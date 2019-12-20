@@ -23,6 +23,11 @@ In the file ``env.sample``, you can configure the policy with the following vari
    AUTHTKT_SECURE  # Default to true.
    AUTHTKT_SAMESITE  # Default to Lax.
 
+.. note::
+
+   With the default configuration, for security reasons, the authentication will only work if the project is
+   served on ``https``.
+
 See also `the official documentation <https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy>`_.
 
 
