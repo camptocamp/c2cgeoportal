@@ -57,6 +57,19 @@ a string of the form ``[<schemaname>.]<tablename>``.  If ``schemaname`` is
 omitted, the table is assumed to be in the ``public`` schema.  The label
 corresponding to this field is *Related Postgres table* in the admin interface.
 
+The ``geoTable`` field supports named formatting and can get values from the
+environment variables, for example:
+
+ ``[<schemaname>_{some-named-variable}.]<tablename>``
+
+with "some-named-variable" defined in the environment.
+
+Support for other database sessions has also been implemented:
+
+``[<database-session-name>.[<schemaname>.]]<tablename>``
+
+See :doc:`../integrator/multiple_databases`.
+
 .. warning::
 
     Only layers embedded in a layergroup are detected as editable.

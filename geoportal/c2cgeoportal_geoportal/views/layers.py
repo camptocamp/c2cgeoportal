@@ -499,7 +499,7 @@ def get_layer_class(layer, with_last_update_columns=False):
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
-        str(layer.geo_table.format(os.environ)),
+        str(layer.geo_table.format(**os.environ)),
         exclude_properties=exclude,
         primary_key=primary_key,
         attributes_order=attributes_order,
