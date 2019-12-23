@@ -8,7 +8,7 @@ flake8 = "==3.7.7"  # lint
 flake8-copyright = "==0.2.2"  # lint
 flake8-mypy = "==17.8.0"  # lint
 mccabe = "==0.6.1"  # lint
-mypy = "==0.750"  # lint
+mypy = "==0.761"  # lint
 pep8 = "==1.7.1"  # lint
 pep8-naming = "==0.9.1"  # Lint
 pyflakes = "==2.1.1"  # lint, flake8
