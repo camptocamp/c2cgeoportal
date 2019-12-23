@@ -9,7 +9,7 @@ Babel = "==2.7.0"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.8.1"  # admin tests
 black = "==19.10b0 "  # lint
-coverage = "==4.5.3"  # Build coverage XML for Codacy
+coverage = "==5.0.1"  # Build coverage XML for Codacy
 flake8 = "==3.6.0"  # lint, TODO remove filter on pyflakes
 flake8-per-file-ignores = "==0.8.1"  # lint
 isort = "==4.3.21"  # lint
