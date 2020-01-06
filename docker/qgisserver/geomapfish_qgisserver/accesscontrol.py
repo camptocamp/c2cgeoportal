@@ -13,6 +13,7 @@ Contact: info@camptocamp.com
 from enum import Enum
 import json
 import os
+import re
 import sys
 from threading import Lock
 import traceback
@@ -20,14 +21,13 @@ import traceback
 from c2c.template.config import config
 import c2cwsgiutils.broadcast
 import geoalchemy2
+from qgis.core import Qgis, QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
+from qgis.server import QgsAccessControlFilter
 from shapely import ops
 import sqlalchemy
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 import yaml
 import zope.event.classhandler
-
-from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsMessageLog, QgsProject
-from qgis.server import QgsAccessControlFilter
 
 
 class GMFException(Exception):
@@ -45,14 +45,23 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         super().__init__(server_iface)
 
         self.server_iface = server_iface
+        self.initialized = False
 
         try:
             config.init(os.environ.get("GEOMAPFISH_CONFIG", "/etc/qgisserver/geomapfish.yaml"))
 
-            c2cwsgiutils.broadcast.init(None)
+            c2cwsgiutils.broadcast.init()
 
             configure_mappers()
-            engine = sqlalchemy.create_engine(config.get("sqlalchemy_slave.url"))
+            db_match = re.match(".*(@[^@]+)$", config.get("sqlalchemy_slave.url"))
+            QgsMessageLog.logMessage(
+                "Connect to the database: ***{}".format(db_match.group(1) if db_match else ""),
+                "GeoMapFishAccessControl",
+                level=Qgis.Info,
+            )
+            engine = sqlalchemy.create_engine(
+                config["sqlalchemy_slave.url"], **(config.get_config().get("sqlalchemy", {}))
+            )
             session_factory = sessionmaker()
             session_factory.configure(bind=engine)
             DBSession = scoped_session(session_factory)  # noqa: N806
@@ -64,8 +73,11 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 )
 
                 QgsMessageLog.logMessage(
-                    "Use OGC server named '{}'.".format(os.environ["GEOMAPFISH_OGCSERVER"])
+                    "Use OGC server named '{}'.".format(os.environ["GEOMAPFISH_OGCSERVER"]),
+                    "GeoMapFishAccessControl",
+                    level=Qgis.Info,
                 )
+                self.initialized = True
             elif "GEOMAPFISH_ACCESSCONTROL_CONFIG" in os.environ:
                 self.single = False
                 self.ogcserver_accesscontrols = {}
@@ -78,17 +90,26 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     )
                     self.ogcserver_accesscontrols[map_] = map_config
                 QgsMessageLog.logMessage(
-                    "Use config '{}'.".format(os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"])
+                    "Use config '{}'.".format(os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]),
+                    "GeoMapFishAccessControl",
+                    level=Qgis.Info,
                 )
+                self.initialized = True
             else:
-                raise GMFException(
+                QgsMessageLog.logMessage(
                     "The environment variable 'GEOMAPFISH_OGCSERVER' or "
-                    "'GEOMAPFISH_ACCESSCONTROL_CONFIG' is not defined."
+                    "'GEOMAPFISH_ACCESSCONTROL_CONFIG' is not defined.",
+                    "GeoMapFishAccessControl",
+                    level=Qgis.Critical,
                 )
 
         except Exception:
-            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
-            raise
+            print("".join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage(
+                "".join(traceback.format_exception(*sys.exc_info())),
+                "GeoMapFishAccessControl",
+                level=Qgis.Critical,
+            )
 
         server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
 
@@ -106,22 +127,49 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Return an additional subset string (typically SQL) filter """
+        if not self.initialized:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return "0"
         return self.get_ogcserver_accesscontrol().layerFilterSubsetString(layer)
 
     def layerFilterExpression(self, layer):  # NOQA
         """ Return an additional expression filter """
+        if not self.initialized:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return "0"
         return self.get_ogcserver_accesscontrol().layerFilterExpression(layer)
 
     def layerPermissions(self, layer):  # NOQA
         """ Return the layer rights """
+        if not self.initialized:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            no_rights = QgsAccessControlFilter.LayerPermissions()
+            no_rights.canRead = no_rights.canInsert = no_rights.canUpdate = no_rights.canDelete = False
+            return no_rights
         return self.get_ogcserver_accesscontrol().layerPermissions(layer)
 
     def authorizedLayerAttributes(self, layer, attributes):  # NOQA
         """ Return the authorised layer attributes """
+        if not self.initialized:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return []
         return self.get_ogcserver_accesscontrol().authorizedLayerAttributes(layer, attributes)
 
     def allowToEdit(self, layer, feature):  # NOQA
         """ Are we authorise to modify the following geometry """
+        if not self.initialized:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return False
         return self.get_ogcserver_accesscontrol().allowToEdit(layer, feature)
 
     def cacheKey(self):  # NOQA
@@ -143,6 +191,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.lock = Lock()
         self.project = None
         self.srid = srid
+        self.ogcserver = None
 
         try:
             from c2cgeoportal_commons.models import InvalidateCacheEvent
@@ -150,7 +199,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             @zope.event.classhandler.handler(InvalidateCacheEvent)
             def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
                 del event
-                QgsMessageLog.logMessage("=== invalidate ===")
+                QgsMessageLog.logMessage("=== invalidate ===", "GeoMapFishAccessControl", level=Qgis.Info)
                 with self.lock:
                     self.layers = None
 
@@ -159,8 +208,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             self.ogcserver = self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one()
 
         except Exception:
-            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
-            raise
+            QgsMessageLog.logMessage(
+                "".join(traceback.format_exception(*sys.exc_info())),
+                "GeoMapFishAccessControl",
+                level=Qgis.Critical,
+            )
 
     @staticmethod
     def ogc_layer_name(layer):
@@ -219,14 +271,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             QgsMessageLog.logMessage(
                 "[accesscontrol] layers:\n{}".format(
                     json.dumps({k: [l.name for l in v] for k, v in layers.items()}, sort_keys=True, indent=4)
-                )
+                ),
+                "GeoMapFishAccessControl",
+                level=Qgis.Info,
             )
             self.layers = layers
             return layers
-
-    def assert_plugin_initialised(self):
-        if self.ogcserver is None:
-            raise Exception("The plugin is not correctly initialised")
 
     def get_roles(self):
         """
@@ -245,7 +295,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         roles = self.DBSession.query(Role).join(Role.users).filter(User.id == parameters.get("USER_ID")).all()
 
         QgsMessageLog.logMessage(
-            "Roles: {}".format(",".join([role.name for role in roles]) if roles else "-")
+            "Roles: {}".format(",".join([role.name for role in roles]) if roles else "-"),
+            "GeoMapFishAccessControl",
+            level=Qgis.Info,
         )
         return roles
 
@@ -325,23 +377,35 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Returns an additional subset string (typically SQL) filter """
-        QgsMessageLog.logMessage(
-            "layerFilterSubsetString {} {}".format(layer.name(), layer.dataProvider().storageType())
-        )
+        if self.ogcserver is None:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return "0"
 
-        self.assert_plugin_initialised()
+        QgsMessageLog.logMessage(
+            "layerFilterSubsetString {} {}".format(layer.name(), layer.dataProvider().storageType()),
+            "GeoMapFishAccessControl",
+            level=Qgis.Info,
+        )
 
         try:
             if layer.dataProvider().storageType() not in self.SUBSETSTRING_TYPE:
-                QgsMessageLog.logMessage("layerFilterSubsetString not in type")
+                QgsMessageLog.logMessage(
+                    "layerFilterSubsetString not in type", "GeoMapFishAccessControl", level=Qgis.Info
+                )
                 return None
 
             access, area = self.get_area(layer)
             if access is Access.FULL:
-                QgsMessageLog.logMessage("layerFilterSubsetString no area")
+                QgsMessageLog.logMessage(
+                    "layerFilterSubsetString no area", "GeoMapFishAccessControl", level=Qgis.Info
+                )
                 return None
             if access is Access.NO:
-                QgsMessageLog.logMessage("layerFilterSubsetString not allowed")
+                QgsMessageLog.logMessage(
+                    "layerFilterSubsetString not allowed", "GeoMapFishAccessControl", level=Qgis.Info
+                )
                 return "0"
 
             area = "ST_GeomFromText('{}', {})".format(area, self.srid)
@@ -350,51 +414,83 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             result = "ST_intersects({}, {})".format(
                 QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn(), area
             )
-            QgsMessageLog.logMessage("layerFilterSubsetString filter: {}".format(result))
+            QgsMessageLog.logMessage(
+                "layerFilterSubsetString filter: {}".format(result),
+                "GeoMapFishAccessControl",
+                level=Qgis.Info,
+            )
             return result
         except Exception:
-            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage(
+                "".join(traceback.format_exception(*sys.exc_info())),
+                "GeoMapFishAccessControl",
+                level=Qgis.Critical,
+            )
             raise
 
     def layerFilterExpression(self, layer):  # NOQA
         """ Returns an additional expression filter """
-        QgsMessageLog.logMessage(
-            "layerFilterExpression {} {}".format(layer.name(), layer.dataProvider().storageType())
-        )
+        if self.ogcserver is None:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return "0"
 
-        self.assert_plugin_initialised()
+        QgsMessageLog.logMessage(
+            "layerFilterExpression {} {}".format(layer.name(), layer.dataProvider().storageType()),
+            "GeoMapFishAccessControl",
+            level=Qgis.Info,
+        )
 
         try:
             if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
-                QgsMessageLog.logMessage("layerFilterExpression not in type")
+                QgsMessageLog.logMessage(
+                    "layerFilterExpression not in type", "GeoMapFishAccessControl", level=Qgis.Info
+                )
                 return None
 
             access, area = self.get_area(layer)
             if access is Access.FULL:
-                QgsMessageLog.logMessage("layerFilterExpression no area")
+                QgsMessageLog.logMessage(
+                    "layerFilterExpression no area", "GeoMapFishAccessControl", level=Qgis.Info
+                )
                 return None
             if access is Access.NO:
-                QgsMessageLog.logMessage("layerFilterExpression not allowed")
+                QgsMessageLog.logMessage(
+                    "layerFilterExpression not allowed", "GeoMapFishAccessControl", level=Qgis.Info
+                )
                 return "0"
 
             result = "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', '{}'))".format(
                 area, self.srid, layer.crs().authid()
             )
-            QgsMessageLog.logMessage("layerFilterExpression filter: {}".format(result))
+            QgsMessageLog.logMessage(
+                "layerFilterExpression filter: {}".format(result), "GeoMapFishAccessControl", level=Qgis.Info
+            )
             return result
         except Exception:
-            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage(
+                "".join(traceback.format_exception(*sys.exc_info())),
+                "GeoMapFishAccessControl",
+                level=Qgis.Critical,
+            )
             raise
 
     def layerPermissions(self, layer):  # NOQA
         """ Returns the layer rights """
-        QgsMessageLog.logMessage("layerPermissions {}".format(layer.name()))
-
-        self.assert_plugin_initialised()
+        QgsMessageLog.logMessage(
+            "layerPermissions {}".format(layer.name()), "GeoMapFishAccessControl", level=Qgis.Info
+        )
 
         try:
             rights = QgsAccessControlFilter.LayerPermissions()
             rights.canRead = rights.canInsert = rights.canUpdate = rights.canDelete = False
+
+            if self.ogcserver is None:
+                QgsMessageLog.logMessage(
+                    "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+                )
+                return rights
 
             layers = self.get_layers()
             ogc_layer_name = self.ogc_layer_name(layer)
@@ -412,14 +508,22 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             return rights
         except Exception:
-            QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
+            QgsMessageLog.logMessage(
+                "".join(traceback.format_exception(*sys.exc_info())),
+                "GeoMapFishAccessControl",
+                level=Qgis.Critical,
+            )
             raise
 
-    @staticmethod
-    def authorizedLayerAttributes(layer, attributes):  # NOQA
+    def authorizedLayerAttributes(self, layer, attributes):  # NOQA
         """ Returns the authorised layer attributes """
-
         del layer
+
+        if self.ogcserver is None:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return []
 
         # TODO
         return attributes
@@ -428,7 +532,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         """ Are we authorise to modify the following geometry """
         QgsMessageLog.logMessage("allowToEdit")
 
-        self.assert_plugin_initialised()
+        if self.ogcserver is None:
+            QgsMessageLog.logMessage(
+                "Call on uninitialized plugin", "GeoMapFishAccessControl", level=Qgis.Critical
+            )
+            return False
 
         try:
             access, area = self.get_area(layer, rw=True)

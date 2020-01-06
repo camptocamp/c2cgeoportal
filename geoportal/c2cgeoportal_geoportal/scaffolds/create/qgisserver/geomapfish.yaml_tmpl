@@ -3,11 +3,18 @@ vars:
   schema: '{PGSCHEMA}'
   schema_static: '{PGSCHEMA_STATIC}'
   sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
+  sqlalchemy_slave.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT}/{PGDATABASE}
   srid: {{srid}}
+  sqlalchemy:
+    pool_recycle: 30
+    pool_size: 5
+    max_overflow: 25
+    use_batch_mode: true
 environment:
   - PGUSER
   - PGPASSWORD
   - PGHOST
+  - PGHOST_SLAVE
   - name: PGPORT
     default: 5432
   - PGDATABASE

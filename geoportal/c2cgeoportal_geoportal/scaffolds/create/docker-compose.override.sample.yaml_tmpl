@@ -13,7 +13,7 @@ services:
       # For Python project development.
       - ${PWD}/geoportal/{{package}}_geoportal:/app/{{package}}_geoportal
       # For Python c2cgeportal development.
-      # - '${PWD}/../c2cgeoportal/commons/c2cgeoportal_gcommons:/opt/c2cgeoportal/commons/c2cgeoportal_commons'
+      # - '${PWD}/../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons'
       # - '${PWD}/../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal'
       # - '${PWD}/../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin'
     environment:
@@ -31,10 +31,12 @@ services:
   #   volumes_from:
   #     - config:ro
 
-  # qgisserver:
-  #   environment:
-  #     env:
-  #       - QGIS_SERVER_LOG_LEVEL=0
+  qgisserver:
+    # volumes:
+    #   - '${PWD}/../c2cgeoportal/docker/qgisserver/geomapfish_qgisserver/:/var/www/plugins/geomapfish_qgisserver/'
+    #   - '${PWD}/../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons/'
+    environment:
+      - QGIS_SERVER_LOG_LEVEL=0
 
   # For Javascript project development.
   # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.
