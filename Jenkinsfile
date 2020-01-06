@@ -301,11 +301,6 @@ dockerBuild {
                         }
                     }
                     sh 'rm -rf ${HOME}/workspace/testgeomapfishapp'
-                }, 'Tests upgrades 220': {
-                    sh 'travis/test-upgrade-convert.sh init ${HOME}/workspace'
-                    // Test Upgrade an convert project
-                    test_upgrade('v220-todocker', 'v220-todocker', 'dockerref')
-                    test_upgrade('v220-tonondocker', 'v220-tonondocker', 'nondockerref')
                 }
             }
 
@@ -314,11 +309,7 @@ dockerBuild {
                 parallel 'Tests upgrades Docker': {
                     test_upgrade('docker', 'docker', 'dockerref')
                 }, 'Tests upgrades non Docker': {
-                    test_upgrade('nondocker', 'nondocker', 'nondockerref')
                     test_upgrade('todocker', 'nondocker', 'dockerref')
-                }, 'Tests upgrades 230': {
-                    test_upgrade('v230-docker', 'v230-docker', 'dockerref')
-                    test_upgrade('v230-nondocker', 'v230-nondocker', 'nondockerref')
                 }, 'Tests upgrades 240': {
                     test_upgrade('v240', 'v240', 'dockerref')
                 }
