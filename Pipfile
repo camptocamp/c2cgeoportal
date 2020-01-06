@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 awscli = "==1.16.156"  # Work with Object storage
-Babel = "==2.7.0"  # i18n
+Babel = "==2.8.0"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.8.1"  # admin tests
 black = "==19.10b0 "  # lint
