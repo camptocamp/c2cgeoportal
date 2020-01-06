@@ -15,7 +15,7 @@ flake8-per-file-ignores = "==0.8.1"  # lint
 isort = "==4.3.21"  # lint
 Jinja2 = "==2.10.3"  # c2c.template
 lingua = "==4.14"  # i18n
-mypy = "==0.750"  # lint
+mypy = "==0.761"  # lint
 PasteScript = "==3.2.0"  # geoportal pcreate
 pep8 = "==1.7.1"  # lint
 polib = "==1.1.0"  # i18n
