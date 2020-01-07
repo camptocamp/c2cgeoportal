@@ -19,7 +19,7 @@ To be editable, a layer should satisfy the following requirements:
    application database. The PostGIS table can be in a separate
    schema though, which is even recommended.
 3. The PostGIS table should include a primary key with a sequence
-   associated. Example::
+   associated. The name of the primary key attribute must be ``id``. Example::
 
        db=# \d table;
                             Table "public.table"
