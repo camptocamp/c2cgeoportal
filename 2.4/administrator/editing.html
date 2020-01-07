@@ -53,7 +53,7 @@ application database. The PostGIS table can be in a separate
 schema though, which is even recommended.</p>
 </li>
 <li><p class="first">The PostGIS table should include a primary key with a sequence
-associated. Example:</p>
+associated. The name of the primary key attribute must be <code class="docutils literal notranslate"><span class="pre">id</span></code>. Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">=</span><span class="c1"># \d table;</span>
                      <span class="n">Table</span> <span class="s2">&quot;public.table&quot;</span>
     <span class="n">Column</span>   <span class="o">|</span>      <span class="n">Type</span>   <span class="o">|</span>                              <span class="n">Modifiers</span>
