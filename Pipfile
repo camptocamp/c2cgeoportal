@@ -24,7 +24,7 @@ pykwalify = "==1.7.0"  # Validate config
 pylint = "==2.2.3"  # lint
 pytest-cov = "==2.8.1"  # tests
 pytest-selenium = "==1.17.0"  # admin tests
-transifex-client = "==0.13.6"  # Makefile
+transifex-client = "==0.13.7"  # Makefile
 typed-ast = "==1.4.0"  # pylint
 WebTest = "==2.0.33"  # admin tests
 
