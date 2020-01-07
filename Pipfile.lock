@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8aa80f669ea594c6999edab7265d1420d54d9d21444b7434193aedb1104d3459"
+            "sha256": "fa2bcd1e256122dc0a2e7abe1e8676cb363568bab419b7afdac084411cca8512"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1396,10 +1396,10 @@
         },
         "transifex-client": {
             "hashes": [
-                "sha256:88072f466627aabc55ae058314c70547e111d2d2e0cc91b1e327d65969bed778"
+                "sha256:5570830f40a9436f0a279fe7ab72a636dc0f2efc66fc424b82b7fd6b3f6b260e"
             ],
             "index": "pypi",
-            "version": "==0.13.6"
+            "version": "==0.13.7"
         },
         "typed-ast": {
             "hashes": [
