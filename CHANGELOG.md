@@ -1,6 +1,6 @@
+##### 2.4.1.74
+* clarify editing prerequisite [c2cgeoportal#5667](https://github.com/camptocamp/c2cgeoportal/pull/5667)
 ##### 2.4.1.73
-* without the double star, the formating inject all the environment [c2cgeoportal#5637](https://github.com/camptocamp/c2cgeoportal/pull/5637)
-* Removes pathspec from nondocker version [c2cgeoportal#5664](https://github.com/camptocamp/c2cgeoportal/pull/5664)
 * CI end of life [c2cgeoportal#5665](https://github.com/camptocamp/c2cgeoportal/pull/5665)
 ##### 2.4.1.72
 * Add security note on authentication [c2cgeoportal#5636](https://github.com/camptocamp/c2cgeoportal/pull/5636)
