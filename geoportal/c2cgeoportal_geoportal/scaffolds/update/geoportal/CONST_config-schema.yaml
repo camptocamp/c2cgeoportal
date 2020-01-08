@@ -621,7 +621,7 @@ mapping:
                 required: True
                 seq:
                   - type: map
-                    mapping:
+                    mapping: &route
                       level:
                         type: int
                         required: True
@@ -637,7 +637,23 @@ mapping:
                             type: str
                             pattern: |-
                               [a-zA-Z0-9_\-~\.]+
-          phantomjs: *routes
+          phantomjs:
+            type: map
+            required: True
+            mapping:
+              disable:
+                type: seq
+                required: True
+                seq:
+                  - type: str
+              routes:
+                type: seq
+                required: True
+                seq:
+                  - type: map
+                    mapping:
+                      <<: *route
+                      environment: *free_dict
           themes:
             type: map
             required: True

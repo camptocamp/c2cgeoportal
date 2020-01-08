@@ -593,16 +593,22 @@ vars:
         - name: desktop
           params:
             no_redirect: "true"
+          environment: &phantomjs-env
+            HTTP_MAP:
+              https://localhost:8484/tiles/: http://localhost:8080/tiles/
           level: 6
         - name: mobile
           params:
             no_redirect: "true"
+          environment: *phantomjs-env
           level: 6
         - name: iframe_api
           params:
             no_redirect: "true"
+          environment: *phantomjs-env
           level: 6
         - name: apihelp
+          environment: *phantomjs-env
           level: 6
     routes:
       disable: []

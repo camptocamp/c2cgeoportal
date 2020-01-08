@@ -22,6 +22,7 @@ default_project_file:
     - geoportal/alembic\.yaml
     - geoportal/demo_geoportal/__init__\.py
     - README\.rst
+    - \.circleci/config\.yml
     - \.travis\.yml
     - qgisserver/geomapfish\.yaml
     - build
