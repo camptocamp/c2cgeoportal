@@ -1,5 +1,7 @@
+##### 2.4.1.76
+* Add a precision about the API layers [c2cgeoportal#5680](https://github.com/camptocamp/c2cgeoportal/pull/5680)
+* Create scss variable for the default border style [ngeo#5407](https://github.com/camptocamp/ngeo/pull/5407)
 ##### 2.4.1.75
-* without the double star, the formating inject all the environment [c2cgeoportal#5637](https://github.com/camptocamp/c2cgeoportal/pull/5637)
 * Removes pathspec from nondocker version [c2cgeoportal#5664](https://github.com/camptocamp/c2cgeoportal/pull/5664)
 ##### 2.4.1.74
 * clarify editing prerequisite [c2cgeoportal#5667](https://github.com/camptocamp/c2cgeoportal/pull/5667)
