@@ -34,3 +34,13 @@ In the file ``geoportal/demo_geoportal/static-ngeo/api/index.js`` you can custom
    config.queryableLayers = [<layer a>, <layer b>, ...];
 
 The API help is in the folder ``geoportal/<package>_geoportal/static-ngeo/api/apihelp/``.
+
+In order for a layer to be accessible via API, proceed as follows::
+
+ * Add the layer.
+ * Select the 'api' interface.
+ * Add the layer to a group which is visible in the API.
+
+.. note::
+
+   A group is visible in the API if it is in a theme whose 'api' interface is checked.
