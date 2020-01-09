@@ -90,6 +90,14 @@ is the name of the PostGIS table containing the layer’s geographic data.  It i
 a string of the form <code class="docutils literal notranslate"><span class="pre">[&lt;schemaname&gt;.]&lt;tablename&gt;</span></code>.  If <code class="docutils literal notranslate"><span class="pre">schemaname</span></code> is
 omitted, the table is assumed to be in the <code class="docutils literal notranslate"><span class="pre">public</span></code> schema.  The label
 corresponding to this field is <em>Related Postgres table</em> in the admin interface.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">geoTable</span></code> field supports named formatting and can get values from the
+environment variables, for example:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">[&lt;schemaname&gt;_{some-named-variable}.]&lt;tablename&gt;</span></code></div></blockquote>
+<p>with “some-named-variable” defined in the environment.</p>
+<p>Support for other database sessions has also been implemented:</p>
+<p><code class="docutils literal notranslate"><span class="pre">[&lt;database-session-name&gt;.[&lt;schemaname&gt;.]]&lt;tablename&gt;</span></code></p>
+<p>See <a class="reference internal" href="../integrator/multiple_databases.html"><span class="doc">Using multiple databases</span></a>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Only layers embedded in a layergroup are detected as editable.</p>
