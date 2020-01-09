@@ -27,7 +27,9 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import json
 import logging
+import os
 import subprocess
 from time import sleep
 from typing import Dict
@@ -246,9 +248,16 @@ def _phantomjs(settings, health_check):
                 url = build_url("Check", path, request)["url"]
 
                 cmd = ["node", "/usr/bin/check-example.js", url]
+                env = dict(os.environ)
+                for name, value in self.route.get("environment", {}).items():
+                    if isinstance(value, (list, dict)):
+                        value = json.dumps(value)
+                    elif not isinstance(value, str):
+                        value = str(value)
+                    env[name] = value
 
                 try:
-                    subprocess.check_output(cmd, timeout=70)
+                    subprocess.check_output(cmd, env=env, timeout=70)
                 except subprocess.CalledProcessError as exception:
                     raise Exception(
                         "{} exit with code: {}\n{}".format(
