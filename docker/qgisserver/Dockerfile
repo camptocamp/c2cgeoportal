@@ -35,10 +35,16 @@ RUN pylint --errors-only --disable=import-error /src/geomapfish_qgisserver
 FROM base AS runner
 
 COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
+COPY logging.ini /var/www/
 COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
     --editable=/opt/c2cgeoportal/commons
+
+ENV LOG_LEVEL=INFO \
+    SQL_LOG_LEVEL=WARN \
+    OTHER_LOG_LEVEL=WARN \
+    C2CGEOPORTAL_LOG_LEVEL=INFO=value
 
 #############################################################################################################
 

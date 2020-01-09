@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 from typing import Any, Dict, List, Optional, Union  # noqa
 
 import sqlalchemy.ext.declarative
@@ -49,6 +50,9 @@ Base: sqlalchemy.ext.declarative.api.ConcreteBase = sqlalchemy.ext.declarative.d
 DBSessions: Dict[str, sqlalchemy.orm.Session] = {}
 
 
+LOG = logging.getLogger(__name__)
+
+
 class InvalidateCacheEvent:
     pass
 
@@ -66,4 +70,4 @@ try:
 
 
 except ModuleNotFoundError:
-    pass
+    LOG.error("c2cwsgiutils broadcast not found")
