@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import Any, Dict, List, Optional, cast
 
 from c2cgeoform.schema import GeoFormSchemaNode
 import colander
@@ -11,12 +11,14 @@ from c2cgeoportal_commons.models.main import Metadata
 
 
 @colander.deferred
-def metadata_definitions(node, kw):  # pylint: disable=unused-argument
+def metadata_definitions(node, kw):
+    del node
     return {m["name"]: m for m in kw["request"].registry.settings["admin_interface"]["available_metadata"]}
 
 
 @colander.deferred
-def metadata_name_widget(node, kw):  # pylint: disable=unused-argument
+def metadata_name_widget(node, kw):
+    del node
     return SelectWidget(
         values=[
             (m["name"], m["name"])
@@ -49,7 +51,7 @@ def regex_validator(node, value):
 
 class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
-    metadata_definitions = None
+    metadata_definitions: Optional[Dict[str, Any]] = None
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
@@ -85,9 +87,9 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         dict_[self._ui_type(obj.name)] = value
         return dict_
 
-    def _ui_type(self, metadata_name):
+    def _ui_type(self, metadata_name: str):
         # pylint: disable=unsubscriptable-object
-        metadata_type = self.metadata_definitions[metadata_name].get("type", "string")
+        metadata_type = cast(Dict[str, Any], self.metadata_definitions)[metadata_name].get("type", "string")
         return metadata_type if metadata_type in self.available_types else "string"
 
 

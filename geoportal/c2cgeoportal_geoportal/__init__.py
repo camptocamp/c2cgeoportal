@@ -138,7 +138,7 @@ def locale_negotiator(request):
     else:
         request.response.set_cookie("_LOCALE_", lang)
     if lang is None:
-        # if best_match returns None then use the default_locale_name configuration variable
+        # If best_match returns None then use the default_locale_name configuration variable
         return request.accept_language.best_match(
             request.registry.settings.get("available_locale_names"),
             default_match=request.registry.settings.get("default_locale_name"),

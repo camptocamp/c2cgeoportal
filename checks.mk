@@ -12,14 +12,19 @@ checks: prospector bandit black isort additionallint
 
 .PHONY: prospector
 prospector:
+	prospector --version
+	mypy --version
+	pylint --version
 	prospector
 
 .PHONY: bandit
 bandit:
+	bandit --version
 	bandit --recursive -ll .
 
 .PHONY: black
 black:
+	black --version
 	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* --check --diff .
 
 .PHONY: black-fix
@@ -28,6 +33,7 @@ black-fix:
 
 .PHONY: isort
 isort:
+	isort --version
 	isort --check-only --diff --settings-path=`pwd` \
 		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
 
