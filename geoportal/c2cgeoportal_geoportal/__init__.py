@@ -138,6 +138,7 @@ def add_getitfixed(config):
         config.add_translation_dirs("getitfixed:locale")
         config.scan("getitfixed")
         # Fix up for admin and getitfixed custom search_paths
+        # pylint: disable=import-outside-toplevel
         from c2cgeoform import Form, default_search_paths, translator
 
         Form.set_zpt_renderer(default_search_paths, translator=translator)
