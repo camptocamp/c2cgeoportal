@@ -637,9 +637,7 @@ class Theme:
                     if isinstance(tree_item, main.LayerWMS):
                         wms_layers.extend(tree_item.layer.split(","))
 
-                    layer_theme, l_errors = self._layer(
-                        tree_item, mixed=mixed, time_=time_, dim=dim, **kwargs
-                    )
+                    layer_theme, l_errors = self._layer(tree_item, mixed=mixed, time_=time_, dim=dim)
                     errors |= l_errors
                     if layer_theme is not None:
                         if depth < min_levels:

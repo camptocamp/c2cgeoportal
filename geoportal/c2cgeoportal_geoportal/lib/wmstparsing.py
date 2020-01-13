@@ -29,6 +29,7 @@
 
 
 import datetime
+from typing import Optional, cast
 
 import isodate
 
@@ -60,7 +61,7 @@ class TimeInformation:
     """
 
     def __init__(self):
-        self.extent = None
+        self.extent: Optional[TimeExtentValue] = None
         self.mode = None
         self.widget = None
         self.layer = None
@@ -107,7 +108,7 @@ class TimeInformation:
 
     def to_dict(self):
         if self.has_time():
-            time = self.extent.to_dict()
+            time = cast(TimeExtentValue, self.extent).to_dict()
             time["mode"] = self.mode
             time["widget"] = self.widget
             return time

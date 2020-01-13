@@ -32,7 +32,7 @@ from argparse import ArgumentParser
 import gettext
 import os
 import sys
-from typing import Dict, List, Set, Tuple, Union
+from typing import Any, Dict, List, Set
 
 from sqlalchemy import func
 import transaction
@@ -89,7 +89,7 @@ def main():
 class Import:
     def __init__(self, session, settings, options):
         self.options = options
-        self.imported: Set[Tuple[Union[str, int]]] = set()
+        self.imported: Set[Any] = set()
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
