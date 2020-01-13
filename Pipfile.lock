@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c6c15299afa620de024ddbe7aa708b988733111aae03253c8da0fbf913268da5"
+            "sha256": "0cd10f0acf8a0eee041ef9316e3d59af97423fb18cdbf6e90dbedb16adad0e17"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -74,11 +74,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:aeadf7565a65ece87b253abefcc1f38aea5aef061a01e9e9a71be5ab44edc529",
-                "sha256:ddd58fe8aab35929ac71481d07f1a07c065c9fe062b53c87ae2efc41a411d1aa"
+                "sha256:a63e0caebcb0d79ff9aa85ca4d6b376f462c1fad238ed486ff051a1738e5a61b",
+                "sha256:f5a544e0fb81d96eb8c44e8feff08ea4a4dd5a1d2af100592210a6381d5fb9f6"
             ],
             "index": "pypi",
-            "version": "==2.0.dev20190613"
+            "version": "==2.1.3.dev20191213"
         },
         "certifi": {
             "hashes": [
@@ -769,6 +769,13 @@
                 "sha256:fb62f2cbe790a50d95593fb40e8cca261c31a2f5637455ea39440d6457c2ba25"
             ],
             "version": "==4.7.1"
+        },
+        "zope.sqlalchemy": {
+            "hashes": [
+                "sha256:069eaad5a15f187603f368a10e0e6b0d485663498c2fe2f8ac7e93f810326eeb",
+                "sha256:882cb812f39a703252f3748e02fcd27a338330763589c8d8bbc4d18d09fb185d"
+            ],
+            "version": "==1.2"
         }
     },
     "develop": {
