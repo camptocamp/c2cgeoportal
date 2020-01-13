@@ -5,12 +5,11 @@ import os
 import re
 import stat
 import subprocess
+import sys
 import urllib.request
 
 parser = argparse.ArgumentParser(description="Build the project,")
-parser.add_argument("--config", action="store_true", help="Build only the configuration image")
-parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
-parser.add_argument("--env", action="store_true", help="Force to create the `.env` file")
+parser.add_argument("--rule", default="build", help="Make rule")
 parser.add_argument("--pgschema", default="main", help="The main schema name used in PostgreSQL")
 parser.add_argument("--upgrade", help="Start upgrading the project to version")
 parser.add_argument("env_files", default=['env.sample'], nargs="*", help="The environment files")
@@ -30,16 +29,15 @@ if args.upgrade:
         if result.code != 200:
             print("ERROR:")
             print(result.read())
-            exit(1)
+            sys.exit(1)
         f.write(result.read().decode())
     os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
     try:
         subprocess.check_call(["./upgrade", full_version])
     except subprocess.CalledProcessError:
-        exit(1)
-    exit(0)
+        sys.exit(1)
+    sys.exit(0)
 
-auto = not (args.config or args.geoportal or args.env)
 env = {}
 for env_file in args.env_files:
     with open(env_file) as f:
@@ -55,38 +53,15 @@ for env_file in args.env_files:
 base = env['DOCKER_BASE'] if 'DOCKER_BASE' in env else "camptocamp/{{package}}"
 tag = ":" + env['DOCKER_TAG'] if 'DOCKER_TAG' in env else ""
 
+environ = dict(os.environ)
+environ['DOCKER_BASE'] = base
+environ['DOCKER_TAG'] = tag
+environ['PGSCHEMA'] = args.pgschema
+environ['GIT_HASH'] = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
+environ['ENV_FILES'] = args.env
+
+subprocess.check_call(["make", "build", args.rule])
 if auto or args.config:
     subprocess.check_call(
         ["docker", "build", "--tag={}-config{}".format(base, tag), "--build-arg=PGSCHEMA=" + args.pgschema, "."]
     )
-if auto or args.geoportal:
-    git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
-    subprocess.check_call(
-        [
-            "docker",
-            "build",
-            "--tag={}-geoportal{}".format(base, tag),
-            "--build-arg=PGSCHEMA=" + args.pgschema,
-            "--build-arg=GIT_HASH=" + git_hash,
-            "geoportal",
-        ]
-    )
-    subprocess.check_call(
-        [
-            "docker",
-            "build",
-            "--target=builder",
-            "--tag={}-geoportal-dev{}".format(base, tag),
-            "--build-arg=PGSCHEMA=" + args.pgschema,
-            "--build-arg=GIT_HASH=" + git_hash,
-            "geoportal",
-        ]
-    )
-
-if args.env or auto and not os.path.exists(".env"):
-    with open(".env", "w") as dest:
-        env_files = args.env_files if args.env_files else [".env.sample"]
-        for file_ in env_files:
-            print("Use env file: " + file_)
-            with open(file_) as src:
-                dest.write(src.read())
