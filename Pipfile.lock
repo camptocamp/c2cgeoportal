@@ -1070,7 +1070,6 @@
                 "sha256:1a2a32c72400d365000412fe08eb4a24ebee89997c18d3d147544f70f5403b39",
                 "sha256:c468adec578380b6281a114cb8a5db34eb1116277da92d7c46f904f0b52d3288"
             ],
-            "index": "pypi",
             "version": "==8.1.0"
         },
         "mypy": {
@@ -1108,10 +1107,11 @@
         },
         "paste": {
             "hashes": [
-                "sha256:127b0b7162d33d7872e1f44eab1fbce58d8d9f62a6acf1a56da5ca82d316790d",
-                "sha256:593413f0c968c1cc8b2fce81d5da6046fb8b4a41f18d4652485f613071a61e92"
+                "sha256:a51429903e7ae2a069062af44acb86dda5f08cbb3f9b8d3d8b752da1028a8fb3",
+                "sha256:ad4e0292a55392531c285bbf6b2c22f6802e1999b50a1cebc6568a1d4e3d7d6a"
             ],
-            "version": "==3.2.5"
+            "index": "pypi",
+            "version": "==3.2.6"
         },
         "pastedeploy": {
             "hashes": [
