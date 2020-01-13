@@ -33,7 +33,7 @@ import os
 import re
 import subprocess
 import traceback
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set, cast
 from urllib.parse import urlsplit
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
@@ -71,13 +71,12 @@ class _Registry:  # pragma: no cover
 
 
 class _Request:  # pragma: no cover
-    registry: _Registry = None
     params: Dict[str, str] = {}
     matchdict: Dict[str, str] = {}
     GET: Dict[str, str] = {}
 
     def __init__(self, settings=None):
-        self.registry = _Registry(settings)
+        self.registry: _Registry = _Registry(settings)
 
     @staticmethod
     def static_url(*args, **kwargs):
@@ -260,12 +259,10 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             for fieldname in list(attributes.keys()):
                 values = self._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
                 for (value,) in values:
-                    if value is not None and isinstance(value, str) and value != "":
+                    if isinstance(value, str) and value != "":
                         msgid = value
                         location = "/layers/{}/values/{}/{}".format(
-                            layername,
-                            fieldname,
-                            value.encode("ascii", errors="replace") if isinstance(value, str) else value,
+                            layername, fieldname, value.encode("ascii", errors="replace").decode("ascii"),
                         )
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 
@@ -337,7 +334,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     # Run on the development.ini file
     extensions = [".ini"]
-    featuretype_cache: Dict[str, Dict] = {}
+    featuretype_cache: Dict[str, Optional[Dict]] = {}
     wmscap_cache: Dict[str, WebMapService] = {}
 
     def __init__(self) -> None:
@@ -659,12 +656,12 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
             try:
                 describe = parseString(response.text)
-                featurestype: Dict[str, Node] = {}
+                featurestype: Optional[Dict[str, Node]] = {}
                 self.featuretype_cache[url] = featurestype
                 for type_element in describe.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "complexType"
                 ):
-                    featurestype[type_element.getAttribute("name")] = type_element
+                    cast(Dict[str, Node], featurestype)[type_element.getAttribute("name")] = type_element
             except ExpatError as e:
                 print(
                     colorize(

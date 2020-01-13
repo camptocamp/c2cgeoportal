@@ -30,7 +30,7 @@
 
 import json
 import re
-from typing import Dict
+from typing import Dict, List, Union
 import urllib.parse
 
 from pyramid.view import view_config
@@ -131,7 +131,7 @@ class DynamicView:
         do_redirect = False
         url = None
         if "redirect_interface" in interface_config:
-            no_redirect_query = {"no_redirect": "t"}
+            no_redirect_query: Dict[str, Union[str, List[str]]] = {"no_redirect": "t"}
             if "query" in self.request.params:
                 query = urllib.parse.parse_qs(self.request.params["query"][1:])
                 no_redirect_query.update(query)

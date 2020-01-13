@@ -156,9 +156,10 @@ class Proxy:
 
     @CACHE_REGION.cache_on_arguments()
     def _proxy_cache(self, method, *args, **kwargs):  # pragma: no cover
-        # method is only for the cache
+        # Method is only for the cache
         del method
-        return self._proxy(*args, cache=True, **kwargs)
+        kwargs["cache"] = True
+        return self._proxy(*args, **kwargs)
 
     def _proxy_response(
         self, service_name, url, headers_update=None, public=False, **kwargs

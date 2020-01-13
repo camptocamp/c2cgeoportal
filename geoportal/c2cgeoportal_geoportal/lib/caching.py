@@ -167,7 +167,7 @@ def _set_cors_headers(request, response, service_name, service_headers_settings,
     """
     Handle CORS requests, as specified in https://www.w3.org/TR/cors/
     """
-    response.vary = (response.vary or ()) + ("Origin",)  # type: ignore
+    response.vary = (response.vary or ()) + ("Origin",)
 
     if "Origin" not in request.headers:
         return  # Not a CORS request if this header is missing

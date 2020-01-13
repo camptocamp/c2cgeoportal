@@ -38,6 +38,7 @@ import shutil
 import subprocess
 from subprocess import call, check_call, check_output
 import sys
+from typing import Any, Dict, cast
 
 import pkg_resources
 import requests
@@ -147,11 +148,10 @@ class Step:
 class C2cUpgradeTool:
 
     color_bar = colorize("================================================================", GREEN)
-    project = None
 
     def __init__(self, options):
         self.options = options
-        self.project = self.get_project()
+        self.project: Dict[str, Any] = self.get_project()
 
     @staticmethod
     def get_project():
@@ -210,7 +210,7 @@ class C2cUpgradeTool:
 
     @Step(0, file_marker=False)
     def step0(self, step):
-        project_template_keys = list(self.project.get("template_vars").keys())
+        project_template_keys = list(cast(Dict[str, Any], self.project.get("template_vars")).keys())
         messages = []
         for required in REQUIRED_TEMPLATE_KEYS:
             if required not in project_template_keys:

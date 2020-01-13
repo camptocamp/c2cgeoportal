@@ -29,7 +29,7 @@
 
 
 import logging
-from typing import Any, Dict, List, Optional, Tuple, Union  # noqa, pylint: disable=unused-import
+from typing import Any, Dict, List, Optional, Tuple, Union, cast  # noqa, pylint: disable=unused-import
 
 from c2c.template.config import config
 from geoalchemy2 import Geometry
@@ -65,7 +65,7 @@ except ModuleNotFoundError:
 LOG = logging.getLogger(__name__)
 
 _schema: str = config["schema"] or "main"
-_srid: str = config["srid"] or 3857
+_srid: int = cast(int, config["srid"]) or 3857
 
 
 class FullTextSearch(GeoInterface, Base):
