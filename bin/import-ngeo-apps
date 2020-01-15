@@ -32,6 +32,7 @@
 from argparse import ArgumentParser
 from json import dumps
 import re
+import sys
 from urllib.parse import parse_qsl
 
 
@@ -42,7 +43,7 @@ def _sub(pattern, repl, string, count=0, flags=0, required=True):
         print(pattern)
         print("in")
         print(string)
-        exit(1)
+        sys.exit(1)
     return new_string
 
 
@@ -59,7 +60,7 @@ def _subs(subs, string):
     print(("\n".join([p for p, r in subs])))
     print("in")
     print(string)
-    exit(1)
+    sys.exit(1)
 
 
 class _RouteDest:

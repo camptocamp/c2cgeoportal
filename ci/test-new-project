@@ -28,7 +28,6 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import json
 import sys
 
 import requests
@@ -52,15 +51,15 @@ if len(sys.argv) == 3 and sys.argv[2] == "enum":
         }]
     }:
         print("enum OK")
-        exit()
+        sys.exit()
     else:
         print("Incorrect result ({}):".format(result.status_code))
         print(result.text)
-        exit(2)
+        sys.exit(2)
 
 if result.ok:
     print("OK")
 else:
     print("NOT OK")
     print(result.text)
-    exit(2)
+    sys.exit(2)

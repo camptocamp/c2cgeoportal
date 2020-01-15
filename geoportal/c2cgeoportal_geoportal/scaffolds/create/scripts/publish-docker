@@ -6,13 +6,13 @@ import sys
 
 if os.environ.get('TRAVIS_PULL_REQUEST', 'false') == 'true':
     print('Not deploying images for pull requests')
-    exit(0)
+    sys.exit(0)
 
 version = os.environ.get('CIRCLE_BRANCH', os.environ.get('TRAVIS_BRANCH'))
 
 if version not in os.environ.get('HELM_RELEASE_NAMES', '').split(','):
     print('Not a release branch')
-    exit(0)
+    sys.exit(0)
 
 print('Deploying images to Docker Hub for tag {}'.format(version))
 sys.stdout.flush()

@@ -6,6 +6,7 @@ import re
 import stat
 import subprocess
 import urllib.request
+import sys
 
 parser = argparse.ArgumentParser(description="Build the project,")
 parser.add_argument("--config", action="store_true", help="Build only the configuration image")
@@ -30,14 +31,14 @@ if args.upgrade:
         if result.code != 200:
             print("ERROR:")
             print(result.read())
-            exit(1)
+            sys.exit(1)
         f.write(result.read().decode())
     os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
     try:
         subprocess.check_call(["./upgrade", full_version])
     except subprocess.CalledProcessError:
-        exit(1)
-    exit(0)
+        sys.exit(1)
+    sys.exit(0)
 
 auto = not (args.config or args.geoportal or args.env)
 env = {}

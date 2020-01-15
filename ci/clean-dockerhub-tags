@@ -5,6 +5,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 
 import requests
 
@@ -65,7 +66,7 @@ def clean_images(image, tag_=lambda tag: tag):
         )
         if not response.ok:
             print(response.text)
-            exit(2)
+            sys.exit(2)
 
 for image in [
     "geomapfish",

@@ -30,6 +30,7 @@
 
 
 import time
+import sys
 
 import psycopg2
 
@@ -43,11 +44,10 @@ while sleep_time < max_sleep:
         connection = psycopg2.connect("")
         cursor = connection.cursor()
         cursor.execute("SELECT 1")
-        exec
-        exit(0)
+        sys.exit(0)
     except Exception as e:
         print(str(e))
         print("Waiting for the DataBase server to be reachable")
         time.sleep(sleep_time)
         sleep_time *= 2
-exit(1)
+sys.exit(1)

@@ -42,11 +42,11 @@ while sleep_time < max_sleep:
     sys.stdout.flush()
     try:
         requests.get(sys.argv[1], timeout=1, verify=False)
-        exit(0)
+        sys.exit(0)
     except Exception as e:
         print(str(e))
         print("Waiting for the WSGI server to be reachable")
         sys.stdout.flush()
         time.sleep(sleep_time)
         sleep_time *= 2
-exit(1)
+sys.exit(1)
