@@ -25,7 +25,6 @@ default_project_file:
     - \.circleci/config\.yml
     - \.travis\.yml
     - qgisserver/geomapfish\.yaml
-    - build
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
     - mapserver/demo\.map\.tmpl
