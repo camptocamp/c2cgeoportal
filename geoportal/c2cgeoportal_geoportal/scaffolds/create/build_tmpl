@@ -14,7 +14,7 @@ parser.add_argument("--geoportal", action="store_true", help="Build only the geo
 parser.add_argument("--env", action="store_true", help="Force to create the `.env` file")
 parser.add_argument("--pgschema", default="main", help="The main schema name used in PostgreSQL")
 parser.add_argument("--upgrade", help="Start upgrading the project to version")
-parser.add_argument("env_files", default=['env.sample'], nargs="*", help="The environment files")
+parser.add_argument("env_files", default=["env.sample"], nargs="*", help="The environment files")
 
 args = parser.parse_args()
 
@@ -45,20 +45,26 @@ env = {}
 for env_file in args.env_files:
     with open(env_file) as f:
         for line in f:
-            if line and line[0] != '#':
+            if line and line[0] != "#":
                 try:
-                    index = line.index('=')
-                    env[line[:index].strip()] = line[index+1:].strip()
+                    index = line.index("=")
+                    env[line[:index].strip()] = line[index + 1 :].strip()
                 except ValueError:
                     # Ignore lines that don't have a '='
                     pass
 
-base = env['DOCKER_BASE'] if 'DOCKER_BASE' in env else "camptocamp/{{package}}"
-tag = ":" + env['DOCKER_TAG'] if 'DOCKER_TAG' in env else ""
+base = env["DOCKER_BASE"] if "DOCKER_BASE" in env else "camptocamp/{{package}}"
+tag = ":" + env["DOCKER_TAG"] if "DOCKER_TAG" in env else ""
 
 if auto or args.config:
     subprocess.check_call(
-        ["docker", "build", "--tag={}-config{}".format(base, tag), "--build-arg=PGSCHEMA=" + args.pgschema, "."]
+        [
+            "docker",
+            "build",
+            "--tag={}-config{}".format(base, tag),
+            "--build-arg=PGSCHEMA=" + args.pgschema,
+            ".",
+        ]
     )
 if auto or args.geoportal:
     git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()

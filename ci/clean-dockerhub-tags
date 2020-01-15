@@ -11,73 +11,52 @@ import requests
 
 token = requests.post(
     "https://hub.docker.com/v2/users/login/",
-    headers={
-        "Content-Type": "application/json"
-    },
-    data=json.dumps({
-        "username": os.environ["DOCKER_USERNAME"],
-        "password": os.environ["DOCKER_PASSWORD"]
-    })
+    headers={"Content-Type": "application/json"},
+    data=json.dumps({"username": os.environ["DOCKER_USERNAME"], "password": os.environ["DOCKER_PASSWORD"]}),
 ).json()["token"]
 
 
 def clean_images(image, tag_=lambda tag: tag):
     docker_tags = [
-        tag['name'] for tag in
-        requests.get('https://registry.hub.docker.com/v1/repositories/camptocamp/{image}/tags'.format(
-            image=image,
-        )).json()
+        tag["name"]
+        for tag in requests.get(
+            "https://registry.hub.docker.com/v1/repositories/camptocamp/{image}/tags".format(image=image,)
+        ).json()
     ]
 
-    git_tags = subprocess.check_output(['git', 'tag']).decode().split('\n')
+    git_tags = subprocess.check_output(["git", "tag"]).decode().split("\n")
     git_branch = [
-        b.split(' ')[-1].split('/')[-1] for b in
-        subprocess.check_output(['git', 'branch', '--all']).decode().split('\n')
+        b.split(" ")[-1].split("/")[-1]
+        for b in subprocess.check_output(["git", "branch", "--all"]).decode().split("\n")
     ]
 
-    docker_tags_to_remove = {
-        tag for tag in docker_tags
-        if tag_(tag) not in (git_tags + git_branch)
-    }
+    docker_tags_to_remove = {tag for tag in docker_tags if tag_(tag) not in (git_tags + git_branch)}
 
-    major_re = re.compile(r'^[0-9]+\.[0-9]+$')
-    docker_tags_to_remove = {
-        tag for tag in docker_tags_to_remove
-        if not major_re.match(tag_(tag))
-    }
+    major_re = re.compile(r"^[0-9]+\.[0-9]+$")
+    docker_tags_to_remove = {tag for tag in docker_tags_to_remove if not major_re.match(tag_(tag))}
 
-    minor_re = re.compile(r'^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$')
-    docker_tags_to_remove = {
-        tag for tag in docker_tags_to_remove
-        if not minor_re.match(tag_(tag))
-    }
+    minor_re = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
+    docker_tags_to_remove = {tag for tag in docker_tags_to_remove if not minor_re.match(tag_(tag))}
     print("Docker tags to be removed for image camptocamp/{} ({}):".format(image, len(docker_tags_to_remove)))
     print("\n".join(docker_tags_to_remove))
 
     for tag in docker_tags_to_remove:
         response = requests.delete(
-            'https://cloud.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/'.format(
-                image=image,
-                tag=tag,
+            "https://cloud.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/".format(
+                image=image, tag=tag,
             ),
-            headers={
-                "Authorization": "JWT " + token
-            }
+            headers={"Authorization": "JWT " + token},
         )
         if not response.ok:
             print(response.text)
             sys.exit(2)
 
-for image in [
-    "geomapfish",
-    "geomapfish-build",
-    "geomapfish-config",
-    "geomapfish-geoportal"
-]:
+
+for image in ["geomapfish", "geomapfish-build", "geomapfish-config", "geomapfish-geoportal"]:
     clean_images(image)
 
 
-qgis_tag_re = re.compile(r'^gmf(.+)-qgis.+$')
+qgis_tag_re = re.compile(r"^gmf(.+)-qgis.+$")
 
 
 def qgis_tag(tag):

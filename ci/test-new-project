@@ -43,13 +43,7 @@ url = sys.argv[1]
 result = requests.get(url, timeout=240, verify=False)
 
 if len(sys.argv) == 3 and sys.argv[2] == "enum":
-    if result.ok and result.json() == {
-        "items": [{
-            "value": "car"
-        }, {
-            "value": "train"
-        }]
-    }:
+    if result.ok and result.json() == {"items": [{"value": "car"}, {"value": "train"}]}:
         print("enum OK")
         sys.exit()
     else:

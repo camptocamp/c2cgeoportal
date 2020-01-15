@@ -29,8 +29,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import time
 import sys
+import time
 
 import psycopg2
 
