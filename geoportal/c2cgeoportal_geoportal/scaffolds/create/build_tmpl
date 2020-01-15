@@ -5,8 +5,8 @@ import os
 import re
 import stat
 import subprocess
-import urllib.request
 import sys
+import urllib.request
 
 parser = argparse.ArgumentParser(description="Build the project,")
 parser.add_argument("--config", action="store_true", help="Build only the configuration image")
