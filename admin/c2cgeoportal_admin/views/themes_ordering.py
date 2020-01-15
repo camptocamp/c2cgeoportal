@@ -47,7 +47,7 @@ class ThemesOrdering(AbstractViews):
     _base_schema = ThemesOrderingSchema()
 
     @view_config(route_name="layertree_ordering", request_method="GET", renderer="../templates/edit.jinja2")
-    def edit(self):
+    def view(self):
         form = self._form()
         dict_ = {
             "themes": [

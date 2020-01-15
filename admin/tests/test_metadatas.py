@@ -61,7 +61,7 @@ def metadatas_test_data(dbsession, transact):
 @pytest.mark.usefixtures("metadatas_test_data", "test_app")
 class TestMetadatasView(AbstractViewsTests):
 
-    _prefix = "/"
+    _prefix = "/admin/"
 
     def __metadata_ui_types(self):
         return ("string", "liste", "boolean", "int", "float", "url", "json")
@@ -137,7 +137,7 @@ class TestMetadatasView(AbstractViewsTests):
     def test_invalid_float_metadata(self, test_app, metadatas_test_data):
         self._post_invalid_metadata(
             test_app,
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             self._base_metadata_params(metadatas_test_data),
             "_float",
             "number",
@@ -146,13 +146,18 @@ class TestMetadatasView(AbstractViewsTests):
 
     def test_valid_float_metadata(self, test_app, metadatas_test_data):
         self._post_metadata(
-            test_app, "/layers_wms/new", self._base_metadata_params(metadatas_test_data), "_float", "2.5", 302
+            test_app,
+            "/admin/layers_wms/new",
+            self._base_metadata_params(metadatas_test_data),
+            "_float",
+            "2.5",
+            302,
         )
 
     def test_invalid_int_metadata(self, test_app, metadatas_test_data):
         self._post_invalid_metadata(
             test_app,
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             self._base_metadata_params(metadatas_test_data),
             "_int",
             "number",
@@ -161,13 +166,18 @@ class TestMetadatasView(AbstractViewsTests):
 
     def test_valid_int_metadata(self, test_app, metadatas_test_data):
         self._post_metadata(
-            test_app, "/layers_wms/new", self._base_metadata_params(metadatas_test_data), "_int", "2", 302
+            test_app,
+            "/admin/layers_wms/new",
+            self._base_metadata_params(metadatas_test_data),
+            "_int",
+            "2",
+            302,
         )
 
     def test_invalid_url_metadata(self, test_app, metadatas_test_data):
         self._post_invalid_metadata(
             test_app,
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             self._base_metadata_params(metadatas_test_data),
             "_url",
             "gnagnagna",
@@ -183,13 +193,18 @@ class TestMetadatasView(AbstractViewsTests):
     )
     def test_valid_url_metadata(self, test_app, metadatas_test_data, url):
         self._post_metadata(
-            test_app, "/layers_wms/new", self._base_metadata_params(metadatas_test_data), "_url", url, 302
+            test_app,
+            "/admin/layers_wms/new",
+            self._base_metadata_params(metadatas_test_data),
+            "_url",
+            url,
+            302,
         )
 
     def test_invalid_json_metadata(self, test_app, metadatas_test_data):
         self._post_invalid_metadata(
             test_app,
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             self._base_metadata_params(metadatas_test_data),
             "_json",
             """{"colors": [{
@@ -207,7 +222,7 @@ class TestMetadatasView(AbstractViewsTests):
     def test_valid_json_metadata(self, test_app, metadatas_test_data):
         self._post_metadata(
             test_app,
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             self._base_metadata_params(metadatas_test_data),
             "_json",
             """{"colors": [{
@@ -225,7 +240,7 @@ class TestMetadatasView(AbstractViewsTests):
     def test_invalid_color(self, test_app, metadatas_test_data):
         self._post_invalid_metadata(
             test_app,
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             self._base_metadata_params(metadatas_test_data),
             "_color",
             "#W007DCD",
@@ -235,7 +250,7 @@ class TestMetadatasView(AbstractViewsTests):
     def test_valid_color(self, test_app, metadatas_test_data):
         self._post_metadata(
             test_app,
-            "/layers_wms/new",
+            "/admin/layers_wms/new",
             self._base_metadata_params(metadatas_test_data),
             "_color",
             "#007DCD",
@@ -268,7 +283,7 @@ class TestMetadatasSelenium:
         self, selenium, selenium_app, metadatas_test_data
     ):
         layer = metadatas_test_data["layer_wms"]
-        selenium.get(selenium_app + "/layers_wms/{}".format(layer.id))
+        selenium.get(selenium_app + "/admin/layers_wms/{}".format(layer.id))
         selenium.execute_script("window.scrollBy(0,3000)", "")
         selenium.find_element_by_xpath(
             """//div[contains(., "Metadatas")]
@@ -306,7 +321,7 @@ class TestMetadatasSelenium:
         # don't trigger "are you sure you want to leave alert"
         layer = metadatas_test_data["layer_wms"]
         IndexPage(selenium)
-        selenium.get(selenium_app + "/layers_wms/{}".format(layer.id))
+        selenium.get(selenium_app + "/admin/layers_wms/{}".format(layer.id))
 
         selenium.find_element_by_xpath('//a[contains(@href, "roles")]').click()
         assert selenium.current_url.endswith("/roles")

@@ -284,19 +284,52 @@ mapping:
         mapping:
           layer_tree_max_nodes:
             type: int
-          map_base_layer:
-            type: str
-          map_x:
-            type: int
-            required: True
-          map_y:
-            type: int
-            required: True
-          map_zoom:
-            type: int
-            required: True
-          map_fit_max_zoom:
-            type: int
+          map: &map_config
+            type: map
+            mapping:
+              baseLayers:
+                type: seq
+                sequence:
+                  - type: map
+                    mapping:
+                      regex;.+:
+                        type: any
+              fitSource:
+                type: bool
+              fitMaxZoom:
+                type: int
+              focusOnly:
+                type: bool
+              projections:
+                type: seq
+                sequence:
+                  - type: map
+                    mapping:
+                      code:
+                        type: str
+                        required: True
+                      definition:
+                        type: str
+                        required: True
+              srid:
+                type: int
+              view:
+                type: map
+                mapping:
+                  center:
+                    type: seq
+                    sequence:
+                      - type: int
+                  initialExtent:
+                    type: seq
+                    sequence:
+                      - type: int
+                  projection:
+                    type: str
+                  zoom:
+                    type: int
+                  regex;.+:
+                    type: any
           available_metadata:
             type: seq
             required: True
@@ -331,6 +364,19 @@ mapping:
                     type: str
                   single:
                     type: bool
+
+      getitfixed:
+        type: map
+        required: True
+        mapping:
+          enabled:
+            type: bool
+            required: True
+          map:
+            <<: *map_config
+          regex;.+:
+            type: any
+
       layers:
         type: map
         required: True

@@ -51,12 +51,18 @@ vars:
           params:
             ogcserver: QGIS server
 
-
   admin_interface:
     # Default values for the admin interface's maps.
-    map_x: 740000
-    map_y: 5860000
-    map_zoom: 10
+    map:
+      baseLayers:
+        - type_: "OSM"
+      view:
+        projection: 'EPSG:3857'
+        center: [829170, 5933942]
+        zoom: 7
+      fitSource: false
+      fitMaxZoom: 14
+      focusOnly: false
 
   functionalities:
     # Functionalities that are made available to Mako templates.

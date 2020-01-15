@@ -5,7 +5,7 @@ ENV VARS_FILE=vars.yaml
 ENV CONFIG_VARS sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
     sqlalchemy.use_batch_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
     sqlalchemy_slave.max_overflow sqlalchemy_slave.use_batch_mode schema schema_static enable_admin_interface \
-    default_locale_name servers layers available_locale_names cache admin_interface functionalities \
+    default_locale_name servers layers available_locale_names cache admin_interface getitfixed functionalities \
     raster shortener hide_capabilities tinyowsproxy resourceproxy print_url print_get_redirect \
     checker check_collector default_max_age package srid \
     reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \

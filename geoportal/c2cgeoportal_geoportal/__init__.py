@@ -37,6 +37,8 @@ import time
 from urllib.parse import urlsplit
 
 from Crypto.Cipher import AES  # nosec
+import c2cgeoform
+from c2cgeoform import Form, translator
 import c2cwsgiutils
 import c2cwsgiutils.db
 from c2cwsgiutils.health_check import HealthCheck
@@ -128,7 +130,17 @@ def add_admin_interface(config):
         )
         config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name="admin_add_ending_slash")
         config.add_route("admin_add_ending_slash", "/admin", request_method="GET")
-        config.include("c2cgeoportal_admin", route_prefix="/admin")
+        config.include("c2cgeoportal_admin")
+
+
+def add_getitfixed(config):
+    if config.get_settings()["getitfixed"].get("enabled", False):
+        config.include("getitfixed.models")
+        config.include("getitfixed.routes")
+        config.add_translation_dirs("getitfixed:locale")
+        config.scan("getitfixed")
+        # Register admin and getitfixed search paths together
+        Form.set_zpt_renderer(c2cgeoform.default_search_paths, translator=translator)
 
 
 def locale_negotiator(request):
@@ -548,6 +560,7 @@ def includeme(config: pyramid.config.Configurator):
     )
 
     add_admin_interface(config)
+    add_getitfixed(config)
 
     # Add the project static view with cache buster
     config.add_static_view(

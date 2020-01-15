@@ -39,7 +39,7 @@ def layer_vectortiles_test_data(dbsession, transact):
 @pytest.mark.usefixtures("layer_vectortiles_test_data", "test_app")
 class TestLayerVectortiles(AbstractViewsTests):
 
-    _prefix = "/layers_vectortiles"
+    _prefix = "/admin/layers_vectortiles"
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -166,7 +166,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import LayerVectorTiles
 
         resp = test_app.post(
-            "/layers_vectortiles/new",
+            "/admin/layers_vectortiles/new",
             {
                 "name": "new_name",
                 "description": "new description",
@@ -179,7 +179,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = dbsession.query(LayerVectorTiles).filter(LayerVectorTiles.name == "new_name").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
     def test_duplicate(self, layer_vectortiles_test_data, test_app, dbsession):
@@ -187,7 +187,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = layer_vectortiles_test_data["layers"][3]
 
-        resp = test_app.get("/layers_vectortiles/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get("/admin/layers_vectortiles/{}/duplicate".format(layer.id), status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -208,7 +208,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = dbsession.query(LayerVectorTiles).filter(LayerVectorTiles.name == "clone").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         assert layer.id == layer.metadatas[0].item_id
@@ -220,7 +220,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer_id = dbsession.query(LayerVectorTiles.id).first().id
 
-        test_app.delete("/layers_vectortiles/{}".format(layer_id), status=200)
+        test_app.delete("/admin/layers_vectortiles/{}".format(layer_id), status=200)
 
         assert dbsession.query(LayerVectorTiles).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None

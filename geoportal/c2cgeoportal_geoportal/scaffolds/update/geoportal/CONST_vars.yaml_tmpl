@@ -202,10 +202,6 @@ vars:
       backend: dogpile.cache.memory
 
   admin_interface:
-    # Default values for the admin interface's maps.
-    map_x: 740000
-    map_y: 5860000
-    map_zoom: 10
 
     layer_tree_max_nodes: 1000
 
@@ -287,6 +283,9 @@ vars:
         single: true
       - name: open_panel
         single: true
+
+  getitfixed:
+    enabled: false
 
   functionalities:
     # Functionalities that are made available to Mako templates and loginuser.

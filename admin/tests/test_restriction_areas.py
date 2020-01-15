@@ -38,7 +38,7 @@ def restriction_area_test_data(dbsession, transact):
 @pytest.mark.usefixtures("restriction_area_test_data", "test_app")
 class TestRestrictionAreaViews(AbstractViewsTests):
 
-    _prefix = "/restriction_areas"
+    _prefix = "/admin/restriction_areas"
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app)
@@ -63,19 +63,19 @@ class TestRestrictionAreaViews(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import RestrictionArea
 
         resp = test_app.post(
-            "/restriction_areas/new", {"name": "new_name", "description": "new_description"}, status=302
+            "/admin/restriction_areas/new", {"name": "new_name", "description": "new_description"}, status=302
         )
 
         restriction_area = dbsession.query(RestrictionArea).filter(RestrictionArea.name == "new_name").one()
         assert str(restriction_area.id) == re.match(
-            r"http://localhost/restriction_areas/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/restriction_areas/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert restriction_area.name == "new_name"
 
     def test_unicity_validator(self, restriction_area_test_data, test_app):
         restriction_area = restriction_area_test_data["restriction_areas"][2]
 
-        resp = test_app.get("/restriction_areas/{}/duplicate".format(restriction_area.id), status=200)
+        resp = test_app.get("/admin/restriction_areas/{}/duplicate".format(restriction_area.id), status=200)
         resp = resp.form.submit("submit")
 
         self._check_submission_problem(resp, "{} is already used.".format(restriction_area.name))
@@ -114,7 +114,7 @@ class TestRestrictionAreaViews(AbstractViewsTests):
 
         restriction_area = restriction_area_test_data["restriction_areas"][0]
         deleted_id = restriction_area.id
-        test_app.delete("/restriction_areas/{}".format(deleted_id), status=200)
+        test_app.delete("/admin/restriction_areas/{}".format(deleted_id), status=200)
         assert dbsession.query(RestrictionArea).get(deleted_id) is None
 
     def test_duplicate(self, restriction_area_test_data, test_app, dbsession):
@@ -123,7 +123,9 @@ class TestRestrictionAreaViews(AbstractViewsTests):
         restriction_area = restriction_area_test_data["restriction_areas"][3]
         roles = restriction_area_test_data["roles"]
 
-        form = test_app.get("/restriction_areas/{}/duplicate".format(restriction_area.id), status=200).form
+        form = test_app.get(
+            "/admin/restriction_areas/{}/duplicate".format(restriction_area.id), status=200
+        ).form
 
         assert "" == self.get_first_field_named(form, "id").value
         self._check_roles(form, roles, restriction_area)
@@ -134,5 +136,5 @@ class TestRestrictionAreaViews(AbstractViewsTests):
         assert resp.status_int == 302
         restriction_area = dbsession.query(RestrictionArea).filter(RestrictionArea.name == "clone").one()
         assert str(restriction_area.id) == re.match(
-            r"http://localhost/restriction_areas/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/restriction_areas/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)

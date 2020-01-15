@@ -1,4 +1,4 @@
-from c2cgeoform.routes import register_models, table_pregenerator
+from c2cgeoform.routes import register_route, register_routes
 
 
 def includeme(config):
@@ -11,20 +11,16 @@ def includeme(config):
     config.add_static_view("root_package_node_modules", asset_spec)
     config.override_asset(to_override=asset_spec, override_with="/opt/c2cgeoportal/admin/node_modules")
 
-    config.add_static_view("static", "c2cgeoportal_admin:static", cache_max_age=3600)
+    config.add_static_view("admin_static", "c2cgeoportal_admin:static", cache_max_age=3600)
 
-    config.add_route("home", "/")
-    config.add_route("layertree", "/layertree")
-    config.add_route("layertree_children", "/layertree/children")
-    config.add_route("layertree_ordering", "/layertree/ordering")
-    config.add_route("layertree_unlink", "/layertree/unlink/{group_id}/{item_id}")
-    config.add_route("layertree_delete", "/layertree/delete/{item_id}")
-    config.add_route(
-        "convert_to_wms", "/{table:layers_wmts}/{id}/convert_to_wms", pregenerator=table_pregenerator
-    )
-    config.add_route(
-        "convert_to_wmts", "/{table:layers_wms}/{id}/convert_to_wmts", pregenerator=table_pregenerator
-    )
+    register_route(config, "admin", "/{application:admin}/")
+    register_route(config, "layertree", "/{application:admin}/layertree")
+    register_route(config, "layertree_children", "/{application:admin}/layertree/children")
+    register_route(config, "layertree_ordering", "/{application:admin}/layertree/ordering")
+    register_route(config, "layertree_unlink", "/{application:admin}/layertree/unlink/{group_id}/{item_id}")
+    register_route(config, "layertree_delete", "/{application:admin}/layertree/delete/{item_id}")
+    register_route(config, "convert_to_wms", "/{application:admin}/{table:layers_wmts}/{id}/convert_to_wms")
+    register_route(config, "convert_to_wmts", "/{application:admin}/{table:layers_wms}/{id}/convert_to_wmts")
 
     from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
         Role,
@@ -66,6 +62,5 @@ def includeme(config):
         if url_path not in admin_interface_config.get("exclude_pages", [])
     ]
 
-    register_models(
-        config, visible_routes,
-    )
+    config.add_c2cgeoform_application("admin", visible_routes)
+    register_routes(config)
