@@ -44,6 +44,7 @@ from c2cgeoportal_geoportal.lib.caching import get_region, set_common_headers, N
 cache_region = get_region()
 
 IGNORED_CHARS_RE = re.compile(r"[()&|!:<>]")
+IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 
 
 class FullTextSearchView:
@@ -91,8 +92,12 @@ class FullTextSearchView:
         if partitionlimit > maxlimit:
             partitionlimit = maxlimit
 
-        terms_ts = "&".join(w + ":*"
-                            for w in IGNORED_CHARS_RE.sub(" ", terms).split(" ") if w != "")
+        terms_ts = "&".join(
+            w + ":*"
+            for w in IGNORED_STARTUP_CHARS_RE.sub(
+                "",
+                IGNORED_CHARS_RE.sub(" ", terms)
+            ).split(" ") if w != "")
         _filter = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
 
         if self.request.user is None:
