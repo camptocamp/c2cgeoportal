@@ -16,11 +16,13 @@ token = requests.post(
 ).json()["token"]
 
 
-def clean_images(image, tag_=lambda tag: tag):
+def clean_images(docker_image, tag_=lambda tag: tag):
     docker_tags = [
         tag["name"]
         for tag in requests.get(
-            "https://registry.hub.docker.com/v1/repositories/camptocamp/{image}/tags".format(image=image,)
+            "https://registry.hub.docker.com/v1/repositories/camptocamp/{image}/tags".format(
+                image=docker_image
+            )
         ).json()
     ]
 
@@ -43,7 +45,7 @@ def clean_images(image, tag_=lambda tag: tag):
     for tag in docker_tags_to_remove:
         response = requests.delete(
             "https://cloud.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/".format(
-                image=image, tag=tag,
+                image=docker_image, tag=tag,
             ),
             headers={"Authorization": "JWT " + token},
         )
