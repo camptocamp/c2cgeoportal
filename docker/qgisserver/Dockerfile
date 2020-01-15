@@ -44,7 +44,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
 ENV LOG_LEVEL=INFO \
     SQL_LOG_LEVEL=WARN \
     OTHER_LOG_LEVEL=WARN \
-    C2CGEOPORTAL_LOG_LEVEL=INFO=value
+    C2CGEOPORTAL_LOG_LEVEL=INFO
 
 #############################################################################################################
 
