@@ -52,11 +52,12 @@ for env_file in args.env_files:
                     # Ignore lines that don't have a '='
                     pass
 
+base = env['DOCKER_BASE']
 tag = ":" + env['DOCKER_TAG'] if 'DOCKER_TAG' in env else ""
 
 if auto or args.config:
     subprocess.check_call(
-        ["docker", "build", "--tag=camptocamp/{{package}}-config" + tag, "--build-arg=PGSCHEMA=" + args.pgschema, "."]
+        ["docker", "build", "--tag=" + base + "-config" + tag, "--build-arg=PGSCHEMA=" + args.pgschema, "."]
     )
 if auto or args.geoportal:
     git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
@@ -64,7 +65,7 @@ if auto or args.geoportal:
         [
             "docker",
             "build",
-            "--tag=camptocamp/{{package}}-geoportal" + tag,
+            "--tag=" + base + "-geoportal" + tag,
             "--build-arg=PGSCHEMA=" + args.pgschema,
             "--build-arg=GIT_HASH=" + git_hash,
             "geoportal",
@@ -75,7 +76,7 @@ if auto or args.geoportal:
             "docker",
             "build",
             "--target=builder",
-            "--tag=camptocamp/{{package}}-geoportal-dev" + tag,
+            "--tag=" + base + "-geoportal-dev" + tag,
             "--build-arg=PGSCHEMA=" + args.pgschema,
             "--build-arg=GIT_HASH=" + git_hash,
             "geoportal",
