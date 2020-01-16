@@ -11,7 +11,7 @@ default_project_file:
     - {{package}}/static-ngeo/.*
     - geoportal/{{package}}_geoportal/templates/.*
     - geoportal/{{package}}_geoportal/locale/.*
-    - geoportal_{{package}}_geoportal/static/.*
+    - geoportal/{{package}}_geoportal/static/.*
     - geoportal/{{package}}_geoportal/static-ngeo/.*
     - print/print-apps/.*
     - mapserver/.*
@@ -39,7 +39,7 @@ no_diff:
   - .*/CONST_.+
 
 # Files that will be present in the CONST_create_template but will not be considered in the upgrade.
-# Used to provide the alt application => does not disturb the user during upgrade.
+# Used to provide the alt applications => does not disturb the user during upgrade.
 extra:
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop_alt\.html\.ejs
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile_alt\.html\.ejs
