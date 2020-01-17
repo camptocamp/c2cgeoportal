@@ -11,6 +11,7 @@ mako.directories = {{package}}_geoportal:templates
 authtkt_secret = %(AUTHTKT_SECRET)s
 authtkt_cookie_name = %(AUTHTKT_COOKIENAME)s
 authtkt_timeout = %(AUTHTKT_TIMEOUT)s
+authtkt_max_age = %(AUTHTKT_MAXAGE)s
 authtkt_reissue_time = %(AUTHTKT_REISSUE_TIME)s
 authtkt_http_only = %(AUTHTKT_HTTP_ONLY)s
 authtkt_secure = %(AUTHTKT_SECURE)s
@@ -68,7 +69,7 @@ handlers =
 qualname = {{package}}_geoportal
 
 [logger_c2cwsgiutils]
-level = %(LOG_LEVEL)s
+level = %(C2CWSGIUTILS_LOG_LEVEL)s
 handlers =
 qualname = c2cwsgiutils
 

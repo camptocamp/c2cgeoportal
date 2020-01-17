@@ -42,9 +42,15 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
     --editable=/opt/c2cgeoportal/commons
 
 ENV LOG_LEVEL=INFO \
+    C2CGEOPORTAL_LOG_LEVEL=INFO \
+    C2CWSGIUTILS_LOG_LEVEL=INFO \
     SQL_LOG_LEVEL=WARN \
     OTHER_LOG_LEVEL=WARN \
-    C2CGEOPORTAL_LOG_LEVEL=INFO
+    QGIS_SERVER_LOG_LEVEL=2 \
+    CPL_VSIL_CURL_USE_CACHE=TRUE \
+    CPL_VSIL_CURL_CACHE_SIZE=128000000 \
+    CPL_VSIL_CURL_USE_HEAD=FALSE \
+    GDAL_DISABLE_READDIR_ON_OPEN=TRUE
 
 #############################################################################################################
 

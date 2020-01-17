@@ -31,14 +31,6 @@ COPY Pipfile Pipfile.lock /tmp/
 RUN cd /tmp && pipenv install --system --clear && \
   rm --recursive --force /usr/local/lib/python3.7/dist-packages/tests/ /tmp/* /root/.cache/*
 
-ENV VISIBLE_ENTRY_POINT=cli \
-    LOG_LEVEL=INFO \
-    C2CGEOPORTAL_LOG_LEVEL=WARN \
-    GUNICORN_LOG_LEVEL=INFO \
-    SQL_LOG_LEVEL=INFO \
-    OTHER_LOG_LEVEL=INFO \
-    DOGPILECACHE_LOG_LEVEL=INFO
-
 
 #############################################################################################################
 # Finally used for all misk task, will not be used on prod runtime
