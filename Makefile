@@ -224,6 +224,8 @@ docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docke
 	# LTR
 	docker build --build-arg=VERSION=3.4 \
 		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.4 docker/qgisserver
+	docker build --build-arg=VERSION=3.10 \
+		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.10 docker/qgisserver
 
 .PHONY: prepare-tests
 prepare-tests: \
