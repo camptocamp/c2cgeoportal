@@ -85,7 +85,7 @@ if auto or args.geoportal:
 
 if args.env or auto and not os.path.exists(".env"):
     with open(".env", "w") as dest:
-        env_files = args.env_files if args.env_files else [".env.sample"]
+        env_files = args.env_files
         for file_ in env_files:
             print("Use env file: " + file_)
             with open(file_) as src:

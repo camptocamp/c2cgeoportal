@@ -457,7 +457,7 @@ class C2cUpgradeTool:
                         task_to_do = True
             if not managed and os.path.exists(dst):
                 print(colorize("The destination '{}' already exists, ignoring.".format(dst), YELLOW))
-            if not managed:
+            elif not managed:
                 print("Move the {} '{}' to '{}'.".format(type_, src, dst))
                 if "version" in element:
                     print("Needed from version {}.".format(element["version"]))

@@ -1,5 +1,8 @@
 ---
 
+# The list (by include, exclude) of default files that will not be overwritten by the upgrade.
+# That that can be extended with managed_files or reduced with unmanaged_files from the
+# project.yaml file in the project root directory.
 default_project_file:
   include:
     - {{package}}/templates/.*
@@ -8,7 +11,7 @@ default_project_file:
     - {{package}}/static-ngeo/.*
     - geoportal/{{package}}_geoportal/templates/.*
     - geoportal/{{package}}_geoportal/locale/.*
-    - geoportal_{{package}}_geoportal/static/.*
+    - geoportal/{{package}}_geoportal/static/.*
     - geoportal/{{package}}_geoportal/static-ngeo/.*
     - print/print-apps/.*
     - mapserver/.*
@@ -25,15 +28,18 @@ default_project_file:
     - \.circleci/config\.yml
     - \.travis\.yml
     - qgisserver/geomapfish\.yaml
-    - build
   exclude:
     - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
     - mapserver/demo\.map\.tmpl
 
+# Files ignored when creating the diff files => will just be left untouched.
 no_diff:
   - .*\.po
   - CONST_.+
   - .*/CONST_.+
+
+# Files that will be present in the CONST_create_template but will not be considered in the upgrade.
+# Used to provide the alt applications => does not disturb the user during upgrade.
 extra:
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop_alt\.html\.ejs
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile_alt\.html\.ejs
@@ -48,13 +54,16 @@ extra:
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/oeedit\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_oeedit\.scss
 
-upgrade_files:
+# Automated file system operations:
+# Remove some files or directories:
 #  - action: remove
 #    paths:
 #      - <one file or directory>
+# Move a file:
 #  - action: move
 #    from: <src file>
 #    to: <dst file>
+upgrade_files:
   - action: remove
     paths:
       - Makefile
