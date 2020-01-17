@@ -32,6 +32,7 @@
 from argparse import ArgumentParser
 from json import dumps
 import re
+import sys
 from urllib.parse import parse_qsl
 
 
@@ -42,7 +43,7 @@ def _sub(pattern, repl, string, count=0, flags=0, required=True):
         print(pattern)
         print("in")
         print(string)
-        exit(1)
+        sys.exit(1)
     return new_string
 
 
@@ -59,18 +60,17 @@ def _subs(subs, string):
     print(("\n".join([p for p, r in subs])))
     print("in")
     print(string)
-    exit(1)
+    sys.exit(1)
 
 
 class _RouteDest:
-
     def __init__(self, constant, route):
         self.constant = constant
         self.route = route
 
     def __call__(self, matches):
         query_string = matches.group(1)
-        query = ''
+        query = ""
         if len(query_string) > 0:
             query = ", _query={0!s}".format(dumps(dict(parse_qsl(query_string))))
         return r"module.constant('{0!s}', '${{request.route_url('{1!s}'{2!s}) | n}}');".format(
@@ -83,13 +83,13 @@ def main():
     Import the ngeo apps files
     """
 
-    parser = ArgumentParser(description='Import ngeo apps files')
+    parser = ArgumentParser(description="Import ngeo apps files")
 
-    parser.add_argument('--html', action="store_true", help="Import the html template")
-    parser.add_argument('--js', action="store_true", help="Import the javascript controller")
-    parser.add_argument('interface', metavar='INTERFACE', help="The interface we import")
-    parser.add_argument('src', metavar='SRC', help="The ngeo source file")
-    parser.add_argument('dst', metavar='DST', help="The destination file")
+    parser.add_argument("--html", action="store_true", help="Import the html template")
+    parser.add_argument("--js", action="store_true", help="Import the javascript controller")
+    parser.add_argument("interface", metavar="INTERFACE", help="The interface we import")
+    parser.add_argument("src", metavar="SRC", help="The ngeo source file")
+    parser.add_argument("dst", metavar="DST", help="The destination file")
 
     args = parser.parse_args()
 
@@ -100,29 +100,30 @@ def main():
 
         if args.html:
             data = _sub(
-                re.escape('<script src="../../../dist/vendor.js') + r'.*',
+                re.escape('<script src="../../../dist/vendor.js') + r".*",
                 r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}"></script>'.format(
-                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
-                    cache_version='${htmlWebpackPlugin.options.vars.cache_version}'
+                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
+                    cache_version="${htmlWebpackPlugin.options.vars.cache_version}",
                 ),
                 data,
                 required=False,
             )
             data = _sub(
-                re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-') +
-                '.*' + re.escape('.camptocamp.com/dynamic.json">'),
+                re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-')
+                + ".*"
+                + re.escape('.camptocamp.com/dynamic.json">'),
                 '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
-                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
+                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
                 ),
                 data,
             )
             data = _sub(
-                re.escape('</head>'),
-                '  <link href="{entry_point}static/{version}/css/{interface}.css" rel="stylesheet">\n  </head>'
-                .format(
-                    entry_point='${htmlWebpackPlugin.options.vars.entry_point}',
-                    version='${htmlWebpackPlugin.options.vars.version}',
-                    interface=args.interface
+                re.escape("</head>"),
+                '  <link href="{entry_point}static/{version}/css/{interface}.css" rel="stylesheet">\n'
+                "  </head>".format(
+                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
+                    version="${htmlWebpackPlugin.options.vars.version}",
+                    interface=args.interface,
                 ),
                 data,
             )
