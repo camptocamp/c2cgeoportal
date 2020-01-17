@@ -1,6 +1,7 @@
+##### 2.4.1.79
+* Build image for QGIS server 3.10 [c2cgeoportal#5710](https://github.com/camptocamp/c2cgeoportal/pull/5710)
 ##### 2.4.1.78
 * Ignore startup quote and spaces [c2cgeoportal#5704](https://github.com/camptocamp/c2cgeoportal/pull/5704)
-* Build image for QGIS server 3.10 [c2cgeoportal#5710](https://github.com/camptocamp/c2cgeoportal/pull/5710)
 ##### 2.4.1.77
 * without the double star, the formating inject all the environment [c2cgeoportal#5637](https://github.com/camptocamp/c2cgeoportal/pull/5637)
 ##### 2.4.1.76
