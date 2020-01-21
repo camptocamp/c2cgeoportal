@@ -17,7 +17,7 @@ fi
 rm -rf ${WORKSPACE}/${PACKAGE}
 mkdir --parent ${WORKSPACE}/${PACKAGE}
 
-DOCKER_RUN_ENV_ARGS="--env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
+DOCKER_RUN_ENV_ARGS="--env=SRID=2056 --env=EXTENT=2489246.36,1078873.44,2837119.76,1296543.14"
 DOCKER_RUN_ARGS="--volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-tools:${TAG}"
 PCREATE_CMD="run $(id -u) $(id -g) /src pcreate --ignore-conflicting-name --overwrite ${PACKAGE}"
 docker run --rm -ti ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
