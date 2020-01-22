@@ -28,7 +28,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.locale_name}} <span class="caret"></span></a>
           <ul class="dropdown-menu">
             {% for locale in request.registry.settings['available_locale_names'] %}
-            <li><a href="{{request.route_url('locale', _query=(('language', locale),))}}">{{locale}}</a></li>
+            <li><a href="{{request.route_url('c2cgeoform_locale', _query=(('language', locale),))}}">{{locale}}</a></li>
             {% endfor %}
           </ul>
         </li>
