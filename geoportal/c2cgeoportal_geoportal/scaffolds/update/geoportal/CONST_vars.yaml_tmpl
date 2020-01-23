@@ -60,6 +60,8 @@ vars:
           - name: ASIT VD
             type: WMTS
             url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
+        gmfAuthenticationConfig:
+          forcePasswordChange: true
         ngeoWfsPermalinkOptions:
           wfsTypes: []
           defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
@@ -149,6 +151,9 @@ vars:
             label: '4'
           - value: '*'
             label: '*'
+        gmfAuthenticationConfig:
+          allowPasswordReset: false
+          allowPasswordChange: false
         ngeoRoutingOptions:
           - backendUrl: https://routing.osm.ch/
           - profiles:
