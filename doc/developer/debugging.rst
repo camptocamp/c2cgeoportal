@@ -218,8 +218,6 @@ Clone ngeo and build:
    git clone https://github.com/camptocamp/ngeo.git
    cd ngeo
    git check <branch>
-   npm install
-   npm prepublish
    cd ../..
 
 Add the following alias in your ``webpack.apps.js.tmpl`` file:
