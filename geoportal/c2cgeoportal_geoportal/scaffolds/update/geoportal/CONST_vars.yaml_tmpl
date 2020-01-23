@@ -486,7 +486,7 @@ vars:
 
   global_headers:
     - pattern: '^/admin/.*'
-      headers:
+      headers: &c2cgeoform_headers
         X-Frame-Options: SAMEORIGIN
         X-Xss-Protection: 1; mode=block
         X-Content-Type-Options: nosniff
@@ -498,6 +498,8 @@ vars:
           style-src {content_security_policy_admin_style_src};
           img-src {content_security_policy_admin_img_src};
           worker-src {content_security_policy_admin_worker_src}"
+    - pattern: '^/getitfixed/.*'
+      headers: *c2cgeoform_headers
     - pattern: '^/static/.*'
       headers:
         Access-Control-Allow-Origin: '*'
