@@ -1,3 +1,5 @@
+##### 2.4.1.80
+* Do not npm install in custom ngeo folder [c2cgeoportal#5725](https://github.com/camptocamp/c2cgeoportal/pull/5725)
 ##### 2.4.1.79
 * Build image for QGIS server 3.10 [c2cgeoportal#5710](https://github.com/camptocamp/c2cgeoportal/pull/5710)
 ##### 2.4.1.78
