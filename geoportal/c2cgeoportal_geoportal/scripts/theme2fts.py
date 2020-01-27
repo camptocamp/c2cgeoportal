@@ -53,7 +53,13 @@ def main():
     parser.add_argument(
         "--locale-folder", default=locale_path, help="The folder where the locale files are stored"
     )
-    parser.add_argument("--interfaces", nargs="+", help="the interfaces to export")
+    parser.add_argument("--interfaces", action="append", help="the interfaces to export")
+    parser.add_argument(
+        "--exclude-interfaces",
+        action="append",
+        default=["api"],
+        help="the interfaces to exclude (can't be used with --interfaces)",
+    )
     parser.add_argument(
         "--duplicate-name",
         action="store_true",
@@ -121,6 +127,8 @@ class Import:
         query = self.session.query(Interface)
         if options.interfaces is not None:
             query = query.filter(Interface.name.in_(options.interfaces))
+        else:
+            query = query.filter(Interface.name.notin_(options.exclude_interfaces))
         self.interfaces = query.all()
 
         self.public_theme: Dict[int, List[int]] = {}

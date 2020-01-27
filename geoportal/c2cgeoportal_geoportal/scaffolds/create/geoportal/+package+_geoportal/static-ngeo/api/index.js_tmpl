@@ -10,6 +10,9 @@ config.themesUrl = '{FULL_ENTRY_POINT}themes?version=2&background=background&int
 // The URL to the locale service.
 config.localeUrl = '{FULL_ENTRY_POINT}locale.json';
 
+// The URL to the search service.
+config.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
+
 // The projection of the map
 config.projection = EPSG{{srid}};
 
