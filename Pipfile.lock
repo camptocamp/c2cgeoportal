@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "49ca52bada9d01c2388866a3c3f51980ab41c2aedc9c2b6fbfadebc0f6a7b6cc"
+            "sha256": "ff57c301eb6175c12ed76213671953c39fd1fd45004f05f478648db58b34513a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -531,11 +531,11 @@
         },
         "pyramid-debugtoolbar": {
             "hashes": [
-                "sha256:3f8657ad4c9a46761afafd8b48a7fe7856f90fa0a7befb196b7e71b90369bddf",
-                "sha256:aabb7200c54d5b8b2add831947a811d54158bba1d20787a3c6fe6f7ccb28d5a4"
+                "sha256:3161513c6d72b9e5225167dfeb701f6df7adc492b3b649bfd037e93df793a8c7",
+                "sha256:92934e8d6822a9c9a55185c9052ec128d7a76c16eddebdb061589ee4117137b4"
             ],
             "index": "pypi",
-            "version": "==4.5.2"
+            "version": "==4.6"
         },
         "pyramid-jinja2": {
             "hashes": [
