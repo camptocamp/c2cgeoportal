@@ -1,4 +1,7 @@
-# can be moved to setup.cfg with pylint 2.5, prefixed with 'pylint.'.
+# Can be moved to setup.cfg with pylint 2.5, prefixed with 'pylint.'.
+[MASTER]
+load-plugins=scripts/pylint-copyright
+
 [MESSAGES CONTROL]
 disable=missing-docstring,
     bad-continuation,
