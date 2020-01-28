@@ -1,0 +1,10 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+alabaster = "==0.7.12"  # theme
+Pygments = "==2.4.0"
+Sphinx = "==2.3.1"
+sphinx-prompt = "==1.1.0"

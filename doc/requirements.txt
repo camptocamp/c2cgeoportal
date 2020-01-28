@@ -1,4 +1,0 @@
-alabaster==0.7.12  # Doc theme
-Pygments==2.4.0  # doc
-Sphinx==2.3.1  # doc
-sphinx-prompt==1.1.0  # doc
