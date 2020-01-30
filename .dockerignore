@@ -26,4 +26,6 @@
 !lingua.cfg
 !.prospector.yaml
 !package.json
+!scripts/pylint-copyright.py
+!.git
 **/__pycache__/

@@ -14,7 +14,7 @@ checks: prospector bandit black isort additionallint
 prospector:
 	prospector --version
 	mypy --version
-	pylint --version
+	pylint --version --rcfile=/dev/null
 	prospector
 
 .PHONY: bandit
