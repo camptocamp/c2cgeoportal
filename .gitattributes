@@ -22,3 +22,4 @@ doc/Makefile -whitespace
 *.dia binary
 *.bz2 binary
 *.qgz binary
+*.gpg binary
