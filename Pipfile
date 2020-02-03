@@ -21,7 +21,7 @@ pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==2.8.1"  # tests
 pytest-selenium = "==1.17.0"  # admin tests
 transifex-client = "==0.13.7"  # Makefile
-WebTest = "==2.0.33"  # admin tests
+WebTest = "==2.0.34"  # admin tests
 prospector = {extras = ["with_mypy"],version = "==1.2.0"}
 
 [packages]
