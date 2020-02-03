@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "94ef0624d46a2a922ac19b14ff73049818149121b0065fb5fc1e4a554dacd542"
+            "sha256": "f690a870711c81e23606376bff5b1ce73a208ea13c24ae70977c2540bdf529b8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -331,10 +331,11 @@
         },
         "owslib": {
             "hashes": [
-                "sha256:1d499981e13a1233822e94ee30c95ddd35d11f176e854d7f0cdc30ef55f5b065"
+                "sha256:11a9d67f99fff23349ea52ae19adbf9f8a10ec521d373b83ccb8547cf3063904",
+                "sha256:5f7810d49ac3cfdb68ccf41980007c4c488305283b28fcef689c133930777b90"
             ],
             "index": "pypi",
-            "version": "==0.19.0"
+            "version": "==0.19.1"
         },
         "papyrus": {
             "hashes": [
