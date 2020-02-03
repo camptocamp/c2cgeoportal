@@ -276,6 +276,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if parameters.get("USER_ID") == "0":
             return "ROOT"
 
+        if "USER_ID" not in parameters:
+            return []
+
         roles = self.DBSession.query(Role).join(Role.users).filter(User.id == parameters.get("USER_ID")).all()
 
         LOG.debug("Roles: %s", ",".join([role.name for role in roles]) if roles else "-")

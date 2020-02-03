@@ -65,6 +65,8 @@ docker push camptocamp/geomapfish:${MAJOR_VERSION_TAG}
 
 # Publish the default geoportal images
 ci/create-new-project ${HOME}/workspace geomapfish
+(cd ${HOME}/workspace/geomapfish/; ./build)
+
 docker tag camptocamp/geomapfish-geoportal camptocamp/geomapfish-geoportal:${MAJOR_VERSION_TAG}
 docker push camptocamp/geomapfish-geoportal:${MAJOR_VERSION_TAG}
 

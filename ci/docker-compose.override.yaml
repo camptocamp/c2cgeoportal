@@ -5,6 +5,18 @@
 version: '2'
 
 services:
+  qgisserver:
+    extends:
+      file: docker-compose-lib.yaml
+      service: qgisserver
+    volumes_from:
+      - config:ro
+    environment:
+      # Single QGIS project files
+      - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgz
+      - GEOMAPFISH_OGCSERVER=source for image/png
+      - QGIS_SERVER_LOG_LEVEL=0
+
   db:
     image: camptocamp/geomapfish-test-app-db
     environment:
