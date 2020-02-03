@@ -39,7 +39,7 @@ geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.4"  # geoportal
 isodate = "==0.6.0"  # geoportal
 Mako = "==1.1.1"  # geoportal
-OWSLib = "==0.19.0"  # geoportal
+OWSLib = "==0.19.1"  # geoportal
 papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # # geoportal
 psycopg2-binary = "==2.8.2"  # geoportal
