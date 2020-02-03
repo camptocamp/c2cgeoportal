@@ -13,7 +13,7 @@ coverage = "==5.0.3"  # Build coverage XML for Codacy
 flake8 = "==3.6.0"  # lint, TODO remove filter on pyflakes
 flake8-per-file-ignores = "==0.8.1"  # lint
 isort = "==4.3.21"  # lint
-Jinja2 = "==2.10.3"  # c2c.template
+Jinja2 = "==2.11.1"  # c2c.template
 lingua = "==4.14"  # i18n
 PasteScript = "==3.2.0"  # geoportal pcreate
 polib = "==1.1.0"  # i18n

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d3aea4b614829b7114bb7563e6e099ebd416af7c9ffeabf4ecca8c342be59dbd"
+            "sha256": "ddb8886500033009168ca5aa31e08835ab68faef22431903bb9214a732bcc6ce"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -239,10 +239,10 @@
         },
         "jinja2": {
             "hashes": [
-                "sha256:6e7a3c2934694d59ad334c93dd1b6c96699cf24c53fdb8ec848ac6b23e685734",
-                "sha256:d6609ae5ec3d56212ca7d802eda654eaf2310000816ce815361041465b108be4"
+                "sha256:93187ffbc7808079673ef52771baa950426fd664d3aad1d0fa3e95644360e250",
+                "sha256:b0eaf100007721b5c16c1fc1eecb87409464edc10469ddc9a22a27a99123be49"
             ],
-            "version": "==2.11.0"
+            "version": "==2.11.1"
         },
         "lingua": {
             "hashes": [
@@ -354,10 +354,10 @@
         },
         "pastedeploy": {
             "hashes": [
-                "sha256:d423fb9d51fdcf853aa4ff43ac7ec469b643ea19590f67488122d6d0d772350a",
-                "sha256:fe53697ec2754703096b75d0ba29112b0590b4ce46726fe4f9408fd006e4eefc"
+                "sha256:bc6578735a32c77435a3e0769426983d3df6dc53a7229290c495ec10aefb81a5",
+                "sha256:e7559878b6e92023041484be9bcb6d767cf4492fc3de7257a5dae76a7cc11a9b"
             ],
-            "version": "==2.0.1"
+            "version": "==2.1.0"
         },
         "peppercorn": {
             "hashes": [
@@ -1009,10 +1009,10 @@
         },
         "jinja2": {
             "hashes": [
-                "sha256:6e7a3c2934694d59ad334c93dd1b6c96699cf24c53fdb8ec848ac6b23e685734",
-                "sha256:d6609ae5ec3d56212ca7d802eda654eaf2310000816ce815361041465b108be4"
+                "sha256:93187ffbc7808079673ef52771baa950426fd664d3aad1d0fa3e95644360e250",
+                "sha256:b0eaf100007721b5c16c1fc1eecb87409464edc10469ddc9a22a27a99123be49"
             ],
-            "version": "==2.11.0"
+            "version": "==2.11.1"
         },
         "jmespath": {
             "hashes": [
@@ -1148,10 +1148,10 @@
         },
         "pastedeploy": {
             "hashes": [
-                "sha256:d423fb9d51fdcf853aa4ff43ac7ec469b643ea19590f67488122d6d0d772350a",
-                "sha256:fe53697ec2754703096b75d0ba29112b0590b4ce46726fe4f9408fd006e4eefc"
+                "sha256:bc6578735a32c77435a3e0769426983d3df6dc53a7229290c495ec10aefb81a5",
+                "sha256:e7559878b6e92023041484be9bcb6d767cf4492fc3de7257a5dae76a7cc11a9b"
             ],
-            "version": "==2.0.1"
+            "version": "==2.1.0"
         },
         "pastescript": {
             "hashes": [
