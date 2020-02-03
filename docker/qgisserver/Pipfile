@@ -16,7 +16,7 @@ pylint = "==2.4.1"  # lint
 
 [packages]
 papyrus = "==2.4"  # commons
-redis = "==3.3.8"
+redis = "==3.4.1"
 transaction = "==3.0.0"  # commons
 "c2c.template" = "==2.1.0"
 GeoAlchemy2 = "==0.6.2"
