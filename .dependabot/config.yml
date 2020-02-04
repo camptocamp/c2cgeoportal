@@ -30,7 +30,6 @@ update_configs:
     automerged_updates:
       - match:
           update_type: all
-    ignored_updates: []
   - package_manager: python
     directory: /docker/qgisserver
     update_schedule: live
@@ -40,7 +39,6 @@ update_configs:
     automerged_updates:
       - match:
           update_type: all
-    ignored_updates: []
   - package_manager: python
     directory: /
     update_schedule: live
@@ -48,7 +46,6 @@ update_configs:
     allowed_updates:
       - match:
           update_type: security
-    ignored_updates: []
 
   - package_manager: docker
     directory: /
