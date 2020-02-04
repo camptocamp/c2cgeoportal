@@ -18,17 +18,17 @@ If the update process modified files which you do not want modified, then add th
 From a version 2.4.x
 ~~~~~~~~~~~~~~~~~~~~
 
-Build the project file if needed:
-
-.. prompt:: bash
-
-   ./docker-run make project.yaml
-
 Clean your project (include ignored files):
 
 .. prompt:: bash
 
    git clean -dx --force
+
+Build the project file if needed:
+
+.. prompt:: bash
+
+   ./docker-run make project.yaml
 
 Get the upgrade script:
 
@@ -43,7 +43,7 @@ Upgrade in Git ignore:
 
     echo /upgrade >> .gitignore
     git add .gitignore
-    git comit -m "Add /upgrade in .gitignore"
+    git commit -m "Add /upgrade in .gitignore"
 
 Run the upgrade:
 

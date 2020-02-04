@@ -2,7 +2,7 @@
 
 # The project Docker compose file for development.
 
-version: '2'
+version: '2.1'
 
 services:
   db:

@@ -2,7 +2,7 @@
 
 # The project Docker compose file for development.
 
-version: '2'
+version: '2.1'
 
 services:
   config:
@@ -32,6 +32,7 @@ services:
   ##     service: qgisserver
   ##   volumes_from:
   ##     - config:ro
+  ##   environment:
   ##     # Single QGIS project files
   ##     - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgz
   ##     - GEOMAPFISH_OGCSERVER=<OGC server name>
