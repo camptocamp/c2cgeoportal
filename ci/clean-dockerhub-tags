@@ -52,7 +52,7 @@ def clean_images(docker_image, tag):
         fail = True
 
 
-responce = requests.get(
+response = requests.get(
     "https://hub.docker.com/api/content/v1/products/search?page_size=10&q=geomapfish&type=image",
     headers={"Search-Version": "v3"},
 )
@@ -60,7 +60,7 @@ if not response.ok:
     print("Error while searchng for GeoMapFish images.")
     print(response.text)
     fail = True
-for image in responce.json()["summaries"]:
+for image in response.json()["summaries"]:
     if image["name"].startswith("camptocamp/"):
         clean_images(image["name"], ref)
 
