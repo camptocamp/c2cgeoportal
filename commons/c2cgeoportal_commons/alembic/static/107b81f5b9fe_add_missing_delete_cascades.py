@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2020, Camptocamp SA
 # All rights reserved.
@@ -28,32 +27,49 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""${message}
+"""Add missing delete cascades
 
-Revision ID: ${up_revision}
-Revises: ${down_revision}
-Create Date: ${create_date}
+Revision ID: 107b81f5b9fe
+Revises: bd029dbfc11a
+Create Date: 2020-05-25 15:13:12.194192
 """
 
 from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
-revision = ${repr(up_revision)}
-down_revision = ${repr(down_revision)}
-branch_labels = ${repr(branch_labels)}
-depends_on = ${repr(depends_on)}
+revision = "107b81f5b9fe"
+down_revision = "bd029dbfc11a"
+branch_labels = None
+depends_on = None
 
 
 def upgrade():
-    schema = config['schema']
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
-    ${upgrades if upgrades else '# Instructions'}
+    op.drop_constraint("user_role_user_id_fkey", "user_role", schema=staticschema, type_="foreignkey")
+    op.create_foreign_key(
+        "user_role_user_id_fkey",
+        "user_role",
+        "user",
+        ["user_id"],
+        ["id"],
+        source_schema=staticschema,
+        referent_schema=staticschema,
+        ondelete="CASCADE",
+    )
 
 
 def downgrade():
-    schema = config['schema']
-    staticschema = config['schema_static']
+    staticschema = config["schema_static"]
 
-    ${downgrades if downgrades else '# Instructions'}
+    op.drop_constraint("user_role_user_id_fkey", "user_role", schema=staticschema, type_="foreignkey")
+    op.create_foreign_key(
+        "user_role_user_id_fkey",
+        "user_role",
+        "user",
+        ["user_id"],
+        ["id"],
+        source_schema=staticschema,
+        referent_schema=staticschema,
+    )

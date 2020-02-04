@@ -128,8 +128,13 @@ event.listen(Functionality, "after_delete", cache_invalidate_cb)
 role_functionality = Table(
     "role_functionality",
     Base.metadata,
-    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
-    Column("functionality_id", Integer, ForeignKey(_schema + ".functionality.id"), primary_key=True),
+    Column("role_id", Integer, ForeignKey(_schema + ".role.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "functionality_id",
+        Integer,
+        ForeignKey(_schema + ".functionality.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
     schema=_schema,
 )
 
@@ -137,8 +142,13 @@ role_functionality = Table(
 theme_functionality = Table(
     "theme_functionality",
     Base.metadata,
-    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
-    Column("functionality_id", Integer, ForeignKey(_schema + ".functionality.id"), primary_key=True),
+    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "functionality_id",
+        Integer,
+        ForeignKey(_schema + ".functionality.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
     schema=_schema,
 )
 
@@ -248,7 +258,10 @@ class LayergroupTreeitem(Base):
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
     description = Column(Unicode, info={"colanderalchemy": {"exclude": True}})
     treegroup_id = Column(
-        Integer, ForeignKey(_schema + ".treegroup.id"), info={"colanderalchemy": {"exclude": True}}
+        Integer,
+        ForeignKey(_schema + ".treegroup.id"),
+        nullable=False,
+        info={"colanderalchemy": {"exclude": True}},
     )
     treegroup = relationship(
         "TreeGroup",
@@ -262,7 +275,10 @@ class LayergroupTreeitem(Base):
         info={"colanderalchemy": {"exclude": True}, "c2cgeoform": {"duplicate": False}},
     )
     treeitem_id = Column(
-        Integer, ForeignKey(_schema + ".treeitem.id"), info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer,
+        ForeignKey(_schema + ".treeitem.id"),
+        nullable=False,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     treeitem = relationship(
         "TreeItem",
@@ -353,8 +369,8 @@ class LayerGroup(TreeGroup):
 restricted_role_theme = Table(
     "restricted_role_theme",
     Base.metadata,
-    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
-    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
+    Column("role_id", Integer, ForeignKey(_schema + ".role.id", ondelete="CASCADE"), primary_key=True),
+    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id", ondelete="CASCADE"), primary_key=True),
     schema=_schema,
 )
 
@@ -442,7 +458,7 @@ class OGCServer(Base):
     __colanderalchemy_config__ = {"title": _("OGC Server"), "plural": _("OGC Servers")}
     __c2cgeoform_config__ = {"duplicate": True}
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
+    name = Column(Unicode, nullable=False, unique=True, info={"colanderalchemy": {"title": _("Name")}})
     description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
     url = Column(Unicode, nullable=False, info={"colanderalchemy": {"title": _("Basic URL")}})
     url_wfs = Column(Unicode, info={"colanderalchemy": {"title": _("WFS URL")}})
@@ -669,8 +685,13 @@ class LayerWMTS(DimensionLayer):
 role_ra = Table(
     "role_restrictionarea",
     Base.metadata,
-    Column("role_id", Integer, ForeignKey(_schema + ".role.id"), primary_key=True),
-    Column("restrictionarea_id", Integer, ForeignKey(_schema + ".restrictionarea.id"), primary_key=True),
+    Column("role_id", Integer, ForeignKey(_schema + ".role.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "restrictionarea_id",
+        Integer,
+        ForeignKey(_schema + ".restrictionarea.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
     schema=_schema,
 )
 
@@ -678,8 +699,13 @@ role_ra = Table(
 layer_ra = Table(
     "layer_restrictionarea",
     Base.metadata,
-    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), primary_key=True),
-    Column("restrictionarea_id", Integer, ForeignKey(_schema + ".restrictionarea.id"), primary_key=True),
+    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "restrictionarea_id",
+        Integer,
+        ForeignKey(_schema + ".restrictionarea.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
     schema=_schema,
 )
 
@@ -798,8 +824,10 @@ event.listen(RestrictionArea, "after_delete", cache_invalidate_cb)
 interface_layer = Table(
     "interface_layer",
     Base.metadata,
-    Column("interface_id", Integer, ForeignKey(_schema + ".interface.id"), primary_key=True),
-    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id"), primary_key=True),
+    Column(
+        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True
+    ),
+    Column("layer_id", Integer, ForeignKey(_schema + ".layer.id", ondelete="CASCADE"), primary_key=True),
     schema=_schema,
 )
 
@@ -807,8 +835,10 @@ interface_layer = Table(
 interface_theme = Table(
     "interface_theme",
     Base.metadata,
-    Column("interface_id", Integer, ForeignKey(_schema + ".interface.id"), primary_key=True),
-    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id"), primary_key=True),
+    Column(
+        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True
+    ),
+    Column("theme_id", Integer, ForeignKey(_schema + ".theme.id", ondelete="CASCADE"), primary_key=True),
     schema=_schema,
 )
 
