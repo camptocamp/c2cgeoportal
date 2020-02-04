@@ -30,6 +30,9 @@ update_configs:
     automerged_updates:
       - match:
           update_type: all
+    ignored_updates:
+      - match:
+          dependency_name: none
   - package_manager: python
     directory: /docker/qgisserver
     update_schedule: live
@@ -39,6 +42,9 @@ update_configs:
     automerged_updates:
       - match:
           update_type: all
+    ignored_updates:
+      - match:
+          dependency_name: none
   - package_manager: python
     directory: /
     update_schedule: live
@@ -62,9 +68,18 @@ update_configs:
   - package_manager: docker
     directory: /docker/test-db
     update_schedule: weekly
+    ignored_updates:
+      - match:
+          dependency_name: none
   - package_manager: docker
     directory: /docker/test-app-db
     update_schedule: weekly
+    ignored_updates:
+      - match:
+          dependency_name: none
   - package_manager: docker
     directory: /docker/test-external-db
     update_schedule: weekly
+    ignored_updates:
+      - match:
+          dependency_name: none
