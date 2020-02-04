@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6eb8417989009526896e6af8feaa3846f89f5a694fe68a19cae487811b712e70"
+            "sha256": "126cc6f29ebcf30db31a3ce88d7e35b9b5cf48beb26ed4429b5fb596b787bc2e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -170,18 +170,20 @@
         },
         "fiona": {
             "hashes": [
-                "sha256:01ceabb54698a6054c9ca156169c38471b4f77737742264fad9655ccf12c2154",
-                "sha256:14428f916b47eb58c1b132817fdf3c2becd85142c46949a81413be75cbc5909c",
-                "sha256:1e5dd891e4e8407b9098854f1c264be7cc0a2894dabed869dfee4a24820b1fa3",
-                "sha256:4dd6e2f5327c1174143c7c8594a75d373bc72f2c9a2a6daee312c3186a128add",
-                "sha256:a29c87d7264828b349456e8b6fecb533d4cd4bc74711dc65fb0445c355f04679",
-                "sha256:a2ffe0a250036043561bfdcf1075fd446a49ad8e3fabc0eece8542af923de290",
-                "sha256:cb0534d025d46cfde7de0321016b72e7273f20d03286f7ec1511713267f002a7",
-                "sha256:e9b1cf808280f46f006448453cf42067716a3d071140eca60204596a371ef64b",
-                "sha256:f547bab48f78f178762195406f0d4cf76bd19b2402a11804e9e002edcce35422"
+                "sha256:0742177422d20f72e69e499886f96e1cbf5ce0c9752f8320a05eddcb0f1c576a",
+                "sha256:3104311faeb10dc80e00c46734a92275d67efabe1fd6e835fec8a6f77c0920bf",
+                "sha256:5567efdba15eea935c581db94f3980ecbccecb4a7a5cd79651c8aed41c70a0fa",
+                "sha256:5ec34898c8b983a723fb4e949dd3e0ed7e691c303e51f6bfd61e52ac9ac813ae",
+                "sha256:5f39bdf39421d79c22ae0b4e0e1169820812941206446b2294e6ca40646708fc",
+                "sha256:621d2230663f3fb95d60249e27fc8e2a6e456dc85f96bbfa9882a6b0a4ce0d1f",
+                "sha256:83314cf2cbe50df24c290d241681964adf6fe9c0ba33a0a0f980a5f44008296b",
+                "sha256:9347c2b8950575014ec233f6191e52d03ef68a5bb759a53a621b095610650a50",
+                "sha256:976e91e056e818720510984970ec33f26b9744cdf52e586e08217bf34bfcb41e",
+                "sha256:b771a58e6b93357096934fa26d65d0cf308345340d694e4d346d3b39879e265c",
+                "sha256:f0adf55192ac715c1ac7a19ff1aacd667ffe251df0e09b9a6feeddce45849f17"
             ],
             "index": "pypi",
-            "version": "==1.8.9"
+            "version": "==1.8.13"
         },
         "geoalchemy2": {
             "hashes": [
