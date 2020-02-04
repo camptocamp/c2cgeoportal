@@ -1,3 +1,6 @@
+##### 2.4.1.81
+* [admin] Add missing field in dimension form template [c2cgeoportal#5772](https://github.com/camptocamp/c2cgeoportal/pull/5772)
+* Additional search actions [ngeo#5355](https://github.com/camptocamp/ngeo/pull/5355)
 ##### 2.4.1.80
 * Do not npm install in custom ngeo folder [c2cgeoportal#5725](https://github.com/camptocamp/c2cgeoportal/pull/5725)
 ##### 2.4.1.79
