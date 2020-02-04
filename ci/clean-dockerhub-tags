@@ -4,7 +4,6 @@
 import json
 import os
 import re
-import subprocess
 import sys
 
 import requests
@@ -16,55 +15,67 @@ token = requests.post(
 ).json()["token"]
 
 
-def clean_images(docker_image, tag_=lambda tag: tag):
-    docker_tags = [
-        tag["name"]
-        for tag in requests.get(
-            "https://registry.hub.docker.com/v1/repositories/camptocamp/{image}/tags".format(
-                image=docker_image
-            )
-        ).json()
-    ]
-
-    git_tags = subprocess.check_output(["git", "tag"]).decode().split("\n")
-    git_branch = [
-        b.split(" ")[-1].split("/")[-1]
-        for b in subprocess.check_output(["git", "branch", "--all"]).decode().split("\n")
-    ]
-
-    docker_tags_to_remove = {tag for tag in docker_tags if tag_(tag) not in (git_tags + git_branch)}
-
-    major_re = re.compile(r"^[0-9]+\.[0-9]+$")
-    docker_tags_to_remove = {tag for tag in docker_tags_to_remove if not major_re.match(tag_(tag))}
-
-    minor_re = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
-    docker_tags_to_remove = {tag for tag in docker_tags_to_remove if not minor_re.match(tag_(tag))}
-    print("Docker tags to be removed for image camptocamp/{} ({}):".format(image, len(docker_tags_to_remove)))
-    print("\n".join(docker_tags_to_remove))
-
-    for tag in docker_tags_to_remove:
-        response = requests.delete(
-            "https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/".format(
-                image=docker_image, tag=tag,
-            ),
-            headers={"Authorization": "JWT " + token},
-        )
-        if not response.ok:
-            print(response.text)
-            sys.exit(2)
+with open(os.environ["GITHUB_EVENT_PATH"]) as event_file:
+    ref = json.loads(event_file.read())["ref"]
 
 
-for image in ["geomapfish", "geomapfish-build", "geomapfish-config", "geomapfish-geoportal"]:
-    clean_images(image)
+fail = False
 
 
-qgis_tag_re = re.compile(r"^gmf(.+)-qgis.+$")
+def clean_images(docker_image, tag):
+    global fail
+    print("Delete image 'camptocamp/{}:{}'.".format(docker_image, tag))
+
+    response = requests.head(
+        "https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/".format(
+            image=docker_image, tag=tag,
+        ),
+        headers={"Authorization": "JWT " + token},
+    )
+    if response.status_code == 404:
+        return
+    if not response.ok:
+        print("Error checking image 'camptocamp/{}:{}' status.".format(docker_image, tag))
+        print(response.text)
+        fail = True
+        return
+
+    response = requests.delete(
+        "https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/".format(
+            image=docker_image, tag=tag,
+        ),
+        headers={"Authorization": "JWT " + token},
+    )
+    if not response.ok:
+        print("Error while deleting image 'camptocamp/{}:{}'.".format(docker_image, tag))
+        print(response.text)
+        fail = True
 
 
-def qgis_tag(tag):
-    match = qgis_tag_re.match(tag)
-    # 2.0 mean not to be deleted
-    return "2.0" if match is None else match.group(1)
+responce = requests.get(
+    "https://hub.docker.com/api/content/v1/products/search?page_size=10&q=geomapfish&type=image",
+    headers={"Search-Version": "v3"},
+)
+if not response.ok:
+    print("Error while searchng for GeoMapFish images.")
+    print(response.text)
+    fail = True
+for image in responce.json()["summaries"]:
+    if image["name"].startswith("camptocamp/"):
+        clean_images(image["name"], ref)
 
 
-clean_images("geomapfish-qgisserver", qgis_tag)
+response = requests.get(
+    "https://hub.docker.com/v2/repositories/camptocamp/geomapfish-qgisserver/tags",
+    headers={"Authorization": "JWT " + token},
+)
+if not response.ok:
+    print("Error while getting GeoMapFish - QGIS server tags.")
+    print(response.text)
+    fail = True
+for tag in response.json()["results"]:
+    if tag["name"].startswith("gmf{}-".format(ref)):
+        clean_images("geomapfish-qgisserver", tag["name"])
+
+if fail:
+    sys.exit(2)

@@ -290,9 +290,6 @@ jobs:
           name: Publish documentation to GitHub.io
           command: |
             ci/publish-documentation
-      - run:
-          name: Clean Docker hub tags
-          command: ci/clean-dockerhub-tags
       - run: *notify
 
 workflows:
