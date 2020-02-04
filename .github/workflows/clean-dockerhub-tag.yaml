@@ -18,4 +18,4 @@ jobs:
           large-secret-passphrase: ${{secrets.LARGE_SECRET_PASSPHRASE}}
           github-gopass-ci-token: ${{secrets.GITHUB_GOPASS_CI_TOKEN}}
       - name: Clean docker hub tags
-        run: summon --environment dockerhub_user_pass ci/clean-dockerhub-tag
+        run: summon --environment dockerhub_user_pass ci/clean-dockerhub-tags
