@@ -36,7 +36,7 @@ defusedxml = "==0.6.0"  # geoportal
 Fiona = "==1.8.9"  # geoportal raster
 GeoAlchemy2 = "==0.6.2"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
-getitfixed = "==1.0.4"  # geoportal
+getitfixed = "==1.0.5"  # geoportal
 isodate = "==0.6.0"  # geoportal
 Mako = "==1.1.1"  # geoportal
 OWSLib = "==0.19.1"  # geoportal
