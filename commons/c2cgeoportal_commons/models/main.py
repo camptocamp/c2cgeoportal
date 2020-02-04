@@ -423,9 +423,9 @@ class LayerGroup(TreeGroup):
 # role theme link for restricted theme
 restricted_role_theme = Table(
     'restricted_role_theme', Base.metadata,
-    Column('role_id', Integer, ForeignKey(_schema + '.role.id'), primary_key=True),
-    Column('theme_id', Integer, ForeignKey(_schema + '.theme.id'), primary_key=True),
-    schema=_schema
+    Column('role_id', Integer, ForeignKey(_schema + '.role.id', ondelete='CASCADE'), primary_key=True),
+    Column('theme_id', Integer, ForeignKey(_schema + '.theme.id', ondelete='CASCADE'), primary_key=True),
+    schema=_schema,
 )
 
 
