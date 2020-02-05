@@ -12,7 +12,8 @@ RUN \
   python3 -m pip install --requirement /tmp/requirements.txt && \
   apt-get remove --purge --autoremove --yes gcc
 
-COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
 COPY commons /opt/c2cgeoportal_commons
-
 RUN python3 -m pip install --editable /opt/c2cgeoportal_commons
+
+COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
+COPY ProjectReloader /var/www/plugins/ProjectReloader

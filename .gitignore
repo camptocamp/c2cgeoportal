@@ -31,6 +31,7 @@
 /admin/c2cgeoportal_admin/locale/
 /admin/c2cgeoportal_admin.egg-info/
 /docker/qgisserver/commons/
+/docker/qgisserver/ProjectReloader/
 /docker/admin-build/Dockerfile
 /docker/admin-build/npm-packages
 /docker/qgisserver/tests/geomapfish.yaml
