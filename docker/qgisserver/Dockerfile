@@ -28,13 +28,15 @@ RUN cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --cl
 
 COPY . /src/
 RUN flake8 /src
-RUN pylint --errors-only --disable=import-error /src/geomapfish_qgisserver
+#RUN pylint --errors-only --disable=import-error /src/geomapfish_qgisserver
+RUN find /src/geomapfish_qgisserver -type f -name "*.py" | xargs python -m pylint --errors-only --disable=import-error
 
 #############################################################################################################
 
 FROM base AS runner
 
 COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
+COPY DbProjectReloader/* /var/www/plugins/DbProjectReloader/
 COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
