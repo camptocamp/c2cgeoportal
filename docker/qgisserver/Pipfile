@@ -12,7 +12,7 @@ mypy = "==0.761"  # lint
 pep8 = "==1.7.1"  # lint
 pep8-naming = "==0.9.1"  # Lint
 pyflakes = "==2.1.1"  # lint, flake8
-pylint = "==2.4.1"  # lint
+pylint = "==2.4.4"  # lint
 
 [packages]
 papyrus = "==2.4"  # commons
