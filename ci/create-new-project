@@ -5,6 +5,11 @@ VERSION=${TAG} DOCKER_TAG=${TAG} make build-tools
 VERSION=${TAG} DOCKER_TAG=${TAG} make build-runner
 VERSION=${TAG} DOCKER_TAG=${TAG} make build-config
 
+docker tag camptocamp/geomapfish:${TAG} camptocamp/geomapfish
+docker build --target=runner --build-arg=VERSION=3.10 \
+    --tag=camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.10 \
+    docker/qgisserver
+
 WORKSPACE=$1
 BASE_APP=false
 if [ $# -ge 2 ]
@@ -66,5 +71,3 @@ git remote add origin . # add a fake remote
 git add --all
 git commit --quiet --message='Initial commit'
 git clean -fX
-
-./build
