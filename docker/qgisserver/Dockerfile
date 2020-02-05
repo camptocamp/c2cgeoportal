@@ -58,6 +58,9 @@ FROM runner as tests
 
 COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
     /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing
+# Workaround to make the build working on GitHub Action
+# See also: https://github.com/moby/moby/issues/37965
+RUN true
 COPY tests/Pipfile tests/Pipfile.lock /tmp/
 
 RUN cd /tmp && pipenv install --system --clear

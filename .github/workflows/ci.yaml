@@ -1,0 +1,216 @@
+---
+
+name: Continuous integration
+
+on:
+  push:
+
+jobs:
+  main:
+    runs-on: ubuntu-18.04
+    name: Continuous integration
+    timeout-minutes: 60
+    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+    env:
+      MAIN_BRANCH: master
+      MAJOR_VERSION: 2.5
+      CI: true
+      PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
+      SUMMON_PROVIDER: /usr/local/bin/gopass
+
+    steps:
+      # Versions
+      - run: docker --version
+      - run: docker-compose --version
+      - run: git --version
+      - run: python3 --version
+      - run: python3 -m pip --version
+      - name: Install Python 3
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3-wheel python3-setuptools
+
+      - uses: actions/checkout@v1
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+
+      # Global simple lint
+      - run: git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
+        if: always()
+      - run: python3 ci/test-eof-newline
+        if: always()
+      - run: >
+            codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
+            $(find -name .git -prune -print)
+        if: always()
+      - run: >
+            yamllint --strict --config-file=yamllint.yaml -s
+            $(find -name .git -prune  -or -name changelog.yaml -prune -or
+            \( -name "*.yml" -or -name "*.yaml" \) -print)
+        if: always()
+
+      # Build images
+      - run: VERSION=$(ci/release-tag) make build-runner
+      - run: VERSION=$(ci/release-tag) make build-tools
+      - run: VERSION=$(ci/release-tag) make checks
+        if: always()
+      - run: VERSION=$(ci/release-tag) make build-config
+
+      # Build QGIS images
+      - run: docker build --target=lint --build-arg=VERSION=latest docker/qgisserver
+      - run: QGIS_VERSION=latest make build-qgisserver
+      # LTR
+      - run: QGIS_VERSION=3.4 make build-qgisserver
+      - run: QGIS_VERSION=3.10 make build-qgisserver
+
+      # Test changelog
+      - run: ci/changelog new_version
+      - run: git diff CHANGELOG.md
+      - run: git checkout CHANGELOG.md ci/changelog.yaml
+
+      # Tests
+      - run: make preparetest
+        if: always()
+      - run: docker-compose logs --timestamps
+        if: failure()
+      # Similar to: make tests-commons
+      - run: >
+            ci/run-dc-logs docker-compose exec -T tests coverage run
+            --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
+            --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
+            /opt/c2cgeoportal/commons/tests
+        if: always()
+      # Similar to: make tests-geoportal
+      - run: >
+            ci/run-dc-logs docker-compose exec -T tests coverage run --append
+            --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+            --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
+            /opt/c2cgeoportal/geoportal/tests
+        if: always()
+      # Similar to: make tests-admin
+      - run: >
+            ci/run-dc-logs docker-compose exec -T tests coverage run --append
+            --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
+            --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
+            /opt/c2cgeoportal/admin/tests
+        if: always()
+      # Similar to: make tests-qgisserver
+      - run: >
+            ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
+            --source=/var/www/plugins/geomapfish_qgisserver
+            --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+            /src/tests/functional
+        if: always()
+      - name: Extract tests artifacts
+        run: |
+              docker-compose exec -T tests coverage report
+              docker-compose exec -T tests coverage html --directory=/tmp/coverage
+              docker-compose exec -T qgisserver-tests coverage report
+              docker-compose exec -T qgisserver-tests coverage html --directory=/tmp/coverage
+              mkdir --parent artifacts/geoportal-coverage
+              mkdir --parent artifacts/qgisserver-plugin-coverage
+              docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
+              docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
+        if: always()
+      - run: docker-compose down
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Geoportal coverage
+          path: artifacts/geoportal-coverage/
+      - uses: actions/upload-artifact@v1
+        with:
+          name: QGISserver plugin coverage
+          path: artifacts/qgisserver-plugin-coverage/
+
+      # Documentation
+      - run: >
+            docker build --tag=camptocamp/geomapfish-doc
+            --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
+            --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
+            doc
+
+      - run: docker images
+        if: always()
+
+      - name: Extract documentation
+        run: ci/extract-documentation artifacts/documentations/
+        if: always()
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Documentation
+          path: artifacts/documentations/
+
+      # Test App
+      - run: ci/test-app
+
+      # Test Upgrade
+      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-tools
+      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-runner
+      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-config
+      - run: ci/test-upgrade init ${HOME}/workspace
+      - run: ci/test-upgrade 240 ${HOME}/workspace
+      - run: ci/test-upgrade 25 ${HOME}/workspace
+      - run: ci/test-upgrade cleanup ${HOME}/workspace
+
+      - name: Init Git
+        run: |
+            git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@${REPO_URL}
+            git config user.email "<ci@camptocamp.com>"
+            git config user.name "Continuous integration"
+        env:
+          REPO_URL: github.com/camptocamp/c2cgeoportal
+      - run: VERSION=$(ci/release-tag) make build-tools
+      - run: VERSION=$(ci/release-tag) make build-runner
+      - run: VERSION=$(ci/release-tag) make build-config
+      - name: Build QGIS server master
+        run: |
+            docker build --target=runner --build-arg=VERSION=latest \
+            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgismaster \
+            docker/qgisserver
+      - name: Build QGIS server 3.4 old LTR
+        run: |
+            docker build --target=runner --build-arg=VERSION=3.4 \
+            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.4 \
+            docker/qgisserver
+      - name: Build QGIS server 3.10 LTR
+        run: |
+            docker build --target=runner --build-arg=VERSION=3.10 \
+            --tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis3.10 \
+            docker/qgisserver
+
+      - uses: camptocamp/initialise-gopass-summon-action@v1
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GITHUB_GOPASS_CI_TOKEN}}
+        if: github.repository == 'camptocamp/c2cgeoportal'
+
+      - name: Publish to Docker hub and Pypi
+        run: |
+          summon --yaml '
+            DOCKER_USERNAME: !var gs/ci/dockerhub/username
+            DOCKER_PASSWORD: !var gs/ci/dockerhub/password
+            PYPI_USERNAME: !var gs/ci/pypi/username
+            PYPI_PASSWORD: !var gs/ci/pypi/password
+          ' ci/publish
+        if: github.repository == 'camptocamp/c2cgeoportal'
+      - name: Publish to Transifex
+        run: |
+          docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
+          docker run --name=transifex -ti --rm --detach transifex tail -f /dev/null
+          summon --yaml '
+            USERNAME: !var gs/ci/transifex/rw/username
+            PASSWORD: !var gs/ci/transifex/rw/password
+          ' bash -c 'envsubst < ci/transifexrc.tmpl > ~/.transifexrc'
+          docker exec transifex bash -c \
+              '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
+          docker stop transifex
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && github.repository == 'camptocamp/c2cgeoportal'
+      - name: Publish documentation to GitHub.io
+        run: ci/publish-documentation
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && github.repository == 'camptocamp/c2cgeoportal'

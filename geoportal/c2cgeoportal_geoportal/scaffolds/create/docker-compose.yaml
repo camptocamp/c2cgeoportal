@@ -91,6 +91,8 @@ services:
   tools:
     volumes_from:
       - config:rw
+    volumes:
+      - .:/src
     extends:
       file: docker-compose-lib.yaml
       service: tools
