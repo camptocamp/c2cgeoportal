@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-flake8 = "==3.7.7"  # lint
+flake8 = "==3.7.9"  # lint
 flake8-copyright = "==0.2.2"  # lint
 flake8-mypy = "==17.8.0"  # lint
 mccabe = "==0.6.1"  # lint
