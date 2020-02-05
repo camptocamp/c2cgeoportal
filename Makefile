@@ -219,8 +219,18 @@ docker/qgisserver/commons: commons
 	rm $@/tests.yaml.mako
 	touch $@
 
+docker/qgisserver/ProjectReloader:
+	cd docker/qgisserver && \
+	curl --location --output ProjectReloader.tar.gz "https://github.com/camptocamp/QgisServerProjectReloader/archive/master.tar.gz" && \
+	tar -zxvf ProjectReloader.tar.gz && \
+	rm -f ProjectReloader.tar.gz && \
+	mv QgisServerProjectReloader-master ProjectReloader
+
 .PHONY: docker-build-qgisserver
-docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docker/qgisserver/commons
+docker-build-qgisserver: \
+		$(shell docker-required --path docker/qgisserver) \
+		docker/qgisserver/commons \
+		docker/qgisserver/ProjectReloader
 	# LTR
 	docker build --build-arg=VERSION=3.4 \
 		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.4 docker/qgisserver
