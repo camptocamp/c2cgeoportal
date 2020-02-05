@@ -42,6 +42,9 @@ def main(_, **settings):
     settings = config.get_settings()
     settings['tm.manager_hook'] = 'pyramid_tm.explicit_manager'
 
+    # Use pyramid_tm to hook the transaction lifecycle to the request
+    config.include('pyramid_tm')
+
     session_factory = get_session_factory(get_engine(settings))
     config.registry['dbsession_factory'] = session_factory
 
@@ -87,8 +90,6 @@ def includeme(config: Configurator):
     config.include('c2cgeoform')
     config.include('c2cgeoportal_commons')
     config.include('c2cgeoportal_admin.routes')
-    # Use pyramid_tm to hook the transaction lifecycle to the request
-    config.include('pyramid_tm')
     config.add_translation_dirs('c2cgeoportal_admin:locale')
 
     with PermissionSetter(config):
