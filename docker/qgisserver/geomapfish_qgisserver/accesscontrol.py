@@ -269,17 +269,16 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         - List of c2cgeoportal_commons.models.main.Role instances.
         """
         from c2cgeoportal_commons.models.main import Role
-        from c2cgeoportal_commons.models.static import User
 
         parameters = self.serverInterface().requestHandler().parameterMap()
 
         if parameters.get("USER_ID") == "0":
             return "ROOT"
 
-        if "USER_ID" not in parameters:
+        if "ROLE_IDS" not in parameters:
             return []
 
-        roles = self.DBSession.query(Role).join(Role.users).filter(User.id == parameters.get("USER_ID")).all()
+        roles = self.DBSession.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(','))).all()
 
         LOG.debug("Roles: %s", ",".join([role.name for role in roles]) if roles else "-")
         return roles
