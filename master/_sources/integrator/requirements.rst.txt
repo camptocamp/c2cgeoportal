@@ -7,8 +7,8 @@ To install a GeoMapFish application, you need to have the following
 components installed on your system:
 
 * **Git**
-* **Docker** >= 1.12 (>= 17 is recommended)
-* **Docker-compose** >= 1.8
+* **Docker** >= 17.05
+* **Docker-compose** >= 1.9
 * **Python** >= 3.5
 * **Apache** >= 2.4 (optional, can be used as a front for SSL)
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1
