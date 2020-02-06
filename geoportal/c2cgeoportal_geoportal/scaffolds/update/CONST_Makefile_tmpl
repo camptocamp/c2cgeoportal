@@ -357,7 +357,7 @@ docker-build:
 build: $(BUILD_RULES)
 
 .PHONY: checks
-checks: flake8 $(CLIENT_CHECK_RULE) git-attributes yamllint spell printlint
+checks: flake8 $(CLIENT_CHECK_RULE) git-attributes yamllint printlint
 
 .PHONY: git-attributes
 git-attributes:
