@@ -14,7 +14,7 @@ env:
 #    - HELM_RELEASE_NAMES=List of branch that should be deployed on helm
 #    - DOCKER_USERNAME=username
 #    - secure: travis encrypt DOCKER_PASSWORD=password
-#    - OPENSHIFT_URL=https://openshift-ch-3.camptocamp.com/
+#    - OPENSHIFT_URL=https://api.openshift-ch-1.camptocamp.com/
 
 script:
   - ./docker-run make checks
