@@ -135,10 +135,7 @@ def add_admin_interface(config):
 
 def add_getitfixed(config):
     if config.get_settings()["getitfixed"].get("enabled", False):
-        config.include("getitfixed.models")
-        config.include("getitfixed.routes")
-        config.add_translation_dirs("getitfixed:locale")
-        config.scan("getitfixed")
+        config.include("getitfixed")
         # Register admin and getitfixed search paths together
         Form.set_zpt_renderer(c2cgeoform.default_search_paths, translator=translator)
 
