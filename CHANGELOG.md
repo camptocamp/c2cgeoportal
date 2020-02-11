@@ -1,5 +1,6 @@
+##### 2.4.1.83
+* Update OpenShift URL [c2cgeoportal#5799](https://github.com/camptocamp/c2cgeoportal/pull/5799)
 ##### 2.4.1.82
-* Add missing ondelete="cascade" on table restricted_role_theme [c2cgeoportal#5778](https://github.com/camptocamp/c2cgeoportal/pull/5778)
 * Remove spell check from CI in scaffold [c2cgeoportal#5789](https://github.com/camptocamp/c2cgeoportal/pull/5789)
 ##### 2.4.1.81
 * [admin] Add missing field in dimension form template [c2cgeoportal#5772](https://github.com/camptocamp/c2cgeoportal/pull/5772)
