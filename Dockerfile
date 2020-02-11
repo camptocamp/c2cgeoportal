@@ -31,6 +31,8 @@ COPY Pipfile Pipfile.lock /tmp/
 RUN cd /tmp && pipenv install --system --clear && \
   rm --recursive --force /usr/local/lib/python3.7/dist-packages/tests/ /tmp/* /root/.cache/*
 
+ENV NODE_PATH=/usr/lib/node_modules
+
 
 #############################################################################################################
 # Finally used for all misk task, will not be used on prod runtime
@@ -57,7 +59,7 @@ RUN \
   pipenv install --system --clear --dev && \
   rm --recursive --force /tmp/* /root/.cache/*
 
-COPY bin/npm-packages /usr/bin/
+COPY bin/npm-packages bin/update-po /usr/bin/
 COPY geoportal/package.json /opt/c2cgeoportal/geoportal/
 WORKDIR /opt/c2cgeoportal/geoportal
 RUN \
@@ -127,8 +129,6 @@ RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer
 COPY bin/bashrc ~/.bashrc
 COPY scripts/clone_schema.sql /opt/
 
-ENV NODE_PATH=/usr/lib/node_modules
-
 WORKDIR /src
 
 
@@ -158,7 +158,7 @@ RUN \
   npm cache clear --force && \
   rm -rf /tmp/*
 
-COPY bin/eval-templates bin/wait-db bin/update-po bin/list4vrt /usr/bin/
+COPY bin/eval-templates bin/wait-db bin/list4vrt /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
 COPY --from=tools-cleaned /usr/lib/node_modules/ngeo/buildtools/check-example.js /usr/bin/
 

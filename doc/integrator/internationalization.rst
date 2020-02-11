@@ -31,7 +31,8 @@ Build your application.
 The files to translate are:
 
 * ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/demo-client.po`` for the ngeo client
-* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (should be empty for ngeo interfaces)
+* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part
+  (should be empty for ngeo interfaces)
 
 .. note::
 
@@ -42,9 +43,7 @@ To update your ``po`` files, you should proceed as follows.
 
 .. code:: bash
 
-    docker-compose exec geoportal update-po <lang>
-    docker-compose exec cat <package>_geoportal/locale/<lang>/LC_MESSAGES/<package>_geoportal-client.po > \
-        geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/<package>_geoportal-client.po
+    docker-compose exec tools update-po $(id --user) $(id --group) <lang_1> [<lang_2> [...]]
 
 .. note::
 

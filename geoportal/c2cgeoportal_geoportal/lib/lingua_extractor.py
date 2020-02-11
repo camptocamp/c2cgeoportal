@@ -46,7 +46,6 @@ from lingua.extractors import Extractor, Message
 from mako.lookup import TemplateLookup
 from mako.template import Template
 from owslib.wms import WebMapService
-from pyramid.paster import bootstrap
 import requests
 import sqlalchemy
 from sqlalchemy.exc import NoSuchTableError, OperationalError, ProgrammingError
@@ -55,8 +54,8 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 import yaml
 
+import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal
-from c2cgeoportal_geoportal import init_dbsessions
 from c2cgeoportal_geoportal.lib import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
@@ -180,9 +179,9 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
             except Exception:
                 print(traceback.format_exc())
 
-        message_str = subprocess.check_output(["node", "tools/extract-messages.js", int_filename]).decode(
-            "utf-8"
-        )
+        message_str = subprocess.check_output(
+            ["node", "geoportal/tools/extract-messages.js", int_filename]
+        ).decode("utf-8")
         if int_filename != filename:
             os.unlink(int_filename)
         try:
@@ -229,7 +228,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             for raster_layer in list(settings.get("raster", {}).keys())
         ]
 
-        # Collect layers enum values (for filters)
+        # Init db sessions
 
         class R:
             settings = None
@@ -245,11 +244,13 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
 
         config_ = C()
         config_.registry.settings = settings
-        init_dbsessions(settings, config_)
-        from c2cgeoportal_commons.models import DBSessions  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models.main import Metadata  # pylint: disable=import-outside-toplevel
 
         c2cgeoportal_geoportal.init_dbsessions(settings, config_)
+
+        # Collect layers enum values (for filters)
+
+        from c2cgeoportal_commons.models import DBSessions  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import Metadata  # pylint: disable=import-outside-toplevel
 
         enums = []
         enum_layers = settings.get("layers", {}).get("enum", {})
@@ -322,7 +323,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
                     "",
                     (filename, "template/{}/{}".format(template_, attribute)),
                 )
-                for attribute in list(print_config.get("templates")[template_].attributes.keys())
+                for attribute in list(print_config["templates"][template_]["attributes"].keys())
             ]
         return result
 
@@ -351,10 +352,13 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         messages: List[Message] = []
 
         try:
-            self.env = bootstrap(filename, options=os.environ)
+            engine = sqlalchemy.engine_from_config(self.config, "sqlalchemy_slave.")
+            factory = sqlalchemy.orm.sessionmaker(bind=engine)
+            db_session = sqlalchemy.orm.scoped_session(factory)
+            c2cgeoportal_commons.models.DBSession = db_session
+            c2cgeoportal_commons.models.Base.metadata.bind = engine
 
             try:
-                from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
                 from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
                     Theme,
                     LayerGroup,
@@ -368,7 +372,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 self._import(LayerWMS, messages, self._import_layer_wms)
                 self._import(LayerWMTS, messages, self._import_layer_wmts)
 
-                for (layer_name,) in DBSession.query(FullTextSearch.layer_name).distinct().all():
+                for (layer_name,) in db_session.query(FullTextSearch.layer_name).distinct().all():
                     if layer_name is not None and layer_name != "":
                         messages.append(
                             Message(
@@ -382,7 +386,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                             )
                         )
 
-                for (actions,) in DBSession.query(FullTextSearch.actions).distinct().all():
+                for (actions,) in db_session.query(FullTextSearch.actions).distinct().all():
                     if actions is not None and actions != "":
                         for action in actions:
                             messages.append(

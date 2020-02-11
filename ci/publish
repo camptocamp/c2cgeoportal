@@ -5,7 +5,15 @@ docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
 
 set -x
 
-TAG=${CIRCLE_TAG}
+if [[ "${GITHUB_REF}" =~ ^refs/tags/.* ]]
+then
+  GIT_TAG=$(echo "${GITHUB_REF}"|sed 's|^refs/tags/||g')
+elif [[ "${GITHUB_REF}" =~ ^refs/heads/.* ]]
+then
+  GIT_BRANCH=$(echo "${GITHUB_REF}"|sed 's|^refs/heads/||g')
+fi
+
+TAG=${GIT_TAG}
 LAST_TAG=`git describe --abbrev=0 --tags`
 COMMIT=FALSE
 VERSION_QGIS=FALSE
@@ -17,9 +25,9 @@ then
     ci/changelog ${TAG}
     COMMIT=TRUE
 else
-    if [[ ${CIRCLE_BRANCH} =~ ^[0-9]\.[0-9]$ ]]
+    if [[ ${GIT_BRANCH} =~ ^[0-9]\.[0-9]$ ]]
     then
-        VERSION_QGIS=${CIRCLE_BRANCH}
+        VERSION_QGIS=${GIT_BRANCH}
         TAG=${LAST_TAG}.$(ci/get-minor)
         ci/changelog ${TAG}
         COMMIT=TRUE
@@ -30,18 +38,18 @@ if [ ${COMMIT} == TRUE ]
 then
     git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
     git commit -m "[skip ci] Update the minor version"
-    git push origin ${CIRCLE_BRANCH}
+    git push ${GIT_BRANCH}
 fi
 
 DEPLOY_PIP=FALSE
 MAJOR_VERSION_TAG=${MAJOR_VERSION}
 # Get the version to be published
-if [ "${TAG}" != "" ]
+if [ "${TAG}" ]
 then
     VERSION=${TAG}
-elif [ "${CIRCLE_BRANCH}" != "${MAIN_BRANCH}" ]
+elif [ "${GIT_BRANCH}" != "${MAIN_BRANCH}" ]
 then
-    VERSION=${CIRCLE_BRANCH//\//_}
+    VERSION=${GIT_BRANCH//\//_}
     MAJOR_VERSION_TAG=${VERSION}
     DEPLOY_PIP=FALSE
 else
