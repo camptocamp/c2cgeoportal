@@ -164,3 +164,7 @@ upgrade_files:
   - action: remove
     paths:
       - cgxp_revision
+  - action: remove
+    paths:
+      - .circleci/config.yml
+      - .travis.yml
