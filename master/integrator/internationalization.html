@@ -55,7 +55,8 @@
 <p>The files to translate are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/demo-client.po</span></code> for the ngeo client</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part (should be empty for ngeo interfaces)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/demo-server.po</span></code> for the server part
+(should be empty for ngeo interfaces)</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -63,9 +64,7 @@
 (if the line is not removed, the localisation will not be used).</p>
 </div>
 <p>To update your <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you should proceed as follows.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose <span class="nb">exec</span> geoportal update-po &lt;lang&gt;
-docker-compose <span class="nb">exec</span> cat &lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;_geoportal-client.po &gt; <span class="se">\</span>
-    geoportal/&lt;package&gt;_geoportal/locale/&lt;lang&gt;/LC_MESSAGES/&lt;package&gt;_geoportal-client.po
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose <span class="nb">exec</span> tools update-po <span class="k">$(</span>id --user<span class="k">)</span> <span class="k">$(</span>id --group<span class="k">)</span> &lt;lang_1&gt; <span class="o">[</span>&lt;lang_2&gt; <span class="o">[</span>...<span class="o">]]</span>
 </pre></div>
 </div>
 <div class="admonition note">

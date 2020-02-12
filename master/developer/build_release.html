@@ -93,24 +93,29 @@ span.prompt1:before {
 <span class="prompt1">git push origin &lt;version&gt;</span>
 </pre></div></div><dl class="simple">
 <dt>Change the version in the following files:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">.circleci/config.yml</span></code> (<code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> (<code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
 <p>Commit your changes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .circleci/config.yml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .github/workflows/ci.yaml</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Create the version &lt;version&gt; branch&quot;</span></span>
 </pre></div></div><p>Go back to the master branch:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git checkout master</span>
-<span class="prompt1">git merge &lt;version&gt;</span>
-</pre></div></div><dl class="simple">
-<dt>Change back the version in the following files:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">.circleci/config.yml</span></code> (<code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code>, <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code>)</p></li>
-</ul>
-</dd>
-</dl>
+</pre></div></div><p>Copy <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> to <code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-&lt;version&gt;.yaml</span></code></p>
+<p>Change the on from pull to cron and checkout the right branch:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span> on:
+<span class="gd">-  push:</span>
+<span class="gi">+  schedule:</span>
+<span class="gi">+    - cron: &quot;30 2 * * *&quot;</span>
+
+ - uses: actions/checkout@v1
+<span class="gi">+  with:</span>
+<span class="gi">+    ref: &lt;version&gt;</span>
+</pre></div>
+</div>
 <p>Commit your changes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .circleci/config.yml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .github/workflows/ci.yaml</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Start version &lt;version + 1&gt;&quot;</span></span>
 </pre></div></div><p>Push your changes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git push origin master</span>

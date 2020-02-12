@@ -84,13 +84,14 @@ For each version, we create a new branch (at the latest, for the final release):
     git push origin <version>
 
 Change the version in the following files:
- * ``.circleci/config.yml`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+ * ``.github/workflows/ci.yaml`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+
 
 Commit your changes:
 
 .. prompt:: bash
 
-    git add .circleci/config.yml
+    git add .github/workflows/ci.yaml
     git commit -m "Create the version <version> branch"
 
 Go back to the master branch:
@@ -98,16 +99,27 @@ Go back to the master branch:
 .. prompt:: bash
 
     git checkout master
-    git merge <version>
 
-Change back the version in the following files:
- * ``.circleci/config.yml`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+Copy ``.github/workflows/ci.yaml`` to ``.github/workflows/rebuild-<version>.yaml``
+
+Change the on from pull to cron and checkout the right branch:
+
+.. code:: diff
+
+     on:
+    -  push:
+    +  schedule:
+    +    - cron: "30 2 * * *"
+
+     - uses: actions/checkout@v1
+    +  with:
+    +    ref: <version>
 
 Commit your changes:
 
 .. prompt:: bash
 
-    git add .circleci/config.yml
+    git add .github/workflows/ci.yaml
     git commit -m "Start version <version + 1>"
 
 Push your changes:
