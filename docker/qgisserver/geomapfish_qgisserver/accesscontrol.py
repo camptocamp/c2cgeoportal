@@ -38,14 +38,13 @@ from threading import Lock
 from c2c.template.config import config
 import c2cwsgiutils.broadcast
 import geoalchemy2
-from shapely import ops
+from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsProject
+from qgis.server import QgsAccessControlFilter
+from shapely import ops, wkb
 import sqlalchemy
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 import yaml
 import zope.event.classhandler
-
-from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsProject
-from qgis.server import QgsAccessControlFilter
 
 LOG = logging.getLogger(__name__)
 
@@ -278,7 +277,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if "ROLE_IDS" not in parameters:
             return []
 
-        roles = self.DBSession.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(','))).all()
+        roles = self.DBSession.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(","))).all()
 
         LOG.debug("Roles: %s", ",".join([role.name for role in roles]) if roles else "-")
         return roles
@@ -353,7 +352,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             self.area_cache[key] = (access, None)
             return access, None
 
-        area = ops.unary_union(restriction_areas).wkt
+        area = ops.unary_union(restriction_areas)
         self.area_cache[key] = (Access.AREA, area)
         return (Access.AREA, area)
 
@@ -378,7 +377,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("layerFilterSubsetString not allowed")
                 return "0"
 
-            area = "ST_GeomFromText('{}', {})".format(area, self.srid)
+            area = "ST_GeomFromText('{}', {})".format(area.wkt, self.srid)
             if self.srid != layer.crs().postgisSrid():
                 area = "ST_transform({}, {})".format(area, layer.crs().postgisSrid())
             result = "ST_intersects({}, {})".format(
@@ -412,7 +411,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 return "0"
 
             result = "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', '{}'))".format(
-                area, self.srid, layer.crs().authid()
+                area.wkt, self.srid, layer.crs().authid()
             )
             LOG.debug("layerFilterExpression filter: %s", result)
             return result
@@ -479,7 +478,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("layerFilterExpression not allowed")
                 return False
 
-            return area.intersect(feature.geom)
+            return area.intersects(wkb.loads(feature.geometry().asWkb().data()))
         except Exception:
             LOG.error("Cannot run allowToEdit", exc_info=True)
             raise

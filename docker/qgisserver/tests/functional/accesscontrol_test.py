@@ -81,6 +81,26 @@ def multiple_ogc_server_env(dbsession):
     del os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]
 
 
+def add_node_in_qgis_project(project, parent_node, node_def):
+
+    if node_def["type"] == "layer":
+        vlayer = QgsVectorLayer("Point", node_def["name"], "memory")
+        if "shortName" in node_def:
+            vlayer.setShortName(node_def["shortName"])
+        project.addMapLayer(vlayer)
+        node = project.layerTreeRoot().findLayer(vlayer)
+        clone = node.clone()
+        parent_node.addChildNode(clone)
+        node.parent().takeChild(node)
+
+    if node_def["type"] == "group":
+        node = parent_node.addGroup(node_def["name"])
+        if "shortName" in node_def:
+            node.setCustomProperty("wmsShortName", node_def["shortName"])
+        for child_def in node_def["children"]:
+            add_node_in_qgis_project(project, node, child_def)
+
+
 @pytest.fixture(scope="module")
 def test_data(dbsession):
     from c2cgeoportal_commons.models.main import (
@@ -122,25 +142,6 @@ def test_data(dbsession):
 
     project = QgsProject.instance()
 
-    def add_node(parent_node, node_def):
-
-        if node_def["type"] == "layer":
-            vlayer = QgsVectorLayer("Point", node_def["name"], "memory")
-            if "shortName" in node_def:
-                vlayer.setShortName(node_def["shortName"])
-            project.addMapLayer(vlayer)
-            node = project.layerTreeRoot().findLayer(vlayer)
-            clone = node.clone()
-            parent_node.addChildNode(clone)
-            node.parent().takeChild(node)
-
-        if node_def["type"] == "group":
-            node = parent_node.addGroup(node_def["name"])
-            if "shortName" in node_def:
-                node.setCustomProperty("wmsShortName", node_def["shortName"])
-            for child_def in node_def["children"]:
-                add_node(node, child_def)
-
     for node in [
         {
             "name": "root",
@@ -171,7 +172,7 @@ def test_data(dbsession):
             ],
         }
     ]:
-        add_node(project.layerTreeRoot(), node)
+        add_node_in_qgis_project(project, project.layerTreeRoot(), node)
 
     public_group = LayerWMS(name="public_group", layer="public_group", public=True)
     public_group.ogc_server = ogc_server1
@@ -338,10 +339,11 @@ class TestOGCServerAccessControl:
                 {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(r.id) for r in user.roles])},
             )
             layer = QgsProject.instance().mapLayersByName(layer_name)[0]
-            result = ogcserver_accesscontrol.get_area(layer)
-            assert expected == result, 'get_area with "{}", "{}" should return {}'.format(
-                user_name, layer_name, expected
-            )
+            access, area = ogcserver_accesscontrol.get_area(layer)
+            assert expected == (
+                access,
+                area.wkt if area else None,
+            ), 'get_area with "{}", "{}" should return {}'.format(user_name, layer_name, expected)
 
     @staticmethod
     def test_layer_permissions(server_iface, dbsession, test_data):
