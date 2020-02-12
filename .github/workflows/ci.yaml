@@ -198,7 +198,7 @@ jobs:
       - name: Publish to Transifex
         run: |
           docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
-          docker run --name=transifex -ti --rm --detach transifex tail -f /dev/null
+          docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root transifex tail -f /dev/null
           summon --yaml '
             USERNAME: !var gs/ci/transifex/rw/username
             PASSWORD: !var gs/ci/transifex/rw/password
