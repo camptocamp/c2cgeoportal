@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "42c36c3c0bef3599fc5a81e4731b2977ccfa791971a7d0a9f3737a667dce392d"
+            "sha256": "fe4f0716219b4e3662d44d68788776e3c9a674a116f80fe8bf3e2ae21dbc8e61"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -832,11 +832,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:09201296e0dcf76f8b84a61c529063e8dc8b6aae5bc368756dfcb148ef140069",
-                "sha256:1783cf6c082f2199357661e812a618e4431631a12a3466dd620b580a35bcdec4"
+                "sha256:75b58f3b0c3fbbf84a465903bc0414f53860aa0e588b7f77f376ba89fd6662fa",
+                "sha256:baaa1a6f920f533cfed2742fc1bc5c060ba4c7c2fd089b45484e1679d50c8628"
             ],
             "index": "pypi",
-            "version": "==1.17.12"
+            "version": "==1.17.15"
         },
         "babel": {
             "hashes": [
@@ -872,10 +872,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:054b195d7afee491a472e1462826042c805b4ab60c2ffd7137b90f41d52fd127",
-                "sha256:e20a7fa4bc3803b64bc59f9af1c86d13c825f209bed0edbf1b6da06bcf213212"
+                "sha256:2538065f9f5023eae3607e78fc5d8c595c9173ec02bc92410652078617c44ac1",
+                "sha256:554231b1690c8521e05a41e50184e43d62941fdf9351e658aea894649b879985"
             ],
-            "version": "==1.14.12"
+            "version": "==1.14.15"
         },
         "certifi": {
             "hashes": [
@@ -1151,10 +1151,10 @@
         },
         "paste": {
             "hashes": [
-                "sha256:81911dd49cb61b90bfcbe5cfdb5bd67d6ae9a852fb7edbf0d0407f9deaacfd40",
-                "sha256:9f29d5bdfb08a3cc375cb210ff470ce01480d660286892a71f01a2faa3e9a85b"
+                "sha256:0330d22d1a5cc7202109151322d681f06e14552d43cb99957a21320f3764519b",
+                "sha256:5d229beb9a0efdb8937ba81fc98894043ed0aae003f91cde8d58ffaa6335e5b7"
             ],
-            "version": "==3.3.0"
+            "version": "==3.4.0"
         },
         "pastedeploy": {
             "hashes": [
