@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "73d5cb3ad03ec856942e235a0569a04515bb86626519eb9a327c0c5dd4fa226b"
+            "sha256": "42c36c3c0bef3599fc5a81e4731b2977ccfa791971a7d0a9f3737a667dce392d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -540,11 +540,11 @@
         },
         "pyramid-debugtoolbar": {
             "hashes": [
-                "sha256:3161513c6d72b9e5225167dfeb701f6df7adc492b3b649bfd037e93df793a8c7",
-                "sha256:92934e8d6822a9c9a55185c9052ec128d7a76c16eddebdb061589ee4117137b4"
+                "sha256:1c5c16ff71a3f0b0992656e3c3a2a642c096460b0ae7ffe0330f0c9179065c85",
+                "sha256:9b52c349cda3eed3d6321693ee5a9c5cd22854e69fc53046512f9564113ebfa0"
             ],
             "index": "pypi",
-            "version": "==4.6"
+            "version": "==4.6.1"
         },
         "pyramid-jinja2": {
             "hashes": [
@@ -989,10 +989,10 @@
         },
         "gitpython": {
             "hashes": [
-                "sha256:9c2398ffc3dcb3c40b27324b316f08a4f93ad646d5a6328cafbb871aa79f5e42",
-                "sha256:c155c6a2653593ccb300462f6ef533583a913e17857cfef8fc617c246b6dc245"
+                "sha256:99c77677f31f255e130f3fed4c8e0eebb35f1a09df98ff965fff6774f71688cf",
+                "sha256:99cd0403cecd8a13b95d2e045b9fcaa7837137fcc5ec3105f2c413305d82c143"
             ],
-            "version": "==3.0.5"
+            "version": "==3.0.7"
         },
         "idna": {
             "hashes": [
@@ -1491,10 +1491,10 @@
         },
         "stevedore": {
             "hashes": [
-                "sha256:01d9f4beecf0fbd070ddb18e5efb10567801ba7ef3ddab0074f54e3cd4e91730",
-                "sha256:e0739f9739a681c7a1fda76a102b65295e96a144ccdb552f2ae03c5f0abe8a14"
+                "sha256:18afaf1d623af5950cc0f7e75e70f917784c73b652a34a12d90b309451b5500b",
+                "sha256:a4e7dc759fb0f2e3e2f7d8ffe2358c19d45b9b8297f393ef1256858d82f69c9b"
             ],
-            "version": "==1.31.0"
+            "version": "==1.32.0"
         },
         "toml": {
             "hashes": [
@@ -1604,10 +1604,10 @@
         },
         "zipp": {
             "hashes": [
-                "sha256:ccc94ed0909b58ffe34430ea5451f07bc0c76467d7081619a454bf5c98b89e28",
-                "sha256:feae2f18633c32fc71f2de629bfb3bd3c9325cd4419642b1f1da42ee488d9b98"
+                "sha256:5c56e330306215cd3553342cfafc73dda2c60792384117893f3a83f8a1209f50",
+                "sha256:d65287feb793213ffe11c0f31b81602be31448f38aeb8ffc2eb286c4f6f6657e"
             ],
-            "version": "==2.1.0"
+            "version": "==2.2.0"
         }
     }
 }

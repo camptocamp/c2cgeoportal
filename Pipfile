@@ -47,7 +47,7 @@ pycryptodome = "==3.9.6"  # geoportal
 pyproj = "==2.4.2.post1"  # admin, other?
 pyotp = "==2.3.0"  # geoportal
 pyramid = "==1.10.4"  # geoportal
-pyramid_debugtoolbar = "==4.6"  # geoportal
+pyramid_debugtoolbar = "==4.6.1"  # geoportal
 pyramid-jinja2 = "==2.8"  # admin
 pyramid_mako = "==1.1.0"  # geoportal
 pyramid_multiauth = "==0.9.0"  # geoportal
