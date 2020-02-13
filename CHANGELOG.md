@@ -1,5 +1,6 @@
-##### 2.4.1.84
+##### 2.4.1.85
 * Fix transactions in QGIS plugin [c2cgeoportal#5806](https://github.com/camptocamp/c2cgeoportal/pull/5806)
+##### 2.4.1.84
 * [Backport 2.4] GitHub actions [c2cgeoportal#5807](https://github.com/camptocamp/c2cgeoportal/pull/5807)
 ##### 2.4.1.83
 * Update OpenShift URL [c2cgeoportal#5799](https://github.com/camptocamp/c2cgeoportal/pull/5799)
