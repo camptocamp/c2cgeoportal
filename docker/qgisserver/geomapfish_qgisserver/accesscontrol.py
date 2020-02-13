@@ -23,7 +23,7 @@ from c2c.template.config import config
 from enum import Enum
 from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject, QgsLayerTreeLayer, QgsLayerTreeGroup
 from qgis.server import QgsAccessControlFilter
-from shapely import ops
+from shapely import ops, wkb
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 from threading import Lock
 
@@ -330,7 +330,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             self.area_cache[key] = (access, None)
             return access, None
 
-        area = ops.unary_union(restriction_areas).wkt
+        area = ops.unary_union(restriction_areas)
         self.area_cache[key] = (Access.AREA, area)
         return (Access.AREA, area)
 
@@ -356,7 +356,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 return "0"
 
             area = "ST_GeomFromText('{}', {})".format(
-                area, self.srid
+                area.wkt, self.srid
             )
             if self.srid != layer.crs().postgisSrid():
                 area = "ST_transform({}, {})".format(
@@ -393,7 +393,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 return "0"
 
             result = "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', '{}'))".format(
-                area, self.srid, layer.crs().authid()
+                area.wkt, self.srid, layer.crs().authid()
             )
             QgsMessageLog.logMessage("layerFilterExpression filter: {}".format(result))
             return result
@@ -454,7 +454,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 QgsMessageLog.logMessage("layerFilterExpression not allowed")
                 return False
 
-            return area.intersect(feature.geom)
+            return area.intersects(wkb.loads(feature.geometry().asWkb().data()))
         except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise

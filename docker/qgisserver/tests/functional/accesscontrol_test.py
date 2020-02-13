@@ -10,20 +10,15 @@ Contact: info@camptocamp.com
 """
 
 import os
-import pytest
 from unittest.mock import Mock, patch
 
-from qgis.core import QgsProject, QgsVectorLayer
-from qgis.server import QgsServerInterface
-
+import pytest
 from geoalchemy2.shape import from_shape
-from shapely.geometry import box, Polygon, shape
+from qgis.core import QgsFeature, QgsGeometry, QgsProject, QgsVectorLayer
+from qgis.server import QgsServerInterface
+from shapely.geometry import LineString, box, shape
 
-from geomapfish_qgisserver.accesscontrol import (
-    Access,
-    GeoMapFishAccessControl,
-    OGCServerAccessControl,
-)
+from geomapfish_qgisserver.accesscontrol import Access, GeoMapFishAccessControl, OGCServerAccessControl
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
@@ -82,6 +77,26 @@ def multiple_ogc_server_env(dbsession):
     del os.environ['GEOMAPFISH_ACCESSCONTROL_CONFIG']
 
 
+def add_node_in_qgis_project(project, parent_node, node_def):
+
+    if node_def['type'] == 'layer':
+        vlayer = QgsVectorLayer("Point", node_def['name'], 'memory')
+        if 'shortName' in node_def:
+            vlayer.setShortName(node_def['shortName'])
+        project.addMapLayer(vlayer)
+        node = project.layerTreeRoot().findLayer(vlayer)
+        clone = node.clone()
+        parent_node.addChildNode(clone)
+        node.parent().takeChild(node)
+
+    if node_def['type'] == 'group':
+        node = parent_node.addGroup(node_def['name'])
+        if 'shortName' in node_def:
+            node.setCustomProperty("wmsShortName", node_def['shortName'])
+        for child_def in node_def['children']:
+            add_node_in_qgis_project(project, node, child_def)
+
+
 @pytest.fixture(scope='module')
 def test_data(dbsession):
     from c2cgeoportal_commons.models.main import (
@@ -124,25 +139,6 @@ def test_data(dbsession):
 
     project = QgsProject.instance()
 
-    def add_node(parent_node, node_def):
-
-        if node_def['type'] == 'layer':
-            vlayer = QgsVectorLayer("Point", node_def['name'], 'memory')
-            if 'shortName' in node_def:
-                vlayer.setShortName(node_def['shortName'])
-            project.addMapLayer(vlayer)
-            node = project.layerTreeRoot().findLayer(vlayer)
-            clone = node.clone()
-            parent_node.addChildNode(clone)
-            node.parent().takeChild(node)
-
-        if node_def['type'] == 'group':
-            node = parent_node.addGroup(node_def['name'])
-            if 'shortName' in node_def:
-                node.setCustomProperty("wmsShortName", node_def['shortName'])
-            for child_def in node_def['children']:
-                add_node(node, child_def)
-
     for node in [
         {'name': 'root', 'type': 'group', 'children': [
             {'name': 'public_group', 'type': 'group', 'children': [
@@ -160,7 +156,7 @@ def test_data(dbsession):
             ]},
         ]},
     ]:
-        add_node(project.layerTreeRoot(), node)
+        add_node_in_qgis_project(project, project.layerTreeRoot(), node)
 
     public_group = LayerWMS(name='public_group', layer='public_group', public=True)
     public_group.ogc_server = ogc_server1
@@ -225,9 +221,11 @@ def wms_use_layer_ids():
         project.writeEntry("WMSUseLayerIDs", "/", False)
 
 
-@pytest.mark.usefixtures("server_iface",
-                         "qgs_access_control_filter",
-                         "test_data")
+@pytest.mark.usefixtures(
+    "server_iface",
+    "qgs_access_control_filter",
+    "test_data",
+)
 class TestOGCServerAccessControl():
 
     def test_init(self, server_iface, dbsession, test_data):
@@ -369,8 +367,8 @@ class TestOGCServerAccessControl():
                 'USER_ID': str(user.id)
             })
             layer = QgsProject.instance().mapLayersByName(layer_name)[0]
-            result = ogcserver_accesscontrol.get_area(layer)
-            assert expected == result, (
+            access, area = ogcserver_accesscontrol.get_area(layer)
+            assert expected == (access, area.wkt if area else None), (
                 'get_area with "{}", "{}" should return {}'.
                 format(user_name, layer_name, expected))
 
