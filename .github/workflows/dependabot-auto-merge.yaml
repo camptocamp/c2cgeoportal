@@ -8,7 +8,7 @@ on:
       - completed
   pull_request:
     types:
-      - ready_for_review
+      - opened
 
 jobs:
   auto-merge:
