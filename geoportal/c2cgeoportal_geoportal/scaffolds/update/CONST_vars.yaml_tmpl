@@ -638,7 +638,7 @@ vars:
           img-src {content_security_policy_main_img_src};
           connect-src {content_security_policy_main_connect_src}"
     - pattern: '^/admin/.*'
-      headers:
+      headers: &c2cgeoform_headers
         Referrer-Policy: same-origin
         Content-Security-Policy:
           "default-src {content_security_policy_admin_default_src};
@@ -654,6 +654,8 @@ vars:
           style-src {content_security_policy_apihelp_style_src};
           img-src {content_security_policy_apihelp_img_src};
           connect-src {content_security_policy_apihelp_connect_src}"
+    - pattern: '^/getitfixed.*'
+      headers: *c2cgeoform_headers
     - pattern: '^/oldx?apihelp.html'
       headers:
         Content-Security-Policy:
