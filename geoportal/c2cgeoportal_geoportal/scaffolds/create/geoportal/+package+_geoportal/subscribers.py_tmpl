@@ -20,7 +20,7 @@ def add_localizer(event):
     def auto_translate(string):
         if request.path_info.startswith('/admin/'):
             tsf_list = [tsf_admin, tsf_c2cgeoform]
-        elif request.path_info.startswith('/getitfixed/'):
+        elif request.path_info.startswith('/getitfixed'):
             tsf_list = [tsf_getitfixed, tsf_c2cgeoform]
         else:
             tsf_list = [tsf_server, tsf_geoportal]
