@@ -93,7 +93,7 @@ Enable snapping
 ---------------
 
 To be able to snap while editing, the ``snappingConfig`` must be set on the layer metadata.
-The value is a ``json`` object containing the following optional properties::
+The value is a ``json`` object containing the following optional properties:
 
 * edge (boolean): whether to allow snapping on edges or not;
 * vertex (boolean): whether to allow snapping on vertices or not;

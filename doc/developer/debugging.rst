@@ -190,7 +190,7 @@ Access to a hidden service
 
 Within the Docker composition, you can access a port of a container; you can achieve this via curl, e.-g.:
 
-.. prompt: bash
+.. prompt:: bash
 
    docker-compose exec tools curl "http://mapserver:8080?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
 
