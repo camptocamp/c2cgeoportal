@@ -59,11 +59,22 @@ Otherwise:
    docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
    docker volume ls --quiet --filter dangling=true | grep '[0-9a-f]\{64\}' | xargs --no-run-if-empty docker volume rm
 
-This will remove::
+This will remove:
 
 * Containers with exit status.
 * Images with version on name as `<none>`.
 * Unnamed dangling volumes.
+
+In addition you may run the following script to get rid of unused
+temporary volumes:
+
+.. prompt:: bash
+
+    #!/bin/bash
+    for vol in $(docker volume ls | awk '{print $2}' | grep -v VOLUME)
+    do
+      docker volume rm $vol
+    done
 
 You can also remove the unused named images, that should be done manually:
 
