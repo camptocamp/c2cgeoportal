@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e87c72b32f4b2ef7dbaea5b33eb162da95da1138267241b5dbd77f6b49069d5a"
+            "sha256": "bd25cf0ca521bbb33c3739a2f7a18883e285db01897e27e5fff39aa808e27498"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -74,11 +74,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:806c03418b17820fec0f8ec9a2a12f57b7af20c0fd7a1ac61091f7c65ae37899",
-                "sha256:9a09fc0bf07e2c8f67f9934725bfe1c900bbf5d39da064a6e958841b3b35e8c6"
+                "sha256:ab56b169c0bdb848a0102445dfffa659928a2b9b98d554c69c8d013af54c32d1",
+                "sha256:e87fa977871228d05a1b5defdf315b6091ccde1b0ab6bfadbb289c4275ddeacf"
             ],
             "index": "pypi",
-            "version": "==2.1.9"
+            "version": "==2.1.10"
         },
         "certifi": {
             "hashes": [
@@ -802,10 +802,10 @@
         },
         "zope.sqlalchemy": {
             "hashes": [
-                "sha256:069eaad5a15f187603f368a10e0e6b0d485663498c2fe2f8ac7e93f810326eeb",
-                "sha256:882cb812f39a703252f3748e02fcd27a338330763589c8d8bbc4d18d09fb185d"
+                "sha256:607d65c7974b2aa586f0608ca740b03ddb582ad84ceb3545b55ad5a402fd6dff",
+                "sha256:b9c689d39d83856b5a81ac45dbd3317762bf6a2b576c5dd13aaa2c56e0168154"
             ],
-            "version": "==1.2"
+            "version": "==1.3"
         }
     },
     "develop": {
@@ -982,17 +982,17 @@
         },
         "gitdb2": {
             "hashes": [
-                "sha256:1b6df1433567a51a4a9c1a5a0de977aa351a405cc56d7d35f3388bad1f630350",
-                "sha256:96bbb507d765a7f51eb802554a9cfe194a174582f772e0d89f4e87288c288b7b"
+                "sha256:0375d983fd887d03c8942e81b1b0abc6c320cfb500cd3fe0d9c0eac87fbf2b52",
+                "sha256:b2b3a67090c17dc61f8407ca485e79ae811225ab5ebcd98ac5ee01448e8987b5"
             ],
-            "version": "==2.0.6"
+            "version": "==3.0.2"
         },
         "gitpython": {
             "hashes": [
-                "sha256:99c77677f31f255e130f3fed4c8e0eebb35f1a09df98ff965fff6774f71688cf",
-                "sha256:99cd0403cecd8a13b95d2e045b9fcaa7837137fcc5ec3105f2c413305d82c143"
+                "sha256:620b3c729bbc143b498cfea77e302999deedc55faec5b1067086c9ef90e101bc",
+                "sha256:a43a5d88a5bbc3cf32bb5223e4b4e68fd716db5e9996cad6e561bbfee6e5f4af"
             ],
-            "version": "==3.0.7"
+            "version": "==3.0.8"
         },
         "idna": {
             "hashes": [
@@ -1604,10 +1604,10 @@
         },
         "zipp": {
             "hashes": [
-                "sha256:5c56e330306215cd3553342cfafc73dda2c60792384117893f3a83f8a1209f50",
-                "sha256:d65287feb793213ffe11c0f31b81602be31448f38aeb8ffc2eb286c4f6f6657e"
+                "sha256:6f181bdb1a8c8019f8c11517680f7c1a836a7274c40de9165abfd6da228e54f2",
+                "sha256:fddb41c555ab338cdf27bc1d92cc6e3c05db8d1f1e7ba89d9646976702367333"
             ],
-            "version": "==2.2.0"
+            "version": "==2.2.1"
         }
     }
 }
