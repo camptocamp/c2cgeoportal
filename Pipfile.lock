@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bd25cf0ca521bbb33c3739a2f7a18883e285db01897e27e5fff39aa808e27498"
+            "sha256": "7f989061a8430f7a0a68dc6058ae5b7dfa584a7d392a435fabc38a3b08297036"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -832,11 +832,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:83451bee35a6352eac546a0c700e9ee5e74da29dcbf2605334a2f80332ea7837",
-                "sha256:e6170c9a44bce6f49013cfea7f97fab141cbff78a6e3bf21b1836a80f46a946f"
+                "sha256:7bf8e31f83e79c9c5ab07fc7b82fdc15765f9c89140d71bda63e63f218ced859",
+                "sha256:ef62f799c4c72614933e3ba28a5aaefe88deed8d1886ca173f452da36add445a"
             ],
             "index": "pypi",
-            "version": "==1.18.0"
+            "version": "==1.18.1"
         },
         "babel": {
             "hashes": [
@@ -872,10 +872,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:055da4826f6c9158e4a61549d57a2ce449c27d44ce34ab4c96c7bb7b5c993efc",
-                "sha256:1f7cecfcd38c7cac17b5386014eb04626d1c7559ee8d8ec1526058cd23f6d1d4"
+                "sha256:5cd1076e953eac0d2da3d499d8b6641e85fe62abe4ad9e40298b6826a3e95bcb",
+                "sha256:7f533d7ffcf4c3655bb2b37d6dbd2b067ba06074b9f186d66e8d6fcb90812987"
             ],
-            "version": "==1.15.0"
+            "version": "==1.15.1"
         },
         "certifi": {
             "hashes": [
@@ -1604,10 +1604,10 @@
         },
         "zipp": {
             "hashes": [
-                "sha256:6f181bdb1a8c8019f8c11517680f7c1a836a7274c40de9165abfd6da228e54f2",
-                "sha256:fddb41c555ab338cdf27bc1d92cc6e3c05db8d1f1e7ba89d9646976702367333"
+                "sha256:12248a63bbdf7548f89cb4c7cda4681e537031eda29c02ea29674bc6854460c2",
+                "sha256:7c0f8e91abc0dc07a5068f315c52cb30c66bfbc581e5b50704c8a2f6ebae794a"
             ],
-            "version": "==2.2.1"
+            "version": "==3.0.0"
         }
     }
 }
