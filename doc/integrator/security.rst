@@ -3,6 +3,7 @@
 Security
 ========
 
+.. _integrator_authentication:
 .. include:: authentication.rst
 .. include:: https.rst
 .. include:: reset_password.rst
