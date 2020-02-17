@@ -80,12 +80,19 @@ you can add the <code class="docutils literal notranslate"><span class="pre">--a
 <span class="prompt1">docker images <span class="p">|</span> grep <span class="s2">&quot;&lt;none&gt;&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $3}&#39;</span> <span class="p">|</span> xargs --no-run-if-empty docker rmi <span class="o">||</span> <span class="nb">true</span></span>
 <span class="prompt1">docker volume ls --quiet --filter <span class="nv">dangling</span><span class="o">=</span><span class="nb">true</span> <span class="p">|</span> grep <span class="s1">&#39;[0-9a-f]\{64\}&#39;</span> <span class="p">|</span> xargs --no-run-if-empty docker volume rm</span>
 </pre></div></div><p>This will remove:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* Containers with exit status.
-* Images with version on name as `&lt;none&gt;`.
-* Unnamed dangling volumes.
-</pre></div>
-</div>
-<p>You can also remove the unused named images, that should be done manually:</p>
+<ul class="simple">
+<li>Containers with exit status.</li>
+<li>Images with version on name as <cite>&lt;none&gt;</cite>.</li>
+<li>Unnamed dangling volumes.</li>
+</ul>
+<p>In addition you may run the following script to get rid of unused
+temporary volumes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="ch">#!/bin/bash</span></span>
+<span class="prompt1"><span class="k">for</span> vol in <span class="k">$(</span>docker volume ls <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> grep -v VOLUME<span class="k">)</span></span>
+<span class="prompt1"><span class="k">do</span></span>
+<span class="prompt1">  docker volume rm <span class="nv">$vol</span></span>
+<span class="prompt1"><span class="k">done</span></span>
+</pre></div></div><p>You can also remove the unused named images, that should be done manually:</p>
 <ul class="simple">
 <li>List the images with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>.</li>
 <li>Remove the unwanted images with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rmi</span> <span class="pre">&lt;image&gt;:&lt;tag&gt;</span></code>.</li>
