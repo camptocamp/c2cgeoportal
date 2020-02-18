@@ -23,7 +23,7 @@ of ngeo.
 
 Add the button to the ``gmf-app-bar``:
 
-.. code: html
+.. code:: html
 
   <button ngeo-btn class="btn btn-default" ng-model="mainCtrl.routingfeatureActive"
           data-toggle="tooltip" data-placement="left" data-original-title="{{'Routing'|translate}}">
@@ -33,7 +33,7 @@ Add the button to the ``gmf-app-bar``:
 
 Then, add the routing component to the ``gmf-app-tools-content`` area:
 
-.. code: html
+.. code:: html
 
     <div ng-show="mainCtrl.routingfeatureActive" class="row">
       <div class="col-sm-12">
@@ -56,7 +56,7 @@ Configuration
 To configure the routing feature, the constants ``ngeoRoutingOptions`` and ``ngeoNominatimSearchDefaultParams``
 can be defined. Add them to your ``interfaces_config`` section in your ``vars.yaml`` file:
 
-.. code: yaml
+.. code:: yaml
 
     interfaces_config:
         [...]

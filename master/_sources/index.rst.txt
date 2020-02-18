@@ -23,9 +23,7 @@ produces code for c2cgeoportal itself.
 The c2cgeoportal project is composed of two software components: NGEO (a JS
 library based on `OpenLayers <https://openlayers.org>`_ and
 `AngularJS <https://angularjs.org/>`_ ), and c2cgeoportal, a Python library
-for the Pyramid web framework. So c2cgeoportal applications are Pyramid
-applications with user interfaces based on ExtJS and
-OpenLayers.
+for the Pyramid web framework.
 
 One of the primary goals of the c2cgeoportal project is sharing as much as
 functionality and code as possible between applications. *Do not repeat
