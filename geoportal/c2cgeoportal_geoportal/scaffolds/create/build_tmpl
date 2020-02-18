@@ -39,7 +39,7 @@ if args.upgrade:
         sys.exit(1)
     sys.exit(0)
 
-auto = not (args.config or args.geoportal or args.env)
+all = not (args.config or args.geoportal)
 env = {}
 for env_file in args.env_files:
     with open(env_file) as f:
@@ -55,7 +55,7 @@ for env_file in args.env_files:
 base = env["DOCKER_BASE"] if "DOCKER_BASE" in env else "camptocamp/{{package}}"
 tag = ":" + env["DOCKER_TAG"] if "DOCKER_TAG" in env else ""
 
-if auto or args.config:
+if all or args.config:
     subprocess.check_call(
         [
             "docker",
@@ -65,7 +65,7 @@ if auto or args.config:
             ".",
         ]
     )
-if auto or args.geoportal:
+if all or args.geoportal:
     git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
     subprocess.check_call(
         [
