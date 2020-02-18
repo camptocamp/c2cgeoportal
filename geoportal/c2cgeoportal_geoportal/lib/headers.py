@@ -45,7 +45,8 @@ class HeadersTween:
             if pattern.match(request.path_info):
                 for header, value in headers.items():
                     if value is None:
-                        del response.headers[header]
+                        if header in response.headers:
+                            del response.headers[header]
                     else:
                         response.headers[header] = value
 

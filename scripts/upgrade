@@ -18,7 +18,7 @@ then
     ./build "$@"
 
     docker-compose down --remove-orphans || true
-    DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures
+    DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures || true
     docker-compose up -d
     docker-compose exec geoportal alembic --name=main --config=alembic.ini upgrade head
 

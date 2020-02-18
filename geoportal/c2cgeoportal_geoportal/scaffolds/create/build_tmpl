@@ -11,7 +11,6 @@ import urllib.request
 parser = argparse.ArgumentParser(description="Build the project,")
 parser.add_argument("--config", action="store_true", help="Build only the configuration image")
 parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
-parser.add_argument("--env", action="store_true", help="Force to create the `.env` file")
 parser.add_argument("--pgschema", default="main", help="The main schema name used in PostgreSQL")
 parser.add_argument("--upgrade", help="Start upgrading the project to version")
 parser.add_argument("env_files", default=["env.sample"], nargs="*", help="The environment files")
@@ -40,7 +39,7 @@ if args.upgrade:
         sys.exit(1)
     sys.exit(0)
 
-auto = not (args.config or args.geoportal or args.env)
+all = not (args.config or args.geoportal)
 env = {}
 for env_file in args.env_files:
     with open(env_file) as f:
@@ -56,7 +55,7 @@ for env_file in args.env_files:
 base = env["DOCKER_BASE"] if "DOCKER_BASE" in env else "camptocamp/{{package}}"
 tag = ":" + env["DOCKER_TAG"] if "DOCKER_TAG" in env else ""
 
-if auto or args.config:
+if all or args.config:
     subprocess.check_call(
         [
             "docker",
@@ -66,7 +65,7 @@ if auto or args.config:
             ".",
         ]
     )
-if auto or args.geoportal:
+if all or args.geoportal:
     git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
     subprocess.check_call(
         [
@@ -90,10 +89,9 @@ if auto or args.geoportal:
         ]
     )
 
-if args.env or auto and not os.path.exists(".env"):
-    with open(".env", "w") as dest:
-        env_files = args.env_files
-        for file_ in env_files:
-            print("Use env file: " + file_)
-            with open(file_) as src:
-                dest.write(src.read())
+with open(".env", "w") as dest:
+    env_files = args.env_files
+    for file_ in env_files:
+        print("Use env file: " + file_)
+        with open(file_) as src:
+            dest.write(src.read())
