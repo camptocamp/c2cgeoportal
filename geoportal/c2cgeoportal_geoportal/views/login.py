@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -242,6 +242,9 @@ class Login:
         if login is not None:
             try:
                 user = self.request.get_user(login)
+                if user is None:
+                    LOG.info("The login '%s' does not exist.", login)
+                    raise HTTPUnauthorized("See server logs for details")
             except NoResultFound:  # pragma: no cover
                 LOG.info("The login '%s' does not exist.", login)
                 raise HTTPUnauthorized("See server logs for details")
@@ -257,7 +260,6 @@ class Login:
         else:
             if self.request.user is not None:
                 user = self.request.user
-                username = user.username
             else:
                 raise HTTPBadRequest(
                     "You should be logged in or 'login' should be available in request params."
