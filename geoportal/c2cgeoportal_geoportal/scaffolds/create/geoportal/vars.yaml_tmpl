@@ -168,6 +168,8 @@ update_paths:
   - admin_interface.available_in_templates
   - api
   - authorized_referers
+  - cache.std.arguments
+  - cache.obj
   - check_collector.disabled
   - check_collector.hosts
   - checker.fulltextsearch
