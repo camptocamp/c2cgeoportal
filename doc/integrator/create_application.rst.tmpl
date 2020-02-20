@@ -143,7 +143,7 @@ Concepts
 ........
 
 Application instances for different environments or for personal development should be configured through
-environment variables that are defined in the ``env`` files (default file: ``env.sample``). Each environment
+environment variables that are defined in the ``env`` files (default file: ``env.default``). Each environment
 can have its own ``env`` file (for example, development, integration, production).
 
 Whenever possible, it is strongly advised not to extend the ``vars.yaml`` file.
@@ -174,7 +174,7 @@ interpreted parameters section:
     runtime_environment:
         - HOST
 
-In the ``env.sample`` file, add parameters you want to change as exported variables:
+In the ``env.default`` file, add parameters you want to change as exported variables:
 
 .. code::
 
@@ -189,13 +189,13 @@ In the ``env`` file that extends this main file, you only need to define the env
 Configure the application
 -------------------------
 
-As the integrator, you need to edit the ``vars.yaml`` and ``env.sample`` files to configure the application.
+As the integrator, you need to edit the ``vars.yaml`` and ``env.default`` files to configure the application.
 
 Do not forget to add your changes to git:
 
 .. prompt:: bash
 
-    git add vars.yaml env.sample
+    git add vars.yaml env.default
     git commit -m "Configure the project"
     git push origin master
 

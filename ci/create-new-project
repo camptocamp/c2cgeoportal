@@ -41,8 +41,8 @@ then
 fi
 
 cd ${WORKSPACE}/${PACKAGE}
-echo 'PGHOST=db' >> env.sample
-echo 'PGHOST_SLAVE=db' >> env.sample
+echo 'PGHOST=db' >> env.default
+echo 'PGHOST_SLAVE=db' >> env.default
 
 if [ $BASE_APP == true ]
 then

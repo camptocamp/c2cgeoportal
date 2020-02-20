@@ -47,7 +47,7 @@ should be managed in your makefiles:
 * The ``DOCKER_PGSCHEMA_STATIC`` variable for production should be set in a specific makefile
   for production e.-g. ``production.mk``, it will be set for example to ``integration_static`` in the
   Makefile, and to ``production_static`` in the production makefile.
-* The line ``PGSCHEMA=main`` should be removed from your ``env.sample`` file.
+* The line ``PGSCHEMA=main`` should be removed from your ``env.default`` file.
 
 
 Start a new version
