@@ -449,15 +449,16 @@ def includeme(config: pyramid.config.Configurator):
     config.add_renderer(".ico", AssetRendererFactory)
     config.add_route("localejson", "/locale.json", request_method="GET")
 
-    def add_api_route(name: str, attr: str, path: str, renderer: str):
+    def add_static_route(name: str, attr: str, path: str, renderer: str):
         config.add_route(name, path, request_method="GET")
         config.add_view(Entry, attr=attr, route_name=name, renderer=renderer)
 
-    add_api_route("favicon", "favicon", "/favicon.ico", "/etc/geomapfish/static/images/favicon.ico")
-    add_api_route("apijs", "apijs", "/api.js", "/etc/static-ngeo/api.js")
-    add_api_route("apijsmap", "apijsmap", "/api.js.map", "/etc/static-ngeo/api.js.map")
-    add_api_route("apicss", "apicss", "/api.css", "/etc/static-ngeo/api.css")
-    add_api_route("apihelp", "apihelp", "/apihelp/index.html", "/etc/geomapfish/static/apihelp/index.html")
+    add_static_route("favicon", "favicon", "/favicon.ico", "/etc/geomapfish/static/images/favicon.ico")
+    add_static_route("robot.txt", "robot_txt", "/robot.txt", "/etc/geomapfish/static/robot.txt")
+    add_static_route("apijs", "apijs", "/api.js", "/etc/static-ngeo/api.js")
+    add_static_route("apijsmap", "apijsmap", "/api.js.map", "/etc/static-ngeo/api.js.map")
+    add_static_route("apicss", "apicss", "/api.css", "/etc/static-ngeo/api.css")
+    add_static_route("apihelp", "apihelp", "/apihelp/index.html", "/etc/geomapfish/static/apihelp/index.html")
     c2cgeoportal_geoportal.views.add_redirect(config, "apihelp_redirect", "/apihelp.html", "apihelp")
 
     config.add_route("themes", "/themes", request_method="GET", pregenerator=C2CPregenerator(role=True))
