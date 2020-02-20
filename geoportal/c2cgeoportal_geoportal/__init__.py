@@ -149,6 +149,9 @@ def add_admin_interface(config):
 
 def add_getitfixed(config):
     if config.get_settings()['getitfixed'].get('enabled', False):
+        config.add_view(c2cgeoportal_geoportal.views.add_ending_slash,
+                        route_name='getitfixed_add_ending_slash')
+        config.add_route('getitfixed_add_ending_slash', '/getitfixed', request_method='GET')
         config.include("getitfixed")
         # Fix up for admin and getitfixed custom search_paths
         from c2cgeoform import Form, default_search_paths, translator
