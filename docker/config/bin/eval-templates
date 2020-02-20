@@ -6,9 +6,9 @@ import re
 import subprocess
 import urllib.parse
 
-os.environ["DOLLAR"] = '$'
-os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ.get('VISIBLE_WEB_HOST'))
-os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ.get('VISIBLE_ENTRY_POINT'))
+os.environ["DOLLAR"] = "$"
+os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ.get("VISIBLE_WEB_HOST"))
+os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ.get("VISIBLE_ENTRY_POINT"))
 os.environ["MAPSERVER_DATA_SUBSELECT"] = (
     "SELECT {ST_JOIN}(ra.area) "
     "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
@@ -41,6 +41,21 @@ for name in ("GEOPORTAL", "TILECLOUDCHAIN"):
         url = urllib.parse.urlparse(os.environ[name + "_INTERNAL_URL"])
         os.environ[name + "_INTERNAL_HOST"] = url.hostname
         os.environ[name + "_INTERNAL_PORT"] = str(url.port or SCHEME_PORT.get(url.scheme, "NULL"))
+
+if (
+    "VISIBLE_WEB_HOST" in os.environ
+    and "VISIBLE_WEB_HOSTAME" not in os.environ
+    and "VISIBLE_WEB_PORT" not in os.environ
+):
+    splited_host = os.environ["VISIBLE_WEB_HOST"].split(":")
+    if len(splited_host) == 2:
+        os.environ["VISIBLE_WEB_HOSTAME"] = splited_host[0]
+        os.environ["VISIBLE_WEB_PORT"] = splited_host[1]
+    elif len(splited_host) == 1 and "VISIBLE_WEB_PROTOCOL" in os.environ:
+        os.environ["VISIBLE_WEB_HOSTAME"] = splited_host[0]
+        os.environ["VISIBLE_WEB_PORT"] = "443" if os.environ["VISIBLE_WEB_PROTOCOL"] == "https" else "80"
+    else:
+        print("Error: Your VISIBLE_WEB_HOST is incorrect or you VISIBLE_WEB_PROTOCOL is missing.")
 
 
 def evaluate(filename):
