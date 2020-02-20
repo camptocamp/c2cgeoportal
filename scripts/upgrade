@@ -1,42 +1,96 @@
-#!/bin/bash -e
+#!/usr/bin/env python3
 
-function help {
-    echo Usage:
-    echo ./upgrade VERSION [STEP]
-    echo ./upgrade --finalise PACKAGE [DOCKER_TAG]
-    exit 1
-}
+# Copyright (c) 2019-2020, Camptocamp SA
+# All rights reserved.
 
-if [ $# -lt 1 ]
-then
-    help
-fi
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
 
-if [ $1 == '--finalise' ]
-then
-    shift
-    ./build "$@"
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
 
-    docker-compose down --remove-orphans || true
-    DOCKER_TAG=unexisting docker-compose pull --ignore-pull-failures || true
-    docker-compose up -d
-    docker-compose exec geoportal alembic --name=main --config=alembic.ini upgrade head
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-    exit 0
-fi
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
 
-if [ $# -gt 1 ]
-then
-    args="--step $2"
-else
-    if [ "$CI" != "true" ]
-    then
-        docker pull camptocamp/geomapfish:$1
-        docker pull camptocamp/geomapfish-tools:$1
-        docker pull camptocamp/geomapfish-config:$1
-    fi
-fi
 
-docker run --rm --env=CI --volume=${PWD}:/src camptocamp/geomapfish-tools:$1 \
-        run-git "$(git config --get user.name)" $(git config --get user.email) $(id -u) $(id -g) \
-        /src c2cupgrade $args
+import argparse
+import os
+import platform
+import subprocess
+import sys
+
+parser = argparse.ArgumentParser(description="Upgrade the project")
+parser.add_argument("version", help="the version to upgrade to (master or x.y.z)")
+parser.add_argument("step", nargs="?", help="the step to run")
+parser_finalise = argparse.ArgumentParser(description="Upgrade the project", add_help=False)
+parser_finalise.add_argument("--finalise", action="store_true", help="finalise the upgrade")
+parser_finalise.add_argument("--help", action="help", help="show this help message and exit")
+parser_finalise.add_argument("build_arg", nargs="*", help="a build argument")
+
+if len(sys.argv) >= 2 and sys.argv[1] == "--finalise":
+    args = parser_finalise.parse_args()
+
+    if platform.system() == "Windows":
+        subprocess.check_call(["python", "build"] + args.build_arg)
+    else:
+        subprocess.check_call(["./build", "build"] + args.build_arg)
+
+    subprocess.call(["docker-compose", "down", "--remove-orphans"])
+    subprocess.call(["docker-compose", "pull", "--ignore-pull-failures"], env={"DOCKER_TAG": "unexisting"})
+    subprocess.check_call(["docker-compose", "up", "-d"])
+    subprocess.check_call(
+        [
+            "docker-compose",
+            "exec",
+            "geoportal",
+            "alembic",
+            "--name=main",
+            "--config=alembic.ini",
+            "upgrade",
+            "head",
+        ]
+    )
+
+else:
+    args = parser.parse_args()
+
+    c2cupgrade_args = ["--step", args.step] if args.step is not None else []
+
+    if os.environ.get("CI") != "true":
+        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(args.version)])
+        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-tools:{}".format(args.version)])
+        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(args.version)])
+
+    subprocess.check_call(
+        [
+            "docker",
+            "run",
+            "--rm",
+            "--env=CI",
+            "--volume={}:/src".format(os.getcwd()),
+            "camptocamp/geomapfish-tools:{}".format(args.version),
+            "run-git",
+            subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
+            subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),
+            subprocess.check_output(["id", "-u"]).decode().strip(),
+            subprocess.check_output(["id", "-g"]).decode().strip(),
+            "/src",
+            "c2cupgrade",
+        ]
+        + c2cupgrade_args
+    )
