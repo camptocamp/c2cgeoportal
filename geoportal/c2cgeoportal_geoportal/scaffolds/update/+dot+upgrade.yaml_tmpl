@@ -168,3 +168,6 @@ upgrade_files:
     paths:
       - .circleci/config.yml
       - .travis.yml
+  - action: move
+    from: env.sample
+    to: env.default
