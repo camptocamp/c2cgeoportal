@@ -21,8 +21,8 @@ services:
       - PGPASSWORD=www-data
       - PGDATABASE=geomapfish
     volumes:
-      - ${PWD}/development.ini:/app/development.ini
-      - ${PWD}/c2cgeoportal_admin:/app/c2cgeoportal_admin
-      - ${PWD}/../commons/c2cgeoportal_commons:/opt/commons/c2cgeoportal_commons
+      - ./development.ini:/app/development.ini
+      - ./c2cgeoportal_admin:/app/c2cgeoportal_admin
+      - ./../commons/c2cgeoportal_commons:/opt/commons/c2cgeoportal_commons
     ports:
       - 8888:8080

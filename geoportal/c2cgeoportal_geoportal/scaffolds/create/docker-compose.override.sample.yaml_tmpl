@@ -11,11 +11,11 @@ services:
     user: root
     volumes:
       # For Python project development.
-      - ${PWD}/geoportal/{{package}}_geoportal:/app/{{package}}_geoportal
+      - ./geoportal/{{package}}_geoportal:/app/{{package}}_geoportal
       # For Python c2cgeportal development.
-      # - '${PWD}/../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons'
-      # - '${PWD}/../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal'
-      # - '${PWD}/../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin'
+      # - ./../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons
+      # - ./../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+      # - ./../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin
     environment:
       - GUNICORN_CMD_ARGS=--reload
       - C2CWSGIUTILS_CONFIG=/app/development.ini
@@ -33,8 +33,8 @@ services:
 
   qgisserver:
     # volumes:
-    #   - '${PWD}/../c2cgeoportal/docker/qgisserver/geomapfish_qgisserver/:/var/www/plugins/geomapfish_qgisserver/'
-    #   - '${PWD}/../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons/'
+    #   - './../c2cgeoportal/docker/qgisserver/geomapfish_qgisserver/:/var/www/plugins/geomapfish_qgisserver/'
+    #   - './../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons/'
     environment:
       - QGIS_SERVER_LOG_LEVEL=0
 
@@ -44,9 +44,9 @@ services:
     # Uncomment these lines when you want to debug respectively the project js, ngeo js and/or the gmf contrib js.
     # Adapt the path for ngeo / gmf contrib to point where you have checkouted the code.
     # volumes:
-    #   - ${PWD}/geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
-    #   - ${PWD}/../ngeo/src:/usr/lib/node_modules/ngeo/src
-    #   - ${PWD}/../ngeo/contribs:/usr/lib/node_modules/ngeo/contribs
+    #   - ./geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
+    #   - ./../ngeo/src:/usr/lib/node_modules/ngeo/src
+    #   - ./../ngeo/contribs:/usr/lib/node_modules/ngeo/contribs
     volumes_from:
       - config:rw
     extends:

@@ -223,7 +223,7 @@ services:
   webpack_dev_server:
     image: ${DOCKER_BASE}-geoportal-dev:${DOCKER_TAG}
     volumes:
-      - ${PWD}/geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
+      - ./geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
     environment:
       - VISIBLE_ENTRY_POINT
       - VISIBLE_WEB_HOST
