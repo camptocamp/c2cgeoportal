@@ -41,10 +41,10 @@ RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=
     python3 -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
 
 ARG GIT_HASH
-RUN c2cwsgiutils_genversion.py $GIT_HASH
+RUN c2cwsgiutils_genversion.py ${GIT_HASH}
 
 ARG PGSCHEMA
-ENV PGSCHEMA=$PGSCHEMA
+ENV PGSCHEMA=${PGSCHEMA}
 
 ENTRYPOINT [ "/usr/bin/eval-templates" ]
 CMD ["c2cwsgiutils_run"]
