@@ -139,7 +139,7 @@ Following this rule is important for easier updates.</p>
 <div class="section" id="concepts">
 <h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h3>
 <p>Application instances for different environments or for personal development should be configured through
-environment variables that are defined in the <code class="docutils literal notranslate"><span class="pre">env</span></code> files (default file: <code class="docutils literal notranslate"><span class="pre">env.sample</span></code>). Each environment
+environment variables that are defined in the <code class="docutils literal notranslate"><span class="pre">env</span></code> files (default file: <code class="docutils literal notranslate"><span class="pre">env.default</span></code>). Each environment
 can have its own <code class="docutils literal notranslate"><span class="pre">env</span></code> file (for example, development, integration, production).</p>
 <p>Whenever possible, it is strongly advised not to extend the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.
 We recommend instead that you use dynamic variables as described below.
@@ -166,7 +166,7 @@ interpreted parameters section:</p>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">HOST</span>
 </pre></div>
 </div>
-<p>In the <code class="docutils literal notranslate"><span class="pre">env.sample</span></code> file, add parameters you want to change as exported variables:</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">env.default</span></code> file, add parameters you want to change as exported variables:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HOST</span><span class="o">=</span><span class="n">domaine</span><span class="o">.</span><span class="n">different</span><span class="o">.</span><span class="n">com</span>
 </pre></div>
 </div>
@@ -178,9 +178,9 @@ interpreted parameters section:</p>
 </div>
 <div class="section" id="configure-the-application">
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this headline">¶</a></h2>
-<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">env.sample</span></code> files to configure the application.</p>
+<p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">env.default</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml env.sample</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml env.default</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
 <span class="prompt1">git push origin master</span>
 </pre></div></div><div class="admonition note">
