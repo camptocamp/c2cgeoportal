@@ -20,6 +20,15 @@ Required Apache modules
 * ``mod_proxy``
 * ``mod_proxy_http``
 
+
+Required PostgreSQL extentions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``postgis``
+* ``hstore``
+* ``pg_trgm`` (optional)
+
+
 Additional notes for Windows users
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
