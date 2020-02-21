@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-awscli = "==1.18.3"  # Work with Object storage
+awscli = "==1.18.4"  # Work with Object storage
 Babel = "==2.7.0"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.8.2"  # admin tests
