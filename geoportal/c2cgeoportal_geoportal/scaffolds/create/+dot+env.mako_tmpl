@@ -36,7 +36,7 @@ TILEGENERATION_SQS_QUEUE=<queue_name>
 TILEGENERATION_S3_BUCKET=<bucket_name>
 GUNICORN_PARAMS=--bind=:8080 --worker-class=gthread --threads=10 --workers=5 --timeout=60 --max-requests=1000 --max-requests-jitter=100
 # Use the mutualised print, ask Camptocamp to configure your project.
-PRINT_URL=https://mutualized-print.paas-ch-3.camptocamp.com/print/${mutualized_print_app}/
+PRINT_URL=https://mutualized-print.apps.openshift-ch-1.camptocamp.com/print/${mutualized_print_app}/
 DEVSERVER_HOST=webpack_dev_server:8080
 C2C_REDIS_URL=redis://redis:6379/0
 PGOPTIONS=-c statement_timeout=30000
