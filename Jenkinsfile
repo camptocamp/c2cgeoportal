@@ -36,8 +36,7 @@ def get_abort_ci() {
     // Makes sure Jenkins will not build his own commit
     COMMITTER = sh(returnStdout: true, script: "git show --no-patch --format='%ae' HEAD").trim()
     TAG = sh(returnStdout: true, script: 'git tag --list --points-at=HEAD').trim()
-    USER_START = currentBuild.getBuildCauses()[0].get('shortDescription').startsWith('Started by user ')
-    if (COMMITTER == 'ci@camptocamp.com' && TAG == "" && !USER_START) {
+    if (COMMITTER == 'ci@camptocamp.com' && TAG == "") {
         return true
     }
     return false
