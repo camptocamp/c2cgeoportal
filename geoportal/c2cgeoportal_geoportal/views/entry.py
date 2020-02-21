@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,11 @@ class Entry:
         return {}
 
     def favicon(self):
-        set_common_headers(self.request, "api", NO_CACHE, content_type="image/vnd.microsoft.icon")
+        set_common_headers(self.request, "index", NO_CACHE, content_type="image/vnd.microsoft.icon")
+        return {}
+
+    def robot_txt(self):
+        set_common_headers(self.request, "index", NO_CACHE, content_type="text/plain")
         return {}
 
     def apijsmap(self):
