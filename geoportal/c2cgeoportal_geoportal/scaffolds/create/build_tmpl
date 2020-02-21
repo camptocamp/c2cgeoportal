@@ -8,7 +8,18 @@ import subprocess
 import sys
 import urllib.request
 
-parser = argparse.ArgumentParser(description="Build the project,")
+
+def call(verbose, arguments, **kwargs):
+    if verbose:
+        print_args = [a.replace(" ", "\\ ") for a in arguments]
+        print_args = [a.replace('"', '\\"') for a in print_args]
+        print_args = [a.replace("'", "\\'") for a in print_args]
+        print(" ".join(print_args))
+    subprocess.check_call(arguments, **kwargs)
+
+
+parser = argparse.ArgumentParser(description="Build the project")
+parser.add_argument("--verbose", help="Display the docker build commands")
 parser.add_argument("--config", action="store_true", help="Build only the configuration image")
 parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
 parser.add_argument("--pgschema", default="main", help="The main schema name used in PostgreSQL")
@@ -56,18 +67,20 @@ base = env["DOCKER_BASE"] if "DOCKER_BASE" in env else "camptocamp/{{package}}"
 tag = ":" + env["DOCKER_TAG"] if "DOCKER_TAG" in env else ""
 
 if default or args.config:
-    subprocess.check_call(
+    call(
+        args.verbose,
         [
             "docker",
             "build",
             "--tag={}-config{}".format(base, tag),
             "--build-arg=PGSCHEMA=" + args.pgschema,
             ".",
-        ]
+        ],
     )
 if default or args.geoportal:
     git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
-    subprocess.check_call(
+    call(
+        args.verbose,
         [
             "docker",
             "build",
@@ -75,10 +88,11 @@ if default or args.geoportal:
             "--build-arg=PGSCHEMA=" + args.pgschema,
             "--build-arg=GIT_HASH=" + git_hash,
             "geoportal",
-        ]
+        ],
     )
-    subprocess.check_call(
-        ["docker", "build", "--target=builder", "--tag={}-geoportal-dev{}".format(base, tag), "geoportal"]
+    call(
+        args.verbose,
+        ["docker", "build", "--target=builder", "--tag={}-geoportal-dev{}".format(base, tag), "geoportal"],
     )
 
 with open(".env", "w") as dest:
