@@ -1,3 +1,6 @@
+##### 2.4.1.87
+* Add OpenShift deployment settings section [c2cgeoportal#5843](https://github.com/camptocamp/c2cgeoportal/pull/5843)
+* Update the mutualized print URL [c2cgeoportal#5867](https://github.com/camptocamp/c2cgeoportal/pull/5867)
 ##### 2.4.1.86
 * Add tip about unused docker volumes cleaning [c2cgeoportal#5815](https://github.com/camptocamp/c2cgeoportal/pull/5815)
 ##### 2.4.1.85
