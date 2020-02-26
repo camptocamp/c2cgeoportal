@@ -23,7 +23,7 @@ from c2c.template.config import config
 from enum import Enum
 from qgis.core import QgsMessageLog, QgsDataSourceUri, QgsProject, QgsLayerTreeLayer, QgsLayerTreeGroup
 from qgis.server import QgsAccessControlFilter
-from shapely import ops, wkb
+from shapely import ops, wkb, wkt
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
 from threading import Lock
 
@@ -454,7 +454,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 QgsMessageLog.logMessage("layerFilterExpression not allowed")
                 return False
 
-            return area.intersects(wkb.loads(feature.geometry().asWkb().data()))
+            return wkt.loads(area).intersects(wkb.loads(feature.geometry().asWkb().data()))
         except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise
