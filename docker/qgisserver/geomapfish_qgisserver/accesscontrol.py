@@ -454,7 +454,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 QgsMessageLog.logMessage("layerFilterExpression not allowed")
                 return False
 
-            return wkt.loads(area).intersects(wkb.loads(feature.geometry().asWkb().data()))
+            return area.intersects(wkb.loads(feature.geometry().asWkb().data()))
         except Exception:
             QgsMessageLog.logMessage(''.join(traceback.format_exception(*sys.exc_info())))
             raise

@@ -27,6 +27,38 @@ geom_in = LineString([[500000, 80000], [500000, 90000]])
 geom_intersects = LineString([[500000, 50000], [500000, 90000]])
 geom_out = LineString([[500000, 50000], [500000, 60000]])
 
+@pytest.fixture(scope='module')
+def scoped_session(dbsession):
+    with patch('geomapfish_qgisserver.accesscontrol.scoped_session',
+               return_value=dbsession) as mock:
+        yield mock
+
+
+@pytest.fixture(scope='function')
+def server_iface():
+    yield Mock(spec=QgsServerInterface)
+
+
+@pytest.fixture(scope='module')
+def qgs_access_control_filter():
+    """
+    Mock some QgsAccessControlFilter methods:
+    - __init__ which does not accept a mocked QgsServerInterface;
+    - serverInterface to return the right server_iface.
+    """
+    class DummyQgsAccessControlFilter():
+
+        def __init__(self, server_iface):
+            self.server_iface = server_iface
+
+        def serverInterface(self):
+            return self.server_iface
+
+    with patch.multiple('geomapfish_qgisserver.accesscontrol.QgsAccessControlFilter',
+                        __init__=DummyQgsAccessControlFilter.__init__,
+                        serverInterface=DummyQgsAccessControlFilter.serverInterface) as mocks:
+        yield mocks
+
 
 @pytest.fixture(scope='class')
 def test_data2(dbsession):
