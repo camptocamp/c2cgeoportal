@@ -15,7 +15,6 @@ from unittest.mock import Mock, patch
 import pytest
 from geoalchemy2.shape import from_shape
 from qgis.core import QgsFeature, QgsGeometry, QgsProject, QgsVectorLayer
-from qgis.server import QgsServerInterface
 from shapely.geometry import LineString, box, shape
 
 from geomapfish_qgisserver.accesscontrol import Access, GeoMapFishAccessControl, OGCServerAccessControl
@@ -23,58 +22,11 @@ from geomapfish_qgisserver.accesscontrol import Access, GeoMapFishAccessControl,
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
 
-@pytest.fixture(scope='module')
-def scoped_session(dbsession):
-    with patch('geomapfish_qgisserver.accesscontrol.scoped_session',
-               return_value=dbsession) as mock:
-        yield mock
-
-
-@pytest.fixture(scope='function')
-def server_iface():
-    yield Mock(spec=QgsServerInterface)
-
-
 def set_request_parameters(server_iface, params):
     server_iface.configure_mock(**{
         'requestHandler.return_value': Mock(**{
             'parameterMap.return_value': params,
             'parameter.side_effect': lambda key: params[key]})})
-
-
-@pytest.fixture(scope='module')
-def qgs_access_control_filter():
-    """
-    Mock some QgsAccessControlFilter methods:
-    - __init__ which does not accept a mocked QgsServerInterface;
-    - serverInterface to return the right server_iface.
-    """
-    class DummyQgsAccessControlFilter():
-
-        def __init__(self, server_iface):
-            self.server_iface = server_iface
-
-        def serverInterface(self):
-            return self.server_iface
-
-    with patch.multiple('geomapfish_qgisserver.accesscontrol.QgsAccessControlFilter',
-                        __init__=DummyQgsAccessControlFilter.__init__,
-                        serverInterface=DummyQgsAccessControlFilter.serverInterface) as mocks:
-        yield mocks
-
-
-@pytest.fixture(scope='class')
-def single_ogc_server_env(dbsession):
-    os.environ['GEOMAPFISH_OGCSERVER'] = 'qgisserver1'
-    yield
-    del os.environ['GEOMAPFISH_OGCSERVER']
-
-
-@pytest.fixture(scope='class')
-def multiple_ogc_server_env(dbsession):
-    os.environ['GEOMAPFISH_ACCESSCONTROL_CONFIG'] = '/etc/qgisserver/multiple_ogc_server.yaml'
-    yield
-    del os.environ['GEOMAPFISH_ACCESSCONTROL_CONFIG']
 
 
 def add_node_in_qgis_project(project, parent_node, node_def):

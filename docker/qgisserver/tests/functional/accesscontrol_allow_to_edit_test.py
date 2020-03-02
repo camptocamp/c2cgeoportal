@@ -9,18 +9,13 @@ Contact: info@camptocamp.com
     option) any later version.
 """
 
-import os
-from unittest.mock import Mock, patch
-
 import pytest
 from geoalchemy2.shape import from_shape
 from qgis.core import QgsFeature, QgsGeometry, QgsProject, QgsVectorLayer
-from qgis.server import QgsServerInterface
 from shapely.geometry import LineString, box, shape
 
 from geomapfish_qgisserver.accesscontrol import Access, GeoMapFishAccessControl, OGCServerAccessControl
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
-
 
 area1 = box(400000, 70000, 800000, 100000)
 geom_in = LineString([[500000, 80000], [500000, 90000]])
