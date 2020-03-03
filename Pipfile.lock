@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "931f2e7f3aeeb568f2dffac18f3cfe4abb0c7fd4ca248f0786d3474108500d44"
+            "sha256": "67bf3fa4fa7b73d06e9a55b430d671b9deb9f28493bc22b8b5289cc7cdcb8190"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -139,11 +139,11 @@
         },
         "colanderalchemy": {
             "hashes": [
-                "sha256:367cd10e54a616222b919e89ad5d01d88f7cb53ea9667cc7cddaa02eb7b67937",
-                "sha256:dcda9d35ddeb6d4e3f61a5ba3c9fddbb80e1f8155818990300bebada45b48c87"
+                "sha256:740d435e6a97c483e3ce0196a36e02e35be99b0174e09554dd7c6a019963dc00",
+                "sha256:abebdbe091d1ff8b30a6ab2a8dc744ba73fddd5f5fb0e60a67038c2165add456"
             ],
             "index": "pypi",
-            "version": "==0.3.3"
+            "version": "==0.3.4"
         },
         "decorator": {
             "hashes": [
@@ -1618,10 +1618,10 @@
         },
         "zipp": {
             "hashes": [
-                "sha256:12248a63bbdf7548f89cb4c7cda4681e537031eda29c02ea29674bc6854460c2",
-                "sha256:7c0f8e91abc0dc07a5068f315c52cb30c66bfbc581e5b50704c8a2f6ebae794a"
+                "sha256:aa36550ff0c0b7ef7fa639055d797116ee891440eac1a56f378e2d3179e0320b",
+                "sha256:c599e4d75c98f6798c509911d08a22e6c021d074469042177c8c86fb92eefd96"
             ],
-            "version": "==3.0.0"
+            "version": "==3.1.0"
         }
     }
 }
