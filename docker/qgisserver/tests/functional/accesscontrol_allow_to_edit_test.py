@@ -56,7 +56,6 @@ def test_data2(dbsession):
 
     user_no_access = User("user_no_access", roles=[role1])
     user_full_access = User("user_full_access", roles=[role2])
-    user_full_access.id = 9999  # root
     user_area_access = User("user_area_access", roles=[role3])
     users = {
         user.username: user
@@ -104,8 +103,7 @@ def test_data2(dbsession):
 
     dbsession.flush()
 
-    yield {"users": users, "roles": roles, "restriction_areas": restriction_areas,
-           "ogc_servers": ogc_servers}
+    yield {"users": users, "roles": roles, "restriction_areas": restriction_areas, "ogc_servers": ogc_servers}
 
     t.rollback()
 
