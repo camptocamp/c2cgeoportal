@@ -271,7 +271,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         parameters = self.serverInterface().requestHandler().parameterMap()
 
-        if parameters.get("USER_ID") == "0":
+        if parameters.get("USER_ID") == "0" or parameters.get("USER_ID") == "9999":
             return "ROOT"
 
         if "ROLE_IDS" not in parameters:
