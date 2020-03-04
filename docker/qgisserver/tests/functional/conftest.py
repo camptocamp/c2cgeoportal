@@ -38,9 +38,7 @@ def settings():
 
 @pytest.fixture(scope="module")
 def scoped_session(dbsession):
-    with patch(
-        "geomapfish_qgisserver.accesscontrol.scoped_session", return_value=dbsession
-    ) as mock:
+    with patch("geomapfish_qgisserver.accesscontrol.scoped_session", return_value=dbsession) as mock:
         yield mock
 
 
@@ -81,8 +79,6 @@ def single_ogc_server_env(dbsession):
 
 @pytest.fixture(scope="class")
 def multiple_ogc_server_env(dbsession):
-    os.environ[
-        "GEOMAPFISH_ACCESSCONTROL_CONFIG"
-    ] = "/etc/qgisserver/multiple_ogc_server.yaml"
+    os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"] = "/etc/qgisserver/multiple_ogc_server.yaml"
     yield
     del os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]
