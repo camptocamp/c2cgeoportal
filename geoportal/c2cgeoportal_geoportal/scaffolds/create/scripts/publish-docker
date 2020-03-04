@@ -4,11 +4,13 @@ import os.path
 import subprocess
 import sys
 
-if os.environ.get("TRAVIS_PULL_REQUEST", "false") == "true":
-    print("Not deploying images for pull requests")
+ref = os.environ["GITHUB_REF"].split("/")
+
+if ref[1] != "heads":
+    print("Not a branch")
     sys.exit(0)
 
-version = os.environ.get("CIRCLE_BRANCH", os.environ.get("TRAVIS_BRANCH"))
+version = "/".join(ref[2:])
 
 if version not in os.environ.get("HELM_RELEASE_NAMES", "").split(","):
     print("Not a release branch")
@@ -20,8 +22,8 @@ subprocess.check_call(
     [
         "docker",
         "login",
-        "--username=" + subprocess.check_output(["gopass", "gs/ci/dockerhub/username"]),
-        "--password=" + subprocess.check_output(["gopass", "gs/ci/dockerhub/username"]),
+        "--username=" + subprocess.check_output(["gopass", "gs/ci/dockerhub/username"]).decode(),
+        "--password=" + subprocess.check_output(["gopass", "gs/ci/dockerhub/password"]).decode(),
     ]
 )
 
@@ -51,12 +53,13 @@ subprocess.check_call(
     [
         oc,
         "login",
-        os.environ["OPENSHIFT_URL"],
+        subprocess.check_output(
+            ["gopass", "gs/ci/openshift/{}/url".format(os.environ["OPENSHIFT_PROJECT"])]
+        ).decode(),
         "--token="
         + subprocess.check_output(
             ["gopass", "gs/ci/openshift/{}/token".format(os.environ["OPENSHIFT_PROJECT"])]
-        ),
-        os.environ["OPENSHIFT_TOKEN"],
+        ).decode(),
     ]
 )
 for image in images:
