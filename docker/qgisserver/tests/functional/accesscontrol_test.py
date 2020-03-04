@@ -9,16 +9,14 @@ Contact: info@camptocamp.com
     option) any later version.
 """
 
-import pytest
+from unittest.mock import Mock
+
 from geoalchemy2.shape import from_shape
-from geomapfish_qgisserver.accesscontrol import (
-    Access,
-    GeoMapFishAccessControl,
-    OGCServerAccessControl,
-)
+import pytest
 from qgis.core import QgsProject, QgsVectorLayer
 from shapely.geometry import box
-from unittest.mock import Mock
+
+from geomapfish_qgisserver.accesscontrol import Access, GeoMapFishAccessControl, OGCServerAccessControl
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
@@ -27,7 +25,7 @@ def set_request_parameters(server_iface, params):
     server_iface.configure_mock(
         **{
             "requestHandler.return_value": Mock(
-                **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key],}
+                **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key]}
             )
         }
     )
@@ -284,7 +282,7 @@ class TestOGCServerAccessControl:
 
         for user_name, layer_name, expected in [
             ("root", layer_name, (Access.FULL, None))
-            for layer_name in ("public_layer", "private_layer1", "private_layer2", "private_layer3",)
+            for layer_name in ("public_layer", "private_layer1", "private_layer2", "private_layer3")
         ] + [
             ("user1", "public_layer", (Access.FULL, None)),
             ("user1", "private_layer1", (Access.AREA, area1.wkt)),
@@ -294,7 +292,7 @@ class TestOGCServerAccessControl:
             user = test_data["users"][user_name]
             set_request_parameters(
                 server_iface,
-                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(r.id) for r in user.roles]),},
+                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(r.id) for r in user.roles])},
             )
             layer = QgsProject.instance().mapLayersByName(layer_name)[0]
             access, area = ogcserver_accesscontrol.get_area(layer)
@@ -311,23 +309,23 @@ class TestOGCServerAccessControl:
             (
                 "user1",
                 "public_layer",
-                {"canDelete": False, "canInsert": False, "canRead": True, "canUpdate": False,},
+                {"canDelete": False, "canInsert": False, "canRead": True, "canUpdate": False},
             ),
             (
                 "user1",
                 "private_layer1",
-                {"canDelete": False, "canInsert": False, "canRead": True, "canUpdate": False,},
+                {"canDelete": False, "canInsert": False, "canRead": True, "canUpdate": False},
             ),
             (
                 "user12",
                 "private_layer2",
-                {"canDelete": True, "canInsert": True, "canRead": True, "canUpdate": True,},
+                {"canDelete": True, "canInsert": True, "canRead": True, "canUpdate": True},
             ),
         ):
             user = test_data["users"][user_name]
             set_request_parameters(
                 server_iface,
-                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(r.id) for r in user.roles]),},
+                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(r.id) for r in user.roles])},
             )
             layer = QgsProject.instance().mapLayersByName(layer_name)[0]
             permissions = ogcserver_accesscontrol.layerPermissions(layer)
@@ -348,7 +346,7 @@ class TestOGCServerAccessControl:
         role2 = test_data["roles"]["role2"]
         set_request_parameters(
             server_iface,
-            {"Host": "example.com", "USER_ID": str(user.id), "ROLE_IDS": "{},{}".format(role1.id, role2.id),},
+            {"Host": "example.com", "USER_ID": str(user.id), "ROLE_IDS": "{},{}".format(role1.id, role2.id)},
         )
         expected = "example.com-{},{}".format(role1.id, role2.id)
         assert expected == ogcserver_accesscontrol.cacheKey()

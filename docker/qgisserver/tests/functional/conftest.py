@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-from c2c.template.config import config
-import pytest
 from unittest.mock import Mock, patch
 
-import transaction
+from c2c.template.config import config
+import pytest
 from qgis.server import QgsServerInterface
+import transaction
 
-from c2cgeoportal_commons.testing import (
-    generate_mappers,
-    get_engine,
-    get_session_factory,
-    get_tm_session,
-)
+from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
 
 

@@ -9,11 +9,12 @@ Contact: info@camptocamp.com
     option) any later version.
 """
 
-import pytest
 from geoalchemy2.shape import from_shape
-from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
+import pytest
 from qgis.core import QgsFeature, QgsGeometry, QgsProject
 from shapely.geometry import LineString, box
+
+from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
 
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
 
@@ -120,7 +121,7 @@ class TestAccessControlAllowToEdit:
             user = test_data2["users"][user_name]
             set_request_parameters(
                 server_iface,
-                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(role.id) for role in user.roles]),},
+                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(role.id) for role in user.roles])},
             )
 
             layer = QgsProject.instance().mapLayersByName("private_layer")[0]
