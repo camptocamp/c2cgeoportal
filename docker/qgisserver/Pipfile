@@ -13,6 +13,8 @@ pep8 = "==1.7.1"  # lint
 pep8-naming = "==0.9.1"  # Lint
 pyflakes = "==2.1.1"  # lint, flake8
 pylint = "==2.4.4"  # lint
+bandit = "==1.6.2"
+isort = "==4.3.21"
 
 [packages]
 papyrus = "==2.4"  # commons
@@ -26,4 +28,4 @@ SQLAlchemy = "==1.3.13"  # commons
 shapely = "==1.6.4.post2"
 
 [requires]
-python_version = "3.6"
+python_version = "3.5"
