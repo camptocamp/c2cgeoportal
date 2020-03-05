@@ -21,3 +21,4 @@ jobs:
           title-regex: "^[A-Z0-9].*"
           on-failed-regex-comment: "The title should start with a capital."
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        if: github.actor != 'dependabot-preview'
