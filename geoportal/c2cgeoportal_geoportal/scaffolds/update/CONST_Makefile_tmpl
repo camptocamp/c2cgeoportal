@@ -707,7 +707,9 @@ docker-build-geoportal: $(shell docker-required --path geoportal) \
 		geoportal/alembic.yaml
 	docker build $(DOCKER_BUILD_ARGS) \
 		--tag=$(DOCKER_BASE)-geoportal:$(DOCKER_TAG) \
-		--build-arg=GIT_HASH=$(GIT_HASH) geoportal
+		--build-arg=PGSCHEMA=$(PGSCHEMA) \
+		--build-arg=GIT_HASH=$(GIT_HASH) \
+		geoportal
 
 .PHONY: push-docker
 push-docker:
