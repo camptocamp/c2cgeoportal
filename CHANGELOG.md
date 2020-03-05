@@ -1,3 +1,5 @@
+##### 2.4.1.89
+* Add OpenShift deployment settings section [c2cgeoportal#5843](https://github.com/camptocamp/c2cgeoportal/pull/5843)
 ##### 2.4.1.88
 * fix(qgisserver) edit tests are now called [c2cgeoportal#5893](https://github.com/camptocamp/c2cgeoportal/pull/5893)
 ##### 2.4.1.87
