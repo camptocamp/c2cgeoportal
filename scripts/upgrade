@@ -40,7 +40,7 @@ parser.add_argument("step", nargs="?", help="the step to run")
 parser_finalise = argparse.ArgumentParser(description="Upgrade the project", add_help=False)
 parser_finalise.add_argument("--finalise", action="store_true", help="finalise the upgrade")
 parser_finalise.add_argument("--help", action="help", help="show this help message and exit")
-parser_finalise.add_argument("build_arg", nargs="*", help="a build argument")
+parser_finalise.add_argument("build_arg", nargs="*", help="build arguments ex: -- --pgschema main env.default env.project")
 
 if len(sys.argv) >= 2 and sys.argv[1] == "--finalise":
     args = parser_finalise.parse_args()
