@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "498ea7aad5ad0739d94496661df00a2a3de938be7a3e51f7451c5468f7ec4b82"
+            "sha256": "33ec58c52624f0e8ac8c4ca1ac1464d38daf1440ee28e85616d10167b68e34fb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -846,11 +846,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:197a1168a2c979752bb290b09cbbf8bf836507de1b99a19431ca9b0cde8a5f81",
-                "sha256:d74c5b097fe9288147c6045974eca9dc369055aa6ccce05fb551b0b95e813213"
+                "sha256:12940e548d88ccc6ca5336680678f1c97da61581e530bf642be90e021f50d950",
+                "sha256:f9bed529769f764b01b0ae55e7853ba69f6cbf3db8e68d53c793ad18fc26edf3"
             ],
             "index": "pypi",
-            "version": "==1.18.13"
+            "version": "==1.18.14"
         },
         "babel": {
             "hashes": [
@@ -886,10 +886,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:265bf5e902e2f0854f12032304f2559f5d042e03c10a59e4f3ec43353be5b88f",
-                "sha256:2fce3cc8fae3bbf89984f3065d9eecf0a906b96bee491a4fb54ad7ec7f4261dc"
+                "sha256:37e713b86bc833587e002610d0b2b5c5c88438617d68189d1b541e20726a43d4",
+                "sha256:4f889842519f54d007e285637c625a0645ffbe6aaa291b62ba510f3a25948f77"
             ],
-            "version": "==1.15.13"
+            "version": "==1.15.14"
         },
         "certifi": {
             "hashes": [
@@ -1158,10 +1158,10 @@
         },
         "packaging": {
             "hashes": [
-                "sha256:170748228214b70b672c581a3dd610ee51f733018650740e98c7df862a583f73",
-                "sha256:e665345f9eef0c621aa0bf2f8d78cf6d21904eef16a93f020240b704a57f1334"
+                "sha256:3c292b474fda1671ec57d46d739d072bfd495a4f51ad01a055121d81e952b7a3",
+                "sha256:82f77b9bee21c1bafbf35a84905d604d5d1223801d639cf3ed140bd651c08752"
             ],
-            "version": "==20.1"
+            "version": "==20.3"
         },
         "paste": {
             "hashes": [
