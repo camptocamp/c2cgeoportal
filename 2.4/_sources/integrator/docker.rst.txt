@@ -80,3 +80,66 @@ You can also remove the unused named images, that should be done manually:
 
 * List the images with ``docker images``.
 * Remove the unwanted images with ``docker rmi <image>:<tag>``.
+
+
+Configure Docker Hub publishing and OpenShift notifications
+-----------------------------------------------------------
+
+.. note::
+
+    This section is specific to projects using OpenShift for deployment,
+    relying on Travis to build Docker images that are then pushed to
+    Docker Hub.
+
+    Some parts may be adapted to other cases but those tasks are mostly
+    performed by Camptocamp integrators.
+
+Edit file `.travis.yml` and update the environment variables:
+
+.. code:: yaml
+
+    env:
+      global:
+        - PROJECT=<package name>
+        - OPENSHIFT_PROJECT=gs-gmf-<package name>
+        - HELM_RELEASE_NAMES=int,prod
+        - OPENSHIFT_URL=https://api.openshift-ch-1.camptocamp.com/
+        - DOCKER_USERNAME=dockerhubc2c
+        - secure: <encrypted password>
+
+The encrypted password is obtained using the ``travis encrypt`` command from
+within the project directory:
+
+.. prompt:: bash
+
+    cd <project directory>
+    travis encrypt DOCKER_PASSWORD=$(gopass gs/ci/dockerhub/password)
+
+Make sure to add line breaks (escaping with ``\``) when filling the ``secure``
+argument so that line length constraints are fulfilled.
+`More info about using gopass <https://github.com/camptocamp/geospatial-ci-pass/blob/master/README.md>`_
+
+Go to https://hub.docker.com/repositories and create repositories
+``<package>-geoportal`` and ``<package>-config`` in the Camptocamp
+organization.
+
+Clone https://github.com/camptocamp/private-geo-charts/ and create file
+`` helmfiles/gmf-<package>/travis.env``::
+
+    TRAVIS_REPO=camptocamp/<package>_gmf
+    TRAVIS_ENDPOINT=https://api.travis-ci.com/
+
+
+You have to push your changes to OpenShift:
+
+.. prompt:: bash
+
+    ./helmfile -l project=gmf-<package> -i apply --context 3
+
+Go back to the root of the repo and update the projects tokens typing:
+
+.. prompt:: bash
+
+    travis login
+    oc login
+    ./get_ci_tokens
