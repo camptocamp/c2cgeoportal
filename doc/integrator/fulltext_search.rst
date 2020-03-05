@@ -6,37 +6,11 @@ Full-text search
 The full-text search table
 --------------------------
 
-The *text search* feature requires a dedicated PostgreSQL table. The full-text
-search table should be named ``tsearch`` (for *text search*) and should be in
-the application-specific schema.
+The *text search* feature uses a dedicated PostgreSQL table. The full-text search table is named ``tsearch``
+(for *text search*) and is in the application-specific schema.
 
 You do not need to create the table yourself, as it was already created during application installation
 (see the section :ref:`integrator_install_application`).
-
-If you do want to create the table manually, you can use the following SQL commands:
-
-.. code:: sql
-
-    CREATE TABLE <schema_name>.tsearch (
-        id SERIAL PRIMARY KEY,
-        layer_name TEXT,
-        label TEXT,
-        public BOOLEAN DEFAULT 't',
-        params TEXT,
-        role_id INTEGER REFERENCES <schema_name>.role,
-        ts TSVECTOR);
-    SELECT AddGeometryColumn('<schema_name>', 'tsearch', 'the_geom', <srid>, 'GEOMETRY', 2);
-    CREATE INDEX tsearch_ts_idx ON <schema_name>.tsearch USING gin(ts);
-
-with ``<schema_name>`` and ``<srid>`` substituted as appropriate.
-
-Also make sure that the db user can ``SELECT`` in the ``tsearch`` table:
-
-.. code:: sql
-
-    GRANT SELECT ON TABLE <schema_name>.tsearch TO "<db_user>";
-
-with ``<db_user>`` substituted as appropriately.
 
 
 Populate the full-text search table
@@ -47,13 +21,14 @@ Here is an example of an insertion in the ``tsearch`` table:
 .. code:: sql
 
     INSERT INTO app_schema.tsearch
-      (the_geom, layer_name, label, public, role_id, ts)
+      (the_geom, layer_name, label, public, role_id, lang, ts)
     VALUES (
        ST_GeomFromText('POINT(2660000 1140000)', 21781),
        'Layer group',
        'text to display',
        't',
        NULL,
+       'fr',
        to_tsvector('french', regexp_replace('text to search', E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
     );
 
@@ -67,13 +42,14 @@ Here is another example where rows from a ``SELECT`` are inserted:
 .. code:: sql
 
     INSERT INTO app_schema.tsearch
-      (the_geom, layer_name, label, public, role_id, ts)
+      (the_geom, layer_name, label, public, role_id, lang, ts)
     SELECT
       geom,
       'layer group name',
       text,
       't',
       NULL,
+      'de',
       to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
     FROM table;
 
@@ -118,24 +94,26 @@ available to users of the corresponding role.
     .. code:: sql
 
         INSERT INTO app_schema.tsearch
-           (the_geom, layer_name, label, public, role_id, ts)
+           (the_geom, layer_name, label, public, role_id, lang, ts)
         SELECT
            geom,
            'layer group name',
            text,
            'f',
            1,
+           'de',
            to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
         INSERT INTO app_schema.tsearch
-           (the_geom, layer_name, label, public, role_id, ts)
+           (the_geom, layer_name, label, public, role_id, lang, ts)
         SELECT
            geom,
            'layer group name',
            text,
            'f',
            2,
+           'de',
            to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
         FROM table;
 
