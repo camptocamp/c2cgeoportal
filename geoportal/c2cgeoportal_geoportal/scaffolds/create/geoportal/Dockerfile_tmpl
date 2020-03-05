@@ -10,8 +10,7 @@ COPY . /app
 
 RUN make checks
 RUN make build
-RUN mv webpack.apps.js webpack.apps.js.tmpl && \
-    ln --symbolic /usr/lib/node_modules/ .
+RUN mv webpack.apps.js webpack.apps.js.tmpl
 
 ENTRYPOINT [ "/usr/bin/eval-templates" ]
 CMD [ "webpack-dev-server", "--mode=development", "--debug", "--watch", "--progress", "--no-inline" ]
