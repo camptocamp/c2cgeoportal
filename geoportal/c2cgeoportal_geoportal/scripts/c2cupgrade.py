@@ -201,6 +201,13 @@ class C2cUpgradeTool:
         except ConnectionRefusedError as exception:
             return False, "\n".join(["Connection refused: {}".format(exception), run_curl])
         if resp.status_code < 200 or resp.status_code >= 300:
+
+            print(colorize("=============", RED))
+            print(colorize("Checker error", RED))
+            for name, value in resp.json()["failures"].items():
+                print(colorize("Test '{}' failed with result:".format(name), YELLOW))
+                print(value["result"] if "result" in value else "No result")
+
             return False, "\n".join(["Checker error:", run_curl])
 
         return True, None
