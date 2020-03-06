@@ -24,7 +24,6 @@ def load_env(env_files):
     """
     env = {}
     for env_file in env_files:
-        print("Use env file: " + env_file)
         with open(env_file) as f:
             for line in f:
                 if line and line[0] != "#":
@@ -68,7 +67,10 @@ def main():
             sys.exit(1)
         sys.exit(0)
 
-    env = load_env(args.env_files)
+    env_files = args.env_files or load_env(['.env'])['ENV_FILES'].split(" ")
+    print("Use env files: {}".format(env_files))
+    env = load_env(env_files)
+
     base = env["DOCKER_BASE"] if "DOCKER_BASE" in env else "camptocamp/{{package}}"
     tag = ":" + env["DOCKER_TAG"] if "DOCKER_TAG" in env else ""
     schema = env['PGSCHEMA']
@@ -105,10 +107,10 @@ def main():
         )
 
     with open(".env", "w") as dest:
-        env_files = args.env_files
         for file_ in env_files:
             with open(file_) as src:
-                dest.write(src.read())
+                dest.write(src.read() + "\n")
+        dest.write("ENV_FILES={}\n".format(" ".join(env_files)))
 
 if __name__ == '__main__':
     main()
