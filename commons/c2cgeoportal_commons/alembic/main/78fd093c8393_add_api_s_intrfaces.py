@@ -53,20 +53,20 @@ def upgrade():
     interface = Table("interface", MetaData(), Column("name", Unicode), schema=schema)
     connection = op.get_bind()
     for interface_name in ("api", "iframe_api"):
-        results = connection.execute(
-            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+        result = connection.execute(
+            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
                 name=interface_name, schema=schema
             )
         )
-        if not results:
+        if result.fetchone()[0] == 0:
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("edit", "routing"):
-        results = connection.execute(
-            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+        result = connection.execute(
+            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
                 name=interface_name, schema=schema
             )
         )
-        if results:
+        if result.fetchone()[0] != 0:
             op.execute(
                 "DELETE FROM {schema}.interface_theme it "
                 "USING {schema}.interface i "
@@ -95,20 +95,20 @@ def downgrade():
     interface = Table("interface", MetaData(), Column("name", Unicode), schema=schema)
     connection = op.get_bind()
     for interface_name in ("edit", "routing"):
-        results = connection.execute(
-            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+        result = connection.execute(
+            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
                 name=interface_name, schema=schema
             )
         )
-        if not results:
+        if result.fetchone()[0] == 0:
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("api", "iframe_api"):
-        results = connection.execute(
-            "SELECT name FROM {schema}.interface WHERE name='{name}'".format(
+        result = connection.execute(
+            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
                 name=interface_name, schema=schema
             )
         )
-        if results:
+        if result.fetchone()[0] != 0:
             op.execute(
                 "DELETE FROM {schema}.interface_theme it "
                 "USING {schema}.interface i "
