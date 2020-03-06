@@ -40,42 +40,23 @@
 <span id="integrator-fulltext-search"></span><h1>Full-text search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="the-full-text-search-table">
 <h2>The full-text search table<a class="headerlink" href="#the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
-<p>The <em>text search</em> feature requires a dedicated PostgreSQL table. The full-text
-search table should be named <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> (for <em>text search</em>) and should be in
-the application-specific schema.</p>
+<p>The <em>text search</em> feature uses a dedicated PostgreSQL table. The full-text search table is named <code class="docutils literal notranslate"><span class="pre">tsearch</span></code>
+(for <em>text search</em>) and is in the application-specific schema.</p>
 <p>You do not need to create the table yourself, as it was already created during application installation
 (see the section <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
-<p>If you do want to create the table manually, you can use the following SQL commands:</p>
-<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="p">(</span>
-    <span class="nb">id</span> <span class="n">SERIAL</span> <span class="n">PRIMARY</span> <span class="n">KEY</span><span class="p">,</span>
-    <span class="n">layer_name</span> <span class="n">TEXT</span><span class="p">,</span>
-    <span class="n">label</span> <span class="n">TEXT</span><span class="p">,</span>
-    <span class="n">public</span> <span class="n">BOOLEAN</span> <span class="n">DEFAULT</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span>
-    <span class="n">params</span> <span class="n">TEXT</span><span class="p">,</span>
-    <span class="n">role_id</span> <span class="n">INTEGER</span> <span class="n">REFERENCES</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">role</span><span class="p">,</span>
-    <span class="n">ts</span> <span class="n">TSVECTOR</span><span class="p">);</span>
-<span class="n">SELECT</span> <span class="n">AddGeometryColumn</span><span class="p">(</span><span class="s1">&#39;&lt;schema_name&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;tsearch&#39;</span><span class="p">,</span> <span class="s1">&#39;the_geom&#39;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">srid</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">&#39;GEOMETRY&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-<span class="n">CREATE</span> <span class="n">INDEX</span> <span class="n">tsearch_ts_idx</span> <span class="n">ON</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="n">USING</span> <span class="n">gin</span><span class="p">(</span><span class="n">ts</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>with <code class="docutils literal notranslate"><span class="pre">&lt;schema_name&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;srid&gt;</span></code> substituted as appropriate.</p>
-<p>Also make sure that the db user can <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
-<div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GRANT</span> <span class="n">SELECT</span> <span class="n">ON</span> <span class="n">TABLE</span> <span class="o">&lt;</span><span class="n">schema_name</span><span class="o">&gt;.</span><span class="n">tsearch</span> <span class="n">TO</span> <span class="s2">&quot;&lt;db_user&gt;&quot;</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>with <code class="docutils literal notranslate"><span class="pre">&lt;db_user&gt;</span></code> substituted as appropriately.</p>
 </div>
 <div class="section" id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
 <p>Here is an example of an insertion in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
 <div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
-  <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">VALUES</span> <span class="p">(</span>
    <span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">21781</span><span class="p">),</span>
    <span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
    <span class="s1">&#39;text to display&#39;</span><span class="p">,</span>
    <span class="s1">&#39;t&#39;</span><span class="p">,</span>
    <span class="n">NULL</span><span class="p">,</span>
+   <span class="s1">&#39;fr&#39;</span><span class="p">,</span>
    <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="s1">&#39;text to search&#39;</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
 <span class="p">);</span>
 </pre></div>
@@ -86,13 +67,14 @@ the application-specific schema.</p>
 <code class="docutils literal notranslate"><span class="pre">french</span></code> is the used language.</p>
 <p>Here is another example where rows from a <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> are inserted:</p>
 <div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
-  <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
   <span class="n">geom</span><span class="p">,</span>
   <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
   <span class="n">text</span><span class="p">,</span>
   <span class="s1">&#39;t&#39;</span><span class="p">,</span>
   <span class="n">NULL</span><span class="p">,</span>
+  <span class="s1">&#39;de&#39;</span><span class="p">,</span>
   <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
@@ -132,24 +114,26 @@ insert that data multiple times. For example, if you want to make the data
 of a table <em>text-searchable</em>, and restrict that data to the roles whose ids
 are <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code> you will use two SQL <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> statements:</p>
 <div class="code sql last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
-   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
    <span class="n">geom</span><span class="p">,</span>
    <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
    <span class="n">text</span><span class="p">,</span>
    <span class="s1">&#39;f&#39;</span><span class="p">,</span>
    <span class="mi">1</span><span class="p">,</span>
+   <span class="s1">&#39;de&#39;</span><span class="p">,</span>
    <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 
 <span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">app_schema</span><span class="o">.</span><span class="n">tsearch</span>
-   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="n">SELECT</span>
    <span class="n">geom</span><span class="p">,</span>
    <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
    <span class="n">text</span><span class="p">,</span>
    <span class="s1">&#39;f&#39;</span><span class="p">,</span>
    <span class="mi">2</span><span class="p">,</span>
+   <span class="s1">&#39;de&#39;</span><span class="p">,</span>
    <span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span> <span class="n">regexp_replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">E</span><span class="s1">&#39;[</span><span class="se">\\</span><span class="s1">[</span><span class="se">\\</span><span class="s1">]</span><span class="se">\\</span><span class="s1">(</span><span class="se">\\</span><span class="s1">):&amp;</span><span class="se">\\</span><span class="s1">*]&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">))</span>
 <span class="n">FROM</span> <span class="n">table</span><span class="p">;</span>
 </pre></div>
