@@ -8,6 +8,7 @@ on:
       - opened
       - edited
       - reopened
+      - synchronize
 
 jobs:
   lint:
@@ -21,6 +22,7 @@ jobs:
           title-regex: "^[A-Z0-9].*"
           on-failed-regex-comment: "The title should start with a capital."
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        if: github.actor != 'dependabot-preview'
 
       - name: Update status
         uses: ouzi-dev/commit-status-updater@v1.0.0
