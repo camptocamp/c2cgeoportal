@@ -305,7 +305,7 @@ class Login:
         except NoResultFound:  # pragma: no cover
             return None, None, None, "The login '{}' does not exist.".format(username)
 
-        if self.two_factor_auth:
+        if self.two_factor_auth and user.is_password_changed:
             otp = self.request.POST.get("otp")
             if otp is None:
                 raise HTTPBadRequest("The second factor is missing.")
