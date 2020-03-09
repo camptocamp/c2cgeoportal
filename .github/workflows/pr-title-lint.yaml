@@ -18,15 +18,13 @@ jobs:
 
     steps:
       - run: echo Actor ${{ github.actor }}
-      - run: echo Event ${{ github.event }}
-      - run: cat ${{ github.event_path }}
 
       - uses: morrisoncole/pr-lint-action@v1.0.0
         with:
           title-regex: "^\\[?[A-Z0-9].*"
           on-failed-regex-comment: "The title should start with a capital."
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        if: github.actor != 'dependabot-preview'
+        if: github.actor != 'dependabot-preview[bot]'
 
       - name: Update status
         uses: ouzi-dev/commit-status-updater@v1.0.0
