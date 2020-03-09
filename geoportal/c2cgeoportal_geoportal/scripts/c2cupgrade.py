@@ -206,7 +206,11 @@ class C2cUpgradeTool:
             print(colorize("Checker error", RED))
             for name, value in resp.json()["failures"].items():
                 print(colorize("Test '{}' failed with result:".format(name), YELLOW))
-                print(value["result"] if "result" in value else "No result")
+                result = value["result"] if "result" in value else "No result"
+                if isinstance(result, str):
+                    print(result)
+                else:
+                    print(yaml.dump(result))
 
             return False, "\n".join(["Checker error:", run_curl])
 
