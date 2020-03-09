@@ -188,7 +188,7 @@ RUN \
   touch /usr/local/lib/python3.7/dist-packages/zope/__init__.py && \
   touch /usr/local/lib/python3.7/dist-packages/c2c/__init__.py
 
-COPY setup.cfg .prospector.yaml .pylintrc .bandit .gitattributes checks.mk ./
+COPY setup.cfg .prospector.yaml .pylintrc .bandit checks.mk ./
 COPY .git ./.git/
 COPY scripts/pylint-copyright.py ./scripts/
 

@@ -9,13 +9,12 @@ Contact: info@camptocamp.com
     option) any later version.
 """
 
-import pytest
 from geoalchemy2.shape import from_shape
-from geomapfish_qgisserver.accesscontrol import (
-    OGCServerAccessControl,
-)
+import pytest
 from qgis.core import QgsFeature, QgsGeometry, QgsProject
 from shapely.geometry import LineString, box
+
+from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
 
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
 
@@ -43,9 +42,7 @@ def test_data2(dbsession):
         image_type="image/png",
         auth=OGCSERVER_AUTH_STANDARD,
     )
-    ogc_servers = {
-        ogc_server.name: ogc_server for ogc_server in [ogc_server1]
-    }
+    ogc_servers = {ogc_server.name: ogc_server for ogc_server in [ogc_server1]}
     dbsession.add(ogc_server1)
 
     role1 = Role("role_no_access")
@@ -57,10 +54,7 @@ def test_data2(dbsession):
     user_no_access = User("user_no_access", roles=[role1])
     user_full_access = User("user_full_access", roles=[role2])
     user_area_access = User("user_area_access", roles=[role3])
-    users = {
-        user.username: user
-        for user in (user_no_access, user_full_access, user_area_access)
-    }
+    users = {user.username: user for user in (user_no_access, user_full_access, user_area_access)}
     dbsession.add_all(users.values())
 
     project = QgsProject.instance()
@@ -86,9 +80,7 @@ def test_data2(dbsession):
     dbsession.add(private_layer)
 
     ra1 = RestrictionArea("restriction_area_no", layers=[private_layer], roles=[role1])
-    ra2 = RestrictionArea(
-        "restriction_area_full", layers=[private_layer], roles=[role2], readwrite=True
-    )
+    ra2 = RestrictionArea("restriction_area_full", layers=[private_layer], roles=[role2], readwrite=True)
     ra3 = RestrictionArea(
         "restriction_area_area",
         layers=[private_layer],
@@ -113,9 +105,7 @@ def test_data2(dbsession):
 )
 class TestAccessControlAllowToEdit:
     def test_allow_to_edit(self, server_iface, dbsession, test_data2):
-        ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver", 21781, dbsession
-        )
+        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver", 21781, dbsession)
 
         for user_name, expected, geometry in [
             ["user_no_access", False, geom_in],
@@ -129,10 +119,10 @@ class TestAccessControlAllowToEdit:
             ["user_area_access", False, geom_out],
         ]:
             user = test_data2["users"][user_name]
-            set_request_parameters(server_iface, {
-                "USER_ID": str(user.id),
-                "ROLE_IDS": ','.join([str(role.id) for role in user.roles]),
-            })
+            set_request_parameters(
+                server_iface,
+                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(role.id) for role in user.roles])},
+            )
 
             layer = QgsProject.instance().mapLayersByName("private_layer")[0]
             feature = QgsFeature()
@@ -140,6 +130,6 @@ class TestAccessControlAllowToEdit:
             geom.fromWkb(geometry.wkb)
             feature.setGeometry(geom)
             result = ogcserver_accesscontrol.allowToEdit(layer, feature)
-            assert (
-                expected == result
-            ), "allowToEdit with '{}', should return '{}'.".format(user_name, expected)
+            assert expected == result, "allowToEdit with '{}', should return '{}'.".format(
+                user_name, expected
+            )

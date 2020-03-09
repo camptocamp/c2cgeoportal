@@ -26,8 +26,7 @@ jobs:
       - run: git --version
       - run: python3 --version
       - run: python3 -m pip --version
-      - name: Install Python 3
-        run: |
+      - run: |
           sudo apt-get update
           sudo apt-get install python3-wheel python3-setuptools
 
@@ -35,18 +34,15 @@ jobs:
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       # Global simple lint
-      - run: git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
+      - run: make gitattributes
         if: always()
-      - run: python3 ci/test-eof-newline
+      - run: make eol
         if: always()
-      - run: >
-            codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
-            $(find -name .git -prune -print)
+      - run: make codespell
         if: always()
-      - run: >
-            yamllint --strict --config-file=yamllint.yaml -s
-            $(find -name .git -prune  -or -name changelog.yaml -prune -or
-            \( -name "*.yml" -or -name "*.yaml" \) -print)
+      - run: make yamllint
+        if: always()
+      - run: make black
         if: always()
 
       # Build images

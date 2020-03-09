@@ -8,7 +8,7 @@ VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 .PHONY: checks
-checks: prospector bandit black isort additionallint
+checks: prospector bandit isort additionallint
 
 .PHONY: prospector
 prospector:
@@ -21,15 +21,6 @@ prospector:
 bandit:
 	bandit --version
 	bandit --recursive -ll .
-
-.PHONY: black
-black:
-	black --version
-	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* --check --diff .
-
-.PHONY: black-fix
-black-fix:
-	black --line-length=110 --target-version py37 --exclude=.*/node_modules/.* /src
 
 .PHONY: isort
 isort:

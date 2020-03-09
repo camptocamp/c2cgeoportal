@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-from c2c.template.config import config
-import pytest
 from unittest.mock import Mock, patch
 
-import transaction
+from c2c.template.config import config
+import pytest
 from qgis.server import QgsServerInterface
+import transaction
 
-from c2cgeoportal_commons.testing import (
-    generate_mappers,
-    get_engine,
-    get_session_factory,
-    get_tm_session,
-)
+from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
 
 
@@ -38,9 +33,7 @@ def settings():
 
 @pytest.fixture(scope="module")
 def scoped_session(dbsession):
-    with patch(
-        "geomapfish_qgisserver.accesscontrol.scoped_session", return_value=dbsession
-    ) as mock:
+    with patch("geomapfish_qgisserver.accesscontrol.scoped_session", return_value=dbsession) as mock:
         yield mock
 
 
@@ -81,8 +74,6 @@ def single_ogc_server_env(dbsession):
 
 @pytest.fixture(scope="class")
 def multiple_ogc_server_env(dbsession):
-    os.environ[
-        "GEOMAPFISH_ACCESSCONTROL_CONFIG"
-    ] = "/etc/qgisserver/multiple_ogc_server.yaml"
+    os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"] = "/etc/qgisserver/multiple_ogc_server.yaml"
     yield
     del os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]

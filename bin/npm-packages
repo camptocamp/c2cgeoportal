@@ -52,7 +52,7 @@ def _ngeo_version():
                 prerelease_match.group(2),
                 prerelease_match.group(3),
                 prerelease_match.group(4),
-                prerelease_match.group(5)
+                prerelease_match.group(5),
             )
     return None
 
@@ -71,11 +71,11 @@ def main():
     Extract npm packages
     """
 
-    parser = ArgumentParser(description='Extract npm packages')
+    parser = ArgumentParser(description="Extract npm packages")
 
-    parser.add_argument('--src', action='append', default=[], metavar='SRC', help="The ngeo source file")
-    parser.add_argument('--dst', metavar='DST', help="The destination file")
-    parser.add_argument('excludes', nargs='*', metavar='EXCLUDE', help="The npm package to exclude")
+    parser.add_argument("--src", action="append", default=[], metavar="SRC", help="The ngeo source file")
+    parser.add_argument("--dst", metavar="DST", help="The destination file")
+    parser.add_argument("excludes", nargs="*", metavar="EXCLUDE", help="The npm package to exclude")
 
     args = parser.parse_args()
 
@@ -83,14 +83,14 @@ def main():
     for src_ in args.src:
         with open(src_) as src:
             input_data = json.loads(src.read())
-            packages.update(input_data.get('devDependencies', {}))
-            packages.update(input_data.get('dependencies', {}))
+            packages.update(input_data.get("devDependencies", {}))
+            packages.update(input_data.get("dependencies", {}))
     for package in args.excludes:
         used = False
-        if package[0] == '@' and '/' not in package:
+        if package[0] == "@" and "/" not in package:
             packages_to_rm = []
             for pkg in packages:
-                if pkg.startswith(package + '/'):
+                if pkg.startswith(package + "/"):
                     packages_to_rm.append(pkg)
                     used = True
             for pkg in packages_to_rm:

@@ -24,11 +24,18 @@ RUN apt-get install --assume-yes --no-install-recommends python3-pip python3-set
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir wheel pipenv
 
 COPY Pipfile Pipfile.lock /tmp/
+RUN cp /tmp/Pipfile.lock Pipfile.lock
+RUN python3 --version
+RUN cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv lock
+RUN diff /tmp/Pipfile.lock Pipfile.lock
 RUN cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
 
 COPY . /src/
 RUN flake8 /src
 RUN pylint --errors-only --disable=import-error /src/geomapfish_qgisserver
+RUN cd /src && \
+    isort --check-only --diff --settings-path=`pwd` --recursive .
+RUN bandit --recursive -ll /src
 
 #############################################################################################################
 

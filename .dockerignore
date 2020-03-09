@@ -18,7 +18,6 @@
 !scripts/clone_schema.sql
 !vars.yaml
 !.tx
-!.gitattributes
 !.pylintrc
 !.bandit
 !.isort.cfg
