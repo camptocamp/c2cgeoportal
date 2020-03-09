@@ -17,6 +17,10 @@ jobs:
     timeout-minutes: 5
 
     steps:
+      - run: echo Actor ${{ github.actor }}
+      - run: echo Event ${{ github.event }}
+      - run: cat ${{ github.event_path }}
+
       - uses: morrisoncole/pr-lint-action@v1.0.0
         with:
           title-regex: "^\\[?[A-Z0-9].*"
