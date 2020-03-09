@@ -75,7 +75,7 @@ else:
 
     c2cupgrade_args = ["--step", args.step] if args.step is not None else []
 
-    if os.environ.get("CI") != "true":
+    if os.environ.get("CI") != "true" and args.step is None:
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(args.version)])
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-tools:{}".format(args.version)])
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(args.version)])
