@@ -60,11 +60,9 @@ class Proxy:
         params = dict(self.request.params) if params is None else params
         parsed_url = urllib.parse.urlparse(url)
         url_params = urllib.parse.parse_qs(parsed_url.query)
-        for p in url_params:  # pragma: no cover
-            url_params[p] = [",".join(url_params[p])]
-        all_params: Dict[str, Union[str, List[str]]] = {}
+        all_params: Dict[str, Union[str]] = {}
         all_params.update(params)
-        all_params.update(url_params)
+        all_params.update({k: ",".join(v) for k, v in url_params.items()})
         query_string = urllib.parse.urlencode(all_params)
 
         if parsed_url.port is None:
