@@ -11,7 +11,6 @@ ENV NODE_PATH=/usr/lib/node_modules \
     PGUSER=www-data \
     PGPASSWORD=www-data \
     PGDATABASE=geomapfish \
-    PGSCHEMA=main \
     PGSCHEMA_STATIC=main_static \
     VISIBLE_ENTRY_POINT=/ \
     TINYOWS_URL=http://tinyows/ \
@@ -28,6 +27,9 @@ RUN mv webpack.apps.js webpack.apps.js.tmpl && \
     adduser www-data root
 
 ARG GIT_HASH
+
+ARG PGSCHEMA
+ENV PGSCHEMA=$PGSCHEMA
 
 RUN pip install --disable-pip-version-check --no-cache-dir --no-deps --editable=/app/ && \
     python -m compileall -q /app/${package}_geoportal -x /app/${package}_geoportal/static.* && \
