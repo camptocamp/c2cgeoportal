@@ -18,7 +18,7 @@ default_project_file:
     - tilegeneration/config\.yaml\.tmpl
     - project\.yaml
     - docker-compose\.yaml
-    - env\.sample
+    - env\.project
     - geoportal/setup\.py
     - geoportal/vars\.yaml
     - geoportal/Makefile

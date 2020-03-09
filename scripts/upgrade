@@ -40,7 +40,7 @@ parser.add_argument("step", nargs="?", help="the step to run")
 parser_finalise = argparse.ArgumentParser(description="Upgrade the project", add_help=False)
 parser_finalise.add_argument("--finalise", action="store_true", help="finalise the upgrade")
 parser_finalise.add_argument("--help", action="help", help="show this help message and exit")
-parser_finalise.add_argument("build_arg", nargs="*", help="a build argument")
+parser_finalise.add_argument("build_arg", nargs="*", help="build arguments ex: -- --pgschema main env.default env.project")
 
 if len(sys.argv) >= 2 and sys.argv[1] == "--finalise":
     args = parser_finalise.parse_args()
@@ -48,10 +48,13 @@ if len(sys.argv) >= 2 and sys.argv[1] == "--finalise":
     if platform.system() == "Windows":
         subprocess.check_call(["python", "build"] + args.build_arg)
     else:
-        subprocess.check_call(["./build", "build"] + args.build_arg)
+        subprocess.check_call(["./build"] + args.build_arg)
 
     subprocess.call(["docker-compose", "down", "--remove-orphans"])
-    subprocess.call(["docker-compose", "pull", "--ignore-pull-failures"], env={"DOCKER_TAG": "unexisting"})
+    subprocess.call(["docker-compose", "pull", "--ignore-pull-failures"], env={
+        **os.environ,
+        "DOCKER_TAG": "unexisting"
+    })
     subprocess.check_call(["docker-compose", "up", "-d"])
     subprocess.check_call(
         [
