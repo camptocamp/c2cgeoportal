@@ -123,8 +123,14 @@ Create a development docker-compose.override.yaml
 
 Be sure that the volume for the project is not commented out in ``docker-compose.override.yaml``.
 
-With the ``docker-compose.override.yaml`` configuration, ``gunicorn`` will automatically restart
+With the ``docker-compose.override.yaml`` configuration, Gunicorn will automatically restart
 on code modification.
+
+You can also do a graceful reload of the running Gunicorn webserver:
+
+.. prompt:: bash
+
+   kill -s HUP `ps aux|grep gunicorn|head --lines=1|awk '{print $2}'`
 
 Working on c2cgeoportal itself
 ..............................

@@ -119,9 +119,11 @@ different entry points. (<code class="docutils literal notranslate"><span class=
 <div class="section" id="create-a-development-docker-compose-override-yaml">
 <h3>Create a development docker-compose.override.yaml<a class="headerlink" href="#create-a-development-docker-compose-override-yaml" title="Permalink to this headline">¶</a></h3>
 <p>Be sure that the volume for the project is not commented out in <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
-<p>With the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> configuration, <code class="docutils literal notranslate"><span class="pre">gunicorn</span></code> will automatically restart
+<p>With the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> configuration, Gunicorn will automatically restart
 on code modification.</p>
-</div>
+<p>You can also do a graceful reload of the running Gunicorn webserver:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">kill</span> -s HUP <span class="sb">`</span>ps aux<span class="p">|</span>grep gunicorn<span class="p">|</span>head --lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span></span>
+</pre></div></div></div>
 <div class="section" id="working-on-c2cgeoportal-itself">
 <h3>Working on c2cgeoportal itself<a class="headerlink" href="#working-on-c2cgeoportal-itself" title="Permalink to this headline">¶</a></h3>
 <p>Clone and build c2cgeoportal, see <a class="reference internal" href="server_side.html#developer-server-side"><span class="std std-ref">Server-side development</span></a>.</p>
