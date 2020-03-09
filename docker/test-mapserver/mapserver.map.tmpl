@@ -62,7 +62,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -97,7 +97,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected') as foo using unique id using srid=21781"
+        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected') as foo USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -134,7 +134,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected_2') as foo using unique id using srid=21781"
+        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected_2') as foo USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -170,7 +170,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo using unique id using srid=21781"
+        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -206,7 +206,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING UNIQUE id USING srid=21781"
+        DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
@@ -243,7 +243,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING UNIQUE id USING srid=21781"
+        DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
@@ -281,7 +281,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -320,7 +320,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "time"
             "wms_timeextent" "2000/2010/P1Y"
@@ -351,7 +351,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "time"
             "wms_timeextent" "2015/2020/P1Y"
@@ -381,7 +381,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
         END
         PROJECTION
@@ -404,7 +404,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -425,7 +425,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom FROM (SELECT geo.* FROM geodata.testpoint as geo) as foo using unique id using srid=21781"
+        DATA "geom FROM (SELECT geo.* FROM geodata.testpoint as geo) as foo USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -437,7 +437,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -449,7 +449,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -461,7 +461,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -473,7 +473,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -485,7 +485,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -497,7 +497,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -509,7 +509,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -521,7 +521,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -533,7 +533,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -546,7 +546,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -567,7 +567,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
            "init=epsg:21781"
         END
@@ -609,7 +609,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -644,7 +644,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -680,7 +680,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -716,7 +716,7 @@ MAP
         STATUS ON
         CONNECTIONTYPE postgis
         CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
-        DATA "geom from geodata.testpoint using unique id using srid=21781"
+        DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo

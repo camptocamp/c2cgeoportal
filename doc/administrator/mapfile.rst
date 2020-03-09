@@ -184,7 +184,7 @@ To define a restricted layer in the Mapfile, the ``DATA`` property of the ``LAYE
            (${MAPSERVER_DATA_SUBSELECT} '<layername>'),
            ST_SetSRID(<the_geom>, <projection>)
          )
-    ) as foo USING UNIQUE gid USING srid=<projection>"
+    ) as foo USING unique gid USING srid=<projection>"
 
 ``<schema>``, ``<table>``, ``<layername>``, ``<projection>`` and ``<the_geom>``
 need to be replaced as appropriate. ``<table>`` is the name of the PostGIS table
@@ -238,7 +238,7 @@ If we do not need to restrict on an area, we can use the following
                 ${MAPSERVER_DATA_NOAREA_SUBSELECT} '<layername>'
             )
         )
-    ) AS foo USING UNIQUE id USING srid=2056"
+    ) AS foo USING unique id USING srid=2056"
 
 Then you do not need to define an area in the admin interface.
 
@@ -317,7 +317,7 @@ listed in the ``DATA`` section. For instance:
 
     LAYER
         ...
-        DATA "geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=2056"
+        DATA "geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056"
         METADATA
             ...
             "gml_exclude_items" "type,gid"
