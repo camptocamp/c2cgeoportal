@@ -55,9 +55,11 @@ jobs:
       # Build QGIS images
       - run: docker build --target=lint --build-arg=VERSION=latest docker/qgisserver
       - run: QGIS_VERSION=latest make build-qgisserver
-      # LTR
+      # Old LTR
       - run: QGIS_VERSION=3.4 make build-qgisserver
+      # LTR
       - run: QGIS_VERSION=3.10 make build-qgisserver
+      - run: QGIS_VERSION=3.12 make build-qgisserver
 
       # Test changelog
       - run: ci/changelog new_version
