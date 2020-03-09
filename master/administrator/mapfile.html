@@ -186,7 +186,7 @@ may slow down the application.</p>
 <span class="ss">       (${MAPSERVER_DATA_SUBSELECT} &#39;&lt;layername&gt;&#39;),</span>
 <span class="ss">       ST_SetSRID(&lt;the_geom&gt;, &lt;projection&gt;)</span>
 <span class="ss">     )</span>
-<span class="ss">) as foo USING UNIQUE gid USING srid=&lt;projection&gt;&quot;</span>
+<span class="ss">) as foo USING unique gid USING srid=&lt;projection&gt;&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;layername&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;projection&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code>
@@ -235,7 +235,7 @@ configuration file. Its goal is to simplify the writing of the mapfile.</p>
             ${MAPSERVER_DATA_NOAREA_SUBSELECT} &#39;&lt;layername&gt;&#39;
         )
     )
-) AS foo USING UNIQUE id USING srid=2056&quot;
+) AS foo USING unique id USING srid=2056&quot;
 </pre></div>
 </div>
 <p>Then you do not need to define an area in the admin interface.</p>
@@ -298,7 +298,7 @@ WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> section. For instance:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">LAYER</span>
     <span class="p">...</span>
-    <span class="k">DATA</span> <span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo using unique gid using SRID=2056&quot;</span>
+    <span class="k">DATA</span> <span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056&quot;</span>
     <span class="n">METADATA</span>
         <span class="p">...</span>
         <span class="ss">&quot;gml_exclude_items&quot;</span> <span class="ss">&quot;type,gid&quot;</span>
