@@ -19,7 +19,6 @@ checks: ## Run the application checks
 checks: black gitattributes eol codespell yamllint otherchecks
 
 .PHONY: black
-black:
 black: ## Run Black check
 	black --version
 	black --line-length=110 --target-version py37 --check --diff $(shell \
@@ -31,18 +30,16 @@ black: ## Run Black check
 	)
 
 .PHONY: black-fix
-black-fix: build-tools
 black-fix: ## Fix the application code style with black
 	black --line-length=110 --target-version py37 $(shell \
 		find -name .git -prune -or -type f -print | \
 		file --mime-type --files-from - | \
 		grep text/x-python | \
 		grep --invert-match '\(\.mako\|\.rst\|_tmpl\):' | \
-		awk -F: '{print $1}' \
+		awk -F: '{print $$1}' \
 	)
 
 .PHONY: gitattributes
-gitattributes:
 gitattributes: ## Run git attributes check
 	git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
 
@@ -52,13 +49,11 @@ eol: ## Check end of lines
 	python3 ci/test-eof-newline
 
 .PHONY: codespell
-codespell:
 codespell: ## Check code spell
 	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
 		$(shell find -name .git -prune -print)
 
 .PHONY: yamllint
-yamllint:
 yamllint: ## YAML lint
 	yamllint --strict --config-file=yamllint.yaml -s $(shell \
 		find -name .git -prune -or -name changelog.yaml -prune -or \
