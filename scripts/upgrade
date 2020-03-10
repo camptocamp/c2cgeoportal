@@ -75,26 +75,28 @@ else:
 
     c2cupgrade_args = ["--step", args.step] if args.step is not None else []
 
-    if os.environ.get("CI") != "true":
+    if os.environ.get("CI") != "true" and args.step is None:
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(args.version)])
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-tools:{}".format(args.version)])
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(args.version)])
 
-    subprocess.check_call(
-        [
-            "docker",
-            "run",
-            "--rm",
-            "--env=CI",
-            "--volume={}:/src".format(os.getcwd()),
-            "camptocamp/geomapfish-tools:{}".format(args.version),
-            "run-git",
-            subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
-            subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),
-            subprocess.check_output(["id", "-u"]).decode().strip(),
-            subprocess.check_output(["id", "-g"]).decode().strip(),
-            "/src",
-            "c2cupgrade",
-        ]
-        + c2cupgrade_args
+    sys.exit(
+        subprocess.call(
+            [
+                "docker",
+                "run",
+                "--rm",
+                "--env=CI",
+                "--volume={}:/src".format(os.getcwd()),
+                "camptocamp/geomapfish-tools:{}".format(args.version),
+                "run-git",
+                subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
+                subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),
+                subprocess.check_output(["id", "-u"]).decode().strip(),
+                subprocess.check_output(["id", "-g"]).decode().strip(),
+                "/src",
+                "c2cupgrade",
+            ]
+            + c2cupgrade_args
+        )
     )

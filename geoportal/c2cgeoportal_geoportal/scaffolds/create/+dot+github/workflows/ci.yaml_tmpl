@@ -10,8 +10,6 @@ env:
   # Requires CI_GPG_PRIVATE_KEY and GITHUB_GOPASS_CI_TOKEN secrets.
   # OPENSHIFT_PROJECT: gs-gmf-{{package}}
   # HELM_RELEASE_NAMES: # List of branch that should be deployed on helm
-  # OPENSHIFT_URL: https://api.openshift-ch-1.camptocamp.com/
-  # PGSCHEMA: # main schema
   PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
   SUMMON_PROVIDER: /usr/local/bin/gopass
 
@@ -25,7 +23,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build config
-        run: ./build --config --pgschema=${PGSCHEMA}
+        run: ./build --config env.default env.project
 
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
@@ -44,7 +42,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build geoportal
-        run: ./build --geoportal --pgschema=${PGSCHEMA}
+        run: ./build --geoportal env.default env.project
 
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
