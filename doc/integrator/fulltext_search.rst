@@ -29,7 +29,7 @@ Here is an example of an insertion in the ``tsearch`` table:
        't',
        NULL,
        'fr',
-       to_tsvector('french', regexp_replace('text to search', E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
+       to_tsvector('french', 'text to search', ' ', 'g'))
     );
 
 Where ``Layer group`` is the name of the layer group that should be activated,
@@ -50,7 +50,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
       't',
       NULL,
       'de',
-      to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
+      to_tsvector('german', text, ' ', 'g'))
     FROM table;
 
 .. note::
@@ -102,7 +102,7 @@ available to users of the corresponding role.
            'f',
            1,
            'de',
-           to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
+           to_tsvector('german', text, ' ', 'g'))
         FROM table;
 
         INSERT INTO app_schema.tsearch
@@ -114,7 +114,7 @@ available to users of the corresponding role.
            'f',
            2,
            'de',
-           to_tsvector('german', regexp_replace(text, E'[\\[\\]\\(\\):&\\*]', ' ', 'g'))
+           to_tsvector('german', text, ' ', 'g'))
         FROM table;
 
 
@@ -254,8 +254,11 @@ instead of 'french'. For example:
     INSERT INTO <schema>.tsearch
       (the_geom, layer_name, label, public, role_id, ts)
     VALUES
-      (ST_GeomFromText('POINT(2660000 1140000)', 2056), 'Layer group',
-       'Accent text to display (éàè)', 't', NULL, to_tsvector('fr', 'Accent text to search (éàè)'));
+      (
+        ST_GeomFromText('POINT(2660000 1140000)', 2056), 'Layer group',
+        'Accent text to display (éàè)', 't', NULL,
+        to_tsvector('fr', 'Accent text to search (éàè)')
+      );
 
 And define the configuration in the ``vars.yaml`` file:
 
