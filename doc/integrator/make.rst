@@ -3,34 +3,60 @@
 Build configuration
 ===================
 
-Makefiles
+Env files
 ---------
 
-Usually we have the following makefile includes:
-``<user>.mk`` -> ``<package>.mk`` -> ``CONST_Makefile.mk``.
+Usually we have the following env files::
 
-The ``CONST_Makefile.mk`` is a huge makefile that is maintained by the
-GeoMapFish developers.
+ - ``env.default`` for the c2cgeoportal default configuration
+ - ``env.project`` for the project configuration
+ - ``env.<town>`` in a multi instance project we will have sone configuration per town
+ - ``env.(dev|int|prod)`` we usualy have a file per integations environment,
+   not needed for OpenShift project
 
-The ``<package>.mk`` contains the project-specific config and rules,
-default is:
+The usage of env file should be configured in the ``project.yaml`` file, in the ``env`` section.
 
-.. code:: makefile
+Project env confguration::
 
-    ifdef VARS_FILE
-    VARS_FILES += ${VARS_FILE} vars.yaml
-    else
-    VARS_FILE = vars.yaml
-    VARS_FILES += ${VARS_FILE}
-    endif
+ * ``files``: the env files interpreted with the build env arguments.
+ * ``required_args``: the number of required build env arguments.
+ * ``help``: the displayed message on wrong build env arguments number.
 
-    include CONST_Makefile
+For an OpenShift project you can use (default):
 
+.. code:: yaml
 
-.. code:: makefile
+  env:
+    files:
+      - env.default
+      - env.project
+    required_args: 0
+    help: No arguments needed.
 
-    include <package>.mk
+For a non OpenShift project you can use:
 
+.. code:: yaml
+
+  env:
+    files:
+      - env.default
+      - env.project
+      - env.{0}
+    required_args: 1
+    help: You should use `./build <env>` where <env> can be dev, int or prod.
+
+For a non OpenShift multi town project you can use:
+
+.. code:: yaml
+
+  env:
+    files:
+      - env.default
+      - env.project
+      - env.{0}
+      - env.{1}
+    required_args: 2
+    help: You should use `./build <town> <env>` where <env> can be dev, int or prod.
 
 Vars files
 ----------
@@ -69,25 +95,27 @@ And in your yaml vars file, add:
 For more information, see the
 `c2c.template <https://github.com/camptocamp/c2c.template>`_ documentation.
 
+Dockefile config variables
+--------------------------
+
+The following variables may be set in the Dockerfile:
+
+* ``CONFIG_VARS``: The list of parameters read from the project YAML configuration file.
 
 Makefile config variables
 -------------------------
 
 The following variables may be set in the makefiles:
 
-* ``CONFIG_VARS``: The list of parameters read from the project YAML configuration file.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``LANGUAGES``: List of available languages, default is ``en fr de``.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
-* ``PRINT``: Mapfish print is enabled, default is ``TRUE``.
-* ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default is ``TRUE``.
-
 
 Secrets
 -------
 
 We provide an easy way to secure some files into your repository, for that you should add
-in your project makefile:
+in your project Makefile:
 
 .. code:: make
 
