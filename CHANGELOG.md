@@ -1,3 +1,6 @@
+##### 2.4.1.91
+* Fix for dynamic main schema [c2cgeoportal#5933](https://github.com/camptocamp/c2cgeoportal/pull/5933)
+* g++ is required to compile some python packages [c2cgeoportal#5974](https://github.com/camptocamp/c2cgeoportal/pull/5974)
 ##### 2.4.1.90
 * Add the missing lang column in the full-text search documetation [c2cgeoportal#5932](https://github.com/camptocamp/c2cgeoportal/pull/5932)
 ##### 2.4.1.89
