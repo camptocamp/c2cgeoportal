@@ -17,7 +17,7 @@ To be editable, a layer should satisfy the following requirements:
    mapfile. See :ref:`administrator_mapfile`.
 2. Its data should be in a PostGIS table, which should be in the
    application database. The PostGIS table can be in a separate
-   schema though, which is even recommended.
+   schema though, which is in fact recommended.
 3. The PostGIS table should include a primary key with a sequence
    associated. The name of the primary key attribute must be ``id``. Example::
 
@@ -30,11 +30,11 @@ To be editable, a layer should satisfy the following requirements:
 4. The PostGIS table should include one geometry column only. You
    will get errors if the table has multiple geometry columns.
 
-5. The following geometry types are supported: ``POINT``, ``LINESTRING``, ``POLYGON``.
+5. The following geometry types are fully supported: ``POINT``, ``LINESTRING``, ``POLYGON``.
    The following geometry types are partially supported:
    ``MULTIPOINT``, ``MULTILINESTRING``, ``MULTIPOLYGON``.
 
-6. If the PostGIS table has a many-to-one relationship to another table
+6. If the PostGIS table has a many-to-one relationship to another table,
    (typically a dictionary table) there are additional requirements:
 
    * The name of the foreign key column should end with ``_id`` (e.g.

@@ -3,7 +3,7 @@
 Mapfile configuration
 =====================
 
-As mentioned on the index page (:ref:`administrator_guide`) the application
+As mentioned on the index page (:ref:`administrator_guide`), the application
 administrator manages the application through the database and via
 the application's MapServer mapfile.
 
@@ -25,13 +25,13 @@ and/or *private* (a.k.a *restricted*).
 Print
 -----
 
-MapFish Print performs single tile requests to the WMS server. For that reason we
+MapFish Print performs single tile requests to the WMS server. For that reason, we
 need to use a relatively large value for the ``MAXSIZE`` parameter (of the
 ``MAP`` section); 5000 for example.
 
 MapFish Print also supports map rotations. This implies specific requirements:
 
-* The ``MAP`` and all the ``LAYER``s should have a ``PROJECTION``. For
+* The ``MAP`` and all the ``LAYER`` definitionsGEO-3031 would in fact be planned for next week should have a ``PROJECTION``. For
   example:
 
   .. code::
@@ -106,20 +106,20 @@ The ``LAYER`` should also define metadata, with a ``METADATA`` section. For exam
 In contrast to WMS GetFeatureInfo, WFS GetFeature supports ``point query`` as
 well as ``box query``. However, it is to be noted that WFS GetFeature may
 return features that are not visible at the current resolution of the map.
-This is because a limitation in MapServer, where ``MINSCALE``/``MAXSCALE``
+This is because of a limitation in MapServer, where ``MINSCALE``/``MAXSCALE``
 values defined in the layer's classes (``CLASS``) have no effect.
 
 WMS GetFeatureInfo
 ------------------
 
 
-To support WMS GetFeatureInfo a ``LAYER`` should define a template:
+To support WMS GetFeatureInfo, a ``LAYER`` should define a template:
 
 .. code::
 
     TEMPLATE fooOnlyForWMSGetFeatureInfo
 
-As for WFS GetFeature, this is a fake template, but it is required.
+Similar to WFS GetFeature, this is a fake template, but it is required.
 
 The ``gml_include_items``, ``gml_<geometry name>_type`` and ``gml_geometries``
 *METADATA* variables should also be defined in the ``LAYER``. For example:
@@ -145,12 +145,12 @@ The ``gml_include_items``, ``gml_<geometry name>_type`` and ``gml_geometries``
 
   This specifies the type of a geometry column. Specifying this property is
   necessary if geometries, instead of bboxes, should be returned in
-  GetFeatureInfo (GML) responses. ``<geometry name>`` should be replaced the string set
+  GetFeatureInfo (GML) responses. ``<geometry name>`` should be replaced by the string set
   with the ``gml_geometries``. For example, if ``geom_geometries`` is set to
-  ``the_geom`` then ``gml_the_geom_type`` should be used.
+  ``the_geom``, then ``gml_the_geom_type`` should be used.
   The possible values are ``point``, ``multipoint``, ``line``, ``multiline``,
-  ``polygon``, ``multipolygon``, if you do not set the right type
-  for multi geometries only the first will be visible on the map.
+  ``polygon``, ``multipolygon``. If you do not set the right type
+  for multi geometries, only the first will be visible on the map.
   See also `gml_<geometry name>_type
   <https://mapserver.org/ogc/wms_server.html#index-71>`_.
 
@@ -160,7 +160,7 @@ Restricted layer
 ----------------
 
 The restricted layers work only with PostgreSQL data.  All layers defined as restricted in the mapfile
-should be defined as well in the admin interface and vice versa.
+should be defined as well in the administration interface and vice versa.
 
 With a RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -191,7 +191,7 @@ need to be replaced as appropriate. ``<table>`` is the name of the PostGIS table
 including the geographic data for this layer. ``<the_geom>`` is the name of the
 table's geometry column. ``<schema>`` is the name of the schema including the table.
 ``<layer_name>`` can be either the layer NAME or the layer GROUP, depending on
-what is configured in the admin interface for the layer.
+what is configured in the administration interface for the layer.
 
 The ``${MAPSERVER_DATA_SUBSELECT}`` is defined as follows:
 
@@ -215,7 +215,7 @@ The ``${MAPSERVER_DATA_SUBSELECT}`` is defined as follows:
 
     In some cases you can have geometries that overlap the restriction
     area. Theses features will not be displayed as they are not in the area (ie not
-    *contained*). *st_intersects* or other operator could be used instead of the
+    *contained*). *st_intersects* or another operator could be used instead of the
     *st_contains* operator.
 
 The ``${mapfile_data_subselect}`` variable is defined in the ``CONST_vars.yaml``
@@ -350,14 +350,14 @@ interface with for instance the following value for the given role:
 Performance improvement
 -----------------------
 
-Adding an ``EXTENT`` parameter to the ``LAYER`` section may significantly improve the performances
+Adding an ``EXTENT`` parameter to the ``LAYER`` section may significantly improve performance
 because it saves MapServer from computing the extent of all layer features.
 
 Prepare raster files
 ~~~~~~~~~~~~~~~~~~~~
 
-To achieve good performance, you should have tiled files with overview, and ideally
-a tileindex, you can achieve this with these steps:
+To achieve good performance, you should have tiled files with overviews, and ideally
+a tileindex. You can achieve this with these steps:
 
 Convert your rasters in tiled GeoTIFF:
 

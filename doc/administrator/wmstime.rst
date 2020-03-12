@@ -43,7 +43,7 @@ The dates (``min``, ``max`` and ``valueN``) can be specified using any of the fo
 
 The format used for the dates in the mapfile determines both the resolution used
 for the slider and the format of the time parameter used for the GetMap
-requests. For example when a layer has monthly data, the ``YYYY-MM`` should be
+requests. For example, when a layer has monthly data, the ``YYYY-MM`` should be
 used in the mapfile to make sure that only months and years are displayed in the
 slider tip and passed to the GetMap request.
 
@@ -64,7 +64,7 @@ Admin interface - widget
 
 Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
-Two different widget types are available: A time slider and a datepicker
+Two different widget types are available: a time slider and a datepicker
 widget. The preferred widget can be selected in the admin interface (field ``Time widget``).
 
 Note that the time mode can be changed. The time mode is one of:
@@ -110,4 +110,4 @@ Some of those limitations apply to the mapfile:
 
 There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(``single`` or ``range``), except for layers with time mode ``disabled`` that can be mixed within others.
+(``single`` or ``range``), except for layers with time mode ``disabled``, which can be mixed within others.
