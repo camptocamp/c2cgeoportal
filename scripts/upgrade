@@ -46,9 +46,11 @@ if len(sys.argv) >= 2 and sys.argv[1] == "--finalise":
     args = parser_finalise.parse_args()
 
     if platform.system() == "Windows":
-        subprocess.check_call(["python", "build"] + args.build_arg)
+        code = subprocess.call(["python", "build"] + args.build_arg)
     else:
-        subprocess.check_call(["./build"] + args.build_arg)
+        code = subprocess.call(["./build"] + args.build_arg)
+    if code != 0:
+        sys.exit(code)
 
     subprocess.call(["docker-compose", "down", "--remove-orphans"])
     subprocess.call(
