@@ -9,7 +9,7 @@ docker build --tag=camptocamp/geomapfish-test-app-db docker/test-app-db
 docker build --tag=camptocamp/geomapfish-test-external-db docker/test-external-db
 
 cd ${HOME}/workspace/testgeomapfishapp/
-./build env.default env.project
+./build
 docker-compose down
 docker-compose up -d
 docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'

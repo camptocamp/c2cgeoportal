@@ -8,6 +8,8 @@ import subprocess
 import sys
 import urllib.request
 
+import yaml
+
 
 def call(verbose, arguments, **kwargs):
     if verbose:
@@ -42,7 +44,7 @@ def main():
     parser.add_argument("--config", action="store_true", help="Build only the configuration image")
     parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
-    parser.add_argument("env_file", nargs="+", help="The environment files")
+    parser.add_argument("env", nargs="*", help="The environment config")
     args = parser.parse_args()
 
     if args.upgrade:
@@ -67,7 +69,12 @@ def main():
             sys.exit(1)
         sys.exit(0)
 
-    env_files = args.env_file or load_env([".env"])["ENV_FILES"].split(" ")
+    with open("project.yaml") as project_file:
+        project_env = yaml.load(project_file, Loader=yaml.SafeLoader)["env"]
+    if len(args.env) != project_env["required_args"]:
+        print(project_env["help"])
+        sys.exit(1)
+    env_files = [e.format(*args.env) for e in project_env["files"]]
     print("Use env files: {}".format(env_files))
     env = load_env(env_files)
 
@@ -116,7 +123,7 @@ def main():
         for file_ in env_files:
             with open(file_) as src:
                 dest.write(src.read() + "\n")
-        dest.write("ENV_FILES={}\n".format(" ".join(env_files)))
+        dest.write("# Used env files: {}\n".format(" ".join(env_files)))
 
 
 if __name__ == "__main__":

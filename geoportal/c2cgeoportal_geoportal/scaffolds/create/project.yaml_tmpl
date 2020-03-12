@@ -10,3 +10,9 @@ template_vars:
   srid: {{srid}}
   extent: {{extent}}
   authtkt_secret: {{authtkt_secret}}
+env:
+  files:
+    - env.default
+    - env.project
+  required_args: 0
+  help: No arguments needed.
