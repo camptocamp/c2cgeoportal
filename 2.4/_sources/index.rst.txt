@@ -22,17 +22,14 @@ produces code for c2cgeoportal itself.
 
 The c2cgeoportal project is composed of two software components: NGEO (a JS
 library based on `OpenLayers <https://openlayers.org>`_ and
-`AngularJS <https://angularjs.org/>`_ ), and c2cgeoportal, a Python library
+`AngularJS <https://angularjs.org/>`_), and c2cgeoportal, a Python library
 for the Pyramid web framework. So c2cgeoportal applications are Pyramid
-applications with user interfaces based on ExtJS and
-OpenLayers.
+applications with user interfaces based on OpenLayers and AngularJS.
 
-One of the primary goals of the c2cgeoportal project is sharing as much as
-functionality and code as possible between applications. *Do not repeat
-ourselves!*
+The `Demo <https://geomapfish-demo-2-4.camptocamp.com/>`_
+application shows a WebGIS built with c2cgeoportal.
+The `Demo alternative UI <https://geomapfish-demo-2-4.camptocamp.com/desktop_alt>`_ shows the same WebGIS with different user interface functionalities.
+To test the editing functionality, you can use the username 'demo' with the password 'demo'.
 
-`Demo <https://geomapfish-demo-2-4.camptocamp.com/>`_,
-`with features grid <https://camptocamp-2-4.github.io/desktop_alt/>`_,
-to test the editing you can use the username 'demo' with the password 'demo'.
-
-`ngeo (client) documentation <https://camptocamp.github.io/ngeo/2.4/apidoc/>`_.
+The
+`ngeo (client) documentation can be found here <https://camptocamp.github.io/ngeo/2.4/apidoc/>`_.

@@ -50,7 +50,7 @@ mapfile. See <a class="reference internal" href="mapfile.html#administrator-mapf
 </li>
 <li><p class="first">Its data should be in a PostGIS table, which should be in the
 application database. The PostGIS table can be in a separate
-schema though, which is even recommended.</p>
+schema though, which is in fact recommended.</p>
 </li>
 <li><p class="first">The PostGIS table should include a primary key with a sequence
 associated. The name of the primary key attribute must be <code class="docutils literal notranslate"><span class="pre">id</span></code>. Example:</p>
@@ -65,11 +65,11 @@ associated. The name of the primary key attribute must be <code class="docutils 
 <li><p class="first">The PostGIS table should include one geometry column only. You
 will get errors if the table has multiple geometry columns.</p>
 </li>
-<li><p class="first">The following geometry types are supported: <code class="docutils literal notranslate"><span class="pre">POINT</span></code>, <code class="docutils literal notranslate"><span class="pre">LINESTRING</span></code>, <code class="docutils literal notranslate"><span class="pre">POLYGON</span></code>.
+<li><p class="first">The following geometry types are fully supported: <code class="docutils literal notranslate"><span class="pre">POINT</span></code>, <code class="docutils literal notranslate"><span class="pre">LINESTRING</span></code>, <code class="docutils literal notranslate"><span class="pre">POLYGON</span></code>.
 The following geometry types are partially supported:
 <code class="docutils literal notranslate"><span class="pre">MULTIPOINT</span></code>, <code class="docutils literal notranslate"><span class="pre">MULTILINESTRING</span></code>, <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code>.</p>
 </li>
-<li><p class="first">If the PostGIS table has a many-to-one relationship to another table
+<li><p class="first">If the PostGIS table has a many-to-one relationship to another table,
 (typically a dictionary table) there are additional requirements:</p>
 <ul class="simple">
 <li>The name of the foreign key column should end with <code class="docutils literal notranslate"><span class="pre">_id</span></code> (e.g.
@@ -206,7 +206,7 @@ The value is a <code class="docutils literal notranslate"><span class="pre">json
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2011-2019, Camptocamp.
+      &copy;2011-2020, Camptocamp.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>

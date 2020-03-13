@@ -18,7 +18,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TinyOWS configuration" href="tinyows.html" />
+    <link rel="next" title="Transactional WFS with TinyOWS" href="tinyows.html" />
     <link rel="prev" title="Editing" href="editing.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -38,7 +38,7 @@
             
   <div class="section" id="mapfile-configuration">
 <span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Permalink to this headline">¶</a></h1>
-<p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>) the application
+<p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>), the application
 administrator manages the application through the database and via
 the application’s MapServer mapfile.</p>
 <p>The application’s mapfile is where WMS and WFS layers are defined.  WMS is used
@@ -55,12 +55,12 @@ These variables are substituted at container start.</p>
 and/or <em>private</em> (a.k.a <em>restricted</em>).</p>
 <div class="section" id="print">
 <h2>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h2>
-<p>MapFish Print performs single tile requests to the WMS server. For that reason we
+<p>MapFish Print performs single tile requests to the WMS server. For that reason, we
 need to use a relatively large value for the <code class="docutils literal notranslate"><span class="pre">MAXSIZE</span></code> parameter (of the
 <code class="docutils literal notranslate"><span class="pre">MAP</span></code> section); 5000 for example.</p>
 <p>MapFish Print also supports map rotations. This implies specific requirements:</p>
 <ul>
-<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">MAP</span></code> and all the <code class="docutils literal notranslate"><span class="pre">LAYER``s</span> <span class="pre">should</span> <span class="pre">have</span> <span class="pre">a</span> <span class="pre">``PROJECTION</span></code>. For
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">MAP</span></code> and all the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> definitions should have a <code class="docutils literal notranslate"><span class="pre">PROJECTION</span></code>. For
 example:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PROJECTION</span>
     <span class="s2">&quot;init=epsg:21781&quot;</span>
@@ -123,16 +123,16 @@ By default the <code class="docutils literal notranslate"><span class="pre">filt
 <p>In contrast to WMS GetFeatureInfo, WFS GetFeature supports <code class="docutils literal notranslate"><span class="pre">point</span> <span class="pre">query</span></code> as
 well as <code class="docutils literal notranslate"><span class="pre">box</span> <span class="pre">query</span></code>. However, it is to be noted that WFS GetFeature may
 return features that are not visible at the current resolution of the map.
-This is because a limitation in MapServer, where <code class="docutils literal notranslate"><span class="pre">MINSCALE</span></code>/<code class="docutils literal notranslate"><span class="pre">MAXSCALE</span></code>
+This is because of a limitation in MapServer, where <code class="docutils literal notranslate"><span class="pre">MINSCALE</span></code>/<code class="docutils literal notranslate"><span class="pre">MAXSCALE</span></code>
 values defined in the layer’s classes (<code class="docutils literal notranslate"><span class="pre">CLASS</span></code>) have no effect.</p>
 </div>
 <div class="section" id="wms-getfeatureinfo">
 <h2>WMS GetFeatureInfo<a class="headerlink" href="#wms-getfeatureinfo" title="Permalink to this headline">¶</a></h2>
-<p>To support WMS GetFeatureInfo a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
+<p>To support WMS GetFeatureInfo, a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWMSGetFeatureInfo</span>
 </pre></div>
 </div>
-<p>As for WFS GetFeature, this is a fake template, but it is required.</p>
+<p>Similar to WFS GetFeature, this is a fake template, but it is required.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code>, <code class="docutils literal notranslate"><span class="pre">gml_&lt;geometry</span> <span class="pre">name&gt;_type</span></code> and <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>
 <em>METADATA</em> variables should also be defined in the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>. For example:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
@@ -152,19 +152,19 @@ should be set for the GetFeatureInfo responses to include the features’ geomet
 <blockquote>
 <div>This specifies the type of a geometry column. Specifying this property is
 necessary if geometries, instead of bboxes, should be returned in
-GetFeatureInfo (GML) responses. <code class="docutils literal notranslate"><span class="pre">&lt;geometry</span> <span class="pre">name&gt;</span></code> should be replaced the string set
+GetFeatureInfo (GML) responses. <code class="docutils literal notranslate"><span class="pre">&lt;geometry</span> <span class="pre">name&gt;</span></code> should be replaced by the string set
 with the <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>. For example, if <code class="docutils literal notranslate"><span class="pre">geom_geometries</span></code> is set to
-<code class="docutils literal notranslate"><span class="pre">the_geom</span></code> then <code class="docutils literal notranslate"><span class="pre">gml_the_geom_type</span></code> should be used.
+<code class="docutils literal notranslate"><span class="pre">the_geom</span></code>, then <code class="docutils literal notranslate"><span class="pre">gml_the_geom_type</span></code> should be used.
 The possible values are <code class="docutils literal notranslate"><span class="pre">point</span></code>, <code class="docutils literal notranslate"><span class="pre">multipoint</span></code>, <code class="docutils literal notranslate"><span class="pre">line</span></code>, <code class="docutils literal notranslate"><span class="pre">multiline</span></code>,
-<code class="docutils literal notranslate"><span class="pre">polygon</span></code>, <code class="docutils literal notranslate"><span class="pre">multipolygon</span></code>, if you do not set the right type
-for multi geometries only the first will be visible on the map.
+<code class="docutils literal notranslate"><span class="pre">polygon</span></code>, <code class="docutils literal notranslate"><span class="pre">multipolygon</span></code>. If you do not set the right type
+for multi geometries, only the first will be visible on the map.
 See also <a class="reference external" href="https://mapserver.org/ogc/wms_server.html#index-71">gml_&lt;geometry name&gt;_type</a>.</div></blockquote>
 <p>See the <a class="reference external" href="https://mapserver.org/ogc/wms_server.html">WMS Server MapFile Documentation</a> for more detail.</p>
 </div>
 <div class="section" id="restricted-layer">
 <h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Permalink to this headline">¶</a></h2>
 <p>The restricted layers work only with PostgreSQL data.  All layers defined as restricted in the mapfile
-should be defined as well in the admin interface and vice versa.</p>
+should be defined as well in the administration interface and vice versa.</p>
 <div class="section" id="with-a-restrictionarea-area">
 <h3>With a RestrictionArea area<a class="headerlink" href="#with-a-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
 <p>A RestrictionArea is used to restrict the layer displaying to a given area.
@@ -190,7 +190,7 @@ need to be replaced as appropriate. <code class="docutils literal notranslate"><
 including the geographic data for this layer. <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code> is the name of the
 table’s geometry column. <code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code> is the name of the schema including the table.
 <code class="docutils literal notranslate"><span class="pre">&lt;layer_name&gt;</span></code> can be either the layer NAME or the layer GROUP, depending on
-what is configured in the admin interface for the layer.</p>
+what is configured in the administration interface for the layer.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_SUBSELECT}</span></code> is defined as follows:</p>
 <div class="code sql highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span>
     <span class="n">rra</span><span class="o">.</span><span class="n">role_id</span>
@@ -211,7 +211,7 @@ what is configured in the admin interface for the layer.</p>
 <p class="first admonition-title">Warning</p>
 <p class="last">In some cases you can have geometries that overlap the restriction
 area. Theses features will not be displayed as they are not in the area (ie not
-<em>contained</em>). <em>st_intersects</em> or other operator could be used instead of the
+<em>contained</em>). <em>st_intersects</em> or another operator could be used instead of the
 <em>st_contains</em> operator.</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">${mapfile_data_subselect}</span></code> variable is defined in the <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>
@@ -325,12 +325,12 @@ but beware that these attributes are not available for cached queries like:
 </div>
 <div class="section" id="performance-improvement">
 <h2>Performance improvement<a class="headerlink" href="#performance-improvement" title="Permalink to this headline">¶</a></h2>
-<p>Adding an <code class="docutils literal notranslate"><span class="pre">EXTENT</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> section may significantly improve the performances
+<p>Adding an <code class="docutils literal notranslate"><span class="pre">EXTENT</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> section may significantly improve performance
 because it saves MapServer from computing the extent of all layer features.</p>
 <div class="section" id="prepare-raster-files">
 <h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this headline">¶</a></h3>
-<p>To achieve good performance, you should have tiled files with overview, and ideally
-a tileindex, you can achieve this with these steps:</p>
+<p>To achieve good performance, you should have tiled files with overviews, and ideally
+a tileindex. You can achieve this with these steps:</p>
 <p>Convert your rasters in tiled GeoTIFF:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">of</span> <span class="n">GTiff</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TILED=YES&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TFW=YES&quot;</span> <span class="o">&lt;</span><span class="n">filename_in</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">filename_out</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span>
 </pre></div>
@@ -396,7 +396,7 @@ file. But note that this affects performance.</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Administrator Guide</a><ul>
       <li>Previous: <a href="editing.html" title="previous chapter">Editing</a></li>
-      <li>Next: <a href="tinyows.html" title="next chapter">TinyOWS configuration</a></li>
+      <li>Next: <a href="tinyows.html" title="next chapter">Transactional WFS with TinyOWS</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -426,7 +426,7 @@ file. But note that this affects performance.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2011-2019, Camptocamp.
+      &copy;2011-2020, Camptocamp.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
