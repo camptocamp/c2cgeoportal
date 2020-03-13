@@ -1,6 +1,8 @@
 MAJOR_VERSION ?= 2.5
 VERSION ?= 2.5.0
 DOCKER_TAG ?= latest
+PIPENV_PIPFILE ?= ci/Pipfile
+export PIPENV_PIPFILE
 
 .PHONY: help
 help: ## Display this help message
@@ -18,10 +20,14 @@ build: build-tools build-runner build-config
 checks: ## Run the application checks
 checks: black gitattributes eol codespell yamllint otherchecks
 
+pipenv.timestamp:
+	pipenv install
+
 .PHONY: black
 black: ## Run Black check
-	black --version
-	black --line-length=110 --target-version py37 --check --diff $(shell \
+black: pipenv.timestamp
+	pipenv run black --version
+	pipenv run black --line-length=110 --target-version py37 --check --diff $(shell \
 		find -name .git -prune -or -type f -print | \
 		file --mime-type --files-from - | \
 		grep text/x-python | \
@@ -31,7 +37,8 @@ black: ## Run Black check
 
 .PHONY: black-fix
 black-fix: ## Fix the application code style with black
-	black --line-length=110 --target-version py37 $(shell \
+black-fix: pipenv.timestamp
+	pipenv run black --line-length=110 --target-version py37 $(shell \
 		find -name .git -prune -or -type f -print | \
 		file --mime-type --files-from - | \
 		grep text/x-python | \
@@ -50,12 +57,14 @@ eol: ## Check end of lines
 
 .PHONY: codespell
 codespell: ## Check code spell
-	codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
+codespell: pipenv.timestamp
+	pipenv run codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
 		$(shell find -name .git -prune -print)
 
 .PHONY: yamllint
 yamllint: ## YAML lint
-	yamllint --strict --config-file=yamllint.yaml -s $(shell \
+yamllint: pipenv.timestamp
+	pipenv run yamllint --strict --config-file=yamllint.yaml -s $(shell \
 		find -name .git -prune -or -name changelog.yaml -prune -or \
 		\( -name "*.yml" -or -name "*.yaml" \) -print \
 	)

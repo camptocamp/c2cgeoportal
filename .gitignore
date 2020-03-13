@@ -3,3 +3,4 @@
 *.pyo
 **/__pycache__/
 *.egg-info/
+/*.timestamp
