@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b125439e1ff9a609c58c04107b4349f3925f3bdb37c476d08acb2ad89d96c842"
+            "sha256": "6302ea1cd3193858e985c281ee25340139148f95dd8ab3928f1fa31bea4b79d3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -341,11 +341,11 @@
         },
         "owslib": {
             "hashes": [
-                "sha256:11a9d67f99fff23349ea52ae19adbf9f8a10ec521d373b83ccb8547cf3063904",
-                "sha256:5f7810d49ac3cfdb68ccf41980007c4c488305283b28fcef689c133930777b90"
+                "sha256:605a742d088f1ed9c946e824d0b3be94b5256931f8b230dae63e27a52c781b6d",
+                "sha256:628ca1648c5693858218886192b3783882eb7bd959d19218d7ceb7b9f372ad31"
             ],
             "index": "pypi",
-            "version": "==0.19.1"
+            "version": "==0.19.2"
         },
         "papyrus": {
             "hashes": [
@@ -1132,6 +1132,7 @@
                 "sha256:e2bb577d10d09a2d8822a042a23b8d62bc3b269667c9eb8e60a6edfa000211b1",
                 "sha256:f97a605d7c8bc2c6d1172c2f0d5a65b24142e11a58de689046e62c2d632ca8c1"
             ],
+            "index": "pypi",
             "version": "==0.761"
         },
         "mypy-extensions": {
@@ -1299,10 +1300,10 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:0d5fe9189a148acc3c3eb2ac8e1ac0742cb7618c084f3d228baaec0c254b318d",
-                "sha256:ff615c761e25eb25df19edddc0b970302d2a9091fbce0e7213298d85fb61fef6"
+                "sha256:0e5b30f5cb04e887b91b1ee519fa3d89049595f428c1db76e73bd7f17b09b172",
+                "sha256:84dde37075b8805f3d1f392cc47e38a0e59518fb46a431cfdaf7cf1ce805f970"
             ],
-            "version": "==5.3.5"
+            "version": "==5.4.1"
         },
         "pytest-base-url": {
             "hashes": [
@@ -1321,10 +1322,10 @@
         },
         "pytest-html": {
             "hashes": [
-                "sha256:933da7a5e71e5eace9e475441ed88a684f20f6198aa36516cb947ac05edd9921",
-                "sha256:bc40553ca2a1835479c2caf7d48604502cd66d0c5db58ddbca53d74946ee71bd"
+                "sha256:0317a0a589db59c26091ab6068b3edac8d9bc1a8bb9727ade48f806797346956",
+                "sha256:8645a8616c8ed7414678e0aeebc3b2fd7d44268773ef5e7289289ad8632c9e91"
             ],
-            "version": "==2.0.1"
+            "version": "==2.1.0"
         },
         "pytest-metadata": {
             "hashes": [
