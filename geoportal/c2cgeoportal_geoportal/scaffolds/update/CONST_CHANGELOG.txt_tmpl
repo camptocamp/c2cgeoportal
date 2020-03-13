@@ -14,14 +14,18 @@ Information
 Changes to apply
 ----------------
 
-1. The configuration vars `vars/functionalities/anonymous` and `vars/functionalities/registered` should
+1. Now se need to have PyYAML python package installed in the home,
+   see the documentation for more information:
+   https://camptocamp.github.io/c2cgeoportal/master/integrator/requirements.html
+
+2. The configuration vars `vars/functionalities/anonymous` and `vars/functionalities/registered` should
    be moved to the new roles `anonymous` and `registered` that will exist after the upgrade of the database.
 
-2. The 'INSTANCE' configuration variable is removed, it should be in the '.env' files, and also the
+3. The 'INSTANCE' configuration variable is removed, it should be in the '.env' files, and also the
    environment makefiles, these contents should also be moved to the '.env' files. In a multi-town
    project you can have a chain of multiple '.env' files see the build configuration documentation.
 
-3. A new PostgreSQL extension is required, install it by running in psql:
+4. A new PostgreSQL extension is required, install it by running in psql:
    `CREATE EXTENSION IF NOT EXISTS hstore;`
 
 
