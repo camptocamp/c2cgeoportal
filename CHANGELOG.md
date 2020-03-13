@@ -1,3 +1,5 @@
+##### 2.4.1.92
+* Documentation typo and sentence fixes [c2cgeoportal#5982](https://github.com/camptocamp/c2cgeoportal/pull/5982)
 ##### 2.4.1.91
 * Fix for dynamic main schema [c2cgeoportal#5933](https://github.com/camptocamp/c2cgeoportal/pull/5933)
 * g++ is required to compile some python packages [c2cgeoportal#5974](https://github.com/camptocamp/c2cgeoportal/pull/5974)
