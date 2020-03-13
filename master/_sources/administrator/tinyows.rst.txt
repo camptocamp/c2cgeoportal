@@ -1,21 +1,22 @@
 .. _administrator_tinyows:
 
 Transactional WFS with TinyOWS
+==============================
 
-Based on `TinyOWS <https://mapserver.org/tinyows/>`_ c2cgeoportal mapserver layers can be
+Based on `TinyOWS <https://mapserver.org/tinyows/>`_, c2cgeoportal mapserver layers can be
 edited via Transactional WFS (WFS-T), for example using QGIS as a client. c2cgeoportal acts as a
 proxy to TinyOWS to limit access to authorized users.
 
 .. note::
 
-   This is not needed for QGIS server because he nativela support Transactional WFS.
+   This is not needed for QGIS server, because it natively supports Transactional WFS.
 
 The following explains how to configure WFS-T for a c2cgeoportal layer.
 
 TinyOWS configuration
 ---------------------
 
-The configuration of TinyOWS is made in a XML file, which is located at
+The configuration of TinyOWS is made in an XML file, which is located at
 ``mapserver/tinyows.xml.tmpl``:
 
 .. code:: xml
@@ -54,19 +55,19 @@ The configuration of TinyOWS is made in a XML file, which is located at
           pkey="id" />
     </tinyows>
 
-In the root element ``tinyows`` the following properties have to be set:
+In the root element ``tinyows``, the following properties have to be set:
 
 * ``online_resource`` - This should be the URL to the TinyOWS proxy, usually
   ``https://${VISIBLE_WEB_HOST}/tinyows_proxy``.
 * ``schema_dir`` - The path to the TinyOWS schema directory. Adapt this path according to your installation.
 * ``log_level`` - The log level (default: 1). Please refer to the
-   `TinyOWS documentation <https://mapserver.org/tinyows/configfile.html#tinyows-element>`__
-   for more information.
+  `TinyOWS documentation <https://mapserver.org/tinyows/configfile.html#tinyows-element>`__
+  for more information.
 * ``check_schema`` - Defines if the input data is validated against the schema when new features are
-   created. In a vhost environment, the schema check has to be disabled, so that the proxy can function
-   properly. This does not disable the validation database-side though!
+  created. In a vhost environment, the schema check has to be disabled so that the proxy can function
+  properly. This does not disable the validation database-side though!
 
-The database connection is configured in the element ``pg``. By default the
+The database connection is configured in the element ``pg``. By default, the
 same database as for the c2cgeoportal application will be used.
 
 The layers that should be accessible with TinyOWS have to specified with ``layer`` elements:
@@ -84,7 +85,7 @@ The layers that should be accessible with TinyOWS have to specified with ``layer
           title="Points"
           pkey="id" />
 
-In this example a layer named ``point`` is created for the table ``point`` in the
+In this example, a layer named ``point`` is created for the table ``point`` in the
 database schema ``edit`` with the primary key column ``id``. This layer is both
 ``retrievable`` and ``writable``.
 
@@ -112,7 +113,7 @@ Editing a layer with WFS-T
 --------------------------
 
 The configured layers can now be edited using your favorite GIS supporting
-WFS-T. For example in QGIS add a new WFS layer with the URL
+WFS-T. For example, in QGIS, add a new WFS layer with the URL
 ``https://${host}/tinyows_proxy`` (e.g.
 ``https://geomapfish.demo-camptocamp.com/demo/tinyows_proxy``). For the
 authentication use your c2cgeoportal account details.

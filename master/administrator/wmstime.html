@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Integrator Guide" href="../integrator/index.html" />
-    <link rel="prev" title="TinyOWS configuration" href="tinyows.html" />
+    <link rel="prev" title="Transactional WFS with TinyOWS" href="tinyows.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -69,7 +69,7 @@ date, an end date and an interval between the time stops.</p>
 </ul>
 <p>The format used for the dates in the mapfile determines both the resolution used
 for the slider and the format of the time parameter used for the GetMap
-requests. For example when a layer has monthly data, the <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code> should be
+requests. For example, when a layer has monthly data, the <code class="docutils literal notranslate"><span class="pre">YYYY-MM</span></code> should be
 used in the mapfile to make sure that only months and years are displayed in the
 slider tip and passed to the GetMap request.</p>
 <p>The interval (<code class="docutils literal notranslate"><span class="pre">interval</span></code>) has to be defined according to the
@@ -86,7 +86,7 @@ ISO 8601 standard and its duration/time intervals definition (see
 <h3>Admin interface - widget<a class="headerlink" href="#admin-interface-widget" title="Permalink to this headline">¶</a></h3>
 <p>Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
-Two different widget types are available: A time slider and a datepicker
+Two different widget types are available: a time slider and a datepicker
 widget. The preferred widget can be selected in the admin interface (field <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>).</p>
 <p>Note that the time mode can be changed. The time mode is one of:</p>
 <ul class="simple">
@@ -127,7 +127,7 @@ different types of definition within the same group,</p></li>
 </ul>
 <p>There is also a limitation that applies to the admin interface: all the WMS Time
 layers of a group should be configured to use the same widget and the same time mode
-(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>), except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code> that can be mixed within others.</p>
+(<code class="docutils literal notranslate"><span class="pre">single</span></code> or <code class="docutils literal notranslate"><span class="pre">range</span></code>), except for layers with time mode <code class="docutils literal notranslate"><span class="pre">disabled</span></code>, which can be mixed within others.</p>
 </div>
 </div>
 
@@ -169,7 +169,7 @@ layers of a group should be configured to use the same widget and the same time 
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Administrator Guide</a><ul>
-      <li>Previous: <a href="tinyows.html" title="previous chapter">TinyOWS configuration</a></li>
+      <li>Previous: <a href="tinyows.html" title="previous chapter">Transactional WFS with TinyOWS</a></li>
       <li>Next: <a href="../integrator/index.html" title="next chapter">Integrator Guide</a></li>
   </ul></li>
   </ul></li>

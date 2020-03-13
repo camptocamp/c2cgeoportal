@@ -75,11 +75,8 @@ of metadata in the <code class="docutils literal notranslate"><span class="pre">
 <p>Some metadata items are used by the <code class="docutils literal notranslate"><span class="pre">layers</span></code> views (for editing) on the server side:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">editingAttributesOrder</span></code>: Specify the order of the editable attributes in the edit interface.</p></li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">geometryValidation</span></code>: Force validation of the geometries according to the layer type (point, line,</dt><dd><p>polygon), for example, to prevent creation of a 2 points polygon.</p>
-</dd>
-</dl>
-</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">geometryValidation</span></code>: Force validation of the geometries according to the layer type (point, line,
+polygon), for example, to prevent creation of a 2-point polygon.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lastUpdateDateColumn</span></code>: Define a column which will be automatically filled with the date of the last edit.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lastUpdateUserColumn</span></code>: Define a column which will be automatically filled with the user of the last edit.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">readonlyAttributes</span></code>: Set attributes as read only.</p></li>
@@ -97,14 +94,14 @@ files in <code class="docutils literal notranslate"><span class="pre">admin_inte
 </div>
 <div class="section" id="layers">
 <span id="administrator-administrate-layers"></span><h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
-<p>Layer definitions are found in to two tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.</p>
-<div class="section" id="all-layer-type">
-<h3>All layer type<a class="headerlink" href="#all-layer-type" title="Permalink to this headline">¶</a></h3>
+<p>Layer definitions are found in two tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.</p>
+<div class="section" id="common-attributes">
+<h3>Common attributes<a class="headerlink" href="#common-attributes" title="Permalink to this headline">¶</a></h3>
 <p>All the layers in the admin interface have the following attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Name</span></code>: the name of the WMS layer/group, or the WMTS layer.
 It is used through the i18n tools to display the name on the layers tree.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated; use <code class="docutils literal notranslate"><span class="pre">Metadata</span></code> instead)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Public</span></code>: makes the layer public. also it is accessible through the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Geo</span> <span class="pre">table</span></code>: the related database table,
@@ -120,12 +117,12 @@ For enumerable attributes (foreign key), the column name should end with ‘_id�
 </div>
 <div class="section" id="wms-layer">
 <h3>WMS layer<a class="headerlink" href="#wms-layer" title="Permalink to this headline">¶</a></h3>
-<p>On internal WMS layers we have the following specific attributes:</p>
+<p>On internal WMS layers, we have the following specific attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">Server</span></code>: the used server.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layer</span> <span class="pre">name</span></code>: the WMS layers. Can be one layer, one group, a comma separated list of layers.
-In the case of a comma separated list of layers, we will get the legend rule for the
-layer icon on the first layer, and the legend will not be supported we should define a legend metadata.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layer</span> <span class="pre">name</span></code>: the WMS layers. Can be one layer, one group, or a comma separated list of layers.
+In the case of a comma separated list of layers, you will get the legend rule for the
+layer icon on the first layer, and to support the legend you should define a legend metadata.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the style used, can be empty.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">mode</span></code>: used for the WMS time component.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>: the component type used for the WMS time.</p></li>
@@ -133,12 +130,12 @@ layer icon on the first layer, and the legend will not be supported we should de
 </div>
 <div class="section" id="wmts-layer">
 <h3>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this headline">¶</a></h3>
-<p>On WMTS layers we have the following specific attributes:</p>
+<p>On WMTS layers, we have the following specific attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">GetCapabilities</span> <span class="pre">URL</span></code>: the URL to the WMTS capabilities.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">WMTS</span> <span class="pre">layer</span> <span class="pre">name</span></code>: the WMTS layer.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the used style, if not present we use the default style.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the used matrix set, if there is only one matrix set in the capabilities it can be empty.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Style</span></code>: the style to use; if not present, the default style is used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">set</span></code>: the matrix set to use; if there is only one matrix set in the capabilities, it can be left empty.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Image</span> <span class="pre">type</span></code>: the MIME type of the images (e.g.: <code class="docutils literal notranslate"><span class="pre">image/png</span></code>).</p></li>
 </ul>
 <p>When using self generated WMTS tiles, you should use the following url: <code class="docutils literal notranslate"><span class="pre">config://local/tiles/1.0.0/WMTSCapabilities.xml</span></code>.
@@ -177,7 +174,7 @@ To activate this, you should add the following <code class="docutils literal not
 <p>Attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Name</span></code>: It is used through the i18n tools to display the name on the layers tree.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated. Use <code class="docutils literal notranslate"><span class="pre">Metadata</span></code> instead).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Expanded</span></code>: (deprecated).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Children</span></code>: the ordered children elements.</p></li>
@@ -193,10 +190,10 @@ To activate this, you should add the following <code class="docutils literal not
 <h2>Theme<a class="headerlink" href="#theme" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Name</span></code>: It is used through the i18n tools to display the name on the layers tree.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span> <span class="pre">URL</span></code>: (deprecated. Use <code class="docutils literal notranslate"><span class="pre">Metadata</span></code> instead).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Public</span></code>: makes the layer public. You must use the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">Roles</span></code> to make
-private theme accessible.</p></li>
+a private theme accessible.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Icon</span></code>: the icon URL.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Interfaces</span></code>: visible in the checked interfaces.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Restricted</span> <span class="pre">Roles</span></code>: Restricted to the following roles.</p></li>
@@ -214,13 +211,13 @@ to see (and edit, if applicable) the features within this area.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Roles</span></code>: Restricted to the following roles.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Read/write</span></code>: Allows the linked users to change the objects.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Area</span></code>: Active in the following area, if not defined it is active everywhere.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Area</span></code>: Active in the following area; if not defined, it is active everywhere.</p></li>
 </ul>
 </div>
 <div class="section" id="users">
 <h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
 <p>Each user may have from 1 to n roles, but each user has a default role from
-which are taken some settings. Currently the default role (defined through the
+which are taken some settings. The default role (defined through the
 “Settings from role” selection) has an influence on the role extent and on some
 functionalities regarding their configuration.</p>
 <p>Role extents for users can only be set in one role, because the application
