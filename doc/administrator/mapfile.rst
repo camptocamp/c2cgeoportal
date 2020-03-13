@@ -31,7 +31,7 @@ need to use a relatively large value for the ``MAXSIZE`` parameter (of the
 
 MapFish Print also supports map rotations. This implies specific requirements:
 
-* The ``MAP`` and all the ``LAYER`` definitionsGEO-3031 would in fact be planned for next week should have a ``PROJECTION``. For
+* The ``MAP`` and all the ``LAYER`` definitions should have a ``PROJECTION``. For
   example:
 
   .. code::
