@@ -1,3 +1,0 @@
-codespell==1.16.0  # Lint
-yamllint==1.20.0  # Lint
-black==19.10b0  # Lint
