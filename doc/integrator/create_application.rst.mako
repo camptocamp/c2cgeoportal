@@ -158,7 +158,7 @@ Put the application under revision control
 ------------------------------------------
 
 Now is a good time to put the application source code under revision
-control wth Git.
+control with Git.
 
 To add a project in a new repository
 ....................................
