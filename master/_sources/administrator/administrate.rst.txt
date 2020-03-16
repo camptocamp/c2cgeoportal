@@ -82,7 +82,6 @@ All the layers in the admin interface have the following attributes:
 
 * ``Name``: the name of the WMS layer/group, or the WMTS layer.
   It is used through the i18n tools to display the name on the layers tree.
-* ``Metadata URL``: (deprecated; use ``Metadata`` instead)
 * ``Description``: a description.
 * ``Public``: makes the layer public. also it is accessible through the ``Restriction areas``.
 * ``Geo table``: the related database table,
@@ -153,9 +152,7 @@ LayerGroup
 Attributes:
 
 * ``Name``: It is used through the i18n tools to display the name on the layers tree.
-* ``Metadata URL``: (deprecated. Use ``Metadata`` instead).
 * ``Description``: a description.
-* ``Expanded``: (deprecated).
 * ``Children``: the ordered children elements.
 * ``Metadata``: Additional metadata.
 
@@ -169,7 +166,6 @@ Theme
 -----
 
 * ``Name``: It is used through the i18n tools to display the name on the layers tree.
-* ``Metadata URL``: (deprecated. Use ``Metadata`` instead).
 * ``Description``: a description.
 * ``Public``: makes the layer public. You must use the ``Restriction Roles`` to make
   a private theme accessible.
