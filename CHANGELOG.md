@@ -1,3 +1,5 @@
+##### 2.4.1.93
+* Fix typo in mail scaffold [c2cgeoportal#6006](https://github.com/camptocamp/c2cgeoportal/pull/6006)
 ##### 2.4.1.92
 * Documentation typo and sentence fixes [c2cgeoportal#5982](https://github.com/camptocamp/c2cgeoportal/pull/5982)
 ##### 2.4.1.91
