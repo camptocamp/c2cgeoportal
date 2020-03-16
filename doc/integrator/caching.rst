@@ -6,14 +6,14 @@ Caching
 Headers
 -------
 
-By default the statuc elements will be cached for 10 days by the browser.
+By default, the static elements will be cached for 10 days by the browser.
 
 To change this value for the whole application, change in the ``vars.yaml`` file the
 ``vars/default_max_age`` value. ``0`` will mean ``no-cache``.
 The specified value is in seconds.
 
 For the services it will be 10 minutes.
-To change this value add the following structure in the ``vars.yaml``:
+To change this value, add the following structure in the ``vars.yaml``:
 
 .. code:: yaml
 
@@ -30,7 +30,7 @@ Where ``<service_name>`` can be: ``entry``, ``fulltextsearch``, ``mapserver``,
 Internal
 --------
 
-The application also has an internal cache, that will be invalidated on
+The application also has an internal cache. The internal cache will be invalidated on
 application start and after each modification in the ``Theme`` or the ``RestrictionArea``.
 
 The internal cache can also be invalidated by calling the URL

@@ -3,10 +3,10 @@
 Automated check
 ===============
 
-c2cgeoportal applications include functionality for testing and assessing that the application is correctly
-functioning, i.e. that its web services respond as expected.
+c2cgeoportal applications include functionality for testing and assessing that the application is
+functioning correctly, i.e. that its web services respond as expected.
 
-For this purpose we have a *checker* and a *check_collector*.
+For this purpose, c2cgeoportal provides a *checker* and a *check_collector*.
 These (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.
 
@@ -29,7 +29,7 @@ The levels used in the default configuration (recommended settings):
 * ``2``: Vital checkers (other database connection, redis connexions, versions).
 * ``3``: Quick internal checks.
 * ``4``: Slow service checks (phantomjs checks, theme).
-* ``5``: Maybe cost service checks (print a page).
+* ``5``: Service checks (caution: these can result in costs, for example, print a page).
 * ``10``: collector of different sites.
 
 See also: https://github.com/camptocamp/c2cwsgiutils/#health-checks
@@ -44,7 +44,7 @@ The recommended URL to use to validate a migration (``checker_url`` in ``proect.
 
 .. note::
 
-    For non Docker project the ``<project_url>`` should end with ``/wsgi``.
+    In a non Docker project, the ``<project_url>`` should end with ``/wsgi``.
 
 Checker
 -------
@@ -62,8 +62,8 @@ The checker uses the following configuration structure in ``vars.yaml``:
 .. note::
 
     If some of the checked services require an authenticated user, the
-    ``forward_headers`` allows to forward ``Cookie`` or ``Authorisation`` headers
-    in the underlying requests.
+    ``forward_headers`` configuration allows to forward ``Cookie`` or ``Authorisation`` headers
+    from the underlying requests.
 
     .. code:: yaml
 
@@ -103,7 +103,7 @@ Uses as spec the ``spec`` from configuration.
 ``fulltextsearch``
 ~~~~~~~~~~~~~~~~~~
 
-Check that the Full-text search service return an element.
+Check that the Full-text search service returns an element.
 
 Uses the ``search`` from configuration as text to search.
 
@@ -135,11 +135,11 @@ an array of strings that must be in ``[cgxp-api, ngeo]``.
 ``routes``
 ~~~~~~~~~~
 
-Check some routes, configured in ``routes`` as array of objects with::
+Check some routes, configured in ``routes`` as array of objects with:
 
-* ``name`` the route name.
-* ``display_name`` the name to be displayed.
-* ``params`` the used query string as a dictionary.
+* ``name``: the route name.
+* ``display_name``: the name to be displayed.
+* ``params``: the used query string as a dictionary.
 * ``level``
 
 In the configuration, we can also fill the ``routes_disable`` to disable some routes.
@@ -148,10 +148,10 @@ In the configuration, we can also fill the ``routes_disable`` to disable some ro
 ~~~~~~~~~~~~~
 
 Check with phantomjs that the pages load correctly without errors,
-using the ``routes`` configuration as an array of route names to check::
+using the ``routes`` configuration as an array of route names to check:
 
-* ``name`` the route name.
-* ``params`` the used query string as a dictionary.
+* ``name``: the route name.
+* ``params``: the query string to use, configured as a dictionary.
 * ``level``
 
 Infrastructure

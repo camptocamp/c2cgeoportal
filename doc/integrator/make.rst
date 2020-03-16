@@ -6,7 +6,7 @@ Build configuration
 Makefiles
 ---------
 
-Usually we have the following makefile includes:
+Usually we have the following makefile hierarchy:
 ``<user>.mk`` -> ``<package>.mk`` -> ``CONST_Makefile.mk``.
 
 The ``CONST_Makefile.mk`` is a huge makefile that is maintained by the
@@ -79,11 +79,11 @@ The following variables may be set in the makefiles:
 
 * ``CONFIG_VARS``: The list of parameters read from the project YAML configuration file.
 * ``DEVELOPMENT``: If ``TRUE`` the ``CSS`` and ``JS`` files are not minified and the
-    ``development.ini`` pyramid config file is used, default is ``FALSE``.
+  ``development.ini`` pyramid config file is used, default is ``FALSE``.
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``LANGUAGES``: List of available languages, default is ``en fr de``.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
-* ``PRINT``: Mapfish print is enabled, default is ``TRUE``.
+* ``PRINT``: Mapfish Print is enabled, default is ``TRUE``.
 * ``TILECLOUD_CHAIN``: ``TRUE`` to indicate that we use TileCloud-chain, default is ``TRUE``.
 
 
@@ -123,8 +123,8 @@ To decrypt the files run:
 
    If you have an issue with the ``dirmngr`` package you can try to add:
    ``pinentry-mode loopback`` in your ``~/.gnupg/gpg.conf`` file and
-   ``allow-loopback-pinentry``in your ``~/.gnupg/gpg-agent.conf`` file.
-   Then it should be fixed or you can also try to run it in Docker:
+   ``allow-loopback-pinentry`` in your ``~/.gnupg/gpg-agent.conf`` file.
+   Alternatively, you can try to run it in Docker:
    ``./docker-run --home make --makefile=<user>.mk secrets``
 
    If you have an error about opening ``/dev/tty``, try to run it in Docker as root:
