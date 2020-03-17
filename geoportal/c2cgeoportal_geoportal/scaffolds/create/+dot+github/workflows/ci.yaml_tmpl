@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build config
-        run: ./build --config env.default env.project
+        run: ./build --config
 
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build geoportal
-        run: ./build --geoportal env.default env.project
+        run: ./build --geoportal
 
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
