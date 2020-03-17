@@ -78,7 +78,7 @@ def main():
         print(project_env["help"])
         sys.exit(1)
     env_files = [e.format(*args.env) for e in project_env["files"]]
-    print("Use env files: {}".format(env_files))
+    print("Use env files: {}".format(", ".join(env_files)))
     env = load_env(env_files)
 
     base = env["DOCKER_BASE"] if "DOCKER_BASE" in env else "camptocamp/{{package}}"
