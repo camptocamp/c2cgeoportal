@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2019, Camptocamp SA
+# Copyright (c) 2012-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -597,7 +597,11 @@ def _convert_column_type(column_type):
             xsd_type = "gml:GeometryPropertyType"
             return {"type": xsd_type, "srid": int(column_type.srid)}
 
-        raise NotImplementedError  # pragma: no cover
+        raise NotImplementedError(
+            "The geometry type '{}' is unsuported, supported types: {}".format(
+                geometry_type, ",".join(XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES)
+            )
+        )  # pragma: no cover
 
     # Enumeration type
     if isinstance(column_type, Enum):
@@ -625,4 +629,7 @@ def _convert_column_type(column_type):
             xsd_type["totalDigits"] = int(column_type.precision)
         return xsd_type
 
-    raise NotImplementedError  # pragma: no cover
+    raise NotImplementedError(
+        "The type '{}' is not supported, supported types: "
+        "Geometry, Enum, String, Text, Unicode, UnicodeText, Numeric".format(type(column_type).__name__)
+    )  # pragma: no cover
