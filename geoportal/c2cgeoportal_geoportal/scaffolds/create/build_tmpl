@@ -64,7 +64,10 @@ def main():
             f.write(result.read().decode())
         os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
         try:
-            subprocess.check_call(["./upgrade", full_version])
+            if platform.system() == "Windows":
+                subprocess.check_call(["python", "upgrade", full_version])
+            else:
+                subprocess.check_call(["./upgrade", full_version])
         except subprocess.CalledProcessError:
             sys.exit(1)
         sys.exit(0)
