@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import platform
 import re
 import stat
 import subprocess
