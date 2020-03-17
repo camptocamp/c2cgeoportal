@@ -75,9 +75,9 @@ services:
       - GDAL_DISABLE_READDIR_ON_OPEN
       - QGIS_SERVER_LOG_LEVEL=2
       - LOG_LEVEL=INFO
-      - C2CGEOPORTAL_LOG_LEVEL=INFO
-      - SQL_LOG_LEVEL=WARN
-      - OTHER_LOG_LEVEL=WARN
+      - C2CGEOPORTAL_LOG_LEVEL
+      - SQL_LOG_LEVEL
+      - OTHER_LOG_LEVEL
 
   tinyows:
     image: camptocamp/tinyows
