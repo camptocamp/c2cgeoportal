@@ -206,7 +206,10 @@ class C2cUpgradeTool:
             print(colorize("Checker error", RED))
             for name, value in resp.json()["failures"].items():
                 print(colorize("Test '{}' failed with result:".format(name), YELLOW))
-                result = value["result"] if "result" in value else "No result"
+                del value["level"]
+                del value["timing"]
+
+                result = yaml.dump(value) if value != {} else "No result"
                 if isinstance(result, str):
                     print(result)
                 else:
