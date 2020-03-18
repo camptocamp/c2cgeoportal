@@ -24,7 +24,7 @@ vars:
     max_overflow: 25
     use_batch_mode: true
   sqlalchemy_slave:
-    url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT}/{PGDATABASE}
+    url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}
     pool_recycle: 30
     pool_size: 5
     max_overflow: 25
@@ -707,6 +707,8 @@ runtime_environment:
   - PGHOST
   - PGHOST_SLAVE
   - name: PGPORT
+    default: '5432'
+  - name: PGPORT_SLAVE
     default: '5432'
   - PGUSER
   - PGPASSWORD
