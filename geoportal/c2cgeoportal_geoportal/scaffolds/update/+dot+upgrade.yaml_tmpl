@@ -5,10 +5,10 @@
 # project.yaml file in the project root directory.
 default_project_file:
   include:
-    - {{package}}/templates/.*
-    - {{package}}/locale/.*
-    - {{package}}/static/.*
-    - {{package}}/static-ngeo/.*
+    - geoportal/setup\.py
+    - geoportal/vars\.yaml
+    - geoportal/Makefile
+    - geoportal/{{package}}_geoportal/__init__\.py
     - geoportal/{{package}}_geoportal/templates/.*
     - geoportal/{{package}}_geoportal/locale/.*
     - geoportal/{{package}}_geoportal/static/.*
@@ -19,16 +19,9 @@ default_project_file:
     - project\.yaml
     - docker-compose\.yaml
     - env\.project
-    - geoportal/setup\.py
-    - geoportal/vars\.yaml
-    - geoportal/Makefile
-    - geoportal/alembic\.yaml
-    - geoportal/{{package}}_geoportal/__init__\.py
     - README\.rst
-    - qgisserver/geomapfish\.yaml
     - \.github/workflows/ci\.yaml
   exclude:
-    - geoportal/{{package}}_geoportal/static-ngeo/js/{{package}}module\.js
     - mapserver/demo\.map\.tmpl
 
 # Files ignored when creating the diff files => will just be left untouched.
