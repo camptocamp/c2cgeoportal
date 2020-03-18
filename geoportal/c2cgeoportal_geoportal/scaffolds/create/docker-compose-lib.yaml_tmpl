@@ -13,6 +13,7 @@ services:
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
+      - PGPORT_SLAVE
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
@@ -61,6 +62,7 @@ services:
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
+      - PGPORT_SLAVE
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
@@ -154,6 +156,7 @@ services:
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
+      - PGPORT_SLAVE
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
@@ -190,6 +193,7 @@ services:
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
+      - PGPORT_SLAVE
       - PGUSER
       - PGPASSWORD
       - PGDATABASE
@@ -223,6 +227,7 @@ services:
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
+      - PGPORT_SLAVE
       - PGUSER
       - PGPASSWORD
       - PGDATABASE

@@ -8,6 +8,7 @@ ENV NODE_PATH=/usr/lib/node_modules \
     PGHOST=db \
     PGHOST_SLAVE=db \
     PGPORT=5432 \
+    PGPORT_SLAVE=5432 \
     PGUSER=www-data \
     PGPASSWORD=www-data \
     PGDATABASE=geomapfish \
