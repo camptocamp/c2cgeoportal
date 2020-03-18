@@ -333,7 +333,7 @@ class MapserverproxyRoutePredicate:
         params = dict(
             (k.lower(), v.lower()) for k, v in request.params.items()
         )
-        return "request" not in params or params["request"] != "getcapabilities"
+        return "request" not in params or params["request"] not in ("getcapabilities", "capabilities")
 
     @staticmethod
     def text():
