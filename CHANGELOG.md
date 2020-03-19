@@ -1,7 +1,8 @@
-##### 2.4.1.94
-* Also hide capabilities [c2cgeoportal#6026](https://github.com/camptocamp/c2cgeoportal/pull/6026)
+##### 2.4.1.95
 * Be able to change the port for the slave database [c2cgeoportal#6027](https://github.com/camptocamp/c2cgeoportal/pull/6027)
 * Add missing AWS credentials [c2cgeoportal#6028](https://github.com/camptocamp/c2cgeoportal/pull/6028)
+##### 2.4.1.94
+* Also hide capabilities [c2cgeoportal#6026](https://github.com/camptocamp/c2cgeoportal/pull/6026)
 ##### 2.4.1.93
 * Fix typo in mail scaffold [c2cgeoportal#6006](https://github.com/camptocamp/c2cgeoportal/pull/6006)
 ##### 2.4.1.92
