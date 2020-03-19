@@ -6,6 +6,8 @@ VARS_FILES += ${VARS_FILE}
 endif
 
 PGSCHEMA ?= main
+# For the alembic upgrade during the migration
+DOCKER_PGSCHEMA ?= main
 DOCKER_PGSCHEMA_STATIC ?= main_static
 
 MUTUALIZED_PRINT_APP ?= {{package}}
