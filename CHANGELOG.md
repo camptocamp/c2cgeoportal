@@ -1,3 +1,6 @@
+##### 2.4.1.96
+* Fix the database connection [c2cgeoportal#6039](https://github.com/camptocamp/c2cgeoportal/pull/6039)
+* Add some other missing port [c2cgeoportal#6040](https://github.com/camptocamp/c2cgeoportal/pull/6040)
 ##### 2.4.1.95
 * Be able to change the port for the slave database [c2cgeoportal#6027](https://github.com/camptocamp/c2cgeoportal/pull/6027)
 * Add missing AWS credentials [c2cgeoportal#6028](https://github.com/camptocamp/c2cgeoportal/pull/6028)
