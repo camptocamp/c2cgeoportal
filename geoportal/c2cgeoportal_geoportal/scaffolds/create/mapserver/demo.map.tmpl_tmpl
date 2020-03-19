@@ -11,7 +11,7 @@ LAYER
   EXTENT -31 27 45 71 # Useful for better performance but not mandatory
   CONNECTIONTYPE postgis
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
-  CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
+  CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
   DATA "geom FROM (SELECT geo.* FROM data.europe_borders as geo) as foo USING unique gid USING srid=4326"
   PROJECTION
     "init=epsg:4326"
@@ -47,7 +47,7 @@ LAYER
   EXTENT  -31 27 45 71
   CONNECTIONTYPE postgis
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
-  CONNECTION "user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE} host=${PGHOST}"
+  CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
   DATA "geom FROM (SELECT geo.*, (pop2005/(area*10)) AS density FROM data.europe_borders AS geo WHERE ARRAY[%role_ids%] && ARRAY(${MAPSERVER_DATA_NOAREA_SUBSELECT} 'density')) as foo USING unique gid USING srid=4326"
   PROJECTION
     "init=epsg:4326"
