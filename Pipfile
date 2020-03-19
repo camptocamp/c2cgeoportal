@@ -25,7 +25,7 @@ prospector = {extras = ["with_mypy"],version = "==1.2.0"}
 mypy = "==0.761"
 
 [packages]
-alembic = "==1.4.1"  # geoportal
+alembic = "==1.4.2"  # geoportal
 "c2c.template" = "==2.1.0"  # geoportal
 c2cgeoform = "==2.1.10"  # commons
 colander = "==1.7.0"  # commons, admin
