@@ -11,6 +11,7 @@ VISIBLE_ENTRY_POINT=${docker_entry_point}
 PGHOST=${docker_dbhost}
 PGHOST_SLAVE=${docker_dbhost_slave}
 PGPORT=${docker_dbport}
+PGPORT_SLAVE=${docker_dbport_slave}
 PGUSER=${docker_dbuser}
 PGPASSWORD=${docker_dbpassword}
 PGDATABASE=${docker_db}

@@ -69,7 +69,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
@@ -104,7 +104,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
@@ -142,7 +142,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${mapserver_join_tables} WHERE ST_Contains(${mapserver_join_area}, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${mapserver_join_where} 'testpoint_protected_2') as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
@@ -179,7 +179,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${mapfile_data_subselect} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
@@ -216,7 +216,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
@@ -256,7 +256,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING UNIQUE id USING srid=21781"
         METADATA
             "wms_title" "countries"
@@ -297,7 +297,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
@@ -336,7 +336,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
@@ -367,7 +367,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "time"
@@ -397,7 +397,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
         END
@@ -420,7 +420,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
@@ -442,7 +442,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
@@ -456,7 +456,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
@@ -477,7 +477,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from main.testpoint using unique id using srid=21781"
         PROJECTION
            "init=epsg:21781"
@@ -520,7 +520,7 @@ MAP
         TYPE POINT
         STATUS ON
         CONNECTIONTYPE postgis
-        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost}"
+        CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
         DATA "geom from geodata.testpoint using unique id using srid=21781"
         METADATA
             "wms_title" "countries"
