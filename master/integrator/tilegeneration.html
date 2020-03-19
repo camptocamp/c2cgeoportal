@@ -50,8 +50,8 @@ update some of them contained in given geometries and delete empty tiles.</p>
 number of tiles that may become unmanageable. For example, when updating the
 data, it is not possible to figure out what tiles should be updated.</p>
 <p>For high usage websites, we want to put the tiles on S3 with the same tool.</p>
-<p>One issue we have if we want to generate all the tiles is that the generation time can grow to more than one month,
-especially if we have a high resolution (low if in m/px) on the last zoom level.
+<p>One issue we have if we want to generate all the tiles is that the generation time can grow to more than one
+month, especially if we have a high resolution (low if in m/px) on the last zoom level.
 Therefore for the last zoom level we should generate the tiles on the fly
 with a low expiry (4 hours for example).
 We should use metatiles to reduce the number of requests to postgres.
@@ -114,6 +114,22 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 </pre></div></div><p>If you setup all the default options, you can generate the tiles by using the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles</span>
 </pre></div></div></div>
+<div class="section" id="aws-credentials">
+<h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Permalink to this headline">¶</a></h3>
+<p>To be able to connect to the S3 service, you should define the following variables in the <code class="docutils literal notranslate"><span class="pre">.env.mako</span></code>
+file:</p>
+<p>code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
+<span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If you do not want to commit these credentials you can add them in your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file:</p>
+<p>code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
+<span class="n">export</span> <span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
