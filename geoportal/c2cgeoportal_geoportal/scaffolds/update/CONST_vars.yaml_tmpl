@@ -27,6 +27,8 @@ vars:
   docker_dbhost_slave: '{DOCKER_PGHOST_SLAVE}'
   # Database port
   docker_dbport: '{DOCKER_PGPORT}'
+  # Slave database port
+  docker_dbport_slave: '{DOCKER_PGPORT_SLAVE}'
   # Database user
   docker_dbuser: '{DOCKER_PGUSER}'
   # Database password
@@ -65,7 +67,7 @@ vars:
     max_overflow: 25
     use_batch_mode: true
   sqlalchemy_slave:
-    url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT}/{PGDATABASE}
+    url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}
     pool_recycle: 30
     pool_size: 5
     max_overflow: 25
@@ -836,6 +838,7 @@ environment:
   - DOCKER_PGHOST
   - DOCKER_PGHOST_SLAVE
   - DOCKER_PGPORT
+  - DOCKER_PGPORT_SLAVE
   - DOCKER_PGDATABASE
   - DOCKER_PGSCHEMA
   - DOCKER_PGSCHEMA_STATIC
@@ -856,6 +859,8 @@ runtime_environment:
   - PGHOST
   - PGHOST_SLAVE
   - name: PGPORT
+    default: '5432'
+  - name: PGPORT_SLAVE
     default: '5432'
   - PGUSER
   - PGPASSWORD
