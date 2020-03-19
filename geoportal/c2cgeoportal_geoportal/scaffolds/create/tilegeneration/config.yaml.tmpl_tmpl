@@ -64,7 +64,7 @@ defaults:
         meta_buffer: 128
         # connexion an sql to get geometries (in column named geom) where we want to generate tiles
         # Warn: too complex result can slow down the application
-#    connection: user=www-data password=www-data dbname=<db> host=localhost
+#    connection: host=localhost port=5432 user=www-data password=www-data dbname=<db>
 #    geoms:
 #        -   sql: <column> AS geom FROM <table>
         # size and hash used to detect empty tiles and metatiles [optional, default to None]
