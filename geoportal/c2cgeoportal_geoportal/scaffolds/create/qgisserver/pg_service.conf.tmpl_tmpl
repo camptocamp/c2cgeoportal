@@ -4,3 +4,4 @@ dbname=${PGDATABASE}
 user=${PGUSER}
 password=${PGPASSWORD}
 port=${PGPORT}
+sslmode=${PGSSLMODE}

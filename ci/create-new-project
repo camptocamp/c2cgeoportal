@@ -38,6 +38,7 @@ then
     cp ci/test-new-project ${WORKSPACE}/${PACKAGE}/geoportal/ci
     mkdir -p ${WORKSPACE}/${PACKAGE}/ci
     cp ci/run-dc-logs ${WORKSPACE}/${PACKAGE}/ci
+    echo "PGSSLMODE=prefer" >> ${WORKSPACE}/${PACKAGE}/env.project
 fi
 
 cd ${WORKSPACE}/${PACKAGE}
