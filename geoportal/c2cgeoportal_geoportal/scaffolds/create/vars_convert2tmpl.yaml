@@ -24,7 +24,7 @@ vars:
   mapserver_layer_validation: |
     "default_role_ids" "-1"
     "role_ids" "^-?[0-9,]*$"
-  mapserver_connection: user={dbuser} password={dbpassword} dbname={db} host={dbhost}
+  mapserver_connection: host={dbhost} port={dbport} user={dbuser} password={dbpassword} dbname={db}
   mapfile_data_subselect: '{MAPSERVER_DATA_SUBSELECT}'
   mapfile_data_noarea_subselect: '{MAPSERVER_DATA_NOAREA_SUBSELECT}'
   mapserver_join_tables: '{MAPSERVER_JOIN_TABLES}'
