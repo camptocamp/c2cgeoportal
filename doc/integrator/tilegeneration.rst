@@ -21,8 +21,8 @@ data, it is not possible to figure out what tiles should be updated.
 
 For high usage websites, we want to put the tiles on S3 with the same tool.
 
-One issue we have if we want to generate all the tiles is that the generation time can grow to more than one month,
-especially if we have a high resolution (low if in m/px) on the last zoom level.
+One issue we have if we want to generate all the tiles is that the generation time can grow to more than one
+month, especially if we have a high resolution (low if in m/px) on the last zoom level.
 Therefore for the last zoom level we should generate the tiles on the fly
 with a low expiry (4 hours for example).
 We should use metatiles to reduce the number of requests to postgres.
@@ -122,3 +122,21 @@ If you setup all the default options, you can generate the tiles by using the co
 .. prompt:: bash
 
     docker-compose exec tilecloudchain generate_tiles
+
+AWS credentials
+~~~~~~~~~~~~~~~
+
+To be able to connect to the S3 service, you should define the following variables in the ``.env.mako``
+file:
+
+code::
+
+  AWS_ACCESS_KEY_ID=<access_key_id>
+  AWS_SECRET_ACCESS_KEY=<secret_access_key>
+
+If you do not want to commit these credentials you can add them in your ``~/.bashrc`` file:
+
+code::
+
+  export AWS_ACCESS_KEY_ID=<access_key_id>
+  export AWS_SECRET_ACCESS_KEY=<secret_access_key>
