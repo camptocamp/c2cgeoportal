@@ -25,7 +25,7 @@ They can be install in your user directory with:
 
    python3 -m pip install --user PyYAML docker-compose
 
-If not yet done, add ``$HOME/.local/lib/bin`` to your ``PATH``.
+If not yet done, add ``$HOME/.local/bin`` to your ``PATH``.
 
 
 Required Apache modules
