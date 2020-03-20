@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import os.path
 import platform
 import re
 import stat
@@ -80,6 +81,10 @@ def main():
         sys.exit(1)
     env_files = [e.format(*args.env) for e in project_env["files"]]
     print("Use env files: {}".format(", ".join(env_files)))
+    for env_file in env_files:
+        if not os.path.exists:
+            print("Error: the env file '{}' does not exists.".format(env_file))
+            sys.exit(1)
     env = load_env(env_files)
 
     base = env["DOCKER_BASE"] if "DOCKER_BASE" in env else "camptocamp/{{package}}"
