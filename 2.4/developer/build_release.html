@@ -39,24 +39,24 @@
 <span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="vocabulary">
 <h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
-<p>On this page I use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
+<p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
 Geoportal (2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
 (2.0.0rc1, 2.0.0, 2.0.1, …).</p>
-<p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes ngeo and c2cgeoportal,
-from start of 2014 both projects will synchronize their major versions.</p>
-<p>Then <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0.0rc1</span></code> for the first release candidate
+<p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes ngeo and c2cgeoportal;
+since 2014, both projects are synchronizing their major versions.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0.0rc1</span></code> for the first release candidate
 of the version <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">2.0.1</span></code> for
 the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.1</span></code>, …</p>
 </div>
 <div class="section" id="pre-release-task">
 <span id="developer-build-release-pre-release-task"></span><h2>Pre release task<a class="headerlink" href="#pre-release-task" title="Permalink to this headline">¶</a></h2>
-<p>Before doing a release you should merge all the previous branch on this one:</p>
+<p>Before doing a release, you should merge all the previous branches on this one:</p>
 <ul>
 <li><p class="first">Merge the release changes (on <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> and on <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>)
 to the upper branches i.e.: <code class="docutils literal notranslate"><span class="pre">2.2</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.3</span></code>, <code class="docutils literal notranslate"><span class="pre">2.3</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">2.4</span></code> (master).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> merge see if an alembic merge should be done:</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> merge, see if an alembic merge should be done:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -67,13 +67,13 @@ span.prompt1:before {
 <span class="prompt1">./docker-run alembic <span class="se">\</span>
     --config<span class="o">=</span>geoportal/tests/functional/alembic.ini <span class="se">\</span>
     --name<span class="o">=</span>static heads</span>
-</pre></div></div><p>If yes create the merge with:</p>
+</pre></div></div><p>If yes, create the merge with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run alembic <span class="se">\</span>
     --config<span class="o">=</span>geoportal/tests/functional/alembic.ini --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
     merge --message<span class="o">=</span><span class="s2">&quot;Merge &lt;src&gt; and &lt;dst&gt; branches&quot;</span> <span class="se">\</span>
     &lt;rev <span class="m">1</span>&gt; &lt;rev <span class="m">2</span>&gt;</span>
 </pre></div></div><p>Remove the import and replace the core of the method by <code class="docutils literal notranslate"><span class="pre">pass</span></code> in the generated file.</p>
-<p class="last">And finally add the new file.</p>
+<p class="last">Finally, add the new file.</p>
 </div>
 </li>
 </ul>
