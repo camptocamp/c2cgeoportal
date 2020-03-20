@@ -1,3 +1,5 @@
+##### 2.4.1.98
+* Doc typos dev chapter [c2cgeoportal#6044](https://github.com/camptocamp/c2cgeoportal/pull/6044)
 ##### 2.4.1.97
 * Add some other missing port [c2cgeoportal#6040](https://github.com/camptocamp/c2cgeoportal/pull/6040)
 ##### 2.4.1.96
