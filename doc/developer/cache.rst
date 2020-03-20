@@ -10,13 +10,13 @@ We have three kinds of services:
  * Cache related to the application version (**public_cache**).
  * Cache related to the application version and the current role (**private_cache**).
 
-For some service we also set the header ``Vary`` to ``Accept-Language``
+For some services, we also set the header ``Vary`` to ``Accept-Language``
 to have one cache per language.
 
 Server side
 -----------
 
-On the server side we set the ``Cache-Control`` header with a different value
+On the server side, we set the ``Cache-Control`` header with a different value
 depending on the cache type.
 
  * **no_cache**: ``no-cache``.
