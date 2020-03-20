@@ -6,14 +6,14 @@ Create a new release
 Vocabulary
 ----------
 
-On this page I use the word ``version`` for a major version of MapFish
+On this page, we use the word ``version`` for a major version of MapFish
 Geoportal (2.0), and the word ``release`` for each step in this version
 (2.0.0rc1, 2.0.0, 2.0.1, ...).
 
-``MapFish Geoportal`` is the pack that includes ngeo and c2cgeoportal,
-from start of 2014 both projects will synchronize their major versions.
+``MapFish Geoportal`` is the pack that includes ngeo and c2cgeoportal;
+since 2014, both projects are synchronizing their major versions.
 
-Then ``<release>`` can be ``2.0.0rc1`` for the first release candidate
+For example, ``<release>`` can be ``2.0.0rc1`` for the first release candidate
 of the version ``2.0``, ``2.0.0`` for the final release, ``2.0.1`` for
 the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
 
@@ -22,14 +22,14 @@ the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
 Pre release task
 ----------------
 
-Before doing a release you should merge all the previous branch on this one:
+Before doing a release, you should merge all the previous branches on this one:
 
 * Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
   to the upper branches i.e.: ``2.2`` => ``2.3``, ``2.3`` => ``2.4`` (master).
 
   .. note::
 
-     On ``c2cgeoportal`` merge see if an alembic merge should be done:
+     On ``c2cgeoportal`` merge, see if an alembic merge should be done:
 
      .. prompt:: bash
 
@@ -40,7 +40,7 @@ Before doing a release you should merge all the previous branch on this one:
             --config=geoportal/tests/functional/alembic.ini ${'\\'}
             --name=static heads
 
-     If yes create the merge with:
+     If yes, create the merge with:
 
      .. prompt:: bash
 
@@ -51,7 +51,7 @@ Before doing a release you should merge all the previous branch on this one:
 
      Remove the import and replace the core of the method by ``pass`` in the generated file.
 
-     And finally add the new file.
+     Finally, add the new file.
 
 ngeo
 ----
