@@ -1,7 +1,15 @@
 [{{package}}]
-host=${PGHOST}
-dbname=${PGDATABASE}
+host=${PGHOST_SLAVE}
+port=${PGPORT_SLAVE}
+sslmode=${PGSSLMODE}
 user=${PGUSER}
 password=${PGPASSWORD}
+dbname=${PGDATABASE}
+
+[{{package}}_master]
+host=${PGHOST}
 port=${PGPORT}
 sslmode=${PGSSLMODE}
+user=${PGUSER}
+password=${PGPASSWORD}
+dbname=${PGDATABASE}
