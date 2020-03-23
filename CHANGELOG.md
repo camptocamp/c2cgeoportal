@@ -1,3 +1,6 @@
+##### 2.4.1.99
+* Doc typos integrator chapter [c2cgeoportal#6008](https://github.com/camptocamp/c2cgeoportal/pull/6008)
+* Allow to set goodness of fit parameter for labels [ngeo#5621](https://github.com/camptocamp/ngeo/pull/5621)
 ##### 2.4.1.98
 * Doc typos dev chapter [c2cgeoportal#6044](https://github.com/camptocamp/c2cgeoportal/pull/6044)
 ##### 2.4.1.97
