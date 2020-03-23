@@ -1,6 +1,6 @@
 ---
 vars:
-  schema: '{PGSCHEMA}'
+  schema: '${PGSCHEMA}'
   schema_static: '{PGSCHEMA_STATIC}'
   sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
   sqlalchemy_slave.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}
@@ -18,8 +18,6 @@ environment:
   - name: PGPORT
     default: 5432
   - PGDATABASE
-  - name: PGSCHEMA
-    default: main
   - name: PGSCHEMA_STATIC
     default: main_static
 interpreted: {}
