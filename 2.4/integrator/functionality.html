@@ -109,15 +109,15 @@ key/value pair: <code class="docutils literal notranslate"><span class="pre">&qu
 </dl>
 </div>
 <div class="section" id="usage-in-javascript-client">
-<h2>Usage in Javascript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this headline">¶</a></h2>
-<p>The functionalities will be send to the Javascript client application through the user web service.
-To be published a functionality should be present in <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code> parameter
-in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
+<h2>Usage in JavaScript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this headline">¶</a></h2>
+<p>The functionalities will be sent to the JavaScript client application through the user web service.
+To be published, a functionality should be present in the parameter <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code>
+parameter in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
 <div class="section" id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
 <h3>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Permalink to this headline">¶</a></h3>
 <p>A default basemap may be automatically loaded when the user selects a given
-theme.</p>
-<p>Then, in the administration interface, if not available yet, define a
+theme. This can be configured in the administration interface, as follows:
+if not available yet, define a
 <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionality containing the basemap reference. Edit the
 theme and select the basemap to load in the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> list. If
 several <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> items are selected, only the first one will be

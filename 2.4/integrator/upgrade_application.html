@@ -165,7 +165,7 @@ structure, you can use the script <code class="docutils literal notranslate"><sp
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">.build/venv/bin/themev1tov2 -i geoportal/production.ini</span>
 </pre></div></div><p>Text translations for ngeo clients are separate and different from text translations for CGXP clients.
 To migrate your text translations from CGXP to ngeo, you can use the script <code class="docutils literal notranslate"><span class="pre">.build/venv/bin/l10nv1tov2</span></code>.
-For example, for converting french texts, in non docker context, the script can be used as follows:</p>
+For example, for converting french texts, the script can be used as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose up -d</span>
 <span class="prompt1">./docker-compose-run l10nv1tov2 fr <span class="se">\</span>
      geoportal/&lt;package&gt;_geoportal/static/js/Proj/Lang/fr.js <span class="se">\</span>

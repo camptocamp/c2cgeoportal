@@ -71,9 +71,9 @@ For a non-Docker project, do:
    In mapfiles, attributes added by mapserver substitution will not be collected
    for translation.
 
-~~~~~~~~~~~~~~~~~~~~~~~
-Collecte custom strings
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+Collect custom strings
+~~~~~~~~~~~~~~~~~~~~~~
 
 If the standard system can not collect some strings, you can add them manually in
 one of your JavaScript application controllers:

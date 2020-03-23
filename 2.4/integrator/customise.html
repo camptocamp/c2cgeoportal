@@ -40,8 +40,8 @@
 <span id="integrator-customise"></span><h1>Customize the application<a class="headerlink" href="#customize-the-application" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p>The application can be customized in the following manners:
-<code class="docutils literal notranslate"><span class="pre">functionalities</span></code>, <code class="docutils literal notranslate"><span class="pre">UI</span> <span class="pre">metadata</span></code> and data model extensions.</p>
+<p>The application can be customized with the following mechanisms:
+functionalities, UI metadata and data model extensions.</p>
 <p>The functionalities will be attached to the <code class="docutils literal notranslate"><span class="pre">role</span></code> and the <code class="docutils literal notranslate"><span class="pre">theme</span></code>,
 and the UI metadata will be attached to all the elements of the theme.</p>
 <p>They should be configured in the vars file, in the <code class="docutils literal notranslate"><span class="pre">admin_interface</span></code> /
@@ -62,7 +62,7 @@ It is a list of objects which have a <code class="docutils literal notranslate">
 </ul>
 <p>Check <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> for examples of usage.</p>
 <p>In order to inherit the default values from <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>, make sure the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> section contains
-the item <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionnalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">admin_interface.available_metadata</span></code>.</p>
+the item <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">admin_interface.available_metadata</span></code>.</p>
 <div class="section" id="url">
 <h2>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
 <p>In the admin interface, we can use for all URL definitions the following special schema:</p>
@@ -159,15 +159,15 @@ key/value pair: <code class="docutils literal notranslate"><span class="pre">&qu
 </dl>
 </div>
 <div class="section" id="usage-in-javascript-client">
-<h3>Usage in Javascript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this headline">¶</a></h3>
-<p>The functionalities will be send to the Javascript client application through the user web service.
-To be published a functionality should be present in <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code> parameter
-in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
+<h3>Usage in JavaScript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this headline">¶</a></h3>
+<p>The functionalities will be sent to the JavaScript client application through the user web service.
+To be published, a functionality should be present in the parameter <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code>
+parameter in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
 <div class="section" id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
 <h4>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Permalink to this headline">¶</a></h4>
 <p>A default basemap may be automatically loaded when the user selects a given
-theme.</p>
-<p>Then, in the administration interface, if not available yet, define a
+theme. This can be configured in the administration interface, as follows:
+if not available yet, define a
 <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionality containing the basemap reference. Edit the
 theme and select the basemap to load in the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> list. If
 several <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> items are selected, only the first one will be
@@ -177,8 +177,8 @@ taken into account.</p>
 </div>
 <div class="section" id="extend-the-data-model">
 <h2>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Permalink to this headline">¶</a></h2>
-<p>The Data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>.</p>
-<p>For example to add some user details, including a link to a new class named “Title”,
+<p>The data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>.</p>
+<p>For example, to add some user details, including a link to a new class named “Title”,
 add to <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
 <span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>

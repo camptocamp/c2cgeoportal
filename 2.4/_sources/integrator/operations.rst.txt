@@ -3,9 +3,7 @@
 Application Operation
 ---------------------
 
-This chapter describes features and configurations that are useful for IT-operations.
-
-At ``<application base URL>/c2c``, you have a page containing services useful for an administrator.
+This chapter describes features and configurations that are useful for IT-operations;
 
 .. toctree::
    :maxdepth: 1

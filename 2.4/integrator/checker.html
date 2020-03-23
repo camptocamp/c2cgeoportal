@@ -38,9 +38,9 @@
             
   <div class="section" id="automated-check">
 <span id="integrator-checker"></span><h1>Automated check<a class="headerlink" href="#automated-check" title="Permalink to this headline">¶</a></h1>
-<p>c2cgeoportal applications include functionality for testing and assessing that the application is correctly
-functioning, i.e. that its web services respond as expected.</p>
-<p>For this purpose we have a <em>checker</em> and a <em>check_collector</em>.
+<p>c2cgeoportal applications include functionality for testing and assessing that the application is
+functioning correctly, i.e. that its web services respond as expected.</p>
+<p>For this purpose, c2cgeoportal provides a <em>checker</em> and a <em>check_collector</em>.
 These (especially the collector) are meant to be used by a
 monitoring system like Nagios to check that the application is alive.</p>
 <p>They integrate into c2cwsgiutils’s health check service. The return codes are:</p>
@@ -61,7 +61,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <li><code class="docutils literal notranslate"><span class="pre">2</span></code>: Vital checkers (other database connection, redis connexions, versions).</li>
 <li><code class="docutils literal notranslate"><span class="pre">3</span></code>: Quick internal checks.</li>
 <li><code class="docutils literal notranslate"><span class="pre">4</span></code>: Slow service checks (phantomjs checks, theme).</li>
-<li><code class="docutils literal notranslate"><span class="pre">5</span></code>: Maybe cost service checks (print a page).</li>
+<li><code class="docutils literal notranslate"><span class="pre">5</span></code>: Service checks (caution: these can result in costs, for example, print a page).</li>
 <li><code class="docutils literal notranslate"><span class="pre">10</span></code>: collector of different sites.</li>
 </ul>
 <p>See also: <a class="reference external" href="https://github.com/camptocamp/c2cwsgiutils/#health-checks">https://github.com/camptocamp/c2cwsgiutils/#health-checks</a></p>
@@ -73,7 +73,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <div>&lt;project_url&gt;/c2c/health_check?max_level=9</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">For non Docker project the <code class="docutils literal notranslate"><span class="pre">&lt;project_url&gt;</span></code> should end with <code class="docutils literal notranslate"><span class="pre">/wsgi</span></code>.</p>
+<p class="last">In a non Docker project, the <code class="docutils literal notranslate"><span class="pre">&lt;project_url&gt;</span></code> should end with <code class="docutils literal notranslate"><span class="pre">/wsgi</span></code>.</p>
 </div>
 <div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
@@ -88,8 +88,8 @@ monitoring system like Nagios to check that the application is alive.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>If some of the checked services require an authenticated user, the
-<code class="docutils literal notranslate"><span class="pre">forward_headers</span></code> allows to forward <code class="docutils literal notranslate"><span class="pre">Cookie</span></code> or <code class="docutils literal notranslate"><span class="pre">Authorisation</span></code> headers
-in the underlying requests.</p>
+<code class="docutils literal notranslate"><span class="pre">forward_headers</span></code> configuration allows to forward <code class="docutils literal notranslate"><span class="pre">Cookie</span></code> or <code class="docutils literal notranslate"><span class="pre">Authorisation</span></code> headers
+from the underlying requests.</p>
 <div class="code yaml last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">checker</span><span class="p">:</span>
     <span class="n">forward_headers</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Cookie&#39;</span><span class="p">,</span> <span class="s1">&#39;Authorisation&#39;</span><span class="p">]</span>
 </pre></div>
@@ -121,7 +121,7 @@ checker_url: https://${host}${entrypoint}check_collector?
 </div>
 <div class="section" id="fulltextsearch">
 <h3><code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code><a class="headerlink" href="#fulltextsearch" title="Permalink to this headline">¶</a></h3>
-<p>Check that the Full-text search service return an element.</p>
+<p>Check that the Full-text search service returns an element.</p>
 <p>Uses the <code class="docutils literal notranslate"><span class="pre">search</span></code> from configuration as text to search.</p>
 </div>
 <div class="section" id="themes">
@@ -147,23 +147,23 @@ an array of strings that must be in <code class="docutils literal notranslate"><
 <div class="section" id="routes">
 <h3><code class="docutils literal notranslate"><span class="pre">routes</span></code><a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h3>
 <p>Check some routes, configured in <code class="docutils literal notranslate"><span class="pre">routes</span></code> as array of objects with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* ``name`` the route name.
-* ``display_name`` the name to be displayed.
-* ``params`` the used query string as a dictionary.
-* ``level``
-</pre></div>
-</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code>: the route name.</li>
+<li><code class="docutils literal notranslate"><span class="pre">display_name</span></code>: the name to be displayed.</li>
+<li><code class="docutils literal notranslate"><span class="pre">params</span></code>: the used query string as a dictionary.</li>
+<li><code class="docutils literal notranslate"><span class="pre">level</span></code></li>
+</ul>
 <p>In the configuration, we can also fill the <code class="docutils literal notranslate"><span class="pre">routes_disable</span></code> to disable some routes.</p>
 </div>
 <div class="section" id="phantomjs">
 <h3><code class="docutils literal notranslate"><span class="pre">phantomjs</span></code><a class="headerlink" href="#phantomjs" title="Permalink to this headline">¶</a></h3>
 <p>Check with phantomjs that the pages load correctly without errors,
 using the <code class="docutils literal notranslate"><span class="pre">routes</span></code> configuration as an array of route names to check:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* ``name`` the route name.
-* ``params`` the used query string as a dictionary.
-* ``level``
-</pre></div>
-</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code>: the route name.</li>
+<li><code class="docutils literal notranslate"><span class="pre">params</span></code>: the query string to use, configured as a dictionary.</li>
+<li><code class="docutils literal notranslate"><span class="pre">level</span></code></li>
+</ul>
 </div>
 </div>
 <div class="section" id="infrastructure">

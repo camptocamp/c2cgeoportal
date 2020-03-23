@@ -31,14 +31,14 @@ You can change the session timeout in the vars file with:
 How to build your token in your application
 -------------------------------------------
 
-The content of the token is a json like this:
+The content of the token is a json-encoded text like this:
 
 .. code:: json
 
     {
         u: <username>,
         p: <password>,
-        t: <timestamp> // end of validity in second
+        t: <timestamp> // end of validity in seconds
     }
 
 This content is then encrypted in AES with the provided key, and encoded in hexadecimal.

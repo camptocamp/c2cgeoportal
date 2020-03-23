@@ -5,7 +5,7 @@ Create a new application
 
 Creating a new c2cgeoportal application is done by applying two Paste scaffolds
 (a.k.a. templates and scaffolds). These scaffolds are provided by the
-``c2cgeoportal`` package. So to be able to create a c2cgeoportal application
+``c2cgeoportal`` package. Therefore, to be able to create a c2cgeoportal application,
 the ``c2cgeoportal`` package must be installed.
 
 If you already have a c2cgeoportal application installed, and if that
@@ -15,10 +15,10 @@ that is already alongside the existing c2cgeoportal application.
 
 .. note::
 
-    Some c2cgeoportal applications provide their own scaffolds. For example
-    in a multi-project, a *parent* application may provide a scaffold for creating *child*
-    applications. In that case, the c2cgeoportal scaffolds, as well as the
-    application scaffolds, should be applied.
+    Some c2cgeoportal applications provide their own scaffolds. For example in a
+    multi-project application, a *parent* application may provide a scaffold for
+    creating *child* applications. In that case, the c2cgeoportal scaffolds, as
+    well as the application scaffolds, should be applied.
 
 Project structure
 -----------------
@@ -30,7 +30,8 @@ created by the c2cgeoportal scaffolds (the ``c2cgeoportal_create`` and
 Install c2cgeoportal
 --------------------
 
-To get ``c2cgeoportal``, you need to get the related docker image:
+To get ``c2cgeoportal``, you need to get the related docker image and the
+``docker-run`` script:
 
 .. prompt:: bash
 
@@ -73,9 +74,9 @@ Create the new application
 The first step in the project creation is to choose a project name
 ``<project>``, and a package name ``<package>``.
 
-Normally the project name should be the same name as the Git repository name.
+Normally, the project name should be the same name as the Git repository name.
 
-The package name should not contain an underscore (``_``) because of an
+The package name should not contain any underscores (``_``), because of an
 issue with Pip.
 
 To create the application, first apply the ``c2cgeoportal_create`` scaffold:
@@ -86,7 +87,8 @@ To create the application, first apply the ``c2cgeoportal_create`` scaffold:
        --version=<release|version> \
        pcreate -s c2cgeoportal_create --package-name <package> <project>
 
-And for the non Docker version, apply also the ``c2cgeoportal_nondockercreate`` scaffold:
+If you want to use the non Docker runtime, apply also the
+``c2cgeoportal_nondockercreate`` scaffold:
 
 .. prompt:: bash
 
@@ -98,8 +100,8 @@ And for the non Docker version, apply also the ``c2cgeoportal_nondockercreate`` 
 
     Do not add any '/' after the project name.
 
-You'll be asked to enter the SRID and the Apache vhost for this project. Note
-that the default extent would be defined directly from the srid. You can change
+You will be asked to enter the SRID and the Apache vhost for this project. Note
+that the default extent would be defined directly from the SRID. You can change
 it later.
 
 .. note::
@@ -156,7 +158,7 @@ Put the application under revision control
 ------------------------------------------
 
 Now is a good time to put the application source code under revision
-control (Git, preferably).
+control with Git.
 
 To add a project in a new repository
 ....................................
@@ -183,7 +185,7 @@ Concepts
 ........
 
 * Makefile: These files are environment configuration files. Each environment will
-  have its configuration file (developer, preprod, prod)
+  have its configuration file (for example: developer, preprod, prod)
 * vars_xxx.yaml: These files are application configuration files. Generally only
   one file is needed to configure your application.
 
@@ -222,7 +224,7 @@ Use of dynamic variables
 ........................
 
 Variables used in the application configuration files (files ``vars.yaml``)
-can be made dynamic by means of environment variable. For this, in the main file
+can be made dynamic by means of environment variables. For this, in the main file
 ``vars.yaml``, add a block ``interpreted`` at the bottom of the file.
 
 In this same file, you can change the value of a parameter by putting it in
@@ -277,7 +279,7 @@ Do not forget to add your changes to git:
 
    Additional notes for Windows users:
 
-   To have a working PNG print you should get and edit the file
+   To have a working PNG print, you should get and edit the file
    ``print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml``,
    get it:
 
@@ -301,8 +303,8 @@ Do not forget to add your changes to git:
 
    with the right path to ``convert``.
 
-After creation and minimal setup the application is ready to be installed.
-Then follow the sections in the install application guide:
+Now, the application is ready to be installed.
+Follow the sections in the install application guide:
 
 * :ref:`integrator_install_application_setup_database`.
 * :ref:`integrator_install_application_create_schema`.
@@ -318,7 +320,7 @@ Then follow the sections in the install application guide:
 
 .. note::
 
-    If you create the main instance you should do the whole
+    If you create the main instance, you should do the whole
     database creation as described in :ref:`integrator_install_application`,
     except the 'Get the application source tree' chapter.
 
@@ -341,7 +343,7 @@ Please see the Mako documentation for details:
 
 https://docs.makotemplates.org/en/latest/
 
-The result is also a file without the ``.mako``.
+The result of the templating is a file without the ``.mako`` extension.
 
 **Syntax**
 
@@ -353,4 +355,6 @@ In ``.mako`` files, the variable replacement syntax is as follows:
 
 For example:
 
-* ``${directory}``
+.. code:: mako
+
+  ${directory}

@@ -68,7 +68,7 @@ names</em>. If this checkbox is enabled, you will have unreliable layer names.</
 <p>In the <em>WMS capabilities</em> section, you should <strong>check</strong> the checkbox <em>Add geometry to feature response</em> in
 order to make the WMS GetFeatureInfo work correctly.</p>
 <p>In the <em>WFS capabilities</em> section, you should check the layers that need to be available in the WFS service.
-Also take care on the Update Insert delete column to make the layer available through the WFS transactional
+Also take care on the Update Insert Delete column to make the layer available through the WFS transactional
 API.</p>
 <p>Your QGIS project layers’ CRS should all be in the same CRS. This is subject to change.</p>
 <p>Finally, edit your project file manually and set:</p>
@@ -169,7 +169,7 @@ and the configuration should be as follows:</p>
 <div class="section" id="access-restriction">
 <h3>Access Restriction<a class="headerlink" href="#access-restriction" title="Permalink to this headline">¶</a></h3>
 <p>The access restriction is available only for Docker projects.</p>
-<p>We provide an Docker image named <code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> with tag pattern:
+<p>We provide a Docker image named <code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> with tag pattern:
 <code class="docutils literal notranslate"><span class="pre">gmf&lt;Major</span> <span class="pre">GeoMapFish</span> <span class="pre">version}-qgis${Major</span> <span class="pre">QGIS}</span></code>.</p>
 <p>To configure a single project, just provide the OGC server name in the environment variable named:
 <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_OGCSERVER</span></code>.</p>
@@ -187,7 +187,7 @@ value of the OGC server.</p>
 </div>
 <div class="section" id="project-in-database">
 <h3>Project in Database<a class="headerlink" href="#project-in-database" title="Permalink to this headline">¶</a></h3>
-<p>If you store the project in the database you should set the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable
+<p>If you store the project in the database, you should set the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable
 to something like that:
 <code class="docutils literal notranslate"><span class="pre">postgresql://&lt;dbuser&gt;:&lt;dbpass&gt;&#64;&lt;dbhost&gt;:&lt;dbport&gt;?sslmode=disable&amp;dbname=&lt;dbname&gt;&amp;schema=&lt;dbschema&gt;&amp;project=&lt;projectname&gt;</span></code>.</p>
 <p>If you specify it in the <cite>MAP</cite> parameter for the  OGC proxy, don’t forget to correctly encode it, you can use this

@@ -40,7 +40,7 @@
 <span id="integrator-make"></span><h1>Build configuration<a class="headerlink" href="#build-configuration" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="makefiles">
 <h2>Makefiles<a class="headerlink" href="#makefiles" title="Permalink to this headline">¶</a></h2>
-<p>Usually we have the following makefile includes:
+<p>Usually we have the following makefile hierarchy:
 <code class="docutils literal notranslate"><span class="pre">&lt;user&gt;.mk</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">CONST_Makefile.mk</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">CONST_Makefile.mk</span></code> is a huge makefile that is maintained by the
 GeoMapFish developers.</p>
@@ -97,15 +97,12 @@ you should export your variable as follows:</p>
 <p>The following variables may be set in the makefiles:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project YAML configuration file.</li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: If <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> the <code class="docutils literal notranslate"><span class="pre">CSS</span></code> and <code class="docutils literal notranslate"><span class="pre">JS</span></code> files are not minified and the</dt>
-<dd><code class="docutils literal notranslate"><span class="pre">development.ini</span></code> pyramid config file is used, default is <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>.</dd>
-</dl>
-</li>
+<li><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: If <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> the <code class="docutils literal notranslate"><span class="pre">CSS</span></code> and <code class="docutils literal notranslate"><span class="pre">JS</span></code> files are not minified and the
+<code class="docutils literal notranslate"><span class="pre">development.ini</span></code> pyramid config file is used, default is <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">DISABLE_BUILD_RULES</span></code>: List of rules we want to disable, default is empty.</li>
 <li><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code>: List of available languages, default is <code class="docutils literal notranslate"><span class="pre">en</span> <span class="pre">fr</span> <span class="pre">de</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>: List of ngeo interfaces, default is <code class="docutils literal notranslate"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">PRINT</span></code>: Mapfish print is enabled, default is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">PRINT</span></code>: Mapfish Print is enabled, default is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN</span></code>: <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to indicate that we use TileCloud-chain, default is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</li>
 </ul>
 </div>
@@ -133,8 +130,8 @@ span.prompt1:before {
 <p class="first admonition-title">Note</p>
 <p>If you have an issue with the <code class="docutils literal notranslate"><span class="pre">dirmngr</span></code> package you can try to add:
 <code class="docutils literal notranslate"><span class="pre">pinentry-mode</span> <span class="pre">loopback</span></code> in your <code class="docutils literal notranslate"><span class="pre">~/.gnupg/gpg.conf</span></code> file and
-<code class="docutils literal notranslate"><span class="pre">allow-loopback-pinentry``in</span> <span class="pre">your</span> <span class="pre">``~/.gnupg/gpg-agent.conf</span></code> file.
-Then it should be fixed or you can also try to run it in Docker:
+<code class="docutils literal notranslate"><span class="pre">allow-loopback-pinentry</span></code> in your <code class="docutils literal notranslate"><span class="pre">~/.gnupg/gpg-agent.conf</span></code> file.
+Alternatively, you can try to run it in Docker:
 <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">--home</span> <span class="pre">make</span> <span class="pre">--makefile=&lt;user&gt;.mk</span> <span class="pre">secrets</span></code></p>
 <p class="last">If you have an error about opening <code class="docutils literal notranslate"><span class="pre">/dev/tty</span></code>, try to run it in Docker as root:
 <code class="docutils literal notranslate"><span class="pre">./docker-run</span> <span class="pre">--root</span> <span class="pre">--home</span> <span class="pre">make</span> <span class="pre">--makefile=&lt;user&gt;.mk</span> <span class="pre">secrets</span></code></p>

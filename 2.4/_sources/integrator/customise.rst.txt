@@ -7,8 +7,8 @@ Customize the application
 .. toctree::
    :maxdepth: 2
 
-The application can be customized in the following manners:
-``functionalities``, ``UI metadata`` and data model extensions.
+The application can be customized with the following mechanisms:
+functionalities, UI metadata and data model extensions.
 
 The functionalities will be attached to the ``role`` and the ``theme``,
 and the UI metadata will be attached to all the elements of the theme.
@@ -33,7 +33,7 @@ The type can be:
 Check ``CONST_vars.yaml`` for examples of usage.
 
 In order to inherit the default values from ``CONST_vars.yaml``, make sure the ``update_paths`` section contains
-the item ``admin_interface.available_functionnalities`` or respectively ``admin_interface.available_metadata``.
+the item ``admin_interface.available_functionalities`` or respectively ``admin_interface.available_metadata``.
 
 URL
 ---

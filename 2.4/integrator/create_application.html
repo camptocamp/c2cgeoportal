@@ -40,7 +40,7 @@
 <span id="integrator-create-application"></span><h1>Create a new application<a class="headerlink" href="#create-a-new-application" title="Permalink to this headline">¶</a></h1>
 <p>Creating a new c2cgeoportal application is done by applying two Paste scaffolds
 (a.k.a. templates and scaffolds). These scaffolds are provided by the
-<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package. So to be able to create a c2cgeoportal application
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package. Therefore, to be able to create a c2cgeoportal application,
 the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package must be installed.</p>
 <p>If you already have a c2cgeoportal application installed, and if that
 application uses a version of c2cgeoportal that fits you, then you do not need
@@ -48,10 +48,10 @@ to install c2cgeoportal again. Instead, you can use the version of c2cgeoportal
 that is already alongside the existing c2cgeoportal application.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Some c2cgeoportal applications provide their own scaffolds. For example
-in a multi-project, a <em>parent</em> application may provide a scaffold for creating <em>child</em>
-applications. In that case, the c2cgeoportal scaffolds, as well as the
-application scaffolds, should be applied.</p>
+<p class="last">Some c2cgeoportal applications provide their own scaffolds. For example in a
+multi-project application, a <em>parent</em> application may provide a scaffold for
+creating <em>child</em> applications. In that case, the c2cgeoportal scaffolds, as
+well as the application scaffolds, should be applied.</p>
 </div>
 <div class="section" id="project-structure">
 <h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
@@ -61,7 +61,8 @@ created by the c2cgeoportal scaffolds (the <code class="docutils literal notrans
 </div>
 <div class="section" id="install-c2cgeoportal">
 <h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
-<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, you need to get the related docker image:</p>
+<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, you need to get the related docker image and the
+<code class="docutils literal notranslate"><span class="pre">docker-run</span></code> script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -98,14 +99,15 @@ c2cgeoportal application you want to create the new application from:</p>
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
 <p>The first step in the project creation is to choose a project name
 <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code>, and a package name <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code>.</p>
-<p>Normally the project name should be the same name as the Git repository name.</p>
-<p>The package name should not contain an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) because of an
+<p>Normally, the project name should be the same name as the Git repository name.</p>
+<p>The package name should not contain any underscores (<code class="docutils literal notranslate"><span class="pre">_</span></code>), because of an
 issue with Pip.</p>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_create --package-name &lt;package&gt; &lt;project&gt;</span>
-</pre></div></div><p>And for the non Docker version, apply also the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockercreate</span></code> scaffold:</p>
+</pre></div></div><p>If you want to use the non Docker runtime, apply also the
+<code class="docutils literal notranslate"><span class="pre">c2cgeoportal_nondockercreate</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run -ti --image<span class="o">=</span>camptocamp/geomapfish-build <span class="se">\</span>
     --version<span class="o">=</span>&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
     pcreate -s c2cgeoportal_nondockercreate &lt;project&gt;</span>
@@ -113,8 +115,8 @@ issue with Pip.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">Do not add any ‘/’ after the project name.</p>
 </div>
-<p>You’ll be asked to enter the SRID and the Apache vhost for this project. Note
-that the default extent would be defined directly from the srid. You can change
+<p>You will be asked to enter the SRID and the Apache vhost for this project. Note
+that the default extent would be defined directly from the SRID. You can change
 it later.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -152,7 +154,7 @@ Following this rule is important for easier updates.</p>
 <div class="section" id="put-the-application-under-revision-control">
 <h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
 <p>Now is a good time to put the application source code under revision
-control (Git, preferably).</p>
+control with Git.</p>
 <div class="section" id="to-add-a-project-in-a-new-repository">
 <h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this headline">¶</a></h3>
 <p>Add the project:</p>
@@ -170,7 +172,7 @@ control (Git, preferably).</p>
 <h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Makefile: These files are environment configuration files. Each environment will
-have its configuration file (developer, preprod, prod)</li>
+have its configuration file (for example: developer, preprod, prod)</li>
 <li>vars_xxx.yaml: These files are application configuration files. Generally only
 one file is needed to configure your application.</li>
 </ul>
@@ -203,7 +205,7 @@ However, in some use cases extending <code class="docutils literal notranslate">
 <div class="section" id="use-of-dynamic-variables">
 <h3>Use of dynamic variables<a class="headerlink" href="#use-of-dynamic-variables" title="Permalink to this headline">¶</a></h3>
 <p>Variables used in the application configuration files (files <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>)
-can be made dynamic by means of environment variable. For this, in the main file
+can be made dynamic by means of environment variables. For this, in the main file
 <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, add a block <code class="docutils literal notranslate"><span class="pre">interpreted</span></code> at the bottom of the file.</p>
 <p>In this same file, you can change the value of a parameter by putting it in
 uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">HOST</span></code>). This parameter must be listed in the
@@ -246,7 +248,7 @@ the parent site check_collector configuration.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Additional notes for Windows users:</p>
-<p>To have a working PNG print you should get and edit the file
+<p>To have a working PNG print, you should get and edit the file
 <code class="docutils literal notranslate"><span class="pre">print/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span></code>,
 get it:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">wget https://raw.github.com/mapfish/mapfish-print/master/sample-spring/imagemagick/WEB-INF/classes/imagemagick-mapfish-spring-application-context-override.xml</span>
@@ -266,8 +268,8 @@ get it:</p>
 </div>
 <p class="last">with the right path to <code class="docutils literal notranslate"><span class="pre">convert</span></code>.</p>
 </div>
-<p>After creation and minimal setup the application is ready to be installed.
-Then follow the sections in the install application guide:</p>
+<p>Now, the application is ready to be installed.
+Follow the sections in the install application guide:</p>
 <ul class="simple">
 <li><a class="reference internal" href="install_application.html#integrator-install-application-setup-database"><span class="std std-ref">Set up the database</span></a>.</li>
 <li><a class="reference internal" href="install_application.html#integrator-install-application-create-schema"><span class="std std-ref">Create the schemas</span></a>.</li>
@@ -280,7 +282,7 @@ Then follow the sections in the install application guide:</p>
 </pre></div></div></div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you create the main instance you should do the whole
+<p class="last">If you create the main instance, you should do the whole
 database creation as described in <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>,
 except the ‘Get the application source tree’ chapter.</p>
 </div>
@@ -296,16 +298,16 @@ have set either in the main <code class="docutils literal notranslate"><span cla
 templating system, such as for loops, conditions, sub-templates, etc.</p>
 <p>Please see the Mako documentation for details:</p>
 <p><a class="reference external" href="https://docs.makotemplates.org/en/latest/">https://docs.makotemplates.org/en/latest/</a></p>
-<p>The result is also a file without the <code class="docutils literal notranslate"><span class="pre">.mako</span></code>.</p>
+<p>The result of the templating is a file without the <code class="docutils literal notranslate"><span class="pre">.mako</span></code> extension.</p>
 <p><strong>Syntax</strong></p>
 <p>In <code class="docutils literal notranslate"><span class="pre">.mako</span></code> files, the variable replacement syntax is as follows:</p>
 <div class="code mako highlight-default notranslate"><div class="highlight"><pre><span></span>${&lt;variablename&gt;}
 </pre></div>
 </div>
 <p>For example:</p>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">${directory}</span></code></li>
-</ul>
+<div class="code mako highlight-default notranslate"><div class="highlight"><pre><span></span>${directory}
+</pre></div>
+</div>
 </div>
 </div>
 </div>

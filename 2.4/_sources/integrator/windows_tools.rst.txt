@@ -1,8 +1,8 @@
 .. _integrator_preparative_work:
 
-============================================================
-Configuring Windows tools required to connect to our servers
-============================================================
+========================================================
+Configuring Windows tools required to connect to servers
+========================================================
 
 Creating a SSH Key with Windows
 ===============================
@@ -20,10 +20,10 @@ Creating a SSH Key with Windows
 
 5. Save the private and public part of the key. Send the public part to the system administrators of the server you want to have access.
 
-Add your SSH Public Key to Github
+Add your SSH Public Key to GitHub
 =================================
 
-In order to pull and push to Github from your server, you need to add the key to Github: https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account
+In order to pull and push to GitHub from your server, you need to add the key to GitHub: https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account
 
 Connecting to a server from Windows
 ===================================

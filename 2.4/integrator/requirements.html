@@ -47,7 +47,7 @@ components installed on your system:</p>
 <li><strong>Python</strong> &gt;= 3.5</li>
 <li><strong>Python-netifaces</strong></li>
 <li><strong>Apache</strong> &gt;= 2.4 (optional, can be used as a front for SSL)</li>
-<li><strong>PostgreSQL</strong> &gt;= 9.1/<strong>PostGIS</strong> &gt;= 2.1</li>
+<li><strong>PostgreSQL</strong> &gt;= 9.1/<strong>PostGIS</strong> &gt;= 2.1 in UTF-8</li>
 <li><strong>gnupg</strong> (with <strong>dirmngr</strong>) optional</li>
 </ul>
 <div class="section" id="required-apache-modules">
@@ -90,8 +90,8 @@ span.prompt1:before {
 </pre></div></div></div>
 <div class="section" id="configure-git">
 <h3>Configure Git<a class="headerlink" href="#configure-git" title="Permalink to this headline">¶</a></h3>
-<p>Cygwin comes with its own git package. It might be a really good idea to configure
-Cygwin’s git for Windows. To do so:</p>
+<p>Cygwin comes with its own git package. Configure
+Cygwin’s git for Windows as follows:</p>
 <ul class="simple">
 <li>Open a Cygwin bash</li>
 <li>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">core.autocrlf</span> <span class="pre">true</span></code></li>

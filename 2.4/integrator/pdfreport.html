@@ -40,13 +40,13 @@
 <span id="integrator-pdfreport"></span><h1>PDF Reporting<a class="headerlink" href="#pdf-reporting" title="Permalink to this headline">¶</a></h1>
 <p>c2cgeoportal offers a <em>pdfreport</em> webservice that can be used to generate
 advanced PDF reports about a given feature.</p>
-<p>It is based upon <a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapfishPrint version 3</a>
+<p>It is based upon <a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">Mapfish Print version 3</a>
 and <a class="reference external" href="https://community.jaspersoft.com/project/jasperreports-library">Jasper Reports</a>.</p>
 <p>The webservice is called using the following URL schema:
 <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;&lt;entrypoint&gt;/pdfreport/&lt;layername&gt;/&lt;featureid&gt;</span></code>.</p>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>The service is configured in the main <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file of the project as in the following example:</p>
+<p>The service is configured in the main <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file of the project, as shown in the following example:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
     <span class="n">pdfreport</span><span class="p">:</span>
@@ -100,9 +100,9 @@ and <a class="reference external" href="https://community.jaspersoft.com/project
     <span class="o">-</span> <span class="n">pdfreport</span>
 </pre></div>
 </div>
-<p>with the following parameters:</p>
+<p>Regarding the configuration parameters,</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">print_url</span></code> is the local URL of the MapFish Print version 3 instance.</li>
+<li><code class="docutils literal notranslate"><span class="pre">print_url</span></code> is the local URL of the MapFish Print instance.</li>
 <li><code class="docutils literal notranslate"><span class="pre">defaults</span></code> contains the default values of parameters not provided explicitly for a given layer.</li>
 <li><code class="docutils literal notranslate"><span class="pre">layers</span></code> is an optional per-layer list of settings specific to the listed layers. The entries of the
 list are the layernames provided as argument of the webservice. If a layer is not listed, the default
@@ -110,13 +110,13 @@ parameters above are used.</li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">defaults</span></code> and <code class="docutils literal notranslate"><span class="pre">layers</span></code>-specific parameters are:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">ogcserver</span></code>: the used OGC server name.</li>
-<li><code class="docutils literal notranslate"><span class="pre">check_credentials</span></code>: boolean, whether layer credentials are checked before generating the report.
+<li><code class="docutils literal notranslate"><span class="pre">ogcserver</span></code>: the name of OGC server to use.</li>
+<li><code class="docutils literal notranslate"><span class="pre">check_credentials</span></code>: boolean, defines whether layer credentials are checked before generating the report.
 Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">srs</span></code>: projection code (required when showing the map).</li>
 <li><code class="docutils literal notranslate"><span class="pre">spec</span></code>: optional template used to build the <code class="docutils literal notranslate"><span class="pre">spec</span></code> argument sent to the MapFish Print webapp.</li>
 <li><code class="docutils literal notranslate"><span class="pre">map</span></code>: optional, the map configuration.</li>
-<li><code class="docutils literal notranslate"><span class="pre">maps</span></code>: optional, a list of maps configurations.</li>
+<li><code class="docutils literal notranslate"><span class="pre">maps</span></code>: optional, a list of map configurations.</li>
 </ul>
 <p>The map configuration can contains the following:</p>
 <ul>
@@ -154,7 +154,7 @@ layernames must be embedded in double-quotes (“). Defaults to <code class="doc
 <div class="section" id="configuration-of-the-reports">
 <h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Permalink to this headline">¶</a></h2>
 <p>If you use the <code class="docutils literal notranslate"><span class="pre">ids</span></code> in an SQL query, you should use <code class="docutils literal notranslate"><span class="pre">$X{IN,</span> <span class="pre">&lt;column_name&gt;,</span> <span class="pre">$P{ids}}</span></code>
-to avoid SQL injection, <a class="reference external" href="https://jasperreports.sourceforge.net/sample.reference/query/">see also the Jasperreports documentation</a>.</p>
+to avoid SQL injection, <a class="reference external" href="https://jasperreports.sourceforge.net/sample.reference/query/">see also the JasperReports documentation</a>.</p>
 </div>
 </div>
 

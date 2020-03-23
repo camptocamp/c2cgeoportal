@@ -10,10 +10,10 @@ Architecture schema
 .. source file is docker.dia.
 
 
-Images
-------
+Docker Images
+-------------
 
-When we build the project it will generate the following images:
+When you build your application, the following images will be generated:
 
 * ``camptocamp/<package>_geoportal:latest``
 * ``camptocamp/<package>_config:latest``
@@ -24,11 +24,11 @@ The tag is by default ``latest``, but you can change it by setting the ``DOCKER_
 Docker compose files
 --------------------
 
-``docker-compose.yaml``: The main file that describes the composition.
-``docker-compose-lib.yaml``: Provide the base description of Geomapfish Docker services.
-``.env``: Build from ``.env.mako`` the environment variable used by the composition.
-``docker-compose-dev.yaml``: Use to start a webpack dev server.
-``docker-compose-build.yaml``: Used by the ``docker-compose-run`` script.
+* ``docker-compose.yaml``: The main file that describes the composition.
+* ``docker-compose-lib.yaml``: Provideis the base description of Geomapfish Docker services.
+* ``.env``: Generated from ``.env.mako``; contains the environment variables used by the composition.
+* ``docker-compose-dev.yaml``: Used to start a webpack dev server.
+* ``docker-compose-build.yaml``: Used by the ``docker-compose-run`` script.
 
 
 Run the developer composition
@@ -91,10 +91,11 @@ Configure Docker Hub publishing and OpenShift notifications
     relying on Travis to build Docker images that are then pushed to
     Docker Hub.
 
-    Some parts may be adapted to other cases but those tasks are mostly
-    performed by Camptocamp integrators.
+    While some parts of this documentation section may be relevant for other setups as well,
+    this section describes primarily the typical steps performed
+    by Camptocamp integrators in OpenShift.
 
-Edit file `.travis.yml` and update the environment variables:
+Edit the file `.travis.yml` and update the environment variables:
 
 .. code:: yaml
 
@@ -123,8 +124,8 @@ Go to https://hub.docker.com/repositories and create repositories
 ``<package>-geoportal`` and ``<package>-config`` in the Camptocamp
 organization.
 
-Clone https://github.com/camptocamp/private-geo-charts/ and create file
-`` helmfiles/gmf-<package>/travis.env``::
+Clone https://github.com/camptocamp/private-geo-charts/ and create a file
+``helmfiles/gmf-<package>/travis.env``::
 
     TRAVIS_REPO=camptocamp/<package>_gmf
     TRAVIS_ENDPOINT=https://api.travis-ci.com/
@@ -136,7 +137,7 @@ You have to push your changes to OpenShift:
 
     ./helmfile -l project=gmf-<package> -i apply --context 3
 
-Go back to the root of the repo and update the projects tokens typing:
+Go back to the root of the repo and update the project's tokens by typing:
 
 .. prompt:: bash
 
