@@ -82,8 +82,8 @@ def main():
     env_files = [e.format(*args.env) for e in project_env["files"]]
     print("Use env files: {}".format(", ".join(env_files)))
     for env_file in env_files:
-        if not os.path.exists:
-            print("Error: the env file '{}' does not exists.".format(env_file))
+        if not os.path.exists(env_file):
+            print("Error: the env file '{}' does not exist.".format(env_file))
             sys.exit(1)
     env = load_env(env_files)
 
