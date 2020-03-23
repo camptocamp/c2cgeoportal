@@ -6,21 +6,21 @@ Build configuration
 Env files
 ---------
 
-Usually we have the following env files::
+Usually we have the following env files:
 
- - ``env.default`` for the c2cgeoportal default configuration
- - ``env.project`` for the project configuration
- - ``env.<town>`` in a multi instance project we will have sone configuration per town
- - ``env.(dev|int|prod)`` we usualy have a file per integations environment,
-   not needed for OpenShift project
+- ``env.default`` for the c2cgeoportal default configuration
+- ``env.project`` for the project configuration
+- ``env.<town>`` in a multi instance project we will have sone configuration per town
+- ``env.(dev|int|prod)`` we usualy have a file per integations environment,
+  not needed for OpenShift project
 
 The usage of env file should be configured in the ``project.yaml`` file, in the ``env`` section.
 
-Project env confguration::
+Project env confguration:
 
- * ``files``: the env files interpreted with the build env arguments.
- * ``required_args``: the number of required build env arguments.
- * ``help``: the displayed message on wrong build env arguments number.
+* ``files``: the env files interpreted with the build env arguments.
+* ``required_args``: the number of required build env arguments.
+* ``help``: the displayed message on wrong build env arguments number.
 
 For an OpenShift project you can use (default):
 
