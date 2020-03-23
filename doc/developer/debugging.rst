@@ -194,7 +194,7 @@ Then in the logs you will have messages with the profiling information.
 Access to a hidden service
 --------------------------
 
-Within the Docker composition, you can access a port of a container; you can achieve this via curl, e.-g.:
+Within the Docker composition, you can access a port of a container; you can achieve this via ``curl``, e.-g.:
 
 .. prompt:: bash
 
@@ -210,7 +210,7 @@ You can also expose a service out of the Docker composition. For that, add a por
        port:
          - 8086:8080
 
-Be careful, one port can be open only one time on a server.
+Be careful, each port can be open only one time on a server.
 
 
 Use a specific version of ngeo
