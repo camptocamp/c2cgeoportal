@@ -74,4 +74,4 @@ By default, only the requests coming from the server are allowed. You can change
 list in your ``vars.yaml`` file.
 
 This solution is not the most secure (some people have browser extensions that reset the referrer),
-but that is the easiest to implement with all the different JS frameworks.
+but that is the most consistent approach with regard to the different JS frameworks.

@@ -69,21 +69,20 @@ The ``vars.yaml`` file includes variables for managing *functionalities*.
     then the ``functionality`` template variable will be set to a dict with one
     key/value pair: ``"<functionality_name>": ["value1","value2"]``.
 
-Usage in Javascript client
+Usage in JavaScript client
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The functionalities will be send to the Javascript client application through the user web service.
-To be published a functionality should be present in ``functionalities:available_in_templates`` parameter
-in the ``vars.yaml`` configuration file.
+The functionalities will be sent to the JavaScript client application through the user web service.
+To be published, a functionality should be present in the parameter ``functionalities:available_in_templates``
+parameter in the ``vars.yaml`` configuration file.
 
 
 Using Functionalities to configure the basemap to use for each theme
 ....................................................................
 
 A default basemap may be automatically loaded when the user selects a given
-theme.
-
-Then, in the administration interface, if not available yet, define a
+theme. This can be configured in the administration interface, as follows:
+if not available yet, define a
 ``default_basemap`` functionality containing the basemap reference. Edit the
 theme and select the basemap to load in the ``default_basemap`` list. If
 several ``default_basemap`` items are selected, only the first one will be

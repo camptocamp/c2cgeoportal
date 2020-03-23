@@ -84,13 +84,13 @@ The used method has the following API:
 
    add_interface(config, interface_name="<interface>", interface_type=INTERFACE_TYPE_NGEO, **kwargs)
 
-Where ``config`` is the application configuration object,
+where:
 
-``interface_name`` is the name specified in the ``interface`` table,
-also used to create the route path,
-
-``interface_type`` may be either ``INTERFACE_TYPE_NGEO`` or
-``INTERFACE_TYPE_NGEO_CATALOGUE``. Constants available in ``c2cgeoportal``.
+* ``config`` is the application configuration object,
+* ``interface_name`` is the name specified in the ``interface`` table,
+  also used to create the route path,
+* ``interface_type`` may be either ``INTERFACE_TYPE_NGEO`` or
+  ``INTERFACE_TYPE_NGEO_CATALOGUE``.
 
 Site-specific configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,9 +98,9 @@ Site-specific configuration
 After rebuilding your project and verifying that the new interface has no technical errors,
 some site-specific configuration issues must be considered:
 
-   - set default theme of the new interface to the desired one (set "defaultTheme"
+   - set the default theme of the new interface as desired (set ``defaultTheme``
      in ``<interface>.html``)
-   - set meaningful starting zoom level and center coordinates of new interface,
+   - set a meaningful starting zoom level and center coordinates of the new interface,
      in ``<interface>.js``
    - after rebuilding, to see the changes in the browser, you probably need to clear
      the browser cache and your URL parameters, and maybe in addition wait some minutes

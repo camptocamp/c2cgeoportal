@@ -27,8 +27,8 @@ ObjectEditing interface available under /oeedit:
     * ``objectediting_id``: the value of the key for searching the feature in
       the database. If not found, a new feature with this value will be created.
 
-Features
---------
+Feature editing
+---------------
 
     * Access a feature via a URL, center on it if it exists.
     * Editing of this one feature (only one).
@@ -51,7 +51,7 @@ Copy / cut: The layer from where one wants to copy / cut from has to be:
     * Available as WFS layer
     * Metadata "copyable" (checked) set on the layer
 
-Add the following configuration int the ``vars.yaml`` file to change the triangle size:
+To change the triangle size, add the following configuration in the ``vars.yaml`` file:
 
 .. code:: yaml
 

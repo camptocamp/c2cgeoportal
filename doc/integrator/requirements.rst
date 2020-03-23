@@ -77,8 +77,8 @@ To avoid file permission problems between Windows and Cygwin, edit Cygwin's
 Configure Git
 ^^^^^^^^^^^^^
 
-Cygwin comes with its own git package. It might be a really good idea to configure
-Cygwin's git for Windows. To do so:
+Cygwin comes with its own git package. Configure
+Cygwin's git for Windows as follows:
 
 * Open a Cygwin bash
 * Run ``git config core.autocrlf true``

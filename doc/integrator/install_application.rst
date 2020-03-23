@@ -3,7 +3,7 @@
 Install an existing application
 ===============================
 
-On this page we explain the procedure to build an application from only the current application code.
+On this page, we explain the procedure to build an application from only the current application code.
 
 If you want to use an existing database, you should ignore all the commands concerning the database.
 
@@ -18,7 +18,7 @@ For specific environments, this page contains some notes to give some help.
 Set up the database
 -------------------
 
-Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
+Every c2cgeoportal application requires a PostgreSQL/PostGIS database. The
 application works with its own tables, which store users, layers, etc. These
 tables are located in a specific schema of the database.
 
@@ -27,13 +27,11 @@ and the application-specific tables must be in the same database, preferably in
 separate schemas. This is required for layer access control (*restricted
 layers*), where joining user/role tables to PostGIS layer tables is necessary.
 
-You need a Postgres database >= 9.1 in UTF-8 with the PostGIS >= 2.1 extension.
-
-If you wish to use the ``similarity`` function within the full-text search, create the ``pg_trgm`` extension:
+If you wish to use the ``similarity`` function within the full-text search, create the ``pg_trgm`` extension.
 
 Create the ``unaccent`` extension to have accent-insensitive search within the full-text search.
 
-And by default we assume that the ``www-data`` user exists with all rights on the application schema.
+By default, c2cgeoportal assumes that the ``www-data`` user exists with all rights on the application schemas.
 
 
 .. _integrator_install_application_create_schema:
@@ -67,8 +65,8 @@ Furthermore, some changes in the Apache WSGI and MapServer configurations are
 required to make c2cgeoportal work on Windows.
 
 Also, between all the different command interfaces available on Windows (cmd,
-Cygwin, git mingw), only Windows default cmd interface handle paths correctly
-in all stage of the application setup.
+Cygwin, git mingw), only Windows default cmd interface handles paths correctly
+in all stages of the application setup.
 
 Command interface and environment variable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

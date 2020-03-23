@@ -3,10 +3,10 @@
 Create a cluster
 ================
 
-A cluster is a configuration where several servers are used to serve the application in production.
+A cluster is a configuration where several servers are used to serve the application.
 
 Deploying data from integration to production may be done by
-`cloning the main integration schema <https://wiki.postgresql.org/wiki/Clone_schema>`_,
+`cloning the main integration schema <https://wiki.postgresql.org/wiki/Clone_schema>`_;
 a customized version of the script, applicable for c2cgeoportal, is available in
 ``scripts/CONST_clone_schema.sql``.
 
@@ -16,7 +16,7 @@ or the robustness of the application.
 In general, scalability is more important, because the main cause of
 down time is too much traffic.
 
-To have better DB performances, one can setup multiple Postgres servers in a
+To have better DB performance, one can setup multiple Postgres servers in a
 `master/slave <https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial>`_
 configuration. To enable this feature on GeoMapFish, you must add this to your ``vars.yaml``:
 
