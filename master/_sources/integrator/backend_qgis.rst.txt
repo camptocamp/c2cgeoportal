@@ -1,8 +1,8 @@
 .. _integrator_backend_qgis:
 
-=========================================
-Specific configuration for QGIS mapserver
-=========================================
+======================================
+Specific configuration for QGIS server
+======================================
 
 QGIS Desktop configuration
 ==========================
