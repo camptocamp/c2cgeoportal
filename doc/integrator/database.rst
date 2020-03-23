@@ -42,10 +42,10 @@ Prepare the project
 To be able to proceed like this, the variables ``PGSCHEMA`` and the ``DOCKER_PGSCHEMA_STATIC``
 should be managed in your makefiles:
 
-* The ``PGSCHEMA`` variable should be set in the ``Makefile``, in this example, it will be set to
+* The variable ``PGSCHEMA`` should be set in the ``Makefile``; in this example, it will be set to
   ``main_2019``.
 * The ``DOCKER_PGSCHEMA_STATIC`` variable for production should be set in a specific makefile
-  for production e.-g. ``production.mk``, it will be set for example to ``integration_static`` in the
+  for production e.-g. ``production.mk``; it will be set for example to ``integration_static`` in the
   Makefile, and to ``production_static`` in the production makefile.
 * The line ``PGSCHEMA=main`` should be removed from your ``env.default`` file.
 
@@ -53,13 +53,13 @@ should be managed in your makefiles:
 Start a new version
 ~~~~~~~~~~~~~~~~~~~
 
-When starting the changes, such as an application change and/or administration settings,
+When starting changes such as an application change and/or administration settings,
 create a new schema ``main_2020`` and use it on integration. Now, integration uses ``main_2020``,
-hile production still uses ``main_2019``.
+while production still uses ``main_2019``.
 
 To create the new schema, you should copy the old one, for that `c2cgeoportal` provides a Postgres
 function called `clone_schema`.
-If you have not created it in your database, use to following command to create this function:
+If you have not yet created this function in your database, use to following command to create it:
 
 .. prompt:: bash
 

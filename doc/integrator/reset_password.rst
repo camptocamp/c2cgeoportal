@@ -24,7 +24,7 @@ in the ``vars.yaml`` file:
         email_body: |
             Hello {user},
 
-            You have asked for an new password,
+            You have asked for a new password,
             the newly generated password is: {password}
 
             Sincerely yours

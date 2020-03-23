@@ -17,10 +17,10 @@ For stand alone projects:
 .. source file is docker-apache.dia.
 
 
-Images
-------
+Docker Images
+-------------
 
-When we build the project it will generate the following images:
+When you build your application, the following images will be generated:
 
 * ``camptocamp/<package>_geoportal:latest``
 * ``camptocamp/<package>_config:latest``
@@ -31,11 +31,11 @@ The tag is by default ``latest``, but you can change it by setting the ``DOCKER_
 Docker compose files
 --------------------
 
-``docker-compose.yaml``: The main file that describes the composition.
-``docker-compose-lib.yaml``: Provide the base description of Geomapfish Docker services.
-``.env``: Build from ``env.default`` the environment variable used by the composition.
-``docker-compose.override[.sample].yaml``: Some rules for debuggung.
-``.env``: The variable used in the compose files.
+* ``docker-compose.yaml``: The main file that describes the composition.
+* ``docker-compose-lib.yaml``: Provideis the base description of Geomapfish Docker services.
+* ``.env``: Generated from the env files; contains the environment variables used by the composition.
+* ``docker-compose.override[.sample].yaml``: Some rules for debuggung.
+* ``.env``: The variable used in the compose files.
 
 
 Run the developer composition

@@ -148,7 +148,7 @@ To decrypt the files run:
    If you have an issue with the ``dirmngr`` package you can try to add:
    ``pinentry-mode loopback`` in your ``~/.gnupg/gpg.conf`` file and
    ``allow-loopback-pinentry``in your ``~/.gnupg/gpg-agent.conf`` file.
-   Then it should be fixed or you can also try to run it in Docker:
+   Alternatively, you can try to run it in Docker:
    ``docker exec camptocamp/geoportal:${MAIN_VERSION} make --makefile=<user>.mk secrets``
 
 

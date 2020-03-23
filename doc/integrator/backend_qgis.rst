@@ -49,7 +49,7 @@ In the *WMS capabilities* section, you should **check** the checkbox *Add geomet
 order to make the WMS GetFeatureInfo work correctly.
 
 In the *WFS capabilities* section, you should check the layers that need to be available in the WFS service.
-Also take care on the Update Insert delete column to make the layer available through the WFS transactional
+Also take care on the Update Insert Delete column to make the layer available through the WFS transactional
 API.
 
 Your QGIS project layers' CRS should all be in the same CRS. This is subject to change.
@@ -174,7 +174,7 @@ Access Restriction
 
 The access restriction is available only for Docker projects.
 
-We provide an Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
+We provide a Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
 ``gmf<Major GeoMapFish version}-qgis${Major QGIS}``.
 
 To configure a single project, just provide the OGC server name in the environment variable named:
@@ -198,7 +198,7 @@ Finally, you should provide the ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` to point to 
 Project in Database
 *******************
 
-If you store the project in the database you should set the ``QGIS_PROJECT_FILE`` environment variable
+If you store the project in the database, you should set the ``QGIS_PROJECT_FILE`` environment variable
 to something like that:
 ``postgresql://<dbuser>:<dbpass>@<dbhost>:<dbport>?sslmode=disable&dbname=<dbname>&schema=<dbschema>&project=<projectname>``.
 
