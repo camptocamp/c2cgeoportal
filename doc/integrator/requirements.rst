@@ -21,7 +21,7 @@ Required Python packages
 
 They can be install in your user directory with:
 
-.. code: bash
+.. code:: bash
 
    python3 -m pip install --user PyYAML docker-compose
 
