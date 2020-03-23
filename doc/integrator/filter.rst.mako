@@ -119,7 +119,7 @@ Administration interface
 You can add some additional configuration in the administration interface as follows.
 
 It is possible to define enumerated or directed attributes, to WMS layers only, via metadata.
-The metadata to look at is ``enumeratedAttributes`` or ``directedFilterAttributes``.
+The metadata to define is ``enumeratedAttributes`` or ``directedFilterAttributes``.
 
 For enumerated attributes, the value is a single string or a list of attributes (that we defined earlier
 in the ``vars.yaml`` file) separated with a comma.
@@ -130,7 +130,8 @@ For directed attributes, it is a single string or a list of attributes defined i
 The difference is that enumerated attributes are configurable (like pointing to a specific database table),
 while directed attributes are ready-to-use values that come directly from the mapfile configuration.
 
-Client-side documentation related to the enumeratedAttributes and directedFilterAttributes metadata is available here:
+Client-side documentation related to the ``enumeratedAttributes`` and ``directedFilterAttributes`` metadata
+is available here:
 `gmfThemes.GmfMetaData <https://camptocamp.github.io/ngeo/${major_version}/apidoc/gmfThemes.GmfMetaData.html>`_.
 
 Using DB sessions

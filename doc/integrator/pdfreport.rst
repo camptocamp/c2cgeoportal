@@ -6,7 +6,7 @@ PDF Reporting
 c2cgeoportal offers a *pdfreport* webservice that can be used to generate
 advanced PDF reports about a given feature.
 
-It is based upon `MapfishPrint version 3 <https://mapfish.github.io/mapfish-print-doc/>`_
+It is based upon `Mapfish Print version 3 <https://mapfish.github.io/mapfish-print-doc/>`_
 and `Jasper Reports <https://community.jaspersoft.com/project/jasperreports-library>`_.
 
 The webservice is called using the following URL schema:
@@ -16,7 +16,7 @@ The webservice is called using the following URL schema:
 Configuration
 -------------
 
-The service is configured in the main ``vars.yaml`` file of the project as in the following example:
+The service is configured in the main ``vars.yaml`` file of the project, as shown in the following example:
 
 .. code:: yaml
 
@@ -73,9 +73,9 @@ The service is configured in the main ``vars.yaml`` file of the project as in th
         - pdfreport
 
 
-with the following parameters:
+Regarding the configuration parameters,
 
-* ``print_url`` is the local URL of the MapFish Print version 3 instance.
+* ``print_url`` is the local URL of the MapFish Print instance.
 * ``defaults`` contains the default values of parameters not provided explicitly for a given layer.
 * ``layers`` is an optional per-layer list of settings specific to the listed layers. The entries of the
   list are the layernames provided as argument of the webservice. If a layer is not listed, the default
@@ -83,13 +83,13 @@ with the following parameters:
 
 ``defaults`` and ``layers``-specific parameters are:
 
-* ``ogcserver``: the used OGC server name.
-* ``check_credentials``: boolean, whether layer credentials are checked before generating the report.
+* ``ogcserver``: the name of OGC server to use.
+* ``check_credentials``: boolean, defines whether layer credentials are checked before generating the report.
   Defaults to ``True``.
 * ``srs``: projection code (required when showing the map).
 * ``spec``: optional template used to build the ``spec`` argument sent to the MapFish Print webapp.
 * ``map``: optional, the map configuration.
-* ``maps``: optional, a list of maps configurations.
+* ``maps``: optional, a list of map configurations.
 
 The map configuration can contains the following:
 
@@ -123,4 +123,4 @@ Configuration of the reports
 ----------------------------
 
 If you use the ``ids`` in an SQL query, you should use ``$X{IN, <column_name>, $P{ids}}``
-to avoid SQL injection, `see also the Jasperreports documentation <https://jasperreports.sourceforge.net/sample.reference/query/>`_.
+to avoid SQL injection, `see also the JasperReports documentation <https://jasperreports.sourceforge.net/sample.reference/query/>`_.

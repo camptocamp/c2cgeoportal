@@ -12,7 +12,7 @@ components installed on your system:
 * **Python** >= 3.5
 * **Python-netifaces**
 * **Apache** >= 2.4 (optional, can be used as a front for SSL)
-* **PostgreSQL** >= 9.1/**PostGIS** >= 2.1
+* **PostgreSQL** >= 9.1/**PostGIS** >= 2.1 in UTF-8
 * **gnupg** (with **dirmngr**) optional
 
 
@@ -56,8 +56,8 @@ To avoid file permission problems between Windows and Cygwin, edit Cygwin's
 Configure Git
 ^^^^^^^^^^^^^
 
-Cygwin comes with its own git package. It might be a really good idea to configure
-Cygwin's git for Windows. To do so:
+Cygwin comes with its own git package. Configure
+Cygwin's git for Windows as follows:
 
 * Open a Cygwin bash
 * Run ``git config core.autocrlf true``

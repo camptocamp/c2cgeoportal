@@ -210,7 +210,7 @@ structure, you can use the script ``themev1tov2``.
 
 Text translations for ngeo clients are separate and different from text translations for CGXP clients.
 To migrate your text translations from CGXP to ngeo, you can use the script ``.build/venv/bin/l10nv1tov2``.
-For example, for converting french texts, in non docker context, the script can be used as follows:
+For example, for converting french texts, the script can be used as follows:
 
 .. prompt:: bash
 
