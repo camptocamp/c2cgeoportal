@@ -54,16 +54,8 @@ API.
 
 Your QGIS project layers' CRS should all be in the same CRS. This is subject to change.
 
-Finally, edit your project file manually and set:
-
-.. code::
-
-    <WMSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WMSUrl>
-    <WFSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WFSUrl>
-    <WMTSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WMTSUrl>
-    <WCSUrl type="QString">https://<host>/mapserv_proxy?ogcserver=<name></WCSUrl>
-
-By default, ``https://<host>/mapserv_proxy?ogcserver=<name>`` is empty.
+Finally, in the project settings, in the QGIS server section, set all the published URL to:
+``https://<application_base_url>/mapserv_proxy?ogcserver=<name>``.
 
 
 Connect to Postgres database
@@ -76,10 +68,17 @@ and add a section for the DB you want to access:
 
    [<package>]
    host=<host>  # Localhost address of the Docker network interface (=> ${IP})
-   dbname=<database name>
+   port=<database port>
    user=<database user>
    password=<database password>
-   port=5432
+   dbname=<database name>
+
+   [<package>_master]
+   host=<host>  # Localhost address of the Docker network interface (=> ${IP})
+   port=<database port>
+   user=<database user>
+   password=<database password>
+   dbname=<database name>
 
 `<host>` can be:
 
@@ -95,37 +94,38 @@ to change the host parameter.
 
 Then, in QGIS, fill only the ``name`` and ``service`` fields when you create the DB connection.
 
+Use ``<package>`` for read only layers, and ``<package>_master`` if the layer should be writable.
+
 In the project repository, you should have a ``qgisserver/pg_service.conf.tmpl`` file
 with a section looking like that:
 
 .. code::
 
    [<package>]
-   host=${PGHOST}
-   dbname=${PGDATABASE}
+   host=${PGHOST_SLAVE}
+   port=${PGPORT_SLAVE}
    user=${PGUSER}
    password=${PGPASSWORD}
+   dbname=${PGDATABASE}
+
+   [<package>_master]
+   host=${PGHOST}
    port=${PGPORT}
-
-If you do not use Docker, you also should add this in the Apache QGIS configuration:
-
-.. code::
-
-    SetEnv QGIS_PROJECT_FILE ${directory}/qgisserver.qgs
-    + SetEnv PGSERVICEFILE ${directory}/pg_service.conf
+   user=${PGUSER}
+   password=${PGPASSWORD}
+   dbname=${PGDATABASE}
 
 Do not forget to gracefully restart Apache.
 
 Extra PostGIS connexion
 ***********************
 
-If you need to add another database connection, add a new section in the
-``$HOME/.pg_service.conf``.
+If you need to add another database connection, add a new section in the ``$HOME/.pg_service.conf``.
 In the ``qgisserver/pg_service.conf.tmpl`` files, add a new section:
 
 .. code::
 
-   [<package>]
+   [<extra_service>]
    host=${EXTRA_PGHOST}
    dbname=${EXTRA_PGDATABASE}
    user=${EXTRA_PGUSER}
