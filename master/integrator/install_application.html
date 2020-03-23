@@ -36,7 +36,7 @@
             
   <div class="section" id="install-an-existing-application">
 <span id="integrator-install-application"></span><h1>Install an existing application<a class="headerlink" href="#install-an-existing-application" title="Permalink to this headline">¶</a></h1>
-<p>On this page we explain the procedure to build an application from only the current application code.</p>
+<p>On this page, we explain the procedure to build an application from only the current application code.</p>
 <p>If you want to use an existing database, you should ignore all the commands concerning the database.</p>
 <dl class="simple">
 <dt>This guide assumes that:</dt><dd><ul class="simple">
@@ -48,17 +48,16 @@
 <p>For specific environments, this page contains some notes to give some help.</p>
 <div class="section" id="set-up-the-database">
 <span id="integrator-install-application-setup-database"></span><h2>Set up the database<a class="headerlink" href="#set-up-the-database" title="Permalink to this headline">¶</a></h2>
-<p>Any c2cgeoportal application requires a PostgreSQL/PostGIS database. The
+<p>Every c2cgeoportal application requires a PostgreSQL/PostGIS database. The
 application works with its own tables, which store users, layers, etc. These
 tables are located in a specific schema of the database.</p>
 <p>If the application has MapServer layers linked to PostGIS tables, these tables
 and the application-specific tables must be in the same database, preferably in
 separate schemas. This is required for layer access control (<em>restricted
 layers</em>), where joining user/role tables to PostGIS layer tables is necessary.</p>
-<p>You need a Postgres database &gt;= 9.1 in UTF-8 with the PostGIS &gt;= 2.1 extension.</p>
-<p>If you wish to use the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> function within the full-text search, create the <code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> extension:</p>
+<p>If you wish to use the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> function within the full-text search, create the <code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> extension.</p>
 <p>Create the <code class="docutils literal notranslate"><span class="pre">unaccent</span></code> extension to have accent-insensitive search within the full-text search.</p>
-<p>And by default we assume that the <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user exists with all rights on the application schema.</p>
+<p>By default, c2cgeoportal assumes that the <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user exists with all rights on the application schemas.</p>
 <div class="section" id="create-the-schemas">
 <span id="integrator-install-application-create-schema"></span><h3>Create the schemas<a class="headerlink" href="#create-the-schemas" title="Permalink to this headline">¶</a></h3>
 <p>Each application needs two application-specific schemas.
@@ -84,8 +83,8 @@ using a C compiler.</p>
 <p>Furthermore, some changes in the Apache WSGI and MapServer configurations are
 required to make c2cgeoportal work on Windows.</p>
 <p>Also, between all the different command interfaces available on Windows (cmd,
-Cygwin, git mingw), only Windows default cmd interface handle paths correctly
-in all stage of the application setup.</p>
+Cygwin, git mingw), only Windows default cmd interface handles paths correctly
+in all stages of the application setup.</p>
 <div class="section" id="command-interface-and-environment-variable">
 <h4>Command interface and environment variable<a class="headerlink" href="#command-interface-and-environment-variable" title="Permalink to this headline">¶</a></h4>
 <p>Only use Windows default command interface:</p>

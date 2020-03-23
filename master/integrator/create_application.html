@@ -48,7 +48,7 @@ created by the c2cgeoportal scaffolds (the <code class="docutils literal notrans
 </div>
 <div class="section" id="install-c2cgeoportal">
 <h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
-<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, you need to get the related docker image:</p>
+<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, you need to get the related Docker image:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -74,7 +74,7 @@ c2cgeoportal application you want to create the new application from:</p>
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
 <p>The first step in the project creation is to choose a project name
 <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code>, and a package name <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code>.</p>
-<p>Normally the project name should be the same name as the Git repository name.</p>
+<p>Normally, the project name should be the same name as the Git repository name.</p>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
@@ -84,8 +84,8 @@ c2cgeoportal application you want to create the new application from:</p>
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
 </div>
-<p>You’ll be asked to enter the SRID and the Apache vhost for this project. Note
-that the default extent would be defined directly from the srid. You can change
+<p>You will be asked to enter the SRID and the Apache vhost for this project. Note
+that the default extent would be defined directly from the SRID. You can change
 it later.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

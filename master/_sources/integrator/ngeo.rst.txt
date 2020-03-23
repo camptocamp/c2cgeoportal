@@ -104,11 +104,12 @@ The sub section is the interface name, and after that we have:
     ``params``: Query string parameters to append to the URL.
     ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
 
-For more information ``elements`` and ``kw`` properties see *Pyramid* ``Request.route_url`` documentation:
+For more information regarding the ``elements`` and ``kw`` properties see the *Pyramid*
+``Request.route_url`` documentation:
 https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url
 
 The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
 
 You also have a ``default`` entry from where we can give the base values for ``constants``,
-``dynamic_constants``, ``static`` and ``routes``. Values that will be updated with interfaces configuration
-(can't be removed with interface configuration).
+``dynamic_constants``, ``static`` and ``routes``. These values will be updated with the interface configuration
+(but can not be removed via interface configuration).

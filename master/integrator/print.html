@@ -38,11 +38,11 @@
 <span id="integrator-print"></span><h1>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="template-configuration">
 <h2>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this headline">¶</a></h2>
-<p>All print-related files are located in the <code class="docutils literal notranslate"><span class="pre">print/</span></code> folder, and the files related to the template in the
+<p>All print-related files are located in the <code class="docutils literal notranslate"><span class="pre">print/</span></code> folder, notably the print templates in the
 <code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;</span></code> folder.</p>
 <p>The main configuration file is <code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>.</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapFish print documentation</a></p></li>
+<li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapFish Print documentation</a></p></li>
 <li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></p></li>
 </ul>
 </div>
@@ -53,20 +53,20 @@ of min/max scaling, you should also test map printing to be sure that it also wo
 </div>
 <div class="section" id="infrastructure">
 <h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
-<p>By default we use the <cite>mutualized print platform as a service from Camptocamp &lt;https://www.camptocamp.com/en/actualite/saas-printing-service-offer/&gt;</cite>.</p>
-<p>To configure it, you should ask Camptocamp to create e.-g. two new applications on the platform, one for the
-integration, one for the production.</p>
+<p>By default, the configuration is set up to the <cite>mutualized print platform as a service from Camptocamp &lt;https://www.camptocamp.com/en/actualite/saas-printing-service-offer/&gt;</cite>.</p>
+<p>To use this platform, you should ask Camptocamp to create e.-g. two new applications on the platform,
+one for the integration, one for the production.</p>
 <p>Configure the application name in the <code class="docutils literal notranslate"><span class="pre">MUTUALIZED_PRINT_APP</span></code> variable of a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 </div>
 <div class="section" id="development">
 <h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
-<p>To test the print locally you can copy the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<p>To test the print locally, you can copy the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and uncomment the <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> environment variable and the
 <code class="docutils literal notranslate"><span class="pre">print</span></code> service.</p>
 </div>
-<div class="section" id="internal-print">
-<h2>Internal print<a class="headerlink" href="#internal-print" title="Permalink to this headline">¶</a></h2>
-<p>To use the internal print you should:</p>
+<div class="section" id="local-print">
+<h2>Local print<a class="headerlink" href="#local-print" title="Permalink to this headline">¶</a></h2>
+<p>To use a local print service, you should:</p>
 <ul class="simple">
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> to <code class="docutils literal notranslate"><span class="pre">http://print:8080/print/</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.default</span></code> file.</p></li>
 <li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">print</span></code> service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file.</p></li>

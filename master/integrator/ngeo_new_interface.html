@@ -98,11 +98,14 @@ adapt the name of the controller and the referenced css and js files to the new 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">config</span></code> is the application configuration object,</p>
-<p><code class="docutils literal notranslate"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal notranslate"><span class="pre">interface</span></code> table,
-also used to create the route path,</p>
-<p><code class="docutils literal notranslate"><span class="pre">interface_type</span></code> may be either <code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
-<code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>. Constants available in <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>.</p>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code> is the application configuration object,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface_name</span></code> is the name specified in the <code class="docutils literal notranslate"><span class="pre">interface</span></code> table,
+also used to create the route path,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface_type</span></code> may be either <code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
+<code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>.</p></li>
+</ul>
 </div>
 <div class="section" id="site-specific-configuration">
 <h2>Site-specific configuration<a class="headerlink" href="#site-specific-configuration" title="Permalink to this headline">¶</a></h2>
@@ -110,9 +113,9 @@ also used to create the route path,</p>
 some site-specific configuration issues must be considered:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>set default theme of the new interface to the desired one (set “defaultTheme”
+<li><p>set the default theme of the new interface as desired (set <code class="docutils literal notranslate"><span class="pre">defaultTheme</span></code>
 in <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;.html</span></code>)</p></li>
-<li><p>set meaningful starting zoom level and center coordinates of new interface,
+<li><p>set a meaningful starting zoom level and center coordinates of the new interface,
 in <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;.js</span></code></p></li>
 <li><p>after rebuilding, to see the changes in the browser, you probably need to clear
 the browser cache and your URL parameters, and maybe in addition wait some minutes

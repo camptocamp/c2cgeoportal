@@ -35,7 +35,7 @@ Here is an example of an insertion in the ``tsearch`` table:
 Where ``Layer group`` is the name of the layer group that should be activated,
 ``text to display`` is the text that is displayed in the results,
 ``test to search`` is the text that we search for,
-``french`` is the used language.
+``french`` is the language used.
 
 Here is another example where rows from a ``SELECT`` are inserted:
 
@@ -58,8 +58,8 @@ Here is another example where rows from a ``SELECT`` are inserted:
     The language string used as the first argument to the ``to_tsvector``
     function should match that defined in the ``default_locale_name`` variable of
     the application configuration (``vars.yaml``). For example, if you have
-    "french" text in the database the application's ``default_locale_name`` should
-    be ``fr``. In other words c2cgeoportal assumes that the database language
+    "french" text in the database, the application's ``default_locale_name`` should
+    be ``fr``. In other words, c2cgeoportal assumes that the database language
     and the application's default language match.
 
 
@@ -77,19 +77,19 @@ Security
 --------
 
 The ``tsearch`` table includes two security-related columns, namely ``public``
-and ``role_id``. If ``public`` is ``true`` then the row is available to any
-user, including anonymous users. And in that case, the ``role_id`` column is
-ignored by ``c2cgeoportal``. If ``public`` is ``false`` then the row is not
+and ``role_id``. If ``public`` is ``true``, then the row is available to any
+user, including anonymous users. In that case, the ``role_id`` column is
+ignored by ``c2cgeoportal``. If ``public`` is ``false``, then the row is not
 available to anonymous users. If ``role_id`` is ``NULL``, the row is available
 to any authenticated user. If ``role_id`` is not ``NULL``, the row is only
-available to users of the corresponding role.
+available to users with the corresponding role.
 
 .. note::
 
-    If you want to restrict some data to specific roles, then you will need to
+    If you want to restrict some data to several specific roles, then you will need to
     insert that data multiple times. For example, if you want to make the data
     of a table *text-searchable*, and restrict that data to the roles whose ids
-    are ``1`` and ``2`` you will use two SQL ``INSERT`` statements:
+    are ``1`` and ``2``, you will use two SQL ``INSERT`` statements:
 
     .. code:: sql
 
@@ -212,25 +212,25 @@ These methods are useful to handle language-based strings. That means for instan
 that plural nouns are the same as singular nouns. This system only checks if
 your search word exists in the result. That means that if you search `B 12 Zug`,
 `B 120 Zug` has the same weight because the system only see that the `12` exists
-in each case. To use this system, your request must contains the
+in each case. To use this system, your request must contain the
 parameter ``rank_system=ts_rank_cd``.
 
 
 Using the unaccent extension
 ----------------------------
 
-By the default the full-text search is accent-sensitive.
+The full-text search is accent-sensitive by default.
 To make it accent-insensitive Postgres's
 `unaccent extension <https://www.postgresql.org/docs/9.0/static/unaccent.html>`_
 can be used.
 
-First connect to the database:
+To activate the unaccent extension, first connect to the database:
 
 .. prompt:: bash
 
     sudo -u postgres psql -d <database>
 
-For that we need the Postgres unaccent extension and dictionary:
+Create the Postgres unaccent extension and dictionary:
 
 .. code:: sql
 
@@ -290,7 +290,7 @@ Thus, 'alignem' does not match in the search, which might be considered unexpect
    SELECT to_tsquery('fr', 'alignem:*');
    'alignem':*
 
-The change this behavior, you can create and use a new dictionary named `french_alt`:
+To change this behavior, you can create and use a new dictionary named `french_alt`:
 
 .. code:: sql
 
