@@ -598,7 +598,7 @@ def _convert_column_type(column_type):
             return {"type": xsd_type, "srid": int(column_type.srid)}
 
         raise NotImplementedError(
-            "The geometry type '{}' is unsuported, supported types: {}".format(
+            "The geometry type '{}' is not supported, supported types: {}".format(
                 geometry_type, ",".join(XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES)
             )
         )  # pragma: no cover
