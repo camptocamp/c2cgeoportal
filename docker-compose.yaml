@@ -56,6 +56,7 @@ services:
       - PGUSER=www-data
       - PGPASSWORD=www-data
       - PGDATABASE=geomapfish_tests
+      - PGSSLMODE=disable
       - CI=true
       - TEST=true
     entrypoint:
