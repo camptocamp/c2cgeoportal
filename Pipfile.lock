@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ba11ac415f859ae6c6582018fe362fb8a7e166349204f87cffd6aa700b65653f"
+            "sha256": "0fb55b7b63b8b20785e6db57dbd4decaef0a6a2151720f29bf5c226315df37a4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -832,11 +832,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:4904af54aa15941ba4bc0f82ec5af49dc58fb9b5c673389f380917cd455fceb0",
-                "sha256:dcdcd44661eb8dc423468f991971ece747078028baca99382fec34293697b79e"
+                "sha256:92102230a35c7c858eabcc18bfaa50a8656769c73eb2f3bc50a6ee93c394c35e",
+                "sha256:aa71dea2b5ceb4d8eaba1650c8be278415f52bffa5c6771face5f3925049476f"
             ],
             "index": "pypi",
-            "version": "==1.18.28"
+            "version": "==1.18.29"
         },
         "babel": {
             "hashes": [
@@ -864,10 +864,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:21674f491f6bdc886179de644d00dec05276fac292117f86685513006d83fe0a",
-                "sha256:74f81aca90cdbe084bcfa19589bd2c6470bb47dd1fd9635bf5484ecf7577fd61"
+                "sha256:7bcae36b3b9449b2137069701e7a877980d63bc331f6c6d77d2c7db42202ebe5",
+                "sha256:d49caf1dae7dd903c2af443dbafd76dcf3902d87236a83f8b64e77aa556d1c6b"
             ],
-            "version": "==1.15.28"
+            "version": "==1.15.29"
         },
         "certifi": {
             "hashes": [
@@ -995,11 +995,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:06f5b3a99029c7134207dd882428a66992a9de2bef7c2b699b5641f9886c3302",
-                "sha256:b97607a1a18a5100839aec1dc26a1ea17ee0d93b20b0f008d80a5a050afb200b"
+                "sha256:0095bf45caca7a93685cbb9e5ef49f0ed37f848639df8f4684f07229aa7a8322",
+                "sha256:dd381cddc02a58a23667ef675164ad70848d82966d3a8fddea96dcfb51064803"
             ],
             "markers": "python_version < '3.8'",
-            "version": "==1.5.0"
+            "version": "==1.5.1"
         },
         "isort": {
             "hashes": [
