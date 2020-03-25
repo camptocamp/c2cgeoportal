@@ -39,20 +39,20 @@
 <div class="section" id="env-files">
 <h2>Env files<a class="headerlink" href="#env-files" title="Permalink to this headline">¶</a></h2>
 <p>Usually we have the following env files:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- ``env.default`` for the c2cgeoportal default configuration
-- ``env.project`` for the project configuration
-- ``env.&lt;town&gt;`` in a multi instance project we will have sone configuration per town
-- ``env.(dev|int|prod)`` we usualy have a file per integations environment,
-  not needed for OpenShift project
-</pre></div>
-</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">env.default</span></code> for the c2cgeoportal default configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env.project</span></code> for the project configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env.&lt;town&gt;</span></code> in a multi-town project these files will contain town-specific configurations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env.(dev|int|prod)</span></code> environment specific settings, for example one for development, one for integration
+and one for production, not needed for projects managed in an OpenShift platform.</p></li>
+</ul>
 <p>The usage of env file should be configured in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file, in the <code class="docutils literal notranslate"><span class="pre">env</span></code> section.</p>
 <p>Project env confguration:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* ``files``: the env files interpreted with the build env arguments.
-* ``required_args``: the number of required build env arguments.
-* ``help``: the displayed message on wrong build env arguments number.
-</pre></div>
-</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">files</span></code>: the env files interpreted with the build env arguments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">required_args</span></code>: the number of required build env arguments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">help</span></code>: the message displayed on wrong build env arguments number.</p></li>
+</ul>
 <p>For an OpenShift project you can use (default):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
   <span class="nt">files</span><span class="p">:</span>
