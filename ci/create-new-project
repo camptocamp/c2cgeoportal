@@ -46,6 +46,8 @@ echo 'PGHOST=db' >> env.project
 echo 'PGHOST_SLAVE=db' >> env.project
 echo 'PGPORT=5432' >> env.project
 echo 'PGPORT_SLAVE=5432' >> env.project
+echo 'PGUSER=www-data' >> env.project
+echo 'PGPASSWORD=www-data' >> env.project
 
 if [ $BASE_APP == true ]
 then
