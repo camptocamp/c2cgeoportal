@@ -3,8 +3,11 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
   . /etc/os-release && \
+  echo deb http://apt.postgresql.org/pub/repos/apt/ ${VERSION_CODENAME}-pgdg main > \
+    /etc/apt/sources.list.d/pgdg.list && \
+  curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends tree apt-transport-https gettext libxml2-utils && \
+  apt-get install --assume-yes --no-install-recommends tree apt-transport-https gettext libxml2-utils postgresql-client && \
   echo "deb https://deb.nodesource.com/node_10.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
 # Docker source list should be like it but actually it's empty...
