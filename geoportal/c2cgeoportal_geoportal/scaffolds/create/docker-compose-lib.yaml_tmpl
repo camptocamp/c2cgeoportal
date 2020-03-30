@@ -53,7 +53,7 @@ services:
       - PGOPTIONS
 
   qgisserver:
-    image: camptocamp/geomapfish-qgisserver:gmf{{geomapfish_main_version}}-qgis3.10
+    image: camptocamp/geomapfish-qgisserver:gmf{{geomapfish_main_version}}-qgis${QGIS_VERSION}
     user: www-data
     restart: unless-stopped
     environment:
