@@ -1,3 +1,7 @@
+##### 2.4.1.100
+* Use latest version of postgres client [c2cgeoportal#6080](https://github.com/camptocamp/c2cgeoportal/pull/6080)
+* Replace INSTANCE by DOCKER_INSTANCE in the vars files [c2cgeoportal#6092](https://github.com/camptocamp/c2cgeoportal/pull/6092)
+* Set default layout for print component [ngeo#5620](https://github.com/camptocamp/ngeo/pull/5620)
 ##### 2.4.1.99
 * Doc typos integrator chapter [c2cgeoportal#6008](https://github.com/camptocamp/c2cgeoportal/pull/6008)
 * Allow to set goodness of fit parameter for labels [ngeo#5621](https://github.com/camptocamp/ngeo/pull/5621)
