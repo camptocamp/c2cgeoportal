@@ -209,11 +209,7 @@ class C2cUpgradeTool:
                 del value["level"]
                 del value["timing"]
 
-                result = yaml.dump(value) if value != {} else "No result"
-                if isinstance(result, str):
-                    print(result)
-                else:
-                    print(yaml.dump(result))
+                print(yaml.dump(value) if value != {} else "No result")
 
             return False, "\n".join(["Checker error:", run_curl])
 
