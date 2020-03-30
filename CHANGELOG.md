@@ -1,5 +1,7 @@
-##### 2.4.1.100
+##### 2.4.1.101
 * Use latest version of postgres client [c2cgeoportal#6080](https://github.com/camptocamp/c2cgeoportal/pull/6080)
+* Use propertychange to make it working with WMTS layer [ngeo#5673](https://github.com/camptocamp/ngeo/pull/5673)
+##### 2.4.1.100
 * Replace INSTANCE by DOCKER_INSTANCE in the vars files [c2cgeoportal#6092](https://github.com/camptocamp/c2cgeoportal/pull/6092)
 * Set default layout for print component [ngeo#5620](https://github.com/camptocamp/ngeo/pull/5620)
 ##### 2.4.1.99
