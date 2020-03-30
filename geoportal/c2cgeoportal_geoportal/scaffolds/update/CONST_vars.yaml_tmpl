@@ -6,7 +6,7 @@ vars:
   # the package name
   package: {{package}}
   geomapfish_version: '{GEOMAPFISH_VERSION}'
-  instance: '{INSTANCE}'
+  instance: '{DOCKER_INSTANCE}'
   build_volume_name: '{BUILD_VOLUME_NAME}'
   main_ogc_server: source for image/png
 
@@ -846,7 +846,7 @@ environment:
   - WMTSCAPABILITIES_PATH
   - BUILD_VOLUME_NAME
   - PROJECT_DIRECTORY
-  - INSTANCE
+  - DOCKER_INSTANCE
   - MUTUALIZED_PRINT_APP
 
 runtime_environment:

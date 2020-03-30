@@ -3,7 +3,8 @@ export GEOMAPFISH_VERSION
 export PACKAGE = {{package}}
 
 INSTANCE ?= main
-export INSTANCE
+DOCKER_INSTANCE = $(instance)
+export DOCKER_INSTANCE
 
 # Enable Docker target
 DOCKER ?= TRUE
