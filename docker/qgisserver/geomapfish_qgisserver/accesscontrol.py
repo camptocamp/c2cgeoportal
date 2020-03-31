@@ -195,7 +195,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             from c2cgeoportal_commons.models.main import OGCServer
 
-            self.ogcserver = self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one()
+            self.ogcserver = (
+                self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
+            )
 
         except Exception:
             LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
@@ -217,6 +219,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             key: QGIS layer tree node name
             value: list of c2cgeoportal_commons.models.main.LayerWMS instances.
         """
+        if self.ogcserver is None:
+            return {}
+
         with self.lock:
             from c2cgeoportal_commons.models.main import LayerWMS
 
@@ -358,11 +363,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Returns an additional subset string (typically SQL) filter """
-        if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
-            return "0"
 
         LOG.debug("layerFilterSubsetString %s %s", layer.name(), layer.dataProvider().storageType())
+
+        if self.ogcserver is None:
+            LOG.error("Call on uninitialized plugin")
+            return "FALSE"
 
         try:
             if layer.dataProvider().storageType() not in self.SUBSETSTRING_TYPE:
@@ -391,11 +397,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def layerFilterExpression(self, layer):  # NOQA
         """ Returns an additional expression filter """
-        if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
-            return "0"
 
         LOG.debug("layerFilterExpression %s %s", layer.name(), layer.dataProvider().storageType())
+
+        if self.ogcserver is None:
+            LOG.error("Call on uninitialized plugin")
+            return "FALSE"
 
         try:
             if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
@@ -421,6 +428,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def layerPermissions(self, layer):  # NOQA
         """ Returns the layer rights """
+
         LOG.debug("layerPermissions %s", layer.name())
 
         try:
