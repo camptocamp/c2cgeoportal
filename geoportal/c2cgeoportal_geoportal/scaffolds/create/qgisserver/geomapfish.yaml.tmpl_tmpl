@@ -2,8 +2,8 @@
 vars:
   schema: '${PGSCHEMA}'
   schema_static: '{PGSCHEMA_STATIC}'
-  sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
-  sqlalchemy_slave.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}
+  sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}?sslmode={PGSSLMODE}
+  sqlalchemy_slave.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}?sslmode={PGSSLMODE}
   srid: {{srid}}
   sqlalchemy:
     pool_recycle: 30
@@ -17,6 +17,8 @@ environment:
   - PGHOST_SLAVE
   - name: PGPORT
     default: 5432
+  - name: PGSSLMODE
+    default: prefer
   - PGDATABASE
   - name: PGSCHEMA_STATIC
     default: main_static

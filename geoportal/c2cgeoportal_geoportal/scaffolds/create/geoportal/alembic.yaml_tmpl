@@ -2,7 +2,7 @@
 vars:
   schema: '{PGSCHEMA}'
   schema_static: '{PGSCHEMA_STATIC}'
-  sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
+  sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}?sslmode={PGSSLMODE}
   srid: {{srid}}
 environment:
   - name: PGHOST
@@ -11,6 +11,8 @@ environment:
   - name: PGUSER
   - name: PGPASSWORD
   - name: PGDATABASE
+  - name: PGSSLMODE
+    default: prefer
   - name: PGSCHEMA
     default: main
   - name: PGSCHEMA_STATIC
