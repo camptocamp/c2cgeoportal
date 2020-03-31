@@ -158,7 +158,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             from c2cgeoportal_commons.models.main import OGCServer
 
-            self.ogcserver = self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one()
+            self.ogcserver = (
+                self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
+            )
 
         except Exception:
             QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
@@ -181,6 +183,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             key: QGIS layer tree node name
             value: list of c2cgeoportal_commons.models.main.LayerWMS instances.
         """
+        if self.ogcserver is None:
+            return {}
+
         with self.lock:
             from c2cgeoportal_commons.models.main import LayerWMS
 
@@ -227,10 +232,6 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             )
             self.layers = layers
             return layers
-
-    def assert_plugin_initialised(self):
-        if self.ogcserver is None:
-            raise Exception("The plugin is not correctly initialised")
 
     def get_roles(self):
         """
@@ -334,7 +335,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             "layerFilterSubsetString {} {}".format(layer.name(), layer.dataProvider().storageType())
         )
 
-        self.assert_plugin_initialised()
+        if self.ogcserver is None:
+            return "FALSE"
 
         try:
             if layer.dataProvider().storageType() not in self.SUBSETSTRING_TYPE:
@@ -367,7 +369,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             "layerFilterExpression {} {}".format(layer.name(), layer.dataProvider().storageType())
         )
 
-        self.assert_plugin_initialised()
+        if self.ogcserver is None:
+            return "FALSE"
 
         try:
             if layer.dataProvider().storageType() in self.SUBSETSTRING_TYPE:
@@ -395,11 +398,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         """ Returns the layer rights """
         QgsMessageLog.logMessage("layerPermissions {}".format(layer.name()))
 
-        self.assert_plugin_initialised()
-
         try:
             rights = QgsAccessControlFilter.LayerPermissions()
             rights.canRead = rights.canInsert = rights.canUpdate = rights.canDelete = False
+
+            if self.ogcserver is None:
+                return rights
 
             layers = self.get_layers()
             ogc_layer_name = self.ogc_layer_name(layer)
@@ -433,7 +437,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         """ Are we authorise to modify the following geometry """
         QgsMessageLog.logMessage("allowToEdit")
 
-        self.assert_plugin_initialised()
+        if self.ogcserver is None:
+            return False
 
         try:
             access, area = self.get_area(layer, rw=True)
