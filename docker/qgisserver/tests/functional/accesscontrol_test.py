@@ -17,7 +17,12 @@ from geoalchemy2.shape import from_shape
 from qgis.core import QgsFeature, QgsGeometry, QgsProject, QgsVectorLayer
 from shapely.geometry import LineString, box, shape
 
-from geomapfish_qgisserver.accesscontrol import Access, GeoMapFishAccessControl, OGCServerAccessControl
+from geomapfish_qgisserver.accesscontrol import (
+    Access,
+    GeoMapFishAccessControl,
+    GMFException,
+    OGCServerAccessControl,
+)
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
@@ -338,6 +343,66 @@ class TestOGCServerAccessControl:
 
 
 @pytest.mark.usefixtures(
+    "server_iface", "qgs_access_control_filter", "test_data",
+)
+class TestUnavailableOGCServerAccessControl:
+    def test_init(self, server_iface, dbsession):
+        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+        assert ogcserver_accesscontrol.ogcserver is None
+
+    def test_get_layers(self, server_iface, dbsession):
+        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+
+        assert ogcserver_accesscontrol.get_layers() == {}
+
+    def test_layerPermissions(self, server_iface, dbsession, test_data):
+        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+
+        for user_name, layer_name, expected in (
+            (
+                "user1",
+                "public_layer",
+                {"canDelete": False, "canInsert": False, "canRead": False, "canUpdate": False},
+            ),
+            (
+                "user12",
+                "private_layer2",
+                {"canDelete": False, "canInsert": False, "canRead": False, "canUpdate": False},
+            ),
+        ):
+            user = test_data["users"][user_name]
+            set_request_parameters(server_iface, {"USER_ID": str(user.id)})
+            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            permissions = ogcserver_accesscontrol.layerPermissions(layer)
+            for key, value in expected.items():
+                assert value == getattr(permissions, key)
+
+    def test_layerFilterSubsetString(self, server_iface, dbsession, test_data):
+        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+
+        for user_name, layer_name, expected in (
+            ("user1", "public_layer", "FALSE"),
+            ("user12", "private_layer2", "FALSE"),
+        ):
+            user = test_data["users"][user_name]
+            set_request_parameters(server_iface, {"USER_ID": str(user.id)})
+            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            assert ogcserver_accesscontrol.layerFilterSubsetString(layer) == expected
+
+    def test_layerFilterExpression(self, server_iface, dbsession, test_data):
+        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+
+        for user_name, layer_name, expected in (
+            ("user1", "public_layer", "FALSE"),
+            ("user12", "private_layer2", "FALSE"),
+        ):
+            user = test_data["users"][user_name]
+            set_request_parameters(server_iface, {"USER_ID": str(user.id)})
+            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            assert ogcserver_accesscontrol.layerFilterExpression(layer) == expected
+
+
+@pytest.mark.usefixtures(
     "server_iface", "qgs_access_control_filter", "single_ogc_server_env", "scoped_session", "test_data"
 )
 class TestGeoMapFishAccessControlSingleOGCServer:
@@ -365,3 +430,8 @@ class TestGeoMapFishAccessControlMultipleOGCServer:
         set_request_parameters(server_iface, {"MAP": "qgsproject2"})
         assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "qgsproject2"
         assert plugin.get_ogcserver_accesscontrol().ogcserver is test_data["ogc_servers"]["qgisserver2"]
+
+        set_request_parameters(server_iface, {"MAP": "unavailable"})
+        assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "unavailable"
+        with pytest.raises(GMFException):
+            plugin.get_ogcserver_accesscontrol()
