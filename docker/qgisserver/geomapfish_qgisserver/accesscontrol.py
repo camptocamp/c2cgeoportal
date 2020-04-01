@@ -100,10 +100,20 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             )
 
     def get_ogcserver_accesscontrol(self):
+        parameters = self.serverInterface().requestHandler().parameterMap()
         if self.single:
+            if "MAP" in parameters:
+                raise GMFException("The map parameter should not be provided")
             return self.ogcserver_accesscontrol
         else:
-            parameters = self.serverInterface().requestHandler().parameterMap()
+            if "MAP" not in parameters:
+                raise GMFException("The map parameter should be provided")
+            if parameters["MAP"] not in self.ogcserver_accesscontrols:
+                raise GMFException(
+                    "The map '{}' is not found possible values: {}".format(
+                        parameters["MAP"], ", ".join(self.ogcserver_accesscontrols.keys())
+                    )
+                )
             return self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
 
     def layerFilterSubsetString(self, layer):  # NOQA
@@ -161,6 +171,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             self.ogcserver = (
                 self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
             )
+            if self.ogcserver is None:
+                QgsMessageLog.logMessage("No OGC server found for '{}' => no rights".format(ogcserver_name))
 
         except Exception:
             QgsMessageLog.logMessage("".join(traceback.format_exception(*sys.exc_info())))
