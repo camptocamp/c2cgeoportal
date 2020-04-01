@@ -210,7 +210,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
             )
             if self.ogcserver is None:
-                QgsMessageLog.logMessage("No OGC server found for '{}' => no rights".format(ogcserver_name))
+                LOG.warning("No OGC server found for '{}' => no rights".format(ogcserver_name))
 
         except Exception:
             LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
