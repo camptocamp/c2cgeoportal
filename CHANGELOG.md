@@ -1,3 +1,7 @@
+##### 2.4.1.102
+*  No rights if OGC server isn't found instead of error  [c2cgeoportal#6108](https://github.com/camptocamp/c2cgeoportal/pull/6108)
+* Backport workflow from master [ngeo#5674](https://github.com/camptocamp/ngeo/pull/5674)
+* Fix print extra property error [ngeo#5683](https://github.com/camptocamp/ngeo/pull/5683)
 ##### 2.4.1.101
 * Use latest version of postgres client [c2cgeoportal#6080](https://github.com/camptocamp/c2cgeoportal/pull/6080)
 * Use propertychange to make it working with WMTS layer [ngeo#5673](https://github.com/camptocamp/ngeo/pull/5673)
