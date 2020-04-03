@@ -20,6 +20,8 @@ jobs:
       SUMMON_PROVIDER: /usr/local/bin/gopass
 
     steps:
+      - run: docker system prune --all --force
+
       # Versions
       - run: docker --version
       - run: docker-compose --version
@@ -148,6 +150,7 @@ jobs:
       - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-tools
       - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-runner
       - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-config
+      - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 240 ${HOME}/workspace
       - run: ci/test-upgrade 25 ${HOME}/workspace
