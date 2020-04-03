@@ -1,3 +1,5 @@
+##### 2.4.1.103
+* Fix cass [c2cgeoportal#6118](https://github.com/camptocamp/c2cgeoportal/pull/6118)
 ##### 2.4.1.102
 *  No rights if OGC server isn't found instead of error  [c2cgeoportal#6108](https://github.com/camptocamp/c2cgeoportal/pull/6108)
 * Backport workflow from master [ngeo#5674](https://github.com/camptocamp/ngeo/pull/5674)
