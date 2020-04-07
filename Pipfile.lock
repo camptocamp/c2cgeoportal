@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e03b6920eb30e7646f69d5c5f7b7eb7648111650243dffeb9130d94b20e85fdb"
+            "sha256": "0b0e4846fe8e417ea2ab3678c53ca377c1a821651f2d1fd2ebf526a6d5d9e31c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1175,10 +1175,10 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:139d2625547dbfa5fb0b81daebb39601c478c21956dc57e2e07b74450a8c506b",
-                "sha256:61aa52a0f18b71c5cc58232d2cf8f8d09cd67fcad60b742a60124cb8d6951488"
+                "sha256:07f558fece33b05caf857474a366dfcc00562bca13dd8b47b2b3e22d9f9bf55c",
+                "sha256:579170e23f8e0c2f24b0de612f71f648eccb79fb1322c814ae6b3c07b5ba23e8"
             ],
-            "version": "==5.4.4"
+            "version": "==5.4.5"
         },
         "pep8-naming": {
             "hashes": [
@@ -1460,10 +1460,10 @@
         },
         "transifex-client": {
             "hashes": [
-                "sha256:8c2cc75d6a330c062b8f95c8764dccc9ee4fcabc9ad926fd9f9335c02c7606b3"
+                "sha256:2eb576e31230b62e06083145907599e456bae05127f7e914b27eb796f739ed51"
             ],
             "index": "pypi",
-            "version": "==0.13.8"
+            "version": "==0.13.9"
         },
         "typed-ast": {
             "hashes": [
