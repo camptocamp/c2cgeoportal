@@ -19,7 +19,7 @@ polib = "==1.1.0"  # i18n
 pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==2.8.1"  # tests
 pytest-selenium = "==1.17.0"  # admin tests
-transifex-client = "==0.13.8"  # Makefile
+transifex-client = "==0.13.9"  # Makefile
 WebTest = "==2.0.34"  # admin tests
 prospector = {extras = ["with_mypy"],version = "==1.2.0"}
 mypy = "==0.761"
