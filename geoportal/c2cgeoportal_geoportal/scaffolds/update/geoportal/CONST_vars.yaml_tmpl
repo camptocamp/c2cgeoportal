@@ -126,6 +126,15 @@ vars:
                 ITEMFONTFAMILY: DejaVu Sans
                 LAYERFONTSIZE: '10'
                 ITEMFONTSIZE: '8'
+        gmfPermalinkOptions:
+          crosshairStyle:
+          crosshairEnabledByDefault: False
+          projectionCodes:
+            - EPSG:3857
+            - EPSG:2056
+            - EPSG:21781
+          useLocalStorage: False
+          pointRecenterZoom:
       routes:
         gmfProfileJsonUrl:
           name: profile.json
@@ -174,6 +183,15 @@ vars:
                 profile: routed-hiking
         ngeoNominatimSearchDefaultParams:
           countrycodes: CH
+        gmfPermalinkOptions:
+          crosshairStyle:
+          crosshairEnabledByDefault: True
+          projectionCodes:
+            - EPSG:3857
+            - EPSG:2056
+            - EPSG:21781
+          useLocalStorage: False
+          pointRecenterZoom:
       routes:
         gmfProfileJsonUrl:
           name: profile.json
