@@ -1,3 +1,5 @@
+##### 2.4.1.104
+* add REM key [c2cgeoportal#6139](https://github.com/camptocamp/c2cgeoportal/pull/6139)
 ##### 2.4.1.103
 * Fix cass [c2cgeoportal#6118](https://github.com/camptocamp/c2cgeoportal/pull/6118)
 ##### 2.4.1.102
