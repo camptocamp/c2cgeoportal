@@ -26,7 +26,7 @@ update_configs:
     update_schedule: live
     allowed_updates:
       - match:
-          dependency_type: direct
+          dependency_type: indirect
     automerged_updates:
       - match:
           update_type: all
@@ -38,7 +38,7 @@ update_configs:
     update_schedule: live
     allowed_updates:
       - match:
-          dependency_type: direct
+          dependency_type: indirect
     automerged_updates:
       - match:
           update_type: all
@@ -50,7 +50,7 @@ update_configs:
     update_schedule: live
     allowed_updates:
       - match:
-          dependency_type: direct
+          dependency_type: indirect
     automerged_updates:
       - match:
           update_type: all
@@ -64,6 +64,7 @@ update_configs:
     allowed_updates:
       - match:
           update_type: security
+          dependency_type: indirect
 
   - package_manager: docker
     directory: /
