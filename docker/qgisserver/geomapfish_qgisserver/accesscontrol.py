@@ -263,6 +263,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             browse([], self.project.layerTreeRoot())
 
+            for ogc_layer_name, ancestors in nodes.items():
+                LOG.debug("QGIS layer: %s", ogc_layer_name)
+
             # Transform ancestor names in LayerWMS instances
             layers = {}  # dict( node name : list of LayerWMS }
             for layer in (
@@ -271,9 +274,15 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 for ogc_layer_name, ancestors in nodes.items():
                     for ancestor in ancestors:
                         if ancestor in layer.layer.split(","):
+                            LOG.debug("GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
                             layers.setdefault(ogc_layer_name, []).append(layer)
+                        else:
+                            LOG.info(
+                                "Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer
+                            )
+
             LOG.debug(
-                "[accesscontrol] layers:\n%s",
+                "layers: %s",
                 json.dumps({k: [l.name for l in v] for k, v in layers.items()}, sort_keys=True, indent=4),
             )
             self.layers = layers
