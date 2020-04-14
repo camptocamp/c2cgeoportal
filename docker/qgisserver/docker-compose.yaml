@@ -15,7 +15,7 @@ services:
   qgisserver:
     image: camptocamp/geomapfish-qgisserver
     volumes:
-      - ./acceptence-tests/project:/etc/qgisserver
+      - ./acceptance-tests/project:/etc/qgisserver
     environment:
       - PGHOST=db
       - PGPORT=5432
@@ -31,7 +31,7 @@ services:
   tests:
     image: camptocamp/geomapfish
     volumes:
-      - ./acceptence-tests:/tests
+      - ./acceptance-tests:/tests
     environment:
       - PGHOST=db
       - PGPORT=5432

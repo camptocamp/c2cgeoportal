@@ -2,26 +2,26 @@
 
 import requests
 
-responce = requests.get("http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities"})
+response = requests.get("http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities"})
 
-print(responce.status_code)
-assert responce.ok
-print(responce.headers["Content-Type"])
-assert responce.headers["Content-Type"].split(";")[0] == "text/xml"
-assert "private_layer" not in responce.text
+print(response.status_code)
+assert response.ok
+print(response.headers["Content-Type"])
+assert response.headers["Content-Type"].split(";")[0] == "text/xml"
+assert "private_layer" not in response.text
 
 
-responce = requests.get(
+response = requests.get(
     "http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities", "ROLE_IDS": "99"}
 )
 
-print(responce.status_code)
-assert responce.ok
-assert responce.headers["Content-Type"].split(";")[0] == "text/xml"
-assert "private_layer" in responce.text
+print(response.status_code)
+assert response.ok
+assert response.headers["Content-Type"].split(";")[0] == "text/xml"
+assert "private_layer" in response.text
 
 
-responce = requests.get(
+response = requests.get(
     "http://qgisserver",
     params={
         "SERVICE": "WMS",
@@ -37,11 +37,11 @@ responce = requests.get(
     },
 )
 
-print(responce.status_code)
-print(responce.text)
-assert responce.status_code == 403
+print(response.status_code)
+print(response.text)
+assert response.status_code == 403
 
-responce = requests.get(
+response = requests.get(
     "http://qgisserver",
     params={
         "SERVICE": "WMS",
@@ -58,6 +58,6 @@ responce = requests.get(
     },
 )
 
-print(responce.status_code)
-assert responce.ok
-assert responce.headers["Content-Type"] == "image/png"
+print(response.status_code)
+assert response.ok
+assert response.headers["Content-Type"] == "image/png"
