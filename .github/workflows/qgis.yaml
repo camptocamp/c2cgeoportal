@@ -61,7 +61,7 @@ jobs:
           docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=main upgrade head
           docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=static upgrade head
           docker-compose exec -T tests /tests/fill-db
-          ../../ci/run-dc-logs docker-compose exec -T tests /tests/acceptence-tests
+          ../../ci/run-dc-logs docker-compose exec -T tests /tests/acceptance-tests
           docker-compose down
 
       - name: Publish
