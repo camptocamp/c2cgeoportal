@@ -1,14 +1,15 @@
 ---
 
-name: QGIS build
+name: QGIS rebuild
 
 on:
-  push:
+  schedule:
+    - cron: "30 3 * * *"
 
 jobs:
   main:
     runs-on: ubuntu-18.04
-    name: QGIS build
+    name: QGIS rebuild
     timeout-minutes: 60
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
@@ -26,8 +27,8 @@ jobs:
           - master
 
     env:
-      MAIN_BRANCH: master
-      MAJOR_VERSION: 2.6
+      MAIN_BRANCH: 2.5
+      MAJOR_VERSION: 2.5
       CI: true
       PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
       SUMMON_PROVIDER: /usr/local/bin/gopass
