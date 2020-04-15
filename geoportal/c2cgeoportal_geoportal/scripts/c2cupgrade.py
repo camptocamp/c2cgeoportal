@@ -720,7 +720,7 @@ class C2cUpgradeTool:
         # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
 
-        check_call(["git", "add", "-A"])
+        check_call(["git", "add", "--all"])
         check_call(["git", "status"])
 
         self.print_step(
