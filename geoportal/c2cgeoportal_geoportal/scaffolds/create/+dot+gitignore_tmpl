@@ -6,6 +6,7 @@ __pycache__/
 /upgrade
 /.upgrade.yaml
 /.UPGRADE*
+/geoportal/{{package}}_geoportal/locale/{{package}}_geoportal-client.pot
 
 # Generated with dev mode
 /geoportal/{{package}}_geoportal/static/apihelp/index.html
