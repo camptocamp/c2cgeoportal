@@ -34,6 +34,26 @@ else
     fi
 fi
 
+DEPLOY_PIP=FALSE
+MAJOR_VERSION_TAG=${MAJOR_VERSION}
+# Get the version to be published
+if [ "${TAG}" ]
+then
+    VERSION=${TAG}
+elif [ "${GIT_BRANCH}" != "${MAIN_BRANCH}" ]
+then
+    VERSION=${GIT_BRANCH//\//_}
+    MAJOR_VERSION_TAG=${VERSION}
+    DEPLOY_PIP=FALSE
+else
+    VERSION=${MAJOR_VERSION}
+fi
+export VERSION
+if [ ${VERSION_QGIS} == FALSE ]
+then
+    VERSION_QGIS=${VERSION}
+fi
+
 if [ $1 == "--geoportal" ]
 then
     if [ ${COMMIT} == TRUE ]
@@ -41,26 +61,6 @@ then
         git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
         git commit -m "[skip ci] Update the minor version"
         git push ${GIT_BRANCH}
-    fi
-
-    DEPLOY_PIP=FALSE
-    MAJOR_VERSION_TAG=${MAJOR_VERSION}
-    # Get the version to be published
-    if [ "${TAG}" ]
-    then
-        VERSION=${TAG}
-    elif [ "${GIT_BRANCH}" != "${MAIN_BRANCH}" ]
-    then
-        VERSION=${GIT_BRANCH//\//_}
-        MAJOR_VERSION_TAG=${VERSION}
-        DEPLOY_PIP=FALSE
-    else
-        VERSION=${MAJOR_VERSION}
-    fi
-    export VERSION
-    if [ ${VERSION_QGIS} == FALSE ]
-    then
-        VERSION_QGIS=${VERSION}
     fi
 
     # Publish the GeoMapFish tools and config images
