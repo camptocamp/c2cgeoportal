@@ -74,7 +74,10 @@ Create a new Transifex resource:
 .. prompt:: bash
 
     make build-tools
-    docker run camptocamp/geomapfish-tools transifex-init <version + 1>
+    docker run --user=root camptocamp/geomapfish-tools transifex-init \
+        <version> <version + 1> \
+        "$(gopass gs/ci/transifex/rw/username)" \
+        "$(gopass gs/ci/transifex/rw/password)"
 
 For each version, we create a new branch (at the latest, for the final release):
 

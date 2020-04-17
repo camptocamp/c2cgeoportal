@@ -116,7 +116,7 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 </pre></div></div></div>
 <div class="section" id="aws-credentials">
 <h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Permalink to this headline">¶</a></h3>
-<p>To be able to connect to the S3 service, you should define the following variables in the <code class="docutils literal notranslate"><span class="pre">.env.mako</span></code>
+<p>To be able to connect to the S3 service, you should define the following variables in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code>
 file:</p>
 <p>code:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
@@ -129,6 +129,14 @@ file:</p>
 <span class="n">export</span> <span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="web-interface">
+<h3>Web Interface<a class="headerlink" href="#web-interface" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to run tile generation commands through a web interface located at URL
+<code class="docutils literal notranslate"><span class="pre">&lt;application</span> <span class="pre">main</span> <span class="pre">URL&gt;/tiles/admin/</span></code>. This interface is protected by a password that
+must be specified in the <code class="docutils literal notranslate"><span class="pre">C2C_SECRET</span></code> environment variable in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
+<p>Predefined commands may be set in parameter <code class="docutils literal notranslate"><span class="pre">server</span> <span class="pre">&gt;</span> <span class="pre">predefined_commands</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
 </div>
 </div>
 </div>

@@ -87,7 +87,10 @@ span.prompt1:before {
 <span class="prompt1">git reset --hard origin/master</span>
 </pre></div></div><p>Create a new Transifex resource:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make build-tools</span>
-<span class="prompt1">docker run camptocamp/geomapfish-tools transifex-init &lt;version + <span class="m">1</span>&gt;</span>
+<span class="prompt1">docker run --user<span class="o">=</span>root camptocamp/geomapfish-tools transifex-init <span class="se">\</span>
+    &lt;version&gt; &lt;version + <span class="m">1</span>&gt; <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="k">$(</span>gopass gs/ci/transifex/rw/username<span class="k">)</span><span class="s2">&quot;</span> <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="k">$(</span>gopass gs/ci/transifex/rw/password<span class="k">)</span><span class="s2">&quot;</span></span>
 </pre></div></div><p>For each version, we create a new branch (at the latest, for the final release):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git checkout -b &lt;version&gt;</span>
 <span class="prompt1">git push origin &lt;version&gt;</span>

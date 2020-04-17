@@ -112,7 +112,7 @@ If you setup all the default options, you can generate the tiles by using the co
 AWS credentials
 ~~~~~~~~~~~~~~~
 
-To be able to connect to the S3 service, you should define the following variables in the ``.env.mako``
+To be able to connect to the S3 service, you should define the following variables in the ``env.project``
 file:
 
 code::
@@ -126,3 +126,13 @@ code::
 
   export AWS_ACCESS_KEY_ID=<access_key_id>
   export AWS_SECRET_ACCESS_KEY=<secret_access_key>
+
+Web Interface
+~~~~~~~~~~~~~
+
+It is possible to run tile generation commands through a web interface located at URL
+``<application main URL>/tiles/admin/``. This interface is protected by a password that
+must be specified in the ``C2C_SECRET`` environment variable in the ``env.project`` file.
+
+Predefined commands may be set in parameter ``server > predefined_commands`` in the
+``tilegeneration/config.yaml.tmpl`` file.
