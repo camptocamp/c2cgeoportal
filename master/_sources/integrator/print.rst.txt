@@ -44,7 +44,7 @@ Local print
 
 To use a local print service, you should:
 
-* Set ``PRINT_URL`` to ``http://print:8080/print/`` in the ``env.default`` file.
+* Set ``PRINT_URL`` to ``http://print:8080/print/`` in the ``env.project`` file.
 * Uncomment the ``print`` service in the ``docker-compose.yaml`` file.
 * Uncomment the ``!mapUri``, ``!forwardHeaders`` and ``!hostnameMatch`` in the print configuration.
 * Uncomment the ``print``/``spec`` configuration section of the ``checker`` in the ``vars.yaml``.
