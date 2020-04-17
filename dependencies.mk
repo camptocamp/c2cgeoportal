@@ -41,15 +41,6 @@ transifex-send: $(TX_DEPENDENCIES) \
 	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
 	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
 
-.PHONY: transifex-init
-transifex-init: $(TX_DEPENDENCIES) \
-		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-
 geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/c2cgeoportal_geoportal.po: geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
 	mkdir --parent $(dir $@)
 	touch $@

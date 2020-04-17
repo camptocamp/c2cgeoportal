@@ -1,4 +1,15 @@
 #!/bin/bash -e
 
-rm .tx/config
-MAJOR_VERSION=$1 make transifex-init
+echo "[https://www.transifex.com]" > ${HOME}/.transifexrc
+echo "hostname = https://www.transifex.com" >> ${HOME}/.transifexrc
+echo "username = $3" >> ${HOME}/.transifexrc
+echo "password = $4" >> ${HOME}/.transifexrc
+echo "token =" >> ${HOME}/.transifexrc
+
+cd /opt/c2cgeoportal
+sed --in-place s/${1/\./_}/${2/\./_}/g .tx/config
+
+tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-${2/\./_}
+tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-${2/\./_}
+tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-${2/\./_}
+tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-${2/\./_}
