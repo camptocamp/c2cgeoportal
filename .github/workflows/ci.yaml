@@ -20,6 +20,7 @@ jobs:
       SUMMON_PROVIDER: /usr/local/bin/gopass
 
     steps:
+      - run: df -h
       - run: docker system prune --all --force
 
       # Versions
@@ -55,14 +56,9 @@ jobs:
         if: always()
       - run: VERSION=$(ci/release-tag) make build-config
 
-      # Build QGIS images
-      - run: docker build --target=lint --build-arg=VERSION=latest docker/qgisserver
-      - run: QGIS_VERSION=latest make build-qgisserver
-      # Old LTR
-      - run: QGIS_VERSION=3.4 make build-qgisserver
-      # LTR
+      # Build and lint QGIS images
+      - run: docker build --target=lint --build-arg=VERSION=3.10 docker/qgisserver
       - run: QGIS_VERSION=3.10 make build-qgisserver
-      - run: QGIS_VERSION=3.12 make build-qgisserver
 
       # Test changelog
       - run: ci/changelog new_version
