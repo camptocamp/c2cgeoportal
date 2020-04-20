@@ -52,8 +52,7 @@ echo 'PGPASSWORD=www-data' >> env.project
 if [ $BASE_APP == true ]
 then
     find -name *desktop_alt*
-#    for interface in desktop_alt mobile_alt oeedit
-    for interface in desktop_alt mobile_alt
+    for interface in desktop_alt mobile_alt oeedit
     do
         for file in \
             geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/${interface}.html.ejs \
@@ -63,8 +62,7 @@ then
         do
             cp CONST_create_template/${file} ${file}
         done
-#        sed -i '1iNGEO_INTERFACES ?= desktop mobile iframe_api desktop_alt mobile_alt oeedit' geoportal/Makefile
-        sed -i '1iNGEO_INTERFACES ?= desktop mobile iframe_api desktop_alt mobile_alt' geoportal/Makefile
+        sed -i '1iNGEO_INTERFACES ?= desktop mobile iframe_api desktop_alt mobile_alt oeedit' geoportal/Makefile
     done
 fi
 
