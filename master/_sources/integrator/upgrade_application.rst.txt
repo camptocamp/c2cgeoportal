@@ -85,11 +85,11 @@ Upgrade the main schema:
 .. prompt:: bash
 
    docker-compose exec geoportal alembic --name=main \
-        --config=geoportal/alembic.ini upgrade head
+        upgrade head
 
 Upgrade the static schema:
 
 .. prompt:: bash
 
    docker-compose exec geoportal alembic --name=static \
-        --config=geoportal/alembic.ini upgrade head
+        --config=alembic.ini upgrade head
