@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -eux
 
 mkdir --parent ${1}
 docker build --tag=camptocamp/geomapfish-doc \

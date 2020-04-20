@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -eu
 
 if [ -z ${MAJOR_VERSION} ]
 then

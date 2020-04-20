@@ -1,10 +1,11 @@
-#!/bin/bash -e
+#!/bin/bash -eu
 
 echo docker login ***
 docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
 
 set -x
 
+GIT_TAG=""
 if [[ "${GITHUB_REF}" =~ ^refs/tags/.* ]]
 then
   GIT_TAG=$(echo "${GITHUB_REF}"|sed 's|^refs/tags/||g')

@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -eux
 
 TAG=$(ci/release-tag)
 VERSION=${TAG} DOCKER_TAG=${TAG} make build-tools
