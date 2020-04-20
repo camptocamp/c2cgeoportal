@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -eux
 
 GIT_REV=$(git log | head --lines=1 | awk '{{print $2}}')
 ci/extract-documentation /tmp/doc

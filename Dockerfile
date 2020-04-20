@@ -162,6 +162,7 @@ RUN \
   npm cache clear --force && \
   rm -rf /tmp/*
 
+ENV TEST=false
 COPY bin/eval-templates bin/wait-db bin/list4vrt /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
 COPY --from=tools-cleaned /usr/lib/node_modules/ngeo/buildtools/check-example.js /usr/bin/

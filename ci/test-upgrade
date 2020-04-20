@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -eux
 
 WORKSPACE=$2
 PCREATE_ARGS="--ignore-conflicting-name --overwrite --package-name testgeomapfish"
