@@ -17,6 +17,8 @@ environment:
   - PGHOST_SLAVE
   - name: PGPORT
     default: 5432
+  - name: PGPORT_SLAVE
+    default: 5432
   - name: PGSSLMODE
     default: prefer
   - PGDATABASE
