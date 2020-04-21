@@ -133,12 +133,15 @@ add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file
 
 .. code::
 
-   ProxyPass "/<instance>"  "http://localhost:8080/<instance>"
-   ProxyPassReverse "/<instance>"  "http://localhost:8080/<instance>"
+   ProxyPass "/<instance>"  "http://localhost:<application_port>/<instance>"
+   ProxyPassReverse "/<instance>"  "http://localhost:<application_port>/<instance>"
    ProxyPreserveHost On
    RequestHeader set X-Forwarded-Proto "https"
    RequestHeader set X-Forwarded-Port "443"
    ProxyRequests Off
+
+Where ``<application_port>`` is the value of ``DOCKER_PORT``,
+and ``/<instance>`` the valie of ``VISIBLE_ENTRY_POINT``.
 
 The root instance should be at the end.
 
