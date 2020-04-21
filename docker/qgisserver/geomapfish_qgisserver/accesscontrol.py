@@ -277,15 +277,15 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             for layer in (
                 self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all()
             ):
+                found = False
                 for ogc_layer_name, ancestors in nodes.items():
                     for ancestor in ancestors:
                         if ancestor in layer.layer.split(","):
+                            found = True
                             LOG.debug("GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
                             layers.setdefault(ogc_layer_name, []).append(layer)
-                        else:
-                            LOG.info(
-                                "Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer
-                            )
+                if not found:
+                    LOG.info("Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
 
             LOG.debug(
                 "layers: %s",
