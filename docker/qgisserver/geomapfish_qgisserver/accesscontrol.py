@@ -220,7 +220,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                     self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
                 )
                 if self.ogcserver is None:
-                    LOG.warning("No OGC server found for '{}' => no rights".format(ogcserver_name))
+                    LOG.error(
+                        "No OGC server found for '%s', project: '%s' => no rights", ogcserver_name, map_file
+                    )
             except Exception:
                 LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
 
@@ -395,7 +397,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         LOG.debug("layerFilterSubsetString %s %s", layer.name(), layer.dataProvider().storageType())
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return "FALSE"
 
         try:
@@ -429,7 +435,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         LOG.debug("layerFilterExpression %s %s", layer.name(), layer.dataProvider().storageType())
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return "FALSE"
 
         try:
@@ -464,7 +474,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             rights.canRead = rights.canInsert = rights.canUpdate = rights.canDelete = False
 
             if self.ogcserver is None:
-                LOG.error("Call on uninitialized plugin")
+                parameters = self.serverInterface().requestHandler().parameterMap()
+                LOG.warning(
+                    "Call on uninitialized plugin, map: %s",
+                    os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+                )
                 return rights
 
             layers = self.get_layers()
@@ -491,7 +505,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         del layer
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return []
 
         # TODO
@@ -502,7 +520,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         LOG.debug("allowToEdit")
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return False
 
         try:
