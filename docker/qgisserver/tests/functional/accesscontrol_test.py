@@ -1,13 +1,31 @@
 # -*- coding: utf-8 -*-
-"""
-Copyright: (C) 2016-2019 by Camptocamp SA
-Contact: info@camptocamp.com
 
-.. note:: This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by the
-    Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
-"""
+# Copyright (c) 2018-2020, Camptocamp SA
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
 
 from unittest.mock import Mock
 
@@ -180,17 +198,18 @@ def test_data(dbsession):
         "users": users,
         "layers": layers,
         "restriction_areas": restriction_areas,
+        "project": project,
     }
 
     t.rollback()
 
 
 @pytest.fixture(scope="function")
-def wms_use_layer_ids():
+def wms_use_layer_ids(test_data):
     """
     Activate WMSUseLayerIDs
     """
-    project = QgsProject.instance()
+    project = test_data["project"]
     try:
         project.writeEntry("WMSUseLayerIDs", "/", True)
         yield
@@ -201,26 +220,37 @@ def wms_use_layer_ids():
 @pytest.mark.usefixtures("server_iface", "qgs_access_control_filter", "test_data")
 class TestOGCServerAccessControl:
     def test_init(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
         assert ogcserver_accesscontrol.ogcserver is test_data["ogc_servers"]["qgisserver1"]
 
-    def test_ogc_layer_name(self, server_iface, dbsession):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+    def test_ogc_layer_name(self, server_iface, dbsession, test_data):
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
+        ogcserver_accesscontrol.project = test_data["project"]
         for layer_name, expected in (
             ("private_layer1", "private_layer1"),
             ("private_layer3", "pl3"),
         ):
-            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            layer = test_data["project"].mapLayersByName(layer_name)[0]
             assert expected == ogcserver_accesscontrol.ogc_layer_name(layer)
 
     @pytest.mark.usefixtures("wms_use_layer_ids")
-    def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, dbsession):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
-        layer = QgsProject.instance().mapLayersByName("private_layer1")[0]
+    def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, dbsession, test_data):
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
+        ogcserver_accesscontrol.project = test_data["project"]
+        layer = test_data["project"].mapLayersByName("private_layer1")[0]
         assert layer.id() == ogcserver_accesscontrol.ogc_layer_name(layer)
 
     def test_get_layers(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
+        ogcserver_accesscontrol.project = test_data["project"]
 
         test_layers = test_data["layers"]
         expected = {
@@ -239,7 +269,9 @@ class TestOGCServerAccessControl:
             assert set(expected[key]) == set(layers[key])
 
     def test_get_roles(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
 
         set_request_parameters(server_iface, {"USER_ID": "0"})
         assert "ROOT" == ogcserver_accesscontrol.get_roles()
@@ -262,7 +294,9 @@ class TestOGCServerAccessControl:
             assert expected_roles == set(ogcserver_accesscontrol.get_roles())
 
     def test_get_restriction_areas(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
 
         test_layers = test_data["layers"]
         test_roles = test_data["roles"]
@@ -283,7 +317,10 @@ class TestOGCServerAccessControl:
             )
 
     def test_get_area(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
+        ogcserver_accesscontrol.project = test_data["project"]
 
         for user_name, layer_name, expected in [
             ("root", layer_name, (Access.FULL, None))
@@ -299,7 +336,7 @@ class TestOGCServerAccessControl:
                 server_iface,
                 {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(r.id) for r in user.roles])},
             )
-            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            layer = test_data["project"].mapLayersByName(layer_name)[0]
             access, area = ogcserver_accesscontrol.get_area(layer)
             assert expected == (
                 access,
@@ -308,7 +345,10 @@ class TestOGCServerAccessControl:
 
     @staticmethod
     def test_layer_permissions(server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
+        ogcserver_accesscontrol.project = test_data["project"]
 
         for user_name, layer_name, expected in (
             (
@@ -332,14 +372,16 @@ class TestOGCServerAccessControl:
                 server_iface,
                 {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(r.id) for r in user.roles])},
             )
-            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            layer = test_data["project"].mapLayersByName(layer_name)[0]
             permissions = ogcserver_accesscontrol.layerPermissions(layer)
             for key, value in expected.items():
                 assert value == getattr(permissions, key)
 
     @staticmethod
     def test_cache_key(server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver1", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver1", "no_project", 21781, dbsession
+        )
 
         set_request_parameters(server_iface, {"Host": "example.com", "USER_ID": "0"})
         assert "0" == server_iface.requestHandler().parameter("USER_ID")
@@ -362,16 +404,22 @@ class TestOGCServerAccessControl:
 )
 class TestUnavailableOGCServerAccessControl:
     def test_init(self, server_iface, dbsession):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "unavailable", "no_project", 21781, dbsession
+        )
         assert ogcserver_accesscontrol.ogcserver is None
 
     def test_get_layers(self, server_iface, dbsession):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "unavailable", "no_project", 21781, dbsession
+        )
 
         assert ogcserver_accesscontrol.get_layers() == {}
 
     def test_layer_permissions(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "unavailable", "no_project", 21781, dbsession
+        )
 
         for user_name, layer_name, expected in (
             (
@@ -387,13 +435,16 @@ class TestUnavailableOGCServerAccessControl:
         ):
             user = test_data["users"][user_name]
             set_request_parameters(server_iface, {"USER_ID": str(user.id)})
-            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            layer = test_data["project"].mapLayersByName(layer_name)[0]
+
             permissions = ogcserver_accesscontrol.layerPermissions(layer)
             for key, value in expected.items():
                 assert value == getattr(permissions, key)
 
     def test_layer_filter_subset_string(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "unavailable", "no_project", 21781, dbsession
+        )
 
         for user_name, layer_name, expected in (
             ("user1", "public_layer", "FALSE"),
@@ -401,11 +452,13 @@ class TestUnavailableOGCServerAccessControl:
         ):
             user = test_data["users"][user_name]
             set_request_parameters(server_iface, {"USER_ID": str(user.id)})
-            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+            layer = test_data["project"].mapLayersByName(layer_name)[0]
             assert ogcserver_accesscontrol.layerFilterSubsetString(layer) == expected
 
     def test_layer_filter_expression(self, server_iface, dbsession, test_data):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "unavailable", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "unavailable", "no_project", 21781, dbsession
+        )
 
         for user_name, layer_name, expected in (
             ("user1", "public_layer", "FALSE"),
@@ -413,7 +466,8 @@ class TestUnavailableOGCServerAccessControl:
         ):
             user = test_data["users"][user_name]
             set_request_parameters(server_iface, {"USER_ID": str(user.id)})
-            layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+
+            layer = test_data["project"].mapLayersByName(layer_name)[0]
             assert ogcserver_accesscontrol.layerFilterExpression(layer) == expected
 
 

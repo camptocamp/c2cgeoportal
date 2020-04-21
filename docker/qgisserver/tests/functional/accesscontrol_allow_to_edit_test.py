@@ -1,13 +1,31 @@
 # -*- coding: utf-8 -*-
-"""
-Copyright: (C) 2016-2019 by Camptocamp SA
-Contact: info@camptocamp.com
 
-.. note:: This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by the
-    Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
-"""
+# Copyright (c) 2018-2020, Camptocamp SA
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
 
 from geoalchemy2.shape import from_shape
 import pytest
@@ -95,7 +113,13 @@ def test_data2(dbsession):
 
     dbsession.flush()
 
-    yield {"users": users, "roles": roles, "restriction_areas": restriction_areas, "ogc_servers": ogc_servers}
+    yield {
+        "users": users,
+        "roles": roles,
+        "restriction_areas": restriction_areas,
+        "ogc_servers": ogc_servers,
+        "project": project,
+    }
 
     t.rollback()
 
@@ -105,7 +129,10 @@ def test_data2(dbsession):
 )
 class TestAccessControlAllowToEdit:
     def test_allow_to_edit(self, server_iface, dbsession, test_data2):
-        ogcserver_accesscontrol = OGCServerAccessControl(server_iface, "qgisserver", 21781, dbsession)
+        ogcserver_accesscontrol = OGCServerAccessControl(
+            server_iface, "qgisserver", "no_project", 21781, dbsession
+        )
+        ogcserver_accesscontrol.project = test_data2["project"]
 
         for user_name, expected, geometry in [
             ["user_no_access", False, geom_in],
@@ -124,7 +151,7 @@ class TestAccessControlAllowToEdit:
                 {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(role.id) for role in user.roles])},
             )
 
-            layer = QgsProject.instance().mapLayersByName("private_layer")[0]
+            layer = test_data2["project"].mapLayersByName("private_layer")[0]
             feature = QgsFeature()
             geom = QgsGeometry()
             geom.fromWkb(geometry.wkb)
