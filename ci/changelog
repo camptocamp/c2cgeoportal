@@ -135,7 +135,9 @@ def get_pulls(repo, ref):
 def add_new_release():
     if len(sys.argv) == 2:
         npm_list = json.loads(
-            output(["docker", "run", "--rm", "camptocamp/geomapfish", "npm", "list", "--json"]).decode()
+            output(
+                ["docker", "run", "--rm", "camptocamp/geomapfish-tools", "npm", "list", "--global", "--json"]
+            ).decode()
         )
 
         version = npm_list["dependencies"]["ngeo"]["version"]
