@@ -127,14 +127,16 @@ environment variable, for cygwin, git and node binaries.</p>
 <p>If you ahave an Apache in front of your application,
 add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
 (create it if it does not exist):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>
-<span class="n">ProxyPassReverse</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:8080/&lt;instance&gt;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:&lt;application_port&gt;/&lt;instance&gt;&quot;</span>
+<span class="n">ProxyPassReverse</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:&lt;application_port&gt;/&lt;instance&gt;&quot;</span>
 <span class="n">ProxyPreserveHost</span> <span class="n">On</span>
 <span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Proto</span> <span class="s2">&quot;https&quot;</span>
 <span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Port</span> <span class="s2">&quot;443&quot;</span>
 <span class="n">ProxyRequests</span> <span class="n">Off</span>
 </pre></div>
 </div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;application_port&gt;</span></code> is the value of <code class="docutils literal notranslate"><span class="pre">DOCKER_PORT</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">/&lt;instance&gt;</span></code> the value of <code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>.</p>
 <p>The root instance should be at the end.</p>
 </div>
 </div>
