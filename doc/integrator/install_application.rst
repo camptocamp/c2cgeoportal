@@ -141,7 +141,7 @@ add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file
    ProxyRequests Off
 
 Where ``<application_port>`` is the value of ``DOCKER_PORT``,
-and ``/<instance>`` the valie of ``VISIBLE_ENTRY_POINT``.
+and ``/<instance>`` the value of ``VISIBLE_ENTRY_POINT``.
 
 The root instance should be at the end.
 
