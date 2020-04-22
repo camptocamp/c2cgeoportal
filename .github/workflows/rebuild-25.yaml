@@ -38,7 +38,7 @@ jobs:
 
       - uses: actions/checkout@v1
         with:
-          ref: ${{ MAIN_BRANCH }}
+          ref: ${{ env.MAIN_BRANCH }}
 
       - run: python3 -m pip install --user pipenv
 
