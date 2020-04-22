@@ -12,6 +12,8 @@ services:
 
   qgisserver-tests:
     image: camptocamp/geomapfish-qgisserver-tests
+    volumes:
+      - ./docker/qgisserver/:/src
     environment:
       - PGHOST=db
       - PGPORT=5432
