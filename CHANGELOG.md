@@ -1,3 +1,7 @@
+##### 2.4.1.105
+* [Backport 2.4] Backport user [c2cgeoportal#6197](https://github.com/camptocamp/c2cgeoportal/pull/6197)
+* Apply transparency on search color [ngeo#5649](https://github.com/camptocamp/ngeo/pull/5649)
+* Allow setting permalink zoom with map_zoom param [ngeo#5684](https://github.com/camptocamp/ngeo/pull/5684)
 ##### 2.4.1.104
 * add REM key [c2cgeoportal#6139](https://github.com/camptocamp/c2cgeoportal/pull/6139)
 ##### 2.4.1.103
