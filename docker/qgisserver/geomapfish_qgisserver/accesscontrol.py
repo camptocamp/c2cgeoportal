@@ -34,12 +34,13 @@ import logging
 import os
 import re
 from threading import Lock
+from typing import Dict, List
 
 from c2c.template.config import config
 import c2cwsgiutils.broadcast
 import geoalchemy2
 from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsProject
-from qgis.server import QgsAccessControlFilter
+from qgis.server import QgsAccessControlFilter, QgsConfigCache
 from shapely import ops, wkb
 import sqlalchemy
 from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
@@ -84,7 +85,11 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             if "GEOMAPFISH_OGCSERVER" in os.environ:
                 self.single = True
                 self.ogcserver_accesscontrol = OGCServerAccessControl(
-                    server_iface, os.environ["GEOMAPFISH_OGCSERVER"], config.get("srid"), DBSession
+                    server_iface,
+                    os.environ["GEOMAPFISH_OGCSERVER"],
+                    os.environ["QGIS_PROJECT_FILE"],
+                    config.get("srid"),
+                    DBSession,
                 )
 
                 LOG.info("Use OGC server named '%s'.", os.environ["GEOMAPFISH_OGCSERVER"])
@@ -97,7 +102,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
                 for map_, map_config in ac_config.get("map_config").items():
                     map_config["access_control"] = OGCServerAccessControl(
-                        server_iface, map_config["ogc_server"], config.get("srid"), DBSession
+                        server_iface, map_config["ogc_server"], map_, config.get("srid"), DBSession
                     )
                     self.ogcserver_accesscontrols[map_] = map_config
                 LOG.info("Use config '%s'.", os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"])
@@ -125,16 +130,15 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             if "MAP" in parameters:
                 raise GMFException("The map parameter should not be provided")
             return self.ogcserver_accesscontrol
-        else:
-            if "MAP" not in parameters:
-                raise GMFException("The map parameter should be provided")
-            if parameters["MAP"] not in self.ogcserver_accesscontrols:
-                raise GMFException(
-                    "The map '{}' is not found possible values: {}".format(
-                        parameters["MAP"], ", ".join(self.ogcserver_accesscontrols.keys())
-                    )
+        if "MAP" not in parameters:
+            raise GMFException("The map parameter should be provided")
+        if parameters["MAP"] not in self.ogcserver_accesscontrols:
+            raise GMFException(
+                "The map '{}' is not found possible values: {}".format(
+                    parameters["MAP"], ", ".join(self.ogcserver_accesscontrols.keys())
                 )
-            return self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
+            )
+        return self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Return an additional subset string (typically SQL) filter """
@@ -182,7 +186,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     SUBSETSTRING_TYPE = ["PostgreSQL database with PostGIS extension"]
 
-    def __init__(self, server_iface, ogcserver_name, srid, DBSession):  # noqa: N803
+    def __init__(self, server_iface, ogcserver_name, map_file, srid, DBSession):  # noqa: N803
         super().__init__(server_iface)
 
         self.server_iface = server_iface
@@ -190,34 +194,40 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.area_cache = {}
         self.layers = None
         self.lock = Lock()
-        self.project = None
         self.srid = srid
         self.ogcserver = None
+        self.project = QgsProject.instance()
 
-        try:
-            from c2cgeoportal_commons.models import InvalidateCacheEvent
+        from c2cgeoportal_commons.models import InvalidateCacheEvent
 
-            @zope.event.classhandler.handler(InvalidateCacheEvent)
-            def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
-                del event
-                LOG.info("=== invalidate ===")
-                with self.lock:
-                    self.layers = None
+        @zope.event.classhandler.handler(InvalidateCacheEvent)
+        def handle(_: InvalidateCacheEvent):  # pylint: disable=unused-variable
+            LOG.info("=== invalidate ===")
+            self._init(ogcserver_name, map_file)
 
-            from c2cgeoportal_commons.models.main import OGCServer
+        self._init(ogcserver_name, map_file)
 
-            self.ogcserver = (
-                self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
-            )
-            if self.ogcserver is None:
-                LOG.warning("No OGC server found for '{}' => no rights".format(ogcserver_name))
+    def _init(self, ogcserver_name, map_file):
+        with self.lock:
+            try:
+                config_cache = QgsConfigCache.instance()
+                self.project = config_cache.project(map_file)
+                self.layers = None
 
-        except Exception:
-            LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
+                from c2cgeoportal_commons.models.main import OGCServer
 
-    @staticmethod
-    def ogc_layer_name(layer):
-        use_layer_id, _ = QgsProject.instance().readBoolEntry("WMSUseLayerIDs", "/", False)
+                self.ogcserver = (
+                    self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
+                )
+                if self.ogcserver is None:
+                    LOG.error(
+                        "No OGC server found for '%s', project: '%s' => no rights", ogcserver_name, map_file
+                    )
+            except Exception:
+                LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
+
+    def ogc_layer_name(self, layer):
+        use_layer_id, _ = self.project.readBoolEntry("WMSUseLayerIDs", "/", False)
         if use_layer_id:
             return layer.id()
         return layer.shortName() or layer.name()
@@ -238,10 +248,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         with self.lock:
             from c2cgeoportal_commons.models.main import LayerWMS
 
-            if self.layers is not None and self.project == QgsProject.instance():
+            if self.layers is not None:
                 return self.layers
-
-            self.project = QgsProject.instance()
 
             nodes = {}  # dict { node name : list of ancestor node names }
 
@@ -267,19 +275,19 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("QGIS layer: %s", ogc_layer_name)
 
             # Transform ancestor names in LayerWMS instances
-            layers = {}  # dict( node name : list of LayerWMS }
+            layers = {}  # type: Dict[str, List[LayerWMS]]
             for layer in (
                 self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all()
             ):
+                found = False
                 for ogc_layer_name, ancestors in nodes.items():
                     for ancestor in ancestors:
                         if ancestor in layer.layer.split(","):
+                            found = True
                             LOG.debug("GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
                             layers.setdefault(ogc_layer_name, []).append(layer)
-                        else:
-                            LOG.info(
-                                "Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer
-                            )
+                if not found:
+                    LOG.info("Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
 
             LOG.debug(
                 "layers: %s",
@@ -389,7 +397,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         LOG.debug("layerFilterSubsetString %s %s", layer.name(), layer.dataProvider().storageType())
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return "FALSE"
 
         try:
@@ -423,7 +435,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         LOG.debug("layerFilterExpression %s %s", layer.name(), layer.dataProvider().storageType())
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return "FALSE"
 
         try:
@@ -458,7 +474,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             rights.canRead = rights.canInsert = rights.canUpdate = rights.canDelete = False
 
             if self.ogcserver is None:
-                LOG.error("Call on uninitialized plugin")
+                parameters = self.serverInterface().requestHandler().parameterMap()
+                LOG.warning(
+                    "Call on uninitialized plugin, map: %s",
+                    os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+                )
                 return rights
 
             layers = self.get_layers()
@@ -485,7 +505,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         del layer
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return []
 
         # TODO
@@ -496,7 +520,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         LOG.debug("allowToEdit")
 
         if self.ogcserver is None:
-            LOG.error("Call on uninitialized plugin")
+            parameters = self.serverInterface().requestHandler().parameterMap()
+            LOG.warning(
+                "Call on uninitialized plugin, map: %s",
+                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+            )
             return False
 
         try:
