@@ -13,7 +13,7 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
-      MAIN_BRANCH: master
+      MAIN_BRANCH: 2.5
       MAJOR_VERSION: 2.5
       CI: true
       PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
@@ -62,6 +62,8 @@ jobs:
 
       # Test changelog
       - run: ci/changelog new_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
       - run: git checkout CHANGELOG.md ci/changelog.yaml
 
@@ -197,3 +199,11 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
+
+      - name: Notify demo
+        run: >
+          curl --request POST --header "Content-Type: application/json"
+          --header 'Accept: application/vnd.github.groot-preview+json'
+          --header "Authorization: token {{ env.GITHUB_GOPASS_CI_TOKEN }}"
+          https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
+          --data '{"event_type": "geomapfish_25_updated"}'
