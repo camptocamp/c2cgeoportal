@@ -3,7 +3,6 @@
 
 import json
 import os
-import re
 import sys
 
 import requests
@@ -24,31 +23,29 @@ fail = False
 
 def clean_images(docker_image, tag):
     global fail
-    print("Delete image 'camptocamp/{}:{}'.".format(docker_image, tag))
 
-    response = requests.head(
-        "https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/".format(
-            image=docker_image, tag=tag,
-        ),
+    response_ = requests.head(
+        "https://hub.docker.com/v2/repositories/{image}/tags/{tag}/".format(image=docker_image, tag=tag),
         headers={"Authorization": "JWT " + token},
     )
-    if response.status_code == 404:
+    if response_.status_code == 404:
         return
-    if not response.ok:
-        print("Error checking image 'camptocamp/{}:{}' status.".format(docker_image, tag))
-        print(response.text)
+
+    print("Delete image '{}:{}'.".format(docker_image, tag))
+
+    if not response_.ok:
+        print("Error checking image '{}:{}' status.".format(docker_image, tag))
+        print(response_.text)
         fail = True
         return
 
-    response = requests.delete(
-        "https://hub.docker.com/v2/repositories/camptocamp/{image}/tags/{tag}/".format(
-            image=docker_image, tag=tag,
-        ),
+    response_ = requests.delete(
+        "https://hub.docker.com/v2/repositories/{image}/tags/{tag}/".format(image=docker_image, tag=tag),
         headers={"Authorization": "JWT " + token},
     )
-    if not response.ok:
-        print("Error while deleting image 'camptocamp/{}:{}'.".format(docker_image, tag))
-        print(response.text)
+    if not response_.ok:
+        print("Error while deleting image '{}:{}'.".format(docker_image, tag))
+        print(response_.text)
         fail = True
 
 
@@ -62,7 +59,7 @@ if not response.ok:
     fail = True
 for image in response.json()["summaries"]:
     if image["name"].startswith("camptocamp/"):
-        clean_images(image["name"], ref)
+        clean_images(image["name"], ref.replace("/", "_"))
 
 
 response = requests.get(
@@ -73,9 +70,9 @@ if not response.ok:
     print("Error while getting GeoMapFish - QGIS server tags.")
     print(response.text)
     fail = True
-for tag in response.json()["results"]:
-    if tag["name"].startswith("gmf{}-".format(ref)):
-        clean_images("geomapfish-qgisserver", tag["name"])
+for tag_ in response.json()["results"]:
+    if tag_["name"].startswith("gmf{}-".format(ref.replace("/", "-"))):
+        clean_images("camptocamp/geomapfish-qgisserver", tag_["name"])
 
 if fail:
     sys.exit(2)
