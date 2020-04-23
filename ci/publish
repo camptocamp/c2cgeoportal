@@ -22,9 +22,6 @@ VERSION_QGIS=FALSE
 if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
 then
     VERSION_QGIS=${TAG}
-    ci/get-minor --reset
-    ci/changelog ${TAG}
-    COMMIT=TRUE
 else
     if [[ ${GIT_BRANCH} =~ ^[0-9]\.[0-9]$ ]]
     then
