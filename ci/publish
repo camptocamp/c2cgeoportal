@@ -61,7 +61,7 @@ then
     then
         git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
         git commit -m "[skip ci] Update the minor version"
-        git push ${GIT_BRANCH}
+        git push origin HEAD:${GIT_BRANCH}
     fi
 
     # Publish the GeoMapFish tools and config images
