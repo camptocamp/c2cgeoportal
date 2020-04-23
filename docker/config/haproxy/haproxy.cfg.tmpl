@@ -62,6 +62,17 @@ backend tilecloudchain
     http-check expect status 200
     server linked tilecloudchain:8080 resolvers dns #check
 
+backend routing_car
+    reqrep ^([^\ ]*)\ /route/route/(.*) \1\ /route/\2
+    server linked osrm_car:5000 resolvers dns #check
+
+backend routing_bike
+    reqrep ^([^\ ]*)\ /bike/route/(.*) \1\ /route/\2
+    server linked osrm_bike:5000 resolvers dns #check
+
+backend routing_foot
+    reqrep ^([^\ ]*)\ /foot/route/(.*) \1\ /route/\2
+    server linked osrm_foot:5000 resolvers dns #check
 
 frontend plain
     bind :80
@@ -72,6 +83,18 @@ frontend plain
     # If the path starts with /tiles/, use the tilecloudchain backend
     acl is_tiles var(req.path) -m beg ${VISIBLE_ENTRY_POINT}tiles/
     use_backend tilecloudchain if is_tiles
+    
+    # If the path starts with /route/, use the tilecloudchain backend
+    acl is_routing_car var(req.path) -m beg /route/
+    use_backend routing_car if is_routing_car
+
+    # If the path starts with /bike/, use the tilecloudchain backend
+    acl is_routing_bike var(req.path) -m beg /bike/
+    use_backend routing_bike if is_routing_bike
+
+    # If the path starts with /foot/, use the tilecloudchain backend
+    acl is_routing_foot var(req.path) -m beg /foot/
+    use_backend routing_foot if is_routing_foot
 
     # Redirect all to geoportal by default
     default_backend geoportal
