@@ -73,7 +73,7 @@ if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
 else:
     args = parser.parse_args()
 
-    c2cupgrade_args = ["--step", args.step] if args.step is not None else []
+    c2cupgrade_args = [args.version, "--step", args.step] if args.step is not None else [args.version]
 
     if os.environ.get("CI") != "true" and args.step is None:
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(args.version)])
