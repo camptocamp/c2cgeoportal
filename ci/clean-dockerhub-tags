@@ -17,6 +17,7 @@ token = requests.post(
 with open(os.environ["GITHUB_EVENT_PATH"]) as event_file:
     ref = json.loads(event_file.read())["ref"]
 
+print("Clean ref '{}'.".format(ref))
 
 fail = False
 
