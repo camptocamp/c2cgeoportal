@@ -31,6 +31,7 @@
 import argparse
 import os
 import platform
+import re
 import subprocess
 import sys
 
@@ -76,7 +77,11 @@ else:
     c2cupgrade_args = ["--step", args.step] if args.step is not None else []
 
     if os.environ.get("CI") != "true" and args.step is None:
-        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(args.version)])
+        major_version = args.version
+        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", major_version)
+        if match is not None:
+            major_version = match.group(1)
+        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(major_version)])
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-tools:{}".format(args.version)])
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(args.version)])
 
