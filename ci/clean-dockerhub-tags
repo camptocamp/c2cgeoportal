@@ -23,7 +23,6 @@ fail = False
 
 def clean_images(docker_image, tag):
     global fail
-    print("Delete image '{}:{}'.".format(docker_image, tag))
 
     response_ = requests.head(
         "https://hub.docker.com/v2/repositories/{image}/tags/{tag}/".format(image=docker_image, tag=tag),
@@ -31,6 +30,9 @@ def clean_images(docker_image, tag):
     )
     if response_.status_code == 404:
         return
+
+    print("Delete image '{}:{}'.".format(docker_image, tag))
+
     if not response_.ok:
         print("Error checking image '{}:{}' status.".format(docker_image, tag))
         print(response_.text)
