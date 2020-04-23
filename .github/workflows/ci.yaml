@@ -180,7 +180,7 @@ jobs:
             PYPI_PASSWORD: !var gs/ci/pypi/password
           ' ci/publish --geoportal
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
         if: github.repository == 'camptocamp/c2cgeoportal'
       - name: Publish to Transifex
         run: |
