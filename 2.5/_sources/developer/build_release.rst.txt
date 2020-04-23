@@ -1,0 +1,193 @@
+.. _developer_build_release:
+
+Create a new release
+====================
+
+Vocabulary
+----------
+
+On this page, we use the word ``version`` for a major version of MapFish
+Geoportal (2.0), and the word ``release`` for each step in this version
+(2.0.0rc1, 2.0.0, 2.0.1, ...).
+
+``MapFish Geoportal`` is the pack that includes ngeo and c2cgeoportal;
+since 2014, both projects are synchronizing their major versions.
+
+For example, ``<release>`` can be ``2.0.0rc1`` for the first release candidate
+of the version ``2.0``, ``2.0.0`` for the final release, ``2.0.1`` for
+the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
+
+.. _developer_build_release_pre_release_task:
+
+Pre release task
+----------------
+
+Before doing a release, you should merge all the previous branches on this one:
+
+* Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
+  to the upper branches i.e.: ``2.2`` => ``2.3``, ``2.3`` => ``2.4`` (master).
+
+  .. note::
+
+     On ``c2cgeoportal`` merge, see if an alembic merge should be done:
+
+     .. prompt:: bash
+
+        python3 -m pip install --user -e commons
+        alembic --config=commons/alembic.ini \
+            --name=[main|static] heads
+
+     If yes, create the merge with:
+
+     .. prompt:: bash
+
+        alembic --config=commons/alembic.ini \
+            --name=[main|static] \
+            merge --message="Merge <src> and <dst> branches" \
+            <rev 1> <rev 2>
+
+     Remove the import and replace the core of the method by ``pass`` in the generated file.
+
+     Finally, add the new file.
+
+ngeo
+----
+
+`For ngeo see here <https://github.com/camptocamp/ngeo/blob/2.5/docs/developer-guide.md#create-a-package-on-npm>`_.
+
+c2cgeoportal
+------------
+
+New version
+~~~~~~~~~~~
+
+Checkout the code:
+
+.. prompt:: bash
+
+    git fetch
+    git checkout master
+    git reset --hard origin/master
+
+Create a new Transifex resource:
+
+.. prompt:: bash
+
+    make build-tools
+    docker run --user=root camptocamp/geomapfish-tools transifex-init \
+        <version> <version + 1> \
+        "$(gopass gs/ci/transifex/rw/username)" \
+        "$(gopass gs/ci/transifex/rw/password)"
+
+For each version, we create a new branch (at the latest, for the final release):
+
+.. prompt:: bash
+
+    git checkout -b <version>
+    git push origin <version>
+
+Change the version in the following files:
+ * ``.github/workflows/ci.yaml`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
+
+
+Commit your changes:
+
+.. prompt:: bash
+
+    git add .github/workflows/ci.yaml
+    git commit -m "Create the version <version> branch"
+
+Go back to the master branch:
+
+.. prompt:: bash
+
+    git checkout master
+
+Copy ``.github/workflows/ci.yaml`` to ``.github/workflows/rebuild-<version>.yaml``
+
+Change the on from pull to cron and checkout the right branch:
+
+.. code:: diff
+
+     on:
+    -  push:
+    +  schedule:
+    +    - cron: "30 2 * * *"
+
+     - uses: actions/checkout@v1
+    +  with:
+    +    ref: <version>
+
+Commit your changes:
+
+.. prompt:: bash
+
+    git add .github/workflows/ci.yaml
+    git commit -m "Start version <version + 1>"
+
+Push your changes:
+
+.. prompt:: bash
+
+    git push origin master
+
+Update the references in the `index.html` file of the `gh-pages` branch.
+
+Then continue by creating the release.
+
+Do the new release
+~~~~~~~~~~~~~~~~~~
+
+Checkout the code:
+
+.. prompt:: bash
+
+    git fetch
+    git checkout <version>
+    git reset --hard origin/<version>
+
+Tag the new release:
+
+.. prompt:: bash
+
+    git tag <release>
+    git push origin <release>
+
+Run a new job for the <version> branch on Jenkins.
+
+.. note::
+
+    It is possible to do a version only on the latest commit on a branch.
+    If you really need to do that, you should create a new branch.
+
+Notes about Travis
+~~~~~~~~~~~~~~~~~~
+
+When you push a tag with the pattern ``^[0-9]+\.[0-9]+\..+$``,
+a new release will automatically be created on Travis CI.
+
+Post release tasks
+------------------
+
+When a new release or a new version is done, you should do the following tasks:
+
+* Merge the version into the upper one to the master i.e.: ``2.4`` => ``2.5``, ``2.5`` => ``master``.
+
+See :ref:`developer_build_release_pre_release_task` for more information.
+
+* Upgrade the demo in your home folder, see :ref:`integrator_upgrade_application`.
+* Some specific things for the demo:
+  `UPGRADE.rst <https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst>`_.
+
+For non dev release
+-------------------
+
+* Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ from ``x.y`` to ``x.y.z``.
+* Create again the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
+  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ for ``x.y``.
+* Move all the open issues to the new milestone and close the current milestone
+  in `ngeo <https://github.com/camptocamp/ngeo/milestones>`_
+  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_.
+* Send a release email to the ``geomapfish@googlegroups.com``
+  and ``gmf2@lists.camptocamp.com`` mailing lists.

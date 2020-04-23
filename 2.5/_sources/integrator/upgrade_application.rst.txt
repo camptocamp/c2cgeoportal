@@ -1,0 +1,93 @@
+.. _integrator_upgrade_application:
+
+==================================
+Upgrading a GeoMapFish application
+==================================
+
+
+Prepare upgrade
+~~~~~~~~~~~~~~~
+
+Be sure that your ``managed_files`` list is up to date in your ``project.yaml`` file.
+
+If you are not sure whether this list is up to date, you can perform an update up to step 7 on your
+current version and see if some files get modified by the update process.
+If the update process modified files which you do not want modified, then add these files to the
+``managed_files`` list.
+
+From a version 2.4.x
+~~~~~~~~~~~~~~~~~~~~
+
+Clean your project (include ignored files):
+
+.. prompt:: bash
+
+   git clean -dx --force
+
+Build the project file if needed:
+
+.. prompt:: bash
+
+   ./docker-run make project.yaml
+
+Get the upgrade script:
+
+.. prompt:: bash
+
+    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.5/scripts/upgrade > upgrade
+    chmod +x upgrade
+
+Upgrade in Git ignore:
+
+.. prompt:: bash
+
+    echo /upgrade >> .gitignore
+    git add .gitignore
+    git commit -m "Add /upgrade in .gitignore"
+
+Run the upgrade:
+
+.. prompt:: bash
+
+   ./upgrade <version>
+
+Then follow the instructions.
+
+
+From a version 2.5 and next
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Start the upgrade:
+
+.. prompt:: bash
+
+    ./build --upgrade <version>
+
+Then follow the instructions.
+
+The ``<version>`` can be ``x.y.z.p``, ``x.y``, or ``master`` to target the master branch.
+
+Upgrade the database
+~~~~~~~~~~~~~~~~~~~~
+
+The database will be automatically upgraded during the upgrade process.
+
+To upgrade only the database you can use alembic directly.
+
+The help:
+
+.. prompt:: bash
+
+   docker-compose exec geoportal alembic --help
+
+Upgrade the main schema:
+
+.. prompt:: bash
+
+   docker-compose exec geoportal alembic --name=main upgrade head
+
+Upgrade the static schema:
+
+.. prompt:: bash
+
+   docker-compose exec geoportal alembic --name=static upgrade head
