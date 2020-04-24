@@ -204,16 +204,6 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
 
-      - uses: actions/checkout@v2
-        with:
-          repository: camptocamp/demo_geomapfish
-          ref: 'prod-2-5'
-          token: '{{ env.GITHUB_GOPASS_CI_TOKEN}}'
-      - name: Update the demo
-        run: ci/update-demo
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
       - name: Push interrupted Upgrade
         run: |
           cd ../demo_geomapfish
