@@ -181,6 +181,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
         if: github.repository == 'camptocamp/c2cgeoportal'
+
       - name: Publish to Transifex
         run: |
           docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
@@ -195,6 +196,7 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
+
       - name: Publish documentation to GitHub.io
         run: ci/publish-documentation
         if: >
