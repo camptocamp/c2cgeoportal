@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-18.04
     name: Rebuild
     timeout-minutes: 60
-    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
       MAIN_BRANCH: master
