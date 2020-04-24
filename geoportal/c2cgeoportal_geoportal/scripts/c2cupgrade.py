@@ -73,6 +73,7 @@ def main():
 
 def _fill_arguments():
     parser = ArgumentParser()
+    parser.add_argument("version", help="Upgrade to version", default=os.environ["VERSION"])
     parser.add_argument(
         "--git-remote", metavar="GITREMOTE", help="Specify the remote branch", default="origin"
     )
@@ -178,7 +179,7 @@ class C2cUpgradeTool:
             print(colorize(message, RED if error else YELLOW))
         if step >= 0:
             print(colorize(prompt, GREEN))
-            cmd = ["./upgrade", os.environ["VERSION"]]
+            cmd = ["./upgrade", self.options.version]
             if step != 0:
                 cmd.append("{}".format(step))
             print(colorize(" ".join(cmd), GREEN))
