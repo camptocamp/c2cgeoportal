@@ -221,6 +221,23 @@ The ``${MAPSERVER_DATA_SUBSELECT}`` is defined as follows:
 The ``${mapfile_data_subselect}`` variable is defined in the ``CONST_vars.yaml``
 configuration file. Its goal is to simplify the writing of the mapfile.
 
+It is required to have the following in the ``VALIDATION`` section of the ``LAYER``:
+
+.. code::
+
+   VALIDATION
+     # For secured layers
+     "default_role_ids" ""
+     # Or
+     # "default_role_ids" "<id of the anonymous role>"
+     "role_ids" "^-?[0-9,]*$"
+   END
+
+The ``default_role_ids`` define the restrictions when mapserver is called without any ``roles_ids``.
+In this situation, if you have set ``default_role_ids`` to an empty value for this layer, then there is
+no access; if you have set ``default_role_ids`` to the anonymous role id, then the access rights of
+anonymous users apply.
+
 
 Without restriction on the RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -234,7 +251,7 @@ If we do not need to restrict on an area, we can use the following
         FROM
             <schema>.<table> AS geo
         WHERE (
-            ARRAY[%role_ids%] && ARRAY(
+            ARRAY[%role_ids%]::integer[] && ARRAY(
                 ${MAPSERVER_DATA_NOAREA_SUBSELECT} '<layername>'
             )
         )
@@ -262,22 +279,26 @@ The ``${MAPSERVER_DATA_NOAREA_SUBSELECT}`` is defined as follows:
     AND
         la.name =
 
-Metadata and filename
-~~~~~~~~~~~~~~~~~~~~~
-
 It is required to have the following in the ``VALIDATION`` section of the ``LAYER``:
 
 .. code::
 
-    ${mapserver_layer_validation}
+   VALIDATION
+     # For secured layers
+     "default_role_ids" "-1"
+     # Or
+     # "default_role_ids" "<id of the anonymous role>"
+     "role_ids" "^-?[0-9,]*$"
+   END
 
-This variable is defined in the ``CONST_vars.yaml`` configuration file as follows:
+The ``default_role_ids`` define the restrictions when mapserver is called without any ``roles_ids``.
+In this situation, if you have set ``default_role_ids`` to ``-1`` for this layer, then there is
+no access; if you have set ``default_role_ids`` to the anonymous role id, then the access rights of
+anonymous users apply.
 
-.. code::
 
-    mapserver_layer_validation =
-        "default_role_ids" "-1"
-        "role_ids" "^-?[0-9]*$$"
+Filename
+~~~~~~~~
 
 The mapfile should be a ``.map.tmpl`` file, for the variable to be substituted at container start.
 

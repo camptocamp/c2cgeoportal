@@ -16,7 +16,7 @@ Changes to apply
 
 1. Now we need to have PyYAML python package installed in the home,
    see the documentation for more information:
-   https://camptocamp.github.io/c2cgeoportal/master/integrator/requirements.html
+   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/integrator/requirements.html
 
 2. The configuration vars `vars/functionalities/anonymous` and `vars/functionalities/registered` should
    be moved to the new roles `anonymous` and `registered` that will be created once the database has been upgraded.
@@ -31,6 +31,9 @@ Changes to apply
 5. The static files will be moved, therefore you should replace:
    `request.static_url('{{package}}_geoportal:static/` by:
    `request.static_url('/etc/geomapfish/static/`.
+
+6. Optional, change your mapfiles according the documentation:
+   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/administrator/mapfile.html
 
 
 Version 2.4.2
