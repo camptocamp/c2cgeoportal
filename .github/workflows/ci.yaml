@@ -149,6 +149,7 @@ jobs:
       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 240 ${HOME}/workspace
+      - run: ci/test-upgrade 250 ${HOME}/workspace
       - run: ci/test-upgrade 25 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
