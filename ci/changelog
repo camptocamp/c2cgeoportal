@@ -96,7 +96,7 @@ def get_commit(repo, ref):
 
 def get_pulls(repo, ref):
     dirty, pulls = get_any(repo, ref, "pulls", "https://api.github.com/repos/camptocamp/{}/commits/{}/pulls")
-    if isinstance(pulls, list):
+    if not isinstance(pulls, list):
         print("Error on commit {}.".format(ref))
         print(pulls)
         sys.exit(1)
