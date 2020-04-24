@@ -1,0 +1,5 @@
+##### 2.5.0.1
+* Be able to call MapServer without any roles_ids [c2cgeoportal#6192](https://github.com/camptocamp/c2cgeoportal/pull/6192)
+* Fix used version during upgrade [c2cgeoportal#6207](https://github.com/camptocamp/c2cgeoportal/pull/6207)
+* Test upgrade from 2.5.0 [c2cgeoportal#6211](https://github.com/camptocamp/c2cgeoportal/pull/6211)
+* Fix changelog [c2cgeoportal#6214](https://github.com/camptocamp/c2cgeoportal/pull/6214)
