@@ -1,3 +1,5 @@
+##### 2.5.0.3
+* Fix commit on protected branch [c2cgeoportal#6219](https://github.com/camptocamp/c2cgeoportal/pull/6219)
 ##### 2.5.0.2
 * Test upgrade from 2.5.0 [c2cgeoportal#6211](https://github.com/camptocamp/c2cgeoportal/pull/6211)
 ##### 2.5.0.1

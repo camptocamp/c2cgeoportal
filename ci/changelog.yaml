@@ -40,21 +40,34 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/342f05f8d9f3a0fba1b0049dcc10f3882bce3e34',
         sha: 342f05f8d9f3a0fba1b0049dcc10f3882bce3e34, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/342f05f8d9f3a0fba1b0049dcc10f3882bce3e34'}
       sha: 5fae9f51c4901eae2d76ff335b504d010af79b52
-    d727fc855: &id003
+    8cc45d9fa: &id003
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/f6bd7d97be87774b86756bb7f37f7b5e90a63b84',
+        sha: f6bd7d97be87774b86756bb7f37f7b5e90a63b84, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/f6bd7d97be87774b86756bb7f37f7b5e90a63b84'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/534a18a1a96e698da2e115e072002f5c31059ea8',
+        sha: 534a18a1a96e698da2e115e072002f5c31059ea8, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/534a18a1a96e698da2e115e072002f5c31059ea8'}
+      sha: 8cc45d9fa1b771854f44e4540446e70622424104
+    8cc45d9fa1b771854f44e4540446e70622424104: *id003
+    d727fc855: &id004
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/a54def4a02c3e0b0c9a4b914be4a3a8cc9c886eb',
         sha: a54def4a02c3e0b0c9a4b914be4a3a8cc9c886eb, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/a54def4a02c3e0b0c9a4b914be4a3a8cc9c886eb'}
       sha: d727fc855cafd9c681f27dfdb10ee0df56be4f0d
-    d727fc855cafd9c681f27dfdb10ee0df56be4f0d: *id003
+    d727fc855cafd9c681f27dfdb10ee0df56be4f0d: *id004
+    f6bd7d97be87774b86756bb7f37f7b5e90a63b84:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/02f1c62f446bf0cbb5a936e1068362ed073b0471',
+        sha: 02f1c62f446bf0cbb5a936e1068362ed073b0471, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/02f1c62f446bf0cbb5a936e1068362ed073b0471'}
+      sha: f6bd7d97be87774b86756bb7f37f7b5e90a63b84
   ngeo:
-    2f7d0c2f8: &id004
+    2f7d0c2f8: &id005
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/bccf5c2eb5ced8af9984de43fdb7dc45b960c3e5',
         sha: bccf5c2eb5ced8af9984de43fdb7dc45b960c3e5, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/bccf5c2eb5ced8af9984de43fdb7dc45b960c3e5'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/21f52d6b8b0d5a8304b5608e51f10c2a4edf063e',
         sha: 21f52d6b8b0d5a8304b5608e51f10c2a4edf063e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/21f52d6b8b0d5a8304b5608e51f10c2a4edf063e'}
       sha: 2f7d0c2f8591b106d353cfdb25b9296553f399be
-    2f7d0c2f8591b106d353cfdb25b9296553f399be: *id004
+    2f7d0c2f8591b106d353cfdb25b9296553f399be: *id005
 pulls:
   c2cgeoportal:
     02f1c62f4:
@@ -75,8 +88,14 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-04-24T14:06:55Z', created_at: '2020-04-22T12:03:42Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6192', number: 6192,
       state: closed, title: Be able to call MapServer without any roles_ids, updated_at: '2020-04-24T14:06:56Z'}
+    8cc45d9fa:
+    - {base_ref: '2.5', closed_at: '2020-04-27T13:55:42Z', created_at: '2020-04-27T12:01:17Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6219', number: 6219,
+      state: closed, title: Fix commit on protected branch, updated_at: '2020-04-27T13:56:24Z'}
+    f6bd7d97be87774b86756bb7f37f7b5e90a63b84: []
   ngeo: {}
 releases:
 - {c2cgeoportal: d727fc855, name: 2.5.0, ngeo: 2f7d0c2f8}
 - {c2cgeoportal: 06d84b22a, name: 2.5.0.1, ngeo: 2f7d0c2f8}
 - {c2cgeoportal: 02f1c62f4, name: 2.5.0.2, ngeo: 2f7d0c2f8}
+- {c2cgeoportal: 8cc45d9fa, name: 2.5.0.3, ngeo: 2f7d0c2f8}
