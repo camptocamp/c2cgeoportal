@@ -50,8 +50,13 @@ def main():
     args = parser.parse_args()
 
     if args.upgrade:
-        version_re = re.search(r"([0-9]\.[0-9])\.[0-9]", args.upgrade)
-        major_version = version_re.group(1) if version_re is not None else args.upgrade
+        major_version = args.upgrade
+        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", args.upgrade)
+        if match is not None:
+            major_version = match.group(1)
+        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+\.[0-9]+$", args.upgrade)
+        if match is not None:
+            major_version = match.group(1)
         full_version = args.upgrade if args.upgrade != "master" else "{{geomapfish_main_version}}"
         with open("upgrade", "w") as f:
             result = urllib.request.urlopen(
