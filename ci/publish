@@ -93,9 +93,3 @@ else
         camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${2}
     docker push camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${2}
 fi
-
-# Cleanup
-if [ -e ~/.docker ]
-then
-    rm --recursive --force ~/.docker
-fi
