@@ -35,7 +35,7 @@ You can customize your API by editing the file ``geoportal/demo_geoportal/static
 
 The API help is in the folder ``geoportal/<package>_geoportal/static-ngeo/api/apihelp/``.
 
-In order for a layer to be accessible via API, proceed as follows::
+In order for a layer to be accessible via API, proceed as follows:
 
  * Add the layer.
  * Select the 'api' interface.
