@@ -2,7 +2,9 @@
 
 GIT_REV=$(git log | head --lines=1 | awk '{{print $2}}')
 ci/extract-documentation /tmp/doc
+git fetch
 git checkout gh-pages
+git reset --hard origin gh-pages
 
 if [ -e ${MAIN_BRANCH} ]
 then
