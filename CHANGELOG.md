@@ -1,7 +1,7 @@
+##### 2.5.0.19
+* Fix version sent in notification [c2cgeoportal#6243](https://github.com/camptocamp/c2cgeoportal/pull/6243)
 ##### 2.5.0.15
 * Fix typo [c2cgeoportal#6240](https://github.com/camptocamp/c2cgeoportal/pull/6240)
-* Fix version sent in notification [c2cgeoportal#6243](https://github.com/camptocamp/c2cgeoportal/pull/6243)
-* Add file with upgrade instructions [c2cgeoportal#6244](https://github.com/camptocamp/c2cgeoportal/pull/6244)
 ##### 2.5.0.11
 * Notify the demo just after the Docker images are uploaded [c2cgeoportal#6233](https://github.com/camptocamp/c2cgeoportal/pull/6233)
 * Less errors on publishing documentation [c2cgeoportal#6234](https://github.com/camptocamp/c2cgeoportal/pull/6234)
