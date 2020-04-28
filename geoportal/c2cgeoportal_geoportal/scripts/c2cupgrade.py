@@ -172,16 +172,20 @@ class C2cUpgradeTool:
             return yaml.safe_load(project_file)[section]
 
     def print_step(self, step, error=False, message=None, prompt="To continue, type:"):
-        print("")
-        print(self.color_bar)
-        if message is not None:
-            print(colorize(message, RED if error else YELLOW))
-        if step >= 0:
-            print(colorize(prompt, GREEN))
-            cmd = ["./upgrade", os.environ["VERSION"]]
-            if step != 0:
-                cmd.append("{}".format(step))
-            print(colorize(" ".join(cmd), GREEN))
+        with open(".UPGRADE_INSTRUCTIONS", "w") as instructions:
+            print("")
+            print(self.color_bar)
+            if message is not None:
+                print(colorize(message, RED if error else YELLOW))
+                instructions.write("{}\n".format(message))
+            if step >= 0:
+                print(colorize(prompt, GREEN))
+                instructions.write("{}\n".format(prompt))
+                cmd = ["./upgrade", os.environ["VERSION"]]
+                if step != 0:
+                    cmd.append("{}".format(step))
+                print(colorize(" ".join(cmd), GREEN))
+                instructions.write("{}\n".format(" ".join(cmd)))
 
     def run_step(self, step):
         getattr(self, "step{}".format(step))()
@@ -733,6 +737,8 @@ class C2cUpgradeTool:
 
     @Step(13, file_marker=False)
     def step13(self, _):
+        if os.path.isfile(".UPGRADE_INSTRUCTIONS"):
+            os.unlink(".UPGRADE_INSTRUCTIONS")
         check_call(
             [
                 "git",
