@@ -69,5 +69,5 @@ jobs:
           summon --yaml '
             DOCKER_USERNAME: !var gs/ci/dockerhub/username
             DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-          ' ci/publish --qgisserver ${{ matrix.version }}
+          ' ci/publish-daily --qgisserver ${{ matrix.version }}
         if: github.repository == 'camptocamp/c2cgeoportal'

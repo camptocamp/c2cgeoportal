@@ -107,27 +107,23 @@ receive updates for security issues; see for example those commits:
 Configure the rebuild
 ---------------------
 
-On ``c2cgeoportal`` copy the files ``.github/workflows/ci.yaml`` and ``.github/workflows/qgis.yaml`` from
-new version branch to master branch as ``.github/workflows/rebuild-<new version>.yaml`` and
-``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following changes:
+On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version branch to master branch as
+``.github/workflows/rebuild-<new version>.yaml`` and do the following changes:
 
 .. code:: diff
 
-   - name: Continuous integration|QGIS
+   - name: Continuous integration
    -
    - on:
    -   push:
-   + name: Rebuild (QGIS)
+   + name: Rebuild
    +
    + on:
    + schedule:
    +     - cron: "30 3 * * *"
-   + repository_dispatch:
-   +     types:
-   +     - ngeo_<new version>_updated
 
-   -     name: Continuous integration|QGIS
-   +     name: Rebuild (QGIS)
+   -     name: Continuous integration
+   +     name: Rebuild
 
    -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
@@ -135,17 +131,85 @@ new version branch to master branch as ``.github/workflows/rebuild-<new version>
    +         with:
    +          ref: ${{ env.MAIN_BRANCH }}
 
+           - name: Publish to Docker hub and Pypi
+   -           ' ci/publish --geoportal
+   +           ' ci/publish-daily --geoportal
+
    -       - name: Publish to Transifex
    -         ...
    -
    -       - name: Publish documentation to GitHub.io
    -         ...
    -
-   -       - name: Push interrupted Upgrade
-   -         ...
-   -
    -       - name: Notify demo
    -         ...
+
+
+On ``c2cgeoportal`` copy the files ``.github/workflows/qgis.yaml`` from new version branch to master branch
+as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following changes:
+
+.. code:: diff
+
+   - name: QGIS
+   -
+   - on:
+   -   push:
+   + name: Rebuild QGIS
+   +
+   + on:
+   + schedule:
+   +     - cron: "30 3 * * *"
+
+   -     name: QGIS
+   +     name: Rebuild QGIS
+
+   -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+           - uses: actions/checkout@v1
+   +         with:
+   +          ref: ${{ env.MAIN_BRANCH }}
+
+           - name: Publish to Docker hub and Pypi
+   -           ' ci/publish --qgisserver ${{ matrix.version }}
+   +           ' ci/publish-daily --qgisserver ${{ matrix.version }}
+
+
+On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version branch to master branch as
+``.github/workflows/ngeo-<new version>.yaml`` and do the following changes:
+
+.. code:: diff
+
+   - name: Continuous integration
+   -
+   - on:
+   -   push:
+   + name: Update ngeo
+   +
+   + on:
+   + repository_dispatch:
+   +     types:
+   +     - ngeo_<new version>_updated
+
+   -     name: Continuous integration
+   +     name: Update ngeo
+
+   -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+           - uses: actions/checkout@v1
+   +         with:
+   +          ref: ${{ env.MAIN_BRANCH }}
+
+           - name: Publish to Docker hub and Pypi
+             env:
+               GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
+   +           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}
+
+   -       - name: Publish to Transifex
+   -         ...
+   -
+   -       - name: Publish documentation to GitHub.io
+   -         ...
+
 
 Use the ``ngeo`` package linked to the branch
 ---------------------------------------------
