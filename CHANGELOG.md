@@ -1,3 +1,5 @@
+##### 2.4.1.106
+* Fix the list [c2cgeoportal#6237](https://github.com/camptocamp/c2cgeoportal/pull/6237)
 ##### 2.4.1.105
 * [Backport 2.4] Backport user [c2cgeoportal#6197](https://github.com/camptocamp/c2cgeoportal/pull/6197)
 * Apply transparency on search color [ngeo#5649](https://github.com/camptocamp/ngeo/pull/5649)
