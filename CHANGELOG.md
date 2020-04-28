@@ -1,3 +1,6 @@
+##### 2.5.0.11
+* Notify the demo just after the Docker images are uploaded [c2cgeoportal#6233](https://github.com/camptocamp/c2cgeoportal/pull/6233)
+* Less errors on publishing documentation [c2cgeoportal#6234](https://github.com/camptocamp/c2cgeoportal/pull/6234)
 ##### 2.5.0.7
 * Fix major version [c2cgeoportal#6221](https://github.com/camptocamp/c2cgeoportal/pull/6221)
 * Use the minor version [c2cgeoportal#6223](https://github.com/camptocamp/c2cgeoportal/pull/6223)
