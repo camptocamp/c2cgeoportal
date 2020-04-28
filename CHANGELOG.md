@@ -1,3 +1,7 @@
+##### 2.5.0.20
+* Fix publish documentation [c2cgeoportal#6248](https://github.com/camptocamp/c2cgeoportal/pull/6248)
+* Add mypy_cache in Git ignore [c2cgeoportal#6249](https://github.com/camptocamp/c2cgeoportal/pull/6249)
+* Fix verson in notification to demo [c2cgeoportal#6250](https://github.com/camptocamp/c2cgeoportal/pull/6250)
 ##### 2.5.0.19
 * Fix version sent in notification [c2cgeoportal#6243](https://github.com/camptocamp/c2cgeoportal/pull/6243)
 ##### 2.5.0.15
