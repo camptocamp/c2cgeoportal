@@ -1,0 +1,20 @@
+Error on backporting to branch master, error on cherry picking ['dad570bcd109c61ebaff816bf194e2f6710b3d75']:
+The previous cherry-pick is now empty, possibly due to conflict resolution.
+If you wish to commit it anyway, use:
+
+    git commit --allow-empty
+
+Otherwise, please use 'git reset'
+
+On branch backport/6237-to-master
+You are currently cherry-picking commit dad570bcd.
+
+nothing to commit, working tree clean
+
+
+to continue do:
+git fetch
+git checkout backport/6237-to-master
+git reset --hard HEAD^
+git cherry-pick dad570bcd109c61ebaff816bf194e2f6710b3d75
+git push origin backport/6237-to-master -f
