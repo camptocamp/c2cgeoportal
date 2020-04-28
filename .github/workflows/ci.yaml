@@ -191,7 +191,7 @@ jobs:
           --header "Authorization: token ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}"
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_25_updated",
-            "client_payload": {"version": "'"$(ci/get-minor --no-save)"'"}}'
+            "client_payload": {"version": "${{ env.MAJOR_VERSION }}.0.'"$(ci/get-minor --no-save)"'"}}'
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
