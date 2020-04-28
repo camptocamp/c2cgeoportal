@@ -19,57 +19,74 @@ the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
 
 .. _developer_build_release_pre_release_task:
 
-Pre release task
-----------------
+Tasks to do
+-----------
 
-Before doing a release, you should merge all the previous branches on this one:
+On branch creation (start of the integration phase):
 
-* Merge the release changes (on ``ngeo`` and on ``c2cgeoportal``)
-  to the upper branches i.e.: ``2.2`` => ``2.3``, ``2.3`` => ``2.4`` (master).
+* Create and initialise the branches
+* Protect the new branches
+* Create the new Transifex ressources
+* Configure dependabot
+* Configure the rebuild
+* Use the ``ngeo`` package linked to the branch
+* Verify that the changelog creation is working
 
-  .. note::
+On release creation:
 
-     On ``c2cgeoportal`` merge, see if an alembic merge should be done:
+* Reset the changelog
+* Do the tags
+* Publish it
+* New tests for the upgrade
+* Create the new demo
+* Use the new demo
 
-     .. prompt:: bash
+.. note::
 
-        python3 -m pip install --user -e commons
-        alembic --config=commons/alembic.ini \
-            --name=[main|static] heads
+   All changes should be committed.
 
-     If yes, create the merge with:
+Create the branches
+-------------------
 
-     .. prompt:: bash
+On the demo you should create the new version branch.
 
-        alembic --config=commons/alembic.ini \
-            --name=[main|static] \
-            merge --message="Merge <src> and <dst> branches" \
-            <rev 1> <rev 2>
+On ``ngeo`` you should create the new version branch.
 
-     Remove the import and replace the core of the method by ``pass`` in the generated file.
+On the new version branch, in the file ``.github/workflows/ci.yaml`` set ``MAIN_BRANCH`` to
+``<new version>``.
 
-     Finally, add the new file.
+On the master branch, in the ``Makefile`` you should set ``DEMO_BRANCH`` to ``prod-<next version>``.
 
-ngeo
-----
+On the master branch, in the file ``package.json`` bump the package version.
 
-`For ngeo see here <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-package-on-npm>`_.
+On ``c2cgeoportal`` you should create the new version branch.
 
-c2cgeoportal
-------------
+On the new version branch, in the file ``.github/workflows/ci.yaml`` set ``MAIN_BRANCH`` to
+``<new version>``.
 
-New version
-~~~~~~~~~~~
+On the master branch, in the file ``.github/workflows/ci.yaml`` set ``MAJOR_VERSION`` to
+``<next version>``.
 
-Checkout the code:
+Create the new Transifex ressources
+-----------------------------------
+
+On ngeo checkout the new version branch
 
 .. prompt:: bash
 
-    git fetch
-    git checkout master
-    git reset --hard origin/master
+   make transifex-get
 
-Create a new Transifex resource:
+
+Checkout the master branch
+
+In the ``Makefile`` set ``TX_VERSION`` to ``<next version>``.
+
+.. prompt:: bash
+
+   rm .tx/config contribs/gmf/apps/.tx/config
+   make transifex-init
+
+On ``c2cgeoportal``, new version branch do:
 
 .. prompt:: bash
 
@@ -79,115 +96,101 @@ Create a new Transifex resource:
         "$(gopass gs/ci/transifex/rw/username)" \
         "$(gopass gs/ci/transifex/rw/password)"
 
-For each version, we create a new branch (at the latest, for the final release):
+Configure Dependabot
+--------------------
 
-.. prompt:: bash
+On ``c2cgeoportal`` and ``ngeo`` master branches, add in the Dependabot configuration the new branch to
+receive updates for security issues; see for example those commits:
+`c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/commit/7783a2d1d02cc58da7cb1e3b9d32a1358cc30524>`_
+`ngeo <https://github.com/camptocamp/ngeo/commit/1d1fe0ee600229daab4a85b75529cbdb8beecd42>`_
 
-    git checkout -b <version>
-    git push origin <version>
+Configure the rebuild
+---------------------
 
-Change the version in the following files:
- * ``.github/workflows/ci.yaml`` (``MAIN_BRANCH``, ``MAJOR_VERSION``)
-
-
-Commit your changes:
-
-.. prompt:: bash
-
-    git add .github/workflows/ci.yaml
-    git commit -m "Create the version <version> branch"
-
-Go back to the master branch:
-
-.. prompt:: bash
-
-    git checkout master
-
-Copy ``.github/workflows/ci.yaml`` to ``.github/workflows/rebuild-<version>.yaml``
-
-Change the on from pull to cron and checkout the right branch:
+On ``c2cgeoportal`` copy the files ``.github/workflows/ci.yaml`` and ``.github/workflows/qgis.yaml`` from
+new version branch to master branch as ``.github/workflows/rebuild-<new version>.yaml`` and
+``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following changes:
 
 .. code:: diff
 
-     on:
-    -  push:
-    +  schedule:
-    +    - cron: "30 2 * * *"
+   - name: Continuous integration|QGIS
+   -
+   - on:
+   -   push:
+   + name: Rebuild (QGIS)
+   +
+   + on:
+   + schedule:
+   +     - cron: "30 3 * * *"
+   + repository_dispatch:
+   +     types:
+   +     - ngeo_<new version>_updated
 
-     - uses: actions/checkout@v1
-    +  with:
-    +    ref: <version>
+   -     name: Continuous integration|QGIS
+   +     name: Rebuild (QGIS)
 
-Commit your changes:
+   -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
-.. prompt:: bash
+           - uses: actions/checkout@v1
+   +         with:
+   +          ref: ${{ env.MAIN_BRANCH }}
 
-    git add .github/workflows/ci.yaml
-    git commit -m "Start version <version + 1>"
+   -       - name: Publish to Transifex
+   -         ...
+   -
+   -       - name: Publish documentation to GitHub.io
+   -         ...
+   -
+   -       - name: Push interrupted Upgrade
+   -         ...
+   -
+   -       - name: Notify demo
+   -         ...
 
-Push your changes:
+Use the ``ngeo`` package linked to the branch
+---------------------------------------------
 
-.. prompt:: bash
+In ``c2cgeoportal`` new version branch, in the file ``geoportal/package.json``, set the ``ngeo`` version to
+``version-<new version>-latest``.
 
-    git push origin master
-
-Update the references in the `index.html` file of the `gh-pages` branch.
-
-Then continue by creating the release.
-
-Do the new release
-~~~~~~~~~~~~~~~~~~
-
-Checkout the code:
-
-.. prompt:: bash
-
-    git fetch
-    git checkout <version>
-    git reset --hard origin/<version>
-
-Tag the new release:
-
-.. prompt:: bash
-
-    git tag <release>
-    git push origin <release>
-
-Run a new job for the <version> branch on Jenkins.
-
-.. note::
-
-    It is possible to do a version only on the latest commit on a branch.
-    If you really need to do that, you should create a new branch.
-
-Notes about Travis
-~~~~~~~~~~~~~~~~~~
-
-When you push a tag with the pattern ``^[0-9]+\.[0-9]+\..+$``,
-a new release will automatically be created on Travis CI.
-
-Post release tasks
-------------------
-
-When a new release or a new version is done, you should do the following tasks:
-
-* Merge the version into the upper one to the master i.e.: ``2.4`` => ``2.5``, ``2.5`` => ``master``.
-
-See :ref:`developer_build_release_pre_release_task` for more information.
-
-* Upgrade the demo in your home folder, see :ref:`integrator_upgrade_application`.
-* Some specific things for the demo:
-  `UPGRADE.rst <https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst>`_.
-
-For non dev release
+Reset the changelog
 -------------------
 
-* Rename the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
-  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ from ``x.y`` to ``x.y.z``.
-* Create again the milestone on `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_
-  and on `ngeo <https://github.com/camptocamp/ngeo/milestones>`_ for ``x.y``.
-* Move all the open issues to the new milestone and close the current milestone
-  in `ngeo <https://github.com/camptocamp/ngeo/milestones>`_
-  and in `c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/milestones>`_.
-* Send a release email to the ``geomapfish@googlegroups.com``
-  and ``gmf2@lists.camptocamp.com`` mailing lists.
+On the ``c2cgeoportal`` new version branch:
+
+* Empty the file ``CHANGELOG``
+* Set the content of the file ``ci/changelog.yaml`` to:
+
+  .. code:: yaml
+
+     commits:
+       c2cgeoportal: {}
+       ngeo: {}
+     pulls:
+       c2cgeoportal: {}
+       ngeo: {}
+     releases: []
+
+Publish it
+----------
+
+Send a release email to the ``geomapfish@googlegroups.com`` and
+``geomapfish-dev@lists.camptocamp.com`` mailing lists.
+
+
+New tests for the upgrade
+-------------------------
+
+`Do something like this <https://github.com/camptocamp/c2cgeoportal/pull/6211>`_
+
+Create the new demo
+-------------------
+
+Create the new demo on OpenShift
+
+Use the new demo
+----------------
+
+On ``ngeo`` master branch change all the URL
+from ``https://geomapfish-demo-<new version>.camptocamp.com``
+to  ``https://geomapfish-demo-<next version>.camptocamp.com``.
