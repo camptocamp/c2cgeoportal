@@ -182,6 +182,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
         if: github.repository == 'camptocamp/c2cgeoportal'
 
+      - name: Notify demo
+        run: >
+          curl --request POST --header "Content-Type: application/json"
+          --header 'Accept: application/vnd.github.v3+json'
+          --header "Authorization: token ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}"
+          https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
+          --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
+            "client_payload": {"version": "$(ci/get-minor --no-save)"}}'
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && github.repository == 'camptocamp/c2cgeoportal'
+
       - name: Publish to Transifex
         run: |
           docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
@@ -199,18 +211,6 @@ jobs:
 
       - name: Publish documentation to GitHub.io
         run: ci/publish-documentation
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
-
-      - name: Notify demo
-        run: >
-          curl --request POST --header "Content-Type: application/json"
-          --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}"
-          https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
-          --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
-            "client_payload": {"version": "$(ci/get-minor --no-save)"}}'
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
