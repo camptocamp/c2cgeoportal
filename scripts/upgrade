@@ -77,11 +77,11 @@ else:
     c2cupgrade_args = [args.version, "--step", args.step] if args.step is not None else [args.version]
 
     if os.environ.get("CI") != "true" and args.step is None:
-        major_version = args.upgrade
-        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", args.upgrade)
+        major_version = args.version
+        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", args.version)
         if match is not None:
             major_version = match.group(1)
-        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+\.[0-9]+$", args.upgrade)
+        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+\.[0-9]+$", args.version)
         if match is not None:
             major_version = match.group(1)
         subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(major_version)])
