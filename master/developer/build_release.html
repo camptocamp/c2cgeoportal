@@ -114,24 +114,20 @@ receive updates for security issues; see for example those commits:
 </div>
 <div class="section" id="configure-the-rebuild">
 <h2>Configure the rebuild<a class="headerlink" href="#configure-the-rebuild" title="Permalink to this headline">¶</a></h2>
-<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> from
-new version branch to master branch as <code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and
-<code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-qgis-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration|QGIS</span>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> from new version branch to master branch as
+<code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span>
 <span class="gd">-</span>
 <span class="gd">- on:</span>
 <span class="gd">-   push:</span>
-<span class="gi">+ name: Rebuild (QGIS)</span>
+<span class="gi">+ name: Rebuild</span>
 <span class="gi">+</span>
 <span class="gi">+ on:</span>
 <span class="gi">+ schedule:</span>
 <span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
-<span class="gi">+ repository_dispatch:</span>
-<span class="gi">+     types:</span>
-<span class="gi">+     - ngeo_&lt;new version&gt;_updated</span>
 
-<span class="gd">-     name: Continuous integration|QGIS</span>
-<span class="gi">+     name: Rebuild (QGIS)</span>
+<span class="gd">-     name: Continuous integration</span>
+<span class="gi">+     name: Rebuild</span>
 
 <span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
@@ -139,16 +135,77 @@ new version branch to master branch as <code class="docutils literal notranslate
 <span class="gi">+         with:</span>
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
+        - name: Publish to Docker hub and Pypi
+<span class="gd">-           &#39; ci/publish --geoportal</span>
+<span class="gi">+           &#39; ci/publish-daily --geoportal</span>
+
 <span class="gd">-       - name: Publish to Transifex</span>
 <span class="gd">-         ...</span>
 <span class="gd">-</span>
 <span class="gd">-       - name: Publish documentation to GitHub.io</span>
 <span class="gd">-         ...</span>
 <span class="gd">-</span>
-<span class="gd">-       - name: Push interrupted Upgrade</span>
+<span class="gd">-       - name: Notify demo</span>
+<span class="gd">-         ...</span>
+</pre></div>
+</div>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> from new version branch to master branch
+as <code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-qgis-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: QGIS</span>
+<span class="gd">-</span>
+<span class="gd">- on:</span>
+<span class="gd">-   push:</span>
+<span class="gi">+ name: Rebuild QGIS</span>
+<span class="gi">+</span>
+<span class="gi">+ on:</span>
+<span class="gi">+ schedule:</span>
+<span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
+
+<span class="gd">-     name: QGIS</span>
+<span class="gi">+     name: Rebuild QGIS</span>
+
+<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
+
+        - uses: actions/checkout@v1
+<span class="gi">+         with:</span>
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+
+        - name: Publish to Docker hub and Pypi
+<span class="gd">-           &#39; ci/publish --qgisserver ${{ matrix.version }}</span>
+<span class="gi">+           &#39; ci/publish-daily --qgisserver ${{ matrix.version }}</span>
+</pre></div>
+</div>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> from new version branch to master branch as
+<code class="docutils literal notranslate"><span class="pre">.github/workflows/ngeo-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span>
+<span class="gd">-</span>
+<span class="gd">- on:</span>
+<span class="gd">-   push:</span>
+<span class="gi">+ name: Update ngeo</span>
+<span class="gi">+</span>
+<span class="gi">+ on:</span>
+<span class="gi">+ repository_dispatch:</span>
+<span class="gi">+     types:</span>
+<span class="gi">+     - ngeo_&lt;new version&gt;_updated</span>
+
+<span class="gd">-     name: Continuous integration</span>
+<span class="gi">+     name: Update ngeo</span>
+
+<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
+
+        - uses: actions/checkout@v1
+<span class="gi">+         with:</span>
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+
+        - name: Publish to Docker hub and Pypi
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
+<span class="gi">+           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}</span>
+
+<span class="gd">-       - name: Publish to Transifex</span>
 <span class="gd">-         ...</span>
 <span class="gd">-</span>
-<span class="gd">-       - name: Notify demo</span>
+<span class="gd">-       - name: Publish documentation to GitHub.io</span>
 <span class="gd">-         ...</span>
 </pre></div>
 </div>
