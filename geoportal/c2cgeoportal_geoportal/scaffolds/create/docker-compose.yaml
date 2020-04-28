@@ -10,12 +10,12 @@ services:
       file: docker-compose-lib.yaml
       service: config
 
-  ## print:
-  ##   extends:
-  ##     file: docker-compose-lib.yaml
-  ##     service: print
-  ##   volumes_from:
-  ##     - config:ro
+  print:
+    extends:
+      file: docker-compose-lib.yaml
+      service: print
+    volumes_from:
+      - config:ro
 
   mapserver:
     extends:
