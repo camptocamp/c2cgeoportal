@@ -1,0 +1,14 @@
+Error on backporting to branch 2.5, error on cherry picking ['4fefc729447fccb886084fe4a0bfe65db198cf58']:
+error: could not apply 4fefc7294... Fix publish changelog
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+
+
+to continue do:
+git fetch
+git checkout backport/6204-to-2.5
+git reset --hard HEAD^
+git cherry-pick 4fefc729447fccb886084fe4a0bfe65db198cf58
+git push origin backport/6204-to-2.5 -f
