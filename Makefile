@@ -1,5 +1,5 @@
 MAJOR_VERSION ?= 2.5
-VERSION ?= 2.5.0.$(shell ci/get-minor)
+VERSION ?= 2.5.0.$(shell ci/get-minor --no-save)
 DOCKER_TAG ?= latest
 PIPENV_PIPFILE ?= ci/Pipfile
 export PIPENV_PIPFILE
