@@ -216,7 +216,7 @@ jobs:
 
       - run: >
           docker run --rm --volume=/var/run/docker.sock:/var/run/docker.sock nate/dockviz
-          images --tree  --only-labelled
+          images --tree
         if: always()
       - run: docker images
         if: always()
