@@ -38,3 +38,7 @@ ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --n
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
 docker-compose down
 rm -rf ${HOME}/workspace/testgeomapfishapp
+
+docker rmi camptocamp/testgeomapfishapp-geoportal-dev:latest
+docker rmi camptocamp/testgeomapfishapp-geoportal:latest
+docker rmi camptocamp/testgeomapfishapp-config:latest
