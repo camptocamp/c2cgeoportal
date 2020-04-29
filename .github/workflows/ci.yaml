@@ -131,9 +131,6 @@ jobs:
             --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
             doc
 
-      - run: docker images
-        if: always()
-
       - name: Extract documentation
         run: ci/extract-documentation artifacts/documentations/
         if: always()
@@ -218,3 +215,14 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
+
+      - run: >
+          docker run --rm --volume=/var/run/docker.sock:/var/run/docker.sock nate/dockviz
+          images --tree  --only-labelled
+        if: always()
+      - run: docker images
+        if: always()
+      - run: docker system df
+        if: always()
+      - run: df -h
+        if: always()
