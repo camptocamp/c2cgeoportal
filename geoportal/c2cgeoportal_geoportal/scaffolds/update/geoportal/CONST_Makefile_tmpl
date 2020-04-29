@@ -105,6 +105,7 @@ $(APP_OUTPUT_DIR)/vendor%: /opt/vendor%
 
 apps: webpack.apps.js
 	rm --force $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .*, $(NGEO_INTERFACES)))
+	cat /app/*_geoportal/static-ngeo/js/apps/mobile.html.ejs
 	webpack $(WEBPACK_ARGS)
 	for interface in $(NGEO_INTERFACES); \
 	do \

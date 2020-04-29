@@ -101,8 +101,9 @@ def main():
         if args.html:
             data = _sub(
                 re.escape('<script src="../../../dist/vendor.js') + r".*",
-                r'<script src="${\'$\'}{VISIBLE_ENTRY_POINT}static-ngeo/vendor.js?${\'$\'}'
-                '{CACHE_VERSION}"></script>',
+                '<script src="{entry_point}static-ngeo/vendor.js?{version}"></script>'.format(
+                    entry_point="${'$'}{VISIBLE_ENTRY_POINT}", version="${'$'}{CACHE_VERSION}",
+                ),
                 data,
                 required=False,
             )
@@ -110,17 +111,15 @@ def main():
                 re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-')
                 + ".*"
                 + re.escape('.camptocamp.com/dynamic.json">'),
-                '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
-                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
-                ),
+                '<meta name="dynamicUrl" content="${\'$\'}{VISIBLE_ENTRY_POINT}dynamic.json">',
                 data,
             )
             data = _sub(
                 re.escape("</head>"),
                 '  <link href="{entry_point}static/{version}/css/{interface}.css" rel="stylesheet">\n'
                 "  </head>".format(
-                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
-                    version="${htmlWebpackPlugin.options.vars.version}",
+                    entry_point="${'$'}{VISIBLE_ENTRY_POINT}",
+                    version="${'$'}{CACHE_VERSION}",
                     interface=args.interface,
                 ),
                 data,
