@@ -6,8 +6,8 @@ DOCKER_TAG=${TAG} make build-runner
 DOCKER_TAG=${TAG} make build-config
 
 docker tag camptocamp/geomapfish:${TAG} camptocamp/geomapfish
-docker tag camptocamp/geomapfish-tools:${TAG} camptocamp/geomapfish:$(scripts/get-version --full)
-docker tag camptocamp/geomapfish-config:${TAG} camptocamp/geomapfish:$(scripts/get-version --full)
+docker tag camptocamp/geomapfish-tools:${TAG} camptocamp/geomapfish-tools:$(scripts/get-version --full)
+docker tag camptocamp/geomapfish-config:${TAG} camptocamp/geomapfish-config:$(scripts/get-version --full)
 
 docker build --target=runner --build-arg=VERSION=3.10 \
     --tag=camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.10 \
