@@ -34,6 +34,8 @@ jobs:
           sudo apt-get install python3-wheel python3-setuptools
 
       - uses: actions/checkout@v1
+      - run: scripts/get-version --auto-increment
+        if: github.repository == 'camptocamp/c2cgeoportal'
 
       - run: python3 -m pip install --user pipenv
 
@@ -50,11 +52,11 @@ jobs:
         if: always()
 
       # Build images
-      - run: VERSION=$(ci/release-tag) make build-runner
-      - run: VERSION=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) make checks
+      - run: make build-runner
+      - run: make build-tools
+      - run: make checks
         if: always()
-      - run: VERSION=$(ci/release-tag) make build-config
+      - run: make build-config
 
       # Build and lint QGIS images
       - run: docker build --target=lint --build-arg=VERSION=3.10 docker/qgisserver
@@ -143,9 +145,9 @@ jobs:
       - run: ci/test-app
 
       # Test Upgrade
-      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-runner
-      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-config
+      - run: DOCKER_TAG=$(scripts/get-version --full) make build-tools
+      - run: DOCKER_TAG=$(scripts/get-version --full) make build-runner
+      - run: DOCKER_TAG=$(scripts/get-version --full) make build-config
       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 240 ${HOME}/workspace
@@ -160,9 +162,9 @@ jobs:
             git config user.name "Continuous integration"
         env:
           REPO_URL: github.com/camptocamp/c2cgeoportal
-      - run: VERSION=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) make build-runner
-      - run: VERSION=$(ci/release-tag) make build-config
+      - run: make build-tools
+      - run: make build-runner
+      - run: make build-config
 
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
@@ -189,7 +191,7 @@ jobs:
           --header "Authorization: token ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}"
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
-            "client_payload": {"version": "${{ env.MAJOR_VERSION }}.0.'"$(ci/get-minor --no-save)"'"}}'
+            "client_payload": {"version": "'"$(scripts/get-version --upgrade-version)"'"}}'
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
