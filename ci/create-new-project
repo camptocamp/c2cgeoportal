@@ -1,9 +1,9 @@
 #!/bin/bash -eux
 
-TAG=$(ci/release-tag)
-VERSION=${TAG} DOCKER_TAG=${TAG} make build-tools
-VERSION=${TAG} DOCKER_TAG=${TAG} make build-runner
-VERSION=${TAG} DOCKER_TAG=${TAG} make build-config
+TAG=$(scripts/get-version --major)
+DOCKER_TAG=${TAG} make build-tools
+DOCKER_TAG=${TAG} make build-runner
+DOCKER_TAG=${TAG} make build-config
 
 docker tag camptocamp/geomapfish:${TAG} camptocamp/geomapfish
 docker build --target=runner --build-arg=VERSION=3.10 \
