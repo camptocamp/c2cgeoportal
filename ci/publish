@@ -15,14 +15,12 @@ then
 fi
 
 TAG=${GIT_TAG}
-LAST_TAG=`git describe --abbrev=0 --tags`
 COMMIT=FALSE
 VERSION_QGIS=FALSE
 
 if [[ ${TAG} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
 then
     VERSION_QGIS=${TAG}
-    ci/get-minor --reset
     ci/changelog ${TAG}
     COMMIT=TRUE
     GIT_BRANCH=$(python3 -c "print(__import__('re').search(r'^([0-9]+\.[0-9]+)\.[0-9]+$', '${TAG}').group(1))")
@@ -30,7 +28,7 @@ else
     if [[ ${GIT_BRANCH} =~ ^[0-9]+\.[0-9]+$ ]]
     then
         VERSION_QGIS=${GIT_BRANCH}
-        TAG=${LAST_TAG}.$(ci/get-minor)
+        TAG=$(scripts/get-version --full)
         ci/changelog ${TAG}
         COMMIT=TRUE
     fi
