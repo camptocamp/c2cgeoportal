@@ -1,3 +1,5 @@
+##### 2.5.0.23
+* Add file with upgrade instructions [c2cgeoportal#6244](https://github.com/camptocamp/c2cgeoportal/pull/6244)
 ##### 2.5.0.22
 * Don't hide unlabled images [c2cgeoportal#6259](https://github.com/camptocamp/c2cgeoportal/pull/6259)
 * Revert "Fix used version during upgrade" [c2cgeoportal#6266](https://github.com/camptocamp/c2cgeoportal/pull/6266)
