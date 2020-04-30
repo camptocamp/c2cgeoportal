@@ -120,7 +120,7 @@ RUN make --makefile=build.mk \
         geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
         admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 
-ARG VERSION=2.6
+ARG VERSION
 ENV VERSION=$VERSION
 
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
