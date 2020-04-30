@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 60
 
     env:
-      MAIN_BRANCH: master
+      MAIN_BRANCH: 2.5
       MAJOR_VERSION: 2.5
       CI: true
       PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
@@ -31,7 +31,7 @@ jobs:
       - run: python3 -m pip --version
       - run: |
           sudo apt-get update
-          sudo apt-get install python3-wheel python3-setuptools
+          sudo apt-get install python3-dev python3-wheel python3-setuptools
 
       - uses: actions/checkout@v1
         with:
@@ -52,18 +52,20 @@ jobs:
         if: always()
 
       # Build images
-      - run: VERSION=$(ci/release-tag) make build-runner
-      - run: VERSION=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) make checks
+      - run: make build-runner
+      - run: make build-tools
+      - run: make checks
         if: always()
-      - run: VERSION=$(ci/release-tag) make build-config
+      - run: make build-config
 
-      # Build QGIS images
+      # Build and lint QGIS images
       - run: docker build --target=lint --build-arg=VERSION=3.10 docker/qgisserver
       - run: QGIS_VERSION=3.10 make build-qgisserver
 
       # Test changelog
       - run: ci/changelog new_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
       - run: git checkout CHANGELOG.md ci/changelog.yaml
 
@@ -129,9 +131,6 @@ jobs:
             --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
             doc
 
-      - run: docker images
-        if: always()
-
       - name: Extract documentation
         run: ci/extract-documentation artifacts/documentations/
         if: always()
@@ -144,16 +143,6 @@ jobs:
       # Test App
       - run: ci/test-app
 
-      # Test Upgrade
-      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-runner
-      - run: VERSION=$(ci/release-tag) DOCKER_TAG=$(ci/release-tag) make build-config
-      - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
-      - run: ci/test-upgrade init ${HOME}/workspace
-      - run: ci/test-upgrade 240 ${HOME}/workspace
-      - run: ci/test-upgrade 25 ${HOME}/workspace
-      - run: ci/test-upgrade cleanup ${HOME}/workspace
-
       - name: Init Git
         run: |
             git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@${REPO_URL}
@@ -161,9 +150,9 @@ jobs:
             git config user.name "Continuous integration"
         env:
           REPO_URL: github.com/camptocamp/c2cgeoportal
-      - run: VERSION=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) make build-runner
-      - run: VERSION=$(ci/release-tag) make build-config
+      - run: make build-tools
+      - run: make build-runner
+      - run: make build-config
 
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
