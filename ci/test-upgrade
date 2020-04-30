@@ -111,6 +111,8 @@ then
     create ${WORKSPACE}/v25 ${MAJOR_VERSION}
     create ${WORKSPACE}/v250 2.5.0
     create ${WORKSPACE}/v240 2.4.0
+    docker rmi camptocamp/geomapfish-tools:2.5.0
+    docker rmi camptocamp/geomapfish-build:2.4.0
 fi
 
 if [ "$1" = "240" ]

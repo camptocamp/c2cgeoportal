@@ -128,8 +128,18 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version
    -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
            - uses: actions/checkout@v1
+   -       - run: scripts/get-version --auto-increment
    +         with:
    +          ref: ${{ env.MAIN_BRANCH }}
+
+   -       # Test Upgrade
+   -       - run: DOCKER_TAG=$(ci/release-tag) make build-tools
+   -       - run: DOCKER_TAG=$(ci/release-tag) make build-runner
+   -       - run: DOCKER_TAG=$(ci/release-tag) make build-config
+   -       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
+   -       - run: ci/test-upgrade init ${HOME}/workspace
+   -       - run: ci/test-upgrade 2* ${HOME}/workspace
+   -       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
            - name: Publish to Docker hub and Pypi
    -           ' ci/publish --geoportal
