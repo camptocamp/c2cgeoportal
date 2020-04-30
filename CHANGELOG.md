@@ -1,8 +1,9 @@
+##### 2.5.0.22
+* Don't hide unlabled images [c2cgeoportal#6259](https://github.com/camptocamp/c2cgeoportal/pull/6259)
+* Revert "Fix used version during upgrade" [c2cgeoportal#6266](https://github.com/camptocamp/c2cgeoportal/pull/6266)
+* Fix argument number [c2cgeoportal#6267](https://github.com/camptocamp/c2cgeoportal/pull/6267)
 ##### 2.5.0.21
 * Version cleanup [c2cgeoportal#6255](https://github.com/camptocamp/c2cgeoportal/pull/6255)
-* Unneeded and suddenly no more working [c2cgeoportal#6256](https://github.com/camptocamp/c2cgeoportal/pull/6256)
-* Don't clean intermediate images [c2cgeoportal#6259](https://github.com/camptocamp/c2cgeoportal/pull/6259)
-* Fix the ejs values [c2cgeoportal#6260](https://github.com/camptocamp/c2cgeoportal/pull/6260)
 * Retag some images [c2cgeoportal#6261](https://github.com/camptocamp/c2cgeoportal/pull/6261)
 ##### 2.5.0.20
 * Fix publish documentation [c2cgeoportal#6248](https://github.com/camptocamp/c2cgeoportal/pull/6248)
