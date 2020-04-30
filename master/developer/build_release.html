@@ -132,8 +132,18 @@ receive updates for security issues; see for example those commits:
 <span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
         - uses: actions/checkout@v1
+<span class="gd">-       - run: scripts/get-version --auto-increment</span>
 <span class="gi">+         with:</span>
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+
+<span class="gd">-       # Test Upgrade</span>
+<span class="gd">-       - run: DOCKER_TAG=$(ci/release-tag) make build-tools</span>
+<span class="gd">-       - run: DOCKER_TAG=$(ci/release-tag) make build-runner</span>
+<span class="gd">-       - run: DOCKER_TAG=$(ci/release-tag) make build-config</span>
+<span class="gd">-       - run: docker images | grep &quot;&lt;none&gt;&quot; | awk &#39;{print $3}&#39; | xargs --no-run-if-empty docker rmi || true</span>
+<span class="gd">-       - run: ci/test-upgrade init /root/workspace</span>
+<span class="gd">-       - run: ci/test-upgrade 2* /root/workspace</span>
+<span class="gd">-       - run: ci/test-upgrade cleanup /root/workspace</span>
 
         - name: Publish to Docker hub and Pypi
 <span class="gd">-           &#39; ci/publish --geoportal</span>
