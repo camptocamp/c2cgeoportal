@@ -102,8 +102,8 @@ def main():
             data = _sub(
                 re.escape('<script src="../../../dist/vendor.js') + r".*",
                 r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}"></script>'.format(
-                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
-                    cache_version="${htmlWebpackPlugin.options.vars.cache_version}",
+                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
                 ),
                 data,
                 required=False,
@@ -113,7 +113,7 @@ def main():
                 + ".*"
                 + re.escape('.camptocamp.com/dynamic.json">'),
                 '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
-                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
+                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
                 ),
                 data,
             )
@@ -121,8 +121,8 @@ def main():
                 re.escape("</head>"),
                 '  <link href="{entry_point}static/{version}/css/{interface}.css" rel="stylesheet">\n'
                 "  </head>".format(
-                    entry_point="${htmlWebpackPlugin.options.vars.entry_point}",
-                    version="${htmlWebpackPlugin.options.vars.version}",
+                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                    version="<%= htmlWebpackPlugin.options.vars.version %>",
                     interface=args.interface,
                 ),
                 data,
