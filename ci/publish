@@ -36,6 +36,10 @@ fi
 
 DEPLOY_PIP=FALSE
 MAJOR_VERSION_TAG=${MAJOR_VERSION}
+if [ ${MAIN_BRANCH} == master ]
+then
+    MAJOR_VERSION_TAG=latest
+fi
 # Get the version to be published
 if [ "${TAG}" ]
 then
