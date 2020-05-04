@@ -59,6 +59,7 @@ vars:
     # Cookie session secret
     secret: __import__('uuid').uuid4().hex
     cookie_name: auth_tkt_{instance}
+
   # Database information
   sqlalchemy:
     url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
@@ -72,6 +73,11 @@ vars:
     pool_size: 5
     max_overflow: 25
     use_batch_mode: true
+
+  # Session backend
+  session:
+    type: 'ext:redis'
+    url: 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 
   # 10 days of default cache
   default_max_age: 864000
