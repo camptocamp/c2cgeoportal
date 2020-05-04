@@ -90,9 +90,8 @@ class BaseTemplate(Template):  # pragma: no cover
             # is named "root"
             package_logger = "app"
         vars_["package_logger"] = package_logger
-        geomapfish_version = os.environ.get("VERSION", "dev")
-        vars_["geomapfish_version"] = geomapfish_version
-        vars_["geomapfish_main_version"] = ".".join(geomapfish_version.split(".")[:2])
+        vars_["geomapfish_version"] = os.environ["VERSION"]
+        vars_["geomapfish_main_version"] = os.environ["MAJOR_VERSION"]
 
     @staticmethod
     def out(msg):
