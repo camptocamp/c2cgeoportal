@@ -394,4 +394,4 @@ releases:
 - {c2cgeoportal: e4af42964, name: 2.5.0.21, ngeo: 2201b03d0}
 - {c2cgeoportal: 629b64299, name: 2.5.0.22, ngeo: 2201b03d0}
 - {c2cgeoportal: c9846b4a4, name: 2.5.0.23, ngeo: 2201b03d0}
-- {c2cgeoportal: 0755bc0f3, name: 2.5.rc.24, ngeo: 2201b03d0}
+- {c2cgeoportal: 0755bc0f3, name: 2.5.0.24, ngeo: 2201b03d0}
