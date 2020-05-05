@@ -11,7 +11,3 @@ rules:
   comma-dangle: 0
   import/no-unresolved: 0
   valid-jsdoc: 0
-  max-len:
-    - error
-    - code: 110
-      ignoreComments: true
