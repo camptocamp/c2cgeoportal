@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2fae4d1687814758597dced6f32659e61b66bc973eb9c60ed7ad6699fbc3c13a"
+            "sha256": "bde735971fece69e36555a4cd25b1c2e28a7c8b397f793161611e624912aa234"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -81,11 +81,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:ab56b169c0bdb848a0102445dfffa659928a2b9b98d554c69c8d013af54c32d1",
-                "sha256:e87fa977871228d05a1b5defdf315b6091ccde1b0ab6bfadbb289c4275ddeacf"
+                "sha256:576abc380cdeff20b6ed1983772b3c3240c47424ebfb5418da021fafcde0a41a",
+                "sha256:b162f0670db46d084e9b765402739b5e489673c69893aa7f70c83a6b551061ab"
             ],
             "index": "pypi",
-            "version": "==2.1.10"
+            "version": "==2.1.13"
         },
         "certifi": {
             "hashes": [
