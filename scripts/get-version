@@ -76,7 +76,7 @@ if args.full or args.upgrade_version:
     elif last_tag.startswith(major_version):
         print(last_tag + "." + minor)
     elif main_branch == "master":
-        print(major_version + ".dev")
+        print("latest")
     else:
         print(major_version + ".rc." + minor)
 elif args.major:
