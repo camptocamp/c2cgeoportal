@@ -12,7 +12,7 @@ mypy = "==0.770"  # lint
 pep8 = "==1.7.1"  # lint
 pep8-naming = "==0.10.0"  # Lint
 pyflakes = "==2.1.1"  # lint, flake8
-pylint = "==2.4.4"  # lint
+pylint = "==2.5.0"  # lint
 bandit = "==1.6.2"
 isort = "==4.3.21"
 
