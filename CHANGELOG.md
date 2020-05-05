@@ -1,7 +1,7 @@
-##### 2.5.rc.24
+##### 2.5.0.25
 * [Backport 2.5] Fix upgrade to master branch [c2cgeoportal#6280](https://github.com/camptocamp/c2cgeoportal/pull/6280)
+##### 2.5.0.24
 * [Backport 2.5] Bump ngeo from 2.6.0-latest.20200429T211657Z.a81a9079e.HEAD to 2.6.0-latest.20200501T020102Z.73a4b43b7.HEAD in /geoportal [c2cgeoportal#6282](https://github.com/camptocamp/c2cgeoportal/pull/6282)
-* Upgrade getitfixed [c2cgeoportal#6284](https://github.com/camptocamp/c2cgeoportal/pull/6284)
 ##### 2.5.0.23
 * Add file with upgrade instructions [c2cgeoportal#6244](https://github.com/camptocamp/c2cgeoportal/pull/6244)
 ##### 2.5.0.22
