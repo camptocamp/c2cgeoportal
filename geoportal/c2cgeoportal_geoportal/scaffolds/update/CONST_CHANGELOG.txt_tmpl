@@ -9,14 +9,14 @@ Information
 
 1. Basic authentication is disabled by default from this version onward.
    To enable basic auth see:
-   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/integrator/security.html#basic-auth
+   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_main_version}}/integrator/security.html#basic-auth
 
 Changes to apply
 ----------------
 
 1. Now we need to have PyYAML python package installed in the home,
    see the documentation for more information:
-   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/integrator/requirements.html
+   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_main_version}}/integrator/requirements.html
 
 2. The configuration vars `vars/functionalities/anonymous` and `vars/functionalities/registered` should
    be moved to the new roles `anonymous` and `registered` that will be created once the database has been upgraded.
@@ -33,7 +33,7 @@ Changes to apply
    `request.static_url('/etc/geomapfish/static/`.
 
 6. Optional, change your mapfiles according the documentation:
-   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_version}}/administrator/mapfile.html
+   https://camptocamp.github.io/c2cgeoportal/{{geomapfish_main_version}}/administrator/mapfile.html
 
 
 Version 2.4.2
