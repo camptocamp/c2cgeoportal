@@ -15,3 +15,5 @@ rules:
     - error
     - code: 110
       ignoreComments: true
+  prettier/prettier: 0
+  sort-imports-es6-autofix/sort-imports-es6: 0
