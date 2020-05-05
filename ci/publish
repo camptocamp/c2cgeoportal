@@ -47,8 +47,7 @@ then
     DEPLOY_PIP=FALSE
 elif [ ${MAIN_BRANCH} == master ]
 then
-    VERSION=latest
-    MAJOR_VERSION_TAG=latest
+    VERSION=$(script/get-version --full)
 else
     VERSION=${MAJOR_VERSION}
 fi
