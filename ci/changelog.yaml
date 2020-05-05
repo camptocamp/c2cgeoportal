@@ -303,11 +303,6 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-04-24T15:19:37Z', created_at: '2020-04-24T14:32:17Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6214', number: 6214,
       state: closed, title: Fix changelog, updated_at: '2020-04-24T15:19:39Z'}
-    0755bc0f3:
-    - {base_ref: '2.5', closed_at: '2020-05-04T16:31:06Z', created_at: '2020-05-04T14:01:00Z',
-      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6282', number: 6282,
-      state: closed, title: '[Backport 2.5] Bump ngeo from 2.6.0-latest.20200429T211657Z.a81a9079e.HEAD
-        to 2.6.0-latest.20200501T020102Z.73a4b43b7.HEAD in /geoportal', updated_at: '2020-05-04T16:31:08Z'}
     081d415cf:
     - {base_ref: '2.5', closed_at: '2020-05-05T07:20:45Z', created_at: '2020-05-04T11:15:40Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6280', number: 6280,
