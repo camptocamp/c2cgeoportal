@@ -1086,7 +1086,7 @@ class Theme:
         layers = self._layers(interface)
         try:
             group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
-            return self._group(group_db.name, group_db, layers)
+            return self._group(group_db.name, group_db, layers, depth=2, dim=DimensionInformation())
         except NoResultFound:  # pragma: no cover
             return (
                 None,
