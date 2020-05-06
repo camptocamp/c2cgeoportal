@@ -25,9 +25,6 @@ update_configs:
     directory: /
     update_schedule: live
     target_branch: "2.5"
-    automerged_updates:
-      - match:
-          update_type: all
     allowed_updates:
       - match:
           update_type: security
@@ -36,9 +33,6 @@ update_configs:
     directory: /geoportal
     update_schedule: live
     target_branch: "2.5"
-    automerged_updates:
-      - match:
-          update_type: all
     allowed_updates:
       - match:
           update_type: security
@@ -47,9 +41,6 @@ update_configs:
     directory: /admin
     update_schedule: live
     target_branch: "2.5"
-    automerged_updates:
-      - match:
-          update_type: all
     allowed_updates:
       - match:
           update_type: security
@@ -96,9 +87,6 @@ update_configs:
     directory: /
     update_schedule: live
     target_branch: "2.5"
-    automerged_updates:
-      - match:
-          update_type: all
     allowed_updates:
       - match:
           update_type: security
@@ -107,9 +95,6 @@ update_configs:
     directory: /docker/qgisserver
     update_schedule: live
     target_branch: "2.5"
-    automerged_updates:
-      - match:
-          update_type: all
     allowed_updates:
       - match:
           update_type: security
@@ -118,9 +103,6 @@ update_configs:
     directory: /ci
     update_schedule: live
     target_branch: "2.5"
-    automerged_updates:
-      - match:
-          update_type: all
     allowed_updates:
       - match:
           update_type: security
