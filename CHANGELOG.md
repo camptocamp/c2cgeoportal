@@ -1,6 +1,7 @@
+##### 2.5.0.29
+* [Backport 2.5] Force the background to always be mixed [c2cgeoportal#6327](https://github.com/camptocamp/c2cgeoportal/pull/6327)
 ##### 2.5.0.28
 * Fix cache version [c2cgeoportal#6323](https://github.com/camptocamp/c2cgeoportal/pull/6323)
-* [Backport 2.5] Force the background to always be mixed [c2cgeoportal#6327](https://github.com/camptocamp/c2cgeoportal/pull/6327)
 * No Javascript error on first click [ngeo#5793](https://github.com/camptocamp/ngeo/pull/5793)
 ##### 2.5.0.27
 * Fix version in changelog documentation link [c2cgeoportal#6306](https://github.com/camptocamp/c2cgeoportal/pull/6306)
