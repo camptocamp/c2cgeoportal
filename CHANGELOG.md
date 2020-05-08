@@ -1,8 +1,11 @@
+##### 2.5.0.28
+* Fix cache version [c2cgeoportal#6323](https://github.com/camptocamp/c2cgeoportal/pull/6323)
+* [Backport 2.5] Force the background to always be mixed [c2cgeoportal#6327](https://github.com/camptocamp/c2cgeoportal/pull/6327)
+* No Javascript error on first click [ngeo#5793](https://github.com/camptocamp/ngeo/pull/5793)
 ##### 2.5.0.27
 * Fix version in changelog documentation link [c2cgeoportal#6306](https://github.com/camptocamp/c2cgeoportal/pull/6306)
 * [Backport 2.5] Bump eslint-config-openlayers from 13.0.0 to 14.0.0 [ngeo#5775](https://github.com/camptocamp/ngeo/pull/5775)
 * Add missing dependency [ngeo#5783](https://github.com/camptocamp/ngeo/pull/5783)
-* [Backport 2.5] [Security] Bump jquery from 3.4.1 to 3.5.1 [ngeo#5784](https://github.com/camptocamp/ngeo/pull/5784)
 * Add missing dependency for prettier [ngeo#5785](https://github.com/camptocamp/ngeo/pull/5785)
 ##### 2.5.0.26
 * Upgrade getitfixed [c2cgeoportal#6284](https://github.com/camptocamp/c2cgeoportal/pull/6284)
