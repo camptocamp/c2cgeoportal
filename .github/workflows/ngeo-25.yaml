@@ -53,11 +53,9 @@ jobs:
         if: always()
 
       # Build images
-      - run: VERSION=$(ci/release-tag) make build-runner
-      - run: VERSION=$(ci/release-tag) make build-tools
-      - run: VERSION=$(ci/release-tag) make checks
-        if: always()
-      - run: VERSION=$(ci/release-tag) make build-config
+      - run: make build-runner
+      - run: make build-tools
+      - run: make build-config
 
       # Build and lint QGIS images
       - run: docker build --target=lint --build-arg=VERSION=3.10 docker/qgisserver
@@ -65,8 +63,6 @@ jobs:
 
       # Test changelog
       - run: ci/changelog new_version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
       - run: git checkout CHANGELOG.md ci/changelog.yaml
 
