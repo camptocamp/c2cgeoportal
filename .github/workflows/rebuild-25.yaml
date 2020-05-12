@@ -54,8 +54,6 @@ jobs:
       # Build images
       - run: make build-runner
       - run: make build-tools
-      - run: make checks
-        if: always()
       - run: make build-config
 
       # Build and lint QGIS images
