@@ -124,7 +124,7 @@ And remove the <code class="docutils literal notranslate"><span class="pre">auto
 <span class="gi">+ name: Rebuild</span>
 <span class="gi">+</span>
 <span class="gi">+ on:</span>
-<span class="gi">+ schedule:</span>
+<span class="gi">+   schedule:</span>
 <span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
 
 <span class="gd">-     name: Continuous integration</span>
@@ -169,7 +169,7 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="gi">+ name: Rebuild QGIS</span>
 <span class="gi">+</span>
 <span class="gi">+ on:</span>
-<span class="gi">+ schedule:</span>
+<span class="gi">+   schedule:</span>
 <span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
 
 <span class="gd">-     name: QGIS</span>
@@ -195,7 +195,7 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="gi">+ name: Update ngeo</span>
 <span class="gi">+</span>
 <span class="gi">+ on:</span>
-<span class="gi">+ repository_dispatch:</span>
+<span class="gi">+   repository_dispatch:</span>
 <span class="gi">+     types:</span>
 <span class="gi">+     - ngeo_&lt;new version&gt;_updated</span>
 
@@ -209,6 +209,13 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
         - name: Publish to Docker hub and Pypi
+          run: |
+            summon --yaml &#39;
+              DOCKER_USERNAME: !var gs/ci/dockerhub/username
+              DOCKER_PASSWORD: !var gs/ci/dockerhub/password
+              PYPI_USERNAME: !var gs/ci/pypi/username
+              PYPI_PASSWORD: !var gs/ci/pypi/password
+            &#39; ci/publish --geoportal
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
 <span class="gi">+           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}</span>
