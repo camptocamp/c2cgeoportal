@@ -1,3 +1,9 @@
+##### 2.5.0.30
+* Add missing CACHE_VERSION in config container [c2cgeoportal#6345](https://github.com/camptocamp/c2cgeoportal/pull/6345)
+* [Backport 2.5] [Security] Bump jquery from 3.4.1 to 3.5.1 [ngeo#5784](https://github.com/camptocamp/ngeo/pull/5784)
+* No error on click on missing data [ngeo#5794](https://github.com/camptocamp/ngeo/pull/5794)
+* Set default style on the features [ngeo#5802](https://github.com/camptocamp/ngeo/pull/5802)
+* Fix secret use to do the notification [ngeo#5805](https://github.com/camptocamp/ngeo/pull/5805)
 ##### 2.5.0.29
 * [Backport 2.5] Force the background to always be mixed [c2cgeoportal#6327](https://github.com/camptocamp/c2cgeoportal/pull/6327)
 ##### 2.5.0.28
