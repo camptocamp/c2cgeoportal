@@ -1,3 +1,5 @@
+##### 2.5.0.31
+* Fix cache version replacement [c2cgeoportal#6352](https://github.com/camptocamp/c2cgeoportal/pull/6352)
 ##### 2.5.0.30
 * Add missing CACHE_VERSION in config container [c2cgeoportal#6345](https://github.com/camptocamp/c2cgeoportal/pull/6345)
 * [Backport 2.5] [Security] Bump jquery from 3.4.1 to 3.5.1 [ngeo#5784](https://github.com/camptocamp/ngeo/pull/5784)
