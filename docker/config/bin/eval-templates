@@ -2,11 +2,13 @@
 
 import glob
 import os
+import random
 import re
 import subprocess
 import urllib.parse
 
 os.environ["DOLLAR"] = "$"
+os.environ["CACHE_VERSION"] = str(random.randint(0, 999999))
 os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ.get("VISIBLE_WEB_HOST"))
 os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ.get("VISIBLE_ENTRY_POINT"))
 os.environ["MAPSERVER_DATA_SUBSELECT"] = (
