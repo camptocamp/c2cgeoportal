@@ -1,3 +1,6 @@
+##### 2.5.0.32
+* [admin] Fix theme ordering [c2cgeoportal#6356](https://github.com/camptocamp/c2cgeoportal/pull/6356)
+* [Backport 2.5] Fix for WMTS layer name [ngeo#5818](https://github.com/camptocamp/ngeo/pull/5818)
 ##### 2.5.0.31
 * Fix cache version replacement [c2cgeoportal#6352](https://github.com/camptocamp/c2cgeoportal/pull/6352)
 ##### 2.5.0.30
