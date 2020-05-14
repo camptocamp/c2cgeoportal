@@ -85,8 +85,13 @@ class ThemesOrdering(AbstractViews):
                 for theme, dummy in form.schema["themes"].treeitems
             ]
         }
-        rendered = form.render(dict_, request=self._request, actions=[])
-        return {"form": rendered, "deform_dependencies": form.get_widget_resources()}
+        return {
+            "title": form.title,
+            "form": form,
+            "form_render_args": (dict_,),
+            "form_render_kwargs": {"request": self._request, "actions": []},
+            "deform_dependencies": form.get_widget_resources(),
+        }
 
     @view_config(route_name="layertree_ordering", request_method="POST", renderer="../templates/edit.jinja2")
     def save(self):
@@ -103,5 +108,10 @@ class ThemesOrdering(AbstractViews):
         except ValidationFailure as e:
             # FIXME see https://github.com/Pylons/deform/pull/243
             self._populate_widgets(form.schema)
-            rendered = e.field.widget.serialize(e.field, e.cstruct, request=self._request, actions=[])
-            return {"form": rendered, "deform_dependencies": form.get_widget_resources()}
+            return {
+                "title": form.title,
+                "form": e,
+                "form_render_args": tuple(),
+                "form_render_kwargs": {"request": self._request, "actions": []},
+                "deform_dependencies": form.get_widget_resources(),
+            }
