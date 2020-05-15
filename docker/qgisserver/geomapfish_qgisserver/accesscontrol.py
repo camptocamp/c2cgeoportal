@@ -43,11 +43,21 @@ from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, Qg
 from qgis.server import QgsAccessControlFilter, QgsConfigCache
 from shapely import ops, wkb
 import sqlalchemy
-from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker
+from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker, subqueryload
 import yaml
 import zope.event.classhandler
 
 LOG = logging.getLogger(__name__)
+
+
+def create_scoped_session(url, config):
+    configure_mappers()
+    db_match = re.match(".*(@[^@]+)$", url)
+    LOG.info("Connect to the database: ***%s", db_match.group(1) if db_match else "")
+    engine = sqlalchemy.create_engine(url, **config)
+    session_factory = sessionmaker()
+    session_factory.configure(bind=engine)
+    return scoped_session(session_factory)
 
 
 class GMFException(Exception):
@@ -72,15 +82,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
             c2cwsgiutils.broadcast.init()
 
-            configure_mappers()
-            db_match = re.match(".*(@[^@]+)$", config.get("sqlalchemy_slave.url"))
-            LOG.info("Connect to the database: ***%s", db_match.group(1) if db_match else "")
-            engine = sqlalchemy.create_engine(
-                config["sqlalchemy_slave.url"], **(config.get_config().get("sqlalchemy", {}))
+            DBSession = create_scoped_session(  # noqa: N806
+                config.get("sqlalchemy_slave.url"), config.get_config().get("sqlalchemy", {})
             )
-            session_factory = sessionmaker()
-            session_factory.configure(bind=engine)
-            DBSession = scoped_session(session_factory)  # noqa: N806
 
             if "GEOMAPFISH_OGCSERVER" in os.environ:
                 self.single = True
@@ -216,9 +220,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
                 from c2cgeoportal_commons.models.main import OGCServer
 
+                session = self.DBSession()
                 self.ogcserver = (
-                    self.DBSession.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
+                    session.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
                 )
+                session.close()
                 if self.ogcserver is None:
                     LOG.error(
                         "No OGC server found for '%s', project: '%s' => no rights", ogcserver_name, map_file
@@ -232,7 +238,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return layer.id()
         return layer.shortName() or layer.name()
 
-    def get_layers(self):
+    def get_layers(self, session):
         """
         Get the list of GMF WMS layers that can give access to each QGIS layer or group.
         That is, for each QGIS layer tree node, the list of GMF WMS layers that:
@@ -246,7 +252,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return {}
 
         with self.lock:
-            from c2cgeoportal_commons.models.main import LayerWMS
+            from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea
 
             if self.layers is not None:
                 return self.layers
@@ -266,8 +272,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 for name in path:
                     nodes[ogc_name].append(name)
 
-                for l in node.children():
-                    browse(path + [ogc_name], l)
+                for layer in node.children():
+                    browse(path + [ogc_name], layer)
 
             browse([], self.project.layerTreeRoot())
 
@@ -277,7 +283,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             # Transform ancestor names in LayerWMS instances
             layers = {}  # type: Dict[str, List[LayerWMS]]
             for layer in (
-                self.DBSession.query(LayerWMS).filter(LayerWMS.ogc_server_id == self.ogcserver.id).all()
+                session.query(LayerWMS)
+                .options(subqueryload(LayerWMS.restrictionareas).subqueryload(RestrictionArea.roles))
+                .filter(LayerWMS.ogc_server_id == self.ogcserver.id)
+                .all()
             ):
                 found = False
                 for ogc_layer_name, ancestors in nodes.items():
@@ -289,6 +298,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 if not found:
                     LOG.info("Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
 
+            session.expunge_all()
             LOG.debug(
                 "layers: %s",
                 json.dumps({k: [l.name for l in v] for k, v in layers.items()}, sort_keys=True, indent=4),
@@ -296,7 +306,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             self.layers = layers
             return layers
 
-    def get_roles(self):
+    def get_roles(self, session):
         """
         Get the current user's available roles based on request parameter USER_ID.
         Returns:
@@ -312,7 +322,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if "ROLE_IDS" not in parameters:
             return []
 
-        roles = self.DBSession.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(","))).all()
+        roles = session.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(","))).all()
 
         LOG.debug("Roles: %s", ",".join([role.name for role in roles]) if roles else "-")
         return roles
@@ -336,8 +346,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return Access.FULL, None
 
         if not rw:
-            for l in gmf_layers:
-                if l.public:
+            for layer in gmf_layers:
+                if layer.public:
                     return Access.FULL, None
 
         if not roles:
@@ -347,7 +357,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         for layer in gmf_layers:
             for restriction_area in layer.restrictionareas:
                 for role in roles or []:
-                    if role in restriction_area.roles and (rw is False or restriction_area.readwrite is True):
+                    restriction_area_roles_ids = [ra_role.id for ra_role in restriction_area.roles]
+                    if role.id in restriction_area_roles_ids and (
+                        rw is False or restriction_area.readwrite is True
+                    ):
                         if restriction_area.area is None:
                             return Access.FULL, None
                         restriction_areas.update({restriction_area})
@@ -360,14 +373,14 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             [geoalchemy2.shape.to_shape(restriction_area.area) for restriction_area in restriction_areas],
         )
 
-    def get_area(self, layer, rw=False):
+    def get_area(self, layer, session, rw=False):
         """
         Calculate access area for a QgsMapLayer and an access mode.
         Returns:
         - Access mode (NO | AREA | FULL)
         - Access area as WKT or None
         """
-        roles = self.get_roles()
+        roles = self.get_roles(session)
         if roles == "ROOT":
             return Access.FULL, None
 
@@ -377,9 +390,13 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if key in self.area_cache:
             return self.area_cache[key]
 
-        gmf_layers = self.get_layers().get(ogc_name, None)
+        gmf_layers = self.get_layers(session).get(ogc_name, None)
         if gmf_layers is None:
-            raise Exception("Access to an unknown layer")
+            raise Exception(
+                "Access to an unknown layer '{}', from [{}]".format(
+                    ogc_name, ", ".join(self.get_layers(session).keys())
+                )
+            )
 
         access, restriction_areas = self.get_restriction_areas(gmf_layers, rw, roles=roles)
 
@@ -409,7 +426,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("layerFilterSubsetString not in type")
                 return None
 
-            access, area = self.get_area(layer)
+            session = self.DBSession()
+            access, area = self.get_area(layer, session)
+            session.close()
             if access is Access.FULL:
                 LOG.debug("layerFilterSubsetString no area")
                 return None
@@ -447,7 +466,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("layerFilterExpression not in type")
                 return None
 
-            access, area = self.get_area(layer)
+            session = self.DBSession()
+            access, area = self.get_area(layer, session)
+            session.close()
             if access is Access.FULL:
                 LOG.debug("layerFilterExpression no area")
                 return None
@@ -481,13 +502,15 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 )
                 return rights
 
-            layers = self.get_layers()
+            session = self.DBSession()
+            layers = self.get_layers(session)
             ogc_layer_name = self.ogc_layer_name(layer)
             if ogc_layer_name not in layers:
                 return rights
-            gmf_layers = self.get_layers()[ogc_layer_name]
+            gmf_layers = self.get_layers(session)[ogc_layer_name]
 
-            roles = self.get_roles()
+            roles = self.get_roles(session)
+            session.close()
             access, _ = self.get_restriction_areas(gmf_layers, roles=roles)
             if access is not Access.NO:
                 rights.canRead = True
@@ -528,7 +551,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return False
 
         try:
-            access, area = self.get_area(layer, rw=True)
+            session = self.DBSession()
+            access, area = self.get_area(layer, session, rw=True)
+            session.close()
             if access is Access.FULL:
                 LOG.debug("layerFilterExpression no area")
                 return True
@@ -543,7 +568,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def cacheKey(self):  # NOQA
         # Root...
-        roles = self.get_roles()
+        session = self.DBSession()
+        roles = self.get_roles(session)
+        session.close()
         if roles == "ROOT":
             return "{}-{}".format(self.serverInterface().requestHandler().parameter("Host"), -1)
         return "{}-{}".format(
