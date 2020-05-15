@@ -13,7 +13,9 @@ services:
   qgisserver-tests:
     image: camptocamp/geomapfish-qgisserver-tests
     volumes:
-      - ./docker/qgisserver/:/src
+      - ./docker/qgisserver/geomapfish_qgisserver/:/var/www/plugins/geomapfish_qgisserver/
+      - ./docker/qgisserver/tests:/src/tests/
+      - ./commons/c2cgeoportal_commons/:/opt/c2cgeoportal/commons/c2cgeoportal_commons/
     environment:
       - PGHOST=db
       - PGPORT=5432
@@ -50,8 +52,10 @@ services:
 
   tests:
     image: camptocamp/geomapfish-tools
-    # volumes:
-    #   - .:/opt/c2cgeoportal
+    volumes:
+      - ./commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons
+      - ./geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+      - ./admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin
     environment:
       - PGHOST=db
       - PGPORT=5432
