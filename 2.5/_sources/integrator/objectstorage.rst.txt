@@ -44,7 +44,7 @@ Create the vrt file for a raster layer:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal ${'\\'}
+   docker-compose exec geoportal \
         gdalbuildvrt /vsis3/<bucket>/<folder>/index.vrt \
         $(list4vrt <bucket> <folder>/)
 
