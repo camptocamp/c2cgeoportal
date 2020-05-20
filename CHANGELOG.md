@@ -1,5 +1,6 @@
+##### 2.5.0.34
+* Upgrade getitfixed to 1.0.13 [c2cgeoportal#6394](https://github.com/camptocamp/c2cgeoportal/pull/6394)
 ##### 2.5.0.33
-* Fix DB sessions timeouts [c2cgeoportal#6374](https://github.com/camptocamp/c2cgeoportal/pull/6374)
 * Fix list4vrt [c2cgeoportal#6388](https://github.com/camptocamp/c2cgeoportal/pull/6388)
 ##### 2.5.0.32
 * [admin] Fix theme ordering [c2cgeoportal#6356](https://github.com/camptocamp/c2cgeoportal/pull/6356)
