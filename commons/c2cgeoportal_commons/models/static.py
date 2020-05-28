@@ -72,7 +72,7 @@ _schema: str = config["schema_static"] or "static"
 user_role = Table(
     "user_role",
     Base.metadata,
-    Column("user_id", Integer, ForeignKey(_schema + ".user.id"), primary_key=True),
+    Column("user_id", Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), primary_key=True),
     Column("role_id", Integer, primary_key=True),
     schema=_schema,
 )
