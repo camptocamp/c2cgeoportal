@@ -144,7 +144,7 @@ class TestXSDGenerator(TestCase):
         e = tb.close()
 
         self.assertEqual(
-            '<xsd:element minOccurs="0" name="readonly" nillable="true" type="xsd:string">'
+            '<xsd:element name="readonly" minOccurs="0" nillable="true" type="xsd:string">'
             "<xsd:annotation>"
             "<xsd:appinfo>"
             '<readonly value="true" />'
@@ -168,7 +168,7 @@ class TestXSDGenerator(TestCase):
         e = tb.close()
 
         self.assertEqual(
-            '<xsd:element minOccurs="0" name="child1" nillable="true">'
+            '<xsd:element minOccurs="0" nillable="true" name="child1">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'

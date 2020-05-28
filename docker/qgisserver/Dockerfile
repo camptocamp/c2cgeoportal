@@ -1,12 +1,12 @@
 ARG VERSION
 
-FROM camptocamp/c2cwsgiutils:release_3-lite AS c2cwsgiutils
+FROM camptocamp/c2cwsgiutils:release_4 AS c2cwsgiutils
 
 FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY --from=c2cwsgiutils /opt/c2cwsgiutils /opt/c2cwsgiutils
-COPY --from=c2cwsgiutils /usr/local/lib/python3.7/dist-packages/c2cwsgiutils.egg-link \
+COPY --from=c2cwsgiutils /usr/local/lib/python3.8/dist-packages/c2cwsgiutils.egg-link \
     /usr/local/lib/python3.6/dist-packages/c2cwsgiutils.egg-link
 RUN echo /opt/c2cwsgiutils >> /usr/local/lib/python3.6/dist-packages/easy-install.pth
 COPY requirements.txt /tmp/
