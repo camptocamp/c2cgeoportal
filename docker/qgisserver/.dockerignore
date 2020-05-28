@@ -1,5 +1,6 @@
 *
 !geomapfish_qgisserver
+!requirements.txt
 !Pipfile
 !Pipfile.lock
 !setup.cfg
