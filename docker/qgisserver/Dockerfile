@@ -9,7 +9,8 @@ COPY --from=c2cwsgiutils /opt/c2cwsgiutils /opt/c2cwsgiutils
 COPY --from=c2cwsgiutils /usr/local/lib/python3.7/dist-packages/c2cwsgiutils.egg-link \
     /usr/local/lib/python3.6/dist-packages/c2cwsgiutils.egg-link
 RUN echo /opt/c2cwsgiutils >> /usr/local/lib/python3.6/dist-packages/easy-install.pth
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir pipenv
+COPY requirements.txt /tmp/
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
 COPY Pipfile Pipfile.lock /tmp/
 RUN cd /tmp && PIP_NO_BINARY=:all: pipenv install --system --deploy --clear
@@ -21,7 +22,8 @@ FROM debian:stretch AS lint
 RUN apt-get update
 RUN apt-get install --assume-yes --no-install-recommends apt-utils
 RUN apt-get install --assume-yes --no-install-recommends python3-pip python3-setuptools
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir wheel pipenv
+COPY requirements.txt /tmp/
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
 COPY Pipfile Pipfile.lock /tmp/
 RUN cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
@@ -67,6 +69,7 @@ RUN true
 COPY tests/Pipfile tests/Pipfile.lock /tmp/
 
 RUN cd /tmp && pipenv install --system --clear
+RUN python3 -m pip install pytest-timeout
 
 COPY tests/geomapfish.yaml /etc/qgisserver/geomapfish.yaml
 COPY tests/multiple_ogc_server.yaml /etc/qgisserver/multiple_ogc_server.yaml

@@ -38,7 +38,7 @@ jobs:
         with:
           ref: ${{ env.MAIN_BRANCH }}
 
-      - run: python3 -m pip install --user pipenv
+      - run: python3 -m pip install --user --requirement=requirements.txt
 
       # Global simple lint
       - run: make gitattributes
