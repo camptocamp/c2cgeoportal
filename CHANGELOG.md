@@ -1,3 +1,7 @@
+##### 2.5.0.35
+* Fix DB sessions timeouts [c2cgeoportal#6374](https://github.com/camptocamp/c2cgeoportal/pull/6374)
+* [Backport 2.5] Fix master by pinning pipenv version [c2cgeoportal#6428](https://github.com/camptocamp/c2cgeoportal/pull/6428)
+* Don't include dragPan interaction twice [ngeo#5867](https://github.com/camptocamp/ngeo/pull/5867)
 ##### 2.5.0.34
 * Upgrade getitfixed to 1.0.13 [c2cgeoportal#6394](https://github.com/camptocamp/c2cgeoportal/pull/6394)
 ##### 2.5.0.33
