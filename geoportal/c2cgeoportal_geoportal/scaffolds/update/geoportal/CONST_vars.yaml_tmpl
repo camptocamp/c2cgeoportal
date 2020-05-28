@@ -22,13 +22,13 @@ vars:
     pool_recycle: 30
     pool_size: 5
     max_overflow: 25
-    use_batch_mode: true
+    executemany_mode: batch
   sqlalchemy_slave:
     url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}?sslmode={PGSSLMODE}
     pool_recycle: 30
     pool_size: 5
     max_overflow: 25
-    use_batch_mode: true
+    executemany_mode: batch
 
   # Session backend
   session:

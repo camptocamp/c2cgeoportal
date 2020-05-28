@@ -59,8 +59,8 @@ mapping:
         type: int
       sqlalchemy.pool_overflow:
         type: int
-      sqlalchemy.use_batch_mode:
-        type: bool
+      sqlalchemy.executemany_mode:
+        type: str
       sqlalchemy_slave.url:
         type: str
         required: True
@@ -70,8 +70,8 @@ mapping:
         type: int
       sqlalchemy_slave.pool_overflow:
         type: int
-      sqlalchemy_slave.use_batch_mode:
-        type: bool
+      sqlalchemy_slave.executemany_mode:
+        type: str
       default_max_age:
         type: int
         required: True
