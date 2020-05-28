@@ -1,0 +1,15 @@
+# Can be moved to setup.cfg with pylint 2.5, prefixed with 'pylint.'.
+[MESSAGES CONTROL]
+disable=import-error,
+    empty-docstring,
+    missing-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    missing-module-docstring,
+    locally-disabled,
+    bad-continuation,
+    too-many-instance-attributes
+
+
+[FORMAT]
+max-line-length=110

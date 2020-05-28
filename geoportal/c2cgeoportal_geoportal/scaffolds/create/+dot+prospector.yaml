@@ -1,0 +1,9 @@
+---
+
+strictness: veryhigh
+
+mccabe:
+  run: false
+
+mypy:
+  run: true

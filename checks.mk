@@ -12,9 +12,10 @@ checks: prospector bandit isort additionallint
 
 .PHONY: prospector
 prospector:
-	prospector --version
-	mypy --version
-	pylint --version --rcfile=/dev/null
+	@prospector --version
+	@mypy --version
+	@pylint --version --rcfile=/dev/null
+	@echo pyflakes $(shell pyflakes --version)
 	prospector
 
 .PHONY: bandit

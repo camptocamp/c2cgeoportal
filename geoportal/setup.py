@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2017, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -57,15 +57,16 @@ setup(
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+        "License :: OSI Approved :: BSD License",
+        "Development Status :: 6 - Mature",
     ],
     author="Camptocamp",
     author_email="info@camptocamp.com",
-    url="http://www.camptocamp.com/solutions/geospatial/",
+    url="https://github.com/camptocamp/c2cgeoportal/",
     keywords="web gis geoportail c2cgeoportal geocommune pyramid",
     packages=find_packages(exclude=["tests.*"]),
     package_data={"c2cgeoportal_geoportal": ["py.typed"]},

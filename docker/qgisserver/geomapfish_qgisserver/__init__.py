@@ -41,7 +41,7 @@ LOG = logging.getLogger(__name__)
 
 try:
     gmf_logging.init()
-except Exception:
+except Exception:  # pylint: disable=broad-except
     print("".join(traceback.format_exception(*sys.exc_info())))
     QgsMessageLog.logMessage(
         "".join(traceback.format_exception(*sys.exc_info())), "GeoMapFishAccessControl", level=Qgis.Critical,
@@ -52,7 +52,10 @@ def serverClassFactory(serverIface):  # noqa
     LOG.info("Starting GeoMapFish access restriction...")
 
     try:
-        from .accesscontrol import GMFException, GeoMapFishAccessControl
+        from .accesscontrol import (  # pylint: disable=import-outside-toplevel
+            GMFException,
+            GeoMapFishAccessControl,
+        )
 
         return GeoMapFishAccessControl(serverIface)
     except GMFException:

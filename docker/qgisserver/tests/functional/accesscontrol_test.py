@@ -304,7 +304,9 @@ class TestOGCServerAccessControl:
         )
 
         assert (Access.FULL, None) == ogcserver_accesscontrol.get_restriction_areas(
-            dbsession.query(LayerWMS).filter(LayerWMS.name == "private_layer1").one(), rw=True, roles="ROOT"
+            dbsession.query(LayerWMS).filter(LayerWMS.name == "private_layer1").one(),
+            read_write=True,
+            roles="ROOT",
         )
 
         for layer_names, rw, role_names, expected in (
