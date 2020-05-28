@@ -37,7 +37,7 @@ jobs:
       - run: scripts/get-version --auto-increment
         if: github.repository == 'camptocamp/c2cgeoportal'
 
-      - run: python3 -m pip install --user pipenv
+      - run: python3 -m pip install --user --requirement=requirements.txt
 
       # Global simple lint
       - run: make gitattributes
