@@ -11,7 +11,7 @@ jobs:
   main:
     runs-on: ubuntu-18.04
     name: Update ngeo
-    timeout-minutes: 60
+    timeout-minutes: 70
 
     env:
       MAIN_BRANCH: 2.5
