@@ -10,7 +10,7 @@ jobs:
   main:
     runs-on: ubuntu-18.04
     name: QGIS rebuild
-    timeout-minutes: 60
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
