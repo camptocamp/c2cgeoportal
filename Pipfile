@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-awscli = "==1.18.68"  # Work with Object storage
+awscli = "==1.18.69"  # Work with Object storage
 Babel = "==2.7.0"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.9.1"  # admin tests
@@ -19,6 +19,7 @@ polib = "==1.1.0"  # i18n
 pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==2.9.0"  # tests
 pytest-selenium = "==1.17.0"  # admin tests
+selenium = "==4.0.0a5"  # admin tests
 transifex-client = "==0.13.9"  # Makefile
 WebTest = "==2.0.35"  # admin tests
 prospector = {extras = ["with_mypy"],version = "==1.2.0"}
