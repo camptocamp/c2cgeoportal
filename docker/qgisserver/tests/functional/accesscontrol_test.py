@@ -75,7 +75,7 @@ def add_node_in_qgis_project(project, parent_node, node_def):
 
 
 @pytest.fixture(scope="module")
-def test_data(DBSession):  # noqa: N803
+def test_data(clean_dbsession):
     from c2cgeoportal_commons.models.main import (
         LayerWMS,
         OGCServer,
@@ -83,23 +83,10 @@ def test_data(DBSession):  # noqa: N803
         OGCSERVER_AUTH_STANDARD,
         RestrictionArea,
         Role,
-        TreeItem,
-        role_ra,
-        layer_ra,
     )
-    from c2cgeoportal_commons.models.static import User, user_role
+    from c2cgeoportal_commons.models.static import User
 
-    dbsession = DBSession()
-    dbsession.execute(layer_ra.delete())
-    dbsession.query(TreeItem).delete()
-    dbsession.query(OGCServer).delete()
-    dbsession.execute(role_ra.delete())
-    dbsession.query(RestrictionArea).delete()
-    dbsession.execute(user_role.delete())
-    dbsession.query(User).delete()
-    dbsession.query(Role).delete()
-    DBSession.remove()
-    dbsession.commit()
+    DBSession = clean_dbsession  # noqa: N806
 
     dbsession = DBSession()
 
@@ -201,7 +188,7 @@ def test_data(DBSession):  # noqa: N803
     roles = {role.name: {"id": role.id} for role in (role1, role2)}
 
     dbsession.commit()
-    DBSession.remove()
+    dbsession.close()
 
     yield {
         # "ogc_servers": ogc_servers,
@@ -211,18 +198,6 @@ def test_data(DBSession):  # noqa: N803
         # "restriction_areas": restriction_areas,
         "project": project,
     }
-
-    dbsession = DBSession()
-    dbsession.execute(layer_ra.delete())
-    dbsession.query(TreeItem).delete()
-    dbsession.query(OGCServer).delete()
-    dbsession.execute(role_ra.delete())
-    dbsession.query(RestrictionArea).delete()
-    dbsession.execute(user_role.delete())
-    dbsession.query(User).delete()
-    dbsession.query(Role).delete()
-    dbsession.commit()
-    DBSession.remove()
 
 
 @pytest.fixture(scope="function")
