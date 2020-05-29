@@ -43,21 +43,21 @@ from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, Qg
 from qgis.server import QgsAccessControlFilter, QgsConfigCache
 from shapely import ops, wkb
 import sqlalchemy
-from sqlalchemy.orm import configure_mappers, scoped_session, sessionmaker, subqueryload
+from sqlalchemy.orm import configure_mappers, sessionmaker, subqueryload
 import yaml
 import zope.event.classhandler
 
 LOG = logging.getLogger(__name__)
 
 
-def create_scoped_session(url, config):
+def create_session_factory(url, config):
     configure_mappers()
     db_match = re.match(".*(@[^@]+)$", url)
     LOG.info("Connect to the database: ***%s", db_match.group(1) if db_match else "")
     engine = sqlalchemy.create_engine(url, **config)
     session_factory = sessionmaker()
     session_factory.configure(bind=engine)
-    return scoped_session(session_factory)
+    return session_factory
 
 
 class GMFException(Exception):
@@ -82,7 +82,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
             c2cwsgiutils.broadcast.init()
 
-            DBSession = create_scoped_session(  # noqa: N806
+            DBSession = create_session_factory(  # noqa: N806
                 config.get("sqlalchemy_slave.url"), config.get_config().get("sqlalchemy", {})
             )
 

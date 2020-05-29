@@ -7,7 +7,7 @@ from c2c.template.config import config
 import pytest
 from qgis.server import QgsServerInterface
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 from c2cgeoportal_commons.testing import generate_mappers
 
@@ -27,15 +27,40 @@ def DBSession(settings):  # noqa: N802
     engine = create_engine(config["sqlalchemy_slave.url"], pool_timeout=10)
     session_factory = sessionmaker()
     session_factory.configure(bind=engine)
-    DBSession = scoped_session(session_factory)  # noqa: N806
 
-    def fake_create_scoped_session():
-        return DBSession
+    with patch("geomapfish_qgisserver.accesscontrol.create_session_factory", return_value=session_factory):
+        yield session_factory
 
-    with patch(
-        "geomapfish_qgisserver.accesscontrol.create_scoped_session", return_value=fake_create_scoped_session
-    ):
-        yield DBSession
+
+@pytest.fixture(scope="module")
+@pytest.mark.usefixtures("DBSession")
+def clean_dbsession(DBSession):  # noqa: N803
+    from c2cgeoportal_commons.models.main import (
+        OGCServer,
+        RestrictionArea,
+        Role,
+        TreeItem,
+        role_ra,
+        layer_ra,
+    )
+    from c2cgeoportal_commons.models.static import User, user_role
+
+    def clean():
+        dbsession = DBSession()
+        dbsession.execute(layer_ra.delete())
+        dbsession.query(TreeItem).delete()
+        dbsession.query(OGCServer).delete()
+        dbsession.execute(role_ra.delete())
+        dbsession.query(RestrictionArea).delete()
+        dbsession.execute(user_role.delete())
+        dbsession.query(User).delete()
+        dbsession.query(Role).delete()
+        dbsession.commit()
+        dbsession.close()
+
+    clean()
+    yield DBSession
+    clean()
 
 
 @pytest.fixture(scope="function")

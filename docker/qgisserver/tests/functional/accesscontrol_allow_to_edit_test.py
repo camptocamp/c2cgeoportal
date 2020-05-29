@@ -43,7 +43,7 @@ geom_out = LineString([[500000, 50000], [500000, 60000]])
 
 
 @pytest.fixture(scope="class")
-def test_data2(DBSession):  # noqa: N803
+def test_data2(clean_dbsession):
     from c2cgeoportal_commons.models.main import (
         LayerWMS,
         OGCServer,
@@ -51,23 +51,11 @@ def test_data2(DBSession):  # noqa: N803
         OGCSERVER_AUTH_STANDARD,
         RestrictionArea,
         Role,
-        role_ra,
-        layer_ra,
         TreeItem,
     )
-    from c2cgeoportal_commons.models.static import User, user_role
+    from c2cgeoportal_commons.models.static import User
 
-    dbsession = DBSession()
-    dbsession.execute(layer_ra.delete())
-    dbsession.query(TreeItem).delete()
-    dbsession.query(OGCServer).delete()
-    dbsession.execute(role_ra.delete())
-    dbsession.query(RestrictionArea).delete()
-    dbsession.execute(user_role.delete())
-    dbsession.query(User).delete()
-    dbsession.query(Role).delete()
-    dbsession.commit()
-    DBSession.remove()
+    DBSession = clean_dbsession  # noqa: N806
 
     dbsession = DBSession()
 
@@ -134,25 +122,13 @@ def test_data2(DBSession):  # noqa: N803
     }
 
     dbsession.commit()
-    DBSession.remove()
+    dbsession.close()
 
     yield {
         "users": users,
         "roles": roles,
         "project": project,
     }
-
-    dbsession = DBSession()
-    dbsession.execute(layer_ra.delete())
-    dbsession.query(TreeItem).delete()
-    dbsession.query(OGCServer).delete()
-    dbsession.execute(role_ra.delete())
-    dbsession.query(RestrictionArea).delete()
-    dbsession.execute(user_role.delete())
-    dbsession.query(User).delete()
-    dbsession.query(Role).delete()
-    dbsession.commit()
-    DBSession.remove()
 
 
 @pytest.mark.usefixtures(
