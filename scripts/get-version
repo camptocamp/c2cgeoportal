@@ -80,6 +80,6 @@ if args.full or args.upgrade_version:
     else:
         print(major_version + ".rc." + minor)
 elif args.major:
-    print(os.environ.get("MAJOR_VERSION", "master"))
+    print(os.environ.get("MAJOR_VERSION", "2.6"))
 else:
     print(minor)
