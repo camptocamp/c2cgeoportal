@@ -43,7 +43,7 @@ geom_out = LineString([[500000, 50000], [500000, 60000]])
 
 
 @pytest.fixture(scope="class")
-def test_data2(dbsession):
+def test_data2(clean_dbsession):
     from c2cgeoportal_commons.models.main import (
         LayerWMS,
         OGCServer,
@@ -51,8 +51,16 @@ def test_data2(dbsession):
         OGCSERVER_AUTH_STANDARD,
         RestrictionArea,
         Role,
+        TreeItem,
     )
     from c2cgeoportal_commons.models.static import User
+
+    DBSession = clean_dbsession  # noqa: N806
+
+    dbsession = DBSession()
+
+    for r in dbsession.query(TreeItem).all():
+        print(r.id)
 
     ogc_server1 = OGCServer(
         name="qgisserver",
@@ -60,20 +68,17 @@ def test_data2(dbsession):
         image_type="image/png",
         auth=OGCSERVER_AUTH_STANDARD,
     )
-    ogc_servers = {ogc_server.name: ogc_server for ogc_server in [ogc_server1]}
     dbsession.add(ogc_server1)
 
     role1 = Role("role_no_access")
     role2 = Role("role_full_access")
     role3 = Role("role_area_access")
-    roles = {role.name: role for role in (role1, role2, role3)}
-    dbsession.add_all(roles.values())
+    dbsession.add_all((role1, role2, role3))
 
     user_no_access = User("user_no_access", roles=[role1])
     user_full_access = User("user_full_access", roles=[role2])
     user_area_access = User("user_area_access", roles=[role3])
-    users = {user.username: user for user in (user_no_access, user_full_access, user_area_access)}
-    dbsession.add_all(users.values())
+    dbsession.add_all((user_no_access, user_full_access, user_area_access))
 
     project = QgsProject.instance()
 
@@ -106,31 +111,34 @@ def test_data2(dbsession):
         readwrite=True,
         area=from_shape(area1, srid=21781),
     )
-    restriction_areas = {ra.name: ra for ra in (ra1, ra2, ra3)}
-    dbsession.add_all(restriction_areas.values())
-
-    t = dbsession.begin_nested()
+    dbsession.add_all((ra1, ra2, ra3))
 
     dbsession.flush()
+
+    roles = {role.name: {"id": role.id} for role in (role1, role2, role3)}
+    users = {
+        user.username: {"id": user.id, "role_ids": [r.id for r in user.roles]}
+        for user in (user_no_access, user_full_access, user_area_access)
+    }
+
+    dbsession.commit()
+    dbsession.close()
 
     yield {
         "users": users,
         "roles": roles,
-        "restriction_areas": restriction_areas,
-        "ogc_servers": ogc_servers,
         "project": project,
     }
-
-    t.rollback()
 
 
 @pytest.mark.usefixtures(
     "server_iface", "qgs_access_control_filter", "test_data2",
 )
 class TestAccessControlAllowToEdit:
-    def test_allow_to_edit(self, server_iface, dbsession, test_data2):
+    def test_allow_to_edit(self, server_iface, DBSession, test_data2):  # noqa: N803
+        session = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver", "no_project", 21781, dbsession
+            server_iface, "qgisserver", "no_project", 21781, lambda: session
         )
         ogcserver_accesscontrol.project = test_data2["project"]
 
@@ -148,7 +156,7 @@ class TestAccessControlAllowToEdit:
             user = test_data2["users"][user_name]
             set_request_parameters(
                 server_iface,
-                {"USER_ID": str(user.id), "ROLE_IDS": ",".join([str(role.id) for role in user.roles])},
+                {"USER_ID": str(user["id"]), "ROLE_IDS": ",".join([str(e) for e in user["role_ids"]])},
             )
 
             layer = test_data2["project"].mapLayersByName("private_layer")[0]
