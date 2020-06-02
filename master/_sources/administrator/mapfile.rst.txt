@@ -218,9 +218,6 @@ The ``${MAPSERVER_DATA_SUBSELECT}`` is defined as follows:
     *contained*). *st_intersects* or another operator could be used instead of the
     *st_contains* operator.
 
-The ``${mapfile_data_subselect}`` variable is defined in the ``CONST_vars.yaml``
-configuration file. Its goal is to simplify the writing of the mapfile.
-
 
 Without restriction on the RestrictionArea area
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
