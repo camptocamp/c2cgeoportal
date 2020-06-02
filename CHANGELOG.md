@@ -1,5 +1,9 @@
-##### 2.5.0.35
+##### 2.5.0.36
 * Fix DB sessions timeouts [c2cgeoportal#6374](https://github.com/camptocamp/c2cgeoportal/pull/6374)
+* Remove, no more valid [c2cgeoportal#6439](https://github.com/camptocamp/c2cgeoportal/pull/6439)
+* [Backport 2.5] Fix getFeaturesFromIds [ngeo#5874](https://github.com/camptocamp/ngeo/pull/5874)
+* Fix missing API help [ngeo#5876](https://github.com/camptocamp/ngeo/pull/5876)
+##### 2.5.0.35
 * [Backport 2.5] Fix master by pinning pipenv version [c2cgeoportal#6428](https://github.com/camptocamp/c2cgeoportal/pull/6428)
 * Don't include dragPan interaction twice [ngeo#5867](https://github.com/camptocamp/ngeo/pull/5867)
 ##### 2.5.0.34
