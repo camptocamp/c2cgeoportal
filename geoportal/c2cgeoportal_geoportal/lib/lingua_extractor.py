@@ -242,6 +242,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         class C:
             registry = R()
 
+            def get_settings(self):
+                return self.registry.settings
+
         config_ = C()
         config_.registry.settings = settings
         init_dbsessions(settings, config_)
