@@ -1,0 +1,14 @@
+Error on backporting to branch 2.5, error on cherry picking ['948905158ab05788c2e38742272cc657210cb347']:
+error: could not apply 948905158... Add get_settings used by c2cwsgiutils
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+
+
+to continue do:
+git fetch
+git checkout backport/6465-to-2.5
+git reset --hard HEAD^
+git cherry-pick 948905158ab05788c2e38742272cc657210cb347
+git push origin backport/6465-to-2.5 --force
