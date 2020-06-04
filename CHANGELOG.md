@@ -1,3 +1,10 @@
+##### 2.4.1.107
+* Move to GitHub Actions [c2cgeoportal#6330](https://github.com/camptocamp/c2cgeoportal/pull/6330)
+* Add get_settings used by c2cwsgiutils [c2cgeoportal#6465](https://github.com/camptocamp/c2cgeoportal/pull/6465)
+* [api] Fix getFeaturesFromIds when GMF and WMS layers do not have the … [ngeo#5553](https://github.com/camptocamp/ngeo/pull/5553)
+* [Backport 2.4] Set default style on the features [ngeo#5810](https://github.com/camptocamp/ngeo/pull/5810)
+* Fix for WMTS layer name [ngeo#5812](https://github.com/camptocamp/ngeo/pull/5812)
+* [Security] Bump angular from 1.7.8 to 1.7.9 [ngeo#5881](https://github.com/camptocamp/ngeo/pull/5881)
 ##### 2.4.1.106
 * Fix the list [c2cgeoportal#6237](https://github.com/camptocamp/c2cgeoportal/pull/6237)
 ##### 2.4.1.105
