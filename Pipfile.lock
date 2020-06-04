@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6e5b64e64242c451136b3c1237c369a602b321dadac4b6afbe7108e1f1a76a73"
+            "sha256": "1b66a4fe6aeb4c1c716a6bf2b531493516915c06b456525074981eac41bb562c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -847,10 +847,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:b01b462ff82431a3a3607272cd8e206be3ef05b7578d0e18cdae2abeabf14609"
+                "sha256:ce100db2d57c4c8e573ed21c35f4a94641465c87912683ddf2b03e64b4bc80ce",
+                "sha256:ef36c4c40784cedc89539a1138c1423b9a804ccbe58ba2a039e4bbbab3640dc5"
             ],
             "index": "pypi",
-            "version": "==1.18.72"
+            "version": "==1.18.73"
         },
         "babel": {
             "hashes": [
@@ -878,10 +879,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:5df4dc49392922dc23042333187ca33686552ae5a901e91d0bc4140c4226995c",
-                "sha256:eb077e2da1654558c9d97888a2e0710b92cc3162a6641959545451e1a21eea8a"
+                "sha256:5831068c9b49b4c91b0733e0ec784a7733d8732359d73c67a07a0b0868433cae",
+                "sha256:7778957bdc9a25dd33bb4383ebd6d45a8570a2cbff03d1edf430fdacec2b7437"
             ],
-            "version": "==1.16.22"
+            "version": "==1.16.23"
         },
         "certifi": {
             "hashes": [
@@ -909,6 +910,7 @@
                 "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
                 "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
             ],
+            "markers": "python_version != '3.4'",
             "version": "==0.4.3"
         },
         "coverage": {
@@ -1442,7 +1444,6 @@
                 "sha256:001e90cd704be6470d46cc9076434e2d0d566c1379187e7013eb296d3a6032d9",
                 "sha256:471c920412265cc809540ae6fb01f3f02aba89c79bbc7091372f4745a50f9691"
             ],
-            "index": "pypi",
             "version": "==2.0.0"
         },
         "transifex-client": {
