@@ -284,6 +284,7 @@ vars:
         type: list
       - name: readonlyAttributes
         type: list
+      - name: queryTolerance
       # WMS
       - name: directedFilterAttributes
         type: list
