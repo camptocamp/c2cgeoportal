@@ -1,7 +1,7 @@
 #############################################################################################################
 # The base image with apt and python packages.
 
-FROM camptocamp/c2cwsgiutils:release_3-lite AS base
+FROM camptocamp/c2cwsgiutils:release_4 AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 ENV \
@@ -29,7 +29,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY Pipfile Pipfile.lock /tmp/
 RUN cd /tmp && pipenv install --system --clear && \
-  rm --recursive --force /usr/local/lib/python3.7/dist-packages/tests/ /tmp/* /root/.cache/*
+  rm --recursive --force /usr/local/lib/python3.8/dist-packages/tests/ /tmp/* /root/.cache/*
 
 ENV NODE_PATH=/usr/lib/node_modules
 
@@ -46,7 +46,7 @@ RUN \
     /etc/apt/sources.list.d/pgdg.list && \
   curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
   apt-get update && \
-  apt-get install --assume-yes --no-install-recommends git make python3.7-dev gcc postgresql-client gdal-bin \
+  apt-get install --assume-yes --no-install-recommends git make python3.8-dev gcc postgresql-client gdal-bin \
         net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils \
         bash-completion pwgen && \
   apt-get clean && \
@@ -174,8 +174,8 @@ RUN \
     --editable=commons \
     --editable=geoportal \
     --editable=admin && \
-    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.7 \
-        -x '/usr/local/lib/python3.7/dist-packages/pipenv/'
+    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.8 \
+        -x '/usr/local/lib/python3.8/dist-packages/pipenv/'
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
@@ -191,8 +191,8 @@ WORKDIR /opt/c2cgeoportal
 
 # For mypy
 RUN \
-  touch /usr/local/lib/python3.7/dist-packages/zope/__init__.py && \
-  touch /usr/local/lib/python3.7/dist-packages/c2c/__init__.py
+  touch /usr/local/lib/python3.8/dist-packages/zope/__init__.py && \
+  touch /usr/local/lib/python3.8/dist-packages/c2c/__init__.py
 
 COPY setup.cfg .prospector.yaml .pylintrc .bandit checks.mk ./
 COPY .git ./.git/

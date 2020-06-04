@@ -50,11 +50,11 @@ import zope.event.classhandler
 LOG = logging.getLogger(__name__)
 
 
-def create_session_factory(url, config):
+def create_session_factory(url, configuration):
     configure_mappers()
     db_match = re.match(".*(@[^@]+)$", url)
     LOG.info("Connect to the database: ***%s", db_match.group(1) if db_match else "")
-    engine = sqlalchemy.create_engine(url, **config)
+    engine = sqlalchemy.create_engine(url, **configuration)
     session_factory = sessionmaker()
     session_factory.configure(bind=engine)
     return session_factory
@@ -117,7 +117,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     "'GEOMAPFISH_ACCESSCONTROL_CONFIG' is not defined.",
                 )
 
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             LOG.error("Cannot setup GeoMapFishAccessControl", exc_info=True)
 
         server_iface.registerAccessControl(self, int(os.environ.get("GEOMAPFISH_POSITION", 100)))
@@ -194,7 +194,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         super().__init__(server_iface)
 
         self.server_iface = server_iface
-        self.DBSession = DBSession
+        self.DBSession = DBSession  # pylint: disable=invalid-name
         self.area_cache = {}
         self.layers = None
         self.lock = Lock()
@@ -202,7 +202,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.ogcserver = None
         self.project = QgsProject.instance()
 
-        from c2cgeoportal_commons.models import InvalidateCacheEvent
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            InvalidateCacheEvent,
+        )
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
         def handle(_: InvalidateCacheEvent):  # pylint: disable=unused-variable
@@ -218,7 +220,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 self.project = config_cache.project(map_file)
                 self.layers = None
 
-                from c2cgeoportal_commons.models.main import OGCServer
+                from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+                    OGCServer,
+                )
 
                 session = self.DBSession()
                 self.ogcserver = (
@@ -229,7 +233,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                     LOG.error(
                         "No OGC server found for '%s', project: '%s' => no rights", ogcserver_name, map_file
                     )
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
 
     def ogc_layer_name(self, layer):
@@ -252,7 +256,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return {}
 
         with self.lock:
-            from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea
+            from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+                LayerWMS,
+                RestrictionArea,
+            )
 
             if self.layers is not None:
                 return self.layers
@@ -312,7 +319,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         Returns:
         - List of c2cgeoportal_commons.models.main.Role instances.
         """
-        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
 
         parameters = self.serverInterface().requestHandler().parameterMap()
 
@@ -328,7 +335,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         return roles
 
     @staticmethod
-    def get_restriction_areas(gmf_layers, rw=False, roles=None):
+    def get_restriction_areas(gmf_layers, read_write=False, roles=None):
         """
         Get access areas given by GMF layers and user roles for an access mode.
 
@@ -345,7 +352,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if roles == "ROOT":
             return Access.FULL, None
 
-        if not rw:
+        if not read_write:
             for layer in gmf_layers:
                 if layer.public:
                     return Access.FULL, None
@@ -359,7 +366,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 for role in roles or []:
                     restriction_area_roles_ids = [ra_role.id for ra_role in restriction_area.roles]
                     if role.id in restriction_area_roles_ids and (
-                        rw is False or restriction_area.readwrite is True
+                        read_write is False or restriction_area.readwrite is True
                     ):
                         if restriction_area.area is None:
                             return Access.FULL, None
@@ -373,7 +380,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             [geoalchemy2.shape.to_shape(restriction_area.area) for restriction_area in restriction_areas],
         )
 
-    def get_area(self, layer, session, rw=False):
+    def get_area(self, layer, session, read_write=False):
         """
         Calculate access area for a QgsMapLayer and an access mode.
         Returns:
@@ -385,7 +392,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return Access.FULL, None
 
         ogc_name = self.ogc_layer_name(layer)
-        key = (ogc_name, tuple(sorted(role.id for role in roles)), rw)
+        key = (ogc_name, tuple(sorted(role.id for role in roles)), read_write)
 
         if key in self.area_cache:
             return self.area_cache[key]
@@ -398,7 +405,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 )
             )
 
-        access, restriction_areas = self.get_restriction_areas(gmf_layers, rw, roles=roles)
+        access, restriction_areas = self.get_restriction_areas(gmf_layers, read_write, roles=roles)
 
         if access is not Access.AREA:
             self.area_cache[key] = (access, None)
@@ -515,7 +522,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             if access is not Access.NO:
                 rights.canRead = True
 
-            access, _ = self.get_restriction_areas(gmf_layers, rw=True, roles=roles)
+            access, _ = self.get_restriction_areas(gmf_layers, read_write=True, roles=roles)
             rights.canInsert = rights.canUpdate = rights.canDelete = access is not Access.NO
 
             return rights
@@ -535,7 +542,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             )
             return []
 
-        # TODO
+        # TODO pylint: disable=fixme
         return attributes
 
     def allowToEdit(self, layer, feature):  # NOQA
@@ -552,7 +559,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         try:
             session = self.DBSession()
-            access, area = self.get_area(layer, session, rw=True)
+            access, area = self.get_area(layer, session, read_write=True)
             session.close()
             if access is Access.FULL:
                 LOG.debug("layerFilterExpression no area")

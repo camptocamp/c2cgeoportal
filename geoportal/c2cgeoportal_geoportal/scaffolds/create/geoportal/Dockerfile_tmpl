@@ -34,19 +34,19 @@ RUN chmod go+w /etc/static-ngeo/ \
     /app/{{package}}_geoportal/locale/ \
     /app/{{package}}_geoportal/locale/*/LC_MESSAGES/{{package}}_geoportal-client.po
 
-RUN pip install --disable-pip-version-check --no-cache-dir --editable=/app/ && \
-    python3 -m compileall -q /usr/local/lib/python3.7 \
-        -x '/usr/local/lib/python3.7/dist-packages/(pydevd|ptvsd|pipenv)/' && \
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --editable=/app/ && \
+    python3 -m compileall -q /usr/local/lib/python3.8 \
+        -x '/usr/local/lib/python3.8/dist-packages/(pydevd|ptvsd|pipenv)/' && \
     python3 -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
 
 ARG GIT_HASH
-RUN c2cwsgiutils_genversion.py ${GIT_HASH}
+RUN c2cwsgiutils-genversion ${GIT_HASH}
 
 ARG PGSCHEMA
 ENV PGSCHEMA=${PGSCHEMA}
 
 ENTRYPOINT [ "/usr/bin/eval-templates" ]
-CMD ["c2cwsgiutils_run"]
+CMD ["c2cwsgiutils-run"]
 
 ENV VISIBLE_ENTRY_POINT=/ \
     AUTHTKT_TIMEOUT=86400 \

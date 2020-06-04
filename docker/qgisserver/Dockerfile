@@ -1,12 +1,12 @@
 ARG VERSION
 
-FROM camptocamp/c2cwsgiutils:release_3-lite AS c2cwsgiutils
+FROM camptocamp/c2cwsgiutils:release_4 AS c2cwsgiutils
 
 FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY --from=c2cwsgiutils /opt/c2cwsgiutils /opt/c2cwsgiutils
-COPY --from=c2cwsgiutils /usr/local/lib/python3.7/dist-packages/c2cwsgiutils.egg-link \
+COPY --from=c2cwsgiutils /usr/local/lib/python3.8/dist-packages/c2cwsgiutils.egg-link \
     /usr/local/lib/python3.6/dist-packages/c2cwsgiutils.egg-link
 RUN echo /opt/c2cwsgiutils >> /usr/local/lib/python3.6/dist-packages/easy-install.pth
 COPY requirements.txt /tmp/
@@ -29,8 +29,7 @@ COPY Pipfile Pipfile.lock /tmp/
 RUN cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
 
 COPY . /src/
-RUN flake8 /src
-RUN pylint --errors-only --disable=import-error /src/geomapfish_qgisserver
+RUN cd /src && prospector
 RUN cd /src && \
     isort --check-only --diff --settings-path=`pwd` --recursive .
 RUN bandit --recursive -ll /src

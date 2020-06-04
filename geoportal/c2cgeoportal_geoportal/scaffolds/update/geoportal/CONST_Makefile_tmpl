@@ -69,11 +69,11 @@ PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print 2> /dev/null)
 build: $(BUILD_RULES)
 
 .PHONY: checks
-checks: flake8 eslint
+checks: prospector eslint
 
-.PHONY: flake8
-flake8:
-	flake8 $(PACKAGE)
+.PHONY: prospector
+prospector:
+	prospector
 
 .PHONY: lint-ngeo
 eslint: $(APP_JS_FILES)

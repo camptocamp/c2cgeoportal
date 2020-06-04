@@ -30,6 +30,7 @@ jobs:
       - run: python3 --version
       - run: python3 -m pip --version
       - run: |
+          sudo rm /etc/apt/sources.list.d/*.list
           sudo apt-get update
           sudo apt-get install python3-wheel python3-setuptools
 
@@ -69,7 +70,6 @@ jobs:
 
       # Tests
       - run: make preparetest
-        if: always()
       - run: docker-compose logs --timestamps
         if: failure()
       # Similar to: make tests-commons
@@ -78,28 +78,24 @@ jobs:
             --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
             --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
             /opt/c2cgeoportal/commons/tests
-        if: always()
       # Similar to: make tests-geoportal
       - run: >
             ci/run-dc-logs docker-compose exec -T tests coverage run --append
             --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
             --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
             /opt/c2cgeoportal/geoportal/tests
-        if: always()
       # Similar to: make tests-admin
       - run: >
             ci/run-dc-logs docker-compose exec -T tests coverage run --append
             --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
             --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
             /opt/c2cgeoportal/admin/tests
-        if: always()
       # Similar to: make tests-qgisserver
       - run: >
             ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
             --source=/var/www/plugins/geomapfish_qgisserver
             --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
             /src/tests/functional
-        if: always()
       - name: Extract tests artifacts
         run: |
               docker-compose exec -T tests coverage report
@@ -140,6 +136,13 @@ jobs:
 
       # Test App
       - run: ci/test-app
+      - run: |
+          cd ${HOME}/workspace/testgeomapfishapp/
+          for service in $(docker-compose config --services)
+          do
+            docker-compose logs ${service}
+          done
+        if: failure()
 
       # Test Upgrade
       - run: DOCKER_TAG=$(scripts/get-version --full) make build-tools

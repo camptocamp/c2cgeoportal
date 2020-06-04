@@ -4,5 +4,7 @@
 !Pipfile
 !Pipfile.lock
 !setup.cfg
+!.prospector.yaml
+!.pylintrc
 !tests
 !logging.ini
