@@ -245,6 +245,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             def get_settings(self):
                 return self.registry.settings
 
+            def add_tween(self, *args, **kwargs):
+                pass
+
         config_ = C()
         config_.registry.settings = settings
         init_dbsessions(settings, config_)
