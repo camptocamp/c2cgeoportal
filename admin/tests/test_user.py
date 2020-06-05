@@ -70,14 +70,23 @@ class TestUser(AbstractViewsTests):
 
         self.check_grid_headers(resp, expected)
 
-    @pytest.mark.skip(reason="Translation is not finished")
     def test_index_rendering_fr(self, test_app):
         resp = self.get(test_app, locale="fr")
 
         self.check_left_menu(resp, "Utilisateurs")
 
-        expected = [("_id_", "", "false"), ("username", "Nom"), ("role_name", "Role"), ("email", "Courriel")]
-        self.check_grid_headers(resp, expected)
+        expected = [
+            ("actions", "", "false"),
+            ("id", "id", "true"),
+            ("username", "Nom d'utilisateur"),
+            ("email", "Email"),
+            ("last_login", "Dernière connexion"),
+            ("expire_on", "Date d'expiration"),
+            ("deactivated", "Désactivé"),
+            ("settings_role", "Rôle de configuration"),
+            ("roles", "Rôles", "false"),
+        ]
+        self.check_grid_headers(resp, expected, new="Nouveau")
 
     def test_view_edit(self, test_app, users_test_data):
         user = users_test_data["users"][9]
