@@ -90,10 +90,6 @@ class TestLayersGroups(TestTreeGroup):
         assert "groups_02, groups_06" == row["parents_relation"]
         assert "disclaimer: © le momo, copyable: true" == row["metadatas"]
 
-    @pytest.mark.skip(reason="use value to be defined")
-    def test_grid_filter_on_parents(self, test_app):
-        self.check_search(test_app, "groups_11", total=4)
-
     def test_grid_search(self, test_app):
         # search on metadatas
         self.check_search(test_app, "copyable", total=8)
