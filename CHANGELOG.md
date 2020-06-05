@@ -1,5 +1,6 @@
+##### 2.4.1.108
+* Add missing add_tween [c2cgeoportal#6484](https://github.com/camptocamp/c2cgeoportal/pull/6484)
 ##### 2.4.1.107
-* Move to GitHub Actions [c2cgeoportal#6330](https://github.com/camptocamp/c2cgeoportal/pull/6330)
 * Add get_settings used by c2cwsgiutils [c2cgeoportal#6465](https://github.com/camptocamp/c2cgeoportal/pull/6465)
 * [api] Fix getFeaturesFromIds when GMF and WMS layers do not have the … [ngeo#5553](https://github.com/camptocamp/ngeo/pull/5553)
 * [Backport 2.4] Set default style on the features [ngeo#5810](https://github.com/camptocamp/ngeo/pull/5810)
