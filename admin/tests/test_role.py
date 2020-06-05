@@ -85,20 +85,20 @@ class TestRole(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    @pytest.mark.skip(reason="Translation is not finished")
     def test_index_rendering_fr(self, test_app):
         resp = self.get(test_app, locale="fr")
 
-        self.check_left_menu(resp, "Roles")
+        self.check_left_menu(resp, "Rôles")
 
         expected = [
-            ("_id_", "", "false"),
-            ("name", "Name"),
+            ("actions", "", "false"),
+            ("id", "id", "true"),
+            ("name", "Nom"),
             ("description", "Description"),
-            ("functionalities", "Fonctionalités", "false"),
-            ("restrictionareas", "Aires de restriction", "false"),
+            ("functionalities", "Fonctionnalités", "false"),
+            ("restrictionareas", "Zones de restriction", "false"),
         ]
-        self.check_grid_headers(resp, expected)
+        self.check_grid_headers(resp, expected, new="Nouveau")
 
     def test_edit(self, dbsession, test_app, roles_test_data):
         role = roles_test_data["roles"][10]

@@ -109,7 +109,7 @@ class AbstractViewsTests:
         assert "http://localhost{}".format(self._prefix) == link.attrs["href"]
         assert title == link.getText()
 
-    def check_grid_headers(self, resp, expected_col_headers):
+    def check_grid_headers(self, resp, expected_col_headers, new="New"):
         pp = pprint.PrettyPrinter(indent=4)
         effective_cols = [
             (th.attrs["data-field"], th.getText(), th.attrs["data-sortable"]) for th in resp.html.select("th")
@@ -120,7 +120,7 @@ class AbstractViewsTests:
         )
         actions = resp.html.select_one('th[data-field="actions"]')
         assert "false" == actions.attrs["data-sortable"]
-        assert 1 == len(list(filter(lambda x: next(x.stripped_strings) == "New", resp.html.findAll("a"))))
+        assert 1 == len(list(filter(lambda x: next(x.stripped_strings) == new, resp.html.findAll("a"))))
 
     def check_search(self, test_app, search="", offset=0, limit=10, sort="", order="", total=None):
         json = test_app.post(
