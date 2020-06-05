@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7ec2577c463e7770c458627816b06b806cdd1706438204636e1f141e4b09222f"
+            "sha256": "0bbdce7ef8d1934315077f58185c1f82dfb0b13a953c7132c216b512e2cf6555"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -633,11 +633,11 @@
         },
         "redis": {
             "hashes": [
-                "sha256:6e9d2722a95d10ddf854596e66516d316d99c6a483e5db3b35c34e1158b2bfa1",
-                "sha256:a5b0e25890d216d8189636742c50ab992e42eea699bcc1b08cc2d6bf3adff52a"
+                "sha256:0e7e0cfca8660dea8b7d5cd8c4f6c5e29e11f31158c0b0ae91a397f00e5a05a2",
+                "sha256:432b788c4530cfe16d8d943a09d40ca6c16149727e4afe8c2c9d5580c59d9f24"
             ],
             "index": "pypi",
-            "version": "==3.5.1"
+            "version": "==3.5.3"
         },
         "repoze.lru": {
             "hashes": [
