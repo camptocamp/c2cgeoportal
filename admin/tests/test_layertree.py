@@ -3,10 +3,8 @@
 from unittest.mock import patch
 
 import pytest
-from selenium.common.exceptions import NoSuchElementException
 
-from . import AbstractViewsTests, skip_if_ci
-from .selenium.page import LayertreePage
+from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
@@ -216,92 +214,17 @@ class TestLayerTreeView(AbstractViewsTests):
         dbsession.expire_all()
         assert item not in group.children
 
-
-@skip_if_ci
-@pytest.mark.selenium
-@pytest.mark.usefixtures("selenium", "selenium_app", "layertree_test_data")
-class TestLayerTreeSelenium:
-
-    _prefix = "/layertree"
-
-    def test_unlink(self, dbsession, selenium, selenium_app, layertree_test_data):
-        from c2cgeoportal_commons.models.main import LayergroupTreeitem
-
-        themes = layertree_test_data["themes"]
-        groups = layertree_test_data["groups"]
-        layers_wms = layertree_test_data["layers_wms"]
-        layers_wmts = layertree_test_data["layers_wmts"]
-
-        selenium.get(selenium_app + self._prefix)
-        page = LayertreePage(selenium)
-        page.expand()
-
-        for group_id, item_id, path in (
-            (
-                groups[0].id,
-                layers_wmts[0].id,
-                "_{}_{}_{}".format(themes[0].id, groups[0].id, layers_wmts[0].id),
-            ),
-            (
-                groups[0].id,
-                layers_wms[0].id,
-                "_{}_{}_{}".format(themes[0].id, groups[0].id, layers_wms[0].id),
-            ),
-            (themes[0].id, groups[0].id, "_{}_{}".format(themes[0].id, groups[0].id)),
-        ):
-            action_el = page.find_item_action(path, "unlink", 10)
-            expected_url = "{}/layertree/unlink/{}/{}".format(selenium_app, group_id, item_id)
-            assert expected_url == action_el.get_attribute("data-url")
-            page.click_and_confirm(action_el)
-
-            dbsession.expire_all()
-            link = (
-                dbsession.query(LayergroupTreeitem)
-                .filter(LayergroupTreeitem.treegroup_id == group_id)
-                .filter(LayergroupTreeitem.treeitem_id == item_id)
-                .one_or_none()
-            )
-            assert link is None
-
-            selenium.refresh()
-            page.wait_jquery_to_be_active()
-            page.find_item("_{}_{}_{}".format(themes[0].id, groups[5].id, layers_wmts[5].id), 10)
-            with pytest.raises(NoSuchElementException):
-                page.find_item(path)
-
-    @skip_if_ci
-    @pytest.mark.selenium
-    @pytest.mark.usefixtures("selenium", "selenium_app")
-    def test_delete(self, dbsession, selenium, selenium_app, layertree_test_data):
+    def test_delete(self, test_app, layertree_test_data, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS, LayerWMTS, LayerGroup
 
-        themes = layertree_test_data["themes"]
         groups = layertree_test_data["groups"]
         layers_wms = layertree_test_data["layers_wms"]
         layers_wmts = layertree_test_data["layers_wmts"]
 
-        selenium.get(selenium_app + self._prefix)
-        page = LayertreePage(selenium)
-        page.expand()
-
-        for item_id, path, model in (
-            (layers_wmts[1].id, "_{}_{}_{}".format(themes[1].id, groups[1].id, layers_wmts[1].id), LayerWMTS),
-            (layers_wms[1].id, "_{}_{}_{}".format(themes[1].id, groups[1].id, layers_wms[1].id), LayerWMS),
-            (groups[1].id, "_{}_{}".format(themes[1].id, groups[1].id), LayerGroup),
+        for item_id, model in (
+            (layers_wmts[1].id, LayerWMTS),
+            (layers_wms[1].id, LayerWMS),
+            (groups[1].id, LayerGroup),
         ):
-            action_el = page.find_item_action(path, "delete", 10)
-            expected_url = "{}/admin/layertree/delete/{}".format(selenium_app, item_id)
-            assert expected_url == action_el.get_attribute("data-url")
-            page.click_and_confirm(action_el)
-            page.wait_jquery_to_be_active()
-
-            deleted = dbsession.query(model).filter(model.id == item_id).one_or_none()
-            assert deleted is None
-
-            dbsession.expire_all()
-            selenium.refresh()
-            page.wait_jquery_to_be_active()
-
-            page.find_item("_{}_{}_{}".format(themes[1].id, groups[6].id, layers_wmts[6].id), 10)
-            with pytest.raises(NoSuchElementException):
-                page.find_item(path)
+            test_app.delete("/admin/layertree/delete/{}".format(item_id), status=200)
+            assert dbsession.query(model).get(item_id) is None

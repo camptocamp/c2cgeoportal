@@ -1,6 +1,3 @@
-import threading
-from wsgiref.simple_server import make_server
-
 from pyramid import testing
 from pyramid.paster import bootstrap
 import pytest
@@ -75,12 +72,3 @@ def settings(app_env):
 def test_app(request, app):
     testapp = WebTestApp(app)
     yield testapp
-
-
-@pytest.fixture(scope="session")  # noqa: F811
-@pytest.mark.usefixtures("app")
-def selenium_app(app):
-    srv = make_server("", 6544, app)
-    threading.Thread(target=srv.serve_forever).start()
-    yield ("http://localhost:6544")
-    srv.shutdown()
