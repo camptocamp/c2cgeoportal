@@ -1,6 +1,6 @@
 ---
 
-name: Rebuild
+name: Rebuild 2.5
 
 on:
   schedule:
@@ -9,7 +9,7 @@ on:
 jobs:
   main:
     runs-on: ubuntu-18.04
-    name: Rebuild
+    name: Rebuild 2.5
     timeout-minutes: 70
 
     env:
