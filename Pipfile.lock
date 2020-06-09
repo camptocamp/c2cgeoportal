@@ -1295,13 +1295,6 @@
             ],
             "version": "==5.4.3"
         },
-        "pytest-base-url": {
-            "hashes": [
-                "sha256:31e42366a5fc22f450b398837dc819bb7569f5e6bd5d74e494b2b9ec239876d1",
-                "sha256:7425e8163345494ac7f544e99c6f3e5a08f4228bee5e26013b98c462a4d31f6e"
-            ],
-            "version": "==1.4.1"
-        },
         "pytest-cov": {
             "hashes": [
                 "sha256:b6a814b8ed6247bd81ff47f038511b57fe1ce7f4cc25b9106f1a4b106f1d9322",
@@ -1309,35 +1302,6 @@
             ],
             "index": "pypi",
             "version": "==2.9.0"
-        },
-        "pytest-html": {
-            "hashes": [
-                "sha256:6a4ac391e105e391208e3eb9bd294a60dd336447fd8e1acddff3a6de7f4e57c5",
-                "sha256:9e4817e8be8ddde62e8653c8934d0f296b605da3d2277a052f762c56a8b32df2"
-            ],
-            "version": "==2.1.1"
-        },
-        "pytest-metadata": {
-            "hashes": [
-                "sha256:168d203abba8cabb65cf1b5fa675b0ba60dccbf1825d147960876a7e6f7c219c",
-                "sha256:91d09c0e367e93c63c98461e9960833f465bff53d00ed2f8ccf680205e5053a4"
-            ],
-            "version": "==1.9.0"
-        },
-        "pytest-selenium": {
-            "hashes": [
-                "sha256:caf049839d12297e01f0521a968e44ae854f4eca1afd80b28f6a2510df02c883",
-                "sha256:e8034ebabc3b55fad57bfb97e7b0b2137532dbc65f33706e1ce1ed8e547caa1a"
-            ],
-            "index": "pypi",
-            "version": "==1.17.0"
-        },
-        "pytest-variables": {
-            "hashes": [
-                "sha256:ccf4afcd70de1f5f18b4463758a19f24647a9def1805f675e80db851c9e00ac0",
-                "sha256:f79851e4c92a94c93d3f1d02377b5ac97cc8800392e87d108d2cbfda774ecc2a"
-            ],
-            "version": "==1.9.0"
         },
         "python-dateutil": {
             "hashes": [
@@ -1404,13 +1368,6 @@
                 "sha256:921a37e2aefc64145e7b73d50c71bb4f26f46e4c9f414dc648c6245ff92cf7db"
             ],
             "version": "==0.3.3"
-        },
-        "selenium": {
-            "hashes": [
-                "sha256:aa5533a7e3db9c85660bce22458ae3ccf8cd2d12e5c4e4ae434ed804c55d57a4"
-            ],
-            "index": "pypi",
-            "version": "==4.0.0a5"
         },
         "setoptconf": {
             "hashes": [

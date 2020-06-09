@@ -3,10 +3,8 @@
 import re
 
 import pytest
-from selenium.webdriver.common.by import By
 
-from . import AbstractViewsTests, factory_build_layers, get_test_default_layers, skip_if_ci
-from .selenium.page import IndexPage
+from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
 @pytest.fixture(scope="function")
@@ -392,8 +390,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert dbsession.query(Layer).get(layer_id) is None
         assert dbsession.query(TreeItem).get(layer_id) is None
 
-    @pytest.mark.skip(reason="Contraint has to be added at model side, alambiced")
-    def test_submit_new_no_layer_name(self, test_app):
+    def test_submit_new_no_layer_name(self, test_app, layer_wms_test_data):
         resp = test_app.post(
             "/admin/layers_wms/new",
             {
@@ -420,29 +417,3 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert ["WMS layer name"] == sorted(
             [(x.select_one("label").text.strip()) for x in resp.html.select("[class~='has-error']")]
         )
-
-
-@skip_if_ci
-@pytest.mark.selenium
-@pytest.mark.usefixtures("selenium", "selenium_app", "layer_wms_test_data")
-class TestLayerWMSSelenium:
-
-    _prefix = "/admin/layers_wms"
-
-    def test_index(self, selenium, selenium_app, layer_wms_test_data):
-        selenium.get(selenium_app + self._prefix)
-
-        layer = layer_wms_test_data["layers"][5]
-        index_page = IndexPage(selenium)
-        index_page.select_language("en")
-        index_page.check_pagination_info("Showing 1 to 25 of 26 rows", 10)
-        index_page.select_page_size(10)
-        index_page.check_pagination_info("Showing 1 to 10 of 26 rows", 10)
-        index_page.wait_jquery_to_be_active()
-
-        el = index_page.find_element(
-            By.XPATH, '//td[contains(text(),"{}")]'.format(layer.geo_table), timeout=5
-        )
-        index_page.dbl_click(el)
-
-        assert selenium.current_url.endswith("/admin/layers_wms/{}".format(layer.id))

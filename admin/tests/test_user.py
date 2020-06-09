@@ -7,8 +7,7 @@ from unittest.mock import MagicMock, patch
 from pyramid.testing import DummyRequest
 import pytest
 
-from . import AbstractViewsTests, skip_if_ci
-from .selenium.page import IndexPage
+from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
@@ -71,14 +70,24 @@ class TestUser(AbstractViewsTests):
 
         self.check_grid_headers(resp, expected)
 
-    @pytest.mark.skip(reason="Translation is not finished")
+    @pytest.mark.skip(reason="Translations seems not available in tests")
     def test_index_rendering_fr(self, test_app):
         resp = self.get(test_app, locale="fr")
 
         self.check_left_menu(resp, "Utilisateurs")
 
-        expected = [("_id_", "", "false"), ("username", "Nom"), ("role_name", "Role"), ("email", "Courriel")]
-        self.check_grid_headers(resp, expected)
+        expected = [
+            ("actions", "", "false"),
+            ("id", "id", "true"),
+            ("username", "Nom d'utilisateur"),
+            ("email", "Email"),
+            ("last_login", "Dernière connexion"),
+            ("expire_on", "Date d'expiration"),
+            ("deactivated", "Désactivé"),
+            ("settings_role", "Rôle de configuration"),
+            ("roles", "Rôles", "false"),
+        ]
+        self.check_grid_headers(resp, expected, new="Nouveau")
 
     def test_view_edit(self, test_app, users_test_data):
         user = users_test_data["users"][9]
@@ -300,47 +309,3 @@ class TestUser(AbstractViewsTests):
 
         dbsession.add(User("test", email="test@valid.net"))
         self.check_search(test_app, "test", total=1)
-
-
-@skip_if_ci
-@pytest.mark.selenium
-@pytest.mark.usefixtures("selenium", "selenium_app", "users_test_data")
-class TestUserSelenium:
-
-    _prefix = "/admin/users"
-
-    def test_index(self, selenium, selenium_app, users_test_data, dbsession):
-        from c2cgeoportal_commons.models.static import User
-
-        selenium.get(selenium_app + self._prefix)
-
-        index_page = IndexPage(selenium)
-        index_page.select_language("en")
-        index_page.check_pagination_info("Showing 1 to 23 of 23 rows", 10)
-        index_page.select_page_size(10)
-        index_page.check_pagination_info("Showing 1 to 10 of 23 rows", 10)
-
-        # delete
-        user = users_test_data["users"][3]
-        deleted_id = user.id
-        index_page.click_delete(deleted_id)
-        index_page.check_pagination_info("Showing 1 to 10 of 22 rows", 10)
-        assert dbsession.query(User).get(deleted_id) is None
-
-        # edit
-        user = users_test_data["users"][4]
-        index_page.find_item_action(user.id, "edit").click()
-
-        elem = selenium.find_element_by_xpath("//input[@name ='username']")
-        elem.clear()
-        elem.send_keys("new_name_éôù")
-        elem = selenium.find_element_by_xpath("//input[@name ='email']")
-        elem.clear()
-        elem.send_keys("new_email@valid.net")
-        elem = selenium.find_element_by_xpath("//button[@name='formsubmit']")
-        elem.click()
-
-        user = dbsession.query(User).filter(User.id == user.id).one()
-        dbsession.expire(user)
-        assert user.username == "new_name_éôù"
-        assert user.email == "new_email@valid.net"

@@ -6,11 +6,9 @@ import re
 from geoalchemy2.shape import from_shape, to_shape
 from pyramid.testing import DummyRequest
 import pytest
-from selenium.webdriver.common.by import By
 from shapely.geometry import Polygon, box, shape
 
-from . import AbstractViewsTests, skip_if_ci
-from .selenium.page import IndexPage
+from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
@@ -87,20 +85,21 @@ class TestRole(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    @pytest.mark.skip(reason="Translation is not finished")
+    @pytest.mark.skip(reason="Translation seems not available in tests")
     def test_index_rendering_fr(self, test_app):
         resp = self.get(test_app, locale="fr")
 
-        self.check_left_menu(resp, "Roles")
+        self.check_left_menu(resp, "Rôles")
 
         expected = [
-            ("_id_", "", "false"),
-            ("name", "Name"),
+            ("actions", "", "false"),
+            ("id", "id", "true"),
+            ("name", "Nom"),
             ("description", "Description"),
-            ("functionalities", "Fonctionalités", "false"),
-            ("restrictionareas", "Aires de restriction", "false"),
+            ("functionalities", "Fonctionnalités", "false"),
+            ("restrictionareas", "Zones de restriction", "false"),
         ]
-        self.check_grid_headers(resp, expected)
+        self.check_grid_headers(resp, expected, new="Nouveau")
 
     def test_edit(self, dbsession, test_app, roles_test_data):
         role = roles_test_data["roles"][10]
@@ -253,34 +252,3 @@ class TestRole(AbstractViewsTests):
         request = DummyRequest(dbsession=dbsession, params={"offset": 0, "limit": 10})
         info = RoleViews(request).grid()
         assert info.status_int == 500, "Expected 500 status when db error"
-
-
-@skip_if_ci
-@pytest.mark.selenium
-@pytest.mark.usefixtures("selenium", "selenium_app", "roles_test_data")
-class TestRoleSelenium:
-
-    _prefix = "/admin/roles"
-
-    def test_index(self, selenium, selenium_app, roles_test_data, dbsession):
-        from c2cgeoportal_commons.models.static import Role
-
-        selenium.get(selenium_app + self._prefix)
-
-        index_page = IndexPage(selenium)
-        index_page.select_language("en")
-        index_page.check_pagination_info("Showing 1 to 23 of 23 rows", 10)
-        index_page.select_page_size(10)
-        index_page.check_pagination_info("Showing 1 to 10 of 23 rows", 10)
-
-        # delete
-        role = roles_test_data["roles"][3]
-        deleted_id = role.id
-        index_page.click_delete(deleted_id)
-        index_page.check_pagination_info("Showing 1 to 10 of 22 rows", 10)
-        assert dbsession.query(Role).get(deleted_id) is None
-
-        # edit
-        role = roles_test_data["roles"][4]
-        index_page.find_item_action(role.id, "edit").click()
-        index_page.find_element(By.XPATH, "//canvas", timeout=5)

@@ -85,10 +85,8 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert "" == self.get_first_field_named(form, "style").value
         assert "" == self.get_first_field_named(form, "xyz").value
 
-    @pytest.mark.skip(reason="Not working now")
     def test_grid_search(self, test_app):
-        # check search on name
-        self.check_search(test_app, "layer_vectortiles_1", total=1)
+        self.check_search(test_app, "layer_vectortiles_10", total=1)
 
     def test_base_edit(self, test_app, layer_vectortiles_test_data):
         layer = layer_vectortiles_test_data["layers"][10]
