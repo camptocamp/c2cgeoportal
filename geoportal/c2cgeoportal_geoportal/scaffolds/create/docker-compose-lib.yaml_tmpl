@@ -30,6 +30,8 @@ services:
       - REDIS_HOST
       - REDIS_PORT
       - REDIS_DB
+      - REDIS_SERVICENAME
+      - REDIS_TIMEOUT
       - TILEGENERATION_SQS_QUEUE
       - TILEGENERATION_S3_BUCKET
       - AWS_ACCESS_KEY_ID
@@ -68,6 +70,10 @@ services:
       - PGSSLMODE
       - PGSCHEMA_STATIC
       - C2C_REDIS_URL
+      - C2C_REDIS_SENTINELS
+      - C2C_REDIS_TIMEOUT
+      - C2C_REDIS_SERVICENAME
+      - C2C_REDIS_DB
       - C2C_BROADCAST_PREFIX
       - PGOPTIONS
       - AWS_ACCESS_KEY_ID
@@ -106,23 +112,51 @@ services:
       - --tcp-keepalive
       - '30'
 
+  redis_master:
+    image: redis:5
+
+  redis_slave:
+    image: redis:5
+    command: redis-server --slaveof redis_master 6379
+
+  redis_sentinel:
+    image: camptocamp/c2cwsgiutils-redis-sentinel:5
+    environment:
+      - MASTER_NAME=mymaster
+      - QUORUM=1
+      - MASTER=redis_master
+
   tilecloudchain:
     image: camptocamp/tilecloud-chain:1.14
     user: www-data
     restart: unless-stopped
     environment:
+      - DEVELOPMENT
       - GUNICORN_PARAMS
       - VISIBLE_ENTRY_POINT
-      - C2C_REDIS_URL
       - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - C2C_BASE_PATH
+      - C2C_REDIS_URL
+      - C2C_REDIS_SENTINELS
+      - C2C_REDIS_TIMEOUT
+      - C2C_REDIS_SERVICENAME
+      - C2C_REDIS_DB
       - C2C_BASE_PATH=/tiles/c2c
       - C2C_BROADCAST_PREFIX=broadcast_tilecloudchain_
+      - C2C_REQUESTS_DEFAULT_TIMEOUT
       - C2C_LOG_VIEW_ENABLED=TRUE
       - C2C_DEBUG_VIEW_ENABLED=TRUE
       - C2C_SQL_PROFILER_ENABLED=TRUE
+      - C2C_PROFILER_PATH
+      - C2C_PROFILER_MODULES
       - C2C_SECRET
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
+      - TILECLOUD_LOG_LEVEL
+      - TILECLOUD_CHAIN_LOG_LEVEL
+      - C2CWSGI_LOG_LEVEL
+      - OTHER_LOG_LEVEL
+      - LOG_TYPE
 
   tilegeneration_slave:
     image: camptocamp/tilecloud-chain:1.14
@@ -141,6 +175,7 @@ services:
     user: www-data
     restart: unless-stopped
     environment: &env
+      - DEVELOPMENT
       - VISIBLE_ENTRY_POINT
       - PACKAGE={{package}}
       - PGHOST
@@ -177,10 +212,20 @@ services:
       - REDIS_HOST
       - REDIS_PORT
       - REDIS_DB
+      - REDIS_SERVICENAME
+      - REDIS_TIMEOUT
+      - C2C_BASE_PATH
       - C2C_REDIS_URL
+      - C2C_REDIS_SENTINELS
+      - C2C_REDIS_TIMEOUT
+      - C2C_REDIS_SERVICENAME
+      - C2C_REDIS_DB
       - C2C_BROADCAST_PREFIX
+      - C2C_REQUESTS_DEFAULT_TIMEOUT
       - C2C_LOG_VIEW_ENABLED=TRUE
       - C2C_SQL_PROFILER_ENABLED=TRUE
+      - C2C_PROFILER_PATH
+      - C2C_PROFILER_MODULES
       - C2C_DEBUG_VIEW_ENABLED=TRUE
       - C2C_SECRET
       - LOG_LEVEL
