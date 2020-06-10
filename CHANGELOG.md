@@ -1,3 +1,11 @@
+##### 2.5.0.38
+* Fix crosshair [c2cgeoportal#6498](https://github.com/camptocamp/c2cgeoportal/pull/6498)
+* Fix Extend the data model documentation [c2cgeoportal#6499](https://github.com/camptocamp/c2cgeoportal/pull/6499)
+* Upgrade c2cgeoform to 2.1.14 [c2cgeoportal#6500](https://github.com/camptocamp/c2cgeoportal/pull/6500)
+* Keep style of feature when selected [ngeo#5868](https://github.com/camptocamp/ngeo/pull/5868)
+* StreetView pluing - Error when no panorama existing [ngeo#5889](https://github.com/camptocamp/ngeo/pull/5889)
+* Fix crosshare style [ngeo#5911](https://github.com/camptocamp/ngeo/pull/5911)
+* Fix API overlays with not existing WMTS layers [ngeo#5912](https://github.com/camptocamp/ngeo/pull/5912)
 ##### 2.5.0.37
 * Fix DB sessions timeouts [c2cgeoportal#6374](https://github.com/camptocamp/c2cgeoportal/pull/6374)
 ##### 2.5.0.36
