@@ -166,3 +166,6 @@ upgrade_files:
   - action: remove
     paths:
       - mapserver/CONST_example_map
+  - action: remove
+    paths:
+      - geoportal/{{package}}_geoportal/static-ngeo/js/apps/image/crosshair.svg
