@@ -185,6 +185,20 @@ vars:
           countrycodes: CH
         gmfPermalinkOptions:
           crosshairStyle:
+            - stroke:
+                color: white
+                width: 5
+              points: 4
+              radius: 10
+              radius2: 0
+              angle: 0
+            - stroke:
+                color: blue
+                width: 2
+              points: 4
+              radius: 10
+              radius2: 0
+              angle: 0
           crosshairEnabledByDefault: True
           projectionCodes:
             - EPSG:3857

@@ -19,8 +19,7 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) $(APPS_SASS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/favicon.ico \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/crosshair.svg
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg
 
 APPS_ALT += desktop_alt mobile_alt oeedit
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
