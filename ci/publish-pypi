@@ -13,10 +13,11 @@ set -x
 cd ${PKG}
 if [ "${VERSION}" == "${MAJOR_VERSION}" ]
 then
-    ../.venv/bin/python3 setup.py egg_info --tag-date sdist bdist_wheel
+    python3 setup.py egg_info --tag-date sdist bdist_wheel
 else
-    ../.venv/bin/python3 setup.py egg_info --no-date sdist bdist_wheel
+    python3 setup.py egg_info --no-date sdist bdist_wheel
 fi
-../.venv/bin/python3 ../.venv/bin/twine upload dist/*
+python3 -m pip install --user twine
+python3 twine upload dist/*
 
 rm ~/.pypirc
