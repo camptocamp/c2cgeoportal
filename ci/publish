@@ -40,11 +40,11 @@ MAJOR_VERSION_TAG=${MAJOR_VERSION}
 if [ "${TAG}" ]
 then
     VERSION=${TAG}
+    DEPLOY_PIP=TRUE
 elif [ "${GIT_BRANCH}" != "${MAIN_BRANCH}" ]
 then
     VERSION=${GIT_BRANCH//\//_}
     MAJOR_VERSION_TAG=${VERSION}
-    DEPLOY_PIP=FALSE
 elif [ ${MAIN_BRANCH} == master ]
 then
     VERSION=$(scripts/get-version --full)
