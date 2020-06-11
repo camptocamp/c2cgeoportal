@@ -115,7 +115,7 @@ $(APPS_PACKAGE_PATH)/static/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
 	sed -i -e 's#github\.css#../static/$${CACHE_VERSION}/apihelp/github.css#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's#rainbow-custom\.min\.js#../static/$${CACHE_VERSION}/apihelp/rainbow-custom.min.js#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's#"data\.txt"#"../static/$${CACHE_VERSION}/apihelp/data.txt"#g' $@/index.html.tmpl_tmpl
-	sed -i -e "s#'data\.txt'#'../static/$${CACHE_VERSION}/apihelp/data.txt'#g" $@/index.html.tmpl_tmpl
+	sed -i -e "s#'data\.txt'#'../static/\$${CACHE_VERSION}/apihelp/data.txt'#g" $@/index.html.tmpl_tmpl
 	sed -i -e 's#img/#../static/$${CACHE_VERSION}/apihelp/img/#g' $@/index.html.tmpl_tmpl
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/
