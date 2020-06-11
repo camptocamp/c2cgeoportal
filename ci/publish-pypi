@@ -18,6 +18,6 @@ else
     python3 setup.py egg_info --no-date sdist bdist_wheel
 fi
 python3 -m pip install --user twine
-python3 twine upload dist/*
+python3 ~/.local/bin/twine upload dist/*
 
 rm ~/.pypirc
