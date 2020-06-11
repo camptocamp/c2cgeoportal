@@ -1,3 +1,4 @@
+##### 2.5.0.40
 ##### 2.5.0.39
 * Upgrade c2cgeoform to 2.1.14 [c2cgeoportal#6500](https://github.com/camptocamp/c2cgeoportal/pull/6500)
 * Fix pypi deployment [c2cgeoportal#6503](https://github.com/camptocamp/c2cgeoportal/pull/6503)
