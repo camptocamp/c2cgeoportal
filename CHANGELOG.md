@@ -1,7 +1,9 @@
+##### 2.5.0.39
+* Upgrade c2cgeoform to 2.1.14 [c2cgeoportal#6500](https://github.com/camptocamp/c2cgeoportal/pull/6500)
+* Fix pypi deployment [c2cgeoportal#6503](https://github.com/camptocamp/c2cgeoportal/pull/6503)
+* Set higher z-index for map messages [ngeo#5917](https://github.com/camptocamp/ngeo/pull/5917)
 ##### 2.5.0.38
 * Fix crosshair [c2cgeoportal#6498](https://github.com/camptocamp/c2cgeoportal/pull/6498)
-* Fix Extend the data model documentation [c2cgeoportal#6499](https://github.com/camptocamp/c2cgeoportal/pull/6499)
-* Upgrade c2cgeoform to 2.1.14 [c2cgeoportal#6500](https://github.com/camptocamp/c2cgeoportal/pull/6500)
 * Keep style of feature when selected [ngeo#5868](https://github.com/camptocamp/ngeo/pull/5868)
 * StreetView pluing - Error when no panorama existing [ngeo#5889](https://github.com/camptocamp/ngeo/pull/5889)
 * Fix crosshare style [ngeo#5911](https://github.com/camptocamp/ngeo/pull/5911)
