@@ -218,6 +218,20 @@ area. Theses features will not be displayed as they are not in the area (ie not
 <em>contained</em>). <em>st_intersects</em> or another operator could be used instead of the
 <em>st_contains</em> operator.</p>
 </div>
+<p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VALIDATION</span>
+  <span class="c1"># For secured layers</span>
+  <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;&quot;</span>
+  <span class="c1"># Or</span>
+  <span class="c1"># &quot;default_role_ids&quot; &quot;&lt;id of the anonymous role&gt;&quot;</span>
+  <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9,]*$&quot;</span>
+<span class="n">END</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> define the restrictions when mapserver is called without any <code class="docutils literal notranslate"><span class="pre">roles_ids</span></code>.
+In this situation, if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to an empty value for this layer, then there is
+no access; if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to the anonymous role id, then the access rights of
+anonymous users apply.</p>
 </div>
 <div class="section" id="without-restriction-on-the-restrictionarea-area">
 <h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
@@ -229,7 +243,7 @@ area. Theses features will not be displayed as they are not in the area (ie not
     FROM
         &lt;schema&gt;.&lt;table&gt; AS geo
     WHERE (
-        ARRAY[%role_ids%] &amp;&amp; ARRAY(
+        ARRAY[%role_ids%]::integer[] &amp;&amp; ARRAY(
             ${MAPSERVER_DATA_NOAREA_SUBSELECT} &#39;&lt;layername&gt;&#39;
         )
     )
@@ -255,19 +269,23 @@ area. Theses features will not be displayed as they are not in the area (ie not
     <span class="n">la</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="metadata-and-filename">
-<h3>Metadata and filename<a class="headerlink" href="#metadata-and-filename" title="Permalink to this headline">¶</a></h3>
 <p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${mapserver_layer_validation}
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VALIDATION</span>
+  <span class="c1"># For secured layers</span>
+  <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;-1&quot;</span>
+  <span class="c1"># Or</span>
+  <span class="c1"># &quot;default_role_ids&quot; &quot;&lt;id of the anonymous role&gt;&quot;</span>
+  <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9,]*$&quot;</span>
+<span class="n">END</span>
 </pre></div>
 </div>
-<p>This variable is defined in the <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> configuration file as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mapserver_layer_validation</span> <span class="o">=</span>
-    <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;-1&quot;</span>
-    <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9]*$$&quot;</span>
-</pre></div>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> define the restrictions when mapserver is called without any <code class="docutils literal notranslate"><span class="pre">roles_ids</span></code>.
+In this situation, if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to <code class="docutils literal notranslate"><span class="pre">-1</span></code> for this layer, then there is
+no access; if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to the anonymous role id, then the access rights of
+anonymous users apply.</p>
 </div>
+<div class="section" id="filename">
+<h3>Filename<a class="headerlink" href="#filename" title="Permalink to this headline">¶</a></h3>
 <p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.tmpl</span></code> file, for the variable to be substituted at container start.</p>
 </div>
 </div>
