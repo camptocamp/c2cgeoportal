@@ -37,15 +37,14 @@
 <p>The data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>.</p>
 <p>For example, to add some user details, including a link to a new class named “Title”,
 add to <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Used to hide the original user in the admin interface</span>
-<span class="n">User</span><span class="o">.</span><span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span><span class="n">DENY_ALL</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">ForeignKey</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">_schema</span><span class="p">,</span> <span class="n">User</span>
+
 
 <span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;userdetail&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
-    <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="n">ALL_PERMISSIONS</span><span class="p">),</span>
-    <span class="p">]</span>
     <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s1">&#39;detailed&#39;</span><span class="p">}</span>
     <span class="n">__colanderalchemy_config__</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;User detail&#39;</span><span class="p">),</span>
@@ -59,7 +58,6 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
 
     <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
         <span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span>
-        <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="n">info</span><span class="o">=</span><span class="p">{</span>
             <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Phone&#39;</span><span class="p">)</span>
@@ -75,12 +73,10 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
         <span class="p">}</span>
     <span class="p">})</span>
 
+
 <span class="k">class</span> <span class="nc">Title</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
-    <span class="n">__acl__</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="n">Allow</span><span class="p">,</span> <span class="n">Authenticated</span><span class="p">,</span> <span class="n">ALL_PERMISSIONS</span><span class="p">),</span>
-    <span class="p">]</span>
     <span class="n">__colanderalchemy_config__</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">),</span>
         <span class="s1">&#39;plural&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Titles&#39;</span><span class="p">)</span>
@@ -97,31 +93,69 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
 For this, first ensure that the following files exist (if needed, create them as empty files):</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/__init__.py</span></code>:</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/view/__init__.py</span></code>:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/__init__.py</span></code>:</p></li>
 </ul>
 <p>Now, create a file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/userdetail.py</span></code> as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_defaults</span>
 <span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">aliased</span><span class="p">,</span> <span class="n">subqueryload</span>
 
+<span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">FormWidget</span>
 <span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
 <span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">AbstractViews</span>
 <span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.schemas.roles</span> <span class="kn">import</span> <span class="n">roles_schema_node</span>
+
+<span class="kn">from</span> <span class="nn">cartoriviera_geoportal.models</span> <span class="kn">import</span> <span class="n">UserDetail</span>
 
 
-<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">)</span>
+<span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">)</span>
+
+<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">FormWidget</span><span class="p">(</span><span class="n">fields_template</span><span class="o">=</span><span class="s2">&quot;user_fields&quot;</span><span class="p">))</span>
+<span class="n">base_schema</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">roles_schema_node</span><span class="p">(</span><span class="s2">&quot;roles&quot;</span><span class="p">))</span>
+<span class="n">base_schema</span><span class="o">.</span><span class="n">add_unique_validator</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+<span class="n">settings_role</span> <span class="o">=</span> <span class="n">aliased</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span>
+
 
 <span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=userdetail&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">LuxDownloadUrlViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UserDetailViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
     <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">),</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;last_login&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;expire_on&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;deactivated&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span>
+            <span class="s2">&quot;settings_role&quot;</span><span class="p">,</span>
+            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">sort_column</span><span class="o">=</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">filter_column</span><span class="o">=</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span>
+            <span class="s2">&quot;roles&quot;</span><span class="p">,</span>
+            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">]),</span>
+            <span class="n">filter_column</span><span class="o">=</span><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">_id_field</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
     <span class="n">_model</span> <span class="o">=</span> <span class="n">UserDetail</span>
     <span class="n">_base_schema</span> <span class="o">=</span> <span class="n">base_schema</span>
+
+    <span class="k">def</span> <span class="nf">_base_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="o">.</span><span class="n">dbsession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">outerjoin</span><span class="p">(</span><span class="n">settings_role</span><span class="p">,</span> <span class="n">settings_role</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">settings_role_id</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">outerjoin</span><span class="p">(</span><span class="s2">&quot;roles&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="s2">&quot;settings_role&quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="s2">&quot;roles&quot;</span><span class="p">))</span>
+        <span class="p">)</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
         <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_index&#39;</span><span class="p">,</span>
@@ -181,10 +215,12 @@ For this, first ensure that the following files exist (if needed, create them as
 <span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
 
 
-<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">)</span>
+<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">Title</span><span class="p">)</span>
+<span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">Title</span><span class="p">)</span>
+
 
 <span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=title&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">LuxDownloadUrlViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TitleViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
     <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
@@ -245,7 +281,8 @@ For this, first ensure that the following files exist (if needed, create them as
 <span class="kn">from</span> <span class="nn">c2cgeoform.routes</span> <span class="kn">import</span> <span class="n">register_models</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Role</span><span class="p">,</span> <span class="n">LayerWMS</span><span class="p">,</span> <span class="n">LayerWMTS</span><span class="p">,</span> <span class="n">Theme</span><span class="p">,</span> <span class="n">LayerGroup</span><span class="p">,</span> <span class="n">Interface</span><span class="p">,</span> <span class="n">OGCServer</span><span class="p">,</span>
-    <span class="n">Functionality</span><span class="p">,</span> <span class="n">RestrictionArea</span><span class="p">)</span>
+    <span class="n">Functionality</span><span class="p">,</span> <span class="n">RestrictionArea</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal_admin</span> <span class="kn">import</span> <span class="n">PermissionSetter</span>
 <span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span><span class="o">,</span> <span class="nn">Title</span>
@@ -257,18 +294,51 @@ For this, first ensure that the following files exist (if needed, create them as
     <span class="p">(</span><span class="s1">&#39;layers_wmts&#39;</span><span class="p">,</span> <span class="n">LayerWMTS</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;ogc_servers&#39;</span><span class="p">,</span> <span class="n">OGCServer</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;restriction_areas&#39;</span><span class="p">,</span> <span class="n">RestrictionArea</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;userdetail&#39;</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;roles&#39;</span><span class="p">,</span> <span class="n">Role</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;functionalities&#39;</span><span class="p">,</span> <span class="n">Functionality</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;interfaces&#39;</span><span class="p">,</span> <span class="n">Interface</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;userdetail&#39;</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">Title</span><span class="p">),</span>
 <span class="p">),</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">PermissionSetter</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
     <span class="c1"># Scan view decorator for adding routes</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;.admin.views&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ignore</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;.admin.views&#39;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;_geoportal.admin.views&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ignore</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;_geoportal.admin.views&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Build and run the application:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">./build &lt;args&gt;</span>
+<span class="prompt1">docker-compose up -d</span>
+</pre></div></div><p>Get and run the SQL command to create the tables:</p>
+<p>Run Python console:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal python3</span>
+</pre></div></div><p>Execute the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2c.template.config</span> <span class="kn">import</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/etc/config/config.yaml&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="kn">import</span> <span class="n">CreateTable</span>
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span><span class="o">,</span> <span class="nn">Title</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Run pSQL console:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tools psql</span>
+</pre></div></div><p>And enter the SQL commands</p>
+<p>Hide the no more used table, add it in your configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">...</span>
+    <span class="l l-Scalar l-Scalar-Plain">admin_interface</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">...</span>
+        <span class="l l-Scalar l-Scalar-Plain">exclude_pages</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">users</span>
 </pre></div>
 </div>
 </div>
