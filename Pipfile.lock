@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b6449f20f90ad5f98eb85c1d16140d3ebd692f4966583f4a3d640a06ce1a8479"
+            "sha256": "1ed1859aa23c04fd7532dde7430eada5edb46b274a52acdea4df621287057b73"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1314,9 +1314,9 @@
         },
         "python-slugify": {
             "hashes": [
-                "sha256:7723daf30996db26573176bddcdf5fcb98f66dc70df05c9cb29f2c79b8193245"
+                "sha256:a8fc3433821140e8f409a9831d13ae5deccd0b033d4744d94b31fea141bdd84c"
             ],
-            "version": "==1.2.6"
+            "version": "==4.0.0"
         },
         "pytz": {
             "hashes": [
@@ -1411,12 +1411,19 @@
             ],
             "version": "==2.0.0"
         },
+        "text-unidecode": {
+            "hashes": [
+                "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8",
+                "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"
+            ],
+            "version": "==1.3"
+        },
         "transifex-client": {
             "hashes": [
-                "sha256:2eb576e31230b62e06083145907599e456bae05127f7e914b27eb796f739ed51"
+                "sha256:633444d0dfa6fba4e1dbdc1cce259ec510e63a3cebc03b3b6e090134a18f4fef"
             ],
             "index": "pypi",
-            "version": "==0.13.9"
+            "version": "==0.13.10"
         },
         "typed-ast": {
             "hashes": [
@@ -1451,13 +1458,6 @@
                 "sha256:f8d2bd89d25bc39dabe7d23df520442fa1d8969b82544370e03d88b5a591c392"
             ],
             "version": "==3.7.4.2"
-        },
-        "unidecode": {
-            "hashes": [
-                "sha256:1d7a042116536098d05d599ef2b8616759f02985c85b4fef50c78a5aaf10822a",
-                "sha256:2b6aab710c2a1647e928e36d69c21e76b453cd455f4e2621000e54b2a9b8cce8"
-            ],
-            "version": "==1.1.1"
         },
         "urllib3": {
             "hashes": [
