@@ -163,3 +163,6 @@ upgrade_files:
   - action: move
     from: env.sample
     to: env.default
+  - action: remove
+    paths:
+      - mapserver/CONST_example_map

@@ -1,6 +1,6 @@
-# This file is used to render the examples layers, he can be deleted.
+# This file is used to render the examples layers, it can be deleted.
 
-# Europe Layer
+# Layer without any restriction
 LAYER
   NAME "borders"
   TYPE POLYGON
@@ -13,15 +13,11 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
   CONNECTION "host=${PGHOST_SLAVE} port=${PGPORT_SLAVE} sslmode=${PGSSLMODE} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
   DATA "geom FROM (SELECT geo.* FROM data.europe_borders as geo) as foo USING unique gid USING srid=4326"
+
   PROJECTION
     "init=epsg:4326"
   END
-  CLASS
-    NAME "borders"
-    STYLE
-      OUTLINECOLOR 0 0 0
-    END
-  END
+
   METADATA
     "wms_title" "Borders of Europe" # For WMS
     "wms_srs" "EPSG:{{srid}}" # For WMS
@@ -35,8 +31,16 @@ LAYER
     "wms_metadataurl_format" "text/html" # For metadata URL
     "wms_metadataurl_type" "TC211" # For metadata URL
   END
+
+  CLASS
+    NAME "borders"
+    STYLE
+      OUTLINECOLOR 0 0 0
+    END
+  END
 END
 
+# Layer with restriction area
 LAYER
   NAME "density"
   TYPE POLYGON
@@ -48,14 +52,36 @@ LAYER
   CONNECTIONTYPE postgis
   PROCESSING "CLOSE_CONNECTION=DEFER" # For performance
   CONNECTION "host=${PGHOST_SLAVE} port=${PGPORT_SLAVE} sslmode=${PGSSLMODE} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
-  DATA "geom FROM (SELECT geo.*, (pop2005/(area*10)) AS density FROM data.europe_borders AS geo WHERE ARRAY[%role_ids%] && ARRAY(${MAPSERVER_DATA_NOAREA_SUBSELECT} 'density')) as foo USING unique gid USING srid=4326"
+  DATA "geom FROM (SELECT geo.*, (pop2005/(area*10)) AS density FROM data.europe_borders AS geo WHERE ARRAY[%role_ids%]::integer[] && ARRAY(${MAPSERVER_DATA_NOAREA_SUBSELECT} 'density')) as foo USING unique gid USING srid=4326"
+
   PROJECTION
     "init=epsg:4326"
   END
-#  COMPOSITE
-#    OPACITY 50
-#  END
+
+  VALIDATION
+    # For secured layers
+    "default_role_ids" ""
+    # Or
+    # "default_role_ids" "<id of the anonymous role>"
+    "role_ids" "^-?[0-9,]*$"
+  END
+
+  METADATA
+    "wms_title" "Density of population" # For WMS
+    "wms_srs" "EPSG:{{srid}}" # For WMS
+
+    "wfs_enable_request" "*" # Enable WFS for this layer
+    "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QueryBuilder)
+    "ows_geom_type" "multipolygon" # For returning geometries in GetFeatureInfo
+    "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
+
+    "wms_metadataurl_href" "https://www.example.com/bar" # For metadata URL
+    "wms_metadataurl_format" "text/html" # For metadata URL
+    "wms_metadataurl_type" "TC211" # For metadata URL
+  END
+
   LABELITEM "name"
+
   CLASS
     NAME "[ 6 - 50 ["
     EXPRESSION ([density] < 49.73)
@@ -221,24 +247,16 @@ LAYER
       END
     END
   END
+END
 
-  VALIDATION
-    # For secured layers
-    "default_role_ids" "-1"
-    "role_ids" "^-?[0-9,]*$"
-  END
-
-  METADATA
-    "wms_title" "Density of population" # For WMS
-    "wms_srs" "EPSG:{{srid}}" # For WMS
-
-    "wfs_enable_request" "*" # Enable WFS for this layer
-    "gml_include_items" "all" # For GetFeatureInfo and WFS GetFeature (QueryBuilder)
-    "ows_geom_type" "multipolygon" # For returning geometries in GetFeatureInfo
-    "ows_geometries" "geom" # For returning geometries in GetFeatureInfo
-
-    "wms_metadataurl_href" "https://www.example.com/bar" # For metadata URL
-    "wms_metadataurl_format" "text/html" # For metadata URL
-    "wms_metadataurl_type" "TC211" # For metadata URL
-  END
+# Raster layer (with a tile index)
+LAYER
+  NAME 'topo'
+  GROUP 'plan'
+  TYPE RASTER
+  STATUS ON
+  PROCESSING "RESAMPLE=AVERAGE"
+  TILEINDEX "raster/topo"
+  TILEITEM "LOCATION"
+  MINSCALEDENOM 25000
 END
