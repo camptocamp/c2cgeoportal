@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 bandit = "==1.6.2"
 isort = "==4.3.21"
-mypy = "==0.761"  # lint
+mypy = "==0.780"  # lint
 prospector = {extras = ["with_mypy"],version = "==1.2.0"}
 
 [packages]
