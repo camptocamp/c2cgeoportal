@@ -278,7 +278,7 @@ class Layers:
                 if allowed.scalar() == 0:
                     raise HTTPForbidden()
 
-                # check if geometry is valid
+                # Check if geometry is valid
                 if self._get_validation_setting(layer):
                     self._validate_geometry(spatial_elt)
 
@@ -342,7 +342,7 @@ class Layers:
             if allowed.scalar() == 0:
                 raise HTTPForbidden()
 
-            # check is geometry is valid
+            # Check is geometry is valid
             if self._get_validation_setting(layer):
                 self._validate_geometry(spatial_elt)
 
@@ -362,12 +362,12 @@ class Layers:
     @staticmethod
     def _validate_geometry(geom):
         if geom is not None:
-            simple = models.DBSession.query(func.ST_IsSimple(geom)).scalar()
+            simple = models.DBSession.query(func.ST_IsSimple(func.ST_GeomFromEWKB(geom))).scalar()
             if not simple:
                 raise TopologicalError("Not simple")
-            valid = models.DBSession.query(func.ST_IsValid(geom)).scalar()
+            valid = models.DBSession.query(func.ST_IsValid(func.ST_GeomFromEWKB(geom))).scalar()
             if not valid:
-                reason = models.DBSession.query(func.ST_IsValidReason(geom)).scalar()
+                reason = models.DBSession.query(func.ST_IsValidReason(func.ST_GeomFromEWKB(geom))).scalar()
                 raise TopologicalError(reason)
 
     def _log_last_update(self, layer, feature):
