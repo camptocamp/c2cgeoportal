@@ -8,15 +8,14 @@ add to ``geoportal/<package>_geoportal/models.py``:
 
 .. code:: python
 
-    # Used to hide the original user in the admin interface
-    User.__acl__ = [DENY_ALL]
+    from sqlalchemy import Column, types
+    from sqlalchemy import ForeignKey
+    from c2cgeoportal_commons.models.static import _schema, User
+
 
     class UserDetail(User):
         __tablename__ = 'userdetail'
         __table_args__ = {'schema': _schema}
-        __acl__ = [
-            (Allow, Authenticated, ALL_PERMISSIONS),
-        ]
         __mapper_args__ = {'polymorphic_identity': 'detailed'}
         __colanderalchemy_config__ = {
             'title': _('User detail'),
@@ -30,7 +29,6 @@ add to ``geoportal/<package>_geoportal/models.py``:
 
         phone = Column(
             types.Unicode,
-            nullable=False,
             info={
                 'colanderalchemy': {
                     'title': _('Phone')
@@ -46,12 +44,10 @@ add to ``geoportal/<package>_geoportal/models.py``:
             }
         })
 
+
     class Title(Base):
         __tablename__ = 'title'
         __table_args__ = {'schema': _schema}
-        __acl__ = [
-            (Allow, Authenticated, ALL_PERMISSIONS),
-        ]
         __colanderalchemy_config__ = {
             'title': _('Title'),
             'plural': _('Titles')
@@ -67,7 +63,7 @@ Now you need to extend the administration user interface.
 For this, first ensure that the following files exist (if needed, create them as empty files):
 
 * ``geoportal/<package>_geoportal/admin/__init__.py``:
-* ``geoportal/<package>_geoportal/admin/view/__init__.py``:
+* ``geoportal/<package>_geoportal/admin/views/__init__.py``:
 
 Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` as follows:
 
@@ -77,24 +73,62 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
     from functools import partial
     from pyramid.view import view_defaults
     from pyramid.view import view_config
+    from sqlalchemy.orm import aliased, subqueryload
 
+    from deform.widget import FormWidget
     from c2cgeoform.schema import GeoFormSchemaNode
     from c2cgeoform.views.abstract_views import AbstractViews
     from c2cgeoform.views.abstract_views import ListField
+    from c2cgeoportal_admin.schemas.roles import roles_schema_node
+
+    from cartoriviera_geoportal.models import UserDetail
 
 
-    base_schema = GeoFormSchemaNode(UserDetail)
+    _list_field = partial(ListField, UserDetail)
+
+    base_schema = GeoFormSchemaNode(UserDetail, widget=FormWidget(fields_template="user_fields"))
+    base_schema.add(roles_schema_node("roles"))
+    base_schema.add_unique_validator(UserDetail.username, UserDetail.id)
+
+    settings_role = aliased(Role)
+
 
     @view_defaults(match_param='table=userdetail')
-    class LuxDownloadUrlViews(AbstractViews):
+    class UserDetailViews(AbstractViews):
         _list_fields = [
             _list_field('id'),
-            _list_field('phone'),
+            _list_field('username'),
             _list_field('title'),
+            _list_field('email'),
+            _list_field('last_login'),
+            _list_field('expire_on'),
+            _list_field('deactivated'),
+            _list_field('phone'),
+            _list_field(
+                "settings_role",
+                renderer=lambda user: user.settings_role.name if user.settings_role else "",
+                sort_column=settings_role.name,
+                filter_column=settings_role.name,
+            ),
+            _list_field(
+                "roles",
+                renderer=lambda user: ", ".join([r.name or "" for r in user.roles]),
+                filter_column=Role.name,
+            ),
         ]
         _id_field = 'id'
         _model = UserDetail
         _base_schema = base_schema
+
+        def _base_query(self):
+            return (
+                self._request.dbsession.query(UserDetail)
+                .distinct()
+                .outerjoin(settings_role, settings_role.id == UserDetail.settings_role_id)
+                .outerjoin("roles")
+                .options(subqueryload("settings_role"))
+                .options(subqueryload("roles"))
+            )
 
         @view_config(
             route_name='c2cgeoform_index',
@@ -156,10 +190,12 @@ And now the file ``geoportal/<package>_geoportal/admin/views/title.py``:
     from c2cgeoform.views.abstract_views import ListField
 
 
-    base_schema = GeoFormSchemaNode(UserDetail)
+    base_schema = GeoFormSchemaNode(Title)
+    _list_field = partial(ListField, Title)
+
 
     @view_defaults(match_param='table=title')
-    class LuxDownloadUrlViews(AbstractViews):
+    class TitleViews(AbstractViews):
         _list_fields = [
             _list_field('id'),
             _list_field('name'),
@@ -222,7 +258,8 @@ And finally in ``geoportal/<package>_geoportal/__init__.py`` replace ``config.sc
     from c2cgeoform.routes import register_models
     from c2cgeoportal_commons.models.main import (
         Role, LayerWMS, LayerWMTS, Theme, LayerGroup, Interface, OGCServer,
-        Functionality, RestrictionArea)
+        Functionality, RestrictionArea
+    )
     from c2cgeoportal_commons.models.static import User
     from c2cgeoportal_admin import PermissionSetter
     from <package>_geoportal.models import UserDetail, Title
@@ -234,15 +271,62 @@ And finally in ``geoportal/<package>_geoportal/__init__.py`` replace ``config.sc
         ('layers_wmts', LayerWMTS),
         ('ogc_servers', OGCServer),
         ('restriction_areas', RestrictionArea),
-        ('users', User),
+        ('userdetail', UserDetail),
         ('roles', Role),
         ('functionalities', Functionality),
         ('interfaces', Interface),
-        ('userdetail', UserDetail),
         ('title', Title),
     ), 'admin')
 
     with PermissionSetter(config):
         # Scan view decorator for adding routes
-        config.scan('<package>.admin.views')
-    config.scan(ignore='<package>.admin.views')
+        config.scan('<package>_geoportal.admin.views')
+    config.scan(ignore='<package>_geoportal.admin.views')
+
+Build and run the application:
+
+.. prompt:: bash
+
+   ./build <args>
+   docker-compose up -d
+
+Get and run the SQL command to create the tables:
+
+Run Python console:
+
+.. prompt:: bash
+
+   docker-compose exec geoportal python3
+
+Execute the following code:
+
+.. code:: python
+
+   from c2c.template.config import config
+
+   config.init('/etc/config/config.yaml')
+
+   from sqlalchemy.schema import CreateTable
+   from <package>_geoportal.models import UserDetail, Title
+
+   print(CreateTable(UserDetail.__table__))
+   print(CreateTable(Title.__table__))
+
+Run pSQL console:
+
+.. prompt:: bash
+
+   docker-compose exec tools psql
+
+And enter the SQL commands
+
+Hide the no more used table, add it in your configuration:
+
+.. code:: yaml
+
+   vars:
+       ...
+       admin_interface:
+           ...
+           exclude_pages:
+             - users
