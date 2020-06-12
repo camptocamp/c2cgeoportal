@@ -1,3 +1,5 @@
+##### 2.5.0.42
+* Fix Extend the data model documentation [c2cgeoportal#6499](https://github.com/camptocamp/c2cgeoportal/pull/6499)
 ##### 2.5.0.41
 ##### 2.5.0.40
 ##### 2.5.0.39
