@@ -1,3 +1,7 @@
+##### 2.5.0.43
+* Fix environment variable name [c2cgeoportal#6521](https://github.com/camptocamp/c2cgeoportal/pull/6521)
+* Hide the ID in the form [c2cgeoportal#6522](https://github.com/camptocamp/c2cgeoportal/pull/6522)
+* [Backport 2.5] Data sources without dimension filters are considered equal [ngeo#5924](https://github.com/camptocamp/ngeo/pull/5924)
 ##### 2.5.0.42
 * Fix Extend the data model documentation [c2cgeoportal#6499](https://github.com/camptocamp/c2cgeoportal/pull/6499)
 ##### 2.5.0.41
