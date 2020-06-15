@@ -8,13 +8,17 @@ components installed on your system:
 
 * **Git**
 * **Docker** >= 1.12 (>= 17 is recommended)
-* **Docker-compose** >= 1.8
 * **Python** >= 3.5
 * **Python-netifaces**
 * **Apache** >= 2.4 (optional, can be used as a front for SSL)
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1 in UTF-8
 * **gnupg** (with **dirmngr**) optional
 
+In addition, to start a GeoMapFish application, you need to use ``docker-compose``
+in version 1.8 or later. If ``docker-compose`` is not installed on your system,
+you can install it in your home directory by executing
+``python3 -m pip install --user docker-compose`` and making sure the installation
+directory is in your user's path (upon first installation, you may need to log on again).
 
 Required Apache modules
 ~~~~~~~~~~~~~~~~~~~~~~~
