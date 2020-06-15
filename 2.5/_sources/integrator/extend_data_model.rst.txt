@@ -8,6 +8,7 @@ add to ``geoportal/<package>_geoportal/models.py``:
 
 .. code:: python
 
+    from deform.widget import HiddenWidget
     from sqlalchemy import Column, types
     from sqlalchemy import ForeignKey
     from c2cgeoportal_commons.models.static import _schema, User
@@ -24,7 +25,13 @@ add to ``geoportal/<package>_geoportal/models.py``:
         id = Column(
             types.Integer,
             ForeignKey(_schema + '.user.id'),
-            primary_key=True
+            primary_key=True.
+            info={
+                "colanderalchemy": {
+                    "missing": None,
+                    "widget": HiddenWidget()
+                }
+            }
         )
 
         phone = Column(
