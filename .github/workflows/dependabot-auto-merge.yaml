@@ -3,17 +3,13 @@
 name: Auto merge Dependabot updates
 
 on:
-  check_suite:
-    types:
-      - completed
+  status:
   pull_request:
     types:
       - opened
       - ready_for_review
       - reopened
-      - synchronize
       - unlocked
-
 jobs:
   auto-merge:
     name: Auto merge Dependabot updates
