@@ -3,7 +3,6 @@
 name: Auto merge Dependabot updates
 
 on:
-  status:
   pull_request:
     types:
       - opened
