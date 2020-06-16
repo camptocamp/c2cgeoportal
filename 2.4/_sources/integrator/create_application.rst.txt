@@ -30,6 +30,9 @@ created by the c2cgeoportal scaffolds (the ``c2cgeoportal_create`` and
 Install c2cgeoportal
 --------------------
 
+Ensure your system meets the requirements listed in
+:ref:`integrator_requirements`.
+
 To get ``c2cgeoportal``, you need to get the related docker image and the
 ``docker-run`` script:
 
