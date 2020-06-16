@@ -1,0 +1,20 @@
+Error on backporting to branch master, error on cherry picking ['944977cf68590f755c786a8edf0e0c08f929e09e']:
+The previous cherry-pick is now empty, possibly due to conflict resolution.
+If you wish to commit it anyway, use:
+
+    git commit --allow-empty
+
+Otherwise, please use 'git reset'
+
+On branch backport/6499-to-master
+You are currently cherry-picking commit 944977cf6.
+
+nothing to commit, working tree clean
+
+
+to continue do:
+git fetch
+git checkout backport/6499-to-master
+git reset --hard HEAD^
+git cherry-pick 944977cf68590f755c786a8edf0e0c08f929e09e
+git push origin backport/6499-to-master --force
