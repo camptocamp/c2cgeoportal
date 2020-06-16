@@ -80,17 +80,17 @@ def includeme(config):
 
     admin_interface_config = config.registry.settings["admin_interface"]
 
-    # Include pages
-    for url_path, model in admin_interface_config.get("include_pages", []):
-        mytuple = (url_path, config.maybe_dotted(model))
-        visible_routes.append(mytuple)
-
     # Exclude pages
     visible_routes = [
         (url_path, model)
         for (url_path, model) in visible_routes
         if url_path not in admin_interface_config.get("exclude_pages", [])
     ]
+
+    # Include pages
+    for spec in admin_interface_config.get("include_pages", []):
+        mytuple = (spec["url_path"], config.maybe_dotted(spec["model"]))
+        visible_routes.append(mytuple)
 
     config.add_c2cgeoform_application("admin", visible_routes)
     register_routes(config)

@@ -364,6 +364,21 @@ mapping:
                     type: str
                   single:
                     type: bool
+          exclude_pages:
+            type: seq
+            sequence:
+              - type: str
+          include_pages:
+            type: seq
+            sequence:
+              - type: map
+                mapping:
+                  url_path:
+                    type: str
+                    required: True
+                  model:
+                    type: str
+                    required: True
 
       getitfixed:
         type: map
