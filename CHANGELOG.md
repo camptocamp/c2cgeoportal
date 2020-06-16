@@ -1,6 +1,8 @@
+##### 2.4.1.110
+* Doc: add info about docker-compose [c2cgeoportal#6526](https://github.com/camptocamp/c2cgeoportal/pull/6526)
+* [Backport 2.4] Fix Extend the data model documentation [c2cgeoportal#6532](https://github.com/camptocamp/c2cgeoportal/pull/6532)
 ##### 2.4.1.109
 * Fix some security issues [c2cgeoportal#6523](https://github.com/camptocamp/c2cgeoportal/pull/6523)
-* Doc: add info about docker-compose [c2cgeoportal#6526](https://github.com/camptocamp/c2cgeoportal/pull/6526)
 * Set higher z-index for map messages [ngeo#5914](https://github.com/camptocamp/ngeo/pull/5914)
 * [Backport 2.4] Fix API overlays with not existing WMTS layers [ngeo#5915](https://github.com/camptocamp/ngeo/pull/5915)
 * Fix security issues with: `npm audit fix` [ngeo#5933](https://github.com/camptocamp/ngeo/pull/5933)
