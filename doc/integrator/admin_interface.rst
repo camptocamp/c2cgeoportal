@@ -47,7 +47,8 @@ Here is an example using the existing vector tiles page:
   vars:
     admin_interface:
       include_pages:
-        - [layers_vectortiles, c2cgeoportal_commons.models.main.LayerVectorTiles]
+        - url_path: layers_vectortiles
+          model: c2cgeoportal_commons.models.main.LayerVectorTiles
 
 .. note::
 
