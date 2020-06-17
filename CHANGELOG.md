@@ -1,6 +1,7 @@
+##### 2.4.1.112
+* [Backport 2.4] Hide the ID in the form [c2cgeoportal#6538](https://github.com/camptocamp/c2cgeoportal/pull/6538)
 ##### 2.4.1.111
 * [Backport 2.4] Fix Extend the data model documentation [c2cgeoportal#6532](https://github.com/camptocamp/c2cgeoportal/pull/6532)
-* [Backport 2.4] Hide the ID in the form [c2cgeoportal#6538](https://github.com/camptocamp/c2cgeoportal/pull/6538)
 ##### 2.4.1.110
 * Doc: add info about docker-compose [c2cgeoportal#6526](https://github.com/camptocamp/c2cgeoportal/pull/6526)
 ##### 2.4.1.109
