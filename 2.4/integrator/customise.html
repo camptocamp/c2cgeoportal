@@ -180,7 +180,8 @@ taken into account.</p>
 <p>The data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>.</p>
 <p>For example, to add some user details, including a link to a new class named “Title”,
 add to <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">types</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deform.widget</span> <span class="k">import</span> <span class="n">HiddenWidget</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">types</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">ForeignKey</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="k">import</span> <span class="n">_schema</span><span class="p">,</span> <span class="n">User</span>
 
@@ -196,7 +197,13 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
         <span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
         <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
-        <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="o">.</span>
+        <span class="n">info</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;colanderalchemy&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;missing&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;widget&quot;</span><span class="p">:</span> <span class="n">HiddenWidget</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
     <span class="p">)</span>
 
     <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
