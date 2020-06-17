@@ -1,3 +1,5 @@
+##### 2.5.0.44
+* Fix include/exclude in admin interface [c2cgeoportal#6534](https://github.com/camptocamp/c2cgeoportal/pull/6534)
 ##### 2.5.0.43
 * Fix environment variable name [c2cgeoportal#6521](https://github.com/camptocamp/c2cgeoportal/pull/6521)
 * Hide the ID in the form [c2cgeoportal#6522](https://github.com/camptocamp/c2cgeoportal/pull/6522)
