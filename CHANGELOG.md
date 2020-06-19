@@ -1,3 +1,5 @@
+##### 2.5.0.45
+* Update the extend the data model for 2.5 [c2cgeoportal#6548](https://github.com/camptocamp/c2cgeoportal/pull/6548)
 ##### 2.5.0.44
 * Fix include/exclude in admin interface [c2cgeoportal#6534](https://github.com/camptocamp/c2cgeoportal/pull/6534)
 ##### 2.5.0.43
