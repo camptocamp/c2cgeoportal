@@ -88,7 +88,7 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
     from c2cgeoform.views.abstract_views import ListField
     from c2cgeoportal_admin.schemas.roles import roles_schema_node
 
-    from cartoriviera_geoportal.models import UserDetail
+    from <package>_geoportal.models import UserDetail
 
 
     _list_field = partial(ListField, UserDetail)
@@ -100,7 +100,7 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
     settings_role = aliased(Role)
 
 
-    @view_defaults(match_param='table=userdetail')
+    @view_defaults(match_param='table=userdetails')
     class UserDetailViews(AbstractViews):
         _list_fields = [
             _list_field('id'),
@@ -201,7 +201,7 @@ And now the file ``geoportal/<package>_geoportal/admin/views/title.py``:
     _list_field = partial(ListField, Title)
 
 
-    @view_defaults(match_param='table=title')
+    @view_defaults(match_param='table=titles')
     class TitleViews(AbstractViews):
         _list_fields = [
             _list_field('id'),
@@ -257,33 +257,36 @@ And now the file ``geoportal/<package>_geoportal/admin/views/title.py``:
         def duplicate(self):
             return super().duplicate()
 
+Change the User page in the admin, add it in your configuration ``geoportal/vars.yaml``:
+
+.. code:: yaml
+
+   vars:
+       ...
+       admin_interface:
+           ...
+           exclude_pages:
+             - users
+             - roles
+             - functionalities
+             - interfaces
+           include_pages:
+             - url_path: userdetails
+               model: <package>_geoportal.models.UserDetail
+             - url_path: titles
+               model: <package>_geoportal.models.Title
+             - url_path: roles
+               model: c2cgeoportal_commons.models.main.Role
+             - url_path: functionalities
+               model: c2cgeoportal_commons.models.main.Functionality
+             - url_path: interfaces
+               model: c2cgeoportal_commons.models.main.Interface
+
 And finally in ``geoportal/<package>_geoportal/__init__.py`` replace ``config.scan()`` by:
 
 .. code:: python
 
-    # Add custom table in admin interface, that means re-add all normal table
-    from c2cgeoform.routes import register_models
-    from c2cgeoportal_commons.models.main import (
-        Role, LayerWMS, LayerWMTS, Theme, LayerGroup, Interface, OGCServer,
-        Functionality, RestrictionArea
-    )
-    from c2cgeoportal_commons.models.static import User
     from c2cgeoportal_admin import PermissionSetter
-    from <package>_geoportal.models import UserDetail, Title
-
-    register_models(config, (
-        ('themes', Theme),
-        ('layer_groups', LayerGroup),
-        ('layers_wms', LayerWMS),
-        ('layers_wmts', LayerWMTS),
-        ('ogc_servers', OGCServer),
-        ('restriction_areas', RestrictionArea),
-        ('userdetail', UserDetail),
-        ('roles', Role),
-        ('functionalities', Functionality),
-        ('interfaces', Interface),
-        ('title', Title),
-    ), 'admin')
 
     with PermissionSetter(config):
         # Scan view decorator for adding routes
@@ -326,14 +329,3 @@ Run pSQL console:
    docker-compose exec tools psql
 
 And enter the SQL commands
-
-Hide the no more used table, add it in your configuration:
-
-.. code:: yaml
-
-   vars:
-       ...
-       admin_interface:
-           ...
-           exclude_pages:
-             - users
