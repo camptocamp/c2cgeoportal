@@ -1,3 +1,5 @@
+##### 2.4.1.113
+* Make Width and Heigth for GetLegendGraphic configurable [ngeo#5931](https://github.com/camptocamp/ngeo/pull/5931)
 ##### 2.4.1.112
 * [Backport 2.4] Hide the ID in the form [c2cgeoportal#6538](https://github.com/camptocamp/c2cgeoportal/pull/6538)
 ##### 2.4.1.111
