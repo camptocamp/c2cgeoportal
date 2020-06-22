@@ -149,7 +149,7 @@
 	</detail>
 	<pageFooter>
 		<band height="56">
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="-171" width="805" height="22" uuid="b14dbd4b-e887-454e-9dcd-293e29fb4b04"/>
 				<textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
 			</textField>

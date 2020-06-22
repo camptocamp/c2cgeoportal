@@ -95,7 +95,7 @@
 				<textFieldExpression><![CDATA[String.format("1: %,.0f",
 $P{mapContext}.getScale().getDenominator()).replace(",","\'")]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="684" width="950" height="23" uuid="b14dbd4b-e887-454e-9dcd-293e29fb4b04"/>
 				<textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
 			</textField>
