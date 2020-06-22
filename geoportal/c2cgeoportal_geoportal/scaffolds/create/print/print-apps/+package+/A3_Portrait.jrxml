@@ -80,7 +80,7 @@
 				<reportElement x="5" y="650" width="150" height="20" uuid="756bf319-bd30-49bd-9e3d-631b5b6f2b6b"/>
 				<subreportExpression><![CDATA[$P{scalebarSubReport}]]></subreportExpression>
 			</subreport>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="680" width="798" height="37" uuid="ea3e251d-bbb2-48ac-b144-4505165208e0"/>
 				<textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
 			</textField>

@@ -7,7 +7,7 @@
 	<detail>
 		<band height="1" splitType="Stretch">
 			<printWhenExpression><![CDATA[!$F{name}.equals("")]]></printWhenExpression>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="0" width="185" height="1"/>
 				<box topPadding="10"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>

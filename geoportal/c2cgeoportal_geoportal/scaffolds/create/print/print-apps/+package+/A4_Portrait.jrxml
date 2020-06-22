@@ -70,7 +70,7 @@
 				<reportElement x="5" y="650" width="150" height="20"/>
 				<subreportExpression><![CDATA[$P{scalebarSubReport}]]></subreportExpression>
 			</subreport>
-			<textField isStretchWithOverflow="true">
+			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="680" width="555" height="37"/>
 				<textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
 			</textField>
