@@ -46,10 +46,25 @@ def metadata_definitions(node, kw):
     return {m["name"]: m for m in kw["request"].registry.settings["admin_interface"]["available_metadata"]}
 
 
+class MetadataSelectWidget(SelectWidget):
+    """Extends class SelectWidget to support undefined metadatas.
+
+    Override serialize to add option in values for current cstruct when needed.
+    """
+
+    def serialize(self, field, cstruct, **kw):
+        values = kw.get("values", self.values)
+        if isinstance(cstruct, str) and (cstruct, cstruct) not in values:
+            values = values.copy()
+            values.append((cstruct, cstruct))
+        kw["values"] = values
+        return super().serialize(field, cstruct, **kw)
+
+
 @colander.deferred
 def metadata_name_widget(node, kw):
     del node
-    return SelectWidget(
+    return MetadataSelectWidget(
         values=[
             (m["name"], m["name"])
             for m in sorted(
@@ -68,7 +83,7 @@ def json_validator(node, value):
 
 
 def regex_validator(node, value):
-    definition = node.metadata_definitions[value["name"]]
+    definition = node.metadata_definitions.get(value["name"], {})
     if definition.get("type", "string") == "regex":
         validator = colander.Regex(definition["regex"], msg=_(definition["error_message"]))
         try:
@@ -118,8 +133,9 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         return dict_
 
     def _ui_type(self, metadata_name: str):
-        # pylint: disable=unsubscriptable-object
-        metadata_type = cast(Dict[str, Any], self.metadata_definitions)[metadata_name].get("type", "string")
+        metadata_type = (
+            cast(Dict[str, Any], self.metadata_definitions).get(metadata_name, {}).get("type", "string")
+        )
         return metadata_type if metadata_type in self.available_types else "string"
 
 
