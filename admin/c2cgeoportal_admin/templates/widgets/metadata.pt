@@ -52,7 +52,7 @@
          $metadataItem.find('.col-value .form-group').hide();
          $metadataItem.find('.col-value .form-group .form-control').attr('disabled', true);
 
-         var type = c2cgeoportalAdmin.metadata_definitions[$name.val()].type || 'string';
+         var type = (c2cgeoportalAdmin.metadata_definitions[$name.val()] || {}).type || 'string';
          $typedFormgroup = $metadataItem.find('.item-' + type);
          if ($typedFormgroup.length == 0) {
            $typedFormgroup = $metadataItem.find('.item-string');
