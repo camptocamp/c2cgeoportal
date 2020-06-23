@@ -1,0 +1,54 @@
+---
+
+name: Audit
+
+on:
+  schedule:
+    - cron: "30 2 * * *"
+
+jobs:
+  main:
+    runs-on: ubuntu-18.04
+    name: Audit
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - '2.4'
+          - '2.5'
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: ${{ matrix.branch }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - run: sudo python3 -m pip install safety
+      - run: |
+          for file in $(find -name requirements.txt)
+          do
+            cd $(dirname ${file})
+            safety check --full-report --file=requirements.txt
+          done
+
+      - run: sudo python3 -m pip pipenv
+      - run: |
+          for file in $(find -name Pipfile)
+          do
+            cd $(dirname ${file})
+            pipenv check
+          done
+
+      - run: |
+          for file in $(find -name package.json)
+          do
+            cd $(dirname ${file})
+            npm install --package-lock
+            npm audit fix --force
+            git diff
+            git diff-index --quiet HEAD
+          done
