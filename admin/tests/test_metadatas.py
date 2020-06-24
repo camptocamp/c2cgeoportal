@@ -29,7 +29,7 @@ def metadatas_test_data(dbsession, transact):
             ("_url", "https://localhost/test.html"),
             ("_json", '{"key":"value"}'),
             ("_color", "#FFFFFF"),
-            ("_unknown", "This is a unknown format"),
+            ("_unknown", "This is an unknown format"),
         ]
     ]
     for metadata in layer_wms.metadatas:
@@ -273,6 +273,20 @@ class TestMetadatasView(AbstractViewsTests):
 
     def test_group_metadatas(self, metadatas_test_data, test_app):
         self._test_edit_treeitem("layer_groups", metadatas_test_data["group"], test_app)
+
+    def test_undefined_metadata(self, metadatas_test_data, test_app):
+        """Undefined metadata must be kept intact accross submissions"""
+        from c2cgeoportal_commons.models.main import Metadata
+
+        layer = metadatas_test_data["layer_wms"]
+        layer.metadatas = [Metadata("_undefined", "This is an undefined metadata")]
+
+        resp = self.get(test_app, "layers_wms/{}".format(layer.id))
+        resp.form.submit("submit", status=302)
+
+        metadata = layer.metadatas[0]
+        assert metadata.name == "_undefined"
+        assert metadata.value == "This is an undefined metadata"
 
 
 @skip_if_ci
