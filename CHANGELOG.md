@@ -1,3 +1,6 @@
+##### 2.5.0.46
+* [admin] Support undefined metadatas [c2cgeoportal#6565](https://github.com/camptocamp/c2cgeoportal/pull/6565)
+* [Backport 2.5] Set background layer to the minimap [ngeo#5953](https://github.com/camptocamp/ngeo/pull/5953)
 ##### 2.5.0.45
 * Update the extend the data model for 2.5 [c2cgeoportal#6548](https://github.com/camptocamp/c2cgeoportal/pull/6548)
 ##### 2.5.0.44
