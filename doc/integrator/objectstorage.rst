@@ -44,9 +44,10 @@ Create the vrt file for a raster layer:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal ${'\\'}
-        gdalbuildvrt /vsis3/<bucket>/<folder>/index.vrt \
-        $(list4vrt <bucket> <folder>/)
+   docker-compose exec geoportal bash -c ${'\\'}
+        'gdalbuildvrt /vsis3/<bucket>/<folder>/index.vrt \
+        $(list4vrt <bucket> <folder>/ .tif)'
+
 
 MapServer
 ---------
@@ -55,10 +56,15 @@ Create the shape index file for a raster layer:
 
 .. prompt:: bash
 
-   gdaltindex mapserver/index.shp \
-        `aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 \
-        s3 ls s3://<bucket>/<folder>/ | grep tif | awk '{print "/vsis3/<bucket>/<folder>/"$4}'`
-
+    docker-compose exec geoportal bash -c \
+        'gdaltindex index.shp $(\
+            aws --endpoint-url http://${AWS_S3_ENDPOINT} --region ${AWS_DEFAULT_REGION} \
+            s3 ls s3://<bucket>/<folder>/ | grep tif$ | \
+            awk '"'"'{print "/vsis3/<bucket>/<folder>/"$4}'"'"'
+        )'
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shp mapserver/
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shx mapserver/
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.dbf mapserver/
 
 Add the following config in the ``mapserver/mapserver.map.tmpl`` file:
 
