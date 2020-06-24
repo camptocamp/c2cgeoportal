@@ -15,6 +15,7 @@ Content:
     :maxdepth: 1
 
     server_side
+    client_side
     debugging
     transifex
     webservices
