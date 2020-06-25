@@ -365,11 +365,15 @@ interface with for instance the following value for the given role:
 `MapServer documentation <https://mapserver.org/cgi/runsub.html>`_
 
 
+
 Performance improvement
 -----------------------
 
 Adding an ``EXTENT`` parameter to the ``LAYER`` section may significantly improve performance
 because it saves MapServer from computing the extent of all layer features.
+
+
+.. _administrator_mapfile_perepare_raster:
 
 Prepare raster files
 ~~~~~~~~~~~~~~~~~~~~
@@ -379,21 +383,22 @@ a tileindex. You can achieve this with these steps:
 
 Convert your rasters in tiled GeoTIFF:
 
-.. code::
+.. prompt:: bash
 
-  gdal_translate -of GTiff -co "TILED=YES" -co "TFW=YES" <filename_in.tif> <filename_out.tif>
+  gdal_translate -of GTiff -co "TILED=YES" -co "TFW=YES" \
+    <filename_in.tif> <filename_out.tif>
 
 Then build overviews for your rasters:
 
-.. code::
+.. prompt:: bash
 
   gdaladdo -r average filename.tif 2 4 8 16
 
 You can generate a shapefile indexing all your rasters:
 
-.. code::
+.. prompt:: bash
 
-  gdaltindex filename_index.shp raster/*.tif
+  gdaltindex filename_index.shp *.tif
 
 Note about ECW
 --------------
