@@ -15,7 +15,7 @@ redis = "==3.5.3"
 transaction = "==3.0.0"  # commons
 "c2c.template" = "==2.1.0"
 GeoAlchemy2 = "==0.8.4"
-SQLAlchemy = "==1.3.17"  # commons
+SQLAlchemy = "==1.3.18"  # commons
 "zope.event" = "==4.4"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.7.0"
