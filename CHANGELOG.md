@@ -1,6 +1,10 @@
+##### 2.4.1.115
+* Some small fix in the documentations [c2cgeoportal#6579](https://github.com/camptocamp/c2cgeoportal/pull/6579)
+* [security] Upgrade pyyaml [c2cgeoportal#6581](https://github.com/camptocamp/c2cgeoportal/pull/6581)
+* [security] Update typedoc [ngeo#5963](https://github.com/camptocamp/ngeo/pull/5963)
+* Fix all security issues [ngeo#5965](https://github.com/camptocamp/ngeo/pull/5965)
 ##### 2.4.1.114
 * Fix the documentation to generate the tiles [c2cgeoportal#6571](https://github.com/camptocamp/c2cgeoportal/pull/6571)
-* Add documentation on how to add an external npm package [c2cgeoportal#6572](https://github.com/camptocamp/c2cgeoportal/pull/6572)
 ##### 2.4.1.113
 * Make Width and Heigth for GetLegendGraphic configurable [ngeo#5931](https://github.com/camptocamp/ngeo/pull/5931)
 ##### 2.4.1.112
