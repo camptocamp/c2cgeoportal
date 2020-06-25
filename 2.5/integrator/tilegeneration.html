@@ -86,7 +86,8 @@ Sub-level of <code class="docutils literal notranslate"><span class="pre">layers
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
+</style><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
+<span class="prompt1">   --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
 </pre></div></div><p>We consider that the first tile of the max zoom is empty.
 Then copy-paste the result in the layer config.</p>
 </li>
@@ -137,6 +138,13 @@ file:</p>
 must be specified in the <code class="docutils literal notranslate"><span class="pre">C2C_SECRET</span></code> environment variable in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
 <p>Predefined commands may be set in parameter <code class="docutils literal notranslate"><span class="pre">server</span> <span class="pre">&gt;</span> <span class="pre">predefined_commands</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
+</div>
+<div class="section" id="see-also">
+<h3>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a></p></li>
+<li><p><a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-perepare-raster"><span class="std std-ref">Prepare raster files</span></a></p></li>
+</ul>
 </div>
 </div>
 </div>

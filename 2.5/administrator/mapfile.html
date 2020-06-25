@@ -348,22 +348,21 @@ but beware that these attributes are not available for cached queries like:
 <p>Adding an <code class="docutils literal notranslate"><span class="pre">EXTENT</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> section may significantly improve performance
 because it saves MapServer from computing the extent of all layer features.</p>
 <div class="section" id="prepare-raster-files">
-<h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this headline">¶</a></h3>
+<span id="administrator-mapfile-perepare-raster"></span><h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this headline">¶</a></h3>
 <p>To achieve good performance, you should have tiled files with overviews, and ideally
 a tileindex. You can achieve this with these steps:</p>
 <p>Convert your rasters in tiled GeoTIFF:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdal_translate</span> <span class="o">-</span><span class="n">of</span> <span class="n">GTiff</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TILED=YES&quot;</span> <span class="o">-</span><span class="n">co</span> <span class="s2">&quot;TFW=YES&quot;</span> <span class="o">&lt;</span><span class="n">filename_in</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">filename_out</span><span class="o">.</span><span class="n">tif</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>Then build overviews for your rasters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdaladdo</span> <span class="o">-</span><span class="n">r</span> <span class="n">average</span> <span class="n">filename</span><span class="o">.</span><span class="n">tif</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span> <span class="mi">16</span>
-</pre></div>
-</div>
-<p>You can generate a shapefile indexing all your rasters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdaltindex</span> <span class="n">filename_index</span><span class="o">.</span><span class="n">shp</span> <span class="n">raster</span><span class="o">/*.</span><span class="n">tif</span>
-</pre></div>
-</div>
-</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">gdal_translate -of GTiff -co <span class="s2">&quot;TILED=YES&quot;</span> -co <span class="s2">&quot;TFW=YES&quot;</span> <span class="se">\</span>
+  &lt;filename_in.tif&gt; &lt;filename_out.tif&gt;</span>
+</pre></div></div><p>Then build overviews for your rasters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaladdo -r average filename.tif <span class="m">2</span> <span class="m">4</span> <span class="m">8</span> <span class="m">16</span></span>
+</pre></div></div><p>You can generate a shapefile indexing all your rasters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex filename_index.shp *.tif</span>
+</pre></div></div></div>
 </div>
 <div class="section" id="note-about-ecw">
 <h2>Note about ECW<a class="headerlink" href="#note-about-ecw" title="Permalink to this headline">¶</a></h2>
