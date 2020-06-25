@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a6bb796c2054ff4b41161f99fb00bffb9c1554e6fb2289ff7090604e3ee4ca83"
+            "sha256": "de262d1341772cf18f1ba513b14565d1464d0eb8121c7f3962aad0a8eb1f8b8b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -81,11 +81,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:617c800f59f78e788f9d174de30cfcab768a55a0433eed493e114de85b9a3776",
-                "sha256:c0228902de62a4fb6b070a6e6c75dcfd9a106cd39bfc996d4362c966b0133a76"
+                "sha256:65a9920afdfc5bed1c85bbf6d9c484bcf6abcfaac861c5949cdecd98e93ab36e",
+                "sha256:a37a1a5ec2776ea50e960a942542076cd4c32ab6b912c5ba55815044e58ddb9f"
             ],
             "index": "pypi",
-            "version": "==2.1.14"
+            "version": "==2.1.15"
         },
         "certifi": {
             "hashes": [
@@ -210,11 +210,11 @@
         },
         "getitfixed": {
             "hashes": [
-                "sha256:57c392c9d65de6f04922caa6a9ea5ccf9eeb3af132d6e5f384e1bfb3e7290706",
-                "sha256:723260c4bc0d33ee6b9734a3bcbf826104095c4519e174162ca318f99a1d45fd"
+                "sha256:9b71dc27499d16e9e0c3bf2662e775604bf8fd33d8f4a87aa70899924381651c",
+                "sha256:a2800da63583980a33e2077d0c9cd63fb253d01f68145552892cafecbec8b080"
             ],
             "index": "pypi",
-            "version": "==1.0.13"
+            "version": "==1.0.14"
         },
         "hupper": {
             "hashes": [
