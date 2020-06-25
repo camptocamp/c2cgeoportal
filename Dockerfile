@@ -174,7 +174,8 @@ RUN \
     --editable=commons \
     --editable=geoportal \
     --editable=admin && \
-    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.7
+    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.7 \
+        -x /usr/local/lib/python3.7/dist-packages/pipenv/patched/yaml2
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
