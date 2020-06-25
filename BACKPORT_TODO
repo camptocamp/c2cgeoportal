@@ -1,0 +1,14 @@
+Error on backporting to branch master, error on cherry picking ['c598757e4c2a9d8173cedd6eda7eb5b4e5cdb52d']:
+error: could not apply c598757e4... Some small fix in the documentations
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+
+
+to continue do:
+git fetch
+git checkout backport/6579-to-master
+git reset --hard HEAD^
+git cherry-pick c598757e4c2a9d8173cedd6eda7eb5b4e5cdb52d
+git push origin backport/6579-to-master --force
