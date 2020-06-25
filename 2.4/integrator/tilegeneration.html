@@ -103,7 +103,8 @@ Sub-level of <code class="docutils literal notranslate"><span class="pre">caches
 Sub-level of <code class="docutils literal notranslate"><span class="pre">layers</span></code> is the layer name.</p>
 </li>
 <li><p class="first">We can drop the empty tiles with a hash comparison, tilecloud-chain has a tool to help us:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles <span class="se">\</span>
+   --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
 </pre></div></div><p>We consider that the first tile of the max zoom is empty.
 Then copy-paste the result in the layer config.</p>
 </li>
@@ -137,6 +138,13 @@ file:</p>
 <span class="n">export</span> <span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="see-also">
+<h3>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a></li>
+<li><a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-perepare-raster"><span class="std std-ref">Prepare raster files</span></a></li>
+</ul>
 </div>
 </div>
 </div>
