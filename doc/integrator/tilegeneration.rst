@@ -34,6 +34,7 @@ The chosen solution is a combination of two tools:
 
 * `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
 
+
 MapCache
 --------
 
@@ -54,6 +55,7 @@ To clear/flush Memcached cache, use the following command in the container:
 See the `TileCloud-chain documentation for more details
 <https://github.com/camptocamp/tilecloud-chain#configure-mapcache>`_.
 
+
 TileCloud-chain
 ---------------
 
@@ -65,6 +67,7 @@ It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.
 
 See the `readme <https://pypi.python.org/pypi/tilecloud-chain>`_.
+
 
 Configuration
 ~~~~~~~~~~~~~
@@ -87,7 +90,8 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     docker-compose exec tilecloudchain generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
+     docker-compose exec tilecloudchain generate_tiles \
+        --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
   Then copy-paste the result in the layer config.
@@ -123,6 +127,7 @@ If you setup all the default options, you can generate the tiles by using the co
 
     docker-compose exec tilecloudchain generate_tiles
 
+
 AWS credentials
 ~~~~~~~~~~~~~~~
 
@@ -140,3 +145,10 @@ code::
 
   export AWS_ACCESS_KEY_ID=<access_key_id>
   export AWS_SECRET_ACCESS_KEY=<secret_access_key>
+
+
+See also
+~~~~~~~~
+
+* :ref:`integrator_api`
+* :ref:`administrator_mapfile_perepare_raster`
