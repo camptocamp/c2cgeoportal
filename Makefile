@@ -27,7 +27,7 @@ pipenv.timestamp:
 black: ## Run Black check
 black: pipenv.timestamp
 	pipenv run black --version
-	pipenv run black --line-length=110 --target-version py37 --check --diff $(shell \
+	pipenv run black --check --diff $(shell \
 		find -name .git -prune -or -type f -print | \
 		file --mime-type --files-from - | \
 		grep text/x-python | \
@@ -38,7 +38,7 @@ black: pipenv.timestamp
 .PHONY: black-fix
 black-fix: ## Fix the application code style with black
 black-fix: pipenv.timestamp
-	pipenv run black --line-length=110 --target-version py37 $(shell \
+	pipenv run black $(shell \
 		find -name .git -prune -or -type f -print | \
 		file --mime-type --files-from - | \
 		grep text/x-python | \
