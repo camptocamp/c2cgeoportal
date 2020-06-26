@@ -31,16 +31,15 @@ jobs:
       - run: |
           for file in $(find -name requirements.txt)
           do
-            cd $(dirname ${file})
-            safety check --full-report --file=requirements.txt
+            (cd $(dirname ${file}) && safety check --full-report --file=requirements.txt)
           done
 
-      - run: sudo python3 -m pip pipenv
+      - run: sudo python3 -m pip install pipenv
+        if: always()
       - run: |
           for file in $(find -name Pipfile)
           do
-            cd $(dirname ${file})
-            pipenv check
+            (cd $(dirname ${file}) && pipenv check)
           done
         if: always()
 
@@ -52,5 +51,6 @@ jobs:
             npm audit fix --force
             git diff
             git diff-index --quiet HEAD
+            cd -
           done
         if: always()
