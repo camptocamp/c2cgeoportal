@@ -96,9 +96,10 @@
         },
         "chameleon": {
             "hashes": [
-                "sha256:37c01c9af720bc80a0097ebc07eb41e802917ad0006c9a77dc158479c087664b"
+                "sha256:84fd294e73dbee519b2cc0b5b79d974de08d35ba4bb9e21fd13adac090f8c7eb"
             ],
-            "version": "==3.7.4"
+            "index": "pypi",
+            "version": "==3.8.0"
         },
         "chardet": {
             "hashes": [
@@ -1198,7 +1199,6 @@
                 "sha256:366389d1db726cd2fcfc79732e75410e5fe4d31db13692115529d34069a043c2",
                 "sha256:9ca6883ce56b4e8da7e79ac18787889fa5206c79dcc67fb065376cd2fe03f342"
             ],
-            "index": "pypi",
             "version": "==1.9.0"
         },
         "pyasn1": {
