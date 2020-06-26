@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e03499c0e1f2a006ab16b8310042c1db4c7a38f1dab501924ff5863bae813618"
+            "sha256": "be3491db2bb401e1dc6e309765da3e139c65c4b83ea01e77646ba50bbaeb93dc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -96,9 +96,9 @@
         },
         "chameleon": {
             "hashes": [
-                "sha256:37c01c9af720bc80a0097ebc07eb41e802917ad0006c9a77dc158479c087664b"
+                "sha256:84fd294e73dbee519b2cc0b5b79d974de08d35ba4bb9e21fd13adac090f8c7eb"
             ],
-            "version": "==3.7.4"
+            "version": "==3.8.0"
         },
         "chardet": {
             "hashes": [
@@ -856,11 +856,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:90b910ed00f34023056a311006e4f60e509dc8cadd017da725c6699e43e8d678",
-                "sha256:cc2fd6bdaf2141a6743ae984b4755f2e2d603ceac93ee9b8a93cf46e515ce9e0"
+                "sha256:14f7dbde3635bf0328d7d7bd3c5e408bfdf61898e669cac8f5db9c699b26ac74",
+                "sha256:f100794703876b73fbcf3ad265cb0d12f9ca7b34d32acc5def6845aedd3970bc"
             ],
             "index": "pypi",
-            "version": "==1.18.87"
+            "version": "==1.18.89"
         },
         "babel": {
             "hashes": [
@@ -888,10 +888,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:b22db58da273b77529edef71425f9c281bc627b1b889f81960750507238abbb8",
-                "sha256:cb0d7511a68439bf6f16683489130e06c5bbf9f5a9d647e0cbf63d79f3d3bdaa"
+                "sha256:45934d880378777cefeca727f369d1f5aebf6b254e9be58e7c77dd0b059338bb",
+                "sha256:a94e0e2307f1b9fe3a84660842909cd2680b57a9fc9fb0c3a03b0afb2eadbe21"
             ],
-            "version": "==1.17.10"
+            "version": "==1.17.12"
         },
         "certifi": {
             "hashes": [
@@ -1198,7 +1198,6 @@
                 "sha256:366389d1db726cd2fcfc79732e75410e5fe4d31db13692115529d34069a043c2",
                 "sha256:9ca6883ce56b4e8da7e79ac18787889fa5206c79dcc67fb065376cd2fe03f342"
             ],
-            "index": "pypi",
             "version": "==1.9.0"
         },
         "pyasn1": {
