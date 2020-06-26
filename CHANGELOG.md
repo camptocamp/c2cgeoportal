@@ -1,5 +1,6 @@
-##### 2.4.1.116
+##### 2.4.1.117
 * Add documentation on how to add an external npm package [c2cgeoportal#6572](https://github.com/camptocamp/c2cgeoportal/pull/6572)
+##### 2.4.1.116
 * [security] Upgrade pyyaml [c2cgeoportal#6581](https://github.com/camptocamp/c2cgeoportal/pull/6581)
 * [Security] Upgrade twine [c2cgeoportal#6596](https://github.com/camptocamp/c2cgeoportal/pull/6596)
 * Fix all security issues [ngeo#5965](https://github.com/camptocamp/ngeo/pull/5965)
