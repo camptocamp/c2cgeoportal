@@ -1,3 +1,5 @@
+##### 2.5.0.48
+* Upgrade getitfixed to version 1.0.14 [c2cgeoportal#6586](https://github.com/camptocamp/c2cgeoportal/pull/6586)
 ##### 2.5.0.47
 * [security] Upgrade pipenv [c2cgeoportal#6580](https://github.com/camptocamp/c2cgeoportal/pull/6580)
 * [Backport 2.5] Some small fix in the documentations [c2cgeoportal#6584](https://github.com/camptocamp/c2cgeoportal/pull/6584)
