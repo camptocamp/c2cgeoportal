@@ -6,6 +6,7 @@ Babel==2.6.0  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
 boto3==1.9.130  # Tile generation
 bottle==0.12.16  # geoportal
+chameleon==3.7.4  # c2cgeoform
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.2.1  # geoportal
 c2cgeoform==2.0.1  # commons
