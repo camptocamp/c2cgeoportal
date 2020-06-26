@@ -32,6 +32,7 @@ The chosen solution is a combination of two tools:
 
 * `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
 
+
 TileCloud-chain
 ---------------
 
@@ -43,6 +44,7 @@ It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.
 
 See the `readme <https://pypi.python.org/pypi/tilecloud-chain>`_.
+
 
 Configuration
 ~~~~~~~~~~~~~
@@ -65,7 +67,8 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     docker-compose exec tilecloudchain generate_tiles --get-hash <max-zoom>/0/0 --layer <layer>
+     docker-compose exec tilecloudchain generate_tiles ${'\\'}
+        --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
   Then copy-paste the result in the layer config.
@@ -109,6 +112,7 @@ If you setup all the default options, you can generate the tiles by using the co
 
     docker-compose exec tilecloudchain generate_tiles
 
+
 AWS credentials
 ~~~~~~~~~~~~~~~
 
@@ -127,6 +131,7 @@ code::
   export AWS_ACCESS_KEY_ID=<access_key_id>
   export AWS_SECRET_ACCESS_KEY=<secret_access_key>
 
+
 Web Interface
 ~~~~~~~~~~~~~
 
@@ -136,3 +141,10 @@ must be specified in the ``C2C_SECRET`` environment variable in the ``env.projec
 
 Predefined commands may be set in parameter ``server > predefined_commands`` in the
 ``tilegeneration/config.yaml.tmpl`` file.
+
+
+See also
+~~~~~~~~
+
+* :ref:`integrator_api`
+* :ref:`administrator_mapfile_perepare_raster`
