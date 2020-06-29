@@ -31,14 +31,17 @@ jobs:
       - run: |
           for file in $(find -name requirements.txt)
           do
-            (cd $(dirname ${file}) && safety check --full-report --file=requirements.txt)
+            echo Audit ${file}
+            (cd $(dirname ${file}) && safety check --full-report --ignore=$(cat safety-ignore|true) \
+              --file=requirements.txt)
           done
 
-      - run: sudo python3 -m pip install pipenv
+      - run: sudo python3 -m pip install pipenv pyenv
         if: always()
       - run: |
           for file in $(find -name Pipfile)
           do
+            echo Audit ${file}
             (cd $(dirname ${file}) && pipenv check)
           done
         if: always()
@@ -46,6 +49,7 @@ jobs:
       - run: |
           for file in $(find -name package.json)
           do
+            echo Audit ${file}
             cd $(dirname ${file})
             npm install --package-lock
             npm audit fix --force
