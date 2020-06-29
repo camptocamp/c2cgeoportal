@@ -31,6 +31,7 @@ jobs:
       - run: |
           for file in $(find -name requirements.txt)
           do
+            echo Audit ${file}
             (cd $(dirname ${file}) && safety check --full-report --file=requirements.txt)
           done
 
@@ -39,6 +40,7 @@ jobs:
       - run: |
           for file in $(find -name Pipfile)
           do
+            echo Audit ${file}
             (cd $(dirname ${file}) && pipenv check)
           done
         if: always()
@@ -46,6 +48,7 @@ jobs:
       - run: |
           for file in $(find -name package.json)
           do
+            echo Audit ${file}
             cd $(dirname ${file})
             npm install --package-lock
             npm audit fix --force
