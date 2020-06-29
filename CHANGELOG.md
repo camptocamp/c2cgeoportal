@@ -1,3 +1,6 @@
+##### 2.5.0.49
+* [security] Upgrade pipenv [c2cgeoportal#6607](https://github.com/camptocamp/c2cgeoportal/pull/6607)
+* [Backport 2.5] Use the same image name in publish as in the build [c2cgeoportal#6608](https://github.com/camptocamp/c2cgeoportal/pull/6608)
 ##### 2.5.0.48
 * Upgrade getitfixed to version 1.0.14 [c2cgeoportal#6586](https://github.com/camptocamp/c2cgeoportal/pull/6586)
 ##### 2.5.0.47
