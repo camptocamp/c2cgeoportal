@@ -36,7 +36,7 @@ jobs:
               --file=requirements.txt)
           done
 
-      - run: sudo python3 -m pip install pipenv
+      - run: sudo python3 -m pip install pipenv pyenv
         if: always()
       - run: |
           for file in $(find -name Pipfile)
