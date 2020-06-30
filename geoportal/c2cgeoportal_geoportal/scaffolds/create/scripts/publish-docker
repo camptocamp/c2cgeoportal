@@ -40,7 +40,7 @@ subprocess.check_call(
 
 images = sys.argv[1:]
 for image in images:
-    full_image = "camptocamp/{}-{}".format(env.get("DOCKER_BASE", "camptocamp/geomapfish"), image)
+    full_image = "{}-{}".format(env.get("DOCKER_BASE", "camptocamp/geomapfish"), image)
     src_image = "{}:{}".format(full_image, env.get("DOCKER_TAG", "latest"))
     dest_image = "{}:{}".format(full_image, version)
     subprocess.check_call(["docker", "tag", src_image, dest_image])
