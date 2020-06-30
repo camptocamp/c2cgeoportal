@@ -7,7 +7,7 @@ defusedxml
 dogpile.cache>=0.6
 Fiona
 GeoAlchemy2
-geojson
+geojson==2.5.0
 isodate  # WMST support
 lingua
 Mako
