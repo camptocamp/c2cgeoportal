@@ -3,7 +3,7 @@ bottle
 c2cgeoportal_commons[upgrade]
 c2cwsgiutils
 c2c.template>=2.0.7  # Makefile
-defusedxml
+defusedxml==0.6.0
 dogpile.cache>=0.6
 Fiona
 GeoAlchemy2
