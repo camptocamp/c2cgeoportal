@@ -24,7 +24,7 @@ pyramid_tm
 python-dateutil
 PyYAML
 rasterio
-requests
+requests==2.24.0
 redis
 Shapely
 SQLAlchemy
