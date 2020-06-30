@@ -3,7 +3,7 @@ c2cgeoform
 c2cwsgiutils
 colander
 deform
-passwordgenerator
+passwordgenerator==1.4
 pyproj
 pyramid
 pyramid_debugtoolbar
