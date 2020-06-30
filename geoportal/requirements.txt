@@ -16,7 +16,7 @@ papyrus
 psycopg2-binary
 pycryptodome
 pyotp
-pyramid
+pyramid==1.10.4
 pyramid_debugtoolbar  # Needed by the development.ini
 pyramid_mako  # to render the HTML files
 pyramid_multiauth
