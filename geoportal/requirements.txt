@@ -28,4 +28,4 @@ requests
 redis
 Shapely
 SQLAlchemy
-transaction
+transaction==3.0.0
