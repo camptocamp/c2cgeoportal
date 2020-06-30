@@ -4,7 +4,7 @@ c2cwsgiutils
 colander
 deform
 passwordgenerator
-pyproj
+pyproj==2.6.1.post1
 pyramid
 pyramid_debugtoolbar
 pyramid_jinja2
