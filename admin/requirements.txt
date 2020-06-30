@@ -10,5 +10,5 @@ pyramid_debugtoolbar
 pyramid_jinja2
 pyramid_tm
 sqlalchemy
-zope.event
+zope.event==4.4
 translationstring
