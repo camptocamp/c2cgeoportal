@@ -8,7 +8,7 @@ dogpile.cache>=0.6
 Fiona
 GeoAlchemy2
 geojson
-isodate  # WMST support
+isodate==0.6.0  # WMST support
 lingua
 Mako
 OWSLib>=0.6.0
