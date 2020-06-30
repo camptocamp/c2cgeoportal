@@ -5,7 +5,7 @@ colander
 deform
 passwordgenerator
 pyproj
-pyramid
+pyramid==1.10.4
 pyramid_debugtoolbar
 pyramid_jinja2
 pyramid_tm
