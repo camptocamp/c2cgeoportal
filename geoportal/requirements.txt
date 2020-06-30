@@ -14,7 +14,7 @@ Mako
 OWSLib>=0.6.0
 papyrus
 psycopg2-binary
-pycryptodome
+pycryptodome==3.9.8
 pyotp
 pyramid
 pyramid_debugtoolbar  # Needed by the development.ini
