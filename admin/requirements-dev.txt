@@ -1,4 +1,4 @@
 # Used for development: please do not remove this file
 
-waitress
+waitress==1.4.4
 pydevd
