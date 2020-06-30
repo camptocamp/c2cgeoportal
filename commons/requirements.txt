@@ -2,5 +2,5 @@ c2c.template
 GeoAlchemy2
 papyrus
 sqlalchemy
-transaction
+transaction==3.0.0
 zope.event
