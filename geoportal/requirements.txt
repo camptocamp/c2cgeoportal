@@ -12,7 +12,7 @@ isodate  # WMST support
 lingua
 Mako
 OWSLib>=0.6.0
-papyrus
+papyrus==2.4
 psycopg2-binary
 pycryptodome
 pyotp
