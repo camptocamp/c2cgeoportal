@@ -1,4 +1,4 @@
-c2c.template
+c2c.template==2.2.1
 GeoAlchemy2
 papyrus
 sqlalchemy
