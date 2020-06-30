@@ -26,6 +26,6 @@ PyYAML
 rasterio
 requests
 redis
-Shapely
+Shapely==1.7.0
 SQLAlchemy
 transaction
