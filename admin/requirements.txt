@@ -9,6 +9,6 @@ pyramid
 pyramid_debugtoolbar
 pyramid_jinja2
 pyramid_tm
-sqlalchemy
+sqlalchemy==1.3.18
 zope.event
 translationstring
