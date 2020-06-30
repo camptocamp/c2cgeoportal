@@ -11,4 +11,4 @@ pyramid_jinja2
 pyramid_tm
 sqlalchemy
 zope.event
-translationstring
+translationstring==1.3
