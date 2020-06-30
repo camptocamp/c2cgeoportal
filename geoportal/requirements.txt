@@ -27,5 +27,5 @@ rasterio
 requests
 redis
 Shapely
-SQLAlchemy
+SQLAlchemy==1.3.18
 transaction
