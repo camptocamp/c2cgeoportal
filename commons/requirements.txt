@@ -3,4 +3,4 @@ GeoAlchemy2
 papyrus
 sqlalchemy
 transaction
-zope.event
+zope.event==4.4
