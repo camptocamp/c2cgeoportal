@@ -23,7 +23,7 @@ pyramid_multiauth
 pyramid_tm
 python-dateutil
 PyYAML
-rasterio
+rasterio==1.1.5
 requests
 redis
 Shapely
