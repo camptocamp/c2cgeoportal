@@ -1,6 +1,6 @@
 c2c.template
 GeoAlchemy2
 papyrus
-sqlalchemy
+sqlalchemy==1.3.18
 transaction
 zope.event
