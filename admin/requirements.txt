@@ -6,7 +6,7 @@ deform
 passwordgenerator
 pyproj
 pyramid
-pyramid_debugtoolbar
+pyramid_debugtoolbar==4.6.1
 pyramid_jinja2
 pyramid_tm
 sqlalchemy
