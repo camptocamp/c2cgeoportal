@@ -1,4 +1,4 @@
-alembic
+alembic==1.4.2
 bottle
 c2cgeoportal_commons[upgrade]
 c2cwsgiutils
