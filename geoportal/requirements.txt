@@ -21,7 +21,7 @@ pyramid_debugtoolbar  # Needed by the development.ini
 pyramid_mako  # to render the HTML files
 pyramid_multiauth
 pyramid_tm
-python-dateutil
+python-dateutil==2.8.1
 PyYAML
 rasterio
 requests
