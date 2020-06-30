@@ -22,7 +22,7 @@ pyramid_mako  # to render the HTML files
 pyramid_multiauth
 pyramid_tm
 python-dateutil
-PyYAML
+PyYAML==5.3.1
 rasterio
 requests
 redis
