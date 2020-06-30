@@ -1,6 +1,6 @@
 c2c.template
 GeoAlchemy2
-papyrus
+papyrus==2.4
 sqlalchemy
 transaction
 zope.event
