@@ -286,6 +286,7 @@ vars:
       - name: thumbnail
         type: url
       - name: timeAttribute
+      - name: geotablePrimaryKey
       - name: lastUpdateDateColumn
       - name: lastUpdateUserColumn
       - name: snappingConfig
