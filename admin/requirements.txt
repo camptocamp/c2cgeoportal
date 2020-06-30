@@ -7,7 +7,7 @@ passwordgenerator
 pyproj
 pyramid
 pyramid_debugtoolbar
-pyramid_jinja2
+pyramid_jinja2==2.8
 pyramid_tm
 sqlalchemy
 zope.event
