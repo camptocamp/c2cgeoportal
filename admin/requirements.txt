@@ -1,6 +1,6 @@
 c2cgeoform
 #c2cgeoportal-commons #  pip -> Could not find a version that satisfies the requirement c2cgeoportal-commons
-c2cwsgiutils
+c2cwsgiutils==3.10.0
 colander
 deform
 passwordgenerator
