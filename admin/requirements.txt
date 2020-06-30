@@ -8,7 +8,7 @@ pyproj
 pyramid
 pyramid_debugtoolbar
 pyramid_jinja2
-pyramid_tm
+pyramid_tm==2.4
 sqlalchemy
 zope.event
 translationstring
