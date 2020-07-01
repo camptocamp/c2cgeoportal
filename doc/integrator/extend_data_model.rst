@@ -84,9 +84,10 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
 
     from deform.widget import FormWidget
     from c2cgeoform.schema import GeoFormSchemaNode
-    from c2cgeoform.views.abstract_views import AbstractViews
     from c2cgeoform.views.abstract_views import ListField
     from c2cgeoportal_admin.schemas.roles import roles_schema_node
+    from c2cgeoportal_admin.views.users import UserViews
+
 
     from <package>_geoportal.models import UserDetail
 
@@ -101,7 +102,7 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
 
 
     @view_defaults(match_param='table=userdetails')
-    class UserDetailViews(AbstractViews):
+    class UserDetailViews(UserViews):
         _list_fields = [
             _list_field('id'),
             _list_field('username'),
