@@ -8,7 +8,8 @@ disable=import-error,
     missing-module-docstring,
     locally-disabled,
     bad-continuation,
-    too-many-instance-attributes
+    too-many-instance-attributes,
+    line-too-long
 
 
 [FORMAT]
