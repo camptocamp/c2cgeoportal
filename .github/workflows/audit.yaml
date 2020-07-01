@@ -10,7 +10,7 @@ jobs:
   main:
     runs-on: ubuntu-18.04
     name: Audit
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
@@ -32,29 +32,45 @@ jobs:
           for file in $(find -name requirements.txt)
           do
             echo Audit ${file}
-            (cd $(dirname ${file}) && safety check --full-report --ignore=$(cat safety-ignore|true) \
-              --file=requirements.txt)
+            (
+              cd $(dirname ${file}) &&
+              safety check --full-report --file=requirements.txt\
+                --ignore=$(cat pip-cwe-ignore 2> /dev/null | sed -e 's/,/ --ignore=/g' || true) \
+
+            )
           done
 
-      - run: sudo python3 -m pip install pipenv pyenv
+      - uses: asdf-vm/actions/install@v1
+        with:
+          tool_versions: python 3.8.0
+        if: always()
+      - run: sudo python3 -m pip install pipenv
         if: always()
       - run: |
           for file in $(find -name Pipfile)
           do
             echo Audit ${file}
-            (cd $(dirname ${file}) && pipenv check)
+            (
+              cd $(dirname ${file}) &&
+              pipenv check --ignore=$(cat pipenv-cwe-ignore 2> /dev/null || echo 0)
+            )
           done
         if: always()
 
       - run: |
+          sudo npm install -g better-npm-audit npm
           for file in $(find -name package.json)
           do
             echo Audit ${file}
             cd $(dirname ${file})
             npm install --package-lock
-            npm audit fix --force
-            git diff
-            git diff-index --quiet HEAD
+            node /usr/local/lib/node_modules/better-npm-audit audit \
+              --ignore=$(cat npm-cwe-ignore 2> /dev/null || true) || (
+              npm audit || true
+              npm audit fix --force
+              git diff
+              git diff-index --quiet HEAD
+            )
             cd -
           done
         if: always()
