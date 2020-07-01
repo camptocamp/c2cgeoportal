@@ -1,3 +1,5 @@
+##### 2.5.0.52
+* Typo, Send the welcome email [c2cgeoportal#6660](https://github.com/camptocamp/c2cgeoportal/pull/6660)
 ##### 2.5.0.51
 * [Backport 2.5] Add missing geotablePrimaryKey metadata [c2cgeoportal#6657](https://github.com/camptocamp/c2cgeoportal/pull/6657)
 ##### 2.5.0.50
