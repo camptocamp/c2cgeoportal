@@ -1,3 +1,5 @@
+##### 2.5.0.51
+* [Backport 2.5] Add missing geotablePrimaryKey metadata [c2cgeoportal#6657](https://github.com/camptocamp/c2cgeoportal/pull/6657)
 ##### 2.5.0.50
 * [security] Upgrade pipenv [c2cgeoportal#6607](https://github.com/camptocamp/c2cgeoportal/pull/6607)
 ##### 2.5.0.49
