@@ -177,7 +177,7 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
         <span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
         <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
-        <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="o">.</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
         <span class="n">info</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;colanderalchemy&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;missing&quot;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -234,9 +234,10 @@ For this, first ensure that the following files exist (if needed, create them as
 
 <span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">FormWidget</span>
 <span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">AbstractViews</span>
 <span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal_admin.schemas.roles</span> <span class="kn">import</span> <span class="n">roles_schema_node</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.views.users</span> <span class="kn">import</span> <span class="n">UserViews</span>
+
 
 <span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span>
 
@@ -251,7 +252,7 @@ For this, first ensure that the following files exist (if needed, create them as
 
 
 <span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=userdetails&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">UserDetailViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UserDetailViews</span><span class="p">(</span><span class="n">UserViews</span><span class="p">):</span>
     <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">),</span>
