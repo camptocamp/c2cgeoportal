@@ -25,7 +25,7 @@ add to ``geoportal/<package>_geoportal/models.py``:
         id = Column(
             types.Integer,
             ForeignKey(_schema + '.user.id'),
-            primary_key=True.
+            primary_key=True,
             info={
                 "colanderalchemy": {
                     "missing": None,
