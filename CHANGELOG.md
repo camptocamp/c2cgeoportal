@@ -1,3 +1,7 @@
+##### 2.4.1.118
+* Upgrade vulnerable dependencies [c2cgeoportal#6605](https://github.com/camptocamp/c2cgeoportal/pull/6605)
+* Add missing geotablePrimaryKey metadata [c2cgeoportal#6653](https://github.com/camptocamp/c2cgeoportal/pull/6653)
+* [Backport 2.4] Localize query result in API [ngeo#5979](https://github.com/camptocamp/ngeo/pull/5979)
 ##### 2.4.1.117
 * Add documentation on how to add an external npm package [c2cgeoportal#6572](https://github.com/camptocamp/c2cgeoportal/pull/6572)
 ##### 2.4.1.116
