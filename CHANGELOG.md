@@ -1,5 +1,7 @@
-##### 2.4.1.118
+##### 2.4.1.119
 * Upgrade vulnerable dependencies [c2cgeoportal#6605](https://github.com/camptocamp/c2cgeoportal/pull/6605)
+* [Backport 2.4] Typo, Send the welcome email [c2cgeoportal#6661](https://github.com/camptocamp/c2cgeoportal/pull/6661)
+##### 2.4.1.118
 * Add missing geotablePrimaryKey metadata [c2cgeoportal#6653](https://github.com/camptocamp/c2cgeoportal/pull/6653)
 * [Backport 2.4] Localize query result in API [ngeo#5979](https://github.com/camptocamp/ngeo/pull/5979)
 ##### 2.4.1.117
