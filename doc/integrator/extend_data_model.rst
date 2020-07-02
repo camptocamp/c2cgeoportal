@@ -25,7 +25,7 @@ add to ``geoportal/<package>_geoportal/models.py``:
         id = Column(
             types.Integer,
             ForeignKey(_schema + '.user.id'),
-            primary_key=True.
+            primary_key=True,
             info={
                 "colanderalchemy": {
                     "missing": None,
@@ -84,9 +84,10 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
 
     from deform.widget import FormWidget
     from c2cgeoform.schema import GeoFormSchemaNode
-    from c2cgeoform.views.abstract_views import AbstractViews
     from c2cgeoform.views.abstract_views import ListField
     from c2cgeoportal_admin.schemas.roles import roles_schema_node
+    from c2cgeoportal_admin.views.users import UserViews
+
 
     from cartoriviera_geoportal.models import UserDetail
 
@@ -100,8 +101,8 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
     settings_role = aliased(Role)
 
 
-    @view_defaults(match_param='table=userdetail')
-    class UserDetailViews(AbstractViews):
+    @view_defaults(match_param='table=userdetails')
+    class UserDetailViews(UserViews):
         _list_fields = [
             _list_field('id'),
             _list_field('username'),
