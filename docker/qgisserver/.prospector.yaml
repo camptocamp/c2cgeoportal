@@ -2,6 +2,10 @@
 
 strictness: veryhigh
 
+pep8:
+  disable:
+    - E501
+
 mccabe:
   run: false
 

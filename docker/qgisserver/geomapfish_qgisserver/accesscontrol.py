@@ -308,7 +308,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             session.expunge_all()
             LOG.debug(
                 "layers: %s",
-                json.dumps({k: [l.name for l in v] for k, v in layers.items()}, sort_keys=True, indent=4),
+                json.dumps(
+                    {k: [layer.name for layer in v] for k, v in layers.items()}, sort_keys=True, indent=4
+                ),
             )
             self.layers = layers
             return layers
