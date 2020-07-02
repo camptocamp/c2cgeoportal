@@ -1,5 +1,4 @@
 ---
-
 name: Audit
 
 on:
@@ -16,8 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         branch:
-          - '2.4'
-          - '2.5'
+          - "2.4"
+          - "2.5"
 
     steps:
       - uses: actions/checkout@v1
@@ -47,6 +46,7 @@ jobs:
       - run: sudo python3 -m pip install pipenv
         if: always()
       - run: |
+          asdf install python 3.5.8
           for file in $(find -name Pipfile)
           do
             echo Audit ${file}
