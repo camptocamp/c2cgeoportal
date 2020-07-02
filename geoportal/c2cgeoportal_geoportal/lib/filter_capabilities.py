@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2019, Camptocamp SA
+# Copyright (c) 2014-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -91,13 +91,13 @@ def wms_structure(wms_url, host, request):
         return result
 
     except AttributeError:  # pragma: no cover
-        error = "WARNING! an error occurred while trying to " "read the mapfile and recover the themes."
+        error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         LOG.exception(error)
         raise HTTPBadGateway(error)
 
     except SyntaxError:  # pragma: no cover
-        error = "WARNING! an error occurred while trying to " "read the mapfile and recover the themes."
+        error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         LOG.exception(error)
         raise HTTPBadGateway(error)
