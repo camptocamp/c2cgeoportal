@@ -1,5 +1,4 @@
 ---
-
 name: Update ngeo
 
 on:
@@ -64,7 +63,7 @@ jobs:
       # Test changelog
       - run: ci/changelog new_version
         env:
-          GITHUB_TOKEN: ${{ secrets-GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
       - run: git checkout CHANGELOG.md ci/changelog.yaml
 
@@ -75,42 +74,42 @@ jobs:
         if: failure()
       # Similar to: make tests-commons
       - run: >
-            ci/run-dc-logs docker-compose exec -T tests coverage run
-            --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
-            --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
-            /opt/c2cgeoportal/commons/tests
+          ci/run-dc-logs docker-compose exec -T tests coverage run
+          --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
+          --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
+          /opt/c2cgeoportal/commons/tests
         if: always()
       # Similar to: make tests-geoportal
       - run: >
-            ci/run-dc-logs docker-compose exec -T tests coverage run --append
-            --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
-            --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
-            /opt/c2cgeoportal/geoportal/tests
+          ci/run-dc-logs docker-compose exec -T tests coverage run --append
+          --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+          --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
+          /opt/c2cgeoportal/geoportal/tests
         if: always()
       # Similar to: make tests-admin
       - run: >
-            ci/run-dc-logs docker-compose exec -T tests coverage run --append
-            --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
-            --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
-            /opt/c2cgeoportal/admin/tests
+          ci/run-dc-logs docker-compose exec -T tests coverage run --append
+          --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
+          --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
+          /opt/c2cgeoportal/admin/tests
         if: always()
       # Similar to: make tests-qgisserver
       - run: >
-            ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
-            --source=/var/www/plugins/geomapfish_qgisserver
-            --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
-            /src/tests/functional
+          ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
+          --source=/var/www/plugins/geomapfish_qgisserver
+          --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+          /src/tests/functional
         if: always()
       - name: Extract tests artifacts
         run: |
-              docker-compose exec -T tests coverage report
-              docker-compose exec -T tests coverage html --directory=/tmp/coverage
-              docker-compose exec -T qgisserver-tests coverage report
-              docker-compose exec -T qgisserver-tests coverage html --directory=/tmp/coverage
-              mkdir --parent artifacts/geoportal-coverage
-              mkdir --parent artifacts/qgisserver-plugin-coverage
-              docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
-              docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
+          docker-compose exec -T tests coverage report
+          docker-compose exec -T tests coverage html --directory=/tmp/coverage
+          docker-compose exec -T qgisserver-tests coverage report
+          docker-compose exec -T qgisserver-tests coverage html --directory=/tmp/coverage
+          mkdir --parent artifacts/geoportal-coverage
+          mkdir --parent artifacts/qgisserver-plugin-coverage
+          docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
+          docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
         if: always()
       - run: docker-compose down
 
@@ -125,10 +124,10 @@ jobs:
 
       # Documentation
       - run: >
-            docker build --tag=camptocamp/geomapfish-doc
-            --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
-            --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
-            doc
+          docker build --tag=camptocamp/geomapfish-doc
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
+          --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
+          doc
 
       - run: docker images
         if: always()
@@ -157,9 +156,9 @@ jobs:
 
       - name: Init Git
         run: |
-            git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@${REPO_URL}
-            git config user.email "<ci@camptocamp.com>"
-            git config user.name "Continuous integration"
+          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@${REPO_URL}
+          git config user.email "<ci@camptocamp.com>"
+          git config user.name "Continuous integration"
         env:
           REPO_URL: github.com/camptocamp/c2cgeoportal
       - run: make build-tools
