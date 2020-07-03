@@ -1,3 +1,5 @@
+##### 2.4.1.120
+* Add some more ignored CWE [c2cgeoportal#6667](https://github.com/camptocamp/c2cgeoportal/pull/6667)
 ##### 2.4.1.119
 * Upgrade vulnerable dependencies [c2cgeoportal#6605](https://github.com/camptocamp/c2cgeoportal/pull/6605)
 * [Backport 2.4] Typo, Send the welcome email [c2cgeoportal#6661](https://github.com/camptocamp/c2cgeoportal/pull/6661)
