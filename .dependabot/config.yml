@@ -1,6 +1,6 @@
 ---
-
 version: 1
+
 update_configs:
   - package_manager: javascript
     directory: /
@@ -21,31 +21,6 @@ update_configs:
       - match:
           update_type: all
 
-  - package_manager: javascript
-    directory: /
-    update_schedule: live
-    target_branch: "2.5"
-    allowed_updates:
-      - match:
-          update_type: security
-          dependency_type: all
-  - package_manager: javascript
-    directory: /geoportal
-    update_schedule: live
-    target_branch: "2.5"
-    allowed_updates:
-      - match:
-          update_type: security
-          dependency_type: all
-  - package_manager: javascript
-    directory: /admin
-    update_schedule: live
-    target_branch: "2.5"
-    allowed_updates:
-      - match:
-          update_type: security
-          dependency_type: all
-
   - package_manager: python
     directory: /
     update_schedule: live
@@ -81,40 +56,6 @@ update_configs:
           dependency_name: none
     allowed_updates:
       - match:
-          dependency_type: all
-
-  - package_manager: python
-    directory: /
-    update_schedule: live
-    target_branch: "2.5"
-    allowed_updates:
-      - match:
-          update_type: security
-          dependency_type: all
-  - package_manager: python
-    directory: /docker/qgisserver
-    update_schedule: live
-    target_branch: "2.5"
-    allowed_updates:
-      - match:
-          update_type: security
-          dependency_type: all
-  - package_manager: python
-    directory: /ci
-    update_schedule: live
-    target_branch: "2.5"
-    allowed_updates:
-      - match:
-          update_type: security
-          dependency_type: all
-
-  - package_manager: python
-    directory: /
-    update_schedule: live
-    target_branch: "2.4"
-    allowed_updates:
-      - match:
-          update_type: security
           dependency_type: all
 
   - package_manager: docker
