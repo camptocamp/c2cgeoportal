@@ -228,6 +228,11 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version
    -       - name: Publish documentation to GitHub.io
    -         ...
 
+Configure the audit
+-------------------
+
+Add the new version branch in the ``.github/workflows/audit.yaml`` file.
+
 
 Use the ``ngeo`` package linked to the branch
 ---------------------------------------------
