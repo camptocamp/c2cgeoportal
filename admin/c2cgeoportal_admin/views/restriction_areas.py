@@ -59,7 +59,7 @@ class RestrictionAreaViews(AbstractViews):
         _list_field(
             "layers",
             renderer=lambda restriction_area: ", ".join(
-                "{}-{}".format(l.item_type, l.name) or "" for l in restriction_area.layers
+                "{}-{}".format(layer.item_type, layer.name) or "" for layer in restriction_area.layers
             ),
         ),
     ]

@@ -584,8 +584,9 @@ def includeme(config: pyramid.config.Configurator):
     config.add_view(error_handler, context=HTTPException)
 
     c2cwsgiutils.index.additional_title = (
-        '<div class="row"><div class="col-lg-3"><h2>GeoMapFish</h2>' '</div><div class="col-lg">'
+        '<div class="row"><div class="col-lg-3"><h2>GeoMapFish</h2></div><div class="col-lg">'
     )
+
     c2cwsgiutils.index.additional_auth.extend(
         [
             '<a href="../tiles/admin/">TileCloud chain admin</a><br>',

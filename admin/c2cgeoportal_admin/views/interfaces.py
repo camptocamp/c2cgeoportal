@@ -47,7 +47,9 @@ class InterfacesViews(AbstractViews):
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),
-        _list_field("layers", renderer=lambda interface: ", ".join([l.name or "" for l in interface.layers])),
+        _list_field(
+            "layers", renderer=lambda interface: ", ".join([layer.name or "" for layer in interface.layers])
+        ),
         _list_field(
             "theme",
             renderer=lambda interface: ", ".join(

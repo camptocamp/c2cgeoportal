@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2019, Camptocamp SA
+# Copyright (c) 2018-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -95,7 +95,6 @@ class XSDGenerator(PapyrusXSDGenerator):
                             pass
             self.element_callback(tb4, column)
 
-    # pylint: disable=method-hidden
     def element_callback(self, tb, column):
         if column.info.get("readonly"):
             with tag(tb, "xsd:annotation"):

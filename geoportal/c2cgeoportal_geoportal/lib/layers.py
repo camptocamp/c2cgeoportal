@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2019, Camptocamp SA
+# Copyright (c) 2018-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ def _get_layers_query(request: Request, what):
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = DBSession.query(what)
-    q = q.join(main.Layer.restrictionareas)
+    q = q.join(main.Layer.restrictionareas)  # pylint: disable=no-member
     q = q.join(main.RestrictionArea.roles)
     q = q.filter(main.Role.id.in_(get_roles_id(request)))
 

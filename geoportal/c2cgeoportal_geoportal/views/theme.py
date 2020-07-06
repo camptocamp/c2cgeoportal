@@ -27,6 +27,9 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
+
 import asyncio
 from collections import Counter
 import gc
@@ -215,7 +218,7 @@ class Theme:
                     "info": info,
                     "timepositions": wms_layer.timepositions,
                     "defaulttimeposition": wms_layer.defaulttimeposition,
-                    "children": [l.name for l in wms_layer.layers],
+                    "children": [layer.name for layer in wms_layer.layers],
                 }
 
             del wms
@@ -1018,7 +1021,7 @@ class Theme:
 
                     all_private_layers = get_private_layers([ogc_server.id]).values()
                     protected_layers_name = [
-                        l.name for l in get_protected_layers(self.request, [ogc_server.id]).values()
+                        layer.name for layer in get_protected_layers(self.request, [ogc_server.id]).values()
                     ]
                     private_layers_name: List[str] = []
                     for layers in [

@@ -277,7 +277,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             Session.configure(bind=engine)
             session = Session()
 
-            query = session.query(Metadata).filter(Metadata.name.in_(names))
+            query = session.query(Metadata).filter(Metadata.name.in_(names))  # pylint: disable=no-member
             for metadata in query.all():
                 location = "metadata/{}/{}".format(metadata.name, metadata.id)
                 metadata_list.append(Message(None, metadata.value, None, [], "", "", (filename, location)))
@@ -510,7 +510,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             layers = [d.value for d in layer.metadatas if d.name == "wmsLayer"]
         server = [d.value for d in layer.metadatas if d.name == "ogcServer"]
         if server and layers:
-            layers = [l for ls in layers for l in ls.split(",")]
+            layers = [layer for ls in layers for layer in ls.split(",")]
             for wms_layer in layers:
                 try:
                     db_server = DBSession.query(OGCServer).filter(OGCServer.name == server[0]).one()
@@ -700,7 +700,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         if wmscap is not None and layer in list(wmscap.contents):
             layer_obj = wmscap[layer]
             if layer_obj.layers:
-                layers = [l.name for l in layer_obj.layers]
+                layers = [layer.name for layer in layer_obj.layers]
 
         attributes = []
         for sub_layer in layers:
