@@ -1,6 +1,7 @@
+##### 2.5.0.54
+* Clarify creation documentation [c2cgeoportal#6676](https://github.com/camptocamp/c2cgeoportal/pull/6676)
 ##### 2.5.0.53
 * [Backport 2.5] Fix image name [c2cgeoportal#6673](https://github.com/camptocamp/c2cgeoportal/pull/6673)
-* Clarify creation documentation [c2cgeoportal#6676](https://github.com/camptocamp/c2cgeoportal/pull/6676)
 * Localize query result in API [ngeo#5974](https://github.com/camptocamp/ngeo/pull/5974)
 ##### 2.5.0.52
 * Typo, Send the welcome email [c2cgeoportal#6660](https://github.com/camptocamp/c2cgeoportal/pull/6660)
