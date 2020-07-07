@@ -1,3 +1,5 @@
+##### 2.5.0.55
+* Doc: fix typos [c2cgeoportal#6684](https://github.com/camptocamp/c2cgeoportal/pull/6684)
 ##### 2.5.0.54
 * Clarify creation documentation [c2cgeoportal#6676](https://github.com/camptocamp/c2cgeoportal/pull/6676)
 ##### 2.5.0.53
