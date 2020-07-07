@@ -96,9 +96,10 @@
         },
         "chameleon": {
             "hashes": [
-                "sha256:84fd294e73dbee519b2cc0b5b79d974de08d35ba4bb9e21fd13adac090f8c7eb"
+                "sha256:adf9609a2fa4ad20deb390605495f9a5d617b737bfbd86e51a49bbac2acaf316"
             ],
-            "version": "==3.8.0"
+            "index": "pypi",
+            "version": "==3.8.1"
         },
         "chardet": {
             "hashes": [
