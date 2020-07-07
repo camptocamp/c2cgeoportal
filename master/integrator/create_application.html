@@ -46,15 +46,19 @@ the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</s
 created by the c2cgeoportal scaffolds (the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffolds).</p>
 </div>
-<div class="section" id="install-c2cgeoportal">
-<h2>Install c2cgeoportal<a class="headerlink" href="#install-c2cgeoportal" title="Permalink to this headline">¶</a></h2>
-<p>To get <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, you need to get the related Docker image:</p>
+<div class="section" id="set-environements-variables">
+<h2>Set environements variables<a class="headerlink" href="#set-environements-variables" title="Permalink to this headline">¶</a></h2>
+<p>For the pracedure we need to set some environement variable:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker pull camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt;</span>
-</pre></div></div></div>
+</style><span class="prompt1"><span class="nv">GEOMAPFISH_VERSION</span><span class="o">=</span>&lt;release&gt;</span>
+<span class="prompt1"><span class="nv">GEOMAPFISH_PROJECT</span><span class="o">=</span>&lt;project&gt;</span>
+<span class="prompt1"><span class="nv">GEOMAPFISH_PACKAGE</span><span class="o">=</span>&lt;package&gt;</span>
+</pre></div></div><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be found on <a class="reference external" href="https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=">Docker hub</a>,
+&lt;project&gt; is the project name that should be the GitHub reposotory name, &lt;package&gt; is the package name.</p>
+</div>
 <div class="section" id="list-existing-scaffolds">
 <h2>List existing scaffolds<a class="headerlink" href="#list-existing-scaffolds" title="Permalink to this headline">¶</a></h2>
 <p>To list the available scaffolds, use the following command, either
@@ -62,7 +66,7 @@ from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm <span class="se">\</span>
-    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools: <span class="se">\</span>
     pcreate -l</span>
 </pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
@@ -72,14 +76,11 @@ c2cgeoportal application you want to create the new application from:</p>
 </div>
 <div class="section" id="create-the-new-application">
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
-<p>The first step in the project creation is to choose a project name
-<code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code>, and a package name <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code>.</p>
-<p>Normally, the project name should be the same name as the Git repository name.</p>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools: <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_create &lt;project&gt;</span>
+    pcreate -s c2cgeoportal_create</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -95,10 +96,10 @@ parameters:</p>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">2056</span> <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span> <span class="se">\</span>
-    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools: <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_create <span class="se">\</span>
-    --package-name &lt;package&gt; &lt;project&gt;</span>
+    --package-name</span>
 </pre></div></div></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> that will be next to the
@@ -106,9 +107,9 @@ parameters:</p>
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools:&lt;release<span class="p">|</span>version&gt; <span class="se">\</span>
+    camptocamp/geomapfish-tools: <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_update &lt;project&gt;</span>
+    pcreate -s c2cgeoportal_update</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -118,7 +119,7 @@ application. The files generated by this scaffold are prefixed with
 <code class="docutils literal notranslate"><span class="pre">CONST_</span></code>, which means they are <em>constant</em> files that should not be changed.
 Following this rule is important for easier updates.</p>
 <p>Go to your new project:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> &lt;project&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span></span>
 </pre></div></div></div>
 <div class="section" id="put-the-application-under-revision-control">
 <h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
@@ -127,7 +128,7 @@ Following this rule is important for easier updates.</p>
 <h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this headline">¶</a></h3>
 <p>Add the project:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git init</span>
-<span class="prompt1">git remote add origin git@github.com:camptocamp/&lt;project&gt;.git</span>
+<span class="prompt1">git remote add origin git@github.com:camptocamp/.git</span>
 </pre></div></div><p>Commit and push on the main repository:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .</span>
 <span class="prompt1">git commit -m <span class="s2">&quot;Initial commit&quot;</span></span>

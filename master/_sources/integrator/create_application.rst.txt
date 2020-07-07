@@ -15,14 +15,21 @@ In the simple case, the root directory of the application is the directory
 created by the c2cgeoportal scaffolds (the ``c2cgeoportal_create`` and
 ``c2cgeoportal_update`` scaffolds).
 
-Install c2cgeoportal
---------------------
 
-To get ``c2cgeoportal``, you need to get the related Docker image:
+Set environements variables
+---------------------------
+
+For the pracedure we need to set some environement variable:
 
 .. prompt:: bash
 
-   docker pull camptocamp/geomapfish-tools:<release|version>
+   GEOMAPFISH_VERSION=<release>
+   GEOMAPFISH_PROJECT=<project>
+   GEOMAPFISH_PACKAGE=<package>
+
+Where ``<release>`` can be found on `Docker hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=>`_,
+<project> is the project name that should be the GitHub reposotory name, <package> is the package name.
+
 
 List existing scaffolds
 -----------------------
@@ -35,7 +42,7 @@ c2cgeoportal application you want to create the new application from:
 .. prompt:: bash
 
     docker run --rm \
-        camptocamp/geomapfish-tools:<release|version> \
+        camptocamp/geomapfish-tools: \
         pcreate -l
 
 You should at least see the c2cgeoportal scaffolds:
@@ -43,22 +50,18 @@ You should at least see the c2cgeoportal scaffolds:
 * c2cgeoportal_create
 * c2cgeoportal_update
 
+
 Create the new application
 --------------------------
-
-The first step in the project creation is to choose a project name
-``<project>``, and a package name ``<package>``.
-
-Normally, the project name should be the same name as the Git repository name.
 
 To create the application, first apply the ``c2cgeoportal_create`` scaffold:
 
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:<release|version> \
+        camptocamp/geomapfish-tools: \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_create <project>
+        pcreate -s c2cgeoportal_create 
 
 .. note::
 
@@ -78,10 +81,10 @@ it later.
         docker run --rm -ti --volume=$(pwd):/src \
             --env=SRID=2056 \
             --env=EXTENT="2420000,1030000,2900000,1350000" \
-            camptocamp/geomapfish-tools:<release|version> \
+            camptocamp/geomapfish-tools: \
             run $(id -u) $(id -g) /src \
             pcreate -s c2cgeoportal_create \
-            --package-name <package> <project>
+            --package-name  
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you are
@@ -92,9 +95,9 @@ Now apply the ``c2cgeoportal_update`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:<release|version> \
+        camptocamp/geomapfish-tools: \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_update <project>
+        pcreate -s c2cgeoportal_update 
 
 .. note::
 
@@ -110,7 +113,7 @@ Go to your new project:
 
 .. prompt:: bash
 
-    cd <project>
+    cd 
 
 
 Put the application under revision control
@@ -126,7 +129,7 @@ Add the project:
 .. prompt:: bash
 
     git init
-    git remote add origin git@github.com:camptocamp/<project>.git
+    git remote add origin git@github.com:camptocamp/.git
 
 Commit and push on the main repository:
 
