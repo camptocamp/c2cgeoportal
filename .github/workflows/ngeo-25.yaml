@@ -145,9 +145,9 @@ jobs:
       - run: ci/test-app
 
       # Test Upgrade
-      - run: DOCKER_TAG=$(ci/release-tag) make build-tools
-      - run: DOCKER_TAG=$(ci/release-tag) make build-runner
-      - run: DOCKER_TAG=$(ci/release-tag) make build-config
+      - run: DOCKER_TAG=$(scripts/get-version --full) make build-tools
+      - run: DOCKER_TAG=$(scripts/get-version --full) make build-runner
+      - run: DOCKER_TAG=$(scripts/get-version --full) make build-config
       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 240 ${HOME}/workspace
