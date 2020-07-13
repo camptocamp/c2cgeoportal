@@ -30,6 +30,7 @@ jobs:
       - run: python3 --version
       - run: python3 -m pip --version
       - run: |
+          sudo rm /etc/apt/sources.list.d/*.list
           sudo apt-get update
           sudo apt-get install python3-wheel python3-setuptools
 
