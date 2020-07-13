@@ -138,9 +138,9 @@ And remove the <code class="docutils literal notranslate"><span class="pre">auto
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
 <span class="gd">-       # Test Upgrade</span>
-<span class="gd">-       - run: DOCKER_TAG=$(ci/release-tag) make build-tools</span>
-<span class="gd">-       - run: DOCKER_TAG=$(ci/release-tag) make build-runner</span>
-<span class="gd">-       - run: DOCKER_TAG=$(ci/release-tag) make build-config</span>
+<span class="gd">-       - run: DOCKER_TAG=$(scripts/get-version --full) make build-tools</span>
+<span class="gd">-       - run: DOCKER_TAG=$(scripts/get-version --full) make build-runner</span>
+<span class="gd">-       - run: DOCKER_TAG=$(scripts/get-version --full) make build-config</span>
 <span class="gd">-       - run: docker images | grep &quot;&lt;none&gt;&quot; | awk &#39;{print $3}&#39; | xargs --no-run-if-empty docker rmi || true</span>
 <span class="gd">-       - run: ci/test-upgrade init /root/workspace</span>
 <span class="gd">-       - run: ci/test-upgrade 2* /root/workspace</span>
