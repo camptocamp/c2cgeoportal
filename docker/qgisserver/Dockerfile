@@ -1,32 +1,30 @@
 ARG VERSION
 
-FROM camptocamp/c2cwsgiutils:release_4 AS c2cwsgiutils
-
 FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
-COPY --from=c2cwsgiutils /opt/c2cwsgiutils /opt/c2cwsgiutils
-COPY --from=c2cwsgiutils /usr/local/lib/python3.8/dist-packages/c2cwsgiutils.egg-link \
-    /usr/local/lib/python3.6/dist-packages/c2cwsgiutils.egg-link
-RUN echo /opt/c2cwsgiutils >> /usr/local/lib/python3.6/dist-packages/easy-install.pth
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
-COPY Pipfile Pipfile.lock /tmp/
-RUN cd /tmp && PIP_NO_BINARY=:all: pipenv install --system --deploy --clear
+COPY python/ /tmp/python/
+RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
+    PIP_NO_BINARY=shapely pipenv --python=$(python --version|awk '{print $2}') \
+    install --system --deploy --clear && \
+    rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs
 
 #############################################################################################################
 
 FROM ubuntu:20.04 AS lint
 
-RUN apt-get update
-RUN apt-get install --assume-yes --no-install-recommends apt-utils
-RUN apt-get install --assume-yes --no-install-recommends python3-pip python3-setuptools
+RUN apt update
+RUN apt install --assume-yes --no-install-recommends apt-utils
+RUN apt install --assume-yes --no-install-recommends python3-pip python3-setuptools
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
-COPY Pipfile Pipfile.lock /tmp/
-RUN cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
+COPY python/ /tmp/python/
+RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
+    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
 
 COPY . /src/
 RUN cd /src && prospector
