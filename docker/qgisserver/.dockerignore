@@ -1,8 +1,7 @@
 *
 !geomapfish_qgisserver
 !requirements.txt
-!Pipfile
-!Pipfile.lock
+!python
 !setup.cfg
 !.prospector.yaml
 !.pylintrc
