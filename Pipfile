@@ -57,7 +57,7 @@ redis = "==3.5.3"  # geoportal cache
 Shapely = "==1.7.0"  # geoportal
 SQLAlchemy = "==1.3.18"
 transaction = "==3.0.0"  # commons, geoportal
-translationstring = "==1.3"  # admin
+translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
 
 [requires]
