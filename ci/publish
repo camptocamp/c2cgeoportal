@@ -17,11 +17,12 @@ fi
 TAG=${GIT_TAG}
 COMMIT=FALSE
 VERSION_QGIS=FALSE
+CHANGELOG=FALSE
 
 if [[ ${TAG} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
 then
     VERSION_QGIS=${TAG}
-    ci/changelog ${TAG}
+    CHANGELOG=TRUE
     COMMIT=TRUE
     GIT_BRANCH=$(python3 -c "print(__import__('re').search(r'^([0-9]+\.[0-9]+)\.[0-9]+$', '${TAG}').group(1))")
 else
@@ -29,7 +30,7 @@ else
     then
         VERSION_QGIS=${GIT_BRANCH}
         TAG=$(scripts/get-version --full)
-        ci/changelog ${TAG}
+        CHANGELOG=TRUE
         COMMIT=TRUE
     fi
 fi
@@ -59,6 +60,11 @@ fi
 
 if [ $1 == "--geoportal" ]
 then
+    if [ "${CHANGELOG}" == "TRUE" ]
+    then
+        ci/changelog ${TAG}
+    fi
+
     if [ ${COMMIT} == TRUE ]
     then
         git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
