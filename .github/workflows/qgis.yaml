@@ -1,5 +1,4 @@
 ---
-
 name: QGIS build
 
 on:
@@ -22,8 +21,6 @@ jobs:
           - '3.10'
           # Last
           - '3.12'
-          # Master
-          - master
 
     env:
       MAIN_BRANCH: 2.5
