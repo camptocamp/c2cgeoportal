@@ -153,6 +153,9 @@ RUN rm --recursive --force geoportal/c2cgeoportal_geoportal/scaffolds \
 
 FROM base AS runner
 
+ENV MAJOR_VERSION=$MAJOR_VERSION
+ENV VERSION=$VERSION
+
 COPY bin/npm-packages /usr/bin/
 COPY package.json /tmp/
 RUN \
