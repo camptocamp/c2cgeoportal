@@ -1,6 +1,7 @@
+##### 2.5.0.57
+* Add missing ARG [c2cgeoportal#6719](https://github.com/camptocamp/c2cgeoportal/pull/6719)
 ##### 2.5.0.56
 * Set the versions in the runner [c2cgeoportal#6715](https://github.com/camptocamp/c2cgeoportal/pull/6715)
-* Don't update the changelog on QGIS CI [c2cgeoportal#6718](https://github.com/camptocamp/c2cgeoportal/pull/6718)
 * Allow the open LayerTree expanded by default [ngeo#5998](https://github.com/camptocamp/ngeo/pull/5998)
 * Add layertree icon tooltips [ngeo#6007](https://github.com/camptocamp/ngeo/pull/6007)
 * Gui for swipe on layertree groups gsgmf 1336 [ngeo#6009](https://github.com/camptocamp/ngeo/pull/6009)
@@ -9,7 +10,6 @@
 * [Backport 2.5] Retry example check [ngeo#6014](https://github.com/camptocamp/ngeo/pull/6014)
 * [Backport 2.5] Fix message for new GitHub version [ngeo#6016](https://github.com/camptocamp/ngeo/pull/6016)
 * [Backport 2.5] Use an image to print RegularShape [ngeo#6020](https://github.com/camptocamp/ngeo/pull/6020)
-* Correct scaleselector with constrainResolution to false [ngeo#6026](https://github.com/camptocamp/ngeo/pull/6026)
 ##### 2.5.0.55
 * Doc: fix typos [c2cgeoportal#6684](https://github.com/camptocamp/c2cgeoportal/pull/6684)
 ##### 2.5.0.54
