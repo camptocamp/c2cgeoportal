@@ -1,3 +1,5 @@
+##### 2.5.0.58
+* Don't update the changelog on QGIS CI [c2cgeoportal#6718](https://github.com/camptocamp/c2cgeoportal/pull/6718)
 ##### 2.5.0.57
 * Add missing ARG [c2cgeoportal#6719](https://github.com/camptocamp/c2cgeoportal/pull/6719)
 ##### 2.5.0.56
