@@ -1,3 +1,11 @@
+##### 2.5.0.59
+* Add getitfixed alembic [c2cgeoportal#6724](https://github.com/camptocamp/c2cgeoportal/pull/6724)
+* Correct scaleselector with constrainResolution to false [ngeo#6026](https://github.com/camptocamp/ngeo/pull/6026)
+* Removes strange and buggy functionality [ngeo#6030](https://github.com/camptocamp/ngeo/pull/6030)
+* Fix check of support of opacity on layer [ngeo#6031](https://github.com/camptocamp/ngeo/pull/6031)
+* Don't blink on e.-g. value around 1000 [ngeo#6032](https://github.com/camptocamp/ngeo/pull/6032)
+* The search popup should be above the disclamers [ngeo#6033](https://github.com/camptocamp/ngeo/pull/6033)
+* Don't hide the cross when there steel have a geometry [ngeo#6034](https://github.com/camptocamp/ngeo/pull/6034)
 ##### 2.5.0.58
 * Don't update the changelog on QGIS CI [c2cgeoportal#6718](https://github.com/camptocamp/c2cgeoportal/pull/6718)
 ##### 2.5.0.57
