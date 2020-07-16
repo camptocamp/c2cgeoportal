@@ -81,11 +81,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:65a9920afdfc5bed1c85bbf6d9c484bcf6abcfaac861c5949cdecd98e93ab36e",
-                "sha256:a37a1a5ec2776ea50e960a942542076cd4c32ab6b912c5ba55815044e58ddb9f"
+                "sha256:68386ab3e3ae845b3c17448ac260ca57f2c459cbadcf40e3f31ff550991f3b84",
+                "sha256:6b3e32b87c246c538dbf283b3a3d6416c7089e407a3d7a7c95fd62e34f383870"
             ],
             "index": "pypi",
-            "version": "==2.1.15"
+            "version": "==2.1.17"
         },
         "certifi": {
             "hashes": [
@@ -96,9 +96,9 @@
         },
         "chameleon": {
             "hashes": [
-                "sha256:5e66ea02e5ca1b5d87f7baf6244eddabd8aa2f4e7f7f0a61c69d25a877add07e"
+                "sha256:adf9609a2fa4ad20deb390605495f9a5d617b737bfbd86e51a49bbac2acaf316"
             ],
-            "version": "==3.7.0"
+            "version": "==3.8.1"
         },
         "chardet": {
             "hashes": [
@@ -154,11 +154,11 @@
         },
         "deform": {
             "hashes": [
-                "sha256:2ff29c32ebe544c0f0a77087e268b2cd9cb4b11fa35af3635d5b42913f88d74a",
-                "sha256:920a62b4101dc50fac453346524ca44b80f51dda3b6faafeb775012ef418c572"
+                "sha256:2f4e98a5b5bdcdfff9a62f88bd17c7ee378b7c8be61738797442eed5b961d3d2",
+                "sha256:ba93e7875dc415244c7b0621330d65407fc46ea33c5f54c0a134a1b4b3ccf462"
             ],
             "index": "pypi",
-            "version": "==2.0.7"
+            "version": "==2.0.10"
         },
         "defusedxml": {
             "hashes": [
@@ -210,11 +210,11 @@
         },
         "getitfixed": {
             "hashes": [
-                "sha256:9b71dc27499d16e9e0c3bf2662e775604bf8fd33d8f4a87aa70899924381651c",
-                "sha256:a2800da63583980a33e2077d0c9cd63fb253d01f68145552892cafecbec8b080"
+                "sha256:75628e02db7439c15a029077e7298aa80fd12f213419912cac6d0b8bd11ba7eb",
+                "sha256:8e69095394a8c046a903f1e34a33a747a27fca841440af879eac555496900d4c"
             ],
             "index": "pypi",
-            "version": "==1.0.14"
+            "version": "==1.0.17"
         },
         "hupper": {
             "hashes": [
