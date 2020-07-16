@@ -27,16 +27,16 @@ mypy = "==0.761"
 [packages]
 alembic = "==1.4.2"  # geoportal
 "c2c.template" = "==2.1.0"  # geoportal
-c2cgeoform = "==2.1.15"  # commons
+c2cgeoform = "==2.1.17"  # commons
 colander = "==1.7.0"  # commons, admin
 ColanderAlchemy = "==0.3.4"  # commons
-deform = "==2.0.7"  # commons, admin
+deform = "==2.0.10"  # commons, admin
 defusedxml = "==0.6.0"  # geoportal
 "dogpile.cache" = "==0.9.0"  # geoportal
 Fiona = "==1.8.13.post1"  # geoportal raster
 GeoAlchemy2 = "==0.7.0"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
-getitfixed = "==1.0.14"  # geoportal
+getitfixed = "==1.0.17"  # geoportal
 isodate = "==0.6.0"  # geoportal
 Mako = "==1.1.2"  # geoportal
 OWSLib = "==0.19.2"  # geoportal
