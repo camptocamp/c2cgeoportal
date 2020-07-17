@@ -210,11 +210,11 @@
         },
         "getitfixed": {
             "hashes": [
-                "sha256:75628e02db7439c15a029077e7298aa80fd12f213419912cac6d0b8bd11ba7eb",
-                "sha256:8e69095394a8c046a903f1e34a33a747a27fca841440af879eac555496900d4c"
+                "sha256:3dee9091499c910f115028f669237a1dd689440c3fa2d1f2bd564d16a9dbb851",
+                "sha256:63b276aa21616b2af8eb5ea702a18e159e1e21514a8a033a8b41adfd3f1e273e"
             ],
             "index": "pypi",
-            "version": "==1.0.17"
+            "version": "==1.0.19"
         },
         "hupper": {
             "hashes": [
