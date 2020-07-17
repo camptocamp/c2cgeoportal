@@ -75,9 +75,13 @@ checks: prospector eslint
 prospector:
 	prospector
 
-.PHONY: lint-ngeo
+.PHONY: eslint
 eslint: $(APP_JS_FILES)
 	eslint $?
+
+.PHONY: eslint-fix
+eslint-fix: $(APP_JS_FILES)
+	eslint --fix $?
 
 # Server localisation
 
