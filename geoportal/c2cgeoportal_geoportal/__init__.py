@@ -135,10 +135,12 @@ def add_admin_interface(config):
 
 def add_getitfixed(config):
     if config.get_settings()["getitfixed"].get("enabled", False):
-        config.add_view(
-            c2cgeoportal_geoportal.views.add_ending_slash, route_name="getitfixed_add_ending_slash"
-        )
-        config.add_route("getitfixed_add_ending_slash", "/getitfixed", request_method="GET")
+        for route_name, pattern in (
+            ("getitfixed_add_ending_slash", "/getitfixed"),
+            ("getitfixed_admin_add_ending_slash", "/getitfixed_admin"),
+        ):
+            config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name=route_name)
+            config.add_route(route_name, pattern, request_method="GET")
         config.include("getitfixed")
         # Register admin and getitfixed search paths together
         Form.set_zpt_renderer(c2cgeoform.default_search_paths, translator=translator)
