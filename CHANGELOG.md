@@ -1,8 +1,16 @@
+##### 2.5.0.60
+* Doc 2.5 add minimum requirement for migration [c2cgeoportal#6727](https://github.com/camptocamp/c2cgeoportal/pull/6727)
+* Fix route conflict with getitfixed [c2cgeoportal#6735](https://github.com/camptocamp/c2cgeoportal/pull/6735)
+* Add ending slash redirect on /getitfixed_admin [c2cgeoportal#6736](https://github.com/camptocamp/c2cgeoportal/pull/6736)
+* Fix eslint error [c2cgeoportal#6737](https://github.com/camptocamp/c2cgeoportal/pull/6737)
+* Clarify the licence for QGIS server plugins [c2cgeoportal#6738](https://github.com/camptocamp/c2cgeoportal/pull/6738)
+* Correct scaleselector with constrainResolution to false [ngeo#6026](https://github.com/camptocamp/ngeo/pull/6026)
+* Fix check of support of opacity on layer [ngeo#6031](https://github.com/camptocamp/ngeo/pull/6031)
+* Fix full text search colorpicker never disappears [ngeo#6045](https://github.com/camptocamp/ngeo/pull/6045)
+* Fix Remove all on externals [ngeo#6046](https://github.com/camptocamp/ngeo/pull/6046)
 ##### 2.5.0.59
 * Add getitfixed alembic [c2cgeoportal#6724](https://github.com/camptocamp/c2cgeoportal/pull/6724)
-* Correct scaleselector with constrainResolution to false [ngeo#6026](https://github.com/camptocamp/ngeo/pull/6026)
 * Removes strange and buggy functionality [ngeo#6030](https://github.com/camptocamp/ngeo/pull/6030)
-* Fix check of support of opacity on layer [ngeo#6031](https://github.com/camptocamp/ngeo/pull/6031)
 * Don't blink on e.-g. value around 1000 [ngeo#6032](https://github.com/camptocamp/ngeo/pull/6032)
 * The search popup should be above the disclamers [ngeo#6033](https://github.com/camptocamp/ngeo/pull/6033)
 * Don't hide the cross when there steel have a geometry [ngeo#6034](https://github.com/camptocamp/ngeo/pull/6034)
