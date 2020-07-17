@@ -1,7 +1,6 @@
 ---
-
 vars:
-  # the package name
+  # The package name
   package: {{package}}
   main_ogc_server: source for image/png
 
@@ -48,13 +47,63 @@ vars:
   interfaces_config:
     default:
       constants:
-        gmfSearchActions:
-          - action: add_theme
-            title: Add a theme
-          - action: add_group
-            title: Add a sub theme
-          - action: add_layer
-            title: Add a layer
+        gmfProjectionsOptions:
+          'EPSG:21781':
+            definition:
+              - +proj=$somerc
+              - +lat_0=46.95240555555556
+              - +lon_0=7.439583333333333
+              - +k_0=1
+              - +x_0=600000
+              - +y_0=200000
+              - +ellps=bessel
+              - +towgs84=674.374,15.056,405.346,0,0,0,0
+              - +units=m
+              - +no_defs
+            extent: [420000, 30000, 900000, 350000]
+          'EPSG:2056':
+            definition:
+              - +proj=$somerc
+              - +lat_0=46.95240555555556
+              - +lon_0=7.439583333333333
+              - +k_0=1
+              - +x_0=2600000
+              - +y_0=1200000
+              - +ellps=bessel
+              - +towgs84=674.374,15.056,405.346,0,0,0,0
+              - +units=m
+              - +no_defs
+            extent: [2420000, 1030000, 2900000, 1350000]
+        gmfSearchOptions:
+          styles: {}
+          coordinatesProjections: [EPSG:21781, EPSG:2056, EPSG:4326]
+          actions:
+            - action: add_theme
+              title: Add a theme
+            - action: add_group
+              title: Add a sub theme
+            - action: add_layer
+              title: Add a layer
+        gmfContextualDataOptions:
+          projections: [2056, 21781, 4326]
+        gmfElevationOptions:
+          layers: [aster, srtm]
+          layersConfig:
+            - name: aster
+              unit: m
+            - name: srtm
+              unit: m
+        gmfMousePositionOptions:
+          projections:
+            - code: EPSG:2056
+              label: CH1903+ / LV95
+              filter: ngeoNumberCoordinates::\{\{x\}\}, \{\{y\}\} m
+            - code: EPSG:21781
+              label: CH1903 / LV03
+              filter: ngeoNumberCoordinates::\{\{x\}\}, \{\{y\}\} m
+            - code: EPSG:4326'
+              label: WGS84
+              filter: ngeoDMSCoordinates:2
         gmfExternalOGCServers:
           - name: Swiss Topo WMS
             type: WMS
@@ -71,6 +120,49 @@ vars:
           wfsTypes: []
           defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
           defaultFeaturePrefix: feature
+        gmfInfobarOptions:
+          show: False
+        gmfProfileOptions:
+          linesConfiguration:
+            aster:
+              - color: '#0000A0'
+            srtm:
+              - color: '#00A000'
+        ngeoScaleSelectorOptions:
+          values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
+        gmfPrintOptions:
+          legend:
+            # See:
+            # https://www.mapserver.org/development/rfc/ms-rfc-101.html
+            # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
+            useBbox: true
+            label:
+              qgis: false
+            params:
+              # See:
+              # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
+              qgis:
+                LAYERFONTFAMILY: DejaVu Sans
+                ITEMFONTFAMILY: DejaVu Sans
+                LAYERFONTSIZE: '10'
+                ITEMFONTSIZE: '8'
+        gmfPermalinkOptions:
+          crosshairStyle:
+          crosshairEnabledByDefault: False
+          projectionCodes:
+            - EPSG:3857
+            - EPSG:2056
+            - EPSG:21781
+          useLocalStorage: False
+          pointRecenterZoom:
+        # Should be removed
+        gmfSearchActions:
+          - action: add_theme
+            title: Add a theme
+          - action: add_group
+            title: Add a sub theme
+          - action: add_layer
+            title: Add a layer
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
@@ -106,135 +198,25 @@ vars:
             background: background
           dynamic_params:
             interface: interface
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
     desktop:
       redirect_interface: mobile
       do_redirect: True
-      constants:
-        gmfPrintOptions:
-          legend:
-            # See:
-            # https://www.mapserver.org/development/rfc/ms-rfc-101.html
-            # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
-            useBbox: true
-            label:
-              qgis: false
-            params:
-              # See:
-              # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
-              qgis:
-                LAYERFONTFAMILY: DejaVu Sans
-                ITEMFONTFAMILY: DejaVu Sans
-                LAYERFONTSIZE: '10'
-                ITEMFONTSIZE: '8'
-        gmfPermalinkOptions:
-          crosshairStyle:
-          crosshairEnabledByDefault: False
-          projectionCodes:
-            - EPSG:3857
-            - EPSG:2056
-            - EPSG:21781
-          useLocalStorage: False
-          pointRecenterZoom:
-      routes:
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
-    desktop_alt:
-      redirect_interface: mobile_alt
-      constants:
-        ngeoQueryOptions:
-          tolerance: 20
-          limit: 5
-          queryCountFirst: true
-        gmfPrintOptions:
-          scaleInput: true
-          legend:
-            useBbox: false
-        gmfTreeManagerModeFlush: false
-        gmfSearchGroups: []
-        gmfFloors:
-          # Communes
-          - value: '8'
-            label: '8'
-          # District
-          - value: '6'
-            label: '6'
-          # Canton
-          - value: '4'
-            label: '4'
-          - value: '*'
-            label: '*'
-        gmfAuthenticationConfig:
-          allowPasswordReset: false
-          allowPasswordChange: false
-        ngeoRoutingOptions:
-          - backendUrl: https://routing.osm.ch/
-          - profiles:
-              - label: Car
-                profile: routed-car
-              - label: Bike (City)
-                profile: routed-bike
-              - label: Bike (Touring)
-                profile: routed-bike-touring
-              - label: Foot
-                profile: routed-foot
-              - label: Hiking
-                profile: routed-hiking
-        ngeoNominatimSearchDefaultParams:
-          countrycodes: CH
-        gmfPermalinkOptions:
-          crosshairStyle:
-            - stroke:
-                color: white
-                width: 5
-              points: 4
-              radius: 10
-              radius2: 0
-              angle: 0
-            - stroke:
-                color: blue
-                width: 2
-              points: 4
-              radius: 10
-              radius2: 0
-              angle: 0
-          crosshairEnabledByDefault: True
-          projectionCodes:
-            - EPSG:3857
-            - EPSG:2056
-            - EPSG:21781
-          useLocalStorage: False
-          pointRecenterZoom:
-      routes:
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
     mobile:
       redirect_interface: desktop
-    mobile_alt:
-      redirect_interface: desktop_alt
-      constants:
-        gmfTreeManagerModeFlush: false
-        gmfSearchActions: []
     iframe_api:
       constants:
         gmfSearchGroups: []
-    oeedit:
-      # FIXME: gmfContextualdatacontentTemplateUrl
-      routes:
-        gmfProfileJsonUrl:
-          name: profile.json
-        gmfPrintUrl:
-          name: printproxy
 
   cache:
     std:
       backend: c2cgeoportal.hybridsentinel
       arguments:
-        lock_timeout: 120  # Two minutes
-        redis_expiration_time: 86400  # One day
+        lock_timeout: 120 # Two minutes
+        redis_expiration_time: 86400 # One day
         distributed_lock: True
         service_name: '{REDIS_SERVICENAME}'
         socket_timeout: '{REDIS_TIMEOUT}'
@@ -243,7 +225,6 @@ vars:
       backend: dogpile.cache.memory
 
   admin_interface:
-
     layer_tree_max_nodes: 1000
 
     # The list of available variable names for the `Metadatas` form.
@@ -420,7 +401,7 @@ vars:
 
   # For print proxy
   print_url: '{PRINT_URL}'
-  print_get_redirect: false  # if true, redirects (302) directly to the print to fetch the report
+  print_get_redirect: false # if true, redirects (302) directly to the print to fetch the report
 
   devserver_url: http://{DEVSERVER_HOST}{VISIBLE_ENTRY_POINT}
 
@@ -429,15 +410,15 @@ vars:
 
   lingua_extractor: {}
 
-  content_security_policy_main_default_src_extra: ""
-  content_security_policy_main_script_src_extra: "
+  content_security_policy_main_default_src_extra: ''
+  content_security_policy_main_script_src_extra: '
     https://maps.google.com/
     https://maps.googleapis.com/
-    https://www.google-analytics.com/"
-  content_security_policy_main_style_src_extra: "
-    https://fonts.googleapis.com/"
-  content_security_policy_main_img_src_extra: ""
-  content_security_policy_main_connect_src_extra: ""
+    https://www.google-analytics.com/'
+  content_security_policy_main_style_src_extra: '
+    https://fonts.googleapis.com/'
+  content_security_policy_main_img_src_extra: ''
+  content_security_policy_main_connect_src_extra: ''
   content_security_policy_main_default_src: "
     'self'
     https://*
@@ -451,19 +432,19 @@ vars:
     'self'
     'unsafe-inline'
     {content_security_policy_main_style_src_extra}"
-  content_security_policy_main_img_src: "
+  content_security_policy_main_img_src: '
     *
     data:
-    {content_security_policy_main_img_src_extra}"
-  content_security_policy_main_connect_src: "
+    {content_security_policy_main_img_src_extra}'
+  content_security_policy_main_connect_src: '
     *
-    {content_security_policy_main_connect_src_extra}"
+    {content_security_policy_main_connect_src_extra}'
 
-  content_security_policy_admin_default_src_extra: ""
-  content_security_policy_admin_script_src_extra: ""
-  content_security_policy_admin_style_src_extra: ""
-  content_security_policy_admin_img_src_extra: ""
-  content_security_policy_admin_worker_src_extra: ""
+  content_security_policy_admin_default_src_extra: ''
+  content_security_policy_admin_script_src_extra: ''
+  content_security_policy_admin_style_src_extra: ''
+  content_security_policy_admin_img_src_extra: ''
+  content_security_policy_admin_worker_src_extra: ''
   content_security_policy_admin_default_src: "
     'self'
     {content_security_policy_admin_default_src_extra}"
@@ -476,20 +457,20 @@ vars:
     'unsafe-inline'
     https://stackpath.bootstrapcdn.com/
     {content_security_policy_admin_style_src_extra}"
-  content_security_policy_admin_img_src: "
+  content_security_policy_admin_img_src: '
     *
     data:
-    {content_security_policy_admin_img_src_extra}"
+    {content_security_policy_admin_img_src_extra}'
   content_security_policy_admin_worker_src: "
     'self'
     blob:
     {content_security_policy_admin_worker_src_extra}"
 
-  content_security_policy_apihelp_default_src_extra: ""
-  content_security_policy_apihelp_script_src_extra: ""
-  content_security_policy_apihelp_style_src_extra: ""
-  content_security_policy_apihelp_img_src_extra: ""
-  content_security_policy_apihelp_connect_src_extra: ""
+  content_security_policy_apihelp_default_src_extra: ''
+  content_security_policy_apihelp_script_src_extra: ''
+  content_security_policy_apihelp_style_src_extra: ''
+  content_security_policy_apihelp_img_src_extra: ''
+  content_security_policy_apihelp_connect_src_extra: ''
   content_security_policy_apihelp_default_src: "
     'self'
     https://*
@@ -505,17 +486,17 @@ vars:
     'unsafe-inline'
     https://stackpath.bootstrapcdn.com/
     {content_security_policy_apihelp_style_src_extra}"
-  content_security_policy_apihelp_img_src: "
+  content_security_policy_apihelp_img_src: '
     *
     data:
-    {content_security_policy_apihelp_img_src_extra}"
-  content_security_policy_apihelp_connect_src: "
+    {content_security_policy_apihelp_img_src_extra}'
+  content_security_policy_apihelp_connect_src: '
     *
-    {content_security_policy_apihelp_connect_src_extra}"
+    {content_security_policy_apihelp_connect_src_extra}'
 
-  content_security_policy_c2c_default_src_extra: ""
-  content_security_policy_c2c_script_src_extra: ""
-  content_security_policy_c2c_style_src_extra: ""
+  content_security_policy_c2c_default_src_extra: ''
+  content_security_policy_c2c_script_src_extra: ''
+  content_security_policy_c2c_style_src_extra: ''
   content_security_policy_c2c_default_src: "
     'self'
     {content_security_policy_c2c_default_src_extra}"
@@ -536,12 +517,11 @@ vars:
         X-Content-Type-Options: nosniff
         Referrer-Policy: same-origin
         Strict-Transport-Security: max-age=31536000; includeSubDomains
-        Content-Security-Policy:
-          "default-src {content_security_policy_admin_default_src};
+        Content-Security-Policy: 'default-src {content_security_policy_admin_default_src};
           script-src {content_security_policy_admin_script_src};
           style-src {content_security_policy_admin_style_src};
           img-src {content_security_policy_admin_img_src};
-          worker-src {content_security_policy_admin_worker_src}"
+          worker-src {content_security_policy_admin_worker_src}'
     - pattern: '^/getitfixed.*'
       headers: *c2cgeoform_headers
     - pattern: '^/static/.*'
@@ -554,24 +534,22 @@ vars:
         Access-Control-Allow-Headers: X-Requested-With, Content-Type
     - pattern: '^/c2c$'
       headers:
-        Content-Security-Policy:
-          "default-src {content_security_policy_c2c_default_src};
+        Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
           script-src {content_security_policy_c2c_script_src};
-          style-src {content_security_policy_c2c_style_src};"
+          style-src {content_security_policy_c2c_style_src};'
     - pattern: '^/c2c/.*'
       headers:
-        Content-Security-Policy:
-          "default-src {content_security_policy_c2c_default_src};
+        Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
           script-src {content_security_policy_c2c_script_src};
-          style-src {content_security_policy_c2c_style_src};"
+          style-src {content_security_policy_c2c_style_src};'
 
   # Control the HTTP headers
   headers:
     dynamic: &header
-      cache_control_max_age: 600  # 10 minutes
-      access_control_max_age: 600  # 10 minutes
+      cache_control_max_age: 600 # 10 minutes
+      access_control_max_age: 600 # 10 minutes
       access_control_allow_origin:
-        - "*"
+        - '*'
     index:
       <<: *header
       headers: &sec_headers
@@ -580,32 +558,30 @@ vars:
         X-Content-Type-Options: nosniff
         Referrer-Policy: origin
         Strict-Transport-Security: max-age=31536000; includeSubDomains
-        Content-Security-Policy:
-          "default-src {content_security_policy_main_default_src};
+        Content-Security-Policy: 'default-src {content_security_policy_main_default_src};
           script-src {content_security_policy_main_script_src};
           style-src {content_security_policy_main_style_src};
           img-src {content_security_policy_main_img_src};
-          connect-src {content_security_policy_main_connect_src}"
+          connect-src {content_security_policy_main_connect_src}'
     api: *header
     apihelp:
       <<: *header
       headers:
         <<: *sec_headers
-        Content-Security-Policy:
-          "default-src {content_security_policy_apihelp_default_src};
+        Content-Security-Policy: 'default-src {content_security_policy_apihelp_default_src};
           script-src {content_security_policy_apihelp_script_src};
           style-src {content_security_policy_apihelp_style_src};
           img-src {content_security_policy_apihelp_img_src};
-          connect-src {content_security_policy_apihelp_connect_src}"
+          connect-src {content_security_policy_apihelp_connect_src}'
     profile: *header
     raster: *header
     error: *header
     themes: &auth_header
-      cache_control_max_age: 600  # 10 minutes
-      access_control_max_age: 600  # 10 minutes
+      cache_control_max_age: 600 # 10 minutes
+      access_control_max_age: 600 # 10 minutes
       access_control_allow_origin:
-        - "{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}"
-        - "*"
+        - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}'
+        - '*'
       headers:
         Strict-Transport-Security: max-age=31536000; includeSubDomains
     config: *auth_header
@@ -618,7 +594,7 @@ vars:
     login:
       <<: *auth_header
       access_control_allow_origin:
-        - "{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}"
+        - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}'
 
   # Checker configuration
   checker_ogc_server: source for image/png
@@ -635,19 +611,19 @@ vars:
       routes:
         - name: desktop
           params:
-            no_redirect: "true"
+            no_redirect: 'true'
           environment: &phantomjs-env
             HTTP_MAP:
               https://localhost:8484/tiles/: http://localhost:8080/tiles/
           level: 6
         - name: mobile
           params:
-            no_redirect: "true"
+            no_redirect: 'true'
           environment: *phantomjs-env
           level: 6
         - name: iframe_api
           params:
-            no_redirect: "true"
+            no_redirect: 'true'
           environment: *phantomjs-env
           level: 6
         - name: apihelp
@@ -680,7 +656,7 @@ vars:
           level: 3
     themes:
       params:
-        version: "2"
+        version: '2'
       level: 4
       interfaces: {}
     print:
@@ -726,10 +702,10 @@ vars:
     # List of {method path} regexes to force the usage of the master, even for GET and OPTIONS
     # This supersedes the slave list.
     master:
-      - GET /s/.*   # The shortener updates the last_hit column on GET
+      - GET /s/.* # The shortener updates the last_hit column on GET
     # List of {method path} regexes to force the usage of the slave
     slave:
-      - \w+ /printproxy/.*  # The print proxy is never writing to the DB
+      - \w+ /printproxy/.* # The print proxy is never writing to the DB
 
 runtime_environment:
   - name: VISIBLE_WEB_HOST
@@ -787,3 +763,10 @@ runtime_postprocess:
 
 no_interpreted:
   - interfaces_config.default.static.angularLocaleScript.append
+  - interfaces_config.default.constants.gmfMousePositionOptions.projections[0].filter
+  - interfaces_config.default.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[0].filter
+  - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[0].filter
+  - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.mobile_alt.constants.gmfMobileMeasure.format
