@@ -1,3 +1,8 @@
+##### 2.4.1.121
+* Allow the layertree to be expanded by default [ngeo#5971](https://github.com/camptocamp/ngeo/pull/5971)
+* [Backport 2.4] Fix message for new GitHub version [ngeo#6015](https://github.com/camptocamp/ngeo/pull/6015)
+* Fix travis 2 4 [ngeo#6065](https://github.com/camptocamp/ngeo/pull/6065)
+* Bump [ngeo#6066](https://github.com/camptocamp/ngeo/pull/6066)
 ##### 2.4.1.120
 * Add some more ignored CWE [c2cgeoportal#6667](https://github.com/camptocamp/c2cgeoportal/pull/6667)
 ##### 2.4.1.119
