@@ -81,11 +81,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:68386ab3e3ae845b3c17448ac260ca57f2c459cbadcf40e3f31ff550991f3b84",
-                "sha256:6b3e32b87c246c538dbf283b3a3d6416c7089e407a3d7a7c95fd62e34f383870"
+                "sha256:0e5089cd7ebf087cf6214082ad33746ed32f1dd124ce7c1e6552649158b26390",
+                "sha256:5df2a4401755ad16a468dda6265308fc5dfd9814fcd0c8f0799a86338311b684"
             ],
             "index": "pypi",
-            "version": "==2.1.17"
+            "version": "==2.1.18"
         },
         "certifi": {
             "hashes": [
@@ -210,11 +210,11 @@
         },
         "getitfixed": {
             "hashes": [
-                "sha256:3dee9091499c910f115028f669237a1dd689440c3fa2d1f2bd564d16a9dbb851",
-                "sha256:63b276aa21616b2af8eb5ea702a18e159e1e21514a8a033a8b41adfd3f1e273e"
+                "sha256:57cf82666343864b92f983f9db7dc4b79b2bd5629f54e7d7c8544df8dc08659d",
+                "sha256:e42ad663ebeb3127bf6f067293269534b32c9c1253df04d2c21e331bee652edb"
             ],
             "index": "pypi",
-            "version": "==1.0.19"
+            "version": "==1.0.20"
         },
         "hupper": {
             "hashes": [
