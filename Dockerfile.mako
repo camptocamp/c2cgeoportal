@@ -20,6 +20,8 @@ RUN \
   cd /tmp && \
   webpack --mode production --profile --json > stats.json || webpack --mode production
 
+RUN echo "test"
+
 RUN \
   mkdir --parents /opt/angular-locale && \
   for LANG in en fr de it en-ch fr-ch de-ch it-ch; \
