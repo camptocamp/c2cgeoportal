@@ -1,7 +1,9 @@
+##### 2.5.0.62
+* Upgrade c2cgeoform and getitfixed [c2cgeoportal#6759](https://github.com/camptocamp/c2cgeoportal/pull/6759)
+* Typo - Use single pipe for translation [ngeo#6053](https://github.com/camptocamp/ngeo/pull/6053)
 ##### 2.5.0.61
 * Fix route conflict with getitfixed [c2cgeoportal#6735](https://github.com/camptocamp/c2cgeoportal/pull/6735)
 * Add ending slash redirect on /getitfixed_admin [c2cgeoportal#6736](https://github.com/camptocamp/c2cgeoportal/pull/6736)
-* Clarify the licence for QGIS server plugins [c2cgeoportal#6738](https://github.com/camptocamp/c2cgeoportal/pull/6738)
 ##### 2.5.0.60
 * Doc 2.5 add minimum requirement for migration [c2cgeoportal#6727](https://github.com/camptocamp/c2cgeoportal/pull/6727)
 * Fix eslint error [c2cgeoportal#6737](https://github.com/camptocamp/c2cgeoportal/pull/6737)
