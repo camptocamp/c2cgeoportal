@@ -1,4 +1,7 @@
 ##### 2.4.2
+* Bump [ngeo#6066](https://github.com/camptocamp/ngeo/pull/6066)
+##### 2.4.2
+* Bump [ngeo#6066](https://github.com/camptocamp/ngeo/pull/6066)
 ##### 2.4.1.122
 * Invalidate Jenkins docker cache [c2cgeoportal#6760](https://github.com/camptocamp/c2cgeoportal/pull/6760)
 ##### 2.4.1.121
