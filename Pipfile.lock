@@ -1315,10 +1315,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:3296b4ad0b07363f69b740edf70e40db8286f882f019179b31e6a03d896afbff",
-                "sha256:c934e33079966229fd236ffae6a7a3c3415bd585693a646ba3adb62a2d695874"
+                "sha256:869ec27f9b89964ccfe4fbdd5ccb8d3f285aaa3e9aa16a8491b9c8829148c230",
+                "sha256:a64d8fb4c15cdc70dae047352e980a197d855747cc885eb332cb73ddcc769168"
             ],
-            "version": "==6.0.0rc1"
+            "index": "pypi",
+            "version": "==6.0.0"
         },
         "pytest-cov": {
             "hashes": [
