@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1bf95fbd5faa1d3c0f8307d2d86d25b60cc893cafce37dd69772aaa4ead7e6a1"
+            "sha256": "3d887ba70c85bf1f49e24307b33d7ed26b0a0722fd53d95dd85bf963e12b75d5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -856,10 +856,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:eca463ca5447d7db2eeebd268217b7e73f7e9a22b750505a3efd655dc189ac84"
+                "sha256:09315c26c835eb5c02a36409575bdf1a92a153ca4c2d3347717081f56dc345bd",
+                "sha256:3f0d1f1bccda17ba3b3aaff254acc4099f3d430964d4c621ecc33ecfc3a0b53e"
             ],
             "index": "pypi",
-            "version": "==1.18.109"
+            "version": "==1.18.110"
         },
         "babel": {
             "hashes": [
@@ -887,10 +888,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:52a80cb721160b687179bd7077e63d775130455a678bf4280fb37c524c2bd67d",
-                "sha256:980c71b91d48ee3378a5f00c4530fdf2213a956e3924ca37859f6b3193f779b0"
+                "sha256:273dbd8e26d4faa568e4cd4ca3180890b59ff0e3e8df7fb352796796c6808527",
+                "sha256:c12a0dc7021fca9d11c2bdbafdc44372e38180b56a1fab97c27b152f79455cd1"
             ],
-            "version": "==1.17.32"
+            "version": "==1.17.33"
         },
         "certifi": {
             "hashes": [
@@ -918,6 +919,7 @@
                 "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
                 "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
             ],
+            "markers": "python_version != '3.4'",
             "version": "==0.4.3"
         },
         "coverage": {
@@ -1021,7 +1023,6 @@
                 "sha256:80cf40c597eb564e86346103f609d74efce0f6b4d4f30ec8ce9e2c26411ba437",
                 "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"
             ],
-            "index": "pypi",
             "version": "==1.0.1"
         },
         "isort": {
@@ -1385,6 +1386,7 @@
                 "sha256:35c5b5f6675ac02120036d97cf96f1fde4d49670543db2822ba5015e21a18032",
                 "sha256:4d409f5a7d78530a4a2062574c7bd80311bc3af29b364e293aa9b03eea77714f"
             ],
+            "markers": "python_version != '3.4'",
             "version": "==4.5"
         },
         "s3transfer": {
