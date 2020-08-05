@@ -281,6 +281,10 @@ vars:
         type: float
       - name: minResolution
         type: float
+      - name: maxQueryResolution
+        type: float
+      - name: minQueryResolution
+        type: float
       - name: opacity
         type: float
       - name: thumbnail
