@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b2b8405bee188bc7d7873c313f0ada4d49a8ee75d91af61ddbd32049598deaa8"
+            "sha256": "5b4a8c1681d82a6032f6e861fd2fd8f57d6590fa9d2a96a59ca7cd78d9e2fe1b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -856,11 +856,10 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:9cb60a145e935c8f42e089cfabac0699a9c3ad431a852a563689783aefd2908a",
-                "sha256:fd954d607cd207396ad559d315e20727b3abab6ac9dc6fbabad978dacbfc87a5"
+                "sha256:ec8bdd92de51b771cfbba8f7a2f00817ed26d85d5c8592c290109cb9ad6cd541"
             ],
             "index": "pypi",
-            "version": "==1.18.112"
+            "version": "==1.18.113"
         },
         "babel": {
             "hashes": [
@@ -888,10 +887,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:0f69698a59e7829d34851ea5025338bddc4352300ba7df619842eac173bc4a4e",
-                "sha256:8b55eb0d5ea82e383649eca3129ae0979781a97ac51c0375dfcb300178e5f2fb"
+                "sha256:1132a09abb84018081e9ad74bf7aba3cc8f776c576db7ec52bf72dee40a7a962",
+                "sha256:7740b12a9a32e78ee32c31dd6882e70c7469259cddf7b2c1f41eabf7eacece6b"
             ],
-            "version": "==1.17.35"
+            "version": "==1.17.36"
         },
         "certifi": {
             "hashes": [
@@ -919,7 +918,6 @@
                 "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
                 "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
             ],
-            "markers": "python_version != '3.4'",
             "version": "==0.4.3"
         },
         "coverage": {
@@ -1386,7 +1384,6 @@
                 "sha256:35c5b5f6675ac02120036d97cf96f1fde4d49670543db2822ba5015e21a18032",
                 "sha256:4d409f5a7d78530a4a2062574c7bd80311bc3af29b364e293aa9b03eea77714f"
             ],
-            "markers": "python_version != '3.4'",
             "version": "==4.5"
         },
         "s3transfer": {
