@@ -35,7 +35,7 @@ from typing import Any, Dict, List
 from dogpile.cache.api import NO_VALUE
 from dogpile.cache.backends.redis import RedisBackend
 from dogpile.cache.region import make_region
-from dogpile.cache.util import compat, sha1_mangle_key
+from dogpile.cache.util import sha1_mangle_key
 from pyramid.request import Request
 from sqlalchemy.orm.util import identity_key
 
@@ -77,7 +77,7 @@ def keygen_function(namespace, function):
         if ignore_first_argument:
             args = args[1:]
         new_args: List[str] = [arg for arg in args if not isinstance(arg, Request)]
-        parts.extend(map(compat.text_type, map(map_dbobject, new_args)))
+        parts.extend(map(str, map(map_dbobject, new_args)))
         return "|".join(parts)
 
     return generate_key
