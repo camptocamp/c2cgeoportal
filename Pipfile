@@ -9,7 +9,6 @@ Babel = "==2.7.0"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.9.1"  # admin tests
 coverage = "==5.2.1"  # Build coverage XML for Codacy
-isort = "==4.3.21"  # lint
 Jinja2 = "==2.10.3"  # c2c.template
 lingua = "==4.14"  # i18n
 PasteScript = "==3.2.0"  # geoportal pcreate

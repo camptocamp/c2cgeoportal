@@ -8,7 +8,7 @@ VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 .PHONY: checks
-checks: prospector bandit isort additionallint
+checks: prospector bandit additionallint
 
 .PHONY: prospector
 prospector:

@@ -7,7 +7,6 @@ disable=missing-docstring,
     bad-continuation,
     too-few-public-methods,
     too-many-arguments,
-    wrong-import-order,
     too-many-locals,
     too-many-branches,
     too-many-statements,
@@ -21,6 +20,8 @@ disable=missing-docstring,
     fixme,
     broad-except,
     invalid-name
+known-third-party=c2cwsgiutils,c2cgeoform
+known-first-party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin
 
 [TYPECHECK]
 ignored-classes=sqlalchemy.orm.scoping.scoped_session,
