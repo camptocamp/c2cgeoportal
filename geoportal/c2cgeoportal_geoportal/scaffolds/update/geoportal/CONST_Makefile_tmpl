@@ -15,12 +15,15 @@ ifneq ($(NGEO_API), "")
 DEFAULT_WEB_RULE += $(NGEO_API_OUTPUT_FILES)
 endif
 
+MO_FILES = $(addprefix {{package}}_geoportal/locale/,$(addsuffix /LC_MESSAGES/{{package}}_geoportal-client.mo, $(LANGUAGES)))
+
 WEB_RULE ?= $(DEFAULT_WEB_RULE)
 
 DEFAULT_BUILD_RULES ?= $(WEB_RULE) \
 	alembic.ini \
 	alembic.yaml \
-	build-api
+	build-api \
+	$(MO_FILES)
 
 
 # Make rules
