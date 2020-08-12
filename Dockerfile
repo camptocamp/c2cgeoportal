@@ -32,6 +32,7 @@ RUN cd /tmp && pipenv install --system --clear && \
     rm --recursive --force /usr/local/lib/python3.7/dist-packages/tests/ /tmp/* /root/.cache/*
 
 ENV NODE_PATH=/usr/lib/node_modules
+ENV TEST=false
 
 
 #############################################################################################################
@@ -167,7 +168,6 @@ RUN \
     npm cache clear --force && \
     rm -rf /tmp/*
 
-ENV TEST=false
 COPY bin/eval-templates bin/wait-db bin/list4vrt /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
 COPY --from=tools-cleaned /usr/lib/node_modules/ngeo/buildtools/check-example.js /usr/bin/
