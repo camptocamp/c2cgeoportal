@@ -1,8 +1,11 @@
+##### 2.5.0.64
+* Add yaml support in the editor config [c2cgeoportal#6816](https://github.com/camptocamp/c2cgeoportal/pull/6816)
+* Fix missing TEST in webpack-dev-server [c2cgeoportal#6817](https://github.com/camptocamp/c2cgeoportal/pull/6817)
+* Fix locales theme2fts [c2cgeoportal#6818](https://github.com/camptocamp/c2cgeoportal/pull/6818)
 ##### 2.5.0.63
 * Clarify the licence for QGIS server plugins [c2cgeoportal#6738](https://github.com/camptocamp/c2cgeoportal/pull/6738)
 * Fts keep clear button when feature gsgmf 1348 [ngeo#6078](https://github.com/camptocamp/ngeo/pull/6078)
 * Do not unregister already unregistered file datasources [ngeo#6086](https://github.com/camptocamp/ngeo/pull/6086)
-* [Backport 2.5] Corrections after release v2.4.2 geo 3403 [ngeo#6097](https://github.com/camptocamp/ngeo/pull/6097)
 ##### 2.5.0.62
 * Upgrade c2cgeoform and getitfixed [c2cgeoportal#6759](https://github.com/camptocamp/c2cgeoportal/pull/6759)
 * Typo - Use single pipe for translation [ngeo#6053](https://github.com/camptocamp/ngeo/pull/6053)
