@@ -1,7 +1,10 @@
-##### 2.5.0.64
-* Add yaml support in the editor config [c2cgeoportal#6816](https://github.com/camptocamp/c2cgeoportal/pull/6816)
-* Fix missing TEST in webpack-dev-server [c2cgeoportal#6817](https://github.com/camptocamp/c2cgeoportal/pull/6817)
+##### 2.5.0.65
 * Fix locales theme2fts [c2cgeoportal#6818](https://github.com/camptocamp/c2cgeoportal/pull/6818)
+* Fix security issue on dependencies [ngeo#6124](https://github.com/camptocamp/ngeo/pull/6124)
+* Removes unwanted scrolls [ngeo#6125](https://github.com/camptocamp/ngeo/pull/6125)
+* Fix the layers in the permalink [ngeo#6126](https://github.com/camptocamp/ngeo/pull/6126)
+##### 2.5.0.64
+* Fix missing TEST in webpack-dev-server [c2cgeoportal#6817](https://github.com/camptocamp/c2cgeoportal/pull/6817)
 ##### 2.5.0.63
 * Clarify the licence for QGIS server plugins [c2cgeoportal#6738](https://github.com/camptocamp/c2cgeoportal/pull/6738)
 * Fts keep clear button when feature gsgmf 1348 [ngeo#6078](https://github.com/camptocamp/ngeo/pull/6078)
