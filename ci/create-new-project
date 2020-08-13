@@ -30,7 +30,6 @@ DOCKER_RUN_ARGS="--volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geo
 PCREATE_CMD="run $(id -u) $(id -g) /src pcreate --ignore-conflicting-name --overwrite ${PACKAGE}"
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
 docker run --rm ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
-sed -i 's/code: 110/code: 999/g' ${WORKSPACE}/${PACKAGE}/geoportal/.eslintrc
 
 if [ $BASE_APP != true ]
 then

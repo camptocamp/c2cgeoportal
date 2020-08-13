@@ -269,6 +269,59 @@ class C2cUpgradeTool:
 
     @Step(2)
     def step2(self, step):
+        with open(".eslintrc", "w") as eslintrc_file:
+            eslintrc_file.write(
+                """extends:
+  - openlayers
+globals:
+  '{}': false
+env:
+  jquery: true
+parserOptions:
+  ecmaVersion: 2017
+rules:
+  no-console: 0
+  comma-dangle: 0
+  import/no-unresolved: 0
+  valid-jsdoc: 0
+  sort-imports-es6-autofix/sort-imports-es6: 0
+  prettier/prettier: 1
+""".format(
+                    self.project["project_package"]
+                )
+            )
+
+        app_js_files = []
+        for base in ("CONST_create_template/", ""):
+            try:
+                app_js_files.extend(
+                    check_output(
+                        [
+                            "find",
+                            base + self.project["project_package"] + "_geoportal/static-ngeo/js",
+                            "-type",
+                            "f",
+                            "-name",
+                            "*.js",
+                        ]
+                    )
+                    .decode()
+                    .split()
+                )
+            except Exception:
+                pass
+
+        if app_js_files:
+            call(["eslint", "--fix"] + app_js_files)
+
+        os.remove(".eslintrc")
+        check_call(["git", "add"] + app_js_files)
+        call(["git", "commit", "--message=Run code style"])
+
+        self.run_step(step + 1)
+
+    @Step(3)
+    def step3(self, step):
         project_path = os.path.join("/tmp", self.project["project_folder"])
         os.mkdir(project_path)
         shutil.copyfile("/src/project.yaml", os.path.join(project_path, "project.yaml"))
@@ -298,8 +351,8 @@ class C2cUpgradeTool:
 
         self.run_step(step + 1)
 
-    @Step(3)
-    def step3(self, step):
+    @Step(4)
+    def step4(self, step):
         if os.path.exists("CONST_create_template"):
             check_call(["git", "rm", "-r", "--force", "CONST_create_template/"])
 
@@ -320,8 +373,8 @@ class C2cUpgradeTool:
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
         self.run_step(step + 1)
 
-    @Step(4)
-    def step4(self, step):
+    @Step(5)
+    def step5(self, step):
         if "managed_files" not in self.project:
             self.print_step(
                 step,
@@ -335,8 +388,8 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    @Step(5)
-    def step5(self, step):
+    @Step(6)
+    def step6(self, step):
         task_to_do = False
         for upgrade_file in self.get_upgrade("upgrade_files"):
             action = upgrade_file["action"]
@@ -484,8 +537,8 @@ class C2cUpgradeTool:
                     os.rename(src, dst)
         return task_to_do
 
-    @Step(6)
-    def step6(self, step):
+    @Step(7)
+    def step7(self, step):
         self.files_to_get(step)
         self.run_step(step + 1)
 
@@ -586,8 +639,8 @@ class C2cUpgradeTool:
                     sys.exit(2)
         return error
 
-    @Step(7)
-    def step7(self, step):
+    @Step(8)
+    def step8(self, step):
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
@@ -622,8 +675,8 @@ class C2cUpgradeTool:
         # fmt: on
         return status
 
-    @Step(8)
-    def step8(self, step):
+    @Step(9)
+    def step9(self, step):
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
@@ -648,8 +701,8 @@ class C2cUpgradeTool:
                 + "\nNote that you can also apply them using: git apply --3way ngeo.diff",
             )
 
-    @Step(9)
-    def step9(self, step):
+    @Step(10)
+    def step10(self, step):
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
@@ -685,8 +738,8 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    @Step(10)
-    def step10(self, step):
+    @Step(11)
+    def step11(self, step):
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
@@ -702,8 +755,8 @@ class C2cUpgradeTool:
             pass
         self.print_step(step + 1, message="\n".join(message))
 
-    @Step(11, file_marker=False)
-    def step11(self, step):
+    @Step(12, file_marker=False)
+    def step12(self, step):
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         good, message = self.test_checkers()
@@ -719,8 +772,8 @@ class C2cUpgradeTool:
             )
             sys.exit(1)
 
-    @Step(12, file_marker=False)
-    def step12(self, step):
+    @Step(13, file_marker=False)
+    def step13(self, step):
         # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
 
@@ -735,8 +788,8 @@ class C2cUpgradeTool:
             prompt="Then to commit your changes type:",
         )
 
-    @Step(13, file_marker=False)
-    def step13(self, _):
+    @Step(14, file_marker=False)
+    def step14(self, _):
         if os.path.isfile(".UPGRADE_INSTRUCTIONS"):
             os.unlink(".UPGRADE_INSTRUCTIONS")
         check_call(

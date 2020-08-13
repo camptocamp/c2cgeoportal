@@ -72,24 +72,24 @@ function upgrade {
     git add --force .gitignore project.yaml
     git commit -m "Add /upgrade in .gitignore"
     ./upgrade ${MAJOR_VERSION}
-    if [ -e .UPGRADE7 ]
-    then
-        ./upgrade ${MAJOR_VERSION} 8
-    fi
     if [ -e .UPGRADE8 ]
     then
-        # Workaround
-        git status > /dev/null
-        git apply --3way ngeo.diff
         ./upgrade ${MAJOR_VERSION} 9
     fi
     if [ -e .UPGRADE9 ]
     then
         # Workaround
         git status > /dev/null
+        git apply --3way ngeo.diff
+        ./upgrade ${MAJOR_VERSION} 10
+    fi
+    if [ -e .UPGRADE10 ]
+    then
+        # Workaround
+        git status > /dev/null
         git apply --3way create.diff
         cp CONST_create_template/project.yaml .
-        ./upgrade ${MAJOR_VERSION} 10
+        ./upgrade ${MAJOR_VERSION} 11
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
     then
