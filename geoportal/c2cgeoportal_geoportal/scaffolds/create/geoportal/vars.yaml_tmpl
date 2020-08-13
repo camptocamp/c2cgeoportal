@@ -161,6 +161,20 @@ vars:
     # - display: Child:
     #   url: {web_protocol}://{host}/child/wsgi
 
+  # The dogpile.cache configuration.
+  cache:
+    std:
+      # Standalone version
+      # backend: c2cgeoportal.hybridsentinel
+      # arguments:
+      #   host: '{REDIS_HOST}'
+      #   port: '{REDIS_PORT}'
+      # Openshift version
+      arguments:
+        sentinels:
+          - - '{REDIS_HOST}'
+            - '{REDIS_PORT}'
+
 update_paths:
   - admin_interface.available_functionalities
   - admin_interface.available_metadata
@@ -222,3 +236,9 @@ no_interpreted:
   - reset_password.email_body
   - shortener.email_body
   - welcome_email.email_body
+
+# Standalone version
+# runtime_postprocess:
+#   - expression: "int({})"
+#     vars:
+#       - cache.std.arguments.port

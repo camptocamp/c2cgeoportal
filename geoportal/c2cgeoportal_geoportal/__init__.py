@@ -380,7 +380,10 @@ def includeme(config: pyramid.config.Configurator):
 
     # dogpile.cache configuration
     if "cache" in settings:
-        register_backend("c2cgeoportal.hybrid", "c2cgeoportal_geoportal.lib.caching", "HybridBackend")
+        register_backend("c2cgeoportal.hybrid", "c2cgeoportal_geoportal.lib.caching", "HybridRedisBackend")
+        register_backend(
+            "c2cgeoportal.hybridsentinel", "c2cgeoportal_geoportal.lib.caching", "HybridRedisSentinelBackend"
+        )
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
 

@@ -229,17 +229,16 @@ vars:
         gmfPrintUrl:
           name: printproxy
 
-  # The dogpile.cache configuration.
   cache:
     std:
-      backend: c2cgeoportal.hybrid
+      backend: c2cgeoportal.hybridsentinel
       arguments:
-        host: '{REDIS_HOST}'
-        port: '{REDIS_PORT}'
-        db: '{REDIS_DB}'
         lock_timeout: 120  # Two minutes
         redis_expiration_time: 86400  # One day
         distributed_lock: True
+        db: '{REDIS_DB}'
+        service_name: '{REDIS_SERVICENAME}'
+        socket_timeout: '{REDIS_TIMEOUT}'
     obj:
       backend: dogpile.cache.memory
 
@@ -771,15 +770,20 @@ runtime_environment:
     default: '6372'
   - name: REDIS_DB
     default: '0'
+  - name: REDIS_SERVICENAME
+    default: 'mymaster'
+  - name: REDIS_TIMEOUT
+    default: '3'
   - name: TILEGENERATION_SQS_QUEUE
     default: queue_name
   - name: TILEGENERATION_S3_BUCKET
     default: bucket_name
 
 runtime_postprocess:
-  - expression: int({})
+  - expression: "int({})"
     vars:
-      - cache.arguments.port
+      - cache.std.arguments.socket_timeout
+      - cache.std.arguments.db
 
 no_interpreted:
   - interfaces_config.default.static.angularLocaleScript.append

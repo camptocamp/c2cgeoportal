@@ -33,7 +33,7 @@ import logging
 from typing import Any, Dict, List
 
 from dogpile.cache.api import NO_VALUE
-from dogpile.cache.backends.redis import RedisBackend
+from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
 from dogpile.cache.region import make_region
 from dogpile.cache.util import sha1_mangle_key
 from pyramid.request import Request
@@ -120,9 +120,45 @@ def invalidate_region(region=None):
         get_region(region).invalidate()
 
 
-class HybridBackend(RedisBackend):
+class HybridRedisBackend(RedisBackend):
     """
     A memory and redis backend
+    """
+
+    def __init__(self, arguments):
+        self._cache = arguments.pop("cache_dict", {})
+        self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
+
+        super().__init__(arguments)
+
+    def get(self, key):
+        value = self._cache.get(key, NO_VALUE)
+        if value == NO_VALUE:
+            value = super().get(sha1_mangle_key(key.encode()))
+        if value != NO_VALUE and self._use_memory_cache:
+            self._cache[key] = value
+        return value
+
+    def get_multi(self, keys):
+        return [self.get(key) for key in keys]
+
+    def set(self, key, value):
+        if self._use_memory_cache:
+            self._cache[key] = value
+        super().set(sha1_mangle_key(key.encode()), value)
+
+    def set_multi(self, mapping):
+        for key, value in mapping.items():
+            self.set(key, value)
+
+    def delete(self, key):
+        self._cache.pop(key, None)
+        super().delete(key)
+
+
+class HybridRedisSentinelBackend(RedisSentinelBackend):
+    """
+    A memory and redis sentinel backend
     """
 
     def __init__(self, arguments):
