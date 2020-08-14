@@ -165,15 +165,18 @@ vars:
   cache:
     std:
       # Standalone version
-      # backend: c2cgeoportal.hybridsentinel
+      # backend: c2cgeoportal.hybrid
       # arguments:
       #   host: '{REDIS_HOST}'
       #   port: '{REDIS_PORT}'
+      #   db: '{REDIS_DB}'
       # Openshift version
       arguments:
         sentinels:
           - - '{REDIS_HOST}'
             - '{REDIS_PORT}'
+        connection_kwargs:
+          db: '{REDIS_DB}'
 
 update_paths:
   - admin_interface.available_functionalities
