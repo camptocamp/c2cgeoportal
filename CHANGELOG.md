@@ -1,8 +1,9 @@
+##### 2.5.0.66
+* Clarify version to upgrade to [c2cgeoportal#6834](https://github.com/camptocamp/c2cgeoportal/pull/6834)
+* Set maxTilesLoading to 128 [ngeo#6136](https://github.com/camptocamp/ngeo/pull/6136)
 ##### 2.5.0.65
 * Fix locales theme2fts [c2cgeoportal#6818](https://github.com/camptocamp/c2cgeoportal/pull/6818)
 * Fix security issue on dependencies [ngeo#6124](https://github.com/camptocamp/ngeo/pull/6124)
-* Removes unwanted scrolls [ngeo#6125](https://github.com/camptocamp/ngeo/pull/6125)
-* Fix the layers in the permalink [ngeo#6126](https://github.com/camptocamp/ngeo/pull/6126)
 ##### 2.5.0.64
 * Fix missing TEST in webpack-dev-server [c2cgeoportal#6817](https://github.com/camptocamp/c2cgeoportal/pull/6817)
 ##### 2.5.0.63
