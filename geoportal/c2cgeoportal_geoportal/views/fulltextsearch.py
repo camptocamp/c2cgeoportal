@@ -40,6 +40,7 @@ from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from c2cgeoportal_geoportal import locale_negotiator
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
 
 CACHE_REGION = get_region("std")
 IGNORED_CHARS_RE = re.compile(r"[()&|!:<>]")
@@ -52,6 +53,7 @@ class FullTextSearchView:
         set_common_headers(request, "fulltextsearch", NO_CACHE)
         self.settings = request.registry.settings.get("fulltextsearch", {})
         self.languages = self.settings.get("languages", {})
+        self.fts_normiliser = Normalize(self.settings)
 
     @staticmethod
     @CACHE_REGION.cache_on_arguments()
@@ -69,7 +71,7 @@ class FullTextSearchView:
 
         if "query" not in self.request.params:
             return HTTPBadRequest(detail="no query")
-        terms = self.request.params.get("query")
+        terms = self.fts_normiliser(self.request.params.get("query"))
 
         maxlimit = self.settings.get("maxlimit", 200)
 
