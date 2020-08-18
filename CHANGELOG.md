@@ -1,3 +1,5 @@
+##### 2.5.0.67
+* Add yaml support in the editor config [c2cgeoportal#6816](https://github.com/camptocamp/c2cgeoportal/pull/6816)
 ##### 2.5.0.66
 * Clarify version to upgrade to [c2cgeoportal#6834](https://github.com/camptocamp/c2cgeoportal/pull/6834)
 * Set maxTilesLoading to 128 [ngeo#6136](https://github.com/camptocamp/ngeo/pull/6136)
