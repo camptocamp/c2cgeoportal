@@ -45,7 +45,7 @@ vars:
               label: display_name
             - featureType: osm_scale
               label: display_name
-    desktop_alt:
+    desktop:
       constants:
         ngeoWfsPermalinkOptions:
           wfsTypes:
@@ -56,6 +56,8 @@ vars:
           defaultFeatureNS: http://www.qgis.org/gml
           defaultFeaturePrefix: feature
         gmfOptions:
+          map:
+            maxTilesLoading: 128
           view:
             srid: 2056,
             center: [2632464, 1185457]
@@ -66,6 +68,16 @@ vars:
     desktop_alt:
       redirect_interface: mobile_alt
       constants:
+        gmfOptions:
+          map:
+            maxTilesLoading: .Inf
+          view:
+            srid: 2056,
+            center: [2632464, 1185457]
+            zoom: 3
+            resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+            constrainResolution: false
+            extent: [2485071.54, 175346.36, 2828515.78, 1299941.84]
         gmfInfobarOptions:
           show: True
         gmfElevationOptions:
@@ -178,6 +190,8 @@ vars:
       redirect_interface: desktop_alt
       constants:
         gmfOptions:
+          map:
+            pixelRatio: 1
           view:
             autorotate: true
             srid: 2056
