@@ -71,7 +71,7 @@ Start the upgrade:
 
 Then follow the instructions.
 
-The ``<version>`` can be ``x.y.z.p``, ``x.y``, or ``master`` to target the master branch.
+The ``<version>`` can be ``x.y.z.p`` to target a stable version, or ``master`` to target the master branch.
 
 Upgrade the database
 ~~~~~~~~~~~~~~~~~~~~
