@@ -38,7 +38,10 @@ from urllib.parse import urlsplit
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
-from bottle import MakoTemplate, template
+import requests
+import sqlalchemy
+import yaml
+from bottle import MakoTemplate, template  # pylint: disable=wrong-import-order,useless-suppression
 from c2c.template.config import config
 from defusedxml.minidom import parseString
 from geoalchemy2.types import Geometry
@@ -46,13 +49,10 @@ from lingua.extractors import Extractor, Message
 from mako.lookup import TemplateLookup
 from mako.template import Template
 from owslib.wms import WebMapService
-import requests
-import sqlalchemy
 from sqlalchemy.exc import NoSuchTableError, OperationalError, ProgrammingError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
-import yaml
 
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal
@@ -360,11 +360,11 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
             try:
                 from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
-                    Theme,
+                    FullTextSearch,
                     LayerGroup,
                     LayerWMS,
                     LayerWMTS,
-                    FullTextSearch,
+                    Theme,
                 )
 
                 self._import(Theme, messages)
