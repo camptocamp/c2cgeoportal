@@ -42,8 +42,6 @@ vars:
             zoom: 3
             resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
             extent: [2420000, 1030000, 2900000, 1350000]
-            autorotate: false
-            constrainResolution: true
         gmfSearchOptions:
           styles: {}
           coordinatesProjections: *alternate_projections
@@ -92,8 +90,14 @@ vars:
             maxTilesLoading: 128
           view:
             <<: *view
-            autorotate: true
-
+            constrainResolution: True
+    mobile:
+      constants:
+        gmfOptions:
+          map: {}
+          view:
+            <<: *view
+            autorotate: True
 
   admin_interface:
     # Default values for the admin interface's maps.
@@ -104,9 +108,9 @@ vars:
         projection: 'EPSG:3857'
         center: [829170, 5933942]
         zoom: 7
-      fitSource: false
+      fitSource: False
       fitMaxZoom: 14
-      focusOnly: false
+      focusOnly: False
 
   functionalities:
     # Functionalities that are made available to Mako templates.
@@ -144,10 +148,10 @@ vars:
   smtp:
     # Used to send email from various feature
     host: smtp.example.com
-    ssl: true
+    ssl: True
     user: <username>
     password: <password>
-    starttls: false
+    starttls: False
 
   reset_password:
     # Used to send a reset password email
@@ -194,7 +198,7 @@ vars:
     #         rotation: 0
     #         center: [2600000, 1200000]
     #         scale: 100000
-    #         longitudeFirst: true
+    #         longitudeFirst: True
     #         layers: []
     #       legend: {}
     phantomjs:
