@@ -146,12 +146,12 @@ layer icon on the first layer, and to support the legend you should define a leg
 <p>To make the WMTS queryable, you should add the following <code class="docutils literal notranslate"><span class="pre">Metadata</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">server</span></code>,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">queryLayers</span></code> with the layers to query (groups not supported).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">queryLayers</span></code> with the layers to query (comma separated list. Groups are not supported).</p></li>
 </ul>
-<p>It is possible to give some scale limits for the queryable layers by setting
-a <code class="docutils literal notranslate"><span class="pre">minResolution</span></code> and/or a <code class="docutils literal notranslate"><span class="pre">maxResolution</span> <span class="pre">Metadata</span></code> value(s) for the
-WMTS layer. These values correspond to the WMTS layer resolution(s) which should
-be the zoom limit.</p>
+<p>By default the scale limits for the queryable layers are the <code class="docutils literal notranslate"><span class="pre">minResolution</span></code> and/or the
+<code class="docutils literal notranslate"><span class="pre">maxResolution</span></code> metadata value(s) of the WMTS layer. These values correspond to the WMTS layer
+resolution(s) which should be the zoom limit. You can also set a <code class="docutils literal notranslate"><span class="pre">minQueryResolution</span></code> and/or a
+<code class="docutils literal notranslate"><span class="pre">maxQueryResolution</span></code> to set a query zoom limits independant of the WMTS layer.</p>
 </div>
 <div class="section" id="print-wmts-in-high-quality">
 <h3>Print WMTS in high quality<a class="headerlink" href="#print-wmts-in-high-quality" title="Permalink to this headline">¶</a></h3>
@@ -160,7 +160,7 @@ be the zoom limit.</p>
 To activate this, you should add the following <code class="docutils literal notranslate"><span class="pre">Metadata</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ogcServer</span></code> with the name of the used <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">server</span></code>,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">printLayers</span></code> with the layers to print.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmsLayers</span></code> or <code class="docutils literal notranslate"><span class="pre">printLayers</span></code> with the layers to print (comma separated list).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
