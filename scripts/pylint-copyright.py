@@ -60,9 +60,7 @@ class CopyrightChecker(BaseChecker):
     def process_module(self, node):
         try:
             commits_date = (
-                subprocess.check_output(["git", "log", "--follow", "--pretty=format:%ci", node.file])
-                .decode()
-                .split("\n")
+                subprocess.check_output(["git", "log", "--pretty=format:%ci", node.file]).decode().split("\n")
             )
             first_year = int(commits_date[-1][0:4])
             last_year = commits_date[0][0:4]
