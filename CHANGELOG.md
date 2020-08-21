@@ -1,3 +1,6 @@
+##### 2.5.0.68
+* [Backport 2.5] Corrections after release v2.4.2 geo 3403 [ngeo#6097](https://github.com/camptocamp/ngeo/pull/6097)
+* Add chokidar requred for webpack dev server in the project [ngeo#6142](https://github.com/camptocamp/ngeo/pull/6142)
 ##### 2.5.0.67
 * Add yaml support in the editor config [c2cgeoportal#6816](https://github.com/camptocamp/c2cgeoportal/pull/6816)
 ##### 2.5.0.66
