@@ -291,6 +291,10 @@ vars:
       - name: wmsLayers
       - name: queryLayers
       - name: printLayers
+      - name: maxQueryResolution
+        type: float
+      - name: minQueryResolution
+        type: float
 
     # The list of functionalities that can be configured
     # through the admin interface.
