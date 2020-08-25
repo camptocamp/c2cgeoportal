@@ -163,6 +163,40 @@ vars:
             title: Add a sub theme
           - action: add_layer
             title: Add a layer
+        ngeoStringToHtmlReplacements:
+          # Hyperlink
+          - expression: ^(https?:\/\/.+)$
+            tags: gm
+            template: <a target="_blank" href="$1">$1</a>
+          # Mailto
+          - expression: ^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,}$
+            tags: gim
+            template: <a href="mailto:$1">$1</a>
+        ngeoTilesPreloadingLimit:
+        ngeoUsedKeyRegexp:
+          - .*
+        ngeoQueryOptions:
+          limit: 20
+        ngeoMeasurePrecision: 3
+        ngeoMeasureDecimals: 0
+        ngeoMeasureSpherical: False
+        gmfSnappingConfig: {}
+        ngeoSnappingTolerance: 20
+        gmfObjectEditingToolsOptions: {}
+        gmfTreeManagerModeFlush: True
+        gmfThemesOptions: {}
+        gmfContextualdataOptions:
+          rasterParams: {}
+        ngeoPointfilter:
+        gmfAuthenticationNoReloadRole:
+        ngeoNominatimSearchDefaultParams: {}
+        ngeoNominatimUrl: https://nominatim.openstreetmap.org/
+        ngeoCsvEncoding: utf-8
+        ngeoCsvExtension: .csv
+        ngeoCsvIncludeHeader: True
+        ngeoCsvQuote: '"'
+        ngeoCsvSeparator: ','
+        gmfCsvFilename: query-results.csv
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
@@ -769,8 +803,13 @@ no_interpreted:
   - interfaces_config.default.static.angularLocaleScript.append
   - interfaces_config.default.constants.gmfMousePositionOptions.projections[0].filter
   - interfaces_config.default.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.default.constants.ngeoStringToHtmlReplacements[0].expression
+  - interfaces_config.default.constants.ngeoStringToHtmlReplacements[1].expression
   - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[0].filter
   - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.mobile.constants.ngeoStringToHtmlReplacements[0].expression
+  - interfaces_config.mobile.constants.ngeoStringToHtmlReplacements[1].expression
   - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[0].filter
   - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[1].filter
-  - interfaces_config.mobile_alt.constants.gmfMobileMeasure.format
+  - interfaces_config.desktop.constants.ngeoStringToHtmlReplacements[0].expression
+  - interfaces_config.desktop.constants.ngeoStringToHtmlReplacements[1].expression
