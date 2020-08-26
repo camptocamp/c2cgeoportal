@@ -188,8 +188,20 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the configuration file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> you can add the following variables:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch_defaultlimit</span></code> the default limit on the results, default is 30.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch_maxlimit</span></code> the max possible limit, default is 200.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.defaultlimit</span></code> the default limit on the results, default is 30.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.maxlimit</span></code> the max possible limit, default is 200.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.languages</span></code> the language correspondance e.-g. <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">fr:</span> <span class="pre">french</span> <span class="pre">}</span></code></p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fulltextsearch.split_regex</span></code> the split regex to split the query text and the text in the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code>,</dt><dd><p>e.-g. <code class="docutils literal notranslate"><span class="pre">[.-]</span></code> to transform <code class="docutils literal notranslate"><span class="pre">St.Al-ban</span></code> to <code class="docutils literal notranslate"><span class="pre">St</span> <span class="pre">al</span> <span class="pre">ban</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fulltextsearch.replace</span></code> dictionary of rules to do a replacement where the key is a regular expression,</dt><dd><p>e.-g.: <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">kantonspolizei:</span> <span class="pre">'kantons</span> <span class="pre">polizei'</span> <span class="pre">}``to</span> <span class="pre">transform</span> <span class="pre">``kantonspolizei</span></code> in
+<code class="docutils literal notranslate"><span class="pre">kantons</span> <span class="pre">polizei</span></code>.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </div>
 <div class="section" id="ranking-system">
@@ -274,6 +286,25 @@ a word like ‘alignement’ is simplified as ‘align’:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We keep the stop words to remove the French short words.</p>
+</div>
+</div>
+<div class="section" id="add-synonyms">
+<h2>Add Synonyms<a class="headerlink" href="#add-synonyms" title="Permalink to this headline">¶</a></h2>
+<p>Create a new search configuration:
+<code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TEXT</span> <span class="pre">SEARCH</span> <span class="pre">CONFIGURATION</span> <span class="pre">de</span> <span class="pre">(COPY</span> <span class="pre">=</span> <span class="pre">german);</span></code></p>
+<p>Create a file with the Synonyms:
+<code class="docutils literal notranslate"><span class="pre">/usr/share/postgresql/10/tsearch_data/de.syn</span></code> with: <code class="docutils literal notranslate"><span class="pre">sankt</span> <span class="pre">st</span></code></p>
+<p>Create the new search directory:
+.. code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">DICTIONARY</span> <span class="n">my_de</span> <span class="p">(</span><span class="n">TEMPLATE</span> <span class="o">=</span> <span class="n">synonym</span><span class="p">,</span> <span class="n">SYNONYMS</span><span class="o">=</span> <span class="n">de</span><span class="p">);</span>
+<span class="n">ALTER</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">de</span> <span class="n">ALTER</span> <span class="n">MAPPING</span> <span class="n">FOR</span> <span class="n">asciiword</span> <span class="n">WITH</span> <span class="n">my_de</span><span class="p">,</span> <span class="n">german_stem</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Use the new search configurtation named de:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span>
+    <span class="nt">languages</span><span class="p">:</span>
+        <span class="nt">de</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">de</span>
+</pre></div>
 </div>
 </div>
 </div>
