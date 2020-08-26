@@ -74,60 +74,13 @@ vars:
               - +units=m
               - +no_defs
             extent: [2420000, 1030000, 2900000, 1350000]
-        gmfSearchOptions:
-          styles: {}
-          coordinatesProjections: [EPSG:21781, EPSG:2056, EPSG:4326]
-          actions:
-            - action: add_theme
-              title: Add a theme
-            - action: add_group
-              title: Add a sub theme
-            - action: add_layer
-              title: Add a layer
-        gmfContextualDataOptions:
-          projections: [2056, 21781, 4326]
-        gmfElevationOptions:
-          layers: [aster, srtm]
-          layersConfig:
-            - name: aster
-              unit: m
-            - name: srtm
-              unit: m
-        gmfMousePositionOptions:
-          projections:
-            - code: EPSG:2056
-              label: CH1903+ / LV95
-              filter: ngeoNumberCoordinates::\{\{x\}\}, \{\{y\}\} m
-            - code: EPSG:21781
-              label: CH1903 / LV03
-              filter: ngeoNumberCoordinates::\{\{x\}\}, \{\{y\}\} m
-            - code: EPSG:4326'
-              label: WGS84
-              filter: ngeoDMSCoordinates:2
-        gmfExternalOGCServers:
-          - name: Swiss Topo WMS
-            type: WMS
-            url: https://wms.geo.admin.ch/?lang=fr
-          - name: Swiss Topo WMTS
-            type: WMTS
-            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
-          - name: ASIT VD
-            type: WMTS
-            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
         gmfAuthenticationConfig:
           forcePasswordChange: true
         ngeoWfsPermalinkOptions:
           wfsTypes: []
           defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
           defaultFeaturePrefix: feature
-        gmfInfobarOptions:
-          show: False
-        gmfProfileOptions:
-          linesConfiguration:
-            aster:
-              - color: '#0000A0'
-            srtm:
-              - color: '#00A000'
+        ngeoProfileOptions: {}
         ngeoScaleSelectorOptions:
           values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
         gmfPrintOptions:
@@ -146,15 +99,6 @@ vars:
                 ITEMFONTFAMILY: DejaVu Sans
                 LAYERFONTSIZE: '10'
                 ITEMFONTSIZE: '8'
-        gmfPermalinkOptions:
-          crosshairStyle:
-          crosshairEnabledByDefault: False
-          projectionCodes:
-            - EPSG:3857
-            - EPSG:2056
-            - EPSG:21781
-          useLocalStorage: False
-          pointRecenterZoom:
         # Should be removed
         gmfSearchActions:
           - action: add_theme
@@ -197,6 +141,38 @@ vars:
         ngeoCsvQuote: '"'
         ngeoCsvSeparator: ','
         gmfCsvFilename: query-results.csv
+        gmfDisplayQueryGridOptions:
+          featureStyle: &featureStyle
+            fill:
+              color: [255, 170, 0, 0.6]
+            stroke:
+              color: [255, 170, 0, 1]
+              width: 2
+            zIndex: 10
+            circle:
+              fill:
+                color: [255, 170, 0, 0.6]
+              stroke:
+                color: [255, 170, 0, 1]
+                width: 2
+              radius: 5
+          selectedFeatureStyle: &selectedFeatureStyle
+            fill:
+              color: [255, 0, 0, 0.6]
+            stroke:
+              color: [255, 0, 0, 1]
+              width: 2
+            zIndex: 10
+            circle:
+              fill:
+                color: [255, 0, 0, 0.6]
+              stroke:
+                color: [255, 0, 0, 1]
+                width: 2
+              radius: 5
+        gmfDisplayQueryWindowOptions:
+          featureStyle: *featureStyle
+          selectedFeatureStyle: *selectedFeatureStyle
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls

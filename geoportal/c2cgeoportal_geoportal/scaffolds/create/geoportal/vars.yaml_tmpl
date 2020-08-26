@@ -43,7 +43,29 @@ vars:
             resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
             extent: [2420000, 1030000, 2900000, 1350000]
         gmfSearchOptions:
-          styles: {}
+          styles:
+            default:
+              fill:
+                color: [65, 134, 240, 0.5]
+              stroke:
+                color: [65, 134, 240, 1]
+                width: 2
+              circle:
+                fill:
+                  color: [65, 134, 240, 0.5]
+                stroke:
+                  color: [65, 134, 240, 1]
+                  width: 2
+                radius: 5,
+            gmfCoordinatesLayerName:
+              regularShape:
+                stroke:
+                  color: [0, 0, 0, 0.7]
+                  width: 2
+                points: 4
+                radius: 8
+                radius2: 0
+                angle: 0
           coordinatesProjections: *alternate_projections
           actions:
             - action: add_theme
@@ -52,8 +74,9 @@ vars:
               title: Add a sub theme
             - action: add_layer
               title: Add a layer
+
         gmfContextualDataOptions:
-          projections: [2056, 21781, 4326]
+          projections: *alternate_projections
         gmfMousePositionOptions:
           projections:
             - code: EPSG:2056
@@ -84,6 +107,24 @@ vars:
           projectionCodes: *alternate_projections
           useLocalStorage: False
           pointRecenterZoom:
+        gmfElevationOptions:
+          layers: [aster, srtm]
+          layersConfig:
+            - name: aster
+              unit: m
+            - name: srtm
+              unit: m
+        gmfProfileOptions:
+          linesConfiguration:
+            aster:
+              - color: '#0000A0'
+            srtm:
+              - color: '#00A000'
+          hoverPointStyle:
+            circle:
+              fill:
+                color: '#ffffff'
+                radius: 3
     desktop:
       constants:
         gmfOptions:
