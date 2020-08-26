@@ -28,15 +28,16 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from argparse import ArgumentParser
 import gettext
 import os
 import sys
+from argparse import ArgumentParser
 from typing import Any, Dict, List, Set
 
-from sqlalchemy import func
 import transaction
+from sqlalchemy import func
 
+from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
@@ -100,6 +101,7 @@ class Import:
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
         self.languages = settings["available_locale_names"]
+        self.fts_normiliser = Normalize(settings["fulltextsearch"])
 
         # must be done only once we have loaded the project config
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
@@ -161,7 +163,9 @@ class Import:
                 fts.interface = interface
                 fts.lang = lang
                 fts.public = role is None
-                fts.ts = func.to_tsvector(self.fts_languages[lang], fts.label)
+                fts.ts = func.to_tsvector(
+                    self.fts_languages[lang], self.fts_normiliser(self._[lang].gettext(item.name))
+                )
                 fts.actions = [{"action": action, "data": item.name}]
                 fts.from_theme = True
                 self.session.add(fts)
