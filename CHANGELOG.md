@@ -1,5 +1,11 @@
+##### 2.5.0.69
+* Fix publish from ngeo change [c2cgeoportal#6872](https://github.com/camptocamp/c2cgeoportal/pull/6872)
+* Removes unwanted scrolls [ngeo#6125](https://github.com/camptocamp/ngeo/pull/6125)
+* Fix the layers in the permalink [ngeo#6126](https://github.com/camptocamp/ngeo/pull/6126)
+* Don't use the pixelRatio to create the mask [ngeo#6141](https://github.com/camptocamp/ngeo/pull/6141)
+* [Backport 2.5] Hide not fully working not c2c feature gmf-layertree-isexpanded [ngeo#6153](https://github.com/camptocamp/ngeo/pull/6153)
+* Do not emit click on drawend queries [ngeo#6157](https://github.com/camptocamp/ngeo/pull/6157)
 ##### 2.5.0.68
-* [Backport 2.5] Corrections after release v2.4.2 geo 3403 [ngeo#6097](https://github.com/camptocamp/ngeo/pull/6097)
 * Add chokidar requred for webpack dev server in the project [ngeo#6142](https://github.com/camptocamp/ngeo/pull/6142)
 ##### 2.5.0.67
 * Add yaml support in the editor config [c2cgeoportal#6816](https://github.com/camptocamp/c2cgeoportal/pull/6816)
