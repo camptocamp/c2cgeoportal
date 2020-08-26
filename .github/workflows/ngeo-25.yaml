@@ -179,10 +179,9 @@ jobs:
             DOCKER_PASSWORD: !var gs/ci/dockerhub/password
             PYPI_USERNAME: !var gs/ci/pypi/username
             PYPI_PASSWORD: !var gs/ci/pypi/password
-          ' ci/publish --geoportal
+          ' ci/publish refs/heads/${{ env.MAIN_BRANCH }} --geoportal
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
-          GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Notify demo
