@@ -5,13 +5,20 @@ docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
 
 set -x
 
+REF=${GITHUB_REF}
+if [ "$#" -ge 1 ] && [[ $1 != --* ]]
+then
+  REF=$1
+  shift
+fi
+
 GIT_TAG=""
-if [[ "${GITHUB_REF}" =~ ^refs/tags/.* ]]
+if [[ "${REF}" =~ ^refs/tags/.* ]]
 then
-  GIT_TAG=$(echo "${GITHUB_REF}"|sed 's|^refs/tags/||g')
-elif [[ "${GITHUB_REF}" =~ ^refs/heads/.* ]]
+  GIT_TAG=$(echo "${REF}"|sed 's|^refs/tags/||g')
+elif [[ "${REF}" =~ ^refs/heads/.* ]]
 then
-  GIT_BRANCH=$(echo "${GITHUB_REF}"|sed 's|^refs/heads/||g')
+  GIT_BRANCH=$(echo "${REF}"|sed 's|^refs/heads/||g')
 fi
 
 TAG=${GIT_TAG}
