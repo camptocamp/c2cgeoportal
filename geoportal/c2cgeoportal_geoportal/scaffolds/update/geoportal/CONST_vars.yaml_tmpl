@@ -218,6 +218,7 @@ vars:
         gmfLayerTreeOptions:
           openLinksInNewWindow: False
           isExpanded: False
+        gmfDisclaimerOptions: {}
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
