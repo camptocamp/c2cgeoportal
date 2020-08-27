@@ -80,6 +80,23 @@ vars:
           wfsTypes: []
           defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
           defaultFeaturePrefix: feature
+          crosshairStyle:
+            - regularShape:
+                stroke:
+                  color: white
+                  width: 5
+                points: 4
+                radius: 10
+                radius2: 0
+                angle: 0
+            - regularShape:
+                stroke:
+                  color: red
+                  width: 2
+                points: 4
+                radius: 10
+                radius2: 0
+                angle: 0
         ngeoProfileOptions: {}
         ngeoScaleSelectorOptions:
           values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
@@ -198,6 +215,9 @@ vars:
           rasterLayers: []
           format: '{x}, {y}'
           sketchStyle: *mobileMeasureStyle
+        gmfLayerTreeOptions:
+          openLinksInNewWindow: False
+          isExpanded: False
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
