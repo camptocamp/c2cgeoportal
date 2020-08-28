@@ -4,6 +4,6 @@
     "description": "GeoMapFish geoportal interface",
     "author": "",
     "dependencies": {
-        "ngeo": "2.6.0-latest.20200827T070008Z.dcb03237c.HEAD"
+        "ngeo": "2.6.0-latest.20200827T213004Z.1f19bb17a.HEAD"
     }
 }
