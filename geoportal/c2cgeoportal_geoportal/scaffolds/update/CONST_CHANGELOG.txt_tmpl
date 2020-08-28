@@ -1,6 +1,19 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.6.0
+=============
+
+Changes to apply
+----------------
+
+1. All ngeo components are now configured via variables in your project variables file, in the section
+   interfaces_config. To ease future migration, you should remove any existing custom JavaScript code which is
+   setting such variables.
+   There is some new documentation about the constants in ngeo
+   https://camptocamp.github.io/ngeo/{{geomapfish_main_version}}/apidoc/index.html.
+
+
 Version 2.5.0
 =============
 
