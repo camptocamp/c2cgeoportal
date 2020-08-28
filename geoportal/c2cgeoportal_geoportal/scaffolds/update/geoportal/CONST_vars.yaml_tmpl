@@ -219,6 +219,7 @@ vars:
           openLinksInNewWindow: False
           isExpanded: False
         gmfDisclaimerOptions: {}
+        gmfBackgroundLayerSelectorOptions: {}
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
