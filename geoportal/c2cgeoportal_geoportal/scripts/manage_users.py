@@ -39,12 +39,12 @@ def main():
     """
     Emergency user create and password reset script
     example, reset toto password to foobar:
-    ./docker-compose-run manage_users --password=foobar toto
+    ./docker-compose-run manage-users --password=foobar toto
     example, create user foo with password bar and role admin:
-    ./docker-compose-run manage_users --create --rolename=role_admin --password=bar foo
+    ./docker-compose-run manage-users --create --rolename=role_admin --password=bar foo
 
     to get the options list, do:
-    ./docker-compose-run manage_users --help
+    ./docker-compose-run manage-users --help
     """
 
     usage = """Usage: %prog [options] USERNAME
