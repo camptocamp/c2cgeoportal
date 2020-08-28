@@ -100,6 +100,7 @@ vars:
         ngeoProfileOptions: {}
         ngeoScaleSelectorOptions:
           values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
+          dropup: True
         gmfPrintOptions:
           legend:
             # See:
@@ -220,6 +221,87 @@ vars:
           isExpanded: False
         gmfDisclaimerOptions: {}
         gmfBackgroundLayerSelectorOptions: {}
+        defaultTheme: Demo
+        defaultLang: en
+        gmfOptions:
+          map: {}
+          view:
+            srid: 'EPSG:2056'
+            center: [2600000, 1200000]
+            zoom: 3
+            resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+            extent: [2420000, 1030000, 2900000, 1350000]
+        gmfSearchOptions:
+          styles:
+            default:
+              fill:
+                color: [65, 134, 240, 0.5]
+              stroke:
+                color: [65, 134, 240, 1]
+                width: 2
+              circle:
+                fill:
+                  color: [65, 134, 240, 0.5]
+                stroke:
+                  color: [65, 134, 240, 1]
+                  width: 2
+                radius: 5,
+            gmfCoordinatesLayerName:
+              regularShape:
+                stroke:
+                  color: [0, 0, 0, 0.7]
+                  width: 2
+                points: 4
+                radius: 8
+                radius2: 0
+                angle: 0
+          coordinatesProjections: ['EPSG:2056']
+          actions:
+            - action: add_theme
+              title: Add a theme
+            - action: add_group
+              title: Add a sub theme
+            - action: add_layer
+              title: Add a layer
+        gmfContextualDataOptions:
+          projections: ['EPSG:2056']
+        gmfMousePositionOptions:
+          projections:
+            - code: EPSG:2056
+              label: CH1903+ / LV95
+              filter: ngeoNumberCoordinates::\{\{x\}\}, \{\{y\}\} m
+            - code: EPSG:21781
+              label: CH1903 / LV03
+              filter: ngeoNumberCoordinates::\{\{x\}\}, \{\{y\}\} m
+            - code: EPSG:4326'
+              label: WGS84
+              filter: ngeoDMSCoordinates:2
+        gmfExternalOGCServers:
+          - name: Swiss Topo WMS
+            type: WMS
+            url: https://wms.geo.admin.ch/?lang=fr
+          - name: Swiss Topo WMTS
+            type: WMTS
+            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
+          - name: ASIT VD
+            type: WMTS
+            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
+        gmfPermalinkOptions:
+          crosshairStyle:
+          crosshairEnabledByDefault: False
+          projectionCodes: ['EPSG:2056']
+          useLocalStorage: False
+          pointRecenterZoom:
+        gmfElevationOptions:
+          layers: []
+          layersConfig: {}
+        gmfProfileOptions:
+          linesConfiguration: {}
+          hoverPointStyle:
+            circle:
+              fill:
+                color: '#ffffff'
+                radius: 3
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
