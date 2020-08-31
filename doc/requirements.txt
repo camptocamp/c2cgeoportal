@@ -1,2 +1,3 @@
 wheel==0.34.2
 pipenv==2020.5.28
+setuptools==49.6.0
