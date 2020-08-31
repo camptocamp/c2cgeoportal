@@ -11,9 +11,9 @@ echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
 cd ${PKG}
 if [ "${VERSION}" == "${MAJOR_VERSION}" ]
 then
-    ./setup.py egg_info --tag-date sdist bdist_wheel
+    python3 setup.py egg_info --tag-date sdist bdist_wheel
 else
-    ./setup.py egg_info --no-date sdist bdist_wheel
+    python3 setup.py egg_info --no-date sdist bdist_wheel
 fi
 twine upload dist/*
 
