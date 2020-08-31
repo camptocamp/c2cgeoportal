@@ -1,3 +1,4 @@
+##### 2.4.2.2
 ##### 2.4.2.1
 * Move to GitHub Actions [c2cgeoportal#6330](https://github.com/camptocamp/c2cgeoportal/pull/6330)
 * Fix typo in manage-users script doc [c2cgeoportal#6880](https://github.com/camptocamp/c2cgeoportal/pull/6880)
