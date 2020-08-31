@@ -1,3 +1,8 @@
+##### 2.4.2.1
+* Move to GitHub Actions [c2cgeoportal#6330](https://github.com/camptocamp/c2cgeoportal/pull/6330)
+* Fix typo in manage-users script doc [c2cgeoportal#6880](https://github.com/camptocamp/c2cgeoportal/pull/6880)
+* Corrections after release v2.4.2 geo 3403 [ngeo#6082](https://github.com/camptocamp/ngeo/pull/6082)
+* Hide not fully working not c2c feature gmf-layertree-isexpanded [ngeo#6152](https://github.com/camptocamp/ngeo/pull/6152)
 ##### 2.4.2
 * Bump [ngeo#6066](https://github.com/camptocamp/ngeo/pull/6066)
 ##### 2.4.2
