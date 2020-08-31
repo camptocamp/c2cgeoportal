@@ -28,7 +28,7 @@ if [ ${COMMIT} == TRUE ]
 then
     git add travis/ci.yaml travis/changelog.yaml CHANGELOG.md
     git commit -m "Update the minor version and changelog"
-    git push origin ${BRANCH_NAME}
+    git push origin HEAD:${BRANCH_NAME}
 fi
 
 DEPLOY_PIP=FALSE
