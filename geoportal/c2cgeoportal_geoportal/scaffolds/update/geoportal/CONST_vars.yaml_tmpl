@@ -304,6 +304,8 @@ vars:
               fill:
                 color: '#ffffff'
                 radius: 3
+        gmfShareOptions:
+          enableEmail: True
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
