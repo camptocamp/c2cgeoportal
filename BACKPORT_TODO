@@ -1,0 +1,14 @@
+Error on backporting to branch master, error on cherry picking ['71de95c442c72d0e6cacaa397dab07668c8c4f3c']:
+error: could not apply 71de95c44... Fix typo in manage-users script doc
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+
+
+to continue do:
+git fetch
+git checkout backport/6880-to-master
+git reset --hard HEAD^
+git cherry-pick 71de95c442c72d0e6cacaa397dab07668c8c4f3c
+git push origin backport/6880-to-master --force
