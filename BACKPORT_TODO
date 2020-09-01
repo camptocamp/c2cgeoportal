@@ -1,0 +1,15 @@
+Error on backporting to branch master, error on cherry picking ['bf7a929c351987ce1e0441a73db90a264ab04b00', '1672db4479024f752dda37c702e067566f7b5e7d']:
+error: could not apply bf7a929c3... Fix build on master
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+
+
+to continue do:
+git fetch
+git checkout backport/6899-to-master
+git reset --hard HEAD^
+git cherry-pick bf7a929c351987ce1e0441a73db90a264ab04b00
+git cherry-pick 1672db4479024f752dda37c702e067566f7b5e7d
+git push origin backport/6899-to-master --force
