@@ -1,3 +1,7 @@
+##### 2.5.0.70
+* [Backport 2.5] Fix typo in manage-users script doc [c2cgeoportal#6897](https://github.com/camptocamp/c2cgeoportal/pull/6897)
+* [Backport 2.5] Fix build on master [c2cgeoportal#6899](https://github.com/camptocamp/c2cgeoportal/pull/6899)
+* Improve offline example [ngeo#6198](https://github.com/camptocamp/ngeo/pull/6198)
 ##### 2.5.0.69
 * Fix controls3d 2.5 [ngeo#6173](https://github.com/camptocamp/ngeo/pull/6173)
 ##### 2.5.0.69
