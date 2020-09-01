@@ -1,3 +1,4 @@
+##### 2.4.2.6
 ##### 2.4.2.5
 ##### 2.4.2.4
 * Add missing twine to publish the python package [c2cgeoportal#6896](https://github.com/camptocamp/c2cgeoportal/pull/6896)
