@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ec550f250eb3cbc76dc8bc2e597ee08711d69a3eb232201920947377f654572f"
+            "sha256": "84433affb48a6000d5db9ada6047857ee3ee4b22e64d38d3c8b9ceb9b2e6a98c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -364,10 +364,10 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:07f558fece33b05caf857474a366dfcc00562bca13dd8b47b2b3e22d9f9bf55c",
-                "sha256:579170e23f8e0c2f24b0de612f71f648eccb79fb1322c814ae6b3c07b5ba23e8"
+                "sha256:14bfd98f51c78a3dd22a1ef45cf194ad79eee4a19e8e1a0d5c7f8e81ffe182ea",
+                "sha256:5adc0f9fc64319d8df5ca1e4e06eea674c26b80e6f00c530b18ce6a6592ead15"
             ],
-            "version": "==5.4.5"
+            "version": "==5.5.0"
         },
         "peppercorn": {
             "hashes": [
@@ -878,11 +878,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:c146c1634edbedc32564c536afcaaaeedc3ecc5aa9db3cf64fe5870c1c1a2a32",
-                "sha256:e094505f698981417612d8204d55631e741b5ae8c3f81762ef5197737b286a5a"
+                "sha256:066fe7a5cd76d663357579dfc2e20f361d4c9b92ac6db0554e4c9b5cf8857f59",
+                "sha256:b48007dcc2efe796a1d8dc59a131e13c42b67f53349e9c5380e366b9904cc3d4"
             ],
             "index": "pypi",
-            "version": "==1.18.128"
+            "version": "==1.18.130"
         },
         "babel": {
             "hashes": [
@@ -910,10 +910,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:198a62d387eb64b4c1dde33a9c41e96b07884c68c1442dd7c7d38123592aae7c",
-                "sha256:5f984def778b0000a12cf28ec727d64634ca46ab0dcdb5ce8b654bfb2a1fb99c"
+                "sha256:7e0272ceeb7747ed259a392e8d7b624cfd037085a8c59ef2b9f8916e7c556267",
+                "sha256:d37a83ac23257c85c48b74ab81173980234f8fc078e7a9d312d0ee7d057f90e6"
             ],
-            "version": "==1.17.51"
+            "version": "==1.17.53"
         },
         "certifi": {
             "hashes": [
@@ -1200,10 +1200,10 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:07f558fece33b05caf857474a366dfcc00562bca13dd8b47b2b3e22d9f9bf55c",
-                "sha256:579170e23f8e0c2f24b0de612f71f648eccb79fb1322c814ae6b3c07b5ba23e8"
+                "sha256:14bfd98f51c78a3dd22a1ef45cf194ad79eee4a19e8e1a0d5c7f8e81ffe182ea",
+                "sha256:5adc0f9fc64319d8df5ca1e4e06eea674c26b80e6f00c530b18ce6a6592ead15"
             ],
-            "version": "==5.4.5"
+            "version": "==5.5.0"
         },
         "pep8-naming": {
             "hashes": [
