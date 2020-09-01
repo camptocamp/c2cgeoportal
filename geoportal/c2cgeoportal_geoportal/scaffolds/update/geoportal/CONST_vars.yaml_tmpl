@@ -4,7 +4,9 @@ vars:
   package: {{package}}
   main_ogc_server: source for image/png
 
-  srid: -1
+  srid: EPSG:-1
+  alternate_projections: &alternate_projections
+    - '{srid}'
 
   # Sqlalchemy schema
   schema: '{PGSCHEMA}'
@@ -226,7 +228,7 @@ vars:
         gmfOptions:
           map: {}
           view:
-            srid: 'EPSG:2056'
+            srid: '{srid}'
             center: [2600000, 1200000]
             zoom: 3
             resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
@@ -255,7 +257,7 @@ vars:
                 radius: 8
                 radius2: 0
                 angle: 0
-          coordinatesProjections: ['EPSG:2056']
+          coordinatesProjections: *alternate_projections
           actions:
             - action: add_theme
               title: Add a theme
@@ -264,7 +266,7 @@ vars:
             - action: add_layer
               title: Add a layer
         gmfContextualDataOptions:
-          projections: ['EPSG:2056']
+          projections: *alternate_projections
         gmfMousePositionOptions:
           projections:
             - code: EPSG:2056
@@ -289,7 +291,7 @@ vars:
         gmfPermalinkOptions:
           crosshairStyle:
           crosshairEnabledByDefault: False
-          projectionCodes: ['EPSG:2056']
+          projectionCodes: *alternate_projections
           useLocalStorage: False
           pointRecenterZoom:
         gmfElevationOptions:
