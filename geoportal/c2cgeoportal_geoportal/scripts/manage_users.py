@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,12 +40,12 @@ def _main():
     """
     Emergency user create and password reset script
     example, reset toto password to foobar:
-    docker-compose exec geoportal manage_users --password=foobar toto
+    docker-compose exec geoportal manage-users --password=foobar toto
     example, create user foo with password bar and role admin:
-    docker-compose exec geoportal manage_users --create --rolename=role_admin --password=bar foo
+    docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo
 
     to get the options list, do:
-    docker-compose exec geoportal manage_users --help
+    docker-compose exec geoportal manage-users --help
     """
 
     usage = """Usage: %prog [options] USERNAME
