@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f6ece4fb46f572b2fc1e4c0fe8dab409fe6379deef50a30bfe43f6232fc5766e"
+            "sha256": "c46d4ea4d7edcc06ea4b40a4be82af83578932c541ef82736a4ad489902d32de"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -81,11 +81,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:0e5089cd7ebf087cf6214082ad33746ed32f1dd124ce7c1e6552649158b26390",
-                "sha256:5df2a4401755ad16a468dda6265308fc5dfd9814fcd0c8f0799a86338311b684"
+                "sha256:af416e67e571da5d6e1de92ea6a4154b86ea285933dc5065ae26f5387c8743ec",
+                "sha256:dcfac6ed4224410aff6e86e15f6a76d9f96dfb4ae39713c54a599f735b353c51"
             ],
             "index": "pypi",
-            "version": "==2.1.18"
+            "version": "==2.1.19"
         },
         "certifi": {
             "hashes": [
@@ -1265,7 +1265,6 @@
                 "sha256:19b86fa8617ed916776a11cd8bc0197e5b9856d5433b777f51a3defe13075325",
                 "sha256:aca749e190a01726a4fb472dd4ef23b5c9da7b9205c0a7857c06533de13fd678"
             ],
-            "index": "pypi",
             "version": "==5.1.1"
         },
         "pyflakes": {
