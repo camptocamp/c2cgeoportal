@@ -31,12 +31,10 @@ then
     git push origin HEAD:${BRANCH_NAME}
 fi
 
-DEPLOY_PIP=FALSE
 # Get the version to be published
 if [ "${TAG}" != "" ]
 then
     VERSION=${TAG}
-    DEPLOY_PIP=TRUE
 elif [ "${BRANCH_NAME}" != "master" ]
 then
     VERSION=${BRANCH_NAME//\//_}
@@ -63,16 +61,6 @@ do
         camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${QGIS_VERSION}
     docker push camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${QGIS_VERSION}
 done
-
-if [ ${DEPLOY_PIP} == TRUE ]
-then
-    # Publish the Python eggs
-    for PKG in commons geoportal admin
-    do
-        export PKG
-        travis/publish-pypi
-    done
-fi
 
 # Cleanup
 if [ -e ~/.docker ]
