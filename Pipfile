@@ -23,7 +23,7 @@ mypy = "==0.761"
 [packages]
 alembic = "==1.4.2"  # geoportal
 "c2c.template" = "==2.2.1"  # geoportal
-c2cgeoform = "==2.1.19"  # commons
+c2cgeoform = "==2.1.20"  # commons
 colander = "==1.8.2"  # commons, admin
 ColanderAlchemy = "==0.3.4"  # commons
 deform = "==2.0.14"  # commons, admin
