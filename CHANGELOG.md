@@ -1,5 +1,7 @@
-##### 2.5.0.70
+##### 2.5.0.71
 * [Backport 2.5] Fix typo in manage-users script doc [c2cgeoportal#6897](https://github.com/camptocamp/c2cgeoportal/pull/6897)
+* Don't fail on unneeded apt repository fetch [c2cgeoportal#6901](https://github.com/camptocamp/c2cgeoportal/pull/6901)
+##### 2.5.0.70
 * [Backport 2.5] Fix build on master [c2cgeoportal#6899](https://github.com/camptocamp/c2cgeoportal/pull/6899)
 * Improve offline example [ngeo#6198](https://github.com/camptocamp/ngeo/pull/6198)
 ##### 2.5.0.69
