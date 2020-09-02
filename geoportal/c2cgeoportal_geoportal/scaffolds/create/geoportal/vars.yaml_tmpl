@@ -109,11 +109,27 @@ vars:
           pointRecenterZoom:
         gmfElevationOptions:
           layers: [aster, srtm]
+        gmfMobileMeasurePointOptions:
           layersConfig:
             - name: aster
               unit: m
             - name: srtm
               unit: m
+          sketchStyle:
+            fill:
+              color: rgba(255, 255, 255, 0.2)
+            stroke:
+              color: rgba(0, 0, 0, 0.5)
+              lineDash: [10, 10]
+              width: 2
+            regularShape:
+              stroke:
+                color: rgba(0, 0, 0, 0.7)
+                width: 2
+              points: 4
+              radius: 8
+              radius2: 0
+              angle: 0
         ngeoProfileOptions:
           linesConfiguration:
             aster:
