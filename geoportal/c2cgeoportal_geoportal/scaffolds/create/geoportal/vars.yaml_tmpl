@@ -133,9 +133,9 @@ vars:
         ngeoProfileOptions:
           linesConfiguration:
             aster:
-              - color: '#0000A0'
+              color: '#0000A0'
             srtm:
-              - color: '#00A000'
+              color: '#00A000'
         gmfProfileOptions:
           hoverPointStyle:
             circle:
