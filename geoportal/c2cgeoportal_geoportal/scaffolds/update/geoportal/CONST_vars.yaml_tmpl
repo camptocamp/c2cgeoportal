@@ -119,14 +119,6 @@ vars:
                 ITEMFONTFAMILY: DejaVu Sans
                 LAYERFONTSIZE: '10'
                 ITEMFONTSIZE: '8'
-        # Should be removed
-        gmfSearchActions:
-          - action: add_theme
-            title: Add a theme
-          - action: add_group
-            title: Add a sub theme
-          - action: add_layer
-            title: Add a layer
         ngeoStringToHtmlReplacements:
           # Hyperlink
           - expression: ^(https?:\/\/.+)$
