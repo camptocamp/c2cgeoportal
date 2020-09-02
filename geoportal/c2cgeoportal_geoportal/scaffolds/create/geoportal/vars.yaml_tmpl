@@ -114,12 +114,13 @@ vars:
               unit: m
             - name: srtm
               unit: m
-        gmfProfileOptions:
+        ngeoProfileOptions:
           linesConfiguration:
             aster:
               - color: '#0000A0'
             srtm:
               - color: '#00A000'
+        gmfProfileOptions:
           hoverPointStyle:
             circle:
               fill:
