@@ -1,3 +1,5 @@
+##### 2.5.0.72
+* Also build and publish QGIS 3.14 [c2cgeoportal#6917](https://github.com/camptocamp/c2cgeoportal/pull/6917)
 ##### 2.5.0.71
 * [Backport 2.5] Fix duplicated STYLES parameter in print requests [ngeo#6227](https://github.com/camptocamp/ngeo/pull/6227)
 ##### 2.5.0.71
