@@ -19,8 +19,9 @@ jobs:
           - '3.4'
           # LTR
           - '3.10'
-          # Last
           - '3.12'
+          # Last
+          - '3.14'
 
     env:
       MAIN_BRANCH: 2.5
