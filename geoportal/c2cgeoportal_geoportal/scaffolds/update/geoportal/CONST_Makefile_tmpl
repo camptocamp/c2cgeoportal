@@ -3,11 +3,6 @@ export PACKAGE = {{package}}
 TEMPLATE_EXCLUDE += $(PACKAGE)_geoportal/static/lib
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 
-# Language provided by the application
-LANGUAGES ?= en fr de
-NGEO_INTERFACES ?= desktop mobile iframe_api
-NGEO_API ?= TRUE
-
 ifneq ($(NGEO_INTERFACES), "")
 DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
 endif
