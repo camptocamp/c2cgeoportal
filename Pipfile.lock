@@ -878,6 +878,7 @@
         },
         "awscli": {
             "hashes": [
+                "sha256:6f6f5bc09e13de8fe83324ae7b46be220bb52693a4a9502d401664b9794e08f1",
                 "sha256:f817110be7f62077919b766ccc96721fe225780b8b3414bfd6e4d859fe643473"
             ],
             "index": "pypi",
@@ -940,6 +941,7 @@
                 "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
                 "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
             ],
+            "markers": "python_version != '3.4'",
             "version": "==0.4.3"
         },
         "coverage": {
@@ -1026,10 +1028,11 @@
         },
         "gitpython": {
             "hashes": [
-                "sha256:2db287d71a284e22e5c2846042d0602465c7434d910406990d5b74df4afb0858",
-                "sha256:fa3b92da728a457dd75d62bb5f3eb2816d99a7fe6c67398e260637a40e3fafb5"
+                "sha256:080bf8e2cf1a2b907634761c2eaefbe83b69930c94c66ad11b65a8252959f912",
+                "sha256:1858f4fd089abe92ae465f01d5aaaf55e937eca565fb2c1fce35a51b5f85c910"
             ],
-            "version": "==3.1.7"
+            "index": "pypi",
+            "version": "==3.1.8"
         },
         "idna": {
             "hashes": [
@@ -1405,6 +1408,7 @@
                 "sha256:35c5b5f6675ac02120036d97cf96f1fde4d49670543db2822ba5015e21a18032",
                 "sha256:4d409f5a7d78530a4a2062574c7bd80311bc3af29b364e293aa9b03eea77714f"
             ],
+            "markers": "python_version != '3.4'",
             "version": "==4.5"
         },
         "s3transfer": {
