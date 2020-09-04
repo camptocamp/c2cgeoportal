@@ -27,6 +27,8 @@ RUN \
 WORKDIR /app
 COPY . /app
 COPY --from=builder /app/{{package}}_geoportal/locale/ /app/{{package}}_geoportal/locale/
+# Workaround, see:https://github.com/moby/moby/issues/37965
+RUN true
 COPY --from=builder /usr/lib/node_modules/ngeo/dist/* /etc/static-ngeo/
 COPY --from=builder /etc/static-ngeo/* /etc/static-ngeo/
 COPY --from=builder /app/alembic.ini /app/alembic.yaml ./
