@@ -110,7 +110,9 @@ vars:
         gmfElevationOptions:
           layers: [aster, srtm]
         gmfMobileMeasurePointOptions:
-          layersConfig:
+          decimals: 0
+          format: '{x}, {y}'
+          rasterLayers:
             - name: aster
               unit: m
             - name: srtm

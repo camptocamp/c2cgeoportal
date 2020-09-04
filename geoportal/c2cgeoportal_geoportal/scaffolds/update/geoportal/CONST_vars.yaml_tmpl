@@ -211,7 +211,7 @@ vars:
           precision: 2
           sketchStyle: *mobileMeasureStyle
         gmfMobileMeasurePointOptions:
-          decimals: 2
+          decimals: 0
           rasterLayers: []
           format: '{x}, {y}'
           sketchStyle: *mobileMeasureStyle
