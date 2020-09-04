@@ -1,3 +1,6 @@
+##### 2.5.0.73
+* Move the base application configuration in the Makefile [c2cgeoportal#6916](https://github.com/camptocamp/c2cgeoportal/pull/6916)
+* Fix missing i10n file for theme2fts [c2cgeoportal#6924](https://github.com/camptocamp/c2cgeoportal/pull/6924)
 ##### 2.5.0.72
 * Also build and publish QGIS 3.14 [c2cgeoportal#6917](https://github.com/camptocamp/c2cgeoportal/pull/6917)
 ##### 2.5.0.71
