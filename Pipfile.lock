@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4f58e0dd8187e7a1c6138c09db3c8cf437d5e9689fdc668480ee0986d1074a12"
+            "sha256": "2126185707132cc7ffeb6ed5a39f5700dfabd7224d1204fea6ed1dc63f106df0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -42,7 +42,6 @@
                 "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594",
                 "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"
             ],
-            "index": "pypi",
             "version": "==20.2.0"
         },
         "babel": {
@@ -177,19 +176,19 @@
         },
         "fiona": {
             "hashes": [
-                "sha256:2a35818799fb95834e36834f8015197ee7dbbaf5a9a3888b67a79be519564e0a",
-                "sha256:3b1c9b5c834fae2fe947cfaea176db890bc6750d1a6ba9f54d969c19ffcd191e",
-                "sha256:4390e27527941d6233878565413bbb8198d0964115ffa06ef3bb0740cb9048e5",
-                "sha256:5a9b379d2e3dab8b145ca0fe5ae56ae915c7afd0893b4659e393ab2ac74b52f0",
-                "sha256:6d9997aa61fcc742f11448962c0fc6cd20c8c5773188996a37ccb784a5759228",
-                "sha256:9f8c111a4ddad913cc8c48a3664ef81299b56e04d9a4fa71ab0e9909df1c15e4",
-                "sha256:c98ef6eb1056e646ed1a79f1c86ccefdc5d8d9614952d02231a47f21c32006ee",
-                "sha256:cf4090cfc0fae7e386b9af7a84ee95393e3f8c2187e148bea2a317814bd0c584",
-                "sha256:e7a77e8a65f216345411aa31246dea547a20167110db92554f0b002642540525",
-                "sha256:ee8458857ce2a2b44c42c7918fd4518331df906d3f1571ec2f89821a8473267f"
+                "sha256:27d369d82454314d9cfb6a0d2cebc2aacbda7c6931d75ccd90febe4ae2c22c5a",
+                "sha256:2e9a42d3b1c7439e225bfd00c5bd5135e5506b9d2dc28b48fd916c2c506b404e",
+                "sha256:2f79c638e3024ac3ba68b1120727d777e60fa833f589b2151e8863e9bfeecacb",
+                "sha256:3f03a9e539f5592f0d68be506a555afe102404948bb515ae69648248fff3f38e",
+                "sha256:6a6b703aece9c794e5bac4d95512161c7b1fba27c1105c5d9ae66ee9cecba770",
+                "sha256:8704c6167f4e6dfb890930a045e833ccb24f9bc3e7db09201a9a0796f02eb607",
+                "sha256:a645af260f15de29f8924cce33f2af18b64fbef4a7ab654fe1caa8590f14e11a",
+                "sha256:c419749b23748a099620bd0e8bf0f9e146ba77647684a1d3c62b8aecd984e65d",
+                "sha256:cb28f94b92cdd07124907535a49dd7cd85ff0e2ee21b78f67a5b254b8cc4e8fa",
+                "sha256:fd6dfb65959becc916e9f6928618bfd59c16cdbc413ece0fbac61489cd11255f"
             ],
             "index": "pypi",
-            "version": "==1.8.15"
+            "version": "==1.8.16"
         },
         "geoalchemy2": {
             "hashes": [
@@ -875,7 +874,6 @@
                 "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594",
                 "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"
             ],
-            "index": "pypi",
             "version": "==20.2.0"
         },
         "awscli": {
