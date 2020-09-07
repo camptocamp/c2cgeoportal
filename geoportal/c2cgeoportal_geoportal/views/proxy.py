@@ -122,7 +122,7 @@ class Proxy(object):
                     "--- Query with body ---",
                     "%s",
                 ]
-                args.append(body.decode("utf-8"))
+                args.append(body.decode('utf-8'))
             log.error("\n".join(errors), *args, exc_info=True)
 
             raise HTTPBadGateway("Error on backend, See logs for detail")

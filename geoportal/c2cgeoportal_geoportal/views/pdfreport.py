@@ -62,7 +62,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 spec["outputFormat"]
             ),
             method="POST",
-            body=dumps(spec),
+            body=dumps(spec).encode('utf-8'),
             headers=headers
         )
 
