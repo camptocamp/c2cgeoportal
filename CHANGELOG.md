@@ -1,3 +1,6 @@
+##### 2.4.2.7
+* Initialize OGCProxy like it is done for TinyOWSProxy [c2cgeoportal#6941](https://github.com/camptocamp/c2cgeoportal/pull/6941)
+* Fix duplicated STYLES parameter in print requests [ngeo#6223](https://github.com/camptocamp/ngeo/pull/6223)
 ##### 2.4.2.6
 ##### 2.4.2.5
 ##### 2.4.2.4
