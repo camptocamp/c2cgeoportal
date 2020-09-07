@@ -1,3 +1,6 @@
+##### 2.4.2.9
+* Fix pdfreport call [c2cgeoportal#6943](https://github.com/camptocamp/c2cgeoportal/pull/6943)
+* Add this directory, as it needed when running c2cgeoportal in debug mode [c2cgeoportal#6944](https://github.com/camptocamp/c2cgeoportal/pull/6944)
 ##### 2.4.2.8
 * Add missing release tag [c2cgeoportal#6942](https://github.com/camptocamp/c2cgeoportal/pull/6942)
 ##### 2.4.2.7
