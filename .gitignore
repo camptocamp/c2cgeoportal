@@ -13,7 +13,6 @@
 /geoportal/tests/functional/alembic.ini
 /geoportal/tests/functional/alembic.yaml
 /geoportal/tests/testegg/production.ini
-/geoportal/c2cgeoportal_geoportal/locale/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/
