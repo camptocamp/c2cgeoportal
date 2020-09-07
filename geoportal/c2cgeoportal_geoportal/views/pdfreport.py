@@ -48,7 +48,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
     layername = None
 
     def __init__(self, request):
-        OGCProxy.__init__(self, request)
+        OGCProxy.__init__(self, request, has_default_ogc_server=True)
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec):
