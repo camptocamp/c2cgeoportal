@@ -17,13 +17,17 @@ COPY . /tmp/config/
 RUN \
     for lang in ${LANGUAGES}; \
     do \
+        msgfmt -o /tmp/config/geoportal/{{package}}_geoportal/locale/${lang}/LC_MESSAGES/geomapfish_geoportal-client.mo \
+            /tmp/config/geoportal/{{package}}_geoportal/locale/${lang}/LC_MESSAGES/geomapfish_geoportal-client.po; \
+        msgfmt -o /tmp/config/geoportal/{{package}}_geoportal/locale/${lang}/LC_MESSAGES/geomapfish_geoportal-server.mo \
+            /tmp/config/geoportal/{{package}}_geoportal/locale/${lang}/LC_MESSAGES/geomapfish_geoportal-server.po; \
         node /usr/bin/compile-catalog \
             /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/ngeo.po \
             /opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/gmf.po \
             /tmp/config/geoportal/{{package}}_geoportal/locale/${lang}/LC_MESSAGES/{{package}}_geoportal-client.po \
             > /tmp/config/geoportal/{{package}}_geoportal/static/${lang}.json; \
     done && \
-    rm -rf /tmp/config/geoportal/{{package}}_geoportal/locale
+    rm -rf /tmp/config/geoportal/{{package}}_geoportal/locale/*/LC_MESSAGES/*.po
 
 RUN \
     cd /tmp/config/geoportal/ && \

@@ -29,7 +29,6 @@
 
 
 import gettext
-import os
 import sys
 from argparse import ArgumentParser
 from typing import Any, Dict, List, Set
@@ -48,11 +47,11 @@ def main():
         description="Tool to fill the tsearch table (full-text search) from the theme information.",
     )
 
-    locale_path_1 = os.path.join("{package}_geoportal", "locale", "")
-    locale_path_2 = os.path.join("geoportal", locale_path_1)
-    locale_path = locale_path_2 if os.path.exists("geoportal") else locale_path_1
+    locale_path = "/etc/geomapfish/locale/"
     parser.add_argument(
-        "--locale-folder", default=locale_path, help="The folder where the locale files are stored"
+        "--locale-folder",
+        default=locale_path,
+        help="The folder where the locale files are stored (default to {})".format(locale_path),
     )
     parser.add_argument("--interfaces", action="append", help="the interfaces to export")
     parser.add_argument(

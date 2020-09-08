@@ -80,9 +80,32 @@ eslint-fix: $(APP_JS_FILES)
 
 # Server localisation
 
-.PRECIOUS: %.mo
-%.mo: %.po
-	msgfmt -o $@ $<
+PO_FILES = $(addprefix $(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-server.po, $(LANGUAGES)))
+
+.INTERMEDIATE: $(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot
+$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot: lingua-server.cfg $(SRC_FILES)
+	mkdir --parent $(dir $@)
+	[ -z "$(SRC_FILES)" ] || pot-create --config $< --keyword _ --output $@ $(SRC_FILES)
+
+.PRECIOUS: $(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-server.po
+$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-server.po: \
+		$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot
+	mkdir --parent $(dir $@)
+	[ ! -f $< ] || [ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
+	touch --no-create $@
+	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location $@ $<
+	touch $@
+	chown $(USER_ID):$(GROUP_ID) $@
+
+.PHONY: update-server-po
+update-server-po: $(PO_FILES)
+
+.PHONY: update-client-po
+update-client-po:
+	cd .. && update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+
+.PHONY: update-po
+update-po: update-server-po update-client-po
 
 # ngeo
 

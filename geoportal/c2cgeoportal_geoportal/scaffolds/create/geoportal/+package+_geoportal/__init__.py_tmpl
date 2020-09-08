@@ -24,7 +24,7 @@ def main(global_config, **settings):
     config.include('c2cgeoportal_geoportal')
     distutils.core._setup_stop_after = None  # pylint: disable=protected-access
 
-    config.add_translation_dirs('{{package}}_geoportal:locale/')
+    config.add_translation_dirs('/etc/geomapfish/locale/')
 
     # Scan view decorator for adding routes
     config.scan()

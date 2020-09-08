@@ -41,8 +41,7 @@ To update your ``po`` files, you should proceed as follows.
 
 .. code:: bash
 
-    docker-compose exec tools update-po $(id --user) $(id --group) \
-        <lang_1> [<lang_2> [...]]
+    make update-po
 
 .. note::
 
