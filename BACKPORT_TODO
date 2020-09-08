@@ -1,0 +1,14 @@
+Error on backporting to branch master, error on cherry picking ['a07ab375138f94b4fa033cf41ed11089685d23e6']:
+error: could not apply a07ab3751... Add pdfreport to vars (#6947)
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+
+
+to continue do:
+git fetch
+git checkout backport/6947-to-master
+git reset --hard HEAD^
+git cherry-pick a07ab375138f94b4fa033cf41ed11089685d23e6
+git push origin backport/6947-to-master --force
