@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         response = self._proxy(
             "{0!s}/buildreport.{1!s}".format(self.config["print_url"], spec["outputFormat"]),
             method="POST",
-            body=dumps(spec),
+            body=dumps(spec).encode("utf-8"),
             headers=headers,
         )
 
