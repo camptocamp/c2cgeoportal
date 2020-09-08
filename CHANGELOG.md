@@ -1,3 +1,6 @@
+##### 2.5.0.74
+* [Backport 2.5] Fix pdfreport call [c2cgeoportal#6945](https://github.com/camptocamp/c2cgeoportal/pull/6945)
+* [Backport 2.5] Add pdfreport to vars [c2cgeoportal#6949](https://github.com/camptocamp/c2cgeoportal/pull/6949)
 ##### 2.5.0.73
 * Move the base application configuration in the Makefile [c2cgeoportal#6916](https://github.com/camptocamp/c2cgeoportal/pull/6916)
 * Fix missing i10n file for theme2fts [c2cgeoportal#6924](https://github.com/camptocamp/c2cgeoportal/pull/6924)
