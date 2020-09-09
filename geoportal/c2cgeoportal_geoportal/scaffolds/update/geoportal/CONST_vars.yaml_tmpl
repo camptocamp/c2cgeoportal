@@ -494,7 +494,7 @@ vars:
     # url with the proxy url.
     # proxy_online_resource: {VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}tinyows_proxy
     # online_resource: http://localhost{VISIBLE_ENTRY_POINT}tinyows
-
+    #
     # When running a c2cgeoportal appl. in debug mode (with `make serve`)
     # the host has to be set explicitly in a vhost environment.
     # tinyows_host: {VISIBLE_WEB_HOST}
@@ -914,7 +914,7 @@ runtime_environment:
     default: bucket_name
 
 runtime_postprocess:
-  - expression: "int({})"
+  - expression: int({})
     vars:
       - cache.std.arguments.socket_timeout
       - cache.std.arguments.db
