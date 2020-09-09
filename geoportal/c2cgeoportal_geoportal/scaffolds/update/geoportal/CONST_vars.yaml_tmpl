@@ -258,7 +258,7 @@ vars:
                 - action: add_layer
                   title: Add a layer
               projection: EPSG:{srid}
-        gmfContextualDataOptions:
+        gmfContextualdataOptions:
           projections: *alternate_projections
           rasterParams: {}
         gmfMousePositionOptions:
