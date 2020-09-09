@@ -251,15 +251,15 @@ vars:
                 angle: 0
           coordinatesProjections: *alternate_projections
           datasources:
-            labelKey: label
-            groupActions:
-              - action: add_theme
-                title: Add a theme
-              - action: add_group
-                title: Add a sub theme
-              - action: add_layer
-                title: Add a layer
-            projection: EPSG:{srid}
+            - labelKey: label
+              groupActions:
+                - action: add_theme
+                  title: Add a theme
+                - action: add_group
+                  title: Add a sub theme
+                - action: add_layer
+                  title: Add a layer
+              projection: EPSG:{srid}
         gmfContextualDataOptions:
           projections: *alternate_projections
         gmfMousePositionOptions:
