@@ -258,7 +258,7 @@ vars:
                 - action: add_layer
                   title: Add a layer
               projection: EPSG:{srid}
-        gmfContextualdataOptions:
+        gmfContextualDataOptions:
           projections: *alternate_projections
           rasterParams: {}
         gmfMousePositionOptions:
@@ -300,7 +300,7 @@ vars:
                 radius: 3
         gmfShareOptions:
           enableEmail: True
-        gmfGeolocationOptions:
+        ngeoGeolocationOptions:
           positionFeatureStyle:
             circle:
               radius: 6
