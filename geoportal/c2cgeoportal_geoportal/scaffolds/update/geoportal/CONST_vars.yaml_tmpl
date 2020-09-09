@@ -141,8 +141,6 @@ vars:
         gmfObjectEditingToolsOptions: {}
         gmfTreeManagerModeFlush: True
         gmfThemesOptions: {}
-        gmfContextualdataOptions:
-          rasterParams: {}
         ngeoPointfilter:
         gmfAuthenticationNoReloadRole:
         ngeoNominatimSearchDefaultParams: {}
@@ -262,6 +260,7 @@ vars:
               projection: EPSG:{srid}
         gmfContextualDataOptions:
           projections: *alternate_projections
+          rasterParams: {}
         gmfMousePositionOptions:
           projections:
             - code: EPSG:2056
