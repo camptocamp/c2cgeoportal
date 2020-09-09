@@ -300,6 +300,23 @@ vars:
                 radius: 3
         gmfShareOptions:
           enableEmail: True
+        gmfGeolocationOptions:
+          positionFeatureStyle:
+            circle:
+              radius: 6
+              fill:
+                color: rgba(230, 100, 100, 1)
+              stroke:
+                color: rgba(230, 40, 40, 1)
+                width: 2
+          accuracyFeatureStyle:
+            fill:
+              color: rgba(100, 100, 230, 0.3)
+            stroke:
+              color: rgba(40, 40, 230, 1)
+              width: 2
+          zoom:
+          autorotate: False
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
