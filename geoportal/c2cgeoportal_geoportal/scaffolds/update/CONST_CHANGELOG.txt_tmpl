@@ -1,6 +1,17 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+Version 2.4.+
+=============
+
+Information
+-----------
+
+1. We add the publishing of images to GitHub Container Registry the followint tarvis environment vartiables
+   are required: GITHUB_USERNAME, GITHUB_TOKEN, for c2c to be set to:
+   `gopass gs/ci/github/username`, and `gopass gs/ci/github/token/gopass`.
+
+
 Version 2.4.2
 =============
 

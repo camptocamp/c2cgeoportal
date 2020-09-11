@@ -1,5 +1,4 @@
 ---
-
 sudo: false
 
 addons:
@@ -21,7 +20,11 @@ script:
   - ./docker-run make docker-build-config docker-build-geoportal
 
 deploy:
-  provider: script
-  script: scripts/deploy-docker
-  on:
-    all_branches: true
+  - provider: script
+    script: scripts/deploy-docker --image=config --no-trigger
+    on:
+      all_branches: true
+  - provider: script
+    script: scripts/deploy-docker --image=config --service=github
+    on:
+      all_branches: true
