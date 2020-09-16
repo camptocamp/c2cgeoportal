@@ -1,0 +1,22 @@
+---
+strictness: veryhigh
+
+pep8:
+  options:
+    max-line-length: 110
+  disable:
+    - E203
+
+pylint:
+  options:
+    max-line-length: 110
+  disable:
+    - too-many-locals
+    - too-many-statements
+    - too-many-branches
+
+mccabe:
+  run: false
+
+mypy:
+  run: true

@@ -9,6 +9,3 @@ verify_ssl = true
 codespell = "==1.16.0"
 yamllint = "==1.22.0"
 black = "==19.10b0"
-
-[requires]
-python_version = "3.6"
