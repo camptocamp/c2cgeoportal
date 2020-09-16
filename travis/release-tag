@@ -21,4 +21,6 @@ then
     RELEASE_TAG=${LAST_TAG}.${MINOR}
 fi
 
+sleep 0.1
+
 echo "##[set-output name=tag;]${RELEASE_TAG}"
