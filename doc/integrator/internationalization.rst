@@ -11,14 +11,13 @@ In the file ``<package>.mk``, define the supported languages with (default):
 
    LANGUAGES ?= en fr de
 
-In the file ``vars.yaml``, define the available and default locales:
+In the file ``vars.yaml``, define the default locale:
 
 .. code:: yaml
 
    vars:
         ...
         default_locale_name: fr
-        available_locale_names: [en, fr, de]
 
 In the file ``language_mapping``, define any desired locale variants, for example:
 

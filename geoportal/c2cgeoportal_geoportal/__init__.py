@@ -59,6 +59,7 @@ from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 from c2cgeoportal_geoportal.lib.metrics import (
     MemoryCacheSizeProvider,
     RasterDataSizeProvider,
@@ -346,6 +347,9 @@ def includeme(config: pyramid.config.Configurator):
     settings = config.get_settings()
 
     config.include("c2cgeoportal_commons")
+
+    if "available_locale_names" not in settings:
+        settings["available_locale_names"] = available_locale_names()
 
     call_hook(settings, "after_settings", settings)
 

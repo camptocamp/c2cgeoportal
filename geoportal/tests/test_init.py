@@ -31,6 +31,7 @@
 
 
 from unittest import TestCase
+from unittest.mock import patch
 
 from c2c.template.config import config
 from pyramid import testing
@@ -74,6 +75,11 @@ class TestIncludeme(TestCase):
                 },
             }
         )
+
+    @patch("c2cgeoportal_geoportal.available_locale_names", return_value=["de", "en", "fr"])
+    def test_available_locale_names(self, locales_mock):
+        self.config.include(c2cgeoportal_geoportal.includeme)
+        self.assertEqual(self.config.registry.settings["available_locale_names"], ["de", "en", "fr"])
 
     def test_set_user_validator_directive(self):
         self.config.include(c2cgeoportal_geoportal.includeme)

@@ -97,12 +97,6 @@ mapping:
         type: str
         pattern: '[a-z][a-z]'
         required: True
-      available_locale_names:
-        type: seq
-        required: True
-        sequence:
-          - type: str
-            pattern: '[a-z][a-z]'
       interfaces:
         required: True
         type: seq

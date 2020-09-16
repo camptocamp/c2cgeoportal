@@ -37,6 +37,7 @@ import transaction
 from sqlalchemy import func
 
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
+from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
@@ -47,11 +48,10 @@ def main():
         description="Tool to fill the tsearch table (full-text search) from the theme information.",
     )
 
-    locale_path = "/etc/geomapfish/locale/"
     parser.add_argument(
         "--locale-folder",
-        default=locale_path,
-        help="The folder where the locale files are stored (default to {})".format(locale_path),
+        default=LOCALE_PATH,
+        help="The folder where the locale files are stored (default to {})".format(LOCALE_PATH),
     )
     parser.add_argument("--interfaces", action="append", help="the interfaces to export")
     parser.add_argument(
