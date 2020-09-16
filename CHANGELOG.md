@@ -1,5 +1,6 @@
-##### 2.5.0.76
+##### 2.5.0.77
 * Publish project Docker images to GitHub Container Registry [c2cgeoportal#6961](https://github.com/camptocamp/c2cgeoportal/pull/6961)
+##### 2.5.0.76
 * [Backport 2.5] Set black options in the setup.cfg [c2cgeoportal#6962](https://github.com/camptocamp/c2cgeoportal/pull/6962)
 ##### 2.5.0.75
 * [Backport 2.5] Add pdfreport to vars [c2cgeoportal#6949](https://github.com/camptocamp/c2cgeoportal/pull/6949)
