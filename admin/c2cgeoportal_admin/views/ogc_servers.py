@@ -33,6 +33,7 @@ from functools import partial
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from deform.widget import FormWidget
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_commons.models.main import OGCServer
@@ -69,9 +70,20 @@ class OGCServerViews(AbstractViews):
     def grid(self):
         return super().grid()
 
+    def schema(self):
+        try:
+            obj = self._get_object()
+        except HTTPNotFound:
+            obj = None
+
+        schema = self._base_schema.clone()
+        schema["url"].description = obj.url_description(self._request)
+        schema["url_wfs"].description = obj.url_wfs_description(self._request)
+        return schema
+
     @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
     def view(self):
-        return super().edit()
+        return super().edit(self.schema())
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
     def save(self):

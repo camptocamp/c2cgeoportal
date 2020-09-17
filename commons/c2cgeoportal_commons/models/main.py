@@ -32,17 +32,19 @@
 
 import logging
 import re
-from typing import Any, Dict, List, Optional, Tuple, Union, cast  # noqa, pylint: disable=unused-import
+from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast  # noqa, pylint: disable=unused-import
 
 from c2c.template.config import config
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from papyrus.geo_interface import GeoInterface
+from pyramid.request import Request
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
 from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
 from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode
 
+from c2cgeoportal_commons.lib import get_url2
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 
@@ -551,6 +553,18 @@ class OGCServer(Base):
 
     def __str__(self) -> str:
         return self.name or ""  # pragma: no cover
+
+    def url_description(self, request: Request) -> str:
+        errors: Set[str] = set()
+        url = get_url2(self.name, self.url, request, errors)
+        return url or "\n".join(errors)
+
+    def url_wfs_description(self, request: Request) -> Optional[str]:
+        if not self.url_wfs:
+            return None
+        errors: Set[str] = set()
+        url = get_url2(self.name, self.url_wfs, request, errors)
+        return url or "\n".join(errors)
 
 
 event.listen(OGCServer, "after_insert", cache_invalidate_cb, propagate=True)

@@ -23,6 +23,6 @@ services:
     volumes:
       - ./development.ini:/app/development.ini
       - ./c2cgeoportal_admin:/app/c2cgeoportal_admin
-      - ./../commons/c2cgeoportal_commons:/opt/commons/c2cgeoportal_commons
+      - ./../commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons
     ports:
       - 8888:8080
