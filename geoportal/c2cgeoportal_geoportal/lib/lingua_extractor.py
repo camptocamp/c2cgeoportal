@@ -54,9 +54,10 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
+from c2cgeoportal_commons.lib import get_url2
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal
-from c2cgeoportal_geoportal.lib import add_url_params, get_url2
+from c2cgeoportal_geoportal.lib import add_url_params
 from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class

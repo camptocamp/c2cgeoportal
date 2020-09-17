@@ -50,13 +50,13 @@ from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib import get_url2
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import (
     add_url_params,
     get_roles_id,
     get_typed,
     get_types_map,
-    get_url2,
     is_intranet,
 )
 from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region, set_common_headers

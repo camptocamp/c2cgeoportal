@@ -27,28 +27,28 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
-
+# pylint: disable=missing-docstring
 
 from unittest import TestCase
 
-from tests import create_dummy_request
+from pyramid.testing import DummyRequest
+
+from c2cgeoportal_commons.lib import get_url2
 
 
 class TestGetURL(TestCase):
     def test_get_url2(self):
-        from c2cgeoportal_geoportal.lib import get_url2
 
-        request = create_dummy_request(
-            {
-                "package": "my_project",
-                "servers": {
-                    "srv": "https://example.com/test",
-                    "srv_alt": "https://example.com/test/",
-                    "full_url": "https://example.com/test.xml",
-                },
-            }
-        )
+        request = DummyRequest()
+        request.registry.settings = {
+            "package": "my_project",
+            "servers": {
+                "srv": "https://example.com/test",
+                "srv_alt": "https://example.com/test/",
+                "full_url": "https://example.com/test.xml",
+            },
+        }
+        request.scheme = "https"
 
         def static_url(path, **kwargs):
             del kwargs  # Unused
