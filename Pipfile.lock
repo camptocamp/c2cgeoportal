@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3336c94c08dc37d81e89b5db512634fd0088154e60ea76157f88738eded18d08"
+            "sha256": "1c640131605303d6fb1ffb9d609dfd1f71d6a4659a679eaaa8ffb811dd269e55"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -486,10 +486,10 @@
         },
         "pygments": {
             "hashes": [
-                "sha256:2594e8fdb06fef91552f86f4fd3a244d148ab24b66042036e64f29a291515048",
-                "sha256:2df50d16b45b977217e02cba6c8422aaddb859f3d0570a88e09b00eafae89c6e"
+                "sha256:307543fe65c0947b126e83dd5a61bd8acbd84abec11f43caebaf5534cbc17998",
+                "sha256:926c3f319eda178d1bd90851e4317e6d8cdb5e292a3386aac9bd75eca29cf9c7"
             ],
-            "version": "==2.7.0"
+            "version": "==2.7.1"
         },
         "pyotp": {
             "hashes": [
@@ -893,11 +893,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:624bbfeb4525771312055798504370756958a809a0327d049a6f3352b30849d8",
-                "sha256:cf6c8bcbd22fdd2cc698f2ee4800b434370409fea65593ef819a4addce6aa5a8"
+                "sha256:49664a0dc1bf8a3dbd9d9ea3ff91a2b9d7cc272600fb211e41167ea3395acf77",
+                "sha256:d30e741a81fa9a0e0484459f76348bc5e2d7b161144b29309d67264e675edb3f"
             ],
             "index": "pypi",
-            "version": "==1.18.139"
+            "version": "==1.18.141"
         },
         "babel": {
             "hashes": [
@@ -925,10 +925,9 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:8712b69f6e4abd9a5ef52b20fb5b9ca545cda335ee1b106fc68dd7786c7c78ae",
-                "sha256:a47ec927517403c6711f0cf7c51207f45b5aa4875791527a395a6402bd146514"
+                "sha256:1dbd37af06432eda8a5736bd82f92ddd1ae8de74e4faa090bd728f8d58d24849"
             ],
-            "version": "==1.17.62"
+            "version": "==1.18.0"
         },
         "certifi": {
             "hashes": [
@@ -1301,10 +1300,10 @@
         },
         "pygments": {
             "hashes": [
-                "sha256:2594e8fdb06fef91552f86f4fd3a244d148ab24b66042036e64f29a291515048",
-                "sha256:2df50d16b45b977217e02cba6c8422aaddb859f3d0570a88e09b00eafae89c6e"
+                "sha256:307543fe65c0947b126e83dd5a61bd8acbd84abec11f43caebaf5534cbc17998",
+                "sha256:926c3f319eda178d1bd90851e4317e6d8cdb5e292a3386aac9bd75eca29cf9c7"
             ],
-            "version": "==2.7.0"
+            "version": "==2.7.1"
         },
         "pykwalify": {
             "hashes": [
