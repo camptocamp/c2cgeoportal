@@ -51,6 +51,9 @@ def includeme(config):
     register_route(config, "layertree_delete", "/{application:admin}/layertree/delete/{item_id}")
     register_route(config, "convert_to_wms", "/{application:admin}/{table:layers_wmts}/{id}/convert_to_wms")
     register_route(config, "convert_to_wmts", "/{application:admin}/{table:layers_wms}/{id}/convert_to_wmts")
+    register_route(
+        config, "ogcserver_synchronize", "/{application:admin}/{table:ogc_servers}/{id}/synchronize"
+    )
 
     from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
         Role,

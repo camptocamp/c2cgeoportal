@@ -31,11 +31,13 @@
 from functools import partial
 
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField
 from deform.widget import FormWidget
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config, view_defaults
+from sqlalchemy import inspect
 
+from c2cgeoportal_admin import _
 from c2cgeoportal_commons.models.main import OGCServer
 
 _list_field = partial(ListField, OGCServer)
@@ -80,6 +82,22 @@ class OGCServerViews(AbstractViews):
         schema["url"].description = obj.url_description(self._request)
         schema["url_wfs"].description = obj.url_wfs_description(self._request)
         return schema
+
+    def _item_actions(self, item, readonly=False):
+        actions = super()._item_actions(item, readonly)
+        if inspect(item).persistent:
+            actions.insert(
+                next((i for i, v in enumerate(actions) if v.name() == "delete")),
+                ItemAction(
+                    name="synchronize",
+                    label=_("Synchronize"),
+                    icon="glyphicon glyphicon-import",
+                    url=self._request.route_url("ogcserver_synchronize", id=getattr(item, self._id_field)),
+                    method="POST",
+                    confirmation=_("Are you sure you want to import content from this OGC server?"),
+                ),
+            )
+        return actions
 
     @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
     def view(self):
