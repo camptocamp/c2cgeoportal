@@ -1,5 +1,5 @@
 const path = require('path');
-const ls = require('ls');
+const ls = require('ngeo/buildtools/ls.js');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
