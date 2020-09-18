@@ -41,8 +41,8 @@ from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
 import requests
 
+from c2cgeoportal_commons.lib.url import add_url_params
 from c2cgeoportal_geoportal.lib import (
-    add_url_params,
     caching,
     get_ogc_server_wfs_url_ids,
     get_ogc_server_wms_url_ids,

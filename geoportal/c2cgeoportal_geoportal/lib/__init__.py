@@ -33,14 +33,13 @@ import ipaddress
 import json
 import logging
 from string import Formatter
-from typing import Any, Dict, List, Optional, Set, Union
-import urllib.parse
+from typing import Any, Dict, List, Set, Union
 
 import dateutil
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
-from c2cgeoportal_commons.lib import get_url2
+from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
 
@@ -118,22 +117,6 @@ def get_typed(
             )
         )
     return None
-
-
-def add_url_params(url: str, params: Optional[Dict[str, str]]) -> str:
-    if not params:
-        return url
-    return add_spliturl_params(urllib.parse.urlsplit(url), params)
-
-
-def add_spliturl_params(spliturl, params):
-    query = {k: v[-1] for k, v in list(urllib.parse.parse_qs(spliturl.query).items())}
-    for key, value in list(params.items()):
-        query[key] = value
-
-    return urllib.parse.urlunsplit(
-        (spliturl.scheme, spliturl.netloc, spliturl.path, urllib.parse.urlencode(query), spliturl.fragment)
-    )
 
 
 def get_setting(settings, path, default=None):

@@ -44,7 +44,7 @@ from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
 from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode
 
-from c2cgeoportal_commons.lib import get_url2
+from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 

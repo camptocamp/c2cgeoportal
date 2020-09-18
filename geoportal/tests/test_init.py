@@ -179,21 +179,3 @@ class TestHooks(TestCase):
 
     def test_bad_hook(self):
         self.assertRaises(AttributeError, call_hook, self.settings, "bad")
-
-
-class TestInit(TestCase):
-    def test_add_url_params(self):
-        from c2cgeoportal_geoportal.lib import add_url_params
-        from urllib.parse import urlparse, parse_qs
-
-        params = {"Name": "Bob", "Age": 18, "Nationality": "Việt Nam"}
-        result = add_url_params("http://test/", params)
-        presult = urlparse(result)
-        self.assertEqual(presult.scheme, "http")
-        self.assertEqual(presult.netloc, "test")
-        self.assertEqual(presult.path, "/")
-        self.assertEqual(presult.params, "")
-        self.assertEqual(presult.fragment, "")
-        self.assertEqual(
-            parse_qs(presult.query), {"Name": ["Bob"], "Age": ["18"], "Nationality": ["Việt Nam"]}
-        )
