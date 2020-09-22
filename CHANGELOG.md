@@ -1,3 +1,8 @@
+##### 2.4.2.11
+* [Backport 2.4] Publish project Docker images to GitHub Container Registry [c2cgeoportal#6982](https://github.com/camptocamp/c2cgeoportal/pull/6982)
+* [Backport 2.4] Import ls from 'ngeo/buildtools/ls.js' [c2cgeoportal#6994](https://github.com/camptocamp/c2cgeoportal/pull/6994)
+* [Backport 2.4] [Fix master] Replace ls package with an internal function [ngeo#6266](https://github.com/camptocamp/ngeo/pull/6266)
+* [Backport 2.4] Add missing dependency required by ls [ngeo#6271](https://github.com/camptocamp/ngeo/pull/6271)
 ##### 2.4.2.10
 * Add pdfreport to vars [c2cgeoportal#6947](https://github.com/camptocamp/c2cgeoportal/pull/6947)
 ##### 2.4.2.9
