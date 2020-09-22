@@ -1,3 +1,10 @@
+##### 2.5.0.78
+* Do not request DescribeFeatureType if not OGCServer.wfs_support [c2cgeoportal#6984](https://github.com/camptocamp/c2cgeoportal/pull/6984)
+* [Backport 2.5] Import ls from 'ngeo/buildtools/ls.js' [c2cgeoportal#6995](https://github.com/camptocamp/c2cgeoportal/pull/6995)
+* Params.STYLES can present but undefined [ngeo#6261](https://github.com/camptocamp/ngeo/pull/6261)
+* [Backport 2.5] [Fix master] Replace ls package with an internal function [ngeo#6267](https://github.com/camptocamp/ngeo/pull/6267)
+* [Backport 2.5] Add missing dependency required by ls [ngeo#6272](https://github.com/camptocamp/ngeo/pull/6272)
+* Reduce tiles preload to 1 level [ngeo#6283](https://github.com/camptocamp/ngeo/pull/6283)
 ##### 2.5.0.77
 * Publish project Docker images to GitHub Container Registry [c2cgeoportal#6961](https://github.com/camptocamp/c2cgeoportal/pull/6961)
 ##### 2.5.0.76
