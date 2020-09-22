@@ -151,16 +151,6 @@ class Theme:
         self._layergroup_cache = None
         self._themes_cache = None
 
-    def _get_capabilities_cache_role_key(self, ogc_server):
-        return (
-            self._get_role_ids()
-            if (
-                ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH
-                and ogc_server.type != main.OGCSERVER_TYPE_MAPSERVER
-            )
-            else None
-        )
-
     def _get_metadata(self, item, metadata, errors):
         metadatas = item.get_metadatas(metadata)
         return (
@@ -181,9 +171,7 @@ class Theme:
         return metadatas
 
     async def _wms_getcap(self, ogc_server, preload=False):
-        url, content, errors = await self._wms_getcap_cached(
-            ogc_server, self._get_capabilities_cache_role_key(ogc_server)
-        )
+        url, content, errors = await self._wms_getcap_cached(ogc_server)
 
         if errors or preload:
             return None, errors
@@ -228,9 +216,7 @@ class Theme:
 
         return build_web_map_service(ogc_server.id)
 
-    async def _wms_getcap_cached(self, ogc_server, _):
-        """ _ is just for cache on the role id """
-
+    async def _wms_getcap_cached(self, ogc_server):
         errors: Set[str] = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
         if errors or url is None:  # pragma: no cover
