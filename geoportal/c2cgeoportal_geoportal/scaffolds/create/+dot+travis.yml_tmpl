@@ -21,10 +21,6 @@ script:
 
 deploy:
   - provider: script
-    script: scripts/deploy-docker --image=config --no-trigger
-    on:
-      all_branches: true
-  - provider: script
-    script: scripts/deploy-docker --image=config --service=github
+    script: scripts/deploy-docker --image=config --image=geoportal
     on:
       all_branches: true
