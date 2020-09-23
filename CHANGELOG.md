@@ -1,3 +1,5 @@
+##### 2.4.2.13
+* Fix the publish of Docker images to GitHub [c2cgeoportal#7010](https://github.com/camptocamp/c2cgeoportal/pull/7010)
 ##### 2.4.2.12
 * [Backport 2.4] Do not request DescribeFeatureType if not OGCServer.wfs_support [c2cgeoportal#7007](https://github.com/camptocamp/c2cgeoportal/pull/7007)
 * [Backport 2.4] Add missing dependency required by ls [ngeo#6271](https://github.com/camptocamp/ngeo/pull/6271)
