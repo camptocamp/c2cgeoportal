@@ -17,7 +17,7 @@ docker-compose exec -T geoportal wait-db
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
 docker-compose exec -T geoportal create-demo-theme
-docker-compose exec -T tools update-po $(id --user) $(id --group) en fr de it
+make update-po
 docker-compose exec -T geoportal theme2fts
 
 # Commit the l10n files modifications
