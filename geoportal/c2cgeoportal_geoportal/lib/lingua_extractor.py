@@ -462,8 +462,9 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         url = server.url_wfs or server.url
         if url is None:
             return
-        for wms_layer in layer.layer.split(","):
-            self._import_layer_attributes(url, wms_layer, layer.item_type, layer.name, messages)
+        if layer.ogc_server.wfs_support:
+            for wms_layer in layer.layer.split(","):
+                self._import_layer_attributes(url, wms_layer, layer.item_type, layer.name, messages)
         if layer.geo_table is not None and layer.geo_table != "":
             try:
                 cls = get_layer_class(layer, with_last_update_columns=True)
@@ -514,9 +515,14 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             for wms_layer in layers:
                 try:
                     db_server = DBSession.query(OGCServer).filter(OGCServer.name == server[0]).one()
-                    self._import_layer_attributes(
-                        db_server.url_wfs or db_server.url, wms_layer, layer.item_type, layer.name, messages
-                    )
+                    if db_server.wfs_support:
+                        self._import_layer_attributes(
+                            db_server.url_wfs or db_server.url,
+                            wms_layer,
+                            layer.item_type,
+                            layer.name,
+                            messages,
+                        )
                 except NoResultFound:
                     print(
                         colorize(
