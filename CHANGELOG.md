@@ -1,3 +1,6 @@
+##### 2.5.0.80
+* Sometimes the upload failed [c2cgeoportal#7016](https://github.com/camptocamp/c2cgeoportal/pull/7016)
+* [Backport 2.5] More compatible with VSCode auto format [c2cgeoportal#7018](https://github.com/camptocamp/c2cgeoportal/pull/7018)
 ##### 2.5.0.79
 * List of WMS/WMTS services when setting focus on text box [ngeo#6290](https://github.com/camptocamp/ngeo/pull/6290)
 ##### 2.5.0.79
