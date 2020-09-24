@@ -37,7 +37,9 @@ from typing import Any, Dict, List, Set
 import transaction
 from sqlalchemy import func
 
+from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
+from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
@@ -48,11 +50,10 @@ def main():
         description="Tool to fill the tsearch table (full-text search) from the theme information.",
     )
 
-    locale_path_1 = os.path.join("{package}_geoportal", "locale", "")
-    locale_path_2 = os.path.join("geoportal", locale_path_1)
-    locale_path = locale_path_2 if os.path.exists("geoportal") else locale_path_1
     parser.add_argument(
-        "--locale-folder", default=locale_path, help="The folder where the locale files are stored"
+        "--locale-folder",
+        default=LOCALE_PATH,
+        help="The folder where the locale files are stored (default to {})".format(LOCALE_PATH),
     )
     parser.add_argument("--interfaces", action="append", help="the interfaces to export")
     parser.add_argument(
@@ -101,7 +102,16 @@ class Import:
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
         self.languages = settings["available_locale_names"]
-        self.fts_normiliser = Normalize(settings["fulltextsearch"])
+        self.fts_normalizer = Normalize(settings["fulltextsearch"])
+
+        fts_missing_langs = [lang for lang in self.languages if lang not in self.fts_languages]
+        if fts_missing_langs:
+            msg = "Keys {} are missing in fulltextsearch languages configuration.".format(fts_missing_langs)
+            if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
+                print(colorize(msg, RED))
+                self.languages = [lang for lang in self.languages if lang in self.fts_languages]
+            else:
+                raise KeyError(KeyError(msg))
 
         # must be done only once we have loaded the project config
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
@@ -164,7 +174,7 @@ class Import:
                 fts.lang = lang
                 fts.public = role is None
                 fts.ts = func.to_tsvector(
-                    self.fts_languages[lang], self.fts_normiliser(self._[lang].gettext(item.name))
+                    self.fts_languages[lang], self.fts_normalizer(self._[lang].gettext(item.name))
                 )
                 fts.actions = [{"action": action, "data": item.name}]
                 fts.from_theme = True
