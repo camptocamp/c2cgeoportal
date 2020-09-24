@@ -1,5 +1,7 @@
 ##### 2.5.0.79
-* Do not request DescribeFeatureType if not OGCServer.wfs_support [c2cgeoportal#6984](https://github.com/camptocamp/c2cgeoportal/pull/6984)
+* List of WMS/WMTS services when setting focus on text box [ngeo#6290](https://github.com/camptocamp/ngeo/pull/6290)
+##### 2.5.0.79
+* List of WMS/WMTS services when setting focus on text box [ngeo#6290](https://github.com/camptocamp/ngeo/pull/6290)
 ##### 2.5.0.78
 * [Backport 2.5] Import ls from 'ngeo/buildtools/ls.js' [c2cgeoportal#6995](https://github.com/camptocamp/c2cgeoportal/pull/6995)
 * [Backport 2.5] [Fix master] Replace ls package with an internal function [ngeo#6267](https://github.com/camptocamp/ngeo/pull/6267)
