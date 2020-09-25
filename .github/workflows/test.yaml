@@ -1,0 +1,16 @@
+---
+name: Test
+
+on:
+  check_suite:
+    types: [completed]
+
+jobs:
+  main:
+    runs-on: ubuntu-18.04
+    name: Test
+    timeout-minutes: 5
+
+    steps:
+      - run: cat ${GITHUB_EVENT_PATH}
+      - run: env
