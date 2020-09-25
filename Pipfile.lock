@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2dea1d60cfbf35fa18b1867e88954e7508642b1159dfbb50186f19e03a1ec5b8"
+            "sha256": "8888dbd0da125374bd763b80c508377bc1f5db1641f4828a66f89345996bf008"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -898,11 +898,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:0b1b8413fb35fcf04f8d30de100590be55039633b51381f698a9db7861086982",
-                "sha256:3988d3be03bebe9d2a1fa9d13206a22346a0d5aea5c37277ff3caf22e9bcab8e"
+                "sha256:108f1ca6049e55042464946be149d79318c665741e6131ec67114e7884db4b08",
+                "sha256:509f2f4e6e6a9ea4a845454ed70cdde134a4a79c8ce9b3f08be555f464093f29"
             ],
             "index": "pypi",
-            "version": "==1.18.145"
+            "version": "==1.18.146"
         },
         "babel": {
             "hashes": [
@@ -930,10 +930,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:36073d47386e260c6dca17c65479c1746ed5a95f6c29a06e9163d3026150440f",
-                "sha256:78b88dd1b7566be9b932bcd213c6c57d54beeaecd8009eb0224c91a7eb1a937e"
+                "sha256:7ce7a05b98ffb3170396960273383e8aade9be6026d5a762f5f40969d5d6b761",
+                "sha256:e3bf44fba058f6df16006b94a67650418a080a525c82521abb3cb516a4cba362"
             ],
-            "version": "==1.18.4"
+            "version": "==1.18.5"
         },
         "certifi": {
             "hashes": [
@@ -1209,11 +1209,10 @@
         },
         "paste": {
             "hashes": [
-                "sha256:cc4247e3a3ad41e40259017f875ad8081351a8fcf7be4c280efc79c24cce5d57",
-                "sha256:de4dccf92e06d505add5a634e01d2ddb7a15a53f68c522c57531c8e69ba4bd1a"
+                "sha256:001370f4fcc7446006b52a39ed386341fce626605af711e0ec18ddb0b4912cb7",
+                "sha256:083d49262674f638e578f564bc51393c3882493333576c7cf579a0c58f8bb6f9"
             ],
-            "index": "pypi",
-            "version": "==3.4.5"
+            "version": "==3.4.6"
         },
         "pastedeploy": {
             "hashes": [
