@@ -1,5 +1,7 @@
 ##### 2.5.0.81
-* [Backport 2.5] More compatible with VSCode auto format [c2cgeoportal#7018](https://github.com/camptocamp/c2cgeoportal/pull/7018)
+* Params.STYLES can present but undefined [ngeo#6261](https://github.com/camptocamp/ngeo/pull/6261)
+##### 2.5.0.81
+* Params.STYLES can present but undefined [ngeo#6261](https://github.com/camptocamp/ngeo/pull/6261)
 ##### 2.5.0.80
 * Sometimes the upload failed [c2cgeoportal#7016](https://github.com/camptocamp/c2cgeoportal/pull/7016)
 ##### 2.5.0.79
