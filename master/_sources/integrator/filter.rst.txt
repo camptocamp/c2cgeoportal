@@ -9,7 +9,7 @@ Filterable layers
 Per default, layers are not filterable.
 If you wish to provide filter functionality for some layers, proceed as follows:
 
-* For each layer you want to be filtrable create a "unctionality record with ``filtrable_layers`` as name
+* For each layer you want to be filtrable create a functionality record with ``filterable_layers`` as name
   and the layer name as value.
 * In any role (anonymous, registered, intranet or any other role) check the corresponding functionality records.
 
