@@ -282,7 +282,32 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
                 location = "metadata/{}/{}".format(metadata.name, metadata.id)
                 metadata_list.append(Message(None, metadata.value, None, [], "", "", (filename, location)))
 
-        return raster + enums + metadata_list
+        interfaces_messages = []
+        for interface, interface_config in config["interfaces_config"].items():
+            for ds_index, datasource in enumerate(
+                interface_config.get("constants", {}).get("gmfSearchOptions", {}).get("datasources", [])
+            ):
+                for a_index, action in enumerate(datasource.get("groupActions", [])):
+                    location = (
+                        "interfaces_config/{}/constants/gmfSearchOptions/datasources[{}]/"
+                        "groupActions[{}]/title".format(interface, ds_index, a_index)
+                    )
+                    interfaces_messages.append(
+                        Message(None, action["title"], None, [], "", "", (filename, location))
+                    )
+
+            for merge_tab in (
+                interface_config.get("constants", {})
+                .get("gmfDisplayQueryGridOptions", {})
+                .get("mergeTabs", {})
+                .keys()
+            ):
+                location = "interfaces_config/{}/constants/gmfDisplayQueryGridOptions/mergeTabs/{}/".format(
+                    interface, merge_tab
+                )
+                interfaces_messages.append(Message(None, merge_tab, None, [], "", "", (filename, location)))
+
+        return raster + enums + metadata_list + interfaces_messages
 
     @staticmethod
     def _enumerate_attributes_values(dbsessions, layers, layerinfos, fieldname):
