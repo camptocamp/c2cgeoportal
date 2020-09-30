@@ -1,3 +1,5 @@
+##### 2.5.0.82
+* Fix typo in the documentation [c2cgeoportal#7041](https://github.com/camptocamp/c2cgeoportal/pull/7041)
 ##### 2.5.0.81
 * Params.STYLES can present but undefined [ngeo#6261](https://github.com/camptocamp/ngeo/pull/6261)
 ##### 2.5.0.81
