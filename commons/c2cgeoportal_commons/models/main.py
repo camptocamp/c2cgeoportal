@@ -922,9 +922,10 @@ class Metadata(Base):
         ),
     )
 
-    def __init__(self, name: str = "", value: str = "") -> None:
+    def __init__(self, name: str = "", value: str = "", description: str = None) -> None:
         self.name = name
         self.value = value
+        self.description = description
 
     def __str__(self) -> str:  # pragma: no cover
         return "{}: {}".format(self.name or "", self.value or "")
@@ -964,12 +965,15 @@ class Dimension(Base):
         ),
     )
 
-    def __init__(self, name: str = "", value: str = "", layer: str = None, field: str = None) -> None:
+    def __init__(
+        self, name: str = "", value: str = "", layer: str = None, field: str = None, description: str = None
+    ) -> None:
         self.name = name
         self.value = value
         self.field = field
         if layer is not None:
             self.layer = layer
+        self.description = description
 
     def __str__(self) -> str:  # pragma: no cover
         return self.name or ""
