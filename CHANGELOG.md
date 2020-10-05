@@ -1,3 +1,5 @@
+##### 2.4.2.15
+* [Backport 2.4] Params.STYLES can present but undefined [ngeo#6300](https://github.com/camptocamp/ngeo/pull/6300)
 ##### 2.4.2.14
 * Fix publish to GitHub Container Registry [c2cgeoportal#7014](https://github.com/camptocamp/c2cgeoportal/pull/7014)
 ##### 2.4.2.13
