@@ -243,7 +243,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             if self.layers is not None:
                 return self.layers
 
-            nodes = {}  # dict { node name : list of ancestor node names }
+            nodes = {}  # dict { node name: list of ancestor node names }
 
             def browse(path, node):
                 if isinstance(node, QgsLayerTreeLayer):
