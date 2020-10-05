@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2019, Camptocamp SA
+# Copyright (c) 2014-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ def create_authentication(settings):
         cookie_name=settings["authtkt_cookie_name"],
         samesite=None if samesite == "" else samesite,
         timeout=timeout,
-        max_age=timeout,
+        max_age=max_age,
         reissue_time=reissue_time,
         hashalg="sha512",
         http_only=http_only,
