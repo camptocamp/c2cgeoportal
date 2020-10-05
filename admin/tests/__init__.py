@@ -91,7 +91,7 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
 
 class AbstractViewsTests:
 
-    _prefix = None  # url prefix (index view url). Example : /users
+    _prefix = None  # url prefix (index view url). Example: /users
 
     def get(self, test_app, path="", locale="en", status=200, **kwargs):
         return test_app.get(
