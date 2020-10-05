@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2019, Camptocamp SA
+# Copyright (c) 2014-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,11 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from pyramid.authentication import AuthTktAuthenticationPolicy, \
-    BasicAuthAuthenticationPolicy
-from pyramid_multiauth import MultiAuthenticationPolicy
-
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
+from pyramid.authentication import AuthTktAuthenticationPolicy, BasicAuthAuthenticationPolicy
+from pyramid_multiauth import MultiAuthenticationPolicy
 
 
 def create_authentication(settings):
@@ -48,7 +46,7 @@ def create_authentication(settings):
         settings["authtkt_secret"],
         callback=defaultgroupsfinder,
         cookie_name=settings["authtkt_cookie_name"],
-        timeout=timeout, max_age=timeout, reissue_time=reissue_time,
+        timeout=timeout, max_age=max_age, reissue_time=reissue_time,
         hashalg="sha512", http_only=http_only, secure=secure,
     )
     basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
