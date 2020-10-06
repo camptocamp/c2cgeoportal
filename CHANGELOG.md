@@ -1,5 +1,9 @@
 ##### 2.5.0.83
-* [Backport 2.5] Fix the max age [c2cgeoportal#7068](https://github.com/camptocamp/c2cgeoportal/pull/7068)
+* [Backport 2.5] Fix pdfreport reading content [c2cgeoportal#7070](https://github.com/camptocamp/c2cgeoportal/pull/7070)
+* Prepare (clean) groups to support disclaimer [ngeo#6328](https://github.com/camptocamp/ngeo/pull/6328)
+##### 2.5.0.83
+* [Backport 2.5] Fix pdfreport reading content [c2cgeoportal#7070](https://github.com/camptocamp/c2cgeoportal/pull/7070)
+* Prepare (clean) groups to support disclaimer [ngeo#6328](https://github.com/camptocamp/ngeo/pull/6328)
 ##### 2.5.0.82
 * Fix typo in the documentation [c2cgeoportal#7041](https://github.com/camptocamp/c2cgeoportal/pull/7041)
 ##### 2.5.0.81
