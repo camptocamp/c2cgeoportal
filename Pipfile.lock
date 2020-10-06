@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a01062ef6e69841e4f55b7fcf9b240839298fa2ff88659c5561c49efd3fe3b1c"
+            "sha256": "7e6b2d51314dacb0065afd702a89829c3932f917cd048200f5b038e3b28f4770"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -898,11 +898,10 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:2688ba072e98449180ee97de439e5c67af763f1c1e969dac9f7381ae28f293d6",
-                "sha256:c7ee9adc5735981bf21f75aa6b47eb15317a21541d5caba3405895a6a42b841b"
+                "sha256:e04073d0088f4114d350ec3742c71d5c5e5799b74a915b46fd448e20a3fc36b4"
             ],
             "index": "pypi",
-            "version": "==1.18.152"
+            "version": "==1.18.153"
         },
         "babel": {
             "hashes": [
@@ -930,10 +929,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:1531ee5d7f7d0f0d9a12ea829ef046ac52063a1948409ae19a452a3f47a07937",
-                "sha256:a0514ba531148af26fe36bf75c73089698a5ed8ae150695b96e7cbdf32dd232b"
+                "sha256:12b2381ee82ff32d5135c0887eadec18d38c8ff7fac06405ba6a8584f2159c3c",
+                "sha256:368f85992b0c7fda95b216776d475791c59e4c4415325fda683a02c5c110cf35"
             ],
-            "version": "==1.18.11"
+            "version": "==1.18.12"
         },
         "certifi": {
             "hashes": [
@@ -961,7 +960,6 @@
                 "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
                 "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
             ],
-            "markers": "python_version != '3.4'",
             "version": "==0.4.3"
         },
         "coverage": {
@@ -1364,7 +1362,6 @@
                 "sha256:7a8190790c17d79a11f847fba0b004ee9a8122582ebff4729a082c109e81a4c9",
                 "sha256:8f593023c1a0f916110285b6efd7f99db07d59546e3d8c36fc60e2ab05d3be92"
             ],
-            "index": "pypi",
             "version": "==6.1.1"
         },
         "pytest-cov": {
@@ -1432,7 +1429,6 @@
                 "sha256:35c5b5f6675ac02120036d97cf96f1fde4d49670543db2822ba5015e21a18032",
                 "sha256:4d409f5a7d78530a4a2062574c7bd80311bc3af29b364e293aa9b03eea77714f"
             ],
-            "markers": "python_version != '3.4'",
             "version": "==4.5"
         },
         "s3transfer": {
