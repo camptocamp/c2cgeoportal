@@ -227,7 +227,7 @@ class TreeItem(Base):
     @property
     # Better: def parents(self) -> List[TreeGroup]:  # pragma: no cover
     def parents(self) -> List["TreeItem"]:  # pragma: no cover
-        return [c.group for c in self.parents_relation]
+        return [c.treegroup for c in self.parents_relation]
 
     def is_in_interface(self, name: str) -> bool:
         if not hasattr(self, "interfaces"):  # pragma: no cover
