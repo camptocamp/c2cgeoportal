@@ -63,7 +63,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
             headers=headers,
         )
 
-        return self._build_response(response, response.text, NO_CACHE, "pdfreport")
+        return self._build_response(response, response.content, NO_CACHE, "pdfreport")
 
     @staticmethod
     def _build_map(mapserv_url, vector_request_url, srs, map_config):
