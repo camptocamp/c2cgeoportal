@@ -67,7 +67,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         )
 
         return self._build_response(
-            response, response.text, NO_CACHE, "pdfreport",
+            response, response.content, NO_CACHE, "pdfreport",
         )
 
     @staticmethod
