@@ -1,3 +1,6 @@
+##### 2.4.2.16
+* [Backport 2.4] Fix the max age [c2cgeoportal#7067](https://github.com/camptocamp/c2cgeoportal/pull/7067)
+* Fix pdfreport reading content [c2cgeoportal#7069](https://github.com/camptocamp/c2cgeoportal/pull/7069)
 ##### 2.4.2.15
 * [Backport 2.4] Params.STYLES can present but undefined [ngeo#6300](https://github.com/camptocamp/ngeo/pull/6300)
 ##### 2.4.2.14
