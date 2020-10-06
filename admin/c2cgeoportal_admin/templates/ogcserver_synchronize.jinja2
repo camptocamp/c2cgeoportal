@@ -1,0 +1,35 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <div class="panel panel-default form-panel">
+    <div class="panel-heading">
+      Synchronization of OGC Server "{{ogcserver.name}}"
+    </div>
+
+    <div class="panel-body">
+      <p>Synchronization will download the WMS Capabilities and for each Layer element:</p>
+      <ul>
+        <li>if the Layer element does not contains any other Layer element, it will create a LayerWMS object;</li>
+        <li>else if the Layer element is at top level, it will create a Theme object;</li>
+        <li>else it will create a Group object.</li>
+      </ul>
+      <form method="POST" class="deform">
+        <button type="submit" class="btn btn-primary">{{_("Synchronize")}}</button>
+      </form>
+    </div>
+  </div>
+
+  {% if success %}
+  <div class="alert alert-success">
+    <div class="msg-lbl">OGC Server has been successfully synchronized.</div>
+  </div>
+  {% endif %}
+
+  {% if report %}
+  <pre>{{ report }}</pre>
+  {% endif %}
+
+</div>
+{% endblock content %}

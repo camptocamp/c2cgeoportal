@@ -38,6 +38,7 @@ from pyramid.view import view_config, view_defaults
 from sqlalchemy import inspect
 
 from c2cgeoportal_admin import _
+from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
 from c2cgeoportal_commons.models.main import OGCServer
 
 _list_field = partial(ListField, OGCServer)
@@ -93,8 +94,6 @@ class OGCServerViews(AbstractViews):
                     label=_("Synchronize"),
                     icon="glyphicon glyphicon-import",
                     url=self._request.route_url("ogcserver_synchronize", id=getattr(item, self._id_field)),
-                    method="POST",
-                    confirmation=_("Are you sure you want to import content from this OGC server?"),
                 ),
             )
         return actions
@@ -116,3 +115,25 @@ class OGCServerViews(AbstractViews):
     )
     def duplicate(self):
         return super().duplicate()
+
+    @view_config(route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2")
+    def synchronize(self):
+        obj = self._get_object()
+
+        if self._request.method == "GET":
+            return {
+                "ogcserver": obj,
+                "success": None,
+                "report": None,
+            }
+
+        if self._request.method == "POST":
+            synchronizer = OGCServerSynchronizer(self._request, obj)
+            synchronizer.synchronize()
+            return {
+                "ogcserver": obj,
+                "success": True,
+                "report": synchronizer.report(),
+            }
+
+        return {}
