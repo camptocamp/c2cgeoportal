@@ -1,3 +1,5 @@
+##### 2.5.0.85
+* [Backport 2.5] Fix: update-po doesn't use PGSCHEMA defined in .env file [c2cgeoportal#7075](https://github.com/camptocamp/c2cgeoportal/pull/7075)
 ##### 2.5.0.84
 * Fix the geoportal image send [c2cgeoportal#7076](https://github.com/camptocamp/c2cgeoportal/pull/7076)
 ##### 2.5.0.83
