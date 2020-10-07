@@ -139,7 +139,7 @@ services:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
     user: www-data
     restart: unless-stopped
-    environment: &env
+    environment:
       - VISIBLE_ENTRY_POINT
       - PACKAGE={{package}}
       - PGHOST
@@ -193,7 +193,58 @@ services:
   tools:
     image: camptocamp/geomapfish-tools:{{geomapfish_version}}
     restart: unless-stopped
-    environment: *env
+    environment:
+      - PGSCHEMA
+      # From geoportal
+      - VISIBLE_ENTRY_POINT
+      - PACKAGE={{package}}
+      - PGHOST
+      - PGHOST_SLAVE
+      - PGPORT
+      - PGPORT_SLAVE
+      - PGUSER
+      - PGPASSWORD
+      - PGDATABASE
+      - PGSSLMODE
+      - PGSCHEMA_STATIC
+      - PGOPTIONS
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - AWS_S3_ENDPOINT
+      - GUNICORN_PARAMS
+      - VISIBLE_WEB_HOST
+      - VISIBLE_WEB_PROTOCOL
+      - AUTHTKT_TIMEOUT
+      - AUTHTKT_REISSUE_TIME
+      - AUTHTKT_MAXAGE
+      - AUTHTKT_SECRET
+      - AUTHTKT_COOKIENAME
+      - AUTHTKT_HTTP_ONLY
+      - AUTHTKT_SECURE
+      - AUTHTKT_SAMESITE
+      - BASICAUTH
+      - TINYOWS_URL
+      - MAPSERVER_URL
+      - QGISSERVER_URL
+      - PRINT_URL
+      - DEVSERVER_HOST
+      - REDIS_HOST
+      - REDIS_PORT
+      - REDIS_DB
+      - C2C_REDIS_URL
+      - C2C_BROADCAST_PREFIX
+      - C2C_LOG_VIEW_ENABLED=TRUE
+      - C2C_SQL_PROFILER_ENABLED=TRUE
+      - C2C_DEBUG_VIEW_ENABLED=TRUE
+      - C2C_SECRET
+      - LOG_LEVEL
+      - C2CGEOPORTAL_LOG_LEVEL
+      - SQL_LOG_LEVEL
+      - GUNICORN_LOG_LEVEL
+      - OTHER_LOG_LEVEL
+      - DOGPILECACHE_LOG_LEVEL
+      - LOG_TYPE
 
   alembic:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
