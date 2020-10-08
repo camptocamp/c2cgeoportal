@@ -18,7 +18,7 @@ pytest-cov = "==2.10.1"  # tests
 transifex-client = "==0.13.12"  # Makefile
 WebTest = "==2.0.35"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit", "with_pyroma"],version = "==1.3.0"}
-mypy = "==0.761"
+mypy = "==0.782"
 
 [packages]
 alembic = "==1.4.3"  # geoportal
