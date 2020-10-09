@@ -36,7 +36,7 @@ import transaction
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
-def _main():
+def main():
     """
     Emergency user create and password reset script
     example, reset toto password to foobar:
@@ -73,12 +73,13 @@ User can be created if it does not exist yet."""
         sess = get_session(settings, transaction.manager)
 
         # Must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models import main, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 
         print("\n")
 
         # Check that user exists
-        query = sess.query(static.User).filter_by(username=username)
+        query = sess.query(User).filter_by(username=username)
 
         result = query.count()
         if result == 0:
@@ -93,7 +94,7 @@ User can be created if it does not exist yet."""
                     parser.error("The email is mandatory on user creation")
 
                 # Get roles
-                query_role = sess.query(main.Role).filter(main.Role.name == options.rolename)
+                query_role = sess.query(Role).filter(Role.name == options.rolename)
 
                 if query_role.count() == 0:
                     # Role not found in db?
@@ -102,7 +103,7 @@ User can be created if it does not exist yet."""
 
                 role = query_role.first()
 
-                user = static.User(
+                user = User(
                     username=username,
                     password=options.password,
                     email=options.email,
@@ -136,4 +137,4 @@ User can be created if it does not exist yet."""
 
 
 if __name__ == "__main__":
-    _main()
+    main()
