@@ -1,3 +1,5 @@
+##### 2.5.0.87
+* Fix call to manage users [c2cgeoportal#7083](https://github.com/camptocamp/c2cgeoportal/pull/7083)
 ##### 2.5.0.86
 * [Backport 2.5] Fix pdfreport reading content [c2cgeoportal#7070](https://github.com/camptocamp/c2cgeoportal/pull/7070)
 ##### 2.5.0.85
