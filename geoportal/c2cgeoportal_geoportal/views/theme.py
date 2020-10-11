@@ -647,7 +647,8 @@ class Theme:
                 "mixed": False,
             }
             if not mixed:
-                for name, nb in list(Counter(layers_name).items()):
+                name: str
+                for name, nb in Counter(layers_name).items():
                     if nb > 1:
                         errors.add(
                             "The GeoMapFish layer name '{}', cannot be two times "
