@@ -183,6 +183,15 @@ vars:
         gmfDisplayQueryWindowOptions:
           featureStyle: *featureStyle
           selectedFeatureStyle: *selectedFeatureStyle
+        gmfEditFeatureOptions:
+          tolerance: 10
+          closeAfterSave: false
+          highlightStyle:
+            fill:
+              color: [255, 139, 139, 0.6]
+            stroke:
+              color: [255, 0, 0, 1]
+              width: 3
         gmfMobileMeasureAreaOptions:
           precision: 2
           sketchStyle: &mobileMeasureStyle
