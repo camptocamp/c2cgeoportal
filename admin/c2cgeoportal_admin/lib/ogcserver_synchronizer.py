@@ -157,7 +157,11 @@ class OGCServerSynchronizer:
         # LayerWMS
         layer.ogc_server = self._ogc_server
         layer.layer = el.find("Name").text
-        layer.style = self._default_wms.style if el.xpath("./Style[Name='text']") else None
+        layer.style = (
+            self._default_wms.style
+            if el.find("./Style/Name[.='{}']".format(self._default_wms.style)) is not None
+            else None
+        )
         # layer.time_mode =
         # layer.time_widget =
 

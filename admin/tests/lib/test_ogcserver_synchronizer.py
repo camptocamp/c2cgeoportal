@@ -140,6 +140,51 @@ class TestOGCServerSynchronizer:
             "3 layers were added\n"
         )
 
+    def test_create_layer_wms_defaut(self, web_request, dbsession):
+        """We should copy properties from default LayerWMS"""
+        from c2cgeoportal_commons.models import main
+
+        synchronizer = self.synchronizer(web_request)
+
+        default_wms = main.LayerWMS()
+        default_wms.description = "Default description"
+        default_wms.metadatas = [main.Metadata(name="isExpanded", value="True")]
+        default_wms.exclude_properties = "excluded_property"
+        default_wms.interfaces = [main.Interface("interface")]
+        default_wms.dimensions = [
+            main.Dimension(name="dim", value=None, field="dim", description="description")
+        ]
+        default_wms.style = "default_style"
+
+        el = etree.fromstring(
+            """
+<Layer>
+    <Name>layer1</Name>
+    <Style>
+        <Name>default_style</Name>
+        <Title>default_style</Title>
+    </Style>
+</Layer>
+"""
+        )
+
+        with patch.object(synchronizer, "_default_wms", default_wms):
+            layer = synchronizer.create_layer_wms(el)
+
+            assert layer.description == "Default description"
+            assert len(layer.metadatas) == 1
+            assert layer.metadatas[0].name == "isExpanded"
+            assert layer.metadatas[0].value == "True"
+            assert layer.exclude_properties == "excluded_property"
+            assert len(layer.interfaces) == 1
+            assert layer.interfaces[0].name == "interface"
+            assert len(layer.dimensions) == 1
+            assert layer.dimensions[0].name == "dim"
+            assert layer.dimensions[0].value is None
+            assert layer.dimensions[0].field == "dim"
+            assert layer.dimensions[0].description == "description"
+            assert layer.style == "default_style"
+
     def test_create_layer_wms_defaut_style_not_exists(self, web_request, dbsession):
         """We should not copy style from default LayerWMS if does not exist in capabilities"""
         from c2cgeoportal_commons.models import main
