@@ -33,7 +33,7 @@ import logging
 from typing import Optional, Set, Type  # noqa, pylint: disable=unused-import
 import urllib.parse
 
-from lxml import etree
+from defusedxml import ElementTree
 import requests
 
 from c2cgeoportal_commons.lib.url import add_url_params, get_url2
@@ -71,7 +71,7 @@ class OGCServerSynchronizer:
         self._groups_added = 0
         self._layers_added = 0
 
-        capabilities = etree.fromstring(self.wms_capabilities())
+        capabilities = ElementTree.fromstring(self.wms_capabilities())
         theme_layers = capabilities.findall("Capability/Layer/Layer")
         for theme_layer in theme_layers:
             self.synchronize_layer(theme_layer)
