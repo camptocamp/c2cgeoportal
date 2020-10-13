@@ -99,6 +99,33 @@ class TestOGCServerSynchronizer:
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
         return_value=wms_capabilities(),
     )
+    def test_synchronize_dry_run(self, cap_mock, web_request, dbsession):
+        from c2cgeoportal_commons.models import main
+
+        assert dbsession.query(main.TreeItem).count() == 0
+
+        synchronizer = self.synchronizer(web_request)
+        synchronizer.synchronize(dry_run=True)
+
+        assert dbsession.query(main.TreeItem).count() == 0
+
+        assert synchronizer.report() == (
+            "Layer theme1 added as new theme\n"
+            "Layer group1 added as new group in theme theme1\n"
+            "Layer layer1 added as new layer in group group1\n"
+            "Layer layer_in_theme added as new layer with no parent\n"
+            "Layer layer_with_no_parent added as new layer with no parent\n"
+            "0 items were found\n"
+            "1 themes were added\n"
+            "1 groups were added\n"
+            "3 layers were added\n"
+            "Rolling back transaction due to dry run\n"
+        )
+
+    @patch(
+        "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
+        return_value=wms_capabilities(),
+    )
     def test_synchronize_success(self, cap_mock, web_request, dbsession):
         from c2cgeoportal_commons.models import main
 

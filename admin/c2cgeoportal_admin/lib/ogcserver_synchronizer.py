@@ -39,6 +39,20 @@ from c2cgeoportal_commons.lib.url import add_url_params, get_url2
 from c2cgeoportal_commons.models import main
 
 
+class dry_run_transaction:  # noqa N801: class names should use CapWords convention
+    def __init__(self, dbsession, dry_run):
+        self.dbsession = dbsession
+        self.dry_run = dry_run
+
+    def __enter__(self):
+        if self.dry_run:
+            self.dbsession.begin_nested()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.dry_run:
+            self.dbsession.rollback()
+
+
 class OGCServerSynchronizer:
     def __init__(self, request, ogc_server):
         self._request = request
@@ -64,7 +78,13 @@ class OGCServerSynchronizer:
     def report(self):
         return self._log.getvalue()
 
-    def synchronize(self):
+    def synchronize(self, dry_run=False):
+        with dry_run_transaction(self._request.dbsession, dry_run):
+            self.do_synchronize()
+            if dry_run:
+                self._logger.info("Rolling back transaction due to dry run")
+
+    def do_synchronize(self):
         self._items_found = 0
         self._themes_added = 0
         self._groups_added = 0
