@@ -31,7 +31,6 @@
 from io import StringIO
 import logging
 from typing import Optional, Set, Type  # noqa, pylint: disable=unused-import
-import urllib.parse
 
 from defusedxml import ElementTree
 import requests
@@ -192,16 +191,12 @@ class OGCServerSynchronizer:
 
         self._logger.info("Get WMS GetCapabilities from: %s", url)
 
-        # Forward request to target (without Host Header)
-        headers = dict(self._request.headers)
+        headers = {}
 
         # Add headers for Geoserver
         if self._ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER:
             headers["sec-username"] = "root"
             headers["sec-roles"] = "root"
-
-        if urllib.parse.urlsplit(url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
-            headers.pop("Host")
 
         response = requests.get(url, headers=headers, timeout=300)
         self._logger.info("Got response %s in %.1fs.", response.status_code, response.elapsed.total_seconds())
