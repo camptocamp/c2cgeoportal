@@ -70,10 +70,10 @@ def ogc_server(**kwargs):
 
 @pytest.mark.usefixtures("test_app", "transact")
 class TestOGCServerSynchronizer:
-    def synchronizer(self, request):
+    def synchronizer(self, request, server=None):
         from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
 
-        return OGCServerSynchronizer(request=request, ogc_server=ogc_server())
+        return OGCServerSynchronizer(request=request, ogc_server=server or ogc_server())
 
     def test_wms_service_mapserver(self, web_request):
         synchronizer = self.synchronizer(web_request)
@@ -89,6 +89,42 @@ class TestOGCServerSynchronizer:
         assert re.match(
             r"Get WMS GetCapabilities from: {url}\nGot response 200 in \d+.\d+s.\n".format(url=url),
             synchronizer.report(),
+        )
+
+    @patch(
+        "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
+        return_value=wms_capabilities(),
+    )
+    def test_check_layers(self, cap_mock, web_request, dbsession):
+        from c2cgeoportal_commons.models import main
+
+        server = ogc_server()
+        dbsession.add(server)
+
+        layer1 = main.LayerWMS(name="layer1", layer="layer1")
+        layer1.ogc_server = server
+        dbsession.add(layer1)
+
+        layer_missing = main.LayerWMS(name="layer_missing", layer="layer_missing")
+        layer_missing.ogc_server = server
+        dbsession.add(layer_missing)
+
+        style_missing = main.LayerWMS(name="style_missing", layer="layer1")
+        style_missing.ogc_server = server
+        style_missing.style = "style_missing"
+        dbsession.add(style_missing)
+
+        dbsession.flush()
+
+        layers = dbsession.query(main.LayerWMS).filter(main.LayerWMS.ogc_server == server)
+        assert layers.count() == 3
+
+        synchronizer = self.synchronizer(web_request, server)
+        synchronizer.check_layers()
+        assert synchronizer.report() == (
+            "Layer layer_missing does not exists on OGC server\n"
+            "Style style_missing does not exists in Layer layer1\n"
+            "Checked 3 layers, 2 are invalid\n"
         )
 
     def test_synchronize_mapserver(self, web_request):

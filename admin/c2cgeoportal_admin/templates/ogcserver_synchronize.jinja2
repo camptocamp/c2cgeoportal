@@ -9,14 +9,33 @@
     </div>
 
     <div class="panel-body">
-      <p>Synchronization will download the WMS Capabilities and for each Layer element:</p>
+      <h3>Check layers validity</h3>
+      <p>Download the WMS Capabilities and for each <code>LayerWMS</code> item in this OGC server:</p>
       <ul>
-        <li>if the Layer element does not contains any other Layer element, it will create a LayerWMS object;</li>
-        <li>else if the Layer element is at top level, it will create a Theme object;</li>
-        <li>else it will create a Group object.</li>
+        <li>verify that all the layers specified in <code>layer</code> field exists on the remote server;</li>
+        <li>if <code>style</code> field is not empty, it will also verify that the corresponding <code>&lt;Style&gt;</code> element is available;</li>
+        <li>and finally populate <code>valid</code> and <code>invalid_reason</code> fields with the results.</li>
       </ul>
-      <form method="POST" class="deform">
-        <button type="submit" name="dry-run" class="btn btn-primary">{{_("Dry run")}}</button>
+      <p>Note that <code>valid</code> and <code>invalid_reason</code> fields have no effect on the front office,
+        they are only populated for your information in this back office.</p>
+      <form method="POST" class="deform" id="form-check">
+        <button type="submit" name="check" class="btn btn-default">{{_("Check layers validity")}}</button>
+      </form>
+      <hr/>
+      <h3>Dry run synchronize</h3>
+      <p>Run the synchronization and display the report but do not commit changes to the database.<p>
+      <form method="POST" class="deform" id="form-dry-run">
+        <button type="submit" name="dry-run" class="btn btn-default">{{_("Dry run synchronize")}}</button>
+      </form>
+      <hr/>
+      <h3>Synchronize</h3>
+      <p>Download the WMS Capabilities and for each &lt;Layer>&gt; element:</p>
+      <ul>
+        <li>if the <code>&lt;Layer&gt;</code> element does not contains any other <code>&lt;Layer&gt;</code> element, it will create a <code>LayerWMS</code> object;</li>
+        <li>else if the Layer element is at top level, it will create a <code>Theme</code> object;</li>
+        <li>else it will create a <code>Group</code> object.</li>
+      </ul>
+      <form method="POST" class="deform" id="form-synchronize">
         <button type="submit" name="synchronize" class="btn btn-primary">{{_("Synchronize")}}</button>
       </form>
     </div>

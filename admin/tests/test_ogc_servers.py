@@ -121,12 +121,34 @@ class TestOGCServer(AbstractViewsTests):
 
         self._check_submission_problem(resp, "{} is already used.".format(ogc_server.name))
 
+    def test_check_success(self, ogc_server_test_data, test_app):
+        ogc_server = ogc_server_test_data["ogc_servers"][3]
+        ogc_server.url = "config://mapserver"
+        resp = test_app.get("/admin/ogc_servers/{}/synchronize".format(ogc_server.id), status=200)
+
+        resp = resp.forms["form-check"].submit("submit")
+
+        assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
+            "OGC Server has been successfully synchronized."
+        ]
+
+    def test_dry_run_success(self, ogc_server_test_data, test_app):
+        ogc_server = ogc_server_test_data["ogc_servers"][3]
+        ogc_server.url = "config://mapserver"
+        resp = test_app.get("/admin/ogc_servers/{}/synchronize".format(ogc_server.id), status=200)
+
+        resp = resp.forms["form-dry-run"].submit("submit")
+
+        assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
+            "OGC Server has been successfully synchronized."
+        ]
+
     def test_synchronize_success(self, ogc_server_test_data, test_app):
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         ogc_server.url = "config://mapserver"
         resp = test_app.get("/admin/ogc_servers/{}/synchronize".format(ogc_server.id), status=200)
 
-        resp = resp.form.submit("submit")
+        resp = resp.forms["form-synchronize"].submit("submit")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
             "OGC Server has been successfully synchronized."

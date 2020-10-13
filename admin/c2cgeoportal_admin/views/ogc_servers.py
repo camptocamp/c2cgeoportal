@@ -129,7 +129,9 @@ class OGCServerViews(AbstractViews):
 
         if self._request.method == "POST":
             synchronizer = OGCServerSynchronizer(self._request, obj)
-            if "dry-run" in self._request.params:
+            if "check" in self._request.params:
+                synchronizer.check_layers()
+            elif "dry-run" in self._request.params:
                 synchronizer.synchronize(dry_run=True)
             elif "synchronize" in self._request.params:
                 synchronizer.synchronize()

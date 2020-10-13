@@ -78,6 +78,35 @@ class OGCServerSynchronizer:
     def report(self):
         return self._log.getvalue()
 
+    def check_layers(self):
+        capabilities = ElementTree.fromstring(self.wms_capabilities())
+        layers = self._request.dbsession.query(main.LayerWMS).filter(
+            main.LayerWMS.ogc_server == self._ogc_server
+        )
+        items = 0
+        invalids = 0
+        for layer in layers:
+            valid = True
+            reason = None
+            for name in layer.layer.split(","):
+                el = capabilities.find(".//Layer[Name='{}']".format(name))
+                if el is None:
+                    valid = False
+                    reason = "Layer {} does not exists on OGC server".format(name)
+                    self._logger.info(reason)
+                    break
+                if layer.style and el.find("./Style/Name[.='{}']".format(layer.style)) is None:
+                    valid = False
+                    reason = "Style {} does not exists in Layer {}".format(layer.style, name)
+                    self._logger.info(reason)
+                    break
+            layer.valid = valid
+            if not valid:
+                invalids += 1
+            layer.invalid_reason = reason
+            items += 1
+        self._logger.info("Checked %s layers, %s are invalid", items, invalids)
+
     def synchronize(self, dry_run=False):
         with dry_run_transaction(self._request.dbsession, dry_run):
             self.do_synchronize()

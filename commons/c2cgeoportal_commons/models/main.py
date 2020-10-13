@@ -50,7 +50,7 @@ from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 
 try:
     from colander import drop
-    from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
+    from deform.widget import CheckboxWidget, HiddenWidget, SelectWidget, TextAreaWidget, TextInputWidget
     from c2cgeoform import default_map_settings
     from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
     from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
@@ -62,12 +62,14 @@ except ModuleNotFoundError:
         def __init__(self, *args: Any, **kwargs: Any):
             pass
 
+    CheckboxWidget = GenericClass
     HiddenWidget = GenericClass
     MapWidget = GenericClass
     SelectWidget = GenericClass
     TextAreaWidget = GenericClass
     ColanderGeometry = GenericClass
     RelationSelect2Widget = GenericClass
+    TextInputWidget = GenericClass
 
 
 LOG = logging.getLogger(__name__)
@@ -605,6 +607,20 @@ class LayerWMS(DimensionLayer):
         Unicode, nullable=False, info={"colanderalchemy": {"title": _("WMS layer name"), "column": 2}}
     )
     style = Column(Unicode, info={"colanderalchemy": {"title": _("Style"), "column": 2}})
+    valid = Column(
+        Boolean,
+        info={"colanderalchemy": {"title": _("Valid"), "column": 2, "widget": CheckboxWidget(readonly=True)}},
+    )
+    invalid_reason = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Reason why I am not valid"),
+                "column": 2,
+                "widget": TextInputWidget(readonly=True),
+            }
+        },
+    )
     time_mode = Column(
         Enum("disabled", "value", "range", native_enum=False),
         default="disabled",
