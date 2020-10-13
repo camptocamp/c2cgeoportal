@@ -167,7 +167,7 @@ class TestOGCServerSynchronizer:
             "3 layers were added\n"
         )
 
-    def test_create_layer_wms_defaut(self, web_request, dbsession):
+    def test_get_layer_wms_defaut(self, web_request, dbsession):
         """We should copy properties from default LayerWMS"""
         from c2cgeoportal_commons.models import main
 
@@ -196,7 +196,7 @@ class TestOGCServerSynchronizer:
         )
 
         with patch.object(synchronizer, "_default_wms", default_wms):
-            layer = synchronizer.create_layer_wms(el)
+            layer = synchronizer.get_layer_wms(el, None)
 
             assert layer.description == "Default description"
             assert len(layer.metadatas) == 1
@@ -212,7 +212,7 @@ class TestOGCServerSynchronizer:
             assert layer.dimensions[0].description == "description"
             assert layer.style == "default_style"
 
-    def test_create_layer_wms_defaut_style_not_exists(self, web_request, dbsession):
+    def test_get_layer_wms_defaut_style_not_exists(self, web_request, dbsession):
         """We should not copy style from default LayerWMS if does not exist in capabilities"""
         from c2cgeoportal_commons.models import main
 
@@ -234,5 +234,5 @@ class TestOGCServerSynchronizer:
         )
 
         with patch.object(synchronizer, "_default_wms", default_wms):
-            layer = synchronizer.create_layer_wms(el)
+            layer = synchronizer.get_layer_wms(el, None)
             assert layer.style is None

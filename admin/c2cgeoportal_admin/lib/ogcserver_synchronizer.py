@@ -101,88 +101,105 @@ class OGCServerSynchronizer:
         self._logger.info("%s layers were added", self._layers_added)
 
     def synchronize_layer(self, el, parent=None):
-        name = el.find("Name").text
-
-        class_: Optional[Type[main.TreeItem]] = None
         if el.find("Layer") is None:
-            class_ = main.LayerWMS
+            tree_item = self.get_layer_wms(el, parent)
         elif parent is None:
-            class_ = main.Theme
+            tree_item = self.get_theme(el)
         else:
-            class_ = main.LayerGroup
-
-        tree_item = self._request.dbsession.query(class_).filter(class_.name == name).one_or_none()
-        if tree_item is not None:
-            self._items_found += 1
-        else:
-            if class_ == main.Theme:
-                tree_item = self.create_theme(el)
-                self._logger.info("Layer %s added as new theme", name)
-                self._themes_added += 1
-
-            if class_ == main.LayerGroup:
-                tree_item = self.creare_layer_group(el)
-                tree_item.parents_relation.append(  # noqa, pylint: no-member
-                    main.LayergroupTreeitem(group=parent)
-                )
-                self._logger.info("Layer %s added as new group in theme %s", name, parent.name)
-                self._groups_added += 1
-
-            if class_ == main.LayerWMS:
-                tree_item = self.create_layer_wms(el)
-                if parent is None or isinstance(parent, main.Theme):
-                    self._logger.info("Layer %s added as new layer with no parent", name)
-                else:
-                    tree_item.parents_relation.append(main.LayergroupTreeitem(group=parent))
-                    self._logger.info("Layer %s added as new layer in group %s", name, parent.name)
-                self._layers_added += 1
-
-            self._request.dbsession.add(tree_item)
+            tree_item = self.get_layer_group(el, parent)
 
         for child in el.findall("Layer"):
             self.synchronize_layer(child, tree_item)
 
-    @staticmethod
-    def create_theme(el):
-        theme = main.Theme()
-        theme.name = el.find("Name").text
-        theme.public = False
+    def get_theme(self, el):
+        name = el.find("Name").text
+
+        theme = self._request.dbsession.query(main.Theme).filter(main.Theme.name == name).one_or_none()
+
+        if theme is None:
+            theme = main.Theme()
+            theme.name = name
+            theme.public = False
+
+            self._request.dbsession.add(theme)
+            self._logger.info("Layer %s added as new theme", name)
+            self._themes_added += 1
+        else:
+            self._items_found += 1
+
         return theme
 
-    @staticmethod
-    def creare_layer_group(el):
-        return main.LayerGroup(name=el.find("Name").text,)
+    def get_layer_group(self, el, parent):
+        name = el.find("Name").text
 
-    def create_layer_wms(self, el):
-        layer = main.LayerWMS()
-
-        # TreeItem
-        layer.name = el.find("Name").text
-        layer.description = self._default_wms.description
-        layer.metadatas = [main.Metadata(name=m.name, value=m.value) for m in self._default_wms.metadatas]
-
-        # Layer
-        layer.public = False
-        layer.geo_table = None
-        layer.exclude_properties = self._default_wms.exclude_properties
-        layer.interfaces = list(self._default_wms.interfaces)
-
-        # DimensionLayer
-        layer.dimensions = [
-            main.Dimension(name=d.name, value=d.value, field=d.field, description=d.description,)
-            for d in self._default_wms.dimensions
-        ]
-
-        # LayerWMS
-        layer.ogc_server = self._ogc_server
-        layer.layer = el.find("Name").text
-        layer.style = (
-            self._default_wms.style
-            if el.find("./Style/Name[.='{}']".format(self._default_wms.style)) is not None
-            else None
+        group = (
+            self._request.dbsession.query(main.LayerGroup).filter(main.LayerGroup.name == name).one_or_none()
         )
-        # layer.time_mode =
-        # layer.time_widget =
+
+        if group is None:
+            group = main.LayerGroup(name=el.find("Name").text)
+            group.parents_relation.append(main.LayergroupTreeitem(group=parent))  # noqa, pylint: no-member
+
+            self._request.dbsession.add(group)
+            self._logger.info("Layer %s added as new group in theme %s", name, parent.name)
+            self._groups_added += 1
+        else:
+            self._items_found += 1
+
+        return group
+
+    def get_layer_wms(self, el, parent):
+        name = el.find("Name").text
+
+        layer = self._request.dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == name).one_or_none()
+
+        if layer is None:
+            layer = main.LayerWMS()
+
+            # TreeItem
+            layer.name = el.find("Name").text
+            layer.description = self._default_wms.description
+            layer.metadatas = [main.Metadata(name=m.name, value=m.value) for m in self._default_wms.metadatas]
+
+            # Layer
+            layer.public = False
+            layer.geo_table = None
+            layer.exclude_properties = self._default_wms.exclude_properties
+            layer.interfaces = list(self._default_wms.interfaces)
+
+            # DimensionLayer
+            layer.dimensions = [
+                main.Dimension(name=d.name, value=d.value, field=d.field, description=d.description,)
+                for d in self._default_wms.dimensions
+            ]
+
+            # LayerWMS
+            layer.ogc_server = self._ogc_server
+            layer.layer = el.find("Name").text
+            layer.style = (
+                self._default_wms.style
+                if el.find("./Style/Name[.='{}']".format(self._default_wms.style)) is not None
+                else None
+            )
+            # layer.time_mode =
+            # layer.time_widget =
+
+            self._request.dbsession.add(layer)
+            if parent is None or isinstance(parent, main.Theme):
+                self._logger.info("Layer %s added as new layer with no parent", name)
+            else:
+                layer.parents_relation.append(main.LayergroupTreeitem(group=parent))
+                self._logger.info("Layer %s added as new layer in group %s", name, parent.name)
+            self._layers_added += 1
+
+        else:
+            self._items_found += 1
+            if layer.ogc_server is not self._ogc_server:
+                self._logger.info(
+                    "Layer %s: another layer already exists with the same name in OGC server %s",
+                    name,
+                    self._ogc_server.name,
+                )
 
         return layer
 
