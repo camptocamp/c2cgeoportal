@@ -57,9 +57,10 @@ class OGCServerSynchronizer:
     def __init__(self, request, ogc_server):
         self._request = request
         self._ogc_server = ogc_server
-        self._default_wms = main.LayerWMS.get_default(request.dbsession) or main.LayerWMS()
-        self._logger = logging.Logger(str(self), logging.INFO)
+        self._default_wms = None
+        self._interfaces = None
 
+        self._logger = logging.Logger(str(self), logging.INFO)
         self._log = StringIO()
         self._log_handler = logging.StreamHandler(self._log)
         self._logger.addHandler(self._log_handler)
@@ -119,6 +120,9 @@ class OGCServerSynchronizer:
         self._groups_added = 0
         self._layers_added = 0
 
+        self._default_wms = main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS()
+        self._interfaces = self._request.dbsession.query(main.Interface).all()
+
         capabilities = ElementTree.fromstring(self.wms_capabilities())
         theme_layers = capabilities.findall("Capability/Layer/Layer")
         for theme_layer in theme_layers:
@@ -149,6 +153,7 @@ class OGCServerSynchronizer:
             theme = main.Theme()
             theme.name = name
             theme.public = False
+            theme.interfaces = self._interfaces
 
             self._request.dbsession.add(theme)
             self._logger.info("Layer %s added as new theme", name)
@@ -194,7 +199,7 @@ class OGCServerSynchronizer:
             layer.public = False
             layer.geo_table = None
             layer.exclude_properties = self._default_wms.exclude_properties
-            layer.interfaces = list(self._default_wms.interfaces)
+            layer.interfaces = list(self._default_wms.interfaces) or self._interfaces
 
             # DimensionLayer
             layer.dimensions = [

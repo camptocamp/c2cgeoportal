@@ -165,13 +165,15 @@ class TestOGCServerSynchronizer:
     def test_synchronize_success(self, cap_mock, web_request, dbsession):
         from c2cgeoportal_commons.models import main
 
-        assert dbsession.query(main.TreeItem).count() == 0
+        interface = main.Interface(name="desktop")
+        dbsession.add(interface)
 
         synchronizer = self.synchronizer(web_request)
         synchronizer.synchronize()
 
         theme1 = dbsession.query(main.Theme).one()
         assert theme1.name == "theme1"
+        assert len(theme1.interfaces) == 1
 
         group1 = dbsession.query(main.LayerGroup).one()
         assert group1.name == "group1"
@@ -180,6 +182,7 @@ class TestOGCServerSynchronizer:
         layer1 = dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == "layer1").one()
         assert layer1.name == "layer1"
         assert layer1.parents == [group1]
+        assert len(layer1.interfaces) == 1
 
         layer_in_theme = dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == "layer_in_theme").one()
         assert layer_in_theme.name == "layer_in_theme"
@@ -256,6 +259,9 @@ class TestOGCServerSynchronizer:
 
         default_wms = main.LayerWMS()
         default_wms.style = "not_existing_style"
+        synchronizer._default_wms = default_wms
+
+        synchronizer._interfaces = []
 
         el = etree.fromstring(
             """
@@ -269,6 +275,5 @@ class TestOGCServerSynchronizer:
 """
         )
 
-        with patch.object(synchronizer, "_default_wms", default_wms):
-            layer = synchronizer.get_layer_wms(el, None)
-            assert layer.style is None
+        layer = synchronizer.get_layer_wms(el, None)
+        assert layer.style is None
