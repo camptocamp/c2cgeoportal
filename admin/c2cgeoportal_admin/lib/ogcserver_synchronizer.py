@@ -30,7 +30,7 @@
 
 from io import StringIO
 import logging
-from typing import Optional, Set, Type  # noqa, pylint: disable=unused-import
+from typing import Set  # noqa, pylint: disable=unused-import
 
 from defusedxml import ElementTree
 import requests
