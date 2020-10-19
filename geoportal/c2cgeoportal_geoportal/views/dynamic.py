@@ -30,6 +30,7 @@
 
 import re
 import urllib.parse
+from typing import Dict, List, Union
 
 from pyramid.view import view_config
 from sqlalchemy import func
@@ -151,7 +152,7 @@ class DynamicView:
                     interface_config['redirect_interface'] + 'theme',
                     themes=theme,
                     _query=query
-                )
+                ).replace("+", "%20")
             else:
                 no_redirect_url = self.request.route_url(
                     interface_config['redirect_interface'],
@@ -160,7 +161,7 @@ class DynamicView:
                 url = self.request.route_url(
                     interface_config['redirect_interface'],
                     _query=query
-                )
+                ).replace("+", "%20")
 
             if 'no_redirect' in query:
                 constants['redirectUrl'] = ''
