@@ -32,20 +32,22 @@
 
 from unittest import TestCase
 
+import pyramid.url
 from pyramid import testing
 from pyramid.testing import testConfig
-
-from c2cgeoportal_geoportal.lib.caching import init_region
 from tests import DummyRequest
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+
+from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestDynamicView(TestCase):
     def setup_method(self, _):
         import transaction
-        from sqlalchemy import func
         from geoalchemy2 import WKTElement
+        from sqlalchemy import func
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import FullTextSearch
 
@@ -80,6 +82,7 @@ class TestDynamicView(TestCase):
         testing.tearDown()
 
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import FullTextSearch
 
@@ -106,12 +109,12 @@ class TestDynamicView(TestCase):
         request.route_url = (
             lambda url, _query=None: "/dummy/route/url/{}".format(url)
             if _query is None
-            else "/dummy/route/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
+            else "/dummy/route/url/{}?{}".format(url, pyramid.url.urlencode(_query))
         )
         request.static_url = (
             lambda url, _query=None: "/dummy/static/url/{}".format(url)
             if _query is None
-            else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
+            else "/dummy/static/url/{}?{}".format(url, pyramid.url.urlencode(_query))
         )
         return request
 
@@ -359,6 +362,21 @@ class TestDynamicView(TestCase):
             "constants": {"currentInterfaceUrl": "/dummy/route/url/test?"},
             "doRedirect": True,
             "redirectUrl": "/dummy/route/url/test_redirect?",
+        }
+
+    def test_redirect_space(self):
+        from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
+        request = self._request({"query": "?test=_%20_"})
+        request.registry.settings = self._get_settings(
+            {"test": {"redirect_interface": "test_redirect", "do_redirect": True}}
+        )
+        dynamic = DynamicView(request).dynamic()
+
+        assert dynamic == {
+            "constants": {"currentInterfaceUrl": "/dummy/route/url/test?"},
+            "doRedirect": True,
+            "redirectUrl": "/dummy/route/url/test_redirect?test=_%20_",
         }
 
     def test_cross_overrid_1(self):
