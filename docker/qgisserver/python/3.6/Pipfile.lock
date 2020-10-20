@@ -475,10 +475,11 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:14bfd98f51c78a3dd22a1ef45cf194ad79eee4a19e8e1a0d5c7f8e81ffe182ea",
-                "sha256:5adc0f9fc64319d8df5ca1e4e06eea674c26b80e6f00c530b18ce6a6592ead15"
+                "sha256:5fad80b613c402d5b7df7bd84812548b2a61e9977387a80a5fc5c396492b13c9",
+                "sha256:b236cde0ac9a6aedd5e3c34517b423cd4fd97ef723849da6b0d2231142d89c00"
             ],
-            "version": "==5.5.0"
+            "index": "pypi",
+            "version": "==5.5.1"
         },
         "pep8-naming": {
             "hashes": [
@@ -661,7 +662,6 @@
                 "sha256:16522f69653f0d67be90e8baa4a46d66389145b734345d68a257da53df670903",
                 "sha256:c1532a8030c32fd52ff6a288d855fe7adef5823ba1d26a29a68fd6314aa72baa"
             ],
-            "index": "pypi",
             "version": "==3.3.1"
         }
     }
