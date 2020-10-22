@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "62ac7db2fbb52ae248b9ed392814555a468aff46022312d1e79cb6dab38377be"
+            "sha256": "81bd088a279dc5290bd00a1e2a97490cad5dc8ac1a39789240dbacf83ae9a347"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -470,7 +470,6 @@
                 "sha256:5fad80b613c402d5b7df7bd84812548b2a61e9977387a80a5fc5c396492b13c9",
                 "sha256:b236cde0ac9a6aedd5e3c34517b423cd4fd97ef723849da6b0d2231142d89c00"
             ],
-            "index": "pypi",
             "version": "==5.5.1"
         },
         "pep8-naming": {
@@ -486,10 +485,10 @@
                 "with_mypy"
             ],
             "hashes": [
-                "sha256:43e5e187c027336b0e4c4aa6a82d66d3b923b5ec5b51968126132e32f9d14a2f"
+                "sha256:700d7918d93d73035a2a58fb18c6be0b609a0481fc6e0908843fa856b89e52c6"
             ],
             "index": "pypi",
-            "version": "==1.3.0"
+            "version": "==1.3.1"
         },
         "pycodestyle": {
             "hashes": [
@@ -514,10 +513,10 @@
         },
         "pylint": {
             "hashes": [
-                "sha256:b95e31850f3af163c2283ed40432f053acbc8fc6eba6a069cb518d9dbf71848c",
-                "sha256:dd506acce0427e9e08fb87274bcaa953d38b50a58207170dbf5b36cf3e16957b"
+                "sha256:7dd78437f2d8d019717dbf287772d0b2dbdfd13fc016aa7faa08d67bccc46adc",
+                "sha256:d0ece7d223fe422088b0e8f13fa0a1e8eb745ebffcb8ed53d3e95394b6101a1c"
             ],
-            "version": "==2.5.2"
+            "version": "==2.5.3"
         },
         "pylint-celery": {
             "hashes": [
@@ -527,10 +526,10 @@
         },
         "pylint-django": {
             "hashes": [
-                "sha256:06a64331c498a3f049ba669dc0c174b92209e164198d43e589b1096ee616d5f8",
-                "sha256:3d3436ba8d0fae576ae2db160e33a8f2746a101fda4463f2b3ff3a8b6fccec38"
+                "sha256:b7756844dba0cecd3471056a1ef4154439defedaba38bf3ced9f848d2bf6297c",
+                "sha256:ca32277c77878dd3c2d9e75f3f3f7f0c0712f053f10ff1b946cdc27367a6c911"
             ],
-            "version": "==2.0.15"
+            "version": "==2.1.0"
         },
         "pylint-flask": {
             "hashes": [
