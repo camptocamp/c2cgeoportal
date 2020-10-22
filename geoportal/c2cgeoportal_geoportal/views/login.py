@@ -305,13 +305,6 @@ class Login:
         except NoResultFound:  # pragma: no cover
             return None, None, None, "The login '{}' does not exist.".format(username)
 
-        if self.two_factor_auth and user.is_password_changed:
-            otp = self.request.POST.get("otp")
-            if otp is None:
-                raise HTTPBadRequest("The second factor is missing.")
-            if not self._validate_2fa_totp(user, otp):
-                return None, None, None, "The second factor is wrong for user '{}'.".format(username)
-
         if user.email is None or user.email == "":  # pragma: no cover
             return None, None, None, "The user '{}' has no registered email address.".format(user.username)
 

@@ -477,14 +477,6 @@ class Test2faView(TestCase):
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).loginresetpassword()
 
-        request = self._create_request_obj(POST={"login": "__test_user"})
-        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
-            Login(request).loginresetpassword()
-
-        request = self._create_request_obj(POST={"login": "__test_user_unexisting", "otp": totp.now()})
-        with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Login(request).loginresetpassword()
-
-        request = self._create_request_obj(POST={"login": "__test_user", "otp": "wrong"})
+        request = self._create_request_obj(POST={"login": "__test_user_unexisting"})
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).loginresetpassword()
