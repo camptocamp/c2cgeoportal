@@ -1,0 +1,12 @@
+Error on backporting to branch 2.4, error on cherry picking ['c5b381eda3e6a6ccc6c00e384614512f69cf51c2']:
+error: could not apply c5b381eda... Bump pr-lint-action to fix it
+hint: after resolving the conflicts, mark the corrected paths
+hint: with 'git add <paths>' or 'git rm <paths>'
+hint: and commit the result with 'git commit'
+
+
+
+to continue do:
+git fetch && git checkout backport/7137-to-2.4 && git reset --hard HEAD^
+git cherry-pick c5b381eda3e6a6ccc6c00e384614512f69cf51c2
+git push origin backport/7137-to-2.4 --force
