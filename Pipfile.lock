@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9a62fc61a8a50c027d56ee2ef417d5ee85b2b7d4d96ca5d9dca6bd84335deb2f"
+            "sha256": "beb36a6c171f9eaafaca7a73d4e007d0ffa2d5ed45602cfa3b16bc066298542c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -905,11 +905,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:3a302d12b2fd6a52d7297ae86972b794d01c9dad8ff5f6d984eee6cd5a534299",
-                "sha256:efed5d77796d13692737643d5fd472a3752a560504786fd56a5366f6a5e7cf54"
+                "sha256:43838aba7439ee3df52d09a3f69fe8666df1b570c1a696c6097b1dd5c187c1ae",
+                "sha256:9b336c75a550ce21f2433ea5da5e115a46f9a136994a1169f094a12fce5db084"
             ],
             "index": "pypi",
-            "version": "==1.18.162"
+            "version": "==1.18.163"
         },
         "babel": {
             "hashes": [
@@ -937,10 +937,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:dc52d4eb5c2a4360506bdd8a99aca7ebc31c56849faf98c707e5201fcbb56957",
-                "sha256:edb4292afe8c66099d45b3650da4757a228d38d25dbe884040cc1804a03d5020"
+                "sha256:4ea4c74d244c1b4701387fd1abe6a5e1833dc621c6d39f8888f0bfa95ddd82f5",
+                "sha256:f5084376a8519332a200737f5cd80e87f47868b7da4d57fc192397670e0af022"
             ],
-            "version": "==1.19.2"
+            "version": "==1.19.3"
         },
         "certifi": {
             "hashes": [
@@ -1055,10 +1055,10 @@
         },
         "gitpython": {
             "hashes": [
-                "sha256:138016d519bf4dd55b22c682c904ed2fd0235c3612b2f8f65ce218ff358deed8",
-                "sha256:a03f728b49ce9597a6655793207c6ab0da55519368ff5961e4a74ae475b9fa8e"
+                "sha256:6eea89b655917b500437e9668e4a12eabdcf00229a0df1762aabd692ef9b746b",
+                "sha256:befa4d101f91bad1b632df4308ec64555db684c360bd7d2130b4807d49ce86b8"
             ],
-            "version": "==3.1.9"
+            "version": "==3.1.11"
         },
         "idna": {
             "hashes": [
