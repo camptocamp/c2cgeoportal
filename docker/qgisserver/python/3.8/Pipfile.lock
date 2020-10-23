@@ -393,10 +393,11 @@
         },
         "gitpython": {
             "hashes": [
-                "sha256:138016d519bf4dd55b22c682c904ed2fd0235c3612b2f8f65ce218ff358deed8",
-                "sha256:a03f728b49ce9597a6655793207c6ab0da55519368ff5961e4a74ae475b9fa8e"
+                "sha256:58483ad99811321e3c0b52c8b2229ff517499229a4854752b7d128005986e409",
+                "sha256:f488d43600d7299567b59fe41497d313e7c1253a9f2a8ebd2df8af2a1151c71d"
             ],
-            "version": "==3.1.9"
+            "index": "pypi",
+            "version": "==3.1.10"
         },
         "isort": {
             "hashes": [
