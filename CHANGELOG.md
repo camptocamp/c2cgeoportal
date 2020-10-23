@@ -1,5 +1,11 @@
 ##### 2.5.0.87
-* Fix call to manage users [c2cgeoportal#7083](https://github.com/camptocamp/c2cgeoportal/pull/7083)
+* Don't requires the 2fa on reset password [c2cgeoportal#7134](https://github.com/camptocamp/c2cgeoportal/pull/7134)
+* [Backport 2.5] Bump pr-lint-action to fix it [c2cgeoportal#7139](https://github.com/camptocamp/c2cgeoportal/pull/7139)
+* [Backport 2.5] Bump pr-lint-action to fix it [ngeo#6387](https://github.com/camptocamp/ngeo/pull/6387)
+##### 2.5.0.87
+* Don't requires the 2fa on reset password [c2cgeoportal#7134](https://github.com/camptocamp/c2cgeoportal/pull/7134)
+* [Backport 2.5] Bump pr-lint-action to fix it [c2cgeoportal#7139](https://github.com/camptocamp/c2cgeoportal/pull/7139)
+* [Backport 2.5] Bump pr-lint-action to fix it [ngeo#6387](https://github.com/camptocamp/ngeo/pull/6387)
 ##### 2.5.0.86
 * [Backport 2.5] Fix pdfreport reading content [c2cgeoportal#7070](https://github.com/camptocamp/c2cgeoportal/pull/7070)
 ##### 2.5.0.85
