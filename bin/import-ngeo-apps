@@ -100,6 +100,15 @@ def main():
 
         if args.html:
             data = _sub(
+                re.escape('<link rel="shortcut icon" href="<%=require("./image/favicon.ico")%>" />'),
+                r'<link rel="shortcut icon" href="{entry_point}static/{cache_version}/images/'
+                r'favicon.ico">'.format(
+                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
+                ),
+                data,
+            )
+            data = _sub(
                 re.escape('<script src="../../../dist/vendor.js') + r".*",
                 r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}"></script>'.format(
                     entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",

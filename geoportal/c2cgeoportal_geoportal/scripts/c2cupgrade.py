@@ -522,7 +522,7 @@ rules:
                             )
                         )
                         task_to_do = True
-            if not managed and os.path.exists(dst):
+            if not managed and os.path.exists(dst) and not element.get("override", False):
                 print(colorize("The destination '{}' already exists, ignoring.".format(dst), YELLOW))
             elif not managed:
                 print("Move the {} '{}' to '{}'.".format(type_, src, dst))

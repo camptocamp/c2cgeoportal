@@ -17,9 +17,9 @@ APPS_SASS_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/var
 APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) $(APPS_SASS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/favicon.ico \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png \
-	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg
+	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg \
+	$(APPS_PACKAGE_PATH)/static/images/favicon.ico
 
 APPS_ALT += desktop_alt mobile_alt oeedit
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
@@ -87,6 +87,11 @@ $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss: \
 	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/contextualdata.html
+	mkdir --parent $(dir $@)
+	cp $< $@
+
+$(APPS_PACKAGE_PATH)/static/images/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
+	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
 
