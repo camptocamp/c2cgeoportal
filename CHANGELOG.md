@@ -1,6 +1,7 @@
 ##### 2.5.0.88
-* Don't requires the 2fa on reset password [c2cgeoportal#7134](https://github.com/camptocamp/c2cgeoportal/pull/7134)
-* [Backport 2.5] Bump pr-lint-action to fix it [c2cgeoportal#7139](https://github.com/camptocamp/c2cgeoportal/pull/7139)
+* Fix Firefox ctrl key [ngeo#6397](https://github.com/camptocamp/ngeo/pull/6397)
+##### 2.5.0.88
+* Fix Firefox ctrl key [ngeo#6397](https://github.com/camptocamp/ngeo/pull/6397)
 ##### 2.5.0.87
 * [Backport 2.5] Bump pr-lint-action to fix it [ngeo#6387](https://github.com/camptocamp/ngeo/pull/6387)
 ##### 2.5.0.87
