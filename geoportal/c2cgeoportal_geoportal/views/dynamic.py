@@ -30,8 +30,8 @@
 
 import json
 import re
-import urllib.parse
 from typing import Dict, List, Union
+import urllib.parse
 
 from pyramid.view import view_config
 from sqlalchemy import func

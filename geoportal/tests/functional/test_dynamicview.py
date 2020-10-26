@@ -32,14 +32,14 @@
 
 from unittest import TestCase
 
-import pyramid.url
 from pyramid import testing
 from pyramid.testing import testConfig
+import pyramid.url
+
+from c2cgeoportal_geoportal.lib.caching import init_region
 from tests import DummyRequest
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
-
-from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestDynamicView(TestCase):
