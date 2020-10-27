@@ -1,3 +1,5 @@
+##### 2.5.0.91
+* Remove Webpack progress mode [c2cgeoportal#7161](https://github.com/camptocamp/c2cgeoportal/pull/7161)
 ##### 2.5.0.90
 * [Backport 2.5] Fix space in redirect URL [c2cgeoportal#7160](https://github.com/camptocamp/c2cgeoportal/pull/7160)
 ##### 2.5.0.89
