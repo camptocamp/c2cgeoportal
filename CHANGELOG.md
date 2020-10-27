@@ -1,6 +1,7 @@
 ##### 2.5.0.89
-* Don't requires the 2fa on reset password [c2cgeoportal#7134](https://github.com/camptocamp/c2cgeoportal/pull/7134)
-* [Backport 2.5] Fix space in redirect URL [c2cgeoportal#7160](https://github.com/camptocamp/c2cgeoportal/pull/7160)
+* Bug with print [ngeo#6399](https://github.com/camptocamp/ngeo/pull/6399)
+##### 2.5.0.89
+* Bug with print [ngeo#6399](https://github.com/camptocamp/ngeo/pull/6399)
 ##### 2.5.0.88
 * Fix Firefox ctrl key [ngeo#6397](https://github.com/camptocamp/ngeo/pull/6397)
 ##### 2.5.0.88
