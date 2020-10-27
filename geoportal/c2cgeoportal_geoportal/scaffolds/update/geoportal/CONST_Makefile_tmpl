@@ -40,12 +40,7 @@ NGEO_OUTPUT_FILES = $(ANGULAR_LOCALES_FILES)
 NGEO_API_OUTPUT_JS_FILE ?= $(APP_OUTPUT_DIR)/api.js.tmpl
 NGEO_API_OUTPUT_FILES += $(NGEO_API_OUTPUT_JS_FILE) $(APP_OUTPUT_DIR)/api.css
 
-
-ifdef CI
 WEBPACK_ARGS ?= --debug
-else
-WEBPACK_ARGS ?= --progress --debug
-endif
 
 VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
 	$(PACKAGE)_geoportal/*.py $(PACKAGE)_geoportal/lib \
