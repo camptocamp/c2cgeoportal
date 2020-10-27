@@ -1,3 +1,5 @@
+##### 2.5.0.90
+* [Backport 2.5] Fix space in redirect URL [c2cgeoportal#7160](https://github.com/camptocamp/c2cgeoportal/pull/7160)
 ##### 2.5.0.89
 * Bug with print [ngeo#6399](https://github.com/camptocamp/ngeo/pull/6399)
 ##### 2.5.0.89
