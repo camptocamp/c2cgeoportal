@@ -148,12 +148,14 @@ class DynamicView:
                 )
                 url = self.request.route_url(
                     interface_config["redirect_interface"] + "theme", themes=theme, _query=query
-                )
+                ).replace("+", "%20")
             else:
                 no_redirect_url = self.request.route_url(
                     interface_config["redirect_interface"], _query=no_redirect_query
                 )
-                url = self.request.route_url(interface_config["redirect_interface"], _query=query)
+                url = self.request.route_url(interface_config["redirect_interface"], _query=query).replace(
+                    "+", "%20"
+                )
 
             if "no_redirect" in query:
                 constants["redirectUrl"] = ""
