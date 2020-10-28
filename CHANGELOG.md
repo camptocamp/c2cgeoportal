@@ -1,3 +1,6 @@
+##### 2.5.0.92
+* Fix build command in documentation [c2cgeoportal#7168](https://github.com/camptocamp/c2cgeoportal/pull/7168)
+* Fix selectObject in API [ngeo#6401](https://github.com/camptocamp/ngeo/pull/6401)
 ##### 2.5.0.91
 * Remove Webpack progress mode [c2cgeoportal#7161](https://github.com/camptocamp/c2cgeoportal/pull/7161)
 ##### 2.5.0.90
