@@ -563,7 +563,7 @@ class OGCServer(Base):
 
     def url_wfs_description(self, request: Request) -> Optional[str]:
         if not self.url_wfs:
-            return None
+            return self.url_description(request)
         errors: Set[str] = set()
         url = get_url2(self.name, self.url_wfs, request, errors)
         return url or "\n".join(errors)
