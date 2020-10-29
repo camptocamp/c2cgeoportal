@@ -30,7 +30,7 @@
 
 from io import StringIO
 import logging
-from typing import Set  # noqa, pylint: disable=unused-import
+from typing import cast, Set  # noqa, pylint: disable=unused-import
 
 from defusedxml import ElementTree
 import requests
@@ -57,7 +57,7 @@ class OGCServerSynchronizer:
     def __init__(self, request, ogc_server):
         self._request = request
         self._ogc_server = ogc_server
-        self._default_wms = None
+        self._default_wms = main.LayerWMS()
         self._interfaces = None
 
         self._logger = logging.Logger(str(self), logging.INFO)
@@ -120,7 +120,9 @@ class OGCServerSynchronizer:
         self._groups_added = 0
         self._layers_added = 0
 
-        self._default_wms = main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS()
+        self._default_wms = cast(
+            main.LayerWMS, main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS()
+        )
         self._interfaces = self._request.dbsession.query(main.Interface).all()
 
         capabilities = ElementTree.fromstring(self.wms_capabilities())
