@@ -27,16 +27,30 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
-
+# pylint: disable=missing-docstring
 
 from unittest import TestCase
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import urlparse, parse_qs
 
-from c2cgeoportal_geoportal.lib import add_url_params
+from pyramid.testing import DummyRequest
+
+from c2cgeoportal_commons.lib.url import add_url_params, get_url2
 
 
-class TestLib(TestCase):
+class TestUrl(TestCase):
+    def test_add_url_params(self):
+        params = {"Name": "Bob", "Age": 18, "Nationality": "Việt Nam"}
+        result = add_url_params("http://test/", params)
+        presult = urlparse(result)
+        self.assertEqual(presult.scheme, "http")
+        self.assertEqual(presult.netloc, "test")
+        self.assertEqual(presult.path, "/")
+        self.assertEqual(presult.params, "")
+        self.assertEqual(presult.fragment, "")
+        self.assertEqual(
+            parse_qs(presult.query), {"Name": ["Bob"], "Age": ["18"], "Nationality": ["Việt Nam"]}
+        )
+
     def test_add_url_params_encode1(self):
         presult = urlparse(add_url_params("http://example.com/toto", {"à": "é"}))
         self.assertEqual(presult.scheme, "http")
@@ -75,3 +89,60 @@ class TestLib(TestCase):
 
     def test_add_url_params_noparam(self):
         self.assertEqual(add_url_params("http://example.com/", {}), "http://example.com/")
+
+    def test_get_url2(self):
+        request = DummyRequest()
+        request.registry.settings = {
+            "package": "my_project",
+            "servers": {
+                "srv": "https://example.com/test",
+                "srv_alt": "https://example.com/test/",
+                "full_url": "https://example.com/test.xml",
+            },
+        }
+        request.scheme = "https"
+
+        def static_url(path, **kwargs):
+            del kwargs  # Unused
+            return "http://server.org/" + path
+
+        request.static_url = static_url
+
+        self.assertEqual(
+            get_url2("test", "static://pr:st/icon.png", request, set()), "http://server.org/pr:st/icon.png"
+        )
+        self.assertEqual(
+            get_url2("test", "static:///icon.png", request, set()),
+            "http://server.org//etc/geomapfish/static/icon.png",
+        )
+        self.assertEqual(
+            get_url2("test", "config://srv/icon.png", request, set()), "https://example.com/test/icon.png"
+        )
+        self.assertEqual(get_url2("test", "config://srv/", request, set()), "https://example.com/test/")
+        self.assertEqual(get_url2("test", "config://srv", request, set()), "https://example.com/test")
+        self.assertEqual(
+            get_url2("test", "config://srv/icon.png?test=aaa", request, set()),
+            "https://example.com/test/icon.png?test=aaa",
+        )
+        self.assertEqual(
+            get_url2("test", "config://srv_alt/icon.png", request, set()), "https://example.com/test/icon.png"
+        )
+        self.assertEqual(
+            get_url2("test", "config://full_url", request, set()), "https://example.com/test.xml"
+        )
+        self.assertEqual(
+            get_url2("test", "http://example.com/icon.png", request, set()), "http://example.com/icon.png"
+        )
+        self.assertEqual(
+            get_url2("test", "https://example.com/icon.png", request, set()), "https://example.com/icon.png"
+        )
+        errors = set()
+        self.assertEqual(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
+        self.assertEqual(
+            errors,
+            set(
+                [
+                    "test: The server 'srv2' (config://srv2/icon.png) is not found in the config: [srv, srv_alt, full_url]"
+                ]
+            ),
+        )

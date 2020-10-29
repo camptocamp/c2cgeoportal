@@ -7,6 +7,12 @@ vars:
   schema_static: main_static
   srid: 21781
 
+  servers:
+    internal: http://localhost/
+    local: 'https://my-geomapfish.com/'
+    mapserver: 'http://mapserver:8080/'
+    qgisserver: 'http://qgisserver:8080/'
+
   available_locale_names:
     - en
     - fr

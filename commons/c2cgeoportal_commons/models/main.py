@@ -32,23 +32,25 @@
 
 import logging
 import re
-from typing import Any, Dict, List, Optional, Tuple, Union, cast  # noqa, pylint: disable=unused-import
+from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast  # noqa, pylint: disable=unused-import
 
 from c2c.template.config import config
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from papyrus.geo_interface import GeoInterface
+from pyramid.request import Request
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
 from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
 from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode
 
+from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 
 try:
     from colander import drop
-    from deform.widget import HiddenWidget, SelectWidget, TextAreaWidget
+    from deform.widget import CheckboxWidget, HiddenWidget, SelectWidget, TextAreaWidget, TextInputWidget
     from c2cgeoform import default_map_settings
     from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
     from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
@@ -60,12 +62,14 @@ except ModuleNotFoundError:
         def __init__(self, *args: Any, **kwargs: Any):
             pass
 
+    CheckboxWidget = GenericClass
     HiddenWidget = GenericClass
     MapWidget = GenericClass
     SelectWidget = GenericClass
     TextAreaWidget = GenericClass
     ColanderGeometry = GenericClass
     RelationSelect2Widget = GenericClass
+    TextInputWidget = GenericClass
 
 
 LOG = logging.getLogger(__name__)
@@ -227,7 +231,7 @@ class TreeItem(Base):
     @property
     # Better: def parents(self) -> List[TreeGroup]:  # pragma: no cover
     def parents(self) -> List["TreeItem"]:  # pragma: no cover
-        return [c.group for c in self.parents_relation]
+        return [c.treegroup for c in self.parents_relation]
 
     def is_in_interface(self, name: str) -> bool:
         if not hasattr(self, "interfaces"):  # pragma: no cover
@@ -552,6 +556,18 @@ class OGCServer(Base):
     def __str__(self) -> str:
         return self.name or ""  # pragma: no cover
 
+    def url_description(self, request: Request) -> str:
+        errors: Set[str] = set()
+        url = get_url2(self.name, self.url, request, errors)
+        return url or "\n".join(errors)
+
+    def url_wfs_description(self, request: Request) -> Optional[str]:
+        if not self.url_wfs:
+            return self.url_description(request)
+        errors: Set[str] = set()
+        url = get_url2(self.name, self.url_wfs, request, errors)
+        return url or "\n".join(errors)
+
 
 event.listen(OGCServer, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(OGCServer, "after_update", cache_invalidate_cb, propagate=True)
@@ -591,6 +607,20 @@ class LayerWMS(DimensionLayer):
         Unicode, nullable=False, info={"colanderalchemy": {"title": _("WMS layer name"), "column": 2}}
     )
     style = Column(Unicode, info={"colanderalchemy": {"title": _("Style"), "column": 2}})
+    valid = Column(
+        Boolean,
+        info={"colanderalchemy": {"title": _("Valid"), "column": 2, "widget": CheckboxWidget(readonly=True)}},
+    )
+    invalid_reason = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Reason why I am not valid"),
+                "column": 2,
+                "widget": TextInputWidget(readonly=True),
+            }
+        },
+    )
     time_mode = Column(
         Enum("disabled", "value", "range", native_enum=False),
         default="disabled",
@@ -908,9 +938,10 @@ class Metadata(Base):
         ),
     )
 
-    def __init__(self, name: str = "", value: str = "") -> None:
+    def __init__(self, name: str = "", value: str = "", description: str = None) -> None:
         self.name = name
         self.value = value
+        self.description = description
 
     def __str__(self) -> str:  # pragma: no cover
         return "{}: {}".format(self.name or "", self.value or "")
@@ -950,12 +981,15 @@ class Dimension(Base):
         ),
     )
 
-    def __init__(self, name: str = "", value: str = "", layer: str = None, field: str = None) -> None:
+    def __init__(
+        self, name: str = "", value: str = "", layer: str = None, field: str = None, description: str = None
+    ) -> None:
         self.name = name
         self.value = value
         self.field = field
         if layer is not None:
             self.layer = layer
+        self.description = description
 
     def __str__(self) -> str:  # pragma: no cover
         return self.name or ""

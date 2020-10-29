@@ -64,16 +64,18 @@ class LayerWmsViews(DimensionLayerViews):
     _list_fields = (
         DimensionLayerViews._list_fields
         + [
-            _list_field("layer"),
-            _list_field("style"),
-            _list_field("time_mode"),
-            _list_field("time_widget"),
             _list_field(
                 "ogc_server",
                 renderer=lambda layer_wms: layer_wms.ogc_server.name,
                 sort_column=OGCServer.name,
                 filter_column=OGCServer.name,
             ),
+            _list_field("layer"),
+            _list_field("style"),
+            _list_field("valid", label="Valid"),
+            _list_field("invalid_reason", visible=False),
+            _list_field("time_mode"),
+            _list_field("time_widget"),
         ]
         + DimensionLayerViews._extra_list_fields
     )

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,9 @@ from typing import Set
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound
 
+from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import OGCServer
-from c2cgeoportal_geoportal.lib import get_url2
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
