@@ -15,7 +15,7 @@ Build the new containers:
 
     git clone git@github.com:camptocamp/c2cgeoportal.git
     cd c2cgeoportal
-    make docker-build
+    make build
 
 Now, the new containers are ready to use in the application on the same host.
 
