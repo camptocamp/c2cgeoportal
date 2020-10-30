@@ -325,7 +325,7 @@ vars:
               color: rgba(40, 40, 230, 1)
               width: 2
           zoom:
-          autorotate: False
+          autoRotate: False
       dynamic_constants:
         cacheVersion: cache_version
         langUrls: lang_urls
