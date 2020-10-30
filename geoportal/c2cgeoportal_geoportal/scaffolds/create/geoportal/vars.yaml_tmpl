@@ -113,7 +113,7 @@ vars:
           map: {}
           view:
             <<: *view
-            autorotate: True
+            autoRotate: True
           geolocalisation: True
 
   admin_interface:
