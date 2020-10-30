@@ -49,7 +49,7 @@ vars:
   interfaces_config:
     default:
       constants:
-        gmfProjectionsOptions:
+        gmfProjectionsOptions: &projections
           'EPSG:21781':
             definition:
               - +proj=somerc
@@ -366,13 +366,37 @@ vars:
         gmfPrintUrl:
           name: printproxy
     desktop:
+      extends: default
       redirect_interface: mobile
       do_redirect: True
     mobile:
+      extends: default
       redirect_interface: desktop
     iframe_api:
+      extends: default
       constants:
         gmfSearchGroups: []
+    api:
+      constants:
+        projections: *projections
+        # The projection of the map
+        projection: EPSG:{srid}
+      routes:
+        themesUrl:
+          name: themes
+          params:
+            background: background
+          dynamic_params:
+            interface: interface
+        localeUrl:
+            name: localejson
+        searchUrl:
+          name: fulltextsearch
+          params:
+            limit: 30
+            partitionlimit: 5
+          dynamic_params:
+            interface: interface
 
   cache:
     std:

@@ -133,7 +133,7 @@ class TestDynamicView(TestCase):
 
         request = self._request()
         request.registry.settings = self._get_settings(
-            {"default": {"constants": {"XTest": "TOTO"}}, "test": {}}
+            {"default": {"constants": {"XTest": "TOTO"}}, "test": {"extends": "default"}}
         )
         dynamic = DynamicView(request).dynamic()
 

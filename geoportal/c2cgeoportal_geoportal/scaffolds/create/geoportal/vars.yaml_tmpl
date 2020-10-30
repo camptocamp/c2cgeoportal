@@ -34,8 +34,8 @@ vars:
             projection: EPSG:{srid}
             center: [2600000, 1200000]
             zoom: 3
-            resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
-            extent: [2420000, 1030000, 2900000, 1350000]
+            resolutions: &resolutions [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+            extent: &extent [2420000, 1030000, 2900000, 1350000]
           geolocalisation: True
         gmfMousePositionOptions:
           projections:
@@ -115,6 +115,25 @@ vars:
             <<: *view
             autoRotate: True
           geolocalisation: True
+    api:
+      constants:
+        # The resolutions list.
+        resolutions: *resolutions
+
+        # The extent restriction, must be in the same projection as `config.projection`.
+        # the format is `[minx, miny, maxx, maxy]`for example: `[2420000, 1030000, 2660000, 1350000]`
+        # the null is no restriction.
+        extent: *extent
+
+        # The name of the layer to use as background, the layer must be present in the 'background_layers'
+        # section of the theme
+        backgroundLayer: OSM map
+
+        # The list of layers (names) that can be queried on mouse click
+        queryableLayers:
+          - osm_open
+          - many_attributes
+          - polygon
 
   admin_interface:
     # Default values for the admin interface's maps.
@@ -289,6 +308,8 @@ update_paths:
   - interfaces_config.desktop.routes
   - interfaces_config.mobile.constants
   - interfaces_config.iframe_api.constants
+  - interfaces_config.api.constants
+  - interfaces_config.api.routes
   - interfaces_theme
   - resourceproxy
   - servers
