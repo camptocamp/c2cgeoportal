@@ -46,7 +46,7 @@ build: \
 # Import ngeo templates
 
 .PHONY: import-ngeo-apps
-import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT)
+import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT) $(APPS_PACKAGE_PATH)/static/header.html
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	mkdir --parent $(dir $@)
@@ -87,6 +87,10 @@ $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss: \
 	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/contextualdata.html
+	mkdir --parent $(dir $@)
+	cp $< $@
+
+$(APPS_PACKAGE_PATH)/static/header.html:  /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/header.html
 	mkdir --parent $(dir $@)
 	cp $< $@
 
