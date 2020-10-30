@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cda761cc7d07576a841f1af3ff1cf7b60c0f4098879cfc88fa266b0d1eb337e6"
+            "sha256": "21e9bfec97d4d6e41cc11669ea7e42d1d1a94924535a436f5641dc4221c19fc1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -922,11 +922,10 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:742dd35bc9dc5bb86ad751a6f0134b1541f7d104e9a54b4836b1af7e7fa1385d",
-                "sha256:a210f4f846ab3502325179e6902a4d767f8bffda31b9c7167facdd4721289bdc"
+                "sha256:31b8069745d4331172312792d9957e08608deb98efcdbff1ddaa8ec0e1a76966"
             ],
             "index": "pypi",
-            "version": "==1.18.167"
+            "version": "==1.18.168"
         },
         "babel": {
             "hashes": [
@@ -954,10 +953,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:1481d6d3ccb77cb7cd97395110408238f3ab93b0d823156c7a2fb697604eb50d",
-                "sha256:ab59f842797cbd09ee7d9e3f353bb9546f428853d94db448977dd554320620b3"
+                "sha256:2e03401b4e0bc1f32fa11b7d1025975a2955f185dd2650fda6e33c70daeaba4c",
+                "sha256:da7ecc69b6e2ea42fb849928635c0689cae32a95cb38f82b21213d276e75a4a4"
             ],
-            "version": "==1.19.7"
+            "version": "==1.19.8"
         },
         "certifi": {
             "hashes": [
@@ -985,7 +984,6 @@
                 "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
                 "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
             ],
-            "markers": "python_version != '3.4'",
             "version": "==0.4.3"
         },
         "coverage": {
@@ -1455,7 +1453,6 @@
                 "sha256:35c5b5f6675ac02120036d97cf96f1fde4d49670543db2822ba5015e21a18032",
                 "sha256:4d409f5a7d78530a4a2062574c7bd80311bc3af29b364e293aa9b03eea77714f"
             ],
-            "markers": "python_version != '3.4'",
             "version": "==4.5"
         },
         "s3transfer": {
