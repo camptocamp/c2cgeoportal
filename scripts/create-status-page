@@ -1,0 +1,361 @@
+#!/usr/bin/env python3
+
+# Copyright (c) 2020, Camptocamp SA
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# The views and conclusions contained in the software and documentation are those
+# of the authors and should not be interpreted as representing official policies,
+# either expressed or implied, of the FreeBSD Project.
+
+
+# Used to generate the status page:
+# https://github.com/camptocamp/c2cgeoportal/wiki/Status
+
+
+import datetime
+import itertools
+import os
+import os.path
+import re
+import subprocess
+import sys
+import urllib.parse
+from typing import Any, Dict, List, Optional
+
+import dateutil.parser
+import markdown
+import requests
+import yaml
+from markdown.extensions.tables import TableExtension
+
+from markdown_table import render
+
+
+class Status:
+    """
+    Render the table of versions got from SECURITY.md, with an additional column named 'CI status'
+    """
+
+    headers: List[str]
+    data: List[List[str]]
+    _row: Optional[List[str]] = None
+
+    def __init__(self, status: str = None):
+        """
+        Parameters:
+            status: the content of the SECURITY.md file.
+        """
+
+        self.headers = []
+        self.data = []
+
+        if status is None:
+            self.headers = ["Version", "CI status"]
+            return
+
+        md = markdown.Markdown(extensions=[TableExtension()])
+
+        elem = md.parser.parseDocument([s for s in status.split("\n") if s != "" and s[0] != "#" and s[0] != "["])  # type: ignore
+        self._pe(elem.getroot())
+
+        self.data = [r for r in self.data if len([c for c in r if c != None]) > 0]
+        self.headers.append("CI status")
+        for row in self.data:
+            row.append("")
+
+    def _pe(self, elem):
+        """
+        Parse the HTML table
+        """
+        if elem.tag == "th":
+            self.headers.append(elem.text)
+        if elem.tag == "tr":
+            self._row = []
+            self.data.append(self._row)
+        if elem.tag == "td":
+            self._row.append(elem.text)  # type: ignore
+        for e in elem.getchildren():
+            self._pe(e)
+
+    def index(self, ver, link):
+        """
+        Get the index of a version and replace if by a version link
+        """
+        for ind, row in enumerate(self.data):
+            if row[0] == ver:
+                row[0] = link
+                return ind
+        row = ["" for _ in self.headers]
+        row[0] = link
+        self.data.append(row)
+        return len(self.data) - 1
+
+    def render(self):
+        return render(self.headers, self.data)
+
+
+AUTH_HEADER = ""
+
+
+def main():
+    global AUTH_HEADER
+    AUTH_HEADER = "Bearer {}".format(
+        os.environ["GITHUB_TOKEN"]
+        if "GITHUB_TOKEN" in os.environ
+        else subprocess.check_output(["gopass", "gs/ci/github/token/gopass"]).strip().decode()
+    )
+    with open(os.path.join(os.path.dirname(__file__), "status.yaml")) as f:
+        config = yaml.load(f, Loader=yaml.SafeLoader)
+        for elem in config:
+            project(elem)
+
+    print()
+    print("Created with `scripts/create-status-page`")
+
+
+def project(elem):
+    """
+    Print everything related to a project
+
+    Parameters:
+        elem: the config from the yaml
+
+    * The project title
+    * The workflow directly related to the project
+    * The workflow that we never display a status
+    * The enhanced table of versions
+    * The stale, open, non draft pull requests
+
+    Related config:
+      name: The project name
+      repo: The project repository
+      workflows: List of related workflows
+      hidden_workflows: List of workflow names that are not considered as missing
+      versions: Dictionary of versions by name
+    """
+    repo = elem["repo"]
+    all_workflows_response = requests.get(
+        "https://api.github.com/repos/{repo}/actions/workflows".format(repo=repo),
+        headers={"Accept": "application/vnd.github.v3+json", "Authorization": AUTH_HEADER},
+    )
+    if all_workflows_response.status_code == 404:
+        all_workflows = []
+    else:
+        all_workflows_response.raise_for_status()
+        all_workflows = all_workflows_response.json()["workflows"]
+    all_workflows_name = {w["name"] for w in all_workflows if w["name"] != ""}
+    all_workflows_by_name = {
+        name: workflows for name, workflows in itertools.groupby(all_workflows, lambda w: w["name"])
+    }
+
+    # The project title
+    name = "[{}](https://github.com/{})".format(elem["name"], repo)
+    print()
+    print(name)
+    print(re.sub(".", "=", name))
+    # The workflow directly related to the project
+    for wflow in elem.get("workflows", []):
+        print(workflow(wflow, repo, all_workflows_name, all_workflows_by_name))
+
+    # The enhanced table of versions
+    response = requests.get("https://raw.githubusercontent.com/{}/master/SECURITY.md".format(repo))
+    if response.status_code == 404:
+        sys.stderr.write("https://raw.githubusercontent.com/{}/master/SECURITY.md not found.\n".format(repo))
+        print()
+        print("No SECURITY.md file found")
+        status = Status()
+    else:
+        response.raise_for_status()
+        status = Status(response.text)
+
+    for ver, velem in elem.get("versions", {}).items():
+        version(velem, ver, repo, status, all_workflows_name, all_workflows_by_name)
+
+    print()
+    for w in elem.get("hidden_workflows", []):
+        all_workflows_name.remove(w)
+
+    # The workflow that we never display a status
+    if len(all_workflows_name) > 0:
+        print("Missing workflows: " + ", ".join(all_workflows_name))
+        print()
+
+    # Output the enhanced table of versions
+    if len(status.data) > 0:
+        print(status.render())
+
+    # The stale, open, non draft pull requests
+    pullrequests_response = requests.get(
+        "https://api.github.com/repos/{repo}/pulls".format(repo=repo),
+        headers={"Accept": "application/vnd.github.v3+json", "Authorization": AUTH_HEADER},
+        params={"state": "open"},
+    )
+    pullrequests_response.raise_for_status()
+    first = True
+    for pullrequest in pullrequests_response.json():
+        delta = (
+            datetime.datetime.now() - dateutil.parser.isoparse(pullrequest["updated_at"]).replace(tzinfo=None)
+        ).days
+        if not pullrequest["draft"] and delta > 2:
+            if first:
+                print()
+                print("Stale pull requests:")
+                first = False
+            print(
+                "* [#{}]({}) {}".format(pullrequest["number"], pullrequest["html_url"], pullrequest["title"])
+            )
+
+
+def version(elem, ver, repo, status, all_workflows_name, all_workflows_by_name):
+    """
+    Fill the versions status table for one version
+
+    Parameters:
+        elem: the config from the yaml
+        ver: the version name
+        repo: the repository name
+        status: the version status table
+        all_workflows_name: used to track the workflows whose we missed the status
+        all_workflows_by_name: list of workflow getter from the REST api in a dictionary by name
+
+    Related config:
+      branch: The branch name, default is the version name
+      workflows: List of related workflows
+    """
+    branch = elem["branch"] if "branch" in elem else ver
+    link = "[{}](https://github.com/{}/tree/{})".format(ver, repo, branch)
+    index = status.index(ver, link)
+    status.data[index][-1] = " ".join(
+        [
+            workflow(wflow, repo, all_workflows_name, all_workflows_by_name, branch)
+            for wflow in elem.get("workflows", [])
+        ]
+    )
+
+
+def workflow(elem, repo, all_workflows_name, all_workflows_by_name, branch=None):
+    """
+    Get every think related with a workflow.
+
+    Parameters:
+        elem: the config from the yaml
+        repo: the repository name
+        all_workflows_name: used to track the workflows that we miss his status
+        all_workflows_by_name: list of workflows got from the REST api in a dictionary by name
+        branch: the name of the optional branch to used
+
+    Basically a badge status image with a link to the related workflow runs
+    on witch one we add some messages:
+    * if he wasn't run for the 2 last days
+    * if the last run contains more than one step, we display the list of step names.
+
+    Related config:
+      workflow: Name of the workflow
+      norunfor: Display a message on stale run, default is True
+      use_branch: Use the related branch if provided, default is True
+    """
+    if elem["workflow"] in all_workflows_name:
+        all_workflows_name.remove(elem["workflow"])
+    params = {"per_page": 1}
+    if elem.get("use_branch", True) and branch is not None:
+        params["branch"] = branch
+    messages = []
+    if elem["workflow"] in all_workflows_by_name:
+        runs = []
+        for current_workflow in all_workflows_by_name[elem["workflow"]]:
+            url = "https://api.github.com/repos/{repo}/actions/workflows/{workflow_id}/runs".format(
+                repo=repo, workflow_id=current_workflow["id"]
+            )
+            workflow_response = requests.get(
+                url,
+                headers={"Accept": "application/vnd.github.v3+json", "Authorization": AUTH_HEADER},
+                params=params,
+            )
+            if workflow_response.status_code == 404:
+                pass
+            else:
+                workflow_response.raise_for_status()
+                runs += workflow_response.json()["workflow_runs"]
+        runs = sorted(runs, key=lambda run: dateutil.parser.isoparse(run["created_at"]), reverse=True)
+
+        if len(runs) == 0:
+            messages.append("No runs")
+        else:
+            # Display if is wasn't run since 2 days
+            if elem.get("norunfor", True):
+                delta = (
+                    datetime.datetime.now()
+                    - dateutil.parser.isoparse(runs[0]["created_at"]).replace(tzinfo=None)
+                ).days
+                if delta > 2:
+                    messages.append(
+                        '<abbr title="No run for the {days} last days">{days}d</abbr>'.format(days=delta)
+                    )
+
+            # If the last run contains more than one step, we display the list of step names.
+            job_response = requests.get(
+                "https://api.github.com/repos/{repo}/actions/runs/{run_id}/jobs".format(
+                    repo=repo, run_id=runs[0]["id"]
+                ),
+                headers={"Accept": "application/vnd.github.v3+json", "Authorization": AUTH_HEADER},
+            )
+            job_response.raise_for_status()
+            steps = [s["name"] for s in job_response.json()["jobs"]]
+            steps2: List[str] = []
+            name_re = re.compile(r"^{} \((.*)\)$".format(re.escape(elem["workflow"])))
+            for step in steps:
+                match = name_re.match(step)
+                steps2.append(match.group(1) if match else step)
+            if len(steps2) > 1:
+                messages.append('<abbr title="List of steps">{}</abbr>'.format(", ".join(steps2)))
+
+    else:
+        messages.append("Missing workflow")
+
+    if elem.get("use_branch", True) and branch is not None:
+        return (
+            "[![{workflow}](https://github.com/{repo}/workflows/{workflow_url}/badge.svg?branch={branch})]"
+            "(https://github.com/{repo}/actions?query="
+            "workflow%3A%22{workflow_url}%22+branch%3A%22{branch_url}%22) {messages}".format(
+                repo=repo,
+                workflow=elem["workflow"],
+                workflow_url=urllib.parse.quote(elem["workflow"]),
+                branch=branch,
+                branch_url=urllib.parse.quote(branch),
+                messages=", ".join(messages),
+            )
+        )
+
+    return (
+        "[![{workflow}](https://github.com/{repo}/workflows/{workflow_url}/badge.svg)]"
+        "(https://github.com/{repo}/actions?query=workflow%3A%22{workflow_url}%22) {messages}".format(
+            repo=repo,
+            workflow=elem["workflow"],
+            workflow_url=urllib.parse.quote(elem["workflow"]),
+            messages=", ".join(messages),
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,39 @@
+---
+name: Update status
+
+on:
+  schedule:
+    # Every working hours on week days.
+    - cron: '0 6-17 ? * MON-FRI'
+
+jobs:
+  main:
+    runs-on: ubuntu-18.04
+    name: Update status
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          repository: camptocamp/c2cgeoportal.wiki.git
+          path: wiki
+          ref: master
+          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+      - run: |
+          sudo rm /etc/apt/sources.list.d/*.list
+          sudo apt-get update
+          sudo apt-get install python3-wheel python3-setuptools
+
+      - run: sudo python3 -m pip install markdown markdown-table dateutils
+      - run: scripts/create-status-page > wiki/Status.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+
+      - run: |
+          cd wiki
+          git config --global user.email "ci@camptocamp.com"
+          git config --global user.name "CI"
+          git add Status.md
+          git commit -m "Update status"
+          git push origin master

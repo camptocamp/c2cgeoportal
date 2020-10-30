@@ -1,5 +1,5 @@
 ---
-name: QGIS rebuild
+name: QGIS rebuild 2.5
 
 on:
   schedule:
@@ -8,7 +8,7 @@ on:
 jobs:
   main:
     runs-on: ubuntu-20.04
-    name: QGIS rebuild
+    name: QGIS rebuild 2.5
     timeout-minutes: 10
 
     strategy:
