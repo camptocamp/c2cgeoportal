@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,12 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
 
 @CACHE_REGION_OBJ.cache_on_arguments()
 def get_class(
-    tablename, exclude_properties=None, primary_key=None, attributes_order=None, readonly_attributes=None
+    tablename,
+    exclude_properties=None,
+    primary_key=None,
+    attributes_order=None,
+    enumerations_order=None,
+    readonly_attributes=None,
 ):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
@@ -141,6 +146,7 @@ def get_class(
         table,
         exclude_properties=exclude_properties,
         attributes_order=attributes_order,
+        enumerations_order=enumerations_order,
         readonly_attributes=readonly_attributes,
     )
 
@@ -148,7 +154,12 @@ def get_class(
 
 
 def _create_class(
-    table, exclude_properties=None, attributes_order=None, readonly_attributes=None, pk_name=None
+    table,
+    exclude_properties=None,
+    attributes_order=None,
+    enumerations_order=None,
+    readonly_attributes=None,
+    pk_name=None,
 ):
     from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
 
@@ -157,6 +168,7 @@ def _create_class(
         __table__=table,
         __mapper_args__={"exclude_properties": exclude_properties},
         __attributes_order__=attributes_order,
+        __enumerations_order__=enumerations_order,
     )
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)

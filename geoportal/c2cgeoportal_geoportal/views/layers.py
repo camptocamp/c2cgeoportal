@@ -508,6 +508,8 @@ def get_layer_class(layer, with_last_update_columns=False):
     attributes_order = m.split(",") if m else None
     m = Layers.get_metadata(layer, "readonlyAttributes")
     readonly_attributes = m.split(",") if m else None
+    m = Layers.get_metadata(layer, "editingEnumerationsOrder")
+    enumerations_order = format_edit_enum_order_metadata(m, layer.name)
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
@@ -515,11 +517,13 @@ def get_layer_class(layer, with_last_update_columns=False):
         exclude_properties=exclude,
         primary_key=primary_key,
         attributes_order=attributes_order,
+        enumerations_order=enumerations_order,
         readonly_attributes=readonly_attributes,
     )
 
     mapper = class_mapper(cls)
     column_properties = [p.key for p in mapper.iterate_properties if isinstance(p, ColumnProperty)]
+
     for attribute_name in attributes_order or []:
         if attribute_name not in column_properties:
             table = mapper.mapped_table
@@ -536,6 +540,20 @@ def get_layer_class(layer, with_last_update_columns=False):
             )
 
     return cls
+
+
+def format_edit_enum_order_metadata(raw_metadata, layername):
+    """
+      Return the editingEnumerationsOrder metadata formatted as a dict.
+      The syntaxe of the metadata must be 'enum1:columnx,enum2:columny'
+    """
+    if not raw_metadata:
+        return None
+    enumerations_order_config = [items.split(":") for items in raw_metadata.split(",")]
+    if False in [len(e) == 2 for e in enumerations_order_config]:
+        LOG.warning('Bad syntax for metadata "editingEnumerationsOrder" on layer %s.', layername)
+        return None
+    return dict(enumerations_order_config)
 
 
 def get_layer_metadatas(layer):

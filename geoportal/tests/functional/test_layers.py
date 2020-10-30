@@ -897,3 +897,15 @@ class TestLayers(TestCase):
         self.assertEqual(
             response, {"items": [{"value": "aaa"}, {"value": "bar"}, {"value": "bbb"}, {"value": "foo"}]}
         )
+
+    def test_format_edit_enum_order_metadata(self):
+        from c2cgeoportal_geoportal.views.layers import format_edit_enum_order_metadata
+
+        lname = "layer_test"
+        self.assertIsNone(format_edit_enum_order_metadata(None, lname))
+        self.assertIsNone(format_edit_enum_order_metadata("enum1:columnx;enum2:columny", lname))
+        self.assertIsNone(format_edit_enum_order_metadata("enum1,columnx:enum2,columny", lname))
+        self.assertEqual(
+            format_edit_enum_order_metadata("enum1:columnx,enum2:columny", lname),
+            {"enum1": "columnx", "enum2": "columny"},
+        )

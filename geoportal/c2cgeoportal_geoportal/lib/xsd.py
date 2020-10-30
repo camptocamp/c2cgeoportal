@@ -81,7 +81,15 @@ class XSDGenerator(PapyrusXSDGenerator):
         association_proxy = getattr(cls, proxy)
         relationship_property = class_mapper(cls).get_property(association_proxy.target)
         target_cls = relationship_property.argument
-        query = DBSession.query(getattr(target_cls, association_proxy.value_attr))
+        if (
+            hasattr(cls, "__enumerations_order__")
+            and association_proxy.value_attr in cls.__enumerations_order__
+        ):
+            query = DBSession.query(getattr(target_cls, association_proxy.value_attr)).order_by(
+                getattr(target_cls, cls.__enumerations_order__[association_proxy.value_attr])
+            )
+        else:
+            query = DBSession.query(getattr(target_cls, association_proxy.value_attr))
         attrs = {}
         if association_proxy.nullable:
             attrs["minOccurs"] = "0"

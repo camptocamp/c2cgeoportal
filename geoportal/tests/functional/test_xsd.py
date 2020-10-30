@@ -83,7 +83,7 @@ class TestXSDGenerator(TestCase):
         Parent.__table__.create()
         self._tables = [Parent.__table__, Child.__table__]
 
-        DBSession.add_all([Child("foo"), Child("bar")])
+        DBSession.add_all([Child("foo"), Child("zad"), Child("bar")])
         transaction.commit()
         self.metadata = Base.metadata
         self.cls = Parent
@@ -172,12 +172,17 @@ class TestXSDGenerator(TestCase):
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="zad" />'
             '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
             "</xsd:element>",
             tostring(e).decode("utf-8"),
         )
+
+        # Test child 2 with an order by name (enumerations_order)
+        self.cls.__enumerations_order__ = {"name": "name"}
+        mapper = class_mapper(self.cls)
 
         tb = TreeBuilder()
         gen.add_association_proxy_xsd(tb, mapper.attrs["child2_id"])
@@ -187,8 +192,9 @@ class TestXSDGenerator(TestCase):
             '<xsd:element name="child2">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
-            '<xsd:enumeration value="foo" />'
             '<xsd:enumeration value="bar" />'
+            '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="zad" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
             "</xsd:element>",
