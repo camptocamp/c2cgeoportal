@@ -128,13 +128,22 @@ def main():
             )
             data = _sub(
                 re.escape("</head>"),
-                '  <link href="{entry_point}static/{version}/css/{interface}.css" rel="stylesheet">\n'
+                '  <link href="{entry_point}static/{cache_version}/css/{interface}.css" rel="stylesheet">\n'
                 "  </head>".format(
                     entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
-                    version="<%= htmlWebpackPlugin.options.vars.version %>",
+                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
                     interface=args.interface,
                 ),
                 data,
+            )
+            data = _sub(
+                re.escape("<ng-include src=\"'desktop/header.html'\"></ng-include>"),
+                "<ng-include src=\"'{entry_point}static/{cache_version}/header.html'\"></ng-include>".format(
+                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
+                ),
+                data,
+                required=False,
             )
         else:
             data = re.sub("app", "{{package}}", data)
