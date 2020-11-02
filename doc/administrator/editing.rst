@@ -39,9 +39,10 @@ To be editable, a layer should satisfy the following requirements:
 
    * The name of the foreign key column should end with ``_id`` (e.g.
      ``type_id``). This is not strictly required, but recommended.
-   * The relationship's target table should have two columns, a
+   * The relationship's target table should have at least two columns, a
      primary key column and a text column. The text column must
-     be named ``name``.
+     be named ``name``. Supplementary columns can be used to sort values using the
+     ``editingEnumerationsOrder`` layer metadata.
 
 .. _administrator_editing_editable:
 

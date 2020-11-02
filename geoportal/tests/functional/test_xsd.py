@@ -61,9 +61,11 @@ class TestXSDGenerator(TestCase):
             __tablename__ = "child"
             id = Column(types.Integer, primary_key=True)
             name = Column(types.Unicode)
+            custom_order = Column(types.Integer)
 
-            def __init__(self, name):
+            def __init__(self, name, custom_order):
                 self.name = name
+                self.custom_order = custom_order
 
         class Parent(Base):
             __tablename__ = "parent"
@@ -83,7 +85,7 @@ class TestXSDGenerator(TestCase):
         Parent.__table__.create()
         self._tables = [Parent.__table__, Child.__table__]
 
-        DBSession.add_all([Child("foo"), Child("zad"), Child("bar")])
+        DBSession.add_all([Child("foo", 2), Child("zad", 1), Child("bar", 2)])
         transaction.commit()
         self.metadata = Base.metadata
         self.cls = Parent
@@ -181,7 +183,7 @@ class TestXSDGenerator(TestCase):
         )
 
         # Test child 2 with an order by name (enumerations_order)
-        self.cls.__enumerations_order__ = {"name": "name"}
+        self.cls.__enumerations_order__ = {"child2_id": "custom_order"}
         mapper = class_mapper(self.cls)
 
         tb = TreeBuilder()
@@ -192,9 +194,9 @@ class TestXSDGenerator(TestCase):
             '<xsd:element name="child2">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
-            '<xsd:enumeration value="bar" />'
-            '<xsd:enumeration value="foo" />'
             '<xsd:enumeration value="zad" />'
+            '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
             "</xsd:element>",

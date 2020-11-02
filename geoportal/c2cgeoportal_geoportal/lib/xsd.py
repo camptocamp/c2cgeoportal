@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 from io import BytesIO
 
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
@@ -35,13 +36,14 @@ from papyrus.xsd import tag
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
+LOG = logging.getLogger(__name__)
+
 
 class XSDGenerator(PapyrusXSDGenerator):
     def add_class_properties_xsd(self, tb, cls):
         """ Add the XSD for the class properties to the ``TreeBuilder``. And
         call the user ``sequence_callback``. """
         mapper = class_mapper(cls)
-
         properties = []
         if cls.__attributes_order__:
             for attribute_name in cls.__attributes_order__:
@@ -81,12 +83,9 @@ class XSDGenerator(PapyrusXSDGenerator):
         association_proxy = getattr(cls, proxy)
         relationship_property = class_mapper(cls).get_property(association_proxy.target)
         target_cls = relationship_property.argument
-        if (
-            hasattr(cls, "__enumerations_order__")
-            and association_proxy.value_attr in cls.__enumerations_order__
-        ):
+        if hasattr(cls, "__enumerations_order__") and column.name in cls.__enumerations_order__:
             query = DBSession.query(getattr(target_cls, association_proxy.value_attr)).order_by(
-                getattr(target_cls, cls.__enumerations_order__[association_proxy.value_attr])
+                getattr(target_cls, cls.__enumerations_order__[column.name])
             )
         else:
             query = DBSession.query(getattr(target_cls, association_proxy.value_attr))

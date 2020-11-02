@@ -51,8 +51,8 @@ of metadata in the ``GmfMetaData`` definition in
 Some metadata items are used by the ``layers`` views (for editing) on the server side:
 
 * ``editingAttributesOrder``: Specify the order of the editable attributes in the edit interface.
-* ``editingEnumerationsOrder``: Specify the column to use to order values of attributes with enumeration in the
-  edit interface. The format must be ``{"columnvalue1": "columnsort1", "columnvalue2": "columnsort2"}``
+* ``editingEnumerationsOrder``: Specify the column to use to order values of attributes with enumeration in
+  the edit interface. The format must be ``{"foreign_key_column": "relationship_table_sort_column"}``.
 * ``geometryValidation``: Force validation of the geometries according to the layer type (point, line,
   polygon), for example, to prevent creation of a 2-point polygon.
 * ``lastUpdateDateColumn``: Define a column which will be automatically filled with the date of the last edit.
