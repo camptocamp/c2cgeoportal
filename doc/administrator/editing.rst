@@ -40,11 +40,20 @@ To be editable, a layer should satisfy the following requirements:
    * The name of the foreign key column should end with ``_id`` (e.g.
      ``type_id``). This is not strictly required, but recommended.
    * The relationship's target table should have at least two columns, a
-     primary key column and a text column. The text column must
-     be named ``name``. Supplementary columns can be used to sort values using the
-     ``editingEnumerationsOrder`` layer metadata.
+     primary key column and a text column. By default the used text column is the column named ``name``.
+     The default order column is the text column. Another text column and a order column can be specified
+     by the ``editingEnumerations`` layer metadata. Example:
 
-.. _administrator_editing_editable:
+.. code:: json
+
+   {
+       "type_id": {
+           "value": "value_column",
+           "order_by": "order_column"
+       }
+   }
+
+
 
 Adding or making layers editable
 --------------------------------
@@ -66,6 +75,8 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 
     It is recommended to limit the editing to 30 editable layers per user.
 
+
+.. _administrator_editing_editable:
 
 Configuring security
 --------------------

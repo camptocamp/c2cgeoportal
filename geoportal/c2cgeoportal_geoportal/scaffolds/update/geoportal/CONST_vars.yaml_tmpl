@@ -440,7 +440,7 @@ vars:
         type: json
       - name: editingAttributesOrder
         type: list
-      - name: editingEnumerationsOrder
+      - name: editingEnumerations
         type: json
       - name: readonlyAttributes
         type: list

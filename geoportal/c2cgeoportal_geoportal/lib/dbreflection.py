@@ -127,7 +127,7 @@ def get_class(
     exclude_properties=None,
     primary_key=None,
     attributes_order=None,
-    enumerations_order=None,
+    enumerations_config=None,
     readonly_attributes=None,
 ):
     """
@@ -147,7 +147,7 @@ def get_class(
         table,
         exclude_properties=exclude_properties,
         attributes_order=attributes_order,
-        enumerations_order=enumerations_order,
+        enumerations_config=enumerations_config,
         readonly_attributes=readonly_attributes,
     )
 
@@ -158,7 +158,7 @@ def _create_class(
     table,
     exclude_properties=None,
     attributes_order=None,
-    enumerations_order=None,
+    enumerations_config=None,
     readonly_attributes=None,
     pk_name=None,
 ):
@@ -169,7 +169,7 @@ def _create_class(
         __table__=table,
         __mapper_args__={"exclude_properties": exclude_properties},
         __attributes_order__=attributes_order,
-        __enumerations_order__=enumerations_order,
+        __enumerations_config__=enumerations_config,
     )
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)
@@ -216,11 +216,18 @@ def _add_association_proxy(cls, col):
     for column in cls_column_property.columns:
         nullable = nullable and column.nullable
 
-    order_by = None
-    if cls.__enumerations_order__ and col.name in cls.__enumerations_order__:
-        order_by = getattr(child_cls, cls.__enumerations_order__[col.name])
+    value_attr = "name"
+    order_by = value_attr
 
-    setattr(cls, proxy, _AssociationProxy(rel, "name", nullable=nullable, order_by=order_by))
+    if cls.__enumerations_config__ and col.name in cls.__enumerations_config__:
+        enumeration_config = cls.__enumerations_config__[col.name]
+        if "value" in enumeration_config:
+            value_attr = getattr(child_cls, enumeration_config["value"])
+            order_by = value_attr
+        if "order_by" in enumeration_config:
+            order_by = getattr(child_cls, enumeration_config["order_by"])
+
+    setattr(cls, proxy, _AssociationProxy(rel, value_attr, nullable=nullable, order_by=order_by))
 
     if cls.__add_properties__ is None:
         cls.__add_properties__ = [proxy]

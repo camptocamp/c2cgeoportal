@@ -509,8 +509,8 @@ def get_layer_class(layer, with_last_update_columns=False):
     attributes_order = m.split(",") if m else None
     m = Layers.get_metadata(layer, "readonlyAttributes")
     readonly_attributes = m.split(",") if m else None
-    m = Layers.get_metadata(layer, "editingEnumerationsOrder")
-    enumerations_order = json.loads(m) if m else None
+    m = Layers.get_metadata(layer, "editingEnumerations")
+    enumerations_config = json.loads(m) if m else None
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
@@ -518,7 +518,7 @@ def get_layer_class(layer, with_last_update_columns=False):
         exclude_properties=exclude,
         primary_key=primary_key,
         attributes_order=attributes_order,
-        enumerations_order=enumerations_order,
+        enumerations_config=enumerations_config,
         readonly_attributes=readonly_attributes,
     )
 

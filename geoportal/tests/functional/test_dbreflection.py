@@ -135,6 +135,10 @@ class TestReflection(TestCase):
         self.assertFalse(modelclass.child2.nullable)
         self.assertEqual(modelclass.child2_id.info.get("association_proxy"), "child2")
 
+        child1_asso_proxy = getattr(modelclass, modelclass.child1_id.info["association_proxy"])
+        self.assertEqual("name", child1_asso_proxy.value_attr)
+        self.assertEqual("name", child1_asso_proxy.order_by)
+
         # test the Table object
         table = modelclass.__table__
         self.assertTrue("id" in table.c)
@@ -217,16 +221,26 @@ class TestReflection(TestCase):
 
         self.assertEqual(attributes_order, cls.__attributes_order__)
 
-    def test_get_class_enumerations_order(self):
+    def test_get_class_enumerations_config(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
-        enumerations_order = {"child1_id": "name"}
+        enumerations_config = {"child1_id": {"value": "id", "order_by": "name"}}
 
         self._create_table("table_d")
-        cls = get_class("table_d", enumerations_order={"child1_id": "name"})
+        cls = get_class("table_d", enumerations_config=enumerations_config)
 
-        self.assertEqual(enumerations_order, cls.__enumerations_order__)
-        self.assertEqual("name", getattr(cls, cls.child1_id.info["association_proxy"]).order_by.key)
+        self.assertEqual(enumerations_config, cls.__enumerations_config__)
+        association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
+        self.assertEqual("id", association_proxy.value_attr.key)
+        self.assertEqual("name", association_proxy.order_by.key)
+
+        # Without order_by.
+        enumerations_config = {"child1_id": {"value": "id"}}
+        cls = get_class("table_d", enumerations_config=enumerations_config)
+
+        association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
+        self.assertEqual("id", association_proxy.value_attr.key)
+        self.assertEqual("id", association_proxy.order_by.key)
 
     def test_get_class_readonly_attributes(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
