@@ -28,15 +28,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import logging
 from io import BytesIO
 
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
-
-LOG = logging.getLogger(__name__)
 
 
 class XSDGenerator(PapyrusXSDGenerator):
@@ -83,12 +80,9 @@ class XSDGenerator(PapyrusXSDGenerator):
         association_proxy = getattr(cls, proxy)
         relationship_property = class_mapper(cls).get_property(association_proxy.target)
         target_cls = relationship_property.argument
-        if hasattr(cls, "__enumerations_order__") and column.name in cls.__enumerations_order__:
-            query = DBSession.query(getattr(target_cls, association_proxy.value_attr)).order_by(
-                getattr(target_cls, cls.__enumerations_order__[column.name])
-            )
-        else:
-            query = DBSession.query(getattr(target_cls, association_proxy.value_attr))
+        query = DBSession.query(getattr(target_cls, association_proxy.value_attr))
+        if association_proxy.order_by is not None:
+            query = query.order_by(association_proxy.order_by)
         attrs = {}
         if association_proxy.nullable:
             attrs["minOccurs"] = "0"

@@ -78,7 +78,7 @@ class TestXSDGenerator(TestCase):
             child1 = _AssociationProxy("child1_", "name")
             child1_id.info["association_proxy"] = "child1"
             child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
-            child2 = _AssociationProxy("child2_", "name", nullable=False)
+            child2 = _AssociationProxy("child2_", "name", nullable=False, order_by="custom_order")
             child2_id.info["association_proxy"] = "child2"
 
         Child.__table__.create()
@@ -182,8 +182,7 @@ class TestXSDGenerator(TestCase):
             tostring(e).decode("utf-8"),
         )
 
-        # Test child 2 with an order by name (enumerations_order)
-        self.cls.__enumerations_order__ = {"child2_id": "custom_order"}
+        # Test child 2 with an order by.
         mapper = class_mapper(self.cls)
 
         tb = TreeBuilder()

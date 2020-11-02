@@ -693,6 +693,20 @@ class TestLayers(TestCase):
 
         self.assertEqual(attributes_order.split(","), cls.__attributes_order__)
 
+    def test_metadata_editing_enumeration_order(self):
+        from c2cgeoportal_geoportal.views.layers import Layers
+        from c2cgeoportal_commons.models.main import Metadata
+
+        edit_enum_order = {"a_column": "order_column"}
+
+        layer_id = self._create_layer(metadatas=[Metadata("editingEnumerationsOrder", edit_enum_order)])
+        request = self._get_request(layer_id, username="__test_user")
+
+        layers = Layers(request)
+        cls = layers.metadata()
+
+        self.assertEqual(layer_id.split(","), cls.__enumerations_order__)
+
     # # # With None area # # #
     def test_read_public_none_area(self):
         from geojson.feature import FeatureCollection

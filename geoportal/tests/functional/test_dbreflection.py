@@ -217,6 +217,17 @@ class TestReflection(TestCase):
 
         self.assertEqual(attributes_order, cls.__attributes_order__)
 
+    def test_get_class_enumerations_order(self):
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
+
+        enumerations_order = {"child1_id": "name"}
+
+        self._create_table("table_d")
+        cls = get_class("table_d", enumerations_order={"child1_id": "name"})
+
+        self.assertEqual(enumerations_order, cls.__enumerations_order__)
+        self.assertEqual("name", getattr(cls, cls.child1_id.info["association_proxy"]).order_by.key)
+
     def test_get_class_readonly_attributes(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 

@@ -53,10 +53,11 @@ SQL_GEOMETRY_COLUMNS = """
 class _AssociationProxy:
     # A specific "association proxy" implementation
 
-    def __init__(self, target, value_attr, nullable=True):
+    def __init__(self, target, value_attr, nullable=True, order_by=None):
         self.target = target
         self.value_attr = value_attr
         self.nullable = nullable
+        self.order_by = order_by
 
     def __get__(self, obj, type_=None):
         if obj is None:
@@ -215,7 +216,11 @@ def _add_association_proxy(cls, col):
     for column in cls_column_property.columns:
         nullable = nullable and column.nullable
 
-    setattr(cls, proxy, _AssociationProxy(rel, "name", nullable=nullable))
+    order_by = None
+    if cls.__enumerations_order__ and col.name in cls.__enumerations_order__:
+        order_by = getattr(child_cls, cls.__enumerations_order__[col.name])
+
+    setattr(cls, proxy, _AssociationProxy(rel, "name", nullable=nullable, order_by=order_by))
 
     if cls.__add_properties__ is None:
         cls.__add_properties__ = [proxy]
