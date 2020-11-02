@@ -441,7 +441,7 @@ vars:
       - name: editingAttributesOrder
         type: list
       - name: editingEnumerationsOrder
-        type: list
+        type: json
       - name: readonlyAttributes
         type: list
       - name: queryIconPosition

@@ -29,6 +29,7 @@
 
 from datetime import datetime
 import logging
+import json
 import os
 from typing import Dict, List, Union
 
@@ -509,7 +510,7 @@ def get_layer_class(layer, with_last_update_columns=False):
     m = Layers.get_metadata(layer, "readonlyAttributes")
     readonly_attributes = m.split(",") if m else None
     m = Layers.get_metadata(layer, "editingEnumerationsOrder")
-    enumerations_order = format_edit_enum_order_metadata(m, layer.name)
+    enumerations_order = json.loads(m) if m else None
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
@@ -540,20 +541,6 @@ def get_layer_class(layer, with_last_update_columns=False):
             )
 
     return cls
-
-
-def format_edit_enum_order_metadata(raw_metadata, layername):
-    """
-      Return the editingEnumerationsOrder metadata formatted as a dict.
-      The syntaxe of the metadata must be 'enum1:columnx,enum2:columny'
-    """
-    if not raw_metadata:
-        return None
-    enumerations_order_config = [items.split(":") for items in raw_metadata.split(",")]
-    if False in [len(e) == 2 for e in enumerations_order_config]:
-        LOG.warning('Bad syntax for metadata "editingEnumerationsOrder" on layer %s.', layername)
-        return None
-    return dict(enumerations_order_config)
 
 
 def get_layer_metadatas(layer):
