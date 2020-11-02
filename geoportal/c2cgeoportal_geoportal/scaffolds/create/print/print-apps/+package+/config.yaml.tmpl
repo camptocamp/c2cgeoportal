@@ -44,6 +44,9 @@ templates:
         height: 20
         default:
           fontSize: 8
+      timezone:
+        !string &timezone
+        default: CET
       datasource:
         !datasource &datasource
         attributes:
@@ -133,6 +136,7 @@ templates:
         height: 441
       northArrow: *northArrow
       scalebar: *scalebar
+      timezone: *timezone
       datasource: *datasource
     processors: *processors
 
@@ -149,6 +153,7 @@ templates:
         height: 1000
       northArrow: *northArrow
       scalebar: *scalebar
+      timezone: *timezone
       datasource: *datasource
     processors: *processors
 
@@ -165,5 +170,6 @@ templates:
         height: 673
       northArrow: *northArrow
       scalebar: *scalebar
+      timezone: *timezone
       datasource: *datasource
     processors: *processors
