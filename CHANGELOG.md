@@ -1,3 +1,5 @@
+##### 2.5.0.93
+* Fix geo_table with environment variables [c2cgeoportal#7198](https://github.com/camptocamp/c2cgeoportal/pull/7198)
 ##### 2.5.0.92
 ##### 2.5.0.92
 ##### 2.5.0.91
