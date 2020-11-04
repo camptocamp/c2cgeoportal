@@ -54,6 +54,7 @@ To be editable, a layer should satisfy the following requirements:
    }
 
 
+.. _administrator_editing_editable:
 
 Adding or making layers editable
 --------------------------------
@@ -75,8 +76,6 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 
     It is recommended to limit the editing to 30 editable layers per user.
 
-
-.. _administrator_editing_editable:
 
 Configuring security
 --------------------
