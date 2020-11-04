@@ -392,6 +392,9 @@ vars:
 
     # The list of available variable names for the `Metadatas` form.
     available_metadata:
+      # TreeItem
+      - name: searchAlias
+        type: list
       # Layers group
       - name: exclusiveGroup
         type: boolean

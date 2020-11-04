@@ -307,3 +307,40 @@ class TestImport:
                 ]
                 for e in expected:
                     self.assert_fts(dbsession, e)
+
+    def test_search_alias(self, dbsession, settings, test_data):
+        from c2cgeoportal_commons.models import main
+        from c2cgeoportal_geoportal.scripts.theme2fts import Import
+
+        alias_layer = main.LayerWMS(name="alias_layer")
+        alias_layer.ogc_server = test_data["ogc_server"]
+        alias_layer.interfaces = list(test_data["interfaces"].values())
+        add_parent(dbsession, alias_layer, test_data["groups"]["first_level_group"])
+        alias_layer.metadatas = [main.Metadata(name="searchAlias", value="myalias,mykeyword")]
+        dbsession.add(alias_layer)
+        dbsession.flush()
+
+        Import(dbsession, settings, options())
+
+        for lang in settings["available_locale_names"]:
+            for interface in test_data["interfaces"].values():
+                if interface.name == "api":
+                    continue
+                expected = [
+                    {
+                        "label": "alias_layer_{}".format(lang),
+                        "role": None,
+                        "interface": interface,
+                        "lang": lang,
+                        "public": True,
+                        "ts": {
+                            "fr": "'ali':1 'fr':3 'lai':2 'myali':4 'mykeyword':5",
+                            "en": "'alia':1 'en':3 'layer':2 'myalia':4 'mykeyword':5",
+                            "de": "'alias':1 'de':3 'lay':2 'myalias':4 'mykeyword':5",
+                            "it": "'alias':1 'it':3 'layer':2 'myalias':4 'mykeyword':5",
+                        },
+                        "actions": [{"action": "add_layer", "data": "alias_layer"}],
+                    },
+                ]
+                for e in expected:
+                    self.assert_fts(dbsession, e)
