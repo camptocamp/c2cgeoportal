@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,10 +53,11 @@ SQL_GEOMETRY_COLUMNS = """
 class _AssociationProxy:
     # A specific "association proxy" implementation
 
-    def __init__(self, target, value_attr, nullable=True):
+    def __init__(self, target, value_attr, nullable=True, order_by=None):
         self.target = target
         self.value_attr = value_attr
         self.nullable = nullable
+        self.order_by = order_by
 
     def __get__(self, obj, type_=None):
         if obj is None:
@@ -122,7 +123,12 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
 
 @CACHE_REGION_OBJ.cache_on_arguments()
 def get_class(
-    tablename, exclude_properties=None, primary_key=None, attributes_order=None, readonly_attributes=None
+    tablename,
+    exclude_properties=None,
+    primary_key=None,
+    attributes_order=None,
+    enumerations_config=None,
+    readonly_attributes=None,
 ):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
@@ -141,6 +147,7 @@ def get_class(
         table,
         exclude_properties=exclude_properties,
         attributes_order=attributes_order,
+        enumerations_config=enumerations_config,
         readonly_attributes=readonly_attributes,
     )
 
@@ -148,7 +155,12 @@ def get_class(
 
 
 def _create_class(
-    table, exclude_properties=None, attributes_order=None, readonly_attributes=None, pk_name=None
+    table,
+    exclude_properties=None,
+    attributes_order=None,
+    enumerations_config=None,
+    readonly_attributes=None,
+    pk_name=None,
 ):
     from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
 
@@ -157,6 +169,7 @@ def _create_class(
         __table__=table,
         __mapper_args__={"exclude_properties": exclude_properties},
         __attributes_order__=attributes_order,
+        __enumerations_config__=enumerations_config,
     )
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)
@@ -203,7 +216,18 @@ def _add_association_proxy(cls, col):
     for column in cls_column_property.columns:
         nullable = nullable and column.nullable
 
-    setattr(cls, proxy, _AssociationProxy(rel, "name", nullable=nullable))
+    value_attr = "name"
+    order_by = value_attr
+
+    if cls.__enumerations_config__ and col.name in cls.__enumerations_config__:
+        enumeration_config = cls.__enumerations_config__[col.name]
+        if "value" in enumeration_config:
+            value_attr = getattr(child_cls, enumeration_config["value"])
+            order_by = value_attr
+        if "order_by" in enumeration_config:
+            order_by = getattr(child_cls, enumeration_config["order_by"])
+
+    setattr(cls, proxy, _AssociationProxy(rel, value_attr, nullable=nullable, order_by=order_by))
 
     if cls.__add_properties__ is None:
         cls.__add_properties__ = [proxy]

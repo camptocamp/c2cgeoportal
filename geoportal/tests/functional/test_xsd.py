@@ -61,9 +61,11 @@ class TestXSDGenerator(TestCase):
             __tablename__ = "child"
             id = Column(types.Integer, primary_key=True)
             name = Column(types.Unicode)
+            custom_order = Column(types.Integer)
 
-            def __init__(self, name):
+            def __init__(self, name, custom_order):
                 self.name = name
+                self.custom_order = custom_order
 
         class Parent(Base):
             __tablename__ = "parent"
@@ -76,14 +78,14 @@ class TestXSDGenerator(TestCase):
             child1 = _AssociationProxy("child1_", "name")
             child1_id.info["association_proxy"] = "child1"
             child2_ = relationship(Child, primaryjoin=(child2_id == Child.id))
-            child2 = _AssociationProxy("child2_", "name", nullable=False)
+            child2 = _AssociationProxy("child2_", "name", nullable=False, order_by="custom_order")
             child2_id.info["association_proxy"] = "child2"
 
         Child.__table__.create()
         Parent.__table__.create()
         self._tables = [Parent.__table__, Child.__table__]
 
-        DBSession.add_all([Child("foo"), Child("bar")])
+        DBSession.add_all([Child("foo", 2), Child("zad", 1), Child("bar", 2)])
         transaction.commit()
         self.metadata = Base.metadata
         self.cls = Parent
@@ -172,12 +174,16 @@ class TestXSDGenerator(TestCase):
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'
+            '<xsd:enumeration value="zad" />'
             '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
             "</xsd:element>",
             tostring(e).decode("utf-8"),
         )
+
+        # Test child 2 with an order by.
+        mapper = class_mapper(self.cls)
 
         tb = TreeBuilder()
         gen.add_association_proxy_xsd(tb, mapper.attrs["child2_id"])
@@ -187,6 +193,7 @@ class TestXSDGenerator(TestCase):
             '<xsd:element name="child2">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
+            '<xsd:enumeration value="zad" />'
             '<xsd:enumeration value="foo" />'
             '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"

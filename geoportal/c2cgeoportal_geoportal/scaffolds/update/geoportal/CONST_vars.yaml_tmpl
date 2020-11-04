@@ -443,6 +443,8 @@ vars:
         type: json
       - name: editingAttributesOrder
         type: list
+      - name: editingEnumerations
+        type: json
       - name: readonlyAttributes
         type: list
       - name: queryIconPosition

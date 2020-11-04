@@ -4,6 +4,12 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.6.0
 =============
 
+Information
+-----------
+
+1. The default order column for edition enumeration lists is now the value column ("name" per
+   default). You can set it through the new `editingEnumerations` layer metadata.
+
 Changes to apply
 ----------------
 

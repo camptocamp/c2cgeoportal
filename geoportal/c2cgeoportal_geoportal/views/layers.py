@@ -29,6 +29,7 @@
 
 from datetime import datetime
 import logging
+import json
 import os
 from typing import Dict, List, Union
 
@@ -508,6 +509,8 @@ def get_layer_class(layer, with_last_update_columns=False):
     attributes_order = m.split(",") if m else None
     m = Layers.get_metadata(layer, "readonlyAttributes")
     readonly_attributes = m.split(",") if m else None
+    m = Layers.get_metadata(layer, "editingEnumerations")
+    enumerations_config = json.loads(m) if m else None
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
     cls = get_class(
@@ -515,11 +518,13 @@ def get_layer_class(layer, with_last_update_columns=False):
         exclude_properties=exclude,
         primary_key=primary_key,
         attributes_order=attributes_order,
+        enumerations_config=enumerations_config,
         readonly_attributes=readonly_attributes,
     )
 
     mapper = class_mapper(cls)
     column_properties = [p.key for p in mapper.iterate_properties if isinstance(p, ColumnProperty)]
+
     for attribute_name in attributes_order or []:
         if attribute_name not in column_properties:
             table = mapper.mapped_table

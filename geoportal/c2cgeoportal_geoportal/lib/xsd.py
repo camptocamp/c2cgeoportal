@@ -41,7 +41,6 @@ class XSDGenerator(PapyrusXSDGenerator):
         """ Add the XSD for the class properties to the ``TreeBuilder``. And
         call the user ``sequence_callback``. """
         mapper = class_mapper(cls)
-
         properties = []
         if cls.__attributes_order__:
             for attribute_name in cls.__attributes_order__:
@@ -82,6 +81,8 @@ class XSDGenerator(PapyrusXSDGenerator):
         relationship_property = class_mapper(cls).get_property(association_proxy.target)
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, association_proxy.value_attr))
+        if association_proxy.order_by is not None:
+            query = query.order_by(association_proxy.order_by)
         attrs = {}
         if association_proxy.nullable:
             attrs["minOccurs"] = "0"
