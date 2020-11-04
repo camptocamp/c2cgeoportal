@@ -1,8 +1,8 @@
-##### 2.5.0.93
+##### 2.5.0.94
 * [Backport 2.5] Fix PR lint action [c2cgeoportal#7212](https://github.com/camptocamp/c2cgeoportal/pull/7212)
+##### 2.5.0.93
 * [Backport 2.5] Fix PR lint action [ngeo#6425](https://github.com/camptocamp/ngeo/pull/6425)
 ##### 2.5.0.93
-* [Backport 2.5] Fix PR lint action [c2cgeoportal#7212](https://github.com/camptocamp/c2cgeoportal/pull/7212)
 * [Backport 2.5] Fix PR lint action [ngeo#6425](https://github.com/camptocamp/ngeo/pull/6425)
 ##### 2.5.0.92
 ##### 2.5.0.92
