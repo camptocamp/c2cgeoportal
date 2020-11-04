@@ -1,3 +1,4 @@
+##### 2.4.2.18
 ##### 2.4.2.17
 * [Backport 2.4] Fix space in redirect URL [c2cgeoportal#7159](https://github.com/camptocamp/c2cgeoportal/pull/7159)
 * [Backport 2.4] Bump pr-lint-action to fix it [ngeo#6386](https://github.com/camptocamp/ngeo/pull/6386)
