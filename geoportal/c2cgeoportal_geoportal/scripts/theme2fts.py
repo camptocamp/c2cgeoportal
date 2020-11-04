@@ -174,7 +174,11 @@ class Import:
                 fts.lang = lang
                 fts.public = role is None
                 fts.ts = func.to_tsvector(
-                    self.fts_languages[lang], self.fts_normalizer(self._[lang].gettext(item.name))
+                    self.fts_languages[lang],
+                    " ".join(
+                        [self.fts_normalizer(self._[lang].gettext(item.name))]
+                        + [v.strip() for m in item.get_metadatas("searchAlias") for v in m.value.split(",")]
+                    ),
                 )
                 fts.actions = [{"action": action, "data": item.name}]
                 fts.from_theme = True
