@@ -1,5 +1,9 @@
 ##### 2.5.0.93
-* Fix geo_table with environment variables [c2cgeoportal#7198](https://github.com/camptocamp/c2cgeoportal/pull/7198)
+* [Backport 2.5] Fix PR lint action [c2cgeoportal#7212](https://github.com/camptocamp/c2cgeoportal/pull/7212)
+* [Backport 2.5] Fix PR lint action [ngeo#6425](https://github.com/camptocamp/ngeo/pull/6425)
+##### 2.5.0.93
+* [Backport 2.5] Fix PR lint action [c2cgeoportal#7212](https://github.com/camptocamp/c2cgeoportal/pull/7212)
+* [Backport 2.5] Fix PR lint action [ngeo#6425](https://github.com/camptocamp/ngeo/pull/6425)
 ##### 2.5.0.92
 ##### 2.5.0.92
 ##### 2.5.0.91
