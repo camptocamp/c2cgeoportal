@@ -40,7 +40,7 @@ papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # # geoportal
 psycopg2-binary = "==2.8.6"  # geoportal
 pycryptodome = "==3.9.9"  # geoportal
-pyproj = "==2.6.1.post1"  # admin, other?
+pyproj = "==3.0.0"  # admin, other?
 pyotp = "==2.4.1"  # geoportal
 pyramid = "==1.10.4"  # geoportal
 pyramid_debugtoolbar = "==4.8"  # geoportal
