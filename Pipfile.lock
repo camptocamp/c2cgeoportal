@@ -40,10 +40,11 @@
         },
         "attrs": {
             "hashes": [
-                "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594",
-                "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"
+                "sha256:31b2eced602aa8423c2aea9c76a724617ed67cf9513173fd3a4f03e3a929c7e6",
+                "sha256:832aa3cde19744e49938b91fea06d69ecb9e649c93ba974535d08ad92164f700"
             ],
-            "version": "==20.2.0"
+            "index": "pypi",
+            "version": "==20.3.0"
         },
         "babel": {
             "hashes": [
@@ -525,9 +526,14 @@
         "pyproj": {
             "hashes": [
                 "sha256:539e320d06e5441edadad2e2ab276e1877445eca384fc1c056b5501453d433c2",
+                "sha256:7fbfa17bf9913d22212456761672e3ba62b6e81350e86b6aeca1672090139fae",
                 "sha256:a79f71254b5bafde8cb10357868285111ff9fa2dee23cb827e162967d2f6adee",
+                "sha256:a97b82255fddf40f8b6d41e4d62c824ebd0d4780b5ab2bc82e833d9f74a14b3c",
+                "sha256:ae8d6a110211c718f5b85abc92341ff5f965d9c718a337184b177351afa49fe2",
                 "sha256:b3a06ed7c4d8c42bdbd4f58aa4392121bf6c502cc5eaa15950c3ae13e34da60a",
-                "sha256:e02b2bc42a2a81d78fae3154e9b12c2d51534e010f75c55cf027e5a7a2064af9"
+                "sha256:e02b2bc42a2a81d78fae3154e9b12c2d51534e010f75c55cf027e5a7a2064af9",
+                "sha256:f44a562eb2567c9d69f6a06daccd5d09ea54d0c59bbb7f58f46554e005d81c57",
+                "sha256:fd7326d27c67c44ebd1e471c9f4a86ba7eddfaa9e06d280eb4b80c76f915c924"
             ],
             "index": "pypi",
             "version": "==3.0.0"
@@ -898,10 +904,11 @@
         },
         "attrs": {
             "hashes": [
-                "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594",
-                "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"
+                "sha256:31b2eced602aa8423c2aea9c76a724617ed67cf9513173fd3a4f03e3a929c7e6",
+                "sha256:832aa3cde19744e49938b91fea06d69ecb9e649c93ba974535d08ad92164f700"
             ],
-            "version": "==20.2.0"
+            "index": "pypi",
+            "version": "==20.3.0"
         },
         "awscli": {
             "hashes": [
