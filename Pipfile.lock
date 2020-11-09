@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "366960e895f423a0057a7749ce2549a6322fea00b13029462c0fc2d9d3b7367f"
+            "sha256": "237622e5db05c1d29734c0a6d06dd53e5ead3d5633c89a4ec1cc982017c0dfe8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -93,7 +93,6 @@
                 "sha256:1f422849db327d534e3d0c5f02a263458c3955ec0aae4ff09b95f195c59f4edd",
                 "sha256:f05def092c44fbf25834a51509ef6e631dc19765ab8a57b4e7ab85531f0a9cf4"
             ],
-            "index": "pypi",
             "version": "==2020.11.8"
         },
         "chameleon": {
@@ -553,11 +552,11 @@
         },
         "pyramid": {
             "hashes": [
-                "sha256:51bf64647345237c00d2fe558935e0e4938c156e29f17e203457fd8e1d757dc7",
-                "sha256:d80ccb8cfa550139b50801591d4ca8a5575334adb493c402fce2312f55d07d66"
+                "sha256:4d7f557b19932b4f719b6e1a81c96aebd49b990124e10175ea2b866e976e6a66",
+                "sha256:fe1bd1140e6b79fe07f0053981d49be2dc66656cc8b481dd7ffcaa872fc25467"
             ],
             "index": "pypi",
-            "version": "==1.10.4"
+            "version": "==1.10.5"
         },
         "pyramid-beaker": {
             "hashes": [
@@ -978,7 +977,6 @@
                 "sha256:1f422849db327d534e3d0c5f02a263458c3955ec0aae4ff09b95f195c59f4edd",
                 "sha256:f05def092c44fbf25834a51509ef6e631dc19765ab8a57b4e7ab85531f0a9cf4"
             ],
-            "index": "pypi",
             "version": "==2020.11.8"
         },
         "chardet": {
