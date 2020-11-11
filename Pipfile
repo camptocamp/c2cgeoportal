@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 awscli = "==1.18.175"  # Work with Object storage
-Babel = "==2.7.0"  # i18n
+Babel = "==2.8.1"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
 coverage = "==5.3"  # Build coverage XML for Codacy
