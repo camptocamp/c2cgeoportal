@@ -59,6 +59,11 @@ Some metadata items are used by the ``layers`` views (for editing) on the server
 * ``lastUpdateUserColumn``: Define a column which will be automatically filled with the user of the last edit.
 * ``readonlyAttributes``: Set attributes as read only.
 
+Some metadata items are used by the ``theme2fts`` script:
+
+* ``searchAlias``: Comma separated list of search aliases (keywords) to be added to the ``tsearch.ts``
+  field for the considered tree item (theme, layer group or layer),
+  that is to say that considered tree item will match when searching for the search aliases.
 
 Functionalities
 ---------------

@@ -95,7 +95,13 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal theme2fts --help</span>
-</pre></div></div></div>
+</pre></div></div><p>Note that some tree items’ metadata are used by the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> script:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">searchAlias</span></code>: Comma separated list of search alias (keywords) to be added to the <code class="docutils literal notranslate"><span class="pre">tsearch.ts</span></code>
+field for the considered tree item (theme, layer group or layer),
+that is to say that considered tree item will match when searching for the search aliases.</p></li>
+</ul>
+</div>
 <div class="section" id="security">
 <h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table includes two security-related columns, namely <code class="docutils literal notranslate"><span class="pre">public</span></code>
