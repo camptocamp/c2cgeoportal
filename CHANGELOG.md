@@ -1,3 +1,4 @@
+##### 2.5.0.95
 ##### 2.5.0.94
 * Adding ability to specify a layer in measure. [ngeo#6430](https://github.com/camptocamp/ngeo/pull/6430)
 ##### 2.5.0.94
