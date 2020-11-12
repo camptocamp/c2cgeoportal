@@ -316,7 +316,10 @@ class TestImport:
         alias_layer.ogc_server = test_data["ogc_server"]
         alias_layer.interfaces = list(test_data["interfaces"].values())
         add_parent(dbsession, alias_layer, test_data["groups"]["first_level_group"])
-        alias_layer.metadatas = [main.Metadata(name="searchAlias", value="myalias,mykeyword")]
+        alias_layer.metadatas = [
+            main.Metadata(name="searchAlias", value="myalias,mykeyword"),
+            main.Metadata(name="searchAlias", value="myotheralias,myotherkeyword"),
+        ]
         dbsession.add(alias_layer)
         dbsession.flush()
 
@@ -334,10 +337,10 @@ class TestImport:
                         "lang": lang,
                         "public": True,
                         "ts": {
-                            "fr": "'ali':1 'fr':3 'lai':2 'myali':4 'mykeyword':5",
-                            "en": "'alia':1 'en':3 'layer':2 'myalia':4 'mykeyword':5",
-                            "de": "'alias':1 'de':3 'lay':2 'myalias':4 'mykeyword':5",
-                            "it": "'alias':1 'it':3 'layer':2 'myalias':4 'mykeyword':5",
+                            "fr": "'ali':1 'fr':3 'lai':2 'myali':4 'mykeyword':5 'myotherali':6 'myotherkeyword':7",
+                            "en": "'alia':1 'en':3 'layer':2 'myalia':4 'mykeyword':5 'myotheralia':6 'myotherkeyword':7",
+                            "de": "'alias':1 'de':3 'lay':2 'myalias':4 'mykeyword':5 'myotheralias':6 'myotherkeyword':7",
+                            "it": "'alias':1 'it':3 'layer':2 'myalias':4 'mykeyword':5 'myotheralias':6 'myotherkeyword':7",
                         },
                         "actions": [{"action": "add_layer", "data": "alias_layer"}],
                     },
