@@ -5,6 +5,7 @@ import os
 import os.path
 import platform
 import re
+import shutil
 import stat
 import subprocess
 import sys
@@ -50,6 +51,7 @@ def main():
     parser.add_argument("--config", action="store_true", help="Build only the configuration image")
     parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
+    parser.add_argument("--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure")
     parser.add_argument("env", nargs="*", help="The environment config")
     args = parser.parse_args()
 
@@ -73,12 +75,16 @@ def main():
                 print(result.read())
                 sys.exit(1)
             f.write(result.read().decode())
+        debug_args = []
+        if args.debug:
+            shutil.copyfile(os.path.join(args.debug, "scripts", "upgrade"), "upgrade")
+            debug_args = ["--debug", args.debug]
         os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
         try:
             if platform.system() == "Windows":
-                subprocess.check_call(["python", "upgrade", full_version])
+                subprocess.check_call(["python", "upgrade", full_version] + debug_args)
             else:
-                subprocess.check_call(["./upgrade", full_version])
+                subprocess.check_call(["./upgrade", full_version] + debug_args)
         except subprocess.CalledProcessError:
             sys.exit(1)
         sys.exit(0)
