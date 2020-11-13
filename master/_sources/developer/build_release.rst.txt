@@ -219,7 +219,7 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version
                  PYPI_PASSWORD: !var gs/ci/pypi/password
                ' ci/publish --geoportal
              env:
-               GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
+               GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
    +           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}
 
    -       - name: Publish to Transifex

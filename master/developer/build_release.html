@@ -217,7 +217,7 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
               PYPI_PASSWORD: !var gs/ci/pypi/password
             &#39; ci/publish --geoportal
           env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
 <span class="gi">+           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}</span>
 
 <span class="gd">-       - name: Publish to Transifex</span>
