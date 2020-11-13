@@ -10,7 +10,7 @@ on:
 jobs:
   auto-rebase:
     name: Automatic Rebase
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: camptocamp/AutoRebase@master
         with:

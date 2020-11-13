@@ -14,7 +14,7 @@ env:
 
 jobs:
   config:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     name: Config
     timeout-minutes: 10
 
@@ -35,7 +35,7 @@ jobs:
         if: "env.HELM_RELEASE_NAMES != ''"
 
   geoportal:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     name: Geoportal
     timeout-minutes: 10
 
