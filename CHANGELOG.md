@@ -1,4 +1,7 @@
 ##### 2.5.0.95
+* [Backport 2.5] [Backport master] Use secret defined in organisation [c2cgeoportal#7263](https://github.com/camptocamp/c2cgeoportal/pull/7263)
+##### 2.5.0.95
+* [Backport 2.5] [Backport master] Use secret defined in organisation [c2cgeoportal#7263](https://github.com/camptocamp/c2cgeoportal/pull/7263)
 ##### 2.5.0.94
 * Adding ability to specify a layer in measure. [ngeo#6430](https://github.com/camptocamp/ngeo/pull/6430)
 ##### 2.5.0.94
