@@ -11,6 +11,9 @@ Information
    To enable basic auth see:
    https://camptocamp.github.io/c2cgeoportal/{{geomapfish_main_version}}/integrator/security.html#basic-auth
 
+2. We change the secret name from `GITHUB_GOPASS_CI_TOKEN` to `GOPASS_CI_GITHUB_TOKEN` because we can't
+   anymore create create secret started with `GITHUB_`.
+
 Changes to apply
 ----------------
 

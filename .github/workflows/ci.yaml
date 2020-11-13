@@ -169,7 +169,7 @@ jobs:
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GITHUB_GOPASS_CI_TOKEN}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Publish to Docker hub and Pypi
@@ -181,14 +181,14 @@ jobs:
             PYPI_PASSWORD: !var gs/ci/pypi/password
           ' ci/publish --geoportal
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Notify demo
         run: >
           curl --request POST --header "Content-Type: application/json"
           --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}"
+          --header "Authorization: token ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}"
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_25_updated",
             "client_payload": {"version": "'"$(scripts/get-version --upgrade-version)"'"}}'
