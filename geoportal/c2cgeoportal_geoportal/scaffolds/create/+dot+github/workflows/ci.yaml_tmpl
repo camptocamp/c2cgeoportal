@@ -6,7 +6,7 @@ on:
 
 env:
   PROJECT: {{package}}
-  # Requires CI_GPG_PRIVATE_KEY and GITHUB_GOPASS_CI_TOKEN secrets.
+  # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
   # OPENSHIFT_PROJECT: gs-gmf-{{package}}
   # HELM_RELEASE_NAMES: # List of branch that should be deployed on helm
   PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
@@ -27,7 +27,7 @@ jobs:
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
           ci-gpg-private-key: ${{'{{'}}secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{'{{'}}secrets.GITHUB_GOPASS_CI_TOKEN}}
+          github-gopass-ci-token: ${{'{{'}}secrets.GOPASS_CI_GITHUB_TOKEN}}
         if: "env.HELM_RELEASE_NAMES != ''"
       - run: scripts/publish-docker --image=config --no-trigger
         if: "env.HELM_RELEASE_NAMES != ''"
@@ -48,7 +48,7 @@ jobs:
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
           ci-gpg-private-key: ${{'{{'}}secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{'{{'}}secrets.GITHUB_GOPASS_CI_TOKEN}}
+          github-gopass-ci-token: ${{'{{'}}secrets.GOPASS_CI_GITHUB_TOKEN}}
         if: "env.HELM_RELEASE_NAMES != ''"
       - run: scripts/publish-docker --image=geoportal --no-trigger
         if: "env.HELM_RELEASE_NAMES != ''"
