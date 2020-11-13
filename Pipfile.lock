@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3d8a77b21e2cfeb3a716882e025effaab4bd601b8946dc604d0726fbb8aa1f34"
+            "sha256": "62ef1733fde09cb3a6e22ea2dfa31da90b0b18424bb1b14c2f69ffd8986ce3fa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -817,7 +817,6 @@
                 "sha256:19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08",
                 "sha256:d8ff90d979214d7b4f8ce956e80f4028fc6860e4431f731ea4a8c08f23f99473"
             ],
-            "index": "pypi",
             "version": "==1.26.2"
         },
         "venusian": {
@@ -938,11 +937,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:c9553c0d62a9e274b8cc0904bedb870c9d796d6b32cf99cdcc6f336b9d8e99a1",
-                "sha256:cbbdd20085c19a37fe9ae7778286fc3767004126d1aa51e0799c0540fdd654a0"
+                "sha256:00319ef216bbc915fbf4ec1429fc3f193500fd1e1bc201eff8881fd200d09b54",
+                "sha256:694600ac5fd8f06bc2ab9bae5993f45b369e3352c95b48696af7f896a210c687"
             ],
             "index": "pypi",
-            "version": "==1.18.177"
+            "version": "==1.18.178"
         },
         "babel": {
             "hashes": [
@@ -970,10 +969,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:33f650b2d63cc1f2d5239947c9ecdadfd8ceeb4ab8bdefa0a711ac175a43bf44",
-                "sha256:81184afc24d19d730c1ded84513fbfc9e88409c329de5df1151bb45ac30dfce4"
+                "sha256:288d43e85f12e3c1d6a0535a585a182ca04e8c6e742ebaaf15357a0e3b37ca7a",
+                "sha256:bba18b5c4eef3eb2dc39b1b1f8959ba01ac27e7e12e413e281b0fb242990c0f5"
             ],
-            "version": "==1.19.17"
+            "version": "==1.19.18"
         },
         "certifi": {
             "hashes": [
@@ -1592,7 +1591,6 @@
                 "sha256:19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08",
                 "sha256:d8ff90d979214d7b4f8ce956e80f4028fc6860e4431f731ea4a8c08f23f99473"
             ],
-            "index": "pypi",
             "version": "==1.26.2"
         },
         "waitress": {
