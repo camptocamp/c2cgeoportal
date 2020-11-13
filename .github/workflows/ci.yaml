@@ -65,7 +65,7 @@ jobs:
       - uses: camptocamp/initialise-gopass-summon-action@v1
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GITHUB_GOPASS_CI_TOKEN}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Clean Docker hub tags
@@ -75,7 +75,7 @@ jobs:
             DOCKER_PASSWORD: !var gs/ci/dockerhub/password
           ' python3 travis/clean-dockerhub-tags
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Publish to Docker hub and Pypi

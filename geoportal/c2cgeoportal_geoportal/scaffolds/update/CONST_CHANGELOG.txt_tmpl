@@ -11,6 +11,9 @@ Information
    are required: GITHUB_USERNAME, GITHUB_TOKEN, for c2c to be set to:
    `gopass gs/ci/github/username`, and `gopass gs/ci/github/token/gopass`.
 
+2. We change the secret name from `GITHUB_GOPASS_CI_TOKEN` to `GOPASS_CI_GITHUB_TOKEN` because we can't
+   anymore create create secret started with `GITHUB_`.
+
 
 Version 2.4.2
 =============
