@@ -12,7 +12,7 @@ on:
 jobs:
   lint:
     name: Lint pull request title
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     timeout-minutes: 5
 
     steps:
