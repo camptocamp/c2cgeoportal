@@ -16,11 +16,9 @@ jobs:
       matrix:
         version:
           # Old LTR
-          - '3.4'
-          # LTR
           - '3.10'
-          # Last
-          - '3.14'
+          # Last LTR
+          - '3.16'
           # Master
           - master
 
