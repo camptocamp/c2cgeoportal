@@ -1,0 +1,328 @@
+---
+- name: Demo
+  repo: camptocamp/demo_geomapfish
+  versions:
+    '2.5':
+      branch: prod-2-5
+      workflows:
+        - workflow: Upgrade 2.5
+          use_branch: no
+        - workflow: Continuous integration
+    '2.6':
+      branch: prod-2-6
+      workflows:
+        - workflow: Upgrade 2.6
+          use_branch: no
+        - workflow: Continuous integration
+
+- name: c2cgeoportal
+  repo: camptocamp/c2cgeoportal
+  hidden_workflows:
+    - Automatic Rebase
+    - QGIS rebuild
+  workflows:
+    - workflow: Clean docker hub tags
+    - workflow: Auto merge Dependabot updates
+    - workflow: Lint pull request title
+    - workflow: Audit
+    - workflow: Update status
+    - workflow: Backport
+      norunfor: false
+  versions:
+    '2.4':
+      workflows:
+        - workflow: Code scanning
+    '2.5':
+      workflows:
+        - workflow: Update ngeo
+          use_branch: no
+        - workflow: Rebuild 2.5
+          use_branch: no
+        - workflow: QGIS rebuild 2.5
+          use_branch: no
+        - workflow: Continuous integration
+        - workflow: QGIS build
+        - workflow: Code scanning
+    master:
+      workflows:
+        - workflow: QGIS build
+        - workflow: Continuous integration
+        - workflow: Code scanning
+
+- name: ngeo
+  repo: camptocamp/ngeo
+  workflows:
+    - workflow: Backport
+      norunfor: false
+    - workflow: Clean GitHub pages
+    - workflow: Auto merge Dependabot updates
+    - workflow: Lint pull request title
+    - workflow: Audit
+    - workflow: Add message on pull requests with the related examples
+  versions:
+    '2.4':
+      workflows:
+        - workflow: CodeQL scanning
+    '2.5':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- name: c2cwsgiutils
+  repo: camptocamp/c2cwsgiutils
+  workflows:
+    - workflow: Rebuild
+    - workflow: Backport
+      norunfor: false
+    - workflow: Clean docker hub tags
+    - workflow: Auto merge Dependabot updates
+    - workflow: Audit
+  hidden_workflows:
+    - Code scanning - action
+  versions:
+    '2':
+      branch: release_2
+      workflows:
+        - workflow: Code scanning
+    '3':
+      branch: release_3
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    '4':
+      branch: release_4
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    master:
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+
+- name: TileCloud
+  repo: camptocamp/tilecloud
+  workflows:
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+  hidden_workflows:
+    - Code scanning - action
+  versions:
+    '1.3':
+      workflows:
+        - workflow: CodeQL scanning
+    '1.4':
+      workflows:
+        - workflow: CodeQL scanning
+    '1.5':
+      workflows:
+        - workflow: CodeQL scanning
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- name: TileCloud-chain
+  repo: camptocamp/tilecloud-chain
+  workflows:
+    - workflow: Rebuild
+    - workflow: Rebuild 1.14
+    - workflow: Rebuild old
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+    - workflow: Clean docker hub tags
+    - workflow: Audit
+  versions:
+    '1.12':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+    '1.13':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+    '1.14':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+    '1.15':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- name: Print
+  repo: mapfish/mapfish-print
+  workflows:
+    - workflow: Rebuild
+    - workflow: Rebuild old
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+    - workflow: Audit
+    - workflow: Clean docker hub tags
+  hidden_workflows:
+    - summon
+  versions:
+    '3.20':
+      workflows:
+        - workflow: Code scanning
+    '3.21':
+      workflows:
+        - workflow: Code scanning
+    '3.22':
+      workflows:
+        - workflow: Code scanning
+    '3.23':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: Code scanning
+    '3.24':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: Code scanning
+    '3.25':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: Code scanning
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: Code scanning
+
+- name: Shared Config Manager
+  repo: camptocamp/shared_config_manager
+  workflows:
+    - workflow: Nightly
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+    - workflow: Audit
+    - workflow: Clean docker hub tags
+  hidden_workflows:
+    - Rebuild
+  versions:
+    '1':
+      branch: release_1
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    '2':
+      branch: release_2
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    master:
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+
+- name: MapServer
+  repo: camptocamp/docker-mapserver
+  workflows:
+    - workflow: Rebuild
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+    - workflow: Clean docker hub tags
+  versions:
+    '7.0':
+      workflows:
+        - workflow: Continuous integration
+    '7.2':
+      workflows:
+        - workflow: Continuous integration
+    '7.4':
+      workflows:
+        - workflow: Continuous integration
+    '7.6':
+      workflows:
+        - workflow: Continuous integration
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: QGISserver
+  repo: camptocamp/docker-qgis-server
+  workflows:
+    - workflow: Rebuild
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+    - workflow: Clean docker hub tags
+  versions:
+    '3.4':
+      workflows:
+        - workflow: Continuous integration
+    '3.10':
+      workflows:
+        - workflow: Continuous integration
+    '3.12':
+      workflows:
+        - workflow: Continuous integration
+    '3.14':
+      workflows:
+        - workflow: Continuous integration
+    '3.16':
+      workflows:
+        - workflow: Continuous integration
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Tomcat logback
+  repo: camptocamp/docker-tomcat-logback
+  workflows:
+    - workflow: Rebuild
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+    - workflow: Audit
+    - workflow: Clean docker hub tags
+  versions:
+    9.0-jre11:
+      workflows:
+        - workflow: Continuous integration
+    10.0-jre11:
+      workflows:
+        - workflow: Continuous integration
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Daily
+  repo: camptocamp/docker-daily
+  workflows:
+    - workflow: Trigger build
+
+- name: Varnish Trovilo
+  repo: camptocamp/docker-trovilo-varnish
+  workflows:
+    - workflow: Rebuild
+    - workflow: Clean docker hub tags
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: mutualized_print_config
+  repo: camptocamp/mutualized_print_config
+
+- name: prometheus-metrics-geo
+  repo: camptocamp/prometheus-metrics-geo
+  workflows:
+    - workflow: Backup Grafana
+
+- name: Backport
+  repo: camptocamp/backport-action
+
+- name: Python action
+  repo: camptocamp/python-action
