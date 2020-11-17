@@ -25,7 +25,7 @@ In this file, you can add some blocks like
 
 .. code:: html
 
-   <gmf-authentication id="login" class="slide" data-header-title="Login">
+   <gmf-authentication id="login" class="slide">
    </gmf-authentication>
 
 to include a directive.
@@ -63,25 +63,7 @@ In the controller you have some lines like:
 
 This is needed to include the javascript of the used directives.
 
-The map configuration will be here:
-
-.. code:: javascript
-
-   goog.base(
-         this, {
-           srid: 2056,
-           mapViewConfig: {
-             center: [2632464, 1185457],
-             zoom: 3,
-             resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
-           }
-         },
-         $scope, $injector);
-
-.. note::
-
-   If you previously had a CGXP application and want to keep your permalinks
-   compatible, the resolutions should be the same as in the previous application.
+The map configuration will be in the vars file.
 
 Dynamic.json view
 -----------------
@@ -117,3 +99,16 @@ You also have a ``default`` entry from where we can give the base values for ``c
 The possible values are described in the ngeo documentation
 `ngeo constants <https://camptocamp.github.io/ngeo/${MAIN_BRANCH}/jsdoc/module-src_options.html>`_,
 `gmf constants <https://camptocamp.github.io/ngeo/${MAIN_BRANCH}/jsdoc/module-contribs_gmf_src_options.html>`_.
+
+CSS style
+---------
+
+In the ``gmfOptions`` we have a ``cssVars`` property where we can configure all CSS variable
+(``var(--a-variable)`` in the css files.
+
+The content of ``cssVars`` is a dictionary where the keys are the CSS variable names, and the values the
+value to be set to the CSS variable.
+For the CSS variables named ``brand-primary`` and ``brand-secondary`` we also calculated the other colors
+related to those variable as it's done in the SCSS, to be able to change the major application colors.
+
+You can in addition define an `<interface>.css` file to override the CSS rules.
