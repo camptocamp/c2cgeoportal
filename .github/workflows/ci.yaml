@@ -59,8 +59,8 @@ jobs:
       - run: make build-config
 
       # Build and lint QGIS images
-      - run: docker build --target=lint --build-arg=VERSION=3.10 docker/qgisserver
-      - run: QGIS_VERSION=3.10 make build-qgisserver
+      - run: docker build --target=lint --build-arg=VERSION=3.16 docker/qgisserver
+      - run: QGIS_VERSION=3.16 make build-qgisserver
 
       # Test changelog
       - run: ci/changelog new_version
