@@ -47,7 +47,6 @@ import markdown
 import requests
 import yaml
 from markdown.extensions.tables import TableExtension
-
 from markdown_table import render
 
 
@@ -164,9 +163,10 @@ def project(elem):
         all_workflows_response.raise_for_status()
         all_workflows = all_workflows_response.json()["workflows"]
     all_workflows_name = {w["name"] for w in all_workflows if w["name"] != ""}
-    all_workflows_by_name = {
-        name: workflows for name, workflows in itertools.groupby(all_workflows, lambda w: w["name"])
-    }
+    all_workflows_by_name: Dict[str, Any] = {}
+    for w in all_workflows:
+        all_workflows_by_name.setdefault(w["name"], [])
+        all_workflows_by_name[w["name"]].append(w)
 
     # The project title
     name = "[{}](https://github.com/{})".format(elem["name"], repo)
