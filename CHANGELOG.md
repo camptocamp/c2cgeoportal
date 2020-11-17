@@ -1,3 +1,6 @@
+##### 2.5.0.97
+* Fix documentation links [c2cgeoportal#7277](https://github.com/camptocamp/c2cgeoportal/pull/7277)
+* [Backport 2.5] [Backport master] [Backport master] Use secret defined in organisation [ngeo#6450](https://github.com/camptocamp/ngeo/pull/6450)
 ##### 2.5.0.96
 * [Backport 2.5] [Backport master] Use secret defined in organisation [c2cgeoportal#7263](https://github.com/camptocamp/c2cgeoportal/pull/7263)
 ##### 2.5.0.95
