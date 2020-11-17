@@ -93,7 +93,7 @@ class Status:
             self.data.append(self._row)
         if elem.tag == "td":
             self._row.append(elem.text)  # type: ignore
-        for e in elem.getchildren():
+        for e in list(elem):
             self._pe(e)
 
     def index(self, ver, link):
@@ -193,7 +193,10 @@ def project(elem):
 
     print()
     for w in elem.get("hidden_workflows", []):
-        all_workflows_name.remove(w)
+        if w in all_workflows_name:
+            all_workflows_name.remove(w)
+        else:
+            print("Extra workflow in hidden_workflows: " + w)
 
     # The workflow that we never display a status
     if len(all_workflows_name) > 0:

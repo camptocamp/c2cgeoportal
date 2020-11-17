@@ -19,7 +19,6 @@
   repo: camptocamp/c2cgeoportal
   hidden_workflows:
     - Automatic Rebase
-    - QGIS rebuild
   workflows:
     - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
