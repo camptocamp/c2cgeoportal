@@ -161,6 +161,31 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
 <p>See also: <a class="reference external" href="https://github.com/microsoft/ptvsd#ptvsd-import-usage">ptvsd usage</a>,
 <a class="reference external" href="https://code.visualstudio.com/docs/python/debugging">Python debug configurations in Visual Studio Code</a></p>
 </div>
+<div class="section" id="debugging-the-upgrade-procedure">
+<span id="upgrade-debugging"></span><h3>Debugging the upgrade procedure<a class="headerlink" href="#debugging-the-upgrade-procedure" title="Permalink to this headline">¶</a></h3>
+<p>When upgrading a c2cgeoportal application, things happen as follow:</p>
+<ul class="simple">
+<li><p>You manually run <cite>./build –upgrade &lt;target_version&gt;</cite>;</p></li>
+<li><p>This script downloads the <cite>./upgrade</cite> script from target branch on GitHub;</p></li>
+<li><p>The freshly downloaded <cite>./upgrade</cite> script pull images from Docker Hub;</p></li>
+<li><p>The <cite>c2cupgrade</cite> tool is runned from the fresh pulled image.</p></li>
+</ul>
+<p>Note that this does not offer you the possibility to interfere or debug anything.</p>
+<p>To be able to debug this workflow, we’ve added a <cite>–debug</cite> parameter on those scripts that you can set to
+the root of your local c2cgeoportal folder, example:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initiate the upgrade by getting the ./upgrade script from you local c2cgeoportal clone.</span>
+./build --debug<span class="o">=</span>../c2cgeoportal --upgrade master
+
+<span class="c1"># Run the upgrade step 1 without pulling images from Docker hub,</span>
+<span class="c1"># and with c2cupgrade file mounted from you local c2cgeoportal folder.</span>
+./upgrade --debug<span class="o">=</span>../c2cgeoportal lastest <span class="m">1</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>With this it is possible to debug <cite>./upgrade</cite> and <cite>c2cupgrade</cite> scripts on the fly when upgrading a real
+c2cgeoportal application.</p>
+</div>
 <div class="section" id="profiling">
 <h3>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h3>
 <p>We can profile the application by using <a class="reference external" href="https://wsgi-lineprof.readthedocs.io/">wsgi_lineprof</a>.</p>

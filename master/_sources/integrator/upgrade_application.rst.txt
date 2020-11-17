@@ -73,6 +73,8 @@ Then follow the instructions.
 
 The ``<version>`` can be ``x.y.z.p`` to target a stable version, or ``master`` to target the master branch.
 
+If for some reason you need to debug what happens during the upgrade see: :ref:`here <upgrade_debugging>`.
+
 Upgrade the database
 ~~~~~~~~~~~~~~~~~~~~
 
