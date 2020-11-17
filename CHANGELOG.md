@@ -1,60 +1,60 @@
+##### 2.5.0.98
+* Changelog fix [c2cgeoportal#7282](https://github.com/camptocamp/c2cgeoportal/pull/7282)
 ##### 2.5.0.97
 * Fix documentation links [c2cgeoportal#7277](https://github.com/camptocamp/c2cgeoportal/pull/7277)
 * [Backport 2.5] [Backport master] [Backport master] Use secret defined in organisation [ngeo#6450](https://github.com/camptocamp/ngeo/pull/6450)
 ##### 2.5.0.96
 * [Backport 2.5] [Backport master] Use secret defined in organisation [c2cgeoportal#7263](https://github.com/camptocamp/c2cgeoportal/pull/7263)
 ##### 2.5.0.95
-##### 2.5.0.95
-##### 2.5.0.94
 * Adding ability to specify a layer in measure. [ngeo#6430](https://github.com/camptocamp/ngeo/pull/6430)
 ##### 2.5.0.94
-* Adding ability to specify a layer in measure. [ngeo#6430](https://github.com/camptocamp/ngeo/pull/6430)
-##### 2.5.0.93
+* [Backport 2.5] Fix PR lint action [c2cgeoportal#7212](https://github.com/camptocamp/c2cgeoportal/pull/7212)
 * [Backport 2.5] Fix PR lint action [ngeo#6425](https://github.com/camptocamp/ngeo/pull/6425)
 ##### 2.5.0.93
-* [Backport 2.5] Fix PR lint action [ngeo#6425](https://github.com/camptocamp/ngeo/pull/6425)
+* Fix geo_table with environment variables [c2cgeoportal#7198](https://github.com/camptocamp/c2cgeoportal/pull/7198)
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 ##### 2.5.0.92
-##### 2.5.0.92
+* Fix build command in documentation [c2cgeoportal#7168](https://github.com/camptocamp/c2cgeoportal/pull/7168)
+* Fix selectObject in API [ngeo#6401](https://github.com/camptocamp/ngeo/pull/6401)
 ##### 2.5.0.91
 * Remove Webpack progress mode [c2cgeoportal#7161](https://github.com/camptocamp/c2cgeoportal/pull/7161)
 ##### 2.5.0.90
 * [Backport 2.5] Fix space in redirect URL [c2cgeoportal#7160](https://github.com/camptocamp/c2cgeoportal/pull/7160)
-##### 2.5.0.89
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 * Bug with print [ngeo#6399](https://github.com/camptocamp/ngeo/pull/6399)
 ##### 2.5.0.89
-* Bug with print [ngeo#6399](https://github.com/camptocamp/ngeo/pull/6399)
-##### 2.5.0.88
+* Don't requires the 2fa on reset password [c2cgeoportal#7134](https://github.com/camptocamp/c2cgeoportal/pull/7134)
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 * Fix Firefox ctrl key [ngeo#6397](https://github.com/camptocamp/ngeo/pull/6397)
 ##### 2.5.0.88
-* Fix Firefox ctrl key [ngeo#6397](https://github.com/camptocamp/ngeo/pull/6397)
-##### 2.5.0.87
+* [Backport 2.5] Bump pr-lint-action to fix it [c2cgeoportal#7139](https://github.com/camptocamp/c2cgeoportal/pull/7139)
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 * [Backport 2.5] Bump pr-lint-action to fix it [ngeo#6387](https://github.com/camptocamp/ngeo/pull/6387)
 ##### 2.5.0.87
-* [Backport 2.5] Bump pr-lint-action to fix it [ngeo#6387](https://github.com/camptocamp/ngeo/pull/6387)
+* Fix call to manage users [c2cgeoportal#7083](https://github.com/camptocamp/c2cgeoportal/pull/7083)
 ##### 2.5.0.86
 * [Backport 2.5] Fix pdfreport reading content [c2cgeoportal#7070](https://github.com/camptocamp/c2cgeoportal/pull/7070)
 ##### 2.5.0.85
 * [Backport 2.5] Fix: update-po doesn't use PGSCHEMA defined in .env file [c2cgeoportal#7075](https://github.com/camptocamp/c2cgeoportal/pull/7075)
 ##### 2.5.0.84
 * Fix the geoportal image send [c2cgeoportal#7076](https://github.com/camptocamp/c2cgeoportal/pull/7076)
-##### 2.5.0.83
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 * Opacity metadata on WMTS layers [ngeo#6299](https://github.com/camptocamp/ngeo/pull/6299)
+* Prepare (clean) groups to support disclaimer [ngeo#6328](https://github.com/camptocamp/ngeo/pull/6328)
 ##### 2.5.0.83
-* Opacity metadata on WMTS layers [ngeo#6299](https://github.com/camptocamp/ngeo/pull/6299)
-##### 2.5.0.83
-* Opacity metadata on WMTS layers [ngeo#6299](https://github.com/camptocamp/ngeo/pull/6299)
+* [Backport 2.5] Fix the max age [c2cgeoportal#7068](https://github.com/camptocamp/c2cgeoportal/pull/7068)
 ##### 2.5.0.82
 * Fix typo in the documentation [c2cgeoportal#7041](https://github.com/camptocamp/c2cgeoportal/pull/7041)
-##### 2.5.0.81
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 * Params.STYLES can present but undefined [ngeo#6261](https://github.com/camptocamp/ngeo/pull/6261)
 ##### 2.5.0.81
-* Params.STYLES can present but undefined [ngeo#6261](https://github.com/camptocamp/ngeo/pull/6261)
+* [Backport 2.5] More compatible with VSCode auto format [c2cgeoportal#7018](https://github.com/camptocamp/c2cgeoportal/pull/7018)
 ##### 2.5.0.80
 * Sometimes the upload failed [c2cgeoportal#7016](https://github.com/camptocamp/c2cgeoportal/pull/7016)
-##### 2.5.0.79
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 * List of WMS/WMTS services when setting focus on text box [ngeo#6290](https://github.com/camptocamp/ngeo/pull/6290)
 ##### 2.5.0.79
-* List of WMS/WMTS services when setting focus on text box [ngeo#6290](https://github.com/camptocamp/ngeo/pull/6290)
+* Do not request DescribeFeatureType if not OGCServer.wfs_support [c2cgeoportal#6984](https://github.com/camptocamp/c2cgeoportal/pull/6984)
 ##### 2.5.0.78
 * [Backport 2.5] Import ls from 'ngeo/buildtools/ls.js' [c2cgeoportal#6995](https://github.com/camptocamp/c2cgeoportal/pull/6995)
 * [Backport 2.5] [Fix master] Replace ls package with an internal function [ngeo#6267](https://github.com/camptocamp/ngeo/pull/6267)
@@ -72,17 +72,23 @@
 * Fix missing i10n file for theme2fts [c2cgeoportal#6924](https://github.com/camptocamp/c2cgeoportal/pull/6924)
 ##### 2.5.0.72
 * Also build and publish QGIS 3.14 [c2cgeoportal#6917](https://github.com/camptocamp/c2cgeoportal/pull/6917)
-##### 2.5.0.71
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
 * [Backport 2.5] Fix duplicated STYLES parameter in print requests [ngeo#6227](https://github.com/camptocamp/ngeo/pull/6227)
 ##### 2.5.0.71
-* [Backport 2.5] Fix duplicated STYLES parameter in print requests [ngeo#6227](https://github.com/camptocamp/ngeo/pull/6227)
+* [Backport 2.5] Fix typo in manage-users script doc [c2cgeoportal#6897](https://github.com/camptocamp/c2cgeoportal/pull/6897)
+* Don't fail on unneeded apt repository fetch [c2cgeoportal#6901](https://github.com/camptocamp/c2cgeoportal/pull/6901)
 ##### 2.5.0.70
 * [Backport 2.5] Fix build on master [c2cgeoportal#6899](https://github.com/camptocamp/c2cgeoportal/pull/6899)
+* mapserver group filtering only work with mapserver 7.6 at least [c2cgeoportal#7207](https://github.com/camptocamp/c2cgeoportal/pull/7207)
+* Fix controls3d 2.5 [ngeo#6173](https://github.com/camptocamp/ngeo/pull/6173)
 * Improve offline example [ngeo#6198](https://github.com/camptocamp/ngeo/pull/6198)
 ##### 2.5.0.69
-* Fix controls3d 2.5 [ngeo#6173](https://github.com/camptocamp/ngeo/pull/6173)
-##### 2.5.0.69
-* Fix controls3d 2.5 [ngeo#6173](https://github.com/camptocamp/ngeo/pull/6173)
+* Fix publish from ngeo change [c2cgeoportal#6872](https://github.com/camptocamp/c2cgeoportal/pull/6872)
+* Removes unwanted scrolls [ngeo#6125](https://github.com/camptocamp/ngeo/pull/6125)
+* Fix the layers in the permalink [ngeo#6126](https://github.com/camptocamp/ngeo/pull/6126)
+* Don't use the pixelRatio to create the mask [ngeo#6141](https://github.com/camptocamp/ngeo/pull/6141)
+* [Backport 2.5] Hide not fully working not c2c feature gmf-layertree-isexpanded [ngeo#6153](https://github.com/camptocamp/ngeo/pull/6153)
+* Do not emit click on drawend queries [ngeo#6157](https://github.com/camptocamp/ngeo/pull/6157)
 ##### 2.5.0.68
 * Add chokidar requred for webpack dev server in the project [ngeo#6142](https://github.com/camptocamp/ngeo/pull/6142)
 ##### 2.5.0.67
@@ -166,8 +172,6 @@
 * [Backport 2.5] Data sources without dimension filters are considered equal [ngeo#5924](https://github.com/camptocamp/ngeo/pull/5924)
 ##### 2.5.0.42
 * Fix Extend the data model documentation [c2cgeoportal#6499](https://github.com/camptocamp/c2cgeoportal/pull/6499)
-##### 2.5.0.41
-##### 2.5.0.40
 ##### 2.5.0.39
 * Upgrade c2cgeoform to 2.1.14 [c2cgeoportal#6500](https://github.com/camptocamp/c2cgeoportal/pull/6500)
 * Fix pypi deployment [c2cgeoportal#6503](https://github.com/camptocamp/c2cgeoportal/pull/6503)
