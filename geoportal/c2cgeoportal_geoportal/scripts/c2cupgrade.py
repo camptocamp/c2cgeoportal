@@ -253,7 +253,9 @@ class C2cUpgradeTool:
             self.print_step(
                 step + 1,
                 message="Here is the output of 'git status'. Please make sure to commit all your "
-                "changes before going further. All uncommitted changes will be lost.",
+                "changes before going further. All uncommitted changes will be lost.\n"
+                "Note that for debugging purpose it is possible to pass directly to step 2 "
+                "e.-g.: ./upgrade --debug=../c2cgeoportal {version} 2".format(version=os.environ["VERSION"]),
             )
 
     @Step(1)

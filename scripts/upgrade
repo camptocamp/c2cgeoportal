@@ -36,6 +36,9 @@ import subprocess
 import sys
 
 parser = argparse.ArgumentParser(description="Upgrade the project")
+parser.add_argument(
+    "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
+)
 parser.add_argument("version", help="the version to upgrade to (master or x.y.z)")
 parser.add_argument("step", nargs="?", help="the step to run")
 parser_finalize = argparse.ArgumentParser(description="Upgrade the project", add_help=False)
@@ -84,18 +87,24 @@ else:
         match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+\.[0-9]+$", args.version)
         if match is not None:
             major_version = match.group(1)
-        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(major_version)])
-        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-tools:{}".format(args.version)])
-        subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(args.version)])
+        if not args.debug:
+            subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(major_version)])
+            subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-tools:{}".format(args.version)])
+            subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(args.version)])
+
+    debug_volumes = []
+    if args.debug:
+        debug_volumes = [
+            "--volume={}/../c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py".format(
+                os.getcwd()
+            ),
+        ]
 
     sys.exit(
         subprocess.call(
-            [
-                "docker",
-                "run",
-                "--rm",
-                "--env=CI",
-                "--volume={}:/src".format(os.getcwd()),
+            ["docker", "run", "--rm", "--env=CI", "--volume={}:/src".format(os.getcwd()),]
+            + debug_volumes
+            + [
                 "camptocamp/geomapfish-tools:{}".format(args.version),
                 "run-git",
                 subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
