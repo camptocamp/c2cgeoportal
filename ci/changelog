@@ -34,6 +34,7 @@ import os
 import re
 import subprocess
 import sys
+from typing import Any, Dict
 
 import requests
 import yaml
@@ -51,6 +52,8 @@ def save():
 
 def output(cmd):
     with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+        if proc.stdout is None:
+            return None
         return proc.stdout.read()
 
 
@@ -63,11 +66,16 @@ def get_any(repo, ref, section, url):
     if ref in changelog[section][repo]:
         return False, changelog[section][repo][ref]
 
+    token = (
+        os.environ["GITHUB_TOKEN"]
+        if "GITHUB_TOKEN" in os.environ
+        else subprocess.check_output(["gopass", "gs/ci/github/token/gopass"]).decode().strip()
+    )
     json_stuff = requests.get(
         url.format(repo, ref),
         headers={
             "Accept": "application/vnd.github.groot-preview+json",
-            "Authorization": "token {}".format(os.environ["GITHUB_TOKEN"]),
+            "Authorization": "token {}".format(token),
         },
     ).json()
 
@@ -133,7 +141,13 @@ def get_pulls(repo, ref):
 
 
 def add_new_release():
+    """
+    Add a new release in the releases list
+    """
     if len(sys.argv) == 2:
+        if len([e for e in changelog["releases"] if e["name"] == sys.argv[1]]) > 0:
+            return
+
         npm_list = json.loads(
             output(
                 ["docker", "run", "--rm", "camptocamp/geomapfish-tools", "npm", "list", "--global", "--json"]
@@ -174,12 +188,21 @@ def main():
     if os.environ.get("MAIN_BRANCH") == "master":
         print("Ignored for master main branch")
         return
+
+    # Remove duplicated release names
+    releases = []
+    releases_names = []
+    for release in changelog["releases"]:
+        if release["name"] not in releases_names:
+            releases.append(release)
+            releases_names.append(release["name"])
+    changelog["releases"] = releases
     add_new_release()
 
     first = True
-    release_pulls = {}
+    release_pulls: Dict[str, Any] = {}
     releases = []
-    commits = {}
+    commits: Dict[str, Any] = {}
     for repo in REPOS:
         commits[repo] = {}
 
@@ -199,10 +222,13 @@ def main():
     with open("CHANGELOG.md", "wb") as md_file:
         for release in releases[::-1]:
             pulls = release_pulls[release]
-            md_file.write("##### {}\n".format(release).encode("utf-8"))
+            notitle = True
             for repo in REPOS:
                 for pull in sorted(pulls[repo].values(), key=lambda pull: pull["number"]):
                     if pull["base_ref"] != "master":
+                        if notitle:
+                            md_file.write("##### {}\n".format(release).encode("utf-8"))
+                            notitle = False
                         md_file.write(
                             "* {} [{}#{}]({})\n".format(
                                 pull["title"], repo, pull["number"], pull["html_url"]
