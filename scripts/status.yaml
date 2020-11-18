@@ -5,25 +5,25 @@
     '2.5':
       branch: prod-2-5
       workflows:
+        - workflow: Continuous integration
         - workflow: Upgrade 2.5
           use_branch: no
-        - workflow: Continuous integration
     '2.6':
       branch: prod-2-6
       workflows:
+        - workflow: Continuous integration
         - workflow: Upgrade 2.6
           use_branch: no
-        - workflow: Continuous integration
 
 - name: c2cgeoportal
   repo: camptocamp/c2cgeoportal
   hidden_workflows:
     - Automatic Rebase
   workflows:
+    - workflow: Audit
     - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Lint pull request title
-    - workflow: Audit
     - workflow: Update status
     - workflow: Backport
       norunfor: false
@@ -33,15 +33,15 @@
         - workflow: Code scanning
     '2.5':
       workflows:
-        - workflow: Update ngeo
-          use_branch: no
+        - workflow: QGIS build
+        - workflow: Continuous integration
+        - workflow: Code scanning
         - workflow: Rebuild 2.5
           use_branch: no
         - workflow: QGIS rebuild 2.5
           use_branch: no
-        - workflow: Continuous integration
-        - workflow: QGIS build
-        - workflow: Code scanning
+        - workflow: Update ngeo
+          use_branch: no
     master:
       workflows:
         - workflow: QGIS build
@@ -51,13 +51,13 @@
 - name: ngeo
   repo: camptocamp/ngeo
   workflows:
-    - workflow: Backport
-      norunfor: false
+    - workflow: Audit
     - workflow: Clean GitHub pages
     - workflow: Auto merge Dependabot updates
     - workflow: Lint pull request title
-    - workflow: Audit
     - workflow: Add message on pull requests with the related examples
+    - workflow: Backport
+      norunfor: false
   versions:
     '2.4':
       workflows:
@@ -75,11 +75,12 @@
   repo: camptocamp/c2cwsgiutils
   workflows:
     - workflow: Rebuild
-    - workflow: Backport
-      norunfor: false
+    - workflow: Audit
     - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
-    - workflow: Audit
+    - workflow: Backport
+      norunfor: false
+    - workflow: Auto merge Dependabot updates
   hidden_workflows:
     - Code scanning - action
   versions:
@@ -131,11 +132,11 @@
     - workflow: Rebuild
     - workflow: Rebuild 1.14
     - workflow: Rebuild old
+    - workflow: Audit
+    - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
-    - workflow: Clean docker hub tags
-    - workflow: Audit
   versions:
     '1.12':
       workflows:
@@ -163,11 +164,11 @@
   workflows:
     - workflow: Rebuild
     - workflow: Rebuild old
+    - workflow: Audit
+    - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
-    - workflow: Audit
-    - workflow: Clean docker hub tags
   hidden_workflows:
     - summon
   versions:
@@ -201,11 +202,11 @@
   repo: camptocamp/shared_config_manager
   workflows:
     - workflow: Nightly
+    - workflow: Audit
+    - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
-    - workflow: Audit
-    - workflow: Clean docker hub tags
   hidden_workflows:
     - Rebuild
   versions:
@@ -228,10 +229,10 @@
   repo: camptocamp/docker-mapserver
   workflows:
     - workflow: Rebuild
+    - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
-    - workflow: Clean docker hub tags
   versions:
     '7.0':
       workflows:
@@ -253,10 +254,10 @@
   repo: camptocamp/docker-qgis-server
   workflows:
     - workflow: Rebuild
+    - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
-    - workflow: Clean docker hub tags
   versions:
     '3.4':
       workflows:
@@ -281,11 +282,11 @@
   repo: camptocamp/docker-tomcat-logback
   workflows:
     - workflow: Rebuild
+    - workflow: Audit
+    - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
-    - workflow: Audit
-    - workflow: Clean docker hub tags
   versions:
     9.0-jre11:
       workflows:
