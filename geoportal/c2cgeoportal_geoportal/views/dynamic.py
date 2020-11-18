@@ -49,12 +49,9 @@ class DynamicView:
         self.request = request
         self.settings = request.registry.settings
         self.interfaces_config = self.settings["interfaces_config"]
-        self.default = self.interfaces_config.get("default", {})
 
     def get(self, value, interface):
-        result = dict(self.default.get(value, {}))
-        result.update(self.interfaces_config.get(interface, {}).get(value, {}))
-        return result
+        return self.interfaces_config.get(interface, {}).get(value, {})
 
     @CACHE_REGION.cache_on_arguments()
     def _fulltextsearch_groups(self):  # pylint: disable=no-self-use
@@ -65,7 +62,15 @@ class DynamicView:
             .all()
         ]
 
-    def _interface(self, interface_config, interface_name, dynamic, constants):
+    def _interface(self, interface_config, interface_name, dynamic):
+
+        if "extends" in interface_config:
+            constants = self._interface(
+                self.interfaces_config[interface_config["extends"]], interface_name, dynamic
+            )
+        else:
+            constants = {}
+
         constants.update(interface_config.get("constants", {}))
         constants.update(
             {
@@ -125,8 +130,7 @@ class DynamicView:
             "fulltextsearch_groups": self._fulltextsearch_groups(),
         }
 
-        constants = self._interface(self.default, interface_name, dynamic, {})
-        constants = self._interface(interface_config, interface_name, dynamic, constants)
+        constants = self._interface(interface_config, interface_name, dynamic)
 
         do_redirect = False
         url = None

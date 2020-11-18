@@ -119,6 +119,8 @@ mapping:
           regex;.+:
             type: map
             mapping:
+              extends:
+                type: str
               constants:
                 type: map
                 mapping:
