@@ -91,6 +91,12 @@ The sub section is the interface name, and after that we have:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">redirect_interface</span></code>: Interface to be redirected to if an unexpected device type is used (mobile/desktop).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">do_redirect</span></code>: Directly do the redirect.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">extends</span></code>: Interface for which the <code class="docutils literal notranslate"><span class="pre">constants</span></code>, <code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>, <code class="docutils literal notranslate"><span class="pre">static</span></code> and <code class="docutils literal notranslate"><span class="pre">routes</span></code> shall</dt><dd><p>be extended. These values will be updated with the interface configuration
+(but can not be removed via interface configuration).</p>
+</dd>
+</dl>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">constants</span></code>: Directly define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant in the vars file.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>: Define an <code class="docutils literal notranslate"><span class="pre">angular</span></code> constant from a dynamic values.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">static</span></code>: key: Constant name, value: name of the static view that we want to have the URL.</p></li>
@@ -107,9 +113,6 @@ The sub section is the interface name, and after that we have:</p>
 </li>
 </ul>
 <p>The dynamic values names are: <code class="docutils literal notranslate"><span class="pre">interface</span></code>, <code class="docutils literal notranslate"><span class="pre">cache_version</span></code>, <code class="docutils literal notranslate"><span class="pre">lang_urls</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>.</p>
-<p>You also have a <code class="docutils literal notranslate"><span class="pre">default</span></code> entry from where we can give the base values for <code class="docutils literal notranslate"><span class="pre">constants</span></code>,
-<code class="docutils literal notranslate"><span class="pre">dynamic_constants</span></code>, <code class="docutils literal notranslate"><span class="pre">static</span></code> and <code class="docutils literal notranslate"><span class="pre">routes</span></code>. These values will be updated with the interface configuration
-(but can not be removed via interface configuration).</p>
 <p>The possible values are described in the ngeo documentation
 <a class="reference external" href="https://camptocamp.github.io/ngeo/master/jsdoc/module-src_options.html">ngeo constants</a>,
 <a class="reference external" href="https://camptocamp.github.io/ngeo/master/jsdoc/module-contribs_gmf_src_options.html">gmf constants</a>.</p>
