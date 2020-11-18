@@ -193,6 +193,10 @@
       workflows:
         - workflow: Continuous integration
         - workflow: Code scanning
+    '3.26':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: Code scanning
     master:
       workflows:
         - workflow: Continuous integration
