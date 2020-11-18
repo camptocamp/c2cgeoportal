@@ -35,5 +35,5 @@ jobs:
           git config --global user.email "ci@camptocamp.com"
           git config --global user.name "CI"
           git add Status.md
-          git commit -m "Update status"
+          git diff --staged --quiet || git commit -m "Update status"
           git push origin master
