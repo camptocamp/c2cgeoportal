@@ -330,3 +330,6 @@
 
 - name: Python action
   repo: camptocamp/python-action
+
+- name: Gopass Summon action
+  repo: camptocamp/initialise-gopass-summon-action
