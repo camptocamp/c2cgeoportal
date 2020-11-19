@@ -27,6 +27,8 @@ def load_env(env_files):
     Parse env files and return environment as dict
     """
     env = {}
+    if  os.path.exists('env.personal'):
+        env_files.append('env.personal')
     for env_file in env_files:
         with open(env_file) as f:
             for line in f:
