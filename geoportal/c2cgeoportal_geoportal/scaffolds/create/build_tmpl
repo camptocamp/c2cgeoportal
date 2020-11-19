@@ -33,6 +33,8 @@ def load_env(env_files):
     """
     env = {}
     for env_file in env_files:
+        if not os.path.exists(env_file) and env_file == 'env.personal' :
+            continue
         with open(env_file) as f:
             for line in f:
                 if line and line[0] != "#":
@@ -97,7 +99,7 @@ def main():
     env_files = [e.format(*args.env) for e in project_env["files"]]
     print("Use env files: {}".format(", ".join(env_files)))
     for env_file in env_files:
-        if not os.path.exists(env_file):
+        if not os.path.exists(env_file) and env_file != 'env.personal' :
             print("Error: the env file '{}' does not exist.".format(env_file))
             sys.exit(1)
     env = load_env(env_files)
@@ -145,8 +147,14 @@ def main():
 
     with open(".env", "w") as dest:
         for file_ in env_files:
-            with open(file_) as src:
-                dest.write(src.read() + "\n")
+            try:
+                with open(file_) as src:
+                    dest.write(src.read() + "\n")
+            except FileNotFoundError as e:
+                if file_ == 'env.personal':
+                    pass
+                else:
+                    raise e
         dest.write("# Used env files: {}\n".format(" ".join(env_files)))
 
 

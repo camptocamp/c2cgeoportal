@@ -14,5 +14,6 @@ env:
   files:
     - env.default
     - env.project
+    - env.personal
   required_args: 0
   help: No arguments needed.
