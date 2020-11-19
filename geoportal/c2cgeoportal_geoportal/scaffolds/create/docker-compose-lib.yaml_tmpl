@@ -68,6 +68,7 @@ services:
       - PGPASSWORD
       - PGDATABASE
       - PGSSLMODE
+      - PGSCHEMA
       - PGSCHEMA_STATIC
       - C2C_REDIS_URL
       - C2C_REDIS_SENTINELS
