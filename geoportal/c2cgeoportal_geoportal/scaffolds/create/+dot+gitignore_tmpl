@@ -7,7 +7,7 @@ __pycache__/
 /.upgrade.yaml
 /.UPGRADE*
 /geoportal/{{package}}_geoportal/locale/{{package}}_geoportal-client.pot
-env.personal
+/env.personal
 
 # Generated with dev mode
 /geoportal/{{package}}_geoportal/static/apihelp/index.html
