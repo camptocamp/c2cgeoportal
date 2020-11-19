@@ -35,8 +35,6 @@ def load_env(env_files):
     if  os.path.exists('env.personal'):
         env_files.append('env.personal')
     for env_file in env_files:
-        if not os.path.exists(env_file):
-            continue
         with open(env_file) as f:
             for line in f:
                 if line and line[0] != "#":
