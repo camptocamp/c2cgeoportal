@@ -60,15 +60,6 @@ services:
     user: www-data
     restart: unless-stopped
     environment:
-      - PGHOST
-      - PGHOST_SLAVE
-      - PGPORT
-      - PGPORT_SLAVE
-      - PGUSER
-      - PGPASSWORD
-      - PGDATABASE
-      - PGSSLMODE
-      - PGSCHEMA_STATIC
       - C2C_REDIS_URL
       - C2C_REDIS_SENTINELS
       - C2C_REDIS_TIMEOUT
