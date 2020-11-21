@@ -9,6 +9,7 @@
 	<parameter name="numberOfLegendRows" class="java.lang.Integer"/>
 	<parameter name="scalebarSubReport" class="java.lang.String"/>
 	<parameter name="northArrowSubReport" class="java.lang.String"/>
+	<parameter name="timezone" class="java.lang.String"/>
 	<parameter name="jrDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<pageHeader>
 		<band height="28">
@@ -37,7 +38,14 @@
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Le " + new SimpleDateFormat("EEEEE dd MMMMM yyyy", new Locale("fr")).format(new Date())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[
+					"Le " + java.time.ZonedDateTime.now().format(
+						java.time.format.DateTimeFormatter.
+						ofPattern("EEEE dd MMMM yyyy HH:mm").
+						withLocale($P{REPORT_LOCALE}).
+						withZone(java.time.ZoneId.of($P{timezone}))
+					)
+				]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="25" width="555" height="1" forecolor="#FA7500"/>

@@ -10,6 +10,7 @@
 	<parameter name="numberOfLegendRows" class="java.lang.Integer"/>
 	<parameter name="scalebarSubReport" class="java.lang.String"/>
 	<parameter name="northArrowSubReport" class="java.lang.String"/>
+	<parameter name="timezone" class="java.lang.String"/>
 	<parameter name="jrDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="mapContext" class="org.mapfish.print.attribute.map.MapfishMapContext"/>
 	<pageHeader>
@@ -36,7 +37,14 @@
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Le " + new SimpleDateFormat("EEEEE dd MMMMM yyyy", new Locale("fr")).format(new Date())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[
+					"Le " + java.time.ZonedDateTime.now().format(
+						java.time.format.DateTimeFormatter.
+						ofPattern("EEEE dd MMMM yyyy HH:mm").
+						withLocale($P{REPORT_LOCALE}).
+						withZone(java.time.ZoneId.of($P{timezone}))
+					)
+				]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="180" y="2" width="365" height="20" uuid="953c0d72-060f-4ed9-9b6b-9e26da551dbe">
