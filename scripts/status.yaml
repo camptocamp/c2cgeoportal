@@ -71,7 +71,26 @@
         - workflow: Continuous integration
         - workflow: CodeQL scanning
 
-- name: c2cwsgiutils
+- name: C2C CI utils
+  repo: camptocamp/c2cciutils
+  workflows:
+    - workflow: Rebuild
+    - workflow: Audit
+    - workflow: Clean docker hub tags
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+  versions:
+    '1.0':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- name: C2C WSGI utils
   repo: camptocamp/c2cwsgiutils
   workflows:
     - workflow: Rebuild
@@ -80,7 +99,6 @@
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
-    - workflow: Auto merge Dependabot updates
   hidden_workflows:
     - Code scanning - action
   versions:
@@ -317,13 +335,23 @@
       workflows:
         - workflow: Continuous integration
 
-- name: mutualized_print_config
-  repo: camptocamp/mutualized_print_config
+- name: Private geo charts
+  repo: camptocamp/private-geo-charts
+  workflows:
+    - workflow: Check images last build
+
+- name: C2C template
+  repo: camptocamp/c2c.template
+  workflows:
+    - workflow: Continuous integration
 
 - name: prometheus-metrics-geo
   repo: camptocamp/prometheus-metrics-geo
   workflows:
     - workflow: Backup Grafana
+
+- name: mutualized_print_config
+  repo: camptocamp/mutualized_print_config
 
 - name: Backport
   repo: camptocamp/backport-action
