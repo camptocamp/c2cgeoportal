@@ -336,6 +336,8 @@ vars:
           name: '/etc/static-ngeo/'
           append: angular-locale_\{\{locale\}\}.js
       routes:
+        currentInterfaceUrl:
+          currentInterface: True
         authenticationBaseUrl:
           name: base
         gmfLayersUrl:

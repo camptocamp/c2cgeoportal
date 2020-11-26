@@ -86,15 +86,14 @@ class DynamicView:
             }
         )
 
-        routes = dict(currentInterfaceUrl={"name": interface_name})
-        routes.update(interface_config.get("routes", {}))
-        for constant, config in routes.items():
+        for constant, config in interface_config.get("routes", {}).items():
+            route_name = interface_name if config.get("currentInterface", False) else config["name"]
             params: Dict[str, str] = {}
             params.update(config.get("params", {}))
             for name, dyn in config.get("dynamic_params", {}).items():
                 params[name] = dynamic[dyn]
             constants[constant] = self.request.route_url(
-                config["name"], *config.get("elements", []), _query=params, **config.get("kw", {})
+                route_name, *config.get("elements", []), _query=params, **config.get("kw", {})
             )
 
         return constants
