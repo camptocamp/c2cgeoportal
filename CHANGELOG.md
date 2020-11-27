@@ -1,3 +1,6 @@
+##### 2.4.2.22
+* Doc - Explain how to extend ngeo [c2cgeoportal#7306](https://github.com/camptocamp/c2cgeoportal/pull/7306)
+* Enable to change the xy order on getFeature GML format [ngeo#6429](https://github.com/camptocamp/ngeo/pull/6429)
 ##### 2.4.2.21
 * [Security] Apply minor bootstrap update [c2cgeoportal#7271](https://github.com/camptocamp/c2cgeoportal/pull/7271)
 * [Backport 2.4] [Backport master] [Backport master] Use secret defined in organisation [ngeo#6449](https://github.com/camptocamp/ngeo/pull/6449)
