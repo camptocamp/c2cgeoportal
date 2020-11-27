@@ -198,7 +198,7 @@ class Theme:
                     "\nURL: {}\n{}".format(e, url, content)
                 )
                 LOG.error(error, exc_info=True)
-                return None, {error}
+                return {"layers": layers}, set()
             wms_layers_name = list(wms.contents)
             for layer_name in wms_layers_name:
                 wms_layer = wms[layer_name]
