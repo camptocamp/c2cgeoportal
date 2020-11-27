@@ -20,12 +20,12 @@ def main(global_config, **settings):
         authentication_policy=create_authentication(settings)
     )
 
+    config.add_translation_dirs(LOCALE_PATH)
+
     # Workaround to not have the error: distutils.errors.DistutilsArgError: no commands supplied
     distutils.core._setup_stop_after = 'config'  # pylint: disable=protected-access
     config.include('c2cgeoportal_geoportal')
     distutils.core._setup_stop_after = None  # pylint: disable=protected-access
-
-    config.add_translation_dirs(LOCALE_PATH)
 
     # Scan view decorator for adding routes
     config.scan()
