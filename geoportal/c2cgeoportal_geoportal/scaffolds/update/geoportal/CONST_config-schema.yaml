@@ -139,7 +139,8 @@ mapping:
                     mapping:
                       name:
                         type: str
-                        required: True
+                      currentInterface:
+                        type: bool
                       elements:
                         type: seq
                         sequence:

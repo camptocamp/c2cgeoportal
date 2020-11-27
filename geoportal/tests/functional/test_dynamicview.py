@@ -326,10 +326,7 @@ class TestDynamicView(TestCase):
         dynamic = DynamicView(request).dynamic()
 
         assert dynamic == {
-            "constants": {
-                "currentInterfaceUrl": "/dummy/route/url/test?",
-                "redirectUrl": "/dummy/route/url/test_redirect?no_redirect=t",
-            },
+            "constants": {"redirectUrl": "/dummy/route/url/test_redirect?no_redirect=t"},
             "doRedirect": False,
             "redirectUrl": "/dummy/route/url/test_redirect?",
         }
@@ -344,7 +341,7 @@ class TestDynamicView(TestCase):
         dynamic = DynamicView(request).dynamic()
 
         assert dynamic == {
-            "constants": {"currentInterfaceUrl": "/dummy/route/url/test?"},
+            "constants": {},
             "doRedirect": True,
             "redirectUrl": "/dummy/route/url/test_redirect?",
         }
@@ -359,7 +356,7 @@ class TestDynamicView(TestCase):
         dynamic = DynamicView(request).dynamic()
 
         assert dynamic == {
-            "constants": {"currentInterfaceUrl": "/dummy/route/url/test?"},
+            "constants": {},
             "doRedirect": True,
             "redirectUrl": "/dummy/route/url/test_redirect?",
         }
@@ -374,7 +371,7 @@ class TestDynamicView(TestCase):
         dynamic = DynamicView(request).dynamic()
 
         assert dynamic == {
-            "constants": {"currentInterfaceUrl": "/dummy/route/url/test?"},
+            "constants": {},
             "doRedirect": True,
             "redirectUrl": "/dummy/route/url/test_redirect?test=_%20_",
         }
@@ -408,3 +405,14 @@ class TestDynamicView(TestCase):
 
         assert "XTest" in dynamic["constants"], dynamic
         assert dynamic["constants"]["XTest"] == "TOTO"
+
+    def test_currentInterface(self):
+        from c2cgeoportal_geoportal.views.dynamic import DynamicView
+
+        request = self._request()
+        request.registry.settings = self._get_settings(
+            {"test": {"routes": {"test_ci": {"currentInterface": True}}}}
+        )
+        dynamic = DynamicView(request).dynamic()
+
+        assert dynamic["constants"] == {"test_ci": "/dummy/route/url/test?"}
