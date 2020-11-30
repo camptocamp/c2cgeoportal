@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7f37d8efc819f2508637857a21013fac46a001be79955efb8e3dac9e70aa4c0f"
+            "sha256": "93a68c765927eabe93867ccd16359b8f85f24cdcb3e6a1e6585cd227a0903fd5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -131,11 +131,11 @@
         },
         "colander": {
             "hashes": [
-                "sha256:498670aa97d632e04268cfdc0d7d25bba2acbc790b7637fb358022d6508a3c14",
-                "sha256:54878d2ffd1afb020daca6cd5c6cfe6c0e44d0069fc825d57fe59aa6e4f6a499"
+                "sha256:259592a0d6a89cbe63c0c5771f9c0c2522387415af8d715f599583eac659f7d4",
+                "sha256:27a94e96899d2e21d7d1685eca8e44f57e772f48cdf39d3dbca8686c24867335"
             ],
             "index": "pypi",
-            "version": "==1.8.2"
+            "version": "==1.8.3"
         },
         "colanderalchemy": {
             "hashes": [
@@ -1239,7 +1239,6 @@
                 "sha256:05af3bb85d320377db281cf254ab050e1a7ebcbf5410685a9a407e18a1f81236",
                 "sha256:eb41423378682dadb7166144a4926e443093863024de508ca5c9737d6bc08376"
             ],
-            "index": "pypi",
             "version": "==20.7"
         },
         "paste": {
