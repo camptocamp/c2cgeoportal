@@ -1,3 +1,10 @@
+##### 2.5.0.99
+* [Backport 2.5] Doc - Explain how to extend ngeo [c2cgeoportal#7336](https://github.com/camptocamp/c2cgeoportal/pull/7336)
+* Handling wms get capabilities failure [c2cgeoportal#7339](https://github.com/camptocamp/c2cgeoportal/pull/7339)
+* Better work around for ctrlKey events [ngeo#6477](https://github.com/camptocamp/ngeo/pull/6477)
+* Fix examples [ngeo#6481](https://github.com/camptocamp/ngeo/pull/6481)
+* WMTS opacity on background layers [ngeo#6486](https://github.com/camptocamp/ngeo/pull/6486)
+* [Backport 2.5] Enable to change the xy order on getFeature GML format [ngeo#6495](https://github.com/camptocamp/ngeo/pull/6495)
 ##### 2.5.0.98
 * Changelog fix [c2cgeoportal#7282](https://github.com/camptocamp/c2cgeoportal/pull/7282)
 ##### 2.5.0.97
