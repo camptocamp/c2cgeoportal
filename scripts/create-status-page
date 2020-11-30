@@ -33,7 +33,6 @@
 
 
 import datetime
-import itertools
 import os
 import os.path
 import re
@@ -52,7 +51,7 @@ from markdown_table import render
 
 class Status:
     """
-    Render the table of versions got from SECURITY.md, with an additional column named 'CI status'
+    Render the table of versions got from SECURITY.md, with an additional columns named 'Used by' and 'CI status'.
     """
 
     headers: List[str]
@@ -69,7 +68,7 @@ class Status:
         self.data = []
 
         if status is None:
-            self.headers = ["Version", "CI status"]
+            self.headers = ["Version", "Used by", "CI status"]
             return
 
         md = markdown.Markdown(extensions=[TableExtension()])
@@ -78,8 +77,10 @@ class Status:
         self._pe(elem.getroot())
 
         self.data = [r for r in self.data if len([c for c in r if c != None]) > 0]
+        self.headers.append("Used by")
         self.headers.append("CI status")
         for row in self.data:
+            row.append("")
             row.append("")
 
     def _pe(self, elem):
@@ -253,6 +254,9 @@ def version(elem, ver, repo, status, all_workflows_name, all_workflows_by_name):
             workflow(wflow, repo, all_workflows_name, all_workflows_by_name, branch)
             for wflow in elem.get("workflows", [])
         ]
+    )
+    status.data[index][-2] = " ".join(
+        ['<abbr title="{long}">{short}</abbr>'.format(**used_by) for used_by in elem.get("used_by", [])]
     )
 
 
