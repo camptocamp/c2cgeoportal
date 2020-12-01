@@ -49,6 +49,14 @@ services:
       - "MAPSERVER_JOIN_WHERE=rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND
         lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
 
+  tilecloudchain:
+    image: camptocamp/tilecloud-chain:1.13
+    user: www-data
+    restart: unless-stopped
+    environment:
+      - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
+    volumes:
+      - ./docker/test-tilecloudchain:/etc/tilegeneration
 
   tests:
     image: camptocamp/geomapfish-tools

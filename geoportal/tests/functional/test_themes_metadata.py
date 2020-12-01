@@ -55,7 +55,7 @@ class TestThemesViewMetadata(TestCase):
         ogc_server_internal = create_default_ogcserver()
 
         layer_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
-        layer_wms.layer = "__test_layer_internal_wms"
+        layer_wms.layer = "testpoint_unprotected"
         layer_wms.ogc_server = ogc_server_internal
         layer_wms.interfaces = [desktop]
         layer_wms.metadatas = [
@@ -63,17 +63,12 @@ class TestThemesViewMetadata(TestCase):
             Metadata("list", "1, 2, a"),
             Metadata("boolean", "y"),
             Metadata("boolean2", "no"),
-            Metadata("boolean3", "Hello"),
             Metadata("integer", "1"),
             Metadata("float", "5.5"),
             Metadata("json", '{"test": 123}'),
-            Metadata("json_wrong", '{"test": 123'),
             Metadata("date", "Sep 25 2003"),
             Metadata("time", "10:36:28"),
             Metadata("datetime", "Sep 25 10:36:28 BRST 2003"),
-            Metadata("date2", "Sep 25 10:36:28 BRST 2003"),
-            Metadata("time2", "Sep 25 10:36:28 BRST 2003"),
-            Metadata("datetime2", "Hello"),
             Metadata("url1", "http://example.com/hi?a=b#c"),
             Metadata("url2", "static:///path/icon.png"),
             Metadata("url3", "static://static/path/icon.png"),
@@ -84,6 +79,18 @@ class TestThemesViewMetadata(TestCase):
             Metadata("url8", "config://server/index.html"),
             Metadata("url9", "/dummy/static/icon.png"),
             Metadata("url10", "dummy/static/icon.png"),
+        ]
+
+        layer_wms_errors = LayerWMS(name="__test_layer_internal_wms_errors", public=True)
+        layer_wms_errors.layer = "testpoint_unprotected"
+        layer_wms_errors.ogc_server = ogc_server_internal
+        layer_wms_errors.interfaces = [desktop]
+        layer_wms_errors.metadatas = [
+            Metadata("boolean3", "Hello"),
+            Metadata("json_wrong", '{"test": 123'),
+            Metadata("date2", "Sep 25 10:36:28 BRST 2003"),
+            Metadata("time2", "Sep 25 10:36:28 BRST 2003"),
+            Metadata("datetime2", "Hello"),
             Metadata("url11", "https:///static/icon.png"),
             Metadata("url12", "static://test"),
             Metadata("url13", "static://test/"),
@@ -98,7 +105,7 @@ class TestThemesViewMetadata(TestCase):
         ]
 
         layer_group = LayerGroup(name="__test_layer_group")
-        layer_group.children = [layer_wms]
+        layer_group.children = [layer_wms, layer_wms_errors]
 
         theme = Theme(name="__test_theme")
         theme.interfaces = [desktop]
@@ -197,7 +204,7 @@ class TestThemesViewMetadata(TestCase):
 
         themes = theme_view.themes()
         self.assertEqual(
-            self._get_filtered_errors(themes),
+            set(themes["errors"]),
             set(
                 [
                     "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
