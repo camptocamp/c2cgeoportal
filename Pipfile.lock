@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "93a68c765927eabe93867ccd16359b8f85f24cdcb3e6a1e6585cd227a0903fd5"
+            "sha256": "1b4cd041d7cbfd26da81b878e42973ad877a803b5bf28ba4f5d9a428db044fd3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -796,7 +796,6 @@
                 "sha256:3a5bbd0652bf552748871eaa73a4a8dc2899786bc497a2aa1fcb4dcdb0debeee",
                 "sha256:50d7b78fbaf0d04cd62411188fa7eedcb03eb7f4c4b37005615ceebe582aa82a"
             ],
-            "index": "pypi",
             "version": "==3.3.0"
         },
         "transaction": {
@@ -940,11 +939,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:1ffb6cd29cab8b6d8e9b78f59ede8048fb54bc973c1fb09a2e4f5918d3bff183",
-                "sha256:810ab0f866b39b7a35eae7e63f0bd540e6dcbf4928b01a1bd165c5f8646dc879"
+                "sha256:72f76db61131b968737037b3645f11a9da5522406eedd2bd066c46b304017146",
+                "sha256:75a533eb603a175580ab7262d7ee0f8825c03f76060501c216c6d4ae75b2a682"
             ],
             "index": "pypi",
-            "version": "==1.18.185"
+            "version": "==1.18.186"
         },
         "babel": {
             "hashes": [
@@ -972,10 +971,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:4e488351f399501a78b16e1dc466e505ccf63897c936030c56c6d3c37e57939c",
-                "sha256:ccaf3979590b72625b3699d93dabf48f350f9a3304c127fc6830e8ac842b0d96"
+                "sha256:034dadecf19293a15da40272073093049519575df2b438954e2da0ffb7b8279f",
+                "sha256:88334b0a80416d3b662bba2067cc48afe9fd1515c3b8413d592a1933e41ce55a"
             ],
-            "version": "==1.19.25"
+            "version": "==1.19.26"
         },
         "certifi": {
             "hashes": [
@@ -1525,7 +1524,6 @@
                 "sha256:3a5bbd0652bf552748871eaa73a4a8dc2899786bc497a2aa1fcb4dcdb0debeee",
                 "sha256:50d7b78fbaf0d04cd62411188fa7eedcb03eb7f4c4b37005615ceebe582aa82a"
             ],
-            "index": "pypi",
             "version": "==3.3.0"
         },
         "text-unidecode": {
