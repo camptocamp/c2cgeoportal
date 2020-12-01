@@ -99,4 +99,5 @@ In this case you may need to rebase your branch on a more recent `master`, resol
 
 ### Code of contuct
 
-Contributors to GeoMapFish are expected to act respectfully toward others in accordance with the [OSGeo code of conduct for open source projects](https://www.osgeo.org/resources/osgeo-code-of-conduct/).
+Contributors to GeoMapFish are expected to act respectfully toward others in accordance with the
+https://www.contributor-covenant.org/ for open source projects.
