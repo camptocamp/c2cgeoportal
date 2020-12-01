@@ -421,7 +421,7 @@
     master:
       workflows:
         - workflow: Continuous integration
-    1.6:
+    '1.6':
       workflows:
         - workflow: Continuous integration
       used_by:
