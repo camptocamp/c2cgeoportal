@@ -14,6 +14,8 @@ Information
 2. We change the secret name from `GITHUB_GOPASS_CI_TOKEN` to `GOPASS_CI_GITHUB_TOKEN` because we can't
    anymore create create secret started with `GITHUB_`.
 
+3. Layers which have any errors are not added to the theme anymore.
+
 Changes to apply
 ----------------
 
