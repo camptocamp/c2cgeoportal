@@ -2,12 +2,15 @@
 *.pyo
 __pycache__/
 /.env
+/env.personal
 /docker-compose.override.yaml
 /upgrade
 /.upgrade.yaml
 /.UPGRADE*
 /geoportal/{{package}}_geoportal/locale/{{package}}_geoportal-client.pot
-/env.personal
 
 # Generated with dev mode
 /geoportal/{{package}}_geoportal/static/apihelp/index.html
+/geoportal/{{package}}_geoportal/static/robot.txt
+/print/print-apps/+package+/config.yaml
+/mapserver/tinyows.xml
