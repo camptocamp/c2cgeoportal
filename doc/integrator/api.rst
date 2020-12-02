@@ -8,30 +8,9 @@ such as CMS applications.
 
 The API CSS is in the file ``geoportal/demo_geoportal/static-ngeo/api/api.css``.
 
-You can customize your API by editing the file ``geoportal/demo_geoportal/static-ngeo/api/index.js``:
+You can customize your API by editing the file ``geoportal/vars.yaml`` section ``interfaces_config/api``,
+see: `API constants definition <https://camptocamp.github.io/ngeo/master/jsdoc/module-api_src_options.html>`
 
-.. code:: JavaScript
-
-   // The URL to the themes service.
-   config.themesUrl = '<the theme URL>';
-
-   // The projection of the map, for example: 'EPSG:2056'
-   config.projection = <the projection>;
-
-   // The resolutions list, for example: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
-   config.resolutions = [<the map resolutions>];
-
-   // The extent restriction, must be in the same projection as `config.projection`.
-   // the format is `[minx, miny, maxx, maxy]`, for example: `[420000, 30000, 660000, 350000]`
-   // the default is ǹo restriction.
-   config.extent = [<the map extent>];
-
-   // The name of the layer to use as background, the layer must be present in the 'background_layers'
-   // section of the theme
-   config.backgroundLayer = '<the background layer name>';
-
-   // The list of layers (names) that can be queried on mouse click
-   config.queryableLayers = [<layer a>, <layer b>, ...];
 
 The API help is in the folder ``geoportal/<package>_geoportal/static/apihelp/``.
 
