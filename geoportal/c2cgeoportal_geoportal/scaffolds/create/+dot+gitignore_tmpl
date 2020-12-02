@@ -12,5 +12,5 @@ __pycache__/
 # Generated with dev mode
 /geoportal/{{package}}_geoportal/static/apihelp/index.html
 /geoportal/{{package}}_geoportal/static/robot.txt
-/print/print-apps/+package+/config.yaml
+/print/print-apps/{{package}}/config.yaml
 /mapserver/tinyows.xml

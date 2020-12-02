@@ -75,7 +75,7 @@
         - workflow: Continuous integration
         - workflow: CodeQL scanning
 
-- name: C2C CI utils
+- name: Camptocamp CI utilities
   repo: camptocamp/c2cciutils
   workflows:
     - workflow: Rebuild
@@ -94,7 +94,7 @@
         - workflow: Continuous integration
         - workflow: CodeQL scanning
 
-- name: C2C WSGI utils
+- name: Camptocamp WSGI utilities
   repo: camptocamp/c2cwsgiutils
   workflows:
     - workflow: Rebuild

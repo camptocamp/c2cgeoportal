@@ -59,7 +59,6 @@ extra:
 upgrade_files:
   - action: remove
     paths:
-      - Makefile
       - docker-run
       - .config
       - docker-compose-run
