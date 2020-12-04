@@ -54,9 +54,9 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
-from c2cgeoportal_commons.lib.url import get_url2, add_url_params
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal
+from c2cgeoportal_commons.lib.url import add_url_params, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
@@ -263,7 +263,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
                     if isinstance(value, str) and value != "":
                         msgid = value
                         location = "/layers/{}/values/{}/{}".format(
-                            layername, fieldname, value.encode("ascii", errors="replace").decode("ascii"),
+                            layername,
+                            fieldname,
+                            value.encode("ascii", errors="replace").decode("ascii"),
                         )
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 

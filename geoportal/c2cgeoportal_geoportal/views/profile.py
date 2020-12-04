@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2019, Camptocamp SA
+# Copyright (c) 2012-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,8 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from decimal import Decimal
 import math
+from decimal import Decimal
 
 import geojson
 from pyramid.httpexceptions import HTTPNotFound

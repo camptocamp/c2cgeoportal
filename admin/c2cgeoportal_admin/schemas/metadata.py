@@ -31,8 +31,8 @@
 import json
 from typing import Any, Dict, List, Optional, cast
 
-from c2cgeoform.schema import GeoFormSchemaNode
 import colander
+from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 
 from c2cgeoportal_admin import _

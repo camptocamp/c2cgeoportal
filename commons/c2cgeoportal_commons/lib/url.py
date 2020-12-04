@@ -28,8 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Dict, Optional, Set
 import urllib.parse
+from typing import Dict, Optional, Set
 
 from pyramid.request import Request
 

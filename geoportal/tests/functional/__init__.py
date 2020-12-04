@@ -34,16 +34,16 @@ Pyramid application test package
 
 from configparser import ConfigParser
 
-from c2c.template.config import config as configuration
-from pyramid import testing
+import tests
 import transaction
 import webob.acceptparse
+from c2c.template.config import config as configuration
+from pyramid import testing
 
-from c2cgeoportal_commons import models
 import c2cgeoportal_geoportal
 import c2cgeoportal_geoportal.lib
+from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import caching
-import tests
 
 mapserv_url = "http://mapserver:8080/"
 config = None
@@ -53,13 +53,13 @@ def cleanup_db():
     """ Cleanup the database """
     from c2cgeoportal_commons import models
     from c2cgeoportal_commons.models.main import (
-        OGCServer,
-        TreeItem,
-        Role,
-        RestrictionArea,
-        Interface,
-        Functionality,
         FullTextSearch,
+        Functionality,
+        Interface,
+        OGCServer,
+        RestrictionArea,
+        Role,
+        TreeItem,
     )
     from c2cgeoportal_commons.models.static import Shorturl, User
 
@@ -72,7 +72,7 @@ def cleanup_db():
     models.DBSession.query(OGCServer).delete()
     models.DBSession.query(Interface).delete()
     for r in models.DBSession.query(Role).all():
-        r.functionnalities = []
+        r.functionalities = []
         models.DBSession.delete(r)
     models.DBSession.query(User).delete()
     models.DBSession.query(Functionality).delete()
@@ -161,8 +161,7 @@ def _get_user(username):
 def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
     if additional_settings is None:
         additional_settings = {}
-    from c2cgeoportal_geoportal import default_user_validator
-    from c2cgeoportal_geoportal import create_get_user_from_request
+    from c2cgeoportal_geoportal import create_get_user_from_request, default_user_validator
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
 
     request = tests.create_dummy_request(

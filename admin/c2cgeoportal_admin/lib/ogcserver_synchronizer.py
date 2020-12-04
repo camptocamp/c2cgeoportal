@@ -28,12 +28,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from io import StringIO
 import logging
-from typing import cast, Set  # noqa, pylint: disable=unused-import
+from io import StringIO
+from typing import Set, cast  # noqa, pylint: disable=unused-import
 
-from defusedxml import ElementTree
 import requests
+from defusedxml import ElementTree
 
 from c2cgeoportal_commons.lib.url import add_url_params, get_url2
 from c2cgeoportal_commons.models import main
@@ -205,7 +205,12 @@ class OGCServerSynchronizer:
 
             # DimensionLayer
             layer.dimensions = [
-                main.Dimension(name=d.name, value=d.value, field=d.field, description=d.description,)
+                main.Dimension(
+                    name=d.name,
+                    value=d.value,
+                    field=d.field,
+                    description=d.description,
+                )
                 for d in self._default_wms.dimensions
             ]
 
@@ -242,7 +247,10 @@ class OGCServerSynchronizer:
     def wms_capabilities(self):
         errors: Set[str] = set()
         url = get_url2(
-            "The OGC server '{}'".format(self._ogc_server.name), self._ogc_server.url, self._request, errors,
+            "The OGC server '{}'".format(self._ogc_server.name),
+            self._ogc_server.url,
+            self._request,
+            errors,
         )
         if url is None:
             raise Exception("\n".join(errors))

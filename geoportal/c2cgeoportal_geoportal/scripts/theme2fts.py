@@ -117,8 +117,8 @@ class Import:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             FullTextSearch,
             Interface,
-            Theme,
             Role,
+            Theme,
         )
 
         self.session = session

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from pyramid.i18n import get_localizer, TranslationStringFactory
-from pyramid.events import subscriber, BeforeRender, NewRequest
-
+from pyramid.events import BeforeRender, NewRequest, subscriber
+from pyramid.i18n import TranslationStringFactory, get_localizer
 
 # use two translator to translate each strings in Make
 tsf_server = TranslationStringFactory("{{package}}-server")

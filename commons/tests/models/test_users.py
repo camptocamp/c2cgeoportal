@@ -6,8 +6,8 @@ import pytest
 @pytest.fixture(scope="class")
 @pytest.mark.usefixtures("dbsession")
 def insert_users_test_data(dbsession):
-    from c2cgeoportal_commons.models.static import User
     from c2cgeoportal_commons.models.main import Role
+    from c2cgeoportal_commons.models.static import User
 
     user = User("babar")
     user.roles = [Role(name="Role1"), Role(name="Role2")]
@@ -29,8 +29,7 @@ class TestUser:
         assert 2 == len(users[0].roles)
 
     def test_remove(self, dbsession):
-        from c2cgeoportal_commons.models.static import User
-        from c2cgeoportal_commons.models.static import user_role
+        from c2cgeoportal_commons.models.static import User, user_role
 
         users = dbsession.query(User).all()
         dbsession.delete(users[0])
@@ -39,9 +38,8 @@ class TestUser:
         assert 0 == dbsession.query(user_role).count()
 
     def test_add(self, dbsession):
-        from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_commons.models.main import Role
-        from c2cgeoportal_commons.models.static import user_role
+        from c2cgeoportal_commons.models.static import User, user_role
 
         user = User(username="momo")
         user.roles = [Role(name="Role3")]
@@ -57,9 +55,8 @@ class TestUser:
 
     @staticmethod
     def test_edit(dbsession):
-        from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_commons.models.main import Role
-        from c2cgeoportal_commons.models.static import user_role
+        from c2cgeoportal_commons.models.static import User, user_role
 
         user = dbsession.query(User).first()
         assert 2 == len(user.roles)

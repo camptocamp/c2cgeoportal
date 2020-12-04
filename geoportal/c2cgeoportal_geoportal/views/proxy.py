@@ -30,12 +30,12 @@
 
 import logging
 import sys
-from typing import Dict, List, Union
 import urllib.parse
+from typing import Dict, List, Union
 
+import requests
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
 from pyramid.response import Response
-import requests
 
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE,
@@ -87,7 +87,7 @@ class Proxy:
         # Forward the request tracking ID to the other service. This will allow to follow the logs belonging
         # to a single request coming from the user
         headers.setdefault("X-Request-ID", self.request.c2c_request_id)
-        # If we releay want to respect the specification, we should chain with the content of the previus
+        # If we releay want to respect the specification, we should chain with the content of the previous
         # proxy, see also:
         # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
         forwarded = {"for": self.request.client_addr, "proto": self.request.scheme}

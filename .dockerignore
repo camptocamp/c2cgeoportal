@@ -20,7 +20,6 @@
 !.tx
 !.pylintrc
 !.bandit
-!.isort.cfg
 !setup.cfg
 !lingua.cfg
 !.prospector.yaml

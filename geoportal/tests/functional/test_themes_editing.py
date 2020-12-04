@@ -32,10 +32,9 @@
 
 from unittest import TestCase
 
+import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
-import transaction
-
 from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -48,20 +47,20 @@ class TestThemeEditing(TestCase):
         self.maxDiff = None
         self._tables = []
 
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import (
-            Role,
-            RestrictionArea,
-            Theme,
-            LayerGroup,
-            Interface,
-            LayerWMS,
-        )
-        from c2cgeoportal_commons.models.static import User
-
+        from geoalchemy2 import Geometry
         from sqlalchemy import Column, Table, types
         from sqlalchemy.ext.declarative import declarative_base
-        from geoalchemy2 import Geometry
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import (
+            Interface,
+            LayerGroup,
+            LayerWMS,
+            RestrictionArea,
+            Role,
+            Theme,
+        )
+        from c2cgeoportal_commons.models.static import User
 
         ogcserver = create_default_ogcserver()
 
@@ -120,13 +119,13 @@ class TestThemeEditing(TestCase):
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
-            Role,
-            Layer,
-            RestrictionArea,
-            Theme,
-            LayerGroup,
             Interface,
+            Layer,
+            LayerGroup,
             OGCServer,
+            RestrictionArea,
+            Role,
+            Theme,
         )
         from c2cgeoportal_commons.models.static import User
 

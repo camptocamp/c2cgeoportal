@@ -32,10 +32,9 @@
 from collections import namedtuple
 from unittest.mock import patch
 
-from c2c.template.config import config as configuration
 import pytest
+from c2c.template.config import config as configuration
 from sqlalchemy import func
-
 from tests.functional import setup_common as setup_module
 
 
@@ -45,7 +44,14 @@ def settings():
     yield {
         **configuration.get_config(),
         "available_locale_names": ["fr", "en", "de", "it"],
-        "fulltextsearch": {"languages": {"fr": "french", "en": "english", "de": "german", "it": "italian",}},
+        "fulltextsearch": {
+            "languages": {
+                "fr": "french",
+                "en": "english",
+                "de": "german",
+                "it": "italian",
+            }
+        },
     }
 
 

@@ -33,15 +33,15 @@
 import logging
 from unittest import TestCase
 
+import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
-import transaction
-
-from c2cgeoportal_geoportal.lib.caching import invalidate_region
 from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+
+from c2cgeoportal_geoportal.lib.caching import invalidate_region
 
 LOG = logging.getLogger(__name__)
 
@@ -53,24 +53,25 @@ class TestThemeEntryView(TestCase):
         self.maxDiff = None  # pylint: disable=invalid-name
         self._tables = []
 
+        from geoalchemy2 import Geometry
+        from sqlalchemy import Column, Table, func, types
+        from sqlalchemy.ext.declarative import declarative_base
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
-            Role,
-            RestrictionArea,
-            Theme,
-            LayerGroup,
+            OGCSERVER_AUTH_GEOSERVER,
+            OGCSERVER_TYPE_GEOSERVER,
+            FullTextSearch,
             Functionality,
             Interface,
+            LayerGroup,
             LayerWMS,
             OGCServer,
-            FullTextSearch,
-            OGCSERVER_TYPE_GEOSERVER,
-            OGCSERVER_AUTH_GEOSERVER,
+            RestrictionArea,
+            Role,
+            Theme,
         )
         from c2cgeoportal_commons.models.static import User
-        from sqlalchemy import Column, Table, types, func
-        from sqlalchemy.ext.declarative import declarative_base
-        from geoalchemy2 import Geometry
 
         setup_db()
 

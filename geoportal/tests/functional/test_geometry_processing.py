@@ -40,6 +40,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestGeometryProcessing(TestCase):
     def test_difference(self):
         from shapely.geometry import Polygon
+
         from c2cgeoportal_geoportal.views.geometry_processing import GeometryProcessing
 
         request = create_dummy_request()

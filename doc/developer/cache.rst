@@ -92,7 +92,7 @@ Private cache
 Internal cache
 --------------
 
-We have two different internal cache types, one (``std``) for the serializable objets (Like JSON) and
+We have two different internal cache types, one (``std``) for the serializable objects (Like JSON) and
 one (``obj``) for the non serializable objects.
 
 The ``std`` cache is stored on redis, and the ``obj`` cache is stored in memory.

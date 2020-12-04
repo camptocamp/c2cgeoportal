@@ -56,15 +56,15 @@ def includeme(config):
     )
 
     from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
-        Role,
+        Functionality,
+        Interface,
+        LayerGroup,
         LayerWMS,
         LayerWMTS,
-        Theme,
-        LayerGroup,
-        Interface,
         OGCServer,
-        Functionality,
         RestrictionArea,
+        Role,
+        Theme,
     )
     from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 

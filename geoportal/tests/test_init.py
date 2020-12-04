@@ -35,6 +35,7 @@ from unittest.mock import patch
 
 from c2c.template.config import config
 from pyramid import testing
+from tests import DummyRequest
 
 import c2cgeoportal_geoportal
 from c2cgeoportal_geoportal import (
@@ -44,7 +45,6 @@ from c2cgeoportal_geoportal import (
     is_valid_referer,
     set_user_validator,
 )
-from tests import DummyRequest
 
 
 class TestIncludeme(TestCase):

@@ -30,10 +30,10 @@
 
 import json
 import logging
-from random import Random
 import sys
-from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 import xml.dom.minidom  # noqa # pylint: disable=unused-import
+from random import Random
+from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import pyotp
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
@@ -221,7 +221,7 @@ class Login:
 
     @view_config(route_name="loginuser", renderer="json")
     def loginuser(self):
-        LOG.info("Client IP adresse: %s", self.request.client_addr)
+        LOG.info("Client IP address: %s", self.request.client_addr)
         set_common_headers(self.request, "login", NO_CACHE)
         return self._user()
 

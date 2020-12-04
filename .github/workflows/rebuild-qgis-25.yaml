@@ -14,6 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        branch:
+          - '2.5'
         version:
           # Old LTR
           - '3.4'
@@ -24,14 +26,23 @@ jobs:
           - '3.14'
 
     env:
-      MAIN_BRANCH: 2.5
-      MAJOR_VERSION: 2.5
+      MAIN_BRANCH: ${{ matrix.branch }}
+      MAJOR_VERSION: ${{ matrix.branch }}
       CI: true
-      PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
-      SUMMON_PROVIDER: /usr/local/bin/gopass
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: docker
+        if: github.repository == 'camptocamp/c2cgeoportal'
+
+      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
 
       - run: docker pull camptocamp/geomapfish:${{ env.MAJOR_VERSION }}
       - run: docker tag camptocamp/geomapfish:${{ env.MAJOR_VERSION }} camptocamp/geomapfish
@@ -45,13 +56,7 @@ jobs:
           docker tag camptocamp/geomapfish-qgisserver \
           camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${{ matrix.version }}
 
-      - uses: camptocamp/initialise-gopass-summon-action@v1
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-        if: github.repository == 'camptocamp/c2cgeoportal'
-
-      - name: Acceptence tests
+      - name: Acceptance tests
         run: |
           cd docker/qgisserver
           docker-compose up -d
@@ -63,9 +68,6 @@ jobs:
           docker-compose down
 
       - name: Publish
-        run: |
-          summon --yaml '
-            DOCKER_USERNAME: !var gs/ci/dockerhub/username
-            DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-          ' ci/publish-daily --qgisserver ${{ matrix.version }}
+        run: c2cciutils-publish --type=rebuild --branch=${{ matrix.version }}
+          --group=qgis-${{ matrix.version }}
         if: github.repository == 'camptocamp/c2cgeoportal'

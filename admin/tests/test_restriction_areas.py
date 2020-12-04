@@ -4,8 +4,8 @@
 import json
 import re
 
-from geoalchemy2.shape import from_shape
 import pytest
+from geoalchemy2.shape import from_shape
 from shapely.geometry import Polygon, box, shape
 
 from . import AbstractViewsTests

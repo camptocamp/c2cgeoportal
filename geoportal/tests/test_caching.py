@@ -32,6 +32,8 @@
 
 from unittest import TestCase
 
+from tests import DummyRequest
+
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import (
     CORS_METHODS,
@@ -40,7 +42,6 @@ from c2cgeoportal_geoportal.lib.caching import (
     invalidate_region,
     set_common_headers,
 )
-from tests import DummyRequest
 
 
 class TestSetCorsHeaders(TestCase):

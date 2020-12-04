@@ -33,7 +33,6 @@
 from unittest import TestCase
 
 from pyramid import testing
-
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 
@@ -42,16 +41,18 @@ class TestshortenerView(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
+        import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import Shorturl
-        import transaction
 
         DBSession.query(Shorturl).delete()
         transaction.commit()
 
     def test_shortener(self):
+        from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
         from tests import DummyRequest
-        from pyramid.httpexceptions import HTTPNotFound, HTTPBadRequest
+
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *args, **kwargs):
@@ -79,8 +80,9 @@ class TestshortenerView(TestCase):
         self.assertRaises(HTTPBadRequest, shortener.create)
 
     def test_shortener_create_1(self):
-        from tests import DummyRequest
         from pyramid.httpexceptions import HTTPFound
+        from tests import DummyRequest
+
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
@@ -108,8 +110,9 @@ class TestshortenerView(TestCase):
         self.assertEqual(result.location, "https://example.com/hi")
 
     def test_shortener_create_2(self):
-        from tests import DummyRequest
         from pyramid.httpexceptions import HTTPFound
+        from tests import DummyRequest
+
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
@@ -138,6 +141,7 @@ class TestshortenerView(TestCase):
 
     def test_shortener_noreplace_1(self):
         from tests import DummyRequest
+
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
@@ -157,6 +161,7 @@ class TestshortenerView(TestCase):
 
     def test_shortener_noreplace_2(self):
         from tests import DummyRequest
+
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):
@@ -176,6 +181,7 @@ class TestshortenerView(TestCase):
 
     def test_shortener_baseurl(self):
         from tests import DummyRequest
+
         from c2cgeoportal_geoportal.views.shortener import Shortener
 
         def route_url(name, *elements, **kw):

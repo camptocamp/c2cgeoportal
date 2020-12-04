@@ -1,0 +1,15 @@
+---
+checks:
+  black: False
+  isort: False
+  codespell: False
+  eof: False
+  required_workflows: False
+
+publish:
+  docker:
+    images:
+      - group: geoportal
+        name: camptocamp/{{package}}-geoportal
+      - group: config
+        name: camptocamp/{{package}}-config

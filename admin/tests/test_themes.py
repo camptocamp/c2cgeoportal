@@ -13,15 +13,15 @@ def theme_test_data(dbsession, transact):
     del transact
 
     from c2cgeoportal_commons.models.main import (
-        Theme,
-        Role,
         Functionality,
-        LayergroupTreeitem,
         Interface,
-        Metadata,
         LayerGroup,
+        LayergroupTreeitem,
         LayerWMS,
+        Metadata,
         OGCServer,
+        Role,
+        Theme,
     )
 
     interfaces = [Interface(name) for name in ["desktop", "mobile", "edit", "routing"]]

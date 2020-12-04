@@ -3,9 +3,9 @@
 import json
 import re
 
+import pytest
 from geoalchemy2.shape import from_shape, to_shape
 from pyramid.testing import DummyRequest
-import pytest
 from shapely.geometry import Polygon, box, shape
 
 from . import AbstractViewsTests
@@ -16,7 +16,7 @@ from . import AbstractViewsTests
 def roles_test_data(dbsession, transact):
     del transact
 
-    from c2cgeoportal_commons.models.main import Role, Functionality, RestrictionArea
+    from c2cgeoportal_commons.models.main import Functionality, RestrictionArea, Role
     from c2cgeoportal_commons.models.static import User
 
     functionalities = {}
@@ -120,13 +120,16 @@ class TestRole(AbstractViewsTests):
         assert expected.almost_equals(shape(json.loads(form["extent"].value)), decimal=0)
 
         functionalities = roles_test_data["functionalities"]
-        assert set(
-            (
-                functionalities["default_basemap"][0].id,
-                functionalities["location"][0].id,
-                functionalities["location"][1].id,
+        assert (
+            set(
+                (
+                    functionalities["default_basemap"][0].id,
+                    functionalities["location"][0].id,
+                    functionalities["location"][1].id,
+                )
             )
-        ) == set(f.id for f in role.functionalities)
+            == set(f.id for f in role.functionalities)
+        )
         self.check_checkboxes(
             form,
             "functionalities",

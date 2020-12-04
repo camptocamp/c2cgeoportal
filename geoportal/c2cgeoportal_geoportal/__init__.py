@@ -36,25 +36,26 @@ import re
 import time
 from urllib.parse import urlsplit
 
-from Crypto.Cipher import AES  # nosec
 import c2cgeoform
-from c2cgeoform import Form, translator
 import c2cwsgiutils
 import c2cwsgiutils.db
-from c2cwsgiutils.health_check import HealthCheck
 import c2cwsgiutils.index
+import pyramid.security
+import zope.event.classhandler
+from c2cgeoform import Form, translator
+from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
+from Crypto.Cipher import AES  # nosec
 from dogpile.cache import register_backend
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
-import pyramid.security
 from pyramid_mako import add_mako_renderer
 from sqlalchemy.orm import Session
-import zope.event.classhandler
 
 import c2cgeoportal_commons.models
+import c2cgeoportal_geoportal.views
 from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
@@ -66,7 +67,6 @@ from c2cgeoportal_geoportal.lib.metrics import (
     TotalPythonObjectMemoryProvider,
 )
 from c2cgeoportal_geoportal.lib.xsd import XSD
-import c2cgeoportal_geoportal.views
 from c2cgeoportal_geoportal.views.entry import Entry
 
 LOG = logging.getLogger(__name__)
@@ -127,7 +127,9 @@ def add_interface_ngeo(config, route_name, route, renderer=None, permission=None
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
         config.add_request_method(
-            lambda request: c2cgeoportal_commons.models.DBSession(), "dbsession", reify=True,
+            lambda request: c2cgeoportal_commons.models.DBSession(),
+            "dbsession",
+            reify=True,
         )
         config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name="admin_add_ending_slash")
         config.add_route("admin_add_ending_slash", "/admin", request_method="GET")
@@ -185,7 +187,7 @@ def is_valid_referer(request, settings=None):
 
 def create_get_user_from_request(settings):
     def get_user_from_request(request, username=None):
-        """ Return the User object for the request.
+        """Return the User object for the request.
 
         Return ``None`` if:
         * user is anonymous
@@ -243,7 +245,7 @@ def create_get_user_from_request(settings):
 
 
 def set_user_validator(config, user_validator):
-    """ Call this function to register a user validator function.
+    """Call this function to register a user validator function.
 
     The validator function is passed three arguments: ``request``,
     ``username``, and ``password``. The function should return the
@@ -286,7 +288,7 @@ def default_user_validator(request, username, password):
 
 
 class MapserverproxyRoutePredicate:
-    """ Serve as a custom route predicate function for mapserverproxy.
+    """Serve as a custom route predicate function for mapserverproxy.
     If the hide_capabilities setting is set and is true then we want to
     return 404s on GetCapabilities requests."""
 

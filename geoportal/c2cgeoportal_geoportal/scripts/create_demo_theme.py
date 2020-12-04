@@ -51,10 +51,10 @@ def main():
 
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Interface,
-            OGCServer,
-            Theme,
             LayerGroup,
             LayerWMS,
+            OGCServer,
+            Theme,
         )
 
         interfaces = session.query(Interface).all()

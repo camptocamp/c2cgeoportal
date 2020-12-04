@@ -33,9 +33,9 @@
 from unittest import TestCase
 
 import pyramid.registry
+from tests import DummyRequest
 
 from c2cgeoportal_geoportal.lib.caching import init_region
-from tests import DummyRequest
 
 
 def handler(request):

@@ -9,17 +9,16 @@
 
 from unittest.mock import Mock
 
-from geoalchemy2.shape import from_shape
 import pytest
-from qgis.core import QgsProject, QgsVectorLayer
-from shapely.geometry import box
-
+from geoalchemy2.shape import from_shape
 from geomapfish_qgisserver.accesscontrol import (
     Access,
     GeoMapFishAccessControl,
     GMFException,
     OGCServerAccessControl,
 )
+from qgis.core import QgsProject, QgsVectorLayer
+from shapely.geometry import box
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
@@ -57,10 +56,10 @@ def add_node_in_qgis_project(project, parent_node, node_def):
 @pytest.fixture(scope="module")
 def test_data(clean_dbsession):
     from c2cgeoportal_commons.models.main import (
+        OGCSERVER_AUTH_STANDARD,
+        OGCSERVER_TYPE_QGISSERVER,
         LayerWMS,
         OGCServer,
-        OGCSERVER_TYPE_QGISSERVER,
-        OGCSERVER_AUTH_STANDARD,
         RestrictionArea,
         Role,
     )
@@ -147,7 +146,14 @@ def test_data(clean_dbsession):
     private_layer3.ogc_server = ogc_server1
 
     dbsession.add_all(
-        (public_group, public_layer, private_layer1, private_layer2, private_group3, private_layer3,)
+        (
+            public_group,
+            public_layer,
+            private_layer1,
+            private_layer2,
+            private_group3,
+            private_layer3,
+        )
     )
 
     ra1 = RestrictionArea(
@@ -394,7 +400,9 @@ class TestOGCServerAccessControl:
 
 
 @pytest.mark.usefixtures(
-    "server_iface", "qgs_access_control_filter", "test_data",
+    "server_iface",
+    "qgs_access_control_filter",
+    "test_data",
 )
 class TestUnavailableOGCServerAccessControl:
     def test_init(self, server_iface, DBSession):  # noqa: N803
@@ -479,7 +487,9 @@ class TestGeoMapFishAccessControlSingleOGCServer:
 
 
 @pytest.mark.usefixtures(
-    "qgs_access_control_filter", "multiple_ogc_server_env", "test_data",
+    "qgs_access_control_filter",
+    "multiple_ogc_server_env",
+    "test_data",
 )
 class TestGeoMapFishAccessControlMultipleOGCServer:
     @pytest.mark.usefixtures()

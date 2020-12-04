@@ -8,8 +8,8 @@
 # the License, or (at your option) any later version.
 
 import logging
-from logging.config import fileConfig
 import os
+from logging.config import fileConfig
 
 from qgis.core import Qgis, QgsMessageLog
 

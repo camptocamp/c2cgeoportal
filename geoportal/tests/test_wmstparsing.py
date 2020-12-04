@@ -38,13 +38,13 @@ import isodate
 
 class TestExtent(TestCase):
     def test_parse_values(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeExtentValue
+        from c2cgeoportal_geoportal.lib.wmstparsing import TimeExtentValue, parse_extent
 
         extent = parse_extent(["2005", "2006"], "2005")
         self.assertTrue(isinstance(extent, TimeExtentValue))
 
     def test_parse_interval(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeExtentInterval
+        from c2cgeoportal_geoportal.lib.wmstparsing import TimeExtentInterval, parse_extent
 
         extent = parse_extent(["2000/2005/P1Y"], "2002")
         self.assertTrue(isinstance(extent, TimeExtentInterval))
@@ -56,7 +56,7 @@ class TestExtent(TestCase):
         self.assertRaises(ValueError, parse_extent, [], "2002")
 
     def test_merge_values(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeExtentValue
+        from c2cgeoportal_geoportal.lib.wmstparsing import TimeExtentValue, parse_extent
 
         e1 = parse_extent(["2000", "2005"], "2000/2005")
         e2 = parse_extent(["2001", "2003"], "2001/2003")
@@ -82,7 +82,7 @@ class TestExtent(TestCase):
         )
 
     def test_merge_interval(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import parse_extent, TimeExtentInterval
+        from c2cgeoportal_geoportal.lib.wmstparsing import TimeExtentInterval, parse_extent
 
         e1 = parse_extent(["2000/2005/P1Y"], "2000/2005")
         e2 = parse_extent(["2006/2010/P1Y"], "2006/2010")
@@ -168,7 +168,7 @@ class TestFormat(TestCase):
         self.assertEqual("2010-02-01T00:00:00Z", _format_date(dt))
 
     def test_format_tz(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date, _format_date
+        from c2cgeoportal_geoportal.lib.wmstparsing import _format_date, _parse_date
 
         dt = _parse_date("2010-02-03T12:34:00+01:00")
         self.assertEqual("2010-02-03T12:34:00+01:00", _format_date(dt[1]))
@@ -206,8 +206,9 @@ class TestParseDuration(TestCase):
         self.assertEqual((0, 0, 0, 10), _parse_duration("PT10S"))
 
     def test_invalid(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
         from isodate import ISO8601Error
+
+        from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
         self.assertRaises(ISO8601Error, _parse_duration, "10S")
 

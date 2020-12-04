@@ -13,15 +13,15 @@ def edit_url_test_data(dbsession, transact):
     del transact
 
     from c2cgeoportal_commons.models.main import (
-        LayerWMTS,
-        RestrictionArea,
-        Interface,
-        Role,
-        LayerWMS,
-        LayerGroup,
-        Theme,
-        OGCServer,
         Functionality,
+        Interface,
+        LayerGroup,
+        LayerWMS,
+        LayerWMTS,
+        OGCServer,
+        RestrictionArea,
+        Role,
+        Theme,
     )
 
     restrictionareas = [RestrictionArea(name="restrictionarea_{}".format(i)) for i in range(0, 5)]

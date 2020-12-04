@@ -11,6 +11,8 @@ jobs:
   auto-rebase:
     name: Automatic Rebase
     runs-on: ubuntu-20.04
+    timeout-minutes: 5
+
     steps:
       - uses: camptocamp/AutoRebase@master
         with:

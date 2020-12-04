@@ -1,0 +1,79 @@
+---
+name: Continuous integration
+
+on:
+  push:
+
+env:
+  PROJECT: {{package}}
+  # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
+  # OPENSHIFT_PROJECT: gs-gmf-{{package}}
+
+jobs:
+  checks:
+    runs-on: ubuntu-20.04
+    name: Checks
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{'{{'}}secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{'{{'}}secrets.GOPASS_CI_GITHUB_TOKEN}}
+
+      - run: |
+          sudo rm /etc/apt/sources.list.d/*.list
+          sudo apt update
+          sudo apt install --yes python3-wheel
+
+      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
+
+      - name: Checks
+        run: c2cciutils-checks
+
+  config:
+    runs-on: ubuntu-20.04
+    name: Config
+    timeout-minutes: 10
+    needs: checks
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
+          github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
+          patterns: docker
+
+      - name: Build config
+        run: ./build --config
+
+      - name: Publish
+        run: c2cciutils-publish --group=config
+      - run: ci/trigger --image=config
+
+
+  geoportal:
+    runs-on: ubuntu-20.04
+    name: Geoportal
+    timeout-minutes: 10
+    needs: checks
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build geoportal
+        run: ./build --geoportal
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
+          github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
+          patterns: docker
+
+      - name: Publish
+        run: c2cciutils-publish --group=geoportal
+      - run: ci/trigger --image=geoportal

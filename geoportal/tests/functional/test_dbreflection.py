@@ -32,9 +32,10 @@
 
 from unittest import TestCase
 
-from c2cgeoportal_geoportal.lib.caching import init_region
 from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module  # noqa
+
+from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestReflection(TestCase):
@@ -54,14 +55,15 @@ class TestReflection(TestCase):
                 table.drop()
 
     def _create_table(self, tablename):
-        """ Test functions use this function to create a table object.
+        """Test functions use this function to create a table object.
         Each test function should call this function only once. And
         there should not be two test functions that call this function
         with the same ptable_name value.
         """
-        from c2cgeoportal_commons.models.main import Base
-        from sqlalchemy import Table, Column, ForeignKey, types
         from geoalchemy2 import Geometry
+        from sqlalchemy import Column, ForeignKey, Table, types
+
+        from c2cgeoportal_commons.models.main import Base
 
         if self._tables is None:
             self._tables = []
@@ -102,13 +104,15 @@ class TestReflection(TestCase):
 
     def test_get_class_nonexisting_table(self):
         from sqlalchemy.exc import NoSuchTableError
+
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self.assertRaises(NoSuchTableError, get_class, "nonexisting")
 
     def test_get_class(self):
         from geoalchemy2 import Geometry
-        from c2cgeoportal_geoportal.lib.dbreflection import get_class, _AssociationProxy
+
+        from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class
 
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
@@ -186,12 +190,13 @@ class TestReflection(TestCase):
         self.assertEqual(modelclass.__table__.schema, "public")
 
     def test_mixing_get_class_and_queries(self):
-        """ This test shows that we can mix the use of DBSession
-        and the db reflection API. """
-        from c2cgeoportal_geoportal.lib.dbreflection import get_class
-        from c2cgeoportal_commons.models import DBSession
-        from sqlalchemy import text
+        """This test shows that we can mix the use of DBSession
+        and the db reflection API."""
         import transaction
+        from sqlalchemy import text
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self._create_table("table_c")
 

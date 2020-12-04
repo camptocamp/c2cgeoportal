@@ -7,24 +7,24 @@
 # GNU General Public License as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
 
-from enum import Enum
 import json
 import logging
 import os
 import re
+from enum import Enum
 from threading import Lock
 from typing import Dict, List
 
-from c2c.template.config import config
 import c2cwsgiutils.broadcast
 import geoalchemy2
+import sqlalchemy
+import yaml
+import zope.event.classhandler
+from c2c.template.config import config
 from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsProject
 from qgis.server import QgsAccessControlFilter, QgsConfigCache
 from shapely import ops, wkb
-import sqlalchemy
 from sqlalchemy.orm import configure_mappers, sessionmaker, subqueryload
-import yaml
-import zope.event.classhandler
 
 LOG = logging.getLogger(__name__)
 

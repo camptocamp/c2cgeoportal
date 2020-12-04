@@ -29,24 +29,20 @@
 
 
 import copy
-from io import StringIO
 import logging
+import xml.sax.handler
+from io import StringIO
 from typing import Callable, Dict, List
 from urllib.parse import urlsplit
-import xml.sax.handler
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 
 import defusedxml.expatreader
+import requests
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
-import requests
 
 from c2cgeoportal_commons.lib.url import add_url_params
-from c2cgeoportal_geoportal.lib import (
-    caching,
-    get_ogc_server_wfs_url_ids,
-    get_ogc_server_wms_url_ids,
-)
+from c2cgeoportal_geoportal.lib import caching, get_ogc_server_wfs_url_ids, get_ogc_server_wms_url_ids
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers, get_writable_layers
 
 CACHE_REGION = caching.get_region("std")
