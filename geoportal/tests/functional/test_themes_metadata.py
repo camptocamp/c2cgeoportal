@@ -33,9 +33,8 @@
 import re
 from unittest import TestCase
 
-from pyramid import testing
 import transaction
-
+from pyramid import testing
 from tests.functional import create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -48,7 +47,7 @@ class TestThemesViewMetadata(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, LayerWMS, Metadata
+        from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, Metadata, Theme
 
         desktop = Interface(name="desktop")
 
@@ -112,7 +111,7 @@ class TestThemesViewMetadata(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import TreeItem, Interface, Metadata
+        from c2cgeoportal_commons.models.main import Interface, Metadata, TreeItem
 
         for t in DBSession.query(Metadata).all():
             DBSession.delete(t)

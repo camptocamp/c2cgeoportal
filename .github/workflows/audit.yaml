@@ -7,7 +7,7 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     name: Audit
     timeout-minutes: 10
 
@@ -17,61 +17,18 @@ jobs:
         branch:
           - '2.4'
           - '2.5'
+          - master
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           ref: ${{ matrix.branch }}
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-      - run: sudo python3 -m pip install safety
-      - run: |
-          for file in $(find -name requirements.txt)
-          do
-            echo Audit ${file}
-            (
-              cd $(dirname ${file}) &&
-              safety check --full-report --file=requirements.txt\
-                --ignore=$(cat pip-cve-ignore 2> /dev/null | sed -e 's/,/ --ignore=/g' || true) \
-
-            )
-          done
 
       - uses: asdf-vm/actions/install@v1
         with:
           tool_versions: python 3.8.0
-        if: always()
-      - run: sudo python3 -m pip install pipenv
-        if: always()
-      - run: |
-          asdf install python 3.5.8
-          asdf install python 3.7.8
-          for file in $(find -name Pipfile)
-          do
-            echo Audit ${file}
-            (
-              cd $(dirname ${file}) &&
-              pipenv check --ignore=$(cat pipenv-cve-ignore 2> /dev/null || echo 0)
-            )
-          done
-        if: always()
 
-      - run: |
-          sudo npm install -g better-npm-audit npm
-          for file in $(find -name package.json)
-          do
-            echo Audit ${file}
-            cd $(dirname ${file})
-            npm install --package-lock
-            node /usr/local/lib/node_modules/better-npm-audit audit \
-              --ignore=$(cat npm-cve-ignore 2> /dev/null || true) || (
-              npm audit || true
-              npm audit fix --force
-              git diff
-              git diff-index --quiet HEAD
-            )
-            cd -
-          done
-        if: always()
+      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
+
+      - name: Audit
+        run: c2cciutils-audit

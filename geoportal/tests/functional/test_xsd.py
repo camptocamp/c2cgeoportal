@@ -45,9 +45,10 @@ class TestXSDGenerator(TestCase):
         setup_module()
 
         import transaction
-        from sqlalchemy import Column, types, ForeignKey
-        from sqlalchemy.orm import relationship
+        from sqlalchemy import Column, ForeignKey, types
         from sqlalchemy.ext.declarative import declarative_base
+        from sqlalchemy.orm import relationship
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy
 
@@ -116,8 +117,9 @@ class TestXSDGenerator(TestCase):
     @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_association_proxy_xsd")
     @patch("c2cgeoportal_geoportal.lib.xsd.PapyrusXSDGenerator.add_column_property_xsd")
     def test_add_column_property_xsd(self, column_mock, proxy_mock):
-        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
         from sqlalchemy.orm.util import class_mapper
+
+        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
 
         gen = XSDGenerator(include_foreign_keys=True)
 
@@ -133,9 +135,11 @@ class TestXSDGenerator(TestCase):
         column_mock.assert_called_once_with(tb, p)
 
     def test_add_column_readonly(self):
-        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
-        from sqlalchemy.orm.util import class_mapper
         from xml.etree.ElementTree import TreeBuilder, tostring
+
+        from sqlalchemy.orm.util import class_mapper
+
+        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
 
         gen = XSDGenerator(include_foreign_keys=True)
         mapper = class_mapper(self.cls)
@@ -158,8 +162,10 @@ class TestXSDGenerator(TestCase):
 
     def test_add_association_proxy_xsd(self):
         from xml.etree.ElementTree import TreeBuilder, tostring
-        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
+
         from sqlalchemy.orm.util import class_mapper
+
+        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
 
         gen = XSDGenerator(include_foreign_keys=True)
 

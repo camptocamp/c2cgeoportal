@@ -28,9 +28,6 @@ RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 ".
 
 COPY . /src/
 RUN cd /src && prospector
-RUN cd /src && \
-    isort --check-only --diff --settings-path=`pwd` --recursive .
-RUN bandit --recursive -ll /src
 
 #############################################################################################################
 

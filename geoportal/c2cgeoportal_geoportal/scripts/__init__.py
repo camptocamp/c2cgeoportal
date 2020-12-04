@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,11 +31,11 @@
 import os
 from urllib.parse import urlsplit, urlunsplit
 
+import transaction
+import zope.sqlalchemy
 from pyramid.scripts.common import get_config_loader
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
-import transaction
-import zope.sqlalchemy
 
 
 def fill_arguments(parser):

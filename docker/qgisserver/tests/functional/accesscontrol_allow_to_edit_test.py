@@ -8,12 +8,11 @@
 # the License, or (at your option) any later version.
 
 
-from geoalchemy2.shape import from_shape
 import pytest
+from geoalchemy2.shape import from_shape
+from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
 from qgis.core import QgsFeature, QgsGeometry, QgsProject
 from shapely.geometry import LineString, box
-
-from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
 
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
 
@@ -26,10 +25,10 @@ geom_out = LineString([[500000, 50000], [500000, 60000]])
 @pytest.fixture(scope="class")
 def test_data2(clean_dbsession):
     from c2cgeoportal_commons.models.main import (
+        OGCSERVER_AUTH_STANDARD,
+        OGCSERVER_TYPE_QGISSERVER,
         LayerWMS,
         OGCServer,
-        OGCSERVER_TYPE_QGISSERVER,
-        OGCSERVER_AUTH_STANDARD,
         RestrictionArea,
         Role,
         TreeItem,
@@ -113,7 +112,9 @@ def test_data2(clean_dbsession):
 
 
 @pytest.mark.usefixtures(
-    "server_iface", "qgs_access_control_filter", "test_data2",
+    "server_iface",
+    "qgs_access_control_filter",
+    "test_data2",
 )
 class TestAccessControlAllowToEdit:
     def test_allow_to_edit(self, server_iface, DBSession, test_data2):  # noqa: N803

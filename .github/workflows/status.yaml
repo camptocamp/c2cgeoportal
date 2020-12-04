@@ -8,7 +8,7 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     name: Update status
     timeout-minutes: 10
 
@@ -20,12 +20,9 @@ jobs:
           path: wiki
           ref: master
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-      - run: |
-          sudo rm /etc/apt/sources.list.d/*.list
-          sudo apt-get update
-          sudo apt-get install python3-wheel python3-setuptools
 
       - run: sudo python3 -m pip install markdown markdown-table dateutils
+
       - run: scripts/create-status-page > wiki/Status.md
         env:
           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}

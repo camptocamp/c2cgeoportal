@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-bandit = "==1.6.2"
 mypy = "==0.790"  # lint
 prospector = {extras = ["with_mypy", "with_bandit"],version = "==1.3.1"}
 

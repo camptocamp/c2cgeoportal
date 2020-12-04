@@ -49,11 +49,11 @@ from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 
 try:
-    from colander import drop
-    from deform.widget import CheckboxWidget, HiddenWidget, SelectWidget, TextAreaWidget, TextInputWidget
     from c2cgeoform import default_map_settings
     from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
     from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
+    from colander import drop
+    from deform.widget import CheckboxWidget, HiddenWidget, SelectWidget, TextAreaWidget, TextInputWidget
 except ModuleNotFoundError:
     drop = None
     default_map_settings = {"srid": 3857, "view": {"projection": "EPSG:3857"}}

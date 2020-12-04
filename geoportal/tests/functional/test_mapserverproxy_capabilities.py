@@ -33,7 +33,6 @@
 from unittest import TestCase
 
 import transaction
-
 from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import setup_db
@@ -46,13 +45,13 @@ class TestMapserverproxyCapabilities(TestCase):
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
-            Role,
-            LayerWMS,
-            RestrictionArea,
-            Interface,
-            OGCServer,
-            OGCSERVER_TYPE_MAPSERVER,
             OGCSERVER_AUTH_STANDARD,
+            OGCSERVER_TYPE_MAPSERVER,
+            Interface,
+            LayerWMS,
+            OGCServer,
+            RestrictionArea,
+            Role,
         )
         from c2cgeoportal_commons.models.static import User
 

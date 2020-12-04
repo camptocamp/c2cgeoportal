@@ -28,9 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
-import colander
 from sqlalchemy import select
 from sqlalchemy.sql.functions import concat
 

@@ -16,40 +16,19 @@ jobs:
       MAIN_BRANCH: 2.5
       MAJOR_VERSION: 2.5
       CI: true
-      PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
-      SUMMON_PROVIDER: /usr/local/bin/gopass
 
     steps:
       - run: df -h
       - run: docker system prune --all --force
 
-      # Versions
-      - run: docker --version
-      - run: docker-compose --version
-      - run: git --version
-      - run: python3 --version
-      - run: python3 -m pip --version
-      - run: |
-          sudo rm /etc/apt/sources.list.d/*.list
-          sudo apt-get update
-          sudo apt-get install python3-wheel python3-setuptools
-
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           ref: ${{ env.MAIN_BRANCH }}
 
       - run: python3 -m pip install --user --requirement=requirements.txt
 
       # Global simple lint
-      - run: make gitattributes
-        if: always()
-      - run: make eol
-        if: always()
-      - run: make codespell
-        if: always()
       - run: make yamllint
-        if: always()
-      - run: make black
         if: always()
 
       # Build images
@@ -155,34 +134,21 @@ jobs:
       - run: ci/test-upgrade 25 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
-      - name: Init Git
-        run: |
-          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@${REPO_URL}
-          git config user.email "<ci@camptocamp.com>"
-          git config user.name "Continuous integration"
         env:
           REPO_URL: github.com/camptocamp/c2cgeoportal
       - run: make build-tools
       - run: make build-runner
       - run: make build-config
 
-      - uses: camptocamp/initialise-gopass-summon-action@v1
+      - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          pattern: pypi docker
         if: github.repository == 'camptocamp/c2cgeoportal'
 
-      - name: Publish to Docker hub and Pypi
-        run: |
-          summon --yaml '
-            DOCKER_USERNAME: !var gs/ci/dockerhub/username
-            DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-            PYPI_USERNAME: !var gs/ci/pypi/username
-            PYPI_PASSWORD: !var gs/ci/pypi/password
-          ' ci/publish refs/heads/${{ env.MAIN_BRANCH }} --geoportal
-        env:
-          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-        if: github.repository == 'camptocamp/c2cgeoportal'
+      - name: Publish
+        run: c2cciutils-publish
 
       - name: Notify demo
         run: >

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import distutils.core
+
 from pyramid.config import Configurator
-from c2cgeoportal_geoportal import locale_negotiator, add_interface, INTERFACE_TYPE_NGEO
+from {{package}}_geoportal.resources import Root
+
+from c2cgeoportal_geoportal import INTERFACE_TYPE_NGEO, add_interface, locale_negotiator
 from c2cgeoportal_geoportal.lib.authentication import create_authentication
 from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
-from {{package}}_geoportal.resources import Root
 
 
 def main(global_config, **settings):

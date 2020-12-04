@@ -6,6 +6,4 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-codespell = "==2.0.0"
 yamllint = "==1.25.0"
-black = "==19.10b0"

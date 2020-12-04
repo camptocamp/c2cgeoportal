@@ -12,7 +12,7 @@ from .test_treegroup import TestTreeGroup
 def layer_groups_test_data(dbsession, transact):
     del transact
 
-    from c2cgeoportal_commons.models.main import LayerGroup, Metadata, LayergroupTreeitem
+    from c2cgeoportal_commons.models.main import LayerGroup, LayergroupTreeitem, Metadata
 
     metadatas_protos = [
         ("copyable", "true"),
@@ -278,7 +278,7 @@ class TestLayersGroups(TestTreeGroup):
         self._check_submission_problem(resp, "{} is already used.".format(group.name))
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
-        from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup, TreeItem, LayergroupTreeitem
+        from c2cgeoportal_commons.models.main import LayerGroup, LayergroupTreeitem, TreeGroup, TreeItem
 
         group_id = layer_groups_test_data["groups"][9].id
 

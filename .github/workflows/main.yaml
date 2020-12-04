@@ -15,40 +15,32 @@ jobs:
       MAIN_BRANCH: master
       MAJOR_VERSION: 2.6
       CI: true
-      PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
-      SUMMON_PROVIDER: /usr/local/bin/gopass
 
     steps:
       - run: df -h
       - run: docker system prune --all --force
 
-      # Versions
-      - run: docker --version
-      - run: docker-compose --version
-      - run: git --version
-      - run: python3 --version
-      - run: python3 -m pip --version
-      - run: |
-          sudo rm /etc/apt/sources.list.d/*.list
-          sudo apt-get update
-          sudo apt-get install python3-wheel python3-setuptools
+      - uses: actions/checkout@v2
 
-      - uses: actions/checkout@v1
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: pypi docker transifex
+        if: github.repository == 'camptocamp/c2cgeoportal'
+
+      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
+
+      - name: Checks
+        run: c2cciutils-checks
+
       - run: scripts/get-version --auto-increment
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - run: python3 -m pip install --user --requirement=requirements.txt
 
       # Global simple lint
-      - run: make gitattributes
-        if: always()
-      - run: make eol
-        if: always()
-      - run: make codespell
-        if: always()
       - run: make yamllint
-        if: always()
-      - run: make black
         if: always()
 
       # Build images
@@ -73,38 +65,38 @@ jobs:
         if: failure()
       # Similar to: make tests-commons
       - run: >
-            ci/run-dc-logs docker-compose exec -T tests coverage run
-            --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
-            --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
-            /opt/c2cgeoportal/commons/tests
+          ci/run-dc-logs docker-compose exec -T tests coverage run
+          --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
+          --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
+          /opt/c2cgeoportal/commons/tests
       # Similar to: make tests-geoportal
       - run: >
-            ci/run-dc-logs docker-compose exec -T tests coverage run --append
-            --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
-            --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
-            /opt/c2cgeoportal/geoportal/tests
+          ci/run-dc-logs docker-compose exec -T tests coverage run --append
+          --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+          --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
+          /opt/c2cgeoportal/geoportal/tests
       # Similar to: make tests-admin
       - run: >
-            ci/run-dc-logs docker-compose exec -T tests coverage run --append
-            --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
-            --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
-            /opt/c2cgeoportal/admin/tests
+          ci/run-dc-logs docker-compose exec -T tests coverage run --append
+          --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
+          --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
+          /opt/c2cgeoportal/admin/tests
       # Similar to: make tests-qgisserver
       - run: >
-            ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
-            --source=/var/www/plugins/geomapfish_qgisserver
-            --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
-            /src/tests/functional
+          ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
+          --source=/var/www/plugins/geomapfish_qgisserver
+          --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+          /src/tests/functional
       - name: Extract tests artifacts
         run: |
-              docker-compose exec -T tests coverage report
-              docker-compose exec -T tests coverage html --directory=/tmp/coverage
-              docker-compose exec -T qgisserver-tests coverage report
-              docker-compose exec -T qgisserver-tests coverage html --directory=/tmp/coverage
-              mkdir --parent artifacts/geoportal-coverage
-              mkdir --parent artifacts/qgisserver-plugin-coverage
-              docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
-              docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
+          docker-compose exec -T tests coverage report
+          docker-compose exec -T tests coverage html --directory=/tmp/coverage
+          docker-compose exec -T qgisserver-tests coverage report
+          docker-compose exec -T qgisserver-tests coverage html --directory=/tmp/coverage
+          mkdir --parent artifacts/geoportal-coverage
+          mkdir --parent artifacts/qgisserver-plugin-coverage
+          docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
+          docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
         if: always()
       - run: docker-compose down
 
@@ -119,10 +111,10 @@ jobs:
 
       # Documentation
       - run: >
-            docker build --tag=camptocamp/geomapfish-doc
-            --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
-            --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
-            doc
+          docker build --tag=camptocamp/geomapfish-doc
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
+          --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
+          doc
 
       - name: Extract documentation
         run: ci/extract-documentation artifacts/documentations/
@@ -156,32 +148,18 @@ jobs:
 
       - name: Init Git
         run: |
-            git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@${REPO_URL}
-            git config user.email "<ci@camptocamp.com>"
-            git config user.name "Continuous integration"
-        env:
-          REPO_URL: github.com/camptocamp/c2cgeoportal
+            git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
       - run: make build-tools
       - run: make build-runner
       - run: make build-config
 
-      - uses: camptocamp/initialise-gopass-summon-action@v1
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-        if: github.repository == 'camptocamp/c2cgeoportal'
-
-      - name: Publish to Docker hub and Pypi
+      - name: Get versions
+        id: version
+        run: scripts/get-version --github
+      - name: Publish
         run: |
-          summon --yaml '
-            DOCKER_USERNAME: !var gs/ci/dockerhub/username
-            DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-            PYPI_USERNAME: !var gs/ci/pypi/username
-            PYPI_PASSWORD: !var gs/ci/pypi/password
-          ' ci/publish --geoportal
-        env:
-          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-        if: github.repository == 'camptocamp/c2cgeoportal'
+          c2cciutils-publish
+          c2cciutils-publish --group=full --type=version-branch --version=${{ steps.version.outputs.full }}
 
       - name: Notify demo
         run: >
@@ -199,10 +177,6 @@ jobs:
         run: |
           docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
           docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root transifex tail -f /dev/null
-          summon --yaml '
-            USERNAME: !var gs/ci/transifex/rw/username
-            PASSWORD: !var gs/ci/transifex/rw/password
-          ' bash -c 'envsubst < ci/transifexrc.tmpl > ~/.transifexrc'
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
           docker stop transifex

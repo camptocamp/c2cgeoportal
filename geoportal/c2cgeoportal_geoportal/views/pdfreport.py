@@ -27,8 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from json import dumps, loads
 import logging
+from json import dumps, loads
 
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
@@ -173,7 +173,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
             datasource = layer_config.get("datasource", True)
             if multiple and datasource:
                 data = dumps(layer_config["data"])
-                datas = [
+                data_list = [
                     loads(
                         data
                         % {
@@ -186,7 +186,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
                     )
                     for id_ in ids
                 ]
-                self.walker(spec, "%(datasource)s", datas)
+                self.walker(spec, "%(datasource)s", data_list)
                 spec = loads(
                     dumps(spec)
                     % {

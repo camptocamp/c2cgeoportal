@@ -53,14 +53,15 @@ class TestThemesEditColumns(TestCase):
         self._tables = []
 
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
-            Role,
-            Interface,
-            TreeItem,
-            Theme,
-            LayerGroup,
             OGCSERVER_AUTH_NOAUTH,
+            Interface,
+            LayerGroup,
+            Role,
+            Theme,
+            TreeItem,
         )
         from c2cgeoportal_commons.models.static import User
 
@@ -100,15 +101,16 @@ class TestThemesEditColumns(TestCase):
         transaction.commit()
 
     def _create_layer(self, exclude_properties=False, metadatas=None, geom_type=False):
-        """ This function is central for this test class. It creates
+        """This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
-        to it. """
+        to it."""
         import transaction
-        from sqlalchemy import Column, Table, types, ForeignKey
-        from sqlalchemy.ext.declarative import declarative_base
         from geoalchemy2 import Geometry
+        from sqlalchemy import Column, ForeignKey, Table, types
+        from sqlalchemy.ext.declarative import declarative_base
+
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import RestrictionArea, LayerWMS
+        from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea
 
         self.__class__._table_index += 1
         id = self.__class__._table_index
@@ -276,8 +278,8 @@ class TestThemesEditColumns(TestCase):
         )
 
     def test_themes_edit_columns_extras(self):
-        from c2cgeoportal_geoportal.views.theme import Theme
         from c2cgeoportal_commons.models.main import Metadata
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         metadatas = [
             Metadata("lastUpdateDateColumn", "last_update_date"),

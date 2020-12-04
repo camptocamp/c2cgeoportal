@@ -29,15 +29,15 @@
 
 
 import argparse
-from argparse import ArgumentParser
 import atexit
 import filecmp
 import os
 import re
 import shutil
 import subprocess
-from subprocess import call, check_call, check_output
 import sys
+from argparse import ArgumentParser
+from subprocess import call, check_call, check_output
 from typing import Any, Dict, cast
 
 import pkg_resources

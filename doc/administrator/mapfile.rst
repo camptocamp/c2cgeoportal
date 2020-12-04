@@ -214,7 +214,7 @@ The ``${MAPSERVER_DATA_SUBSELECT}`` is defined as follows:
 .. warning::
 
     In some cases you can have geometries that overlap the restriction
-    area. Theses features will not be displayed as they are not in the area (ie not
+    area. These features will not be displayed as they are not in the area (ie not
     *contained*). *st_intersects* or another operator could be used instead of the
     *st_contains* operator.
 

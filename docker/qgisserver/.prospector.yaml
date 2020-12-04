@@ -1,5 +1,4 @@
 ---
-
 strictness: veryhigh
 
 pep8:
@@ -10,4 +9,7 @@ mccabe:
   run: false
 
 mypy:
+  run: true
+
+bandit:
   run: true

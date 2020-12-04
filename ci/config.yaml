@@ -1,0 +1,32 @@
+---
+checks:
+  black:
+    ignore_patterns_re:
+      - ^commons/c2cgeoportal_commons/alembic/script\.py\.mako$
+      - .*\.rst$
+      - ^geoportal/c2cgeoportal_geoportal/scaffolds/.*/.*
+  required_workflows:
+    rebuild-master.yaml:
+      runs_re: []
+
+publish:
+  docker:
+    images:
+      - name: camptocamp/geomapfish
+      - name: camptocamp/geomapfish-tools
+        group: full
+      - name: camptocamp/geomapfish-config
+        group: full
+      - name: camptocamp/geomapfish-geoportal
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-3.10
+        tags:
+          - gmf{version}-qgis3.10
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-3.16
+        tags:
+          - gmf{version}-qgis3.16
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-master
+        tags:
+          - gmf{version}-qgismaster

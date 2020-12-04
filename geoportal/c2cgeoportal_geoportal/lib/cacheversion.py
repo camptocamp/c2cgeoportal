@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,8 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from urllib.parse import urljoin
 import uuid
+from urllib.parse import urljoin
 
 import pyramid.registry
 

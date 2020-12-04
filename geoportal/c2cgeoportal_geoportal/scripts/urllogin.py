@@ -34,8 +34,8 @@ import os
 import sys
 import time
 
-from Crypto.Cipher import AES  # nosec
 import c2c.template
+from Crypto.Cipher import AES  # nosec
 
 
 def create_token(aeskey, user, password, valid):

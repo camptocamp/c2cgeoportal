@@ -173,3 +173,9 @@ upgrade_files:
     from: geoportal/{{package}}_geoportal/static-ngeo/js/apps/image/favicon.ico
     to: geoportal/{{package}}_geoportal/static/images/favicon.ico
     override: True
+  - action: move
+    from: .github/workflows/ci.yaml
+    to: .github/workflows/main.yaml
+  - action: remove
+    paths:
+      - scripts/publish-docker

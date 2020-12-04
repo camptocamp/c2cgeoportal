@@ -9,7 +9,7 @@ skip_if_ci = pytest.mark.skipif(os.environ.get("CI", "false") == "true", reason=
 
 
 def get_test_default_layers(dbsession, default_ogc_server):
-    from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS, LayerVectorTiles
+    from c2cgeoportal_commons.models.main import LayerVectorTiles, LayerWMS, LayerWMTS
 
     default_wms = LayerWMS("wms-defaults")
     default_wms.ogc_server = default_ogc_server
@@ -30,12 +30,12 @@ def get_test_default_layers(dbsession, default_ogc_server):
 
 def factory_build_layers(layer_builder, dbsession, add_dimension=True):
     from c2cgeoportal_commons.models.main import (
-        RestrictionArea,
-        LayergroupTreeitem,
-        Interface,
         Dimension,
-        Metadata,
+        Interface,
         LayerGroup,
+        LayergroupTreeitem,
+        Metadata,
+        RestrictionArea,
     )
 
     restrictionareas = [RestrictionArea(name="restrictionarea_{}".format(i)) for i in range(0, 5)]

@@ -39,7 +39,7 @@ services:
       - QGIS_SERVER_LOG_LEVEL=0
 
   # For Javascript project development.
-  # The debug application will be availavble at ``https://<host>/<entry_point>/dev/<interface>.html``.
+  # The debug application will be available at ``https://<host>/<entry_point>/dev/<interface>.html``.
   webpack_dev_server:
     # Uncomment these lines when you want to debug respectively the project js, ngeo js and/or the gmf contrib js.
     # Adapt the path for ngeo / gmf contrib to point where you have checkouted the code.

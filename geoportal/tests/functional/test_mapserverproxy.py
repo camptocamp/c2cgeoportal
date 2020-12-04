@@ -63,11 +63,10 @@ import hashlib
 import typing
 from unittest import TestCase
 
-from geoalchemy2 import Geometry, WKTElement
-from sqlalchemy import Column, types
 import sqlalchemy.ext.declarative
 import transaction
-
+from geoalchemy2 import Geometry, WKTElement
+from sqlalchemy import Column, types
 from tests.functional import (
     cleanup_db,
     create_default_ogcserver,
@@ -140,14 +139,14 @@ class TestMapserverproxyView(TestCase):
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
-            Role,
-            LayerWMS,
-            RestrictionArea,
+            OGCSERVER_AUTH_GEOSERVER,
+            OGCSERVER_TYPE_GEOSERVER,
             Functionality,
             Interface,
+            LayerWMS,
             OGCServer,
-            OGCSERVER_TYPE_GEOSERVER,
-            OGCSERVER_AUTH_GEOSERVER,
+            RestrictionArea,
+            Role,
         )
         from c2cgeoportal_commons.models.static import User
 
@@ -995,8 +994,9 @@ class TestMapserverproxyView(TestCase):
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
     def test_authentication_required(self):
-        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
         from pyramid.httpexceptions import HTTPUnauthorized
+
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
         request.params.update(

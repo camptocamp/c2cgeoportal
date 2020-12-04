@@ -30,8 +30,8 @@
 
 from functools import partial
 
-from c2cgeoform.schema import GeoFormSchemaNode
 import colander
+from c2cgeoform.schema import GeoFormSchemaNode
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import case, func
 

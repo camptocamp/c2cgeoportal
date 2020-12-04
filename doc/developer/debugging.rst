@@ -90,7 +90,7 @@ With the following command, you can access the logs:
    docker-compose logs -f --tail=20 [<service_name>]
 
 To have the access log on gunicorn you should add the option ``--access-logfile=-`` in the gunicorn
-arguments (``GUNICORN_PARAMS`` environement variable).
+arguments (``GUNICORN_PARAMS`` environment variable).
 
 Go inside a container
 .....................
@@ -181,7 +181,7 @@ When upgrading a c2cgeoportal application, things happen as follow:
 - You manually run `./build --upgrade <target_version>`;
 - This script downloads the `./upgrade` script from target branch on GitHub;
 - The freshly downloaded `./upgrade` script pull images from Docker Hub;
-- The `c2cupgrade` tool is runned from the fresh pulled image.
+- The `c2cupgrade` tool is ran from the fresh pulled image.
 
 Note that this does not offer you the possibility to interfere or debug anything.
 
@@ -195,7 +195,7 @@ the root of your local c2cgeoportal folder, example:
 
    # Run the upgrade step 1 without pulling images from Docker hub,
    # and with c2cupgrade file mounted from you local c2cgeoportal folder.
-   ./upgrade --debug=../c2cgeoportal lastest 1
+   ./upgrade --debug=../c2cgeoportal latest 1
 
 With this it is possible to debug `./upgrade` and `c2cupgrade` scripts on the fly when upgrading a real
 c2cgeoportal application.

@@ -29,12 +29,12 @@ def layer_wmts_test_data(dbsession, transact):
         layer.style = "décontrasté"
         return layer
 
-    datas = factory_build_layers(layer_builder, dbsession)
-    datas["default"] = get_test_default_layers(dbsession, server)
+    data = factory_build_layers(layer_builder, dbsession)
+    data["default"] = get_test_default_layers(dbsession, server)
 
     dbsession.flush()
 
-    yield datas
+    yield data
 
 
 @pytest.mark.usefixtures("layer_wmts_test_data", "test_app")
@@ -192,7 +192,7 @@ class TestLayerWMTS(AbstractViewsTests):
         ).group(1)
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import LayerWMTS, Layer, TreeItem
+        from c2cgeoportal_commons.models.main import Layer, LayerWMTS, TreeItem
 
         layer_id = dbsession.query(LayerWMTS.id).first().id
 
@@ -211,7 +211,7 @@ class TestLayerWMTS(AbstractViewsTests):
         self._check_submission_problem(resp, "{} is already used.".format(layer.name))
 
     def test_convert_common_fields_copied(self, layer_wmts_test_data, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import LayerWMTS, LayerWMS
+        from c2cgeoportal_commons.models.main import LayerWMS, LayerWMTS
 
         layer = layer_wmts_test_data["layers"][3]
 

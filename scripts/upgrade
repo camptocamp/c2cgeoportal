@@ -102,7 +102,13 @@ else:
 
     sys.exit(
         subprocess.call(
-            ["docker", "run", "--rm", "--env=CI", "--volume={}:/src".format(os.getcwd()),]
+            [
+                "docker",
+                "run",
+                "--rm",
+                "--env=CI",
+                "--volume={}:/src".format(os.getcwd()),
+            ]
             + debug_volumes
             + [
                 "camptocamp/geomapfish-tools:{}".format(args.version),

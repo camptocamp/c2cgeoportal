@@ -32,9 +32,8 @@
 
 from unittest import TestCase
 
-from pyramid import testing
 import transaction
-
+from pyramid import testing
 from tests.functional import create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -48,16 +47,16 @@ class TestThemesView(TestCase):
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
-            Theme,
-            LayerGroup,
+            OGCSERVER_AUTH_NOAUTH,
+            Dimension,
             Functionality,
             Interface,
-            OGCServer,
+            LayerGroup,
             LayerWMS,
             LayerWMTS,
             Metadata,
-            Dimension,
-            OGCSERVER_AUTH_NOAUTH,
+            OGCServer,
+            Theme,
         )
 
         main = Interface(name="desktop")
@@ -126,7 +125,7 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import OGCServer, TreeItem, Interface, Metadata, Dimension
+        from c2cgeoportal_commons.models.main import Dimension, Interface, Metadata, OGCServer, TreeItem
 
         DBSession.query(Metadata).delete()
         DBSession.query(Dimension).delete()

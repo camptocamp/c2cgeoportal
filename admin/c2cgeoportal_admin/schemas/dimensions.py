@@ -28,8 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from c2cgeoform.schema import GeoFormSchemaNode
 import colander
+from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SequenceWidget
 
 from c2cgeoportal_admin import _

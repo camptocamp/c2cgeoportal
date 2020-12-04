@@ -34,6 +34,12 @@ update_configs:
       - match:
           update_type: all
   - package_manager: python
+    directory: /ci
+    update_schedule: live
+    automerged_updates:
+      - match:
+          update_type: all
+  - package_manager: python
     directory: /docker/qgisserver/python/3.6
     update_schedule: live
     automerged_updates:

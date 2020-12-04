@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2019, Camptocamp SA
+# Copyright (c) 2012-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,15 +28,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from decimal import Decimal
 import logging
 import math
 import os
+from decimal import Decimal
 from typing import Any, Dict  # noqa, pylint: disable=unused-import
 
+import zope.event.classhandler
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
-import zope.event.classhandler
 
 from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers

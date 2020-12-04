@@ -28,11 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import zope.sqlalchemy
 from sqlalchemy import engine_from_config
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 from transaction import TransactionManager
-import zope.sqlalchemy
 
 
 def get_engine(settings: dict, prefix: str = "sqlalchemy.") -> Engine:

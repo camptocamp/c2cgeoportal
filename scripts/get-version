@@ -41,6 +41,7 @@ parser.add_argument("--auto-increment", action="store_true")
 parser.add_argument("--full", action="store_true")
 parser.add_argument("--major", action="store_true")
 parser.add_argument("--upgrade-version", action="store_true")
+parser.add_argument("--github", action="store_true")
 args = parser.parse_args()
 
 with open("ci/ci.yaml") as ci_file:
@@ -67,18 +68,24 @@ if args.upgrade_version and os.environ.get("MAIN_BRANCH") == "master":
     print("master")
     sys.exit(0)
 
-if args.full or args.upgrade_version:
+if args.full or args.upgrade_version or args.github:
     last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
     main_branch = os.environ.get("MAIN_BRANCH", "master")
     major_version = os.environ.get("MAJOR_VERSION", "dev")
     if tag:
-        print(tag + ".0")
+        full = tag + ".0"
     elif last_tag.startswith(major_version):
-        print(last_tag + "." + minor)
+        full = last_tag + "." + minor
     elif main_branch == "master":
-        print("latest")
+        full = "latest"
     else:
-        print(major_version + ".rc." + minor)
+        full = major_version + ".rc." + minor
+    if args.github:
+        print("##[set-output name=full;]{}".format(full))
+        print("##[set-output name=major;]{}".format(os.environ.get("MAJOR_VERSION", "2.6")))
+        print("##[set-output name=minor;]{}".format(minor))
+    else:
+        print(full)
 elif args.major:
     print(os.environ.get("MAJOR_VERSION", "2.6"))
 else:

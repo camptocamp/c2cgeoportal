@@ -38,7 +38,7 @@ Required Apache modules
 * ``mod_proxy_http``
 
 
-Required PostgreSQL extentions
+Required PostgreSQL extensions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``postgis``

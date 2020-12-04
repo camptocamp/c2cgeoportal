@@ -27,16 +27,16 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from datetime import datetime
-import logging
 import json
+import logging
 import os
+from datetime import datetime
 from typing import Dict, List, Union
 
+import geojson
 from geoalchemy2 import Geometry
 from geoalchemy2 import func as ga_func
 from geoalchemy2.shape import from_shape, to_shape
-import geojson
 from geojson.feature import Feature, FeatureCollection
 from papyrus.protocol import Protocol, create_filter
 from papyrus.xsd import XSDGenerator
@@ -80,7 +80,7 @@ class Layers:
 
     @staticmethod
     def _get_geom_col_info(layer):
-        """ Return information about the layer's geometry column, namely
+        """Return information about the layer's geometry column, namely
         a ``(name, srid)`` tuple, where ``name`` is the name of the
         geometry column, and ``srid`` its srid.
 
@@ -117,8 +117,8 @@ class Layers:
         return layer
 
     def _get_layers_for_request(self):
-        """ A generator function that yields ``Layer`` objects based
-        on the layer ids found in the ``layer_id`` matchdict. """
+        """A generator function that yields ``Layer`` objects based
+        on the layer ids found in the ``layer_id`` matchdict."""
         try:
             layer_ids = (
                 int(layer_id) for layer_id in self.request.matchdict["layer_id"].split(",") if layer_id
@@ -131,8 +131,8 @@ class Layers:
             )  # pragma: no cover
 
     def _get_layer_for_request(self):
-        """ Return a ``Layer`` object for the first layer id found
-        in the ``layer_id`` matchdict. """
+        """Return a ``Layer`` object for the first layer id found
+        in the ``layer_id`` matchdict."""
         return next(self._get_layers_for_request())
 
     def _get_protocol_for_layer(self, layer, **kwargs):
@@ -142,8 +142,8 @@ class Layers:
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
 
     def _get_protocol_for_request(self, **kwargs):
-        """ Returns a papyrus ``Protocol`` for the first layer
-        id found in the ``layer_id`` matchdict. """
+        """Returns a papyrus ``Protocol`` for the first layer
+        id found in the ``layer_id`` matchdict."""
         layer = self._get_layer_for_request()
         return self._get_protocol_for_layer(layer, **kwargs)
 

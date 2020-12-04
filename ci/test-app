@@ -9,6 +9,8 @@ docker build --tag=camptocamp/geomapfish-test-app-db docker/test-app-db
 docker build --tag=camptocamp/geomapfish-test-external-db docker/test-external-db
 
 cd ${HOME}/workspace/testgeomapfishapp/
+rm ci/config.yaml
+c2cciutils-checks
 ./build
 docker-compose down
 docker-compose up -d
@@ -27,8 +29,7 @@ docker-compose exec -T geoportal theme2fts
 #git commit -m "Upgrade the po files"
 
 ci/run-dc-logs docker-compose exec -T geoportal ci/waitwsgi https://front/themes
-for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector "layers/test/values/type enum" admin/layertree admin/layertree/children
-do
+for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector "layers/test/values/type enum" admin/layertree admin/layertree/children; do
     ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project https://front/${path}
     #docker-compose exec -T geoportal curl --insecure https://front/c2c/debug/stacks?secret=c2c
 done

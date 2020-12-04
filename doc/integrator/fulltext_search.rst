@@ -194,7 +194,7 @@ In the configuration file ``vars.yaml`` you can add the following variables:
 
 *  ``fulltextsearch.defaultlimit`` the default limit on the results, default is 30.
 *  ``fulltextsearch.maxlimit`` the max possible limit, default is 200.
-*  ``fulltextsearch.languages`` the language correspondance e.-g. ``{ fr: french }``
+*  ``fulltextsearch.languages`` the language correspondence e.-g. ``{ fr: french }``
 *  ``fulltextsearch.split_regex`` the split regex to split the query text and the text in the ``theme2fts``,
         e.-g. ``[.-]`` to transform ``St.Al-ban`` to ``St al ban``.
 *  ``fulltextsearch.replace`` dictionary of rules to do a replacement where the key is a regular expression,
@@ -329,7 +329,7 @@ Create the new search directory:
    CREATE TEXT SEARCH DICTIONARY my_de (TEMPLATE = synonym, SYNONYMS= de);
    ALTER TEXT SEARCH CONFIGURATION de ALTER MAPPING FOR asciiword WITH my_de, german_stem;
 
-Use the new search configurtation named de:
+Use the new search configuration named de:
 
 .. code:: yaml
 
