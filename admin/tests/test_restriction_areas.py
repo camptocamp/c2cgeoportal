@@ -8,19 +8,27 @@ import pytest
 from geoalchemy2.shape import from_shape
 from shapely.geometry import Polygon, box, shape
 
-from . import AbstractViewsTests
+from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope="function")
 @pytest.mark.usefixtures("dbsession", "transact")
 def restriction_area_test_data(dbsession, transact):
     del transact
-    from c2cgeoportal_commons.models.main import RestrictionArea, Role
+    from c2cgeoportal_commons.models.main import OGCServer, LayerWMS, RestrictionArea, Role
 
     roles = []
     for i in range(0, 4):
         roles.append(Role("secretary_" + str(i)))
-        dbsession.add(roles[i])
+    dbsession.add_all(roles)
+
+    ogc_server = OGCServer(name="test_server")
+    layers = []
+    for i in range(0, 4):
+        layer = LayerWMS(name="layer_{}".format(i), layer="layer_{}".format(i), public=False)
+        layer.ogc_server = ogc_server
+        layers.append(layer)
+    dbsession.add_all(layers)
 
     restrictionareas = []
     for i in range(0, 4):
@@ -28,15 +36,20 @@ def restriction_area_test_data(dbsession, transact):
         restrictionarea.area = from_shape(box(485869.5728, 76443.1884, 837076.5648, 299941.7864), srid=21781)
         restrictionarea.description = "description_{}".format(i)
         restrictionarea.roles = [roles[i % 4], roles[(i + 2) % 4]]
+        restrictionarea.layers = [layers[i % 4], layers[(i + 2) % 4]]
         dbsession.add(restrictionarea)
         restrictionareas.append(restrictionarea)
 
     dbsession.flush()
-    yield {"restriction_areas": restrictionareas, "roles": roles}
+    yield {
+        "layers": layers,
+        "restriction_areas": restrictionareas,
+        "roles": roles,
+    }
 
 
 @pytest.mark.usefixtures("restriction_area_test_data", "test_app")
-class TestRestrictionAreaViews(AbstractViewsTests):
+class TestRestrictionAreaViews(TestTreeGroup):
 
     _prefix = "/admin/restriction_areas"
 
@@ -59,18 +72,49 @@ class TestRestrictionAreaViews(AbstractViewsTests):
     def test_grid_search(self, test_app):
         self.check_search(test_app, "restrictionarea_1", total=1)
 
-    def test_submit_new(self, dbsession, test_app):
+    def test_submit_new(self, dbsession, test_app, restriction_area_test_data):
         from c2cgeoportal_commons.models.main import RestrictionArea
 
+        roles = restriction_area_test_data["roles"]
+        layers = restriction_area_test_data["layers"]
+
         resp = test_app.post(
-            "/admin/restriction_areas/new", {"name": "new_name", "description": "new_description"}, status=302
+            "/admin/restriction_areas/new",
+            (
+                ("_charset_", "UTF-8"),
+                ("__formid__", "deform"),
+                ("id", ""),
+                ("name", "new_name"),
+                ("description", "new_description"),
+                ("readwrite", "true"),
+                ("area", ""),
+                ("__start__", "roles:sequence"),
+                ("roles", str(roles[0].id)),
+                ("roles", str(roles[1].id)),
+                ("__end__", "roles:sequence"),
+                ("__start__", "layers:sequence"),
+                ("__start__", "layer:mapping"),
+                ("id", str(layers[0].id)),
+                ("__end__", "layer:mapping"),
+                ("__start__", "layer:mapping"),
+                ("id", str(layers[1].id)),
+                ("__end__", "layer:mapping"),
+                ("__end__", "layers:sequence"),
+                ("formsubmit", "formsubmit"),
+            ),
+            status=302,
         )
 
         restriction_area = dbsession.query(RestrictionArea).filter(RestrictionArea.name == "new_name").one()
         assert str(restriction_area.id) == re.match(
             r"http://localhost/admin/restriction_areas/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
+
         assert restriction_area.name == "new_name"
+        assert restriction_area.description == "new_description"
+        assert restriction_area.readwrite
+        assert set(restriction_area.roles) == set([roles[0], roles[1]])
+        assert set(restriction_area.layers) == set([layers[0], layers[1]])
 
     def test_unicity_validator(self, restriction_area_test_data, test_app):
         restriction_area = restriction_area_test_data["restriction_areas"][2]
@@ -83,6 +127,9 @@ class TestRestrictionAreaViews(AbstractViewsTests):
     def test_edit(self, test_app, restriction_area_test_data, dbsession):
         restriction_area = restriction_area_test_data["restriction_areas"][0]
         roles = restriction_area_test_data["roles"]
+
+        # Ensure restriction_area.layers is loaded with relationship "order_by"
+        dbsession.expire(restriction_area)
 
         form = self.get_item(test_app, restriction_area.id).form
 
@@ -100,6 +147,14 @@ class TestRestrictionAreaViews(AbstractViewsTests):
         )
         assert expected.almost_equals(shape(json.loads(form["area"].value)), decimal=0)
         self._check_roles(form, roles, restriction_area)
+        self.check_children(
+            form,
+            "layers",
+            [
+                {"label": layer.name, "values": {"id": str(layer.id)}}
+                for layer in sorted(restriction_area.layers, key=lambda l: l.name)
+            ],
+        )
 
         form["description"] = "new_description"
         form["roles"] = [roles[i].id for i in range(0, 3)]
@@ -123,12 +178,23 @@ class TestRestrictionAreaViews(AbstractViewsTests):
         restriction_area = restriction_area_test_data["restriction_areas"][3]
         roles = restriction_area_test_data["roles"]
 
+        # Ensure restriction_area.layers is loaded with relationship "order_by"
+        dbsession.expire(restriction_area)
+
         form = test_app.get(
             "/admin/restriction_areas/{}/duplicate".format(restriction_area.id), status=200
         ).form
 
         assert "" == self.get_first_field_named(form, "id").value
         self._check_roles(form, roles, restriction_area)
+        self.check_children(
+            form,
+            "layers",
+            [
+                {"label": layer.name, "values": {"id": str(layer.id)}}
+                for layer in sorted(restriction_area.layers, key=lambda l: l.name)
+            ],
+        )
 
         self.set_first_field_named(form, "name", "clone")
         resp = form.submit("submit")

@@ -3,7 +3,7 @@
   <div class="col-md-6 col-sm-6">
     <div tal:repeat="child field.children" tal:omit-tag="">
       <div
-         tal:condition="child.schema.name not in ('roles', 'area')"
+         tal:condition="child.schema.name not in ('roles', 'layers')"
          tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
     </div>
@@ -12,17 +12,10 @@
   <div class="col-md-6 col-sm-6">
     <div tal:repeat="child field.children" tal:omit-tag="">
       <div
-         tal:condition="child.schema.name in ('roles')"
+         tal:condition="child.schema.name in ('roles', 'layers')"
          tal:replace="structure child.render_template(field.widget.item_template)">
       </div>
     </div>
   </div>
 
-</div>
-
-<div tal:repeat="child field.children" tal:omit-tag="">
-  <div
-     tal:condition="child.schema.name in ('area')"
-     tal:replace="structure child.render_template(field.widget.item_template)">
-  </div>
 </div>

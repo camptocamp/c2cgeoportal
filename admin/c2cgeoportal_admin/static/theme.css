@@ -29,11 +29,13 @@
 }
 
 .item-theme,
-.item-layergroup_treeitem {
+.item-layergroup_treeitem,
+.item-layer {
   margin-bottom: 0;
 }
 .item-theme .well,
-.item-layergroup_treeitem .well {
+.item-layergroup_treeitem .well,
+.item-layer .well {
   padding: 10px;
   margin-bottom: 5px;
 }

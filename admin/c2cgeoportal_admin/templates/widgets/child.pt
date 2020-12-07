@@ -4,7 +4,7 @@
                      item_template item_template|field.widget.item_template"
          i18n:domain="deform">
 
-  <div class="deform-order-button ">
+  <div class="orderable-item">
     <div class="well"><span class="glyphicon icon-${treeitem.item_type}"></span> ${treeitem.name}</div>
 
     ${field.start_mapping()}

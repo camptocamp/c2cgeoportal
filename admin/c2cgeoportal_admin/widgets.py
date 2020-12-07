@@ -80,18 +80,31 @@ class ThemeOrderWidget(MappingWidget):
         return super().serialize(field, cstruct, **kw)
 
 
+class LayerWidget(MappingWidget):
+    template = "child"
+
+    def serialize(self, field, cstruct, **kw):
+        from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
+
+        if cstruct["id"] == colander.null:
+            kw["treeitem"] = Layer()
+        else:
+            kw["treeitem"] = field.schema.dbsession.query(Layer).get(int(cstruct["id"]))
+        return super().serialize(field, cstruct, **kw)
+
+
 class ChildrenWidget(SequenceWidget):
 
     template = "children"
     add_subitem = True
+    orderable = True
+    child_input_name = "treeitem_id"
     requirements = SequenceWidget.requirements + (("magicsuggest", None),)
 
-    def __init__(self, **kw):
-        SequenceWidget.__init__(self, orderable=True, **kw)
-
     def deserialize(self, field, pstruct):
-        for i, dict_ in enumerate(pstruct):
-            dict_["ordering"] = str(i)
+        if self.orderable and pstruct != colander.null:
+            for i, dict_ in enumerate(pstruct):
+                dict_["ordering"] = str(i)
         return super().deserialize(field, pstruct)
 
     def serialize(self, field, cstruct, **kw):
