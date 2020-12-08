@@ -34,6 +34,7 @@ Revises: e85afd327ab3
 Create Date: 2019-08-29 07:56:15.547216
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column, MetaData, Table
@@ -54,37 +55,41 @@ def upgrade():
     connection = op.get_bind()
     for interface_name in ("api", "iframe_api"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            sqlalchemy.sql.text("SELECT count(name) FROM :schema}.interface WHERE name=:name"),
+            name=interface_name,
+            schema=schema,
         )
         if result.fetchone()[0] == 0:
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("edit", "routing"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            sqlalchemy.sql.text("SELECT count(name) FROM :schema.interface WHERE name=:name"),
+            name=interface_name,
+            schema=schema,
         )
         if result.fetchone()[0] != 0:
             op.execute(
-                "DELETE FROM {schema}.interface_theme it "
-                "USING {schema}.interface i "
-                "WHERE it.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                sqlalchemy.sql.text(
+                    "DELETE FROM :schema.interface_theme it "
+                    "USING :schema.interface i "
+                    "WHERE it.interface_id = i.id AND i.name = :name"
+                ),
+                name=interface_name,
+                schema=schema,
             )
             op.execute(
-                "DELETE FROM {schema}.interface_layer il "
-                "USING {schema}.interface i "
-                "WHERE il.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                sqlalchemy.sql.text(
+                    "DELETE FROM :schema.interface_layer il "
+                    "USING :schema.interface i "
+                    "WHERE il.interface_id = i.id AND i.name = :name"
+                ),
+                name=interface_name,
+                schema=schema,
             )
             op.execute(
-                "DELETE FROM {schema}.interface WHERE name='{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                sqlalchemy.sql.text("DELETE FROM :schema.interface WHERE name=:name"),
+                name=interface_name,
+                schema=schema,
             )
 
 
@@ -96,35 +101,39 @@ def downgrade():
     connection = op.get_bind()
     for interface_name in ("edit", "routing"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            sqlalchemy.sql.text("SELECT count(name) FROM schema.interface WHERE name=:name"),
+            name=interface_name,
+            schema=schema,
         )
         if result.fetchone()[0] == 0:
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("api", "iframe_api"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            sqlalchemy.sql.text("SELECT count(name) FROM :schema.interface WHERE name=:name"),
+            name=interface_name,
+            schema=schema,
         )
         if result.fetchone()[0] != 0:
             op.execute(
-                "DELETE FROM {schema}.interface_theme it "
-                "USING {schema}.interface i "
-                "WHERE it.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                sqlalchemy.sql.text(
+                    "DELETE FROM :schema.interface_theme it "
+                    "USING :schema.interface i "
+                    "WHERE it.interface_id = i.id AND i.name = :name"
+                ),
+                name=interface_name,
+                schema=schema,
             )
             op.execute(
-                "DELETE FROM {schema}.interface_layer il "
-                "USING {schema}.interface i "
-                "WHERE il.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                sqlalchemy.sql.text(
+                    "DELETE FROM :schema.interface_layer il "
+                    "USING :schema.interface i "
+                    "WHERE il.interface_id = i.id AND i.name = :name"
+                ),
+                name=interface_name,
+                schema=schema,
             )
             op.execute(
-                "DELETE FROM {schema}.interface WHERE name='{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                sqlalchemy.sql.text("DELETE FROM :schema.interface WHERE name=:name"),
+                name=interface_name,
+                schema=schema,
             )

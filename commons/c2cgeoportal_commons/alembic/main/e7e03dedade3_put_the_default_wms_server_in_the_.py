@@ -34,6 +34,7 @@ Revises: daf738d5bae4
 Create Date: 2016-08-26 14:39:21.984921
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -48,13 +49,14 @@ def upgrade():
     schema = config["schema"]
 
     op.execute(
-        """
-        UPDATE "{schema}".ogc_server
+        sqlalchemy.sql.text(
+            """
+        UPDATE :schema.ogc_server
         SET url = 'config://local/mapserv'
         WHERE url IS NULL
-    """.format(
-            schema=schema
-        )
+    """
+        ),
+        schema=schema,
     )
 
     op.alter_column("ogc_server", "url", nullable=False, schema=schema)
@@ -72,11 +74,12 @@ def downgrade():
     op.drop_constraint("type_name_unique_treeitem", "treeitem", schema=schema)
 
     op.execute(
-        """
-        UPDATE "{schema}".ogc_server
+        sqlalchemy.sql.text(
+            """
+        UPDATE :schema.ogc_server
         SET url = NULL
         WHERE url = 'config://local/mapserv'
-    """.format(
-            schema=schema
-        )
+    """
+        ),
+        schema=schema,
     )

@@ -34,6 +34,7 @@ Revises: 53d671b17b20
 Create Date: 2018-12-04 15:32:30.506633
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey
@@ -57,24 +58,28 @@ def upgrade():
         schema=staticschema,
     )
     op.execute(
-        """
-INSERT INTO "{staticschema}"."user_role" ("user_id", "role_id")
+        sqlalchemy.sql.text(
+            """
+INSERT INTO :staticschema."user_role" ("user_id", "role_id")
 SELECT "user"."id", "role"."id"
-FROM "{staticschema}"."user"
-JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";""".format(
-            schema=schema, staticschema=staticschema
-        )
+FROM :staticschema."user"
+JOIN :schema."role" ON "role"."name" = "user"."role_name";"""
+        ),
+        schema=schema,
+        staticschema=staticschema,
     )
 
     op.add_column("user", Column("settings_role_id", Integer), schema=staticschema)
     op.execute(
-        """
-UPDATE "{staticschema}"."user"
+        sqlalchemy.sql.text(
+            """
+UPDATE :staticschema."user"
 SET "settings_role_id" = "role"."id"
-FROM "{schema}"."role"
-WHERE "role"."name" = "user"."role_name";""".format(
-            schema=schema, staticschema=staticschema
-        )
+FROM :schema."role"
+WHERE "role"."name" = "user"."role_name";"""
+        ),
+        schema=schema,
+        staticschema=staticschema,
     )
 
     op.drop_column("user", "role_name", schema=staticschema)
@@ -87,13 +92,15 @@ def downgrade():
     op.add_column("user", Column("role_name", Unicode), schema=staticschema)
 
     op.execute(
-        """
-UPDATE "{staticschema}"."user"
+        sqlalchemy.sql.text(
+            """
+UPDATE :staticschema."user"
 SET "role_name" = "role"."name"
-FROM "{schema}"."role"
-WHERE "role"."id" = "user"."settings_role_id";""".format(
-            schema=schema, staticschema=staticschema
-        )
+FROM :schema."role"
+WHERE "role"."id" = "user"."settings_role_id";"""
+        ),
+        schema=schema,
+        staticschema=staticschema,
     )
 
     op.drop_column("user", "settings_role_id", schema=staticschema)

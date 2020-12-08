@@ -34,6 +34,7 @@ Revises: 164ac0819a61
 Create Date: 2015-04-27 17:31:41.760977
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column
@@ -51,7 +52,9 @@ def upgrade():
     for table in ["layerv1", "layer_internal_wms", "layer_external_wms"]:
         op.add_column(table, Column("time_widget", Unicode(10), default="slider"), schema=schema)
         op.execute(
-            "UPDATE {schema!s}.{table!s} SET time_widget = 'slider'".format(schema=schema, table=table)
+            sqlalchemy.sql.text("UPDATE :schema.:table SET time_widget = 'slider'"),
+            schema=schema,
+            table=table,
         )
 
 

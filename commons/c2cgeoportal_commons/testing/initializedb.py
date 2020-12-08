@@ -32,6 +32,7 @@ import os
 import sys
 from typing import List
 
+import sqlalchemy
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
 
@@ -45,21 +46,25 @@ def usage(argv: List[str]) -> None:
 
 
 def schema_exists(connection: Connection, schema_name: str) -> bool:
-    sql = """
+    result = connection.execute(
+        sqlalchemy.sql.text(
+            """
 SELECT count(*) AS count
 FROM information_schema.schemata
-WHERE schema_name = '{}';
-""".format(
-        schema_name
+WHERE schema_name = :name;
+"""
+        ),
+        name=schema_name,
     )
-    result = connection.execute(sql)
     row = result.first()
     return row[0] == 1
 
 
 def truncate_tables(connection: Connection) -> None:
     for t in Base.metadata.sorted_tables:
-        connection.execute("TRUNCATE TABLE {}.{} CASCADE;".format(t.schema, t.name))
+        connection.execute(
+            sqlalchemy.sql.text("TRUNCATE TABLE :schema.:table CASCADE;"), schema=t.schema, table=t.name
+        )
 
 
 def setup_test_data(dbsession: Session) -> None:

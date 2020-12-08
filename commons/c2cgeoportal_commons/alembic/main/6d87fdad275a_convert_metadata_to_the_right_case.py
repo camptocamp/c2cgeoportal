@@ -34,6 +34,7 @@ Revises: 9268a1dffac0
 Create Date: 2017-09-05 11:18:52.494205
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -48,25 +49,28 @@ def upgrade():
     schema = config["schema"]
 
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'".format(schema=schema)
+        sqlalchemy.sql.text("UPDATE ONLY :schema.metadata SET name = 'copyTo' where name = 'copy_to'"),
+        schema=schema,
     )
-    # fmt: off
+
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'geometryValidation' where name = 'geometry_validation'"
-        .format(schema=schema)
+        sqlalchemy.sql.text(
+            "UPDATE ONLY :schema.metadata SET name = 'geometryValidation' where name = 'geometry_validation'"
+        ),
+        schema=schema,
     )
-    # fmt: on
 
 
 def downgrade():
     schema = config["schema"]
 
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'".format(schema=schema)
+        sqlalchemy.sql.text("UPDATE ONLY :schema.metadata SET name = 'copy_to' where name = 'copyTo'"),
+        schema=schema,
     )
-    # fmt: off
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'geometry_validation' where name = 'geometryValidation'"
-        .format(schema=schema)
+        sqlalchemy.sql.text(
+            "UPDATE ONLY :schema.metadata SET name = 'geometry_validation' where name = 'geometryValidation'"
+        ),
+        schema=schema,
     )
-    # fmt: on

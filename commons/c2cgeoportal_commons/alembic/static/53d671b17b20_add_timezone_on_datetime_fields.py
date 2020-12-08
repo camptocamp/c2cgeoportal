@@ -34,6 +34,7 @@ Revises: 1857owc78a07
 Create Date: 2018-05-29 08:44:17.675988
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -48,14 +49,15 @@ def upgrade():
     staticschema = config["schema_static"]
 
     op.execute(
-        """
+        sqlalchemy.sql.text(
+            """
 SET TIME ZONE 'UTC';
-ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp with time zone;
+ALTER TABLE :staticschema.user ALTER COLUMN last_login TYPE timestamp with time zone;
 SET TIME ZONE LOCAL;
-ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp with time zone;
-""".format(
-            staticschema=staticschema
-        )
+ALTER TABLE :staticschema.user ALTER COLUMN expire_on TYPE timestamp with time zone;
+"""
+        ),
+        staticschema=staticschema,
     )
 
 
@@ -63,12 +65,13 @@ def downgrade():
     staticschema = config["schema_static"]
 
     op.execute(
-        """
+        sqlalchemy.sql.text(
+            """
 SET TIME ZONE 'UTC';
-ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp without time zone;
+ALTER TABLE :staticschema.user ALTER COLUMN last_login TYPE timestamp without time zone;
 SET TIME ZONE LOCAL;
-ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp without time zone;
-""".format(
-            staticschema=staticschema
-        )
+ALTER TABLE :staticschema.user ALTER COLUMN expire_on TYPE timestamp without time zone;
+"""
+        ),
+        staticschema=staticschema,
     )

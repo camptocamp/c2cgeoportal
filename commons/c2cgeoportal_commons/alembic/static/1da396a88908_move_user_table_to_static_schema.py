@@ -37,6 +37,7 @@ Create Date: 2015-02-20 14:09:04.875390
 
 from hashlib import sha1
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey
@@ -69,40 +70,47 @@ def upgrade():
         Column("role_name", String),
         schema=staticschema,
     )
-    parent_column = ""
-    parent_select = ""
-    parent_join = ""
-    if parentschema is not None and parentschema != "":  # pragma: no cover
-        op.add_column("user", Column("parent_role_name", String), schema=staticschema)
-        parent_column = ", parent_role_name"
-        parent_select = ", pr.name"
-        parent_join = "LEFT OUTER JOIN {parentschema!s}.role AS pr ON (pr.id = u.parent_role_id)".format(
-            parentschema=parentschema
-        )
 
     try:
-        op.execute(
-            "INSERT INTO %(staticschema)s.user "
-            "(type, username, password, email, is_password_changed, role_name%(parent_column)s) ("
-            "SELECT u.type, u.username, u.password, u.email, "
-            "u.is_password_changed, r.name%(parent_select)s "
-            "FROM %(schema)s.user AS u "
-            "LEFT OUTER JOIN %(schema)s.role AS r ON (r.id = u.role_id) %(parent_join)s"
-            ")"
-            % {
-                "staticschema": staticschema,
-                "schema": schema,
-                "parent_select": parent_select,
-                "parent_column": parent_column,
-                "parent_join": parent_join,
-            }
-        )
+        if parentschema is not None and parentschema != "":  # pragma: no cover
+            op.execute(
+                sqlalchemy.sql.text(
+                    "INSERT INTO :staticschema.user "
+                    "(type, username, password, email, is_password_changed, role_name, parent_role_name) ("
+                    "SELECT u.type, u.username, u.password, u.email, "
+                    "u.is_password_changed, r.name, pr.name "
+                    "FROM :schema.user AS u "
+                    "LEFT OUTER JOIN :schema.role AS r ON (r.id = u.role_id) "
+                    "LEFT OUTER JOIN :parentschema.role AS pr ON (pr.id = u.parent_role_id)"
+                    ")"
+                ),
+                staticschema=staticschema,
+                schema=schema,
+                parentschema=parentschema,
+            )
+        else:
+            op.execute(
+                sqlalchemy.sql.text(
+                    "INSERT INTO :staticschema.user "
+                    "(type, username, password, email, is_password_changed, role_name) ("
+                    "SELECT u.type, u.username, u.password, u.email, "
+                    "u.is_password_changed, r.name "
+                    "FROM :schema.user AS u "
+                    "LEFT OUTER JOIN :schema.role AS r ON (r.id = u.role_id) "
+                    ")"
+                ),
+                staticschema=staticschema,
+                schema=schema,
+            )
         op.drop_table("user", schema=schema)
     except Exception:
         op.execute(
-            "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
-            "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')"
-            % {"staticschema": staticschema, "pass": sha1("admin".encode("utf-8")).hexdigest()}
+            sqlalchemy.sql.text(
+                "INSERT INTO :staticschema.user (type, username, email, password, role) "
+                "VALUES ('user', 'admin', 'info@example.com', :password, 'role_admin')"
+            ),
+            staticschema=staticschema,
+            password=sha1("admin".encode("utf-8")).hexdigest(),
         )
 
 
@@ -122,34 +130,38 @@ def downgrade():
         Column("role_id", Integer, ForeignKey(schema + ".role.id"), nullable=False),
         schema=schema,
     )
-    parent_column = ""
-    parent_select = ""
-    parent_join = ""
     if parentschema is not None and parentschema != "":  # pragma: no cover
         op.add_column(
             "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema
         )
-        parent_column = ", parent_role_id"
-        parent_select = ", pr.id"
-        parent_join = "LEFT OUTER JOIN {parentschema}.role AS pr ON (pr.name = u.parent_role_name)".format(
-            parentschema=parentschema
+        op.execute(
+            sqlalchemy.sql.text(
+                "INSERT INTO :schema.user "
+                "(type, username, password, email, is_password_changed, role_id, parent_role_id) ("
+                "SELECT u.type, u.username, u.password, u.email, "
+                "u.is_password_changed, r.id, pr.id "
+                "FROM :staticschema.user AS u "
+                "LEFT OUTER JOIN :schema.role AS r ON (r.name = u.role_name) "
+                "LEFT OUTER JOIN :parentschema.role AS pr ON (pr.name = u.parent_role_name) "
+                ")"
+            ),
+            staticschema=staticschema,
+            schema=schema,
+            parentschema=parentschema,
         )
-
-    op.execute(
-        "INSERT INTO %(schema)s.user "
-        "(type, username, password, email, is_password_changed, role_id%(parent_column)s) ("
-        "SELECT u.type, u.username, u.password, u.email, "
-        "u.is_password_changed, r.id%(parent_select)s "
-        "FROM %(staticschema)s.user AS u "
-        "LEFT OUTER JOIN %(schema)s.role AS r ON (r.name = u.role_name) %(parent_join)s"
-        ")"
-        % {
-            "staticschema": staticschema,
-            "schema": schema,
-            "parent_select": parent_select,
-            "parent_column": parent_column,
-            "parent_join": parent_join,
-        }
-    )
+    else:
+        op.execute(
+            sqlalchemy.sql.text(
+                "INSERT INTO :schema.user "
+                "(type, username, password, email, is_password_changed, role_id) ("
+                "SELECT u.type, u.username, u.password, u.email, "
+                "u.is_password_changed, r.id "
+                "FROM :staticschema.user AS u "
+                "LEFT OUTER JOIN :schema.role AS r ON (r.name = u.role_name) "
+                ")"
+            ),
+            staticschema=staticschema,
+            schema=schema,
+        )
 
     op.drop_table("user", schema=staticschema)

@@ -34,6 +34,7 @@ Revises: 0c640a58a09a
 Create Date: 2019-09-10 13:23:26.934801
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -47,7 +48,9 @@ depends_on = None
 def upgrade():
     staticschema = config["schema_static"]
 
-    op.execute("UPDATE {staticschema}.\"user\" SET tech_data = '';".format(staticschema=staticschema))
+    op.execute(
+        sqlalchemy.sql.text("UPDATE :staticschema.\"user\" SET tech_data = '';"), staticschema=staticschema
+    )
 
 
 def downgrade():

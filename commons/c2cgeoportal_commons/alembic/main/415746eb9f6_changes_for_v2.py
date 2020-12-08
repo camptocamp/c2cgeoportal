@@ -34,6 +34,7 @@ Revises: None
 Create Date: 2014-10-23 16:00:47.940216
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, MetaData, Table
@@ -107,25 +108,29 @@ def upgrade():
     )
 
     op.execute(
-        "UPDATE ONLY %(schema)s.treeitem SET type = 'layerv1' " "WHERE type='layer'" % {"schema": schema}
+        sqlalchemy.sql.text("UPDATE ONLY :schema.treeitem SET type = 'layerv1' " "WHERE type='layer'"),
+        schema=schema,
     )
 
     op.execute(
-        "INSERT INTO %(schema)s.layerv1 ("
-        "id, is_checked, icon, layer_type, url, image_type, style, dimensions, matrix_set, "
-        "wms_url, wms_layers, query_layers, kml, is_single_tile, legend, "
-        "legend_image, legend_rule, is_legend_expanded, min_resolution, max_resolution, "
-        "disclaimer, identifier_attribute_field, exclude_properties, time_mode) "
-        "(SELECT "
-        'id, "isChecked" AS is_checked, icon, "layerType" AS layer_type, url, '
-        '"imageType" AS image_type, style, dimensions, "matrixSet" AS matrix_set, '
-        '"wmsUrl" AS wms_url, "wmsLayers" AS wms_layers, "queryLayers" AS query_layers, kml, '
-        '"isSingleTile" AS is_single_tile, legend, "legendImage" AS legend_image, '
-        '"legendRule" AS legend_rule, "isLegendExpanded" AS is_legend_expanded, '
-        '"minResolution" AS min_resolution, "maxResolution" AS max_resolution, disclaimer, '
-        '"identifierAttributeField" AS identifier_attribute_field, '
-        '"excludeProperties" AS exclude_properties, "timeMode" AS time_mode '
-        "FROM %(schema)s.layer)" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "INSERT INTO :schema.layerv1 ("
+            "id, is_checked, icon, layer_type, url, image_type, style, dimensions, matrix_set, "
+            "wms_url, wms_layers, query_layers, kml, is_single_tile, legend, "
+            "legend_image, legend_rule, is_legend_expanded, min_resolution, max_resolution, "
+            "disclaimer, identifier_attribute_field, exclude_properties, time_mode) "
+            "(SELECT "
+            'id, "isChecked" AS is_checked, icon, "layerType" AS layer_type, url, '
+            '"imageType" AS image_type, style, dimensions, "matrixSet" AS matrix_set, '
+            '"wmsUrl" AS wms_url, "wmsLayers" AS wms_layers, "queryLayers" AS query_layers, kml, '
+            '"isSingleTile" AS is_single_tile, legend, "legendImage" AS legend_image, '
+            '"legendRule" AS legend_rule, "isLegendExpanded" AS is_legend_expanded, '
+            '"minResolution" AS min_resolution, "maxResolution" AS max_resolution, disclaimer, '
+            '"identifierAttributeField" AS identifier_attribute_field, '
+            '"excludeProperties" AS exclude_properties, "timeMode" AS time_mode '
+            "FROM :schema.layer)"
+        ),
+        schema=schema,
     )
 
     op.drop_column("layer", "isChecked", schema=schema)
@@ -156,29 +161,41 @@ def upgrade():
     op.bulk_insert(interface, [{"name": "main"}, {"name": "mobile"}, {"name": "edit"}, {"name": "routing"}])
 
     op.execute(
-        "INSERT INTO %(schema)s.interface_layer (layer_id, interface_id) "
-        "(SELECT l.id AS layer_id, i.id AS interface_id "
-        "FROM %(schema)s.layer AS l, %(schema)s.interface AS i "
-        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "INSERT INTO :schema.interface_layer (layer_id, interface_id) "
+            "(SELECT l.id AS layer_id, i.id AS interface_id "
+            "FROM :schema.layer AS l, :schema.interface AS i "
+            "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")"
+        ),
+        schema=schema,
     )
     op.execute(
-        "INSERT INTO %(schema)s.interface_layer (layer_id, interface_id) "
-        "(SELECT l.id AS layer_id, i.id AS interface_id "
-        "FROM %(schema)s.layer AS l, %(schema)s.interface AS i "
-        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "INSERT INTO :schema.interface_layer (layer_id, interface_id) "
+            "(SELECT l.id AS layer_id, i.id AS interface_id "
+            "FROM :schema.layer AS l, :schema.interface AS i "
+            "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")"
+        ),
+        schema=schema,
     )
 
     op.execute(
-        "INSERT INTO %(schema)s.interface_theme (theme_id, interface_id) "
-        "(SELECT l.id AS theme_id, i.id AS interface_id "
-        "FROM %(schema)s.theme AS l, %(schema)s.interface AS i "
-        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "INSERT INTO :schema.interface_theme (theme_id, interface_id) "
+            "(SELECT l.id AS theme_id, i.id AS interface_id "
+            "FROM :schema.theme AS l, :schema.interface AS i "
+            "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")"
+        ),
+        schema=schema,
     )
     op.execute(
-        "INSERT INTO %(schema)s.interface_theme (theme_id, interface_id) "
-        "(SELECT l.id AS theme_id, i.id AS interface_id "
-        "FROM %(schema)s.theme AS l, %(schema)s.interface AS i "
-        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "INSERT INTO :schema.interface_theme (theme_id, interface_id) "
+            "(SELECT l.id AS theme_id, i.id AS interface_id "
+            "FROM :schema.theme AS l, :schema.interface AS i "
+            "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")"
+        ),
+        schema=schema,
     )
 
     op.drop_column("layer", "inMobileViewer", schema=schema)
@@ -269,32 +286,48 @@ def downgrade():
     op.alter_column("layergroup", "is_internal_wms", new_column_name="isInternalWMS", schema=schema)
     op.alter_column("layergroup", "is_base_layer", new_column_name="isBaseLayer", schema=schema)
 
-    op.execute("UPDATE ONLY %(schema)s.theme AS t " 'SET "inDesktopViewer" = FALSE' % {"schema": schema})
-    op.execute("UPDATE ONLY %(schema)s.layer AS t " 'SET "inDesktopViewer" = FALSE' % {"schema": schema})
+    op.execute(
+        sqlalchemy.sql.text("UPDATE ONLY :schema.theme AS t " 'SET "inDesktopViewer" = FALSE'), schema=schema
+    )
+    op.execute(
+        sqlalchemy.sql.text("UPDATE ONLY :schema.layer AS t " 'SET "inDesktopViewer" = FALSE'), schema=schema
+    )
 
     op.execute(
-        "UPDATE ONLY %(schema)s.theme AS t "
-        'SET "inMobileViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_theme AS it "
-        "WHERE i.name = 'mobile' AND i.id = it.interface_id AND it.theme_id = t.id" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "UPDATE ONLY :schema.theme AS t "
+            'SET "inMobileViewer" = TRUE '
+            "FROM :schema.interface AS i, :schema.interface_theme AS it "
+            "WHERE i.name = 'mobile' AND i.id = it.interface_id AND it.theme_id = t.id"
+        ),
+        schema=schema,
     )
     op.execute(
-        "UPDATE ONLY %(schema)s.theme AS t "
-        'SET "inDesktopViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_theme AS it "
-        "WHERE i.name = 'main' AND i.id = it.interface_id AND it.theme_id = t.id" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "UPDATE ONLY :schema.theme AS t "
+            'SET "inDesktopViewer" = TRUE '
+            "FROM :schema.interface AS i, :schema.interface_theme AS it "
+            "WHERE i.name = 'main' AND i.id = it.interface_id AND it.theme_id = t.id"
+        ),
+        schema=schema,
     )
     op.execute(
-        "UPDATE ONLY %(schema)s.layer AS l "
-        'SET "inMobileViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_layer AS il "
-        "WHERE i.name = 'mobile' AND i.id = il.interface_id AND il.layer_id = l.id" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "UPDATE ONLY :schema.layer AS l "
+            'SET "inMobileViewer" = TRUE '
+            "FROM :schema.interface AS i, :schema.interface_layer AS il "
+            "WHERE i.name = 'mobile' AND i.id = il.interface_id AND il.layer_id = l.id"
+        ),
+        schema=schema,
     )
     op.execute(
-        "UPDATE ONLY %(schema)s.layer AS l "
-        'SET "inDesktopViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_layer AS il "
-        "WHERE i.name = 'main' AND i.id = il.interface_id AND il.layer_id = l.id" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "UPDATE ONLY :schema.layer AS l "
+            'SET "inDesktopViewer" = TRUE '
+            "FROM :schema.interface AS i, :schema.interface_layer AS il "
+            "WHERE i.name = 'main' AND i.id = il.interface_id AND il.layer_id = l.id"
+        ),
+        schema=schema,
     )
 
     op.add_column("layer", Column("timeMode", Unicode(8)), schema=schema)
@@ -322,18 +355,21 @@ def downgrade():
     op.add_column("layer", Column("isChecked", Boolean, default=True), schema=schema)
 
     op.execute(
-        "UPDATE %(schema)s.layer AS l SET ("
-        'id, "isChecked", icon, "layerType", url, "imageType", style, dimensions, "matrixSet", '
-        '"wmsUrl", "wmsLayers", "queryLayers", kml, "isSingleTile", legend, "legendImage", '
-        '"legendRule", "isLegendExpanded", "minResolution", "maxResolution", disclaimer, '
-        '"identifierAttributeField", "excludeProperties", "timeMode"'
-        ") = ("
-        "o.id, o.is_checked, o.icon, o.layer_type, o.url, o.image_type, o.style, o.dimensions, "
-        "o.matrix_set, o.wms_url, o.wms_layers, o.query_layers, o.kml, o.is_single_tile, "
-        "o.legend, o.legend_image, o.legend_rule, o.is_legend_expanded, o.min_resolution, "
-        "o.max_resolution, o.disclaimer, o.identifier_attribute_field, o.exclude_properties, "
-        "o.time_mode "
-        ") FROM %(schema)s.layerv1 AS o WHERE o.id = l.id" % {"schema": schema}
+        sqlalchemy.sql.text(
+            "UPDATE :schema.layer AS l SET ("
+            'id, "isChecked", icon, "layerType", url, "imageType", style, dimensions, "matrixSet", '
+            '"wmsUrl", "wmsLayers", "queryLayers", kml, "isSingleTile", legend, "legendImage", '
+            '"legendRule", "isLegendExpanded", "minResolution", "maxResolution", disclaimer, '
+            '"identifierAttributeField", "excludeProperties", "timeMode"'
+            ") = ("
+            "o.id, o.is_checked, o.icon, o.layer_type, o.url, o.image_type, o.style, o.dimensions, "
+            "o.matrix_set, o.wms_url, o.wms_layers, o.query_layers, o.kml, o.is_single_tile, "
+            "o.legend, o.legend_image, o.legend_rule, o.is_legend_expanded, o.min_resolution, "
+            "o.max_resolution, o.disclaimer, o.identifier_attribute_field, o.exclude_properties, "
+            "o.time_mode "
+            ") FROM :schema.layerv1 AS o WHERE o.id = l.id"
+        ),
+        schema=schema,
     )
 
     op.drop_table("layerv1", schema=schema)

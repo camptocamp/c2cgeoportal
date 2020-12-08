@@ -34,6 +34,7 @@ Revises: dba87f2647f9
 Create Date: 2018-12-05 09:13:21.191424
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -47,8 +48,8 @@ depends_on = None
 def upgrade():
     schema = config["schema"]
 
-    op.execute("DROP TRIGGER on_role_name_change ON {schema}.role".format(schema=schema))
-    op.execute("DROP FUNCTION {schema}.on_role_name_change()".format(schema=schema))
+    op.execute(sqlalchemy.sql.text("DROP TRIGGER on_role_name_change ON :schema.role"), schema=schema)
+    op.execute(sqlalchemy.sql.text("DROP FUNCTION :schema.on_role_name_change()"), schema=schema)
 
 
 def downgrade():
@@ -56,22 +57,27 @@ def downgrade():
     staticschema = config["schema_static"]
 
     op.execute(
-        """
-CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+        sqlalchemy.sql.text(
+            """
+CREATE OR REPLACE FUNCTION :schema.on_role_name_change()
 RETURNS trigger AS
 $$
 BEGIN
 IF NEW.name <> OLD.name THEN
-UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+UPDATE :staticschema."user" SET role_name = NEW.name WHERE role_name = OLD.name;
 END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(
-            schema=schema, staticschema=staticschema
-        )
+LANGUAGE plpgsql"""
+        ),
+        schema=schema,
+        staticschema=staticschema,
     )
     op.execute(
-        "CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
-        "EXECUTE PROCEDURE {schema}.on_role_name_change()".format(schema=schema)
+        sqlalchemy.sql.text(
+            "CREATE TRIGGER on_role_name_change AFTER UPDATE ON :schema.role FOR EACH ROW "
+            "EXECUTE PROCEDURE :schema.on_role_name_change()"
+        ),
+        schema=schema,
     )

@@ -34,6 +34,7 @@ Revises: 9268a1dffac0
 Create Date: 2017-08-24 08:05:46.012191
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -49,13 +50,14 @@ def upgrade():
 
     # Instructions
     op.execute(
-        """
-        UPDATE "{schema}".ogc_server
+        sqlalchemy.sql.text(
+            """
+        UPDATE :schema.ogc_server
         SET url = 'config://mapserver'
         WHERE url = 'config://internal/mapserv'
-    """.format(
-            schema=schema
-        )
+    """
+        ),
+        schema=schema,
     )
 
 
@@ -64,11 +66,12 @@ def downgrade():
 
     # Instructions
     op.execute(
-        """
-        UPDATE "{schema}".ogc_server
+        sqlalchemy.sql.text(
+            """
+        UPDATE :schema.ogc_server
         SET url = 'config://internal/mapserv'
         WHERE url = 'config://mapserver'
-    """.format(
-            schema=schema
-        )
+    """
+        ),
+        schema=schema,
     )

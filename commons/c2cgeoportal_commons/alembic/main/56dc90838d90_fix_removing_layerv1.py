@@ -34,6 +34,7 @@ Revises: 1de20166b274
 Create Date: 2019-06-25 17:56:25.991417
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -48,13 +49,14 @@ def upgrade():
     schema = config["schema"]
 
     op.execute(
-        (
-            "DELETE from {schema}.layer_restrictionarea WHERE layer_id IN ("
-            "SELECT id from {schema}.treeitem WHERE type = 'layerv1'"
+        sqlalchemy.sql.text(
+            "DELETE from :schema.layer_restrictionarea WHERE layer_id IN ("
+            "SELECT id from :schema.treeitem WHERE type = 'layerv1'"
             ");"
-        ).format(schema=schema)
+        ),
+        schema=schema,
     )
-    op.execute("DELETE from {schema}.treeitem WHERE type = 'layerv1';".format(schema=schema))
+    op.execute("DELETE from :schema.treeitem WHERE type = 'layerv1';", schema=schema)
 
 
 def downgrade():

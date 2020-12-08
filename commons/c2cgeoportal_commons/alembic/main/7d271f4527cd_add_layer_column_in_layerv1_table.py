@@ -34,6 +34,7 @@ Revises: 8117bb9bba16
 Create Date: 2016-10-20 15:00:13.619090
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column
@@ -51,10 +52,13 @@ def upgrade():
 
     op.add_column("layerv1", Column("layer", Unicode), schema=schema)
     op.execute(
-        "UPDATE {schema}.layerv1 AS l1 "
-        "SET layer = name "
-        "FROM {schema}.treeitem AS ti "
-        "WHERE l1.id = ti.id".format(schema=schema)
+        sqlalchemy.sql.text(
+            "UPDATE :schema.layerv1 AS l1 "
+            "SET layer = name "
+            "FROM :schema.treeitem AS ti "
+            "WHERE l1.id = ti.id"
+        ),
+        schema=schema,
     )
 
 

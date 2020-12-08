@@ -34,6 +34,7 @@ Revises: 596ba21e3833
 Create Date: 2016-09-21 11:39:37.086066
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -48,8 +49,8 @@ def upgrade():
     schema = config["schema"]
 
     op.execute(
-        "UPDATE ONLY {schema}.interface AS i "
-        "SET name = 'desktop' where name = 'main'".format(schema=schema)
+        sqlalchemy.sql.text("UPDATE ONLY :schema.interface AS i " "SET name = 'desktop' where name = 'main'"),
+        schema=schema,
     )
 
 
@@ -57,6 +58,6 @@ def downgrade():
     schema = config["schema"]
 
     op.execute(
-        "UPDATE ONLY {schema}.interface AS i "
-        "SET name = 'main' where name = 'desktop'".format(schema=schema)
+        sqlalchemy.sql.text("UPDATE ONLY :schema.interface AS i " "SET name = 'main' where name = 'desktop'"),
+        schema=schema,
     )

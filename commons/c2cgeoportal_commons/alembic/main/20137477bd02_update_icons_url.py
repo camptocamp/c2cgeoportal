@@ -34,6 +34,7 @@ Revises: 415746eb9f6
 Create Date: 2014-12-10 17:50:36.176587
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -46,32 +47,38 @@ def upgrade():
     schema = config["schema"]
 
     updates = [
-        "UPDATE %(schema)s.%(table)s SET %(column)s = 'static:///' || %(column)s "
-        "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
-        "AND NOT (%(column)s LIKE 'http%%') "
-        "AND NOT (%(column)s LIKE '/%%')",
-        "UPDATE %(schema)s.%(table)s SET %(column)s = 'static://' || %(column)s "
-        "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
-        "AND NOT (%(column)s LIKE 'http%%') AND NOT (%(column)s LIKE 'static://%%')",
+        sqlalchemy.sql.text(
+            "UPDATE :schema.:table SET :column = 'static:///' || :column "
+            "WHERE (:column IS NOT NULL) AND (NOT :column = '') "
+            "AND NOT (:column LIKE 'http%%') "
+            "AND NOT (:column LIKE '/%%')",
+            "UPDATE :schema.:table SET :column = 'static://' || :column "
+            "WHERE (:column IS NOT NULL) AND (NOT :column = '') "
+            "AND NOT (:column LIKE 'http%%') AND NOT (:column LIKE 'static://%%')",
+        ),
     ]
     for update in updates:
-        op.execute(update % {"schema": schema, "table": "theme", "column": "icon"})
-        op.execute(update % {"schema": schema, "table": "layerv1", "column": "icon"})
-        op.execute(update % {"schema": schema, "table": "layerv1", "column": "kml"})
-        op.execute(update % {"schema": schema, "table": "layerv1", "column": "legend_image"})
+        op.execute(update, schema=schema, table="theme", column="icon")
+        op.execute(update, schema=schema, table="layerv1", column="icon")
+        op.execute(update, schema=schema, table="layerv1", column="kml")
+        op.execute(update, schema=schema, table="layerv1", column="legend_image")
 
 
 def downgrade():
     schema = config["schema"]
 
     updates = [
-        "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 11) "
-        "WHERE %(column)s LIKE 'static:///%%'",
-        "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 10) "
-        "WHERE %(column)s LIKE 'static://%%'",
+        sqlalchemy.sql.text(
+            "UPDATE :schema.:table SET :column = substring(:column from 11) "
+            "WHERE :column LIKE 'static:///%%'"
+        ),
+        sqlalchemy.sql.text(
+            "UPDATE :schema.:table SET :column = substring(:column from 10) "
+            "WHERE :column LIKE 'static://%%'"
+        ),
     ]
     for update in updates:
-        op.execute(update % {"schema": schema, "table": "theme", "column": "icon"})
-        op.execute(update % {"schema": schema, "table": "layerv1", "column": "icon"})
-        op.execute(update % {"schema": schema, "table": "layerv1", "column": "kml"})
-        op.execute(update % {"schema": schema, "table": "layerv1", "column": "legend_image"})
+        op.execute(update, schema=schema, table="theme", column="icon")
+        op.execute(update, schema=schema, table="layerv1", column="icon")
+        op.execute(update, schema=schema, table="layerv1", column="kml")
+        op.execute(update, schema=schema, table="layerv1", column="legend_image")

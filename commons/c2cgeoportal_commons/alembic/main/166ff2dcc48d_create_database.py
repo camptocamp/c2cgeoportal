@@ -36,6 +36,7 @@ Create Date: 2014-10-24 11:43:23.886123
 
 from hashlib import sha1
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, MetaData, Table
@@ -91,8 +92,11 @@ def upgrade():
         schema=schema,
     )
     op.execute(
-        "SELECT AddGeometryColumn('%(schema)s', 'restrictionarea', "
-        "'area', %(srid)s, 'POLYGON', 2)" % {"schema": schema, "srid": srid}
+        sqlalchemy.sql.text(
+            "SELECT AddGeometryColumn(:schema, 'restrictionarea', " "'area', :srid, 'POLYGON', 2)"
+        ),
+        schema=schema,
+        srid=srid,
     )
     op.create_table(
         "shorturl",
@@ -114,8 +118,9 @@ def upgrade():
         schema=schema,
     )
     op.execute(
-        "SELECT AddGeometryColumn('%(schema)s', 'role', "
-        "'extent', %(srid)s, 'POLYGON', 2)" % {"schema": schema, "srid": srid}
+        sqlalchemy.sql.text("SELECT AddGeometryColumn(:schema, 'role', " "'extent', :srid, 'POLYGON', 2)"),
+        schema=schema,
+        srid=srid,
     )
     role = Table("role", MetaData(), Column("name", Unicode, unique=True, nullable=False), schema=schema)
     op.bulk_insert(role, [{"name": "role_admin"}])
@@ -170,8 +175,9 @@ def upgrade():
         schema=schema,
     )
     op.execute(
-        "SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', "
-        "%(srid)s, 'GEOMETRY', 2)" % {"schema": schema, "srid": srid}
+        sqlalchemy.sql.text("SELECT AddGeometryColumn(:schema, 'tsearch', 'the_geom', :srid, 'GEOMETRY', 2)"),
+        schema=schema,
+        srid=srid,
     )
     op.create_index("tsearch_ts_idx", "tsearch", ["ts"], schema=schema, postgresql_using="gin")
     op.create_table(
@@ -196,10 +202,14 @@ def upgrade():
             "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema
         )
     op.execute(
-        "INSERT INTO %(schema)s.user (type, username, email, password, role_id) "
-        "(SELECT 'user', 'admin', 'info@example.com', '%(pass)s', r.id "
-        "FROM %(schema)s.role AS r "
-        "WHERE r.name = 'role_admin')" % {"schema": schema, "pass": sha1("admin".encode("utf-8")).hexdigest()}
+        sqlalchemy.sql.text(
+            "INSERT INTO :schema.user (type, username, email, password, role_id) "
+            "(SELECT 'user', 'admin', 'info@example.com', :password, r.id "
+            "FROM :schema.role AS r "
+            "WHERE r.name = 'role_admin')"
+        ),
+        schema=schema,
+        password=sha1("admin".encode("utf-8")).hexdigest(),
     )
 
     op.create_table(
@@ -251,14 +261,18 @@ def upgrade():
     )
 
     op.execute(
-        'INSERT INTO {schema}.treeitem (type, name, "order") '
-        "VALUES ('group', 'background', 0)".format(schema=schema)
+        sqlalchemy.sql.text(
+            'INSERT INTO :schema.treeitem (type, name, "order") ' "VALUES ('group', 'background', 0)"
+        ),
+        schema=schema,
     )
     op.execute(
-        "INSERT INTO {schema}.treegroup (id) SELECT id " "FROM {schema}.treeitem".format(schema=schema)
+        sqlalchemy.sql.text("INSERT INTO :schema.treegroup (id) SELECT id " "FROM :schema.treeitem"),
+        schema=schema,
     )
     op.execute(
-        "INSERT INTO {schema}.layergroup (id) SELECT id " "FROM {schema}.treeitem".format(schema=schema)
+        sqlalchemy.sql.text("INSERT INTO :schema.layergroup (id) SELECT id " "FROM :schema.treeitem"),
+        schema=schema,
     )
 
 

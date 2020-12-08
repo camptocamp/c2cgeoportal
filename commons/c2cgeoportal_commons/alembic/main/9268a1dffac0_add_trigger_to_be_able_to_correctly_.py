@@ -34,6 +34,7 @@ Revises: 32b21aa1d0ed
 Create Date: 2017-01-11 11:07:53.042003
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -48,30 +49,34 @@ def upgrade():
     schema = config["schema"]
 
     op.execute(
-        """
-CREATE FUNCTION {schema}.on_role_name_change()
+        sqlalchemy.sql.text(
+            """
+CREATE FUNCTION :schema.on_role_name_change()
 RETURNS trigger AS
 $$
 BEGIN
 IF NEW.name <> OLD.name THEN
-UPDATE {schema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+UPDATE :schema."user" SET role_name = NEW.name WHERE role_name = OLD.name;
 END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(
-            schema=schema
-        )
+LANGUAGE plpgsql"""
+        ),
+        schema=schema,
     )
 
     op.execute(
-        "CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
-        "EXECUTE PROCEDURE {schema}.on_role_name_change()".format(schema=schema)
+        sqlalchemy.sql.text(
+            "CREATE TRIGGER on_role_name_change AFTER UPDATE ON :schema.role FOR EACH ROW "
+            "EXECUTE PROCEDURE :schema.on_role_name_change()"
+        ),
+        schema=schema,
     )
 
 
 def downgrade():
     schema = config["schema"]
 
-    op.execute("DROP TRIGGER on_role_name_change ON {schema}.role".format(schema=schema))
-    op.execute("DROP FUNCTION {schema}.on_role_name_change()".format(schema=schema))
+    op.execute(sqlalchemy.sql.text("DROP TRIGGER on_role_name_change ON :schema.role"), schema=schema)
+    op.execute(sqlalchemy.sql.text("DROP FUNCTION :schema.on_role_name_change()"), schema=schema)

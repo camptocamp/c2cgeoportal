@@ -34,6 +34,7 @@ Revises: d48a63b348f1
 Create Date: 2018-03-23 09:08:56.910629
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 
@@ -49,20 +50,22 @@ def upgrade():
     staticschema = config["schema_static"]
 
     op.execute(
-        """
-CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+        sqlalchemy.sql.text(
+            """
+CREATE OR REPLACE FUNCTION :schema.on_role_name_change()
 RETURNS trigger AS
 $$
 BEGIN
 IF NEW.name <> OLD.name THEN
-UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+UPDATE :staticschema."user" SET role_name = NEW.name WHERE role_name = OLD.name;
 END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(
-            schema=schema, staticschema=staticschema
-        )
+LANGUAGE plpgsql"""
+        ),
+        schema=schema,
+        staticschema=staticschema,
     )
 
 
@@ -70,18 +73,19 @@ def downgrade():
     schema = config["schema"]
 
     op.execute(
-        """
-CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+        sqlalchemy.sql.text(
+            """
+CREATE OR REPLACE FUNCTION :schema.on_role_name_change()
 RETURNS trigger AS
 $$
 BEGIN
 IF NEW.name <> OLD.name THEN
-UPDATE {schema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+UPDATE :schema."user" SET role_name = NEW.name WHERE role_name = OLD.name;
 END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(
-            schema=schema
-        )
+LANGUAGE plpgsql"""
+        ),
+        schema=schema,
     )

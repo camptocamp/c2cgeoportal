@@ -1,11 +1,10 @@
 import re
 from unittest.mock import patch
 
+import pytest
 from lxml import etree
 from owslib.wms import WebMapService
 from pyramid import testing
-import pytest
-
 
 DEFAULT_CONTENT = """
 <Layer>
@@ -232,7 +231,7 @@ class TestOGCServerSynchronizer:
     </Style>
 </Layer>
 """
-        )
+        )  # nosec
 
         with patch.object(synchronizer, "_default_wms", default_wms):
             layer = synchronizer.get_layer_wms(el, None)
@@ -273,7 +272,7 @@ class TestOGCServerSynchronizer:
     </Style>
 </Layer>
 """
-        )
+        )  # nosec
 
         layer = synchronizer.get_layer_wms(el, None)
         assert layer.style is None
