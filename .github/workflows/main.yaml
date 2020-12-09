@@ -21,6 +21,8 @@ jobs:
       - run: docker system prune --all --force
 
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
@@ -147,8 +149,8 @@ jobs:
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
       - name: Init Git
-        run: |
-            git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        run: git remote set-url origin
+          https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
       - run: make build-tools
       - run: make build-runner
       - run: make build-config

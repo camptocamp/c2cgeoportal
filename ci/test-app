@@ -5,11 +5,13 @@ rm -rf ${HOME}/workspace/testgeomapfishapp
 ci/create-new-project ${HOME}/workspace
 cp ci/docker-compose.override.yaml ${HOME}/workspace/testgeomapfishapp/
 cp ci/empty.qgz ${HOME}/workspace/testgeomapfishapp/qgisserver/project.qgz
+PROJECT_DIR=$(pwd)
 docker build --tag=camptocamp/geomapfish-test-app-db docker/test-app-db
 docker build --tag=camptocamp/geomapfish-test-external-db docker/test-external-db
 
 cd ${HOME}/workspace/testgeomapfishapp/
-rm ci/config.yaml
+c2cciutils-checks
+cp ${PROJECT_DIR}/ci/project-config.yaml ci/config.yaml
 c2cciutils-checks
 ./build
 docker-compose down
