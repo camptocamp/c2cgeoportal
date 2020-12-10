@@ -190,7 +190,7 @@ class TestThemesTimeView(TestCase):
         theme_view = self._create_theme_obj()
         themes = theme_view.themes()
         self.assertEqual(
-            self._get_filtered_errors(themes),
+            set(themes["errors"]),
             set(
                 [
                     "Error while handling time for layer '__test_layer_time_group': Could not mix time mode 'range' and 'value'",
@@ -251,27 +251,27 @@ class TestThemesTimeView(TestCase):
                             "children": [
                                 {"name": "__test_layer_time_1"},
                                 {"name": "__test_layer_time_2"},
-                                {"name": "__test_layer_time_group"},
+                                # {"name": "__test_layer_time_group"},
                             ],
                         },
-                        {
-                            "name": "__test_layer_group_4",
-                            "children": [
-                                {
-                                    "name": "__test_layer_time_group",
-                                    "time": {
-                                        "maxDefValue": None,
-                                        "interval": (1, 0, 0, 0),
-                                        "maxValue": "2020-01-01T00:00:00Z",
-                                        "minDefValue": "2000-01-01T00:00:00Z",
-                                        "minValue": "2000-01-01T00:00:00Z",
-                                        "mode": "range",
-                                        "resolution": "year",
-                                        "widget": "datepicker",
-                                    },
-                                }
-                            ],
-                        },
+                        # {
+                        #     "name": "__test_layer_group_4",
+                        #     "children": [
+                        #         {
+                        #             "name": "__test_layer_time_group",
+                        #             "time": {
+                        #                 "maxDefValue": None,
+                        #                 "interval": (1, 0, 0, 0),
+                        #                 "maxValue": "2020-01-01T00:00:00Z",
+                        #                 "minDefValue": "2000-01-01T00:00:00Z",
+                        #                 "minValue": "2000-01-01T00:00:00Z",
+                        #                 "mode": "range",
+                        #                 "resolution": "year",
+                        #                 "widget": "datepicker",
+                        #             },
+                        #         }
+                        #     ],
+                        # },
                         {
                             "name": "__test_layer_group_5",
                             "children": [{"name": "__test_layer_time_1"}, {"name": "__test_layer_time_2"}],
