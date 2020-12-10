@@ -1,3 +1,6 @@
+##### 2.5.0.100
+* Do not add layer to theme if GetCapabilities fails [c2cgeoportal#7353](https://github.com/camptocamp/c2cgeoportal/pull/7353)
+* Interval timeslider with PD1 [ngeo#6523](https://github.com/camptocamp/ngeo/pull/6523)
 ##### 2.5.0.99
 * [Backport 2.5] Doc - Explain how to extend ngeo [c2cgeoportal#7336](https://github.com/camptocamp/c2cgeoportal/pull/7336)
 * Better work around for ctrlKey events [ngeo#6477](https://github.com/camptocamp/ngeo/pull/6477)
