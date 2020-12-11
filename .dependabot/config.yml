@@ -33,42 +33,6 @@ update_configs:
     automerged_updates:
       - match:
           update_type: all
-  - package_manager: python
-    directory: /docker/qgisserver/python/3.6
-    update_schedule: live
-    automerged_updates:
-      - match:
-          update_type: all
-    ignored_updates:
-      - match:
-          dependency_name: none
-    allowed_updates:
-      - match:
-          dependency_type: all
-  - package_manager: python
-    directory: /docker/qgisserver/python/3.8
-    update_schedule: live
-    automerged_updates:
-      - match:
-          update_type: all
-    ignored_updates:
-      - match:
-          dependency_name: none
-    allowed_updates:
-      - match:
-          dependency_type: all
-  - package_manager: python
-    directory: /ci
-    update_schedule: live
-    automerged_updates:
-      - match:
-          update_type: all
-    ignored_updates:
-      - match:
-          dependency_name: none
-    allowed_updates:
-      - match:
-          dependency_type: all
 
   - package_manager: docker
     directory: /
