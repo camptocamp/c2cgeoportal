@@ -270,6 +270,7 @@ def workflow(elem, repo, all_workflows_name, all_workflows_by_name, branch=None)
         all_workflows_name: used to track the workflows that we miss his status
         all_workflows_by_name: list of workflows got from the REST api in a dictionary by name
         branch: the name of the optional branch to used
+        with_step: Add a list with the steps of the job
 
     Basically a badge status image with a link to the related workflow runs
     on witch one we add some messages:
@@ -319,22 +320,24 @@ def workflow(elem, repo, all_workflows_name, all_workflows_by_name, branch=None)
                         '<abbr title="No run for the {days} last days">{days}d</abbr>'.format(days=delta)
                     )
 
-            # If the last run contains more than one step, we display the list of step names.
-            job_response = requests.get(
-                "https://api.github.com/repos/{repo}/actions/runs/{run_id}/jobs".format(
-                    repo=repo, run_id=runs[0]["id"]
-                ),
-                headers={"Accept": "application/vnd.github.v3+json", "Authorization": AUTH_HEADER},
-            )
-            job_response.raise_for_status()
-            steps = [s["name"] for s in job_response.json()["jobs"]]
-            steps2: List[str] = []
-            name_re = re.compile(r"^{} \((.*)\)$".format(re.escape(elem["workflow"])))
-            for step in steps:
-                match = name_re.match(step)
-                steps2.append(match.group(1) if match else step)
-            if len(steps2) > 1:
-                messages.append('<abbr title="List of steps">{}</abbr>'.format(", ".join(steps2)))
+            # Display the list of step names.
+            if elem.get("with_step", False):
+                # Display the list of step names.
+                job_response = requests.get(
+                    "https://api.github.com/repos/{repo}/actions/runs/{run_id}/jobs".format(
+                        repo=repo, run_id=runs[0]["id"]
+                    ),
+                    headers={"Accept": "application/vnd.github.v3+json", "Authorization": AUTH_HEADER},
+                )
+                job_response.raise_for_status()
+                steps = [s["name"] for s in job_response.json()["jobs"]]
+                steps2: List[str] = []
+                name_re = re.compile(r"^{} \((.*)\)$".format(re.escape(elem["workflow"])))
+                for step in steps:
+                    match = name_re.match(step)
+                    steps2.append(match.group(1) if match else step)
+                if len(steps2) > 1:
+                    messages.append('<abbr title="List of steps">{}</abbr>'.format(", ".join(steps2)))
 
     else:
         messages.append("Missing workflow")

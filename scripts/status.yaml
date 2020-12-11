@@ -38,17 +38,20 @@
     '2.5':
       workflows:
         - workflow: QGIS build
+          with_step: True
         - workflow: Continuous integration
         - workflow: Code scanning
         - workflow: Rebuild 2.5
           use_branch: no
         - workflow: QGIS rebuild 2.5
           use_branch: no
+          with_step: True
         - workflow: Update ngeo
           use_branch: no
     master:
       workflows:
         - workflow: QGIS build
+          with_step: True
         - workflow: Continuous integration
         - workflow: Code scanning
 
