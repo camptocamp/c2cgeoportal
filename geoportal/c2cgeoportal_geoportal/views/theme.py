@@ -373,7 +373,7 @@ class Theme:
             wms, wms_errors = self._wms_layers(layer.ogc_server)
             errors |= wms_errors
             if wms is None:
-                return layer_info, errors
+                return None if errors else layer_info, errors
             if layer.layer is None or layer.layer == "":
                 errors.add("The layer '{}' do not have any layers".format(layer.name))
                 return None, errors
@@ -390,7 +390,7 @@ class Theme:
             layer_info["type"] = "VectorTiles"
             self._vectortiles_layers(layer_info, layer)
 
-        return layer_info, errors
+        return None if errors else layer_info, errors
 
     @staticmethod
     def _merge_time(time_, layer_theme, layer, wms):

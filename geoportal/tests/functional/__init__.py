@@ -171,7 +171,8 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
             "functionalities": {"available_in_templates": []},
             "layers": {"geometry_validation": True},
             "admin_interface": {
-                "available_functionalities": [{"name": "mapserver_substitution", "single": False}]
+                "available_functionalities": [{"name": "mapserver_substitution", "single": False}],
+                "available_metadata": [{"name": "lastUpdateDateColumn"}, {"name": "lastUpdateUserColumn"}],
             },
         },
         *args,

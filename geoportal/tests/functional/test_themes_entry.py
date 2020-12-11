@@ -137,7 +137,7 @@ class TestThemeEntryView(TestCase):
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
         public_layer_geoserver = LayerWMS(
-            name="__test_public_layer_geoserver", layer="__test_public_layer_geoserver", public=True
+            name="__test_public_layer_geoserver", layer="testpoint_unprotected", public=True
         )
         public_layer_geoserver.interfaces = [interface_geoserver]
         public_layer_geoserver.ogc_server = ogcserver_geoserver
@@ -294,11 +294,7 @@ class TestThemeEntryView(TestCase):
 
         invalidate_region()
         themes, errors = theme_view._themes("interface_not_in_mapfile")
-        assert len(themes) == 1
-        groups = {g["name"] for g in themes[0]["children"]}
-        assert groups == {"__test_layer_group"}
-        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
-        assert layers == {"__test_public_layer_not_in_mapfile"}
+        assert len(themes) == 0
         assert {e[:90] for e in errors} == {
             "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_in_mapfile) is not"
         }
@@ -311,11 +307,7 @@ class TestThemeEntryView(TestCase):
 
         invalidate_region()
         themes, errors = theme_view._themes("interface_notmapfile")
-        assert len(themes) == 1
-        groups = {g["name"] for g in themes[0]["children"]}
-        assert groups == {"__test_layer_group"}
-        layers = {l["name"] for l in themes[0]["children"][0]["children"]}
-        assert layers == {"__test_public_layer_notmapfile"}
+        assert len(themes) == 0
         assert {e[:90] for e in errors} == {
             "GetCapabilities from URL http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1.",
         }
@@ -328,9 +320,7 @@ class TestThemeEntryView(TestCase):
 
         # unautenticated v1
         themes, errors = theme_view._themes("interface_geoserver")
-        assert {e[:90] for e in errors} == {
-            "The layer '__test_public_layer_geoserver' (__test_public_layer_geoserver) is not defined i"
-        }
+        assert {e[:90] for e in errors} == set()
         assert len(themes) == 1
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         assert layers == {"__test_public_layer_geoserver"}

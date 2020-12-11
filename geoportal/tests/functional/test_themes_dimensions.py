@@ -61,55 +61,55 @@ class TestThemesView(TestCase):
         main = Interface(name="main")
 
         layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
-        layer_wms_1.layer = "__test_layer_wms_1"
+        layer_wms_1.layer = "testpoint_unprotected"
         layer_wms_1.interfaces = [main]
         layer_wms_1.ogc_server = ogc_server
         Dimension("A", "a", layer_wms_1)
 
         layer_wms_2 = LayerWMS(name="__test_layer_wms_2", public=True)
-        layer_wms_2.layer = "__test_layer_wms_2"
+        layer_wms_2.layer = "testpoint_unprotected"
         layer_wms_2.interfaces = [main]
         layer_wms_2.ogc_server = ogc_server
         Dimension("A", "b", layer_wms_2)
 
         layer_wms_3 = LayerWMS(name="__test_layer_wms_3", public=True)
-        layer_wms_3.layer = "__test_layer_wms_3"
+        layer_wms_3.layer = "testpoint_unprotected"
         layer_wms_3.interfaces = [main]
         layer_wms_3.ogc_server = ogc_server
         Dimension("A", None, layer_wms_3)
 
         layer_wms_4 = LayerWMS(name="__test_layer_wms_4", public=True)
-        layer_wms_4.layer = "__test_layer_wms_4"
+        layer_wms_4.layer = "testpoint_unprotected"
         layer_wms_4.interfaces = [main]
         layer_wms_4.ogc_server = ogc_server
         Dimension("A", "a", layer_wms_4)
 
         layer_wms_5 = LayerWMS(name="__test_layer_wms_5", public=True)
-        layer_wms_5.layer = "__test_layer_wms_5"
+        layer_wms_5.layer = "testpoint_unprotected"
         layer_wms_5.interfaces = [main]
         layer_wms_5.ogc_server = ogc_server
         Dimension("B", "b", layer_wms_5)
 
         layer_wms_6 = LayerWMS(name="__test_layer_wms_6", public=True)
-        layer_wms_6.layer = "__test_layer_wms_6"
+        layer_wms_6.layer = "testpoint_unprotected"
         layer_wms_6.interfaces = [main]
         layer_wms_6.ogc_server = ogc_server
         Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wms_6)
 
         layer_wms_7 = LayerWMS(name="__test_layer_wms_7", public=True)
-        layer_wms_7.layer = "__test_layer_wms_7"
+        layer_wms_7.layer = "testpoint_unprotected"
         layer_wms_7.interfaces = [main]
         layer_wms_7.ogc_server = ogc_server
         Dimension("FLOOR", None, layer_wms_7, "floor")
 
         layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
-        layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+        layer_wmts.url = "http://tilecloudchain/1.0.0/WMTSCapabilities.xml"
         layer_wmts.layer = "map"
         layer_wmts.interfaces = [main]
         Dimension("B", "b", layer_wmts)
 
         layer_wmts_2 = LayerWMTS(name="__test_layer_wmts_2", public=True)
-        layer_wmts_2.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+        layer_wmts_2.url = "http://tilecloudchain/1.0.0/WMTSCapabilities.xml"
         layer_wmts_2.layer = "map"
         layer_wmts_2.interfaces = [main]
         Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wmts_2)
@@ -210,7 +210,7 @@ class TestThemesView(TestCase):
         theme_view = self._create_theme_obj(params={"interface": "main"})
         themes = theme_view.themes()
         self.assertEqual(
-            self._get_filtered_errors(themes),
+            set(themes["errors"]),
             set(
                 [
                     "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty.",
@@ -228,12 +228,11 @@ class TestThemesView(TestCase):
                             "children": [
                                 {"dimensions": {"A": "a"}, "name": "__test_layer_wms_1"},
                                 {"dimensions": {"B": "b"}, "name": "__test_layer_wmts"},
-                                {"dimensions": {}, "name": "__test_layer_wmts_2"},
                             ],
                         },
                         {
                             "name": "__test_layer_group_2",
-                            "children": [{"name": "__test_layer_wms_1"}, {"name": "__test_layer_wms_2"}],
+                            "children": [{"name": "__test_layer_wms_1"}],
                             "dimensions": {"A": "a"},
                         },
                         {
