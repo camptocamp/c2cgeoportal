@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3122d3016ae1fc1bb91b546352742a9aa096cd106f886835485d0a3af3b4b93f"
+            "sha256": "39e4525a7a70fc8d8d7393251e67dd5350dfa43f3c12a67a0b8c6a05ca297245"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -255,11 +255,11 @@
         },
         "transaction": {
             "hashes": [
-                "sha256:3b0ad400cb7fa25f95d1516756c4c4557bb78890510f69393ad0bd15869eaa2d",
-                "sha256:e0397e7733124e23a670cd3eee4096c197b48f1e14730d7cc7da868389f016b7"
+                "sha256:0c15ef0b7ff3518357ceea75722a30d974c3f85e11aa5cec5d5a2b6a40cfcf68",
+                "sha256:2329a6e6b82d1d8d4de9267ea6ee790532c375e5911d3c7633a234e94a4a0a9e"
             ],
             "index": "pypi",
-            "version": "==3.0.0"
+            "version": "==3.0.1"
         },
         "translationstring": {
             "hashes": [
