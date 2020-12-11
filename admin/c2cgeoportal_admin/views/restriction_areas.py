@@ -36,11 +36,10 @@ import colander
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
-from sqlalchemy.sql.expression import literal_column
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
-from c2cgeoportal_admin.widgets import ChildrenWidget, LayerWidget
+from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 
 _list_field = partial(ListField, RestrictionArea)
@@ -52,17 +51,35 @@ base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 
 def layers(node, kw):  # pylint: disable=unused-argument
     dbsession = kw["request"].dbsession
-    query = dbsession.query(Layer, literal_column("'all'").label("group")).order_by(Layer.name)
-    return query
+    query = dbsession.query(Layer).order_by(Layer.name)
+    return [
+        {
+            "id": layer.id,
+            "label": layer.name,
+            "icon_class": "icon-{}".format(layer.item_type),
+            "group": "All",
+        }
+        for layer in query
+    ]
 
 
 base_schema.add(
     colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Layer, name="layer", widget=LayerWidget(), includes=["id"]),
+        GeoFormManyToManySchemaNode(
+            Layer,
+            name="layer",
+            includes=["id"],
+            widget=ChildWidget(
+                input_name="id",
+                model=Layer,
+                label_field="name",
+                icon_class=lambda layer: "icon-{}".format(layer.item_type),
+            ),
+        ),
         name="layers",
         title=_("Layers"),
-        treeitems=colander.deferred(layers),
-        widget=ChildrenWidget(child_input_name="id", orderable=False, category="structural"),
+        candidates=colander.deferred(layers),
+        widget=ChildrenWidget(child_input_name="id", orderable=False),
     )
 )
 

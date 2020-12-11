@@ -23,6 +23,9 @@
 .icon-l_wmts:before {
   content: "\e011";
 }
+.icon-user:before {
+  content: "\e008";
+}
 
 .ms-res-ctn .ms-res-item {
   color: initial;
@@ -30,12 +33,14 @@
 
 .item-theme,
 .item-layergroup_treeitem,
-.item-layer {
+.item-layer,
+.item-user {
   margin-bottom: 0;
 }
 .item-theme .well,
 .item-layergroup_treeitem .well,
-.item-layer .well {
+.item-layer .well,
+.item-user .well {
   padding: 10px;
   margin-bottom: 5px;
 }

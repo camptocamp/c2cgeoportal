@@ -8,7 +8,7 @@ from geoalchemy2.shape import from_shape, to_shape
 from pyramid.testing import DummyRequest
 from shapely.geometry import Polygon, box, shape
 
-from . import AbstractViewsTests
+from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope="function")
@@ -66,7 +66,7 @@ def roles_test_data(dbsession, transact):
 
 
 @pytest.mark.usefixtures("roles_test_data", "test_app")
-class TestRole(AbstractViewsTests):
+class TestRole(TestTreeGroup):
 
     _prefix = "/admin/roles"
 
@@ -101,8 +101,62 @@ class TestRole(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected, new="Nouveau")
 
+    def test_submit_new(self, dbsession, test_app, roles_test_data):
+        from c2cgeoportal_commons.models.main import Role
+
+        roles = roles_test_data["roles"]
+        functionalities = roles_test_data["functionalities"]
+        restrictionareas = roles_test_data["restrictionareas"]
+        users = roles_test_data["users"]
+
+        resp = test_app.post(
+            "/admin/roles/new",
+            (
+                ("_charset_", "UTF-8"),
+                ("__formid__", "deform"),
+                ("id", ""),
+                ("name", "new_name"),
+                ("description", "new_description"),
+                ("extent", ""),
+                ("__start__", "functionalities:sequence"),
+                ("functionalities", str(functionalities["default_basemap"][0].id)),
+                ("functionalities", str(functionalities["location"][1].id)),
+                ("__end__", "functionalities:sequence"),
+                ("__start__", "restrictionareas:sequence"),
+                ("restrictionareas", str(restrictionareas[0].id)),
+                ("restrictionareas", str(restrictionareas[1].id)),
+                ("__end__", "restrictionareas:sequence"),
+                ("__start__", "users:sequence"),
+                ("__start__", "user:mapping"),
+                ("id", str(users[0].id)),
+                ("__end__", "user:mapping"),
+                ("__start__", "user:mapping"),
+                ("id", str(users[1].id)),
+                ("__end__", "user:mapping"),
+                ("__end__", "users:sequence"),
+                ("formsubmit", "formsubmit"),
+            ),
+            status=302,
+        )
+
+        role = dbsession.query(Role).filter(Role.name == "new_name").one()
+        assert str(role.id) == re.match(
+            r"http://localhost/admin/roles/(.*)\?msg_col=submit_ok", resp.location
+        ).group(1)
+
+        assert role.name == "new_name"
+        assert role.description == "new_description"
+        assert set(role.functionalities) == set(
+            [functionalities["default_basemap"][0], functionalities["location"][1]]
+        )
+        assert set(role.restrictionareas) == set([restrictionareas[0], restrictionareas[1]])
+        assert set(role.users) == set([users[0], users[1]])
+
     def test_edit(self, dbsession, test_app, roles_test_data):
         role = roles_test_data["roles"][10]
+
+        # Ensure role.users is loaded with relationship "order_by"
+        dbsession.expire(role)
 
         form = self.get_item(test_app, role.id).form
 
@@ -153,6 +207,15 @@ class TestRole(AbstractViewsTests):
             [
                 {"label": ra.name, "value": str(ra.id), "checked": ra in role.restrictionareas}
                 for ra in sorted(ras, key=lambda ra: ra.name)
+            ],
+        )
+
+        self.check_children(
+            form,
+            "users",
+            [
+                {"label": user.username, "values": {"id": str(user.id)}}
+                for user in sorted(role.users, key=lambda u: u.username)
             ],
         )
 
@@ -216,7 +279,7 @@ class TestRole(AbstractViewsTests):
         resp = test_app.get("/admin/roles/{}/duplicate".format(role_proto.id), status=200)
         form = resp.form
 
-        assert "" == form["id"].value
+        assert "" == self.get_first_field_named(form, "id").value
         assert role_proto.name == form["name"].value
         assert role_proto.description == form["description"].value
         form["name"].value = "clone"
@@ -227,11 +290,9 @@ class TestRole(AbstractViewsTests):
             r"http://localhost/admin/roles/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert role_proto.id != role.id
-        assert role_proto.functionalities[2].name == role.functionalities[2].name
-        assert role_proto.functionalities[2].value == role.functionalities[2].value
-        assert role_proto.functionalities[2].id == role.functionalities[2].id
-        assert role_proto.restrictionareas[1].name == role.restrictionareas[1].name
-        assert role_proto.restrictionareas[1].id == role.restrictionareas[1].id
+        assert set(role_proto.functionalities) == set(role.functionalities)
+        assert set(role_proto.restrictionareas) == set(role.restrictionareas)
+        assert set(role_proto.users) == set(role.users)
 
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Role

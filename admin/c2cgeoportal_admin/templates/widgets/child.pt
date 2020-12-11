@@ -1,11 +1,18 @@
 <tal:def tal:define="title title|field.title;
                      description description|field.description;
                      errormsg errormsg|field.errormsg;
-                     item_template item_template|field.widget.item_template"
+                     item_template item_template|field.widget.item_template;
+                     label_field label_field|field.widget.label_field"
          i18n:domain="deform">
 
   <div class="orderable-item">
-    <div class="well"><span class="glyphicon icon-${treeitem.item_type}"></span> ${treeitem.name}</div>
+    <div class="well">
+       <span
+         tal:condition="field.widget.icon_class(child)"
+         class="glyphicon ${field.widget.icon_class(child)}"
+       ></span>
+       ${getattr(child, label_field)}
+    </div>
 
     ${field.start_mapping()}
     <div tal:repeat="child field.children"

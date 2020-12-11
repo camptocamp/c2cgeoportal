@@ -70,12 +70,12 @@
                                          ${orderable});
 
            var ms = $('#'+ oid + ' .magicsuggest').magicSuggest({
-             data: ${ structure: json.dumps(treeitems, indent=4, separators=(',', ': ')) },
+             data: ${ structure: json.dumps(candidates, indent=4, separators=(',', ': ')) },
              renderer: function(data) {
-               return '<span class="glyphicon icon-' + data.item_type + '"></span> ' + data.name;
+               return '<span class="glyphicon ' + data.icon_class + '"></span> ' + data.label;
              },
              valueField: 'id',
-             displayField: 'name',
+             displayField: 'label',
              groupBy: 'group',
              allowFreeEntries: false,
              maxDropHeight: 500
@@ -101,7 +101,7 @@
 
                  // Set title and treeitem_id
                  var $itemnode = $('#'+ oid).find('.deform-insert-before').last().prev();
-                 $itemnode.find('.well').html('<span class="glyphicon icon-' + selecteditem.item_type + '"></span> ' + selecteditem.name);
+                 $itemnode.find('.well').html('<span class="glyphicon ' + selecteditem.icon_class + '"></span> ' + selecteditem.label);
                  $itemnode.find('input[name="${child_input_name}"]').val(selecteditem.id);
                }
              });

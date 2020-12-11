@@ -52,7 +52,7 @@ class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 def treeitems(node, kw, only_groups=False):  # pylint: disable=unused-argument
     dbsession = kw["request"].dbsession
 
-    group = case([(func.count(LayergroupTreeitem.id) == 0, "Unlinked")], else_="Others").label("group")
+    group = case([(func.count(LayergroupTreeitem.id) == 0, "Unlinked")], else_="Others")
 
     query = (
         dbsession.query(TreeItem, group)
@@ -85,12 +85,15 @@ def treeitems(node, kw, only_groups=False):  # pylint: disable=unused-argument
     if only_groups:
         query = query.filter(TreeItem.item_type == "group")
 
-    return query
+    return [
+        {"id": item.id, "label": item.name, "icon_class": "icon-{}".format(item.item_type), "group": group}
+        for item, group in query
+    ]
 
 
 def children_validator(node, cstruct):
     for dict_ in cstruct:
-        if not dict_["treeitem_id"] in [item.id for item, group in node.treeitems]:
+        if not dict_["treeitem_id"] in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {} or is not allowed to avoid cycles").format(
@@ -111,10 +114,19 @@ def base_deferred_parent_id_validator(node, kw, model):  # pylint: disable=unuse
 
 def children_schema_node(only_groups=False):
     return colander.SequenceSchema(
-        ChildSchemaNode(LayergroupTreeitem, name="layergroup_treeitem", widget=ChildWidget()),
+        ChildSchemaNode(
+            LayergroupTreeitem,
+            name="layergroup_treeitem",
+            widget=ChildWidget(
+                input_name="treeitem_id",
+                model=TreeItem,
+                label_field="name",
+                icon_class=lambda treeitem: "icon-{}".format(treeitem.item_type),
+            ),
+        ),
         name="children_relation",
         title=_("Children"),
-        treeitems=colander.deferred(partial(treeitems, only_groups=only_groups)),
+        candidates=colander.deferred(partial(treeitems, only_groups=only_groups)),
         validator=children_validator,
-        widget=ChildrenWidget(category="structural"),
+        widget=ChildrenWidget(child_input_name="treeitem_id", add_subitem=True, orderable=True),
     )
