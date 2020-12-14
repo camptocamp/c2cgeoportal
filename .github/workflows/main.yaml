@@ -15,24 +15,31 @@ jobs:
       MAIN_BRANCH: 2.4
       MAJOR_VERSION: 2.4
       CI: true
-      PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
-      SUMMON_PROVIDER: /usr/local/bin/gopass
 
     steps:
       - run: df -h
       - run: docker system prune --all --force
 
-      # Versions
-      - run: docker --version
-      - run: docker-compose --version
-      - run: git --version
-      - run: python3 --version
-      - run: python3 -m pip --version
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: pypi docker transifex
+        if: github.repository == 'camptocamp/c2cgeoportal'
+
       - run: |
           sudo apt-get update
-          sudo apt-get install python3-dev python3-wheel python3-setuptools
+          sudo apt-get install python3-wheel python3-setuptools
 
-      - uses: actions/checkout@v1
+      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
+
+      - name: Checks
+        run: c2cciutils-checks
+
       - run: sudo python3 -m pip install --requirement travis/requirements.txt
 
       - id: release
@@ -62,12 +69,6 @@ jobs:
         env:
           REPO_URL: github.com/camptocamp/c2cgeoportal
 
-      - uses: camptocamp/initialise-gopass-summon-action@v1
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-        if: github.repository == 'camptocamp/c2cgeoportal'
-
       - name: Clean Docker hub tags
         run: |
           summon --yaml '
@@ -79,13 +80,7 @@ jobs:
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Publish to Docker hub and Pypi
-        run: |
-          summon --yaml '
-            DOCKER_USERNAME: !var gs/ci/dockerhub/username
-            DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-            PYPI_USERNAME: !var gs/ci/pypi/username
-            PYPI_PASSWORD: !var gs/ci/pypi/password
-          ' travis/publish
+        run: travis/publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
         if: github.repository == 'camptocamp/c2cgeoportal'

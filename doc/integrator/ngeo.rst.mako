@@ -184,7 +184,7 @@ AngularJS is still ECMAScript. You can define some new functions or new variable
 prototype. Here's an example with the ngeo draw controller:
 
 .. code:: javascript
-    
+
    import `import {DrawController} from 'ngeo/draw/Controller.js'`
    /**
     * Doctype is important for compilation.
