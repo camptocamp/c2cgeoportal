@@ -38,17 +38,20 @@
     '2.5':
       workflows:
         - workflow: QGIS build
+          with_step: True
         - workflow: Continuous integration
         - workflow: Code scanning
         - workflow: Rebuild 2.5
           use_branch: no
         - workflow: QGIS rebuild 2.5
           use_branch: no
+          with_step: True
         - workflow: Update ngeo
           use_branch: no
     master:
       workflows:
         - workflow: QGIS build
+          with_step: True
         - workflow: Continuous integration
         - workflow: Code scanning
 
@@ -251,33 +254,6 @@
         - workflow: Continuous integration
         - workflow: Code scanning
 
-- name: Shared Config Manager
-  repo: camptocamp/shared_config_manager
-  workflows:
-    - workflow: Nightly
-    - workflow: Audit
-    - workflow: Clean docker hub tags
-    - workflow: Auto merge Dependabot updates
-    - workflow: Backport
-      norunfor: false
-  hidden_workflows:
-    - Rebuild
-  versions:
-    '1':
-      branch: release_1
-      workflows:
-        - workflow: Build
-        - workflow: Code scanning
-    '2':
-      branch: release_2
-      workflows:
-        - workflow: Build
-        - workflow: Code scanning
-    master:
-      workflows:
-        - workflow: Build
-        - workflow: Code scanning
-
 - name: MapServer
   repo: camptocamp/docker-mapserver
   workflows:
@@ -382,21 +358,6 @@
       workflows:
         - workflow: Continuous integration
 
-- name: Daily
-  repo: camptocamp/docker-daily
-  workflows:
-    - workflow: Trigger build
-
-- name: Varnish Trovilo
-  repo: camptocamp/docker-trovilo-varnish
-  workflows:
-    - workflow: Rebuild
-    - workflow: Clean docker hub tags
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
 - name: Tiny OWS
   repo: camptocamp/docker-tinyows
   workflows:
@@ -428,29 +389,110 @@
         - short: 2.4
           long: GeoMapFish 2.4
 
-- name: Private geo charts
-  repo: camptocamp/private-geo-charts
-  workflows:
-    - workflow: Check images last build
-
 - name: C2C template
   repo: camptocamp/c2c.template
   workflows:
     - workflow: Continuous integration
 
-- name: prometheus-metrics-geo
-  repo: camptocamp/prometheus-metrics-geo
-  workflows:
-    - workflow: Backup Grafana
-
-- name: mutualized_print_config
-  repo: camptocamp/mutualized_print_config
+# GitHub actions
 
 - name: Backport
   repo: camptocamp/backport-action
-
-- name: Python action
-  repo: camptocamp/python-action
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
 
 - name: Gopass Summon action
   repo: camptocamp/initialise-gopass-summon-action
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Python action
+  repo: camptocamp/python-action
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+# Openshift and others
+
+- name: Shared Config Manager
+  repo: camptocamp/shared_config_manager
+  workflows:
+    - workflow: Nightly
+    - workflow: Audit
+    - workflow: Clean docker hub tags
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+  hidden_workflows:
+    - Rebuild
+  versions:
+    '1':
+      branch: release_1
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    '2':
+      branch: release_2
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    master:
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+
+- name: Varnish Trovilo
+  repo: camptocamp/docker-trovilo-varnish
+  workflows:
+    - workflow: Rebuild
+    - workflow: Clean docker hub tags
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Private geo charts
+  repo: camptocamp/private-geo-charts
+  workflows:
+    - workflow: Check images last build
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Prometheus metrics geo
+  repo: camptocamp/prometheus-metrics-geo
+  workflows:
+    - workflow: Backup Grafana
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Mutualized print config
+  repo: camptocamp/mutualized_print_config
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Mutualized print logs
+  repo: camptocamp/mapfish-print-logs
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Daily
+  repo: camptocamp/docker-daily
+  workflows:
+    - workflow: Trigger build
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
