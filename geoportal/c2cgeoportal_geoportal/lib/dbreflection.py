@@ -27,8 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import threading
-from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
 import warnings
+from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
 
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, Integer, MetaData, Table

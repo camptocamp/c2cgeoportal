@@ -29,14 +29,14 @@
 
 
 import crypt
+import logging
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
-import logging
 from typing import Any, List
 
-from c2c.template.config import config
 import pytz
+from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import HSTORE
 from sqlalchemy.ext.mutable import MutableDict
@@ -47,9 +47,9 @@ from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
 
 try:
-    from colander import drop, Email
-    from deform.widget import HiddenWidget, DateTimeInputWidget
     from c2cgeoform.ext.deform_ext import RelationSelect2Widget
+    from colander import Email, drop
+    from deform.widget import DateTimeInputWidget, HiddenWidget
 except ModuleNotFoundError:
     drop = None
 

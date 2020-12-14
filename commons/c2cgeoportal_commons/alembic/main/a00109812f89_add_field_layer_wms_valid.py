@@ -34,8 +34,8 @@ Revises: 87f8330ed64e
 Create Date: 2020-10-13 14:42:42.108254
 """
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.

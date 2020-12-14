@@ -28,16 +28,16 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from c2c.template.config import config as configuration
 import c2cgeoform
 import c2cwsgiutils.pretty_json
+import zope.sqlalchemy
+from c2c.template.config import config as configuration
 from pkg_resources import resource_filename
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender, NewRequest
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import configure_mappers, sessionmaker
 from translationstring import TranslationStringFactory
-import zope.sqlalchemy
 
 from c2cgeoportal_admin.subscribers import add_localizer, add_renderer_globals
 

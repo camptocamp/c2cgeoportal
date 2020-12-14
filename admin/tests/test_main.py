@@ -1,5 +1,5 @@
-from pyramid import testing
 import pytest
+from pyramid import testing
 from webtest import TestApp as WebTestApp
 
 

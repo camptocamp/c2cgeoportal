@@ -31,33 +31,28 @@
 
 
 import asyncio
-from collections import Counter
 import gc
 import logging
-from math import sqrt
 import re
 import sys
 import time
-from typing import Any, Dict, List, Set, Union, cast
 import urllib.parse
+from collections import Counter
+from math import sqrt
+from typing import Any, Dict, List, Set, Union, cast
 
+import requests
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
 from owslib.wms import WebMapService
 from pyramid.view import view_config
-import requests
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.url import get_url2, add_url_params
+from c2cgeoportal_commons.lib.url import add_url_params, get_url2
 from c2cgeoportal_commons.models import main
-from c2cgeoportal_geoportal.lib import (
-    get_roles_id,
-    get_typed,
-    get_types_map,
-    is_intranet,
-)
+from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
 from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import (
@@ -958,7 +953,7 @@ class Theme:
             elif (type_ == "Character") and (name + "Type") in types:
                 LOG.debug(
                     "Due mapserver strange result the type 'ms:Character' is fallbacked to type '%sType'"
-                    " for feature '%s', This is a stange comportement of mapserver when we use the "
+                    " for feature '%s', This is a strange comportement of mapserver when we use the "
                     'METADATA "gml_types" "auto"',
                     name,
                     name,

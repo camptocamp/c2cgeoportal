@@ -35,10 +35,10 @@ import re
 import subprocess
 import sys
 
-from pyramid.compat import input_
-from pyramid.scaffolds.template import Template
 import requests
 import yaml
+from pyramid.compat import input_
+from pyramid.scaffolds.template import Template
 
 
 class BaseTemplate(Template):  # pragma: no cover
@@ -139,7 +139,7 @@ class BaseTemplate(Template):  # pragma: no cover
             r2 = r.json()[0]
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
         except requests.RequestException:
-            print("Failed to establish a connexion to epsg.io.")
+            print("Failed to establish a connection to epsg.io.")
         except json.JSONDecodeError:
             print("epsg.io doesn't return a correct json.")
         except IndexError:

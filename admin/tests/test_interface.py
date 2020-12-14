@@ -12,7 +12,7 @@ from . import AbstractViewsTests
 def interface_test_data(dbsession, transact):
     del transact
 
-    from c2cgeoportal_commons.models.main import Interface, Theme, OGCServer, LayerWMS
+    from c2cgeoportal_commons.models.main import Interface, LayerWMS, OGCServer, Theme
 
     themes = []
     for i in range(0, 5):

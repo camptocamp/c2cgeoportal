@@ -28,11 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
+import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate
-import logging
-import smtplib
 from socket import gaierror
 from typing import Any, Dict, List, cast
 

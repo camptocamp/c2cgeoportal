@@ -28,8 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from logging.config import fileConfig
 import os
+from logging.config import fileConfig
 from typing import Dict
 
 from alembic import context

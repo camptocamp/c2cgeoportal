@@ -35,11 +35,10 @@ import logging
 from unittest import TestCase
 
 import pyotp
-from pyramid import testing
 import pyramid.httpexceptions
 import pytest
 import transaction
-
+from pyramid import testing
 from tests.functional import cleanup_db, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import setup_db
@@ -86,9 +85,9 @@ class Test2faView(TestCase):
         return request
 
     def test_new_user(self):
-        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(POST={"login": "__test_user", "password": "__test_user"})
         response = Login(request).login()
@@ -142,9 +141,9 @@ class Test2faView(TestCase):
         }
 
     def test_user_reset_password(self):
-        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.login import Login
 
         user = DBSession.query(User).filter_by(username="__test_user").one()
         _2fa_totp_secret = pyotp.random_base32()
@@ -207,9 +206,9 @@ class Test2faView(TestCase):
         }
 
     def test_change_password(self):
-        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.login import Login
 
         user = DBSession.query(User).filter_by(username="__test_user").one()
         _2fa_totp_secret = pyotp.random_base32()
@@ -281,9 +280,9 @@ class Test2faView(TestCase):
             Login(request).login()
 
     def test_wrong_login(self):
-        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.login import Login
 
         user = DBSession.query(User).filter_by(username="__test_user").one()
         _2fa_totp_secret = pyotp.random_base32()
@@ -316,9 +315,9 @@ class Test2faView(TestCase):
             Login(request).login()
 
     def test_wrong_change_password(self):
-        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.login import Login
 
         user = DBSession.query(User).filter_by(username="__test_user").one()
         _2fa_totp_secret = pyotp.random_base32()
@@ -429,9 +428,9 @@ class Test2faView(TestCase):
             Login(request).change_password()
 
     def test_wrong_login_change_password(self):
-        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.login import Login
 
         user = DBSession.query(User).filter_by(username="__test_user").one()
         user.tech_data["2fa_totp_secret"] = pyotp.random_base32()
@@ -463,9 +462,9 @@ class Test2faView(TestCase):
             Login(request).change_password()
 
     def test_wrong_loginresetpassword(self):
-        from c2cgeoportal_geoportal.views.login import Login
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_geoportal.views.login import Login
 
         user = DBSession.query(User).filter_by(username="__test_user").one()
         _2fa_totp_secret = pyotp.random_base32()

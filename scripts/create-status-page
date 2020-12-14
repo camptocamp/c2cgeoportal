@@ -209,24 +209,27 @@ def project(elem):
         print(status.render())
 
     # The stale, open, non draft pull requests
-    pullrequests_response = requests.get(
+    pull_requests_response = requests.get(
         "https://api.github.com/repos/{repo}/pulls".format(repo=repo),
         headers={"Accept": "application/vnd.github.v3+json", "Authorization": AUTH_HEADER},
         params={"state": "open"},
     )
-    pullrequests_response.raise_for_status()
+    pull_requests_response.raise_for_status()
     first = True
-    for pullrequest in pullrequests_response.json():
+    for pull_request in pull_requests_response.json():
         delta = (
-            datetime.datetime.now() - dateutil.parser.isoparse(pullrequest["updated_at"]).replace(tzinfo=None)
+            datetime.datetime.now()
+            - dateutil.parser.isoparse(pull_request["updated_at"]).replace(tzinfo=None)
         ).days
-        if not pullrequest["draft"] and delta > 2:
+        if not pull_request["draft"] and delta > 2:
             if first:
                 print()
                 print("Stale pull requests:")
                 first = False
             print(
-                "* [#{}]({}) {}".format(pullrequest["number"], pullrequest["html_url"], pullrequest["title"])
+                "* [#{}]({}) {}".format(
+                    pull_request["number"], pull_request["html_url"], pull_request["title"]
+                )
             )
 
 

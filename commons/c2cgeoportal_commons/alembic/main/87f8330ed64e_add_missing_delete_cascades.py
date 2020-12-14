@@ -34,9 +34,9 @@ Revises: 16e43f8c0330
 Create Date: 2020-05-25 14:53:36.289305
 """
 
+import sqlalchemy as sa
 from alembic import op
 from c2c.template.config import config
-import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "87f8330ed64e"

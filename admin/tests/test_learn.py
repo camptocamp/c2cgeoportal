@@ -1,7 +1,7 @@
 # pylint: disable=no-self-use
 
-from pyramid.view import view_config
 import pytest
+from pyramid.view import view_config
 
 
 @pytest.fixture(scope="class")

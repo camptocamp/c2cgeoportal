@@ -28,9 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews
-import colander
 from deform import ValidationFailure
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config

@@ -32,9 +32,8 @@
 
 from unittest import TestCase
 
-from pyramid import testing
 import transaction
-
+from pyramid import testing
 from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -47,7 +46,7 @@ class TestLayerMultiNameErrorView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, LayerWMS
+        from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, Theme
 
         main = Interface(name="desktop")
 
@@ -85,7 +84,7 @@ class TestLayerMultiNameErrorView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import TreeItem, Interface, OGCServer
+        from c2cgeoportal_commons.models.main import Interface, OGCServer, TreeItem
 
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)

@@ -28,12 +28,12 @@ def layer_vectortiles_test_data(dbsession, transact):
         layer.xyz = "https://vectortiles-staging.geoportail.lu/styles/roadmap/{z}/{x}/{y}.png"
         return layer
 
-    datas = factory_build_layers(layer_builder, dbsession)
-    datas["default"] = get_test_default_layers(dbsession, server)
+    data = factory_build_layers(layer_builder, dbsession)
+    data["default"] = get_test_default_layers(dbsession, server)
 
     dbsession.flush()
 
-    yield datas
+    yield data
 
 
 @pytest.mark.usefixtures("layer_vectortiles_test_data", "test_app")
@@ -214,7 +214,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert layer_vectortiles_test_data["layers"][3].metadatas[1].name == layer.metadatas[1].name
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import LayerVectorTiles, Layer, TreeItem
+        from c2cgeoportal_commons.models.main import Layer, LayerVectorTiles, TreeItem
 
         layer_id = dbsession.query(LayerVectorTiles.id).first().id
 

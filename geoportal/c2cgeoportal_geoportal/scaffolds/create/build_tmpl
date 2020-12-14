@@ -32,8 +32,8 @@ def load_env(env_files):
     Parse env files and return environment as dict
     """
     env = {}
-    if  os.path.exists('env.personal'):
-        env_files.append('env.personal')
+    if os.path.exists("env.personal"):
+        env_files.append("env.personal")
     for env_file in env_files:
         with open(env_file) as f:
             for line in f:
@@ -53,7 +53,9 @@ def main():
     parser.add_argument("--config", action="store_true", help="Build only the configuration image")
     parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
-    parser.add_argument("--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure")
+    parser.add_argument(
+        "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
+    )
     parser.add_argument("env", nargs="*", help="The environment config")
     args = parser.parse_args()
 

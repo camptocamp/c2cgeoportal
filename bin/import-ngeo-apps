@@ -29,10 +29,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from argparse import ArgumentParser
-from json import dumps
 import re
 import sys
+from argparse import ArgumentParser
+from json import dumps
 from urllib.parse import parse_qsl
 
 

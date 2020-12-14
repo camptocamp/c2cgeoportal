@@ -34,13 +34,12 @@ import re
 import typing
 from unittest import TestCase
 
+import sqlalchemy.ext.declarative
+import transaction
 from geoalchemy2 import Geometry
 from pyramid import testing
 from sqlalchemy import Column
-import sqlalchemy.ext.declarative
 from sqlalchemy.types import DateTime, Integer, Unicode
-import transaction
-
 from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -64,7 +63,7 @@ class TestThemesTimeView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Theme, LayerGroup, Interface, LayerWMS, LayerWMTS
+        from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, LayerWMTS, Theme
 
         DBSession.query(PointTest).delete()
 
@@ -136,7 +135,7 @@ class TestThemesTimeView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import TreeItem, Interface, OGCServer
+        from c2cgeoportal_commons.models.main import Interface, OGCServer, TreeItem
 
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)

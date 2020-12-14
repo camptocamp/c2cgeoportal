@@ -1,11 +1,10 @@
 import re
 from unittest.mock import patch
 
+import pytest
 from lxml import etree
 from owslib.wms import WebMapService
 from pyramid import testing
-import pytest
-
 
 DEFAULT_CONTENT = """
 <Layer>

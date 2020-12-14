@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 
+import transaction
 from c2c.template.config import config
 from geoalchemy2.shape import from_shape
 from shapely.geometry import box
-import transaction
 
 from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
 
@@ -30,7 +30,10 @@ session_factory = get_session_factory(engine)
 dbsession = get_tm_session(session_factory, transaction.manager)
 
 ogc_server = OGCServer(
-    name="qgisserver", type_=OGCSERVER_TYPE_QGISSERVER, image_type="image/png", auth=OGCSERVER_AUTH_STANDARD,
+    name="qgisserver",
+    type_=OGCSERVER_TYPE_QGISSERVER,
+    image_type="image/png",
+    auth=OGCSERVER_AUTH_STANDARD,
 )
 dbsession.add(ogc_server)
 
@@ -42,7 +45,11 @@ layer = LayerWMS(name="private_layer", layer="private_layer", public=False)
 layer.ogc_server = ogc_server
 
 restriction_area = RestrictionArea(
-    "restriction_area", layers=[layer], roles=[role], readwrite=True, area=from_shape(area, srid=21781),
+    "restriction_area",
+    layers=[layer],
+    roles=[role],
+    readwrite=True,
+    area=from_shape(area, srid=21781),
 )
 dbsession.add(restriction_area)
 

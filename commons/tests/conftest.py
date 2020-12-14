@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from logging.config import fileConfig
 import os
+from logging.config import fileConfig
 
-from c2c.template.config import config
 import plaster
 import pytest
-from sqlalchemy.exc import DBAPIError
 import transaction
+from c2c.template.config import config
+from sqlalchemy.exc import DBAPIError
 
 from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
 from c2cgeoportal_commons.testing.initializedb import truncate_tables

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2019, Camptocamp SA
+# Copyright (c) 2013-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,10 +28,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from datetime import datetime
 import logging
 import random
 import string
+from datetime import datetime
 from urllib.parse import urlparse
 
 from pyramid.httpexceptions import HTTPBadRequest, HTTPFound, HTTPInternalServerError, HTTPNotFound

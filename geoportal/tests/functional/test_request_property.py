@@ -41,6 +41,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestRequestProperty(TestCase):
     def setup_method(self, _):
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User
@@ -53,6 +54,7 @@ class TestRequestProperty(TestCase):
 
     def teardown_method(self, _):
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User

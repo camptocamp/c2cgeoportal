@@ -30,7 +30,7 @@
 # pylint: disable=missing-docstring
 
 from unittest import TestCase
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
 
 from pyramid.testing import DummyRequest
 

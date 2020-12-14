@@ -215,7 +215,7 @@ class TestLayerTreeView(AbstractViewsTests):
         assert item not in group.children
 
     def test_delete(self, test_app, layertree_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import LayerWMS, LayerWMTS, LayerGroup
+        from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS
 
         groups = layertree_test_data["groups"]
         layers_wms = layertree_test_data["layers_wms"]

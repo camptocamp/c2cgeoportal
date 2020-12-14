@@ -23,7 +23,9 @@ try:
 except Exception:  # pylint: disable=broad-except
     print("".join(traceback.format_exception(*sys.exc_info())))
     QgsMessageLog.logMessage(
-        "".join(traceback.format_exception(*sys.exc_info())), "GeoMapFishAccessControl", level=Qgis.Critical,
+        "".join(traceback.format_exception(*sys.exc_info())),
+        "GeoMapFishAccessControl",
+        level=Qgis.Critical,
     )
 
 
@@ -32,8 +34,8 @@ def serverClassFactory(serverIface):  # noqa
 
     try:
         from .accesscontrol import (  # pylint: disable=import-outside-toplevel
-            GMFException,
             GeoMapFishAccessControl,
+            GMFException,
         )
 
         return GeoMapFishAccessControl(serverIface)

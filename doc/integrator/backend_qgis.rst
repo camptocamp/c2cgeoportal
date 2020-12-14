@@ -117,8 +117,8 @@ with a section looking like that:
 
 Do not forget to gracefully restart Apache.
 
-Extra PostGIS connexion
-***********************
+Extra PostGIS connection
+************************
 
 If you need to add another database connection, add a new section in the ``$HOME/.pg_service.conf``.
 In the ``qgisserver/pg_service.conf.tmpl`` files, add a new section:

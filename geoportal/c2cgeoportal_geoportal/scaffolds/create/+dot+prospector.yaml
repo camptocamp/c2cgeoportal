@@ -1,6 +1,4 @@
 ---
-strictness: veryhigh
-
 pep8:
   options:
     max-line-length: 110
@@ -19,4 +17,7 @@ mccabe:
   run: false
 
 mypy:
+  run: true
+
+bandit:
   run: true

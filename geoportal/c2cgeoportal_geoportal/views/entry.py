@@ -29,8 +29,8 @@
 
 
 import logging
-from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 import xml.dom.minidom  # noqa # pylint: disable=unused-import
+from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
