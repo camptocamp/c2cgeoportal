@@ -89,7 +89,7 @@ the application according to the user’s permissions.</p>
 <p>A functionality may be associated to users through the admin interface.</p>
 <p>Some technical roles are used to define default functionalities depending on the user’s context,
 they are named <cite>anonymous</cite>, <cite>registered</cite> and <cite>intranet</cite>.</p>
-<p>User get functionnalities from, by priority order:</p>
+<p>User get functionalities from, by priority order:</p>
 <p>If authenticated:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- roles associated to his user profile
 - role named `registered`
@@ -161,9 +161,9 @@ taken into account.</p>
 <p>For example, to add some user details, including a link to a new class named “Title”,
 add to <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">HiddenWidget</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">types</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">ForeignKey</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">_schema</span><span class="p">,</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">types</span>
+
+<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">_schema</span>
 
 
 <span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
@@ -226,20 +226,17 @@ For this, first ensure that the following files exist (if needed, create them as
 <li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/__init__.py</span></code>:</p></li>
 </ul>
 <p>Now, create a file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/userdetail.py</span></code> as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_defaults</span>
-<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">aliased</span><span class="p">,</span> <span class="n">subqueryload</span>
-
-<span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">FormWidget</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.schemas.roles</span> <span class="kn">import</span> <span class="n">roles_schema_node</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.views.users</span> <span class="kn">import</span> <span class="n">UserViews</span>
-
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span>
+<span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
+<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
+<span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">FormWidget</span>
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">aliased</span><span class="p">,</span> <span class="n">subqueryload</span>
+
+<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.schemas.roles</span> <span class="kn">import</span> <span class="n">roles_schema_node</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.views.users</span> <span class="kn">import</span> <span class="n">UserViews</span>
 
 
 <span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">)</span>
@@ -336,14 +333,12 @@ For this, first ensure that the following files exist (if needed, create them as
 </pre></div>
 </div>
 <p>And now the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/title.py</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_defaults</span>
-<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span>
 <span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">AbstractViews</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
+<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">AbstractViews</span><span class="p">,</span> <span class="n">ListField</span>
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
 
 
 <span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">Title</span><span class="p">)</span>
@@ -454,8 +449,8 @@ span.prompt1:before {
 
 <span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/etc/config/config.yaml&#39;</span><span class="p">)</span>
 
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span><span class="o">,</span> <span class="nn">UserDetail</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="kn">import</span> <span class="n">CreateTable</span>
-<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span><span class="o">,</span> <span class="nn">Title</span>
 
 <span class="k">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>

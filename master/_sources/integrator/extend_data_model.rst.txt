@@ -9,9 +9,9 @@ add to ``geoportal/<package>_geoportal/models.py``:
 .. code:: python
 
     from deform.widget import HiddenWidget
-    from sqlalchemy import Column, types
-    from sqlalchemy import ForeignKey
-    from c2cgeoportal_commons.models.static import _schema, User
+    from sqlalchemy import Column, ForeignKey, types
+
+    from c2cgeoportal_commons.models.static import User, _schema
 
 
     class UserDetail(User):
@@ -76,20 +76,17 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
 
 .. code:: python
 
-    from <package>_geoportal.models import UserDetail
     from functools import partial
-    from pyramid.view import view_defaults
-    from pyramid.view import view_config
-    from sqlalchemy.orm import aliased, subqueryload
 
-    from deform.widget import FormWidget
+    from <package>_geoportal.models import UserDetail
     from c2cgeoform.schema import GeoFormSchemaNode
     from c2cgeoform.views.abstract_views import ListField
+    from deform.widget import FormWidget
+    from pyramid.view import view_config, view_defaults
+    from sqlalchemy.orm import aliased, subqueryload
+
     from c2cgeoportal_admin.schemas.roles import roles_schema_node
     from c2cgeoportal_admin.views.users import UserViews
-
-
-    from <package>_geoportal.models import UserDetail
 
 
     _list_field = partial(ListField, UserDetail)
@@ -188,14 +185,12 @@ And now the file ``geoportal/<package>_geoportal/admin/views/title.py``:
 
 .. code:: python
 
-    from <package>_geoportal.models import Title
     from functools import partial
-    from pyramid.view import view_defaults
-    from pyramid.view import view_config
 
+    from <package>_geoportal.models import Title
     from c2cgeoform.schema import GeoFormSchemaNode
-    from c2cgeoform.views.abstract_views import AbstractViews
-    from c2cgeoform.views.abstract_views import ListField
+    from c2cgeoform.views.abstract_views import AbstractViews, ListField
+    from pyramid.view import view_config, view_defaults
 
 
     base_schema = GeoFormSchemaNode(Title)
@@ -317,8 +312,8 @@ Execute the following code:
 
    config.init('/etc/config/config.yaml')
 
+   from <package>_geoportal.models import Title, UserDetail
    from sqlalchemy.schema import CreateTable
-   from <package>_geoportal.models import UserDetail, Title
 
    print(CreateTable(UserDetail.__table__))
    print(CreateTable(Title.__table__))

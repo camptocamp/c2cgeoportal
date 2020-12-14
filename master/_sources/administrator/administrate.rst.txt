@@ -138,7 +138,7 @@ To make the WMTS queryable, you should add the following ``Metadata``:
 By default the scale limits for the queryable layers are the ``minResolution`` and/or the
 ``maxResolution`` metadata value(s) of the WMTS layer. These values correspond to the WMTS layer
 resolution(s) which should be the zoom limit. You can also set a ``minQueryResolution`` and/or a
-``maxQueryResolution`` to set a query zoom limits independant of the WMTS layer.
+``maxQueryResolution`` to set a query zoom limits independent of the WMTS layer.
 
 Print WMTS in high quality
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
