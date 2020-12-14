@@ -39,6 +39,7 @@ from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
+from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 
@@ -57,6 +58,7 @@ def layers(node, kw):  # pylint: disable=unused-argument
             "id": layer.id,
             "label": layer.name,
             "icon_class": "icon-{}".format(layer.item_type),
+            "edit_url": treeitem_edit_url(kw["request"], layer),
             "group": "All",
         }
         for layer in query
@@ -74,6 +76,7 @@ base_schema.add(
                 model=Layer,
                 label_field="name",
                 icon_class=lambda layer: "icon-{}".format(layer.item_type),
+                edit_url=treeitem_edit_url,
             ),
         ),
         name="layers",

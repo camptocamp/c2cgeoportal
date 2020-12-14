@@ -84,12 +84,18 @@ class ChildWidget(MappingWidget):
     ``deform.widget.MappingWidget`` in the deform documentation:
     <http://deform.readthedocs.org/en/latest/api.html>
     """
+
     template = "child"
     input_name = "treeitem_id"
     model = TreeItem
     label_field = "name"
 
     def icon_class(self, child) -> Optional[str]:  # pylint: disable=no-self-use
+        del child
+        return None  # pylint: disable=useless-return
+
+    def edit_url(self, request, child) -> Optional[str]:  # pylint: disable=no-self-use
+        del request
         del child
         return None  # pylint: disable=useless-return
 
@@ -112,6 +118,7 @@ class ChildrenWidget(SequenceWidget):
         "id": "Value to be set in child identifier input (child_input_name)",
         "label": "The text to display in MagicSuggest",
         "icon_class": "An optional icon class for the MagisSuggest entries",
+        "edit_url": "An optional url to edit the child resource",
         "group": "An optional group name for grouping entries in MagicSuggest",
     }
 
@@ -124,6 +131,7 @@ class ChildrenWidget(SequenceWidget):
     ``deform.widget.SequenceWidget`` in the deform documentation:
     <http://deform.readthedocs.org/en/latest/api.html>
     """
+
     template = "children"
     category = "structural"
     add_subitem = True

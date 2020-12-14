@@ -36,6 +36,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
 from c2cgeoportal_admin import _
+from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Theme, TreeItem
 
@@ -75,6 +76,7 @@ class ThemesOrderingSchema(colander.MappingSchema):
                 model=TreeItem,
                 label_field="name",
                 icon_class=lambda item: "icon-{}".format(item.item_type),
+                edit_url=treeitem_edit_url,
             ),
         ),
         name="themes",

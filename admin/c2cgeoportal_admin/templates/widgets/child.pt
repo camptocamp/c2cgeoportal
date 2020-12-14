@@ -2,16 +2,18 @@
                      description description|field.description;
                      errormsg errormsg|field.errormsg;
                      item_template item_template|field.widget.item_template;
-                     label_field label_field|field.widget.label_field"
+                     label_field label_field|field.widget.label_field;
+                     icon_class icons_class|field.widget.icon_class(child);
+                     edit_url edit_url|field.widget.edit_url(field.schema.bindings['request'], child)"
          i18n:domain="deform">
 
   <div class="orderable-item">
     <div class="well">
-       <span
-         tal:condition="field.widget.icon_class(child)"
-         class="glyphicon ${field.widget.icon_class(child)}"
-       ></span>
+       <span tal:condition="icon_class" class="glyphicon ${icon_class}"></span>
        ${getattr(child, label_field)}
+       <a tal:condition="edit_url" href="${edit_url}">
+         <span class="glyphicon glyphicon-pencil"></span>
+       </a>
     </div>
 
     ${field.start_mapping()}

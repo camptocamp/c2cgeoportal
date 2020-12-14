@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 from functools import partial
 
 import colander
@@ -38,6 +39,17 @@ from sqlalchemy.sql.expression import case, func
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
+
+LOG = logging.getLogger(__name__)
+
+# Correspondance between TreeItem.item_type and route table segment
+ITEM_TYPE_ROUTE_MAP = {
+    "theme": "themes",
+    "group": "layer_groups",
+    "layer": None,
+    "l_wms": "layers_wms",
+    "l_wmts": "layers_wms",
+}
 
 
 class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
@@ -86,7 +98,13 @@ def treeitems(node, kw, only_groups=False):  # pylint: disable=unused-argument
         query = query.filter(TreeItem.item_type == "group")
 
     return [
-        {"id": item.id, "label": item.name, "icon_class": "icon-{}".format(item.item_type), "group": group}
+        {
+            "id": item.id,
+            "label": item.name,
+            "icon_class": "icon-{}".format(item.item_type),
+            "edit_url": treeitem_edit_url(kw["request"], item),
+            "group": group,
+        }
         for item, group in query
     ]
 
@@ -112,6 +130,18 @@ def base_deferred_parent_id_validator(node, kw, model):  # pylint: disable=unuse
     return validator
 
 
+def treeitem_edit_url(request, treeitem):
+    if treeitem.item_type is None:
+        return None
+    table = ITEM_TYPE_ROUTE_MAP.get(treeitem.item_type, None)
+    if table is None:
+        LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
+        return None
+    return request.route_url(
+        "c2cgeoform_item", table=ITEM_TYPE_ROUTE_MAP[treeitem.item_type], id=treeitem.id,
+    )
+
+
 def children_schema_node(only_groups=False):
     return colander.SequenceSchema(
         ChildSchemaNode(
@@ -122,6 +152,7 @@ def children_schema_node(only_groups=False):
                 model=TreeItem,
                 label_field="name",
                 icon_class=lambda treeitem: "icon-{}".format(treeitem.item_type),
+                edit_url=treeitem_edit_url,
             ),
         ),
         name="children_relation",

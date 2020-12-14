@@ -56,7 +56,14 @@ def users(node, kw):  # pylint: disable=unused-argument
     dbsession = kw["request"].dbsession
     query = dbsession.query(User).order_by(User.username)
     return [
-        {"id": user.id, "label": user.username, "icon_class": "icon-user", "group": "All"} for user in query
+        {
+            "id": user.id,
+            "label": user.username,
+            "icon_class": "icon-user",
+            "edit_url": kw["request"].route_url("c2cgeoform_item", table="users", id=user.id,),
+            "group": "All",
+        }
+        for user in query
     ]
 
 
@@ -67,7 +74,13 @@ base_schema.add(
             name="layer",
             includes=["id"],
             widget=ChildWidget(
-                input_name="id", model=User, label_field="username", icon_class=lambda user: "icon-user",
+                input_name="id",
+                model=User,
+                label_field="username",
+                icon_class=lambda user: "icon-user",
+                edit_url=lambda request, user: request.route_url(
+                    "c2cgeoform_item", table="users", id=user.id,
+                ),
             ),
         ),
         name="users",

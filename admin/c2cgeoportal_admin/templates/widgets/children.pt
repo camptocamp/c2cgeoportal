@@ -101,7 +101,13 @@
 
                  // Set title and treeitem_id
                  var $itemnode = $('#'+ oid).find('.deform-insert-before').last().prev();
-                 $itemnode.find('.well').html('<span class="glyphicon ' + selecteditem.icon_class + '"></span> ' + selecteditem.label);
+                 $itemnode.find('.well').html(
+                     '<span class="glyphicon ' + selecteditem.icon_class + '"></span> ' +
+                     selecteditem.label +
+                     ' <a href="' + selecteditem.edit_url + '">' +
+                       '<span class="glyphicon glyphicon-pencil"></span>' +
+                     '</a>'
+                 );
                  $itemnode.find('input[name="${child_input_name}"]').val(selecteditem.id);
                }
              });
