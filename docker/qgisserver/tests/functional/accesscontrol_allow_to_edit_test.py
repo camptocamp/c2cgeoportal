@@ -10,9 +10,10 @@
 
 import pytest
 from geoalchemy2.shape import from_shape
-from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
 from qgis.core import QgsFeature, QgsGeometry, QgsProject
 from shapely.geometry import LineString, box
+
+from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
 
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
 
