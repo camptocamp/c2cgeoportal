@@ -11,14 +11,15 @@ from unittest.mock import Mock
 
 import pytest
 from geoalchemy2.shape import from_shape
+from qgis.core import QgsProject, QgsVectorLayer
+from shapely.geometry import box
+
 from geomapfish_qgisserver.accesscontrol import (
     Access,
     GeoMapFishAccessControl,
     GMFException,
     OGCServerAccessControl,
 )
-from qgis.core import QgsProject, QgsVectorLayer
-from shapely.geometry import box
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
