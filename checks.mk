@@ -8,7 +8,7 @@ VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
 VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 .PHONY: checks
-checks: prospector bandit isort additionallint
+checks: prospector bandit additionallint
 
 .PHONY: prospector
 prospector:
@@ -21,17 +21,6 @@ prospector:
 bandit:
 	bandit --version
 	bandit --recursive -ll .
-
-.PHONY: isort
-isort:
-	isort --version
-	isort --check-only --diff --settings-path=`pwd` \
-		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
-
-.PHONY: isort-fix
-isort-fix:
-	isort --apply --settings-path=`pwd` \
-		 --recursive commons geoportal admin/c2cgeoportal_admin admin/tests bin docker
 
 .PHONY: additionallint
 additionallint:

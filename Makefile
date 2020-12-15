@@ -18,53 +18,15 @@ build: build-tools build-runner build-config
 
 .PHONY: checks
 checks: ## Run the application checks
-checks: black gitattributes eol codespell yamllint otherchecks
+checks: yamllint otherchecks
 
 pipenv.timestamp:
 	pipenv install
 
-.PHONY: black
-black: ## Run Black check
-black: pipenv.timestamp
-	pipenv run black --version
-	pipenv run black --check --diff $(shell \
-		find -name .git -prune -or -type f -print | \
-		file --mime-type --files-from - | \
-		grep text/x-python | \
-		grep --invert-match '\(\.mako\|\.rst\|_tmpl\):' | \
-		awk -F: '{print $$1}' \
-	)
-
-.PHONY: black-fix
-black-fix: ## Fix the application code style with black
-black-fix: pipenv.timestamp
-	pipenv run black $(shell \
-		find -name .git -prune -or -type f -print | \
-		file --mime-type --files-from - | \
-		grep text/x-python | \
-		grep --invert-match '\(\.mako\|\.rst\|_tmpl\):' | \
-		awk -F: '{print $$1}' \
-	)
-
-.PHONY: gitattributes
-gitattributes: ## Run git attributes check
-	git --no-pager diff --check a6eacf93706d94606fb3c68a671f8254aea48e3b
-
-.PHONY: eol
-eol:
-eol: ## Check end of lines
-	python3 ci/test-eof-newline
-
-.PHONY: codespell
-codespell: ## Check code spell
-codespell: pipenv.timestamp
-	pipenv run codespell --quiet-level=2 --check-filenames --ignore-words=spell-ignore-words.txt \
-		$(shell find -name .git -prune -print)
-
 .PHONY: yamllint
 yamllint: ## YAML lint
 yamllint: pipenv.timestamp
-	pipenv run yamllint --strict --config-file=yamllint.yaml -s $(shell \
+	pipenv run yamllint --strict --config-file=yamllint.yaml $(shell \
 		find -name .git -prune -or -name changelog.yaml -prune -or \
 		\( -name "*.yml" -or -name "*.yaml" \) -print \
 	)
@@ -73,13 +35,6 @@ yamllint: pipenv.timestamp
 otherchecks:
 	docker build --target=checks \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
-
-.PHONY: isort-fix
-isort-fix: build-tools
-isort-fix: ## Fix the application import order with isort
-	docker run --rm --volume=`pwd`:/src camptocamp/geomapfish-tools:$(DOCKER_TAG) \
-		make --makefile=checks.mk isort-fix
-
 
 .PHONY: build-tools
 build-tools:
