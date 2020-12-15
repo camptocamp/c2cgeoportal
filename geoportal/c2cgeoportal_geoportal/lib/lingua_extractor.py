@@ -533,6 +533,8 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
                 "REQUEST": "GetCapabilities",
+                "ROLE_ID": "0",
+                "USER_ID": "0",
             })
             try:
                 print("Get WMS GetCapabilities for URL {},\nwith headers: {}".format(
@@ -572,6 +574,8 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 "SERVICE": "WFS",
                 "VERSION": "1.1.0",
                 "REQUEST": "DescribeFeatureType",
+                "ROLE_ID": "0",
+                "USER_ID": "0",
             })
             try:
                 response = requests.get(wfs_descrfeat_url, headers=headers, **kwargs)
