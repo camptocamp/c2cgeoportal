@@ -620,7 +620,14 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             self.wmscap_cache[url] = None
 
             wms_getcap_url = add_url_params(
-                url, {"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"}
+                url,
+                {
+                    "SERVICE": "WMS",
+                    "VERSION": "1.1.1",
+                    "REQUEST": "GetCapabilities",
+                    "ROLE_IDS": "0",
+                    "USER_ID": "0",
+                },
             )
             try:
                 print(
@@ -663,7 +670,14 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             self.featuretype_cache[url] = None
 
             wfs_descrfeat_url = add_url_params(
-                url, {"SERVICE": "WFS", "VERSION": "1.1.0", "REQUEST": "DescribeFeatureType"}
+                url,
+                {
+                    "SERVICE": "WFS",
+                    "VERSION": "1.1.0",
+                    "REQUEST": "DescribeFeatureType",
+                    "ROLE_IDS": "0",
+                    "USER_ID": "0",
+                },
             )
             try:
                 response = requests.get(wfs_descrfeat_url, headers=headers, **kwargs)
