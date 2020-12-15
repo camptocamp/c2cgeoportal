@@ -1,5 +1,9 @@
-##### 2.4.2.22
+##### 2.4.2.23
 * Doc - Explain how to extend ngeo [c2cgeoportal#7306](https://github.com/camptocamp/c2cgeoportal/pull/7306)
+* [Backport 2.4] [Backport 2.5] Use c2cciutils - Publish to GitHub Container Registry [c2cgeoportal#7449](https://github.com/camptocamp/c2cgeoportal/pull/7449)
+* Add USER_ID and ROLE_ID in lingua extractor requests [c2cgeoportal#7450](https://github.com/camptocamp/c2cgeoportal/pull/7450)
+* [Backport 2.4] [Backport 2.5] Use c2cciutils - publish to GitHub Container Registry [ngeo#6547](https://github.com/camptocamp/ngeo/pull/6547)
+##### 2.4.2.22
 * Enable to change the xy order on getFeature GML format [ngeo#6429](https://github.com/camptocamp/ngeo/pull/6429)
 ##### 2.4.2.21
 * [Security] Apply minor bootstrap update [c2cgeoportal#7271](https://github.com/camptocamp/c2cgeoportal/pull/7271)
