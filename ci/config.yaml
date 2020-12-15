@@ -9,6 +9,11 @@ checks:
     rebuild-master.yaml:
       runs_re: []
 
+audit:
+  pipenv:
+    python_version:
+      - 3.6.12
+
 publish:
   docker:
     images:
