@@ -1,9 +1,7 @@
 #!/bin/bash -ex
 
-docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
-
-TAG=`git tag --list --points-at=HEAD`
-LAST_TAG=`git describe --abbrev=0 --tags`
+TAG=$(git tag --list --points-at=HEAD)
+LAST_TAG=$(git describe --abbrev=0 --tags)
 COMMIT=FALSE
 VERSION_QGIS=FALSE
 BRANCH_NAME=$(echo "${GITHUB_REF}"|sed 's|^refs/heads/||g')
