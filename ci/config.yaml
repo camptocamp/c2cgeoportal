@@ -7,7 +7,7 @@ checks:
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/.*/.*
   required_workflows:
     rebuild-master.yaml:
-      runs_re: []
+      steps: []
 
 audit:
   pipenv:
