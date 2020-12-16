@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Code scanning
     timeout-minutes: 20
+    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     steps:
       - name: Checkout repository
