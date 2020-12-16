@@ -1,6 +1,8 @@
+##### 2.4.2.26
+* [Backport 2.4] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216094446 [c2cgeoportal#7462](https://github.com/camptocamp/c2cgeoportal/pull/7462)
+* [Backport 2.4] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216090400 [ngeo#6583](https://github.com/camptocamp/ngeo/pull/6583)
 ##### 2.4.2.25
 * [Backport 2.4] Add Python version for the audit [c2cgeoportal#7460](https://github.com/camptocamp/c2cgeoportal/pull/7460)
-* [Backport 2.4] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216094446 [c2cgeoportal#7462](https://github.com/camptocamp/c2cgeoportal/pull/7462)
 ##### 2.4.2.24
 * [Backport 2.4] [Backport 2.5] Use c2cciutils - Publish to GitHub Container Registry [c2cgeoportal#7449](https://github.com/camptocamp/c2cgeoportal/pull/7449)
 ##### 2.4.2.23
