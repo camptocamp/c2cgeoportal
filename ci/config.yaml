@@ -7,6 +7,11 @@ checks:
     clean.yaml: False
     audit.yaml: False
 
+audit:
+  pipenv:
+    python_versions:
+      - 3.6.12
+
 publish:
   docker:
     images:
