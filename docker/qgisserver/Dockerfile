@@ -18,7 +18,7 @@ FROM ubuntu:20.04 AS lint
 
 RUN apt update
 RUN apt install --assume-yes --no-install-recommends apt-utils
-RUN apt install --assume-yes --no-install-recommends python3-pip python3-setuptools
+RUN apt install --assume-yes --no-install-recommends python3-pip
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
