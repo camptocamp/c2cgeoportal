@@ -161,17 +161,16 @@ jobs:
       - run: ci/create-new-project ${HOME}/workspace geomapfish
       - run: (cd ${HOME}/workspace/geomapfish/; ./build)
 
-      - name: Publish
-        run: |
-          c2cciutils-publish
-          c2cciutils-publish --group=full
+      - name: Publish Docker images with tag like 2.6 and PyPI packages
+        run: c2cciutils-publish
+        if: github.repository == 'camptocamp/c2cgeoportal'
+      - name: Publish other Docker images on feature branches
+        run: c2cciutils-publish --group=full
         if: >
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
-      - name: Publish
-        run: |
-          c2cciutils-publish --type=version-branch --version=${{ steps.version.outputs.full }}
-          c2cciutils-publish --group=full --type=version-branch --version=${{ steps.version.outputs.full }}
+      - name: Publish Docker images with tag like 2.6.0.1 on main branches
+        run: c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
