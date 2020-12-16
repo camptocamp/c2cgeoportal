@@ -11,7 +11,7 @@ checks:
 
 audit:
   pipenv:
-    python_version:
+    python_versions:
       - 3.6.12
 
 publish:
