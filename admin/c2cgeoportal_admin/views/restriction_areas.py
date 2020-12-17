@@ -30,9 +30,9 @@
 
 from functools import partial
 
-from c2cgeoform.schema import GeoFormSchemaNode, GeoFormManyToManySchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
 import colander
+from c2cgeoform.schema import GeoFormManyToManySchemaNode, GeoFormSchemaNode
+from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload

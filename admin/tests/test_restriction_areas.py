@@ -15,7 +15,7 @@ from .test_treegroup import TestTreeGroup
 @pytest.mark.usefixtures("dbsession", "transact")
 def restriction_area_test_data(dbsession, transact):
     del transact
-    from c2cgeoportal_commons.models.main import OGCServer, LayerWMS, RestrictionArea, Role
+    from c2cgeoportal_commons.models.main import LayerWMS, OGCServer, RestrictionArea, Role
 
     roles = []
     for i in range(0, 4):

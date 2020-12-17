@@ -42,7 +42,7 @@ from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
 
 LOG = logging.getLogger(__name__)
 
-# Correspondance between TreeItem.item_type and route table segment
+# Correspondence between TreeItem.item_type and route table segment
 ITEM_TYPE_ROUTE_MAP = {
     "theme": "themes",
     "group": "layer_groups",
@@ -138,7 +138,9 @@ def treeitem_edit_url(request, treeitem):
         LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
         return None
     return request.route_url(
-        "c2cgeoform_item", table=ITEM_TYPE_ROUTE_MAP[treeitem.item_type], id=treeitem.id,
+        "c2cgeoform_item",
+        table=ITEM_TYPE_ROUTE_MAP[treeitem.item_type],
+        id=treeitem.id,
     )
 
 

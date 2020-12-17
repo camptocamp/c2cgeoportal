@@ -61,7 +61,8 @@ def themes_validator(node, cstruct):
     for dict_ in cstruct:
         if not dict_["id"] in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
-                node, _("Value {} does not exist in table {}").format(dict_["id"], Theme.__tablename__),
+                node,
+                _("Value {} does not exist in table {}").format(dict_["id"], Theme.__tablename__),
             )
 
 

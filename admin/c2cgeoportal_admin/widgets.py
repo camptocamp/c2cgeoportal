@@ -57,7 +57,7 @@ widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=prot
 
 class ChildWidget(MappingWidget):
     """
-    Extension of the widget ````deform.widget.MappingWidget`` to be used in conjuction with ChildrenWidget,
+    Extension of the widget ````deform.widget.MappingWidget`` to be used in conjunction with ChildrenWidget,
     to manage n-m relationships.
 
     Do not embed complete children forms, but just an hidden input for child primary key.
@@ -65,7 +65,7 @@ class ChildWidget(MappingWidget):
     **Attributes/Arguments**
 
     input_name (required)
-        Form input name namely the name of the schema field identifing the child in the relation.
+        Form input name namely the name of the schema field identifying the child in the relation.
 
     model (required)
         The child model class.
@@ -76,7 +76,7 @@ class ChildWidget(MappingWidget):
     icon_class (optional)
         A function which takes a child as parameter and returns a CSS class.
 
-    edit_url (optionnal)
+    edit_url (optional)
         A function taking request and child as parameter and returning
         an URL to the corresponding resource.
 
@@ -109,11 +109,11 @@ class ChildWidget(MappingWidget):
 
 class ChildrenWidget(SequenceWidget):
     """
-    Extension of the widget ````deform.widget.SequenceWidget``, to be used in conjuction with ChildWidget,
+    Extension of the widget ````deform.widget.SequenceWidget``, to be used in conjunction with ChildWidget,
     to manage n-m relationships.
 
     Use Magicsuggest for searching into parent schema candidates property, which should be a list of
-    dictionnaries of the form:
+    dictionaries of the form:
     {
         "id": "Value to be set in child identifier input (child_input_name)",
         "label": "The text to display in MagicSuggest",

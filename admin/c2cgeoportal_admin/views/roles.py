@@ -30,9 +30,9 @@
 
 from functools import partial
 
-from c2cgeoform.schema import GeoFormSchemaNode, GeoFormManyToManySchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
 import colander
+from c2cgeoform.schema import GeoFormManyToManySchemaNode, GeoFormSchemaNode
+from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
@@ -60,7 +60,11 @@ def users(node, kw):  # pylint: disable=unused-argument
             "id": user.id,
             "label": user.username,
             "icon_class": "icon-user",
-            "edit_url": kw["request"].route_url("c2cgeoform_item", table="users", id=user.id,),
+            "edit_url": kw["request"].route_url(
+                "c2cgeoform_item",
+                table="users",
+                id=user.id,
+            ),
             "group": "All",
         }
         for user in query
@@ -79,7 +83,9 @@ base_schema.add(
                 label_field="username",
                 icon_class=lambda user: "icon-user",
                 edit_url=lambda request, user: request.route_url(
-                    "c2cgeoform_item", table="users", id=user.id,
+                    "c2cgeoform_item",
+                    table="users",
+                    id=user.id,
                 ),
             ),
         ),
