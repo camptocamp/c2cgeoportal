@@ -10,7 +10,9 @@ checks:
 audit:
   pipenv:
     python_versions:
+      - 3.5.10
       - 3.6.12
+      - 3.7.9
 
 publish:
   docker:
