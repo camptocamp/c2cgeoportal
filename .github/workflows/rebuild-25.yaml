@@ -143,4 +143,4 @@ jobs:
       - run: make build-config
 
       - name: Publish
-        run: c2cciutils-publish  --type=rebuild --branch=${{ matrix.version }}
+        run: c2cciutils-publish  --type=rebuild --branch=${{ matrix.branch }}
