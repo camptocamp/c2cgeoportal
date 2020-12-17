@@ -33,6 +33,9 @@ update_configs:
     automerged_updates:
       - match:
           update_type: all
+  - package_manager: python
+    directory: /geoportal/c2cgeoportal_geoportal/scaffolds/create/ci/
+    update_schedule: live
 
   - package_manager: docker
     directory: /
