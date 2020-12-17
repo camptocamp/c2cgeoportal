@@ -62,8 +62,8 @@ For a non OpenShift multi town project you can use:
 Vars files
 ----------
 
-The project variables are set in the ``vars.yaml`` file,
-which extends the default ``CONST_vars.yaml``.
+The project variables are set in the ``geoportal/vars.yaml`` file,
+which extends the default ``geoportal/CONST_vars.yaml``.
 
 To make such variables available to the python code, for instance using
 
@@ -112,51 +112,11 @@ The following variables may be set in the makefiles:
 * ``LANGUAGES``: List of available languages, default is ``en fr de``.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
 
-Secrets
--------
-
-We provide an easy way to secure some files into your repository, for that you should add
-in your project Makefile:
-
-.. code:: make
-
-   GPG_KEYS += <allowed pgp key id> # <the owner name>
-
-   secrets.tar.bz2.gpg: <the files to encrypt>
-
-Add the files that should be encrypted in the ``.gitignore`` file.
-
-To encrypt the files run:
-
-.. prompt:: bash
-
-   make --makefile=<user>.mk secrets.tar.bz2.gpg
-
-Add the file ``secrets.tar.bz2.gpg`` to git:
-
-.. prompt:: bash
-
-   git add secrets.tar.bz2.gpg
-
-To decrypt the files run:
-
-.. prompt:: bash
-
-   make --makefile=<user>.mk secrets
-
-.. note::
-
-   If you have an issue with the ``dirmngr`` package you can try to add:
-   ``pinentry-mode loopback`` in your ``~/.gnupg/gpg.conf`` file and
-   ``allow-loopback-pinentry``in your ``~/.gnupg/gpg-agent.conf`` file.
-   Alternatively, you can try to run it in Docker:
-   ``docker exec camptocamp/geoportal:${MAIN_VERSION} make --makefile=<user>.mk secrets``
-
 
 Custom rules
 ------------
 
-In the ``<package>.mk`` file, you can create custom rules.
+In the ``geoportal/Makefile`` file, you can create custom rules.
 Here is an example:
 
 .. code:: makefile
@@ -175,11 +135,5 @@ Here is an example:
     project-clean:
         rm -f $(MY_FILE)
 
-
-Note
-----
-
-The ``/build/*.timestamp`` files are flags
-indicating that another rule is correctly done.
 
 Upstream `make documentation <https://www.gnu.org/software/make/manual/make.html>`_.
