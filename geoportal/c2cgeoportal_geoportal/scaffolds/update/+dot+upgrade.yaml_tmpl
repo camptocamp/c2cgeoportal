@@ -75,9 +75,6 @@ upgrade_files:
       - project.yaml.mako
       - geoportal/{{package}}_geoportal/static/apihelp/images
   - action: move
-    from: Makefile
-    to: geoportal/Makefile
-  - action: move
     from: .eslintrc
     to: geoportal/.eslintrc
   - action: move
