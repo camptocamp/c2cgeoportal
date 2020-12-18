@@ -24,6 +24,11 @@ jobs:
         with:
           ref: ${{ matrix.branch }}
 
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+
       - uses: asdf-vm/actions/install@v1
         with:
           tool_versions: python 3.8.0
