@@ -27,7 +27,7 @@ For this procedure, we need to set some environment variables:
    GEOMAPFISH_PROJECT=<project>
    GEOMAPFISH_PACKAGE=<package>
 
-Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=>`_,
+Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=2.6>`_,
 <project> is the project name that should be the GitHub repository name, <package> is the package name.
 
 
@@ -61,7 +61,7 @@ To create the application, first apply the ``c2cgeoportal_create`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools: \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_create 
+        pcreate -s c2cgeoportal_create ${GEOMAPFISH_PROJECT}
 
 .. note::
 
@@ -84,7 +84,7 @@ it later.
             camptocamp/geomapfish-tools: \
             run $(id -u) $(id -g) /src \
             pcreate -s c2cgeoportal_create \
-            --package-name  
+            --package-name ${GEOMAPFISH_PACKAGE} ${GEOMAPFISH_PROJECT}
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you are
@@ -97,7 +97,7 @@ Now apply the ``c2cgeoportal_update`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools: \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_update 
+        pcreate -s c2cgeoportal_update ${GEOMAPFISH_PROJECT}
 
 .. note::
 
@@ -113,7 +113,46 @@ Go to your new project:
 
 .. prompt:: bash
 
-    cd 
+    cd ${GEOMAPFISH_PROJECT}
+
+Simple application
+------------------
+
+A simple application is an application that you can't add come code on it (Python or JavaScript).
+A simple application is an application for which no custom code is needed (Python or JavaScript).
+
+To create a simple application you should:
+
+- Remove the geoportal job in the ``.github/workflows/main.yaml`` file.
+- Build the application by adding ``--config`` to the ``./build`` command.
+- Add the image to the ``geoportal`` service in the ``docker-compose.yaml``:
+  ``image: camptocamp/geomapfish-geoportal:2.6``.
+- Add the following lines in the ``.gitignore`` file:
+
+.. code::
+
+    # Simple mode
+    /geoportal/*
+    !/geoportal/vars*.yaml
+    !/geoportal/CONST_vars.yaml
+    !/geoportal/CONST_config-schema.yaml
+    !/geoportal/geomapfish_geoportal
+    /geoportal/geomapfish_geoportal/*
+    !/geoportal/geomapfish_geoportal/locale/
+    !/geoportal/geomapfish_geoportal/static/
+
+    /CONST_create_template/geoportal/*
+    !/CONST_create_template/geoportal/vars*.yaml
+    !/CONST_create_template/geoportal/geomapfish_geoportal
+    /CONST_create_template/geoportal/geomapfish_geoportal/*
+    !/CONST_create_template/geoportal/geomapfish_geoportal/locale/
+    !/CONST_create_template/geoportal/geomapfish_geoportal/static/
+
+
+.. note::
+
+    If you apply those steps on a project already committed on Git, you should also remove
+    all the ignored files.
 
 
 Put the application under revision control
@@ -129,7 +168,7 @@ Add the project:
 .. prompt:: bash
 
     git init
-    git remote add origin git@github.com:camptocamp/.git
+    git remote add origin git@github.com:camptocamp/${GEOMAPFISH_PROJECT}.git
 
 Commit and push on the main repository:
 

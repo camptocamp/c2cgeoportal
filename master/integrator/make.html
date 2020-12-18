@@ -87,8 +87,8 @@ and one for production, not needed for projects managed in an OpenShift platform
 </div>
 <div class="section" id="vars-files">
 <h2>Vars files<a class="headerlink" href="#vars-files" title="Permalink to this headline">¶</a></h2>
-<p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file,
-which extends the default <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>.</p>
+<p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> file,
+which extends the default <code class="docutils literal notranslate"><span class="pre">geoportal/CONST_vars.yaml</span></code>.</p>
 <p>To make such variables available to the python code, for instance using</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
 </pre></div>
@@ -129,38 +129,9 @@ you should export your variable as follows:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>: List of ngeo interfaces, default is <code class="docutils literal notranslate"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</p></li>
 </ul>
 </div>
-<div class="section" id="secrets">
-<h2>Secrets<a class="headerlink" href="#secrets" title="Permalink to this headline">¶</a></h2>
-<p>We provide an easy way to secure some files into your repository, for that you should add
-in your project Makefile:</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">GPG_KEYS</span> <span class="o">+=</span> &lt;allowed pgp key id&gt; <span class="c1"># &lt;the owner name&gt;</span>
-
-<span class="nf">secrets.tar.bz2.gpg</span><span class="o">:</span> &lt;<span class="n">the</span> <span class="n">files</span> <span class="n">to</span> <span class="n">encrypt</span>&gt;
-</pre></div>
-</div>
-<p>Add the files that should be encrypted in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file.</p>
-<p>To encrypt the files run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk secrets.tar.bz2.gpg</span>
-</pre></div></div><p>Add the file <code class="docutils literal notranslate"><span class="pre">secrets.tar.bz2.gpg</span></code> to git:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add secrets.tar.bz2.gpg</span>
-</pre></div></div><p>To decrypt the files run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make --makefile<span class="o">=</span>&lt;user&gt;.mk secrets</span>
-</pre></div></div><div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you have an issue with the <code class="docutils literal notranslate"><span class="pre">dirmngr</span></code> package you can try to add:
-<code class="docutils literal notranslate"><span class="pre">pinentry-mode</span> <span class="pre">loopback</span></code> in your <code class="docutils literal notranslate"><span class="pre">~/.gnupg/gpg.conf</span></code> file and
-<code class="docutils literal notranslate"><span class="pre">allow-loopback-pinentry``in</span> <span class="pre">your</span> <span class="pre">``~/.gnupg/gpg-agent.conf</span></code> file.
-Alternatively, you can try to run it in Docker:
-<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">camptocamp/geoportal:${MAIN_VERSION}</span> <span class="pre">make</span> <span class="pre">--makefile=&lt;user&gt;.mk</span> <span class="pre">secrets</span></code></p>
-</div>
-</div>
 <div class="section" id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code> file, you can create custom rules.
+<p>In the <code class="docutils literal notranslate"><span class="pre">geoportal/Makefile</span></code> file, you can create custom rules.
 Here is an example:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">MY_FILE</span> <span class="o">?=</span> &lt;file&gt;
 
@@ -177,11 +148,6 @@ Here is an example:</p>
     rm -f <span class="k">$(</span>MY_FILE<span class="k">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">/build/*.timestamp</span></code> files are flags
-indicating that another rule is correctly done.</p>
 <p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
 </div>
 </div>
