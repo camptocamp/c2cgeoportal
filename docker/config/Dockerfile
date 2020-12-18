@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM ubuntu:20.04
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 ARG VERSION
