@@ -4,6 +4,43 @@ This file includes migration steps for each release of c2cgeoportal.
 Version 2.6.0
 =============
 
+Information to know before starting the upgrade
+-----------------------------------------------
+
+Simple application
+..................
+
+A mode "simple application" has been introduced, see `the documentation
+<https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/create_application.html#simple-application>`_
+
+This change implies that:
+
+- Now the API configuration is moved to the `vars.yaml` file, section `vars/interfaces_config/api`.
+  diff: https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-c0556a9b77c45b7cefd76100f480643b430c8ecc080edc549cee740cfb71e6aa
+- All the configuration present in the controllers (especially the map configuration) is moved to the
+  `vars.yaml` file, section `vars/interfaces_config/<interface>`.
+  diff: https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-98196fd1bacd50a637a3fec9a1a4116cb14eca3587d11c76d734deaf02ae3296
+- All the configuration present in the *.html.ejs files is moved to the `vars.yaml` file,
+  section `vars/interfaces_config/<interface>`.
+  diff: https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-49e4e3e08323fa260d0e7682f102a585bb0ee2d25f0434e47255519c0b0423a5
+
+Changes in the `geoportal/vars.yaml` file:
+  https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-d8128a088c1fb76a5d2e77bfc707d1426f5bd1511d430f20a724c0e4955b3db7
+
+- Optional point: the header can be in a separate file, diff in the `*.html.ejs` file:
+
+    - <header>
+    -   <div class="logo">
+    -     <span></span>
+    -   </div>
+    -   <div class="logo-right">
+    -     <span></span>
+    -   </div>
+    - </header>
+    + <ng-include src="'desktop_alt/header.html'"></ng-include>
+
+  The content will be in the `geoportal/geomapfish_geoportal/static/header.html` file.
+
 Information
 -----------
 
