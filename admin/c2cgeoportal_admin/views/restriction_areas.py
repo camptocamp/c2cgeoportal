@@ -30,20 +30,61 @@
 
 from functools import partial
 
-from c2cgeoform.schema import GeoFormSchemaNode
+import colander
+from c2cgeoform.schema import GeoFormManyToManySchemaNode, GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 
+from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
-from c2cgeoportal_commons.models.main import RestrictionArea
+from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
+from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
+from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 
 _list_field = partial(ListField, RestrictionArea)
 
 base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template="restriction_area_fields"))
 base_schema.add_before("area", roles_schema_node("roles"))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
+
+
+def layers(node, kw):  # pylint: disable=unused-argument
+    dbsession = kw["request"].dbsession
+    query = dbsession.query(Layer).order_by(Layer.name)
+    return [
+        {
+            "id": layer.id,
+            "label": layer.name,
+            "icon_class": "icon-{}".format(layer.item_type),
+            "edit_url": treeitem_edit_url(kw["request"], layer),
+            "group": "All",
+        }
+        for layer in query
+    ]
+
+
+base_schema.add(
+    colander.SequenceSchema(
+        GeoFormManyToManySchemaNode(
+            Layer,
+            name="layer",
+            includes=["id"],
+            widget=ChildWidget(
+                input_name="id",
+                model=Layer,
+                label_field="name",
+                icon_class=lambda layer: "icon-{}".format(layer.item_type),
+                edit_url=treeitem_edit_url,
+            ),
+        ),
+        name="layers",
+        title=_("Layers"),
+        candidates=colander.deferred(layers),
+        widget=ChildrenWidget(child_input_name="id", orderable=False),
+    )
+)
 
 
 @view_defaults(match_param="table=restriction_areas")

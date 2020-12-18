@@ -27,11 +27,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from typing import Optional
 
 import colander
 from colander import Mapping, SchemaNode
 from deform import widget
 from deform.widget import MappingWidget, SequenceWidget
+
+from c2cgeoportal_commons.models.main import TreeItem
 
 registry = widget.default_resource_registry
 registry.set_js_resources(
@@ -53,50 +56,95 @@ widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=prot
 
 
 class ChildWidget(MappingWidget):
+    """
+    Extension of the widget ````deform.widget.MappingWidget`` to be used in conjunction with ChildrenWidget,
+    to manage n-m relationships.
+
+    Do not embed complete children forms, but just an hidden input for child primary key.
+
+    **Attributes/Arguments**
+
+    input_name (required)
+        Form input name namely the name of the schema field identifying the child in the relation.
+
+    model (required)
+        The child model class.
+
+    label_field (required)
+        The name of the field used for display.
+
+    icon_class (optional)
+        A function which takes a child as parameter and returns a CSS class.
+
+    edit_url (optional)
+        A function taking request and child as parameter and returning
+        an URL to the corresponding resource.
+
+    For further attributes, please refer to the documentation of
+    ``deform.widget.MappingWidget`` in the deform documentation:
+    <http://deform.readthedocs.org/en/latest/api.html>
+    """
 
     template = "child"
+    input_name = "treeitem_id"
+    model = TreeItem
+    label_field = "name"
+
+    def icon_class(self, child) -> Optional[str]:  # pylint: disable=no-self-use,useless-return
+        del child
+        return None
+
+    def edit_url(self, request, child) -> Optional[str]:  # pylint: disable=no-self-use,useless-return
+        del request
+        del child
+        return None
 
     def serialize(self, field, cstruct, **kw):
-        from c2cgeoportal_commons.models.main import TreeItem  # pylint: disable=import-outside-toplevel
-
-        if cstruct["treeitem_id"] == colander.null:
-            kw["treeitem"] = TreeItem()
+        if cstruct[self.input_name] == colander.null:
+            kw["child"] = self.model()
         else:
-            kw["treeitem"] = field.schema.dbsession.query(TreeItem).get(int(cstruct["treeitem_id"]))
-        return super().serialize(field, cstruct, **kw)
-
-
-class ThemeOrderWidget(MappingWidget):
-
-    template = "child"
-
-    def serialize(self, field, cstruct, **kw):
-        from c2cgeoportal_commons.models.main import TreeItem  # pylint: disable=import-outside-toplevel
-
-        if cstruct["id"] == colander.null:
-            kw["treeitem"] = TreeItem()
-        else:
-            kw["treeitem"] = field.schema.dbsession.query(TreeItem).get(int(cstruct["id"]))
+            kw["child"] = field.schema.dbsession.query(self.model).get(int(cstruct[self.input_name]))
         return super().serialize(field, cstruct, **kw)
 
 
 class ChildrenWidget(SequenceWidget):
+    """
+    Extension of the widget ````deform.widget.SequenceWidget``, to be used in conjunction with ChildWidget,
+    to manage n-m relationships.
+
+    Use Magicsuggest for searching into parent schema candidates property, which should be a list of
+    dictionaries of the form:
+    {
+        "id": "Value to be set in child identifier input (child_input_name)",
+        "label": "The text to display in MagicSuggest",
+        "icon_class": "An optional icon class for the MagisSuggest entries",
+        "edit_url": "An optional url to edit the child resource",
+        "group": "An optional group name for grouping entries in MagicSuggest",
+    }
+
+    **Attributes/Arguments**
+
+    child_input_name (required)
+        The name of the child input to fill with selected child primary key.
+
+    For further attributes, please refer to the documentation of
+    ``deform.widget.SequenceWidget`` in the deform documentation:
+    <http://deform.readthedocs.org/en/latest/api.html>
+    """
 
     template = "children"
+    category = "structural"
     add_subitem = True
+    orderable = True
+    child_input_name = "treeitem_id"
     requirements = SequenceWidget.requirements + (("magicsuggest", None),)
 
-    def __init__(self, **kw):
-        SequenceWidget.__init__(self, orderable=True, **kw)
-
     def deserialize(self, field, pstruct):
-        for i, dict_ in enumerate(pstruct):
-            dict_["ordering"] = str(i)
+        if self.orderable and pstruct != colander.null:
+            for i, dict_ in enumerate(pstruct):
+                dict_["ordering"] = str(i)
         return super().deserialize(field, pstruct)
 
     def serialize(self, field, cstruct, **kw):
-        kw["treeitems"] = [
-            {"id": item.id, "name": item.name, "item_type": item.item_type, "group": group}
-            for item, group in field.schema.treeitems
-        ]
+        kw["candidates"] = field.schema.candidates
         return super().serialize(field, cstruct, **kw)

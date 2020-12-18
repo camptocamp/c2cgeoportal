@@ -128,7 +128,7 @@ class User(Base):
         Role,
         secondary=user_role,
         secondaryjoin=Role.id == user_role.c.role_id,
-        backref=backref("users", info={"colanderalchemy": {"exclude": True}}),
+        backref=backref("users", order_by="User.username", info={"colanderalchemy": {"exclude": True}}),
         info={"colanderalchemy": {"title": _("Roles"), "exclude": True}},
     )
 

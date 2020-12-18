@@ -34,11 +34,11 @@ from c2cgeoform.views.abstract_views import AbstractViews
 from deform import ValidationFailure
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
-from sqlalchemy.sql.expression import literal_column
 
 from c2cgeoportal_admin import _
-from c2cgeoportal_admin.widgets import ChildrenWidget, ThemeOrderWidget
-from c2cgeoportal_commons.models.main import Theme
+from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
+from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
+from c2cgeoportal_commons.models.main import Theme, TreeItem
 
 
 class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
@@ -49,26 +49,41 @@ class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
 
 @colander.deferred
-def treeitems(node, kw):  # pylint: disable=unused-argument
-    return kw["dbsession"].query(Theme, literal_column("0")).order_by(Theme.ordering, Theme.name)
+def themes(node, kw):  # pylint: disable=unused-argument
+    query = kw["dbsession"].query(Theme).order_by(Theme.ordering, Theme.name)
+    return [
+        {"id": item.id, "label": item.name, "icon_class": "icon-{}".format(item.item_type), "group": "All"}
+        for item in query
+    ]
 
 
 def themes_validator(node, cstruct):
     for dict_ in cstruct:
-        if not dict_["id"] in [item.id for item, dummy in node.treeitems]:
+        if not dict_["id"] in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
                 node,
-                _("Value {} does not exist in table {}").format(dict_["treeitem_id"], Theme.__tablename__),
+                _("Value {} does not exist in table {}").format(dict_["id"], Theme.__tablename__),
             )
 
 
 class ThemesOrderingSchema(colander.MappingSchema):
     themes = colander.SequenceSchema(
-        ThemeOrderSchema(Theme, includes=["id", "ordering"], name="theme", widget=ThemeOrderWidget()),
+        ThemeOrderSchema(
+            Theme,
+            includes=["id", "ordering"],
+            name="theme",
+            widget=ChildWidget(
+                input_name="id",
+                model=TreeItem,
+                label_field="name",
+                icon_class=lambda item: "icon-{}".format(item.item_type),
+                edit_url=treeitem_edit_url,
+            ),
+        ),
         name="themes",
-        treeitems=treeitems,
+        candidates=themes,
         validator=themes_validator,
-        widget=ChildrenWidget(add_subitem=False, category="structural"),
+        widget=ChildrenWidget(child_input_name="id", add_subitem=False, orderable=True),
     )
 
 
@@ -82,7 +97,7 @@ class ThemesOrdering(AbstractViews):
         dict_ = {
             "themes": [
                 form.schema["themes"].children[0].dictify(theme)
-                for theme, dummy in form.schema["themes"].treeitems
+                for theme in self._request.dbsession.query(Theme).order_by(Theme.ordering)
             ]
         }
         return {

@@ -432,7 +432,12 @@ class Layer(TreeItem):
     __table_args__ = {"schema": _schema}
     __mapper_args__ = {"polymorphic_identity": "layer"}  # needed for _identity_class
 
-    id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
+    id = Column(
+        Integer,
+        ForeignKey(_schema + ".treeitem.id"),
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
+    )
     public = Column(Boolean, default=True, info={"colanderalchemy": {"title": _("Public")}})
     geo_table = Column(Unicode, info={"colanderalchemy": {"title": _("Geo table")}})
     exclude_properties = Column(Unicode, info={"colanderalchemy": {"title": _("Exclude properties")}})
@@ -789,6 +794,10 @@ class RestrictionArea(Base):
     __colanderalchemy_config__ = {"title": _("Restriction area"), "plural": _("Restriction areas")}
     __c2cgeoform_config__ = {"duplicate": True}
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
+
+    name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
+    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
+    readwrite = Column(Boolean, default=False, info={"colanderalchemy": {"title": _("Read/write")}})
     area = Column(
         Geometry("POLYGON", srid=_srid),
         info={
@@ -798,10 +807,6 @@ class RestrictionArea(Base):
             }
         },
     )
-
-    name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
-    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
-    readwrite = Column(Boolean, default=False, info={"colanderalchemy": {"title": _("Read/write")}})
 
     # relationship with Role and Layer
     roles = relationship(
@@ -816,6 +821,7 @@ class RestrictionArea(Base):
     layers = relationship(
         "Layer",
         secondary=layer_ra,
+        order_by=Layer.name,
         info={"colanderalchemy": {"title": _("Layers"), "exclude": True}},
         cascade="save-update,merge,refresh-expire",
         backref=backref(
