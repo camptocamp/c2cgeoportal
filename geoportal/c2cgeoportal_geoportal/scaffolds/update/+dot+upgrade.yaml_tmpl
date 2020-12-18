@@ -20,7 +20,7 @@ default_project_file:
     - docker-compose\.yaml
     - env\.project
     - README\.rst
-    - \.github/workflows/ci\.yaml
+    - \.github/workflows/main\.yaml
   exclude:
     - mapserver/demo\.map\.tmpl
     - geoportal/{{package}}_geoportal/static-ngeo/js/apps/image/favicon\.ico
