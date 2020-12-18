@@ -142,5 +142,8 @@ jobs:
       - run: make build-runner
       - run: make build-config
 
+      - run: ci/create-new-project ${HOME}/workspace geomapfish
+      - run: (cd ${HOME}/workspace/geomapfish/; ./build)
+
       - name: Publish
-        run: c2cciutils-publish  --type=rebuild --branch=${{ matrix.branch }}
+        run: c2cciutils-publish --type=rebuild --branch=${{ matrix.branch }}
