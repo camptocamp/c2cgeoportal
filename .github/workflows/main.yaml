@@ -162,6 +162,11 @@ jobs:
         if: >
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
+      - name: Publish
+        run: c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && github.repository == 'camptocamp/c2cgeoportal'
 
       - run: ci/create-new-project ${HOME}/workspace geomapfish
       - run: (cd ${HOME}/workspace/geomapfish/; ./build)
@@ -169,11 +174,6 @@ jobs:
       - name: Publish
         run: c2cciutils-publish
         if: github.repository == 'camptocamp/c2cgeoportal'
-      - name: Publish
-        run: c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Push version and changelog
         run: |
