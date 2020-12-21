@@ -5,8 +5,8 @@ WMSTime Layer
 
 c2cgeoportal supports `WMS Time layers <https://mapserver.org/ogc/wms_time.html>`_.
 
-When the time is enabled for a layer group, a time widget (a slider or datepicker)
-is added to this group in the layer tree which enables changing the layer time.
+When the time is enabled for a layer group (a layertree group, not a wms layer group), a time widge
+(a slider or datepicker) is added to this group in the layer tree which enables changing the layer time.
 
 Configuration
 -------------
@@ -22,6 +22,8 @@ In the mapfile, a WMS Time layer is configured with the help of the layer metada
 * ``wms_timeextent``
 * ``wms_timeitem``
 * ``wms_timedefault``
+
+If the time layer is a wms layer group, the metadata are extracted from its children.
 
 c2cgeoportal uses the ``wms_timeextent`` to configure the slider. Two different
 formats are supported to define the time:
@@ -90,8 +92,8 @@ Admin interface - query
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 By setting a ``timeAttribute`` metadata having as value the attribute used in the OGS server as time item,
-you ensure that the WMS/WFS queries take into account the time filtering values and that no result is returned if an object
-is hidden by the time filter.
+you ensure that the WMS/WFS queries take into account the time filtering values and that no result is
+returned if an object is hidden by the time filter.
 
 Merging configurations
 ----------------------
