@@ -40,7 +40,6 @@ parser = argparse.ArgumentParser(description="Get and upgrade the minor version.
 parser.add_argument("--auto-increment", action="store_true")
 parser.add_argument("--full", action="store_true")
 parser.add_argument("--major", action="store_true")
-parser.add_argument("--upgrade-version", action="store_true")
 parser.add_argument("--github", action="store_true")
 args = parser.parse_args()
 
@@ -64,29 +63,34 @@ if args.auto_increment:
 
 minor = str(ci["minor"])
 
-if args.upgrade_version and os.environ.get("MAIN_BRANCH") == "master":
-    print("master")
+last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
+main_branch = os.environ.get("MAIN_BRANCH", "master")
+major_version = os.environ.get("MAJOR_VERSION", "dev")
+if tag:
+    full = tag + ".0"
+elif last_tag.startswith(major_version):
+    full = last_tag + "." + minor
+elif main_branch == "master":
+    full = "latest"
+else:
+    full = major_version + ".rc." + minor
+upgrade_version = "master" if os.environ.get("MAIN_BRANCH") == "master" else full
+major = os.environ.get("MAJOR_VERSION", "2.6")
+
+if args.major:
+    print(major)
+    sys.exit(0)
+if args.full:
+    print(full)
     sys.exit(0)
 
-if args.full or args.upgrade_version or args.github:
-    last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
-    main_branch = os.environ.get("MAIN_BRANCH", "master")
-    major_version = os.environ.get("MAJOR_VERSION", "dev")
-    if tag:
-        full = tag + ".0"
-    elif last_tag.startswith(major_version):
-        full = last_tag + "." + minor
-    elif main_branch == "master":
-        full = "latest"
-    else:
-        full = major_version + ".rc." + minor
-    if args.github:
-        print("##[set-output name=full;]{}".format(full))
-        print("##[set-output name=major;]{}".format(os.environ.get("MAJOR_VERSION", "2.6")))
-        print("##[set-output name=minor;]{}".format(minor))
-    else:
-        print(full)
-elif args.major:
-    print(os.environ.get("MAJOR_VERSION", "master"))
-else:
-    print(minor)
+
+print("full: {}".format(full))
+print("major: {}".format(major))
+print("minor: {}".format(minor))
+print("upgrade_version: {}".format(upgrade_version))
+if args.github:
+    print("##[set-output name=full;]{}".format(full))
+    print("##[set-output name=major;]{}".format(major))
+    print("##[set-output name=minor;]{}".format(minor))
+    print("##[set-output name=upgrade_version;]{}".format(upgrade_version))
