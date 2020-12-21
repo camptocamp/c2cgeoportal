@@ -1,3 +1,8 @@
+##### 2.4.2.27
+* Gunicorn: adapt tmpdir setting for Docker environment [c2cgeoportal#7488](https://github.com/camptocamp/c2cgeoportal/pull/7488)
+* Script docker-run: fix home directory setting [c2cgeoportal#7512](https://github.com/camptocamp/c2cgeoportal/pull/7512)
+* [Backport 2.4] Bump c2cciutils from 1.0.dev20201217141839 to 1.0.dev20201221104733 [c2cgeoportal#7514](https://github.com/camptocamp/c2cgeoportal/pull/7514)
+* [Backport 2.4] Bump c2cciutils from 1.0.dev20201217141839 to 1.0.dev20201221104733 [ngeo#6604](https://github.com/camptocamp/ngeo/pull/6604)
 ##### 2.4.2.26
 * [Backport 2.4] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216094446 [c2cgeoportal#7462](https://github.com/camptocamp/c2cgeoportal/pull/7462)
 * [Backport 2.4] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216090400 [ngeo#6583](https://github.com/camptocamp/ngeo/pull/6583)
