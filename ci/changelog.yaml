@@ -25,6 +25,13 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/5eac4b206b7bd12c20dce78fddc1c7e8d6dcc07d',
         sha: 5eac4b206b7bd12c20dce78fddc1c7e8d6dcc07d, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/5eac4b206b7bd12c20dce78fddc1c7e8d6dcc07d'}
       sha: 062eb3e2cff9abf2faa132fc1654d485310e7ecc
+    065bf2973921d46945200f7cb6639caf85e69c56:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/bc77a92b58ec91643646638f0fd2ca521c1a18ef',
+        sha: bc77a92b58ec91643646638f0fd2ca521c1a18ef, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/bc77a92b58ec91643646638f0fd2ca521c1a18ef'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/e27888f9eb306f6313e0415186f3de6f39e66449',
+        sha: e27888f9eb306f6313e0415186f3de6f39e66449, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/e27888f9eb306f6313e0415186f3de6f39e66449'}
+      sha: 065bf2973921d46945200f7cb6639caf85e69c56
     0671cd8adec8baf2ce00069a472427ee061d99e1:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/7b4d3e9c7ffd5f4517bcccdc04845e408de914e5',
@@ -105,6 +112,13 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/bf16b69b7e61e0fc8dcba216cde3a71283c8e2d2',
         sha: bf16b69b7e61e0fc8dcba216cde3a71283c8e2d2, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/bf16b69b7e61e0fc8dcba216cde3a71283c8e2d2'}
       sha: 0e3e841469f5e957dc36f3cddb47f7e38ca97e53
+    0ed42aca09eb2c00876b4ff9329dd22670110c54:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/549f7ffab5df37887295e590aab09d55a223397f',
+        sha: 549f7ffab5df37887295e590aab09d55a223397f, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/549f7ffab5df37887295e590aab09d55a223397f'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/dddd2867e04fa0b58a7054e29ab0b385d870effc',
+        sha: dddd2867e04fa0b58a7054e29ab0b385d870effc, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/dddd2867e04fa0b58a7054e29ab0b385d870effc'}
+      sha: 0ed42aca09eb2c00876b4ff9329dd22670110c54
     119fcccc0: &id008
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/696d00cef2fd4d1796fb1549f966d1d761964443',
@@ -238,6 +252,16 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/45c0ee77bf1102efa669e38c9da854eb766c7b96',
         sha: 45c0ee77bf1102efa669e38c9da854eb766c7b96, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/45c0ee77bf1102efa669e38c9da854eb766c7b96'}
       sha: 2483920c9053fef44a9c4d953df7cd85730bbdda
+    25328d08b0a6749a2eff85b865f71072de2f734d:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/7d053944695cc6bd5914eca086a9e24cdbaa64eb',
+        sha: 7d053944695cc6bd5914eca086a9e24cdbaa64eb, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/7d053944695cc6bd5914eca086a9e24cdbaa64eb'}
+      sha: 25328d08b0a6749a2eff85b865f71072de2f734d
+    25b65a70406b000d26f7a5e52f25c3dc9251b961:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/78866bdd704e3ef713d7b4b00dcb27a883f9e7e1',
+        sha: 78866bdd704e3ef713d7b4b00dcb27a883f9e7e1, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/78866bdd704e3ef713d7b4b00dcb27a883f9e7e1'}
+      sha: 25b65a70406b000d26f7a5e52f25c3dc9251b961
     2642def90: &id019
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/aa3a5d27fc0034fad258211022d8f3b3a86d5628',
@@ -301,6 +325,11 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/0c01a1aee42b7ac858c1203901f3826e6623c73a',
         sha: 0c01a1aee42b7ac858c1203901f3826e6623c73a, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/0c01a1aee42b7ac858c1203901f3826e6623c73a'}
       sha: 2c57ab630050c2cb60630976ed51173f62bcb64a
+    2e533dd58505bf7f739c25b1189eb4dc3919e51b:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/e815271177fee72310b4cc64217d4f3451363a4f',
+        sha: e815271177fee72310b4cc64217d4f3451363a4f, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/e815271177fee72310b4cc64217d4f3451363a4f'}
+      sha: 2e533dd58505bf7f739c25b1189eb4dc3919e51b
     3797d8080: &id024
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/e9016d3e2f4711656d946493a16aee27d37cb7ec',
@@ -309,6 +338,13 @@ commits:
         sha: 3fee7c1b753a92bad123b72623db1a5feafa5ee0, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/3fee7c1b753a92bad123b72623db1a5feafa5ee0'}
       sha: 3797d80802c7f3f1025e0e9664f2ea96dda28f2a
     3797d80802c7f3f1025e0e9664f2ea96dda28f2a: *id024
+    3bfdf6a23af97fa315207934fcbb1a0b1156176c:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/86a1ee5f02e7144c0f969b1d64fe57af00e40119',
+        sha: 86a1ee5f02e7144c0f969b1d64fe57af00e40119, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/86a1ee5f02e7144c0f969b1d64fe57af00e40119'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/d6c4107e487cc85a541dae0184bc901bcb19ec90',
+        sha: d6c4107e487cc85a541dae0184bc901bcb19ec90, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/d6c4107e487cc85a541dae0184bc901bcb19ec90'}
+      sha: 3bfdf6a23af97fa315207934fcbb1a0b1156176c
     3e046417269a951e044435ac2737a17e831879c0:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/c265112a581ac9a370571d4c8d934c38cf3cc0df',
@@ -353,6 +389,11 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/d31160b98622f5bdc1b89a9c39ed2009209f4969',
         sha: d31160b98622f5bdc1b89a9c39ed2009209f4969, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/d31160b98622f5bdc1b89a9c39ed2009209f4969'}
       sha: 43aec6adccab5638576f024b95ca3c43ff3354be
+    445c0f48fe0ec92fc18f1f5a18698d5c39b2d03f:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/5b583758467e0db68c67f1bf19cdc095b37586ef',
+        sha: 5b583758467e0db68c67f1bf19cdc095b37586ef, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/5b583758467e0db68c67f1bf19cdc095b37586ef'}
+      sha: 445c0f48fe0ec92fc18f1f5a18698d5c39b2d03f
     4516298c1cc9f00830303e9102141646c9534f88:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/986e13cdfa16cf27e8bf3ccb93c8e85669fd3caf',
@@ -419,6 +460,13 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/06d84b22ae54c65e402522e3409b5676bd0c63b0',
         sha: 06d84b22ae54c65e402522e3409b5676bd0c63b0, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/06d84b22ae54c65e402522e3409b5676bd0c63b0'}
       sha: 5397876081e8fa388e85c52fc383fc691e46f91e
+    549f7ffab5df37887295e590aab09d55a223397f:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/b8a33f6097dcc021c7ddd4afbe76039de2e17948',
+        sha: b8a33f6097dcc021c7ddd4afbe76039de2e17948, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b8a33f6097dcc021c7ddd4afbe76039de2e17948'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/803ccabca1db9da9311dcb1d6bde7637b30e4df5',
+        sha: 803ccabca1db9da9311dcb1d6bde7637b30e4df5, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/803ccabca1db9da9311dcb1d6bde7637b30e4df5'}
+      sha: 549f7ffab5df37887295e590aab09d55a223397f
     55136b8655d39803eb396112f97b60741f1bd2cd:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/f7aa7ad8ad0f8f475526b32af15e62d436a6fe6f',
@@ -448,6 +496,11 @@ commits:
         sha: cd85a38e00b9e72c69de6459f74cd4d3c088babb, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/cd85a38e00b9e72c69de6459f74cd4d3c088babb'}
       sha: 5a8c65af4031eb786e120909d0576ed8512af148
     5a8c65af4031eb786e120909d0576ed8512af148: *id032
+    5b583758467e0db68c67f1bf19cdc095b37586ef:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/25b65a70406b000d26f7a5e52f25c3dc9251b961',
+        sha: 25b65a70406b000d26f7a5e52f25c3dc9251b961, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/25b65a70406b000d26f7a5e52f25c3dc9251b961'}
+      sha: 5b583758467e0db68c67f1bf19cdc095b37586ef
     5ceaeeeee: &id033
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/9ac60ca52718b3ab13246c363cf32c66a2b874e1',
@@ -564,11 +617,25 @@ commits:
         sha: 8133fb9e5109394dd005e4cf2a4ecba72ababfa8, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/8133fb9e5109394dd005e4cf2a4ecba72ababfa8'}
       sha: 6f54e4e414d734fe3dcdc87a9c2666d76098ba6c
     6f54e4e414d734fe3dcdc87a9c2666d76098ba6c: *id043
+    78866bdd704e3ef713d7b4b00dcb27a883f9e7e1:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/d0a4d27146b656f87e7a4da3064a05861ac17b69',
+        sha: d0a4d27146b656f87e7a4da3064a05861ac17b69, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/d0a4d27146b656f87e7a4da3064a05861ac17b69'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/32e1e0f5cfd8ef0430d47ceda99b64b4873d439a',
+        sha: 32e1e0f5cfd8ef0430d47ceda99b64b4873d439a, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/32e1e0f5cfd8ef0430d47ceda99b64b4873d439a'}
+      sha: 78866bdd704e3ef713d7b4b00dcb27a883f9e7e1
     79dbc699b2be092663fb03c53788545a83bb84ac:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/46dc9699a2dc3a5477d34939eb059ac7f99a4512',
         sha: 46dc9699a2dc3a5477d34939eb059ac7f99a4512, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/46dc9699a2dc3a5477d34939eb059ac7f99a4512'}
       sha: 79dbc699b2be092663fb03c53788545a83bb84ac
+    7aafc903cbd26a733f0cfc9504b0a01fa9e226cd:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/3bfdf6a23af97fa315207934fcbb1a0b1156176c',
+        sha: 3bfdf6a23af97fa315207934fcbb1a0b1156176c, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/3bfdf6a23af97fa315207934fcbb1a0b1156176c'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/2aea584bcba5613440be94459a189de1dc857121',
+        sha: 2aea584bcba5613440be94459a189de1dc857121, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/2aea584bcba5613440be94459a189de1dc857121'}
+      sha: 7aafc903cbd26a733f0cfc9504b0a01fa9e226cd
     7af945f989ea3c48feb63ddd63664f3ab41f958f:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/f1747aa9d74132b35c2a963ed16f88bb1d488fde',
@@ -593,6 +660,11 @@ commits:
         sha: a0fcc643b34a327fecb2066ecece9f89bad2ea2f, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/a0fcc643b34a327fecb2066ecece9f89bad2ea2f'}
       sha: 7b5a27ab71e8ba01d883227473e637f0872714bf
     7b5a27ab71e8ba01d883227473e637f0872714bf: *id045
+    7d053944695cc6bd5914eca086a9e24cdbaa64eb:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/7aafc903cbd26a733f0cfc9504b0a01fa9e226cd',
+        sha: 7aafc903cbd26a733f0cfc9504b0a01fa9e226cd, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/7aafc903cbd26a733f0cfc9504b0a01fa9e226cd'}
+      sha: 7d053944695cc6bd5914eca086a9e24cdbaa64eb
     7da350dba78af4928d3dc93bbe38e4d3891eaa37:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/be43f3430dae4a137f2735c8308ef12fb523e448',
@@ -652,6 +724,13 @@ commits:
         sha: 46f45e9aeb347c34461b51e58e9eeb04207d7fe3, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/46f45e9aeb347c34461b51e58e9eeb04207d7fe3'}
       sha: 8563c62f104d9b2a83ef4eec45e030df2efec84d
     8563c62f104d9b2a83ef4eec45e030df2efec84d: *id050
+    86a1ee5f02e7144c0f969b1d64fe57af00e40119:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/2e533dd58505bf7f739c25b1189eb4dc3919e51b',
+        sha: 2e533dd58505bf7f739c25b1189eb4dc3919e51b, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/2e533dd58505bf7f739c25b1189eb4dc3919e51b'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/cd6dd1fe0f9d506b1cd3d809c4f22adee2b53563',
+        sha: cd6dd1fe0f9d506b1cd3d809c4f22adee2b53563, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/cd6dd1fe0f9d506b1cd3d809c4f22adee2b53563'}
+      sha: 86a1ee5f02e7144c0f969b1d64fe57af00e40119
     887aa7795: &id051
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/278baf4c5568b72d5fa167e838f56b1aeaa97480',
@@ -962,6 +1041,11 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/bc6d5e7f1ec10059dd0e71c6c299cb3c84e23cd4',
         sha: bc6d5e7f1ec10059dd0e71c6c299cb3c84e23cd4, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/bc6d5e7f1ec10059dd0e71c6c299cb3c84e23cd4'}
       sha: b776062bafe1bd208f2dcc86be0484bd8128acea
+    b8a33f6097dcc021c7ddd4afbe76039de2e17948:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/d00ab03da3b2750b138c6262db97e27e383ae642',
+        sha: d00ab03da3b2750b138c6262db97e27e383ae642, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/d00ab03da3b2750b138c6262db97e27e383ae642'}
+      sha: b8a33f6097dcc021c7ddd4afbe76039de2e17948
     b9ef5c609: &id073
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/a2686b4d52db15933c0e1e224a0bcaec18ef7279',
@@ -983,6 +1067,11 @@ commits:
         sha: 7b714a34aba53fc44b504ed92ec96d312f790a1e, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/7b714a34aba53fc44b504ed92ec96d312f790a1e'}
       sha: bc6d5e7f1ec10059dd0e71c6c299cb3c84e23cd4
     bc6d5e7f1ec10059dd0e71c6c299cb3c84e23cd4: *id074
+    bc77a92b58ec91643646638f0fd2ca521c1a18ef:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/0ed42aca09eb2c00876b4ff9329dd22670110c54',
+        sha: 0ed42aca09eb2c00876b4ff9329dd22670110c54, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/0ed42aca09eb2c00876b4ff9329dd22670110c54'}
+      sha: bc77a92b58ec91643646638f0fd2ca521c1a18ef
     be43f3430: &id075
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/564a023829f0ee9de7aca22b498a109af1fd6331',
@@ -1116,6 +1205,11 @@ commits:
         sha: d5624ffb03e89e6252184b46d02c253d4c0a1035, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/d5624ffb03e89e6252184b46d02c253d4c0a1035'}
       sha: d00ab03da3b2750b138c6262db97e27e383ae642
     d00ab03da3b2750b138c6262db97e27e383ae642: *id084
+    d0a4d27146b656f87e7a4da3064a05861ac17b69:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/065bf2973921d46945200f7cb6639caf85e69c56',
+        sha: 065bf2973921d46945200f7cb6639caf85e69c56, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/065bf2973921d46945200f7cb6639caf85e69c56'}
+      sha: d0a4d27146b656f87e7a4da3064a05861ac17b69
     d0cce4eb49c86aa4a3693135b4fee6a8a4321069:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/94e9c9e43dfd07e12e448eae3ed63126a8ea8c88',
@@ -1227,6 +1321,13 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/a8161bd52677c9e227bbee798849bfc0bd49daa8',
         sha: a8161bd52677c9e227bbee798849bfc0bd49daa8, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/a8161bd52677c9e227bbee798849bfc0bd49daa8'}
       sha: e6716448cda4b1c69cd3009c358174726683b53e
+    e815271177fee72310b4cc64217d4f3451363a4f:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/445c0f48fe0ec92fc18f1f5a18698d5c39b2d03f',
+        sha: 445c0f48fe0ec92fc18f1f5a18698d5c39b2d03f, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/445c0f48fe0ec92fc18f1f5a18698d5c39b2d03f'}
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/51ff499ce5d3cfba20155b41743dcd9596195e13',
+        sha: 51ff499ce5d3cfba20155b41743dcd9596195e13, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/51ff499ce5d3cfba20155b41743dcd9596195e13'}
+      sha: e815271177fee72310b4cc64217d4f3451363a4f
     e8f75966cc08833edebc924058caf487896fd940:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/8cc45d9fa1b771854f44e4540446e70622424104',
@@ -1341,6 +1442,12 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/8563c62f104d9b2a83ef4eec45e030df2efec84d',
         sha: 8563c62f104d9b2a83ef4eec45e030df2efec84d, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/8563c62f104d9b2a83ef4eec45e030df2efec84d'}
       sha: fca3e6c7abb35ebf9dbb8e0c89f607eac2971973
+    fe5e2fccb: &id102
+      parents:
+      - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/25328d08b0a6749a2eff85b865f71072de2f734d',
+        sha: 25328d08b0a6749a2eff85b865f71072de2f734d, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/25328d08b0a6749a2eff85b865f71072de2f734d'}
+      sha: fe5e2fccba96a2a9d0a870316d2577e88700e085
+    fe5e2fccba96a2a9d0a870316d2577e88700e085: *id102
     fe702d14d1af256047da68929ada4892e0bce8ef:
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/ff29cd80892dbe6f649f7354e11a0631c43227fb',
@@ -1360,31 +1467,31 @@ commits:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/de7aed209098e47547f6817f3e313762bbf6687e',
         sha: de7aed209098e47547f6817f3e313762bbf6687e, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/de7aed209098e47547f6817f3e313762bbf6687e'}
       sha: ff29cd80892dbe6f649f7354e11a0631c43227fb
-    ffff57027: &id102
+    ffff57027: &id103
       parents:
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/aaa2553f9aee577cea36402921b1a66b36fb31b1',
         sha: aaa2553f9aee577cea36402921b1a66b36fb31b1, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/aaa2553f9aee577cea36402921b1a66b36fb31b1'}
       - {html_url: 'https://github.com/camptocamp/c2cgeoportal/commit/ca05fa2b9dc21a94d06f61220b66df8652b90c82',
         sha: ca05fa2b9dc21a94d06f61220b66df8652b90c82, url: 'https://api.github.com/repos/camptocamp/c2cgeoportal/commits/ca05fa2b9dc21a94d06f61220b66df8652b90c82'}
       sha: ffff570275ba523852757be72b65406af04f2a59
-    ffff570275ba523852757be72b65406af04f2a59: *id102
+    ffff570275ba523852757be72b65406af04f2a59: *id103
   ngeo:
-    00a33660f: &id103
+    00a33660f: &id104
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/6b9b42d9af6f6ae288a611d07af3d16d9f3be730',
         sha: 6b9b42d9af6f6ae288a611d07af3d16d9f3be730, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/6b9b42d9af6f6ae288a611d07af3d16d9f3be730'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/e2813490910b32eec6300c1eea1d3fb28e3cbd59',
         sha: e2813490910b32eec6300c1eea1d3fb28e3cbd59, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/e2813490910b32eec6300c1eea1d3fb28e3cbd59'}
       sha: 00a33660ff1f00ee0fe07475f5b70188e0765dfa
-    00a33660ff1f00ee0fe07475f5b70188e0765dfa: *id103
-    0442e03a6: &id104
+    00a33660ff1f00ee0fe07475f5b70188e0765dfa: *id104
+    0442e03a6: &id105
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/595e85ebcf0304438a68b3a4a3625c5f99880c04',
         sha: 595e85ebcf0304438a68b3a4a3625c5f99880c04, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/595e85ebcf0304438a68b3a4a3625c5f99880c04'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/b38bfd30bff8a62390961a95b946b66a19bc5c8d',
         sha: b38bfd30bff8a62390961a95b946b66a19bc5c8d, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/b38bfd30bff8a62390961a95b946b66a19bc5c8d'}
       sha: 0442e03a66c9bea6dd71b92af9e0445655df635c
-    0442e03a66c9bea6dd71b92af9e0445655df635c: *id104
+    0442e03a66c9bea6dd71b92af9e0445655df635c: *id105
     073a2f4996f891c6a32b2eca8f0eced7594d539e:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/0bd7ba42810b34d14b6068edc10aeeefecb43151',
@@ -1397,22 +1504,30 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/0e0eeecb2cf39b9c8434e067d1cce6d8f2f15a57',
         sha: 0e0eeecb2cf39b9c8434e067d1cce6d8f2f15a57, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/0e0eeecb2cf39b9c8434e067d1cce6d8f2f15a57'}
       sha: 0bd7ba42810b34d14b6068edc10aeeefecb43151
-    0e0eeecb2: &id105
+    0e0eeecb2: &id106
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/d6a75837fb33080950c3911812be70447984715a',
         sha: d6a75837fb33080950c3911812be70447984715a, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/d6a75837fb33080950c3911812be70447984715a'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/6e02c7164e0954aa0cd2ba57aa85d3d5e0592fe3',
         sha: 6e02c7164e0954aa0cd2ba57aa85d3d5e0592fe3, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/6e02c7164e0954aa0cd2ba57aa85d3d5e0592fe3'}
       sha: 0e0eeecb2cf39b9c8434e067d1cce6d8f2f15a57
-    0e0eeecb2cf39b9c8434e067d1cce6d8f2f15a57: *id105
-    11062a485: &id106
+    0e0eeecb2cf39b9c8434e067d1cce6d8f2f15a57: *id106
+    0e2f08ed8: &id107
+      parents:
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/c71c129cb8086ef15fe61a5838c97480f5a1142c',
+        sha: c71c129cb8086ef15fe61a5838c97480f5a1142c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/c71c129cb8086ef15fe61a5838c97480f5a1142c'}
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/fa8eda2db9a8f7db07d912ea9a1be361e8dbf420',
+        sha: fa8eda2db9a8f7db07d912ea9a1be361e8dbf420, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/fa8eda2db9a8f7db07d912ea9a1be361e8dbf420'}
+      sha: 0e2f08ed84a454c2d8e7e5a07edc85e77c8a33db
+    0e2f08ed84a454c2d8e7e5a07edc85e77c8a33db: *id107
+    11062a485: &id108
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/3fe7f6d138673016673a929cea313d0146925ca8',
         sha: 3fe7f6d138673016673a929cea313d0146925ca8, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/3fe7f6d138673016673a929cea313d0146925ca8'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/1a797cd661bad9dd28642c03e1ad86dcdb980233',
         sha: 1a797cd661bad9dd28642c03e1ad86dcdb980233, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/1a797cd661bad9dd28642c03e1ad86dcdb980233'}
       sha: 11062a4855ccb734883e0cabbee75daced2a4d65
-    11062a4855ccb734883e0cabbee75daced2a4d65: *id106
+    11062a4855ccb734883e0cabbee75daced2a4d65: *id108
     155ccdada074a263839b3e83e8dca26a6bc485bf:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/70cdc2b891c9338c28b5079ca151eaee915df619',
@@ -1425,6 +1540,13 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/4ce5f1b6944a6eef561cd5a6ffe8d509c04d2220',
         sha: 4ce5f1b6944a6eef561cd5a6ffe8d509c04d2220, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/4ce5f1b6944a6eef561cd5a6ffe8d509c04d2220'}
       sha: 19541b024bfaa1afc8e2b7fea3b0f82aa2d83d35
+    1a4020660b097183f60a9d7a728dca2372b92cc4:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/5341ac7b064a7916fb1728f4d914cb8bdd9f35ef',
+        sha: 5341ac7b064a7916fb1728f4d914cb8bdd9f35ef, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/5341ac7b064a7916fb1728f4d914cb8bdd9f35ef'}
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/53b1db850bba7cb9fb42cf9331e6ac4bdabaadaa',
+        sha: 53b1db850bba7cb9fb42cf9331e6ac4bdabaadaa, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/53b1db850bba7cb9fb42cf9331e6ac4bdabaadaa'}
+      sha: 1a4020660b097183f60a9d7a728dca2372b92cc4
     1d89042393ca5d1af1e21adac040c644087ae999:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5296996b8a29d5805ccb74e853534df181f78b15',
@@ -1446,14 +1568,14 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/bc8301e44f6bf2acdd42082103a105c215ed0940',
         sha: bc8301e44f6bf2acdd42082103a105c215ed0940, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/bc8301e44f6bf2acdd42082103a105c215ed0940'}
       sha: 21cec874b34cfef82c9b4daf2e8a8a80b4400abf
-    2201b03d0: &id107
+    2201b03d0: &id109
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/e309b262f7cf4ed49c8e7f57c881a28dd7e3b685',
         sha: e309b262f7cf4ed49c8e7f57c881a28dd7e3b685, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/e309b262f7cf4ed49c8e7f57c881a28dd7e3b685'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/aba1629d09e9816f7c3efe74cdad57d5b97320a7',
         sha: aba1629d09e9816f7c3efe74cdad57d5b97320a7, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/aba1629d09e9816f7c3efe74cdad57d5b97320a7'}
       sha: 2201b03d087ab3b4c9cd36f6c5951e8f489a3412
-    2201b03d087ab3b4c9cd36f6c5951e8f489a3412: *id107
+    2201b03d087ab3b4c9cd36f6c5951e8f489a3412: *id109
     2247d83a4032ee4af9b8c665e79ef8f642d5ccae:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5f3e7c529ecfa47a44c3cdeee3d9a39bbd585770',
@@ -1461,22 +1583,22 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/7243988b06dcb1d3eda068189ca5f0fd364258c5',
         sha: 7243988b06dcb1d3eda068189ca5f0fd364258c5, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/7243988b06dcb1d3eda068189ca5f0fd364258c5'}
       sha: 2247d83a4032ee4af9b8c665e79ef8f642d5ccae
-    225f080ad: &id108
+    225f080ad: &id110
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/11062a4855ccb734883e0cabbee75daced2a4d65',
         sha: 11062a4855ccb734883e0cabbee75daced2a4d65, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/11062a4855ccb734883e0cabbee75daced2a4d65'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/ac2de224f70370cd7639fdc3f49135b83dc7ddac',
         sha: ac2de224f70370cd7639fdc3f49135b83dc7ddac, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/ac2de224f70370cd7639fdc3f49135b83dc7ddac'}
       sha: 225f080ade4b2b890a816817e51c348a521dc117
-    225f080ade4b2b890a816817e51c348a521dc117: *id108
-    23914f77f: &id109
+    225f080ade4b2b890a816817e51c348a521dc117: *id110
+    23914f77f: &id111
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/50039df610a6e0b9c492f7cc538d5caf5579a6ae',
         sha: 50039df610a6e0b9c492f7cc538d5caf5579a6ae, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/50039df610a6e0b9c492f7cc538d5caf5579a6ae'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/d8a0ccfa72289e023911a25c8c40def81e24110b',
         sha: d8a0ccfa72289e023911a25c8c40def81e24110b, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/d8a0ccfa72289e023911a25c8c40def81e24110b'}
       sha: 23914f77fe6751ba1b9df6902086d1dcd92bdeac
-    23914f77fe6751ba1b9df6902086d1dcd92bdeac: *id109
+    23914f77fe6751ba1b9df6902086d1dcd92bdeac: *id111
     256f10f2b3fda05043af735b3a835058b8e054b4:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/c628f17a7d086e7f76788e5e5a89e136cfe57058',
@@ -1484,30 +1606,30 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/38bf7091604908779b5c32dac18f365fa5d263db',
         sha: 38bf7091604908779b5c32dac18f365fa5d263db, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/38bf7091604908779b5c32dac18f365fa5d263db'}
       sha: 256f10f2b3fda05043af735b3a835058b8e054b4
-    2857048f4: &id110
+    2857048f4: &id112
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/9c2fc76ecd736d9930a6fd8c2fec4ed192f96d74',
         sha: 9c2fc76ecd736d9930a6fd8c2fec4ed192f96d74, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/9c2fc76ecd736d9930a6fd8c2fec4ed192f96d74'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/c5dc4290b2b26803663225739dd93dc82e801c4f',
         sha: c5dc4290b2b26803663225739dd93dc82e801c4f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/c5dc4290b2b26803663225739dd93dc82e801c4f'}
       sha: 2857048f46bd60bacd52e2e62e7591a41c4c312b
-    2857048f46bd60bacd52e2e62e7591a41c4c312b: *id110
-    2c3fcc051: &id111
+    2857048f46bd60bacd52e2e62e7591a41c4c312b: *id112
+    2c3fcc051: &id113
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/2857048f46bd60bacd52e2e62e7591a41c4c312b',
         sha: 2857048f46bd60bacd52e2e62e7591a41c4c312b, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/2857048f46bd60bacd52e2e62e7591a41c4c312b'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/3caca70defe164ac912019fb7bcbd7c5a2512955',
         sha: 3caca70defe164ac912019fb7bcbd7c5a2512955, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/3caca70defe164ac912019fb7bcbd7c5a2512955'}
       sha: 2c3fcc0519a8b3fe9b4a638af50144ba2199d06a
-    2c3fcc0519a8b3fe9b4a638af50144ba2199d06a: *id111
-    2f7d0c2f8: &id112
+    2c3fcc0519a8b3fe9b4a638af50144ba2199d06a: *id113
+    2f7d0c2f8: &id114
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/bccf5c2eb5ced8af9984de43fdb7dc45b960c3e5',
         sha: bccf5c2eb5ced8af9984de43fdb7dc45b960c3e5, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/bccf5c2eb5ced8af9984de43fdb7dc45b960c3e5'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/21f52d6b8b0d5a8304b5608e51f10c2a4edf063e',
         sha: 21f52d6b8b0d5a8304b5608e51f10c2a4edf063e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/21f52d6b8b0d5a8304b5608e51f10c2a4edf063e'}
       sha: 2f7d0c2f8591b106d353cfdb25b9296553f399be
-    2f7d0c2f8591b106d353cfdb25b9296553f399be: *id112
+    2f7d0c2f8591b106d353cfdb25b9296553f399be: *id114
     3147b74da8e5b529bd60aaef256df06c17909c2d:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/23914f77fe6751ba1b9df6902086d1dcd92bdeac',
@@ -1515,14 +1637,14 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/c654628f5642c98216b1435c3e6d7cb3d11ad5a5',
         sha: c654628f5642c98216b1435c3e6d7cb3d11ad5a5, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/c654628f5642c98216b1435c3e6d7cb3d11ad5a5'}
       sha: 3147b74da8e5b529bd60aaef256df06c17909c2d
-    39a261197: &id113
+    39a261197: &id115
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5e9ef0966fdcaf29826c6ecf050a25344602f5af',
         sha: 5e9ef0966fdcaf29826c6ecf050a25344602f5af, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/5e9ef0966fdcaf29826c6ecf050a25344602f5af'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/509df875243a0907bb6065f39011352a1084ff4c',
         sha: 509df875243a0907bb6065f39011352a1084ff4c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/509df875243a0907bb6065f39011352a1084ff4c'}
       sha: 39a2611976645ac419959470638c4b7bf6b7a747
-    39a2611976645ac419959470638c4b7bf6b7a747: *id113
+    39a2611976645ac419959470638c4b7bf6b7a747: *id115
     3e6f7ad113deedf63acc47eeed8a5d47e0082f27:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/1e4f0b717d16eed9ff39dfa839b9cd12046f567e',
@@ -1556,14 +1678,14 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/25ee44aa8df1f6697b6f8cf5c0b842c60886867e',
         sha: 25ee44aa8df1f6697b6f8cf5c0b842c60886867e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/25ee44aa8df1f6697b6f8cf5c0b842c60886867e'}
       sha: 45a77eb83619e3045ef8d9c907680c1747c3c8f6
-    495b829d7: &id114
+    495b829d7: &id116
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/bb7eeecd794183379b6798f3bc409e8734c7f02b',
         sha: bb7eeecd794183379b6798f3bc409e8734c7f02b, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/bb7eeecd794183379b6798f3bc409e8734c7f02b'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/8a731d9a96ba0d115b49a4517eea78ed909feae5',
         sha: 8a731d9a96ba0d115b49a4517eea78ed909feae5, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/8a731d9a96ba0d115b49a4517eea78ed909feae5'}
       sha: 495b829d716a1c15a536edc6e8739f85a89bfc13
-    495b829d716a1c15a536edc6e8739f85a89bfc13: *id114
+    495b829d716a1c15a536edc6e8739f85a89bfc13: *id116
     4a34f5e71a4e2e96cff65811d6e01436c777d977:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5ad543d25c9baec8515c37f322601cc9f9198df0',
@@ -1578,14 +1700,14 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/b37759d78d048d173138a8fa6a294c49817741ae',
         sha: b37759d78d048d173138a8fa6a294c49817741ae, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/b37759d78d048d173138a8fa6a294c49817741ae'}
       sha: 4ca33ea39fc6a8cbbf1763bff3173f8d11cc646c
-    4dbd24ab9: &id115
+    4dbd24ab9: &id117
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/fbd9700bb406974fa8defd90c17d5bb971998a29',
         sha: fbd9700bb406974fa8defd90c17d5bb971998a29, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/fbd9700bb406974fa8defd90c17d5bb971998a29'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/88cb4e0527d130fdeab1c87ecc8328855b3f2e41',
         sha: 88cb4e0527d130fdeab1c87ecc8328855b3f2e41, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/88cb4e0527d130fdeab1c87ecc8328855b3f2e41'}
       sha: 4dbd24ab939ae05062e758a23b79422a4e415176
-    4dbd24ab939ae05062e758a23b79422a4e415176: *id115
+    4dbd24ab939ae05062e758a23b79422a4e415176: *id117
     50039df610a6e0b9c492f7cc538d5caf5579a6ae:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/84ccb1b0653506c8bbd8be7f28ade61ab08f379b',
@@ -1600,28 +1722,35 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/0cc37321c5afd861db8bfa89437a3ae52782eb04',
         sha: 0cc37321c5afd861db8bfa89437a3ae52782eb04, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/0cc37321c5afd861db8bfa89437a3ae52782eb04'}
       sha: 5296996b8a29d5805ccb74e853534df181f78b15
-    595e85ebc: &id116
+    5341ac7b064a7916fb1728f4d914cb8bdd9f35ef:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/4dbd24ab939ae05062e758a23b79422a4e415176',
+        sha: 4dbd24ab939ae05062e758a23b79422a4e415176, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/4dbd24ab939ae05062e758a23b79422a4e415176'}
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/cdb93b1e022d75ce04bc60b0ca5da0e8f586605f',
+        sha: cdb93b1e022d75ce04bc60b0ca5da0e8f586605f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/cdb93b1e022d75ce04bc60b0ca5da0e8f586605f'}
+      sha: 5341ac7b064a7916fb1728f4d914cb8bdd9f35ef
+    595e85ebc: &id118
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/67514a8251f12fbca7991db08afa80ec9b818ec9',
         sha: 67514a8251f12fbca7991db08afa80ec9b818ec9, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/67514a8251f12fbca7991db08afa80ec9b818ec9'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5bdbdb3e0b7b4598dec2804ed1c3d768a9a78962',
         sha: 5bdbdb3e0b7b4598dec2804ed1c3d768a9a78962, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/5bdbdb3e0b7b4598dec2804ed1c3d768a9a78962'}
       sha: 595e85ebcf0304438a68b3a4a3625c5f99880c04
-    595e85ebcf0304438a68b3a4a3625c5f99880c04: *id116
-    5a80fb2a0: &id117
+    595e85ebcf0304438a68b3a4a3625c5f99880c04: *id118
+    5a80fb2a0: &id119
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/495b829d716a1c15a536edc6e8739f85a89bfc13',
         sha: 495b829d716a1c15a536edc6e8739f85a89bfc13, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/495b829d716a1c15a536edc6e8739f85a89bfc13'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/6efaa80bd351aa759acf2377c00cf4c2c820067e',
         sha: 6efaa80bd351aa759acf2377c00cf4c2c820067e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/6efaa80bd351aa759acf2377c00cf4c2c820067e'}
       sha: 5a80fb2a017723b4c1448aa7136a385c2452164f
-    5a80fb2a017723b4c1448aa7136a385c2452164f: *id117
-    5aa76f7da: &id118
+    5a80fb2a017723b4c1448aa7136a385c2452164f: *id119
+    5aa76f7da: &id120
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/0442e03a66c9bea6dd71b92af9e0445655df635c',
         sha: 0442e03a66c9bea6dd71b92af9e0445655df635c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/0442e03a66c9bea6dd71b92af9e0445655df635c'}
       sha: 5aa76f7da8618d413fc624606945de33623a0966
-    5aa76f7da8618d413fc624606945de33623a0966: *id118
+    5aa76f7da8618d413fc624606945de33623a0966: *id120
     5ad543d25c9baec8515c37f322601cc9f9198df0:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/4ca33ea39fc6a8cbbf1763bff3173f8d11cc646c',
@@ -1629,14 +1758,14 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/73a9d878644a556a1853405ab061e3b4af9fdb84',
         sha: 73a9d878644a556a1853405ab061e3b4af9fdb84, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/73a9d878644a556a1853405ab061e3b4af9fdb84'}
       sha: 5ad543d25c9baec8515c37f322601cc9f9198df0
-    5e9ef0966: &id119
+    5e9ef0966: &id121
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/efecb47a94b1ba8552682a47d09a04837bbca6ca',
         sha: efecb47a94b1ba8552682a47d09a04837bbca6ca, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/efecb47a94b1ba8552682a47d09a04837bbca6ca'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/6b5c5fd0278fe9614b8286be9f0890eb43cd9a7c',
         sha: 6b5c5fd0278fe9614b8286be9f0890eb43cd9a7c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/6b5c5fd0278fe9614b8286be9f0890eb43cd9a7c'}
       sha: 5e9ef0966fdcaf29826c6ecf050a25344602f5af
-    5e9ef0966fdcaf29826c6ecf050a25344602f5af: *id119
+    5e9ef0966fdcaf29826c6ecf050a25344602f5af: *id121
     5f3e7c529ecfa47a44c3cdeee3d9a39bbd585770:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/8fa3444e76a9a9b37e2d7211890e70b8f9fbf520',
@@ -1644,30 +1773,30 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/c81efef6fbee25fac5631c32d0bf9e6df9a7c187',
         sha: c81efef6fbee25fac5631c32d0bf9e6df9a7c187, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/c81efef6fbee25fac5631c32d0bf9e6df9a7c187'}
       sha: 5f3e7c529ecfa47a44c3cdeee3d9a39bbd585770
-    624cc17f3: &id120
+    624cc17f3: &id122
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/ee872677ab17f8d5e7a89f5fec070ac70b1a8571',
         sha: ee872677ab17f8d5e7a89f5fec070ac70b1a8571, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/ee872677ab17f8d5e7a89f5fec070ac70b1a8571'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/ca9ed73d6ce4a5be6667cb60de87090aed61100e',
         sha: ca9ed73d6ce4a5be6667cb60de87090aed61100e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/ca9ed73d6ce4a5be6667cb60de87090aed61100e'}
       sha: 624cc17f3be08d31291fb1dc76cc48b40118e79e
-    624cc17f3be08d31291fb1dc76cc48b40118e79e: *id120
-    67514a825: &id121
+    624cc17f3be08d31291fb1dc76cc48b40118e79e: *id122
+    67514a825: &id123
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/96cc16c699989893b266ee3d11f4867d3dd223b2',
         sha: 96cc16c699989893b266ee3d11f4867d3dd223b2, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/96cc16c699989893b266ee3d11f4867d3dd223b2'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/6942437e3785c1b18138a1c2bfdfb484a5bca0f3',
         sha: 6942437e3785c1b18138a1c2bfdfb484a5bca0f3, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/6942437e3785c1b18138a1c2bfdfb484a5bca0f3'}
       sha: 67514a8251f12fbca7991db08afa80ec9b818ec9
-    67514a8251f12fbca7991db08afa80ec9b818ec9: *id121
-    6b9b42d9a: &id122
+    67514a8251f12fbca7991db08afa80ec9b818ec9: *id123
+    6b9b42d9a: &id124
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/7994714c4beb6246bc2544cc3f84fcd32bd9fea5',
         sha: 7994714c4beb6246bc2544cc3f84fcd32bd9fea5, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/7994714c4beb6246bc2544cc3f84fcd32bd9fea5'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/8f07132a0cfdc649e775d51be2121afb4e06b3cc',
         sha: 8f07132a0cfdc649e775d51be2121afb4e06b3cc, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/8f07132a0cfdc649e775d51be2121afb4e06b3cc'}
       sha: 6b9b42d9af6f6ae288a611d07af3d16d9f3be730
-    6b9b42d9af6f6ae288a611d07af3d16d9f3be730: *id122
+    6b9b42d9af6f6ae288a611d07af3d16d9f3be730: *id124
     6db6db340e63fe9702789e9bc655128164ba26f1:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/21cec874b34cfef82c9b4daf2e8a8a80b4400abf',
@@ -1687,38 +1816,38 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/c0368bfdc44d38d34d7137c5b7e12954e8eb0f4d',
         sha: c0368bfdc44d38d34d7137c5b7e12954e8eb0f4d, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/c0368bfdc44d38d34d7137c5b7e12954e8eb0f4d'}
       sha: 72159fd3848ecc0a79ce2200c45f34a949c02062
-    7263ed920: &id123
+    7263ed920: &id125
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/6db6db340e63fe9702789e9bc655128164ba26f1',
         sha: 6db6db340e63fe9702789e9bc655128164ba26f1, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/6db6db340e63fe9702789e9bc655128164ba26f1'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/4bc023b15d80b38a5b1abd9e5179a5abddfbafea',
         sha: 4bc023b15d80b38a5b1abd9e5179a5abddfbafea, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/4bc023b15d80b38a5b1abd9e5179a5abddfbafea'}
       sha: 7263ed92087977ce55bc7e05246fcc98a015834b
-    7263ed92087977ce55bc7e05246fcc98a015834b: *id123
-    74af2b476: &id124
+    7263ed92087977ce55bc7e05246fcc98a015834b: *id125
+    74af2b476: &id126
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/b6ccf588f028aeb6ac6e42de8431989aaabd1205',
         sha: b6ccf588f028aeb6ac6e42de8431989aaabd1205, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/b6ccf588f028aeb6ac6e42de8431989aaabd1205'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/2d9e0e74e8e240f4dbfc0d142f6d7a38da8c9f45',
         sha: 2d9e0e74e8e240f4dbfc0d142f6d7a38da8c9f45, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/2d9e0e74e8e240f4dbfc0d142f6d7a38da8c9f45'}
       sha: 74af2b47629576bbcebfb2991e5d7093ac207d9e
-    74af2b47629576bbcebfb2991e5d7093ac207d9e: *id124
-    782aefb87: &id125
+    74af2b47629576bbcebfb2991e5d7093ac207d9e: *id126
+    782aefb87: &id127
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5a80fb2a017723b4c1448aa7136a385c2452164f',
         sha: 5a80fb2a017723b4c1448aa7136a385c2452164f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/5a80fb2a017723b4c1448aa7136a385c2452164f'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5d57c8d77ca0e666088ab2aa9b6607b1240d633f',
         sha: 5d57c8d77ca0e666088ab2aa9b6607b1240d633f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/5d57c8d77ca0e666088ab2aa9b6607b1240d633f'}
       sha: 782aefb879a8e2cdf4a3f6ec47571fbd9114bd53
-    782aefb879a8e2cdf4a3f6ec47571fbd9114bd53: *id125
-    7994714c4: &id126
+    782aefb879a8e2cdf4a3f6ec47571fbd9114bd53: *id127
+    7994714c4: &id128
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/a9da51e9e8283313e8e4ed8183f13a8bccf09d8c',
         sha: a9da51e9e8283313e8e4ed8183f13a8bccf09d8c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/a9da51e9e8283313e8e4ed8183f13a8bccf09d8c'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/2c5ed5a33df401efca7dda1f2cc39a2697b9005c',
         sha: 2c5ed5a33df401efca7dda1f2cc39a2697b9005c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/2c5ed5a33df401efca7dda1f2cc39a2697b9005c'}
       sha: 7994714c4beb6246bc2544cc3f84fcd32bd9fea5
-    7994714c4beb6246bc2544cc3f84fcd32bd9fea5: *id126
+    7994714c4beb6246bc2544cc3f84fcd32bd9fea5: *id128
     7e64a7b0a42a34afe487d257dec6b7393fa2a74a:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/00a33660ff1f00ee0fe07475f5b70188e0765dfa',
@@ -1733,22 +1862,22 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/d149bf7e3b5dfbafe26ba33df1b865e2182a650c',
         sha: d149bf7e3b5dfbafe26ba33df1b865e2182a650c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/d149bf7e3b5dfbafe26ba33df1b865e2182a650c'}
       sha: 84ccb1b0653506c8bbd8be7f28ade61ab08f379b
-    86fe2d4f0: &id127
+    86fe2d4f0: &id129
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/39a2611976645ac419959470638c4b7bf6b7a747',
         sha: 39a2611976645ac419959470638c4b7bf6b7a747, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/39a2611976645ac419959470638c4b7bf6b7a747'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/f06587e643bf3f755c23c676f6f1cab3b63078f1',
         sha: f06587e643bf3f755c23c676f6f1cab3b63078f1, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/f06587e643bf3f755c23c676f6f1cab3b63078f1'}
       sha: 86fe2d4f0b811821e016d1b4f6c2b7a42f1ef2b9
-    86fe2d4f0b811821e016d1b4f6c2b7a42f1ef2b9: *id127
-    87c168694: &id128
+    86fe2d4f0b811821e016d1b4f6c2b7a42f1ef2b9: *id129
+    87c168694: &id130
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/782aefb879a8e2cdf4a3f6ec47571fbd9114bd53',
         sha: 782aefb879a8e2cdf4a3f6ec47571fbd9114bd53, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/782aefb879a8e2cdf4a3f6ec47571fbd9114bd53'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/1f02f666db9046c6126b1122918e9fba6be22f5c',
         sha: 1f02f666db9046c6126b1122918e9fba6be22f5c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/1f02f666db9046c6126b1122918e9fba6be22f5c'}
       sha: 87c16869435865abdaee662b59f66695733f1487
-    87c16869435865abdaee662b59f66695733f1487: *id128
+    87c16869435865abdaee662b59f66695733f1487: *id130
     88d98bada3b6fb9a444f9783fcfbcb251c3817ac:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/3fc9d228ae8134dec1ba225d476a72b8b0518927',
@@ -1761,22 +1890,22 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/7160c997620c2f97c5bdea50271413e23444112f',
         sha: 7160c997620c2f97c5bdea50271413e23444112f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/7160c997620c2f97c5bdea50271413e23444112f'}
       sha: 8a69559a1cb27a8c1691f472aadb27e5d59be3bf
-    8fa3444e7: &id129
+    8fa3444e7: &id131
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5aa76f7da8618d413fc624606945de33623a0966',
         sha: 5aa76f7da8618d413fc624606945de33623a0966, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/5aa76f7da8618d413fc624606945de33623a0966'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/9d4db2dee7bcc64806fd3b5cd66fd17272335bcf',
         sha: 9d4db2dee7bcc64806fd3b5cd66fd17272335bcf, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/9d4db2dee7bcc64806fd3b5cd66fd17272335bcf'}
       sha: 8fa3444e76a9a9b37e2d7211890e70b8f9fbf520
-    8fa3444e76a9a9b37e2d7211890e70b8f9fbf520: *id129
-    96cc16c69: &id130
+    8fa3444e76a9a9b37e2d7211890e70b8f9fbf520: *id131
+    96cc16c69: &id132
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/74af2b47629576bbcebfb2991e5d7093ac207d9e',
         sha: 74af2b47629576bbcebfb2991e5d7093ac207d9e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/74af2b47629576bbcebfb2991e5d7093ac207d9e'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/c728b9bab7a77282bc1573278fd7ed0768ce293c',
         sha: c728b9bab7a77282bc1573278fd7ed0768ce293c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/c728b9bab7a77282bc1573278fd7ed0768ce293c'}
       sha: 96cc16c699989893b266ee3d11f4867d3dd223b2
-    96cc16c699989893b266ee3d11f4867d3dd223b2: *id130
+    96cc16c699989893b266ee3d11f4867d3dd223b2: *id132
     9c2fc76ecd736d9930a6fd8c2fec4ed192f96d74:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/45a77eb83619e3045ef8d9c907680c1747c3c8f6',
@@ -1784,30 +1913,30 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/f4200a62d6a7c24e2dc8126540c653522f46e498',
         sha: f4200a62d6a7c24e2dc8126540c653522f46e498, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/f4200a62d6a7c24e2dc8126540c653522f46e498'}
       sha: 9c2fc76ecd736d9930a6fd8c2fec4ed192f96d74
-    9dd40ca35: &id131
+    9dd40ca35: &id133
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/073a2f4996f891c6a32b2eca8f0eced7594d539e',
         sha: 073a2f4996f891c6a32b2eca8f0eced7594d539e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/073a2f4996f891c6a32b2eca8f0eced7594d539e'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/b4b70d67cc6151d5050fa4e7cc3471f4195b1b36',
         sha: b4b70d67cc6151d5050fa4e7cc3471f4195b1b36, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/b4b70d67cc6151d5050fa4e7cc3471f4195b1b36'}
       sha: 9dd40ca35c624f25a106a7f31d694e4f56b48af0
-    9dd40ca35c624f25a106a7f31d694e4f56b48af0: *id131
-    9ddace0b0: &id132
+    9dd40ca35c624f25a106a7f31d694e4f56b48af0: *id133
+    9ddace0b0: &id134
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/88d98bada3b6fb9a444f9783fcfbcb251c3817ac',
         sha: 88d98bada3b6fb9a444f9783fcfbcb251c3817ac, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/88d98bada3b6fb9a444f9783fcfbcb251c3817ac'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/7f6ef2ddbcbb4a4a1b063ea92469776bbb3dbe19',
         sha: 7f6ef2ddbcbb4a4a1b063ea92469776bbb3dbe19, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/7f6ef2ddbcbb4a4a1b063ea92469776bbb3dbe19'}
       sha: 9ddace0b03f39d3b97589c912a0d5a96bce05a2f
-    9ddace0b03f39d3b97589c912a0d5a96bce05a2f: *id132
-    a4dc52a2f: &id133
+    9ddace0b03f39d3b97589c912a0d5a96bce05a2f: *id134
+    a4dc52a2f: &id135
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/b406d84d8e2f87fe37aae1bede8e0b29e46383cc',
         sha: b406d84d8e2f87fe37aae1bede8e0b29e46383cc, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/b406d84d8e2f87fe37aae1bede8e0b29e46383cc'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/1482dfab4c72fbab7ba8ef25a5218ddbfa2781a6',
         sha: 1482dfab4c72fbab7ba8ef25a5218ddbfa2781a6, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/1482dfab4c72fbab7ba8ef25a5218ddbfa2781a6'}
       sha: a4dc52a2f0cf80bf7c986d7803559e86d103140f
-    a4dc52a2f0cf80bf7c986d7803559e86d103140f: *id133
+    a4dc52a2f0cf80bf7c986d7803559e86d103140f: *id135
     a6ccdea55329599ebfcb1b95adfeb62833b35864:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/d8fc2aa5eae17966711a366e6c483b0e7e0fdef0',
@@ -1815,14 +1944,14 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/458dd09526dc39a60bd637abacdb12a1b0a47d1a',
         sha: 458dd09526dc39a60bd637abacdb12a1b0a47d1a, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/458dd09526dc39a60bd637abacdb12a1b0a47d1a'}
       sha: a6ccdea55329599ebfcb1b95adfeb62833b35864
-    a9da51e9e: &id134
+    a9da51e9e: &id136
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/dd72e1b0705406190b6db528366052d40fe4fc86',
         sha: dd72e1b0705406190b6db528366052d40fe4fc86, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/dd72e1b0705406190b6db528366052d40fe4fc86'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/116b103f3db0574161d2160fa5fa6ad6728f8eab',
         sha: 116b103f3db0574161d2160fa5fa6ad6728f8eab, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/116b103f3db0574161d2160fa5fa6ad6728f8eab'}
       sha: a9da51e9e8283313e8e4ed8183f13a8bccf09d8c
-    a9da51e9e8283313e8e4ed8183f13a8bccf09d8c: *id134
+    a9da51e9e8283313e8e4ed8183f13a8bccf09d8c: *id136
     b406d84d8e2f87fe37aae1bede8e0b29e46383cc:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/44f63d5a70422f99d647376ee37528ff43682fb1',
@@ -1830,22 +1959,22 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/5cb11cd8761e4cc7f7db526879eb5d7db503cad1',
         sha: 5cb11cd8761e4cc7f7db526879eb5d7db503cad1, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/5cb11cd8761e4cc7f7db526879eb5d7db503cad1'}
       sha: b406d84d8e2f87fe37aae1bede8e0b29e46383cc
-    b6ccf588f: &id135
+    b6ccf588f: &id137
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/87c16869435865abdaee662b59f66695733f1487',
         sha: 87c16869435865abdaee662b59f66695733f1487, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/87c16869435865abdaee662b59f66695733f1487'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/c917f704fee3171c9f0619bec2a7ba3da455209e',
         sha: c917f704fee3171c9f0619bec2a7ba3da455209e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/c917f704fee3171c9f0619bec2a7ba3da455209e'}
       sha: b6ccf588f028aeb6ac6e42de8431989aaabd1205
-    b6ccf588f028aeb6ac6e42de8431989aaabd1205: *id135
-    bb7eeecd7: &id136
+    b6ccf588f028aeb6ac6e42de8431989aaabd1205: *id137
+    bb7eeecd7: &id138
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/7e64a7b0a42a34afe487d257dec6b7393fa2a74a',
         sha: 7e64a7b0a42a34afe487d257dec6b7393fa2a74a, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/7e64a7b0a42a34afe487d257dec6b7393fa2a74a'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/8938d2cd46109c8c2ffa8d8388781e46be8df555',
         sha: 8938d2cd46109c8c2ffa8d8388781e46be8df555, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/8938d2cd46109c8c2ffa8d8388781e46be8df555'}
       sha: bb7eeecd794183379b6798f3bc409e8734c7f02b
-    bb7eeecd794183379b6798f3bc409e8734c7f02b: *id136
+    bb7eeecd794183379b6798f3bc409e8734c7f02b: *id138
     c2e56bf68403409b44c87154627372aa0ed2e998:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/256f10f2b3fda05043af735b3a835058b8e054b4',
@@ -1853,30 +1982,37 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/b382d54adb11a81856a9f868cacffefbfcaf7719',
         sha: b382d54adb11a81856a9f868cacffefbfcaf7719, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/b382d54adb11a81856a9f868cacffefbfcaf7719'}
       sha: c2e56bf68403409b44c87154627372aa0ed2e998
-    c628f17a7: &id137
+    c628f17a7: &id139
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/9ddace0b03f39d3b97589c912a0d5a96bce05a2f',
         sha: 9ddace0b03f39d3b97589c912a0d5a96bce05a2f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/9ddace0b03f39d3b97589c912a0d5a96bce05a2f'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/497694f5c2f499875fbca0b6f3f4921078fc4ca6',
         sha: 497694f5c2f499875fbca0b6f3f4921078fc4ca6, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/497694f5c2f499875fbca0b6f3f4921078fc4ca6'}
       sha: c628f17a7d086e7f76788e5e5a89e136cfe57058
-    c628f17a7d086e7f76788e5e5a89e136cfe57058: *id137
-    d6a75837f: &id138
+    c628f17a7d086e7f76788e5e5a89e136cfe57058: *id139
+    c71c129cb8086ef15fe61a5838c97480f5a1142c:
+      parents:
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/1a4020660b097183f60a9d7a728dca2372b92cc4',
+        sha: 1a4020660b097183f60a9d7a728dca2372b92cc4, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/1a4020660b097183f60a9d7a728dca2372b92cc4'}
+      - {html_url: 'https://github.com/camptocamp/ngeo/commit/a722b60a569dad286fad860d62a60c53a2fa5f61',
+        sha: a722b60a569dad286fad860d62a60c53a2fa5f61, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/a722b60a569dad286fad860d62a60c53a2fa5f61'}
+      sha: c71c129cb8086ef15fe61a5838c97480f5a1142c
+    d6a75837f: &id140
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/7263ed92087977ce55bc7e05246fcc98a015834b',
         sha: 7263ed92087977ce55bc7e05246fcc98a015834b, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/7263ed92087977ce55bc7e05246fcc98a015834b'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/a9e5855db0c9765d7249c0e3add916391642d95b',
         sha: a9e5855db0c9765d7249c0e3add916391642d95b, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/a9e5855db0c9765d7249c0e3add916391642d95b'}
       sha: d6a75837fb33080950c3911812be70447984715a
-    d6a75837fb33080950c3911812be70447984715a: *id138
-    d8fc2aa5e: &id139
+    d6a75837fb33080950c3911812be70447984715a: *id140
+    d8fc2aa5e: &id141
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/19541b024bfaa1afc8e2b7fea3b0f82aa2d83d35',
         sha: 19541b024bfaa1afc8e2b7fea3b0f82aa2d83d35, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/19541b024bfaa1afc8e2b7fea3b0f82aa2d83d35'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/6311851479de17d64b3b0c5f36e537f239e9c16f',
         sha: 6311851479de17d64b3b0c5f36e537f239e9c16f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/6311851479de17d64b3b0c5f36e537f239e9c16f'}
       sha: d8fc2aa5eae17966711a366e6c483b0e7e0fdef0
-    d8fc2aa5eae17966711a366e6c483b0e7e0fdef0: *id139
+    d8fc2aa5eae17966711a366e6c483b0e7e0fdef0: *id141
     dd72e1b0705406190b6db528366052d40fe4fc86:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/72159fd3848ecc0a79ce2200c45f34a949c02062',
@@ -1884,22 +2020,22 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/458a3acc712513cc11268e08fb60ce2d9882fa2d',
         sha: 458a3acc712513cc11268e08fb60ce2d9882fa2d, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/458a3acc712513cc11268e08fb60ce2d9882fa2d'}
       sha: dd72e1b0705406190b6db528366052d40fe4fc86
-    df23d3858: &id140
+    df23d3858: &id142
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/a4dc52a2f0cf80bf7c986d7803559e86d103140f',
         sha: a4dc52a2f0cf80bf7c986d7803559e86d103140f, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/a4dc52a2f0cf80bf7c986d7803559e86d103140f'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/ac38a9ba3b4070075786aa391346fa28130d6317',
         sha: ac38a9ba3b4070075786aa391346fa28130d6317, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/ac38a9ba3b4070075786aa391346fa28130d6317'}
       sha: df23d38588995dc64d8dbb8dcf01fa64c4f3797d
-    df23d38588995dc64d8dbb8dcf01fa64c4f3797d: *id140
-    e2d70763f: &id141
+    df23d38588995dc64d8dbb8dcf01fa64c4f3797d: *id142
+    e2d70763f: &id143
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/624cc17f3be08d31291fb1dc76cc48b40118e79e',
         sha: 624cc17f3be08d31291fb1dc76cc48b40118e79e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/624cc17f3be08d31291fb1dc76cc48b40118e79e'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/1ebd87997fffd9bb0c4bc0a7d1e79b97b5f6bb9c',
         sha: 1ebd87997fffd9bb0c4bc0a7d1e79b97b5f6bb9c, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/1ebd87997fffd9bb0c4bc0a7d1e79b97b5f6bb9c'}
       sha: e2d70763f7855a9d25653589ae3311156861afd3
-    e2d70763f7855a9d25653589ae3311156861afd3: *id141
+    e2d70763f7855a9d25653589ae3311156861afd3: *id143
     e309b262f7cf4ed49c8e7f57c881a28dd7e3b685:
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/2f7d0c2f8591b106d353cfdb25b9296553f399be',
@@ -1914,22 +2050,22 @@ commits:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/7df5a964d5ca31f5a01d64bc179f7d1b1a36d2d9',
         sha: 7df5a964d5ca31f5a01d64bc179f7d1b1a36d2d9, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/7df5a964d5ca31f5a01d64bc179f7d1b1a36d2d9'}
       sha: ee872677ab17f8d5e7a89f5fec070ac70b1a8571
-    efecb47a9: &id142
+    efecb47a9: &id144
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/e2d70763f7855a9d25653589ae3311156861afd3',
         sha: e2d70763f7855a9d25653589ae3311156861afd3, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/e2d70763f7855a9d25653589ae3311156861afd3'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/ddbe5580165dc85e6ea2c1de012caa0857cb65e4',
         sha: ddbe5580165dc85e6ea2c1de012caa0857cb65e4, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/ddbe5580165dc85e6ea2c1de012caa0857cb65e4'}
       sha: efecb47a94b1ba8552682a47d09a04837bbca6ca
-    efecb47a94b1ba8552682a47d09a04837bbca6ca: *id142
-    fbd9700bb: &id143
+    efecb47a94b1ba8552682a47d09a04837bbca6ca: *id144
+    fbd9700bb: &id145
       parents:
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/2247d83a4032ee4af9b8c665e79ef8f642d5ccae',
         sha: 2247d83a4032ee4af9b8c665e79ef8f642d5ccae, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/2247d83a4032ee4af9b8c665e79ef8f642d5ccae'}
       - {html_url: 'https://github.com/camptocamp/ngeo/commit/1659a583083632ec4ab6a11be78d8149c127b00e',
         sha: 1659a583083632ec4ab6a11be78d8149c127b00e, url: 'https://api.github.com/repos/camptocamp/ngeo/commits/1659a583083632ec4ab6a11be78d8149c127b00e'}
       sha: fbd9700bb406974fa8defd90c17d5bb971998a29
-    fbd9700bb406974fa8defd90c17d5bb971998a29: *id143
+    fbd9700bb406974fa8defd90c17d5bb971998a29: *id145
 pulls:
   c2cgeoportal:
     01ee8569eac000fd07c88605567d3a49a0c51cc0: []
@@ -1942,6 +2078,10 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-04-24T05:46:02Z', created_at: '2020-04-23T16:11:16Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6207', number: 6207,
       state: closed, title: Fix used version during upgrade, updated_at: '2020-04-24T05:46:03Z'}
+    065bf2973921d46945200f7cb6639caf85e69c56:
+    - {base_ref: '2.5', closed_at: '2020-12-16T10:47:24Z', created_at: '2020-12-16T09:35:56Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7456', number: 7456,
+      state: closed, title: Add Python version for the audit, updated_at: '2020-12-16T10:47:26Z'}
     0671cd8adec8baf2ce00069a472427ee061d99e1: []
     06907d9593795f8188a5be5048756c854f7b4647:
     - {base_ref: '2.5', closed_at: '2020-04-28T06:33:44Z', created_at: '2020-04-27T17:03:08Z',
@@ -1975,6 +2115,11 @@ pulls:
     0c01a1aee: []
     0d068e17a68542d9d496be4200fae8dde7d96028: []
     0e3e841469f5e957dc36f3cddb47f7e38ca97e53: []
+    0ed42aca09eb2c00876b4ff9329dd22670110c54:
+    - {base_ref: '2.5', closed_at: '2020-12-15T15:03:06Z', created_at: '2020-12-15T13:42:14Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7448', number: 7448,
+      state: closed, title: Add USER_ID and ROLE_IDS in lingua extractor requests,
+      updated_at: '2020-12-15T15:03:08Z'}
     119fcccc0:
     - {base_ref: '2.5', closed_at: '2020-06-10T14:08:09Z', created_at: '2020-06-10T08:52:58Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6498', number: 6498,
@@ -2029,6 +2174,8 @@ pulls:
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6388', number: 6388,
       state: closed, title: Fix list4vrt, updated_at: '2020-05-18T15:52:33Z'}
     2483920c9053fef44a9c4d953df7cd85730bbdda: []
+    25328d08b0a6749a2eff85b865f71072de2f734d: []
+    25b65a70406b000d26f7a5e52f25c3dc9251b961: []
     2642def90:
     - {base_ref: '2.5', closed_at: '2020-06-17T08:10:42Z', created_at: '2020-06-16T14:36:15Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6534', number: 6534,
@@ -2052,11 +2199,21 @@ pulls:
       state: closed, title: Also build and publish QGIS 3.14, updated_at: '2020-09-03T09:31:54Z'}
     2c1df8f4c209ecd1d906dc1992cce897173130ab: []
     2c57ab630050c2cb60630976ed51173f62bcb64a: []
+    2e533dd58505bf7f739c25b1189eb4dc3919e51b:
+    - {base_ref: '2.5', closed_at: '2020-12-18T14:54:19Z', created_at: '2020-12-18T13:07:31Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7493', number: 7493,
+      state: closed, title: '[Backport 2.5] Use personal env file for local development
+        without breaking the CI', updated_at: '2020-12-18T14:54:20Z'}
     3797d8080:
     - {base_ref: '2.5', closed_at: '2020-09-23T07:02:12Z', created_at: '2020-09-16T15:09:54Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6984', number: 6984,
       state: closed, title: Do not request DescribeFeatureType if not OGCServer.wfs_support,
       updated_at: '2020-09-23T07:02:13Z'}
+    3bfdf6a23af97fa315207934fcbb1a0b1156176c:
+    - {base_ref: '2.5', closed_at: '2020-12-21T13:49:58Z', created_at: '2020-12-21T12:34:53Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7515', number: 7515,
+      state: closed, title: '[Backport 2.5] Bump c2cciutils from 1.0.dev20201217141839
+        to 1.0.dev20201221104733', updated_at: '2020-12-21T13:49:59Z'}
     3e046417269a951e044435ac2737a17e831879c0: []
     3f55713058ae12dff62f5421e209dbc0cd9e2916: []
     407a919bf:
@@ -2073,6 +2230,7 @@ pulls:
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6234', number: 6234,
       state: closed, title: Less errors on publishing documentation, updated_at: '2020-04-28T11:35:48Z'}
     43aec6adccab5638576f024b95ca3c43ff3354be: []
+    445c0f48fe0ec92fc18f1f5a18698d5c39b2d03f: []
     4516298c1cc9f00830303e9102141646c9534f88: []
     45c0ee77b:
     - {base_ref: '2.5', closed_at: '2020-05-08T12:37:38Z', created_at: '2020-05-08T11:33:44Z',
@@ -2098,6 +2256,11 @@ pulls:
       state: closed, title: '[Backport 2.5] Fix typo in manage-users script doc',
       updated_at: '2020-09-01T14:49:13Z'}
     5397876081e8fa388e85c52fc383fc691e46f91e: []
+    549f7ffab5df37887295e590aab09d55a223397f:
+    - {base_ref: '2.5', closed_at: '2020-12-15T13:46:36Z', created_at: '2020-12-14T09:43:33Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7434', number: 7434,
+      state: closed, title: '[Backport 2.5] Use c2cciutils - Publish to GitHub Container
+        Registry', updated_at: '2020-12-15T13:46:37Z'}
     55136b8655d39803eb396112f97b60741f1bd2cd: []
     56034ea2299f8a7a82b5f26ad2c721c3fb169f00: []
     564a02382: []
@@ -2106,6 +2269,7 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-06-24T08:09:32Z', created_at: '2020-06-23T12:52:02Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6565', number: 6565,
       state: closed, title: '[admin] Support undefined metadatas', updated_at: '2020-06-24T08:09:34Z'}
+    5b583758467e0db68c67f1bf19cdc095b37586ef: []
     5ceaeeeee:
     - {base_ref: '2.5', closed_at: '2020-09-01T11:24:21Z', created_at: '2020-09-01T07:54:47Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6899', number: 6899,
@@ -2155,7 +2319,16 @@ pulls:
       state: closed, title: Add missing CACHE_VERSION in config container, updated_at: '2020-05-13T07:29:14Z'}
     6f54e4e41: []
     6f54e4e414d734fe3dcdc87a9c2666d76098ba6c: []
+    78866bdd704e3ef713d7b4b00dcb27a883f9e7e1:
+    - {base_ref: '2.5', closed_at: '2020-12-16T15:11:26Z', created_at: '2020-12-16T11:43:07Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7463', number: 7463,
+      state: closed, title: '[Backport 2.5] Bump c2cciutils from 1.0.dev20201215125058
+        to 1.0.dev20201216094446', updated_at: '2020-12-16T15:11:27Z'}
     79dbc699b2be092663fb03c53788545a83bb84ac: []
+    7aafc903cbd26a733f0cfc9504b0a01fa9e226cd:
+    - {base_ref: '2.5', closed_at: '2020-12-21T14:53:42Z', created_at: '2020-12-21T10:01:00Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7506', number: 7506,
+      state: closed, title: Fix publish, updated_at: '2020-12-21T14:53:43Z'}
     7af945f989ea3c48feb63ddd63664f3ab41f958f: []
     7b1e9cae4f899b87a070214328ca342f0483554c: []
     7b4d3e9c7: []
@@ -2163,6 +2336,7 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-07-01T15:22:44Z', created_at: '2020-07-01T14:00:13Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6660', number: 6660,
       state: closed, title: 'Typo, Send the welcome email', updated_at: '2020-07-01T15:22:46Z'}
+    7d053944695cc6bd5914eca086a9e24cdbaa64eb: []
     7da350dba78af4928d3dc93bbe38e4d3891eaa37: []
     7f9a508e3bf6b4a9053bcf552c04c4f11f995ba8: []
     7fbe57e3b:
@@ -2186,6 +2360,11 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-06-26T10:15:16Z', created_at: '2020-06-25T13:26:42Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6586', number: 6586,
       state: closed, title: Upgrade getitfixed to version 1.0.14, updated_at: '2020-06-26T10:15:34Z'}
+    86a1ee5f02e7144c0f969b1d64fe57af00e40119:
+    - {base_ref: '2.5', closed_at: '2020-12-21T12:25:10Z', created_at: '2020-12-21T07:12:11Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7504', number: 7504,
+      state: closed, title: '[Backport 2.5] Gunicorn: adapt tmpdir setting for Docker
+        environment', updated_at: '2020-12-21T12:25:12Z'}
     887aa7795:
     - {base_ref: '2.5', closed_at: '2020-09-22T09:06:48Z', created_at: '2020-09-18T14:22:09Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6995', number: 6995,
@@ -2315,6 +2494,7 @@ pulls:
     b662c7e01b925aedaa718470b45ce496ebc5c78f: []
     b748d2df52dc2ab3e3b4a711c12cebc440921017: []
     b776062bafe1bd208f2dcc86be0484bd8128acea: []
+    b8a33f6097dcc021c7ddd4afbe76039de2e17948: []
     b9ef5c609:
     - {base_ref: '2.5', closed_at: '2020-09-24T16:14:15Z', created_at: '2020-09-24T15:03:25Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7018', number: 7018,
@@ -2325,6 +2505,7 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-06-29T15:14:05Z', created_at: '2020-06-29T08:27:58Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6607', number: 6607,
       state: closed, title: '[security] Upgrade pipenv', updated_at: '2020-06-29T15:14:06Z'}
+    bc77a92b58ec91643646638f0fd2ca521c1a18ef: []
     be43f3430: []
     be43f3430dae4a137f2735c8308ef12fb523e448: []
     bf16b69b7:
@@ -2376,6 +2557,7 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-12-10T12:09:32Z', created_at: '2020-12-01T15:31:00Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7353', number: 7353,
       state: closed, title: Do not add layer to theme if GetCapabilities fails, updated_at: '2020-12-10T12:09:33Z'}
+    d0a4d27146b656f87e7a4da3064a05861ac17b69: []
     d0cce4eb49c86aa4a3693135b4fee6a8a4321069: []
     d31160b98:
     - {base_ref: '2.5', closed_at: '2020-07-01T07:36:47Z', created_at: '2020-07-01T06:40:48Z',
@@ -2423,6 +2605,10 @@ pulls:
     e4af42964: []
     e6404d2f7e0a91ac927d8ae9f464bff68d60dbd0: []
     e6716448cda4b1c69cd3009c358174726683b53e: []
+    e815271177fee72310b4cc64217d4f3451363a4f:
+    - {base_ref: '2.5', closed_at: '2020-12-18T12:35:14Z', created_at: '2020-12-18T11:41:04Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7489', number: 7489,
+      state: closed, title: Push the right image, updated_at: '2020-12-18T12:35:15Z'}
     e8f75966cc08833edebc924058caf487896fd940: []
     e9016d3e2f4711656d946493a16aee27d37cb7ec: []
     e94efbd10: []
@@ -2462,6 +2648,10 @@ pulls:
     fb8ba53a2128527f5a565ea2018623df9176ebcb: []
     fb8f383644236ab03dd3c38bf337491f67cd745d: []
     fca3e6c7abb35ebf9dbb8e0c89f607eac2971973: []
+    fe5e2fccb:
+    - {base_ref: '2.5', closed_at: '2020-12-21T17:23:24Z', created_at: '2020-12-21T11:58:32Z',
+      html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/7510', number: 7510,
+      state: closed, title: Fix time on wms layer groups, updated_at: '2020-12-21T17:23:25Z'}
     fe702d14d1af256047da68929ada4892e0bce8ef:
     - {base_ref: '2.5', closed_at: '2020-04-28T16:36:32Z', created_at: '2020-04-28T15:46:04Z',
       html_url: 'https://github.com/camptocamp/c2cgeoportal/pull/6250', number: 6250,
@@ -2493,6 +2683,11 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-05-28T12:16:39Z', created_at: '2020-05-28T07:58:53Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/5867', number: 5867, state: closed,
       title: Don't include dragPan interaction twice, updated_at: '2020-05-28T12:50:10Z'}
+    0e2f08ed8:
+    - {base_ref: '2.5', closed_at: '2020-12-21T12:48:40Z', created_at: '2020-12-21T11:48:17Z',
+      html_url: 'https://github.com/camptocamp/ngeo/pull/6605', number: 6605, state: closed,
+      title: '[Backport 2.5] Bump c2cciutils from 1.0.dev20201217141839 to 1.0.dev20201221104733',
+      updated_at: '2020-12-21T12:48:42Z'}
     11062a485:
     - {base_ref: '2.5', closed_at: '2020-07-31T09:01:56Z', created_at: '2020-07-29T12:23:04Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/6086', number: 6086, state: closed,
@@ -2505,6 +2700,10 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-07-16T09:18:48Z', created_at: '2020-07-15T14:12:50Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/6030', number: 6030, state: closed,
       title: Removes strange and buggy functionality, updated_at: '2020-07-16T09:18:49Z'}
+    1a4020660b097183f60a9d7a728dca2372b92cc4:
+    - {base_ref: '2.5', closed_at: '2020-12-15T20:15:59Z', created_at: '2020-12-14T09:31:27Z',
+      html_url: 'https://github.com/camptocamp/ngeo/pull/6566', number: 6566, state: closed,
+      title: '[Backport 2.5] Fix publishing', updated_at: '2020-12-15T20:16:00Z'}
     1d89042393ca5d1af1e21adac040c644087ae999:
     - {base_ref: '2.5', closed_at: '2020-07-13T12:25:04Z', created_at: '2020-07-11T15:59:32Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/6012', number: 6012, state: closed,
@@ -2596,6 +2795,11 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-07-08T09:48:05Z', created_at: '2020-07-07T14:12:42Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/5998', number: 5998, state: closed,
       title: Allow the open LayerTree expanded by default, updated_at: '2020-07-08T09:48:07Z'}
+    5341ac7b064a7916fb1728f4d914cb8bdd9f35ef:
+    - {base_ref: '2.5', closed_at: '2020-12-11T11:08:29Z', created_at: '2020-12-10T16:26:23Z',
+      html_url: 'https://github.com/camptocamp/ngeo/pull/6545', number: 6545, state: closed,
+      title: '[Backport 2.5] Use c2cciutils - publish to GitHub Container Registry',
+      updated_at: '2020-12-11T11:08:30Z'}
     595e85ebc:
     - {base_ref: '2.5', closed_at: '2020-11-04T11:19:28Z', created_at: '2020-11-04T11:00:07Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/6425', number: 6425, state: closed,
@@ -2737,6 +2941,11 @@ pulls:
     - {base_ref: '2.5', closed_at: '2020-08-18T14:39:57Z', created_at: '2020-08-18T13:33:12Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/6142', number: 6142, state: closed,
       title: Add chokidar requred for webpack dev server in the project, updated_at: '2020-08-18T14:39:58Z'}
+    c71c129cb8086ef15fe61a5838c97480f5a1142c:
+    - {base_ref: '2.5', closed_at: '2020-12-16T11:12:26Z', created_at: '2020-12-16T10:38:56Z',
+      html_url: 'https://github.com/camptocamp/ngeo/pull/6584', number: 6584, state: closed,
+      title: '[Backport 2.5] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216090400',
+      updated_at: '2020-12-16T11:12:27Z'}
     d6a75837f:
     - {base_ref: '2.5', closed_at: '2020-05-13T14:38:45Z', created_at: '2020-05-13T13:42:19Z',
       html_url: 'https://github.com/camptocamp/ngeo/pull/5818', number: 5818, state: closed,
@@ -2864,3 +3073,4 @@ releases:
 - {c2cgeoportal: d404bf399, name: 2.5.0.98, ngeo: 8fa3444e7}
 - {c2cgeoportal: a63038c4d, name: 2.5.0.99, ngeo: fbd9700bb}
 - {c2cgeoportal: d00ab03da, name: 2.5.0.100, ngeo: 4dbd24ab9}
+- {c2cgeoportal: fe5e2fccb, name: 2.5.0.101, ngeo: 0e2f08ed8}

@@ -1,3 +1,18 @@
+##### 2.5.0.101
+* [Backport 2.5] Use c2cciutils - Publish to GitHub Container Registry [c2cgeoportal#7434](https://github.com/camptocamp/c2cgeoportal/pull/7434)
+* Add USER_ID and ROLE_IDS in lingua extractor requests [c2cgeoportal#7448](https://github.com/camptocamp/c2cgeoportal/pull/7448)
+* Add Python version for the audit [c2cgeoportal#7456](https://github.com/camptocamp/c2cgeoportal/pull/7456)
+* [Backport 2.5] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216094446 [c2cgeoportal#7463](https://github.com/camptocamp/c2cgeoportal/pull/7463)
+* Push the right image [c2cgeoportal#7489](https://github.com/camptocamp/c2cgeoportal/pull/7489)
+* [Backport 2.5] Use personal env file for local development without breaking the CI [c2cgeoportal#7493](https://github.com/camptocamp/c2cgeoportal/pull/7493)
+* [Backport 2.5] Gunicorn: adapt tmpdir setting for Docker environment [c2cgeoportal#7504](https://github.com/camptocamp/c2cgeoportal/pull/7504)
+* Fix publish [c2cgeoportal#7506](https://github.com/camptocamp/c2cgeoportal/pull/7506)
+* Fix time on wms layer groups [c2cgeoportal#7510](https://github.com/camptocamp/c2cgeoportal/pull/7510)
+* [Backport 2.5] Bump c2cciutils from 1.0.dev20201217141839 to 1.0.dev20201221104733 [c2cgeoportal#7515](https://github.com/camptocamp/c2cgeoportal/pull/7515)
+* [Backport 2.5] Use c2cciutils - publish to GitHub Container Registry [ngeo#6545](https://github.com/camptocamp/ngeo/pull/6545)
+* [Backport 2.5] Fix publishing [ngeo#6566](https://github.com/camptocamp/ngeo/pull/6566)
+* [Backport 2.5] Bump c2cciutils from 1.0.dev20201215125058 to 1.0.dev20201216090400 [ngeo#6584](https://github.com/camptocamp/ngeo/pull/6584)
+* [Backport 2.5] Bump c2cciutils from 1.0.dev20201217141839 to 1.0.dev20201221104733 [ngeo#6605](https://github.com/camptocamp/ngeo/pull/6605)
 ##### 2.5.0.100
 * Do not add layer to theme if GetCapabilities fails [c2cgeoportal#7353](https://github.com/camptocamp/c2cgeoportal/pull/7353)
 * Interval timeslider with PD1 [ngeo#6523](https://github.com/camptocamp/ngeo/pull/6523)
