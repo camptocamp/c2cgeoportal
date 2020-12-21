@@ -180,7 +180,7 @@ jobs:
           git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
           git commit -m "[skip ci] Update the minor version"
           git push https://${{ secrets.GOPASS_CI_GITHUB_TOKEN }}@github.com/camptocamp/c2cgeoportal.git \
-            HEAD:${GIT_BRANCH}
+            HEAD:${{ env.MAIN_BRANCH }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
