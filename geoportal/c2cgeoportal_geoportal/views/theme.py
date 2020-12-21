@@ -408,31 +408,37 @@ class Theme:
     def _merge_time(time_, layer_theme, layer, wms):
         errors = set()
         wmslayer = layer.layer
+
+        def merge_time(wms_layer_obj):
+            extent = parse_extent(
+                wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"]
+            )
+            time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
+
         try:
             if wmslayer in wms["layers"]:
                 wms_layer_obj = wms["layers"][wmslayer]
 
                 if layer.time_mode != "disabled":
+                    has_time = False
                     if wms_layer_obj["timepositions"]:
-                        extent = parse_extent(
-                            wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"]
-                        )
-                        time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
+                        merge_time(wms_layer_obj)
+                        has_time = True
+
                     else:
+                        # For wms layer group, get time from the chldren.
+                        for child_layer_name in wms_layer_obj["children"]:
+                            child_layer = wms["layers"][child_layer_name]
+                            if child_layer["timepositions"]:
+                                merge_time(child_layer)  # The time mode comes from the wms layer group
+                                has_time = True
+
+                    if not has_time:
                         errors.add(
                             "Error: time layer '{}' has no time information in capabilities".format(
                                 layer.name
                             )
                         )
-
-                for child_layer_name in wms_layer_obj["children"]:
-                    child_layer = wms["layers"][child_layer_name]
-                    if child_layer["timepositions"]:
-                        extent = parse_extent(
-                            child_layer["timepositions"], child_layer["defaulttimeposition"]
-                        )
-                        # The time mode comes from the layer group
-                        time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
 
         except ValueError:  # pragma no cover
             errors.add("Error while handling time for layer '{}': {}".format(layer.name, sys.exc_info()[1]))
