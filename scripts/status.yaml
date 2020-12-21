@@ -488,6 +488,13 @@
       workflows:
         - workflow: Continuous integration
 
+- name: ElasticSearch OOM exporter
+  repo: camptocamp/es-ooms-exporter
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
 - name: Daily
   repo: camptocamp/docker-daily
   workflows:
