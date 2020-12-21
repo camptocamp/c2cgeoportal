@@ -128,7 +128,7 @@ def main():
         docker_cmd.append("--volume={socket}:{socket}".format(socket="/var/run/docker.sock"))
 
     if options.home:
-        internal_home = "/home/{login}".format(login=login) if is_windows else os.environ["HOME"]
+        internal_home = "/home/{login}".format(login=login)
         external_home = os.environ["USERPROFILE"] if is_windows else os.environ["HOME"]
 
         if options.root:
@@ -175,9 +175,8 @@ def main():
     else:
         # For Jenkins slave in Docker
         docker_adrs = netifaces.gateways()[netifaces.AF_INET][0][0]
-    # We needs the user HOME directory to correctly create the user in Docker
-    docker_cmd.append("--env=HOME_DIR={}".format(
-        "/home/" + login if is_windows else os.environ["HOME"]))
+    # We need the user HOME directory to correctly create the user in Docker
+    docker_cmd.append("--env=HOME_DIR=/home/{}".format(login))
     docker_cmd.append("--env=DOCKER_HOST_={}".format(docker_adrs))
     docker_cmd.append("--env=BUILD_VOLUME_NAME={}".format(build_volume_name))
     docker_cmd.append("--env=PROJECT_DIRECTORY={}".format(os.getcwd()))
