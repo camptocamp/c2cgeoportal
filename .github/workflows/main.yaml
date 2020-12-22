@@ -175,7 +175,8 @@ jobs:
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
       - name: Publish version branch
-        run: c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
+        run: |
+          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
           c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
