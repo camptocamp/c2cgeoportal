@@ -25,6 +25,7 @@ jobs:
         with:
           ref: ${{ env.MAIN_BRANCH }}
 
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=requirements.txt
 
       # Global simple lint
