@@ -33,7 +33,8 @@ jobs:
         with:
           tool_versions: python 3.8.0
 
-      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Audit
         run: c2cciutils-audit --branch=${{ matrix.branch }}

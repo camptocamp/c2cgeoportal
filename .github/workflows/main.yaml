@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
@@ -31,12 +32,14 @@ jobs:
           patterns: pypi docker transifex
         if: github.repository == 'camptocamp/c2cgeoportal'
 
-      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Checks
         run: c2cciutils-checks
 
-      - run: scripts/get-version --auto-increment
+      - run: scripts/get-version --auto-increment --github
+        id: version
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - run: python3 -m pip install --user --requirement=requirements.txt
@@ -55,11 +58,6 @@ jobs:
       # Build and lint QGIS images
       - run: docker build --target=lint --build-arg=VERSION=3.16 docker/qgisserver
       - run: QGIS_VERSION=3.16 make build-qgisserver
-
-      # Test changelog
-      - run: ci/changelog new_version
-      - run: git diff CHANGELOG.md
-      - run: git checkout CHANGELOG.md ci/changelog.yaml
 
       # Tests
       - run: make preparetest
@@ -143,9 +141,9 @@ jobs:
         if: failure()
 
       # Test Upgrade
-      - run: DOCKER_TAG=$(scripts/get-version --full) make build-tools
-      - run: DOCKER_TAG=$(scripts/get-version --full) make build-runner
-      - run: DOCKER_TAG=$(scripts/get-version --full) make build-config
+      - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
+      - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-runner
+      - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-config
       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 240 ${HOME}/workspace
@@ -160,27 +158,37 @@ jobs:
       - run: make build-runner
       - run: make build-config
 
-      - name: Get versions
-        id: version
-        run: scripts/get-version --github
+      - run: ci/create-new-project ${HOME}/workspace geomapfishapp
+      - run: (cd ${HOME}/workspace/geomapfishapp/; ./build)
 
-      - name: Publish other Docker images on feature branches
-        run: c2cciutils-publish --group=full
+      - name: 'Update the changelog'
+        run: ci/changelog ${{ steps.version.outputs.full }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: git diff CHANGELOG.md
+
+      - name: Publish feature branch
+        run: |
+          c2cciutils-publish
+          c2cciutils-publish --group=full
         if: >
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
-      - name: Publish Docker images with tag like 2.6.0.1 on main branches
-        run: c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
+      - name: Publish version branch
+        run: c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
+          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
 
-      - run: ci/create-new-project ${HOME}/workspace geomapfish
-      - run: (cd ${HOME}/workspace/geomapfish/; ./build)
-
-      - name: Publish Docker images with tag like 2.6 and PyPI packages
-        run: c2cciutils-publish
-        if: github.repository == 'camptocamp/c2cgeoportal'
+      - name: Push version and changelog
+        run: |
+          git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
+          git commit -m "[skip ci] Update the minor version"
+          git push origin HEAD:${{ env.MAIN_BRANCH }}
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Notify demo
         run: >
@@ -189,7 +197,7 @@ jobs:
           --header "Authorization: token ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}"
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
-            "client_payload": {"version": "'"$(scripts/get-version --upgrade-version)"'"}}'
+            "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'

@@ -21,7 +21,8 @@ jobs:
           ref: master
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
 
-      - run: sudo python3 -m pip install markdown markdown-table dateutils
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user markdown markdown-table dateutils
 
       - run: scripts/create-status-page > wiki/Status.md
         env:
