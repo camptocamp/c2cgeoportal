@@ -184,7 +184,7 @@ jobs:
 
       - name: Push version and changelog
         run: |
-          set -aux
+          set -eux
           git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
           git commit -m "[skip ci] Update the minor version" || true
           git push origin HEAD:${{ env.MAIN_BRANCH }}
