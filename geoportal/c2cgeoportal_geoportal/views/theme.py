@@ -393,9 +393,7 @@ class Theme:
         wmslayer = layer.layer
 
         def merge_time(wms_layer_obj):
-            extent = parse_extent(
-                wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"]
-            )
+            extent = parse_extent(wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"])
             time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
 
         try:
