@@ -34,8 +34,8 @@ COPY --from=builder /app/alembic.ini /app/alembic.yaml ./
 RUN chmod go+w /etc/static-ngeo/
 
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --editable=/app/ && \
-    python3 -m compileall -q /usr/local/lib/python3.8 \
-        -x '/usr/local/lib/python3.8/dist-packages/(ptvsd|pipenv|.*pydev.*)/' && \
+    python3 -m compileall -q /usr/local/lib/python3.* \
+        -x '/(ptvsd|pipenv|.*pydev.*)/' && \
     python3 -m compileall -q /app/{{package}}_geoportal -x /app/{{package}}_geoportal/static.*
 
 ARG GIT_HASH
