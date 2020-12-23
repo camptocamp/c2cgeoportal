@@ -118,7 +118,6 @@ Go to your new project:
 Simple application
 ------------------
 
-A simple application is an application that you can't add come code on it (Python or JavaScript).
 A simple application is an application for which no custom code is needed (Python or JavaScript).
 
 To create a simple application you should:
