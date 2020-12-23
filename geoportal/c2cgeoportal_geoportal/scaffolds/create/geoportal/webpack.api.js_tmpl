@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
             plugins: [
               require.resolve('@babel/plugin-syntax-object-rest-spread'),
               require.resolve('@babel/plugin-transform-spread'),
-              require.resolve('@camptocamp/babel-plugin-angularjs-annotate'),
+              require.resolve('babel-plugin-angularjs-annotate'),
             ]
           }
         }
