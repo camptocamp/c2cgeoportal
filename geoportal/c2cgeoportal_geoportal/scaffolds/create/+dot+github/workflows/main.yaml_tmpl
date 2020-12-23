@@ -23,7 +23,8 @@ jobs:
           ci-gpg-private-key: ${{'{{'}}secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{'{{'}}secrets.GOPASS_CI_GITHUB_TOKEN}}
 
-      - run: sudo python3 -m pip install --requirement=ci/requirements.txt
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Checks
         run: c2cciutils-checks
@@ -37,14 +38,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Build config
+        run: ./build --config
+
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
 
-      - name: Build config
-        run: ./build --config
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Publish
         run: c2cciutils-publish --group=config
@@ -68,6 +72,9 @@ jobs:
           ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
+
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Publish
         run: c2cciutils-publish --group=geoportal
