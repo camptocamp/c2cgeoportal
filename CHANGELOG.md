@@ -1,3 +1,5 @@
+##### 2.5.0.102
+* [Backport 2.5] Bump c2cciutils from 1.0.dev20201222122805 to 1.0.dev20201223143028 [ngeo#6617](https://github.com/camptocamp/ngeo/pull/6617)
 ##### 2.5.0.101
 * [Backport 2.5] Use c2cciutils - Publish to GitHub Container Registry [c2cgeoportal#7434](https://github.com/camptocamp/c2cgeoportal/pull/7434)
 * Add USER_ID and ROLE_IDS in lingua extractor requests [c2cgeoportal#7448](https://github.com/camptocamp/c2cgeoportal/pull/7448)
