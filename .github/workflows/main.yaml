@@ -185,8 +185,7 @@ jobs:
         run: |
           set -eux
           git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
-          git diff --staged --quiet || git commit -m "[skip ci] Update the minor version"
-          git push origin HEAD:${{ env.MAIN_BRANCH }}
+          git diff --staged --quiet || (git commit -m "[skip ci] Update the minor version"; git push origin HEAD:${{ env.MAIN_BRANCH }})
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
