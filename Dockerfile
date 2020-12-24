@@ -29,7 +29,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY Pipfile Pipfile.lock /tmp/
 RUN cd /tmp && pipenv install --system --clear && \
-    rm --recursive --force /usr/local/lib/python3.8/dist-packages/tests/ /tmp/* /root/.cache/*
+    rm --recursive --force /usr/local/lib/python3.*/dist-packages/tests/ /tmp/* /root/.cache/*
 
 ENV NODE_PATH=/usr/lib/node_modules
 ENV TEST=false
@@ -179,8 +179,8 @@ RUN \
     --editable=commons \
     --editable=geoportal \
     --editable=admin && \
-    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.8 \
-    -x '/usr/local/lib/python3.8/dist-packages/pipenv/'
+    python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.* \
+    -x /usr/local/lib/python3.*/dist-packages/pipenv/
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
