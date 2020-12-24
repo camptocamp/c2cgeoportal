@@ -3,6 +3,7 @@
 
 - name: Demo
   repo: camptocamp/demo_geomapfish
+  description: The GeoMapFish demo
   versions:
     '2.5':
       branch: prod-2-5
@@ -60,6 +61,7 @@
 
 - name: ngeo
   repo: camptocamp/ngeo
+  description: The GeoMapFish client part
   workflows:
     - workflow: Audit
     - workflow: Clean GitHub pages
@@ -83,6 +85,7 @@
 
 - name: Camptocamp CI utilities
   repo: camptocamp/c2cciutils
+  description: Some utils for the CI (checks, publish, audit, clean)
   workflows:
     - workflow: Rebuild
     - workflow: Audit
@@ -102,6 +105,7 @@
 
 - name: Camptocamp WSGI utilities
   repo: camptocamp/c2cwsgiutils
+  description: The base of WSGI application
   workflows:
     - workflow: Rebuild
     - workflow: Audit
@@ -139,6 +143,7 @@
 
 - name: TileCloud
   repo: camptocamp/tilecloud
+  description: A lirary for tile generation
   workflows:
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
@@ -172,6 +177,7 @@
 
 - name: TileCloud-chain
   repo: camptocamp/tilecloud-chain
+  description: A tool for tile generation from WMS to WMTS
   workflows:
     - workflow: Rebuild
     - workflow: Rebuild 1.14
@@ -210,6 +216,7 @@
 
 - name: Print
   repo: mapfish/mapfish-print
+  description: Mapfish print (print a map)
   workflows:
     - workflow: Rebuild
     - workflow: Rebuild old
@@ -354,6 +361,7 @@
 
 - name: Gopass Summon action
   repo: camptocamp/initialise-gopass-summon-action
+  description: Initialise Gopass and Summon to use with our pass store
   versions:
     master:
       workflows:
@@ -361,6 +369,7 @@
 
 - name: Python action
   repo: camptocamp/python-action
+  description: Base container to create a Docker action in Python
   versions:
     master:
       workflows:
@@ -370,6 +379,9 @@
 
 - name: Shared Config Manager
   repo: camptocamp/shared_config_manager
+  description: |
+    Clint server infrastructure to get configuration from Git and make it available
+    to the application
   workflows:
     - workflow: Nightly
     - workflow: Audit
@@ -407,6 +419,7 @@
 
 - name: Private geo charts
   repo: camptocamp/private-geo-charts
+  description: Our Helm charts with the application variable
   workflows:
     - workflow: Check images last build
   versions:
@@ -425,6 +438,7 @@
 
 - name: Mutualized print config
   repo: camptocamp/mutualized_print_config
+  description: The configuration of mutualised print
   versions:
     master:
       workflows:
@@ -432,6 +446,7 @@
 
 - name: Mutualized print logs
   repo: camptocamp/mapfish-print-logs
+  description: Used to extract logs from ElasticSearch for the mutualised print
   versions:
     master:
       workflows:

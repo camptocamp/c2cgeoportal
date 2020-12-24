@@ -149,6 +149,7 @@ def project(elem):
     Related config:
       name: The project name
       repo: The project repository
+      description: A project short description
       workflows: List of related workflows
       hidden_workflows: List of workflow names that are not considered as missing
       versions: Dictionary of versions by name
@@ -181,6 +182,11 @@ def project(elem):
     name = "[{}](https://github.com/{})".format(elem["name"], repo)
     print()
     print("## " + name)
+
+    if "description" in elem:
+        print()
+        print(elem["description"])
+
     # The workflow directly related to the project
     for wflow in elem.get("workflows", []):
         print(workflow(wflow, repo, all_workflows_name, all_workflows_by_name))
