@@ -427,8 +427,8 @@
       workflows:
         - workflow: Continuous integration
 
-- name: Prometheus metrics geo
-  repo: camptocamp/prometheus-metrics-geo
+- name: Dashboard backup
+  repo: camptocamp/geospatial-dashboards
   workflows:
     - workflow: Backup Grafana
   versions:
