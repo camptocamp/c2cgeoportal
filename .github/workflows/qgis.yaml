@@ -25,7 +25,6 @@ jobs:
     env:
       MAIN_BRANCH: master
       MAJOR_VERSION: 2.6
-      CI: true
 
     steps:
       - uses: actions/checkout@v2

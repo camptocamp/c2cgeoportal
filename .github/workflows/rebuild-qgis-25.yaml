@@ -28,7 +28,6 @@ jobs:
     env:
       MAIN_BRANCH: ${{ matrix.branch }}
       MAJOR_VERSION: ${{ matrix.branch }}
-      CI: true
 
     steps:
       - uses: actions/checkout@v2
