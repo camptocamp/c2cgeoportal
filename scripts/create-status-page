@@ -187,6 +187,8 @@ def project(elem):
         print()
         print(elem["description"])
 
+    print()
+
     # The workflow directly related to the project
     for wflow in elem.get("workflows", []):
         print(workflow(wflow, repo, all_workflows_name, all_workflows_by_name))

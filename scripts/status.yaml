@@ -4,6 +4,8 @@
 - name: Demo
   repo: camptocamp/demo_geomapfish
   description: The GeoMapFish demo
+  workflows:
+    - workflow: Rebuild
   versions:
     '2.5':
       branch: prod-2-5
@@ -50,7 +52,7 @@
         - workflow: QGIS rebuild 2.5
           use_branch: no
           with_step: True
-        - workflow: Update ngeo
+        - workflow: Update ngeo 2.5
           use_branch: no
     master:
       workflows:
@@ -58,6 +60,8 @@
           with_step: True
         - workflow: Continuous integration
         - workflow: Code scanning
+        - workflow: Rebuild master
+          use_branch: no
 
 - name: ngeo
   repo: camptocamp/ngeo
@@ -181,7 +185,7 @@
   workflows:
     - workflow: Rebuild
     - workflow: Rebuild 1.14
-    - workflow: Rebuild old
+    - workflow: Rebuild 1.15
     - workflow: Audit
     - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
@@ -213,13 +217,16 @@
       workflows:
         - workflow: Continuous integration
         - workflow: CodeQL scanning
+  hidden_workflows:
+    - Rebuild old
 
 - name: Print
   repo: mapfish/mapfish-print
   description: Mapfish print (print a map)
   workflows:
     - workflow: Rebuild
-    - workflow: Rebuild old
+    - workflow: Rebuild 3.23
+    - workflow: Rebuild 3.20 - 3.22
     - workflow: Audit
     - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
@@ -358,22 +365,28 @@
     master:
       workflows:
         - workflow: Continuous integration
+        - workflow: CodeQL scanning
 
 - name: Gopass Summon action
   repo: camptocamp/initialise-gopass-summon-action
   description: Initialise Gopass and Summon to use with our pass store
   versions:
-    master:
+    v2:
       workflows:
         - workflow: Continuous integration
+        - workflow: CodeQL scanning
 
 - name: Python action
   repo: camptocamp/python-action
   description: Base container to create a Docker action in Python
+  workflows:
+    - workflow: Rebuild
+    - workflow: Clean Docker hub tags
   versions:
     master:
       workflows:
         - workflow: Continuous integration
+        - workflow: CodeQL scanning
 
 - title: Openshift and others
 
@@ -404,28 +417,32 @@
         - workflow: Code scanning
     master:
       workflows:
-        - workflow: Build
+        - workflow: Continuous integration
         - workflow: Code scanning
 
 - name: Varnish Trovilo
   repo: camptocamp/docker-trovilo-varnish
   workflows:
     - workflow: Rebuild
-    - workflow: Clean docker hub tags
+    - workflow: Clean Docker hub tags
   versions:
     master:
       workflows:
         - workflow: Continuous integration
+        - workflow: CodeQL scanning
 
 - name: Private geo charts
   repo: camptocamp/private-geo-charts
   description: Our Helm charts with the application variable
   workflows:
     - workflow: Check images last build
+    - workflow: Auto merge Dependabot updates
   versions:
     master:
       workflows:
         - workflow: Continuous integration
+  hidden_workflows:
+    - CodeQL scanning
 
 - name: Dashboard backup
   repo: camptocamp/geospatial-dashboards
@@ -443,6 +460,8 @@
     master:
       workflows:
         - workflow: Continuous integration
+  hidden_workflows:
+    - CodeQL scanning
 
 - name: Mutualized print logs
   repo: camptocamp/mapfish-print-logs
@@ -454,10 +473,16 @@
 
 - name: ElasticSearch OOM exporter
   repo: camptocamp/es-ooms-exporter
+  workflows:
+    - workflow: Clean Docker hub tags
+    - workflow: Rebuild
   versions:
     master:
       workflows:
         - workflow: Continuous integration
+        - workflow: CodeQL scanning
+  hidden_workflows:
+    - Docker Image CI
 
 - title: Will be progrssively abandoned
 
@@ -502,16 +527,8 @@
 
 - name: Mapcache
   repo: camptocamp/docker-mapcache
-  workflows:
-    - workflow: Rebuild
-    - workflow: Clean docker hub tags
   versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
     '1.6':
-      workflows:
-        - workflow: Continuous integration
       used_by:
         - short: 2.4
           long: GeoMapFish 2.4
