@@ -1,4 +1,6 @@
 ---
+- title: GeoMapFish
+
 - name: Demo
   repo: camptocamp/demo_geomapfish
   versions:
@@ -21,6 +23,7 @@
 
 - name: c2cgeoportal
   repo: camptocamp/c2cgeoportal
+  description: The GeoMapFish server part
   hidden_workflows:
     - Automatic Rebase
   workflows:
@@ -319,45 +322,6 @@
       workflows:
         - workflow: Continuous integration
 
-- name: Tomcat logback
-  repo: camptocamp/docker-tomcat-logback
-  workflows:
-    - workflow: Rebuild
-    - workflow: Audit
-    - workflow: Clean docker hub tags
-    - workflow: Auto merge Dependabot updates
-    - workflow: Backport
-      norunfor: false
-  versions:
-    8.5-jre8:
-      workflows:
-        - workflow: Continuous integration
-      used_by:
-        - short: 3.20
-          long: MapFish-print 3.20
-        - short: 3.21
-          long: MapFish-print 3.21
-        - short: 3.22
-          long: MapFish-print 3.22
-        - short: 3.23
-          long: MapFish-print 3.23
-        - short: 3.24
-          long: MapFish-print 3.24
-        - short: 3.25
-          long: MapFish-print 3.25
-    9.0-jre11:
-      workflows:
-        - workflow: Continuous integration
-      used_by:
-        - short: 3.26
-          long: MapFish-print 3.26
-    10.0-jre11:
-      workflows:
-        - workflow: Continuous integration
-    master:
-      workflows:
-        - workflow: Continuous integration
-
 - name: Tiny OWS
   repo: camptocamp/docker-tinyows
   workflows:
@@ -373,28 +337,13 @@
         - short: 2.5
           long: GeoMapFish 2.5
 
-- name: Mapcache
-  repo: camptocamp/docker-mapcache
-  workflows:
-    - workflow: Rebuild
-    - workflow: Clean docker hub tags
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-    '1.6':
-      workflows:
-        - workflow: Continuous integration
-      used_by:
-        - short: 2.4
-          long: GeoMapFish 2.4
-
 - name: C2C template
   repo: camptocamp/c2c.template
+  description: The configuration generator used by c2cgeoportal
   workflows:
     - workflow: Continuous integration
 
-# GitHub actions
+- title: GitHub actions
 
 - name: Backport
   repo: camptocamp/backport-action
@@ -417,7 +366,7 @@
       workflows:
         - workflow: Continuous integration
 
-# Openshift and others
+- title: Openshift and others
 
 - name: Shared Config Manager
   repo: camptocamp/shared_config_manager
@@ -494,6 +443,63 @@
     master:
       workflows:
         - workflow: Continuous integration
+
+- title: Will be progrssively abandoned
+
+- name: Tomcat logback
+  repo: camptocamp/docker-tomcat-logback
+  workflows:
+    - workflow: Rebuild
+    - workflow: Audit
+    - workflow: Clean docker hub tags
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+  versions:
+    8.5-jre8:
+      workflows:
+        - workflow: Continuous integration
+      used_by:
+        - short: 3.20
+          long: MapFish-print 3.20
+        - short: 3.21
+          long: MapFish-print 3.21
+        - short: 3.22
+          long: MapFish-print 3.22
+        - short: 3.23
+          long: MapFish-print 3.23
+        - short: 3.24
+          long: MapFish-print 3.24
+        - short: 3.25
+          long: MapFish-print 3.25
+    9.0-jre11:
+      workflows:
+        - workflow: Continuous integration
+      used_by:
+        - short: 3.26
+          long: MapFish-print 3.26
+    10.0-jre11:
+      workflows:
+        - workflow: Continuous integration
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Mapcache
+  repo: camptocamp/docker-mapcache
+  workflows:
+    - workflow: Rebuild
+    - workflow: Clean docker hub tags
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+    '1.6':
+      workflows:
+        - workflow: Continuous integration
+      used_by:
+        - short: 2.4
+          long: GeoMapFish 2.4
 
 - name: Daily
   repo: camptocamp/docker-daily
