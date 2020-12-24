@@ -21,6 +21,7 @@ default_project_file:
     - env\.project
     - README\.rst
     - \.github/workflows/main\.yaml
+    - \.github/workflows/rebuild\.yaml
   exclude:
     - mapserver/demo\.map\.tmpl
     - geoportal/{{package}}_geoportal/static-ngeo/js/apps/image/favicon\.ico

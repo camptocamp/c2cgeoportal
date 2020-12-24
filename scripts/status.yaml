@@ -1,6 +1,11 @@
 ---
+- title: GeoMapFish
+
 - name: Demo
   repo: camptocamp/demo_geomapfish
+  description: The GeoMapFish demo
+  workflows:
+    - workflow: Rebuild
   versions:
     '2.5':
       branch: prod-2-5
@@ -21,6 +26,7 @@
 
 - name: c2cgeoportal
   repo: camptocamp/c2cgeoportal
+  description: The GeoMapFish server part
   hidden_workflows:
     - Automatic Rebase
   workflows:
@@ -46,7 +52,7 @@
         - workflow: QGIS rebuild 2.5
           use_branch: no
           with_step: True
-        - workflow: Update ngeo
+        - workflow: Update ngeo 2.5
           use_branch: no
     master:
       workflows:
@@ -54,9 +60,12 @@
           with_step: True
         - workflow: Continuous integration
         - workflow: Code scanning
+        - workflow: Rebuild master
+          use_branch: no
 
 - name: ngeo
   repo: camptocamp/ngeo
+  description: The GeoMapFish client part
   workflows:
     - workflow: Audit
     - workflow: Clean GitHub pages
@@ -80,6 +89,7 @@
 
 - name: Camptocamp CI utilities
   repo: camptocamp/c2cciutils
+  description: Some utils for the CI (checks, publish, audit, clean)
   workflows:
     - workflow: Rebuild
     - workflow: Audit
@@ -99,6 +109,7 @@
 
 - name: Camptocamp WSGI utilities
   repo: camptocamp/c2cwsgiutils
+  description: The base of WSGI application
   workflows:
     - workflow: Rebuild
     - workflow: Audit
@@ -136,6 +147,7 @@
 
 - name: TileCloud
   repo: camptocamp/tilecloud
+  description: A lirary for tile generation
   workflows:
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
@@ -169,10 +181,11 @@
 
 - name: TileCloud-chain
   repo: camptocamp/tilecloud-chain
+  description: A tool for tile generation from WMS to WMTS
   workflows:
     - workflow: Rebuild
     - workflow: Rebuild 1.14
-    - workflow: Rebuild old
+    - workflow: Rebuild 1.15
     - workflow: Audit
     - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
@@ -204,12 +217,16 @@
       workflows:
         - workflow: Continuous integration
         - workflow: CodeQL scanning
+  hidden_workflows:
+    - Rebuild old
 
 - name: Print
   repo: mapfish/mapfish-print
+  description: Mapfish print (print a map)
   workflows:
     - workflow: Rebuild
-    - workflow: Rebuild old
+    - workflow: Rebuild 3.23
+    - workflow: Rebuild 3.20 - 3.22
     - workflow: Audit
     - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
@@ -319,6 +336,156 @@
       workflows:
         - workflow: Continuous integration
 
+- name: Tiny OWS
+  repo: camptocamp/docker-tinyows
+  workflows:
+    - workflow: Rebuild
+    - workflow: Clean docker hub tags
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+      used_by:
+        - short: 2.4
+          long: GeoMapFish 2.4
+        - short: 2.5
+          long: GeoMapFish 2.5
+
+- name: C2C template
+  repo: camptocamp/c2c.template
+  description: The configuration generator used by c2cgeoportal
+  workflows:
+    - workflow: Continuous integration
+
+- title: GitHub actions
+
+- name: Backport
+  repo: camptocamp/backport-action
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- name: Gopass Summon action
+  repo: camptocamp/initialise-gopass-summon-action
+  description: Initialise Gopass and Summon to use with our pass store
+  versions:
+    v2:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- name: Python action
+  repo: camptocamp/python-action
+  description: Base container to create a Docker action in Python
+  workflows:
+    - workflow: Rebuild
+    - workflow: Clean Docker hub tags
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- title: Openshift and others
+
+- name: Shared Config Manager
+  repo: camptocamp/shared_config_manager
+  description: |
+    Clint server infrastructure to get configuration from Git and make it available
+    to the application
+  workflows:
+    - workflow: Nightly
+    - workflow: Audit
+    - workflow: Clean docker hub tags
+    - workflow: Auto merge Dependabot updates
+    - workflow: Backport
+      norunfor: false
+  hidden_workflows:
+    - Rebuild
+  versions:
+    '1':
+      branch: release_1
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    '2':
+      branch: release_2
+      workflows:
+        - workflow: Build
+        - workflow: Code scanning
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: Code scanning
+
+- name: Varnish Trovilo
+  repo: camptocamp/docker-trovilo-varnish
+  workflows:
+    - workflow: Rebuild
+    - workflow: Clean Docker hub tags
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+
+- name: Private geo charts
+  repo: camptocamp/private-geo-charts
+  description: Our Helm charts with the application variable
+  workflows:
+    - workflow: Check images last build
+    - workflow: Auto merge Dependabot updates
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+  hidden_workflows:
+    - CodeQL scanning
+
+- name: Dashboard backup
+  repo: camptocamp/geospatial-dashboards
+  workflows:
+    - workflow: Backup Grafana
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: Mutualized print config
+  repo: camptocamp/mutualized_print_config
+  description: The configuration of mutualised print
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+  hidden_workflows:
+    - CodeQL scanning
+
+- name: Mutualized print logs
+  repo: camptocamp/mapfish-print-logs
+  description: Used to extract logs from ElasticSearch for the mutualised print
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+
+- name: ElasticSearch OOM exporter
+  repo: camptocamp/es-ooms-exporter
+  workflows:
+    - workflow: Clean Docker hub tags
+    - workflow: Rebuild
+  versions:
+    master:
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+  hidden_workflows:
+    - Docker Image CI
+
+- title: Will be progrssively abandoned
+
 - name: Tomcat logback
   repo: camptocamp/docker-tomcat-logback
   workflows:
@@ -358,135 +525,13 @@
       workflows:
         - workflow: Continuous integration
 
-- name: Tiny OWS
-  repo: camptocamp/docker-tinyows
-  workflows:
-    - workflow: Rebuild
-    - workflow: Clean docker hub tags
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-      used_by:
-        - short: 2.4
-          long: GeoMapFish 2.4
-        - short: 2.5
-          long: GeoMapFish 2.5
-
 - name: Mapcache
   repo: camptocamp/docker-mapcache
-  workflows:
-    - workflow: Rebuild
-    - workflow: Clean docker hub tags
   versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
     '1.6':
-      workflows:
-        - workflow: Continuous integration
       used_by:
         - short: 2.4
           long: GeoMapFish 2.4
-
-- name: C2C template
-  repo: camptocamp/c2c.template
-  workflows:
-    - workflow: Continuous integration
-
-# GitHub actions
-
-- name: Backport
-  repo: camptocamp/backport-action
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
-- name: Gopass Summon action
-  repo: camptocamp/initialise-gopass-summon-action
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
-- name: Python action
-  repo: camptocamp/python-action
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
-# Openshift and others
-
-- name: Shared Config Manager
-  repo: camptocamp/shared_config_manager
-  workflows:
-    - workflow: Nightly
-    - workflow: Audit
-    - workflow: Clean docker hub tags
-    - workflow: Auto merge Dependabot updates
-    - workflow: Backport
-      norunfor: false
-  hidden_workflows:
-    - Rebuild
-  versions:
-    '1':
-      branch: release_1
-      workflows:
-        - workflow: Build
-        - workflow: Code scanning
-    '2':
-      branch: release_2
-      workflows:
-        - workflow: Build
-        - workflow: Code scanning
-    master:
-      workflows:
-        - workflow: Build
-        - workflow: Code scanning
-
-- name: Varnish Trovilo
-  repo: camptocamp/docker-trovilo-varnish
-  workflows:
-    - workflow: Rebuild
-    - workflow: Clean docker hub tags
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
-- name: Private geo charts
-  repo: camptocamp/private-geo-charts
-  workflows:
-    - workflow: Check images last build
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
-- name: Prometheus metrics geo
-  repo: camptocamp/prometheus-metrics-geo
-  workflows:
-    - workflow: Backup Grafana
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
-- name: Mutualized print config
-  repo: camptocamp/mutualized_print_config
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
-
-- name: Mutualized print logs
-  repo: camptocamp/mapfish-print-logs
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
 
 - name: Daily
   repo: camptocamp/docker-daily

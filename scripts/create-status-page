@@ -149,10 +149,19 @@ def project(elem):
     Related config:
       name: The project name
       repo: The project repository
+      description: A project short description
       workflows: List of related workflows
       hidden_workflows: List of workflow names that are not considered as missing
       versions: Dictionary of versions by name
+
+      or:
+
+      title: A title separation
     """
+    if "title" in elem:
+        print("# " + elem["title"])
+        return
+
     repo = elem["repo"]
     all_workflows_response = requests.get(
         "https://api.github.com/repos/{repo}/actions/workflows".format(repo=repo),
@@ -172,8 +181,14 @@ def project(elem):
     # The project title
     name = "[{}](https://github.com/{})".format(elem["name"], repo)
     print()
-    print(name)
-    print(re.sub(".", "=", name))
+    print("## " + name)
+
+    if "description" in elem:
+        print()
+        print(elem["description"])
+
+    print()
+
     # The workflow directly related to the project
     for wflow in elem.get("workflows", []):
         print(workflow(wflow, repo, all_workflows_name, all_workflows_by_name))
