@@ -1,0 +1,6 @@
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/alembic.ini
+/docker/qgisserver/logging.ini
+/docker/qgisserver/acceptance-tests/alembic.ini
+/commons/tests/tests.ini
+/commons/alembic.ini
+/admin/development.ini
