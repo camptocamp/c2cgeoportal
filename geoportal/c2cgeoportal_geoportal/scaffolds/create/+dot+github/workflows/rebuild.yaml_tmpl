@@ -20,8 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         branch:
-          - int_{{geomapfish_main_version}}
-          - prod_{{geomapfish_main_version}}
+          - int-{{geomapfish_main_version}}
+          - prod-{{geomapfish_main_version}}
 
     steps:
       - uses: actions/checkout@v2
