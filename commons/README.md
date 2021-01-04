@@ -19,6 +19,7 @@ sudo -u postgres psql -c "CREATE DATABASE $DATABASE WITH OWNER \"www-data\";"
 sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 
 ```
+
 use common/testing/initialized.py to create the database (development.ini at admin side)
 
 ```
@@ -26,5 +27,9 @@ use common/testing/initialized.py to create the database (development.ini at adm
 ## Run the tests
 
 ```
+
 make test
+
+```
+
 ```

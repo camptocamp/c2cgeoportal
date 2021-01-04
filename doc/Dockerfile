@@ -8,7 +8,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY Pipfile Pipfile.lock /tmp/
 RUN \
-  cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear
+    cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear
 
 ARG MAJOR_VERSION
 ARG MAIN_BRANCH
@@ -17,5 +17,5 @@ COPY . /doc
 WORKDIR /doc
 
 RUN ./eval-templates
-RUN  mkdir --parent _build/html
-RUN  ./build.sh
+RUN mkdir --parent _build/html
+RUN ./build.sh

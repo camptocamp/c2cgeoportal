@@ -1,10 +1,10 @@
 #!/bin/bash -eu
 
-echo "[https://www.transifex.com]" > ${HOME}/.transifexrc
-echo "hostname = https://www.transifex.com" >> ${HOME}/.transifexrc
-echo "username = $3" >> ${HOME}/.transifexrc
-echo "password = $4" >> ${HOME}/.transifexrc
-echo "token =" >> ${HOME}/.transifexrc
+echo "[https://www.transifex.com]" >${HOME}/.transifexrc
+echo "hostname = https://www.transifex.com" >>${HOME}/.transifexrc
+echo "username = $3" >>${HOME}/.transifexrc
+echo "password = $4" >>${HOME}/.transifexrc
+echo "token =" >>${HOME}/.transifexrc
 
 cd /opt/c2cgeoportal
 sed --in-place s/${1/\./_}/${2/\./_}/g .tx/config

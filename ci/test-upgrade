@@ -6,7 +6,7 @@ PCREATE_ARGS="--ignore-conflicting-name --overwrite --package-name testgeomapfis
 # $1: folder
 # $2: scaffold
 # $3: version
-function pcreate240 {
+function pcreate240() {
     wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.4/docker-run
     chmod +x docker-run
     ./docker-run --env=SRID=21781 --env=APACHE_VHOST=test \
@@ -17,13 +17,11 @@ function pcreate240 {
 # $1: folder
 # $2: scaffold
 # $3: version
-function pcreate {
-    if [ $3 == '2.4.0' ]
-    then
+function pcreate() {
+    if [ $3 == '2.4.0' ]; then
         pcreate240 $1 $2 $3
     else
-        if [ $2 == c2cgeoportal_create ]
-        then
+        if [ $2 == c2cgeoportal_create ]; then
             DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
         fi
         docker run --rm ${DOCKER_ENV} \
@@ -34,7 +32,7 @@ function pcreate {
 
 # $1: folder
 # $2: version
-function create {
+function create() {
     rm --recursive --force $1
     mkdir --parent $1
     pcreate $1 c2cgeoportal_create $2
@@ -54,45 +52,40 @@ function create {
     cd -
 }
 
-function printdiff {
+function printdiff() {
     ls -l .UPGRADE*
-    for f in $(ls -1 *.diff)
-    do
+    for f in $(ls -1 *.diff); do
         echo "--- $f ---"
         cat "$f"
     done
 }
 
 # $1: version
-function upgrade {
+function upgrade() {
     cp scripts/upgrade ${WORKSPACE}/v$1/testgeomapfish/
     cd ${WORKSPACE}/v$1/testgeomapfish
     cp project.yaml.mako project.yaml || true
-    echo /upgrade >> .gitignore
+    echo /upgrade >>.gitignore
     git add --force .gitignore project.yaml
     git commit -m "Add /upgrade in .gitignore"
     ./upgrade ${MAJOR_VERSION}
-    if [ -e .UPGRADE8 ]
-    then
+    if [ -e .UPGRADE8 ]; then
         ./upgrade ${MAJOR_VERSION} 9
     fi
-    if [ -e .UPGRADE9 ]
-    then
+    if [ -e .UPGRADE9 ]; then
         # Workaround
-        git status > /dev/null
+        git status >/dev/null
         git apply --3way ngeo.diff
         ./upgrade ${MAJOR_VERSION} 10
     fi
-    if [ -e .UPGRADE10 ]
-    then
+    if [ -e .UPGRADE10 ]; then
         # Workaround
-        git status > /dev/null
+        git status >/dev/null
         git apply --3way create.diff
         cp CONST_create_template/project.yaml .
         ./upgrade ${MAJOR_VERSION} 11
     fi
-    if [ ! -e .UPGRADE_SUCCESS ]
-    then
+    if [ ! -e .UPGRADE_SUCCESS ]; then
         printdiff
         echo "Fail to upgrade"
         exit 1
@@ -103,9 +96,8 @@ function upgrade {
     diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/ref ${WORKSPACE}/v$1
 }
 
-if [ "$1" = "init" ]
-then
-    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240  ${WORKSPACE}/v25
+if [ "$1" = "init" ]; then
+    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create ${WORKSPACE}/ref ${MAJOR_VERSION}
     create ${WORKSPACE}/v25 ${MAJOR_VERSION}
@@ -115,22 +107,18 @@ then
     docker rmi camptocamp/geomapfish-build:2.4.0
 fi
 
-if [ "$1" = "240" ]
-then
+if [ "$1" = "240" ]; then
     upgrade $1
 fi
 
-if [ "$1" = "250" ]
-then
+if [ "$1" = "250" ]; then
     upgrade $1
 fi
 
-if [ "$1" = "25" ]
-then
+if [ "$1" = "25" ]; then
     upgrade $1
 fi
 
-if [ "$1" = "cleanup" ]
-then
+if [ "$1" = "cleanup" ]; then
     rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25
 fi

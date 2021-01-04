@@ -7,10 +7,10 @@ COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
 COPY python/ /tmp/python/
-RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    PIP_NO_BINARY=shapely pipenv --python=$(python --version|awk '{print $2}') \
-    install --system --deploy --clear && \
-    rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs
+RUN cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
+    && PIP_NO_BINARY=shapely pipenv --python=$(python --version | awk '{print $2}') \
+        install --system --deploy --clear \
+    && rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs
 
 #############################################################################################################
 
@@ -23,8 +23,8 @@ COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
 COPY python/ /tmp/python/
-RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
+RUN cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
+    && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
 
 COPY . /src/
 RUN cd /src && prospector

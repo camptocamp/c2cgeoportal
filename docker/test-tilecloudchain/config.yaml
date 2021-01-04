@@ -99,7 +99,7 @@ server:
   wmts_path: tiles
   static_path: tiles/static
   admin_path: tiles/admin
-  expires: 8  # 8 hours
+  expires: 8 # 8 hours
   mapcache_internal: True
   predefined_commands:
     - name: Generation all layers

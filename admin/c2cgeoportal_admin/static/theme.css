@@ -1,53 +1,52 @@
-@import "navbar.css";
+@import 'navbar.css';
 
-.nav>li>a {
-  padding-left: 8px;
-  padding-right: 8px;
+.nav > li > a {
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .bootstrap-table th.actions,
-.bootstrap-table td.actions
-{
-  width: 30px;
+.bootstrap-table td.actions {
+    width: 30px;
 }
 
 .icon-theme:before {
-  content: "\e139";
+    content: '\e139';
 }
 .icon-group:before {
-  content: "\e118";
+    content: '\e118';
 }
 .icon-l_wms:before {
-  content: "\e060";
+    content: '\e060';
 }
 .icon-l_wmts:before {
-  content: "\e011";
+    content: '\e011';
 }
 .icon-user:before {
-  content: "\e008";
+    content: '\e008';
 }
 
 .ms-res-ctn .ms-res-item {
-  color: initial;
+    color: initial;
 }
 
 .item-theme,
 .item-layergroup_treeitem,
 .item-layer,
 .item-user {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 .item-theme .well,
 .item-layergroup_treeitem .well,
 .item-layer .well,
 .item-user .well {
-  padding: 10px;
-  margin-bottom: 5px;
+    padding: 10px;
+    margin-bottom: 5px;
 }
 .item-theme .deform-close-button {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 #layertree .alert-info {
-  margin-top: 30px;
+    margin-top: 30px;
 }

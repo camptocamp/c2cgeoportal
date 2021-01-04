@@ -1,12 +1,12 @@
 {
-    "name": "geomapfish-geoportal-run",
-    "version": "1.0.0",
-    "description": "GeoMapFish geoportal interface",
-    "author": "",
-    "dependencies": {
-        "angular-gettext-tools": "2.5.3",
-        "commander": "6.2.1",
-        "puppeteer": "5.5.0",
-        "url-parse": "1.4.7"
-    }
+  "name": "geomapfish-geoportal-run",
+  "version": "1.0.0",
+  "description": "GeoMapFish geoportal interface",
+  "author": "",
+  "dependencies": {
+    "angular-gettext-tools": "2.5.3",
+    "commander": "6.2.1",
+    "puppeteer": "5.5.0",
+    "url-parse": "1.4.7"
+  }
 }

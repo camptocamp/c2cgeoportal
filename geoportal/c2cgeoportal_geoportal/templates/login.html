@@ -1,7 +1,7 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="${lang}">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="Content-Language" content="${lang}" />
         <title>${_('Login to Geoportal Application')}</title>
         <style>
@@ -14,7 +14,7 @@
                 margin: 0;
             }
             div#content {
-                background: #F5F5EF;
+                background: #f5f5ef;
                 padding: 20px 30px;
                 width: 330px;
                 margin: 100px auto auto auto;
@@ -52,31 +52,41 @@
     </head>
     <body>
         <div id="content">
-            <form method="POST" id="loginForm" action="${request.route_url('login', _query=dict(came_from=came_from))}">
-                <table style="margin-left: auto; margin-right: auto;">
+            <form
+                method="POST"
+                id="loginForm"
+                action="${request.route_url('login', _query=dict(came_from=came_from))}"
+            >
+                <table style="margin-left: auto; margin-right: auto">
                     <tbody>
                         <tr>
-                            <td class="field"><p>
-                                <label for="email">${_('Username')}</label></p>
-                                <input id="login" name="login" type="text">
+                            <td class="field">
+                                <p>
+                                    <label for="email">${_('Username')}</label>
+                                </p>
+                                <input id="login" name="login" type="text" />
                             </td>
                         </tr>
                         <tr>
-                            <td class="field"><p>
-                                <label for="password">${_('Password')}</label></p>
-                                <input id="password" name="password" type="password">
+                            <td class="field">
+                                <p>
+                                    <label for="password">${_('Password')}</label>
+                                </p>
+                                <input id="password" name="password" type="password" />
                             </td>
                         </tr>
-% if two_fa:
+                        % if two_fa:
                         <tr>
                             <td class="field">
                                 <p><label for="otp">${_('Authentication code')}</label></p>
-                                <input id="otp" name="otp" type="text" autocomplete="off">
+                                <input id="otp" name="otp" type="text" autocomplete="off" />
                             </td>
                         </tr>
-% endif
+                        % endif
                         <tr>
-                            <td class="buttons"><input tabindex="4" value="${_('Login')}" type="submit"></td>
+                            <td class="buttons">
+                                <input tabindex="4" value="${_('Login')}" type="submit" />
+                            </td>
                         </tr>
                     </tbody>
                 </table>
