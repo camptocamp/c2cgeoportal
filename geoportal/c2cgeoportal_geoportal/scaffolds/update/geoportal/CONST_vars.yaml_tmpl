@@ -121,6 +121,8 @@ vars:
                 ITEMFONTFAMILY: DejaVu Sans
                 LAYERFONTSIZE: '10'
                 ITEMFONTSIZE: '8'
+          hiddenAttributes:
+            - timezone
         ngeoStringToHtmlReplacements:
           # Hyperlink
           - expression: ^(https?:\/\/.+)$
