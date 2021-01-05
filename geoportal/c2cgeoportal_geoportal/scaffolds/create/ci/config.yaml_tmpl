@@ -6,6 +6,13 @@ checks:
   eof: False
   required_workflows: False
 
+version:
+  branch_to_version_re:
+    - from: (prod-[0-9]+\.[0-9]+)
+      to: \1
+    - from: (int-[0-9]+\.[0-9]+)
+      to: \1
+
 publish:
   docker:
     images:
