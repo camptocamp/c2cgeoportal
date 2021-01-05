@@ -62,6 +62,24 @@ jobs:
           ../../ci/run-dc-logs docker-compose exec -T tests /tests/acceptance-tests
           docker-compose down
 
+      - run: scripts/get-version --auto-increment --github
+        id: version
+        if: github.repository == 'camptocamp/c2cgeoportal'
+
       - name: Publish
         run: c2cciutils-publish --group=qgis-${{ matrix.version }}
         if: github.repository == 'camptocamp/c2cgeoportal'
+
+      - name: Publish feature branch
+        run: |
+          c2cciutils-publish --group=qgis-${{ matrix.version }}
+        if: >
+          github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
+          && github.repository == 'camptocamp/c2cgeoportal'
+      - name: Publish version branch
+        run: |
+          c2cciutils-publish --group=qgis-${{ matrix.version }} --type=version_branch \
+            --version=${{ steps.version.outputs.full }}
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && github.repository == 'camptocamp/c2cgeoportal'
