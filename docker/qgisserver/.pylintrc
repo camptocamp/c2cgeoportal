@@ -9,7 +9,8 @@ disable=import-error,
     locally-disabled,
     bad-continuation,
     too-many-instance-attributes,
-    line-too-long
+    line-too-long,
+    wrong-import-order
 
 
 [FORMAT]

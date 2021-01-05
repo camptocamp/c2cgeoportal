@@ -17,7 +17,9 @@ from typing import Dict, List
 
 import c2cwsgiutils.broadcast
 import geoalchemy2
+import psycopg2.errors
 import sqlalchemy
+import sqlalchemy.orm.session
 import yaml
 import zope.event.classhandler
 from c2c.template.config import config
@@ -36,7 +38,17 @@ def create_session_factory(url, configuration):
     engine = sqlalchemy.create_engine(url, **configuration)
     session_factory = sessionmaker()
     session_factory.configure(bind=engine)
-    return session_factory
+
+    def get_session() -> sqlalchemy.orm.session.Session:
+        while True:
+            session = session_factory()
+            try:
+                session.execute("SELECT TRUE")  # pylint: disable=no-member
+                return session
+            except psycopg2.errors.IdleInTransactionSessionTimeout:
+                session.rollback()  # pylint: disable=no-member
+
+    return get_session
 
 
 class GMFException(Exception):
@@ -178,7 +190,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.layers = None
         self.lock = Lock()
         self.srid = srid
-        self.ogcserver = None
+        self.ogcserver_id = None
         self.project = QgsProject.instance()
 
         from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
@@ -204,11 +216,14 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 )
 
                 session = self.DBSession()
-                self.ogcserver = (
-                    session.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
-                )
-                session.close()
-                if self.ogcserver is None:
+                try:
+                    self.ogcserver_id = (
+                        session.query(OGCServer.id).filter(OGCServer.name == ogcserver_name).one_or_none()
+                    )[0]
+                finally:
+                    session.rollback()
+                    session.close()
+                if self.ogcserver_id is None:
                     LOG.error(
                         "No OGC server found for '%s', project: '%s' => no rights", ogcserver_name, map_file
                     )
@@ -231,7 +246,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             key: QGIS layer tree node name
             value: list of c2cgeoportal_commons.models.main.LayerWMS instances.
         """
-        if self.ogcserver is None:
+        if self.ogcserver_id is None:
             return {}
 
         with self.lock:
@@ -271,7 +286,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             for layer in (
                 session.query(LayerWMS)
                 .options(subqueryload(LayerWMS.restrictionareas).subqueryload(RestrictionArea.roles))
-                .filter(LayerWMS.ogc_server_id == self.ogcserver.id)
+                .filter(LayerWMS.ogc_server_id == self.ogcserver_id)
                 .all()
             ):
                 found = False
@@ -401,7 +416,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         LOG.debug("layerFilterSubsetString %s %s", layer.name(), layer.dataProvider().storageType())
 
-        if self.ogcserver is None:
+        if self.ogcserver_id is None:
             parameters = self.serverInterface().requestHandler().parameterMap()
             LOG.warning(
                 "Call on uninitialized plugin, map: %s",
@@ -415,8 +430,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 return None
 
             session = self.DBSession()
-            access, area = self.get_area(layer, session)
-            session.close()
+            try:
+                access, area = self.get_area(layer, session)
+            finally:
+                session.rollback()
+                session.close()
             if access is Access.FULL:
                 LOG.debug("layerFilterSubsetString no area")
                 return None
@@ -441,7 +459,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         LOG.debug("layerFilterExpression %s %s", layer.name(), layer.dataProvider().storageType())
 
-        if self.ogcserver is None:
+        if self.ogcserver_id is None:
             parameters = self.serverInterface().requestHandler().parameterMap()
             LOG.warning(
                 "Call on uninitialized plugin, map: %s",
@@ -455,8 +473,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 return None
 
             session = self.DBSession()
-            access, area = self.get_area(layer, session)
-            session.close()
+            try:
+                access, area = self.get_area(layer, session)
+            finally:
+                session.rollback()
+                session.close()
             if access is Access.FULL:
                 LOG.debug("layerFilterExpression no area")
                 return None
@@ -482,7 +503,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             rights = QgsAccessControlFilter.LayerPermissions()
             rights.canRead = rights.canInsert = rights.canUpdate = rights.canDelete = False
 
-            if self.ogcserver is None:
+            if self.ogcserver_id is None:
                 parameters = self.serverInterface().requestHandler().parameterMap()
                 LOG.warning(
                     "Call on uninitialized plugin, map: %s",
@@ -491,20 +512,23 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 return rights
 
             session = self.DBSession()
-            layers = self.get_layers(session)
-            ogc_layer_name = self.ogc_layer_name(layer)
-            if ogc_layer_name not in layers:
-                return rights
-            gmf_layers = self.get_layers(session)[ogc_layer_name]
+            try:
+                layers = self.get_layers(session)
+                ogc_layer_name = self.ogc_layer_name(layer)
+                if ogc_layer_name not in layers:
+                    return rights
+                gmf_layers = self.get_layers(session)[ogc_layer_name]
 
-            roles = self.get_roles(session)
-            session.close()
-            access, _ = self.get_restriction_areas(gmf_layers, roles=roles)
-            if access is not Access.NO:
-                rights.canRead = True
+                roles = self.get_roles(session)
+                access, _ = self.get_restriction_areas(gmf_layers, roles=roles)
+                if access is not Access.NO:
+                    rights.canRead = True
 
-            access, _ = self.get_restriction_areas(gmf_layers, read_write=True, roles=roles)
-            rights.canInsert = rights.canUpdate = rights.canDelete = access is not Access.NO
+                access, _ = self.get_restriction_areas(gmf_layers, read_write=True, roles=roles)
+                rights.canInsert = rights.canUpdate = rights.canDelete = access is not Access.NO
+            finally:
+                session.rollback()
+                session.close()
 
             return rights
         except Exception:
@@ -515,7 +539,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         """ Returns the authorised layer attributes """
         del layer
 
-        if self.ogcserver is None:
+        if self.ogcserver_id is None:
             parameters = self.serverInterface().requestHandler().parameterMap()
             LOG.warning(
                 "Call on uninitialized plugin, map: %s",
@@ -530,7 +554,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         """ Are we authorise to modify the following geometry """
         LOG.debug("allowToEdit")
 
-        if self.ogcserver is None:
+        if self.ogcserver_id is None:
             parameters = self.serverInterface().requestHandler().parameterMap()
             LOG.warning(
                 "Call on uninitialized plugin, map: %s",
@@ -540,8 +564,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         try:
             session = self.DBSession()
-            access, area = self.get_area(layer, session, read_write=True)
-            session.close()
+            try:
+                access, area = self.get_area(layer, session, read_write=True)
+            finally:
+                session.rollback()
+                session.close()
             if access is Access.FULL:
                 LOG.debug("layerFilterExpression no area")
                 return True
@@ -557,11 +584,14 @@ class OGCServerAccessControl(QgsAccessControlFilter):
     def cacheKey(self):  # NOQA
         # Root...
         session = self.DBSession()
-        roles = self.get_roles(session)
-        session.close()
-        if roles == "ROOT":
-            return "{}-{}".format(self.serverInterface().requestHandler().parameter("Host"), -1)
-        return "{}-{}".format(
-            self.serverInterface().requestHandler().parameter("Host"),
-            ",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id)),
-        )
+        try:
+            roles = self.get_roles(session)
+            if roles == "ROOT":
+                return "{}-{}".format(self.serverInterface().requestHandler().parameter("Host"), -1)
+            return "{}-{}".format(
+                self.serverInterface().requestHandler().parameter("Host"),
+                ",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id)),
+            )
+        finally:
+            session.rollback()
+            session.close()

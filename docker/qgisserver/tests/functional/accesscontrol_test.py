@@ -203,11 +203,16 @@ def wms_use_layer_ids(test_data):
 @pytest.mark.usefixtures("server_iface", "qgs_access_control_filter", "test_data")
 class TestOGCServerAccessControl:
     def test_init(self, server_iface, DBSession, test_data):  # noqa: N803
+        from c2cgeoportal_commons.models.main import OGCServer
+
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
-        assert ogcserver_accesscontrol.ogcserver.name == "qgisserver1"
+        assert (
+            ogcserver_accesscontrol.ogcserver_id
+            == dbsession.query(OGCServer).filter(OGCServer.name == "qgisserver1").one_or_none().id
+        )
 
     def test_ogc_layer_name(self, server_iface, DBSession, test_data):  # noqa: N803
         dbsession = DBSession()
@@ -411,7 +416,7 @@ class TestUnavailableOGCServerAccessControl:
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "unavailable", "no_project", 21781, lambda: dbsession
         )
-        assert ogcserver_accesscontrol.ogcserver is None
+        assert ogcserver_accesscontrol.ogcserver_id is None
 
     def test_get_layers(self, server_iface, DBSession):  # noqa: N803
         dbsession = DBSession()
@@ -494,19 +499,28 @@ class TestGeoMapFishAccessControlSingleOGCServer:
 )
 class TestGeoMapFishAccessControlMultipleOGCServer:
     @pytest.mark.usefixtures()
-    def test_init(self, server_iface, test_data):
+    def test_init(self, server_iface, DBSession, test_data):  # noqa: N803
+        from c2cgeoportal_commons.models.main import OGCServer
+
         plugin = GeoMapFishAccessControl(server_iface)
         assert plugin.single is False
+        dbsession = DBSession()
 
         assert plugin.serverInterface() is server_iface
 
         set_request_parameters(server_iface, {"MAP": "qgsproject1"})
         assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "qgsproject1"
-        assert plugin.get_ogcserver_accesscontrol().ogcserver.name == "qgisserver1"
+        assert (
+            plugin.get_ogcserver_accesscontrol().ogcserver_id
+            == dbsession.query(OGCServer).filter(OGCServer.name == "qgisserver1").one_or_none().id
+        )
 
         set_request_parameters(server_iface, {"MAP": "qgsproject2"})
         assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "qgsproject2"
-        assert plugin.get_ogcserver_accesscontrol().ogcserver.name == "qgisserver2"
+        assert (
+            plugin.get_ogcserver_accesscontrol().ogcserver_id
+            == dbsession.query(OGCServer).filter(OGCServer.name == "qgisserver2").one_or_none().id
+        )
 
         set_request_parameters(server_iface, {"MAP": "unavailable"})
         assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "unavailable"
