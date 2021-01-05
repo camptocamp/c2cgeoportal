@@ -35,6 +35,9 @@ jobs:
       - name: Build config
         run: ./build --config
 
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+
       - name: Publish
         run: c2cciutils-publish --group=config
       - run: ci/trigger --image=config
@@ -62,6 +65,9 @@ jobs:
           ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
+
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Publish
         run: c2cciutils-publish --group=geoportal
