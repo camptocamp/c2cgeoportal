@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -91,7 +91,7 @@ class BaseTemplate(Template):  # pragma: no cover
             package_logger = "app"
         vars_["package_logger"] = package_logger
         vars_["geomapfish_version"] = os.environ["VERSION"]
-        vars_["geomapfish_main_version"] = os.environ["MAIN_BRANCH"]
+        vars_["geomapfish_main_version"] = os.environ["MAJOR_VERSION"]
 
     @staticmethod
     def out(msg):

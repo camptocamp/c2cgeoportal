@@ -34,14 +34,12 @@ yamllint: pipenv.timestamp
 .PHONY: otherchecks
 otherchecks:
 	docker build --target=checks \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAIN_BRANCH=$(MAIN_BRANCH) \
-		--build-arg=VERSION=$(VERSION) .
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-tools
 build-tools:
 	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAIN_BRANCH=$(MAIN_BRANCH) \
-		--build-arg=VERSION=$(VERSION) .
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-config
 build-config:
@@ -51,8 +49,7 @@ build-config:
 .PHONY: build-runner
 build-runner:
 	docker build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAIN_BRANCH=$(MAIN_BRANCH) \
-		--build-arg=VERSION=$(VERSION) .
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 QGIS_VERSION ?= latest
 .PHONY: build-qgisserver

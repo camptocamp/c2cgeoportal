@@ -136,9 +136,6 @@ COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src
 
-ARG MAIN_BRANCH
-ENV MAIN_BRANCH=$MAIN_BRANCH
-
 
 #############################################################################################################
 # Cleaned image used to copy files to the runner
