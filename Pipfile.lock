@@ -1108,10 +1108,11 @@
         },
         "gitpython": {
             "hashes": [
-                "sha256:6eea89b655917b500437e9668e4a12eabdcf00229a0df1762aabd692ef9b746b",
-                "sha256:befa4d101f91bad1b632df4308ec64555db684c360bd7d2130b4807d49ce86b8"
+                "sha256:42dbefd8d9e2576c496ed0059f3103dcef7125b9ce16f9d5f9c834aed44a1dac",
+                "sha256:867ec3dfb126aac0f8296b19fb63b8c4a399f32b4b6fafe84c4b10af5fa9f7b5"
             ],
-            "version": "==3.1.11"
+            "index": "pypi",
+            "version": "==3.1.12"
         },
         "idna": {
             "hashes": [
