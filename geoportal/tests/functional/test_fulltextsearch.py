@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2019, Camptocamp SA
+# Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -418,3 +418,18 @@ class TestFulltextsearchView(TestCase):
         self.assertEqual(response.features[0].properties["label"], "A 70 simi")
         self.assertEqual(response.features[1].properties["label"], "A 71 simi")
         self.assertEqual(response.features[2].properties["label"], "A 7 simi")
+
+    def test_extra_quote(self):
+        from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(params=dict(query="tra 'sol"))
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        self.assertEqual(len(response.features), 2)
+        self.assertEqual(response.features[0].properties["label"], "label1")
+        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
+        self.assertEqual(response.features[1].properties["label"], "label4")
+        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
