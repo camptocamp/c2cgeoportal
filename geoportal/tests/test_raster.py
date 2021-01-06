@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2019, Camptocamp SA
+# Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -260,3 +260,10 @@ class TestRasterViews(TestCase):
         # test wrong layer name
         request.params["layers"] = "wrong"
         self.assertRaises(HTTPNotFound, profile.json)
+
+    def test_round_bigvalue(self):
+        from decimal import Decimal
+
+        from c2cgeoportal_geoportal.views.raster import Raster
+
+        assert Raster._round(-5.4775915e29, 1) == Decimal("-5.4775915E+29")
