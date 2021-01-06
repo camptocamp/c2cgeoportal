@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2019, Camptocamp SA
+# Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,11 @@ class TestRasterViews(TestCase):
 
     def test_raster(self):
         from decimal import Decimal
-        from pyramid.testing import DummyRequest
+
         from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
+
         from c2cgeoportal_geoportal.views.raster import Raster
 
         request = DummyRequest()
@@ -83,7 +86,9 @@ class TestRasterViews(TestCase):
 
     def test_raster_angle(self):
         from decimal import Decimal
+
         from pyramid.testing import DummyRequest
+
         from c2cgeoportal_geoportal.views.raster import Raster
 
         request = DummyRequest()
@@ -126,7 +131,9 @@ class TestRasterViews(TestCase):
 
     def test_raster_vrt(self):
         from decimal import Decimal
+
         from pyramid.testing import DummyRequest
+
         from c2cgeoportal_geoportal.views.raster import Raster
 
         request = DummyRequest()
@@ -161,8 +168,11 @@ class TestRasterViews(TestCase):
 
     def test_profile_json(self):
         from decimal import Decimal
-        from pyramid.testing import DummyRequest
+
         from pyramid.httpexceptions import HTTPNotFound
+        from pyramid.testing import DummyRequest
+        from tests import DummyRequest
+
         from c2cgeoportal_geoportal.views.profile import Profile
 
         request = DummyRequest()
@@ -262,6 +272,7 @@ class TestRasterViews(TestCase):
 
     def test_profile_csv(self):
         from pyramid.testing import DummyRequest
+
         from c2cgeoportal_geoportal.views.profile import Profile
 
         request = DummyRequest()
@@ -291,3 +302,11 @@ class TestRasterViews(TestCase):
 9.2,1181,548003.0,215996.5
 18.4,1180,547996.5,216003.0
 27.6,1164,547990.0,216009.5""")
+
+
+    def test_round_bigvalue(self):
+        from decimal import Decimal
+
+        from c2cgeoportal_geoportal.views.raster import Raster
+
+        assert Raster._round(-5.4775915e29, 1) == Decimal("-5.4775915E+29")
