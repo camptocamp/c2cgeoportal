@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,18 +28,18 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
-from pyramid.view import view_config
-
-from geojson import Feature, FeatureCollection
-from sqlalchemy import func, desc, or_, and_
-from geoalchemy2.shape import to_shape
 import re
 
-from c2cgeoportal_geoportal import locale_negotiator
+from geoalchemy2.shape import to_shape
+from geojson import Feature, FeatureCollection
+from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
+from pyramid.view import view_config
+from sqlalchemy import and_, desc, func, or_
+
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import FullTextSearch, Interface
-from c2cgeoportal_geoportal.lib.caching import get_region, set_common_headers, NO_CACHE
+from c2cgeoportal_geoportal import locale_negotiator
+from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
 
 cache_region = get_region()
 
@@ -92,12 +92,10 @@ class FullTextSearchView:
         if partitionlimit > maxlimit:
             partitionlimit = maxlimit
 
-        terms_ts = "&".join(
-            w + ":*"
-            for w in IGNORED_STARTUP_CHARS_RE.sub(
-                "",
-                IGNORED_CHARS_RE.sub(" ", terms)
-            ).split(" ") if w != "")
+        terms_array = [
+            IGNORED_STARTUP_CHARS_RE.sub("", elem) for elem in IGNORED_CHARS_RE.sub(" ", terms).split(" ")
+        ]
+        terms_ts = "&".join(w + ":*" for w in terms_array if w != "")
         _filter = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
 
         if self.request.user is None:
