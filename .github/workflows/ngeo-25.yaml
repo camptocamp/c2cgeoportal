@@ -154,10 +154,10 @@ jobs:
       - run: git diff CHANGELOG.md
 
       - name: Publish
-        run: c2cciutils-publish --group=full --type=version_branch \
+        run: c2cciutils-publish --group=full --type=version_branch
           --version=${{ steps.version.outputs.major }}
       - name: Publish
-        run: c2cciutils-publish --group=full --type=version_branch \
+        run: c2cciutils-publish --group=full --type=version_branch
           --version=${{ steps.version.outputs.full }}
 
       - run: ci/create-new-project ${HOME}/workspace geomapfish
