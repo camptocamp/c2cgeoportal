@@ -1,5 +1,10 @@
-##### 2.5.0.102
-* [Backport 2.5] Bump c2cciutils from 1.0.dev20201222122805 to 1.0.dev20201223143028 [ngeo#6617](https://github.com/camptocamp/ngeo/pull/6617)
+##### 2.5.0.103
+* Fix round on too big value [c2cgeoportal#7579](https://github.com/camptocamp/c2cgeoportal/pull/7579)
+* [Backport 2.5] Ignore startup quote on all the search therm [c2cgeoportal#7584](https://github.com/camptocamp/c2cgeoportal/pull/7584)
+* Make checkboxes have value false when not checked [ngeo#6619](https://github.com/camptocamp/ngeo/pull/6619)
+* Some fix for the audit [ngeo#6621](https://github.com/camptocamp/ngeo/pull/6621)
+* Use getDataSource to check if layer is filtrable [ngeo#6624](https://github.com/camptocamp/ngeo/pull/6624)
+* Export controllers [ngeo#6649](https://github.com/camptocamp/ngeo/pull/6649)
 ##### 2.5.0.101
 * [Backport 2.5] Use c2cciutils - Publish to GitHub Container Registry [c2cgeoportal#7434](https://github.com/camptocamp/c2cgeoportal/pull/7434)
 * Add USER_ID and ROLE_IDS in lingua extractor requests [c2cgeoportal#7448](https://github.com/camptocamp/c2cgeoportal/pull/7448)
