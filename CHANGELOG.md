@@ -1,7 +1,8 @@
+##### 2.4.2.29
+* [Backport 2.4] Ignore startup quote on all the search therm [c2cgeoportal#7583](https://github.com/camptocamp/c2cgeoportal/pull/7583)
 ##### 2.4.2.28
 * Script docker-run: fix home directory setting [c2cgeoportal#7512](https://github.com/camptocamp/c2cgeoportal/pull/7512)
 * Fix audit [ngeo#6603](https://github.com/camptocamp/ngeo/pull/6603)
-* GitHub workflow [ngeo#6609](https://github.com/camptocamp/ngeo/pull/6609)
 ##### 2.4.2.27
 * Gunicorn: adapt tmpdir setting for Docker environment [c2cgeoportal#7488](https://github.com/camptocamp/c2cgeoportal/pull/7488)
 * [Backport 2.4] Bump c2cciutils from 1.0.dev20201217141839 to 1.0.dev20201221104733 [c2cgeoportal#7514](https://github.com/camptocamp/c2cgeoportal/pull/7514)
