@@ -61,6 +61,8 @@ mapping:
         type: int
       sqlalchemy.executemany_mode:
         type: str
+      sqlalchemy.pool_pre_ping:
+        type: bool
       sqlalchemy_slave.url:
         type: str
         required: True
@@ -72,6 +74,8 @@ mapping:
         type: int
       sqlalchemy_slave.executemany_mode:
         type: str
+      sqlalchemy_slave.pool_pre_ping:
+        type: bool
       default_max_age:
         type: int
         required: True
