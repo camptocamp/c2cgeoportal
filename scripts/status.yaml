@@ -374,7 +374,6 @@
     v2:
       workflows:
         - workflow: Continuous integration
-        - workflow: CodeQL scanning
 
 - name: Python action
   repo: camptocamp/python-action
@@ -386,7 +385,6 @@
     master:
       workflows:
         - workflow: Continuous integration
-        - workflow: CodeQL scanning
 
 - title: Openshift and others
 
@@ -425,11 +423,11 @@
   workflows:
     - workflow: Rebuild
     - workflow: Clean Docker hub tags
+    - workflow: Auto merge Dependabot updates
   versions:
     master:
       workflows:
         - workflow: Continuous integration
-        - workflow: CodeQL scanning
 
 - name: Private geo charts
   repo: camptocamp/private-geo-charts
@@ -448,6 +446,7 @@
   repo: camptocamp/geospatial-dashboards
   workflows:
     - workflow: Backup Grafana
+    - workflow: Auto merge Dependabot updates
   versions:
     master:
       workflows:
@@ -456,6 +455,8 @@
 - name: Mutualized print config
   repo: camptocamp/mutualized_print_config
   description: The configuration of mutualised print
+  workflows:
+    - workflow: Auto merge Dependabot updates
   versions:
     master:
       workflows:
@@ -466,16 +467,23 @@
 - name: Mutualized print logs
   repo: camptocamp/mapfish-print-logs
   description: Used to extract logs from ElasticSearch for the mutualised print
+  workflows:
+    - workflow: Rebuild
+    - workflow: Auto merge Dependabot updates
   versions:
     master:
       workflows:
-        - workflow: Continuous integration
+        - workflow: Build
+        - workflow: CodeQL scanning
+  hidden_workflows:
+    - Nightly
 
 - name: ElasticSearch OOM exporter
   repo: camptocamp/es-ooms-exporter
   workflows:
     - workflow: Clean Docker hub tags
     - workflow: Rebuild
+    - workflow: Auto merge Dependabot updates
   versions:
     master:
       workflows:
@@ -489,16 +497,11 @@
 - name: Tomcat logback
   repo: camptocamp/docker-tomcat-logback
   workflows:
-    - workflow: Rebuild
-    - workflow: Audit
-    - workflow: Clean docker hub tags
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
       norunfor: false
   versions:
     8.5-jre8:
-      workflows:
-        - workflow: Continuous integration
       used_by:
         - short: 3.20
           long: MapFish-print 3.20
@@ -537,7 +540,3 @@
   repo: camptocamp/docker-daily
   workflows:
     - workflow: Trigger build
-  versions:
-    master:
-      workflows:
-        - workflow: Continuous integration
