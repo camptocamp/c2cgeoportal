@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2019, Camptocamp SA
+# Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,15 +28,17 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import decimal
 import logging
 import math
 import os
-from decimal import Decimal
-from typing import Dict, Any  # noqa, pylint: disable=unused-import
+import traceback
+from typing import Any, Dict, Optional  # noqa, pylint: disable=unused-import
 
-import zope.event.classhandler
+import numpy
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
+import zope.event.classhandler
 
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
 
@@ -137,7 +139,7 @@ class Raster:
         if "round" in layer:
             result = self._round(result, layer["round"])
         elif result is not None:
-            result = Decimal(str(result))
+            result = decimal.Decimal(str(result))
 
         return result
 
@@ -166,8 +168,12 @@ class Raster:
         return result
 
     @staticmethod
-    def _round(value, round_to):
+    def _round(value: numpy.float32, round_to: float) -> Optional[decimal.Decimal]:
         if value is not None:
-            return Decimal(str(value)).quantize(Decimal(str(round_to)))
-        else:
-            return None
+            decimal_value = decimal.Decimal(str(value))
+            try:
+                return decimal_value.quantize(decimal.Decimal(str(round_to)))
+            except decimal.InvalidOperation:
+                log.info("Error on rounding %s: %s", decimal_value, traceback.format_exc())
+                return decimal_value
+        return None
