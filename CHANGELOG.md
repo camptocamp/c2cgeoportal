@@ -1,5 +1,6 @@
-##### 2.5.0.103
+##### 2.5.0.104
 * Fix round on too big value [c2cgeoportal#7579](https://github.com/camptocamp/c2cgeoportal/pull/7579)
+##### 2.5.0.103
 * [Backport 2.5] Ignore startup quote on all the search therm [c2cgeoportal#7584](https://github.com/camptocamp/c2cgeoportal/pull/7584)
 * Make checkboxes have value false when not checked [ngeo#6619](https://github.com/camptocamp/ngeo/pull/6619)
 * Some fix for the audit [ngeo#6621](https://github.com/camptocamp/ngeo/pull/6621)
