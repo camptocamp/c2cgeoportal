@@ -1,3 +1,5 @@
+##### 2.4.2.30
+* [Backport 2.4] Fix round on too big value [c2cgeoportal#7597](https://github.com/camptocamp/c2cgeoportal/pull/7597)
 ##### 2.4.2.29
 * [Backport 2.4] Ignore startup quote on all the search therm [c2cgeoportal#7583](https://github.com/camptocamp/c2cgeoportal/pull/7583)
 ##### 2.4.2.28
