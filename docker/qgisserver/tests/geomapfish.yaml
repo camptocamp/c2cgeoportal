@@ -5,6 +5,12 @@ vars:
   sqlalchemy.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
   sqlalchemy_slave.url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}
   srid: 21781
+  sqlalchemy:
+    pool_recycle: 30
+    pool_size: 5
+    max_overflow: 25
+    executemany_mode: batch
+    pool_pre_ping: True
 environment:
   - PGUSER
   - PGPASSWORD

@@ -10,6 +10,7 @@ vars:
     pool_size: 5
     max_overflow: 25
     executemany_mode: batch
+    pool_pre_ping: True
 interpreted: {}
 no_interpreted: []
 postprocess: []
