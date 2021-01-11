@@ -6,8 +6,8 @@ defaultToSvg: true
 allowedReferers: &allowedHosts
   ${DISABLE_MUTUALIZED_PRINT}- !hostnameMatch
   ${DISABLE_MUTUALIZED_PRINT}  host: ${MUTUALIZED_PRINT_URL}
-  - !hostnameMatch
-    host: ${VISIBLE_WEB_HOST}
+  ${DISABLE_LOCAL_PRINT}- !hostnameMatch
+  ${DISABLE_LOCAL_PRINT}  host: ${VISIBLE_WEB_HOST}
   - !localMatch {}
 
 templates:
@@ -59,25 +59,18 @@ templates:
       - !configureHttpRequests &configureHttpRequests
         httpProcessors:
           ## For internal print
-          ${DISABLE_MUTUALIZED_PRINT}- !mapUri
-          ${DISABLE_MUTUALIZED_PRINT}  mapping:
-          ${DISABLE_MUTUALIZED_PRINT}    https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles(.*): "${TILECLOUDCHAIN_INTERNAL_URL}${VISIBLE_ENTRY_POINT}tiles$1"
-          ${DISABLE_MUTUALIZED_PRINT}- !mapUri
-          ${DISABLE_MUTUALIZED_PRINT}  mapping:
-          ${DISABLE_MUTUALIZED_PRINT}    https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$1"
-          ${DISABLE_MUTUALIZED_PRINT}- !forwardHeaders
-          ${DISABLE_MUTUALIZED_PRINT}  matchers:
-          ${DISABLE_MUTUALIZED_PRINT}    - !hostnameMatch
-          ${DISABLE_MUTUALIZED_PRINT}      host: ${GEOPORTAL_INTERNAL_HOST}
-          ${DISABLE_MUTUALIZED_PRINT}      port: ${GEOPORTAL_INTERNAL_PORT}
-          ## For mutualized print
           ${DISABLE_LOCAL_PRINT}- !mapUri
           ${DISABLE_LOCAL_PRINT}  mapping:
-          ${DISABLE_LOCAL_PRINT}    https?://localhost:8484/tiles(.*): "http://tilecloudchain:8080/tiles$1"
+          ${DISABLE_LOCAL_PRINT}    https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}tiles(.*): "${TILECLOUDCHAIN_INTERNAL_URL}${VISIBLE_ENTRY_POINT}tiles$1"
           ${DISABLE_LOCAL_PRINT}- !mapUri
           ${DISABLE_LOCAL_PRINT}  mapping:
-          ${DISABLE_LOCAL_PRINT}    https?://localhost:8484/(.*): "http://geoportal:8080/$1"
-          ## End for mutualized print
+          ${DISABLE_LOCAL_PRINT}    https?://${VISIBLE_WEB_HOST_RE_ESCAPED}${VISIBLE_ENTRY_POINT_RE_ESCAPED}(.*): "${GEOPORTAL_INTERNAL_URL}${VISIBLE_ENTRY_POINT}$1"
+          ${DISABLE_LOCAL_PRINT}- !forwardHeaders
+          ${DISABLE_LOCAL_PRINT}  matchers:
+          ${DISABLE_LOCAL_PRINT}    - !hostnameMatch
+          ${DISABLE_LOCAL_PRINT}      host: ${GEOPORTAL_INTERNAL_HOST}
+          ${DISABLE_LOCAL_PRINT}      port: ${GEOPORTAL_INTERNAL_PORT}
+          ## End for internal print
           - !forwardHeaders
             matchers: *allowedHosts
             headers:
