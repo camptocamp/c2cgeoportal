@@ -68,10 +68,6 @@ jobs:
         id: version
         if: github.repository == 'camptocamp/c2cgeoportal'
 
-      - name: Publish
-        run: c2cciutils-publish --group=qgis-${{ matrix.version }}
-        if: github.repository == 'camptocamp/c2cgeoportal'
-
       - name: Publish feature branch
         run: |
           c2cciutils-publish --group=qgis-${{ matrix.version }}
@@ -81,7 +77,7 @@ jobs:
       - name: Publish version branch
         run: |
           c2cciutils-publish --group=qgis-${{ matrix.version }} --type=version_branch \
-            --version=${{ steps.version.outputs.full }}
+            --version=${{ steps.version.outputs.major }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
