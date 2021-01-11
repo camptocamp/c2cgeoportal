@@ -31,8 +31,11 @@ jobs:
           patterns: pypi docker transifex
         if: github.repository == 'camptocamp/c2cgeoportal'
 
+      - run: python3 -m pip install httplib2==0.18.1
+      - run: python3 -m pip freeze|grep httplib2
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - run: python3 -m pip freeze|grep httplib2
 
       - name: Checks
         run: c2cciutils-checks
@@ -42,6 +45,7 @@ jobs:
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - run: python3 -m pip install --user --requirement=requirements.txt
+      - run: python3 -m pip freeze|grep httplib2
 
       # Global simple lint
       - run: make yamllint
@@ -160,12 +164,13 @@ jobs:
       - run: ci/create-new-project ${HOME}/workspace geomapfishapp
       - run: (cd ${HOME}/workspace/geomapfishapp/; ./build)
 
-      - name: 'Update the changelog'
+      - name: Update the changelog
         run: ci/changelog ${{ steps.version.outputs.full }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
 
+      - run: python3 -m pip freeze|grep httplib2
       - name: Publish feature branch
         run: |
           c2cciutils-publish
