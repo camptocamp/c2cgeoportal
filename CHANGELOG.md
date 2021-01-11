@@ -1,3 +1,5 @@
+##### 2.4.2.31
+* Fix doc for urllogin according to fix #5160 from GMF 2.3 [c2cgeoportal#7602](https://github.com/camptocamp/c2cgeoportal/pull/7602)
 ##### 2.4.2.30
 * [Backport 2.4] Fix round on too big value [c2cgeoportal#7597](https://github.com/camptocamp/c2cgeoportal/pull/7597)
 ##### 2.4.2.29
