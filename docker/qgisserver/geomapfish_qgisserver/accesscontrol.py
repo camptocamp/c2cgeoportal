@@ -32,7 +32,11 @@ LOG = logging.getLogger(__name__)
 def create_session_factory(url, configuration):
     configure_mappers()
     db_match = re.match(".*(@[^@]+)$", url)
-    LOG.info("Connect to the database: ***%s", db_match.group(1) if db_match else "")
+    LOG.info(
+        "Connect to the database: ***%s, with config: %s",
+        db_match.group(1) if db_match else "",
+        ", ".join(["{}={}".format(*e) for e in configuration.items()]),
+    )
     engine = sqlalchemy.create_engine(url, **configuration)
     session_factory = sessionmaker(autocommit=True)
     session_factory.configure(bind=engine)
