@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7c33c2737091febea9fcc4c628a35d36e14feb615f8c1d2f0a9a8d47e00159b3"
+            "sha256": "7164209c7e5ea612abb944cab8586ffe9aeb0126f5362bf7f88944a688e0c8d6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -505,7 +505,6 @@
                 "sha256:bc9591213a8f0e0ca1a5e68a479b4887fdc3e75d0774e5c71c31920c427de435",
                 "sha256:df49d09b498e83c1a73128295860250b0b7edd4c723a32e9bc0d295c7c2ec337"
             ],
-            "index": "pypi",
             "version": "==2.7.4"
         },
         "pyotp": {
@@ -946,11 +945,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:07e74ce15310aa85cbfe30254256a65f2a3716610cb27fa989585a6f1a258f33",
-                "sha256:570d84503d3f737a600b42059b156b7b7339ff3bc969e28dfb750c97af232119"
+                "sha256:0aefc7e8482306d35006ef49b4d1f876ce2dfe7434085e5d9729b9aceff31b89",
+                "sha256:afff5200fbe505f818827fa740b076f0cc502e1c146e8e6ffd267607dc30a97a"
             ],
             "index": "pypi",
-            "version": "==1.18.212"
+            "version": "==1.18.213"
         },
         "babel": {
             "hashes": [
@@ -978,10 +977,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:d8f50e4162012ccfab64c2db4fcc99313d46d57789072251bab56013d66546e2",
-                "sha256:dc5ec23deadbe9327d3c81d03fddf80805c549059baabd80dea605941fe6a221"
+                "sha256:21677cda7b32492a1a74ac40e51d691a6623578d6700feb9976966d26a576414",
+                "sha256:e93539781c43bd64291798a01cc6df2c0ff98e01ae7fe48286942ca8fa351680"
             ],
-            "version": "==1.19.52"
+            "version": "==1.19.53"
         },
         "certifi": {
             "hashes": [
@@ -1365,7 +1364,6 @@
                 "sha256:bc9591213a8f0e0ca1a5e68a479b4887fdc3e75d0774e5c71c31920c427de435",
                 "sha256:df49d09b498e83c1a73128295860250b0b7edd4c723a32e9bc0d295c7c2ec337"
             ],
-            "index": "pypi",
             "version": "==2.7.4"
         },
         "pykwalify": {
