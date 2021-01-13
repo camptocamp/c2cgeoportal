@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2020, Camptocamp SA
+# Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,14 +28,71 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import binascii
+import json
 import logging
+import time
 
-from pyramid.authentication import AuthTktAuthenticationPolicy, BasicAuthAuthenticationPolicy
+from Crypto.Cipher import AES  # nosec
+from pyramid.authentication import (
+    AuthTktAuthenticationPolicy,
+    BasicAuthAuthenticationPolicy,
+    CallbackAuthenticationPolicy,
+)
+from pyramid.interfaces import IAuthenticationPolicy
+from pyramid.security import remember
 from pyramid_multiauth import MultiAuthenticationPolicy
+from zope.interface import implementer
 
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 
 LOG = logging.getLogger(__name__)
+
+
+@implementer(IAuthenticationPolicy)
+class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):
+    def __init__(self, aes_key, callback=None, debug=False):
+        self.aeskey = aes_key
+        self.callback = callback
+        self.debug = debug
+
+    def unauthenticated_userid(self, request):
+        if not request.method == "GET" or "auth" not in request.params:
+            return None
+        auth_enc = request.params.get("auth")
+        if auth_enc is None:
+            return None
+        try:
+            if self.aeskey is None:  # pragma: nocover
+                raise Exception("urllogin is not configured")
+            now = int(time.time())
+            data = binascii.unhexlify(auth_enc.encode("ascii"))
+            nonce = data[0:16]
+            tag = data[16:32]
+            ciphertext = data[32:]
+            cipher = AES.new(self.aeskey.encode("ascii"), AES.MODE_EAX, nonce)
+            auth = json.loads(cipher.decrypt_and_verify(ciphertext, tag).decode("utf-8"))  # type: ignore
+
+            if "t" in auth and "u" in auth and "p" in auth:
+                timestamp = int(auth["t"])
+
+                if now < timestamp and request.registry.validate_user(request, auth["u"], auth["p"]):
+                    headers = remember(request, auth["u"])
+                    request.response.headerlist.extend(headers)
+                    return auth["u"]
+
+        except Exception as e:
+            LOG.error("URL login error: %s.", e, exc_info=True)
+
+        return None
+
+    def remember(self, request, userid, **kw):  # pylint: disable=unused-argument, no-self-use
+        """A no-op."""
+        return []
+
+    def forget(self, request):  # pylint: disable=unused-argument, no-self-use
+        """A no-op."""
+        return []
 
 
 def create_authentication(settings):
@@ -73,7 +130,11 @@ def create_authentication(settings):
     if not basicauth:
         return cookie_authentication_policy
     basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
-    policies = [cookie_authentication_policy, basic_authentication_policy]
+    url_authentication_policy = UrlAuthenticationPolicy(
+        settings.get("urllogin", {}).get("aes_key"),
+        defaultgroupsfinder,
+    )
+    policies = [cookie_authentication_policy, basic_authentication_policy, url_authentication_policy]
     return MultiAuthenticationPolicy(policies)
 
 

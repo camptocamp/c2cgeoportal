@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2019, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,22 +29,22 @@
 
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
-
 import datetime
 from unittest import TestCase
 from unittest.mock import patch
 
-import pyramid.security
 import transaction
 from tests.functional import create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 
-from c2cgeoportal_geoportal import create_get_user_from_request
+from c2cgeoportal_geoportal.lib import authentication
+from c2cgeoportal_geoportal.lib.authentication import UrlAuthenticationPolicy
+from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 from c2cgeoportal_geoportal.scripts.urllogin import create_token
 
 
-class TestUrllogin(TestCase):
+class TestUrlAuthenticationPolicy(TestCase):
     def setup_method(self, _):
         self.maxDiff = None
 
@@ -67,15 +67,6 @@ class TestUrllogin(TestCase):
 
         DBSession.flush()
 
-        self.old_remember = pyramid.security.remember
-        self.user = None
-
-        def remember(request, user=None):
-            del request  # Unused
-            self.user = user
-
-        pyramid.security.remember = remember
-
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
@@ -86,15 +77,17 @@ class TestUrllogin(TestCase):
         DBSession.query(User).filter(User.username == "__test_user4").delete()
         transaction.commit()
 
-        pyramid.security.remember = None
-        pyramid.security.remember = self.old_remember
-
-    def get_user(self, aeskey, user, password, valid):
+    @patch("c2cgeoportal_geoportal.lib.authentication.remember")
+    def get_user(self, aeskey, user, password, valid, remember_mock):
         token = create_token(aeskey, user, password, valid)
-        request = create_dummy_request({"urllogin": {"aes_key": aeskey}}, params={"auth": token})
-        get_user_from_request = create_get_user_from_request(request.registry.settings)
-        get_user_from_request(request)
-        return self.user
+        request = create_dummy_request(params={"auth": token})
+        policy = UrlAuthenticationPolicy(aeskey, defaultgroupsfinder)
+        userid = policy.unauthenticated_userid(request)
+        if userid is not None:
+            remember_mock.assert_called_once_with(request, userid)
+        else:
+            remember_mock.assert_not_called()
+        return userid
 
     def test_ok(self):
         user = self.get_user("foobar1234567891", "__test_user1", "__test_user1", 1)
@@ -112,12 +105,12 @@ class TestUrllogin(TestCase):
 
     def test_wrong_key(self):
         token = create_token("foobar1234567890", "__test_user1", "__test_user1", 1)
-        request = create_dummy_request({"urllogin": {"aes_key": "foobar1234567891"}}, params={"auth": token})
-        get_user_from_request = create_get_user_from_request(request.registry.settings)
-        get_user_from_request(request)
-        self.assertIsNone(self.user)
+        request = create_dummy_request(params={"auth": token})
+        policy = UrlAuthenticationPolicy("foobar1234567891", defaultgroupsfinder)
+        userid = policy.unauthenticated_userid(request)
+        self.assertIsNone(userid)
 
-    @patch("c2cgeoportal_geoportal.LOG.error", side_effect=Exception())
+    @patch("c2cgeoportal_geoportal.lib.authentication.LOG.error", side_effect=Exception())
     def test_wrong_method(self, log_mock):  # pylint: disable=unused-argument
         """
         POST requests with input named "auth" must not raise exceptions due to urllogin.
@@ -125,8 +118,8 @@ class TestUrllogin(TestCase):
 
         def _get_user(method):
             request = create_dummy_request(params={"auth": "this is a form field value"}, method=method)
-            get_user_from_request = create_get_user_from_request(request.registry.settings)
-            get_user_from_request(request)
+            policy = UrlAuthenticationPolicy(None, defaultgroupsfinder)
+            policy.unauthenticated_userid(request)
 
         # Verify that GET request raises an Exception
         with self.assertRaises(Exception):
