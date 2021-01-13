@@ -188,9 +188,7 @@ class TestXSDGenerator(TestCase):
             tostring(e).decode("utf-8"),
         )
 
-        # Test child 2 with an order by.
-        mapper = class_mapper(self.cls)
-
+        # Test child2 enumeration is ordered by Child.custom_order
         tb = TreeBuilder()
         gen.add_association_proxy_xsd(tb, mapper.attrs["child2_id"])
         e = tb.close()

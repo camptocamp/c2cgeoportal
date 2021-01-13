@@ -236,16 +236,16 @@ class TestReflection(TestCase):
 
         self.assertEqual(enumerations_config, cls.__enumerations_config__)
         association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
-        self.assertEqual("id", association_proxy.value_attr.key)
-        self.assertEqual("name", association_proxy.order_by.key)
+        self.assertEqual("id", association_proxy.value_attr)
+        self.assertEqual("name", association_proxy.order_by)
 
         # Without order_by.
         enumerations_config = {"child1_id": {"value": "id"}}
         cls = get_class("table_d", enumerations_config=enumerations_config)
 
         association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
-        self.assertEqual("id", association_proxy.value_attr.key)
-        self.assertEqual("id", association_proxy.order_by.key)
+        self.assertEqual("id", association_proxy.value_attr)
+        self.assertEqual("id", association_proxy.order_by)
 
     def test_get_class_readonly_attributes(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
