@@ -193,3 +193,29 @@ class TestshortenerView(TestCase):
         result = shortener.create()
         index = result["short_url"].rfind("/")
         self.assertEqual(result["short_url"][:index], "http://my_host/my_short")
+
+    def test_shortener_dev(self):
+        from tests import DummyRequest
+
+        from c2cgeoportal_geoportal.views.shortener import Shortener
+
+        def route_url(name, *elements, **kw):
+            return "https://localhost:8484/s/" + kw["ref"]
+
+        request = DummyRequest()
+        request.user = None
+        request.host = "localhost:8484"
+        request.server_name = "0.0.0.0"
+        request.route_url = route_url
+        request.registry.settings["shortener"] = {
+            "base_url": "https://localhost:8484/s/",
+            "allowed_hosts": [
+                "localhost:8484",
+            ],
+        }
+        shortener = Shortener(request)
+
+        request.params = {"url": "https://localhost:8484/theme/Demo"}
+        result = shortener.create()
+        index = result["short_url"].rfind("/")
+        self.assertEqual(result["short_url"][:index], "https://localhost:8484/s")

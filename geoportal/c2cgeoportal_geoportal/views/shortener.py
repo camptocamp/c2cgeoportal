@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2019, Camptocamp SA
+# Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -81,11 +81,11 @@ class Shortener:
 
         # Check that it is an internal URL...
         uri_parts = urlparse(url)
-        hostname = uri_parts.hostname
         if "allowed_hosts" in self.settings:
-            if hostname not in self.settings["allowed_hosts"]:  # pragma: no cover
+            if uri_parts.netloc not in self.settings["allowed_hosts"]:  # pragma: no cover
                 raise HTTPBadRequest("The requested host is not allowed.")
         else:
+            hostname = uri_parts.hostname
             if hostname != self.request.server_name:
                 raise HTTPBadRequest(
                     "The requested host '{0!s}' should be '{1!s}'".format(hostname, self.request.server_name)
