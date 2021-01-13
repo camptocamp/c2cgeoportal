@@ -24,12 +24,13 @@ from geomapfish_qgisserver.accesscontrol import (
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
 
-def set_request_parameters(server_iface, params):
+def set_request_parameters(server_iface, params, env={}):
     server_iface.configure_mock(
         **{
             "requestHandler.return_value": Mock(
                 **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key]}
-            )
+            ),
+            "getEnv.side_effect": lambda key: env.get(key, ""),
         }
     )
 
@@ -380,9 +381,8 @@ class TestOGCServerAccessControl:
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
 
-        set_request_parameters(server_iface, {"Host": "example.com", "USER_ID": "0"})
+        set_request_parameters(server_iface, {"USER_ID": "0"}, {"HTTP_HOST": "example.com"})
         assert "0" == server_iface.requestHandler().parameter("USER_ID")
-        assert "example.com" == server_iface.requestHandler().parameter("Host")
         assert "example.com--1" == ogcserver_accesscontrol.cacheKey()
 
         user = test_data["users"]["user12"]
@@ -391,10 +391,10 @@ class TestOGCServerAccessControl:
         set_request_parameters(
             server_iface,
             {
-                "Host": "example.com",
                 "USER_ID": str(user["id"]),
                 "ROLE_IDS": "{},{}".format(role1["id"], role2["id"]),
             },
+            {"HTTP_HOST": "example.com"},
         )
         expected = "example.com-{},{}".format(role1["id"], role2["id"])
         assert expected == ogcserver_accesscontrol.cacheKey()

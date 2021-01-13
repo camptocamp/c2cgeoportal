@@ -41,6 +41,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
     --editable=/opt/c2cgeoportal/commons
 
 ENV LOG_LEVEL=INFO \
+    LOG_TYPE=console \
     C2CGEOPORTAL_LOG_LEVEL=INFO \
     C2CWSGIUTILS_LOG_LEVEL=INFO \
     SQL_LOG_LEVEL=WARN \

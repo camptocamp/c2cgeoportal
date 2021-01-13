@@ -125,43 +125,67 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def layerFilterSubsetString(self, layer):  # NOQA
         """ Return an additional subset string (typically SQL) filter """
-        if not self.initialized:
-            LOG.error("Call on uninitialized plugin")
-            return "0"
-        return self.get_ogcserver_accesscontrol().layerFilterSubsetString(layer)
+        try:
+            if not self.initialized:
+                LOG.error("Call on uninitialized plugin")
+                return "0"
+            return self.get_ogcserver_accesscontrol().layerFilterSubsetString(layer)
+        except Exception:
+            LOG.error("Unhandle error", exc_info=True)
+            raise
 
     def layerFilterExpression(self, layer):  # NOQA
         """ Return an additional expression filter """
-        if not self.initialized:
-            LOG.error("Call on uninitialized plugin")
-            return "0"
-        return self.get_ogcserver_accesscontrol().layerFilterExpression(layer)
+        try:
+            if not self.initialized:
+                LOG.error("Call on uninitialized plugin")
+                return "0"
+            return self.get_ogcserver_accesscontrol().layerFilterExpression(layer)
+        except Exception:
+            LOG.error("Unhandle error", exc_info=True)
+            raise
 
     def layerPermissions(self, layer):  # NOQA
         """ Return the layer rights """
-        if not self.initialized:
-            LOG.error("Call on uninitialized plugin")
-            no_rights = QgsAccessControlFilter.LayerPermissions()
-            no_rights.canRead = no_rights.canInsert = no_rights.canUpdate = no_rights.canDelete = False
-            return no_rights
-        return self.get_ogcserver_accesscontrol().layerPermissions(layer)
+        try:
+            if not self.initialized:
+                LOG.error("Call on uninitialized plugin")
+                no_rights = QgsAccessControlFilter.LayerPermissions()
+                no_rights.canRead = no_rights.canInsert = no_rights.canUpdate = no_rights.canDelete = False
+                return no_rights
+            return self.get_ogcserver_accesscontrol().layerPermissions(layer)
+        except Exception:
+            LOG.error("Unhandle error", exc_info=True)
+            raise
 
     def authorizedLayerAttributes(self, layer, attributes):  # NOQA
         """ Return the authorised layer attributes """
-        if not self.initialized:
-            LOG.error("Call on uninitialized plugin")
-            return []
-        return self.get_ogcserver_accesscontrol().authorizedLayerAttributes(layer, attributes)
+        try:
+            if not self.initialized:
+                LOG.error("Call on uninitialized plugin")
+                return []
+            return self.get_ogcserver_accesscontrol().authorizedLayerAttributes(layer, attributes)
+        except Exception:
+            LOG.error("Unhandle error", exc_info=True)
+            raise
 
     def allowToEdit(self, layer, feature):  # NOQA
         """ Are we authorise to modify the following geometry """
-        if not self.initialized:
-            LOG.error("Call on uninitialized plugin")
-            return False
-        return self.get_ogcserver_accesscontrol().allowToEdit(layer, feature)
+        try:
+            if not self.initialized:
+                LOG.error("Call on uninitialized plugin")
+                return False
+            return self.get_ogcserver_accesscontrol().allowToEdit(layer, feature)
+        except Exception:
+            LOG.error("Unhandle error", exc_info=True)
+            raise
 
     def cacheKey(self):  # NOQA
-        return self.get_ogcserver_accesscontrol().cacheKey()
+        try:
+            return self.get_ogcserver_accesscontrol().cacheKey()
+        except Exception:
+            LOG.error("Unhandle error", exc_info=True)
+            raise
 
 
 class OGCServerAccessControl(QgsAccessControlFilter):
@@ -572,8 +596,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         finally:
             session.close()
         if roles == "ROOT":
-            return "{}-{}".format(self.serverInterface().requestHandler().parameter("Host"), -1)
+            return "{}-{}".format(self.serverInterface().getEnv("HTTP_HOST"), -1)
         return "{}-{}".format(
-            self.serverInterface().requestHandler().parameter("Host"),
+            self.serverInterface().getEnv("HTTP_HOST"),
             ",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id)),
         )

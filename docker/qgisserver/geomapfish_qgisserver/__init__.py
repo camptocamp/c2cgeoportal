@@ -18,18 +18,19 @@ from . import gmf_logging
 LOG = logging.getLogger(__name__)
 
 
-try:
-    gmf_logging.init()
-except Exception:  # pylint: disable=broad-except
-    print("".join(traceback.format_exception(*sys.exc_info())))
-    QgsMessageLog.logMessage(
-        "".join(traceback.format_exception(*sys.exc_info())),
-        "GeoMapFishAccessControl",
-        level=Qgis.Critical,
-    )
-
-
 def serverClassFactory(serverIface):  # noqa
+    LOG.info("Configure logging...")
+
+    try:
+        gmf_logging.init(serverIface)
+    except Exception:  # pylint: disable=broad-except
+        print("".join(traceback.format_exception(*sys.exc_info())))
+        QgsMessageLog.logMessage(
+            "".join(traceback.format_exception(*sys.exc_info())),
+            "GeoMapFishAccessControl",
+            level=Qgis.Critical,
+        )
+
     LOG.info("Starting GeoMapFish access restriction...")
 
     try:

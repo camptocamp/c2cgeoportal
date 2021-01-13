@@ -58,7 +58,8 @@ def clean_dbsession(DBSession):  # noqa: N803
 
 @pytest.fixture(scope="function")
 def server_iface():
-    yield Mock(spec=QgsServerInterface)
+    result = Mock(spec=QgsServerInterface)
+    yield result
 
 
 @pytest.fixture(scope="module")
