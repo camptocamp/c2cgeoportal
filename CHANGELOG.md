@@ -1,3 +1,5 @@
+##### 2.5.0.105
+* [Backport 2.5] Fix shortener in dev mode [c2cgeoportal#7630](https://github.com/camptocamp/c2cgeoportal/pull/7630)
 ##### 2.5.0.104
 * Fix round on too big value [c2cgeoportal#7579](https://github.com/camptocamp/c2cgeoportal/pull/7579)
 ##### 2.5.0.103
