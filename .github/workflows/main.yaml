@@ -97,17 +97,20 @@ jobs:
           docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
           docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
         if: always()
+        continue-on-error: True
       - run: docker-compose down
 
       - uses: actions/upload-artifact@v2
         with:
           name: Geoportal coverage
           path: artifacts/geoportal-coverage/
+          if-no-files-found: ignore
           retention-days: 5
       - uses: actions/upload-artifact@v2
         with:
           name: QGISserver plugin coverage
           path: artifacts/qgisserver-plugin-coverage/
+          if-no-files-found: ignore
           retention-days: 5
 
       # Documentation
@@ -138,6 +141,7 @@ jobs:
             docker-compose logs ${service}
           done
         if: failure()
+        continue-on-error: True
 
       # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
