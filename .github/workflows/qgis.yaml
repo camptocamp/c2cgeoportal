@@ -53,6 +53,10 @@ jobs:
           docker tag camptocamp/geomapfish-qgisserver \
           camptocamp/geomapfish-qgisserver:gmflatest-qgis${{ matrix.version }}
 
+      - name: Test library availability
+        run: "! ( docker run --rm camptocamp/geomapfish-qgisserver ldd /usr/local/bin/qgis_mapserv.fcgi |
+          grep 'not found' )"
+
       - name: Acceptance tests
         run: |
           cd docker/qgisserver
