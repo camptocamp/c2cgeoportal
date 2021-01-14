@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,13 +27,10 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import binascii
 import importlib
-import json
 import logging
 import os
 import re
-import time
 from urllib.parse import urlsplit
 
 import c2cgeoform
@@ -45,7 +42,6 @@ import zope.event.classhandler
 from c2cgeoform import Form, translator
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
-from Crypto.Cipher import AES  # nosec
 from dogpile.cache import register_backend
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
@@ -196,33 +192,6 @@ def create_get_user_from_request(settings):
         """
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
-
-        try:
-            if request.method == "GET" and "auth" in request.params:
-                auth_enc = request.params.get("auth")
-
-                if auth_enc is not None:
-                    urllogin = request.registry.settings.get("urllogin", {})
-                    aeskey = urllogin.get("aes_key")
-                    if aeskey is None:  # pragma: nocover
-                        raise Exception("urllogin is not configured")
-                    now = int(time.time())
-                    data = binascii.unhexlify(auth_enc.encode("ascii"))
-                    nonce = data[0:16]
-                    tag = data[16:32]
-                    ciphertext = data[32:]
-                    cipher = AES.new(aeskey.encode("ascii"), AES.MODE_EAX, nonce)
-                    auth = json.loads(
-                        cipher.decrypt_and_verify(ciphertext, tag).decode("utf-8")  # type: ignore
-                    )
-
-                    if "t" in auth and "u" in auth and "p" in auth:
-                        timestamp = int(auth["t"])
-                        if now < timestamp and request.registry.validate_user(request, auth["u"], auth["p"]):
-                            headers = pyramid.security.remember(request, auth["u"])
-                            request.response.headerlist.extend(headers)
-        except Exception as e:
-            LOG.error("URL login error: %s.", e, exc_info=True)
 
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referer(request, settings)
