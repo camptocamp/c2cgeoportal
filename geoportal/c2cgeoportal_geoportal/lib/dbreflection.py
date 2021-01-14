@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -222,10 +222,10 @@ def _add_association_proxy(cls, col):
     if cls.__enumerations_config__ and col.name in cls.__enumerations_config__:
         enumeration_config = cls.__enumerations_config__[col.name]
         if "value" in enumeration_config:
-            value_attr = getattr(child_cls, enumeration_config["value"])
+            value_attr = enumeration_config["value"]
             order_by = value_attr
         if "order_by" in enumeration_config:
-            order_by = getattr(child_cls, enumeration_config["order_by"])
+            order_by = enumeration_config["order_by"]
 
     setattr(cls, proxy, _AssociationProxy(rel, value_attr, nullable=nullable, order_by=order_by))
 

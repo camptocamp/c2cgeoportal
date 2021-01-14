@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -82,7 +82,7 @@ class XSDGenerator(PapyrusXSDGenerator):
         target_cls = relationship_property.argument
         query = DBSession.query(getattr(target_cls, association_proxy.value_attr))
         if association_proxy.order_by is not None:
-            query = query.order_by(association_proxy.order_by)
+            query = query.order_by(getattr(target_cls, association_proxy.order_by))
         attrs = {}
         if association_proxy.nullable:
             attrs["minOccurs"] = "0"
