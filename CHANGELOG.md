@@ -1,3 +1,6 @@
+##### 2.4.2.32
+* [Backport 2.4] Fix shortener in dev mode [c2cgeoportal#7629](https://github.com/camptocamp/c2cgeoportal/pull/7629)
+* [Backport 2.4] CI will fail on failed backport [c2cgeoportal#7636](https://github.com/camptocamp/c2cgeoportal/pull/7636)
 ##### 2.4.2.31
 * Fix doc for urllogin according to fix #5160 from GMF 2.3 [c2cgeoportal#7602](https://github.com/camptocamp/c2cgeoportal/pull/7602)
 ##### 2.4.2.30
