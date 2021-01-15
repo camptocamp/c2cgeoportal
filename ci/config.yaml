@@ -6,6 +6,7 @@ checks:
       - .*\.rst$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/.*/.*
   required_workflows:
+    main.yaml: False
     rebuild-master.yaml:
       steps: []
 
