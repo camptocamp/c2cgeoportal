@@ -115,6 +115,8 @@ def create_authentication(settings):
             "See https://docs.pylonsproject.org/projects/pyramid/en/latest/api/session.html"
         )
 
+    policies = []
+
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         secret,
         callback=defaultgroupsfinder,
@@ -127,14 +129,18 @@ def create_authentication(settings):
         http_only=http_only,
         secure=secure,
     )
-    if not basicauth:
-        return cookie_authentication_policy
-    basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
+    policies.append(cookie_authentication_policy)
+
     url_authentication_policy = UrlAuthenticationPolicy(
         settings.get("urllogin", {}).get("aes_key"),
         defaultgroupsfinder,
     )
-    policies = [cookie_authentication_policy, basic_authentication_policy, url_authentication_policy]
+    policies.append(url_authentication_policy)
+
+    if basicauth:
+        basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
+        policies.append(basic_authentication_policy)
+
     return MultiAuthenticationPolicy(policies)
 
 
