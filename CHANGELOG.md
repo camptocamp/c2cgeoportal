@@ -1,3 +1,6 @@
+##### 2.5.0.106
+* [Backport 2.5] CI will fail on failed backport [c2cgeoportal#7637](https://github.com/camptocamp/c2cgeoportal/pull/7637)
+* [Backport 2.5] [Backport master] CI will fail on failed backport [ngeo#6686](https://github.com/camptocamp/ngeo/pull/6686)
 ##### 2.5.0.105
 * [Backport 2.5] Fix shortener in dev mode [c2cgeoportal#7630](https://github.com/camptocamp/c2cgeoportal/pull/7630)
 ##### 2.5.0.104
