@@ -4,6 +4,7 @@ checks:
   isort: False
   codespell: False
   required_workflows:
+    main.yaml: False
     clean.yaml: False
     audit.yaml: False
 
