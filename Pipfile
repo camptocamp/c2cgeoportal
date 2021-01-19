@@ -49,7 +49,7 @@ pyramid_mako = "==1.1.0"  # geoportal
 pyramid_multiauth = "==0.9.0"  # geoportal
 pyramid_tm = "==2.4"  # geoportal
 python-dateutil = "==2.8.1"  # geoportal
-PyYAML = "==5.3.1"  # geoportal
+PyYAML = "==5.4"  # geoportal
 rasterio = "==1.1.8"  # geoportal raster
 requests = "==2.25.1"  # geoportal
 redis = "==3.5.3"  # geoportal cache
