@@ -169,9 +169,11 @@ jobs:
       - name: Push version and changelog
         run: |
           git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
-          git commit -m "[skip ci] Update the minor version"
-          git push https://${{ secrets.GOPASS_CI_GITHUB_TOKEN }}@github.com/camptocamp/c2cgeoportal.git \
-            HEAD:${{ env.MAIN_BRANCH }}
+          git diff --staged --quiet || (\
+            git commit -m "[skip ci] Update the minor version"
+            git push https://${{ secrets.GOPASS_CI_GITHUB_TOKEN }}@github.com/camptocamp/c2cgeoportal.git \
+              HEAD:${{ env.MAIN_BRANCH }}
+          )
 
       - name: Notify demo
         run: >
