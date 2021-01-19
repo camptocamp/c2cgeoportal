@@ -1,3 +1,6 @@
+##### 2.5.0.107
+* Set boolean attributes before adding the propertychange listener [ngeo#6679](https://github.com/camptocamp/ngeo/pull/6679)
+* Add UTF-8 BOM [ngeo#6694](https://github.com/camptocamp/ngeo/pull/6694)
 ##### 2.5.0.106
 * [Backport 2.5] CI will fail on failed backport [c2cgeoportal#7637](https://github.com/camptocamp/c2cgeoportal/pull/7637)
 * [Backport 2.5] [Backport master] CI will fail on failed backport [ngeo#6686](https://github.com/camptocamp/ngeo/pull/6686)
