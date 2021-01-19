@@ -473,8 +473,7 @@
   versions:
     master:
       workflows:
-        - workflow: Build
-        - workflow: CodeQL scanning
+        - workflow: Continuous integration
   hidden_workflows:
     - Nightly
 
