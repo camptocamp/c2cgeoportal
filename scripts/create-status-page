@@ -364,15 +364,15 @@ def workflow(elem, repo, all_workflows_name, all_workflows_by_name, branch=None)
         messages.append("Missing workflow")
 
     return "{} {messages}".format(
-        format_workflow(repo, workflow, branch if elem.get("use_branch", True) else None),
+        format_workflow(repo, elem["workflow"], branch if elem.get("use_branch", True) else None),
         messages=", ".join(messages),
     )
 
 
 def format_workflow(repo, workflow, branch=None):
     workflow_url = urllib.parse.quote(workflow)
-    branch_url = urllib.parse.quote(branch)
-    branch_param = "?branch={branch}".format(branch) if branch else ""
+    branch_url = urllib.parse.quote(branch) if branch else ""
+    branch_param = "?branch={}".format(branch) if branch else ""
     return (
         f"[![{workflow}](https://github.com/{repo}/workflows/{workflow_url}/badge.svg?branch={branch_param})]"
         f"(https://github.com/{repo}/actions?query="

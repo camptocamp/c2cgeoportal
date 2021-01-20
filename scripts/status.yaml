@@ -147,7 +147,7 @@
 
 - name: TileCloud
   repo: camptocamp/tilecloud
-  description: A lirary for tile generation
+  description: A library for tile generation
   workflows:
     - workflow: Auto merge Dependabot updates
     - workflow: Backport
