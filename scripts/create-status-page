@@ -76,7 +76,7 @@ class Status:
         elem = md.parser.parseDocument([s for s in status.split("\n") if s != "" and s[0] != "#" and s[0] != "["])  # type: ignore
         self._pe(elem.getroot())
 
-        self.data = [r for r in self.data if len([c for c in r if c != None]) > 0]
+        self.data = [r for r in self.data if len([c for c in r if c is not None]) > 0]
         self.headers.append("Used by")
         self.headers.append("CI status")
         for row in self.data:
@@ -216,7 +216,10 @@ def project(elem):
 
     # The workflow that we never display a status
     if len(all_workflows_name) > 0:
-        print("Missing workflows: " + ", ".join(all_workflows_name))
+        print(
+            "Missing workflows: "
+            + ", ".join([format_workflow(repo, workflow) for workflow in all_workflows_name])
+        )
         print()
 
     # Output the enhanced table of versions
@@ -360,28 +363,20 @@ def workflow(elem, repo, all_workflows_name, all_workflows_by_name, branch=None)
     else:
         messages.append("Missing workflow")
 
-    if elem.get("use_branch", True) and branch is not None:
-        return (
-            "[![{workflow}](https://github.com/{repo}/workflows/{workflow_url}/badge.svg?branch={branch})]"
-            "(https://github.com/{repo}/actions?query="
-            "workflow%3A%22{workflow_url}%22+branch%3A%22{branch_url}%22) {messages}".format(
-                repo=repo,
-                workflow=elem["workflow"],
-                workflow_url=urllib.parse.quote(elem["workflow"]),
-                branch=branch,
-                branch_url=urllib.parse.quote(branch),
-                messages=", ".join(messages),
-            )
-        )
+    return "{} {messages}".format(
+        format_workflow(repo, workflow, branch if elem.get("use_branch", True) else None),
+        messages=", ".join(messages),
+    )
 
+
+def format_workflow(repo, workflow, branch=None):
+    workflow_url = urllib.parse.quote(workflow)
+    branch_url = urllib.parse.quote(branch)
+    branch_param = "?branch={branch}".format(branch) if branch else ""
     return (
-        "[![{workflow}](https://github.com/{repo}/workflows/{workflow_url}/badge.svg)]"
-        "(https://github.com/{repo}/actions?query=workflow%3A%22{workflow_url}%22) {messages}".format(
-            repo=repo,
-            workflow=elem["workflow"],
-            workflow_url=urllib.parse.quote(elem["workflow"]),
-            messages=", ".join(messages),
-        )
+        f"[![{workflow}](https://github.com/{repo}/workflows/{workflow_url}/badge.svg?branch={branch_param})]"
+        f"(https://github.com/{repo}/actions?query="
+        f"workflow%3A%22{workflow_url}%22+branch%3A%22{branch_url}%22)"
     )
 
 
