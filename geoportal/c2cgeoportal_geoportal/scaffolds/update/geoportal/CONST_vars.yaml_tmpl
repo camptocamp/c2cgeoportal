@@ -76,6 +76,13 @@ vars:
               - +units=m
               - +no_defs
             extent: [2420000, 1030000, 2900000, 1350000]
+        sentryOptions:
+          dsn: '{SENTRY_URL}'
+          release: '{SENTRY_CLIENT_RELEASE}'
+          environment: '{SENTRY_CLIENT_ENVIRONMENT}'
+          attachStacktrace: True
+          tags:
+            service: js
         gmfAuthenticationConfig:
           forcePasswordChange: true
         ngeoWfsPermalinkOptions:
@@ -240,6 +247,7 @@ vars:
           zoom:
           autoRotate: False
       dynamic_constants:
+        interface: interface
         cacheVersion: cache_version
         langUrls: lang_urls
         gmfTwoFactorAuth: two_factor
@@ -959,6 +967,12 @@ runtime_environment:
     default: queue_name
   - name: TILEGENERATION_S3_BUCKET
     default: bucket_name
+  - name: SENTRY_URL
+    default: ''
+  - name: SENTRY_CLIENT_RELEASE
+    default: ''
+  - name: SENTRY_CLIENT_ENVIRONMENT
+    default: ''
 
 runtime_postprocess:
   - expression: int({})
