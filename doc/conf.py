@@ -43,7 +43,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "c2cgeoportal"
-copyright = "2011-2019, Camptocamp"
+copyright = "2011-2021, Camptocamp"
 
 # The version info for the project you are documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
