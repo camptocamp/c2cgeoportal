@@ -472,12 +472,13 @@
     - workflow: Auto merge Dependabot updates
     - workflow: Clean Docker hub tags
     - workflow: Audit
+    - workflow: Backport
   versions:
     master:
       workflows:
         - workflow: Continuous integration
   hidden_workflows:
-    - CodeQL scanning, Backport
+    - CodeQL scanning
 
 - name: ElasticSearch OOM exporter
   repo: camptocamp/es-ooms-exporter
