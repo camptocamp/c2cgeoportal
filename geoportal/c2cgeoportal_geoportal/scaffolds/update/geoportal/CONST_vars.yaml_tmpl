@@ -336,16 +336,6 @@ vars:
             - code: EPSG:4326'
               label: WGS84
               filter: ngeoDMSCoordinates:2
-        gmfExternalOGCServers:
-          - name: Swiss Topo WMS
-            type: WMS
-            url: https://wms.geo.admin.ch/?lang=fr
-          - name: Swiss Topo WMTS
-            type: WMTS
-            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
-          - name: ASIT VD
-            type: WMTS
-            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
         gmfProfileOptions:
           linesConfiguration: {}
           hoverPointStyle:

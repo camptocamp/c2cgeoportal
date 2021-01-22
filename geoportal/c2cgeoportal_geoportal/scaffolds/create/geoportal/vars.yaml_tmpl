@@ -48,21 +48,50 @@ vars:
             - code: EPSG:4326'
               label: WGS84
               filter: ngeoDMSCoordinates:2
-        gmfExternalOGCServers:
-          - name: Swiss Topo WMS
-            type: WMS
-            url: https://wms.geo.admin.ch/?lang=fr
-          - name: Swiss Topo WMTS
-            type: WMTS
-            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
-          - name: ASIT VD
-            type: WMTS
-            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
         ngeoScaleSelectorOptions:
           values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
           dropup: True
         gmfElevationOptions:
           layers: [aster, srtm]
+    desktop:
+      constants:
+        gmfOptions:
+          map:
+            maxTilesLoading: 128
+          view:
+            <<: *view
+            constrainResolution: True
+          geolocalisation: True
+        gmfExternalOGCServers:
+          - name: swisstopo WMS
+            type: WMS
+            url: https://wms.geo.admin.ch/?lang=fr
+          - name: swisstopo WMTS
+            type: WMTS
+            url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
+          - name: ASIT
+            type: WMTS
+            url: https://wmts.asit-asso.ch/wmts/1.0.0/WMTSCapabilities.xml
+        ngeoProfileOptions:
+          linesConfiguration:
+            aster:
+              color: '#0000A0'
+            srtm:
+              color: '#00A000'
+        gmfProfileOptions:
+          hoverPointStyle:
+            circle:
+              fill:
+                color: '#ffffff'
+                radius: 3
+    mobile:
+      constants:
+        gmfOptions:
+          map: {}
+          view:
+            <<: *view
+            autoRotate: True
+          geolocalisation: True
         gmfMobileMeasurePointOptions:
           decimals: 0
           format: '{x}, {y}'
@@ -86,35 +115,6 @@ vars:
               radius: 8
               radius2: 0
               angle: 0
-        ngeoProfileOptions:
-          linesConfiguration:
-            aster:
-              color: '#0000A0'
-            srtm:
-              color: '#00A000'
-        gmfProfileOptions:
-          hoverPointStyle:
-            circle:
-              fill:
-                color: '#ffffff'
-                radius: 3
-    desktop:
-      constants:
-        gmfOptions:
-          map:
-            maxTilesLoading: 128
-          view:
-            <<: *view
-            constrainResolution: True
-          geolocalisation: True
-    mobile:
-      constants:
-        gmfOptions:
-          map: {}
-          view:
-            <<: *view
-            autoRotate: True
-          geolocalisation: True
     api:
       constants:
         # The resolutions list.
