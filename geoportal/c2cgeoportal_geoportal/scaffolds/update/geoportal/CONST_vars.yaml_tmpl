@@ -62,9 +62,9 @@ vars:
           - name: Swiss Topo WMTS
             type: WMTS
             url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
-          - name: ASIT VD
+          - name: ASIT
             type: WMTS
-            url: https://ows.asitvd.ch/wmts/1.0.0/WMTSCapabilities.xml
+            url: https://wmts.asit-asso.ch/wmts/1.0.0/WMTSCapabilities.xml
         gmfAuthenticationConfig:
           forcePasswordChange: true
         ngeoWfsPermalinkOptions:
