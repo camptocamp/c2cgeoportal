@@ -1,3 +1,7 @@
+##### 2.5.0.109
+* Update demo external OGC servers [c2cgeoportal#7684](https://github.com/camptocamp/c2cgeoportal/pull/7684)
+* Fix offline mask [ngeo#6713](https://github.com/camptocamp/ngeo/pull/6713)
+* [Backport 2.5] Make displayquerygrid height overridable [ngeo#6723](https://github.com/camptocamp/ngeo/pull/6723)
 ##### 2.5.0.108
 * Update doc copyright [c2cgeoportal#7674](https://github.com/camptocamp/c2cgeoportal/pull/7674)
 * Avoid dropdown menus expanding out of viewport [ngeo#6701](https://github.com/camptocamp/ngeo/pull/6701)
