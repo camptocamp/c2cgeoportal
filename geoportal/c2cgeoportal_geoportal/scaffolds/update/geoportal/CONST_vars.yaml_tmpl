@@ -56,10 +56,10 @@ vars:
           - action: add_layer
             title: Add a layer
         gmfExternalOGCServers:
-          - name: Swiss Topo WMS
+          - name: swisstopo WMS
             type: WMS
             url: https://wms.geo.admin.ch/?lang=fr
-          - name: Swiss Topo WMTS
+          - name: swisstopo WMTS
             type: WMTS
             url: https://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml?lang=fr
           - name: ASIT
