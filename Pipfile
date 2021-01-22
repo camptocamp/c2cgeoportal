@@ -58,6 +58,7 @@ SQLAlchemy = "==1.3.22"
 transaction = "==3.0.1"  # commons, geoportal
 translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
+c2cwsgiutils = {version = "==4.1.1", extras = ["broadcast", "profiler", "standard"]}
 
 [requires]
 python_version = "3.8"
