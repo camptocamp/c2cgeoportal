@@ -1,9 +1,7 @@
 ##### 2.5.0.108
-* Fix upgrade for Windows [c2cgeoportal#7663](https://github.com/camptocamp/c2cgeoportal/pull/7663)
 * Update doc copyright [c2cgeoportal#7674](https://github.com/camptocamp/c2cgeoportal/pull/7674)
 * Avoid dropdown menus expanding out of viewport [ngeo#6701](https://github.com/camptocamp/ngeo/pull/6701)
 * Handle QGIS nil value [ngeo#6712](https://github.com/camptocamp/ngeo/pull/6712)
-* Fix offline mask [ngeo#6713](https://github.com/camptocamp/ngeo/pull/6713)
 ##### 2.5.0.107
 * Set boolean attributes before adding the propertychange listener [ngeo#6679](https://github.com/camptocamp/ngeo/pull/6679)
 * Add UTF-8 BOM [ngeo#6694](https://github.com/camptocamp/ngeo/pull/6694)
