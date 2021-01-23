@@ -117,6 +117,12 @@ def create_authentication(settings):
 
     policies = []
 
+    url_authentication_policy = UrlAuthenticationPolicy(
+        settings.get("urllogin", {}).get("aes_key"),
+        defaultgroupsfinder,
+    )
+    policies.append(url_authentication_policy)
+
     cookie_authentication_policy = AuthTktAuthenticationPolicy(
         secret,
         callback=defaultgroupsfinder,
@@ -130,12 +136,6 @@ def create_authentication(settings):
         secure=secure,
     )
     policies.append(cookie_authentication_policy)
-
-    url_authentication_policy = UrlAuthenticationPolicy(
-        settings.get("urllogin", {}).get("aes_key"),
-        defaultgroupsfinder,
-    )
-    policies.append(url_authentication_policy)
 
     if basicauth:
         basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
