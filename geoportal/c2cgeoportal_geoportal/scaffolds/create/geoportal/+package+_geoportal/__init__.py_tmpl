@@ -2,6 +2,7 @@
 
 import distutils.core
 
+from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
 
 from c2cgeoportal_geoportal import INTERFACE_TYPE_NGEO, add_interface, locale_negotiator
@@ -20,7 +21,6 @@ def main(global_config, **settings):
         root_factory=Root,
         settings=settings,
         locale_negotiator=locale_negotiator,
-        authentication_policy=create_authentication(settings),
     )
 
     config.add_translation_dirs(LOCALE_PATH)
@@ -29,6 +29,9 @@ def main(global_config, **settings):
     distutils.core._setup_stop_after = "config"  # pylint: disable=protected-access
     config.include("c2cgeoportal_geoportal")
     distutils.core._setup_stop_after = None  # pylint: disable=protected-access
+
+    config.set_authorization_policy(ACLAuthorizationPolicy())
+    config.set_authentication_policy(create_authentication(config.get_settings()))
 
     # Scan view decorator for adding routes
     config.scan()
