@@ -32,7 +32,7 @@ import time
 import logging
 import os
 import re
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 from socket import gethostbyname, gaierror
 import importlib
 
@@ -194,10 +194,12 @@ def create_get_user_from_request(settings):
         from c2cgeoportal_commons.models.static import User
 
         try:
-            if request.method == 'GET' and "auth" in request.params:
-                auth_enc = request.params.get("auth")
+            if request.method == 'GET' and 'query' in request.params:
+                params_dict = parse_qs(request.params['query'])
+                auth_entry = params_dict.get('auth', None)
 
-                if auth_enc is not None:
+                if auth_entry:
+                    auth_enc = auth_entry[0]
                     urllogin = request.registry.settings.get("urllogin", {})
                     aeskey = urllogin.get("aes_key")
                     if aeskey is None:  # pragma: nocover
