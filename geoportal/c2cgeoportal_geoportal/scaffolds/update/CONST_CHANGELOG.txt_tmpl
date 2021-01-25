@@ -56,6 +56,11 @@ Changes to apply
    There is some new documentation about the constants in ngeo
    https://camptocamp.github.io/ngeo/{{geomapfish_main_version}}/apidoc/index.html.
 
+2. If you use the most recent version of the `legend.jrxml` print template, you will obtain a legend with
+   elements indented hierarchically per groups level. If you want to keep to previous legend style, keep your
+   previous `legend.jrxml` template and add a new variable `gmfPrintOptions.legend.showGroupsTitle` in the
+   `interfaces_config` constants of the vars file and set it to false.
+
 
 Version 2.5.0
 =============

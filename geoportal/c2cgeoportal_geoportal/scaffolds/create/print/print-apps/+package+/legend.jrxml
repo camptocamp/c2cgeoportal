@@ -5,18 +5,100 @@
 	<field name="icon" class="java.awt.Image"/>
 	<field name="level" class="java.lang.Integer"/>
 	<detail>
-		<band height="1" splitType="Stretch">
-			<printWhenExpression><![CDATA[!$F{name}.equals("")]]></printWhenExpression>
+		<!-- Always the same content except the x value (indent) per level and bold, for first level
+		     text. Level 0 empty and ignored-->
+		<!--Level 1-->
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{name}.equals("") && $F{level} <= 1]]></printWhenExpression>
 			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="0" width="185" height="1"/>
+				<reportElement x="0" y="0" width="185" height="15"/>
+				<box topPadding="10"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{report}.equals("") && $F{level} <= 1]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="0" width="185" height="15" uuid="fa145068-76a5-4834-98ed-ce65b1976b3d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportExpression><![CDATA[$F{report}]]></subreportExpression>
+			</subreport>
+		</band>
+		<!--Level 2-->
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{name}.equals("") && $F{level} == 2]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="10" y="0" width="185" height="15"/>
 				<box topPadding="10"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="14" splitType="Stretch">
-			<printWhenExpression><![CDATA[!$F{report}.equals("")]]></printWhenExpression>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{report}.equals("") && $F{level} == 2]]></printWhenExpression>
 			<subreport>
-				<reportElement x="0" y="0" width="185" height="10" uuid="fa145068-76a5-4834-98ed-ce65b1976b3d">
+				<reportElement x="10" y="0" width="185" height="15" uuid="fa145068-76a5-4834-98ed-ce65b1976b3d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportExpression><![CDATA[$F{report}]]></subreportExpression>
+			</subreport>
+		</band>
+		<!--Level 3-->
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{name}.equals("") && $F{level} == 3]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="20" y="0" width="185" height="15"/>
+				<box topPadding="10"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{report}.equals("") && $F{level} == 3]]></printWhenExpression>
+			<subreport>
+				<reportElement x="20" y="0" width="185" height="15" uuid="fa145068-76a5-4834-98ed-ce65b1976b3d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportExpression><![CDATA[$F{report}]]></subreportExpression>
+			</subreport>
+		</band>
+		<!--Level 4-->
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{name}.equals("") && $F{level} == 4]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="30" y="0" width="185" height="15"/>
+				<box topPadding="10"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{report}.equals("") && $F{level} == 4]]></printWhenExpression>
+			<subreport>
+				<reportElement x="30" y="0" width="185" height="15" uuid="fa145068-76a5-4834-98ed-ce65b1976b3d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportExpression><![CDATA[$F{report}]]></subreportExpression>
+			</subreport>
+		</band>
+		<!--Level 5-->
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{name}.equals("") && $F{level} >= 5]]></printWhenExpression>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="40" y="0" width="185" height="15"/>
+				<box topPadding="10"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{report}.equals("") && $F{level} >= 5]]></printWhenExpression>
+			<subreport>
+				<reportElement x="40" y="0" width="185" height="15" uuid="fa145068-76a5-4834-98ed-ce65b1976b3d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
