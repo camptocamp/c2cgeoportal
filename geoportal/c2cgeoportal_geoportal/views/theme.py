@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -174,9 +174,10 @@ class Theme:
         def build_web_map_service(ogc_server_id):
             del ogc_server_id  # Just for cache
 
+            version = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)["VERSION"][0]
             layers = {}
             try:
-                wms = WebMapService(None, xml=content)
+                wms = WebMapService(None, xml=content, version=version)
             except Exception as e:  # pragma: no cover
                 error = (
                     "WARNING! an error '{}' occurred while trying to read the mapfile and recover the themes."
