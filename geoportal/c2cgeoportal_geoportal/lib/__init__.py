@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -182,7 +182,8 @@ def add_url_params(url: str, params: Optional[Dict[str, str]]) -> str:
 def add_spliturl_params(spliturl, params):
     query = {k: v[-1] for k, v in list(urllib.parse.parse_qs(spliturl.query).items())}
     for key, value in list(params.items()):
-        query[key] = value
+        if key not in query:
+            query[key] = value
 
     return urllib.parse.urlunsplit(
         (spliturl.scheme, spliturl.netloc, spliturl.path, urllib.parse.urlencode(query), spliturl.fragment)
