@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2016-2019, Camptocamp SA
+# Copyright (c) 2016-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -62,6 +62,18 @@ class TestThemesView(TestCase):
         ogc_server_external = OGCServer(
             name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg"
         )
+        ogc_server_valid_wms_version = OGCServer(
+            name="__test_ogc_server_valid_wms_version",
+            url=mapserv_url + "?VERSION=1.3.0",
+            image_type="image/jpeg",
+            wfs_support=False,
+        )
+        ogc_server_invalid_wms_version = OGCServer(
+            name="__test_ogc_server_invalid_wms_version",
+            url=mapserv_url + "?VERSION=1.0.0",
+            image_type="image/jpeg",
+            wfs_support=False,
+        )
 
         layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"
@@ -73,6 +85,18 @@ class TestThemesView(TestCase):
         )
         layer_external_wms.interfaces = [main]
         layer_external_wms.ogc_server = ogc_server_external
+
+        layer_valid_wms_version = LayerWMS(
+            name="__test_valid_wms_version", layer="testpoint_unprotected", public=True
+        )
+        layer_valid_wms_version.interfaces = [main]
+        layer_valid_wms_version.ogc_server = ogc_server_valid_wms_version
+
+        layer_invalid_wms_version = LayerWMS(
+            name="__test_invalid_wms_version", layer="testpoint_unprotected", public=True
+        )
+        layer_invalid_wms_version.interfaces = [main]
+        layer_invalid_wms_version.ogc_server = ogc_server_invalid_wms_version
 
         layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
         layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
@@ -103,6 +127,9 @@ class TestThemesView(TestCase):
         layer_group_8 = LayerGroup(name="__test_layer_group_8")
         layer_group_8.children = [layer_group_2, layer_group_6]
 
+        layer_group_9 = LayerGroup(name="__test_layer_group_9")
+        layer_group_9.children = [layer_valid_wms_version, layer_invalid_wms_version]
+
         theme = Theme(name="__test_theme")
         theme.interfaces = [main]
         theme.children = [
@@ -113,6 +140,7 @@ class TestThemesView(TestCase):
             layer_group_5,
             layer_group_7,
             layer_group_8,
+            layer_group_9,
         ]
 
         DBSession.add(theme)
@@ -171,21 +199,25 @@ class TestThemesView(TestCase):
     @staticmethod
     def _get_filtered_errors(themes):
         errors = themes["errors"]
-        errors = [
-            e
-            for e in errors
-            if e != "The layer '' (__test_layer_external_wms) is not defined in WMS capabilities"
-        ]
+
         regex = re.compile(
-            r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block (first level group)."
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block \(first level group\)."
         )
-        errors = [e for e in errors if regex.match(e)]
+        errors = [e for e in errors if not regex.match(e)]
+
+        errors = [e[:100] for e in errors]
+
         return set(errors)
 
     def test_theme_mixed(self):
         theme_view = self._create_theme_obj(params={"interface": "main"})
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        self.assertEqual(
+            self._get_filtered_errors(themes),
+            {
+                "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3"
+            },
+        )
         self.assertEqual(
             [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],
             [
@@ -269,6 +301,11 @@ class TestThemesView(TestCase):
                             ],
                             "mixed": True,
                             "name": "__test_layer_group_8",
+                        },
+                        {
+                            "children": [{"name": "__test_valid_wms_version"}],
+                            "mixed": True,
+                            "name": "__test_layer_group_9",
                         },
                     ],
                     "name": "__test_theme",
