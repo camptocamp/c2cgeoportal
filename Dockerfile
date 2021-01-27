@@ -1,18 +1,25 @@
 #############################################################################################################
 # The base image with apt and python packages.
 
-FROM camptocamp/c2cwsgiutils:release_4 AS base
+FROM osgeo/gdal:ubuntu-small-3.2.1 AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
+
+# Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
+# Treat unset variables as an error when substituting.
+# Print commands and their arguments as they are executed.
+SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
 ENV \
     DEBIAN_FRONTEND=noninteractive \
     SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
+# hadolint ignore=SC1091,DL3008
 RUN \
     . /etc/os-release && \
     apt-get update && \
     apt-get install --assume-yes --no-install-recommends apt-utils && \
-    apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less && \
+    apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less gnupg libpq5 \
+         python3-pip python3-dev python3-wheel python3-pkgconfig libgraphviz-dev libpq-dev binutils gcc && \
     echo "For Chrome installed by Pupetter" && \
     apt-get install --assume-yes --no-install-recommends libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
     libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
@@ -23,13 +30,16 @@ RUN \
     apt-get install --assume-yes --no-install-recommends 'nodejs=14.*' && \
     apt-get clean && \
     rm --recursive --force /var/lib/apt/lists/*
+
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
     rm --recursive --force /tmp/*
 
 COPY Pipfile Pipfile.lock /tmp/
+# hadolint disable=DL3003
 RUN cd /tmp && pipenv install --system --clear && \
-    rm --recursive --force /usr/local/lib/python3.*/dist-packages/tests/ /tmp/* /root/.cache/*
+    rm --recursive --force /usr/local/lib/python3.*/dist-packages/tests/ /tmp/* /root/.cache/* && \
+    strip /usr/local/lib/python3.*/dist-packages/*/*.so
 
 ENV NODE_PATH=/usr/lib/node_modules
 ENV TEST=false
@@ -40,14 +50,21 @@ ENV TEST=false
 
 FROM base AS tools
 
+# Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
+# Treat unset variables as an error when substituting.
+# Print commands and their arguments as they are executed.
+SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
+
 CMD ["sleep", "infinity"]
+
+# hadolint ignore=SC1091,DL3008
 RUN \
     . /etc/os-release && \
-    echo deb http://apt.postgresql.org/pub/repos/apt/ ${VERSION_CODENAME}-pgdg main > \
+    echo deb http://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > \
     /etc/apt/sources.list.d/pgdg.list && \
     curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && \
-    apt-get install --assume-yes --no-install-recommends git make python3.8-dev gcc postgresql-client gdal-bin \
+    apt-get install --assume-yes --no-install-recommends git make python3.8-dev gcc postgresql-client \
     net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils \
     bash-completion pwgen && \
     apt-get clean && \
@@ -59,6 +76,7 @@ RUN \
     echo 'set term=xterm-256color " Make home and end working' >> /etc/vim/vimrc.local
 
 COPY Pipfile Pipfile.lock /tmp/
+# hadolint ignore=DL3003
 RUN \
     cd /tmp && \
     pipenv install --system --clear --dev && \
@@ -67,9 +85,11 @@ RUN \
 COPY bin/npm-packages bin/update-po /usr/bin/
 COPY geoportal/package.json /opt/c2cgeoportal/geoportal/
 WORKDIR /opt/c2cgeoportal/geoportal
+
+# hadolint ignore=SC2046,DL3016
 RUN \
     npm-packages --src=package.json --dst=/tmp/npm-packages && \
-    npm --no-optional --global --unsafe-perm --no-package-lock install `cat /tmp/npm-packages` && \
+    npm --no-optional --global --unsafe-perm --no-package-lock install $(cat /tmp/npm-packages) && \
     npm cache clear --force && \
     rm -rf /tmp/*
 
@@ -86,6 +106,7 @@ RUN \
     npm cache clear --force && \
     rm -rf /tmp/*
 
+# hadolint ignore=SC2046,DL3016
 RUN \
     npm install --no-optional --global --unsafe-perm --no-package-lock $(cat /opt/c2cgeoportal/geoportal/npm-packages) && \
     npm cache clear --force && \
@@ -143,7 +164,7 @@ WORKDIR /src
 FROM tools AS tools-cleaned
 
 # Removes unwanted and unsecured (see bandit checks) files
-RUN rm --recursive --force geoportal/c2cgeoportal_geoportal/scaffolds \
+RUN rm --recursive --force -- geoportal/c2cgeoportal_geoportal/scaffolds \
     */tests \
     commons/c2cgeoportal_commons/testing/ \
     geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py
@@ -154,6 +175,8 @@ RUN rm --recursive --force geoportal/c2cgeoportal_geoportal/scaffolds \
 
 FROM base AS runner
 
+RUN apt-get remove --yes --auto-remove gcc
+
 ARG MAJOR_VERSION
 ENV MAJOR_VERSION=$MAJOR_VERSION
 ARG VERSION
@@ -161,6 +184,8 @@ ENV VERSION=$VERSION
 
 COPY bin/npm-packages /usr/bin/
 COPY package.json /tmp/
+
+# hadolint ignore=SC2046,DL3016,DL3003
 RUN \
     cd /tmp && \
     npm-packages --src=package.json --dst=npm-packages && \
@@ -180,12 +205,45 @@ RUN \
     --editable=geoportal \
     --editable=admin && \
     python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.* \
-    -x /usr/local/lib/python3.*/dist-packages/pipenv/
+    -x '/usr/local/lib/python3.*/dist-packages/(pipenv|networkx)/'
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
 RUN adduser www-data root
 
+# From c2cwsgiutils
+
+CMD ["c2cwsgiutils-run"]
+
+ENV TERM=linux \
+  LANG=C.UTF-8 \
+  LOG_TYPE=console \
+  LOG_HOST=localhost \
+  LOG_PORT=514 \
+  SQL_LOG_LEVEL=WARN \
+  GUNICORN_LOG_LEVEL=WARN \
+  OTHER_LOG_LEVEL=WARN \
+  DEVELOPMENT=0 \
+  PKG_CONFIG_ALLOW_SYSTEM_LIBS=OHYESPLEASE
+
+ENV C2C_BASE_PATH=/c2c \
+  C2C_SECRET=c2crulez \
+  C2CWSGIUTILS_CONFIG=/app/production.ini \
+  C2C_REDIS_URL= \
+  C2C_REDIS_SENTINELS= \
+  C2C_REDIS_TIMEOUT=3 \
+  C2C_REDIS_SERVICENAME=mymaster \
+  C2C_REDIS_DB=0 \
+  C2C_BROADCAST_PREFIX=broadcast_api_ \
+  C2C_REQUEST_ID_HEADER= \
+  C2C_REQUESTS_DEFAULT_TIMEOUT= \
+  C2C_SQL_PROFILER_ENABLED=0 \
+  C2C_PROFILER_PATH= \
+  C2C_PROFILER_MODULES= \
+  C2C_DEBUG_VIEW_ENABLED=0 \
+  C2C_ENABLE_EXCEPTION_HANDLING=0
+
+# End from c2cwsgiutils
 
 #############################################################################################################
 # Image that run the checks
