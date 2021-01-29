@@ -35,6 +35,12 @@ yamllint: pipenv.timestamp
 otherchecks:
 	docker build --target=checks \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
+	if [ "`git grep demo_ doc`" != "" ]; \
+	then \
+		echo "ERROR: You still have a demo_ in your documentation"; \
+		git grep demo_ doc; \
+		false; \
+	fi
 
 .PHONY: build-tools
 build-tools:

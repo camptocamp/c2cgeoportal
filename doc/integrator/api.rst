@@ -6,7 +6,7 @@ JavaScript API
 Any c2cgeoportal application exposes a JavaScript API. This API can be used in third-party applications,
 such as CMS applications.
 
-The API CSS is in the file ``geoportal/demo_geoportal/static-ngeo/api/api.css``.
+The API CSS is in the file ``geoportal/<package>_geoportal/static-ngeo/api/api.css``.
 
 You can customize your API by editing the file ``geoportal/vars.yaml`` section ``interfaces_config/api``,
 see: `API constants definition <https://camptocamp.github.io/ngeo/master/jsdoc/module-api_src_options.html>`
