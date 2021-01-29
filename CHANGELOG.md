@@ -1,3 +1,10 @@
+##### 2.5.0.110
+* Do not overwrite parameters in the URL with default values [c2cgeoportal#7705](https://github.com/camptocamp/c2cgeoportal/pull/7705)
+* [Backport 2.5] Documentation: fix typos regarding names [c2cgeoportal#7715](https://github.com/camptocamp/c2cgeoportal/pull/7715)
+* Fix offline mask [ngeo#6713](https://github.com/camptocamp/ngeo/pull/6713)
+* Fix panel close [ngeo#6742](https://github.com/camptocamp/ngeo/pull/6742)
+* Min and max time can be null [ngeo#6745](https://github.com/camptocamp/ngeo/pull/6745)
+* Change attribute types to ngeoFormatAttributeTypes [ngeo#6746](https://github.com/camptocamp/ngeo/pull/6746)
 ##### 2.5.0.109
 * Update demo external OGC servers [c2cgeoportal#7684](https://github.com/camptocamp/c2cgeoportal/pull/7684)
 * [Backport 2.5] Make displayquerygrid height overridable [ngeo#6723](https://github.com/camptocamp/ngeo/pull/6723)
