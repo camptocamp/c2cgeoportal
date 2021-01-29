@@ -20,8 +20,9 @@ build: build-tools build-runner build-config
 checks: ## Run the application checks
 checks: yamllint otherchecks
 
-pipenv.timestamp:
-	pipenv install
+pipenv.timestamp: Pipfile.lock
+	pipenv sync
+	touch $@
 
 .PHONY: yamllint
 yamllint: ## YAML lint
