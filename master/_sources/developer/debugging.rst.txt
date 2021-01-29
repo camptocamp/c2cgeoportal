@@ -29,7 +29,7 @@ Webpack
 
 To have faster builds, you need to use the Webpack dev server; you can achieve this as follows.
 
-In the file ``geoportal/demo_geoportal/static-ngeo/js/apps/<interface>.html.ejs``,
+In the file ``geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs``,
 remove the ``ng-strict-di`` in the ``html`` tag.
 
 Be sure that the service ``webpack_dev_server`` is present and uncommented in the

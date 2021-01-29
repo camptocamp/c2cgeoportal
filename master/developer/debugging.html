@@ -52,7 +52,7 @@ files. To achieve this, you can use the sources maps, a function activable in th
 <div class="section" id="webpack">
 <h2>Webpack<a class="headerlink" href="#webpack" title="Permalink to this headline">¶</a></h2>
 <p>To have faster builds, you need to use the Webpack dev server; you can achieve this as follows.</p>
-<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/demo_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code>,
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code>,
 remove the <code class="docutils literal notranslate"><span class="pre">ng-strict-di</span></code> in the <code class="docutils literal notranslate"><span class="pre">html</span></code> tag.</p>
 <p>Be sure that the service <code class="docutils literal notranslate"><span class="pre">webpack_dev_server</span></code> is present and uncommented in the
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> file.</p>
