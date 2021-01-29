@@ -11,7 +11,7 @@ The main page where we can redefine the header is in the file:
 ``geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js``
 where ``<interface>`` is the interface name.
 
-The style sheet file is ``geoportal/demo_geoportal/static-ngeo/js/apps/sass/<interface>.scss``.
+The style sheet file is ``geoportal/<package>_geoportal/static-ngeo/js/apps/sass/<interface>.scss``.
 
 The images used by the application code should be placed in the folder ``geoportal/<package>_geoportal/static-ngeo/images/``.
 

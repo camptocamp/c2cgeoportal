@@ -30,8 +30,8 @@ Build your application.
 
 The files to translate are:
 
-* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/demo-client.po`` for the ngeo client
-* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/demo-server.po`` for the server part (should be empty for ngeo interfaces)
+* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/<package>_geoportal-client.po`` for the ngeo client
+* ``geoportal/<package>_geoportal/locale/<lang>/LC_MESSAGES/<package>_geoportal-server.po`` for the server part (should be empty for ngeo interfaces)
 
 .. note::
 
