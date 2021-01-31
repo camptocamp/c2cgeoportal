@@ -13,7 +13,7 @@ Jinja2 = "==2.11.3"  # c2c.template
 lingua = "==4.14"  # i18n
 PasteScript = "==3.2.0"  # geoportal pcreate
 polib = "==1.1.0"  # i18n
-pykwalify = "==1.7.0"  # Validate config
+pykwalify = "==1.8.0"  # Validate config
 pytest-cov = "==2.11.1"  # tests
 transifex-client = "==0.14.2"  # Makefile
 WebTest = "==2.0.35"  # admin tests
