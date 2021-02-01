@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2020, Camptocamp SA
+# Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,12 +30,12 @@
 import argparse
 import binascii
 import json
-import os
 import sys
 import time
 
-import c2c.template
 from Crypto.Cipher import AES  # nosec
+
+from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
 
 def create_token(aeskey, user, password, valid):
@@ -55,16 +55,14 @@ def create_token(aeskey, user, password, valid):
 
 def main():
     parser = argparse.ArgumentParser(description="Generate an auth token")
+    fill_arguments(parser)
     parser.add_argument("user", help="The username")
     parser.add_argument("password", help="The password")
     parser.add_argument("valid", type=int, default=1, nargs="?", help="Is valid for, in days")
 
     args = parser.parse_args()
-    if os.path.exists("geoportal/config.yaml"):
-        config = c2c.template.get_config("geoportal/config.yaml")
-    else:
-        config = c2c.template.get_config("config.yaml")
-    urllogin = config.get("urllogin", {})
+    settings = get_appsettings(args)
+    urllogin = settings.get("urllogin", {})
     aeskey = urllogin.get("aes_key")
     auth_enc = create_token(aeskey, args.user, args.password, args.valid)
 
