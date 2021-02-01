@@ -723,9 +723,10 @@
         },
         "pygraphviz": {
             "hashes": [
-                "sha256:411ae84a5bc313e3e1523a1cace59159f512336318a510573b47f824edef8860"
+                "sha256:a7bec6609f37cf1e64898c59f075afd659106cf9356c5f387cecaa2e0cdb2304"
             ],
-            "version": "==1.6"
+            "index": "pypi",
+            "version": "==1.7"
         },
         "pyotp": {
             "hashes": [
