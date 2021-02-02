@@ -20,7 +20,7 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
-      MAIN_BRANCH: master
+      MAIN_BRANCH: 2.6
       MAJOR_VERSION: 2.6
 
     steps:
