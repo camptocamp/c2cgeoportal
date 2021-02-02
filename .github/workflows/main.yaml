@@ -130,7 +130,7 @@ jobs:
           doc
 
       - name: Extract documentation
-        run: ci/extract-documentation artifacts/documentations/
+        run: ci/extract-documentation artifacts/documentations/ || true
         if: always()
 
       - uses: actions/upload-artifact@v2
