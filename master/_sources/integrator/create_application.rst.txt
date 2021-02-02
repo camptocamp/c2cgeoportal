@@ -27,7 +27,7 @@ For this procedure, we need to set some environment variables:
    GEOMAPFISH_PROJECT=<project>
    GEOMAPFISH_PACKAGE=<package>
 
-Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=2.6>`_,
+Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=2.7>`_,
 <project> is the project name that should be the GitHub repository name, <package> is the package name.
 
 
@@ -125,7 +125,7 @@ To create a simple application you should:
 - Remove the geoportal job in the ``.github/workflows/main.yaml`` file.
 - Build the application by adding ``--config`` to the ``./build`` command.
 - Add the image to the ``geoportal`` service in the ``docker-compose.yaml``:
-  ``image: camptocamp/geomapfishapp-geoportal:2.6``.
+  ``image: camptocamp/geomapfishapp-geoportal:2.7``.
 - Add the following lines in the ``.gitignore`` file:
 
 .. code::
