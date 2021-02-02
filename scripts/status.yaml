@@ -23,6 +23,12 @@
       branch: prod-2-6-simple
       workflows:
         - workflow: Continuous integration
+    '2.7':
+      branch: prod-2-7
+      workflows:
+        - workflow: Continuous integration
+        - workflow: Upgrade 2.7
+          use_branch: no
 
 - name: c2cgeoportal
   repo: camptocamp/c2cgeoportal
@@ -54,6 +60,19 @@
           with_step: True
         - workflow: Update ngeo 2.5
           use_branch: no
+    '2.6':
+      workflows:
+        - workflow: QGIS build
+          with_step: True
+        - workflow: Continuous integration
+        - workflow: Code scanning
+        - workflow: Rebuild 2.6
+          use_branch: no
+        - workflow: QGIS rebuild 2.6
+          use_branch: no
+          with_step: True
+        - workflow: Update ngeo 2.6
+          use_branch: no
     master:
       workflows:
         - workflow: QGIS build
@@ -79,6 +98,10 @@
       workflows:
         - workflow: CodeQL scanning
     '2.5':
+      workflows:
+        - workflow: Continuous integration
+        - workflow: CodeQL scanning
+    '2.6':
       workflows:
         - workflow: Continuous integration
         - workflow: CodeQL scanning

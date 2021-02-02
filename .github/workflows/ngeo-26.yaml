@@ -1,27 +1,20 @@
 ---
-name: Continuous integration
+name: Update ngeo 2.6
 
 on:
-  push:
+  repository_dispatch:
+    types:
+      - ngeo_26_updated
 
 jobs:
-  not-failed-backport:
-    runs-on: ubuntu-20.04
-    name: Test that's not a failed backport
-    timeout-minutes: 5
-    steps:
-      - run: 'false'
-        if: "github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'"
-
   main:
     runs-on: ubuntu-20.04
-    name: Continuous integration
+    name: Update ngeo 2.6
     timeout-minutes: 70
-    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
-      MAIN_BRANCH: master
-      MAJOR_VERSION: 2.7
+      MAIN_BRANCH: 2.6
+      MAJOR_VERSION: 2.6
 
     steps:
       - run: '! ls BACKPORT_TODO'
@@ -32,6 +25,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+          ref: ${{ env.MAIN_BRANCH }}
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:

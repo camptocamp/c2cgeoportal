@@ -1,19 +1,21 @@
 ---
-name: QGIS build
+name: QGIS rebuild 2.6
 
 on:
-  push:
+  schedule:
+    - cron: '30 3 * * *'
 
 jobs:
   main:
     runs-on: ubuntu-20.04
-    name: QGIS build
+    name: QGIS rebuild 2.6
     timeout-minutes: 10
-    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     strategy:
       fail-fast: false
       matrix:
+        branch:
+          - '2.6'
         version:
           # Old LTR
           - '3.10'
@@ -23,12 +25,13 @@ jobs:
           - master
 
     env:
-      MAIN_BRANCH: master
-      MAJOR_VERSION: 2.7
+      MAIN_BRANCH: ${{ matrix.branch }}
+      MAJOR_VERSION: ${{ matrix.branch }}
 
     steps:
       - uses: actions/checkout@v2
         with:
+          ref: ${{ matrix.branch }}
           fetch-depth: 0
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
