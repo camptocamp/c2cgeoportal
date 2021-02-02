@@ -77,14 +77,4 @@ jobs:
 
       - name: Publish feature branch
         run: |
-          c2cciutils-publish --group=qgis-${{ matrix.version }}
-        if: >
-          github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
-      - name: Publish version branch
-        run: |
-          c2cciutils-publish --group=qgis-${{ matrix.version }} --type=version_branch \
-            --version=${{ steps.version.outputs.major }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          c2cciutils-publish --type=rebuild --group=qgis-${{ matrix.version }}
