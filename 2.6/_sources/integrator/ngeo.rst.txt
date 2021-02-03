@@ -1,0 +1,222 @@
+.. _integrator_ngeo:
+
+ngeo
+====
+
+Organization
+------------
+
+The main page where we can redefine the header is in the file:
+``geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` and
+``geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js``
+where ``<interface>`` is the interface name.
+
+The style sheet file is ``geoportal/<package>_geoportal/static-ngeo/js/apps/sass/<interface>.scss``.
+
+The images used by the application code should be placed in the folder ``geoportal/<package>_geoportal/static-ngeo/images/``.
+
+The images used from the admin interface should be placed in the folder ``geoportal/<package>_geoportal/static/images/``.
+
+
+HTML file
+---------
+
+In this file, you can add some blocks like
+
+.. code:: html
+
+   <gmf-authentication id="login" class="slide">
+   </gmf-authentication>
+
+to include a directive.
+
+You can find the available directives in the
+`ngeo documentation <https://camptocamp.github.io/ngeo/2.6/apidoc/>`_.
+
+The controller (``js`` file) is commonly named ``mainCtrl``. So you can use a value
+from the controller by doing the following (here, the controller is the ``DesktopController``):
+
+.. code:: html
+
+    <html lang="{{desktopCtrl.lang}}" ng-app="mydemo" ng-controller="DesktopController as mainCtrl">
+      <head>
+      ...
+      </head>
+      <body>
+      ...
+      <gmf-mydirective gmf-mydirective-variableproperty="mainCtrl.open"
+                       gmf-mydirective-staticproperty="::mainCtrl.map">
+      <gmf-mydirective>
+      ...
+      </body>
+    </html>
+
+
+Controller (js file)
+--------------------
+
+In the controller you have some lines like:
+
+.. code:: javascript
+
+   import gmf<Component>Component from 'gmf/<component>/component.js';
+
+This is needed to include the javascript of the used directives.
+
+The map configuration will be in the vars file.
+
+Dynamic.json view
+-----------------
+
+To configure the ngeo constants with dynamic or configurable values,
+you can use the dynamic view.
+
+This view is configurable in the vars files in the section ``interfaces_config``.
+The sub section is the interface name, and after that we have:
+
+* ``redirect_interface``: Interface to be redirected to if an unexpected device type is used (mobile/desktop).
+* ``do_redirect``: Directly do the redirect.
+* ``extends``: Interface for which the ``constants``, ``dynamic_constants``, ``static`` and ``routes`` shall
+    be extended. These values will be updated with the interface configuration
+    (but can not be removed via interface configuration).
+* ``constants``: Directly define an ``angular`` constant in the vars file.
+* ``dynamic_constants``: Define an ``angular`` constant from a dynamic values.
+* ``static``: key: Constant name, value: name of the static view that we want to have the URL.
+* ``routes``: key: Constant name, value:
+    ``name``: Name of the route witch one we want to have the URL.
+    ``kw``: Keyword arguments to supply for dynamic path elements in the route definition.
+    ``elements``: Additional positional path segments to append the URL after it is generated.
+    ``params``: Query string parameters to append to the URL.
+    ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
+
+    For more information regarding the ``elements`` and ``kw`` properties see the *Pyramid*
+    ``Request.route_url`` `documentation
+    <https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url>`_.
+
+The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
+
+The possible values are described in the ngeo documentation
+`ngeo constants <https://camptocamp.github.io/ngeo/2.6/jsdoc/module-src_options.html>`_,
+`gmf constants <https://camptocamp.github.io/ngeo/2.6/jsdoc/module-contribs_gmf_src_options.html>`_.
+
+CSS style
+---------
+
+In the ``gmfOptions`` we have a ``cssVars`` property where we can configure all CSS variable
+(``var(--a-variable)`` in the css files.
+
+The content of ``cssVars`` is a dictionary where the keys are the CSS variable names, and the values the
+value to be set to the CSS variable.
+For the CSS variables named ``brand-primary`` and ``brand-secondary`` we also calculated the other colors
+related to those variable as it's done in the SCSS, to be able to change the major application colors.
+
+You can in addition define an `<interface>.css` file to override the CSS rules.
+
+Creating your own component
+---------------------------
+
+Create your ``.js`` and ``.html`` (partial) files in a dedicated folder under:
+``geoportal/<package>_geoportal/static-ngeo/js/``. We encourage you to write standard ECMAScript and
+use AngularJS only to display your component.
+
+For the structure, you can be inspired by one of the components in ngeo.
+
+You should register each of your AngularJS element (component, controller, service, etc.) in a module. First
+declare your module:
+
+.. code:: javascript
+
+   import angular from 'angular';
+   const module = angular.module('<projectElementname>', [
+     // dependencies to load within this module.
+   ]);
+
+Then register your component to this module:
+
+.. code:: javascript
+
+   class aController {}
+   module.controller('<projectController>', aController);
+   const aDirective = function() {};
+   module.directive('<projectDirectivename>', aDirective);
+
+And export this module:
+
+.. code:: javascript
+
+   export default module;
+
+Finally add your module in your main controller app file:
+
+.. code:: javascript
+
+   import myCustomComponent from '../myComponent/Component.js';
+   // Update the already declared module at the end of the controller with:
+   const module = angular.module('<AppInterface>', [
+     ...
+     myCustomComponent.name,
+   ];
+
+At this point, if in your <interface> HTML app file you declare your component, it should be loaded:
+
+.. code:: html
+
+   <project-directivename></project-directivename>
+
+If you have no error and no result, verify that the module is correctly declared and loaded. AngularJS can't
+throw errors for a component that it doesn't know and having a custom markup in the HTML is not an error
+for the HTML.
+
+.. note::
+
+   To load a partial (HTML) file for a component you can use this syntax inside the declaration of your
+   component: ``template: require('./component.html')`` (from ``./Component.js`` file).
+
+Extending or overriding an existing component
+----------------------------------------------
+
+Overriding an existing partial (HTML) or JS element is possible but you have to test carefully your code
+after each GMF update as the original code may have changed.
+
+AngularJS is still ECMAScript. You can define some new functions or new variables to a class via the
+prototype. Here's an example with the ngeo draw controller:
+
+.. code:: javascript
+
+   import `import {DrawController} from 'ngeo/draw/Controller.js'`
+   /**
+    * Doctype is important for compilation.
+    * @type {string}
+    */
+   DrawController.prototype.myNewValue;
+   DrawController.prototype.newFunction = function () {};
+
+To replace an existing function, just create a function with the same name than the one to replace:
+
+.. code:: javascript
+
+   DrawController.prototype. = function () {};
+
+You will have to copy-paste the content of the original function to keep the component working. Then you
+can extend it.
+
+To override a partial (HMTL) file, you have to copy-paste the whole original file. Then you can adapt it.
+To make the original component use your own partial file, you must set the template cache of the module:
+
+.. code:: javascript
+
+   import GmfDrawFeatureComponent from 'gmf/drawing/drawFeatureComponent.js';
+   /**
+    * Override gmf/drawing/drawFeatureComponent partial with a custom one.
+    */
+   GmfDrawFeatureComponent.run(/* @ngInject */ () => {
+     // @ts-ignore: webpack
+     .put('gmf/drawing/drawFeatureComponent', require('./drawFeatureComponent.html'));
+   });
+
+Finally be sure that the file where you override or extend existing content is read by the main
+controller file of your app:
+
+.. code:: javascript
+
+   import '../myComponent/load_and_override.js';

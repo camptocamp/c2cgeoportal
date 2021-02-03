@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Create a new release &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Cache management" href="cache.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="create-a-new-release">
+<span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vocabulary">
+<h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
+<p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
+Geoportal (2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
+(2.0.0rc1, 2.0.0, 2.0.1, …).</p>
+<p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes ngeo and c2cgeoportal;
+since 2014, both projects are synchronizing their major versions.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0.0rc1</span></code> for the first release candidate
+of the version <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">2.0.1</span></code> for
+the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.1</span></code>, …</p>
+</div>
+<div class="section" id="tasks-to-do">
+<span id="developer-build-release-pre-release-task"></span><h2>Tasks to do<a class="headerlink" href="#tasks-to-do" title="Permalink to this headline">¶</a></h2>
+<p>On branch creation (start of the integration phase):</p>
+<ul class="simple">
+<li><p>Create and initialise the branches</p></li>
+<li><p>Protect the new branches</p></li>
+<li><p>Create the new Transifex resources</p></li>
+<li><p>Configure Dependabot</p></li>
+<li><p>Configure the rebuild</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> package linked to the branch</p></li>
+<li><p>Verify that the changelog creation is working</p></li>
+</ul>
+<p>On release creation:</p>
+<ul class="simple">
+<li><p>Reset the changelog</p></li>
+<li><p>Do the tags</p></li>
+<li><p>Publish it</p></li>
+<li><p>New tests for the upgrade</p></li>
+<li><p>Create the new demo</p></li>
+<li><p>Use the new demo</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All changes should be committed.</p>
+</div>
+</div>
+<div class="section" id="create-the-branches">
+<h2>Create the branches<a class="headerlink" href="#create-the-branches" title="Permalink to this headline">¶</a></h2>
+<p>On the demo you should create the new version branch.</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> you should create the new version branch.</p>
+<p>On the new version branch, in the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code> to
+<code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>.</p>
+<p>On the master branch, in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> you should set <code class="docutils literal notranslate"><span class="pre">DEMO_BRANCH</span></code> to <code class="docutils literal notranslate"><span class="pre">prod-&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
+<p>On the master branch, in the file <code class="docutils literal notranslate"><span class="pre">package.json</span></code> bump the package version.</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> you should create the new version branch.</p>
+<p>On the new version branch, in the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code> to
+<code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>.</p>
+<p>On the master branch, in the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code> to
+<code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
+</div>
+<div class="section" id="create-the-new-transifex-resources">
+<h2>Create the new Transifex resources<a class="headerlink" href="#create-the-new-transifex-resources" title="Permalink to this headline">¶</a></h2>
+<p>On ngeo checkout the new version branch</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">make transifex-get</span>
+</pre></div></div><p>Checkout the master branch</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> set <code class="docutils literal notranslate"><span class="pre">TX_VERSION</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">rm .tx/config contribs/gmf/apps/.tx/config</span>
+<span class="prompt1">make transifex-init</span>
+</pre></div></div><p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, new version branch do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make build-tools</span>
+<span class="prompt1">docker run --user<span class="o">=</span>root camptocamp/geomapfish-tools transifex-init <span class="se">\</span>
+    &lt;version&gt; &lt;version + <span class="m">1</span>&gt; <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="k">$(</span>gopass gs/ci/transifex/rw/username<span class="k">)</span><span class="s2">&quot;</span> <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="k">$(</span>gopass gs/ci/transifex/rw/password<span class="k">)</span><span class="s2">&quot;</span></span>
+</pre></div></div></div>
+<div class="section" id="configure-dependabot">
+<h2>Configure Dependabot<a class="headerlink" href="#configure-dependabot" title="Permalink to this headline">¶</a></h2>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> and <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> master branches, add in the Dependabot configuration the new branch to
+receive updates for security issues; see for example those commits:
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/commit/7783a2d1d02cc58da7cb1e3b9d32a1358cc30524">c2cgeoportal</a>
+<a class="reference external" href="https://github.com/camptocamp/ngeo/commit/1d1fe0ee600229daab4a85b75529cbdb8beecd42">ngeo</a>
+And remove the <code class="docutils literal notranslate"><span class="pre">automerged_updates</span></code> section.</p>
+</div>
+<div class="section" id="configure-the-rebuild">
+<h2>Configure the rebuild<a class="headerlink" href="#configure-the-rebuild" title="Permalink to this headline">¶</a></h2>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> from new version branch to master branch as
+<code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span>
+<span class="gd">-</span>
+<span class="gd">- on:</span>
+<span class="gd">-   push:</span>
+<span class="gi">+ name: Rebuild</span>
+<span class="gi">+</span>
+<span class="gi">+ on:</span>
+<span class="gi">+   schedule:</span>
+<span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
+
+<span class="gd">-     name: Continuous integration</span>
+<span class="gi">+     name: Rebuild</span>
+
+<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
+
+        - uses: actions/checkout@v1
+<span class="gd">-       - run: scripts/get-version --auto-increment</span>
+<span class="gi">+         with:</span>
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+
+<span class="gd">-       # Test Upgrade</span>
+<span class="gd">-       - run: DOCKER_TAG=$(scripts/get-version --full) make build-tools</span>
+<span class="gd">-       - run: DOCKER_TAG=$(scripts/get-version --full) make build-runner</span>
+<span class="gd">-       - run: DOCKER_TAG=$(scripts/get-version --full) make build-config</span>
+<span class="gd">-       - run: docker images | grep &quot;&lt;none&gt;&quot; | awk &#39;{print $3}&#39; | xargs --no-run-if-empty docker rmi || true</span>
+<span class="gd">-       - run: ci/test-upgrade init /root/workspace</span>
+<span class="gd">-       - run: ci/test-upgrade 2* /root/workspace</span>
+<span class="gd">-       - run: ci/test-upgrade cleanup /root/workspace</span>
+
+        - name: Publish to Docker hub and Pypi
+<span class="gd">-           &#39; ci/publish --geoportal</span>
+<span class="gi">+           &#39; ci/publish-daily --geoportal</span>
+
+<span class="gd">-       - name: Publish to Transifex</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Publish documentation to GitHub.io</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Notify demo</span>
+<span class="gd">-         ...</span>
+</pre></div>
+</div>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> from new version branch to master branch
+as <code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-qgis-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: QGIS</span>
+<span class="gd">-</span>
+<span class="gd">- on:</span>
+<span class="gd">-   push:</span>
+<span class="gi">+ name: Rebuild QGIS</span>
+<span class="gi">+</span>
+<span class="gi">+ on:</span>
+<span class="gi">+   schedule:</span>
+<span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
+
+<span class="gd">-     name: QGIS</span>
+<span class="gi">+     name: Rebuild QGIS</span>
+
+<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
+
+        - uses: actions/checkout@v1
+<span class="gi">+         with:</span>
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+
+        - name: Publish to Docker hub and Pypi
+<span class="gd">-           &#39; ci/publish --qgisserver ${{ matrix.version }}</span>
+<span class="gi">+           &#39; ci/publish-daily --qgisserver ${{ matrix.version }}</span>
+</pre></div>
+</div>
+<p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yaml</span></code> from new version branch to master branch as
+<code class="docutils literal notranslate"><span class="pre">.github/workflows/ngeo-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span>
+<span class="gd">-</span>
+<span class="gd">- on:</span>
+<span class="gd">-   push:</span>
+<span class="gi">+ name: Update ngeo</span>
+<span class="gi">+</span>
+<span class="gi">+ on:</span>
+<span class="gi">+   repository_dispatch:</span>
+<span class="gi">+     types:</span>
+<span class="gi">+     - ngeo_&lt;new version&gt;_updated</span>
+
+<span class="gd">-     name: Continuous integration</span>
+<span class="gi">+     name: Update ngeo</span>
+
+<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
+
+        - uses: actions/checkout@v1
+<span class="gi">+         with:</span>
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+
+        - name: Publish to Docker hub and Pypi
+          run: |
+            summon --yaml &#39;
+              DOCKER_USERNAME: !var gs/ci/dockerhub/username
+              DOCKER_PASSWORD: !var gs/ci/dockerhub/password
+              PYPI_USERNAME: !var gs/ci/pypi/username
+              PYPI_PASSWORD: !var gs/ci/pypi/password
+            &#39; ci/publish --geoportal
+          env:
+            GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+<span class="gi">+           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}</span>
+
+<span class="gd">-       - name: Publish to Transifex</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Publish documentation to GitHub.io</span>
+<span class="gd">-         ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-the-audit">
+<h2>Configure the audit<a class="headerlink" href="#configure-the-audit" title="Permalink to this headline">¶</a></h2>
+<p>Add the new version branch in the <code class="docutils literal notranslate"><span class="pre">.github/workflows/audit.yaml</span></code> file.</p>
+</div>
+<div class="section" id="use-the-ngeo-package-linked-to-the-branch">
+<h2>Use the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> package linked to the branch<a class="headerlink" href="#use-the-ngeo-package-linked-to-the-branch" title="Permalink to this headline">¶</a></h2>
+<p>In <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> new version branch, in the file <code class="docutils literal notranslate"><span class="pre">geoportal/package.json</span></code>, set the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> version to
+<code class="docutils literal notranslate"><span class="pre">version-&lt;new</span> <span class="pre">version&gt;-latest</span></code>.</p>
+</div>
+<div class="section" id="reset-the-changelog">
+<h2>Reset the changelog<a class="headerlink" href="#reset-the-changelog" title="Permalink to this headline">¶</a></h2>
+<p>On the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> new version branch:</p>
+<ul>
+<li><p>Empty the file <code class="docutils literal notranslate"><span class="pre">CHANGELOG</span></code></p></li>
+<li><p>Set the content of the file <code class="docutils literal notranslate"><span class="pre">ci/changelog.yaml</span></code> to:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">commits</span><span class="p">:</span>
+  <span class="nt">c2cgeoportal</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+  <span class="nt">ngeo</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+<span class="nt">pulls</span><span class="p">:</span>
+  <span class="nt">c2cgeoportal</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+  <span class="nt">ngeo</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+<span class="nt">releases</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="publish-it">
+<h2>Publish it<a class="headerlink" href="#publish-it" title="Permalink to this headline">¶</a></h2>
+<p>Send a release email to the <code class="docutils literal notranslate"><span class="pre">geomapfish&#64;googlegroups.com</span></code> and
+<code class="docutils literal notranslate"><span class="pre">geomapfish-dev&#64;lists.camptocamp.com</span></code> mailing lists.</p>
+</div>
+<div class="section" id="new-tests-for-the-upgrade">
+<h2>New tests for the upgrade<a class="headerlink" href="#new-tests-for-the-upgrade" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/pull/6211">Do something like this</a></p>
+</div>
+<div class="section" id="create-the-new-demo">
+<h2>Create the new demo<a class="headerlink" href="#create-the-new-demo" title="Permalink to this headline">¶</a></h2>
+<p>Create the new demo on OpenShift</p>
+</div>
+<div class="section" id="use-the-new-demo">
+<h2>Use the new demo<a class="headerlink" href="#use-the-new-demo" title="Permalink to this headline">¶</a></h2>
+<p>On <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> master branch change all the URL
+from <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;new</span> <span class="pre">version&gt;.camptocamp.com</span></code>
+to  <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;next</span> <span class="pre">version&gt;.camptocamp.com</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrator/index.html">Integrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="cache.html" title="previous chapter">Cache management</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2021, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/developer/build_release.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
