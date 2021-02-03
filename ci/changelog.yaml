@@ -1,7 +1,24 @@
 commits:
-  c2cgeoportal: {}
-  ngeo: {}
+  c2cgeoportal:
+    30f7a4411: &id001
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/1218cfa8d53cacbabd880d7c578afe4fb2526d0d
+        sha: 1218cfa8d53cacbabd880d7c578afe4fb2526d0d
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/1218cfa8d53cacbabd880d7c578afe4fb2526d0d
+      sha: 30f7a4411b9ae3040474a5f45eec50eaca68b712
+    30f7a4411b9ae3040474a5f45eec50eaca68b712: *id001
+  ngeo:
+    26c7180f9: &id002
+      parents:
+      - html_url: https://github.com/camptocamp/ngeo/commit/3ea208e044f36629e9b670255b87a7163322ca2e
+        sha: 3ea208e044f36629e9b670255b87a7163322ca2e
+        url: https://api.github.com/repos/camptocamp/ngeo/commits/3ea208e044f36629e9b670255b87a7163322ca2e
+      sha: 26c7180f9079d78fdeb7faefac744c0e253471ec
+    26c7180f9079d78fdeb7faefac744c0e253471ec: *id002
 pulls:
   c2cgeoportal: {}
   ngeo: {}
-releases: []
+releases:
+- c2cgeoportal: 30f7a4411
+  name: 2.6.rc.1
+  ngeo: 26c7180f9
