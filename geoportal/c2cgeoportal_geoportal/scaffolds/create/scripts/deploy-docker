@@ -8,11 +8,11 @@ import sys
 
 def main():
     parser = argparse.ArgumentParser(description="Publish Docker images")
+    parser.add_argument("--image", dest="images", action="append", help="The image to be exported")
     parser.add_argument(
-        "--image", dest="images", action="append", help="The image to be exported"
-    )
-    parser.add_argument(
-        "--service", default="dockerhub", help="Used repository",
+        "--service",
+        default="dockerhub",
+        help="Used repository",
     )
     parser.add_argument(
         "--no-trigger",
@@ -44,34 +44,12 @@ def main():
     print("Deploying images for tag {}".format(version))
     sys.stdout.flush()
 
-    cmd = ["docker", "login"]
     if args.service == "dockerhub":
-        if "GITHUB_REF" in os.environ:
-            login = subprocess.check_output(
-                ["gopass", "gs/ci/dockerhub/username"]
-            ).decode()
-            password = subprocess.check_output(["gopass", "gs/ci/dockerhub/password"])
-        else:
-            login = os.environ["DOCKER_USERNAME"]
-            password = os.environ["DOCKER_PASSWORD"]
         prefix = ""
     elif args.service == "github":
-        cmd += ["ghcr.io"]
-        login = subprocess.check_output(["gopass", "gs/ci/github/username"]).decode()
-        password = subprocess.check_output(["gopass", "gs/ci/github/token/gopass"])
         prefix = "ghcr.io/"
     else:
         print("Unknown service '{}'".format(args.service))
-        sys.exit(1)
-
-    cmd += ["--username=" + login, "--password-stdin"]
-    process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    output, output_err = process.communicate(input=password)
-    if process.returncode != 0:
-        if output:
-            print(output.decode())
-        if output_err:
-            print(output_err.decode())
         sys.exit(1)
 
     for image in args.images:
@@ -105,9 +83,7 @@ def main():
                     + subprocess.check_output(
                         [
                             "gopass",
-                            "gs/ci/openshift/{}/token".format(
-                                os.environ["OPENSHIFT_PROJECT"]
-                            ),
+                            "gs/ci/openshift/{}/token".format(os.environ["OPENSHIFT_PROJECT"]),
                         ]
                     ).decode(),
                 ]
