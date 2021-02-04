@@ -100,6 +100,7 @@ else:
             ),
         ]
 
+    win = platform.system() == "Windows"
     sys.exit(
         subprocess.call(
             [
@@ -115,8 +116,8 @@ else:
                 "run-git",
                 subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
                 subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),
-                subprocess.check_output(["id", "-u"]).decode().strip(),
-                subprocess.check_output(["id", "-g"]).decode().strip(),
+                "" if win else subprocess.check_output(["id", "-u"]).decode().strip(),
+                "" if win else subprocess.check_output(["id", "-g"]).decode().strip(),
                 "/src",
                 "c2cupgrade",
             ]
