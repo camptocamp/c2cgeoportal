@@ -1,6 +1,7 @@
+##### 2.5.0.112
+* Use WMS version from OGC server URL to GetCapabilities  [c2cgeoportal#7705](https://github.com/camptocamp/c2cgeoportal/pull/7705)
 ##### 2.5.0.111
 * Fix upgrade for Windows [c2cgeoportal#7663](https://github.com/camptocamp/c2cgeoportal/pull/7663)
-* [Backport 2.5] Fix config.yaml path in urllogin script [c2cgeoportal#7734](https://github.com/camptocamp/c2cgeoportal/pull/7734)
 ##### 2.5.0.110
 * [Backport 2.5] Documentation: fix typos regarding names [c2cgeoportal#7715](https://github.com/camptocamp/c2cgeoportal/pull/7715)
 * Fix offline mask [ngeo#6713](https://github.com/camptocamp/ngeo/pull/6713)
