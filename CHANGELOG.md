@@ -1,3 +1,6 @@
+##### 2.4.2.34
+* Bump c2cciutils [c2cgeoportal#7757](https://github.com/camptocamp/c2cgeoportal/pull/7757)
+* Remove no more working Travis CI [c2cgeoportal#7760](https://github.com/camptocamp/c2cgeoportal/pull/7760)
 ##### 2.4.2.33
 * Documentation: fix typos regarding names [c2cgeoportal#7714](https://github.com/camptocamp/c2cgeoportal/pull/7714)
 * Fix security issue [c2cgeoportal#7744](https://github.com/camptocamp/c2cgeoportal/pull/7744)
