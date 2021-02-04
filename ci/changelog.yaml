@@ -7,18 +7,47 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/1218cfa8d53cacbabd880d7c578afe4fb2526d0d
       sha: 30f7a4411b9ae3040474a5f45eec50eaca68b712
     30f7a4411b9ae3040474a5f45eec50eaca68b712: *id001
+    ad845ec74913813f07d02d13c584bdef0e3dcc7b:
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/30f7a4411b9ae3040474a5f45eec50eaca68b712
+        sha: 30f7a4411b9ae3040474a5f45eec50eaca68b712
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/30f7a4411b9ae3040474a5f45eec50eaca68b712
+      sha: ad845ec74913813f07d02d13c584bdef0e3dcc7b
+    ba95eb850: &id002
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/ad845ec74913813f07d02d13c584bdef0e3dcc7b
+        sha: ad845ec74913813f07d02d13c584bdef0e3dcc7b
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/ad845ec74913813f07d02d13c584bdef0e3dcc7b
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/cf3de1ffb190c931554b3b49871a56c31812c40c
+        sha: cf3de1ffb190c931554b3b49871a56c31812c40c
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/cf3de1ffb190c931554b3b49871a56c31812c40c
+      sha: ba95eb850ba93d17407b7c34fc187fd4fec29962
+    ba95eb850ba93d17407b7c34fc187fd4fec29962: *id002
   ngeo:
-    26c7180f9: &id002
+    26c7180f9: &id003
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/3ea208e044f36629e9b670255b87a7163322ca2e
         sha: 3ea208e044f36629e9b670255b87a7163322ca2e
         url: https://api.github.com/repos/camptocamp/ngeo/commits/3ea208e044f36629e9b670255b87a7163322ca2e
       sha: 26c7180f9079d78fdeb7faefac744c0e253471ec
-    26c7180f9079d78fdeb7faefac744c0e253471ec: *id002
+    26c7180f9079d78fdeb7faefac744c0e253471ec: *id003
 pulls:
-  c2cgeoportal: {}
+  c2cgeoportal:
+    ad845ec74913813f07d02d13c584bdef0e3dcc7b: []
+    ba95eb850:
+    - base_ref: '2.6'
+      closed_at: '2021-02-04T13:49:58Z'
+      created_at: '2021-02-04T12:56:19Z'
+      html_url: https://github.com/camptocamp/c2cgeoportal/pull/7755
+      number: 7755
+      state: closed
+      title: '[Backport 2.6] [Backport master] Fix upgrade for Windows'
+      updated_at: '2021-02-04T13:50:00Z'
   ngeo: {}
 releases:
 - c2cgeoportal: 30f7a4411
   name: 2.6.rc.1
+  ngeo: 26c7180f9
+- c2cgeoportal: ba95eb850
+  name: 2.6.rc.2
   ngeo: 26c7180f9
