@@ -32,9 +32,9 @@ jobs:
       - name: Build config
         run: ./docker-run make docker-build-config
 
-#      - run: scripts/deploy-docker --image=config --no-trigger
+#      - run: scripts/deploy-docker --image=config --service=github --no-trigger
 #        if: "env.HELM_RELEASE_NAMES != ''"
-      - run: scripts/deploy-docker --image=config --service=github
+      - run: scripts/deploy-docker --image=config
         if: "env.HELM_RELEASE_NAMES != ''"
 
   geoportal:
@@ -57,7 +57,7 @@ jobs:
       - name: Build geoportal
         run: ./docker-run make docker-build-geoportal
 
-#      - run: scripts/deploy-docker --image=geoportal --no-trigger
+#      - run: scripts/deploy-docker --image=geoportal --service=github --no-trigger
 #        if: "env.HELM_RELEASE_NAMES != ''"
-      - run: scripts/deploy-docker --image=geoportal --service=github
+      - run: scripts/deploy-docker --image=geoportal
         if: "env.HELM_RELEASE_NAMES != ''"
