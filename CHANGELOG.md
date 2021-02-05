@@ -1,7 +1,6 @@
 ##### 2.5.0.114
 * Fix upgrade to an rc [c2cgeoportal#7765](https://github.com/camptocamp/c2cgeoportal/pull/7765)
 * [Backport 2.5] Ignore permalink on manual background selection [ngeo#6777](https://github.com/camptocamp/ngeo/pull/6777)
-* Fix typo in scale-selector log [ngeo#6784](https://github.com/camptocamp/ngeo/pull/6784)
 ##### 2.5.0.113
 * [Backport 2.5] Bump c2cciutils [c2cgeoportal#7761](https://github.com/camptocamp/c2cgeoportal/pull/7761)
 ##### 2.5.0.112
