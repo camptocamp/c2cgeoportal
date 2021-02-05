@@ -1,3 +1,6 @@
+##### 2.5.0.115
+* [Backport 2.5] Make config enable_admin_interface scalar [c2cgeoportal#7771](https://github.com/camptocamp/c2cgeoportal/pull/7771)
+* Fix typo in scale-selector log [ngeo#6784](https://github.com/camptocamp/ngeo/pull/6784)
 ##### 2.5.0.114
 * Fix upgrade to an rc [c2cgeoportal#7765](https://github.com/camptocamp/c2cgeoportal/pull/7765)
 * [Backport 2.5] Ignore permalink on manual background selection [ngeo#6777](https://github.com/camptocamp/ngeo/pull/6777)
