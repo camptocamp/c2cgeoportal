@@ -1,3 +1,5 @@
+##### 2.5.0.113
+* [Backport 2.5] Bump c2cciutils [c2cgeoportal#7761](https://github.com/camptocamp/c2cgeoportal/pull/7761)
 ##### 2.5.0.112
 * Use WMS version from OGC server URL to GetCapabilities  [c2cgeoportal#7705](https://github.com/camptocamp/c2cgeoportal/pull/7705)
 ##### 2.5.0.111
