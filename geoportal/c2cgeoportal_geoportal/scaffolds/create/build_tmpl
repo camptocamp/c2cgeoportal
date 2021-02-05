@@ -56,7 +56,7 @@ def main():
         match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", args.upgrade)
         if match is not None:
             major_version = match.group(1)
-        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+\.[0-9]+$", args.upgrade)
+        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9a-z]+\.[0-9]+$", args.upgrade)
         if match is not None:
             major_version = match.group(1)
         full_version = args.upgrade if args.upgrade != "master" else "latest"
