@@ -45,7 +45,7 @@ mapping:
         type: str
         required: True
       enable_admin_interface:
-        type: bool
+        type: scalar
         required: True
       c2c.base_path:
         type: str
