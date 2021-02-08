@@ -132,10 +132,6 @@ And remove the <code class="docutils literal notranslate"><span class="pre">auto
 
 <span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-     env:
-<span class="gd">-      MAIN_BRANCH: master</span>
-<span class="gi">+      MAIN_BRANCH: &lt;new version&gt;</span>
-
         - uses: actions/checkout@v1
 <span class="gd">-       - run: scripts/get-version --auto-increment</span>
 <span class="gi">+         with:</span>

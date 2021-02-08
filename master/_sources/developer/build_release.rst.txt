@@ -128,10 +128,6 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version
 
    -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
-        env:
-   -      MAIN_BRANCH: master
-   +      MAIN_BRANCH: <new version>
-
            - uses: actions/checkout@v1
    -       - run: scripts/get-version --auto-increment
    +         with:
