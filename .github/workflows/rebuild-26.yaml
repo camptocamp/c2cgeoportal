@@ -18,7 +18,7 @@ jobs:
           - '2.6'
 
     env:
-      MAIN_BRANCH: master
+      MAIN_BRANCH: 2.6
       MAJOR_VERSION: 2.6
 
     steps:
