@@ -36,21 +36,23 @@ import logging
 import re
 import sys
 import time
-import urllib.parse
 from collections import Counter
 from math import sqrt
-from typing import Any, Dict, List, Set, Union, cast
+from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
+import pyramid.request
 import requests
+import sqlalchemy.orm.query
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
+from lxml import etree
 from owslib.wms import WebMapService
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.url import add_url_params, get_url2
+from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
 from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region, set_common_headers
@@ -67,9 +69,9 @@ LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
 
 
-def get_http_cached(http_options, url, headers):
+def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, str]) -> requests.Response:
     @CACHE_REGION.cache_on_arguments()
-    def do_get_http_cached(url):
+    def do_get_http_cached(url: str) -> requests.Response:
         response = requests.get(url, headers=headers, timeout=300, **http_options)
         LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
         return response
@@ -84,7 +86,7 @@ class DimensionInformation:
     def __init__(self) -> None:
         self._dimensions: Dict[str, str] = {}
 
-    def merge(self, layer, layer_node, mixed):
+    def merge(self, layer: main.Layer, layer_node: Dict[str, Any], mixed: bool) -> Set[str]:
         errors = set()
 
         dimensions: Dict[str, str] = {}
@@ -125,12 +127,12 @@ class DimensionInformation:
                     )
         return errors
 
-    def get_dimensions(self):
+    def get_dimensions(self) -> Dict[str, str]:
         return self._dimensions
 
 
 class Theme:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings
         self.http_options = self.request.registry.settings.get("http_options", {})
@@ -145,7 +147,7 @@ class Theme:
         self._layergroup_cache = None
         self._themes_cache = None
 
-    def _get_metadata(self, item, metadata, errors):
+    def _get_metadata(self, item: main.TreeItem, metadata: str, errors: Set[str]):
         metadatas = item.get_metadatas(metadata)
         return (
             None
@@ -155,7 +157,7 @@ class Theme:
             )
         )
 
-    def _get_metadatas(self, item, errors):
+    def _get_metadatas(self, item: main.TreeItem, errors: Set[str]):
         metadatas = {}
         for metadata in item.metadatas:
             value = get_typed(metadata.name, metadata.value, self.metadata_type, self.request, errors)
@@ -164,24 +166,30 @@ class Theme:
 
         return metadatas
 
-    async def _wms_getcap(self, ogc_server, preload=False):
+    async def _wms_getcap(
+        self, ogc_server: main.OGCServer, preload: bool = False
+    ) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
+
         url, content, errors = await self._wms_getcap_cached(ogc_server)
 
-        if errors or preload:
+        if errors or preload or url is None:
             return None, errors
 
         @CACHE_REGION.cache_on_arguments()
-        def build_web_map_service(ogc_server_id):
+        def build_web_map_service(ogc_server_id: int) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
             del ogc_server_id  # Just for cache
 
-            version = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)["VERSION"][0]
+            if url is None:
+                raise RuntimeError("Url is None")
+
+            version = url.query.get("VERSION", "1.1.1")
             layers = {}
             try:
                 wms = WebMapService(None, xml=content, version=version)
             except Exception as e:  # pragma: no cover
                 error = (
                     "WARNING! an error '{}' occurred while trying to read the mapfile and recover the themes."
-                    "\nURL: {}\n{}".format(e, url, content)
+                    "\nURL: {}\n{}".format(e, url, content.decode() if content else None)
                 )
                 LOG.error(error, exc_info=True)
                 return None, {error}
@@ -211,7 +219,9 @@ class Theme:
 
         return build_web_map_service(ogc_server.id)
 
-    async def _wms_getcap_cached(self, ogc_server):
+    async def _wms_getcap_cached(
+        self, ogc_server: main.OGCServer
+    ) -> Tuple[Optional[Url], Optional[bytes], Set[str]]:
         errors: Set[str] = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
         if errors or url is None:  # pragma: no cover
@@ -219,10 +229,9 @@ class Theme:
 
         # Add functionality params
         sparams = get_mapserver_substitution_params(self.request)
-        url = add_url_params(url, sparams)
+        url.add_query(sparams)
 
-        url = add_url_params(
-            url,
+        url.add_query(
             {
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
@@ -242,7 +251,7 @@ class Theme:
             headers["sec-username"] = "root"
             headers["sec-roles"] = "root"
 
-        if urllib.parse.urlsplit(url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
+        if url.hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
 
         try:
@@ -277,7 +286,7 @@ class Theme:
 
         return url, response.content, errors
 
-    def _create_layer_query(self, interface):
+    def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.Query:
         """
         Create an SQLAlchemy query for Layer and for the role
         identified to by ``role_id``.
@@ -302,7 +311,7 @@ class Theme:
 
         return query
 
-    def _get_layer_metadata_urls(self, layer):
+    def _get_layer_metadata_urls(self, layer: main.Layer) -> List[str]:
         metadata_urls: List[str] = []
         if layer.metadataUrls:
             metadata_urls = layer.metadataUrls
@@ -310,7 +319,7 @@ class Theme:
             metadata_urls.extend(self._get_layer_metadata_urls(child_layer))
         return metadata_urls
 
-    def _get_layer_resolution_hint_raw(self, layer):
+    def _get_layer_resolution_hint_raw(self, layer: main.Layer) -> Tuple[Optional[float], Optional[float]]:
         resolution_hint_min = None
         resolution_hint_max = None
         if layer.scaleHint:
@@ -342,14 +351,16 @@ class Theme:
 
         return (resolution_hint_min, resolution_hint_max)
 
-    def _get_layer_resolution_hint(self, layer):
+    def _get_layer_resolution_hint(self, layer: main.Layer) -> Tuple[float, float]:
         resolution_hint_min, resolution_hint_max = self._get_layer_resolution_hint_raw(layer)
         return (
             0.0 if resolution_hint_min is None else resolution_hint_min,
             999999999 if resolution_hint_max is None else resolution_hint_max,
         )
 
-    def _layer(self, layer, time_=None, dim=None, mixed=True):
+    def _layer(
+        self, layer: main.Layer, time_: TimeInformation = None, dim=None, mixed: bool = True
+    ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         errors: Set[str] = set()
         layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadatas(layer, errors)}
         if re.search("[/?#]", layer.name):  # pragma: no cover
@@ -389,11 +400,13 @@ class Theme:
         return None if errors else layer_info, errors
 
     @staticmethod
-    def _merge_time(time_, layer_theme, layer, wms):
+    def _merge_time(
+        time_: TimeInformation, layer_theme: Dict[str, Any], layer: main.Layer, wms: Dict[str, Dict[str, Any]]
+    ) -> Set[str]:
         errors = set()
         wmslayer = layer.layer
 
-        def merge_time(wms_layer_obj):
+        def merge_time(wms_layer_obj: Dict[str, Any]) -> None:
             extent = parse_extent(wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"])
             time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
 
@@ -427,7 +440,7 @@ class Theme:
 
         return errors
 
-    def _fill_editable(self, layer_theme, layer):
+    def _fill_editable(self, layer_theme: Dict[str, Any], layer: main.Layer) -> Set[str]:
         errors = set()
         try:
             if self.request.user:
@@ -447,7 +460,9 @@ class Theme:
             errors.add(str(exception))
         return errors
 
-    def _fill_wms(self, layer_theme, layer, errors, mixed):
+    def _fill_wms(
+        self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str], mixed: bool
+    ) -> None:
         wms, wms_errors = self._wms_layers(layer.ogc_server)
         errors |= wms_errors
         if wms is None:
@@ -500,23 +515,7 @@ class Theme:
         if mixed:
             layer_theme["ogcServer"] = layer.ogc_server.name
 
-    @staticmethod
-    def _fill_legend_rule_query_string(layer_theme, layer, url):
-        if layer.legend_rule and url:
-            layer_theme["icon"] = add_url_params(
-                url,
-                {
-                    "SERVICE": "WMS",
-                    "VERSION": "1.1.1",
-                    "REQUEST": "GetLegendGraphic",
-                    "LAYER": layer.name,
-                    "FORMAT": "image/png",
-                    "TRANSPARENT": "TRUE",
-                    "RULE": layer.legend_rule,
-                },
-            )
-
-    def _fill_wmts(self, layer_theme, layer, errors):
+    def _fill_wmts(self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str]) -> None:
         layer_theme["url"] = get_url2(
             "The WMTS layer '{}'".format(layer.name), layer.url, self.request, errors=errors
         )
@@ -530,16 +529,16 @@ class Theme:
         layer_theme["imageType"] = layer.image_type
 
     @staticmethod
-    def _vectortiles_layers(layer_theme, layer):
+    def _vectortiles_layers(layer_theme: Dict[str, Any], layer: main.Layer) -> None:
         layer_theme["style"] = layer.style
         if layer.xyz:
             layer_theme["xyz"] = layer.xyz
 
     @staticmethod
-    def _layer_included(tree_item):
+    def _layer_included(tree_item: main.TreeItem) -> bool:
         return isinstance(tree_item, main.Layer)
 
-    def _get_ogc_servers(self, group, depth):
+    def _get_ogc_servers(self, group: main.LayerGroup, depth: int) -> Set[Union[str, bool]]:
         """ Recurse on all children to get unique identifier for each child. """
 
         ogc_servers: Set[Union[str, bool]] = set()
@@ -564,18 +563,18 @@ class Theme:
 
     def _group(
         self,
-        path,
-        group,
-        layers,
-        depth=1,
-        min_levels=1,
-        mixed=True,
-        time_=None,
-        dim=None,
-        wms_layers=None,
-        layers_name=None,
+        path: str,
+        group: main.LayerGroup,
+        layers: List[str],
+        depth: int = 1,
+        min_levels: int = 1,
+        mixed: bool = True,
+        time_: TimeInformation = None,
+        dim: DimensionInformation = None,
+        wms_layers: List[str] = None,
+        layers_name: List[str] = None,
         **kwargs,
-    ):
+    ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         if wms_layers is None:
             wms_layers = []
         if layers_name is None:
@@ -657,6 +656,8 @@ class Theme:
             group_theme["mixed"] = mixed
             if org_depth == 1:
                 if not mixed:
+                    assert time_ is not None
+                    assert dim is not None
                     group_theme["ogcServer"] = cast(List, ogc_servers)[0]
                     if time_.has_time() and time_.layer is None:
                         group_theme["time"] = time_.to_dict()
@@ -666,11 +667,11 @@ class Theme:
             return group_theme, errors
         return None, errors
 
-    def _layers(self, interface):
+    def _layers(self, interface: str) -> List[str]:
         query = self._create_layer_query(interface=interface)
         return [name for (name,) in query.all()]
 
-    def _wms_layers(self, ogc_server):
+    def _wms_layers(self, ogc_server: main.OGCServer) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = asyncio.run(self._wms_getcap(ogc_server))
         if wms_errors:
@@ -707,7 +708,9 @@ class Theme:
             .all()
         )
 
-    def _themes(self, interface="desktop", filter_themes=True, min_levels=1):
+    def _themes(
+        self, interface: str = "desktop", filter_themes: bool = True, min_levels: int = 1
+    ) -> Tuple[List[Dict[str, Any]], Set[str]]:
         """
         This function returns theme information for the role identified
         by ``role_id``.
@@ -761,7 +764,7 @@ class Theme:
         return export_themes, errors
 
     @staticmethod
-    def _get_functionalities(theme):
+    def _get_functionalities(theme: main.Theme) -> Dict[str, List[str]]:
         result: Dict[str, List[str]] = {}
         for functionality in theme.functionalities:
             if functionality.name in result:
@@ -771,12 +774,14 @@ class Theme:
         return result
 
     @view_config(route_name="invalidate", renderer="json")
-    def invalidate_cache(self):  # pragma: no cover
+    def invalidate_cache(self) -> Dict[str, bool]:  # pragma: no cover
         auth_view(self.request)
         main.cache_invalidate_cb()
         return {"success": True}
 
-    def _get_children(self, theme, layers, min_levels):
+    def _get_children(
+        self, theme: main.Theme, layers, min_levels: int
+    ) -> Tuple[List[Dict[str, Any]], Set[str]]:
         children = []
         errors: Set[str] = set()
         for item in theme.children:
@@ -802,7 +807,7 @@ class Theme:
         return children, errors
 
     @CACHE_REGION.cache_on_arguments()
-    def _get_layers_enum(self):
+    def _get_layers_enum(self) -> Dict[str, Dict[str, str]]:
         layers_enum = {}
         if "enum" in self.settings.get("layers", {}):
             for layer_name, layer in list(self.settings["layers"]["enum"].items()):
@@ -817,26 +822,29 @@ class Theme:
                     )
         return layers_enum
 
-    def _get_role_ids(self):
+    def _get_role_ids(self) -> Optional[Set[int]]:
         return None if self.request.user is None else {role.id for role in self.request.user.roles}
 
-    async def _wms_get_features_type(self, wfs_url, preload=False):
+    async def _wms_get_features_type(
+        self, wfs_url: Url, preload: bool = False
+    ) -> Tuple[Optional[etree.Element], Set[str]]:
         errors = set()
 
-        params = {
-            "SERVICE": "WFS",
-            "VERSION": "1.0.0",
-            "REQUEST": "DescribeFeatureType",
-            "ROLE_ID": "0",
-            "USER_ID": "0",
-        }
-        wfs_url = add_url_params(wfs_url, params)
+        wfs_url.add_query(
+            {
+                "SERVICE": "WFS",
+                "VERSION": "1.0.0",
+                "REQUEST": "DescribeFeatureType",
+                "ROLE_ID": "0",
+                "USER_ID": "0",
+            }
+        )
 
         LOG.debug("WFS DescribeFeatureType for base url: %s", wfs_url)
 
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
-        if urllib.parse.urlsplit(wfs_url).hostname != "localhost" and "Host" in headers:
+        if wfs_url.hostname != "localhost" and "Host" in headers:
             headers.pop("Host")  # pragma nocover
 
         try:
@@ -868,11 +876,15 @@ class Theme:
             )
             return None, errors
 
-    def get_url_internal_wfs(self, ogc_server, errors):
+    def get_url_internal_wfs(
+        self, ogc_server: main.OGCServer, errors: Set[str]
+    ) -> Tuple[Optional[Url], Optional[Url], Optional[Url]]:
         # required to do every time to validate the url.
         if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
-            url = self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
-            url_wfs = url
+            url: Optional[Url] = Url(
+                self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name})
+            )
+            url_wfs: Optional[Url] = url
             url_internal_wfs = get_url2(
                 "The OGC server (WFS) '{}'".format(ogc_server.name),
                 ogc_server.url_wfs or ogc_server.url,
@@ -896,25 +908,30 @@ class Theme:
             url_internal_wfs = url_wfs
         return url_internal_wfs, url, url_wfs
 
-    async def preload(self, errors):
+    async def preload(self, errors: Set[str]):
         tasks = set()
         for ogc_server in models.DBSession.query(main.OGCServer).all():
             url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
-            tasks.add(self._wms_get_features_type(url_internal_wfs, True))
-            tasks.add(self._wms_getcap(ogc_server, True))
+            if url_internal_wfs is not None:
+                tasks.add(self._wms_get_features_type(url_internal_wfs, True))
+                tasks.add(self._wms_getcap(ogc_server, True))
 
         await asyncio.gather(*tasks)
 
     @CACHE_REGION.cache_on_arguments()
-    def _get_features_attributes(self, url_internal_wfs):
+    def _get_features_attributes(
+        self, url_internal_wfs: Url
+    ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
+
         all_errors: Set[str] = set()
         feature_type, errors = asyncio.run(self._wms_get_features_type(url_internal_wfs))
         LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
         if errors:
             all_errors |= errors
             return None, None, all_errors
-        namespace = feature_type.attrib.get("targetNamespace")
-        types = {}
+        assert feature_type
+        namespace: str = feature_type.attrib.get("targetNamespace")
+        types: Dict[Any, Dict[str, Any]] = {}
         elements = {}
         for child in feature_type.getchildren():
             if child.tag == "{http://www.w3.org/2001/XMLSchema}element":
@@ -951,7 +968,7 @@ class Theme:
                         if key not in ("name", "type", "namespace"):
                             attrib[name][key] = value
                 types[child.attrib["name"]] = attrib
-        attributes = {}
+        attributes: Dict[str, Dict[Any, Dict[str, Any]]] = {}
         for name, type_ in elements.items():
             if type_ in types:
                 attributes[name] = types[type_]
@@ -974,7 +991,7 @@ class Theme:
         return attributes, namespace, all_errors
 
     @view_config(route_name="themes", renderer="json")
-    def themes(self):
+    def themes(self) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
         interface = self.request.params.get("interface", "desktop")
         sets = self.request.params.get("set", "all")
         min_levels = int(self.request.params.get("min_levels", 1))
@@ -983,12 +1000,12 @@ class Theme:
 
         set_common_headers(self.request, "themes", PRIVATE_CACHE)
 
-        def get_theme():
+        def get_theme() -> Dict[str, Union[Dict[str, Any], List[str]]]:
             export_themes = sets in ("all", "themes")
             export_group = group is not None and sets in ("all", "group")
             export_background = background_layers_group is not None and sets in ("all", "background")
 
-            result: Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]] = {}
+            result: Dict[str, Union[Dict[str, Any], List[Any]]] = {}
             all_errors: Set[str] = set()
             LOG.debug("Start preload")
             start_time = time.time()
@@ -1021,8 +1038,8 @@ class Theme:
                                 del attributes[name]
 
                 result["ogcServers"][ogc_server.name] = {
-                    "url": url,
-                    "urlWfs": url_wfs,
+                    "url": url.url() if url else None,
+                    "urlWfs": url_wfs.url() if url_wfs else None,
                     "type": ogc_server.type,
                     "credential": ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH,
                     "imageType": ogc_server.image_type,
@@ -1054,7 +1071,9 @@ class Theme:
             return result
 
         @CACHE_REGION.cache_on_arguments()
-        def get_theme_anonymous(intranet, interface, sets, min_levels, group, background_layers_group, host):
+        def get_theme_anonymous(
+            intranet, interface, sets, min_levels, group, background_layers_group, host
+        ) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
             # Only for cache key
             del intranet, interface, sets, min_levels, group, background_layers_group, host
             return get_theme()
@@ -1071,7 +1090,9 @@ class Theme:
             )
         return get_theme()
 
-    def _get_group(self, group, interface):
+    def _get_group(
+        self, group: main.LayerGroup, interface: main.Interface
+    ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         layers = self._layers(interface)
         try:
             group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -564,14 +564,14 @@ class OGCServer(Base):
     def url_description(self, request: Request) -> str:
         errors: Set[str] = set()
         url = get_url2(self.name, self.url, request, errors)
-        return url or "\n".join(errors)
+        return url.url() if url else "\n".join(errors)
 
     def url_wfs_description(self, request: Request) -> Optional[str]:
         if not self.url_wfs:
             return self.url_description(request)
         errors: Set[str] = set()
         url = get_url2(self.name, self.url_wfs, request, errors)
-        return url or "\n".join(errors)
+        return url.url() if url else "\n".join(errors)
 
 
 event.listen(OGCServer, "after_insert", cache_invalidate_cb, propagate=True)

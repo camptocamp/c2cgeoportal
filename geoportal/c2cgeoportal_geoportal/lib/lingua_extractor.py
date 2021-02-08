@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -33,8 +33,7 @@ import os
 import re
 import subprocess
 import traceback
-from typing import Dict, List, Optional, Set, cast
-from urllib.parse import urlsplit
+from typing import Any, Dict, List, Optional, Set, Tuple, cast
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
@@ -56,7 +55,7 @@ from sqlalchemy.orm.util import class_mapper
 
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal
-from c2cgeoportal_commons.lib.url import add_url_params, get_url2
+from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
@@ -589,18 +588,17 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 )
             )
 
-    def _build_url(self, url):
-        url_split = urlsplit(url)
-        hostname = url_split.hostname
+    def _build_url(self, url: Url) -> Tuple[Url, Dict[str, str], Dict[str, Any]]:
+        hostname = url.hostname
         host_map = self.config.get("lingua_extractor", {}).get("host_map", {})
         if hostname in host_map:
             map_ = host_map[hostname]
             if "netloc" in map_:
-                url_split = url_split._replace(netloc=map_["netloc"])
+                url.netloc = map_["netloc"]
             if "scheme" in map_:
-                url_split = url_split._replace(scheme=map_["scheme"])
+                url.scheme = map_["scheme"]
             kwargs = {"verify": map_["verify"]} if "verify" in map_ else {}
-            return url_split.geturl(), map_.get("headers", {}), kwargs
+            return url, map_.get("headers", {}), kwargs
         return url, {}, {}
 
     def _layer_attributes(self, url, layer):
@@ -609,25 +607,32 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         request = _Request()
         request.registry.settings = self.config
         # Static schema will not be supported
-        url = get_url2("Layer", url, request, errors)
+        url_obj_ = get_url2("Layer", url, request, errors)
         if errors:
             print("\n".join(errors))
             return [], []
-        url, headers, kwargs = self._build_url(url)
+        if not url_obj_:
+            print("No URL for: {}".format(url))
+            return [], []
+        url_obj: Url = url_obj_
+        url_obj, headers, kwargs = self._build_url(url_obj)
 
         if url not in self.wmscap_cache:
-            print("Get WMS GetCapabilities for URL: {}".format(url))
+            print("Get WMS GetCapabilities for URL: {}".format(url_obj))
             self.wmscap_cache[url] = None
 
-            wms_getcap_url = add_url_params(
-                url,
-                {
-                    "SERVICE": "WMS",
-                    "VERSION": "1.1.1",
-                    "REQUEST": "GetCapabilities",
-                    "ROLE_IDS": "0",
-                    "USER_ID": "0",
-                },
+            wms_getcap_url = (
+                url_obj.clone()
+                .add_query(
+                    {
+                        "SERVICE": "WMS",
+                        "VERSION": "1.1.1",
+                        "REQUEST": "GetCapabilities",
+                        "ROLE_IDS": "0",
+                        "USER_ID": "0",
+                    }
+                )
+                .url()
             )
             try:
                 print(
@@ -666,18 +671,21 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         wmscap = self.wmscap_cache[url]
 
         if url not in self.featuretype_cache:
-            print("Get WFS DescribeFeatureType for URL: {}".format(url))
+            print("Get WFS DescribeFeatureType for URL: {}".format(url_obj))
             self.featuretype_cache[url] = None
 
-            wfs_descrfeat_url = add_url_params(
-                url,
-                {
-                    "SERVICE": "WFS",
-                    "VERSION": "1.1.0",
-                    "REQUEST": "DescribeFeatureType",
-                    "ROLE_IDS": "0",
-                    "USER_ID": "0",
-                },
+            wfs_descrfeat_url = (
+                url_obj.clone()
+                .add_query(
+                    {
+                        "SERVICE": "WFS",
+                        "VERSION": "1.1.0",
+                        "REQUEST": "DescribeFeatureType",
+                        "ROLE_IDS": "0",
+                        "USER_ID": "0",
+                    }
+                )
+                .url()
             )
             try:
                 response = requests.get(wfs_descrfeat_url, headers=headers, **kwargs)

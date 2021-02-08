@@ -32,10 +32,15 @@
 """
 
 import os
+import warnings
 
+import sqlalchemy.exc
 from pyramid.testing import DummyRequest as PyramidDummyRequest
 
 from c2cgeoportal_geoportal.lib import caching
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore", category=sqlalchemy.exc.SAWarning)
 
 
 class DummyRequest(PyramidDummyRequest):

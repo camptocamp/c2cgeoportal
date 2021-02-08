@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.url import add_url_params
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers
@@ -57,7 +57,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
         response = self._proxy(
-            "{0!s}/buildreport.{1!s}".format(self.config["print_url"], spec["outputFormat"]),
+            Url("{0!s}/buildreport.{1!s}".format(self.config["print_url"], spec["outputFormat"])),
             method="POST",
             body=dumps(spec).encode("utf-8"),
             headers=headers,
@@ -138,8 +138,8 @@ class PdfReport(OGCProxy):  # pragma: no cover
         mapserv_url = self.request.route_url(
             "mapserverproxy", _query={"ogcserver": layer_config["ogc_server"]}
         )
-        vector_request_url = add_url_params(
-            mapserv_url,
+        url = Url(mapserv_url)
+        url.add_query(
             {
                 "service": "WFS",
                 "version": "1.1.0",
@@ -148,8 +148,9 @@ class PdfReport(OGCProxy):  # pragma: no cover
                 "typeName": self.layername,
                 "featureid": ",".join(features_ids),
                 "srsName": srs,
-            },
+            }
         )
+        vector_request_url = url.url()
 
         spec = layer_config["spec"]
         if spec is None:

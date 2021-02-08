@@ -36,6 +36,7 @@ from string import Formatter
 from typing import Any, Dict, List, Set, Union
 
 import dateutil
+import pyramid.request
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
@@ -100,7 +101,8 @@ def get_typed(
             date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))  # type: ignore
             return datetime.datetime.strftime(date, "%Y-%m-%dT%H:%M:%S")
         elif type_["type"] == "url":
-            return get_url2("{}The attribute '{}'".format(prefix, name), value, request, errors)
+            url = get_url2("{}The attribute '{}'".format(prefix, name), value, request, errors)
+            return url.url() if url else ""
         elif type_["type"] == "json":
             try:
                 return json.loads(value)
@@ -130,7 +132,7 @@ def get_setting(settings, path, default=None):
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def get_ogc_server_wms_url_ids(request):
+def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
@@ -139,7 +141,7 @@ def get_ogc_server_wms_url_ids(request):
     for ogc_server in DBSession.query(OGCServer).all():
         url = get_url2(ogc_server.name, ogc_server.url, request, errors)
         if url is not None:
-            servers.setdefault(url, []).append(ogc_server.id)
+            servers.setdefault(url.url(), []).append(ogc_server.id)
     return servers
 
 
@@ -153,7 +155,7 @@ def get_ogc_server_wfs_url_ids(request):
     for ogc_server in DBSession.query(OGCServer).all():
         url = get_url2(ogc_server.name, ogc_server.url_wfs or ogc_server.url, request, errors)
         if url is not None:
-            servers.setdefault(url, []).append(ogc_server.id)
+            servers.setdefault(url.url(), []).append(ogc_server.id)
     return servers
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any, Collection, Dict, Optional
+
 from pyramid.request import Request
 
 from c2cgeoportal_geoportal.lib import caching, get_roles_id
@@ -46,7 +48,11 @@ def _get_layers_query(request: Request, what):
     return q
 
 
-def get_protected_layers_query(request: Request, ogc_server_ids, what=None):
+def get_protected_layers_query(
+    request: Request,
+    ogc_server_ids: Optional[Collection[int]],
+    what=None,
+):
     from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, what)
@@ -57,7 +63,7 @@ def get_protected_layers_query(request: Request, ogc_server_ids, what=None):
     return q
 
 
-def get_writable_layers_query(request: Request, ogc_server_ids):
+def get_writable_layers_query(request: Request, ogc_server_ids: Collection[int]):
     from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, main.LayerWMS)
@@ -68,7 +74,7 @@ def get_writable_layers_query(request: Request, ogc_server_ids):
     )
 
 
-def get_protected_layers(request: Request, ogc_server_ids):
+def get_protected_layers(request: Request, ogc_server_ids: Collection[int]):
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = get_protected_layers_query(request, ogc_server_ids, what=main.LayerWMS)
@@ -77,7 +83,7 @@ def get_protected_layers(request: Request, ogc_server_ids):
     return {r.id: r for r in results}
 
 
-def get_writable_layers(request: Request, ogc_server_ids):
+def get_writable_layers(request: Request, ogc_server_ids: Collection[int]):
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
     q = get_writable_layers_query(request, ogc_server_ids)
@@ -87,7 +93,7 @@ def get_writable_layers(request: Request, ogc_server_ids):
 
 
 @CACHE_REGION.cache_on_arguments()
-def get_private_layers(ogc_server_ids):
+def get_private_layers(ogc_server_ids: Collection[int]) -> Dict[int, Any]:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = (
