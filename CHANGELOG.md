@@ -1,3 +1,7 @@
+##### 2.6.rc.6
+* Update the documentation to invalidate the cache [c2cgeoportal#7785](https://github.com/camptocamp/c2cgeoportal/pull/7785)
+* Simplify background selection [ngeo#6783](https://github.com/camptocamp/ngeo/pull/6783)
+* [Backport 2.6] Fix permalink: avoid using ng-include [ngeo#6798](https://github.com/camptocamp/ngeo/pull/6798)
 ##### 2.6.rc.5
 * [Backport 2.6] Make config enable_admin_interface scalar [c2cgeoportal#7772](https://github.com/camptocamp/c2cgeoportal/pull/7772)
 * [Backport 2.6] Ignore permalink on manual background selection [ngeo#6781](https://github.com/camptocamp/ngeo/pull/6781)
