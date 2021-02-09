@@ -33,5 +33,5 @@ Internal
 The application also has an internal cache. The internal cache will be invalidated on
 application start and after each modification in the ``Theme`` or the ``RestrictionArea``.
 
-The internal cache can also be invalidated by calling the URL
-``https://<server>/<instance>/invalidate``.
+The internal cache can also be invalidated by calling the invalidate view from
+:ref:`integrator_c2cwsgiutils`.
