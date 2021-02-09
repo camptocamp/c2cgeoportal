@@ -100,9 +100,11 @@ def main():
 
         if args.html:
             data = _sub(
-                re.escape('<link rel="shortcut icon" href="<%=require("./image/favicon.ico")%>" />'),
+                re.escape(
+                    '<link rel="shortcut icon" href="<%=require("./image/favicon.ico")%>" crossorigin="anonymous" />'
+                ),
                 r'<link rel="shortcut icon" href="{entry_point}static/{cache_version}/images/'
-                r'favicon.ico">'.format(
+                r'favicon.ico" crossorigin="anonymous">'.format(
                     entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
                     cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
                 ),
@@ -110,7 +112,7 @@ def main():
             )
             data = _sub(
                 re.escape('<script src="../../../dist/vendor.js') + r".*",
-                r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}"></script>'.format(
+                r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}" crossorigin="anonymous"></script>'.format(
                     entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
                     cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
                 ),
@@ -128,7 +130,7 @@ def main():
             )
             data = _sub(
                 re.escape("</head>"),
-                '  <link href="{entry_point}static/{cache_version}/css/{interface}.css" rel="stylesheet">\n'
+                '  <link href="{entry_point}static/{cache_version}/css/{interface}.css" rel="stylesheet" crossorigin="anonymous">\n'
                 "  </head>".format(
                     entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
                     cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
@@ -137,10 +139,10 @@ def main():
                 data,
             )
             data = _sub(
-                re.escape("<ng-include src=\"'desktop")
+                re.escape('<gmf-header gmf-header-template-url="desktop')
                 + "(_alt)?"
-                + re.escape("/header.html'\"></ng-include>"),
-                "<ng-include src=\"'{entry_point}static/{cache_version}/header.html'\"></ng-include>".format(
+                + re.escape("/header.html'\"></gmf-header>"),
+                'gmf-header gmf-header-template-url="{entry_point}static/{cache_version}/header.html"></gmf-header>'.format(
                     entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
                     cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
                 ),
