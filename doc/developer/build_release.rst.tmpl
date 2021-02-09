@@ -26,8 +26,6 @@ On branch creation (start of the integration phase):
 
 * Create and initialise the branches
 * Protect the new branches
-* Create the new Transifex resources
-* Configure Dependabot
 * Configure the rebuild
 * Use the ``ngeo`` package linked to the branch
 * Verify that the changelog creation is working
@@ -37,7 +35,6 @@ On release creation:
 * Reset the changelog
 * Do the tags
 * Publish it
-* New tests for the upgrade
 * Create the new demo
 * Use the new demo
 
@@ -52,103 +49,101 @@ On the demo you should create the new version branch.
 
 On ``ngeo`` you should create the new version branch.
 
-On the new version branch, in the file ``.github/workflows/ci.yaml`` set ``MAIN_BRANCH`` to
-``<new version>``.
-
-On the master branch, in the ``Makefile`` you should set ``DEMO_BRANCH`` to ``prod-<next version>``.
-
-On the master branch, in the file ``package.json`` bump the package version.
-
 On ``c2cgeoportal`` you should create the new version branch.
 
-On the new version branch, in the file ``.github/workflows/ci.yaml`` set ``MAIN_BRANCH`` to
-``<new version>``.
+On the demo GitHub repository you should set the default branch to the new branch.
 
-On the master branch, in the file ``.github/workflows/ci.yaml`` set ``MAJOR_VERSION`` to
-``<next version>``.
+On the new branch of the demo you should copy the file ``.github/workflows/upgrade-<new version>.yaml`` to
+``.github/workflows/upgrade-<next version>.yaml`` and update the versions in the new file:
 
-Create the new Transifex resources
------------------------------------
+.. code::
 
-On ngeo checkout the new version branch
+   name: Upgrade <version>
 
-.. prompt:: bash
+   on:
+     repository_dispatch:
+       types:
+         - geomapfish_<version>_updated
 
-   make transifex-get
+       name: Upgrade <version>
 
+           branch:
+             - prod-<version>
+             - prod-<version>-simple
 
-Checkout the master branch
+On the new version branch:
 
-In the ``Makefile`` set ``TX_VERSION`` to ``<next version>``.
+- in the files ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAIN_BRANCH`` to
+  ``<new version>``.
 
-.. prompt:: bash
+On the master branch:
 
-   rm .tx/config contribs/gmf/apps/.tx/config
-   make transifex-init
-
-On ``c2cgeoportal``, new version branch do:
-
-.. prompt:: bash
-
-    make build-tools
-    docker run --user=root camptocamp/geomapfish-tools transifex-init \
-        <version> <version + 1> \
-        "$(gopass gs/ci/transifex/rw/username)" \
-        "$(gopass gs/ci/transifex/rw/password)"
-
-Configure Dependabot
---------------------
-
-On ``c2cgeoportal`` and ``ngeo`` master branches, add in the Dependabot configuration the new branch to
-receive updates for security issues; see for example those commits:
-`c2cgeoportal <https://github.com/camptocamp/c2cgeoportal/commit/7783a2d1d02cc58da7cb1e3b9d32a1358cc30524>`_
-`ngeo <https://github.com/camptocamp/ngeo/commit/1d1fe0ee600229daab4a85b75529cbdb8beecd42>`_
-And remove the ``automerged_updates`` section.
+- add the new branch for the demo, ngeo and c2cgeoportal in the file ``scripts/status.yaml``.
+- in the file ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
+  ``<next version>``.
+- in the files ``.github/workflows/audit.yaml`` and the new branch.
 
 Configure the rebuild
 ---------------------
 
-On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version branch to master branch as
+On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
 ``.github/workflows/rebuild-<new version>.yaml`` and do the following changes:
 
 .. code:: diff
 
    - name: Continuous integration
-   -
-   - on:
+   + name: Rebuild <new version>
+
+     on:
    -   push:
-   + name: Rebuild
-   +
-   + on:
    +   schedule:
    +     - cron: "30 3 * * *"
 
-   -     name: Continuous integration
-   +     name: Rebuild
+     jobs:
+   -   not-failed-backport:
+   -     ...
 
-   -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+   -     name: Continuous integration
+   +     name: Rebuild <new version>
+
+   -     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+   +     strategy:
+   +       fail-fast: false
+   +       matrix:
+   +         branch:
+   +           - 'x.y'
+
 
         env:
    -      MAIN_BRANCH: master
    +      MAIN_BRANCH: <new version>
 
            - uses: actions/checkout@v1
-   -       - run: scripts/get-version --auto-increment
-   +         with:
+             with:
    +          ref: ${{ env.MAIN_BRANCH }}
 
    -       # Test Upgrade
-   -       - run: DOCKER_TAG=$(scripts/get-version --full) make build-tools
-   -       - run: DOCKER_TAG=$(scripts/get-version --full) make build-runner
-   -       - run: DOCKER_TAG=$(scripts/get-version --full) make build-config
-   -       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
-   -       - run: ci/test-upgrade init ${HOME}/workspace
-   -       - run: ci/test-upgrade 2* ${HOME}/workspace
+   -       ...
    -       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
-           - name: Publish to Docker hub and Pypi
-   -           ' ci/publish --geoportal
-   +           ' ci/publish-daily --geoportal
+       - name: Publish feature branch
+   -     run: |
+   -       c2cciutils-publish
+   -       c2cciutils-publish --group=full
+   +       c2cciutils-publish --type=rebuild
+   -     if: >
+   -       github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
+   -       && github.repository == 'camptocamp/c2cgeoportal'
+   -   - name: Publish version branch
+   -     ...
+
+   -       - name: 'Update the changelog'
+   -         ...
+   -       - run: git diff CHANGELOG.md
+
+   -       - name: Push version and changelog
+   -         ...
 
    -       - name: Publish to Transifex
    -         ...
@@ -166,65 +161,72 @@ as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following ch
 .. code:: diff
 
    - name: QGIS
-   -
-   - on:
+   + name: QGIS rebuild <new version>
+
+     on:
    -   push:
-   + name: Rebuild QGIS
-   +
-   + on:
    +   schedule:
    +     - cron: "30 3 * * *"
 
    -     name: QGIS
-   +     name: Rebuild QGIS
+   +     name: QGIS rebuild <new version>
 
-   -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+   -     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+         strategy:
+           fail-fast: false
+           matrix:
+   +         branch:
+   +           - 'x.y'
+
+         env:
+   -       MAIN_BRANCH: master
+   -       MAJOR_VERSION: x.y
+   +       MAIN_BRANCH: ${{ matrix.branch }}
+   +       MAJOR_VERSION: ${{ matrix.branch }}
 
            - uses: actions/checkout@v1
    +         with:
    +          ref: ${{ env.MAIN_BRANCH }}
 
-           - name: Publish to Docker hub and Pypi
-   -           ' ci/publish --qgisserver ${{ matrix.version }}
-   +           ' ci/publish-daily --qgisserver ${{ matrix.version }}
+      - name: Publish feature branch
+        run: |
+   -       c2cciutils-publish --group=qgis-${{ matrix.version }}
+   +       c2cciutils-publish --type=rebuild --group=qgis-${{ matrix.version }}
+   -     if: >
+   -       github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
+   -       && github.repository == 'camptocamp/c2cgeoportal'
+   -   - name: Publish version branch
+   -     ...
 
-
-On ``c2cgeoportal`` copy the file ``.github/workflows/ci.yaml`` from new version branch to master branch as
+On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
 ``.github/workflows/ngeo-<new version>.yaml`` and do the following changes:
 
 .. code:: diff
 
    - name: Continuous integration
-   -
-   - on:
+   + name: Update ngeo <new version>
+
+     on:
    -   push:
-   + name: Update ngeo
-   +
-   + on:
    +   repository_dispatch:
    +     types:
    +     - ngeo_<new version>_updated
 
    -     name: Continuous integration
-   +     name: Update ngeo
+   +     name: Update ngeo <new version>
 
    -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+         env:
+   -       MAIN_BRANCH: master
+   -       MAJOR_VERSION: x.y
+   +       MAIN_BRANCH: x.y
+   +       MAJOR_VERSION: x.y
 
            - uses: actions/checkout@v1
    +         with:
    +          ref: ${{ env.MAIN_BRANCH }}
-
-           - name: Publish to Docker hub and Pypi
-             run: |
-               summon --yaml '
-                 DOCKER_USERNAME: !var gs/ci/dockerhub/username
-                 DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-                 PYPI_USERNAME: !var gs/ci/pypi/username
-                 PYPI_PASSWORD: !var gs/ci/pypi/password
-               ' ci/publish --geoportal
-             env:
-               GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-   +           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}
 
    -       - name: Publish to Transifex
    -         ...
@@ -262,17 +264,46 @@ On the ``c2cgeoportal`` new version branch:
        ngeo: {}
      releases: []
 
+Security information
+--------------------
+
+On the master branch, update the file ``SECURITY.md`` with the security information by adding:
+
+.. code::
+
+  | x.y+1 | To be defined |
+
+Version check
+-------------
+
+On the <new_version> branch disable version check by adding in the ``ci/config.yaml``:
+
+.. code:: diff
+
+    checks:
+   +  versions: False
+
+Backport label
+--------------
+
+Create the new backport label named ``backport_<new_version>``.
+
+Protect branch
+--------------
+
+In GitHub project settings, protect the new branch with the same settings as the master branch.
+
+Check
+-----
+
+Run `c2cciutils-checks` on each branch before pushing to be sure that everything is OK.
+
 Publish it
 ----------
 
 Send a release email to the ``geomapfish@googlegroups.com`` and
 ``geomapfish-dev@lists.camptocamp.com`` mailing lists.
 
-
-New tests for the upgrade
--------------------------
-
-`Do something like this <https://github.com/camptocamp/c2cgeoportal/pull/6211>`_
 
 Create the new demo
 -------------------
