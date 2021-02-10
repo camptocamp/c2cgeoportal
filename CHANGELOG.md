@@ -1,4 +1,4 @@
-##### 2.6.rc.9
+##### 2.6.rc.10
 * [Backport 2.6] Update the version of docker dependencies [c2cgeoportal#7799](https://github.com/camptocamp/c2cgeoportal/pull/7799)
 ##### 2.6.rc.7
 * [Backport 2.6] Bump ngeo from 2.6.0-version-2.6-latest.20210209T055250Z.40369795a.HEAD to 2.6.0-version-2.6-latest.20210209T090848Z.3c3cd18f0.HEAD in /geoportal [c2cgeoportal#7793](https://github.com/camptocamp/c2cgeoportal/pull/7793)
