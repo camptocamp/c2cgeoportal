@@ -249,7 +249,7 @@ pulls:
       html_url: https://github.com/camptocamp/ngeo/pull/6795
       number: 6795
       state: closed
-      title: "Add crossorigin=anonymous on ressources that don't required an autent\u2026"
+      title: "Add crossorigin=anonymous on resources that don't required an autent\u2026"
       updated_at: '2021-02-09T09:08:50Z'
     40369795a:
     - base_ref: '2.6'
