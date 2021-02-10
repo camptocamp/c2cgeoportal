@@ -141,8 +141,8 @@ def main():
             data = _sub(
                 re.escape('<gmf-header gmf-header-template-url="desktop')
                 + "(_alt)?"
-                + re.escape("/header.html'\"></gmf-header>"),
-                'gmf-header gmf-header-template-url="{entry_point}static/{cache_version}/header.html"></gmf-header>'.format(
+                + re.escape('/header.html"></gmf-header>'),
+                '<gmf-header gmf-header-template-url="{entry_point}static/{cache_version}/header.html"></gmf-header>'.format(
                     entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
                     cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
                 ),
