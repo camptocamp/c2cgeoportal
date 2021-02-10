@@ -5,9 +5,6 @@ on:
   pull_request:
     types:
       - opened
-      - ready_for_review
-      - reopened
-      - unlocked
 jobs:
   auto-merge:
     name: Auto merge Dependabot updates
@@ -18,4 +15,5 @@ jobs:
       - uses: ridedott/merge-me-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_LOGIN: dependabot-preview[bot]
           MERGE_METHOD: dependabot-preview
