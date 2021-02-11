@@ -133,7 +133,7 @@ class DynamicView:
         if "redirect_interface" in interface_config:
             no_redirect_query: Dict[str, Union[str, List[str]]] = {"no_redirect": "t"}
             if "query" in self.request.params:
-                query = urllib.parse.parse_qs(self.request.params["query"][1:])
+                query = urllib.parse.parse_qs(self.request.params["query"][1:], keep_blank_values=True)
                 no_redirect_query.update(query)
             else:
                 query = {}
