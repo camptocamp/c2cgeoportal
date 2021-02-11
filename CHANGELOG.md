@@ -1,3 +1,5 @@
+##### 2.4.2.36
+* Fix_redirect_url [c2cgeoportal#7804](https://github.com/camptocamp/c2cgeoportal/pull/7804)
 ##### 2.4.2.35
 ##### 2.4.2.34
 * Bump c2cciutils [c2cgeoportal#7757](https://github.com/camptocamp/c2cgeoportal/pull/7757)
