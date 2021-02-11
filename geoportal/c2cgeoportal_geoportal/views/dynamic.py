@@ -133,7 +133,7 @@ class DynamicView:
                 'no_redirect': 't'
             }
             if 'query' in self.request.params:
-                query = urllib.parse.parse_qs(self.request.params['query'][1:])
+                query = urllib.parse.parse_qs(self.request.params['query'][1:], keep_blank_values=True)
                 no_redirect_query.update(query)
             else:
                 query = {}
