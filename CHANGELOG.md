@@ -1,3 +1,5 @@
+##### 2.4.2.37
+* Fix pykwalify version [c2cgeoportal#7818](https://github.com/camptocamp/c2cgeoportal/pull/7818)
 ##### 2.4.2.36
 * Fix_redirect_url [c2cgeoportal#7804](https://github.com/camptocamp/c2cgeoportal/pull/7804)
 ##### 2.4.2.35
