@@ -1,3 +1,9 @@
+##### 2.6.rc.11
+* Add some more generation commands [c2cgeoportal#7805](https://github.com/camptocamp/c2cgeoportal/pull/7805)
+* [Backport 2.6] Fix redirect URL [c2cgeoportal#7807](https://github.com/camptocamp/c2cgeoportal/pull/7807)
+* Add missing HELM_RELEASE_NAMES [c2cgeoportal#7812](https://github.com/camptocamp/c2cgeoportal/pull/7812)
+* [Backport 2.6] Use alert instead of modal to show changed password (simple message) [ngeo#6809](https://github.com/camptocamp/ngeo/pull/6809)
+* Rename Rule.expression to Rule.literal [ngeo#6810](https://github.com/camptocamp/ngeo/pull/6810)
 ##### 2.6.rc.10
 * [Backport 2.6] Update the version of docker dependencies [c2cgeoportal#7799](https://github.com/camptocamp/c2cgeoportal/pull/7799)
 ##### 2.6.rc.7
