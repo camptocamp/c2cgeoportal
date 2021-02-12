@@ -88,3 +88,4 @@ wsgi-lineprof==0.7.0  # profiling
 yamllint==1.15.0  # lint
 zgitignore==0.8.2  # Makefile
 zope.event==4.4  # commons, geoportal
+pykwalify==1.7.0
