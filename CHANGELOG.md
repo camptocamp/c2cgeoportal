@@ -1,3 +1,15 @@
+##### 2.4.2.38
+* GitHub workflow [ngeo#6609](https://github.com/camptocamp/ngeo/pull/6609)
+* Some fix for the audit [ngeo#6622](https://github.com/camptocamp/ngeo/pull/6622)
+* Ignore cve from the system [ngeo#6654](https://github.com/camptocamp/ngeo/pull/6654)
+* [Audit] Upgrade urllib3 [ngeo#6658](https://github.com/camptocamp/ngeo/pull/6658)
+* [Backport 2.4] [Backport master] CI will fail on failed backport [ngeo#6685](https://github.com/camptocamp/ngeo/pull/6685)
+* [Backport 2.4] Add UTF-8 BOM [ngeo#6699](https://github.com/camptocamp/ngeo/pull/6699)
+* [Backport 2.4] Avoid dropdown menus expanding out of viewport [ngeo#6704](https://github.com/camptocamp/ngeo/pull/6704)
+* Ignore permalink on manual background selection [ngeo#6770](https://github.com/camptocamp/ngeo/pull/6770)
+* Use alert instead of modal to show changed password (simple message) [ngeo#6804](https://github.com/camptocamp/ngeo/pull/6804)
+* Fix build [ngeo#6805](https://github.com/camptocamp/ngeo/pull/6805)
+* Fix publishing [ngeo#6831](https://github.com/camptocamp/ngeo/pull/6831)
 ##### 2.4.2.37
 * Fix pykwalify version [c2cgeoportal#7818](https://github.com/camptocamp/c2cgeoportal/pull/7818)
 ##### 2.4.2.36
