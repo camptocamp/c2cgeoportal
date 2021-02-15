@@ -713,7 +713,6 @@
                 "sha256:37a13ba168a02ac54cc5891a42b1caec333e59b66addb7fa633ea8a6d73445c0",
                 "sha256:b21b072d0ccdf29297a82a2363359d99623597b8a265b8081760e4d0f7153c88"
             ],
-            "index": "pypi",
             "version": "==2.8.0"
         },
         "pygraphviz": {
@@ -926,9 +925,11 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:3693cb47ba8d90c004ac002425770b32aaf0c83a846ec48e2d1364e7db1d072d"
+                "sha256:9044b616ec6663cd50794fb3362efd87586e476e7b51ef2439a711d6569aede7",
+                "sha256:efc65e5ffd38324797a7e1dfc8a4e74b62ea6f56a59df5bb03217b84d58dff6a"
             ],
-            "version": "==0.20.1"
+            "index": "pypi",
+            "version": "==0.20.2"
         },
         "shapely": {
             "hashes": [
@@ -1649,7 +1650,6 @@
                 "sha256:37a13ba168a02ac54cc5891a42b1caec333e59b66addb7fa633ea8a6d73445c0",
                 "sha256:b21b072d0ccdf29297a82a2363359d99623597b8a265b8081760e4d0f7153c88"
             ],
-            "index": "pypi",
             "version": "==2.8.0"
         },
         "pykwalify": {
