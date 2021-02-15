@@ -27,17 +27,21 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
+import logging
+import re
 import urllib.parse
 from typing import Dict, Optional, Set
 
 from pyramid.request import Request
 
+LOG = logging.getLogger(__name__)
+
 
 class Url:
     scheme = ""
     _netloc = ""
-    _hostname: Optional[str] = ""
+    _hostname: Optional[str] = None
+    _port: Optional[int] = None
     path = ""
     query: Dict[str, str] = {}
     fragment = ""
@@ -48,6 +52,10 @@ class Url:
             self.scheme = url_split.scheme
             self._netloc = url_split.netloc
             self._hostname = url_split.hostname
+            try:
+                self._port = url_split.port
+            except ValueError as error:
+                LOG.debug(error)
             self.path = url_split.path
             self.query = dict(urllib.parse.parse_qsl(url_split.query))
             self.fragment = url_split.fragment
@@ -57,26 +65,63 @@ class Url:
         result.scheme = self.scheme
         result._netloc = self._netloc  # pylint: disable=protected-access
         result._hostname = self._hostname  # pylint: disable=protected-access
+        result._port = self._port  # pylint: disable=protected-access
         result.path = self.path
         result.query = dict(self.query)
         result.fragment = self.fragment
         return result
+
+    @staticmethod
+    def _is_valid_hostname(hostname: str) -> bool:
+        if len(hostname) > 255:
+            return False
+        if hostname[-1] == ".":
+            hostname = hostname[:-1]  # strip exactly one dot from the right, if present
+        allowed = re.compile(r"(?!-)[a-z\d-]{1,63}(?<!-)$", re.IGNORECASE)
+        return all(allowed.match(x) for x in hostname.split("."))
 
     @property
     def netloc(self) -> str:
         return self._netloc
 
     @netloc.setter
-    def netloc(self, netloc: str) -> None:  # pylint: disable=no-self-use
-        raise RuntimeError("Unable to change netloc")
+    def netloc(self, netloc: str) -> None:
+        netloc_split = netloc.split(":")
+        if len(netloc_split) > 2:
+            raise RuntimeError(f"The netloc '{netloc}' in invalid")
+        if not self._is_valid_hostname(netloc_split[0]):
+            raise RuntimeError(f"The netloc '{netloc}' in invalid")
+        if len(netloc_split) == 2:
+            allowed = re.compile(r"^[0-9]+$")
+            if not allowed.match(netloc_split[1]):
+                LOG.debug("The netloc '%s' contains invalid port", netloc)
+                self._port = None
+            else:
+                self._port = int(netloc_split[1])
+        else:
+            self._port = None
+        self._netloc = netloc
+        self._hostname = netloc_split[0]
 
     @property
     def hostname(self) -> Optional[str]:
         return self._hostname
 
     @hostname.setter
-    def hostname(self, hostname: str) -> None:  # pylint: disable=no-self-use
-        raise RuntimeError("Unable to change hostname")
+    def hostname(self, hostname: str) -> None:
+        if not self._is_valid_hostname(hostname):
+            raise RuntimeError(f"The hostname '{hostname}' in invalid")
+        self._hostname = hostname
+        self.netloc = hostname if self._port is None else f"{hostname}:{self._port}"
+
+    @property
+    def port(self) -> Optional[int]:
+        return self._port
+
+    @port.setter
+    def port(self, port: Optional[int]) -> None:
+        self._port = port
+        self.netloc = (self._hostname or "") if port is None else f"{self._hostname}:{port}"
 
     def add_query(self, query: Dict[str, str], force: bool = False) -> "Url":
         if query:

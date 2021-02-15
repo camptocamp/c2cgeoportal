@@ -88,6 +88,37 @@ class TestUrl(TestCase):
         url.add_query({})
         self.assertEqual(url.url(), "http://example.com/")
 
+    def test_url_update(self):
+        url = Url("http://test:123/toto?map=123#456")
+        url.hostname = "example"
+        assert url.netloc == "example:123"
+        assert url.port == 123
+        assert url.url() == "http://example:123/toto?map=123#456"
+
+        url = Url("http://test:123/toto?map=123#456")
+        url.netloc = "example"
+        assert url.hostname == "example"
+        assert url.port is None
+        assert url.url() == "http://example/toto?map=123#456"
+
+        url = Url("http://test:123/toto?map=123#456")
+        url.netloc = "example:234"
+        assert url.hostname == "example"
+        assert url.port == 234
+        assert url.url() == "http://example:234/toto?map=123#456"
+
+        url = Url("http://test:123/toto?map=123#456")
+        url.port = 345
+        assert url.netloc == "test:345"
+        assert url.hostname == "test"
+        assert url.url() == "http://test:345/toto?map=123#456"
+
+        url = Url("http://test:123/toto?map=123#456")
+        url.port = None
+        assert url.netloc == "test"
+        assert url.hostname == "test"
+        assert url.url() == "http://test/toto?map=123#456"
+
     def test_get_url2(self):
         request = DummyRequest()
         request.registry.settings = {
@@ -139,7 +170,7 @@ class TestUrl(TestCase):
             get_url2("test", "https://example.com/icon.png", request, set()).url(),
             "https://example.com/icon.png",
         )
-        errors = set()
+        errors: Set[str] = set()
         self.assertEqual(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
         self.assertEqual(
             errors,

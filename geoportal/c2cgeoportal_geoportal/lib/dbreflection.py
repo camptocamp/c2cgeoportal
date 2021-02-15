@@ -175,6 +175,8 @@ def _create_class(
     )
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)
+    # The randint is to fix the SAWarning: This declarative base already contains a class with the same
+    # class name and module nam
     cls = type(f"{table.name.capitalize()}_{random.randint(0, 9999999)}", (GeoInterface, Base), attributes)
 
     for col in table.columns:
