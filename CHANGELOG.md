@@ -1,3 +1,7 @@
+##### 2.5.0.116
+* [Backport 2.5] Fix redirect URL [c2cgeoportal#7806](https://github.com/camptocamp/c2cgeoportal/pull/7806)
+* [Backport 2.5] Enable to change the xy order on getFeature GML format [ngeo#6495](https://github.com/camptocamp/ngeo/pull/6495)
+* [Backport 2.5] Use alert instead of modal to show changed password (simple message) [ngeo#6806](https://github.com/camptocamp/ngeo/pull/6806)
 ##### 2.5.0.115
 * [Backport 2.5] Make config enable_admin_interface scalar [c2cgeoportal#7771](https://github.com/camptocamp/c2cgeoportal/pull/7771)
 * Fix typo in scale-selector log [ngeo#6784](https://github.com/camptocamp/ngeo/pull/6784)
