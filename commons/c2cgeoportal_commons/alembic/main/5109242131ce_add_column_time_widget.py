@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """add column time_widget
 
 Revision ID: 5109242131ce
@@ -44,7 +46,7 @@ revision = "5109242131ce"
 down_revision = "164ac0819a61"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     # Instructions
@@ -55,7 +57,7 @@ def upgrade():
         )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     # Instructions

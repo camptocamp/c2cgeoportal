@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@
 from typing import Optional
 
 import colander
+import pyramid.request
 from colander import Mapping, SchemaNode
 from deform import widget
 from deform.widget import MappingWidget, SequenceWidget
@@ -94,7 +95,9 @@ class ChildWidget(MappingWidget):
         del child
         return None
 
-    def edit_url(self, request, child) -> Optional[str]:  # pylint: disable=no-self-use,useless-return
+    def edit_url(  # pylint: disable=no-self-use,useless-return
+        self, request: pyramid.request.Request, child
+    ) -> Optional[str]:
         del request
         del child
         return None

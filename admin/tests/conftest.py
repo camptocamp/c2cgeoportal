@@ -67,7 +67,7 @@ def settings(app_env):
     yield app_env.get("registry").settings
 
 
-@pytest.fixture(scope="session")  # noqa: F811
+@pytest.fixture(scope="session")  # noqa: ignore=F811
 @pytest.mark.usefixtures("app")
 def test_app(request, app):
     testapp = WebTestApp(app)

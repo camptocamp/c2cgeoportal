@@ -1,5 +1,4 @@
 ---
-
 strictness: veryhigh
 
 ignore-paths:
@@ -7,8 +6,14 @@ ignore-paths:
   - setup.py
   - CONST_create_template
 
-mccabe:
-  run: false
+pep8:
+  disable:
+    - E203
+  options:
+    max-line-length: 110
 
 mypy:
   run: true
+
+mccabe:
+  run: false

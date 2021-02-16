@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Fill tech_data column
 
 Revision ID: bd029dbfc11a
@@ -44,11 +46,11 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     staticschema = config["schema_static"]
 
     op.execute("UPDATE {staticschema}.\"user\" SET tech_data = '';".format(staticschema=staticschema))
 
 
-def downgrade():
+def downgrade() -> None:
     pass

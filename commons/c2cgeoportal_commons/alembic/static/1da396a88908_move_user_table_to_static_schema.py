@@ -27,6 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
 
 """Move user table to static schema
 
@@ -47,7 +48,7 @@ revision = "1da396a88908"
 down_revision = "3f89a7d71a5e"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
     staticschema = config["schema_static"]
     parentschema = config.get("parentschema")
@@ -55,7 +56,7 @@ def upgrade():
     engine = op.get_bind().engine
     if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
         engine, "user", schema=staticschema
-    ):  # pragma: no cover
+    ):
         return
 
     op.create_table(
@@ -72,7 +73,7 @@ def upgrade():
     parent_column = ""
     parent_select = ""
     parent_join = ""
-    if parentschema is not None and parentschema != "":  # pragma: no cover
+    if parentschema is not None and parentschema != "":
         op.add_column("user", Column("parent_role_name", String), schema=staticschema)
         parent_column = ", parent_role_name"
         parent_select = ", pr.name"
@@ -106,7 +107,7 @@ def upgrade():
         )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
     staticschema = config.get("schema_static")
     parentschema = config.get("parentschema")
@@ -125,7 +126,7 @@ def downgrade():
     parent_column = ""
     parent_select = ""
     parent_join = ""
-    if parentschema is not None and parentschema != "":  # pragma: no cover
+    if parentschema is not None and parentschema != "":
         op.add_column(
             "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema
         )

@@ -30,31 +30,33 @@
 
 import logging
 from io import StringIO
-from typing import Set, cast  # noqa, pylint: disable=unused-import
+from typing import Any, Optional, Set, cast
 
+import pyramid.request
 import requests
 from defusedxml import ElementTree
+from sqlalchemy.orm.session import Session
 
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import main
 
 
-class dry_run_transaction:  # noqa N801: class names should use CapWords convention
-    def __init__(self, dbsession, dry_run):
+class dry_run_transaction:  # noqa ignore=N801: class names should use CapWords convention
+    def __init__(self, dbsession: Session, dry_run: bool):
         self.dbsession = dbsession
         self.dry_run = dry_run
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         if self.dry_run:
             self.dbsession.begin_nested()
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         if self.dry_run:
             self.dbsession.rollback()
 
 
 class OGCServerSynchronizer:
-    def __init__(self, request, ogc_server):
+    def __init__(self, request: pyramid.request.Request, ogc_server: main.OGCServer) -> None:
         self._request = request
         self._ogc_server = ogc_server
         self._default_wms = main.LayerWMS()
@@ -70,16 +72,16 @@ class OGCServerSynchronizer:
         self._groups_added = 0
         self._layers_added = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "OGCServerSynchronizer({})".format(self._ogc_server.name)
 
-    def logger(self):
+    def logger(self) -> logging.Logger:
         return self._logger
 
-    def report(self):
+    def report(self) -> str:
         return self._log.getvalue()
 
-    def check_layers(self):
+    def check_layers(self) -> None:
         capabilities = ElementTree.fromstring(self.wms_capabilities())
         layers = self._request.dbsession.query(main.LayerWMS).filter(
             main.LayerWMS.ogc_server == self._ogc_server
@@ -108,13 +110,13 @@ class OGCServerSynchronizer:
             items += 1
         self._logger.info("Checked %s layers, %s are invalid", items, invalids)
 
-    def synchronize(self, dry_run=False):
+    def synchronize(self, dry_run: bool = False) -> None:
         with dry_run_transaction(self._request.dbsession, dry_run):
             self.do_synchronize()
             if dry_run:
                 self._logger.info("Rolling back transaction due to dry run")
 
-    def do_synchronize(self):
+    def do_synchronize(self) -> None:
         self._items_found = 0
         self._themes_added = 0
         self._groups_added = 0
@@ -135,7 +137,7 @@ class OGCServerSynchronizer:
         self._logger.info("%s groups were added", self._groups_added)
         self._logger.info("%s layers were added", self._layers_added)
 
-    def synchronize_layer(self, el, parent=None):
+    def synchronize_layer(self, el: ElementTree, parent: ElementTree = None) -> None:
         if el.find("Layer") is None:
             tree_item = self.get_layer_wms(el, parent)
         elif parent is None:
@@ -146,10 +148,13 @@ class OGCServerSynchronizer:
         for child in el.findall("Layer"):
             self.synchronize_layer(child, tree_item)
 
-    def get_theme(self, el):
+    def get_theme(self, el: ElementTree) -> main.Theme:
         name = el.find("Name").text
 
-        theme = self._request.dbsession.query(main.Theme).filter(main.Theme.name == name).one_or_none()
+        theme = cast(
+            Optional[main.Theme],
+            self._request.dbsession.query(main.Theme).filter(main.Theme.name == name).one_or_none(),
+        )
 
         if theme is None:
             theme = main.Theme()
@@ -165,16 +170,21 @@ class OGCServerSynchronizer:
 
         return theme
 
-    def get_layer_group(self, el, parent):
+    def get_layer_group(self, el: ElementTree, parent: ElementTree) -> main.LayerGroup:
         name = el.find("Name").text
 
-        group = (
-            self._request.dbsession.query(main.LayerGroup).filter(main.LayerGroup.name == name).one_or_none()
+        group = cast(
+            Optional[main.LayerGroup],
+            (
+                self._request.dbsession.query(main.LayerGroup)
+                .filter(main.LayerGroup.name == name)
+                .one_or_none()
+            ),
         )
 
         if group is None:
             group = main.LayerGroup(name=el.find("Name").text)
-            group.parents_relation.append(main.LayergroupTreeitem(group=parent))  # noqa, pylint: no-member
+            group.parents_relation.append(main.LayergroupTreeitem(group=parent))  # pylint: disable=no-member
 
             self._request.dbsession.add(group)
             self._logger.info("Layer %s added as new group in theme %s", name, parent.name)
@@ -184,10 +194,13 @@ class OGCServerSynchronizer:
 
         return group
 
-    def get_layer_wms(self, el, parent):
+    def get_layer_wms(self, el: ElementTree, parent: ElementTree) -> main.LayerWMS:
         name = el.find("Name").text
 
-        layer = self._request.dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == name).one_or_none()
+        layer = cast(
+            Optional[main.LayerWMS],
+            self._request.dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == name).one_or_none(),
+        )
 
         if layer is None:
             layer = main.LayerWMS()
@@ -244,7 +257,7 @@ class OGCServerSynchronizer:
 
         return layer
 
-    def wms_capabilities(self):
+    def wms_capabilities(self) -> bytes:
         errors: Set[str] = set()
         url = get_url2(
             "The OGC server '{}'".format(self._ogc_server.name),

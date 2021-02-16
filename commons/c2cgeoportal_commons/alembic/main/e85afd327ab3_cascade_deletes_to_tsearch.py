@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Cascade deletes to tsearch
 
 Revision ID: e85afd327ab3
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.drop_constraint("tsearch_role_id_fkey", "tsearch", schema=schema, type_="foreignkey")
@@ -72,7 +74,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.drop_constraint("tsearch_role_id_fkey", "tsearch", schema=schema, type_="foreignkey")

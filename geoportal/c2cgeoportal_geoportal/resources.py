@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,22 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from typing import List
+
+import pyramid.request
+
 
 class Root:
-    def __init__(self, request):
-        self.request = request  # pragma: no cover
+    def __init__(self, request: pyramid.request.Request):
+        self.request = request
 
 
-def defaultgroupsfinder(username, request):
+def defaultgroupsfinder(username: str, request: pyramid.request.Request) -> List[str]:
     """
     The c2cgeoportal default group finder. To be used as the callback of the ``AuthTktAuthenticationPolicy``
     or any callback-based authentication policy.
     """
     del username  # unused
     if not hasattr(request, "user") or request.user is None:
-        return []  # pragma: no cover
+        return []
     return [role.name for role in request.user.roles]

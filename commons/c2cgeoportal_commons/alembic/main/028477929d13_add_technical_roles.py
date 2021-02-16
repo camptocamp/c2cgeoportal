@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add technical roles
 
 Revision ID: 028477929d13
@@ -46,7 +48,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     role = Table("role", MetaData(), Column("name", Unicode), Column("description", Unicode), schema=schema)
@@ -63,7 +65,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     for name in ("anonymous", "registered", "intranet"):

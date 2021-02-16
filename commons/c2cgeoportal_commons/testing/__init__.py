@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ def generate_mappers() -> None:
 
     # import or define all models here to ensure they are attached to the
     # Base.metadata prior to any initialization routines
-    import c2cgeoportal_commons.models.main  # noqa: F401
+    import c2cgeoportal_commons.models.main  # noqa: ignore=F401
 
     # run configure_mappers after defining all of the models to ensure
     # all relationships can be setup

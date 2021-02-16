@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,33 +31,35 @@
 import ast
 import logging
 
+import pyramid.request
+import pyramid.response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE
+from c2cgeoportal_geoportal.lib.caching import Cache
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
 LOG = logging.getLogger(__name__)
 
 
 class ResourceProxy(Proxy):
-    def __init__(self, request):  # pragma: no cover
+    def __init__(self, request: pyramid.request.Request):
         Proxy.__init__(self, request)
         self.request = request
         self.settings = request.registry.settings.get("resourceproxy", {})
 
     @view_config(route_name="resourceproxy")
-    def proxy(self):  # pragma: no cover
+    def proxy(self) -> pyramid.response.Response:
         target = self.request.params.get("target", "")
         targets = self.settings.get("targets", [])
-        if target in targets:  # pragma: no cover
+        if target in targets:
             url = targets[target]
             values = ast.literal_eval(self.request.params.get("values"))
             url = url % values
 
             response = self._proxy(url=url)
 
-            cache_control = NO_CACHE
+            cache_control = Cache.NO
             content_type = response.headers["Content-Type"]
 
             response = self._build_response(
@@ -67,5 +69,5 @@ class ResourceProxy(Proxy):
                 if header not in self.settings["allowed_headers"]:
                     response.headers.pop(header)
             return response
-        LOG.warning("Target url not found: %s", target)
+        LOG.warning("Target URL not found: %s", target)
         return HTTPBadRequest("URL not allowed")

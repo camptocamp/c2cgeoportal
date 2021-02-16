@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add table user_role and rename user.role_name to settings_role_id
 
 Revision ID: ae5e88f35669
@@ -46,7 +48,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
     staticschema = config["schema_static"]
 
@@ -80,7 +82,7 @@ WHERE "role"."name" = "user"."role_name";""".format(
     op.drop_column("user", "role_name", schema=staticschema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
     staticschema = config["schema_static"]
 

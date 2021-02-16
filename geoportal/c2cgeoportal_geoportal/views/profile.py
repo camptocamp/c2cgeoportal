@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2020, Camptocamp SA
+# Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,33 +30,36 @@
 
 import math
 from decimal import Decimal
+from typing import Any, Dict, List, Tuple
 
 import geojson
+import pyramid.request
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 from c2cgeoportal_geoportal.views.raster import Raster
 
 _ = TranslationStringFactory("c2cgeoportal")
 
 
 class Profile(Raster):
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         Raster.__init__(self, request)
 
     @view_config(route_name="profile.json", renderer="fast_json")
-    def json(self):
+    def json(self) -> Dict[str, Any]:
         """answers to /profile.json"""
         _, points = self._compute_points()
-        set_common_headers(self.request, "profile", NO_CACHE)
+        set_common_headers(self.request, "profile", Cache.NO)
         return {"profile": points}
 
-    def _compute_points(self):
+    def _compute_points(self) -> Tuple[List[str], List[Dict[str, Any]]]:
         """Compute the alt=fct(dist) array"""
         geom = geojson.loads(self.request.params["geom"], object_hook=geojson.GeoJSON.to_instance)
 
+        layers: List[str]
         if "layers" in self.request.params:
             rasters = {}
             layers = self.request.params["layers"].split(",")
@@ -70,7 +73,7 @@ class Profile(Raster):
             layers = list(rasters.keys())
             layers.sort()
 
-        points = []
+        points: List[Dict[str, Any]] = []
 
         dist = 0
         prev_coord = None
@@ -92,11 +95,11 @@ class Profile(Raster):
         return layers, points
 
     @staticmethod
-    def _dist(coord1, coord2):
+    def _dist(coord1: Tuple[float, float], coord2: Tuple[float, float]) -> float:
         """Compute the distance between 2 points"""
         return math.sqrt(math.pow(coord1[0] - coord2[0], 2.0) + math.pow(coord1[1] - coord2[1], 2.0))
 
-    def _create_points(self, coords, nb_points):
+    def _create_points(self, coords: List[Tuple[float, float]], nb_points: int) -> List[Tuple[float, float]]:
         """Add some points in order to reach roughly the asked number of points"""
         total_length = 0
         prev_coord = None
@@ -108,7 +111,7 @@ class Profile(Raster):
         if total_length == 0.0:
             return coords
 
-        result = []
+        result: List[Tuple[float, float]] = []
         prev_coord = None
         for coord in coords:
             if prev_coord is not None:
@@ -119,8 +122,8 @@ class Profile(Raster):
                 dx = (coord[0] - prev_coord[0]) / float(cur_nb_points)
                 dy = (coord[1] - prev_coord[1]) / float(cur_nb_points)
                 for i in range(1, cur_nb_points + 1):
-                    result.append([prev_coord[0] + dx * i, prev_coord[1] + dy * i])
+                    result.append((prev_coord[0] + dx * i, prev_coord[1] + dy * i))
             else:
-                result.append([coord[0], coord[1]])
+                result.append((coord[0], coord[1]))
             prev_coord = coord
         return result

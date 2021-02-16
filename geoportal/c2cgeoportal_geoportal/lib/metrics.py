@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 
 import gc
 import sys
+from typing import Any, Dict, List, Tuple
 
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.debug import get_size
@@ -39,11 +40,11 @@ from c2cgeoportal_geoportal.views.raster import Raster
 
 
 class MemoryCacheSizeProvider(Provider):
-    def __init__(self, all_=False):
+    def __init__(self, all_: bool = False):
         super().__init__("pod_process_memory_cache_kb", "Used memory cache")
         self.all = all_
 
-    def get_data(self):
+    def get_data(self) -> List[List[Dict[str, Any]]]:
         result = []
         for elem in _get_memory_cache(all_=self.all):
             if elem is not None:
@@ -55,7 +56,7 @@ class MemoryCacheSizeProvider(Provider):
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
-def _get_memory_cache(all_):
+def _get_memory_cache(all_: bool) -> Dict[str, List[Tuple[Dict[str, Any], float]]]:
     values = (
         [({"key": key}, get_size(value) / 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
         if all_
@@ -66,10 +67,10 @@ def _get_memory_cache(all_):
 
 
 class RasterDataSizeProvider(Provider):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("pod_process_raster_data_kb", "Memory used by raster")
 
-    def get_data(self):
+    def get_data(self) -> List[List[Dict[str, Any]]]:
         result = []
         for elem in _get_raster_data():
             for value in elem["values"]:
@@ -80,15 +81,15 @@ class RasterDataSizeProvider(Provider):
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
-def _get_raster_data():
+def _get_raster_data() -> Dict[str, List[Tuple[Dict[str, str], float]]]:
     return {"values": [({"key": key}, get_size(value) / 1024) for key, value in list(Raster.data.items())]}
 
 
 class TotalPythonObjectMemoryProvider(Provider):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("total_python_object_memory_kb", "Memory used by raster")
 
-    def get_data(self):
+    def get_data(self) -> List[Tuple[Dict[str, str], float]]:
         return [
             ({"pid": str(val["pid"]), "hostname": val["hostname"]}, val["value"])
             for val in _get_python_object_size()
@@ -97,5 +98,5 @@ class TotalPythonObjectMemoryProvider(Provider):
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
-def _get_python_object_size():
+def _get_python_object_size() -> Dict[str, float]:
     return {"value": sum([sys.getsizeof(o) / 1024 for o in gc.get_objects()])}

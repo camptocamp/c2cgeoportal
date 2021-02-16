@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2020, Camptocamp SA
+# Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,15 +36,15 @@ import re
 import shutil
 import subprocess
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from subprocess import call, check_call, check_output
-from typing import Any, Dict, cast
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union, cast
 
 import pkg_resources
 import requests
 import yaml
 
-from c2cgeoportal_geoportal.lib.bashcolor import GREEN, RED, YELLOW, colorize
+from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
 TEMPLATE_EXAMPLE = {"package": "${package}", "srid": "${srid}", "extent": "489246, 78873, 837119, 296543"}
@@ -59,7 +59,7 @@ DIFF_NOTICE = (
 )
 
 
-def main():
+def main() -> None:
     """
     tool used to do the application upgrade
     """
@@ -71,7 +71,7 @@ def main():
     c2cupgradetool.upgrade()
 
 
-def _fill_arguments():
+def _fill_arguments() -> ArgumentParser:
     parser = ArgumentParser()
     parser.add_argument(
         "--git-remote", metavar="GITREMOTE", help="Specify the remote branch", default="origin"
@@ -89,14 +89,16 @@ current_step_number = 0
 
 
 class Step:
-    def __init__(self, step_number, file_marker=True):
+    def __init__(self, step_number: int, file_marker: bool = True):
         global current_step_number
         current_step_number = step_number
         self.step_number = step_number
         self.file_marker = file_marker
 
-    def __call__(self, current_step):
-        def decorate(c2cupgradetool, *args, **kwargs):
+    def __call__(
+        self, current_step: Callable[["C2cUpgradeTool", int], None]
+    ) -> Callable[["C2cUpgradeTool"], None]:
+        def decorate(c2cupgradetool: "C2cUpgradeTool") -> None:
             try:
                 if os.path.isfile(".UPGRADE{}".format(self.step_number - 1)):
                     os.unlink(".UPGRADE{}".format(self.step_number - 1))
@@ -105,7 +107,7 @@ class Step:
                         pass
                 print("Start step {}.".format(self.step_number))
                 sys.stdout.flush()
-                current_step(c2cupgradetool, self.step_number, *args, **kwargs)
+                current_step(c2cupgradetool, self.step_number)
             except subprocess.CalledProcessError as exception:
                 c2cupgradetool.print_step(
                     self.step_number,
@@ -131,7 +133,7 @@ class Step:
                 global current_step_number
                 if self.step_number == current_step_number:
 
-                    def message():
+                    def message() -> None:
                         c2cupgradetool.print_step(
                             self.step_number,
                             error=True,
@@ -147,50 +149,52 @@ class Step:
 
 class C2cUpgradeTool:
 
-    color_bar = colorize("================================================================", GREEN)
+    color_bar = colorize("================================================================", Color.GREEN)
 
-    def __init__(self, options):
+    def __init__(self, options: Namespace):
         self.options = options
-        self.project: Dict[str, Any] = self.get_project()
+        self.project = self.get_project()
 
     @staticmethod
-    def get_project():
+    def get_project() -> Dict[str, Any]:
         if not os.path.isfile("project.yaml"):
-            print(colorize("Unable to find the required 'project.yaml' file.", RED))
+            print(colorize("Unable to find the required 'project.yaml' file.", Color.RED))
             sys.exit(1)
 
         with open("project.yaml", "r") as project_file:
-            return yaml.safe_load(project_file)
+            return cast(Dict[str, Any], yaml.safe_load(project_file))
 
     @staticmethod
-    def get_upgrade(section):
+    def get_upgrade(section: str) -> Union[List[Any], Dict[str, Any]]:
         if not os.path.isfile(".upgrade.yaml"):
-            print(colorize("Unable to find the required '.upgrade.yaml' file.", RED))
+            print(colorize("Unable to find the required '.upgrade.yaml' file.", Color.RED))
             sys.exit(1)
 
         with open(".upgrade.yaml", "r") as project_file:
-            return yaml.safe_load(project_file)[section]
+            return cast(Union[List[Any], Dict[str, Any]], yaml.safe_load(project_file)[section])
 
-    def print_step(self, step, error=False, message=None, prompt="To continue, type:"):
+    def print_step(
+        self, step: int, error: bool = False, message: str = None, prompt: str = "To continue, type:"
+    ) -> None:
         with open(".UPGRADE_INSTRUCTIONS", "w") as instructions:
             print("")
             print(self.color_bar)
             if message is not None:
-                print(colorize(message, RED if error else YELLOW))
+                print(colorize(message, Color.RED if error else Color.YELLOW))
                 instructions.write("{}\n".format(message))
             if step >= 0:
-                print(colorize(prompt, GREEN))
+                print(colorize(prompt, Color.GREEN))
                 instructions.write("{}\n".format(prompt))
                 cmd = ["./upgrade", os.environ["VERSION"]]
                 if step != 0:
                     cmd.append("{}".format(step))
-                print(colorize(" ".join(cmd), GREEN))
+                print(colorize(" ".join(cmd), Color.GREEN))
                 instructions.write("{}\n".format(" ".join(cmd)))
 
-    def run_step(self, step):
+    def run_step(self, step: int) -> None:
         getattr(self, "step{}".format(step))()
 
-    def test_checkers(self):
+    def test_checkers(self) -> Tuple[bool, Optional[str]]:
         run_curl = "Run `curl --insecure {} '{}'` for more information.".format(
             " ".join(["--header {}={}".format(*i) for i in self.project.get("checker_headers", {}).items()]),
             self.project["checker_url"],
@@ -206,10 +210,10 @@ class C2cUpgradeTool:
             return False, "\n".join(["Connection refused: {}".format(exception), run_curl])
         if resp.status_code < 200 or resp.status_code >= 300:
 
-            print(colorize("=============", RED))
-            print(colorize("Checker error", RED))
+            print(colorize("=============", Color.RED))
+            print(colorize("Checker error", Color.RED))
             for name, value in resp.json()["failures"].items():
-                print(colorize("Test '{}' failed with result:".format(name), YELLOW))
+                print(colorize("Test '{}' failed with result:".format(name), Color.YELLOW))
                 del value["level"]
                 del value["timing"]
 
@@ -219,11 +223,11 @@ class C2cUpgradeTool:
 
         return True, None
 
-    def upgrade(self):
+    def upgrade(self) -> None:
         self.run_step(self.options.step)
 
     @Step(0, file_marker=False)
-    def step0(self, step):
+    def step0(self, step: int) -> None:
         project_template_keys = list(cast(Dict[str, Any], self.project.get("template_vars")).keys())
         messages = []
         for required in REQUIRED_TEMPLATE_KEYS:
@@ -259,7 +263,7 @@ class C2cUpgradeTool:
             )
 
     @Step(1)
-    def step1(self, step):
+    def step1(self, step: int) -> None:
         shutil.copyfile("project.yaml", "/tmp/project.yaml")
         try:
             check_call(["git", "reset", "--hard"])
@@ -270,7 +274,7 @@ class C2cUpgradeTool:
         self.run_step(step + 1)
 
     @Step(2)
-    def step2(self, step):
+    def step2(self, step: int) -> None:
         with open(".eslintrc", "w") as eslintrc_file:
             eslintrc_file.write(
                 """extends:
@@ -323,7 +327,7 @@ rules:
         self.run_step(step + 1)
 
     @Step(3)
-    def step3(self, step):
+    def step3(self, step: int) -> None:
         project_path = os.path.join("/tmp", self.project["project_folder"])
         os.mkdir(project_path)
         shutil.copyfile("/src/project.yaml", os.path.join(project_path, "project.yaml"))
@@ -338,7 +342,7 @@ rules:
         )
 
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
-        for upgrade_file in self.get_upgrade("upgrade_files"):
+        for upgrade_file in cast(List[Dict[str, Any]], self.get_upgrade("upgrade_files")):
             action = upgrade_file["action"]
             if action == "remove":
                 self.files_to_remove(upgrade_file, prefix="CONST_create_template", force=True)
@@ -354,7 +358,7 @@ rules:
         self.run_step(step + 1)
 
     @Step(4)
-    def step4(self, step):
+    def step4(self, step: int) -> None:
         if os.path.exists("CONST_create_template"):
             check_call(["git", "rm", "-r", "--force", "CONST_create_template/"])
 
@@ -376,7 +380,7 @@ rules:
         self.run_step(step + 1)
 
     @Step(5)
-    def step5(self, step):
+    def step5(self, step: int) -> None:
         if "managed_files" not in self.project:
             self.print_step(
                 step,
@@ -391,9 +395,9 @@ rules:
             self.run_step(step + 1)
 
     @Step(6)
-    def step6(self, step):
+    def step6(self, step: int) -> None:
         task_to_do = False
-        for upgrade_file in self.get_upgrade("upgrade_files"):
+        for upgrade_file in cast(List[Dict[str, Any]], self.get_upgrade("upgrade_files")):
             action = upgrade_file["action"]
             if action == "remove":
                 task_to_do |= self.files_to_remove(upgrade_file)
@@ -415,7 +419,7 @@ rules:
         else:
             self.run_step(step + 1)
 
-    def files_to_remove(self, element, prefix="", force=False):
+    def files_to_remove(self, element: Dict[str, Any], prefix: str = "", force: bool = False) -> bool:
         task_to_do = False
         for path in element["paths"]:
             file_ = os.path.join(prefix, path.format(package=self.project["project_package"]))
@@ -433,23 +437,23 @@ rules:
                             if no_touch:
                                 managed = True
                             else:
-                                # fmt: off
-                                print(colorize(
-                                    "The file '{}' has been removed but he is in the `managed_files` as '{}'."
-                                    .format(file_, pattern),
-                                    RED
-                                ))
-                                # fmt: on
+                                print(
+                                    colorize(
+                                        f"The file '{file_}' has been removed but he is in the "
+                                        f"`managed_files` as '{pattern}'.",
+                                        Color.RED,
+                                    )
+                                )
                                 task_to_do = True
                     for pattern in self.project.get("unmanaged_files", []):
                         if re.match(pattern + "$", file_):
-                            # fmt: off
-                            print(colorize(
-                                "The file '{}' has been removed but he is in the `unmanaged_files` as '{}'."
-                                .format(file_, pattern),
-                                YELLOW
-                            ))
-                            # fmt: on
+                            print(
+                                colorize(
+                                    f"The file '{file_}' has been removed but he is in the "
+                                    f"`unmanaged_files` as '{pattern}'.",
+                                    Color.YELLOW,
+                                )
+                            )
                             task_to_do = True
                 if not managed:
                     print("The file '{}' is removed.".format(file_))
@@ -465,7 +469,7 @@ rules:
                         os.remove(file_)
         return task_to_do
 
-    def files_to_move(self, element, prefix="", force=False):
+    def files_to_move(self, element: Dict[str, Any], prefix: str = "", force: bool = False) -> bool:
         task_to_do = False
         src = os.path.join(prefix, element["from"].format(package=self.project["project_package"]))
         dst = os.path.join(prefix, element["to"].format(package=self.project["project_package"]))
@@ -488,7 +492,7 @@ rules:
                                 colorize(
                                     "The {} '{}' is present in the `managed_files` as '{}', "
                                     "but it has been moved to '{}'.".format(type_, src, pattern, dst),
-                                    RED,
+                                    Color.RED,
                                 )
                             )
                             task_to_do = True
@@ -499,7 +503,7 @@ rules:
                                 "but a file have been moved on it from '{}'.".format(
                                     type_, dst, pattern, src
                                 ),
-                                RED,
+                                Color.RED,
                             )
                         )
                         task_to_do = True
@@ -509,7 +513,7 @@ rules:
                             colorize(
                                 "The {} '{}' is present in the `unmanaged_files` as '{}', "
                                 "but it has been moved to '{}'.".format(type_, src, pattern, dst),
-                                YELLOW,
+                                Color.YELLOW,
                             )
                         )
                         task_to_do = True
@@ -520,12 +524,12 @@ rules:
                                 "but a file have been moved on it from '{}'.".format(
                                     type_, dst, pattern, src
                                 ),
-                                YELLOW,
+                                Color.YELLOW,
                             )
                         )
                         task_to_do = True
             if not managed and os.path.exists(dst) and not element.get("override", False):
-                print(colorize("The destination '{}' already exists, ignoring.".format(dst), YELLOW))
+                print(colorize("The destination '{}' already exists, ignoring.".format(dst), Color.YELLOW))
             elif not managed:
                 print("Move the {} '{}' to '{}'.".format(type_, src, dst))
                 if "version" in element:
@@ -540,12 +544,15 @@ rules:
         return task_to_do
 
     @Step(7)
-    def step7(self, step):
+    def step7(self, step: int) -> None:
         self.files_to_get(step)
         self.run_step(step + 1)
 
-    def is_managed(self, file_, files_to_get=False):
-        default_project_file = self.get_upgrade("default_project_file")
+    def is_managed(self, file_: str, files_to_get: bool = False) -> bool:
+        # Dictionary with:
+        # include: list of include regular expression
+        # exclude: list of exclude regular expression
+        default_project_file = cast(Dict[str, List[str]], self.get_upgrade("default_project_file"))
 
         # Managed means managed by the application owner, not the c2cupgrade
         managed = False
@@ -603,18 +610,20 @@ rules:
 
         return managed
 
-    def files_to_get(self, step, pre=False):
+    def files_to_get(self, step: int, pre: bool = False) -> bool:
         error = False
         for root, _, files in os.walk("CONST_create_template"):
-            # fmt: off
-            root = root[len("CONST_create_template/"):]
-            # fmt: on
+            root = root[len("CONST_create_template/") :]
             for file_ in files:
                 destination = os.path.join(root, file_)
                 managed = self.is_managed(destination, True)
                 source = os.path.join("CONST_create_template", destination)
                 if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
-                    print(colorize("Get the file '{}' from the create template.".format(destination), GREEN))
+                    print(
+                        colorize(
+                            "Get the file '{}' from the create template.".format(destination), Color.GREEN
+                        )
+                    )
                     if not pre:
                         if os.path.dirname(destination) != "":
                             os.makedirs(os.path.dirname(destination), exist_ok=True)
@@ -642,7 +651,7 @@ rules:
         return error
 
     @Step(8)
-    def step8(self, step):
+    def step8(self, step: int) -> None:
         with open("changelog.diff", "w") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
@@ -664,21 +673,19 @@ rules:
                 "file (listed in the `changelog.diff` file).",
             )
 
-    def get_modified(self, status_path):
-        status = check_git_status_output([status_path])
-        status = [s for s in status.split("\n") if len(s) > 3]
+    def get_modified(self, status_path: str) -> List[str]:
+        status = check_git_status_output([status_path]).split("\n")
+        status = [s for s in status if len(s) > 3]
         status = [s[3:] for s in status if s[:3].strip() == "M"]
         for pattern in self.get_upgrade("no_diff"):
             matcher = re.compile("CONST_create_template/{}$".format(pattern))
             status = [s for s in status if not matcher.match(s)]
-        # fmt: off
-        status = [s for s in status if os.path.exists(s[len("CONST_create_template/"):])]
-        status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/"):])]
-        # fmt: on
+        status = [s for s in status if os.path.exists(s[len("CONST_create_template/") :])]
+        status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/") :])]
         return status
 
     @Step(9)
-    def step9(self, step):
+    def step9(self, step: int) -> None:
         if os.path.isfile("changelog.diff"):
             os.unlink("changelog.diff")
 
@@ -704,7 +711,7 @@ rules:
             )
 
     @Step(10)
-    def step10(self, step):
+    def step10(self, step: int) -> None:
         if os.path.isfile("ngeo.diff"):
             os.unlink("ngeo.diff")
 
@@ -741,7 +748,7 @@ rules:
             self.run_step(step + 1)
 
     @Step(11)
-    def step11(self, step):
+    def step11(self, step: int) -> None:
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
 
@@ -758,7 +765,7 @@ rules:
         self.print_step(step + 1, message="\n".join(message))
 
     @Step(12, file_marker=False)
-    def step12(self, step):
+    def step12(self, step: int) -> None:
         if os.path.isfile(".UPGRADE_SUCCESS"):
             os.unlink(".UPGRADE_SUCCESS")
         good, message = self.test_checkers()
@@ -770,12 +777,12 @@ rules:
                 error=True,
                 message=message,
                 prompt="Correct the checker, then run the step again "
-                "(If you want to fix it later you can pass to the next step):",
+                "(If you want to fix it later you can pass to the next step:int):",
             )
             sys.exit(1)
 
     @Step(13, file_marker=False)
-    def step13(self, step):
+    def step13(self, step: int) -> None:
         # Required to remove from the Git stage the ignored file when we lunch the step again
         check_call(["git", "reset", "--mixed"])
 
@@ -791,7 +798,7 @@ rules:
         )
 
     @Step(14, file_marker=False)
-    def step14(self, _):
+    def step14(self, _: int) -> None:
         if os.path.isfile(".UPGRADE_INSTRUCTIONS"):
             os.unlink(".UPGRADE_INSTRUCTIONS")
         check_call(
@@ -807,14 +814,14 @@ rules:
         print("")
         print(self.color_bar)
         print("")
-        print(colorize("Congratulations, your upgrade was successful.", GREEN))
+        print(colorize("Congratulations, your upgrade was successful.", Color.GREEN))
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         print("Now all your files are committed; you should do a git push:")
-        print("git push {0!s} {1!s}.".format(self.options.git_remote, branch))
+        print("git push {} {}.".format(self.options.git_remote, branch))
 
 
-def check_git_status_output(args=None):
+def check_git_status_output(args: List[str] = None) -> str:
     return check_output(["git", "status", "--short"] + (args if args is not None else [])).decode("utf-8")
 
 

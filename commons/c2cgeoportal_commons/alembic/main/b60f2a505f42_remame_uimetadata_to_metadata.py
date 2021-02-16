@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Remame UIMetadata to Metadata
 
 Revision ID: b60f2a505f42
@@ -44,13 +46,13 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("ui_metadata", "metadata", schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("metadata", "ui_metadata", schema=schema)

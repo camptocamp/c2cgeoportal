@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,11 +31,12 @@
 import json
 import logging
 import sys
-import xml.dom.minidom  # noqa # pylint: disable=unused-import
 from random import Random
-from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pyotp
+import pyramid.request
+import pyramid.response
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
 from pyramid.response import Response
 from pyramid.security import forget, remember
@@ -47,7 +48,7 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal import is_valid_referer
 from c2cgeoportal_geoportal.lib import get_setting, is_intranet
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PUBLIC_CACHE, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 
 LOG = logging.getLogger(__name__)
@@ -55,7 +56,7 @@ CACHE_REGION = get_region("std")
 
 
 class Login:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings
         self.lang = request.locale_name
@@ -64,7 +65,7 @@ class Login:
         self.two_factor_auth = authentication_settings.get("two_factor", False)
         self.two_factor_issuer_name = authentication_settings.get("two_factor_issuer_name")
 
-    def _functionality(self):
+    def _functionality(self) -> Dict[str, List[Union[str, int, float, bool, List[Any], Dict[str, Any]]]]:
         functionality = {}
         for func_ in get_setting(self.settings, ("functionalities", "available_in_templates"), []):
             functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
@@ -77,17 +78,17 @@ class Login:
             LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
 
     @view_config(context=HTTPForbidden, renderer="login.html")
-    def loginform403(self):
+    def loginform403(self) -> Dict[str, Any]:
         if self.request.authenticated_userid:
-            return HTTPUnauthorized()  # pragma: no cover
+            raise HTTPUnauthorized()
 
-        set_common_headers(self.request, "login", NO_CACHE)
+        set_common_headers(self.request, "login", Cache.NO)
 
         return {"lang": self.lang, "came_from": self.request.path, "two_fa": self.two_factor_auth}
 
     @view_config(route_name="loginform", renderer="login.html")
-    def loginform(self):
-        set_common_headers(self.request, "login", PUBLIC_CACHE)
+    def loginform(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "login", Cache.PUBLIC)
 
         return {
             "lang": self.lang,
@@ -96,18 +97,18 @@ class Login:
         }
 
     @staticmethod
-    def _validate_2fa_totp(user, otp: str) -> bool:
+    def _validate_2fa_totp(user: static.User, otp: str) -> bool:
         if pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp):
             return True
         return False
 
     @view_config(route_name="login")
-    def login(self):
+    def login(self) -> pyramid.response.Response:
         self._referer_log()
 
         login = self.request.POST.get("login")
         password = self.request.POST.get("password")
-        if login is None or password is None:  # pragma nocover
+        if login is None or password is None:
             raise HTTPBadRequest("'login' and 'password' should be available in request params.")
         username = self.request.registry.validate_user(self.request, login, password)
         if username is not None:
@@ -120,7 +121,7 @@ class Login:
                     return set_common_headers(
                         self.request,
                         "login",
-                        NO_CACHE,
+                        Cache.NO,
                         response=Response(
                             json.dumps(
                                 {
@@ -149,7 +150,7 @@ class Login:
                 return set_common_headers(
                     self.request,
                     "login",
-                    NO_CACHE,
+                    Cache.NO,
                     response=Response(
                         json.dumps(
                             {
@@ -171,7 +172,7 @@ class Login:
             return set_common_headers(
                 self.request,
                 "login",
-                NO_CACHE,
+                Cache.NO,
                 response=Response(json.dumps(self._user(self.request.get_user(username))), headers=headers),
             )
         user = models.DBSession.query(static.User).filter(static.User.username == login).one_or_none()
@@ -190,7 +191,7 @@ class Login:
         raise HTTPUnauthorized("See server logs for details")
 
     @view_config(route_name="logout")
-    def logout(self):
+    def logout(self) -> pyramid.response.Response:
         headers = forget(self.request)
 
         if not self.request.user:
@@ -200,9 +201,9 @@ class Login:
         LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
 
         headers.append(("Content-Type", "text/json"))
-        return set_common_headers(self.request, "login", NO_CACHE, response=Response("true", headers=headers))
+        return set_common_headers(self.request, "login", Cache.NO, response=Response("true", headers=headers))
 
-    def _user(self, user=None):
+    def _user(self, user: static.User = None) -> Dict[str, Any]:
         result = {
             "functionalities": self._functionality(),
             "is_intranet": is_intranet(self.request),
@@ -220,14 +221,14 @@ class Login:
         return result
 
     @view_config(route_name="loginuser", renderer="json")
-    def loginuser(self):
+    def loginuser(self) -> Dict[str, Any]:
         LOG.info("Client IP address: %s", self.request.client_addr)
-        set_common_headers(self.request, "login", NO_CACHE)
+        set_common_headers(self.request, "login", Cache.NO)
         return self._user()
 
     @view_config(route_name="change_password", renderer="json")
-    def change_password(self):
-        set_common_headers(self.request, "login", NO_CACHE)
+    def change_password(self) -> pyramid.response.Response:
+        set_common_headers(self.request, "login", Cache.NO)
 
         login = self.request.POST.get("login")
         old_password = self.request.POST.get("oldPassword")
@@ -245,7 +246,7 @@ class Login:
                 if user is None:
                     LOG.info("The login '%s' does not exist.", login)
                     raise HTTPUnauthorized("See server logs for details")
-            except NoResultFound:  # pragma: no cover
+            except NoResultFound:
                 LOG.info("The login '%s' does not exist.", login)
                 raise HTTPUnauthorized("See server logs for details")
 
@@ -281,11 +282,11 @@ class Login:
         headers = remember(self.request, username)
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(
-            self.request, "login", NO_CACHE, response=Response(json.dumps(self._user(user)), headers=headers)
+            self.request, "login", Cache.NO, response=Response(json.dumps(self._user(user)), headers=headers)
         )
 
     @staticmethod
-    def generate_password():
+    def generate_password() -> str:
         allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         rand = Random()
 
@@ -295,17 +296,19 @@ class Login:
 
         return password
 
-    def _loginresetpassword(self):
+    def _loginresetpassword(
+        self,
+    ) -> Tuple[Optional[static.User], Optional[str], Optional[str], Optional[str]]:
         username = self.request.POST.get("login")
         if username is None:
             raise HTTPBadRequest("'login' should be available in request params.")
         username = self.request.POST["login"]
         try:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
-        except NoResultFound:  # pragma: no cover
+        except NoResultFound:
             return None, None, None, "The login '{}' does not exist.".format(username)
 
-        if user.email is None or user.email == "":  # pragma: no cover
+        if user.email is None or user.email == "":
             return None, None, None, "The user '{}' has no registered email address.".format(user.username)
 
         password = self.generate_password()
@@ -314,13 +317,15 @@ class Login:
         return user, username, password, None
 
     @view_config(route_name="loginresetpassword", renderer="json")
-    def loginresetpassword(self):  # pragma: no cover
-        set_common_headers(self.request, "login", NO_CACHE)
+    def loginresetpassword(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "login", Cache.NO)
 
         user, username, password, error = self._loginresetpassword()
         if error is not None:
             LOG.info(error)
             raise HTTPUnauthorized("See server logs for details")
+        assert user is not None
+        assert password is not None
         if user.deactivated:
             LOG.info("The user '%s' is deactivated", username)
             raise HTTPUnauthorized("See server logs for details")

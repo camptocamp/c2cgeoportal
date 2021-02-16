@@ -102,9 +102,7 @@ class TestshortenerView(TestCase):
         self.assertEqual(result["short_url"][:index], "https://example.com/s")
 
         request.params = {}
-        # fmt: off
-        request.matchdict = {"ref": result["short_url"][index + 1:]}
-        # fmt: on
+        request.matchdict = {"ref": result["short_url"][index + 1 :]}
         result = shortener.get()
         self.assertEqual(type(result), HTTPFound)
         self.assertEqual(result.location, "https://example.com/hi")

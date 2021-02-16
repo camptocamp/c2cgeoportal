@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add missing not null
 
 Revision ID: e004f76e951a
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.alter_column("layer_wmts", "url", nullable=False, schema=schema)
@@ -85,7 +87,7 @@ def upgrade():
     op.alter_column("ogc_server", "auth", nullable=False, schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.alter_column("layer_wmts", "url", nullable=True, schema=schema)

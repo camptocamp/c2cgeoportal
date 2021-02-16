@@ -32,28 +32,30 @@ import binascii
 import json
 import sys
 import time
+from typing import cast
 
 from Crypto.Cipher import AES  # nosec
+from Crypto.Cipher.ChaCha20_Poly1305 import ChaCha20Poly1305Cipher
 
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
 
-def create_token(aeskey, user, password, valid):
+def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
     auth = {"u": user, "p": password, "t": int(time.time()) + valid * 3600 * 24}
 
     if aeskey is None:
         print("urllogin is not configured")
         sys.exit(1)
-    cipher = AES.new(aeskey.encode("ascii"), AES.MODE_EAX)
+    cipher = cast(ChaCha20Poly1305Cipher, AES.new(aeskey.encode("ascii"), AES.MODE_EAX))
     data = json.dumps(auth)
     mod_len = len(data) % 16
     if mod_len != 0:
         data += "".join([" " for i in range(16 - mod_len)])
-    ciphertext, tag = cipher.encrypt_and_digest(data.encode("utf-8"))  # type: ignore
-    return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")  # type: ignore
+    ciphertext, tag = cipher.encrypt_and_digest(data.encode("utf-8"))
+    return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Generate an auth token")
     fill_arguments(parser)
     parser.add_argument("user", help="The username")

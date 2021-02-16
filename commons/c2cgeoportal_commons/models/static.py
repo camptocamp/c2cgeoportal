@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -172,7 +172,7 @@ class User(Base):
     @property
     def password(self) -> str:
         """returns password"""
-        return self._password  # pragma: no cover
+        return self._password  # type: ignore
 
     @password.setter
     def password(self, password: str) -> None:
@@ -229,7 +229,7 @@ class User(Base):
         self.last_login = datetime.now(pytz.utc)
 
     def __str__(self) -> str:
-        return self.username or ""  # pragma: no cover
+        return self.username or ""
 
 
 class Shorturl(Base):

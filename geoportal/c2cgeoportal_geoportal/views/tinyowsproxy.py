@@ -29,7 +29,7 @@
 
 
 import logging
-from typing import Dict, Optional, Set, Tuple
+from typing import Any, Dict, Optional, Set, Tuple
 
 import pyramid.request
 from defusedxml import ElementTree
@@ -39,7 +39,7 @@ from pyramid.view import view_config
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE
+from c2cgeoportal_geoportal.lib.caching import Cache
 from c2cgeoportal_geoportal.lib.filter_capabilities import (
     filter_wfst_capabilities,
     normalize_tag,
@@ -72,7 +72,7 @@ class TinyOWSProxy(OGCProxy):
         return Url(self.settings.get("tinyows_url"))
 
     @view_config(route_name="tinyowsproxy")
-    def proxy(self) -> str:
+    def proxy(self) -> pyramid.response.Response:
         if self.user is None:
             raise HTTPUnauthorized(
                 "Authentication required", headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
@@ -80,7 +80,7 @@ class TinyOWSProxy(OGCProxy):
 
         operation = self.lower_params.get("request")
         typenames = (
-            set([normalize_typename(self.lower_params.get("typename"))])
+            set([normalize_typename(self.lower_params["typename"])])
             if "typename" in self.lower_params
             else set()
         )
@@ -112,7 +112,7 @@ class TinyOWSProxy(OGCProxy):
 
         # we want clients to cache GetCapabilities and DescribeFeatureType req.
         use_cache = method == "GET" and operation in ("getcapabilities", "describefeaturetype")
-        cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
+        cache_control = Cache.PRIVATE if use_cache else Cache.NO
 
         errors: Set[str] = set()
         url = super()._get_wfs_url(errors)
@@ -149,7 +149,9 @@ class TinyOWSProxy(OGCProxy):
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
-    def _proxy_callback(self, operation: str, cache_control: int, *args, **kwargs) -> str:
+    def _proxy_callback(
+        self, operation: str, cache_control: Cache, *args: Any, **kwargs: Any
+    ) -> pyramid.response.Response:
         response = self._proxy(*args, **kwargs)
         content = response.content.decode()
 

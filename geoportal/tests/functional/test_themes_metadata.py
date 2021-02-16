@@ -207,7 +207,7 @@ class TestThemesViewMetadata(TestCase):
             set(
                 [
                     "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
-                    "Unable to parse the attribute 'json_wrong'='{\"test\": 123' with the type 'json', error:\n'set' object has no attribute 'append'",
+                    "The attribute 'json_wrong'='{\"test\": 123' has an error: Expecting ',' delimiter: line 1 column 13 (char 12)",
                     "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
                     "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' should not have any date",
                     "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\nUnknown string format: Hello",

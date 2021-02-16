@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Be able to delete a linked functionality
 
 Revision ID: d8ef99bc227e
@@ -45,7 +47,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     for source, dest in [
@@ -72,7 +74,7 @@ def upgrade():
         )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     for source, dest in [

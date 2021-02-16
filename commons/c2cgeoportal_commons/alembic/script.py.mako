@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -45,14 +45,14 @@ branch_labels = ${repr(branch_labels)}
 depends_on = ${repr(depends_on)}
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config['schema']
     staticschema = config['schema_static']
 
     ${upgrades if upgrades else '# Instructions'}
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config['schema']
     staticschema = config['schema_static']
 

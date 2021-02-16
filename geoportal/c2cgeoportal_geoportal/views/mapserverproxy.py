@@ -29,7 +29,7 @@
 
 
 import logging
-from typing import Any, Dict, Set  # noqa, pylint: disable=unused-import
+from typing import Any, Dict, Set
 
 from pyramid.httpexceptions import HTTPInternalServerError, HTTPUnauthorized
 from pyramid.request import Request
@@ -39,7 +39,7 @@ from pyramid.view import view_config
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
@@ -73,7 +73,7 @@ class MapservProxy(OGCProxy):
             self.params["role_ids"] = ",".join([str(e) for e in get_roles_id(self.request)])
 
             # In some application we want to display the features owned by a user than we need his id.
-            self.params["user_id"] = self.user.id if self.user is not None else "-1"  # pragma: no cover
+            self.params["user_id"] = self.user.id if self.user is not None else "-1"
 
         # Do not allows direct variable substitution
         for k in list(self.params.keys()):
@@ -96,7 +96,7 @@ class MapservProxy(OGCProxy):
             # For GET requests, params are added only if the self.request
             # parameter is actually provided.
             if "request" not in self.lower_params:
-                self.params = {}  # pragma: no cover
+                self.params = {}
             else:
                 if self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
 
@@ -120,17 +120,17 @@ class MapservProxy(OGCProxy):
             LOG.error("Error getting the URL:\n%s", "\n".join(errors))
             raise HTTPInternalServerError()
 
-        cache_control = PRIVATE_CACHE
+        cache_control = Cache.PRIVATE
         if method == "GET" and "service" in self.lower_params and self.lower_params["service"] == "wms":
             if self.lower_params.get("request") in ("getmap", "getfeatureinfo"):
-                cache_control = NO_CACHE
+                cache_control = Cache.NO
             elif self.lower_params.get("request") == "getlegendgraphic":
-                cache_control = PUBLIC_CACHE
+                cache_control = Cache.PUBLIC
         elif method == "GET" and "service" in self.lower_params and self.lower_params["service"] == "wfs":
             if self.lower_params.get("request") == "getfeature":
-                cache_control = NO_CACHE
+                cache_control = Cache.NO
         elif method != "GET":
-            cache_control = NO_CACHE
+            cache_control = Cache.NO
 
         headers = self._get_headers()
         # Add headers for Geoserver
@@ -156,7 +156,7 @@ class MapservProxy(OGCProxy):
 
         return response
 
-    def _proxy_callback(self, cache_control: int, url: Url, params: dict, **kwargs: Any) -> Response:
+    def _proxy_callback(self, cache_control: Cache, url: Url, params: dict, **kwargs: Any) -> Response:
         response = self._proxy(url=url, params=params, **kwargs)
 
         content = response.content

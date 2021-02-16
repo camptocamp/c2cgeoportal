@@ -111,7 +111,7 @@ class TestMobileDesktop(TestCase):
         for g in DBSession.query(LayerGroup).all():
             DBSession.delete(g)
         for layer in DBSession.query(LayerWMS).all():
-            DBSession.delete(layer)  # pragma: no cover
+            DBSession.delete(layer)
         DBSession.query(Interface).filter(Interface.name == "main").delete()
         DBSession.query(OGCServer).delete()
 

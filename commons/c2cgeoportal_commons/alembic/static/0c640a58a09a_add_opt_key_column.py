@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add tech_data hstor column
 
 Revision ID: 0c640a58a09a
@@ -46,13 +48,13 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     staticschema = config["schema_static"]
 
     op.add_column("user", Column("tech_data", HSTORE), schema=staticschema)
 
 
-def downgrade():
+def downgrade() -> None:
     staticschema = config["schema_static"]
 
     op.drop_column("user", "tech_data", schema=staticschema)

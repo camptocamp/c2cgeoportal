@@ -22,7 +22,7 @@ def settings():
 
 @pytest.fixture(scope="module")
 @pytest.mark.usefixtures("settings")
-def DBSession(settings):  # noqa: N802
+def DBSession(settings):  # noqa: ignore=N802
     generate_mappers()
     engine = create_engine(config["sqlalchemy_slave.url"], pool_timeout=10)
     session_factory = sessionmaker()
@@ -34,7 +34,7 @@ def DBSession(settings):  # noqa: N802
 
 @pytest.fixture(scope="module")
 @pytest.mark.usefixtures("DBSession")
-def clean_dbsession(DBSession):  # noqa: N803
+def clean_dbsession(DBSession):  # noqa: ignore=N803
     from c2cgeoportal_commons.models.main import OGCServer, RestrictionArea, Role, TreeItem, layer_ra, role_ra
     from c2cgeoportal_commons.models.static import User, user_role
 
@@ -74,7 +74,7 @@ def qgs_access_control_filter():
         def __init__(self, server_iface):
             self.server_iface = server_iface
 
-        def serverInterface(self):  # noqa
+        def serverInterface(self):  # noqa: ignore=N806
             return self.server_iface
 
     with patch.multiple(

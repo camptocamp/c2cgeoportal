@@ -27,7 +27,7 @@ RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 ".
     LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
 
 COPY . /src/
-RUN cd /src && prospector --output-format=pylint
+RUN cd /src && prospector
 
 #############################################################################################################
 

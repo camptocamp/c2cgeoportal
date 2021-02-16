@@ -55,7 +55,7 @@ from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
-from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import (
     get_private_layers,
@@ -68,6 +68,8 @@ from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
 
+Metadata = Union[str, int, float, bool, List[Any], Dict[str, Any]]
+
 
 def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, str]) -> requests.Response:
     @CACHE_REGION.cache_on_arguments()
@@ -76,7 +78,7 @@ def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, s
         LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
         return response
 
-    return do_get_http_cached(url)
+    return do_get_http_cached(url)  # type: ignore
 
 
 class DimensionInformation:
@@ -147,7 +149,9 @@ class Theme:
         self._layergroup_cache = None
         self._themes_cache = None
 
-    def _get_metadata(self, item: main.TreeItem, metadata: str, errors: Set[str]):
+    def _get_metadata(
+        self, item: main.TreeItem, metadata: str, errors: Set[str]
+    ) -> Union[None, str, int, float, bool, List[Any], Dict[str, Any]]:
         metadatas = item.get_metadatas(metadata)
         return (
             None
@@ -157,8 +161,9 @@ class Theme:
             )
         )
 
-    def _get_metadatas(self, item: main.TreeItem, errors: Set[str]):
-        metadatas = {}
+    def _get_metadatas(self, item: main.TreeItem, errors: Set[str]) -> Dict[str, Metadata]:
+        metadatas: Dict[str, Metadata] = {}
+        metadata: main.Metadata
         for metadata in item.metadatas:
             value = get_typed(metadata.name, metadata.value, self.metadata_type, self.request, errors)
             if value is not None:
@@ -186,7 +191,7 @@ class Theme:
             layers = {}
             try:
                 wms = WebMapService(None, xml=content, version=version)
-            except Exception as e:  # pragma: no cover
+            except Exception as e:
                 error = (
                     "WARNING! an error '{}' occurred while trying to read the mapfile and recover the themes."
                     "\nURL: {}\n{}".format(e, url, content.decode() if content else None)
@@ -217,14 +222,14 @@ class Theme:
 
             return {"layers": layers}, set()
 
-        return build_web_map_service(ogc_server.id)
+        return build_web_map_service(ogc_server.id)  # type: ignore
 
     async def _wms_getcap_cached(
         self, ogc_server: main.OGCServer
     ) -> Tuple[Optional[Url], Optional[bytes], Set[str]]:
         errors: Set[str] = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
-        if errors or url is None:  # pragma: no cover
+        if errors or url is None:
             return url, None, errors
 
         # Add functionality params
@@ -251,20 +256,20 @@ class Theme:
             headers["sec-username"] = "root"
             headers["sec-roles"] = "root"
 
-        if url.hostname != "localhost" and "Host" in headers:  # pragma: no cover
+        if url.hostname != "localhost" and "Host" in headers:
             headers.pop("Host")
 
         try:
             response = await asyncio.get_event_loop().run_in_executor(
                 None, get_http_cached, self.http_options, url, headers
             )
-        except Exception:  # pragma: no cover
+        except Exception:
             error = "Unable to GetCapabilities from URL {}".format(url)
             errors.add(error)
             LOG.error(error, exc_info=True)
             return url, None, errors
 
-        if not response.ok:  # pragma: no cover
+        if not response.ok:
             error = "GetCapabilities from URL {} return the error: {:d} {}".format(
                 url, response.status_code, response.reason
             )
@@ -359,13 +364,17 @@ class Theme:
         )
 
     def _layer(
-        self, layer: main.Layer, time_: TimeInformation = None, dim=None, mixed: bool = True
+        self,
+        layer: main.Layer,
+        time_: TimeInformation = None,
+        dim: DimensionInformation = None,
+        mixed: bool = True,
     ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         errors: Set[str] = set()
         layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadatas(layer, errors)}
-        if re.search("[/?#]", layer.name):  # pragma: no cover
+        if re.search("[/?#]", layer.name):
             errors.add("The layer has an unsupported name '{}'.".format(layer.name))
-        if isinstance(layer, main.LayerWMS) and re.search("[/?#]", layer.layer):  # pragma: no cover
+        if isinstance(layer, main.LayerWMS) and re.search("[/?#]", layer.layer):
             errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
         if layer.geo_table:
             errors |= self._fill_editable(layer_info, layer)
@@ -373,6 +382,7 @@ class Theme:
             assert time_ is None
             time_ = TimeInformation()
         assert time_ is not None
+        assert dim is not None
 
         errors |= dim.merge(layer, layer_info, mixed)
 
@@ -469,7 +479,7 @@ class Theme:
             return
 
         layer_theme["imageType"] = layer.ogc_server.image_type
-        if layer.style:  # pragma: no cover
+        if layer.style:
             layer_theme["style"] = layer.style
 
         # now look at what is in the WMS capabilities doc
@@ -573,7 +583,7 @@ class Theme:
         dim: DimensionInformation = None,
         wms_layers: List[str] = None,
         layers_name: List[str] = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         if wms_layers is None:
             wms_layers = []
@@ -582,7 +592,7 @@ class Theme:
         children = []
         errors = set()
 
-        if re.search("[/?#]", group.name):  # pragma: no cover
+        if re.search("[/?#]", group.name):
             errors.add("The group has an unsupported name '{}'.".format(group.name))
 
         # escape loop
@@ -774,13 +784,13 @@ class Theme:
         return result
 
     @view_config(route_name="invalidate", renderer="json")
-    def invalidate_cache(self) -> Dict[str, bool]:  # pragma: no cover
+    def invalidate_cache(self) -> Dict[str, bool]:
         auth_view(self.request)
         main.cache_invalidate_cb()
         return {"success": True}
 
     def _get_children(
-        self, theme: main.Theme, layers, min_levels: int
+        self, theme: main.Theme, layers: List[str], min_levels: int
     ) -> Tuple[List[Dict[str, Any]], Set[str]]:
         children = []
         errors: Set[str] = set()
@@ -845,17 +855,17 @@ class Theme:
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
         if wfs_url.hostname != "localhost" and "Host" in headers:
-            headers.pop("Host")  # pragma nocover
+            headers.pop("Host")
 
         try:
             response = await asyncio.get_event_loop().run_in_executor(
                 None, get_http_cached, self.http_options, wfs_url, headers
             )
-        except Exception:  # pragma: no cover
+        except Exception:
             errors.add("Unable to get DescribeFeatureType from URL {}".format(wfs_url))
             return None, errors
 
-        if not response.ok:  # pragma: no cover
+        if not response.ok:
             errors.add(
                 "DescribeFeatureType from URL {} return the error: {:d} {}".format(
                     wfs_url, response.status_code, response.reason
@@ -868,7 +878,7 @@ class Theme:
 
         try:
             return lxml.XML(response.text.encode("utf-8")), errors
-        except Exception as e:  # pragma: no cover
+        except Exception as e:
             errors.add(
                 "Error '{}' on reading DescribeFeatureType from URL {}:\n{}".format(
                     str(e), wfs_url, response.text
@@ -908,7 +918,7 @@ class Theme:
             url_internal_wfs = url_wfs
         return url_internal_wfs, url, url_wfs
 
-    async def preload(self, errors: Set[str]):
+    async def preload(self, errors: Set[str]) -> None:
         tasks = set()
         for ogc_server in models.DBSession.query(main.OGCServer).all():
             url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
@@ -998,7 +1008,7 @@ class Theme:
         group = self.request.params.get("group")
         background_layers_group = self.request.params.get("background")
 
-        set_common_headers(self.request, "themes", PRIVATE_CACHE)
+        set_common_headers(self.request, "themes", Cache.PRIVATE)
 
         def get_theme() -> Dict[str, Union[Dict[str, Any], List[str]]]:
             export_themes = sets in ("all", "themes")
@@ -1072,21 +1082,30 @@ class Theme:
 
         @CACHE_REGION.cache_on_arguments()
         def get_theme_anonymous(
-            intranet, interface, sets, min_levels, group, background_layers_group, host
+            intranet: bool,
+            interface: str,
+            sets: str,
+            min_levels: str,
+            group: str,
+            background_layers_group: str,
+            host: str,
         ) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
             # Only for cache key
             del intranet, interface, sets, min_levels, group, background_layers_group, host
             return get_theme()
 
         if self.request.user is None:
-            return get_theme_anonymous(
-                is_intranet(self.request),
-                interface,
-                sets,
-                min_levels,
-                group,
-                background_layers_group,
-                self.request.headers.get("Host"),
+            return cast(
+                Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]],
+                get_theme_anonymous(
+                    is_intranet(self.request),
+                    interface,
+                    sets,
+                    min_levels,
+                    group,
+                    background_layers_group,
+                    self.request.headers.get("Host"),
+                ),
             )
         return get_theme()
 
@@ -1097,7 +1116,7 @@ class Theme:
         try:
             group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
             return self._group(group_db.name, group_db, layers, depth=2, dim=DimensionInformation())
-        except NoResultFound:  # pragma: no cover
+        except NoResultFound:
             return (
                 None,
                 set(

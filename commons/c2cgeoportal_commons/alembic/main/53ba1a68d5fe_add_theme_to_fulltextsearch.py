@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add theme to full-text search
 
 Revision ID: 53ba1a68d5fe
@@ -43,7 +45,7 @@ revision = "53ba1a68d5fe"
 down_revision = "5109242131ce"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.add_column(
@@ -63,7 +65,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.drop_index("tsearch_search_index", schema=schema)

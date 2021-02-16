@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add trigger to be able to correctly change the role name
 
 Revision ID: 9268a1dffac0
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.execute(
@@ -70,7 +72,7 @@ LANGUAGE plpgsql""".format(
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.execute("DROP TRIGGER on_role_name_change ON {schema}.role".format(schema=schema))

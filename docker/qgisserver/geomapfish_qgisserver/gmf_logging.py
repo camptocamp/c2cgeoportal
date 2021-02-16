@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019-2020, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -12,12 +12,13 @@ import os
 from typing import IO, Any, Optional
 
 import c2cwsgiutils.pyramid_logging
+import qgis.server
 from qgis.core import Qgis, QgsMessageLog
 
-SERVER_IFACE = None
+SERVER_IFACE: qgis.server.QgsServerInterface = None
 
 
-def init(server_iface):
+def init(server_iface: qgis.server.QgsServerInterface) -> None:
     global SERVER_IFACE  # pylint: disable=global-statement
     SERVER_IFACE = server_iface
     logging.config.fileConfig(
@@ -67,7 +68,7 @@ class JsonLogHandler(c2cwsgiutils.pyramid_logging.JsonLogHandler):
     Log to stdout in JSON.
     """
 
-    def __init__(self, stream: Optional[IO[str]] = None):
+    def __init__(self, stream: Optional[IO[str]] = None) -> None:
         super().__init__(stream)
         self.addFilter(_REQUEST_FILTER)
 

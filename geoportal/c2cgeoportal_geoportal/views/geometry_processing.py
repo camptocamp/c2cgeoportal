@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,28 +28,32 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Optional
+
+import pyramid.request
 from geoalchemy2.shape import from_shape, to_shape
 from geojson import loads
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 from shapely.geometry import asShape
+from shapely.geometry.base import BaseGeometry
 from sqlalchemy import func
 
 from c2cgeoportal_commons.models import DBSession
 
 
 class GeometryProcessing:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
 
     @view_config(route_name="difference", renderer="geojson")
-    def difference(self):
+    def difference(self) -> Optional[BaseGeometry]:
         body = loads(self.request.body)
         if (
             "geometries" not in body
             or not isinstance(body["geometries"], list)
             or len(body["geometries"]) != 2
-        ):  # pragma: no cover
+        ):
             raise HTTPBadRequest(
                 """Wrong body, it should be like that:
             {

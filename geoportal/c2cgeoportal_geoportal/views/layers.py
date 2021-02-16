@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2020, Camptocamp SA
+# Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,9 +31,12 @@ import json
 import logging
 import os
 from datetime import datetime
-from typing import Dict, List, Union
+from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Tuple, Union, cast
 
-import geojson
+import geojson.geometry
+import pyramid.request
+import pyramid.response
+import sqlalchemy.ext.declarative.api
 from geoalchemy2 import Geometry
 from geoalchemy2 import func as ga_func
 from geoalchemy2.shape import from_shape, to_shape
@@ -59,27 +62,23 @@ from sqlalchemy.sql import and_, or_
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import get_roles_id
-from c2cgeoportal_geoportal.lib.caching import (
-    NO_CACHE,
-    PRIVATE_CACHE,
-    PUBLIC_CACHE,
-    get_region,
-    set_common_headers,
-)
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class, get_table
 
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports.useless-suppression
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
 
 
 class Layers:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings.get("layers", {})
         self.layers_enum_config = self.settings.get("enum")
 
     @staticmethod
-    def _get_geom_col_info(layer):
+    def _get_geom_col_info(layer: "main.Layer") -> Tuple[str, int]:
         """Return information about the layer's geometry column, namely
         a ``(name, srid)`` tuple, where ``name`` is the name of the
         geometry column, and ``srid`` its srid.
@@ -90,16 +89,16 @@ class Layers:
         mapped_class = get_layer_class(layer)
         for p in class_mapper(mapped_class).iterate_properties:
             if not isinstance(p, ColumnProperty):
-                continue  # pragma: no cover
+                continue
             col = p.columns[0]
             if isinstance(col.type, Geometry):
                 return col.name, col.type.srid
         raise HTTPInternalServerError(
             'Failed getting geometry column info for table "{0!s}".'.format(layer.geo_table)
-        )  # pragma: no cover
+        )
 
     @staticmethod
-    def _get_layer(layer_id):
+    def _get_layer(layer_id: int) -> "main.Layer":
         """ Return a ``Layer`` object for ``layer_id``. """
         from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
 
@@ -109,14 +108,14 @@ class Layers:
             query = query.filter(Layer.id == layer_id)
             layer, geo_table = query.one()
         except NoResultFound:
-            raise HTTPNotFound("Layer {0:d} not found".format(layer_id))
-        except MultipleResultsFound:  # pragma: no cover
-            raise HTTPInternalServerError("Too many layers found with id {0:d}".format(layer_id))
-        if not geo_table:  # pragma: no cover
-            raise HTTPNotFound("Layer {0:d} has no geo table".format(layer_id))
-        return layer
+            raise HTTPNotFound("Layer {:d} not found".format(layer_id))
+        except MultipleResultsFound:
+            raise HTTPInternalServerError("Too many layers found with id {:d}".format(layer_id))
+        if not geo_table:
+            raise HTTPNotFound("Layer {:d} has no geo table".format(layer_id))
+        return cast("main.Layer", layer)
 
-    def _get_layers_for_request(self):
+    def _get_layers_for_request(self) -> Generator["main.Layer", None, None]:
         """A generator function that yields ``Layer`` objects based
         on the layer ids found in the ``layer_id`` matchdict."""
         try:
@@ -128,26 +127,26 @@ class Layers:
         except ValueError:
             raise HTTPBadRequest(
                 "A Layer id in '{0!s}' is not an integer".format(self.request.matchdict["layer_id"])
-            )  # pragma: no cover
+            )
 
-    def _get_layer_for_request(self):
+    def _get_layer_for_request(self) -> "main.Layer":
         """Return a ``Layer`` object for the first layer id found
         in the ``layer_id`` matchdict."""
         return next(self._get_layers_for_request())
 
-    def _get_protocol_for_layer(self, layer, **kwargs):
+    def _get_protocol_for_layer(self, layer: "main.Layer", **kwargs: Any) -> Protocol:
         """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
         cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
 
-    def _get_protocol_for_request(self, **kwargs):
+    def _get_protocol_for_request(self, **kwargs: Any) -> Protocol:
         """Returns a papyrus ``Protocol`` for the first layer
         id found in the ``layer_id`` matchdict."""
         layer = self._get_layer_for_request()
         return self._get_protocol_for_layer(layer, **kwargs)
 
-    def _proto_read(self, layer):
+    def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
         """ Read features for the layer based on the self.request. """
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
@@ -175,7 +174,7 @@ class Layers:
                 return proto.read(self.request)
             use_srid = srid
             collect_ra.append(to_shape(ra))
-        if not collect_ra:  # pragma: no cover
+        if not collect_ra:
             raise HTTPForbidden()
 
         filter1_ = create_filter(self.request, cls, geom_attr)
@@ -183,11 +182,14 @@ class Layers:
         filter2_ = ga_func.ST_Contains(from_shape(ra, use_srid), getattr(cls, geom_attr))
         filter_ = filter2_ if filter1_ is None else and_(filter1_, filter2_)
 
-        return proto.read(self.request, filter=filter_)
+        feature = proto.read(self.request, filter=filter_)
+        if isinstance(feature, HTTPException):
+            raise feature  # pylint: disable=raising-non-exception
+        return feature
 
     @view_config(route_name="layers_read_many", renderer="geojson")
-    def read_many(self):
-        set_common_headers(self.request, "layers", NO_CACHE)
+    def read_many(self) -> FeatureCollection:
+        set_common_headers(self.request, "layers", Cache.NO)
 
         features = []
         for layer in self._get_layers_for_request():
@@ -198,14 +200,14 @@ class Layers:
         return FeatureCollection(features)
 
     @view_config(route_name="layers_read_one", renderer="geojson")
-    def read_one(self):
+    def read_one(self) -> Feature:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
             Role,
         )
 
-        set_common_headers(self.request, "layers", NO_CACHE)
+        set_common_headers(self.request, "layers", Cache.NO)
 
         layer = self._get_layer_for_request()
         protocol = self._get_protocol_for_layer(layer)
@@ -218,7 +220,7 @@ class Layers:
         if self.request.user is None:
             raise HTTPForbidden()
         geom = feature.geometry
-        if not geom or isinstance(geom, geojson.geometry.Default):  # pragma: no cover
+        if not geom or isinstance(geom, geojson.geometry.Default):
             return feature
         shape = asShape(geom)
         srid = self._get_geom_col_info(layer)[1]
@@ -237,21 +239,24 @@ class Layers:
         return feature
 
     @view_config(route_name="layers_count", renderer="string")
-    def count(self):
-        set_common_headers(self.request, "layers", NO_CACHE)
+    def count(self) -> int:
+        set_common_headers(self.request, "layers", Cache.NO)
 
         protocol = self._get_protocol_for_request()
-        return protocol.count(self.request)
+        count = protocol.count(self.request)
+        if isinstance(count, HTTPException):
+            raise count
+        return cast(int, count)
 
     @view_config(route_name="layers_create", renderer="geojson")
-    def create(self):
+    def create(self) -> Optional[FeatureCollection]:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
             Role,
         )
 
-        set_common_headers(self.request, "layers", NO_CACHE)
+        set_common_headers(self.request, "layers", Cache.NO)
 
         if self.request.user is None:
             raise HTTPForbidden()
@@ -260,7 +265,7 @@ class Layers:
 
         layer = self._get_layer_for_request()
 
-        def check_geometry(_, feature, obj):
+        def check_geometry(_: Any, feature: Feature, obj: Any) -> None:
             del obj  # unused
             geom = feature.geometry
             if geom and not isinstance(geom, geojson.geometry.Default):
@@ -301,14 +306,14 @@ class Layers:
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
 
     @view_config(route_name="layers_update", renderer="geojson")
-    def update(self):
+    def update(self) -> Feature:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
             Role,
         )
 
-        set_common_headers(self.request, "layers", NO_CACHE)
+        set_common_headers(self.request, "layers", Cache.NO)
 
         if self.request.user is None:
             raise HTTPForbidden()
@@ -318,7 +323,7 @@ class Layers:
         feature_id = self.request.matchdict.get("feature_id")
         layer = self._get_layer_for_request()
 
-        def check_geometry(_, feature, obj):
+        def check_geometry(_: Any, feature: Feature, obj: Any) -> None:
             # we need both the "original" and "new" geometry to be
             # within the restriction area
             geom_attr, srid = self._get_geom_col_info(layer)
@@ -350,8 +355,10 @@ class Layers:
         protocol = self._get_protocol_for_layer(layer, before_update=check_geometry)
         try:
             feature = protocol.update(self.request, feature_id)
+            if isinstance(feature, HTTPException):
+                raise feature
             self._log_last_update(layer, feature)
-            return feature
+            return cast(Feature, feature)
         except TopologicalError as e:
             self.request.response.status_int = 400
             return {"error_type": "validation_error", "message": str(e)}
@@ -361,7 +368,7 @@ class Layers:
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
 
     @staticmethod
-    def _validate_geometry(geom):
+    def _validate_geometry(geom: Geometry) -> None:
         if geom is not None:
             simple = models.DBSession.query(func.ST_IsSimple(func.ST_GeomFromEWKB(geom))).scalar()
             if not simple:
@@ -371,7 +378,7 @@ class Layers:
                 reason = models.DBSession.query(func.ST_IsValidReason(func.ST_GeomFromEWKB(geom))).scalar()
                 raise TopologicalError(reason)
 
-    def _log_last_update(self, layer, feature):
+    def _log_last_update(self, layer: "main.Layer", feature: Feature) -> None:
         last_update_date = self.get_metadata(layer, "lastUpdateDateColumn")
         if last_update_date is not None:
             setattr(feature, last_update_date, datetime.now())
@@ -381,22 +388,22 @@ class Layers:
             setattr(feature, last_update_user, self.request.user.id)
 
     @staticmethod
-    def get_metadata(layer, key, default=None):
+    def get_metadata(layer: "main.Layer", key: str, default: str = None) -> Optional[str]:
         metadatas = layer.get_metadatas(key)
         if len(metadatas) == 1:
             metadata = metadatas[0]
-            return metadata.value
+            return cast(str, metadata.value)
         return default
 
-    def _get_validation_setting(self, layer):
+    def _get_validation_setting(self, layer: "main.Layer") -> bool:
         # The validation UIMetadata is stored as a string, not a boolean
         should_validate = self.get_metadata(layer, "geometryValidation", None)
         if should_validate:
             return should_validate.lower() != "false"
-        return self.settings.get("geometry_validation", False)
+        return cast(bool, self.settings.get("geometry_validation", False))
 
     @view_config(route_name="layers_delete")
-    def delete(self):
+    def delete(self) -> pyramid.response.Response:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -409,7 +416,7 @@ class Layers:
         feature_id = self.request.matchdict.get("feature_id")
         layer = self._get_layer_for_request()
 
-        def security_cb(_, obj):
+        def security_cb(_: Any, obj: Any) -> None:
             geom_attr = getattr(obj, self._get_geom_col_info(layer)[0])
             allowed = models.DBSession.query(func.count(RestrictionArea.id))
             allowed = allowed.join(RestrictionArea.roles)
@@ -425,12 +432,14 @@ class Layers:
 
         protocol = self._get_protocol_for_layer(layer, before_delete=security_cb)
         response = protocol.delete(self.request, feature_id)
-        set_common_headers(self.request, "layers", NO_CACHE, response=response)
+        if isinstance(response, HTTPException):
+            raise response  # pylint: disable=raising-non-exception
+        set_common_headers(self.request, "layers", Cache.NO, response=response)
         return response
 
     @view_config(route_name="layers_metadata", renderer="xsd")
-    def metadata(self):
-        set_common_headers(self.request, "layers", PRIVATE_CACHE)
+    def metadata(self) -> pyramid.response.Response:
+        set_common_headers(self.request, "layers", Cache.PRIVATE)
 
         layer = self._get_layer_for_request()
         if not layer.public and self.request.user is None:
@@ -439,28 +448,28 @@ class Layers:
         return get_layer_class(layer, with_last_update_columns=True)
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
-    def enumerate_attribute_values(self):
-        set_common_headers(self.request, "layers", PUBLIC_CACHE)
+    def enumerate_attribute_values(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "layers", Cache.PUBLIC)
 
-        if self.layers_enum_config is None:  # pragma: no cover
+        if self.layers_enum_config is None:
             raise HTTPInternalServerError("Missing configuration")
         layername = self.request.matchdict["layer_name"]
         fieldname = self.request.matchdict["field_name"]
         # TODO check if layer is public or not
 
-        return self._enumerate_attribute_values(layername, fieldname)
+        return cast(Dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
 
     @CACHE_REGION.cache_on_arguments()
-    def _enumerate_attribute_values(self, layername, fieldname):
-        if layername not in self.layers_enum_config:  # pragma: no cover
+    def _enumerate_attribute_values(self, layername: str, fieldname: str) -> Dict[str, Any]:
+        if layername not in self.layers_enum_config:
             raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))
 
         layerinfos = self.layers_enum_config[layername]
-        if fieldname not in layerinfos["attributes"]:  # pragma: no cover
+        if fieldname not in layerinfos["attributes"]:
             raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
         dbsession_name = layerinfos.get("dbsession", "dbsession")
         dbsession = models.DBSessions.get(dbsession_name)
-        if dbsession is None:  # pragma: no cover
+        if dbsession is None:
             raise HTTPInternalServerError(
                 "No dbsession found for layer '{0!s}' ({1!s})".format(layername, dbsession_name)
             )
@@ -469,7 +478,9 @@ class Layers:
         return enum
 
     @staticmethod
-    def query_enumerate_attribute_values(dbsession, layerinfos, fieldname):
+    def query_enumerate_attribute_values(
+        dbsession: sqlalchemy.orm.Session, layerinfos: Dict[str, Any], fieldname: str
+    ) -> List[str]:
         attrinfos = layerinfos["attributes"][fieldname]
         table = attrinfos["table"]
         layertable = get_table(table, session=dbsession)
@@ -480,10 +491,12 @@ class Layers:
         if "separator" in attrinfos:
             separator = attrinfos["separator"]
             attribute = func.unnest(func.string_to_array(func.string_agg(attribute, separator), separator))
-        return dbsession.query(distinct(attribute)).order_by(attribute).all()
+        return cast(List[str], dbsession.query(distinct(attribute)).order_by(attribute).all())
 
 
-def get_layer_class(layer, with_last_update_columns=False):
+def get_layer_class(
+    layer: "main.Layer", with_last_update_columns: bool = False
+) -> sqlalchemy.ext.declarative.api.ConcreteBase:
     """
     Get the SQLAlchemy class to edit a GeoMapFish layer
 
@@ -543,7 +556,7 @@ def get_layer_class(layer, with_last_update_columns=False):
     return cls
 
 
-def get_layer_metadatas(layer):
+def get_layer_metadatas(layer: "main.Layer") -> List[Dict[str, Any]]:
     cls = get_layer_class(layer, with_last_update_columns=True)
     edit_columns = []
 
@@ -551,7 +564,7 @@ def get_layer_metadatas(layer):
         if isinstance(column_property, ColumnProperty):
 
             if len(column_property.columns) != 1:
-                raise NotImplementedError  # pragma: no cover
+                raise NotImplementedError
 
             column = column_property.columns[0]
 
@@ -586,7 +599,7 @@ def get_layer_metadatas(layer):
     return edit_columns
 
 
-def _convert_column_type(column_type):
+def _convert_column_type(column_type: object) -> Dict[str, Any]:
     # SIMPLE_XSD_TYPES
     for cls, xsd_type in XSDGenerator.SIMPLE_XSD_TYPES.items():
         if isinstance(column_type, cls):
@@ -606,7 +619,7 @@ def _convert_column_type(column_type):
             "The geometry type '{}' is not supported, supported types: {}".format(
                 geometry_type, ",".join(XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES)
             )
-        )  # pragma: no cover
+        )
 
     # Enumeration type
     if isinstance(column_type, Enum):
@@ -624,17 +637,17 @@ def _convert_column_type(column_type):
 
     # Numeric Type
     if isinstance(column_type, Numeric):
-        xsd_type = {"type": "xsd:decimal"}
+        xsd_type2: Dict[str, Any] = {"type": "xsd:decimal"}
         if column_type.scale is None and column_type.precision is None:
-            return xsd_type
+            return xsd_type2
 
         if column_type.scale is not None:
-            xsd_type["fractionDigits"] = int(column_type.scale)
+            xsd_type2["fractionDigits"] = int(column_type.scale)
         if column_type.precision is not None:
-            xsd_type["totalDigits"] = int(column_type.precision)
-        return xsd_type
+            xsd_type2["totalDigits"] = int(column_type.precision)
+        return xsd_type2
 
     raise NotImplementedError(
         "The type '{}' is not supported, supported types: "
         "Geometry, Enum, String, Text, Unicode, UnicodeText, Numeric".format(type(column_type).__name__)
-    )  # pragma: no cover
+    )

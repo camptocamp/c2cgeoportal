@@ -67,7 +67,7 @@ def test_data(clean_dbsession):
     )
     from c2cgeoportal_commons.models.static import User
 
-    DBSession = clean_dbsession  # noqa: N806
+    DBSession = clean_dbsession  # noqa: ignore=N806
 
     dbsession = DBSession()
 
@@ -203,14 +203,14 @@ def wms_use_layer_ids(test_data):
 
 @pytest.mark.usefixtures("server_iface", "qgs_access_control_filter", "test_data")
 class TestOGCServerAccessControl:
-    def test_init(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_init(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
         assert ogcserver_accesscontrol.ogcserver.name == "qgisserver1"
 
-    def test_ogc_layer_name(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_ogc_layer_name(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
@@ -224,7 +224,7 @@ class TestOGCServerAccessControl:
             assert expected == ogcserver_accesscontrol.ogc_layer_name(layer)
 
     @pytest.mark.usefixtures("wms_use_layer_ids")
-    def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
@@ -233,7 +233,7 @@ class TestOGCServerAccessControl:
         layer = test_data["project"].mapLayersByName("private_layer1")[0]
         assert layer.id() == ogcserver_accesscontrol.ogc_layer_name(layer)
 
-    def test_get_layers(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_get_layers(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
@@ -255,7 +255,7 @@ class TestOGCServerAccessControl:
         for key in expected.keys():
             assert set(expected[key]) == {layer.name for layer in layers[key]}
 
-    def test_get_roles(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_get_roles(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
@@ -283,7 +283,7 @@ class TestOGCServerAccessControl:
             }
             assert expected_roles == {role.id for role in ogcserver_accesscontrol.get_roles(dbsession)}
 
-    def test_get_restriction_areas(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_get_restriction_areas(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         from c2cgeoportal_commons.models.main import LayerWMS, Role
 
         dbsession = DBSession()
@@ -311,7 +311,7 @@ class TestOGCServerAccessControl:
                 (layer_names, rw, role_names), expected
             )
 
-    def test_get_area(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_get_area(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
@@ -340,7 +340,7 @@ class TestOGCServerAccessControl:
             ), 'get_area with "{}", "{}" should return {}'.format(user_name, layer_name, expected)
 
     @staticmethod
-    def test_layer_permissions(server_iface, DBSession, test_data):  # noqa: N803
+    def test_layer_permissions(server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
@@ -375,7 +375,7 @@ class TestOGCServerAccessControl:
                 assert value == getattr(permissions, key)
 
     @staticmethod
-    def test_cache_key(server_iface, DBSession, test_data):  # noqa: N803
+    def test_cache_key(server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
@@ -406,14 +406,14 @@ class TestOGCServerAccessControl:
     "test_data",
 )
 class TestUnavailableOGCServerAccessControl:
-    def test_init(self, server_iface, DBSession):  # noqa: N803
+    def test_init(self, server_iface, DBSession):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "unavailable", "no_project", 21781, lambda: dbsession
         )
         assert ogcserver_accesscontrol.ogcserver is None
 
-    def test_get_layers(self, server_iface, DBSession):  # noqa: N803
+    def test_get_layers(self, server_iface, DBSession):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "unavailable", "no_project", 21781, lambda: dbsession
@@ -421,7 +421,7 @@ class TestUnavailableOGCServerAccessControl:
 
         assert ogcserver_accesscontrol.get_layers(dbsession) == {}
 
-    def test_layer_permissions(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_layer_permissions(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "unavailable", "no_project", 21781, lambda: dbsession
@@ -447,7 +447,7 @@ class TestUnavailableOGCServerAccessControl:
             for key, value in expected.items():
                 assert value == getattr(permissions, key)
 
-    def test_layer_filter_subset_string(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_layer_filter_subset_string(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "unavailable", "no_project", 21781, lambda: dbsession
@@ -462,7 +462,7 @@ class TestUnavailableOGCServerAccessControl:
             layer = test_data["project"].mapLayersByName(layer_name)[0]
             assert ogcserver_accesscontrol.layerFilterSubsetString(layer) == expected
 
-    def test_layer_filter_expression(self, server_iface, DBSession, test_data):  # noqa: N803
+    def test_layer_filter_expression(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "unavailable", "no_project", 21781, lambda: dbsession

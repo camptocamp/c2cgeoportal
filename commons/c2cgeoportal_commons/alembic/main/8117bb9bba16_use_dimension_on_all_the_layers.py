@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Use dimension on all the layers
 
 Revision ID: 8117bb9bba16
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("wmts_dimension", "dimension", schema=schema)
@@ -59,7 +61,7 @@ def upgrade():
         )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     with op.batch_alter_table("dimension", schema=schema) as table_op:

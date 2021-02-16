@@ -34,6 +34,7 @@ import os
 import re
 import subprocess
 import sys
+from typing import Any, Dict, Iterable, List, Optional, Type, Union, cast
 
 import requests
 import yaml
@@ -41,7 +42,7 @@ from pyramid.compat import input_
 from pyramid.scaffolds.template import Template
 
 
-class BaseTemplate(Template):  # pragma: no cover
+class BaseTemplate(Template):
     """
     A class that can be used as a base class for c2cgeoportal scaffolding
     templates.
@@ -49,7 +50,9 @@ class BaseTemplate(Template):  # pragma: no cover
     Greatly inspired from ``pyramid.scaffolds.template.PyramidTemplate``.
     """
 
-    def pre(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
+    def pre(  # pylint: disable=arguments-differ
+        self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]
+    ) -> None:
         """
         Overrides ``pyramid.scaffold.template.Template.pre``, adding
         several variables to the default variables list. Also prevents
@@ -59,7 +62,7 @@ class BaseTemplate(Template):  # pragma: no cover
 
         self._get_vars(vars_, "package", "Get a package name: ")
         self._get_vars(vars_, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
-        srid = vars_["srid"]
+        srid = cast(int, vars_["srid"])
         extent = self._epsg2bbox(srid)
         self._get_vars(
             vars_,
@@ -69,9 +72,10 @@ class BaseTemplate(Template):  # pragma: no cover
             if extent
             else "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid),
         )
-        match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", vars_["extent"])
+        match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", cast(str, vars_["extent"]))
         if match is not None:
             extent = [match.group(n + 1) for n in range(4)]
+        assert extent is not None
         vars_["extent"] = ",".join(extent)
         vars_["extent_mapserver"] = " ".join(extent)
 
@@ -94,17 +98,17 @@ class BaseTemplate(Template):  # pragma: no cover
         vars_["geomapfish_main_version"] = os.environ["MAJOR_VERSION"]
 
     @staticmethod
-    def out(msg):
+    def out(msg: str) -> None:
         print(msg)
 
     @staticmethod
-    def _get_vars(vars_, name, prompt, type_=None):
+    def _get_vars(vars_: Dict[str, Any], name: str, prompt: str, type_: Type = None) -> None:
         """
         Set an attribute in the vars dict.
         """
 
         if name.upper() in os.environ and os.environ[name.upper()] != "":
-            value = os.environ[name.upper()]
+            value = os.environ.get(name.upper())
         else:
             value = vars_.get(name)
 
@@ -113,7 +117,7 @@ class BaseTemplate(Template):  # pragma: no cover
 
         if type_ is not None and not isinstance(value, type_):
             try:
-                type_(value)
+                value = type_(value)
             except ValueError:
                 print(("The attribute {}={} is not a {}".format(name, value, type_)))
                 sys.exit(1)
@@ -121,7 +125,7 @@ class BaseTemplate(Template):  # pragma: no cover
         vars_[name] = value
 
     @staticmethod
-    def _epsg2bbox(srid):
+    def _epsg2bbox(srid: int) -> Optional[List[str]]:
         try:
             r = requests.get("https://epsg.io/?format=json&q={}".format(srid))
             bbox = r.json()["results"][0]["bbox"]
@@ -149,7 +153,7 @@ class BaseTemplate(Template):  # pragma: no cover
         return None
 
 
-def fix_executables(output_dir, patterns, in_const_create_template=False):
+def fix_executables(output_dir: str, patterns: Iterable[str], in_const_create_template: bool = False) -> None:
     if os.name == "posix":
         for pattern in patterns:
             if in_const_create_template:
@@ -160,24 +164,26 @@ def fix_executables(output_dir, patterns, in_const_create_template=False):
                 subprocess.check_call(["chmod", "+x", file_])
 
 
-def _gen_authtkt_secret():
+def _gen_authtkt_secret() -> str:
     if os.environ.get("CI") == "true":
         return "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
     return subprocess.check_output(["pwgen", "64"]).decode().strip()
 
 
-class TemplateCreate(BaseTemplate):  # pragma: no cover
+class TemplateCreate(BaseTemplate):
     _template_dir = "create"
     summary = "Template used to create a c2cgeoportal project"
 
-    def pre(self, command, output_dir, vars_):
+    def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         """
         Overrides the base template
         """
         super().pre(command, output_dir, vars_)
         vars_["authtkt_secret"] = _gen_authtkt_secret()
 
-    def post(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
+    def post(  # pylint: disable=arguments-differ
+        self, command: str, output_dir: str, vars_: Dict[str, str]
+    ) -> None:
         """
         Overrides the base template class to print the next step.
         """
@@ -187,12 +193,12 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         super().post(command, output_dir, vars_)
 
 
-class TemplateUpdate(BaseTemplate):  # pragma: no cover
+class TemplateUpdate(BaseTemplate):
     _template_dir = "update"
     summary = "Template used to update a c2cgeoportal project"
 
     @staticmethod
-    def open_project(output_dir, vars_):
+    def open_project(output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         project_file = os.path.join(output_dir, "project.yaml")
         if os.path.exists(project_file):
             with open(project_file, "r") as f:
@@ -204,7 +210,7 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
             print("Missing project file: " + project_file)
             sys.exit(1)
 
-    def pre(self, command, output_dir, vars_):
+    def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         """
         Overrides the base template
         """
@@ -215,7 +221,9 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
 
         super().pre(command, output_dir, vars_)
 
-    def post(self, command, output_dir, vars_):  # pylint: disable=arguments-differ
+    def post(  # pylint: disable=arguments-differ
+        self, command: str, output_dir: str, vars_: Dict[str, str]
+    ) -> None:
         """
         Overrides the base template class to print "Welcome to c2cgeoportal!"
         after a successful scaffolding rendering.

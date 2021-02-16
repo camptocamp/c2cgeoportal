@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2020, Camptocamp SA
+# Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,19 +31,24 @@
 import gettext
 import os
 import sys
-from argparse import ArgumentParser
-from typing import Any, Dict, List, Set
+from argparse import ArgumentParser, Namespace
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
 
+import pyramid.config
 import transaction
 from sqlalchemy import func
+from sqlalchemy.orm.session import Session
 
-from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
+from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
 from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
+if TYPE_CHECKING:
+    import c2cgeoportal_commons.models.main
 
-def main():
+
+def main() -> None:
     parser = ArgumentParser(
         prog=sys.argv[0],
         add_help=True,
@@ -95,7 +100,7 @@ def main():
 
 
 class Import:
-    def __init__(self, session, settings, options):
+    def __init__(self, session: Session, settings: pyramid.config.Configurator, options: Namespace):
         self.options = options
         self.imported: Set[Any] = set()
         package = settings["package"]
@@ -108,7 +113,7 @@ class Import:
         if fts_missing_langs:
             msg = "Keys {} are missing in fulltextsearch languages configuration.".format(fts_missing_langs)
             if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                print(colorize(msg, RED))
+                print(colorize(msg, Color.RED))
                 self.languages = [lang for lang in self.languages if lang in self.fts_languages]
             else:
                 raise KeyError(KeyError(msg))
@@ -122,7 +127,9 @@ class Import:
         )
 
         self.session = session
-        self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))  # noqa
+        self.session.execute(
+            FullTextSearch.__table__.delete().where(FullTextSearch.from_theme)  # pylint: disable=no-member
+        )
 
         self._: Dict[str, gettext.NullTranslations] = {}
         for lang in self.languages:
@@ -156,7 +163,13 @@ class Import:
             for theme in self.session.query(Theme).all():
                 self._add_theme(theme, role)
 
-    def _add_fts(self, item, interface, action, role):
+    def _add_fts(
+        self,
+        item: "c2cgeoportal_commons.models.main.TreeItem",
+        interface: "c2cgeoportal_commons.models.main.Interface",
+        action: str,
+        role: Optional["c2cgeoportal_commons.models.main.Role"],
+    ) -> None:
         from c2cgeoportal_commons.models.main import FullTextSearch  # pylint: disable=import-outside-toplevel
 
         key = (
@@ -184,7 +197,11 @@ class Import:
                 fts.from_theme = True
                 self.session.add(fts)
 
-    def _add_theme(self, theme, role=None):
+    def _add_theme(
+        self,
+        theme: "c2cgeoportal_commons.models.main.Theme",
+        role: "c2cgeoportal_commons.models.main.Role" = None,
+    ) -> None:
         fill = False
         for interface in self.interfaces:
             if interface in theme.interfaces:
@@ -198,13 +215,29 @@ class Import:
                     if role is None or theme.id not in self.public_theme[interface.id]:
                         self._add_fts(theme, interface, "add_theme", role)
 
-    def _add_block(self, group, interface, role):
+    def _add_block(
+        self,
+        group: "c2cgeoportal_commons.models.main.LayerGroup",
+        interface: "c2cgeoportal_commons.models.main.Interface",
+        role: Optional["c2cgeoportal_commons.models.main.Role"],
+    ) -> bool:
         return self._add_group(group, interface, self.options.blocks, role)
 
-    def _add_folder(self, group, interface, role):
+    def _add_folder(
+        self,
+        group: "c2cgeoportal_commons.models.main.LayerGroup",
+        interface: "c2cgeoportal_commons.models.main.Interface",
+        role: Optional["c2cgeoportal_commons.models.main.Role"],
+    ) -> bool:
         return self._add_group(group, interface, self.options.folders, role)
 
-    def _add_group(self, group, interface, export, role):
+    def _add_group(
+        self,
+        group: "c2cgeoportal_commons.models.main.LayerGroup",
+        interface: "c2cgeoportal_commons.models.main.Interface",
+        export: bool,
+        role: Optional["c2cgeoportal_commons.models.main.Role"],
+    ) -> bool:
         from c2cgeoportal_commons.models.main import LayerGroup  # pylint: disable=import-outside-toplevel
 
         fill = False
@@ -224,13 +257,20 @@ class Import:
         return fill
 
     @staticmethod
-    def _layer_visible(layer, role):
+    def _layer_visible(
+        layer: "c2cgeoportal_commons.models.main.Layer", role: "c2cgeoportal_commons.models.main.Role"
+    ) -> bool:
         for restrictionarea in layer.restrictionareas:
             if role in restrictionarea.roles:
                 return True
         return False
 
-    def _add_layer(self, layer, interface, role):
+    def _add_layer(
+        self,
+        layer: "c2cgeoportal_commons.models.main.Layer",
+        interface: "c2cgeoportal_commons.models.main.Interface",
+        role: Optional["c2cgeoportal_commons.models.main.Role"],
+    ) -> bool:
         if role is None:
             fill = layer.public and interface in layer.interfaces
         else:

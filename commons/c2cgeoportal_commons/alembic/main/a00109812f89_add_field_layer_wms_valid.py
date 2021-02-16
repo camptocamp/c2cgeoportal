@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add field layer_wms.valid
 
 Revision ID: a00109812f89
@@ -45,13 +47,13 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
     op.add_column("layer_wms", sa.Column("valid", sa.Boolean(), nullable=True), schema=schema)
     op.add_column("layer_wms", sa.Column("invalid_reason", sa.Unicode(), nullable=True), schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
     op.drop_column("layer_wms", "valid", schema=schema)
     op.drop_column("layer_wms", "invalid_reason", schema=schema)

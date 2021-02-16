@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,12 @@
 
 
 import uuid
+from typing import Any, Callable, Dict, Tuple
 from urllib.parse import urljoin
 
 import pyramid.registry
+import pyramid.request
+import pyramid.response
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 
@@ -39,12 +42,14 @@ CACHE_REGION = get_region("std")
 
 
 @CACHE_REGION.cache_on_arguments()
-def get_cache_version():
+def get_cache_version() -> str:
     """Return a cache version that is regenerate after each cache invalidation"""
     return uuid.uuid4().hex
 
 
-def version_cache_buster(request, subpath, kw):  # pragma: no cover
+def version_cache_buster(
+    request: pyramid.request.Request, subpath: str, kw: Dict[str, Any]
+) -> Tuple[str, Dict[str, Any]]:
     del request  # unused
     return urljoin(get_cache_version() + "/", subpath), kw
 
@@ -52,11 +57,15 @@ def version_cache_buster(request, subpath, kw):  # pragma: no cover
 class CachebusterTween:
     """ Get back the cachebuster URL. """
 
-    def __init__(self, handler, registry: pyramid.registry.Registry):
+    def __init__(
+        self,
+        handler: Callable[[pyramid.request.Request], pyramid.response.Response],
+        registry: pyramid.registry.Registry,
+    ):
         self.handler = handler
         self.cache_path = registry.settings["cache_path"]
 
-    def __call__(self, request):
+    def __call__(self, request: pyramid.request.Request) -> pyramid.response.Response:
         path = request.path_info.split("/")
         if len(path) > 1 and path[1] in self.cache_path:
             # remove the cache buster

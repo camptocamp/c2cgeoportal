@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,8 +30,9 @@
 
 import logging
 import time
-from typing import Any, Dict
+from typing import Any, Dict, cast
 
+import pyramid.request
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.auth import auth_view
 from c2cwsgiutils.debug import get_size
@@ -44,12 +45,12 @@ LOG = logging.getLogger(__name__)
 
 
 @view_config(route_name="memory", renderer="fast_json")
-def memory(request):
+def memory(request: pyramid.request.Request) -> Dict[str, Any]:
     auth_view(request)
-    return _memory()
+    return cast(Dict[str, Any], _memory())
 
 
-def _nice_type_name(obj, dogpile_cache=False):
+def _nice_type_name(obj: Any, dogpile_cache: bool = False) -> str:
     # See: https://dogpilecache.sqlalchemy.org/en/latest/api.html#dogpile.cache.api.CachedValue
     if dogpile_cache:
         obj, _ = obj
@@ -57,7 +58,7 @@ def _nice_type_name(obj, dogpile_cache=False):
     return "{}.{}".format(type_.__module__, type_.__name__)
 
 
-def _process_dict(dict_, dogpile_cache=False):
+def _process_dict(dict_: Dict, dogpile_cache: bool = False) -> Dict[str, Any]:
     # Timeout after one minute, must be set to a bit less that the timeout of the broadcast
     timeout = time.monotonic() + 20
 
@@ -73,7 +74,7 @@ def _process_dict(dict_, dogpile_cache=False):
                 }
                 for key, value in dict_.items()
             ],
-            key=lambda i: -i["size_kb"],
+            key=lambda i: cast(float, -i["size_kb"]),
         ),
         "id": id(dict_),
         "size_kb": get_size(dict_) / 1024 if time.monotonic() < timeout else -1,

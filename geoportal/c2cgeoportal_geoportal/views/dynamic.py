@@ -30,8 +30,9 @@
 
 import re
 import urllib.parse
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Union, cast
 
+import pyramid.request
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
 from sqlalchemy import func
@@ -39,22 +40,22 @@ from sqlalchemy import func
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 
 CACHE_REGION = get_region("std")
 
 
 class DynamicView:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings
         self.interfaces_config = self.settings["interfaces_config"]
 
-    def get(self, value, interface):
-        return self.interfaces_config.get(interface, {}).get(value, {})
+    def get(self, value: Dict[str, Any], interface: str) -> Dict[str, Any]:
+        return cast(Dict[str, Any], self.interfaces_config.get(interface, {}).get(value, {}))
 
     @CACHE_REGION.cache_on_arguments()
-    def _fulltextsearch_groups(self):  # pylint: disable=no-self-use
+    def _fulltextsearch_groups(self) -> List[str]:  # pylint: disable=no-self-use
         return [
             group[0]
             for group in models.DBSession.query(func.distinct(main.FullTextSearch.layer_name))
@@ -62,7 +63,9 @@ class DynamicView:
             .all()
         ]
 
-    def _interface(self, interface_config, interface_name, dynamic):
+    def _interface(
+        self, interface_config: Dict[str, Any], interface_name: str, dynamic: Dict[str, Any]
+    ) -> Dict[str, Any]:
 
         if "extends" in interface_config:
             constants = self._interface(
@@ -99,7 +102,7 @@ class DynamicView:
         return constants
 
     @view_config(route_name="dynamic", renderer="fast_json")
-    def dynamic(self):
+    def dynamic(self) -> Dict[str, Any]:
         interface_name = self.request.params.get("interface")
 
         if interface_name not in self.interfaces_config:
@@ -160,5 +163,5 @@ class DynamicView:
                 else:
                     constants["redirectUrl"] = no_redirect_url
 
-        set_common_headers(self.request, "dynamic", NO_CACHE)
+        set_common_headers(self.request, "dynamic", Cache.NO)
         return {"constants": constants, "doRedirect": do_redirect, "redirectUrl": url}

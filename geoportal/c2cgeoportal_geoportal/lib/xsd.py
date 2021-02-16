@@ -29,15 +29,18 @@
 
 
 from io import BytesIO
+from typing import Any, Callable, Dict, Optional, Type, cast
 
+import sqlalchemy.sql.schema
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
+from sqlalchemy.ext.declarative.api import DeclarativeMeta
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
 
 class XSDGenerator(PapyrusXSDGenerator):
-    def add_class_properties_xsd(self, tb, cls):
+    def add_class_properties_xsd(self, tb: str, cls: DeclarativeMeta) -> None:
         """Add the XSD for the class properties to the ``TreeBuilder``. And
         call the user ``sequence_callback``."""
         mapper = class_mapper(cls)
@@ -62,7 +65,7 @@ class XSDGenerator(PapyrusXSDGenerator):
         if self.sequence_callback:
             self.sequence_callback(tb, cls)
 
-    def add_column_property_xsd(self, tb, column_property):
+    def add_column_property_xsd(self, tb: str, column_property: ColumnProperty) -> None:
         column = column_property.columns[0]
         if column.foreign_keys:
             self.add_association_proxy_xsd(tb, column_property)
@@ -70,7 +73,7 @@ class XSDGenerator(PapyrusXSDGenerator):
 
         super().add_column_property_xsd(tb, column_property)
 
-    def add_association_proxy_xsd(self, tb, column_property):
+    def add_association_proxy_xsd(self, tb: str, column_property: ColumnProperty) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
         column = column_property.columns[0]
@@ -96,7 +99,7 @@ class XSDGenerator(PapyrusXSDGenerator):
                             pass
             self.element_callback(tb4, column)
 
-    def element_callback(self, tb, column):
+    def element_callback(self, tb: str, column: sqlalchemy.sql.schema.Column) -> None:
         if column.info.get("readonly"):
             with tag(tb, "xsd:annotation"):
                 with tag(tb, "xsd:appinfo"):
@@ -107,10 +110,10 @@ class XSDGenerator(PapyrusXSDGenerator):
 class XSD:
     def __init__(
         self,
-        include_primary_keys=False,
-        include_foreign_keys=False,
-        sequence_callback=None,
-        element_callback=None,
+        include_primary_keys: bool = False,
+        include_foreign_keys: bool = False,
+        sequence_callback: str = None,
+        element_callback: str = None,
     ):
         self.generator = XSDGenerator(
             include_primary_keys=include_primary_keys,
@@ -119,14 +122,14 @@ class XSD:
             element_callback=element_callback,
         )
 
-    def __call__(self, table):
-        def _render(cls, system):
+    def __call__(self, table: str) -> Callable[[Type, Dict[str, Any]], Optional[bytes]]:
+        def _render(cls: Type, system: Dict[str, Any]) -> Optional[bytes]:
             request = system.get("request")
             if request is not None:
                 response = request.response
                 response.content_type = "application/xml"
                 io = self.generator.get_class_xsd(BytesIO(), cls)
-                return io.getvalue()
+                return cast(bytes, io.getvalue())
             return None
 
         return _render

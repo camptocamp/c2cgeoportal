@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-from typing import Optional, Set
+from typing import Optional, Set, cast
 
 import pyramid.request
 from pyramid.httpexceptions import HTTPBadRequest
@@ -52,9 +52,9 @@ class OGCProxy(Proxy):
         self.params = dict(self.request.params)
 
         # reset possible value of role_id and user_id
-        if "role_id" in self.params:  # pragma: no cover
+        if "role_id" in self.params:
             del self.params["role_id"]
-        if "user_id" in self.params:  # pragma: no cover
+        if "user_id" in self.params:
             del self.params["user_id"]
 
         self.lower_params = self._get_lower_params(self.params)
@@ -68,8 +68,8 @@ class OGCProxy(Proxy):
         try:
             result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
             DBSession.expunge(result)
-            return result
-        except NoResultFound:  # pragma nocover
+            return cast(OGCServer, result)
+        except NoResultFound:
             raise HTTPBadRequest(
                 "OGSServer '{}' does not exists (existing: {}).".format(
                     name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
@@ -79,7 +79,7 @@ class OGCProxy(Proxy):
     def _get_wms_url(self, errors: Set[str]) -> Optional[Url]:
         ogc_server = self.ogc_server
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
-        if errors:  # pragma: no cover
+        if errors:
             LOG.error("\n".join(errors))
         return url
 
@@ -91,6 +91,6 @@ class OGCProxy(Proxy):
             self.request,
             errors,
         )
-        if errors:  # pragma: no cover
+        if errors:
             LOG.error("\n".join(errors))
         return url

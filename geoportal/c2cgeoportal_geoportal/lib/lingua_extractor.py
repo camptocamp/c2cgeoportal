@@ -33,14 +33,14 @@ import os
 import re
 import subprocess
 import traceback
-from typing import Any, Dict, List, Optional, Set, Tuple, cast
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, Type, cast
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
 import requests
 import sqlalchemy
 import yaml
-from bottle import MakoTemplate, template  # pylint: disable=wrong-import-order,useless-suppression
+from bottle import MakoTemplate, template
 from c2c.template.config import config
 from defusedxml.minidom import parseString
 from geoalchemy2.types import Geometry
@@ -51,57 +51,61 @@ from owslib.wms import WebMapService
 from sqlalchemy.exc import NoSuchTableError, OperationalError, ProgrammingError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
+from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.util import class_mapper
 
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal
 from c2cgeoportal_commons.lib.url import Url, get_url2
-from c2cgeoportal_geoportal.lib.bashcolor import RED, colorize
+from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
 
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports,useless-suppression
 
-class _Registry:  # pragma: no cover
+
+class _Registry:
     settings = None
 
-    def __init__(self, settings):
+    def __init__(self, settings: Optional[Dict[str, Any]]):
         self.settings = settings
 
 
-class _Request:  # pragma: no cover
+class _Request:
     params: Dict[str, str] = {}
     matchdict: Dict[str, str] = {}
     GET: Dict[str, str] = {}
 
-    def __init__(self, settings=None):
+    def __init__(self, settings: Dict[str, Any] = None):
         self.registry: _Registry = _Registry(settings)
 
     @staticmethod
-    def static_url(*args, **kwargs):
+    def static_url(*args: Any, **kwargs: Any) -> str:
         del args
         del kwargs
         return ""
 
     @staticmethod
-    def static_path(*args, **kwargs):
+    def static_path(*args: Any, **kwargs: Any) -> str:
         del args
         del kwargs
         return ""
 
     @staticmethod
-    def route_url(*args, **kwargs):
+    def route_url(*args: Any, **kwargs: Any) -> str:
         del args
         del kwargs
         return ""
 
     @staticmethod
-    def current_route_url(*args, **kwargs):
+    def current_route_url(*args: Any, **kwargs: Any) -> str:
         del args
         del kwargs
         return ""
 
 
-class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
+class GeomapfishAngularExtractor(Extractor):
     """
     GeoMapFish angular extractor
     """
@@ -117,7 +121,9 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
             self.config = None
         self.tpl = None
 
-    def __call__(self, filename, options, fileobj=None, lineno=0):
+    def __call__(
+        self, filename: str, options: Dict[str, Any], fileobj: Dict[str, Any] = None, lineno: int = 0
+    ) -> List[Message]:
         del fileobj, lineno
 
         init_region({"backend": "dogpile.cache.memory"}, "std")
@@ -130,14 +136,14 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
 
                 class Lookup(TemplateLookup):
                     @staticmethod
-                    def get_template(uri):
+                    def get_template(uri: str) -> Template:
                         del uri  # unused
                         return empty_template
 
                 class MyTemplate(MakoTemplate):
                     tpl = None
 
-                    def prepare(self, **kwargs):
+                    def prepare(self, **kwargs: Any) -> None:
                         options.update({"input_encoding": self.encoding})
                         lookup = Lookup(**kwargs)
                         if self.source:
@@ -167,9 +173,11 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
                         file_open.write(processed.encode("utf-8"))
                 except Exception:
                     print(
-                        colorize("ERROR! Occurred during the '{}' template generation".format(filename), RED)
+                        colorize(
+                            "ERROR! Occurred during the '{}' template generation".format(filename), Color.RED
+                        )
                     )
-                    print(colorize(traceback.format_exc(), RED))
+                    print(colorize(traceback.format_exc(), Color.RED))
                     if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                         # Continue with the original one
                         int_filename = filename
@@ -190,20 +198,22 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
                     messages.append(Message(None, message, None, [], "", "", context.split(":")))
             return messages
         except Exception:
-            print(colorize("An error occurred", RED))
-            print(colorize(message_str, RED))
+            print(colorize("An error occurred", Color.RED))
+            print(colorize(message_str, Color.RED))
             print("------")
             raise
 
 
-class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
+class GeomapfishConfigExtractor(Extractor):
     """
     GeoMapFish config extractor (raster layers, and print templates)
     """
 
     extensions = [".yaml", ".tmpl"]
 
-    def __call__(self, filename, options, fileobj=None, lineno=0):
+    def __call__(
+        self, filename: str, options: Dict[str, Any], fileobj: Dict[str, Any] = None, lineno: int = 0
+    ) -> List[Message]:
         del fileobj, lineno
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
@@ -218,7 +228,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
                 return self._collect_print_config(gmf_config, filename)
             raise Exception("Not a known config file")
 
-    def _collect_app_config(self, filename):
+    def _collect_app_config(self, filename: str) -> List[Message]:
         config.init(filename)
         settings = config.get_config()
         # Collect raster layers names
@@ -230,15 +240,15 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         # Init db sessions
 
         class R:
-            settings = None
+            settings: Dict[str, Any] = {}
 
         class C:
             registry = R()
 
-            def get_settings(self):
+            def get_settings(self) -> Dict[str, Any]:
                 return self.registry.settings
 
-            def add_tween(self, *args, **kwargs):
+            def add_tween(self, *args: Any, **kwargs: Any) -> None:
                 pass
 
         config_ = C()
@@ -257,7 +267,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             layerinfos = enum_layers.get(layername, {})
             attributes = layerinfos.get("attributes", {})
             for fieldname in list(attributes.keys()):
-                values = self._enumerate_attributes_values(DBSessions, Layers, layerinfos, fieldname)
+                values = self._enumerate_attributes_values(DBSessions, layerinfos, fieldname)
                 for (value,) in values:
                     if isinstance(value, str) and value != "":
                         msgid = value
@@ -274,9 +284,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
 
         if names:
             engine = sqlalchemy.create_engine(config["sqlalchemy.url"])
-            Session = sqlalchemy.orm.session.sessionmaker()  # noqa
-            Session.configure(bind=engine)
-            session = Session()
+            DBSession = sqlalchemy.orm.session.sessionmaker()  # noqa: disable=N806
+            DBSession.configure(bind=engine)
+            session = DBSession()
 
             query = session.query(Metadata).filter(Metadata.name.in_(names))  # pylint: disable=no-member
             for metadata in query.all():
@@ -311,21 +321,23 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         return raster + enums + metadata_list + interfaces_messages
 
     @staticmethod
-    def _enumerate_attributes_values(dbsessions, layers, layerinfos, fieldname):
+    def _enumerate_attributes_values(
+        dbsessions: Dict[str, Session], layerinfos: Dict[str, Any], fieldname: str
+    ) -> List[Message]:
         dbname = layerinfos.get("dbsession", "dbsession")
-        translate = layerinfos.get("attributes").get(fieldname, {}).get("translate", True)
+        translate = cast(Dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
         if not translate:
             return []
         try:
             dbsession = dbsessions.get(dbname)
-            return layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+            return Layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         except Exception as e:
-            table = layerinfos.get("attributes").get(fieldname, {}).get("table")
+            table = cast(Dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("table")
             print(
                 colorize(
                     "ERROR! Unable to collect enumerate attributes for "
                     "db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
-                    RED,
+                    Color.RED,
                 )
             )
             if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
@@ -333,9 +345,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
             raise
 
     @staticmethod
-    def _collect_print_config(print_config, filename):
+    def _collect_print_config(print_config: Dict[str, Any], filename: str) -> List[Message]:
         result = []
-        for template_ in list(print_config.get("templates").keys()):
+        for template_ in list(cast(Dict[str, Any], print_config.get("templates")).keys()):
             result.append(
                 Message(None, template_, None, [], "", "", (filename, "template/{}".format(template_)))
             )
@@ -354,7 +366,7 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
         return result
 
 
-class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
+class GeomapfishThemeExtractor(Extractor):
     """
     GeoMapFish theme extractor
     """
@@ -373,7 +385,9 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             self.config = None
         self.env = None
 
-    def __call__(self, filename, options, fileobj=None, lineno=0):
+    def __call__(
+        self, filename: str, options: Dict[str, Any], fileobj: str = None, lineno: int = 0
+    ) -> List[Message]:
         del fileobj, lineno
         messages: List[Message] = []
 
@@ -431,10 +445,10 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                     colorize(
                         "ERROR! The database is probably not up to date "
                         "(should be ignored when happen during the upgrade)",
-                        RED,
+                        Color.RED,
                     )
                 )
-                print(colorize(e, RED))
+                print(colorize(e, Color.RED))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
         except NoSuchTableError as e:
@@ -442,10 +456,10 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 colorize(
                     "ERROR! The schema didn't seem to exists "
                     "(should be ignored when happen during the deploy)",
-                    RED,
+                    Color.RED,
                 )
             )
-            print(colorize(e, RED))
+            print(colorize(e, Color.RED))
             if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
         except OperationalError as e:
@@ -453,17 +467,19 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 colorize(
                     "ERROR! The database didn't seem to exists "
                     "(should be ignored when happen during the deploy)",
-                    RED,
+                    Color.RED,
                 )
             )
-            print(colorize(e, RED))
+            print(colorize(e, Color.RED))
             if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
 
         return messages
 
     @staticmethod
-    def _import(object_type, messages, callback=None):
+    def _import(
+        object_type: Type, messages: List[str], callback: Callable[["main.Layer", List[str]], None] = None
+    ) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
         items = DBSession.query(object_type)
@@ -483,7 +499,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             if callback is not None:
                 callback(item, messages)
 
-    def _import_layer_wms(self, layer, messages):
+    def _import_layer_wms(self, layer: "main.Layer", messages: List[str]) -> None:
         server = layer.ogc_server
         url = server.url_wfs or server.url
         if url is None:
@@ -521,14 +537,15 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             except NoSuchTableError:
                 print(
                     colorize(
-                        "ERROR! No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name), RED
+                        "ERROR! No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
+                        Color.RED,
                     )
                 )
-                print(colorize(traceback.format_exc(), RED))
+                print(colorize(traceback.format_exc(), Color.RED))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
-    def _import_layer_wmts(self, layer, messages):
+    def _import_layer_wmts(self, layer: "main.Layer", messages: List[str]) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
@@ -555,13 +572,15 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                             "ERROR! the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
                                 server[0], layer.name
                             ),
-                            RED,
+                            Color.RED,
                         )
                     )
                     if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
 
-    def _import_layer_attributes(self, url, layer, item_type, name, messages):
+    def _import_layer_attributes(
+        self, url: str, layer: "main.Layer", item_type: str, name: str, messages: List[str]
+    ) -> None:
         attributes, layers = self._layer_attributes(url, layer)
         for sub_layer in layers:
             messages.append(
@@ -601,7 +620,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             return url, map_.get("headers", {}), kwargs
         return url, {}, {}
 
-    def _layer_attributes(self, url, layer):
+    def _layer_attributes(self, url: str, layer: str) -> Tuple[List[str], List[str]]:
         errors: Set[str] = set()
 
         request = _Request()
@@ -648,21 +667,21 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                     print(
                         colorize(
                             "ERROR! an error occurred while trying to " "parse the GetCapabilities document.",
-                            RED,
+                            Color.RED,
                         )
                     )
-                    print(colorize(str(e), RED))
+                    print(colorize(str(e), Color.RED))
                     print("URL: {}\nxml:\n{}".format(wms_getcap_url, response.text))
                     if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
-            except Exception as e:  # pragma: no cover
-                print(colorize(str(e), RED))
+            except Exception as e:
+                print(colorize(str(e), Color.RED))
                 print(
                     colorize(
                         "ERROR! Unable to GetCapabilities from URL: {},\nwith headers: {}".format(
                             wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
                         ),
-                        RED,
+                        Color.RED,
                     )
                 )
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
@@ -689,24 +708,25 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             )
             try:
                 response = requests.get(wfs_descrfeat_url, headers=headers, **kwargs)
-            except Exception as e:  # pragma: no cover
-                print(colorize(str(e), RED))
+            except Exception as e:
+                print(colorize(str(e), Color.RED))
                 print(
                     colorize(
-                        "ERROR! Unable to DescribeFeatureType from URL: {}".format(wfs_descrfeat_url), RED
+                        "ERROR! Unable to DescribeFeatureType from URL: {}".format(wfs_descrfeat_url),
+                        Color.RED,
                     )
                 )
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 raise
 
-            if not response.ok:  # pragma: no cover
+            if not response.ok:
                 print(
                     colorize(
                         "ERROR! DescribeFeatureType from URL {} return the error: {:d} {}".format(
                             wfs_descrfeat_url, response.status_code, response.reason
                         ),
-                        RED,
+                        Color.RED,
                     )
                 )
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
@@ -725,10 +745,10 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 print(
                     colorize(
                         "ERROR! an error occurred while trying to " "parse the DescribeFeatureType document.",
-                        RED,
+                        Color.RED,
                     )
                 )
-                print(colorize(str(e), RED))
+                print(colorize(str(e), Color.RED))
                 print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
@@ -738,7 +758,7 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                     colorize(
                         "ERROR! an error occurred while trying to "
                         "read the Mapfile and recover the themes.",
-                        RED,
+                        Color.RED,
                     )
                 )
                 print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
@@ -751,13 +771,13 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         if featurestype is None:
             return [], []
 
-        layers = [layer]
+        layers: List[str] = [layer]
         if wmscap is not None and layer in list(wmscap.contents):
             layer_obj = wmscap[layer]
             if layer_obj.layers:
                 layers = [layer.name for layer in layer_obj.layers]
 
-        attributes = []
+        attributes: List[str] = []
         for sub_layer in layers:
             # Should probably be adapted for other king of servers
             type_element = featurestype.get("{}Type".format(sub_layer))

@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Put the default WMS server in the servers part, add some constrains
 
 Revision ID: e7e03dedade3
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.execute(
@@ -63,7 +65,7 @@ def upgrade():
     op.create_unique_constraint("type_name_unique_treeitem", "treeitem", ["type", "name"], schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.alter_column("ogc_server", "url", nullable=True, schema=schema)
