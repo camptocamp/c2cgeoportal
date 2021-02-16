@@ -1204,7 +1204,6 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:a2893a97ba30ef9c6a9c41b9c9d3bbecc03f71ee335aa92f162a003e69a4074c",
                 "sha256:ae426af1dac71b5c9474344bb3a045f8a68f009db6559fa06f9849b19761b4f0"
             ],
             "index": "pypi",
@@ -1701,10 +1700,11 @@
         },
         "pyroma": {
             "hashes": [
-                "sha256:351758a81e2a12c970deb73687e239636aad52795cd81429695073d59fff0699",
-                "sha256:c49c00377219626bf83df42adf018cc231e6162b68cc7aaf2ff1c63803924102"
+                "sha256:2527423e3a24ccd56951f3ce1b0ebbcc4fa0518c82fca882e696c78726ab9c2f",
+                "sha256:7800609a3976873c80b99956fcf415db4056fe2b531e6406d5e9facca6e5ab0e"
             ],
-            "version": "==2.6"
+            "index": "pypi",
+            "version": "==2.6.1"
         },
         "pytest": {
             "hashes": [
