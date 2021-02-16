@@ -1,7 +1,10 @@
+##### 2.6.rc.12
+* [Backport 2.6] Fix redirect URL [c2cgeoportal#7807](https://github.com/camptocamp/c2cgeoportal/pull/7807)
+* Fix the upgrade to an rc [c2cgeoportal#7826](https://github.com/camptocamp/c2cgeoportal/pull/7826)
+* [Backport 2.6] 2.5 and 2.6 update [ngeo#6824](https://github.com/camptocamp/ngeo/pull/6824)
+* [Backport 2.6] Rename 'Apply' button in rule creating form [ngeo#6826](https://github.com/camptocamp/ngeo/pull/6826)
 ##### 2.6.rc.11
 * Add some more generation commands [c2cgeoportal#7805](https://github.com/camptocamp/c2cgeoportal/pull/7805)
-* [Backport 2.6] Fix redirect URL [c2cgeoportal#7807](https://github.com/camptocamp/c2cgeoportal/pull/7807)
-* Add missing HELM_RELEASE_NAMES [c2cgeoportal#7812](https://github.com/camptocamp/c2cgeoportal/pull/7812)
 * [Backport 2.6] Use alert instead of modal to show changed password (simple message) [ngeo#6809](https://github.com/camptocamp/ngeo/pull/6809)
 * Rename Rule.expression to Rule.literal [ngeo#6810](https://github.com/camptocamp/ngeo/pull/6810)
 ##### 2.6.rc.10
