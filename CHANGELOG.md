@@ -1,3 +1,5 @@
+##### 2.4.2.40
+* Remove no more working Travis CI [c2cgeoportal#7760](https://github.com/camptocamp/c2cgeoportal/pull/7760)
 ##### 2.4.2.39
 * Update GPG keys [c2cgeoportal#7831](https://github.com/camptocamp/c2cgeoportal/pull/7831)
 ##### 2.4.2.38
