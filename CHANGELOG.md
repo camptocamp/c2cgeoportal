@@ -1,3 +1,6 @@
+##### 2.5.0.117
+* [Backport 2.5] Replace pipenv install by pipenv sync [c2cgeoportal#7835](https://github.com/camptocamp/c2cgeoportal/pull/7835)
+* [Backport 2.5] Rename 'Apply' button in rule creating form [ngeo#6825](https://github.com/camptocamp/ngeo/pull/6825)
 ##### 2.5.0.116
 * [Backport 2.5] Fix redirect URL [c2cgeoportal#7806](https://github.com/camptocamp/c2cgeoportal/pull/7806)
 * [Backport 2.5] Enable to change the xy order on getFeature GML format [ngeo#6495](https://github.com/camptocamp/ngeo/pull/6495)
