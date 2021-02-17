@@ -90,7 +90,7 @@ else:
         if not args.debug:
             subprocess.check_call(["docker", "pull", "camptocamp/geomapfish:{}".format(major_version)])
             subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-tools:{}".format(args.version)])
-            subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(args.version)])
+            subprocess.check_call(["docker", "pull", "camptocamp/geomapfish-config:{}".format(major_version)])
 
     debug_volumes = []
     if args.debug:
