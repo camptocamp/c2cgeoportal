@@ -23,17 +23,18 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: docker
+
       - name: Build config
         run: ./docker-run make docker-build-config
 
-      - uses: camptocamp/initialise-gopass-summon-action@v1
-        with:
-          ci-gpg-private-key: ${{'{{'}}secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{'{{'}}secrets.GOPASS_CI_GITHUB_TOKEN}}
-        if: "env.HELM_RELEASE_NAMES != ''"
-#      - run: scripts/deploy-docker --image=config --no-trigger
+#      - run: scripts/deploy-docker --image=config --service=github --no-trigger
 #        if: "env.HELM_RELEASE_NAMES != ''"
-      - run: scripts/deploy-docker --image=config --service=github
+      - run: scripts/deploy-docker --image=config
         if: "env.HELM_RELEASE_NAMES != ''"
 
   geoportal:
@@ -44,18 +45,19 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: docker
+
       - name: Run checks
         run: ./docker-run make checks
 
       - name: Build geoportal
         run: ./docker-run make docker-build-geoportal
 
-      - uses: camptocamp/initialise-gopass-summon-action@v1
-        with:
-          ci-gpg-private-key: ${{'{{'}}secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{'{{'}}secrets.GOPASS_CI_GITHUB_TOKEN}}
-        if: "env.HELM_RELEASE_NAMES != ''"
-#      - run: scripts/deploy-docker --image=geoportal --no-trigger
+#      - run: scripts/deploy-docker --image=geoportal --service=github --no-trigger
 #        if: "env.HELM_RELEASE_NAMES != ''"
-      - run: scripts/deploy-docker --image=geoportal --service=github
+      - run: scripts/deploy-docker --image=geoportal
         if: "env.HELM_RELEASE_NAMES != ''"
