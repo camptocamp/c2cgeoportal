@@ -29,6 +29,10 @@
         - workflow: Continuous integration
         - workflow: Upgrade 2.7
           use_branch: no
+    '2.7-simple':
+      branch: prod-2-7-simple
+      workflows:
+        - workflow: Continuous integration
 
 - name: c2cgeoportal
   repo: camptocamp/c2cgeoportal
