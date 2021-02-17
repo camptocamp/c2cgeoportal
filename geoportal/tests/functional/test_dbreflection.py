@@ -121,7 +121,7 @@ class TestReflection(TestCase):
         modelclass = get_class("table_a")
 
         # test the class
-        self.assertEqual(modelclass.__name__, "Table_a")
+        assert modelclass.__name__.startswith("Table_a_")
         self.assertEqual(modelclass.__table__.name, "table_a")
         self.assertEqual(modelclass.__table__.schema, "public")
 
@@ -185,7 +185,7 @@ class TestReflection(TestCase):
         self._create_table("table_b")
         modelclass = get_class("public.table_b")
 
-        self.assertEqual(modelclass.__name__, "Table_b")
+        assert modelclass.__name__.startswith("Table_b_")
         self.assertEqual(modelclass.__table__.name, "table_b")
         self.assertEqual(modelclass.__table__.schema, "public")
 
@@ -203,7 +203,7 @@ class TestReflection(TestCase):
         DBSession.execute(text("SELECT id FROM table_c"))
 
         modelclass = get_class("table_c")
-        self.assertEqual(modelclass.__name__, "Table_c")
+        assert modelclass.__name__.startswith("Table_c_")
 
         # This commits the transaction created by DBSession.execute. This
         # is required here in the test because tearDown does table.drop,

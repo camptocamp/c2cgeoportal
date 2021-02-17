@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,13 @@
 
 import logging
 import sys
-import urllib.parse
 from typing import Dict, List, Union
 
 import requests
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
 from pyramid.response import Response
 
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib.caching import (
     NO_CACHE,
     PRIVATE_CACHE,
@@ -55,22 +55,18 @@ class Proxy:
         self.host_forward_host = request.registry.settings["host_forward_host"]
         self.http_options = self.request.registry.settings.get("http_options", {})
 
-    def _proxy(self, url, params=None, method=None, cache=False, body=None, headers=None):
-        # get query string
+    def _proxy(
+        self,
+        url: Url,
+        params: Dict[str, str] = None,
+        method: str = None,
+        cache: bool = False,
+        body: bytes = None,
+        headers: Dict[str, str] = None,
+    ):
+        # Get query string
         params = dict(self.request.params) if params is None else params
-        parsed_url = urllib.parse.urlparse(url)
-        url_params = urllib.parse.parse_qs(parsed_url.query)
-        all_params: Dict[str, Union[str]] = {}
-        all_params.update(params)
-        all_params.update({k: ",".join(v) for k, v in url_params.items()})
-        query_string = urllib.parse.urlencode(all_params)
-
-        if parsed_url.port is None:
-            url = "{}://{}{}?{}".format(parsed_url.scheme, parsed_url.hostname, parsed_url.path, query_string)
-        else:  # pragma: no cover
-            url = "{}://{}:{:d}{}?{}".format(
-                parsed_url.scheme, parsed_url.hostname, parsed_url.port, parsed_url.path, query_string
-            )
+        url = url.clone().add_query(params, True)
 
         LOG.debug("Send query to URL:\n%s.", url)
 
@@ -81,7 +77,7 @@ class Proxy:
             headers = dict(self.request.headers)
 
         # Forward request to target (without Host Header)
-        if parsed_url.hostname not in self.host_forward_host and "Host" in headers:  # pragma: no cover
+        if url.hostname not in self.host_forward_host and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
 
         # Forward the request tracking ID to the other service. This will allow to follow the logs belonging
@@ -107,9 +103,11 @@ class Proxy:
 
         try:
             if method in ("POST", "PUT"):
-                response = requests.request(method, url, data=body, headers=headers, **self.http_options)
+                response = requests.request(
+                    method, url.url(), data=body, headers=headers, **self.http_options
+                )
             else:
-                response = requests.request(method, url, headers=headers, **self.http_options)
+                response = requests.request(method, url.url(), headers=headers, **self.http_options)
         except Exception:  # pragma: no cover
             errors = ["Error '%s' while getting the URL:", "%s", "Method: %s", "--- With headers ---", "%s"]
             args1 = [
@@ -118,7 +116,7 @@ class Proxy:
                 method,
                 "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
             ]
-            if method in ("POST", "PUT"):
+            if method in ("POST", "PUT") and body is not None:
                 errors += ["--- Query with body ---", "%s"]
                 args1.append(body.decode("utf-8"))
             LOG.error("\n".join(errors), *args1, exc_info=True)
@@ -136,12 +134,12 @@ class Proxy:
             ]
             args2: List[Union[str, int]] = [
                 response.reason,
-                url,
+                url.url(),
                 response.status_code,
                 method,
                 "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
             ]
-            if method in ("POST", "PUT"):
+            if method in ("POST", "PUT") and body is not None:
                 errors += ["--- Query with body ---", "%s"]
                 args2.append(body.decode("utf-8"))
             errors += ["--- Return content ---", "%s"]

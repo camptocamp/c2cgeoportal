@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ from typing import Set, cast  # noqa, pylint: disable=unused-import
 import requests
 from defusedxml import ElementTree
 
-from c2cgeoportal_commons.lib.url import add_url_params, get_url2
+from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import main
 
 
@@ -257,10 +257,9 @@ class OGCServerSynchronizer:
 
         # Add functionality params
         # sparams = get_mapserver_substitution_params(self.request)
-        # url = add_url_params(url, sparams)
+        # url.add_query(url, sparams)
 
-        url = add_url_params(
-            url,
+        url.add_query(
             {
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
@@ -279,7 +278,7 @@ class OGCServerSynchronizer:
             headers["sec-username"] = "root"
             headers["sec-roles"] = "root"
 
-        response = requests.get(url, headers=headers, timeout=300)
+        response = requests.get(url.url(), headers=headers, timeout=300)
         self._logger.info("Got response %s in %.1fs.", response.status_code, response.elapsed.total_seconds())
         response.raise_for_status()
 

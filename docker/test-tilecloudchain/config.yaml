@@ -10,7 +10,7 @@ grids:
     # bbox [required]
     bbox: [2420000, 1030000, 2900000, 1350000]
     # srs [required]
-    srs: EPSG:{{srid}}
+    srs: EPSG:2056
 
 caches:
   local:
@@ -99,7 +99,7 @@ server:
   wmts_path: tiles
   static_path: tiles/static
   admin_path: tiles/admin
-  expires: 8  # 8 hours
+  expires: 8 # 8 hours
   mapcache_internal: True
   predefined_commands:
     - name: Generation all layers
@@ -116,7 +116,7 @@ process:
     - cmd: optipng %(args)s -q -zc9 -zm8 -zs3 -f5 %(in)s
       arg:
         default: '-q'
-      quiet: '-q'
+        quiet: '-q'
   jpegoptim:
     - cmd: jpegoptim %(args)s --strip-all --all-normal -m 90 %(in)s
       arg:
@@ -125,7 +125,7 @@ process:
 
 openlayers:
   # srs, center_x, center_y [required]
-  srs: EPSG:{{srid}}
+  srs: EPSG:2056
   center_x: 2600000
   center_y: 1200000
 

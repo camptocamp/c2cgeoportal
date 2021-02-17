@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2020, Camptocamp SA
+# Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,16 +32,16 @@ import copy
 import logging
 import xml.sax.handler
 from io import StringIO
-from typing import Callable, Dict, List
-from urllib.parse import urlsplit
+from typing import Callable, Collection, Dict, List
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 
 import defusedxml.expatreader
+import pyramid.request
 import requests
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal_commons.lib.url import add_url_params
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib import caching, get_ogc_server_wfs_url_ids, get_ogc_server_wms_url_ids
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers, get_writable_layers
 
@@ -50,23 +50,24 @@ LOG = logging.getLogger(__name__)
 
 
 @CACHE_REGION.cache_on_arguments()
-def wms_structure(wms_url, host, request):
-    url = urlsplit(wms_url)
-    wms_url = add_url_params(wms_url, {"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
+def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> Dict[str, List[str]]:
+    url = wms_url.clone().add_query({"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
 
     # Forward request to target (without Host Header)
     headers = dict()
     if url.hostname == "localhost" and host is not None:  # pragma: no cover
         headers["Host"] = host
     try:
-        response = requests.get(wms_url, headers=headers, **request.registry.settings.get("http_options", {}))
+        response = requests.get(
+            url.url(), headers=headers, **request.registry.settings.get("http_options", {})
+        )
     except Exception:  # pragma: no cover
-        raise HTTPBadGateway("Unable to GetCapabilities from wms_url {0!s}".format(wms_url))
+        raise HTTPBadGateway("Unable to GetCapabilities from wms_url {}".format(wms_url))
 
     if not response.ok:  # pragma: no cover
         raise HTTPBadGateway(
-            "GetCapabilities from wms_url {0!s} return the error: {1:d} {2!s}".format(
-                wms_url, response.status_code, response.reason
+            "GetCapabilities from wms_url {} return the error: {:d} {}".format(
+                url.url(), response.status_code, response.reason
             )
         )
 
@@ -99,13 +100,15 @@ def wms_structure(wms_url, host, request):
         raise HTTPBadGateway(error)
 
 
-def filter_capabilities(content, wms, url, headers, request):
+def filter_capabilities(
+    content: str, wms: str, url: Url, headers: Dict[str, str], request: pyramid.request.Request
+):
 
     wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
     ogc_server_ids = (
         get_ogc_server_wms_url_ids(request) if wms else get_ogc_server_wfs_url_ids(request)
-    ).get(url)
+    ).get(url.url())
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
     for id_ in list(get_protected_layers(request, ogc_server_ids).keys()):
         if id_ in gmf_private_layers:
@@ -132,7 +135,7 @@ def filter_capabilities(content, wms, url, headers, request):
     return result.getvalue()
 
 
-def filter_wfst_capabilities(content, wfs_url, request):
+def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.request.Request):
     writable_layers: List[str] = []
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
     for gmflayer in list(get_writable_layers(request, ogc_server_ids).values()):
@@ -153,7 +156,7 @@ def filter_wfst_capabilities(content, wfs_url, request):
 
 
 class _Layer:
-    def __init__(self, self_hidden=False):
+    def __init__(self, self_hidden: bool = False):
         self.accumul: List[Callable] = []
         self.hidden = True
         self.self_hidden = self_hidden
@@ -170,7 +173,14 @@ class _CapabilitiesFilter(XMLFilterBase):
     `layers_whitelist` is given).
     """
 
-    def __init__(self, upstream, downstream, tag_name, layers_blacklist=None, layers_whitelist=None):
+    def __init__(
+        self,
+        upstream: XMLFilterBase,
+        downstream: XMLGenerator,
+        tag_name: str,
+        layers_blacklist: Collection[str] = None,
+        layers_whitelist: Collection[str] = None,
+    ):
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
         self._accumulator: List[str] = []
@@ -199,21 +209,21 @@ class _CapabilitiesFilter(XMLFilterBase):
             self._downstream.characters("".join(self._accumulator))
             self._accumulator = []
 
-    def _do(self, action):
+    def _do(self, action: Callable[[], None]):
         if self.layers_path:
             self.layers_path[-1].accumul.append(action)
         else:
             self._complete_text_node()
             action()
 
-    def _add_child(self, layer):
+    def _add_child(self, layer: _Layer):
         if not layer.hidden and not (layer.has_children and layer.children_nb == 0):
             for action in layer.accumul:
                 self._complete_text_node()
                 action()
             layer.accumul = []
 
-    def setDocumentLocator(self, locator):  # noqa
+    def setDocumentLocator(self, locator: str):  # noqa
         self._downstream.setDocumentLocator(locator)
 
     def startDocument(self):  # noqa
@@ -222,13 +232,13 @@ class _CapabilitiesFilter(XMLFilterBase):
     def endDocument(self):  # noqa
         self._downstream.endDocument()
 
-    def startPrefixMapping(self, prefix, uri):  # pragma: no cover  # noqa
+    def startPrefixMapping(self, prefix: str, uri: str):  # pragma: no cover  # noqa
         self._downstream.startPrefixMapping(prefix, uri)
 
-    def endPrefixMapping(self, prefix):  # pragma: no cover  # noqa
+    def endPrefixMapping(self, prefix: str):  # pragma: no cover  # noqa
         self._downstream.endPrefixMapping(prefix)
 
-    def startElement(self, name, attrs):  # noqa
+    def startElement(self, name: str, attrs: Dict[str, str]):  # noqa
         if name == self.tag_name:
             self.level += 1
             if self.layers_path:
@@ -247,7 +257,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self._do(lambda: self._downstream.startElement(name, attrs))
 
-    def endElement(self, name):  # noqa
+    def endElement(self, name: str):  # noqa
         self._do(lambda: self._downstream.endElement(name))
 
         if name == self.tag_name:
@@ -260,18 +270,18 @@ class _CapabilitiesFilter(XMLFilterBase):
         elif name == "Name":
             self.in_name = False
 
-    def startElementNS(self, name, qname, attrs):  # pragma: no cover  # noqa
+    def startElementNS(self, name: str, qname: str, attrs: Dict[str, str]):  # pragma: no cover  # noqa
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 
-    def endElementNS(self, name, qname):  # pragma: no cover  # noqa
+    def endElementNS(self, name: str, qname: str):  # pragma: no cover  # noqa
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
-    def _keep_layer(self, layer_name):
+    def _keep_layer(self, layer_name: str) -> bool:
         return (self.layers_blacklist is not None and layer_name not in self.layers_blacklist) or (
             self.layers_whitelist is not None and layer_name in self.layers_whitelist
         )
 
-    def characters(self, content):
+    def characters(self, content: str):
         if self.in_name and self.layers_path and not self.layers_path[-1].self_hidden is True:
             layer_name = normalize_typename(content)
             if self._keep_layer(layer_name):
@@ -285,17 +295,17 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self._do(lambda: self._accumulator.append(content))
 
-    def ignorableWhitespace(self, chars):  # pragma: no cover  # noqa
+    def ignorableWhitespace(self, chars: str):  # pragma: no cover  # noqa
         self._do(lambda: self._accumulator.append(chars))
 
-    def processingInstruction(self, target, data):  # pragma: no cover  # noqa
+    def processingInstruction(self, target: str, data: str):  # pragma: no cover  # noqa
         self._do(lambda: self._downstream.processingInstruction(target, data))
 
-    def skippedEntity(self, name):  # pragma: no cover  # noqa
+    def skippedEntity(self, name: str):  # pragma: no cover  # noqa
         self._downstream.skippedEntity(name)
 
 
-def normalize_tag(tag):
+def normalize_tag(tag: str) -> str:
     """
     Drops the namespace from a tag and converts to lower case.
     e.g. '{https://....}TypeName' -> 'TypeName'
@@ -307,7 +317,7 @@ def normalize_tag(tag):
     return normalized.lower()
 
 
-def normalize_typename(typename):
+def normalize_typename(typename: str) -> str:
     """
     Drops the namespace from a type name and converts to lower case.
     e.g. 'tows:parks' -> 'parks'

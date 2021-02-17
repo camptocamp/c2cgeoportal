@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2015-2020, Camptocamp SA
+# Copyright (c) 2015-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,15 @@
 
 
 import logging
+from typing import Dict, Optional, Set, Tuple
 
+import pyramid.request
 from defusedxml import ElementTree
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPUnauthorized
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPInternalServerError, HTTPUnauthorized
 from pyramid.view import view_config
 
 from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE
 from c2cgeoportal_geoportal.lib.filter_capabilities import (
@@ -49,7 +52,7 @@ LOG = logging.getLogger(__name__)
 
 
 class TinyOWSProxy(OGCProxy):
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         OGCProxy.__init__(self, request, has_default_ogc_server=True)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
@@ -65,11 +68,11 @@ class TinyOWSProxy(OGCProxy):
         # params hold the parameters we are going to send to TinyOWS
         self.lower_params = self._get_lower_params(dict(self.request.params))
 
-    def _get_wfs_url(self):
-        return self.settings.get("tinyows_url")
+    def _get_wfs_url(self, errors: Set[str]) -> Optional[Url]:
+        return Url(self.settings.get("tinyows_url"))
 
     @view_config(route_name="tinyowsproxy")
-    def proxy(self):
+    def proxy(self) -> str:
         if self.user is None:
             raise HTTPUnauthorized(
                 "Authentication required", headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
@@ -111,10 +114,16 @@ class TinyOWSProxy(OGCProxy):
         use_cache = method == "GET" and operation in ("getcapabilities", "describefeaturetype")
         cache_control = PRIVATE_CACHE if use_cache else NO_CACHE
 
+        errors: Set[str] = set()
+        url = super()._get_wfs_url(errors)
+        if url is None:
+            LOG.error("Error getting the URL:\n%s", "\n".join(errors))
+            raise HTTPInternalServerError()
+
         response = self._proxy_callback(
             operation,
             cache_control,
-            url=self._get_wfs_url(),
+            url=url,
             params=dict(self.request.params),
             cache=use_cache,
             headers=self._get_headers(),
@@ -122,7 +131,7 @@ class TinyOWSProxy(OGCProxy):
         )
         return response
 
-    def _is_allowed(self, typenames):
+    def _is_allowed(self, typenames: Set[str]) -> bool:
         """
         Checks if the current user has the rights to access the given
         type-names.
@@ -134,20 +143,24 @@ class TinyOWSProxy(OGCProxy):
                 writable_layers.add(ogclayer.lower())
         return typenames.issubset(writable_layers)
 
-    def _get_headers(self):
+    def _get_headers(self) -> Dict[str, str]:
         headers = OGCProxy._get_headers(self)
         if "tinyows_host" in self.settings:
             headers["Host"] = self.settings.get("tinyows_host")
         return headers
 
-    def _proxy_callback(self, operation, cache_control, *args, **kwargs):
+    def _proxy_callback(self, operation: str, cache_control: int, *args, **kwargs) -> str:
         response = self._proxy(*args, **kwargs)
         content = response.content.decode()
 
+        errors: Set[str] = set()
+        url = super()._get_wfs_url(errors)
+        if url is None:
+            LOG.error("Error getting the URL:\n%s", "\n".join(errors))
+            raise HTTPInternalServerError()
+
         if operation == "getcapabilities":
-            content = filter_wfst_capabilities(
-                content, super(TinyOWSProxy, self)._get_wfs_url(), self.request
-            )
+            content = filter_wfst_capabilities(content, url, self.request)
 
         content = self._filter_urls(
             content, self.settings.get("online_resource"), self.settings.get("proxy_online_resource")
@@ -156,13 +169,13 @@ class TinyOWSProxy(OGCProxy):
         return self._build_response(response, content, cache_control, "tinyows")
 
     @staticmethod
-    def _filter_urls(content, online_resource, proxy_online_resource):
+    def _filter_urls(content: str, online_resource: str, proxy_online_resource: str) -> str:
         if online_resource is not None and proxy_online_resource is not None:
             return content.replace(online_resource, proxy_online_resource)
         return content
 
     @staticmethod
-    def _parse_body(body):
+    def _parse_body(body: str) -> Tuple[str, Set[str]]:
         """
         Read the WFS-T request body and extract the referenced type-names
         and request method.
@@ -171,7 +184,7 @@ class TinyOWSProxy(OGCProxy):
         wfs_request = normalize_tag(xml.tag)
 
         # get the type names
-        typenames = set()
+        typenames: Set[str] = set()
         for child in xml:
             tag = normalize_tag(child.tag)
             if tag == "typename":

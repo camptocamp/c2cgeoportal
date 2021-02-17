@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,13 +29,14 @@
 
 
 import logging
-from typing import Any, Dict  # noqa, pylint: disable=unused-import
+from typing import Any, Dict, Set  # noqa, pylint: disable=unused-import
 
-from pyramid.httpexceptions import HTTPUnauthorized
+from pyramid.httpexceptions import HTTPInternalServerError, HTTPUnauthorized
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
 
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PRIVATE_CACHE, PUBLIC_CACHE, get_region
@@ -90,6 +91,7 @@ class MapservProxy(OGCProxy):
         # DescribeFeatureType requests
         use_cache = False
 
+        errors: Set[str] = set()
         if method == "GET":
             # For GET requests, params are added only if the self.request
             # parameter is actually provided.
@@ -107,12 +109,16 @@ class MapservProxy(OGCProxy):
                         del self.params["role_ids"]
 
             if "service" in self.lower_params and self.lower_params["service"] == "wfs":
-                _url = self._get_wfs_url()
+                _url = self._get_wfs_url(errors)
             else:
-                _url = self._get_wms_url()
+                _url = self._get_wms_url(errors)
         else:
             # POST means WFS
-            _url = self._get_wfs_url()
+            _url = self._get_wfs_url(errors)
+
+        if _url is None:
+            LOG.error("Error getting the URL:\n%s", "\n".join(errors))
+            raise HTTPInternalServerError()
 
         cache_control = PRIVATE_CACHE
         if method == "GET" and "service" in self.lower_params and self.lower_params["service"] == "wms":
@@ -150,7 +156,7 @@ class MapservProxy(OGCProxy):
 
         return response
 
-    def _proxy_callback(self, cache_control: int, url: str, params: dict, **kwargs: Any) -> Response:
+    def _proxy_callback(self, cache_control: int, url: Url, params: dict, **kwargs: Any) -> Response:
         response = self._proxy(url=url, params=params, **kwargs)
 
         content = response.content

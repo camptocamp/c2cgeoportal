@@ -88,7 +88,7 @@ class TestOGCServerSynchronizer:
         assert re.match(
             r"Get WMS GetCapabilities from: {url}\nGot response 200 in \d+.\d+s.\n".format(url=url),
             synchronizer.report(),
-        )
+        ), synchronizer.report()
 
     @patch(
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",

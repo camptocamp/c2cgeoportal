@@ -26,6 +26,8 @@
 # The views and conclusions contained in the software and documentation are those
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
+
+import random
 import threading
 import warnings
 from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
@@ -173,7 +175,9 @@ def _create_class(
     )
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)
-    cls = type(table.name.capitalize(), (GeoInterface, Base), attributes)
+    # The randint is to fix the SAWarning: This declarative base already contains a class with the same
+    # class name and module nam
+    cls = type(f"{table.name.capitalize()}_{random.randint(0, 9999999)}", (GeoInterface, Base), attributes)
 
     for col in table.columns:
         if col.name in (readonly_attributes or []):

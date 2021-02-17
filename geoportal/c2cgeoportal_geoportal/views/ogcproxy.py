@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,12 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-from typing import Set
+from typing import Optional, Set
 
+import pyramid.request
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound
 
-from c2cgeoportal_commons.lib.url import get_url2
+from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import OGCServer
 from c2cgeoportal_geoportal.lib.caching import get_region
@@ -44,7 +45,7 @@ LOG = logging.getLogger(__name__)
 
 
 class OGCProxy(Proxy):
-    def __init__(self, request, has_default_ogc_server=False):
+    def __init__(self, request: pyramid.request.Request, has_default_ogc_server: bool = False):
         Proxy.__init__(self, request)
 
         # params hold the parameters we"re going to send to backend
@@ -63,7 +64,7 @@ class OGCProxy(Proxy):
             self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
 
     @CACHE_REGION.cache_on_arguments()
-    def _get_ogcserver_byname(self, name):  # pylint: disable=no-self-use
+    def _get_ogcserver_byname(self, name: str) -> OGCServer:  # pylint: disable=no-self-use
         try:
             result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
             DBSession.expunge(result)
@@ -75,17 +76,15 @@ class OGCProxy(Proxy):
                 )
             )
 
-    def _get_wms_url(self):
+    def _get_wms_url(self, errors: Set[str]) -> Optional[Url]:
         ogc_server = self.ogc_server
-        errors: Set[str] = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
         if errors:  # pragma: no cover
             LOG.error("\n".join(errors))
         return url
 
-    def _get_wfs_url(self):
+    def _get_wfs_url(self, errors: Set[str]) -> Optional[Url]:
         ogc_server = self.ogc_server
-        errors: Set[str] = set()
         url = get_url2(
             "The OGC server (WFS) '{}'".format(ogc_server.name),
             ogc_server.url_wfs or ogc_server.url,
