@@ -1,3 +1,5 @@
+##### 2.4.2.39
+* Update GPG keys [c2cgeoportal#7831](https://github.com/camptocamp/c2cgeoportal/pull/7831)
 ##### 2.4.2.38
 * GitHub workflow [ngeo#6609](https://github.com/camptocamp/ngeo/pull/6609)
 * Some fix for the audit [ngeo#6622](https://github.com/camptocamp/ngeo/pull/6622)
