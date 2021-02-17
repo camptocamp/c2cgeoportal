@@ -42,11 +42,11 @@ def main():
             oc,
             "login",
             subprocess.check_output(
-                ["gopass", "gs/ci/openshift/{}/url".format(os.environ["OPENSHIFT_PROJECT"])]
+                ["gopass", "show", "gs/ci/openshift/{}/url".format(os.environ["OPENSHIFT_PROJECT"])]
             ).decode(),
             "--token="
             + subprocess.check_output(
-                ["gopass", "gs/ci/openshift/{}/token".format(os.environ["OPENSHIFT_PROJECT"])]
+                ["gopass", "show", "gs/ci/openshift/{}/token".format(os.environ["OPENSHIFT_PROJECT"])]
             ).decode(),
         ]
     )
