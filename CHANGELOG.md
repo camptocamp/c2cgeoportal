@@ -1,6 +1,7 @@
+##### 2.6.rc.13
+* Fix trigger for new version of gopass [c2cgeoportal#7830](https://github.com/camptocamp/c2cgeoportal/pull/7830)
 ##### 2.6.rc.12
 * [Backport 2.6] Fix redirect URL [c2cgeoportal#7807](https://github.com/camptocamp/c2cgeoportal/pull/7807)
-* Fix the upgrade to an rc [c2cgeoportal#7826](https://github.com/camptocamp/c2cgeoportal/pull/7826)
 * [Backport 2.6] 2.5 and 2.6 update [ngeo#6824](https://github.com/camptocamp/ngeo/pull/6824)
 * [Backport 2.6] Rename 'Apply' button in rule creating form [ngeo#6826](https://github.com/camptocamp/ngeo/pull/6826)
 ##### 2.6.rc.11
