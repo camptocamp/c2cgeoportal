@@ -84,7 +84,7 @@ else:
         match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", args.version)
         if match is not None:
             major_version = match.group(1)
-        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+\.[0-9]+$", args.version)
+        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9a-z]+\.[0-9]+$", args.version)
         if match is not None:
             major_version = match.group(1)
         if not args.debug:
