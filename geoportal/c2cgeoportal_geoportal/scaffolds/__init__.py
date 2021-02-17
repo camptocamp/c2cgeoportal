@@ -182,7 +182,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         Overrides the base template class to print the next step.
         """
 
-        fix_executables(output_dir, ("bin/*", "build", "scripts/publish-docker"))
+        fix_executables(output_dir, ("bin/*", "build", "scripts/publish-docker", "ci/trigger"))
 
         super().post(command, output_dir, vars_)
 
