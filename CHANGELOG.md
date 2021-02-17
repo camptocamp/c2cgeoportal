@@ -1,3 +1,8 @@
+##### 2.6.rc.14
+* Add missing HELM_RELEASE_NAMES [c2cgeoportal#7812](https://github.com/camptocamp/c2cgeoportal/pull/7812)
+* Fix the upgrade to an rc [c2cgeoportal#7826](https://github.com/camptocamp/c2cgeoportal/pull/7826)
+* Set trigger as executable [c2cgeoportal#7833](https://github.com/camptocamp/c2cgeoportal/pull/7833)
+* Pull the major version [c2cgeoportal#7839](https://github.com/camptocamp/c2cgeoportal/pull/7839)
 ##### 2.6.rc.13
 * Fix trigger for new version of gopass [c2cgeoportal#7830](https://github.com/camptocamp/c2cgeoportal/pull/7830)
 ##### 2.6.rc.12
