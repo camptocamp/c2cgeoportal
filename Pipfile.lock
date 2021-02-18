@@ -172,10 +172,11 @@
         },
         "cornice": {
             "hashes": [
-                "sha256:2aa7bd075e1b3c6ee2c1cba86b58577fc372f955b952f12add4dfa72e7fd3c42",
-                "sha256:f971831e90343374b21c0c97d523e23eb09cec41a2a8fc2e85bb5c2585348576"
+                "sha256:b002c23c82229c30d4b5b62a883b80c7d3cf3f2d21baf2f6913e444bfbc2d9f2",
+                "sha256:c81cd9429759c0de475f580bbff92d5646cfc5f43e8aa24492037e2e90677ee6"
             ],
-            "version": "==5.0.3"
+            "index": "pypi",
+            "version": "==5.1.0"
         },
         "decorator": {
             "hashes": [
@@ -925,10 +926,10 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:9044b616ec6663cd50794fb3362efd87586e476e7b51ef2439a711d6569aede7",
-                "sha256:efc65e5ffd38324797a7e1dfc8a4e74b62ea6f56a59df5bb03217b84d58dff6a"
+                "sha256:4ae8d1ced6c67f1c8ea51d82a16721c166c489b76876c9f2c202b8a50334b237",
+                "sha256:e75c8c58932bda8cd293ea8e4b242527129e1caaec91433d21b8b2f20fee030b"
             ],
-            "version": "==0.20.2"
+            "version": "==0.20.3"
         },
         "shapely": {
             "hashes": [
@@ -1105,7 +1106,6 @@
                 "sha256:73aae30359291c14fa3b956f8b5ca31960e420c28c1bec002547fb04928cf89b",
                 "sha256:b64ef5141be559cfade448f044fa45c2260351edcb6a8ef6b7e00c7dcef0c323"
             ],
-            "index": "pypi",
             "version": "==1.8.7"
         },
         "zope.deprecation": {
@@ -1923,7 +1923,6 @@
                 "sha256:73aae30359291c14fa3b956f8b5ca31960e420c28c1bec002547fb04928cf89b",
                 "sha256:b64ef5141be559cfade448f044fa45c2260351edcb6a8ef6b7e00c7dcef0c323"
             ],
-            "index": "pypi",
             "version": "==1.8.7"
         },
         "webtest": {
