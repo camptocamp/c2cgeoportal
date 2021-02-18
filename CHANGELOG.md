@@ -1,3 +1,6 @@
+##### 2.6.rc.15
+* Fix executable [c2cgeoportal#7846](https://github.com/camptocamp/c2cgeoportal/pull/7846)
+* [Backport 2.6] Fix oeedit with 2d geom GEO-4161 [ngeo#6838](https://github.com/camptocamp/ngeo/pull/6838)
 ##### 2.6.rc.14
 * Add missing HELM_RELEASE_NAMES [c2cgeoportal#7812](https://github.com/camptocamp/c2cgeoportal/pull/7812)
 * Fix the upgrade to an rc [c2cgeoportal#7826](https://github.com/camptocamp/c2cgeoportal/pull/7826)
