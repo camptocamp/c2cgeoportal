@@ -182,7 +182,7 @@ class TemplateCreate(BaseTemplate):  # pragma: no cover
         Overrides the base template class to print the next step.
         """
 
-        fix_executables(output_dir, ("bin/*", "build", "scripts/publish-docker", "ci/trigger"))
+        fix_executables(output_dir, ("bin/*", "build", "ci/trigger"))
 
         super().post(command, output_dir, vars_)
 
@@ -221,6 +221,6 @@ class TemplateUpdate(BaseTemplate):  # pragma: no cover
         after a successful scaffolding rendering.
         """
 
-        fix_executables(output_dir, ("bin/*", "build", "scripts/publish-docker"), True)
+        fix_executables(output_dir, ("bin/*", "build", "ci/trigger"), True)
 
         super().post(command, output_dir, vars_)
