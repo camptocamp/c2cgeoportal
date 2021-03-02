@@ -377,7 +377,7 @@ vars:
         gmfMobileMeasurePointOptions:
           decimals: 0
           rasterLayers: []
-          format: '{x}, {y}'
+          format: '{x} {y}'
           sketchStyle: *mobileMeasureStyle
     iframe_api:
       extends: default
@@ -974,16 +974,22 @@ no_interpreted:
   - interfaces_config.default.static.angularLocaleScript.append
   - interfaces_config.default.constants.gmfMousePositionOptions.projections[0].filter
   - interfaces_config.default.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.default.constants.gmfMousePositionOptions.projections[2].filter
+  - interfaces_config.default.constants.gmfMousePositionOptions.projections[3].filter
   - interfaces_config.default.constants.gmfMobileMeasurePointOptions.format
   - interfaces_config.default.constants.ngeoStringToHtmlReplacements[0].expression
   - interfaces_config.default.constants.ngeoStringToHtmlReplacements[1].expression
   - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[0].filter
   - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[2].filter
+  - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[3].filter
   - interfaces_config.mobile.constants.gmfMobileMeasurePointOptions.format
   - interfaces_config.mobile.constants.ngeoStringToHtmlReplacements[0].expression
   - interfaces_config.mobile.constants.ngeoStringToHtmlReplacements[1].expression
   - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[0].filter
   - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[1].filter
+  - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[2].filter
+  - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[3].filter
   - interfaces_config.desktop.constants.gmfMobileMeasurePointOptions.format
   - interfaces_config.desktop.constants.ngeoStringToHtmlReplacements[0].expression
   - interfaces_config.desktop.constants.ngeoStringToHtmlReplacements[1].expression

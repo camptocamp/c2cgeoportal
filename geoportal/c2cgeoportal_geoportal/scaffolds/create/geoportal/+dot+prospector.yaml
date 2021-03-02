@@ -20,8 +20,5 @@ pyflakes:
 mccabe:
   run: false
 
-mypy:
-  run: true
-
 bandit:
   run: true

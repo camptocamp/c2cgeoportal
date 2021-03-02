@@ -692,6 +692,7 @@ rules:
         status = self.get_modified(
             "CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(self.project["project_package"])
         )
+        status += ["CONST_create_template/geoportal/vars.yaml"]
 
         with open("ngeo.diff", "w") as diff_file:
             if status:
