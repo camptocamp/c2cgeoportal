@@ -7,27 +7,144 @@ Version 2.6.0
 Information to know before starting the upgrade
 -----------------------------------------------
 
-Simple application
-..................
+Client application configuration
+................................
 
-A mode "simple application" has been introduced, see `the documentation
-<https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/create_application.html#simple-application>`_
+Previous versions had configuration in the `*.html.ejs`, in the `Controler*.js`, and in the `vars.yaml` file.
+The goal of this change is to move this configuration to the `vars.yaml` file (with default values in
+the `CONST_vars.yaml`). This will make future upgrades easier and increase configuration possibilities
+in the simple application mode, see the documentation
+<https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/create_application.html#simple-application>.
 
-This change implies that:
 
-- Now the API configuration is moved to the `vars.yaml` file, section `vars/interfaces_config/api`.
-  diff: https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-c0556a9b77c45b7cefd76100f480643b430c8ecc080edc549cee740cfb71e6aa
-- All the configuration present in the controllers (especially the map configuration) is moved to the
-  `vars.yaml` file, section `vars/interfaces_config/<interface>`.
-  diff: https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-98196fd1bacd50a637a3fec9a1a4116cb14eca3587d11c76d734deaf02ae3296
-- All the configuration present in the *.html.ejs files is moved to the `vars.yaml` file,
-  section `vars/interfaces_config/<interface>`.
-  diff: https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-49e4e3e08323fa260d0e7682f102a585bb0ee2d25f0434e47255519c0b0423a5
+When you apply the `ngeo.diff` you should first apply the changes in the `geoportal/vars.yaml` file.
 
-Changes in the `geoportal/vars.yaml` file:
-  https://github.com/camptocamp/demo_geomapfish/compare/prod-2-5...prod-2-6#diff-d8128a088c1fb76a5d2e77bfc707d1426f5bd1511d430f20a724c0e4955b3db7
+For the next step, you should consult the documentation about:
+- The interfaces_config documentation
+<https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/ngeo.html?highlight=ngeo#dynamic-json-view>
+- GMF constants definitions <https://camptocamp.github.io/ngeo/master/jsdoc/module-contribs_gmf_src_options.html>
+- ngeo constants definitions <https://camptocamp.github.io/ngeo/master/jsdoc/module-src_options.html>
 
-- Optional point: the header can be in a separate file, diff in the `*.html.ejs` file:
+
+Then configure the `vars/srid`, `vars/alternate_projections`, `vars/resolutions` and `vars/extent` they will
+be dispatched using `c2ctemplate` or YAML link.
+
+In the following, we show typical examples of necessary changes:
+
+Example in API
+..............
+
+In the ngeo.diff:
+```
+--- a/geoportal/cartoriviera_geoportal/static-ngeo/api/index.js
++++ b/geoportal/cartoriviera_geoportal/static-ngeo/api/index.js
+...
+-// The URL to the search service.
+-config.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
+```
+
+And in your `geoportal/cartoriviera_geoportal/static-ngeo/api/index.js` file:
+```
+// The URL to the search service.
+onfig.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
+```
+
+We see that the project settings didn't correspond to the previous default settings, therefore you should
+have in your vars file something like:
+```
+vars:
+  interfaces_config:
+    api:
+      routes:
+        searchUrl:
+          params:
+            limit: 15
+
+update_paths:
+  - interfaces_config.api.routes.searchUrl  # This one should already be present
+```
+
+
+Example in controller constructor
+.................................
+
+In the ngeo.diff:
+```
+-  constructor($scope, $injector) {
+-    super({
+-      srid: 2056,
+-      mapViewConfig: {
+-        center: [2632464, 1185457],
+-        zoom: 3,
+-        resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05],
+-        constrainResolution: true,
+-        extent: [2485071.54, 175346.36, 2828515.78, 1299941.84],
+-      }
+-    }, $scope, $injector);
+```
+
+And in your `geoportal/cartoriviera_geoportal/static-ngeo/api/index.js` file:
+```
+  constructor($scope, $injector) {
+    super({
+      maxTilesLoading: Infinity,
+      srid: 2056,
+      mapViewConfig: {
+        center: [2559045, 1144195],
+        zoom: 1,
+        constrainResolution: true,
+        resolutions: [50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1, 0.05, 0.025]
+      }
+    }, $scope, $injector);
+```
+
+We see that the project settings didn't correspond to the previous default settings, therefore you should
+have in your vars file something like:
+```
+vars:
+  interfaces_config:
+    default:  # or interface name
+      constants:
+        gmfOptions:
+          map:
+            maxTilesLoading: .Inf
+          view: &view
+            projection: EPSG:{srid}
+            center: [2559045, 1144195]
+            zoom: 1
+            resolutions: &resolutions [50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1, 0.05, 0.025]
+            extent: &extent [2420000, 1030000, 2900000, 1350000]
+          geolocalisation: True
+```
+
+Standard example in controller
+..............................
+
+In the ngeo.diff:
+```
+-    this.elevationLayers = ['aster', 'srtm'];
+```
+
+And in your `geoportal/cartoriviera_geoportal/static-ngeo/api/index.js` file:
+```
+   this.elevationLayers = ['mns', 'mnt', 'rayglobal'];
+```
+
+We see that the project settings didn't correspond to the previous default settings, therefore you should
+have in your vars file something like:
+```
+vars:
+  interfaces_config:
+    default:  # or interface name
+      constants:
+        gmfElevationOptions:
+          layers: [mns, mnt, rayglobal]
+```
+
+Optional point
+..............
+
+The header can be in a separate file, diff in the `*.html.ejs` file:
 
     - <header>
     -   <div class="logo">
@@ -40,6 +157,7 @@ Changes in the `geoportal/vars.yaml` file:
     + <ng-include src="'desktop_alt/header.html'"></ng-include>
 
   The content will be in the `geoportal/geomapfish_geoportal/static/header.html` file.
+
 
 Information
 -----------
