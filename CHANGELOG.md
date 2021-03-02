@@ -1,3 +1,7 @@
+##### 2.4.2.41
+* Ignore [1609] Insecure Default Configuration [c2cgeoportal#7873](https://github.com/camptocamp/c2cgeoportal/pull/7873)
+* [Security] Update some dependencies [c2cgeoportal#7878](https://github.com/camptocamp/c2cgeoportal/pull/7878)
+* Fix oeedit with 2d geom GEO-4161 [ngeo#6835](https://github.com/camptocamp/ngeo/pull/6835)
 ##### 2.4.2.40
 * Remove no more working Travis CI [c2cgeoportal#7760](https://github.com/camptocamp/c2cgeoportal/pull/7760)
 ##### 2.4.2.39
