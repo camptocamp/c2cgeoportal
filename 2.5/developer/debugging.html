@@ -93,7 +93,7 @@ of the MapServer container <code class="docutils literal notranslate"><span clas
 <p>With the following command, you can access the logs:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose logs -f --tail<span class="o">=</span><span class="m">20</span> <span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
 </pre></div></div><p>To have the access log on gunicorn you should add the option <code class="docutils literal notranslate"><span class="pre">--access-logfile=-</span></code> in the gunicorn
-arguments (<code class="docutils literal notranslate"><span class="pre">GUNICORN_PARAMS</span></code> environement variable).</p>
+arguments (<code class="docutils literal notranslate"><span class="pre">GUNICORN_PARAMS</span></code> environment variable).</p>
 </div>
 <div class="section" id="go-inside-a-container">
 <h3>Go inside a container<a class="headerlink" href="#go-inside-a-container" title="Permalink to this headline">¶</a></h3>
