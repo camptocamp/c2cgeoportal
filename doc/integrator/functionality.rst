@@ -9,7 +9,7 @@ A functionality may be associated to users through the admin interface.
 Some technical roles are used to define default functionalities depending on the user's context,
 they are named `anonymous`, `registered` and `intranet`.
 
-User get functionnalities from, by priority order:
+User get functionalities from, by priority order:
 
 If authenticated::
 
