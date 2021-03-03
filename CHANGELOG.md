@@ -1,3 +1,11 @@
+##### 2.6.rc.16
+* Update the changelog [c2cgeoportal#7886](https://github.com/camptocamp/c2cgeoportal/pull/7886)
+* [Backport 2.6] Doc - Add custom alembic [c2cgeoportal#7888](https://github.com/camptocamp/c2cgeoportal/pull/7888)
+* Use pipenv sync [c2cgeoportal#7890](https://github.com/camptocamp/c2cgeoportal/pull/7890)
+* Sum of tabs for too many results text [ngeo#6834](https://github.com/camptocamp/ngeo/pull/6834)
+* Fix print text on feature [ngeo#6840](https://github.com/camptocamp/ngeo/pull/6840)
+* Retablish search clear button to true per default [ngeo#6850](https://github.com/camptocamp/ngeo/pull/6850)
+* Typo in print vector encoders [ngeo#6851](https://github.com/camptocamp/ngeo/pull/6851)
 ##### 2.6.rc.15
 * Fix executable [c2cgeoportal#7846](https://github.com/camptocamp/c2cgeoportal/pull/7846)
 * [Backport 2.6] Fix oeedit with 2d geom GEO-4161 [ngeo#6838](https://github.com/camptocamp/ngeo/pull/6838)
