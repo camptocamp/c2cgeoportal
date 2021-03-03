@@ -8,7 +8,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY Pipfile Pipfile.lock /tmp/
 RUN \
-  cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear
+  cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear
 
 ARG MAJOR_VERSION
 ARG MAIN_BRANCH
