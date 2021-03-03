@@ -11,6 +11,10 @@ vars:
     - EPSG:{srid}
     - EPSG:21781
 
+  resolutions: &resolutions [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+
+  extent: &extent [2420000, 1030000, 2900000, 1350000]
+
   # The application's default language. This is the language used by
   # the application if no specific language is specified in the URLs.
   # This also defines the language used for the text search.
@@ -34,25 +38,30 @@ vars:
             projection: EPSG:{srid}
             center: [2600000, 1200000]
             zoom: 3
-            resolutions: &resolutions [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
-            extent: &extent [2420000, 1030000, 2900000, 1350000]
+            resolutions: *resolutions
+            extent: *extent
           geolocalisation: True
         gmfMousePositionOptions:
           projections:
             - code: EPSG:2056
-              label: CH1903+ / LV95
-              filter: ngeoNumberCoordinates::{x}, {y} m
+              label: CH1903+ / MN95
+              filter: ngeoNumberCoordinates::{x} {y} m
             - code: EPSG:21781
-              label: CH1903 / LV03
-              filter: ngeoNumberCoordinates::{x}, {y} m
+              label: CH1903 / MN03
+              filter: ngeoNumberCoordinates::{x} {y} m
             - code: EPSG:4326'
               label: WGS84
-              filter: ngeoDMSCoordinates:2
+              filter: ngeoDMSCoordinates:2:{y} {x}
         ngeoScaleSelectorOptions:
           values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
           dropup: True
         gmfElevationOptions:
           layers: [aster, srtm]
+      routes:
+        fulltextsearchUrl:
+          params:
+            limit: 30
+            partitionlimit: 5
     desktop:
       constants:
         gmfOptions:
@@ -134,6 +143,11 @@ vars:
           - osm_open
           - many_attributes
           - polygon
+      routes:
+        searchUrl:
+          params:
+            limit: 30
+            partitionlimit: 5
 
   admin_interface:
     # Default values for the admin interface's maps.
@@ -303,13 +317,13 @@ update_paths:
   - interfaces_config.default.constants.ngeoWfsPermalinkOptions
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
-  - interfaces_config.default.routes
+  - interfaces_config.default.routes.fulltextsearchUrl
   - interfaces_config.desktop.constants
   - interfaces_config.desktop.routes
   - interfaces_config.mobile.constants
   - interfaces_config.iframe_api.constants
   - interfaces_config.api.constants
-  - interfaces_config.api.routes
+  - interfaces_config.api.routes.searchUrl
   - interfaces_theme
   - resourceproxy
   - servers

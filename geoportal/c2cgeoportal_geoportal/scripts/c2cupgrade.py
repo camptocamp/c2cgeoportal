@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2020, Camptocamp SA
+# Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -685,6 +685,7 @@ rules:
         status = self.get_modified(
             "CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(self.project["project_package"])
         )
+        status += ["CONST_create_template/geoportal/vars.yaml"]
 
         with open("ngeo.diff", "w") as diff_file:
             if status:
