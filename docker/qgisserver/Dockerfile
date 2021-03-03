@@ -24,7 +24,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY python/ /tmp/python/
 RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --clear --dev
+    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
 
 COPY . /src/
 RUN cd /src && prospector
@@ -63,7 +63,7 @@ COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_c
 RUN true
 COPY tests/Pipfile tests/Pipfile.lock /tmp/
 
-RUN cd /tmp && pipenv install --system --clear
+RUN cd /tmp && pipenv sync --system --clear
 RUN python3 -m pip install pytest-timeout
 
 COPY tests/geomapfish.yaml /etc/qgisserver/geomapfish.yaml
