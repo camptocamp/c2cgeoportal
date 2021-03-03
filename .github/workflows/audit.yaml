@@ -21,6 +21,9 @@ jobs:
           - master
 
     steps:
+      # Have an httplib2 version without any security issues
+      - run: sudo python3 -m pip install --upgrade httplib2
+
       - uses: actions/checkout@v2
         with:
           ref: ${{ matrix.branch }}
