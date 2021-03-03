@@ -1,3 +1,8 @@
+##### 2.5.0.118
+* Doc - Add custom alembic [c2cgeoportal#7882](https://github.com/camptocamp/c2cgeoportal/pull/7882)
+* [Backport 2.5] Fix oeedit with 2d geom GEO-4161 [ngeo#6837](https://github.com/camptocamp/ngeo/pull/6837)
+* Backport ngeo/print/VectorEncoder.js from 2.6 [ngeo#6854](https://github.com/camptocamp/ngeo/pull/6854)
+* Ignore: [1609] Insecure Default Configuration [ngeo#6888](https://github.com/camptocamp/ngeo/pull/6888)
 ##### 2.5.0.117
 * [Backport 2.5] Replace pipenv install by pipenv sync [c2cgeoportal#7835](https://github.com/camptocamp/c2cgeoportal/pull/7835)
 * [Backport 2.5] Rename 'Apply' button in rule creating form [ngeo#6825](https://github.com/camptocamp/ngeo/pull/6825)
