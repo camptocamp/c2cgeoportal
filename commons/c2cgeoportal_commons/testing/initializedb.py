@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 
 import os
 import sys
-from typing import List
+from typing import List, cast
 
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
@@ -54,7 +54,7 @@ WHERE schema_name = '{}';
     )
     result = connection.execute(sql)
     row = result.first()
-    return row[0] == 1
+    return cast(bool, row[0] == 1)
 
 
 def truncate_tables(connection: Connection) -> None:

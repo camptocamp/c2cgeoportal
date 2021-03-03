@@ -27,6 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
 
 """Alter_column_url_to_remove_limitation
 
@@ -44,10 +45,10 @@ revision = "3f89a7d71a5e"
 down_revision = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema_static"]
     op.alter_column("shorturl", "url", type_=types.Unicode, schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     pass

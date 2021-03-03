@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add missing on delete cascade on layer tree
 
 Revision ID: ec82a8906649
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:
@@ -61,7 +63,7 @@ def upgrade():
         )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:

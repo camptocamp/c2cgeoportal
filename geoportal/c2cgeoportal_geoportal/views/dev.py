@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,9 +31,12 @@
 import logging
 import re
 
+import pyramid.request
+import pyramid.response
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
 logger = logging.getLogger(__name__)
@@ -43,13 +46,13 @@ class Dev(Proxy):
 
     THEME_RE = re.compile(r"/theme/.*$")
 
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         super().__init__(request)
         self.dev_url = self.request.registry.settings["devserver_url"]
 
     @view_config(route_name="dev")
-    def dev(self):
+    def dev(self) -> pyramid.response.Response:
         path = self.THEME_RE.sub("", self.request.path_info)
         if self.request.path.endswith("/dynamic.js"):
             return HTTPFound(location=self.request.route_url("dynamic", _query=self.request.params))
-        return self._proxy_response("dev", "{}/{}".format(self.dev_url.rstrip("/"), path.lstrip("/")))
+        return self._proxy_response("dev", Url("{}/{}".format(self.dev_url.rstrip("/"), path.lstrip("/"))))

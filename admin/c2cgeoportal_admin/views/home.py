@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,10 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import pyramid.request
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
 
 @view_config(route_name="admin")
-def home_view(request):
+def home_view(request: pyramid.request.Request) -> HTTPFound:
     return HTTPFound(request.route_url("layertree", application="admin"))

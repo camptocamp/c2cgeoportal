@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """create database
 
 Revision ID: 166ff2dcc48d
@@ -49,11 +51,11 @@ down_revision = None
 class TsVector(UserDefinedType):
     """ A custom type for PostgreSQL's tsvector type. """
 
-    def get_col_spec(self):
+    def get_col_spec(self) -> str:
         return "TSVECTOR"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
     schema_static = config["schema_static"]
     parentschema = config.get("parentschema")
@@ -62,7 +64,7 @@ def upgrade():
     engine = op.get_bind().engine
     if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
         engine, "functionality", schema=schema
-    ):  # pragma: no cover
+    ):
         return
 
     op.create_table(
@@ -191,7 +193,7 @@ def upgrade():
         Column("role_id", Integer, ForeignKey(schema + ".role.id"), nullable=False),
         schema=schema,
     )
-    if parentschema is not None and parentschema != "":  # pragma: no cover
+    if parentschema is not None and parentschema != "":
         op.add_column(
             "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema
         )
@@ -262,7 +264,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
     schema_static = config["schema_static"]
 

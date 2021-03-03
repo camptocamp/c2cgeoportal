@@ -33,10 +33,11 @@ import ipaddress
 import json
 import logging
 from string import Formatter
-from typing import Any, Dict, List, Set, Union
+from typing import Any, Dict, Iterable, List, Set, Tuple, Union, cast
 
 import dateutil
 import pyramid.request
+import pyramid.response
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
@@ -49,12 +50,17 @@ CACHE_REGION = get_region("std")
 CACHE_REGION_OBJ = get_region("obj")
 
 
-def get_types_map(types_array):
+def get_types_map(types_array: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
     return {type_["name"]: type_ for type_ in types_array}
 
 
 def get_typed(
-    name, value, types, request, errors, layer_name=None
+    name: str,
+    value: str,
+    types: Dict[str, Any],
+    request: pyramid.request.Request,
+    errors: Set[str],
+    layer_name: str = None,
 ) -> Union[str, int, float, bool, None, List[Any], Dict[str, Any]]:
     prefix = "Layer '{}': ".format(layer_name) if layer_name is not None else ""
     type_ = {"type": "not init"}
@@ -105,11 +111,9 @@ def get_typed(
             return url.url() if url else ""
         elif type_["type"] == "json":
             try:
-                return json.loads(value)
+                return cast(Dict[str, Any], json.loads(value))
             except Exception as e:
-                errors.append(
-                    "{}The attribute '{}'='{}' has an error: {}".format(prefix, name, value, str(e))
-                )
+                errors.add("{}The attribute '{}'='{}' has an error: {}".format(prefix, name, value, str(e)))
         else:
             errors.add("{}Unknown type '{}'.".format(prefix, type_["type"]))
     except Exception as e:
@@ -121,7 +125,7 @@ def get_typed(
     return None
 
 
-def get_setting(settings, path, default=None):
+def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
     value = settings
     for p in path:
         if value and p in value:
@@ -146,7 +150,7 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, Li
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def get_ogc_server_wfs_url_ids(request):
+def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
@@ -160,12 +164,12 @@ def get_ogc_server_wfs_url_ids(request):
 
 
 @implementer(IRoutePregenerator)
-class C2CPregenerator:  # pragma: no cover
-    def __init__(self, version=True, role=False):
+class C2CPregenerator:
+    def __init__(self, version: bool = True, role: bool = False):
         self.version = version
         self.role = role
 
-    def __call__(self, request, elements, kw):
+    def __call__(self, request: pyramid.request.Request, elements: Any, kw: Any) -> Tuple[Any, Any]:
         query = kw.get("_query", {})
 
         if self.version:
@@ -185,7 +189,9 @@ _formatter = Formatter()
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def _get_intranet_networks(request):
+def _get_intranet_networks(
+    request: pyramid.request.Request,
+) -> List[Union[ipaddress.IPv4Network, ipaddress.IPv6Network]]:
     return [
         ipaddress.ip_network(network, strict=False)
         for network in request.registry.settings.get("intranet", {}).get("networks", [])
@@ -193,13 +199,13 @@ def _get_intranet_networks(request):
 
 
 @CACHE_REGION.cache_on_arguments()
-def get_role_id(name):
+def get_role_id(name: str) -> int:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
-    return DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0]
+    return cast(int, DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
 
 
-def get_roles_id(request):
+def get_roles_id(request: pyramid.request.Request) -> List[int]:
     result = [get_role_id("anonymous")]
     if is_intranet(request):
         result.append(get_role_id("intranet"))
@@ -209,7 +215,7 @@ def get_roles_id(request):
     return result
 
 
-def get_roles_name(request):
+def get_roles_name(request: pyramid.request.Request) -> pyramid.response.Response:
     result = ["anonymous"]
     if is_intranet(request):
         result.append("intranet")
@@ -219,7 +225,7 @@ def get_roles_name(request):
     return result
 
 
-def is_intranet(request):
+def is_intranet(request: pyramid.request.Request) -> bool:
     address = ipaddress.ip_address(request.client_addr)
     for network in _get_intranet_networks(request):
         if address in network:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2016-2020, Camptocamp SA
+# Copyright (c) 2016-2021, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -10,7 +10,9 @@
 import logging
 import sys
 import traceback
+from typing import Optional
 
+import qgis.server
 from qgis.core import Qgis, QgsMessageLog
 
 from . import gmf_logging
@@ -18,7 +20,9 @@ from . import gmf_logging
 LOG = logging.getLogger(__name__)
 
 
-def serverClassFactory(serverIface):  # noqa
+def serverClassFactory(  # noqa: ignore=N806
+    serverIface: qgis.server.QgsServerInterface,  # noqa: ignore=N803
+) -> Optional[qgis.server.QgsAccessControlFilter]:
     LOG.info("Configure logging...")
 
     try:

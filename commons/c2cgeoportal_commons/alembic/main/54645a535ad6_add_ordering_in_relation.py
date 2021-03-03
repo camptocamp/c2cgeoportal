@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add ordering in relation
 
 Revision ID: 54645a535ad6
@@ -44,7 +46,7 @@ revision = "54645a535ad6"
 down_revision = "415746eb9f6"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.drop_constraint("layergroup_treeitem_pkey", "layergroup_treeitem", schema=schema)
@@ -62,7 +64,7 @@ def upgrade():
     op.drop_column("treeitem", "order", schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
     op.add_column("treeitem", Column("order", Integer), schema=schema)
     op.execute(

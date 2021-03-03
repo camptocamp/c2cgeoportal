@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2020, Camptocamp SA
+# Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,16 +29,25 @@
 
 
 import re
+from typing import Callable
+
+import pyramid.registry
+import pyramid.request
+import pyramid.response
 
 
 class HeadersTween:
-    def __init__(self, handler, registry):
+    def __init__(
+        self,
+        handler: Callable[[pyramid.request.Request], pyramid.response.Response],
+        registry: pyramid.registry.Registry,
+    ) -> None:
         self.handler = handler
         self.settings = [
             (re.compile(e["pattern"]), e["headers"]) for e in registry.settings["global_headers"]
         ]
 
-    def __call__(self, request):
+    def __call__(self, request: pyramid.request.Request) -> pyramid.response.Response:
         response = self.handler(request)
 
         for pattern, headers in self.settings:

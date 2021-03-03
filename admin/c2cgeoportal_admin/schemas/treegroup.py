@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@ import logging
 from functools import partial
 
 import colander
+import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import case, func
@@ -130,7 +131,7 @@ def base_deferred_parent_id_validator(node, kw, model):  # pylint: disable=unuse
     return validator
 
 
-def treeitem_edit_url(request, treeitem):
+def treeitem_edit_url(request: pyramid.request.Request, treeitem):
     if treeitem.item_type is None:
         return None
     table = ITEM_TYPE_ROUTE_MAP.get(treeitem.item_type, None)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ import transaction
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
-def main():
+def main() -> None:
     """
     Emergency user create and password reset script
     example, reset toto password to foobar:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019-2020, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,20 +28,22 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import pyramid.request
+import pyramid.response
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 
 @view_config(route_name="localejson")
-def locale(request):
+def locale(request: pyramid.request.Request) -> pyramid.response.Response:
     response = HTTPFound(
         request.static_url(
             "/etc/geomapfish/static/{lang}.json".format(lang=request.locale_name),
             _query={"cache": get_cache_version()},
         )
     )
-    set_common_headers(request, "api", NO_CACHE, response=response)
+    set_common_headers(request, "api", Cache.NO, response=response)
     return response

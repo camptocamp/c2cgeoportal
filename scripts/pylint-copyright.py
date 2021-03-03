@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,11 +27,12 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
 import datetime
 import re
 import subprocess
 
+import astroid.scoped_nodes
+import pylint.lint
 from pylint.checkers import BaseChecker
 from pylint.interfaces import IRawChecker
 
@@ -57,7 +58,7 @@ class CopyrightChecker(BaseChecker):
         r"Copyright \(c\) ([0-9][0-9][0-9][0-9])(-[0-9][0-9][0-9][0-9])?, Camptocamp SA".encode()
     )
 
-    def process_module(self, node):
+    def process_module(self, node: astroid.scoped_nodes.Module) -> None:
         try:
             commits_date = (
                 subprocess.check_output(["git", "log", "--pretty=format:%ci", node.file]).decode().split("\n")
@@ -100,7 +101,7 @@ class CopyrightChecker(BaseChecker):
             self.add_message("error-in-copyright", line=0, args=(str(e),))
 
 
-def register(linter):
+def register(linter: pylint.lint.PyLinter) -> None:
     """
     required method to auto register this checker
     """

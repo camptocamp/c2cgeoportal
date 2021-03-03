@@ -37,7 +37,7 @@ from tests import DummyRequest
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import (
     CORS_METHODS,
-    NO_CACHE,
+    Cache,
     init_region,
     invalidate_region,
     set_common_headers,
@@ -57,7 +57,7 @@ class TestSetCorsHeaders(TestCase):
             request.registry.settings = {"headers": {"foo": settings}}
         else:
             request.registry.settings = {"headers": {}}
-        set_common_headers(request, "foo", NO_CACHE, credentials=credentials)
+        set_common_headers(request, "foo", Cache.NO, credentials=credentials)
 
         return dict(request.response.headers)
 

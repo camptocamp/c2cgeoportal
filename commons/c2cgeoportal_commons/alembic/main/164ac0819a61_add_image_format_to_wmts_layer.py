@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add image format to WMTS layer
 
 Revision ID: 164ac0819a61
@@ -43,13 +45,13 @@ revision = "164ac0819a61"
 down_revision = "20137477bd02"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.add_column("layer_wmts", Column("image_type", Unicode(10)), schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.drop_column("layer_wmts", "image_type", schema=schema)

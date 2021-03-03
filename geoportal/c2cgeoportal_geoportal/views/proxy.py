@@ -30,27 +30,22 @@
 
 import logging
 import sys
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Union
 
+import pyramid.request
+import pyramid.response
 import requests
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
-from pyramid.response import Response
 
 from c2cgeoportal_commons.lib.url import Url
-from c2cgeoportal_geoportal.lib.caching import (
-    NO_CACHE,
-    PRIVATE_CACHE,
-    PUBLIC_CACHE,
-    get_region,
-    set_common_headers,
-)
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
 
 
 class Proxy:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.host_forward_host = request.registry.settings["host_forward_host"]
         self.http_options = self.request.registry.settings.get("http_options", {})
@@ -63,7 +58,7 @@ class Proxy:
         cache: bool = False,
         body: bytes = None,
         headers: Dict[str, str] = None,
-    ):
+    ) -> pyramid.response.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
         url = url.clone().add_query(params, True)
@@ -73,11 +68,11 @@ class Proxy:
         if method is None:
             method = self.request.method
 
-        if headers is None:  # pragma: no cover
+        if headers is None:
             headers = dict(self.request.headers)
 
         # Forward request to target (without Host Header)
-        if url.hostname not in self.host_forward_host and "Host" in headers:  # pragma: no cover
+        if url.hostname not in self.host_forward_host and "Host" in headers:
             headers.pop("Host")
 
         # Forward the request tracking ID to the other service. This will allow to follow the logs belonging
@@ -98,7 +93,7 @@ class Proxy:
         if not cache:
             headers["Cache-Control"] = "no-cache"
 
-        if method in ("POST", "PUT") and body is None:  # pragma: no cover
+        if method in ("POST", "PUT") and body is None:
             body = self.request.body
 
         try:
@@ -108,7 +103,7 @@ class Proxy:
                 )
             else:
                 response = requests.request(method, url.url(), headers=headers, **self.http_options)
-        except Exception:  # pragma: no cover
+        except Exception:
             errors = ["Error '%s' while getting the URL:", "%s", "Method: %s", "--- With headers ---", "%s"]
             args1 = [
                 sys.exc_info()[0],
@@ -123,7 +118,7 @@ class Proxy:
 
             raise HTTPBadGateway("Error on backend, See logs for detail")
 
-        if not response.ok:  # pragma: no cover
+        if not response.ok:
             errors = [
                 "Error '%s' in response of URL:",
                 "%s",
@@ -151,15 +146,22 @@ class Proxy:
         return response
 
     @CACHE_REGION.cache_on_arguments()
-    def _proxy_cache(self, method, *args, **kwargs):  # pragma: no cover
+    def _proxy_cache(
+        self, method: str, *args: Any, **kwargs: Any
+    ) -> pyramid.response.Response:
         # Method is only for the cache
         del method
         kwargs["cache"] = True
         return self._proxy(*args, **kwargs)
 
     def _proxy_response(
-        self, service_name, url, headers_update=None, public=False, **kwargs
-    ):  # pragma: no cover
+        self,
+        service_name: str,
+        url: Url,
+        headers_update: Dict[str, str] = None,
+        public: bool = False,
+        **kwargs: Any,
+    ) -> pyramid.response.Response:
         if headers_update is None:
             headers_update = {}
         cache = kwargs.get("cache", False)
@@ -168,23 +170,21 @@ class Proxy:
         else:
             response = self._proxy(url, **kwargs)
 
-        cache_control = (PUBLIC_CACHE if public else PRIVATE_CACHE) if cache else NO_CACHE
+        cache_control = (Cache.PUBLIC if public else Cache.PRIVATE) if cache else Cache.NO
         return self._build_response(
             response, response.content, cache_control, service_name, headers_update=headers_update
         )
 
     def _build_response(
         self,
-        response,
-        content,
-        cache_control,
-        service_name,
-        headers=None,
-        headers_update=None,
-        content_type=None,
-    ):
-        if isinstance(content, str):
-            content = content.encode("utf-8")
+        response: pyramid.response.Response,
+        content: str,
+        cache_control: Cache,
+        service_name: str,
+        headers: Dict[str, str] = None,
+        headers_update: Dict[str, str] = None,
+        content_type: str = None,
+    ) -> pyramid.response.Response:
         if headers_update is None:
             headers_update = {}
         headers = response.headers if headers is None else headers
@@ -202,28 +202,28 @@ class Proxy:
             "Trailers",
             "Transfer-Encoding",
             "Upgrade",
-        ]:  # pragma: no cover
+        ]:
             if header in headers:
                 del headers[header]
         # Other problematic headers
-        for header in ["Content-Length", "Content-Location", "Content-Encoding"]:  # pragma: no cover
+        for header in ["Content-Length", "Content-Location", "Content-Encoding"]:
             if header in headers:
                 del headers[header]
 
         headers.update(headers_update)
 
-        response = Response(content, status=response.status_code, headers=headers)
+        response = pyramid.response.Response(content, status=response.status_code, headers=headers)
 
         return set_common_headers(
             self.request, service_name, cache_control, response=response, content_type=content_type
         )
 
     @staticmethod
-    def _get_lower_params(params):
+    def _get_lower_params(params: Dict[str, str]) -> Dict[str, str]:
         return dict((k.lower(), str(v).lower()) for k, v in params.items())
 
-    def _get_headers(self):
-        headers = self.request.headers
-        if "Cookie" in headers:  # pragma: no cover
+    def _get_headers(self) -> Dict[str, str]:
+        headers: Dict[str, str] = self.request.headers
+        if "Cookie" in headers:
             headers.pop("Cookie")
         return headers

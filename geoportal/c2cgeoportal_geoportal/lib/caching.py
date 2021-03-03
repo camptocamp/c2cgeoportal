@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2020, Camptocamp SA
+# Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,11 +30,15 @@
 
 import inspect
 import logging
-from typing import Any, Dict, List
+from enum import Enum
+from typing import Any, Callable, Dict, List, Optional, cast
 
-from dogpile.cache.api import NO_VALUE
+import pyramid.request
+import pyramid.response
+import sqlalchemy.ext.declarative.api
+from dogpile.cache.api import NO_VALUE, SerializedReturnType
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
-from dogpile.cache.region import make_region
+from dogpile.cache.region import CacheRegion, make_region
 from dogpile.cache.util import sha1_mangle_key
 from pyramid.request import Request
 from sqlalchemy.orm.util import identity_key
@@ -46,12 +50,14 @@ _REGION: Dict[str, Any] = {}
 MEMORY_CACHE_DICT: Dict[str, Any] = {}
 
 
-def map_dbobject(item):
+def map_dbobject(
+    item: sqlalchemy.ext.declarative.api.ConcreteBase,
+) -> sqlalchemy.ext.declarative.api.ConcreteBase:
 
     return identity_key(item) if isinstance(item, Base) else item
 
 
-def keygen_function(namespace, function):
+def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..., str]:
     """
     Return a function that generates a string
     key, based on a given function as well as
@@ -63,14 +69,14 @@ def keygen_function(namespace, function):
 
     if namespace is None:
         namespace = (function.__module__, function.__name__)
-    else:  # pragma: no cover
+    else:
         namespace = (function.__module__, function.__name__, namespace)
 
     args = inspect.getfullargspec(function)
     ignore_first_argument = args[0] and args[0][0] in ("self", "cls")
 
-    def generate_key(*args, **kw):
-        if kw:  # pragma: no cover
+    def generate_key(*args: Any, **kw: Any) -> str:
+        if kw:
             raise ValueError("key creation function does not accept keyword arguments.")
         parts: List[str] = []
         parts.extend(namespace)
@@ -83,7 +89,7 @@ def keygen_function(namespace, function):
     return generate_key
 
 
-def init_region(conf, region):
+def init_region(conf: Dict[str, Any], region: str) -> CacheRegion:
     """
     Initialize the caching module.
     """
@@ -92,17 +98,17 @@ def init_region(conf, region):
     return cache_region
 
 
-def _configure_region(conf, cache_region):
+def _configure_region(conf: Dict[str, Any], cache_region: CacheRegion) -> None:
     global MEMORY_CACHE_DICT
-    kwargs = {"replace_existing_backend": True}
+    kwargs: Dict[str, Any] = {"replace_existing_backend": True}
     backend = conf["backend"]
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
-    kwargs.setdefault("arguments", {})  # type: ignore
-    kwargs["arguments"]["cache_dict"] = MEMORY_CACHE_DICT  # type: ignore
+    kwargs.setdefault("arguments", {})
+    kwargs["arguments"]["cache_dict"] = MEMORY_CACHE_DICT
     cache_region.configure(backend, **kwargs)
 
 
-def get_region(region):
+def get_region(region: str) -> CacheRegion:
     """
     Return a cache region.
     """
@@ -112,7 +118,7 @@ def get_region(region):
     return _REGION[region]
 
 
-def invalidate_region(region=None):
+def invalidate_region(region: str = None) -> None:
     if region is None:
         for cache_region in _REGION.values():
             cache_region.invalidate()
@@ -125,13 +131,13 @@ class HybridRedisBackend(RedisBackend):
     A memory and redis backend
     """
 
-    def __init__(self, arguments):
-        self._cache = arguments.pop("cache_dict", {})
+    def __init__(self, arguments: Dict[str, Any]):
+        self._cache: Dict[str, SerializedReturnType] = arguments.pop("cache_dict", {})
         self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
 
         super().__init__(arguments)
 
-    def get(self, key):
+    def get(self, key: str) -> SerializedReturnType:
         value = self._cache.get(key, NO_VALUE)
         if value == NO_VALUE:
             value = super().get(sha1_mangle_key(key.encode()))
@@ -139,19 +145,19 @@ class HybridRedisBackend(RedisBackend):
             self._cache[key] = value
         return value
 
-    def get_multi(self, keys):
+    def get_multi(self, keys: List[str]) -> List[SerializedReturnType]:
         return [self.get(key) for key in keys]
 
-    def set(self, key, value):
+    def set(self, key: str, value: SerializedReturnType) -> None:
         if self._use_memory_cache:
             self._cache[key] = value
         super().set(sha1_mangle_key(key.encode()), value)
 
-    def set_multi(self, mapping):
+    def set_multi(self, mapping: Dict[str, SerializedReturnType]) -> None:
         for key, value in mapping.items():
             self.set(key, value)
 
-    def delete(self, key):
+    def delete(self, key: str) -> None:
         self._cache.pop(key, None)
         super().delete(key)
 
@@ -161,13 +167,13 @@ class HybridRedisSentinelBackend(RedisSentinelBackend):
     A memory and redis sentinel backend
     """
 
-    def __init__(self, arguments):
-        self._cache = arguments.pop("cache_dict", {})
+    def __init__(self, arguments: Dict[str, Any]):
+        self._cache: Dict[str, SerializedReturnType] = arguments.pop("cache_dict", {})
         self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
 
         super().__init__(arguments)
 
-    def get(self, key):
+    def get(self, key: str) -> SerializedReturnType:
         value = self._cache.get(key, NO_VALUE)
         if value == NO_VALUE:
             value = super().get(sha1_mangle_key(key.encode()))
@@ -175,31 +181,39 @@ class HybridRedisSentinelBackend(RedisSentinelBackend):
             self._cache[key] = value
         return value
 
-    def get_multi(self, keys):
+    def get_multi(self, keys: List[str]) -> List[SerializedReturnType]:
         return [self.get(key) for key in keys]
 
-    def set(self, key, value):
+    def set(self, key: str, value: SerializedReturnType) -> None:
         if self._use_memory_cache:
             self._cache[key] = value
         super().set(sha1_mangle_key(key.encode()), value)
 
-    def set_multi(self, mapping):
+    def set_multi(self, mapping: Dict[str, SerializedReturnType]) -> None:
         for key, value in mapping.items():
             self.set(key, value)
 
-    def delete(self, key):
+    def delete(self, key: str) -> None:
         self._cache.pop(key, None)
         super().delete(key)
 
 
-NO_CACHE = 0
-PUBLIC_CACHE = 1
-PRIVATE_CACHE = 2
+class Cache(Enum):
+    NO = 0
+    PUBLIC = 1
+    PRIVATE = 2
+
 
 CORS_METHODS = "HEAD, GET, POST, PUT, DELETE"
 
 
-def _set_cors_headers(request, response, service_name, service_headers_settings, credentials):
+def _set_cors_headers(
+    request: pyramid.request.Request,
+    response: pyramid.response.Response,
+    service_name: str,
+    service_headers_settings: Dict[str, Any],
+    credentials: bool,
+) -> None:
     """
     Handle CORS requests, as specified in https://www.w3.org/TR/cors/
     """
@@ -213,7 +227,7 @@ def _set_cors_headers(request, response, service_name, service_headers_settings,
         LOG.warning("CORS preflight query missing the Access-Control-Request-Method header")
         return
 
-    allowed_origins = service_headers_settings.get("access_control_allow_origin", [])
+    allowed_origins = cast(List[str], service_headers_settings.get("access_control_allow_origin", []))
     if origin not in allowed_origins:
         if "*" in allowed_origins:
             origin = "*"
@@ -250,27 +264,33 @@ def _set_cors_headers(request, response, service_name, service_headers_settings,
     # Access-Control-Expose-Headers
 
 
-def _set_common_headers(request, response, service_headers_settings, cache, content_type):
+def _set_common_headers(
+    request: pyramid.request.Request,
+    response: pyramid.response.Response,
+    service_headers_settings: Dict[str, Dict[str, str]],
+    cache: Cache,
+    content_type: Optional[str],
+) -> pyramid.response.Response:
     """
     Set the common headers
     """
 
     response.headers.update(service_headers_settings.get("headers", {}))
 
-    if cache == NO_CACHE:
+    if cache == Cache.NO:
         response.cache_control.no_cache = True
         response.cache_control.max_age = 0
-    elif cache == PUBLIC_CACHE:
+    elif cache == Cache.PUBLIC:
         response.cache_control.public = True
-    elif cache == PRIVATE_CACHE:
+    elif cache == Cache.PRIVATE:
         if request.user is not None:
             response.cache_control.private = True
         else:
             response.cache_control.public = True
-    else:  # pragma: no cover
+    else:
         raise Exception("Invalid cache type")
 
-    if cache != NO_CACHE:
+    if cache != Cache.NO:
         max_age = service_headers_settings.get("cache_control_max_age", 3600)
 
         response.cache_control.max_age = max_age
@@ -283,7 +303,14 @@ def _set_common_headers(request, response, service_headers_settings, cache, cont
     return response
 
 
-def set_common_headers(request, service_name, cache, response=None, credentials=True, content_type=None):
+def set_common_headers(
+    request: pyramid.request.Request,
+    service_name: str,
+    cache: Cache,
+    response: pyramid.response.Response = None,
+    credentials: bool = True,
+    content_type: str = None,
+) -> pyramid.response.Response:
     """
     Set the common headers
     """

@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add description column in the tree
 
 Revision ID: 22e6dfb556de
@@ -43,7 +45,7 @@ revision = "22e6dfb556de"
 down_revision = "2b8ed8c1df94"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     # Instructions
@@ -51,7 +53,7 @@ def upgrade():
     op.add_column("treeitem", Column("description", Unicode), schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     # Instructions

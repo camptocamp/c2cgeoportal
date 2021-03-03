@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 
 
 from functools import partial
+from typing import cast
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
@@ -70,7 +71,7 @@ class ThemeViews(TreeItemViews):
                 renderer=lambda themes: ", ".join(
                     [
                         "{}={}".format(f.name, f.value)
-                        for f in sorted(themes.functionalities, key=lambda f: f.name)
+                        for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
                     ]
                 ),
                 filter_column=concat(Functionality.name, "=", Functionality.value),
@@ -83,7 +84,7 @@ class ThemeViews(TreeItemViews):
             _list_field(
                 "interfaces",
                 renderer=lambda themes: ", ".join(
-                    [i.name or "" for i in sorted(themes.interfaces, key=lambda i: i.name)]
+                    [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast(str, i.name))]
                 ),
                 filter_column=Interface.name,
             ),

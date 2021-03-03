@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@
 
 from functools import partial
 from itertools import groupby
+from typing import cast
 
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
@@ -48,7 +49,7 @@ class DimensionLayerViews(LayerViews):
             renderer=lambda layer_wms: "; ".join(
                 [
                     "{}: {}".format(group[0], ", ".join([d.value or "NULL" for d in group[1]]))
-                    for group in groupby(layer_wms.dimensions, lambda d: d.name)
+                    for group in groupby(layer_wms.dimensions, lambda d: cast(str, d.name))
                 ]
             ),
         )

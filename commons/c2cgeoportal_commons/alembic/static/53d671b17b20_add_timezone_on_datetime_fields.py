@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add timezone on datetime fields
 
 Revision ID: 53d671b17b20
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     staticschema = config["schema_static"]
 
     op.execute(
@@ -59,7 +61,7 @@ ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp with time 
     )
 
 
-def downgrade():
+def downgrade() -> None:
     staticschema = config["schema_static"]
 
     op.execute(

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Convert the metadata to the right case
 
 Revision ID: 6d87fdad275a
@@ -44,29 +46,19 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
+    op.execute(f"UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'")
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'".format(schema=schema)
+        f"UPDATE ONLY {schema}.metadata SET name = 'geometryValidation' where name = 'geometry_validation'"
     )
-    # fmt: off
-    op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'geometryValidation' where name = 'geometry_validation'"
-        .format(schema=schema)
-    )
-    # fmt: on
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
+    op.execute(f"UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'")
     op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'".format(schema=schema)
+        f"UPDATE ONLY {schema}.metadata SET name = 'geometry_validation' where name = 'geometryValidation'"
     )
-    # fmt: off
-    op.execute(
-        "UPDATE ONLY {schema}.metadata SET name = 'geometry_validation' where name = 'geometryValidation'"
-        .format(schema=schema)
-    )
-    # fmt: on

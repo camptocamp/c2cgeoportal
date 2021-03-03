@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Merge 1.6 and master branches
 
 Revision ID: 29f2a32859ec
@@ -41,9 +43,9 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     pass
 
 
-def downgrade():
+def downgrade() -> None:
     pass

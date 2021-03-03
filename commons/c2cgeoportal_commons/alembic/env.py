@@ -28,10 +28,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+# pylint: disable=no-member
+
 import os
 from logging.config import fileConfig
-from typing import Dict
+from typing import Any, Dict, Union, cast
 
+import sqlalchemy
 from alembic import context
 from c2c.template.config import config
 from sqlalchemy import engine_from_config, pool
@@ -41,9 +44,9 @@ from sqlalchemy import engine_from_config, pool
 fileConfig(context.config.config_file_name, defaults=dict(os.environ))
 
 
-def get_config():
+def get_config() -> Dict[str, Union[str, bool]]:
     config.init(context.config.get_main_option("app.cfg"))
-    settings: Dict[str, str] = {}
+    settings: Dict[str, Union[str, bool]] = {}
     settings.update(config.get_config())
     alembic_name = context.config.get_main_option("type")
     schema_config_name = "schema{}".format("_{}".format(alembic_name) if alembic_name != "main" else "")
@@ -58,7 +61,7 @@ def get_config():
     return settings
 
 
-def run_migrations_offline():  # pragma: no cover
+def run_migrations_offline() -> None:
     """
     Run migrations in 'offline' mode.
 
@@ -78,7 +81,7 @@ def run_migrations_offline():  # pragma: no cover
         context.run_migrations()
 
 
-def run_migrations_online():
+def run_migrations_online() -> None:
     """
     Run migrations in 'online' mode.
 
@@ -86,7 +89,7 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    conf = get_config()
+    conf: Dict[str, Any] = get_config()
 
     # Autogenerate config
     alembic_name = context.config.get_main_option("type")
@@ -95,11 +98,19 @@ def run_migrations_online():
     Base = main.Base if alembic_name == "main" else static.Base  # nopep8
     _schema = main._schema if alembic_name == "main" else static._schema
 
-    def include_object(obj, name, type_, reflected, compare_to):  # pylint: disable=unused-argument
+    def include_object(
+        obj: sqlalchemy.ext.declarative.api.ConcreteBase,
+        name: str,
+        type_: str,
+        reflected: str,
+        compare_to: str,
+    ) -> bool:
+        del name, reflected, compare_to
+
         if type_ == "table":
-            return obj.schema == _schema
+            return cast(bool, obj.schema == _schema)
         else:
-            return obj.table.schema == _schema
+            return cast(bool, obj.table.schema == _schema)
 
     if _schema:
         conf.update(
@@ -117,7 +128,7 @@ def run_migrations_online():
         connection.close()
 
 
-if context.is_offline_mode():  # pragma: no cover
+if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()

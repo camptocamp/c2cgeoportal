@@ -29,29 +29,32 @@
 
 import logging
 from json import dumps, loads
+from typing import Any, Dict, List, Union
 
+import pyramid.request
+import pyramid.response
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden
 from pyramid.view import view_config
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE
+from c2cgeoportal_geoportal.lib.caching import Cache
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
 LOG = logging.getLogger(__name__)
 
 
-class PdfReport(OGCProxy):  # pragma: no cover
+class PdfReport(OGCProxy):
 
     layername = None
 
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         OGCProxy.__init__(self, request)
         self.config = self.request.registry.settings.get("pdfreport", {})
 
-    def _do_print(self, spec):
+    def _do_print(self, spec: Dict[str, Any]) -> pyramid.response.Response:
         """ Create and get report PDF. """
 
         headers = dict(self.request.headers)
@@ -63,10 +66,12 @@ class PdfReport(OGCProxy):  # pragma: no cover
             headers=headers,
         )
 
-        return self._build_response(response, response.content, NO_CACHE, "pdfreport")
+        return self._build_response(response, response.content, Cache.NO, "pdfreport")
 
     @staticmethod
-    def _build_map(mapserv_url, vector_request_url, srs, map_config):
+    def _build_map(
+        mapserv_url: str, vector_request_url: str, srs: str, map_config: Dict[str, Any]
+    ) -> Dict[str, Any]:
         backgroundlayers = map_config["backgroundlayers"]
         imageformat = map_config["imageformat"]
         return {
@@ -99,7 +104,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         }
 
     @view_config(route_name="pdfreport", renderer="json")
-    def get_report(self):
+    def get_report(self) -> pyramid.response.Response:
         self.layername = self.request.matchdict["layername"]
         layer_config = self.config["layers"].get(self.layername)
 
@@ -222,7 +227,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
 
         return self._do_print(spec)
 
-    def walker(self, spec, name, value):
+    def walker(self, spec: Union[Dict[str, Any], List[Dict[str, Any]]], name: str, value: Any) -> None:
         if isinstance(spec, dict):
             for k, v in spec.items():
                 if isinstance(v, str):
@@ -232,9 +237,9 @@ class PdfReport(OGCProxy):  # pragma: no cover
                     self.walker(v, name, value)
 
         if isinstance(spec, list):
-            for k, v in enumerate(spec):
-                if isinstance(v, str):
-                    if v == name:
-                        spec[k] = value
+            for k2, v2 in enumerate(spec):
+                if isinstance(v2, str):
+                    if v2 == name:
+                        spec[k2] = value
                 else:
-                    self.walker(v, name, value)
+                    self.walker(v2, name, value)

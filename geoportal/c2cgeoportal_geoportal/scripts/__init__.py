@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,8 +29,11 @@
 
 
 import os
+from argparse import ArgumentParser, Namespace
+from typing import Any, Dict
 from urllib.parse import urlsplit, urlunsplit
 
+import pyramid.config
 import transaction
 import zope.sqlalchemy
 from pyramid.scripts.common import get_config_loader
@@ -38,7 +41,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 
 
-def fill_arguments(parser):
+def fill_arguments(parser: ArgumentParser) -> None:
     default_app_config = (
         "geoportal/production.ini" if os.path.isfile("geoportal/production.ini") else "production.ini"
     )
@@ -54,14 +57,14 @@ def fill_arguments(parser):
     )
 
 
-def get_config_uri(options):
+def get_config_uri(options: Namespace) -> str:
     uri = urlsplit(options.app_config)
     return urlunsplit(
         (uri.scheme or "c2cgeoportal", uri.netloc, uri.path, uri.query, options.app_name or uri.fragment)
     )
 
 
-def get_appsettings(options, defaults=None):
+def get_appsettings(options: Namespace, defaults: Dict[str, Any] = None) -> pyramid.config.Configurator:
     config_uri = get_config_uri(options)
     loader = get_config_loader(config_uri)
     loader.setup_logging()

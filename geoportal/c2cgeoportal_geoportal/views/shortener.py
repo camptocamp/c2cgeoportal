@@ -32,21 +32,23 @@ import logging
 import random
 import string
 from datetime import datetime
+from typing import Dict
 from urllib.parse import urlparse
 
+import pyramid.request
 from pyramid.httpexceptions import HTTPBadRequest, HTTPFound, HTTPInternalServerError, HTTPNotFound
 from pyramid.view import view_config
 
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.static import Shorturl
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 logger = logging.getLogger(__name__)
 
 
 class Shortener:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings.get("shortener", {})
         self.short_bases = [self.request.route_url("shortener_get", ref="")]
@@ -54,7 +56,7 @@ class Shortener:
             self.short_bases.append(self.settings["base_url"])
 
     @view_config(route_name="shortener_get")
-    def get(self):
+    def get(self) -> HTTPFound:
         ref = self.request.matchdict["ref"]
         short_urls = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
 
@@ -64,11 +66,11 @@ class Shortener:
         short_urls[0].nb_hits += 1
         short_urls[0].last_hit = datetime.now()
 
-        set_common_headers(self.request, "shortener", NO_CACHE)
+        set_common_headers(self.request, "shortener", Cache.NO)
         return HTTPFound(location=short_urls[0].url)
 
     @view_config(route_name="shortener_create", renderer="json")
-    def create(self):
+    def create(self) -> Dict[str, str]:
 
         if "url" not in self.request.params:
             raise HTTPBadRequest("The parameter url is required")
@@ -76,13 +78,13 @@ class Shortener:
         url = self.request.params["url"]
 
         # see: https://httpd.apache.org/docs/2.2/mod/core.html#limitrequestline
-        if len(url) > 8190:  # pragma: no cover
+        if len(url) > 8190:
             raise HTTPBadRequest("The parameter url is too long ({} > {})".format(len(url), 8190))
 
         # Check that it is an internal URL...
         uri_parts = urlparse(url)
         if "allowed_hosts" in self.settings:
-            if uri_parts.netloc not in self.settings["allowed_hosts"]:  # pragma: no cover
+            if uri_parts.netloc not in self.settings["allowed_hosts"]:
                 raise HTTPBadRequest("The requested host is not allowed.")
         else:
             hostname = uri_parts.hostname
@@ -108,8 +110,8 @@ class Shortener:
             test_url = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
             if not test_url:
                 break
-            tries += 1  # pragma: no cover
-            if tries > 20:  # pragma: no cover
+            tries += 1
+            if tries > 20:
                 message = "No free ref found, considered to increase the length"
                 logging.error(message)
                 raise HTTPInternalServerError(message)
@@ -131,7 +133,7 @@ class Shortener:
         else:
             s_url = self.request.route_url("shortener_get", ref=ref)
 
-        if email is not None:  # pragma: no cover
+        if email is not None:
             send_email_config(
                 self.request.registry.settings,
                 "shortener",
@@ -141,5 +143,5 @@ class Shortener:
                 message=self.request.params.get("message", ""),
             )
 
-        set_common_headers(self.request, "shortener", NO_CACHE)
+        set_common_headers(self.request, "shortener", Cache.NO)
         return {"short_url": s_url}

@@ -26,6 +26,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
 
 """
 Add columns last_login, expire_on (both datetime) and deactivated (boolean) on
@@ -45,7 +46,7 @@ revision = "1857owc78a07"
 down_revision = "5472fbc19f39"
 
 
-def upgrade():
+def upgrade() -> None:
     staticschema = config["schema_static"]
 
     # Instructions
@@ -54,7 +55,7 @@ def upgrade():
     op.add_column("user", Column("deactivated", Boolean, default=False), schema=staticschema)
 
 
-def downgrade():
+def downgrade() -> None:
     staticschema = config["schema_static"]
 
     # Instructions

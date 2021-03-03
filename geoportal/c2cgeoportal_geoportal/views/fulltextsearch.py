@@ -29,7 +29,9 @@
 
 
 import re
+from typing import cast
 
+import pyramid.request
 from geoalchemy2.shape import to_shape
 from geojson import Feature, FeatureCollection
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
@@ -39,7 +41,7 @@ from sqlalchemy import and_, desc, func, or_
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from c2cgeoportal_geoportal import locale_negotiator
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
 
 CACHE_REGION = get_region("std")
@@ -48,20 +50,20 @@ IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 
 
 class FullTextSearchView:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
-        set_common_headers(request, "fulltextsearch", NO_CACHE)
+        set_common_headers(request, "fulltextsearch", Cache.NO)
         self.settings = request.registry.settings.get("fulltextsearch", {})
         self.languages = self.settings.get("languages", {})
         self.fts_normiliser = Normalize(self.settings)
 
     @staticmethod
     @CACHE_REGION.cache_on_arguments()
-    def _get_interface_id(interface):
-        return DBSession.query(Interface).filter_by(name=interface).one().id
+    def _get_interface_id(interface: str) -> int:
+        return cast(int, DBSession.query(Interface).filter_by(name=interface).one().id)
 
     @view_config(route_name="fulltextsearch", renderer="geojson")
-    def fulltextsearch(self):
+    def fulltextsearch(self) -> FeatureCollection:
         lang = locale_negotiator(self.request)
 
         try:

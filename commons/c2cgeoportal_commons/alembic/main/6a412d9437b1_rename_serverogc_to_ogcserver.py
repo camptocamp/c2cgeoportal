@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Rename ServerOGC to OGCServer
 
 Revision ID: 6a412d9437b1
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("server_ogc", "ogc_server", schema=schema)
@@ -52,7 +54,7 @@ def upgrade():
         table_op.alter_column("server_ogc_id", new_column_name="ogc_server_id")
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("ogc_server", "server_ogc", schema=schema)

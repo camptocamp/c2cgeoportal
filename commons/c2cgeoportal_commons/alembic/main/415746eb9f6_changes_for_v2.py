@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Changes to start the implementation of the version 2
 
 Revision ID: 415746eb9f6
@@ -44,13 +46,13 @@ revision = "415746eb9f6"
 down_revision = "166ff2dcc48d"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     engine = op.get_bind().engine
     if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
         engine, "interface", schema=schema
-    ):  # pragma: no cover
+    ):
         return
 
     op.drop_table("user_functionality", schema=schema)
@@ -247,7 +249,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.drop_table("wmts_dimension", schema=schema)

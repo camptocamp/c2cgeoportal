@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add layer column in layerv1 table
 
 Revision ID: 7d271f4527cd
@@ -46,7 +48,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.add_column("layerv1", Column("layer", Unicode), schema=schema)
@@ -58,7 +60,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.drop_column("layerv1", "layer", schema=schema)

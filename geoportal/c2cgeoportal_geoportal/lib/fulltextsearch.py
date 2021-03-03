@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,10 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import re
+from typing import Any, Dict
 
 
 class Normalize:
-    def __init__(self, config):
+    def __init__(self, config: Dict[str, Any]) -> None:
         split = config.get("split_regex")
         self.split_re = re.compile(split) if split is not None else None
 
@@ -39,7 +40,7 @@ class Normalize:
         for search_regex, text in config.get("replace", {}).items():
             self.word_replace.append((re.compile(search_regex), text))
 
-    def __call__(self, text):
+    def __call__(self, text: str) -> str:
         if self.split_re is not None:
             text = " ".join(self.split_re.split(text))
 

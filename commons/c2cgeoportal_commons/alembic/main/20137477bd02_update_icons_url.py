@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Update icons url
 
 Revision ID: 20137477bd02
@@ -42,7 +44,7 @@ revision = "20137477bd02"
 down_revision = "1d5d4abfebd1"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     updates = [
@@ -61,7 +63,7 @@ def upgrade():
         op.execute(update % {"schema": schema, "table": "layerv1", "column": "legend_image"})
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     updates = [

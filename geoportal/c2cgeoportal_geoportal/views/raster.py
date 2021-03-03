@@ -33,28 +33,33 @@ import logging
 import math
 import os
 import traceback
-from typing import Any, Dict, Optional  # noqa, pylint: disable=unused-import
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 
 import numpy
+import pyramid.request
 import zope.event.classhandler
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
+from rasterio.io import DatasetReader
 
 from c2cgeoportal_commons.models import InvalidateCacheEvent
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    import fiona.collection
 
 LOG = logging.getLogger(__name__)
 
 
 class Raster:
-    data: Dict[str, Any] = {}
+    data: Dict[str, "fiona.collection.Collection"] = {}
 
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
-        def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
+        def handle(event: InvalidateCacheEvent) -> None:  # pylint: disable=unused-variable
             del event
             for _, v in Raster.data.items():
                 v.close()
@@ -76,7 +81,7 @@ class Raster:
         return result
 
     @view_config(route_name="raster", renderer="fast_json")
-    def raster(self):
+    def raster(self) -> Dict[str, Any]:
         lon = self._get_required_finite_float_param("lon")
         lat = self._get_required_finite_float_param("lat")
 
@@ -95,10 +100,10 @@ class Raster:
         for ref in list(rasters.keys()):
             result[ref] = self._get_raster_value(rasters[ref], ref, lon, lat)
 
-        set_common_headers(self.request, "raster", NO_CACHE)
+        set_common_headers(self.request, "raster", Cache.NO)
         return result
 
-    def _get_data(self, layer, name):
+    def _get_data(self, layer: Dict[str, Any], name: str) -> "fiona.collection.Collection":
         if name not in self.data:
             path = layer["file"]
             if layer.get("type", "shp_index") == "shp_index":
@@ -114,7 +119,9 @@ class Raster:
 
         return self.data[name]
 
-    def _get_raster_value(self, layer, name, lon, lat):
+    def _get_raster_value(
+        self, layer: Dict[str, Any], name: str, lon: float, lat: float
+    ) -> Optional[decimal.Decimal]:
         data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
         if type_ == "shp_index":
@@ -135,21 +142,25 @@ class Raster:
         else:
             raise ValueError("Unsupported type " + type_)
 
-        if "round" in layer:
-            result = self._round(result, layer["round"])
+        result_d = None
+        if "round" in layer and result is not None:
+            result_d = self._round(result, layer["round"])
         elif result is not None:
-            result = decimal.Decimal(str(result))
+            result_d = decimal.Decimal(str(result))
 
-        return result
+        return result_d
 
     @staticmethod
-    def _get_value(layer, name, dataset, lon, lat):
+    def _get_value(
+        layer: Dict[str, Any], name: str, dataset: DatasetReader, lon: float, lat: float
+    ) -> Optional[numpy.float32]:
         index = dataset.index(lon, lat)
 
         shape = dataset.shape
+        result: Optional[numpy.float32]
         if 0 <= index[0] < shape[0] and 0 <= index[1] < shape[1]:
 
-            def get_index(index_):
+            def get_index(index_: int) -> Tuple[int, int]:
                 return index_, index_ + 1
 
             result = dataset.read(1, window=(get_index(index[0]), get_index(index[1])))[0][0]

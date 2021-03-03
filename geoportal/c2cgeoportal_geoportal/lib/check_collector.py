@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,11 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import logging
-from typing import Any
+from typing import Any, Dict, Optional, cast
 
+import c2cwsgiutils.health_check
+import pyramid.config
+import pyramid.request
 import requests
 
 from c2cgeoportal_geoportal.lib.checker import build_url
@@ -36,7 +39,7 @@ from c2cgeoportal_geoportal.lib.checker import build_url
 LOG = logging.getLogger(__name__)
 
 
-def init(config, health_check):
+def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
     global_settings = config.get_settings()
     if "check_collector" not in global_settings:
         return
@@ -48,10 +51,10 @@ def init(config, health_check):
     for host in settings["hosts"]:
 
         class Check:
-            def __init__(self, host):
+            def __init__(self, host: Dict[str, Any]):
                 self.host = host
 
-            def __call__(self, request) -> Any:  # pylint: disable=inconsistent-return-statements
+            def __call__(self, request: pyramid.request.Request) -> Optional[Dict[str, Any]]:
                 params = request.params
                 display = self.host["display"]
                 if "host" not in params or display == params["host"]:
@@ -63,10 +66,11 @@ def init(config, health_check):
                     r = requests.get(
                         params={"max_level": str(self.host.get("max_level", max_level))},
                         timeout=120,
-                        **url_headers,
+                        **url_headers,  # type: ignore
                     )
                     r.raise_for_status()
-                    return r.json()
+                    return cast(Dict[str, Any], r.json())
+                return None
 
         health_check.add_custom_check(
             name="check_collector_" + host["display"], check_cb=Check(host), level=settings["level"]

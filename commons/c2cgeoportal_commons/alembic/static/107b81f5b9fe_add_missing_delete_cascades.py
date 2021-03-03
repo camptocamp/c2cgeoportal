@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add missing delete cascades
 
 Revision ID: 107b81f5b9fe
@@ -44,7 +46,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     staticschema = config["schema_static"]
 
     op.drop_constraint("user_role_user_id_fkey", "user_role", schema=staticschema, type_="foreignkey")
@@ -60,7 +62,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     staticschema = config["schema_static"]
 
     op.drop_constraint("user_role_user_id_fkey", "user_role", schema=staticschema, type_="foreignkey")

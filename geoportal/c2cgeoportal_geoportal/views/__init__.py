@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,15 +28,17 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import pyramid.config
+import pyramid.request
 from pyramid.httpexceptions import HTTPFound
 
 
-def add_ending_slash(request):
+def add_ending_slash(request: pyramid.request.Request) -> HTTPFound:
     return HTTPFound(location=request.path + "/")
 
 
-def add_redirect(config, name, from_, to):
-    def redirect_view(request):
+def add_redirect(config: pyramid.config.Configurator, name: str, from_: str, to: str) -> None:
+    def redirect_view(request: pyramid.request.Request) -> HTTPFound:
         return HTTPFound(location=request.route_url(to))
 
     config.add_route(name, from_, request_method="GET")

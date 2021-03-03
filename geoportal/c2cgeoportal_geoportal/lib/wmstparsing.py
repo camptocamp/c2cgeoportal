@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2020, Camptocamp SA
+# Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,14 @@
 
 
 import datetime
-from typing import Optional, cast
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import isodate
 
+TimeExtent = Union["TimeExtentValue", "TimeExtentInterval"]
 
-def min_none(a, b):
+
+def min_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
     if a is None:
         return b
     if b is None:
@@ -42,7 +44,7 @@ def min_none(a, b):
     return min(a, b)
 
 
-def max_none(a, b):
+def max_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
     if a is None:
         return b
     if b is None:
@@ -60,13 +62,13 @@ class TimeInformation:
     * ``widget`` The layer mode ("slider" (default) or "datepicker")
     """
 
-    def __init__(self):
-        self.extent: Optional[TimeExtentValue] = None
-        self.mode = None
-        self.widget = None
-        self.layer = None
+    def __init__(self) -> None:
+        self.extent: Optional[TimeExtent] = None
+        self.mode: Optional[str] = None
+        self.widget: Optional[str] = None
+        self.layer: Optional[Dict[str, Any]] = None
 
-    def merge(self, layer, extent, mode, widget):
+    def merge(self, layer: Dict[str, Any], extent: TimeExtent, mode: str, widget: str) -> None:
         layer_apply = self.layer == layer or (not self.has_time() and extent is not None)
 
         self.merge_extent(extent)
@@ -80,13 +82,13 @@ class TimeInformation:
             del self.layer["time"]
             self.layer = None
 
-    def merge_extent(self, extent):
+    def merge_extent(self, extent: TimeExtent) -> None:
         if self.extent is not None:
             self.extent.merge(extent)
         else:
             self.extent = extent
 
-    def merge_mode(self, mode):
+    def merge_mode(self, mode: str) -> None:
         if mode != "disabled":
             if self.mode is not None:
                 if self.mode != mode:
@@ -94,8 +96,9 @@ class TimeInformation:
             else:
                 self.mode = mode
 
-    def merge_widget(self, widget):
+    def merge_widget(self, widget: Optional[str]) -> None:
         widget = "slider" if not widget else widget
+        assert widget is not None
 
         if self.widget is not None:
             if self.widget != widget:
@@ -103,12 +106,13 @@ class TimeInformation:
         else:
             self.widget = widget
 
-    def has_time(self):
+    def has_time(self) -> bool:
         return self.extent is not None
 
-    def to_dict(self):
+    def to_dict(self) -> Optional[Dict[str, Any]]:
         if self.has_time():
-            time = cast(TimeExtentValue, self.extent).to_dict()
+            assert self.extent is not None
+            time = self.extent.to_dict()
             time["mode"] = self.mode
             time["widget"] = self.widget
             return time
@@ -120,7 +124,13 @@ class TimeExtentValue:
     Represents time as a list of values.
     """
 
-    def __init__(self, values, resolution, min_def_value, max_def_value):
+    def __init__(
+        self,
+        values: Set[datetime.datetime],
+        resolution: str,
+        min_def_value: Optional[datetime.datetime],
+        max_def_value: Optional[datetime.datetime],
+    ):
         """
         Arguments:
 
@@ -134,7 +144,7 @@ class TimeExtentValue:
         self.min_def_value = min_def_value
         self.max_def_value = max_def_value
 
-    def merge(self, extent):
+    def merge(self, extent: TimeExtent) -> None:
         if not isinstance(extent, TimeExtentValue):
             raise ValueError(
                 "Could not mix time defined as a list of " "values with other type of definition"
@@ -143,7 +153,7 @@ class TimeExtentValue:
         self.min_def_value = min_none(self.min_def_value, extent.min_def_value)
         self.max_def_value = max_none(self.max_def_value, extent.max_def_value)
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         values = sorted(self.values)
         min_def_value = _format_date(self.min_def_value) if self.min_def_value else None
         max_def_value = _format_date(self.max_def_value) if self.max_def_value else None
@@ -163,7 +173,15 @@ class TimeExtentInterval:
     Represents time with the help of a start, an end and an interval.
     """
 
-    def __init__(self, start, end, interval, resolution, min_def_value, max_def_value):
+    def __init__(
+        self,
+        start: datetime.datetime,
+        end: datetime.datetime,
+        interval: Tuple[int, int, int, int],
+        resolution: str,
+        min_def_value: Optional[datetime.datetime],
+        max_def_value: Optional[datetime.datetime],
+    ):
         """
         Arguments:
 
@@ -181,15 +199,19 @@ class TimeExtentInterval:
         self.min_def_value = min_def_value
         self.max_def_value = max_def_value
 
-    def merge(self, extent):
+    def merge(self, extent: TimeExtent) -> None:
         if not isinstance(extent, TimeExtentInterval):
             raise ValueError(
                 "Could not merge time defined as with an " " interval with other type of definition"
             )
         if self.interval != extent.interval:
             raise ValueError("Could not merge times defined with a " "different interval")
-        self.start = min_none(self.start, extent.start)
-        self.end = max_none(self.end, extent.end)
+        start = min_none(self.start, extent.start)
+        assert start is not None
+        self.start = start
+        end = max_none(self.end, extent.end)
+        assert end is not None
+        self.end = end
         self.min_def_value = (
             self.min_def_value
             if extent.min_def_value is None
@@ -205,7 +227,7 @@ class TimeExtentInterval:
             else max_none(self.max_def_value, extent.max_def_value)
         )
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         min_def_value = _format_date(self.min_def_value) if self.min_def_value is not None else None
         max_def_value = _format_date(self.max_def_value) if self.max_def_value is not None else None
 
@@ -219,7 +241,7 @@ class TimeExtentInterval:
         }
 
 
-def parse_extent(extent, default_values):
+def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
     """
     Parse a time extend from OWSLib to a `̀ TimeExtentValue`` or a
     ``TimeExtentInterval``
@@ -252,14 +274,14 @@ def parse_extent(extent, default_values):
     raise ValueError("Invalid time extent format '{}'".format(extent))
 
 
-def _parse_default_values(default_values):
+def _parse_default_values(default_values: str) -> Tuple[datetime.datetime, Optional[datetime.datetime]]:
     """
     Parse the 'default' value from OWSLib's defaulttimeposition
     and return a maximum of two dates. default value must be a
     slash separated String.
     return None on the seconde value if it does not exist.
     """
-    if default_values is None:  # pragma: no cover
+    if default_values is None:
         return None, None
 
     def_value = default_values.split("/")
@@ -273,7 +295,7 @@ def _parse_default_values(default_values):
     return min_def_value, max_def_value
 
 
-def _parse_date(date):
+def _parse_date(date: str) -> Tuple[str, datetime.datetime]:
     """
     Parses a string into a tuple containing:
 
@@ -300,15 +322,15 @@ def _parse_date(date):
         raise ValueError("Invalid date format '{0!s}'".format(date))
 
 
-def _format_date(date):
-    assert isinstance(date, datetime.datetime)
+def _format_date(date: datetime.datetime) -> str:
     str_ = isodate.datetime_isoformat(date)
+    assert isinstance(str_, str)
     if date.tzinfo is None:
         str_ += "Z"
     return str_
 
 
-def _parse_duration(duration):
+def _parse_duration(duration: str) -> Tuple[int, int, int, int]:
     """
     Parses an ISO 8601 duration (i.e. "P2DT5S") and returns a tuple containing:
 
@@ -317,12 +339,12 @@ def _parse_duration(duration):
     * days
     * seconds
     """
-    duration = isodate.parse_duration(duration)
+    parsed_duration = isodate.parse_duration(duration)
 
     # casting years and months to int as isodate might return a float
     return (
-        int(duration.years) if hasattr(duration, "years") else 0,
-        int(duration.months) if hasattr(duration, "months") else 0,
-        duration.days,
-        duration.seconds,
+        int(parsed_duration.years) if hasattr(parsed_duration, "years") else 0,
+        int(parsed_duration.months) if hasattr(parsed_duration, "months") else 0,
+        parsed_duration.days,
+        parsed_duration.seconds,
     )

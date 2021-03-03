@@ -28,16 +28,18 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Any, Collection, Dict, Optional
+from typing import Any, Dict, Iterable, Optional
 
 from pyramid.request import Request
+from sqlalchemy.ext.declarative.api import DeclarativeMeta
+from sqlalchemy.orm.query import Query
 
 from c2cgeoportal_geoportal.lib import caching, get_roles_id
 
 CACHE_REGION = caching.get_region("std")
 
 
-def _get_layers_query(request: Request, what):
+def _get_layers_query(request: Request, what: DeclarativeMeta) -> Query:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = DBSession.query(what)
@@ -50,9 +52,9 @@ def _get_layers_query(request: Request, what):
 
 def get_protected_layers_query(
     request: Request,
-    ogc_server_ids: Optional[Collection[int]],
-    what=None,
-):
+    ogc_server_ids: Optional[Iterable[int]],
+    what: DeclarativeMeta = None,
+) -> Query:
     from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, what)
@@ -63,7 +65,7 @@ def get_protected_layers_query(
     return q
 
 
-def get_writable_layers_query(request: Request, ogc_server_ids: Collection[int]):
+def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -> Query:
     from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, main.LayerWMS)
@@ -74,7 +76,7 @@ def get_writable_layers_query(request: Request, ogc_server_ids: Collection[int])
     )
 
 
-def get_protected_layers(request: Request, ogc_server_ids: Collection[int]):
+def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict[int, DeclarativeMeta]:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = get_protected_layers_query(request, ogc_server_ids, what=main.LayerWMS)
@@ -83,7 +85,7 @@ def get_protected_layers(request: Request, ogc_server_ids: Collection[int]):
     return {r.id: r for r in results}
 
 
-def get_writable_layers(request: Request, ogc_server_ids: Collection[int]):
+def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict[int, DeclarativeMeta]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
     q = get_writable_layers_query(request, ogc_server_ids)
@@ -93,7 +95,7 @@ def get_writable_layers(request: Request, ogc_server_ids: Collection[int]):
 
 
 @CACHE_REGION.cache_on_arguments()
-def get_private_layers(ogc_server_ids: Collection[int]) -> Dict[int, Any]:
+def get_private_layers(ogc_server_ids: Iterable[int]) -> Dict[int, Any]:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = (

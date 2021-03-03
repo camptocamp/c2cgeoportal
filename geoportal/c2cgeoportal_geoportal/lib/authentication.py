@@ -32,7 +32,9 @@ import binascii
 import json
 import logging
 import time
+from typing import Any, Callable, Dict, List, Optional, cast
 
+import pyramid.request
 from Crypto.Cipher import AES  # nosec
 from pyramid.authentication import (
     AuthTktAuthenticationPolicy,
@@ -51,12 +53,12 @@ LOG = logging.getLogger(__name__)
 
 @implementer(IAuthenticationPolicy)
 class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):
-    def __init__(self, aes_key, callback=None, debug=False):
+    def __init__(self, aes_key: str, callback: Callable[[str, Any], List[str]] = None, debug: bool = False):
         self.aeskey = aes_key
         self.callback = callback
         self.debug = debug
 
-    def unauthenticated_userid(self, request):
+    def unauthenticated_userid(self, request: pyramid.request.Request) -> Optional[str]:
         if not request.method == "GET" or "auth" not in request.params:
             return None
         auth_enc = request.params.get("auth")
@@ -79,23 +81,27 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):
                 if now < timestamp and request.registry.validate_user(request, auth["u"], auth["p"]):
                     headers = remember(request, auth["u"])
                     request.response.headerlist.extend(headers)
-                    return auth["u"]
+                    return cast(str, auth["u"])
 
         except Exception as e:
             LOG.error("URL login error: %s.", e, exc_info=True)
 
         return None
 
-    def remember(self, request, userid, **kw):  # pylint: disable=unused-argument, no-self-use
+    def remember(  # pylint: disable=no-self-use
+        self, request: pyramid.request.Request, userid: str, **kw: Any
+    ) -> List:
         """A no-op."""
+        del request, userid, kw
         return []
 
-    def forget(self, request):  # pylint: disable=unused-argument, no-self-use
+    def forget(self, request: pyramid.request.Request) -> List:  # pylint: disable=no-self-use
         """A no-op."""
+        del request
         return []
 
 
-def create_authentication(settings):
+def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy:
     timeout = settings.get("authtkt_timeout")
     timeout = None if timeout is None or timeout.lower() == "none" else int(timeout)
     reissue_time = settings.get("authtkt_reissue_time")
@@ -144,7 +150,7 @@ def create_authentication(settings):
     return MultiAuthenticationPolicy(policies)
 
 
-def c2cgeoportal_check(username, password, request):  # pragma: no cover
+def c2cgeoportal_check(username: str, password: str, request: pyramid.request.Request) -> Optional[List[str]]:
     if request.registry.validate_user(request, username, password):
         return defaultgroupsfinder(username, request)
     return None

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,51 +29,51 @@
 
 
 import logging
-import xml.dom.minidom  # noqa # pylint: disable=unused-import
-from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
+from typing import Any, Dict
 
+import pyramid.request
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PUBLIC_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)
 
 
 class Entry:
-    def __init__(self, request):
+    def __init__(self, request: pyramid.request.Request):
         self.request = request
 
     @view_config(route_name="testi18n", renderer="testi18n.html")
-    def testi18n(self):  # pragma: no cover
+    def testi18n(self) -> Dict[str, Any]:
         _ = self.request.translate
         return {"title": _("title i18n")}
 
-    def get_ngeo_index_vars(self):
-        set_common_headers(self.request, "index", NO_CACHE, content_type="text/html")
+    def get_ngeo_index_vars(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "index", Cache.NO, content_type="text/html")
         return {}
 
-    def apijs(self):
-        set_common_headers(self.request, "api", PUBLIC_CACHE, content_type="application/javascript")
+    def apijs(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/javascript")
         return {}
 
-    def favicon(self):
-        set_common_headers(self.request, "index", NO_CACHE, content_type="image/vnd.microsoft.icon")
+    def favicon(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "index", Cache.NO, content_type="image/vnd.microsoft.icon")
         return {}
 
-    def robot_txt(self):
-        set_common_headers(self.request, "index", NO_CACHE, content_type="text/plain")
+    def robot_txt(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "index", Cache.NO, content_type="text/plain")
         return {}
 
-    def apijsmap(self):
-        set_common_headers(self.request, "api", NO_CACHE, content_type="application/octet-stream")
+    def apijsmap(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "api", Cache.NO, content_type="application/octet-stream")
         return {}
 
-    def apicss(self):
-        set_common_headers(self.request, "api", PUBLIC_CACHE, content_type="text/css")
+    def apicss(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "api", Cache.PUBLIC, content_type="text/css")
         return {}
 
-    def apihelp(self):
-        set_common_headers(self.request, "apihelp", NO_CACHE)
+    def apihelp(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "apihelp", Cache.NO)
         return {}

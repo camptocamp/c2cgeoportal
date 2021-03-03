@@ -32,12 +32,14 @@ import copy
 import logging
 import xml.sax.handler
 from io import StringIO
-from typing import Callable, Collection, Dict, List
+from typing import Any, Callable, Dict, List, Set, Union
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator
 
 import defusedxml.expatreader
 import pyramid.request
 import requests
+from owslib.map.wms111 import ContentMetadata as ContentMetadata111
+from owslib.map.wms130 import ContentMetadata as ContentMetadata130
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
 
@@ -47,6 +49,7 @@ from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_
 
 CACHE_REGION = caching.get_region("std")
 LOG = logging.getLogger(__name__)
+ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
 
 
 @CACHE_REGION.cache_on_arguments()
@@ -55,16 +58,16 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 
     # Forward request to target (without Host Header)
     headers = dict()
-    if url.hostname == "localhost" and host is not None:  # pragma: no cover
+    if url.hostname == "localhost" and host is not None:
         headers["Host"] = host
     try:
         response = requests.get(
             url.url(), headers=headers, **request.registry.settings.get("http_options", {})
         )
-    except Exception:  # pragma: no cover
+    except Exception:
         raise HTTPBadGateway("Unable to GetCapabilities from wms_url {}".format(wms_url))
 
-    if not response.ok:  # pragma: no cover
+    if not response.ok:
         raise HTTPBadGateway(
             "GetCapabilities from wms_url {} return the error: {:d} {}".format(
                 url.url(), response.status_code, response.reason
@@ -75,7 +78,7 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
         wms = WebMapService(None, xml=response.content)
         result: Dict[str, List[str]] = {}
 
-        def _fill(name, parent):
+        def _fill(name: str, parent: ContentMetadata) -> None:
             if parent is None:
                 return
             if parent.name not in result:
@@ -87,13 +90,13 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
             _fill(layer.name, layer.parent)
         return result
 
-    except AttributeError:  # pragma: no cover
+    except AttributeError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         LOG.exception(error)
         raise HTTPBadGateway(error)
 
-    except SyntaxError:  # pragma: no cover
+    except SyntaxError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
         error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
         LOG.exception(error)
@@ -101,8 +104,8 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 
 
 def filter_capabilities(
-    content: str, wms: str, url: Url, headers: Dict[str, str], request: pyramid.request.Request
-):
+    content: str, wms: bool, url: Url, headers: Dict[str, str], request: pyramid.request.Request
+) -> str:
 
     wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
@@ -135,8 +138,8 @@ def filter_capabilities(
     return result.getvalue()
 
 
-def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.request.Request):
-    writable_layers: List[str] = []
+def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.request.Request) -> str:
+    writable_layers: Set[str] = set()
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
     for gmflayer in list(get_writable_layers(request, ogc_server_ids).values()):
         writable_layers += gmflayer.layer.split(",")
@@ -178,8 +181,8 @@ class _CapabilitiesFilter(XMLFilterBase):
         upstream: XMLFilterBase,
         downstream: XMLGenerator,
         tag_name: str,
-        layers_blacklist: Collection[str] = None,
-        layers_whitelist: Collection[str] = None,
+        layers_blacklist: Set[str] = None,
+        layers_whitelist: Set[str] = None,
     ):
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
@@ -193,9 +196,9 @@ class _CapabilitiesFilter(XMLFilterBase):
         ), "only either layers_blacklist OR layers_whitelist can be set"
 
         if layers_blacklist is not None:
-            layers_blacklist = [layer.lower() for layer in layers_blacklist]
+            layers_blacklist = {layer.lower() for layer in layers_blacklist}
         if layers_whitelist is not None:
-            layers_whitelist = [layer.lower() for layer in layers_whitelist]
+            layers_whitelist = {layer.lower() for layer in layers_whitelist}
         self.layers_blacklist = layers_blacklist
         self.layers_whitelist = layers_whitelist
 
@@ -209,36 +212,36 @@ class _CapabilitiesFilter(XMLFilterBase):
             self._downstream.characters("".join(self._accumulator))
             self._accumulator = []
 
-    def _do(self, action: Callable[[], None]):
+    def _do(self, action: Callable[[], Any]) -> None:
         if self.layers_path:
             self.layers_path[-1].accumul.append(action)
         else:
             self._complete_text_node()
             action()
 
-    def _add_child(self, layer: _Layer):
+    def _add_child(self, layer: _Layer) -> None:
         if not layer.hidden and not (layer.has_children and layer.children_nb == 0):
             for action in layer.accumul:
                 self._complete_text_node()
                 action()
             layer.accumul = []
 
-    def setDocumentLocator(self, locator: str):  # noqa
+    def setDocumentLocator(self, locator: str) -> None:  # noqa: ignore=N802
         self._downstream.setDocumentLocator(locator)
 
-    def startDocument(self):  # noqa
+    def startDocument(self) -> None:  # noqa: ignore=N802
         self._downstream.startDocument()
 
-    def endDocument(self):  # noqa
+    def endDocument(self) -> None:  # noqa: ignore=N802
         self._downstream.endDocument()
 
-    def startPrefixMapping(self, prefix: str, uri: str):  # pragma: no cover  # noqa
+    def startPrefixMapping(self, prefix: str, uri: str) -> None:  # noqa: ignore=N802
         self._downstream.startPrefixMapping(prefix, uri)
 
-    def endPrefixMapping(self, prefix: str):  # pragma: no cover  # noqa
+    def endPrefixMapping(self, prefix: str) -> None:  # noqa: ignore=N802
         self._downstream.endPrefixMapping(prefix)
 
-    def startElement(self, name: str, attrs: Dict[str, str]):  # noqa
+    def startElement(self, name: str, attrs: Dict[str, str]) -> None:  # noqa: ignore=N802
         if name == self.tag_name:
             self.level += 1
             if self.layers_path:
@@ -257,7 +260,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self._do(lambda: self._downstream.startElement(name, attrs))
 
-    def endElement(self, name: str):  # noqa
+    def endElement(self, name: str) -> None:  # noqa: ignore=N802
         self._do(lambda: self._downstream.endElement(name))
 
         if name == self.tag_name:
@@ -270,10 +273,10 @@ class _CapabilitiesFilter(XMLFilterBase):
         elif name == "Name":
             self.in_name = False
 
-    def startElementNS(self, name: str, qname: str, attrs: Dict[str, str]):  # pragma: no cover  # noqa
+    def startElementNS(self, name: str, qname: str, attrs: Dict[str, str]) -> None:  # noqa: ignore=N802
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 
-    def endElementNS(self, name: str, qname: str):  # pragma: no cover  # noqa
+    def endElementNS(self, name: str, qname: str) -> None:  # noqa: ignore=N802
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def _keep_layer(self, layer_name: str) -> bool:
@@ -281,7 +284,7 @@ class _CapabilitiesFilter(XMLFilterBase):
             self.layers_whitelist is not None and layer_name in self.layers_whitelist
         )
 
-    def characters(self, content: str):
+    def characters(self, content: str) -> None:
         if self.in_name and self.layers_path and not self.layers_path[-1].self_hidden is True:
             layer_name = normalize_typename(content)
             if self._keep_layer(layer_name):
@@ -295,13 +298,13 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self._do(lambda: self._accumulator.append(content))
 
-    def ignorableWhitespace(self, chars: str):  # pragma: no cover  # noqa
+    def ignorableWhitespace(self, chars: str) -> None:  # noqa: ignore=N802
         self._do(lambda: self._accumulator.append(chars))
 
-    def processingInstruction(self, target: str, data: str):  # pragma: no cover  # noqa
+    def processingInstruction(self, target: str, data: str) -> None:  # noqa: ignore=N802
         self._do(lambda: self._downstream.processingInstruction(target, data))
 
-    def skippedEntity(self, name: str):  # pragma: no cover  # noqa
+    def skippedEntity(self, name: str) -> None:  # noqa: ignore=N802
         self._downstream.skippedEntity(name)
 
 

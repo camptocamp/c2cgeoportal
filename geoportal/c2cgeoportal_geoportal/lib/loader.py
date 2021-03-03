@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019-2020, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 
 
 import os
-from typing import Dict
+from typing import Any, Dict, cast
 
 from c2c.template.config import config as configuration
 from plaster_pastedeploy import Loader as BaseLoader
@@ -43,10 +43,10 @@ class Loader(BaseLoader):
         d.update({k: v.replace("%", "%%") for k, v in os.environ.items()})
         if defaults:
             d.update(defaults)
-        return super()._get_defaults(d)
+        return cast(Dict[str, str], super()._get_defaults(d))
 
-    def get_wsgi_app_settings(self, name: str = None, defaults: Dict[str, str] = None) -> Dict:
-        settings = super().get_wsgi_app_settings(name, defaults)
+    def get_wsgi_app_settings(self, name: str = None, defaults: Dict[str, str] = None) -> Dict[str, Any]:
+        settings = cast(Dict[str, Any], super().get_wsgi_app_settings(name, defaults))
         configuration.init(settings.get("app.cfg"))
         settings.update(configuration.get_config())
         if "available_locale_names" not in settings:

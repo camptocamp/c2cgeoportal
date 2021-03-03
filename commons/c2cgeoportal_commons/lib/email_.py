@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2020, Camptocamp SA
+# Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,9 +47,7 @@ except ModuleNotFoundError:
 LOG = logging.getLogger(__name__)
 
 
-def send_email_config(
-    settings: Dict[str, Any], email_config_name: str, email: str, **kwargs: Dict[str, Any]
-) -> None:  # pragma: no cover
+def send_email_config(settings: Dict[str, Any], email_config_name: str, email: str, **kwargs: Any) -> None:
     smtp_config = settings["smtp"]
     email_config = cast(Dict[str, str], settings[email_config_name])
 
@@ -68,7 +66,7 @@ def send_email_config(
 
 def send_email(
     from_addr: str, to_addrs: List[str], body: str, subject: str, smtp_config: Dict[str, str]
-) -> None:  # pragma: no cover
+) -> None:
     msg = MIMEMultipart()
     msg["From"] = from_addr
     msg["To"] = ", ".join(to_addrs)

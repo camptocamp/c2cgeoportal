@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Remove trigger on_role_name_change
 
 Revision ID: 338b57593823
@@ -44,14 +46,14 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.execute("DROP TRIGGER on_role_name_change ON {schema}.role".format(schema=schema))
     op.execute("DROP FUNCTION {schema}.on_role_name_change()".format(schema=schema))
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
     staticschema = config["schema_static"]
 

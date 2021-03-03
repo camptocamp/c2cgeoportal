@@ -30,13 +30,14 @@
 import random
 import threading
 import warnings
-from typing import Dict, Tuple  # noqa, pylint: disable=unused-import
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
+import sqlalchemy.ext.declarative.api
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, Integer, MetaData, Table
 from sqlalchemy.exc import SAWarning
-from sqlalchemy.ext.declarative.api import DeclarativeMeta  # noqa, pylint: disable=unused-import
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.util import class_mapper
 
 from c2cgeoportal_geoportal.lib.caching import get_region
@@ -55,13 +56,17 @@ SQL_GEOMETRY_COLUMNS = """
 class _AssociationProxy:
     # A specific "association proxy" implementation
 
-    def __init__(self, target, value_attr, nullable=True, order_by=None):
+    def __init__(self, target: str, value_attr: str, nullable: bool = True, order_by: str = None):
         self.target = target
         self.value_attr = value_attr
         self.nullable = nullable
         self.order_by = order_by
 
-    def __get__(self, obj, type_=None):
+    def __get__(
+        self,
+        obj: sqlalchemy.ext.declarative.api.ConcreteBase,
+        type_: sqlalchemy.ext.declarative.api.DeclarativeMeta = None,
+    ) -> Optional[Union["_AssociationProxy", str]]:
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.
@@ -71,7 +76,7 @@ class _AssociationProxy:
         target = getattr(obj, self.target)
         return getattr(target, self.value_attr) if target else None
 
-    def __set__(self, obj, val):
+    def __set__(self, obj: str, val: str) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
         o = getattr(obj, self.target)
@@ -85,7 +90,7 @@ class _AssociationProxy:
             setattr(obj, self.target, o)
 
 
-def _get_schema(tablename):
+def _get_schema(tablename: str) -> Tuple[str, str]:
     if "." in tablename:
         schema, tablename = tablename.split(".", 1)
     else:
@@ -97,7 +102,7 @@ def _get_schema(tablename):
 _get_table_lock = threading.RLock()
 
 
-def get_table(tablename, schema=None, session=None, primary_key=None):
+def get_table(tablename: str, schema: str = None, session: Session = None, primary_key: str = None) -> Table:
     if schema is None:
         tablename, schema = _get_schema(tablename)
 
@@ -125,13 +130,13 @@ def get_table(tablename, schema=None, session=None, primary_key=None):
 
 @CACHE_REGION_OBJ.cache_on_arguments()
 def get_class(
-    tablename,
-    exclude_properties=None,
-    primary_key=None,
-    attributes_order=None,
-    enumerations_config=None,
-    readonly_attributes=None,
-):
+    tablename: str,
+    exclude_properties: List[str] = None,
+    primary_key: str = None,
+    attributes_order: List[str] = None,
+    enumerations_config: Dict[str, str] = None,
+    readonly_attributes: List[str] = None,
+) -> sqlalchemy.ext.declarative.api.DeclarativeMeta:
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
     for "tablename" one is created, and added to the cache. "tablename"
@@ -157,13 +162,13 @@ def get_class(
 
 
 def _create_class(
-    table,
-    exclude_properties=None,
-    attributes_order=None,
-    enumerations_config=None,
-    readonly_attributes=None,
-    pk_name=None,
-):
+    table: Table,
+    exclude_properties: Iterable[str] = None,
+    attributes_order: List[str] = None,
+    enumerations_config: Dict[str, str] = None,
+    readonly_attributes: List[str] = None,
+    pk_name: str = None,
+) -> sqlalchemy.ext.declarative.api.DeclarativeMeta:
     from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
 
     exclude_properties = exclude_properties or ()
@@ -188,8 +193,10 @@ def _create_class(
     return cls
 
 
-def _add_association_proxy(cls, col):
-    if len(col.foreign_keys) != 1:  # pragma: no cover
+def _add_association_proxy(
+    cls: sqlalchemy.ext.declarative.api.DeclarativeMeta, col: sqlalchemy.sql.schema.Column
+) -> None:
+    if len(col.foreign_keys) != 1:
         raise NotImplementedError
 
     fk = next(iter(col.foreign_keys))
@@ -197,10 +204,8 @@ def _add_association_proxy(cls, col):
     child_cls = get_class(child_tablename)
 
     try:
-        # fmt: off
-        proxy = col.name[0:col.name.rindex("_id")]
-        # fmt: on
-    except ValueError:  # pragma: no cover
+        proxy = col.name[0 : col.name.rindex("_id")]
+    except ValueError:
         proxy = col.name + "_"
 
     # The following is a workaround for a bug in the geojson lib. The
@@ -208,7 +213,7 @@ def _add_association_proxy(cls, col):
     # (this is a GeoJSON keyword), and produces a UnicodeEncodeError
     # if the property includes non-ascii characters.
     if proxy == "type":
-        proxy = "type_"  # pragma: no cover
+        proxy = "type_"
 
     rel = proxy + "_"
     primaryjoin = getattr(cls, col.name) == getattr(child_cls, child_pk)

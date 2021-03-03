@@ -31,12 +31,17 @@ import importlib
 import logging
 import os
 import re
+from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, cast
 from urllib.parse import urlsplit
 
 import c2cgeoform
 import c2cwsgiutils
 import c2cwsgiutils.db
 import c2cwsgiutils.index
+import pyramid.config
+import pyramid.renderers
+import pyramid.request
+import pyramid.response
 import pyramid.security
 import zope.event.classhandler
 from c2cgeoform import Form, translator
@@ -55,7 +60,7 @@ import c2cgeoportal_geoportal.views
 from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
-from c2cgeoportal_geoportal.lib.caching import NO_CACHE, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 from c2cgeoportal_geoportal.lib.metrics import (
     MemoryCacheSizeProvider,
@@ -65,6 +70,10 @@ from c2cgeoportal_geoportal.lib.metrics import (
 from c2cgeoportal_geoportal.lib.xsd import XSD
 from c2cgeoportal_geoportal.views.entry import Entry
 
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models import static  # pylint: disable=ungrouped-imports,useless-suppression
+
+
 LOG = logging.getLogger(__name__)
 
 # Header predicate to accept only JSON content
@@ -73,21 +82,26 @@ GEOJSON_CONTENT_TYPE = r"Content-Type:application/geo\+json"
 
 
 class AssetRendererFactory:
-    def __init__(self, info):
+    def __init__(self, info: Any):
         del info  # unused
         self.resolver = AssetResolver("c2cgeoportal_geoportal")
 
-    def __call__(self, value, system):
+    def __call__(self, value: Any, system: Dict[str, str]) -> bytes:
+        del value
         asset = self.resolver.resolve(system["renderer_name"])
-        return asset.stream().read()
+        return cast(bytes, asset.stream().read())
 
 
 INTERFACE_TYPE_NGEO = "ngeo"
 
 
 def add_interface(
-    config, interface_name="desktop", interface_type=INTERFACE_TYPE_NGEO, default=False, **kwargs
-):  # pragma: no cover
+    config: pyramid.config.Configurator,
+    interface_name: str = "desktop",
+    interface_type: str = INTERFACE_TYPE_NGEO,
+    default: bool = False,
+    **kwargs: Any,
+) -> None:
     del interface_type  # unused
     route = "/" if default else "/{}".format(interface_name)
     add_interface_ngeo(
@@ -99,7 +113,13 @@ def add_interface(
     )
 
 
-def add_interface_ngeo(config, route_name, route, renderer=None, permission=None):  # pragma: no cover
+def add_interface_ngeo(
+    config: pyramid.config.Configurator,
+    route_name: str,
+    route: str,
+    renderer: str = None,
+    permission: str = None,
+) -> None:
 
     config.add_route(route_name, route, request_method="GET")
     config.add_view(
@@ -120,7 +140,7 @@ def add_interface_ngeo(config, route_name, route, renderer=None, permission=None
     )
 
 
-def add_admin_interface(config):
+def add_admin_interface(config: pyramid.config.Configurator) -> None:
     if config.get_settings().get("enable_admin_interface", False):
         config.add_request_method(
             lambda request: c2cgeoportal_commons.models.DBSession(),
@@ -132,7 +152,7 @@ def add_admin_interface(config):
         config.include("c2cgeoportal_admin")
 
 
-def add_getitfixed(config):
+def add_getitfixed(config: pyramid.config.Configurator) -> None:
     if config.get_settings()["getitfixed"].get("enabled", False):
         for route_name, pattern in (
             ("getitfixed_add_ending_slash", "/getitfixed"),
@@ -145,8 +165,8 @@ def add_getitfixed(config):
         Form.set_zpt_renderer(c2cgeoform.default_search_paths, translator=translator)
 
 
-def locale_negotiator(request):
-    lang = request.params.get("lang")
+def locale_negotiator(request: pyramid.request.Request) -> str:
+    lang: str = request.params.get("lang")
     if lang is None:
         lang = request.cookies.get("_LOCALE_")
     else:
@@ -160,18 +180,16 @@ def locale_negotiator(request):
     return lang
 
 
-def _match_url_start(reference, value):
+def _match_url_start(reference: str, value: str) -> bool:
     """
     Checks that the val URL starts like the ref URL.
     """
     reference_parts = reference.rstrip("/").split("/")
-    # fmt: off
-    value_parts = value[0:len(reference_parts)]
-    # fmt: on
+    value_parts = value[0 : len(reference_parts)]
     return reference_parts == value_parts
 
 
-def is_valid_referer(request, settings=None):
+def is_valid_referer(request: pyramid.request.Request, settings: Dict[str, Any] = None) -> bool:
     if request.referer is not None:
         referer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
         if settings is None:
@@ -181,8 +199,12 @@ def is_valid_referer(request, settings=None):
     return True
 
 
-def create_get_user_from_request(settings):
-    def get_user_from_request(request, username=None):
+def create_get_user_from_request(
+    settings: Dict[str, Any]
+) -> Callable[[pyramid.request.Request, Optional[str]], Optional["static.User"]]:
+    def get_user_from_request(
+        request: pyramid.request.Request, username: str = None
+    ) -> Optional["static.User"]:
         """Return the User object for the request.
 
         Return ``None`` if:
@@ -208,12 +230,14 @@ def create_get_user_from_request(settings):
                 # user so we use joined loading
                 request.user_ = DBSession.query(User).filter_by(username=username).first()
 
-        return request.user_
+        return cast(User, request.user_)
 
     return get_user_from_request
 
 
-def set_user_validator(config, user_validator):
+def set_user_validator(
+    config: pyramid.config.Configurator, user_validator: Callable[[pyramid.request.Request, str, str], str]
+) -> None:
     """Call this function to register a user validator function.
 
     The validator function is passed three arguments: ``request``,
@@ -230,7 +254,7 @@ def set_user_validator(config, user_validator):
     config.action("user_validator", register)
 
 
-def default_user_validator(request, username, password):
+def default_user_validator(request: pyramid.request.Request, username: str, password: str) -> Optional[str]:
     """
     Validate the username/password. This is c2cgeoportal's
     default user validator.
@@ -261,10 +285,11 @@ class MapserverproxyRoutePredicate:
     If the hide_capabilities setting is set and is true then we want to
     return 404s on GetCapabilities requests."""
 
-    def __init__(self, val, config):
-        pass
+    def __init__(self, val: Any, config: pyramid.config.Configurator) -> None:
+        del val, config
 
-    def __call__(self, context, request):
+    def __call__(self, context: Any, request: pyramid.request.Request) -> bool:
+        del context
         hide_capabilities = request.registry.settings.get("hide_capabilities")
         if not hide_capabilities:
             return True
@@ -272,34 +297,36 @@ class MapserverproxyRoutePredicate:
         return "request" not in params or params["request"] not in ("getcapabilities", "capabilities")
 
     @staticmethod
-    def text():
+    def text() -> str:
         return "mapserverproxy"
 
     phash = text
 
 
-def add_cors_route(config, pattern, service):
+def add_cors_route(config: pyramid.config.Configurator, pattern: str, service: str) -> None:
     """
     Add the OPTIONS route and view need for services supporting CORS.
     """
 
-    def view(request):  # pragma: no cover
-        return set_common_headers(request, service, NO_CACHE)
+    def view(request: pyramid.request.Request) -> pyramid.response.Response:
+        return set_common_headers(request, service, Cache.NO)
 
     name = pattern + "_options"
     config.add_route(name, pattern, request_method="OPTIONS")
     config.add_view(view, route_name=name)
 
 
-def error_handler(http_exception, request):  # pragma: no cover
+def error_handler(
+    http_exception: HTTPException, request: pyramid.request.Request
+) -> pyramid.response.Response:
     """
     View callable for handling all the exceptions that are not already handled.
     """
     LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
-    return caching.set_common_headers(request, "error", caching.NO_CACHE, http_exception)
+    return caching.set_common_headers(request, "error", caching.Cache.NO, http_exception)
 
 
-def call_hook(settings, name, *args, **kwargs):
+def call_hook(settings: pyramid.config.Configurator, name: str, *args: Any, **kwargs: Any) -> None:
     hooks = settings.get("hooks", {})
     hook = hooks.get(name)
     if hook is None:
@@ -310,7 +337,7 @@ def call_hook(settings, name, *args, **kwargs):
     function_(*args, **kwargs)
 
 
-def includeme(config: pyramid.config.Configurator):
+def includeme(config: pyramid.config.Configurator) -> None:
     """
     This function returns a Pyramid WSGI application.
     """
@@ -363,7 +390,7 @@ def includeme(config: pyramid.config.Configurator):
             caching.init_region(cache_config, name)
 
             @zope.event.classhandler.handler(InvalidateCacheEvent)
-            def handle(event: InvalidateCacheEvent):  # pylint: disable=unused-variable
+            def handle(event: InvalidateCacheEvent) -> None:  # pylint: disable=unused-variable
                 del event
                 caching.invalidate_region()
                 if caching.MEMORY_CACHE_DICT:
@@ -433,7 +460,7 @@ def includeme(config: pyramid.config.Configurator):
     config.add_renderer(".ico", AssetRendererFactory)
     config.add_route("localejson", "/locale.json", request_method="GET")
 
-    def add_static_route(name: str, attr: str, path: str, renderer: str):
+    def add_static_route(name: str, attr: str, path: str, renderer: str) -> None:
         config.add_route(name, path, request_method="GET")
         config.add_view(Entry, attr=attr, route_name=name, renderer=renderer)
 
@@ -632,7 +659,7 @@ def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCh
                         version_schema=settings["schema_static"],
                         level=1,
                     )
-            else:  # pragma: no cover
+            else:
 
                 def check(session_: Session) -> None:
                     session_.execute("SELECT 1")

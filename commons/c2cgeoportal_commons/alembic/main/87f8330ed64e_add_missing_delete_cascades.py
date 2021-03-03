@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add missing delete cascades
 
 Revision ID: 87f8330ed64e
@@ -45,7 +47,7 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.drop_constraint(
@@ -177,7 +179,7 @@ def upgrade():
     op.alter_column("theme", "ordering", existing_type=sa.INTEGER(), nullable=False, schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.alter_column("theme", "ordering", existing_type=sa.INTEGER(), nullable=True, schema=schema)

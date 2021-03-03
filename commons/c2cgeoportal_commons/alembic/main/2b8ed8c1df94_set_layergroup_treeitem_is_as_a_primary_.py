@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Set layergroup_treeitem.id as a primary key
 
 Revision ID: 2b8ed8c1df94
@@ -44,13 +46,13 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.create_primary_key("layergroup_treeitem_pkey", "layergroup_treeitem", ["id"], schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.drop_constraint("layergroup_treeitem_pkey", "layergroup_treeitem", schema=schema)

@@ -32,6 +32,10 @@ yamllint: pipenv.timestamp
 		\( -name "*.yml" -or -name "*.yaml" \) -print \
 	)
 
+prospector: ## prospector lint (Quick, use otherchecks to get an exact result)
+prospector: pipenv.timestamp
+	pipenv run prospector --output-format=pylint
+
 .PHONY: otherchecks
 otherchecks:
 	docker build --target=checks \

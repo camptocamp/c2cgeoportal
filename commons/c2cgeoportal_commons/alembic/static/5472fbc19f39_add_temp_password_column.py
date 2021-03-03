@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add temp_password column
 
 Revision ID: 5472fbc19f39
@@ -43,14 +45,14 @@ revision = "5472fbc19f39"
 down_revision = "1da396a88908"
 
 
-def upgrade():
+def upgrade() -> None:
     staticschema = config["schema_static"]
 
     # Instructions
     op.add_column("user", Column("temp_password", Unicode), schema=staticschema)
 
 
-def downgrade():
+def downgrade() -> None:
     staticschema = config["schema_static"]
 
     # Instructions

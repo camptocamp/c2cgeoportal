@@ -32,13 +32,13 @@
 
 import logging
 import re
-from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast  # noqa, pylint: disable=unused-import
+from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
+import pyramid.request
 from c2c.template.config import config
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from papyrus.geo_interface import GeoInterface
-from pyramid.request import Request
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
 from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
@@ -123,7 +123,7 @@ class Functionality(Base):
         self.description = description
 
     def __str__(self) -> str:
-        return "{} - {}".format(self.name or "", self.value or "")  # pragma: no cover
+        return "{} - {}".format(self.name or "", self.value or "")
 
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
@@ -201,13 +201,13 @@ class Role(Base):
         self.description = description
 
     def __str__(self) -> str:
-        return self.name or ""  # pragma: no cover
+        return self.name or ""
 
     @property
-    def bounds(self) -> None:
+    def bounds(self) -> Optional[Tuple[float, float, float, float]]:  # TODO
         if self.extent is None:
             return None
-        return to_shape(self.extent).bounds
+        return cast(Tuple[float, float, float, float], to_shape(self.extent).bounds)
 
 
 event.listen(Role.functionalities, "set", cache_invalidate_cb)
@@ -229,12 +229,12 @@ class TreeItem(Base):
     description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
 
     @property
-    # Better: def parents(self) -> List[TreeGroup]:  # pragma: no cover
-    def parents(self) -> List["TreeItem"]:  # pragma: no cover
+    # Better: def parents(self) -> List[TreeGroup]:
+    def parents(self) -> List["TreeItem"]:
         return [c.treegroup for c in self.parents_relation]
 
     def is_in_interface(self, name: str) -> bool:
-        if not hasattr(self, "interfaces"):  # pragma: no cover
+        if not hasattr(self, "interfaces"):
             return False
 
         for interface in self.interfaces:
@@ -243,7 +243,7 @@ class TreeItem(Base):
 
         return False
 
-    def get_metadatas(self, name: str) -> List["Metadata"]:  # pragma: no cover
+    def get_metadatas(self, name: str) -> List["Metadata"]:
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
     def __init__(self, name: str = "") -> None:
@@ -559,14 +559,14 @@ class OGCServer(Base):
         self.is_single_tile = is_single_tile
 
     def __str__(self) -> str:
-        return self.name or ""  # pragma: no cover
+        return self.name or ""
 
-    def url_description(self, request: Request) -> str:
+    def url_description(self, request: pyramid.request.Request) -> str:
         errors: Set[str] = set()
         url = get_url2(self.name, self.url, request, errors)
         return url.url() if url else "\n".join(errors)
 
-    def url_wfs_description(self, request: Request) -> Optional[str]:
+    def url_wfs_description(self, request: pyramid.request.Request) -> Optional[str]:
         if not self.url_wfs:
             return self.url_description(request)
         errors: Set[str] = set()
@@ -672,8 +672,11 @@ class LayerWMS(DimensionLayer):
         self.time_widget = time_widget
 
     @staticmethod
-    def get_default(dbsession: Session) -> DimensionLayer:
-        return dbsession.query(LayerWMS).filter(LayerWMS.name == "wms-defaults").one_or_none()
+    def get_default(dbsession: Session) -> Optional[DimensionLayer]:
+        return cast(
+            Optional[DimensionLayer],
+            dbsession.query(LayerWMS).filter(LayerWMS.name == "wms-defaults").one_or_none(),
+        )
 
 
 class LayerWMTS(DimensionLayer):
@@ -714,8 +717,11 @@ class LayerWMTS(DimensionLayer):
         self.image_type = image_type
 
     @staticmethod
-    def get_default(dbsession: Session) -> DimensionLayer:
-        return dbsession.query(LayerWMTS).filter(LayerWMTS.name == "wmts-defaults").one_or_none()
+    def get_default(dbsession: Session) -> Optional[DimensionLayer]:
+        return cast(
+            Optional[DimensionLayer],
+            dbsession.query(LayerWMTS).filter(LayerWMTS.name == "wmts-defaults").one_or_none(),
+        )
 
 
 # association table role <> restriction area
@@ -849,7 +855,7 @@ class RestrictionArea(Base):
         self.area = area
         self.readwrite = readwrite
 
-    def __str__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:
         return self.name or ""
 
 
@@ -911,7 +917,7 @@ class Interface(Base):
         self.name = name
         self.description = description
 
-    def __str__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:
         return self.name or ""
 
 
@@ -949,7 +955,7 @@ class Metadata(Base):
         self.value = value
         self.description = description
 
-    def __str__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:
         return "{}: {}".format(self.name or "", self.value or "")
 
 
@@ -997,5 +1003,5 @@ class Dimension(Base):
             self.layer = layer
         self.description = description
 
-    def __str__(self) -> str:  # pragma: no cover
+    def __str__(self) -> str:
         return self.name or ""

@@ -36,7 +36,7 @@ def test_data2(clean_dbsession):
     )
     from c2cgeoportal_commons.models.static import User
 
-    DBSession = clean_dbsession  # noqa: N806
+    DBSession = clean_dbsession  # noqa: ignore=N806
 
     dbsession = DBSession()
 
@@ -118,7 +118,7 @@ def test_data2(clean_dbsession):
     "test_data2",
 )
 class TestAccessControlAllowToEdit:
-    def test_allow_to_edit(self, server_iface, DBSession, test_data2):  # noqa: N803
+    def test_allow_to_edit(self, server_iface, DBSession, test_data2):  # noqa: ignore=N803
         session = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver", "no_project", 21781, lambda: session

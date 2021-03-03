@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,12 +31,17 @@
 import json
 import logging
 import urllib.parse
+from typing import Dict, List, Tuple
 
+import pyramid.request
+import pyramid.response
+import requests
 from pyramid.httpexceptions import HTTPBadGateway, HTTPFound
 from pyramid.view import view_config
 
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib import is_intranet
-from c2cgeoportal_geoportal.lib.caching import PRIVATE_CACHE, get_region
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
@@ -44,13 +49,13 @@ LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
 
 
-class PrintProxy(Proxy):  # pragma: no cover
-    def __init__(self, request):
+class PrintProxy(Proxy):
+    def __init__(self, request: pyramid.request.Request):
         Proxy.__init__(self, request)
         self.config = self.request.registry.settings
 
     @view_config(route_name="printproxy_capabilities")
-    def capabilities(self):
+    def capabilities(self) -> pyramid.response.Response:
         """ Get print capabilities. """
 
         templates = get_functionality("print_template", self.request, is_intranet(self.request))
@@ -61,10 +66,12 @@ class PrintProxy(Proxy):  # pragma: no cover
 
         resp, content = self._capabilities(templates, query_string, self.request.method)
 
-        return self._build_response(resp, content, PRIVATE_CACHE, "print")
+        return self._build_response(resp, content, Cache.PRIVATE, "print")
 
     @CACHE_REGION.cache_on_arguments()
-    def _capabilities(self, templates, query_string, method):
+    def _capabilities(
+        self, templates: List[str], query_string: Dict[str, str], method: str
+    ) -> Tuple[requests.Response, str]:
         del query_string  # Just for caching
         del method  # Just for caching
         # get URL
@@ -97,32 +104,32 @@ class PrintProxy(Proxy):  # pragma: no cover
         return response, content
 
     @view_config(route_name="printproxy_report_create")
-    def report_create(self):
+    def report_create(self) -> pyramid.response.Response:
         """ Create PDF. """
         return self._proxy_response(
             "print",
-            "{0!s}/report.{1!s}".format(self.config["print_url"], self.request.matchdict.get("format")),
+            Url("{}/report.{}".format(self.config["print_url"], self.request.matchdict.get("format"))),
         )
 
     @view_config(route_name="printproxy_status")
-    def status(self):
+    def status(self) -> pyramid.response.Response:
         """ PDF status. """
         return self._proxy_response(
             "print",
-            "{0!s}/status/{1!s}.json".format(self.config["print_url"], self.request.matchdict.get("ref")),
+            Url("{}/status/{}.json".format(self.config["print_url"], self.request.matchdict.get("ref"))),
         )
 
     @view_config(route_name="printproxy_cancel")
-    def cancel(self):
+    def cancel(self) -> pyramid.response.Response:
         """ PDF cancel. """
         return self._proxy_response(
-            "print", "{0!s}/cancel/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
+            "print", Url("{}/cancel/{}".format(self.config["print_url"], self.request.matchdict.get("ref")))
         )
 
     @view_config(route_name="printproxy_report_get")
-    def report_get(self):
+    def report_get(self) -> pyramid.response.Response:
         """ Get the PDF. """
-        url = "{0!s}/report/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
+        url = Url("{0!s}/report/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref")))
         if self.config.get("print_get_redirect", False):
-            raise HTTPFound(location=url)
+            raise HTTPFound(location=url.url())
         return self._proxy_response("print", url)

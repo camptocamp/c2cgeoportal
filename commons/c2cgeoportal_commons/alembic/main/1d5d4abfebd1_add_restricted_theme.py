@@ -25,6 +25,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Add restricted theme
 
 Revision ID: 1d5d4abfebd1
@@ -42,13 +44,13 @@ revision = "1d5d4abfebd1"
 down_revision = "54645a535ad6"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     engine = op.get_bind().engine
     if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
         engine, "restricted_role_theme", schema=schema
-    ):  # pragma: no cover
+    ):
         return
 
     op.add_column("theme", Column("public", Boolean, server_default="t", nullable=False), schema=schema)
@@ -60,7 +62,7 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.drop_table("restricted_role_theme", schema=schema)

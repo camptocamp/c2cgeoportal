@@ -27,6 +27,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
+
 """Move exclude_properties from LayerV1 to Layer
 
 Revision ID: 32527659d57b
@@ -44,7 +46,7 @@ revision = "32527659d57b"
 down_revision = "5109242131ce"
 
 
-def upgrade():
+def upgrade() -> None:
     schema = config["schema"]
 
     op.add_column("layer", Column("exclude_properties", Unicode), schema=schema)
@@ -56,7 +58,7 @@ def upgrade():
     op.drop_column("layerv1", "exclude_properties", schema=schema)
 
 
-def downgrade():
+def downgrade() -> None:
     schema = config["schema"]
 
     op.add_column("layerv1", Column("exclude_properties", Unicode), schema=schema)
