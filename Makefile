@@ -21,7 +21,7 @@ checks: ## Run the application checks
 checks: yamllint otherchecks
 
 pipenv.timestamp:
-	pipenv install
+	pipenv sync
 
 .PHONY: yamllint
 yamllint: ## YAML lint
