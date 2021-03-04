@@ -1,7 +1,6 @@
 ##### 2.6.rc.17
 * Use pipenv sync [c2cgeoportal#7890](https://github.com/camptocamp/c2cgeoportal/pull/7890)
 * [Backport 2.6] Bump c2cciutils from 1.0.dev20210217133842 to 1.0.dev20210302092543 [c2cgeoportal#7895](https://github.com/camptocamp/c2cgeoportal/pull/7895)
-* Move ngeoScaleSelectorOptions and gmfMousePositionOptions on desktop,… [c2cgeoportal#7897](https://github.com/camptocamp/c2cgeoportal/pull/7897)
 ##### 2.6.rc.16
 * Update the changelog [c2cgeoportal#7886](https://github.com/camptocamp/c2cgeoportal/pull/7886)
 * [Backport 2.6] Doc - Add custom alembic [c2cgeoportal#7888](https://github.com/camptocamp/c2cgeoportal/pull/7888)
