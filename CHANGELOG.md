@@ -1,7 +1,10 @@
+##### 2.6.rc.17
+* Use pipenv sync [c2cgeoportal#7890](https://github.com/camptocamp/c2cgeoportal/pull/7890)
+* [Backport 2.6] Bump c2cciutils from 1.0.dev20210217133842 to 1.0.dev20210302092543 [c2cgeoportal#7895](https://github.com/camptocamp/c2cgeoportal/pull/7895)
+* Move ngeoScaleSelectorOptions and gmfMousePositionOptions on desktop,… [c2cgeoportal#7897](https://github.com/camptocamp/c2cgeoportal/pull/7897)
 ##### 2.6.rc.16
 * Update the changelog [c2cgeoportal#7886](https://github.com/camptocamp/c2cgeoportal/pull/7886)
 * [Backport 2.6] Doc - Add custom alembic [c2cgeoportal#7888](https://github.com/camptocamp/c2cgeoportal/pull/7888)
-* Use pipenv sync [c2cgeoportal#7890](https://github.com/camptocamp/c2cgeoportal/pull/7890)
 * Sum of tabs for too many results text [ngeo#6834](https://github.com/camptocamp/ngeo/pull/6834)
 * Fix print text on feature [ngeo#6840](https://github.com/camptocamp/ngeo/pull/6840)
 * Retablish search clear button to true per default [ngeo#6850](https://github.com/camptocamp/ngeo/pull/6850)
