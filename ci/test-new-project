@@ -40,7 +40,7 @@ url = sys.argv[1]
 # See also:
 # ci/vars.yaml geoportal/GUNICORN_PARAMS
 # Jenkinsfile timeout line 130
-result = requests.get(url, timeout=240, verify=False)
+result = requests.get(url, timeout=240, verify=False)  # nosec
 
 if len(sys.argv) == 3 and sys.argv[2] == "enum":
     if result.ok and result.json() == {"items": [{"value": "car"}, {"value": "train"}]}:

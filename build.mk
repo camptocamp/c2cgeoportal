@@ -117,7 +117,7 @@ $(APPS_PACKAGE_PATH)/static/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
 	rm --recursive --force $@
 	cp -r $< $@
 	mv $@/apihelp.html $@/index.html.tmpl_tmpl
-	sed -i -e 's#https://geomapfish-demo-2-4.camptocamp.com/#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $@/index.html.tmpl_tmpl
+	sed -i -e 's#https://geomapfish-demo-2-[0-9].camptocamp.com/#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's# = new demo.Map# = new {{package}}.Map#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's#\.\./api\.js#../api.js?version=2#g' $@/index.html.tmpl_tmpl
 	sed -i -e 's#github\.css#../static/$${CACHE_VERSION}/apihelp/github.css#g' $@/index.html.tmpl_tmpl
