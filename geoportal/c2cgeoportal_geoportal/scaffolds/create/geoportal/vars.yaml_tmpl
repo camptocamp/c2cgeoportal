@@ -41,20 +41,6 @@ vars:
             resolutions: *resolutions
             extent: *extent
           geolocalisation: True
-        gmfMousePositionOptions:
-          projections:
-            - code: EPSG:2056
-              label: CH1903+ / MN95
-              filter: ngeoNumberCoordinates::{x} {y} m
-            - code: EPSG:21781
-              label: CH1903 / MN03
-              filter: ngeoNumberCoordinates::{x} {y} m
-            - code: EPSG:4326'
-              label: WGS84
-              filter: ngeoDMSCoordinates:2:{y} {x}
-        ngeoScaleSelectorOptions:
-          values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
-          dropup: True
         gmfElevationOptions:
           layers: [aster, srtm]
       routes:
@@ -81,6 +67,20 @@ vars:
           - name: ASIT
             type: WMTS
             url: https://wmts.asit-asso.ch/wmts/1.0.0/WMTSCapabilities.xml
+        ngeoScaleSelectorOptions:
+          values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
+          dropup: True
+        gmfMousePositionOptions:
+          projections:
+            - code: EPSG:2056
+              label: CH1903+ / MN95
+              filter: ngeoNumberCoordinates::{x} {y} m
+            - code: EPSG:21781
+              label: CH1903 / MN03
+              filter: ngeoNumberCoordinates::{x} {y} m
+            - code: EPSG:4326'
+              label: WGS84
+              filter: ngeoDMSCoordinates:2:{y} {x}
         ngeoProfileOptions:
           linesConfiguration:
             aster:
