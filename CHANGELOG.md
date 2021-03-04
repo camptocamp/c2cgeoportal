@@ -1,3 +1,5 @@
+##### 2.6.rc.19
+* [Backport 2.6] Remove default URL length limit in Gunicorn [c2cgeoportal#7902](https://github.com/camptocamp/c2cgeoportal/pull/7902)
 ##### 2.6.rc.17
 * Use pipenv sync [c2cgeoportal#7890](https://github.com/camptocamp/c2cgeoportal/pull/7890)
 * [Backport 2.6] Bump c2cciutils from 1.0.dev20210217133842 to 1.0.dev20210302092543 [c2cgeoportal#7895](https://github.com/camptocamp/c2cgeoportal/pull/7895)
