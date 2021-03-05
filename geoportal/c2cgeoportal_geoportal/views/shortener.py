@@ -84,9 +84,9 @@ class Shortener:
         if "allowed_hosts" in self.settings:
             if uri_parts.netloc not in self.settings["allowed_hosts"]:  # pragma: no cover
                 raise HTTPBadRequest(
-                    "The requested host '{}' is not part of allowed hosts: '{}'".format(
+                    "The requested host '{}' is not part of allowed hosts: {}".format(
                         uri_parts.netloc,
-                        "', '".join(self.settings["allowed_hosts"])
+                        ", ".join(self.settings["allowed_hosts"])
                     )
                 )
         else:
