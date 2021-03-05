@@ -36,6 +36,15 @@ update_configs:
   - package_manager: python
     directory: /geoportal/c2cgeoportal_geoportal/scaffolds/create/ci/
     update_schedule: live
+  - package_manager: python
+    directory: /docker/qgisserver/
+    update_schedule: live
+  - package_manager: python
+    directory: /docker/qgisserver/python/3.6/
+    update_schedule: live
+  - package_manager: python
+    directory: /docker/qgisserver/python/3.8/
+    update_schedule: live
 
   - package_manager: docker
     directory: /

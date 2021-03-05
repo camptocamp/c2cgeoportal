@@ -37,7 +37,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY Pipfile Pipfile.lock /tmp/
 # hadolint disable=DL3003
-RUN cd /tmp && pipenv install --system --clear && \
+RUN cd /tmp && pipenv sync --system --clear && \
     rm --recursive --force /usr/local/lib/python3.*/dist-packages/tests/ /tmp/* /root/.cache/* && \
     strip /usr/local/lib/python3.*/dist-packages/*/*.so
 
@@ -79,7 +79,7 @@ COPY Pipfile Pipfile.lock /tmp/
 # hadolint ignore=DL3003
 RUN \
     cd /tmp && \
-    pipenv install --system --clear --dev && \
+    pipenv sync --system --clear --dev && \
     rm --recursive --force /tmp/* /root/.cache/*
 
 COPY bin/npm-packages bin/update-po /usr/bin/
