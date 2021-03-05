@@ -1,3 +1,5 @@
+##### 2.4.2.42
+* [Backport 2.4] Add doc about excluded or readonly attributes while editing [c2cgeoportal#7922](https://github.com/camptocamp/c2cgeoportal/pull/7922)
 ##### 2.4.2.41
 * Ignore [1609] Insecure Default Configuration [c2cgeoportal#7873](https://github.com/camptocamp/c2cgeoportal/pull/7873)
 * [Security] Update some dependencies [c2cgeoportal#7878](https://github.com/camptocamp/c2cgeoportal/pull/7878)
