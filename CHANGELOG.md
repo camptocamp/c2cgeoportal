@@ -1,3 +1,6 @@
+##### 2.5.0.119
+* Make shortener not allowed host exception more explicit [c2cgeoportal#7918](https://github.com/camptocamp/c2cgeoportal/pull/7918)
+* [Backport 2.5] Add doc about excluded or readonly attributes while editing [c2cgeoportal#7923](https://github.com/camptocamp/c2cgeoportal/pull/7923)
 ##### 2.5.0.118
 * Doc - Add custom alembic [c2cgeoportal#7882](https://github.com/camptocamp/c2cgeoportal/pull/7882)
 * [Backport 2.5] Fix oeedit with 2d geom GEO-4161 [ngeo#6837](https://github.com/camptocamp/ngeo/pull/6837)
