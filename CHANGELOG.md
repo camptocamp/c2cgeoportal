@@ -1,6 +1,10 @@
+##### 2.6.rc.22
+* Add some missing entrypoint [c2cgeoportal#7907](https://github.com/camptocamp/c2cgeoportal/pull/7907)
+* [Backport 2.6] Add doc about excluded or readonly attributes while editing [c2cgeoportal#7924](https://github.com/camptocamp/c2cgeoportal/pull/7924)
+* [Backport 2.6] Make shortener not allowed host exception more explicit [c2cgeoportal#7925](https://github.com/camptocamp/c2cgeoportal/pull/7925)
+* Mapillary as dev dependency [ngeo#6914](https://github.com/camptocamp/ngeo/pull/6914)
 ##### 2.6.rc.21
 * Remove override with the same value, better format [c2cgeoportal#7919](https://github.com/camptocamp/c2cgeoportal/pull/7919)
-* [Backport 2.6] Add doc about excluded or readonly attributes while editing [c2cgeoportal#7924](https://github.com/camptocamp/c2cgeoportal/pull/7924)
 ##### 2.6.rc.20
 * Move ngeoScaleSelectorOptions and gmfMousePositionOptions on desktop,… [c2cgeoportal#7897](https://github.com/camptocamp/c2cgeoportal/pull/7897)
 * Avoid error on unset bgLayer [ngeo#6908](https://github.com/camptocamp/ngeo/pull/6908)
