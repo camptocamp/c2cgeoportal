@@ -98,3 +98,13 @@ The value is a ``json`` object containing the following optional properties:
 * edge (boolean): whether to allow snapping on edges or not;
 * vertex (boolean): whether to allow snapping on vertices or not;
 * tolerance (number): the pixel tolerance.
+
+Managing attributes
+-------------------
+
+To exclude some attributes from the editing form, list them as a comma-separated string
+(with no blank spaces) in the ``Exclude properties`` field of the WMS/WMTS layer forms
+in the admin interface.
+
+To make some attributes readonly, add a ``readonlyAttributes`` metadata in the same form,
+also as a comma-separated list of attributes.
