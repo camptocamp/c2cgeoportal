@@ -13,7 +13,7 @@ papyrus = "==2.4"  # commons
 transaction = "==3.0.1"  # commons
 "c2c.template" = "==2.1.0"
 GeoAlchemy2 = "==0.8.4"
-SQLAlchemy = "==1.3.20"  # commons
+SQLAlchemy = "==1.3.23"  # commons
 "zope.event" = "==4.4"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.7.1"
