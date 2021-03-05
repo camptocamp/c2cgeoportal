@@ -1,3 +1,6 @@
+##### 2.6.rc.20
+* Move ngeoScaleSelectorOptions and gmfMousePositionOptions on desktop,… [c2cgeoportal#7897](https://github.com/camptocamp/c2cgeoportal/pull/7897)
+* Avoid error on unset bgLayer [ngeo#6908](https://github.com/camptocamp/ngeo/pull/6908)
 ##### 2.6.rc.19
 * [Backport 2.6] Remove default URL length limit in Gunicorn [c2cgeoportal#7902](https://github.com/camptocamp/c2cgeoportal/pull/7902)
 ##### 2.6.rc.17
