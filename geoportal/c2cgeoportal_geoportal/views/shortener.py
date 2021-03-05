@@ -83,7 +83,12 @@ class Shortener:
         uri_parts = urlparse(url)
         if "allowed_hosts" in self.settings:
             if uri_parts.netloc not in self.settings["allowed_hosts"]:  # pragma: no cover
-                raise HTTPBadRequest("The requested host is not allowed.")
+                raise HTTPBadRequest(
+                    "The requested host '{}' is not part of allowed hosts: '{}'".format(
+                        uri_parts.netloc,
+                        "', '".join(self.settings["allowed_hosts"])
+                    )
+                )
         else:
             hostname = uri_parts.hostname
             if hostname != self.request.server_name:
