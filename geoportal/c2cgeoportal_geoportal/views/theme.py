@@ -246,7 +246,7 @@ class Theme:
             },
         )
 
-        LOG.debug("Get WMS GetCapabilities for url: %s", url)
+        LOG.debug("Get WMS GetCapabilities for URL: %s", url)
 
         # Forward request to target (without Host Header)
         headers = dict(self.request.headers)

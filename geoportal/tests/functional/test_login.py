@@ -86,7 +86,6 @@ class TestLoginView(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         request = create_dummy_request(**kwargs)
-        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
         request.interface_name = "desktop"
         request.params = params
@@ -178,7 +177,7 @@ class TestLoginView(TestCase):
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user1",
             "is_password_changed": False,
-            "two_factor_enable": True,
+            "two_factor_enable": False,
         }
 
         request = self._create_request_obj(

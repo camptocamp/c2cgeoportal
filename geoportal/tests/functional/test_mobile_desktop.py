@@ -124,7 +124,6 @@ class TestMobileDesktop(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
 
         request = create_dummy_request(**kargs)
-        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
 
