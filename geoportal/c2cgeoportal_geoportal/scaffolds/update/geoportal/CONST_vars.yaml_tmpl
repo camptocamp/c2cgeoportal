@@ -5,8 +5,6 @@ vars:
   main_ogc_server: source for image/png
 
   srid: EPSG:-1
-  alternate_projections: &alternate_projections
-    - '{srid}'
 
   # Sqlalchemy schema
   schema: '{PGSCHEMA}'
@@ -209,7 +207,6 @@ vars:
                 radius: 8
                 radius2: 0
                 angle: 0
-          coordinatesProjections: *alternate_projections
           datasources:
             - labelKey: label
               groupActions:
@@ -223,7 +220,6 @@ vars:
         gmfPermalinkOptions:
           crosshairStyle:
           crosshairEnabledByDefault: False
-          projectionCodes: *alternate_projections
           useLocalStorage: False
           pointRecenterZoom:
         gmfElevationOptions:
@@ -322,9 +318,6 @@ vars:
             stroke:
               color: [255, 0, 0, 1]
               width: 3
-        gmfContextualDataOptions:
-          projections: *alternate_projections
-          rasterParams: {}
         gmfProfileOptions:
           linesConfiguration: {}
           hoverPointStyle:
