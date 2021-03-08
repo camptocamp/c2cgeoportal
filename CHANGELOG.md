@@ -1,6 +1,8 @@
+##### 2.6.rc.25
+* Fix unworking alternate_projections behivior [c2cgeoportal#7938](https://github.com/camptocamp/c2cgeoportal/pull/7938)
+* Add LIDAR profile to desktop alt [ngeo#6907](https://github.com/camptocamp/ngeo/pull/6907)
 ##### 2.6.rc.24
 * Don't have the vars diff in ngeo and create diff [c2cgeoportal#7920](https://github.com/camptocamp/c2cgeoportal/pull/7920)
-* Fix unworking alternate_projections behivior [c2cgeoportal#7938](https://github.com/camptocamp/c2cgeoportal/pull/7938)
 * Fix the event name [ngeo#6916](https://github.com/camptocamp/ngeo/pull/6916)
 ##### 2.6.rc.23
 * [Backport 2.6] Make shortener not allowed host exception more explicit [c2cgeoportal#7925](https://github.com/camptocamp/c2cgeoportal/pull/7925)
