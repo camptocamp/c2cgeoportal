@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9b434bc7edddb01c5725948b9f4a16b9b0c181dab16041eb1fe98e80ae13ea7e"
+            "sha256": "1f6441679c021d1b36eff289e2b489bdfdf626c1fc13cc68c6215dc346d3e31b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -196,11 +196,11 @@
         },
         "defusedxml": {
             "hashes": [
-                "sha256:86b15d9e3c639de79f4cb38aeffea3281f62aff78dde7d798e1352c63bfa6ea0",
-                "sha256:a290cad10346ed366c8a0133d868eaf6585ec6afdd0c511286cdb11f5fc3d285"
+                "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69",
+                "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"
             ],
             "index": "pypi",
-            "version": "==0.7.0"
+            "version": "==0.7.1"
         },
         "dogpile.cache": {
             "hashes": [
