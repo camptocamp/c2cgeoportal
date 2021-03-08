@@ -7,7 +7,7 @@ vars:
   srid: {{srid}}
 
   alternate_projections: &alternate_projections
-    - EPSG:3857
+    - EPSG:4326
     - EPSG:{srid}
     - EPSG:21781
 
