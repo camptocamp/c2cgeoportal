@@ -719,6 +719,7 @@ rules:
                 )
             )
         ]
+        status = [s for s in status if s != "CONST_create_template/geoportal/vars.yaml"]
 
         if status:
             with open("create.diff", "w") as diff_file:
