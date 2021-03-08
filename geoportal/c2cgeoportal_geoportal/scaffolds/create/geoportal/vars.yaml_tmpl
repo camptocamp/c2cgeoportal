@@ -7,7 +7,7 @@ vars:
   srid: {{srid}}
 
   alternate_projections: &alternate_projections
-    - EPSG:3857
+    - EPSG:4326
     - EPSG:{srid}
     - EPSG:21781
 
@@ -43,11 +43,16 @@ vars:
           geolocalisation: True
         gmfElevationOptions:
           layers: [aster, srtm]
+        gmfSearchOptions:
+          coordinatesProjections: *alternate_projections
+        gmfPermalinkOptions:
+          projectionCodes: *alternate_projections
       routes:
         fulltextsearchUrl:
           params:
             limit: 30
             partitionlimit: 5
+
     desktop:
       constants:
         gmfOptions:
@@ -87,6 +92,10 @@ vars:
               color: '#0000A0'
             srtm:
               color: '#00A000'
+        gmfContextualDataOptions:
+          projections: *alternate_projections
+          rasterParams: {}
+
     mobile:
       constants:
         gmfOptions:
@@ -118,6 +127,7 @@ vars:
               radius: 8
               radius2: 0
               angle: 0
+
     api:
       constants:
         # The resolutions list.
@@ -309,6 +319,8 @@ update_paths:
   - headers.shortener
   - headers.login
   - interfaces_config.default.constants.ngeoWfsPermalinkOptions
+  - interfaces_config.default.constants.gmfSearchOptions
+  - interfaces_config.default.constants.gmfPermalinkOptions
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
   - interfaces_config.default.routes.fulltextsearchUrl
