@@ -367,7 +367,7 @@ def includeme(config: pyramid.config.Configurator):
                 del event
                 caching.invalidate_region()
                 if caching.MEMORY_CACHE_DICT:
-                    caching.get_region("std").delete_multi(caching.MEMORY_CACHE_DICT.keys())
+                    caching.get_region("std").delete_multi(list(caching.MEMORY_CACHE_DICT.keys()))
                 caching.MEMORY_CACHE_DICT.clear()
 
     # Register a tween to get back the cache buster path.
@@ -389,6 +389,10 @@ def includeme(config: pyramid.config.Configurator):
     # Add the set_user_validator directive, and set a default user validator
     config.add_directive("set_user_validator", set_user_validator)
     config.set_user_validator(default_user_validator)
+
+    config.add_route("oauth2token", "/oauth/token", request_method="POST")
+    config.add_route("oauth2loginform", "/oauth/login", request_method="GET")
+    config.add_route("notlogin", "/notlogin", request_method="GET")
 
     config.add_route("dynamic", "/dynamic.json", request_method="GET")
 

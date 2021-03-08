@@ -31,7 +31,9 @@
 """Pyramid application test package
 """
 
+import logging
 import os
+import urllib.parse
 
 from pyramid.testing import DummyRequest as PyramidDummyRequest
 
@@ -48,6 +50,8 @@ class DummyRequest(PyramidDummyRequest):
 
 
 def setup_common():
+    logging.getLogger("c2cgeoportal_geoportal").setLevel(logging.DEBUG)
+
     caching.init_region({"backend": "dogpile.cache.null"}, "std")
     caching.init_region({"backend": "dogpile.cache.null"}, "obj")
 
@@ -65,6 +69,16 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
     request.registry.settings.update(additional_settings)
     request.is_valid_referer = True
     request.scheme = "https"
+    request.static_url = lambda url: "http://example.com/dummy/static/url"
+    request.route_url = (
+        lambda name, **kwargs: "http://example.com/"
+        + name
+        + "/view?"
+        + urllib.parse.urlencode(kwargs.get("_query", {}))
+    )
+    request.current_route_url = lambda **kwargs: "http://example.com/current/view?" + urllib.parse.urlencode(
+        kwargs.get("_query", {})
+    )
     return request
 
 

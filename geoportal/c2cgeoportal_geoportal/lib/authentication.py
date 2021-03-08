@@ -44,6 +44,7 @@ from pyramid.security import remember
 from pyramid_multiauth import MultiAuthenticationPolicy
 from zope.interface import implementer
 
+from c2cgeoportal_geoportal.lib import oauth2
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 
 LOG = logging.getLogger(__name__)
@@ -95,6 +96,37 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):
         return []
 
 
+@implementer(IAuthenticationPolicy)
+class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):
+    @staticmethod
+    def unauthenticated_userid(request):
+        route_url = ""
+        try:
+            route_url = request.current_route_url(_query=request.GET)
+        except ValueError:
+            route_url = request.route_url("base", _query=request.GET)
+
+        LOG.debug(
+            "Call OAuth verify_request with:\nurl: %s\nmethod: %s\nbody:\n%s",
+            route_url,
+            request.method,
+            request.body,
+        )
+        valid, oauth2_request = oauth2.get_oauth_client(request.registry.settings).verify_request(
+            route_url,
+            request.method,
+            request.body,
+            request.headers,
+            [],
+        )
+        LOG.info("OAuth verify_request: %s", valid)
+        if valid:
+            request.user_ = oauth2_request.user
+
+            return request.user_.username
+        return None
+
+
 def create_authentication(settings):
     timeout = settings.get("authtkt_timeout")
     timeout = None if timeout is None or timeout.lower() == "none" else int(timeout)
@@ -117,27 +149,37 @@ def create_authentication(settings):
 
     policies = []
 
-    url_authentication_policy = UrlAuthenticationPolicy(
-        settings.get("urllogin", {}).get("aes_key"),
-        defaultgroupsfinder,
+    policies.append(
+        UrlAuthenticationPolicy(
+            settings.get("urllogin", {}).get("aes_key"),
+            defaultgroupsfinder,
+        )
     )
-    policies.append(url_authentication_policy)
 
-    cookie_authentication_policy = AuthTktAuthenticationPolicy(
-        secret,
-        callback=defaultgroupsfinder,
-        cookie_name=settings["authtkt_cookie_name"],
-        samesite=None if samesite == "" else samesite,
-        timeout=timeout,
-        max_age=max_age,
-        reissue_time=reissue_time,
-        hashalg="sha512",
-        http_only=http_only,
-        secure=secure,
+    policies.append(
+        AuthTktAuthenticationPolicy(
+            secret,
+            callback=defaultgroupsfinder,
+            cookie_name=settings["authtkt_cookie_name"],
+            samesite=None if samesite == "" else samesite,
+            timeout=timeout,
+            max_age=max_age,
+            reissue_time=reissue_time,
+            hashalg="sha512",
+            http_only=http_only,
+            secure=secure,
+        )
     )
-    policies.append(cookie_authentication_policy)
+
+    policies.append(OAuth2AuthenticationPolicy())
 
     if basicauth:
+        if settings["authentication"].get("two_factor", False):
+            LOG.warning(
+                "Basic auth and tow factor auth should not be anhable toogether, "
+                "you should use OAuth2 instead of Basic auth"
+            )
+
         basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
         policies.append(basic_authentication_policy)
 

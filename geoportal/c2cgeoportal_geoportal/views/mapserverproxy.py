@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -58,10 +58,13 @@ class MapservProxy(OGCProxy):
     @view_config(route_name="mapserverproxy")
     @view_config(route_name="mapserverproxy_post")
     def proxy(self) -> Response:
-
         if self.user is None and "authentication_required" in self.request.params:
             LOG.debug("proxy() detected authentication_required")
-            raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'})
+            if self.request.registry.settings.get("basicauth", "False").lower() == "true":
+                raise HTTPUnauthorized(
+                    headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'}
+                )
+            raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Bearer realm="Access to restricted layers"'})
 
         # We have a user logged in. We need to set group_id and possible layer_name in the params. We set
         # layer_name when either QUERY_PARAMS or LAYERS is set in the WMS params, i.e. for GetMap and

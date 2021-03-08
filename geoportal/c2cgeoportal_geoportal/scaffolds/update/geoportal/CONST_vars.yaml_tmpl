@@ -40,6 +40,8 @@ vars:
   authentication:
     two_factor: false
     two_factor_issuer_name: {{project}}
+    oauth2_token_expire_minutes: 60
+    oauth2_authorization_expire_minutes: 10
 
   intranet:
     networks: []

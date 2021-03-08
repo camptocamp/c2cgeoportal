@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,7 @@ from hmac import compare_digest as compare_hash
 from typing import Any, List
 
 import pytz
+import sqlalchemy.schema
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import HSTORE
@@ -242,3 +243,50 @@ class Shorturl(Base):
     creation = Column(DateTime)
     last_hit = Column(DateTime)
     nb_hits = Column(Integer)
+
+
+class OAuth2Client(Base):
+    __tablename__ = "oauth2_client"
+    __table_args__ = {"schema": _schema}
+    __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
+    __c2cgeoform_config__ = {"duplicate": True}
+    id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
+    client_id = Column(Unicode, unique=True, info={"colanderalchemy": {"title": _("Client ID")}})
+    secret = Column(Unicode, info={"colanderalchemy": {"title": _("Secret")}})
+    redirect_uri = Column(Unicode, info={"colanderalchemy": {"title": _("Redirect URI")}})
+
+
+class OAuth2BearerToken(Base):
+    __tablename__ = "oauth2_bearertoken"
+    __table_args__ = (
+        sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),
+        {
+            "schema": _schema,
+        },
+    )
+    id = Column(Integer, primary_key=True)
+    client_id = Column(Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False)
+    client = relationship(OAuth2Client)
+    user_id = Column(Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False)
+    user = relationship(User)
+    access_token = Column(Unicode(100), unique=True)
+    refresh_token = Column(Unicode(100), unique=True)
+    expire_at = Column(DateTime(timezone=True))  # in one hour
+
+
+class OAuth2AuthorizationCode(Base):
+    __tablename__ = "oauth2_authorizationcode"
+    __table_args__ = (
+        sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),
+        {
+            "schema": _schema,
+        },
+    )
+    id = Column(Integer, primary_key=True)
+    client_id = Column(Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False)
+    client = relationship(OAuth2Client)
+    user_id = Column(Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False)
+    user = relationship(User)
+    redirect_uri = Column(Unicode)
+    code = Column(Unicode(100), unique=True)
+    expire_at = Column(DateTime(timezone=True))  # in 10 minutes

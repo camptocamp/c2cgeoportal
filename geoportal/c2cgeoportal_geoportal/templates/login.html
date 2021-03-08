@@ -52,7 +52,7 @@
     </head>
     <body>
         <div id="content">
-            <form method="POST" id="loginForm" action="${request.route_url('login', _query=dict(came_from=came_from))}">
+            <form method="POST" id="loginForm" action="${request.route_url('login', _query=login_params)}">
                 <table style="margin-left: auto; margin-right: auto;">
                     <tbody>
                         <tr>

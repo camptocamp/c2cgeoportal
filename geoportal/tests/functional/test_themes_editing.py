@@ -164,7 +164,6 @@ class TestThemeEditing(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         request = create_dummy_request(**kwargs)
-        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
         request.interface_name = "main"
         request.params = params
