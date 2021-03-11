@@ -79,13 +79,13 @@ vars:
           projections:
             - code: EPSG:2056
               label: CH1903+ / MN95
-              filter: ngeoNumberCoordinates::{x} {y} m
+              filter: ngeoNumberCoordinates::{x}, {y} m
             - code: EPSG:21781
               label: CH1903 / MN03
-              filter: ngeoNumberCoordinates::{x} {y} m
+              filter: ngeoNumberCoordinates::{x}, {y} m
             - code: EPSG:4326'
               label: WGS84
-              filter: ngeoDMSCoordinates:2:{y} {x}
+              filter: ngeoDMSCoordinates:2:{y}, {x}
         ngeoProfileOptions:
           linesConfiguration:
             aster:
@@ -105,28 +105,11 @@ vars:
             autoRotate: True
           geolocalisation: True
         gmfMobileMeasurePointOptions:
-          decimals: 0
-          format: '{x} {y}'
           rasterLayers:
             - name: aster
               unit: m
             - name: srtm
               unit: m
-          sketchStyle:
-            fill:
-              color: rgba(255, 255, 255, 0.2)
-            stroke:
-              color: rgba(0, 0, 0, 0.5)
-              lineDash: [10, 10]
-              width: 2
-            regularShape:
-              stroke:
-                color: rgba(0, 0, 0, 0.7)
-                width: 2
-              points: 4
-              radius: 8
-              radius2: 0
-              angle: 0
 
     api:
       constants:
