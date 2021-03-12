@@ -1,5 +1,6 @@
+##### 2.6.rc.27
+* Remove defined but never used [c2cgeoportal#7962](https://github.com/camptocamp/c2cgeoportal/pull/7962)
 ##### 2.6.rc.26
-* Add OAuth2 authentication server [c2cgeoportal#7955](https://github.com/camptocamp/c2cgeoportal/pull/7955)
 * Fix duplicate, unsplited coordinates [c2cgeoportal#7958](https://github.com/camptocamp/c2cgeoportal/pull/7958)
 * Too long drop down [ngeo#6924](https://github.com/camptocamp/ngeo/pull/6924)
 * Fix search coordinates [ngeo#6925](https://github.com/camptocamp/ngeo/pull/6925)
@@ -7,7 +8,6 @@
 * Show label for small drawing polygons [ngeo#6935](https://github.com/camptocamp/ngeo/pull/6935)
 * Debug usage of options in mousepositionComponent [ngeo#6936](https://github.com/camptocamp/ngeo/pull/6936)
 * Fix example permalink crosshair style [ngeo#6949](https://github.com/camptocamp/ngeo/pull/6949)
-* Better texts for Raster component [ngeo#6952](https://github.com/camptocamp/ngeo/pull/6952)
 ##### 2.6.rc.25
 * Fix unworking alternate_projections behivior [c2cgeoportal#7938](https://github.com/camptocamp/c2cgeoportal/pull/7938)
 * Add LIDAR profile to desktop alt [ngeo#6907](https://github.com/camptocamp/ngeo/pull/6907)
