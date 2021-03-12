@@ -29,11 +29,7 @@ export NODE_ENV
 NO_DEV_SERVER ?= TRUE
 export NO_DEV_SERVER
 APP_OUTPUT_DIR = /etc/static-ngeo
-GCC_JS_FILES = $(shell find /usr/lib/node_modules/openlayers/src/ol /usr/lib/node_modules/ngeo/src /usr/lib/node_modules/ol-cesium/src -type f -name '*.js' 2> /dev/null)
 APP_JS_FILES = $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.js' 2> /dev/null)
-HTML_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.html' 2> /dev/null)
-SASS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.scss' 2> /dev/null)
-CSS_FILES += $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.css' 2> /dev/null)
 ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
 NGEO_OUTPUT_FILES = $(ANGULAR_LOCALES_FILES)
 
