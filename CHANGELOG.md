@@ -1,6 +1,6 @@
 ##### 2.6.rc.26
 * Add OAuth2 authentication server [c2cgeoportal#7955](https://github.com/camptocamp/c2cgeoportal/pull/7955)
-* Fix dupplicate, unsplited coordinates [c2cgeoportal#7958](https://github.com/camptocamp/c2cgeoportal/pull/7958)
+* Fix duplicate, unsplited coordinates [c2cgeoportal#7958](https://github.com/camptocamp/c2cgeoportal/pull/7958)
 * Too long drop down [ngeo#6924](https://github.com/camptocamp/ngeo/pull/6924)
 * Fix search coordinates [ngeo#6925](https://github.com/camptocamp/ngeo/pull/6925)
 * Fix LIDAR [ngeo#6934](https://github.com/camptocamp/ngeo/pull/6934)

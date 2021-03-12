@@ -746,7 +746,7 @@ pulls:
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/7958
       number: 7958
       state: closed
-      title: Fix dupplicate, unsplited coordinates
+      title: Fix duplicate, unsplited coordinates
       updated_at: '2021-03-11T09:06:24Z'
     18d4332e7: []
     19ad36045:
