@@ -1,7 +1,7 @@
 #############################################################################################################
 # The base image with apt and python packages.
 
-FROM osgeo/gdal:ubuntu-small-3.2.1 AS base
+FROM osgeo/gdal:ubuntu-small-3.2.2 AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 # Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
