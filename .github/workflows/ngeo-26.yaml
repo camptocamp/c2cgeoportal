@@ -32,7 +32,6 @@ jobs:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker transifex
-        if: github.repository == 'camptocamp/c2cgeoportal'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -42,7 +41,6 @@ jobs:
 
       - run: scripts/get-version --auto-increment --github
         id: version
-        if: github.repository == 'camptocamp/c2cgeoportal'
 
       - run: python3 -m pip install --user --requirement=requirements.txt
 
@@ -177,16 +175,10 @@ jobs:
         run: |
           c2cciutils-publish
           c2cciutils-publish --group=full
-        if: >
-          github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
       - name: Publish version branch
         run: |
           c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
           c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Push version and changelog
         run: |
@@ -196,9 +188,6 @@ jobs:
             git commit -m "[skip ci] Update the minor version"; \
             git push origin HEAD:${{ env.MAIN_BRANCH }} \
           )
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Notify demo
         run: >
@@ -208,9 +197,6 @@ jobs:
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
             "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Publish to Transifex
         run: |
@@ -219,15 +205,9 @@ jobs:
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
           docker stop transifex
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Publish documentation to GitHub.io
         run: ci/publish-documentation
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
 
       - run: >
           docker run --rm --volume=/var/run/docker.sock:/var/run/docker.sock nate/dockviz
