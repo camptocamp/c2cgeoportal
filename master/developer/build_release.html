@@ -248,6 +248,11 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="gd">-         ...</span>
 </pre></div>
 </div>
+<p>And also remove all the <cite>if</cite> concerning the following tests:</p>
+<ul class="simple">
+<li><p><cite>github.ref != format(‘refs/heads/{0}’, env.MAIN_BRANCH)</cite></p></li>
+<li><p><cite>github.repository == ‘camptocamp/c2cgeoportal’</cite></p></li>
+</ul>
 </div>
 <div class="section" id="configure-the-audit">
 <h2>Configure the audit<a class="headerlink" href="#configure-the-audit" title="Permalink to this headline">¶</a></h2>

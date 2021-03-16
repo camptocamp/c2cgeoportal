@@ -234,6 +234,11 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
    -       - name: Publish documentation to GitHub.io
    -         ...
 
+And also remove all the `if` concerning the following tests:
+
+- `github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)`
+- `github.repository == 'camptocamp/c2cgeoportal'`
+
 Configure the audit
 -------------------
 
