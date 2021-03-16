@@ -16,23 +16,22 @@ the `CONST_vars.yaml`). This will make future upgrades easier and increase confi
 in the simple application mode, see the documentation
 <https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/create_application.html#simple-application>.
 
+When you apply the `ngeo.diff` you should first apply the proposed changes concerning the
+`geoportal/vars.yaml` file itself.
 
-When you apply the `ngeo.diff` you will have to remove lines of configuration from your `*.html.ejs` and
-`Controler*.js` files. You must compare each removed line of configuration with its default value newly
-defined in the section `vars/interface_config` of your `geoporal/CONST_vars.yaml` file. If you use a custom
-configuration, you have to override the default value by adding a new one in your `geoportal/vars.yaml`.
+Then during applying the `ngeo.diff` you have to remove multiple lines of configuration from your
+`*.html.ejs` and `Controler*.js` files. for each configuration that diverge from the default configuration you
+have to override the default value (that are newly defined in the `geoportal/CONST_vars.yaml`) by adding
+a new value in the `vars/interface_config` section of your `geoportal/vars.yaml` file.
 
-
-In the `vars/interface_config` section of `geoportal/vars.yaml` and `geoporal/CONST_vars.yaml` files, you
-define configuration per `interface` and then mainly per `constants` and `routes` (for paths). See all
+In the `vars/interface_config` section of the `geoportal/vars.yaml` and the `geoporal/CONST_vars.yaml` files,
+you define configuration per `interface`, and then mainly per `constants` and `routes` (for paths). See all
 possibility in the `Dynamic.json view` part of the documentation
 <https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/ngeo.html?highlight=ngeo#dynamic-json-view>
-
 
 You can find a list of existing options in the `geoporal/CONST_vars.yaml` and here with descriptions:
 - GMF constants definitions <https://camptocamp.github.io/ngeo/master/jsdoc/module-contribs_gmf_src_options.html>
 - ngeo constants definitions <https://camptocamp.github.io/ngeo/master/jsdoc/module-src_options.html>
-
 
 In the following examples, we show typical examples of necessary changes:
 
@@ -44,7 +43,7 @@ In the ngeo.diff:
 -    this.elevationLayers = ['aster', 'srtm'];
 ```
 
-But you have this custom config in your `geoportal/<project_package>_geoportal/static-ngeo/api/index.js` file:
+But you have this custom config in your `geoportal/{{package}}_geoportal/static-ngeo/api/index.js` file:
 ```
    this.elevationLayers = ['mns', 'mnt', 'rayglobal'];
 ```
@@ -68,14 +67,14 @@ Example in API
 
 In the ngeo.diff:
 ```
---- a/geoportal/<project_package>_geoportal/static-ngeo/api/index.js
-+++ b/geoportal/<project_package>_geoportal/static-ngeo/api/index.js
+--- a/geoportal/{{package}}_geoportal/static-ngeo/api/index.js
++++ b/geoportal/{{package}}_geoportal/static-ngeo/api/index.js
 ...
 -// The URL to the search service.
 -config.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
 ```
 
-And in your `geoportal/<project_package>_geoportal/static-ngeo/api/index.js` file:
+And in your `geoportal/{{package}}_geoportal/static-ngeo/api/index.js` file:
 ```
 // The URL to the search service.
 config.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
@@ -131,7 +130,7 @@ In the ngeo.diff:
 -    }, $scope, $injector);
 ```
 
-And in your `geoportal/<project_package>_geoportal/static-ngeo/api/index.js` file:
+And in your `geoportal/{{package}}_geoportal/static-ngeo/api/index.js` file:
 ```
   constructor($scope, $injector) {
     super({
@@ -165,6 +164,12 @@ vars:
           geolocalisation: True
 ```
 
+Other configuration
+...................
+
+You also have to configure the `vars/srid`, `vars/alternate_projections`, `vars/resolutions` and
+`vars/extent` they will be dispatched using `c2ctemplate` or YAML link.
+
 Optional point
 ..............
 
@@ -180,7 +185,7 @@ The header can be in a separate file, diff in the `*.html.ejs` file:
     - </header>
     + <ng-include src="'desktop_alt/header.html'"></ng-include>
 
-The content will be in the `geoportal/<project_package>_geoportal/static/header.html` file.
+The content will be in the `geoportal/{{package}}_geoportal/static/header.html` file.
 
 
 Information
