@@ -1,3 +1,5 @@
+##### 2.4.2.43
+* Fix GitHub CI template [c2cgeoportal#7974](https://github.com/camptocamp/c2cgeoportal/pull/7974)
 ##### 2.4.2.42
 * [Backport 2.4] Add doc about excluded or readonly attributes while editing [c2cgeoportal#7922](https://github.com/camptocamp/c2cgeoportal/pull/7922)
 ##### 2.4.2.41
