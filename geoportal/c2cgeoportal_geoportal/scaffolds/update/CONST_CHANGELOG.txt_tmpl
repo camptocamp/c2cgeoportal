@@ -11,42 +11,73 @@ Client application configuration
 ................................
 
 Previous versions had configuration in the `*.html.ejs`, in the `Controler*.js`, and in the `vars.yaml` file.
-The goal of this change is to move this configuration to the `vars.yaml` file (with default values in
+The goal of this change is to group all this configuration to the `vars.yaml` file (with default values in
 the `CONST_vars.yaml`). This will make future upgrades easier and increase configuration possibilities
 in the simple application mode, see the documentation
 <https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/create_application.html#simple-application>.
 
+When you apply the `ngeo.diff` you should first apply the proposed changes concerning the
+`geoportal/vars.yaml` file itself.
 
-When you apply the `ngeo.diff` you should first apply the changes in the `geoportal/vars.yaml` file.
+Then during applying the `ngeo.diff` you have to remove multiple lines of configuration from your
+`*.html.ejs` and `Controler*.js` files. for each configuration that diverge from the default configuration you
+have to override the default value (that are newly defined in the `geoportal/CONST_vars.yaml`) by adding
+a new value in the `vars/interface_config` section of your `geoportal/vars.yaml` file.
 
-For the next step, you should consult the documentation about:
-- The interfaces_config documentation
+In the `vars/interface_config` section of the `geoportal/vars.yaml` and the `geoporal/CONST_vars.yaml` files,
+you define configuration per `interface`, and then mainly per `constants` and `routes` (for paths). See all
+possibility in the `Dynamic.json view` part of the documentation
 <https://camptocamp.github.io/c2cgeoportal/${MAIN_BRANCH}/integrator/ngeo.html?highlight=ngeo#dynamic-json-view>
+
+You can find a list of existing options in the `geoporal/CONST_vars.yaml` and here with descriptions:
 - GMF constants definitions <https://camptocamp.github.io/ngeo/master/jsdoc/module-contribs_gmf_src_options.html>
 - ngeo constants definitions <https://camptocamp.github.io/ngeo/master/jsdoc/module-src_options.html>
 
+In the following examples, we show typical examples of necessary changes:
 
-Then configure the `vars/srid`, `vars/alternate_projections`, `vars/resolutions` and `vars/extent` they will
-be dispatched using `c2ctemplate` or YAML link.
+Standard example in controller
+..............................
 
-In the following, we show typical examples of necessary changes:
+In the ngeo.diff:
+```
+-    this.elevationLayers = ['aster', 'srtm'];
+```
+
+But you have this custom config in your `geoportal/{{package}}_geoportal/static-ngeo/api/index.js` file:
+```
+   this.elevationLayers = ['mns', 'mnt', 'rayglobal'];
+```
+
+We have to remove the `elevationLayers` config. And we also see that the project settings do not correspond to
+the default settings, therefore you should have in your `geoportal/vars.yaml` file something like:
+```
+vars:
+  interfaces_config:
+    default:  # or interface name
+      constants:
+        gmfElevationOptions:
+          layers: [mns, mnt, rayglobal]
+```
+
+Again, you can find the `gmfElevationOptions` in the `geoporal/CONST_vars.yaml` and its composition and
+description in the GMF/ngeo constants definitions (see links above).
 
 Example in API
 ..............
 
 In the ngeo.diff:
 ```
---- a/geoportal/cartoriviera_geoportal/static-ngeo/api/index.js
-+++ b/geoportal/cartoriviera_geoportal/static-ngeo/api/index.js
+--- a/geoportal/{{package}}_geoportal/static-ngeo/api/index.js
++++ b/geoportal/{{package}}_geoportal/static-ngeo/api/index.js
 ...
 -// The URL to the search service.
 -config.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
 ```
 
-And in your `geoportal/cartoriviera_geoportal/static-ngeo/api/index.js` file:
+And in your `geoportal/{{package}}_geoportal/static-ngeo/api/index.js` file:
 ```
 // The URL to the search service.
-onfig.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
+config.searchUrl = '{FULL_ENTRY_POINT}search?interface=api&limit=15';
 ```
 
 We see that the project settings didn't correspond to the previous default settings, therefore you should
@@ -64,6 +95,22 @@ update_paths:
   - interfaces_config.api.routes.searchUrl  # This one should already be present
 ```
 
+In this case you could have to add also this `update_paths`. It's because the default value in the
+`geoportal/CONST_vars.yaml` define the searchUrl like this:
+
+```
+searchUrl:
+  name: fulltextsearch
+  params:
+    limit: 15
+    partitionlimit: 5
+  dynamic_params:
+    interface: interface
+```
+
+You won't redefine the whole `searchUrl` configuration you only want to set the params. The `update_paths`
+Allows you to update the one part of the configuration. Without this entry in the `update_paths`, the
+whole `searchUrl` configuration would have been replaced.
 
 Example in controller constructor
 .................................
@@ -83,7 +130,7 @@ In the ngeo.diff:
 -    }, $scope, $injector);
 ```
 
-And in your `geoportal/cartoriviera_geoportal/static-ngeo/api/index.js` file:
+And in your `geoportal/{{package}}_geoportal/static-ngeo/api/index.js` file:
 ```
   constructor($scope, $injector) {
     super({
@@ -117,29 +164,11 @@ vars:
           geolocalisation: True
 ```
 
-Standard example in controller
-..............................
+Other configuration
+...................
 
-In the ngeo.diff:
-```
--    this.elevationLayers = ['aster', 'srtm'];
-```
-
-And in your `geoportal/cartoriviera_geoportal/static-ngeo/api/index.js` file:
-```
-   this.elevationLayers = ['mns', 'mnt', 'rayglobal'];
-```
-
-We see that the project settings didn't correspond to the previous default settings, therefore you should
-have in your vars file something like:
-```
-vars:
-  interfaces_config:
-    default:  # or interface name
-      constants:
-        gmfElevationOptions:
-          layers: [mns, mnt, rayglobal]
-```
+You also have to configure the `vars/srid`, `vars/alternate_projections`, `vars/resolutions` and
+`vars/extent` they will be dispatched using `c2ctemplate` or YAML link.
 
 Optional point
 ..............
@@ -156,7 +185,7 @@ The header can be in a separate file, diff in the `*.html.ejs` file:
     - </header>
     + <ng-include src="'desktop_alt/header.html'"></ng-include>
 
-  The content will be in the `geoportal/geomapfish_geoportal/static/header.html` file.
+The content will be in the `geoportal/{{package}}_geoportal/static/header.html` file.
 
 
 Information
