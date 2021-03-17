@@ -5,3 +5,12 @@
 *.egg-info/
 /*.timestamp
 /.mypy_cache/
+
+# Files generated when we mount c2cgeoportal in the project
+/admin/tests/tests.ini
+/commons/tests/tests.yaml
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static/robot.txt
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/mapserver/tinyows.xml
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/print/print-apps/+package+/config.yaml
+/geoportal/tests/testegg/production.ini
+/geoportal/tests/tests.ini
