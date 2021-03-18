@@ -656,7 +656,13 @@ class GeomapfishThemeExtractor(Extractor):
             try:
                 print(
                     "Get WMS GetCapabilities for URL {},\nwith headers: {}".format(
-                        wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
+                        wms_getcap_url,
+                        " ".join(
+                            [
+                                "{}={}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                                for h, v in headers.items()
+                            ]
+                        ),
                     )
                 )
                 response = requests.get(wms_getcap_url, headers=headers, **kwargs)
@@ -679,7 +685,13 @@ class GeomapfishThemeExtractor(Extractor):
                 print(
                     colorize(
                         "ERROR! Unable to GetCapabilities from URL: {},\nwith headers: {}".format(
-                            wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
+                            wms_getcap_url,
+                            " ".join(
+                                [
+                                    "{}={}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                                    for h, v in headers.items()
+                                ]
+                            ),
                         ),
                         Color.RED,
                     )

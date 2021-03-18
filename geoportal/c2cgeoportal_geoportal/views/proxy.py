@@ -109,7 +109,12 @@ class Proxy:
                 sys.exc_info()[0],
                 url,
                 method,
-                "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
+                "\n".join(
+                    [
+                        "{}: {}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                        for h, v in list(headers.items())
+                    ]
+                ),
             ]
             if method in ("POST", "PUT") and body is not None:
                 errors += ["--- Query with body ---", "%s"]
@@ -132,7 +137,12 @@ class Proxy:
                 url.url(),
                 response.status_code,
                 method,
-                "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
+                "\n".join(
+                    [
+                        "{}: {}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                        for h, v in list(headers.items())
+                    ]
+                ),
             ]
             if method in ("POST", "PUT") and body is not None:
                 errors += ["--- Query with body ---", "%s"]
