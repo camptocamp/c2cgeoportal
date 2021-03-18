@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -116,7 +116,12 @@ class Proxy:
                 sys.exc_info()[0],
                 url,
                 method,
-                "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
+                "\n".join(
+                    [
+                        "{}: {}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                        for h, v in list(headers.items())
+                    ]
+                ),
             ]
             if method in ("POST", "PUT"):
                 errors += ["--- Query with body ---", "%s"]
@@ -139,7 +144,12 @@ class Proxy:
                 url,
                 response.status_code,
                 method,
-                "\n".join(["{}: {}".format(*h) for h in list(headers.items())]),
+                "\n".join(
+                    [
+                        "{}: {}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                        for h, v in list(headers.items())
+                    ]
+                ),
             ]
             if method in ("POST", "PUT"):
                 errors += ["--- Query with body ---", "%s"]

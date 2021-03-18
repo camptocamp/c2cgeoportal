@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -632,7 +632,13 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
             try:
                 print(
                     "Get WMS GetCapabilities for URL {},\nwith headers: {}".format(
-                        wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
+                        wms_getcap_url,
+                        " ".join(
+                            [
+                                "{}={}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                                for h, v in headers.items()
+                            ]
+                        ),
                     )
                 )
                 response = requests.get(wms_getcap_url, headers=headers, **kwargs)
@@ -655,7 +661,13 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                 print(
                     colorize(
                         "ERROR! Unable to GetCapabilities from URL: {},\nwith headers: {}".format(
-                            wms_getcap_url, " ".join(["=".join(h) for h in headers.items()])
+                            wms_getcap_url,
+                            " ".join(
+                                [
+                                    "{}={}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                                    for h, v in headers.items()
+                                ]
+                            ),
                         ),
                         RED,
                     )
