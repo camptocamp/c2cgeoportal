@@ -1272,7 +1272,7 @@ pulls:
       html_url: https://github.com/camptocamp/ngeo/pull/6958
       number: 6958
       state: closed
-      title: Fix first segment lenght on mobile
+      title: Fix first segment length on mobile
       updated_at: '2021-03-15T07:27:11Z'
     cc9f8cec50783b28d39e5b19b4932c4dfb505655:
     - base_ref: '2.6'
