@@ -1,14 +1,15 @@
 This file includes migration steps for each release of c2cgeoportal.
 
 
+=============
 Version 2.6.0
 =============
 
 Information to know before starting the upgrade
------------------------------------------------
+===============================================
 
 Client application configuration
-................................
+--------------------------------
 
 Previous versions had configuration in the `*.html.ejs`, in the `Controler*.js`, and in the `vars.yaml` file.
 The goal of this change is to group all this configuration to the `vars.yaml` file (with default values in
@@ -170,6 +171,12 @@ Other configuration
 You also have to configure the `vars/srid`, `vars/alternate_projections`, `vars/resolutions` and
 `vars/extent` they will be dispatched using `c2ctemplate` or YAML link.
 
+Now we can easily switch between the display of query results in a window or in a grid by using
+`gmfQueryGrid` configuration variable.
+
+Now you can easily switch between flush theme mode and non-flush theme mode  by using
+`gmfTreeManagerModeFlush` configuration variable.
+
 Optional point
 ..............
 
@@ -187,15 +194,47 @@ The header can be in a separate file, diff in the `*.html.ejs` file:
 
 The content will be in the `geoportal/{{package}}_geoportal/static/header.html` file.
 
+Print
+-----
 
-Information
+- You can now switch easily between local print and mutualised print by setting one
+  of `DISABLE_MUTUALIZED_PRINT` and `DISABLE_LOCAL_PRINT` environment variavle to '#' ant the other to ''.
+- The client timezone is added as a new attribute named `timezone`, you can use it with e.-g.:
+  `java.time.ZonedDateTime.now().format(java.time.format.DateTimeFormatter
+    .ofPattern("EEEE dd MMMM yyyy HH:mm")
+    .withLocale($P{REPORT_LOCALE})
+    .withZone(java.time.ZoneId.of($P{timezone}))`
+- If you use the most recent version of the `legend.jrxml` print template, you will obtain a legend with
+  elements indented hierarchically per groups level. If you want to keep the previous legend style, keep
+  your previous `legend.jrxml` template and add a new variable `gmfPrintOptions.legend.showGroupsTitle` in
+  the `interfaces_config` constants of the vars file and set it to false.
+
+Editing
+-------
+
+- The default order column for edition enumeration lists is now the value column ("name" per
+  default). You can set it through the new `editingEnumerations` layer metadata.
+
+QGIS server
 -----------
 
-1. The default order column for edition enumeration lists is now the value column ("name" per
-   default). You can set it through the new `editingEnumerations` layer metadata.
+- The runtime variables of the GeoMapFish configuration (geomapfish.yaml.tmpl) are now filled in the config
+  container, previously it was in the QGIS server container.
+
+Tile generation
+---------------
+
+- Some commands are added to generate the OpenLayers example,
+  and the legend images used in the WMTS capabilities (but not used in the web application).
+
+Redis
+-----
+
+- Redis can be used in a scalable architecture (with sentinel), this is disabled by default.
+
 
 Changes to apply
-----------------
+================
 
 1. All ngeo components are now configured via variables in your project variables file, in the section
    interfaces_config. To ease future migration, you should remove any existing custom JavaScript code which is
@@ -203,12 +242,8 @@ Changes to apply
    There is some new documentation about the constants in ngeo
    https://camptocamp.github.io/ngeo/{{geomapfish_main_version}}/apidoc/index.html.
 
-2. If you use the most recent version of the `legend.jrxml` print template, you will obtain a legend with
-   elements indented hierarchically per groups level. If you want to keep to previous legend style, keep your
-   previous `legend.jrxml` template and add a new variable `gmfPrintOptions.legend.showGroupsTitle` in the
-   `interfaces_config` constants of the vars file and set it to false.
 
-
+=============
 Version 2.5.0
 =============
 
