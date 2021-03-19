@@ -1021,7 +1021,9 @@ class Theme:
             start_time = time.time()
             asyncio.run(self.preload(all_errors))
             LOG.debug("End preload")
-            LOG.info("Do preload in %.3fs.", time.time() - start_time)
+            # Don't log if it looks to be already preloaded.
+            if (time.time() - start_time) > 1:
+                LOG.info("Do preload in %.3fs.", time.time() - start_time)
             result["ogcServers"] = {}
             for ogc_server in models.DBSession.query(main.OGCServer).all():
                 url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
