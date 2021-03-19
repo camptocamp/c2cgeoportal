@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -1020,6 +1020,8 @@ class Theme:
                 namespace = None
                 if ogc_server.wfs_support:
                     attributes, namespace, errors = self._get_features_attributes(url_internal_wfs)
+                    # Create a local copy (don't modify the cache)
+                    attributes = dict(attributes)
                     all_errors |= errors
 
                     all_private_layers = get_private_layers([ogc_server.id]).values()
