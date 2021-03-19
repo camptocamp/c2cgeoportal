@@ -832,7 +832,7 @@ class Theme:
         }
         wfs_url = add_url_params(wfs_url, params)
 
-        LOG.debug("WFS DescribeFeatureType for base url: %s", wfs_url)
+        LOG.debug("WFS DescribeFeatureType for base URL: %s", wfs_url)
 
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
