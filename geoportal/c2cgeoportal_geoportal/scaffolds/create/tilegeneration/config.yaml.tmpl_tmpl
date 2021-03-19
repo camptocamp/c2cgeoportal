@@ -103,13 +103,13 @@ generation:
 redis:
     socket_timeout: ${REDIS_TIMEOUT}
     # For standalone version
-    # url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
+    url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
     # For OpenShift version
-    sentinels:
-      - - ${REDIS_HOST}
-        - ${REDIS_PORT}
-    service_name: ${REDIS_SERVICENAME}
-    db: ${REDIS_DB}
+    # sentinels:
+    #   - - ${REDIS_HOST}
+    #     - ${REDIS_PORT}
+    # service_name: ${REDIS_SERVICENAME}
+    # db: ${REDIS_DB}
 
 # Not used if the previous redis section is not commented out
 sqs:
