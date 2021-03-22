@@ -1,7 +1,12 @@
+##### 2.6.rc.29
+* Add OAuth2 authentication server [c2cgeoportal#7955](https://github.com/camptocamp/c2cgeoportal/pull/7955)
+* Some little fix [c2cgeoportal#7980](https://github.com/camptocamp/c2cgeoportal/pull/7980)
+* Add more informations in the ChangeLog [c2cgeoportal#7982](https://github.com/camptocamp/c2cgeoportal/pull/7982)
+* Add measure point to update_path [c2cgeoportal#7984](https://github.com/camptocamp/c2cgeoportal/pull/7984)
+* [Backport 2.6] Fix filter on private layers [c2cgeoportal#7985](https://github.com/camptocamp/c2cgeoportal/pull/7985)
+* Add polyfill in api [ngeo#6983](https://github.com/camptocamp/ngeo/pull/6983)
 ##### 2.6.rc.28
-* Highlight style for points [c2cgeoportal#7971](https://github.com/camptocamp/c2cgeoportal/pull/7971)
 * Improve changelog about the relocation of the config to the vars.yaml [c2cgeoportal#7978](https://github.com/camptocamp/c2cgeoportal/pull/7978)
-* Fix point highlight and console error [ngeo#6905](https://github.com/camptocamp/ngeo/pull/6905)
 * Better texts for Raster component [ngeo#6952](https://github.com/camptocamp/ngeo/pull/6952)
 * Fix first segment length on mobile [ngeo#6958](https://github.com/camptocamp/ngeo/pull/6958)
 * [Backport 2.6] Update arrow position (draw) on modify [ngeo#6968](https://github.com/camptocamp/ngeo/pull/6968)
