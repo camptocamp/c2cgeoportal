@@ -3,7 +3,7 @@
 * Improve changelog about the relocation of the config to the vars.yaml [c2cgeoportal#7978](https://github.com/camptocamp/c2cgeoportal/pull/7978)
 * Fix point highlight and console error [ngeo#6905](https://github.com/camptocamp/ngeo/pull/6905)
 * Better texts for Raster component [ngeo#6952](https://github.com/camptocamp/ngeo/pull/6952)
-* Fix first segment lenght on mobile [ngeo#6958](https://github.com/camptocamp/ngeo/pull/6958)
+* Fix first segment length on mobile [ngeo#6958](https://github.com/camptocamp/ngeo/pull/6958)
 * [Backport 2.6] Update arrow position (draw) on modify [ngeo#6968](https://github.com/camptocamp/ngeo/pull/6968)
 ##### 2.6.rc.27
 * Remove defined but never used [c2cgeoportal#7962](https://github.com/camptocamp/c2cgeoportal/pull/7962)
