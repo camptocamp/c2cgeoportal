@@ -1,3 +1,6 @@
+##### 2.5.0.120
+* Fix filter on private layers [c2cgeoportal#7981](https://github.com/camptocamp/c2cgeoportal/pull/7981)
+* [Backport 2.5] Fix LIDAR [ngeo#6947](https://github.com/camptocamp/ngeo/pull/6947)
 ##### 2.5.0.119
 * Make shortener not allowed host exception more explicit [c2cgeoportal#7918](https://github.com/camptocamp/c2cgeoportal/pull/7918)
 * [Backport 2.5] Add doc about excluded or readonly attributes while editing [c2cgeoportal#7923](https://github.com/camptocamp/c2cgeoportal/pull/7923)
