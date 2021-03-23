@@ -1,3 +1,5 @@
+##### 2.6.rc.32
+* Add more information in the ChangeLog [c2cgeoportal#7982](https://github.com/camptocamp/c2cgeoportal/pull/7982)
 ##### 2.6.rc.31
 * Add measure point to update_path [c2cgeoportal#7984](https://github.com/camptocamp/c2cgeoportal/pull/7984)
 * [Backport 2.6] Fix filter on private layers [c2cgeoportal#7985](https://github.com/camptocamp/c2cgeoportal/pull/7985)
