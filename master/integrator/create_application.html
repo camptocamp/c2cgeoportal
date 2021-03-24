@@ -66,7 +66,7 @@ from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm <span class="se">\</span>
-    camptocamp/geomapfish-tools: <span class="se">\</span>
+    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     pcreate -l</span>
 </pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
@@ -78,7 +78,7 @@ c2cgeoportal application you want to create the new application from:</p>
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools: <span class="se">\</span>
+    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><div class="admonition note">
@@ -96,7 +96,7 @@ parameters:</p>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">2056</span> <span class="se">\</span>
     --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span> <span class="se">\</span>
-    camptocamp/geomapfish-tools: <span class="se">\</span>
+    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_create <span class="se">\</span>
     --package-name <span class="si">${</span><span class="nv">GEOMAPFISH_PACKAGE</span><span class="si">}</span> <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
@@ -107,7 +107,7 @@ parameters:</p>
 creating this application from.</p>
 <p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools: <span class="se">\</span>
+    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s c2cgeoportal_update <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><div class="admonition note">
