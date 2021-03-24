@@ -106,6 +106,7 @@ def main():
             [
                 "docker",
                 "build",
+                "--pull",
                 "--tag={}-config{}".format(base, tag),
                 "--build-arg=PGSCHEMA=" + schema,
                 ".",
@@ -118,6 +119,7 @@ def main():
             [
                 "docker",
                 "build",
+                "--pull",
                 "--tag={}-geoportal{}".format(base, tag),
                 "--build-arg=PGSCHEMA=" + schema,
                 "--build-arg=GIT_HASH=" + git_hash,
