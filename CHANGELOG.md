@@ -1,3 +1,6 @@
+##### 2.6.rc.33
+* Fix the create application [c2cgeoportal#7991](https://github.com/camptocamp/c2cgeoportal/pull/7991)
+* Adapt WFS-version for reading of GML2 results [ngeo#6987](https://github.com/camptocamp/ngeo/pull/6987)
 ##### 2.6.rc.32
 * Add more information in the ChangeLog [c2cgeoportal#7982](https://github.com/camptocamp/c2cgeoportal/pull/7982)
 ##### 2.6.rc.31
