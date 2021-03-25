@@ -313,6 +313,13 @@ vars:
           tolerance: 10
           closeAfterSave: false
           highlightStyle:
+            circle:
+              radius: 7
+              fill:
+                color: [255, 139, 139, 0.6]
+              stroke:
+                color: [255, 0, 0, 1]
+                width: 3
             fill:
               color: [255, 139, 139, 0.6]
             stroke:
