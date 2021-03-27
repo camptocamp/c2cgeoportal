@@ -1,3 +1,11 @@
+##### 2.6.rc.34
+* Highlight style for points [c2cgeoportal#7971](https://github.com/camptocamp/c2cgeoportal/pull/7971)
+* Pull the base images before building the image [c2cgeoportal#7994](https://github.com/camptocamp/c2cgeoportal/pull/7994)
+* Fix point highlight and console error [ngeo#6905](https://github.com/camptocamp/ngeo/pull/6905)
+* Fix Sentry [ngeo#7002](https://github.com/camptocamp/ngeo/pull/7002)
+* Tools panel fix [ngeo#7009](https://github.com/camptocamp/ngeo/pull/7009)
+* The IDE was making as unnecessary, but it is necessary [ngeo#7011](https://github.com/camptocamp/ngeo/pull/7011)
+* Mobile query result [ngeo#7022](https://github.com/camptocamp/ngeo/pull/7022)
 ##### 2.6.rc.33
 * Fix the create application [c2cgeoportal#7991](https://github.com/camptocamp/c2cgeoportal/pull/7991)
 * Adapt WFS-version for reading of GML2 results [ngeo#6987](https://github.com/camptocamp/ngeo/pull/6987)
