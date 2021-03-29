@@ -11,15 +11,29 @@ The main page where we can redefine the header is in the file:
 ``geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js``
 where ``<interface>`` is the interface name.
 
+In all mode:
+
+The style sheet file is ``geoportal/<package>_geoportal/static/css/<interface>.css``.
+
+The header file is ``geoportal/<package>_geoportal/static/header.html``.
+
+The images used from the admin interface should be placed in the folder ``geoportal/<package>_geoportal/static/images/``.
+
+Not available in simple application mode:
+
+The style sheet vars file is ``geoportal/<package>_geoportal/static-ngeo/js/apps/sass/vars_<interface>.scss``.
+
 The style sheet file is ``geoportal/<package>_geoportal/static-ngeo/js/apps/sass/<interface>.scss``.
 
 The images used by the application code should be placed in the folder ``geoportal/<package>_geoportal/static-ngeo/images/``.
 
-The images used from the admin interface should be placed in the folder ``geoportal/<package>_geoportal/static/images/``.
-
 
 HTML file
 ---------
+
+.. note::
+
+    This is not possible in the simple application mode
 
 In this file, you can add some blocks like
 
@@ -54,6 +68,10 @@ from the controller by doing the following (here, the controller is the ``Deskto
 
 Controller (js file)
 --------------------
+
+.. note::
+
+    This is not possible in the simple application mode
 
 In the controller you have some lines like:
 
@@ -115,6 +133,10 @@ You can in addition define an `<interface>.css` file to override the CSS rules.
 Creating your own component
 ---------------------------
 
+.. note::
+
+    This is not possible in the simple application mode
+
 Create your ``.js`` and ``.html`` (partial) files in a dedicated folder under:
 ``geoportal/<package>_geoportal/static-ngeo/js/``. We encourage you to write standard ECMAScript and
 use AngularJS only to display your component.
@@ -174,6 +196,10 @@ for the HTML.
 
 Extending or overriding an existing component
 ----------------------------------------------
+
+.. note::
+
+    This is not possible in the simple application mode
 
 Overriding an existing partial (HTML) or JS element is possible but you have to test carefully your code
 after each GMF update as the original code may have changed.

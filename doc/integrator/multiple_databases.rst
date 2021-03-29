@@ -3,6 +3,10 @@
 Using multiple databases
 ========================
 
+.. note::
+
+    This is not possible in the simple application mode
+
 Configuration
 -------------
 In your ``vars`` file, configure any database sessions

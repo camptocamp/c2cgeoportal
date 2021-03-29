@@ -5,7 +5,8 @@
 Internationalization
 ====================
 
-In the file ``<package>.mk``, define the supported languages with (default):
+In the file ``<package>.mk``, define the supported languages with (default),
+in the simple application mode, the list of languages is constant: en fr de it.
 
 .. code:: make
 
@@ -64,6 +65,10 @@ To update your ``po`` files, you should proceed as follows.
 ~~~~~~~~~~~~~~~~~~~~~~
 Collect custom strings
 ~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+    This is not possible in the simple application mode
 
 If the standard system can not collect some strings, you can add them manually in
 one of your JavaScript application controllers:
