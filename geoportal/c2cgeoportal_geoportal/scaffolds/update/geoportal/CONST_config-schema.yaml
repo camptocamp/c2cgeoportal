@@ -54,30 +54,30 @@ mapping:
         type: str
         required: True
       sqlalchemy.pool_recycle:
-        type: int
+        type: scalar
       sqlalchemy.pool_size:
-        type: int
+        type: scalar
       sqlalchemy.pool_overflow:
-        type: int
+        type: scalar
       sqlalchemy.executemany_mode:
         type: str
       sqlalchemy.pool_pre_ping:
-        type: bool
+        type: scalar
       sqlalchemy_slave.url:
         type: str
         required: True
       sqlalchemy_slave.pool_recycle:
-        type: int
+        type: scalar
       sqlalchemy_slave.pool_size:
-        type: int
+        type: scalar
       sqlalchemy_slave.pool_overflow:
-        type: int
+        type: scalar
       sqlalchemy_slave.executemany_mode:
         type: str
       sqlalchemy_slave.pool_pre_ping:
-        type: bool
+        type: scalar
       default_max_age:
-        type: int
+        type: scalar
         required: True
       srid:
         type: int

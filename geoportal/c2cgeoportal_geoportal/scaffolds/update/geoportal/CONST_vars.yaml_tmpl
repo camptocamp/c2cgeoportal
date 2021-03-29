@@ -18,15 +18,15 @@ vars:
   # Database information
   sqlalchemy:
     url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}?sslmode={PGSSLMODE}
-    pool_recycle: 30
-    pool_size: 5
-    max_overflow: 25
+    pool_recycle: '{SQLALCHEMY_POOL_RECYCLE}'
+    pool_size: '{SQLALCHEMY_POOL_SIZE}'
+    max_overflow: '{SQLALCHEMY_MAX_OVERFLOW}'
     executemany_mode: batch
   sqlalchemy_slave:
     url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}?sslmode={PGSSLMODE}
-    pool_recycle: 30
-    pool_size: 5
-    max_overflow: 25
+    pool_recycle: '{SQLALCHEMY_POOL_RECYCLE}'
+    pool_size: '{SQLALCHEMY_POOL_SIZE}'
+    max_overflow: '{SQLALCHEMY_MAX_OVERFLOW}'
     executemany_mode: batch
 
   # Session backend
@@ -936,6 +936,12 @@ runtime_environment:
     default: main
   - name: PGSCHEMA_STATIC
     default: main_static
+  - name: SQLALCHEMY_POOL_RECYCLE
+    default: '30'
+  - name: SQLALCHEMY_POOL_SIZE
+    default: '5'
+  - name: SQLALCHEMY_MAX_OVERFLOW
+    default: '25'
   - name: TINYOWS_URL
     default: http://tinyows:8080/
   - name: MAPSERVER_URL
@@ -972,6 +978,12 @@ runtime_postprocess:
     vars:
       - cache.std.arguments.socket_timeout
       - cache.std.arguments.db
+      - sqlalchemy.pool_recycle
+      - sqlalchemy.pool_size
+      - sqlalchemy.max_overflow
+      - sqlalchemy_slave.pool_recycle
+      - sqlalchemy_slave.pool_size
+      - sqlalchemy_slave.max_overflow
 
 no_interpreted:
   - interfaces_config.default.static.angularLocaleScript.append
