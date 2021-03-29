@@ -3,6 +3,10 @@
 Configure the admin interface
 =============================
 
+.. note::
+
+    Configuration of the admin interface is not possible in the simple application mode.
+
 You can activate or deactivate (tabs, modules, models or tables) in administration interface using configuration key ``exclude_pages`` and ``include_pages``.
 
 
