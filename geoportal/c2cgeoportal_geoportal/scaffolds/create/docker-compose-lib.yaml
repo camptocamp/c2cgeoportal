@@ -60,7 +60,7 @@ services:
       - PGOPTIONS
 
   qgisserver:
-    image: camptocamp/geomapfish-qgisserver:gmf{{geomapfish_main_version}}-qgis${QGIS_VERSION}
+    image: camptocamp/geomapfish-qgisserver:gmf${GEOMAPFISH_MAIN_VERSION}-qgis${QGIS_VERSION}
     user: www-data
     restart: unless-stopped
     environment:
@@ -173,7 +173,7 @@ services:
     environment:
       - DEVELOPMENT
       - VISIBLE_ENTRY_POINT
-      - PACKAGE={{package}}
+      - PACKAGE
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
@@ -236,14 +236,14 @@ services:
       - LOG_TYPE
 
   tools:
-    image: camptocamp/geomapfish-tools:{{geomapfish_version}}
+    image: camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
     restart: unless-stopped
     environment:
       - PGSCHEMA
       # From geoportal
       - DEVELOPMENT
       - VISIBLE_ENTRY_POINT
-      - PACKAGE={{package}}
+      - PACKAGE
       - PGHOST
       - PGHOST_SLAVE
       - PGPORT
@@ -338,7 +338,7 @@ services:
   webpack_dev_server:
     image: ${DOCKER_BASE}-geoportal-dev:${DOCKER_TAG}
     volumes:
-      - ./geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
+      - ./geoportal/${PACKAGE}_geoportal/static-ngeo:/app/${PACKAGE}_geoportal/static-ngeo
     environment:
       - VISIBLE_ENTRY_POINT
       - VISIBLE_WEB_HOST
