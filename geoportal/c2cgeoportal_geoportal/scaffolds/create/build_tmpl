@@ -100,13 +100,15 @@ def main():
 
     default = not (args.config or args.geoportal)
 
+    docker_build = ["docker", "build"]
+    if os.environ.get("CI") != "TRUE":
+        docker_build.append("--pull")
+
     if default or args.config:
         call(
             args.verbose,
-            [
-                "docker",
-                "build",
-                "--pull",
+            docker_build
+            + [
                 "--tag={}-config{}".format(base, tag),
                 "--build-arg=PGSCHEMA=" + schema,
                 ".",
@@ -116,10 +118,8 @@ def main():
         git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
         call(
             args.verbose,
-            [
-                "docker",
-                "build",
-                "--pull",
+            docker_build
+            + [
                 "--tag={}-geoportal{}".format(base, tag),
                 "--build-arg=PGSCHEMA=" + schema,
                 "--build-arg=GIT_HASH=" + git_hash,
@@ -128,9 +128,8 @@ def main():
         )
         call(
             args.verbose,
-            [
-                "docker",
-                "build",
+            docker_build
+            + [
                 "--target=builder",
                 "--tag={}-geoportal-dev{}".format(base, tag),
                 "geoportal",
