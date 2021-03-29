@@ -1,3 +1,8 @@
+##### 2.5.0.121
+* [Backport 2.5] Fix config.yaml path in urllogin script [c2cgeoportal#7734](https://github.com/camptocamp/c2cgeoportal/pull/7734)
+* [Backport 2.5] Pull the base images before building the image [c2cgeoportal#7998](https://github.com/camptocamp/c2cgeoportal/pull/7998)
+* [Backport 2.5] Don't use the --pull in CI [c2cgeoportal#8008](https://github.com/camptocamp/c2cgeoportal/pull/8008)
+* [Backport 2.5] CI is lower on GitHub [c2cgeoportal#8014](https://github.com/camptocamp/c2cgeoportal/pull/8014)
 ##### 2.5.0.120
 * Fix filter on private layers [c2cgeoportal#7981](https://github.com/camptocamp/c2cgeoportal/pull/7981)
 * [Backport 2.5] Fix LIDAR [ngeo#6947](https://github.com/camptocamp/ngeo/pull/6947)
