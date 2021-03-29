@@ -11,7 +11,7 @@ services:
     user: root
     volumes:
       # For Python project development.
-      - ./geoportal/{{package}}_geoportal:/app/{{package}}_geoportal
+      - ./geoportal/${PACKAGE}_geoportal:/app/${PACKAGE}_geoportal
       # For Python c2cgeportal development.
       # - ./../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons
       # - ./../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
@@ -44,7 +44,7 @@ services:
     # Uncomment these lines when you want to debug respectively the project js, ngeo js and/or the gmf contrib js.
     # Adapt the path for ngeo / gmf contrib to point where you have checkouted the code.
     # volumes:
-    #   - ./geoportal/{{package}}_geoportal/static-ngeo:/app/{{package}}_geoportal/static-ngeo
+    #   - ./geoportal/${PACKAGE}_geoportal/static-ngeo:/app/${PACKAGE}_geoportal/static-ngeo
     #   - ./../ngeo/src:/usr/lib/node_modules/ngeo/src
     #   - ./../ngeo/contribs:/usr/lib/node_modules/ngeo/contribs
     volumes_from:
