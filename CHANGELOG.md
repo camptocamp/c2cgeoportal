@@ -1,10 +1,8 @@
-##### 2.6.rc.35
-* Be able to configure the pool on OpenShift [c2cgeoportal#8006](https://github.com/camptocamp/c2cgeoportal/pull/8006)
-* Add documentation for the simple application mode [c2cgeoportal#8007](https://github.com/camptocamp/c2cgeoportal/pull/8007)
-* [Backport 2.6] Don't use the --pull in CI [c2cgeoportal#8009](https://github.com/camptocamp/c2cgeoportal/pull/8009)
-* Build an CI simple mode auto detection [c2cgeoportal#8010](https://github.com/camptocamp/c2cgeoportal/pull/8010)
-* Move scaffold variable from docker-compose* to the env.default file [c2cgeoportal#8011](https://github.com/camptocamp/c2cgeoportal/pull/8011)
+##### 2.6.rc.36
 * Fix admin i18n in simple application mode [c2cgeoportal#8012](https://github.com/camptocamp/c2cgeoportal/pull/8012)
+* Add missing default value [c2cgeoportal#8017](https://github.com/camptocamp/c2cgeoportal/pull/8017)
+##### 2.6.rc.35
+* [Backport 2.6] Don't use the --pull in CI [c2cgeoportal#8009](https://github.com/camptocamp/c2cgeoportal/pull/8009)
 * CI is lower on GitHub [c2cgeoportal#8013](https://github.com/camptocamp/c2cgeoportal/pull/8013)
 ##### 2.6.rc.34
 * Highlight style for points [c2cgeoportal#7971](https://github.com/camptocamp/c2cgeoportal/pull/7971)
