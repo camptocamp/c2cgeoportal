@@ -749,7 +749,7 @@ rules:
 
         message = [
             "The upgrade is nearly done, now you should:",
-            "- Build your application with ./upgrade --finalize [build arguments]",
+            "- Build your application with `./upgrade --finalize [build arguments]`",
             "- Test your application on '{}'.".format(self.project.get("application_url", "... missing ...")),
         ]
 
