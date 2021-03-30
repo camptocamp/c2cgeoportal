@@ -137,7 +137,7 @@ def get_pulls(repo, ref):
 
         save()
 
-    return pulls
+    return [pull for pull in pulls if pull["state"] == "closed"]
 
 
 def add_new_release():
