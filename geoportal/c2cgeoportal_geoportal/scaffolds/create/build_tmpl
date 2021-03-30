@@ -113,7 +113,7 @@ def main():
     default = not (args.config or args.geoportal)
 
     docker_build = ["docker", "build"]
-    if os.environ.get("CI").upper() != "TRUE":
+    if os.environ.get("CI", "FALSE").upper() != "TRUE":
         docker_build.append("--pull")
 
     if default or args.config:
