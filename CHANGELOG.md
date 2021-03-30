@@ -1,5 +1,6 @@
+##### 2.6.rc.37
+* Be able to configure the pool on OpenShift [c2cgeoportal#8006](https://github.com/camptocamp/c2cgeoportal/pull/8006)
 ##### 2.6.rc.36
-* Fix admin i18n in simple application mode [c2cgeoportal#8012](https://github.com/camptocamp/c2cgeoportal/pull/8012)
 * Add missing default value [c2cgeoportal#8017](https://github.com/camptocamp/c2cgeoportal/pull/8017)
 ##### 2.6.rc.35
 * [Backport 2.6] Don't use the --pull in CI [c2cgeoportal#8009](https://github.com/camptocamp/c2cgeoportal/pull/8009)
