@@ -91,7 +91,7 @@ for translation.</p>
 <p>If the standard system can not collect some strings, you can add them manually in
 one of your JavaScript application controllers:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="cm">/** @type {angular.gettext.gettextCatalog} */</span>
-<span class="kr">const</span> <span class="nx">gettextCatalog</span> <span class="o">=</span> <span class="nx">$injector</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;gettextCatalog&#39;</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">gettextCatalog</span> <span class="o">=</span> <span class="nx">$injector</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;gettextCatalog&#39;</span><span class="p">);</span>
 <span class="nx">gettextCatalog</span><span class="p">.</span><span class="nx">getString</span><span class="p">(</span><span class="s1">&#39;My previously not collected string&#39;</span><span class="p">);</span>
 </pre></div>
 </div>

@@ -177,10 +177,10 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
         <span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
         <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
-        <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">info</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;colanderalchemy&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;missing&quot;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="s2">&quot;missing&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="s2">&quot;widget&quot;</span><span class="p">:</span> <span class="n">HiddenWidget</span><span class="p">()</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -196,7 +196,7 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
     <span class="p">)</span>
 
     <span class="c1"># title</span>
-    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">),</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
         <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">)</span>
@@ -211,8 +211,8 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
         <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">),</span>
         <span class="s1">&#39;plural&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Titles&#39;</span><span class="p">)</span>
     <span class="p">}</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
         <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
         <span class="p">}</span>
@@ -452,8 +452,8 @@ span.prompt1:before {
 <span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span><span class="o">,</span> <span class="nn">UserDetail</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="kn">import</span> <span class="n">CreateTable</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Run pSQL console:</p>

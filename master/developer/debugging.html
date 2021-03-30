@@ -195,7 +195,7 @@ c2cgeoportal application.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wsgi_lineprof.middleware</span> <span class="kn">import</span> <span class="n">LineProfilerMiddleware</span>
 <span class="kn">from</span> <span class="nn">wsgi_lineprof.filters</span> <span class="kn">import</span> <span class="n">FilenameFilter</span><span class="p">,</span> <span class="n">TotalTimeSorter</span>
 <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">&quot;c2cgeoportal.*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">&quot;c2cgeoportal.*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="n">TotalTimeSorter</span><span class="p">(),</span>
 <span class="p">]</span>
 <span class="k">return</span> <span class="n">LineProfilerMiddleware</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">(),</span> <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
