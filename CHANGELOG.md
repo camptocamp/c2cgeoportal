@@ -1,3 +1,5 @@
+##### 2.5.0.122
+* [Backport 2.5] Add missing default value [c2cgeoportal#8018](https://github.com/camptocamp/c2cgeoportal/pull/8018)
 ##### 2.5.0.121
 * [Backport 2.5] Fix config.yaml path in urllogin script [c2cgeoportal#7734](https://github.com/camptocamp/c2cgeoportal/pull/7734)
 * [Backport 2.5] Pull the base images before building the image [c2cgeoportal#7998](https://github.com/camptocamp/c2cgeoportal/pull/7998)
