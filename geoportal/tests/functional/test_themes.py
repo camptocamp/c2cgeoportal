@@ -145,7 +145,6 @@ class TestThemesView(TestCase):
         if params is None:
             params = {}
         request = create_dummy_request(**kwargs)
-        request.static_url = lambda url: "/dummy/static/url"
 
         def route_url(name, _query=None, **kwargs):
             del name  # Unused

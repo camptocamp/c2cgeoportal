@@ -130,7 +130,6 @@ class TestThemesScale(TestCase):
             },
             **kwargs,
         )
-        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
         request.params = params
 

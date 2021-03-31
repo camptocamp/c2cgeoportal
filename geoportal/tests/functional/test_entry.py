@@ -237,7 +237,6 @@ class TestEntryView(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         request = create_dummy_request(**kwargs)
-        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda url, **kwargs: mapserv_url
         request.interface_name = "desktop"
         request.params = params
@@ -264,7 +263,6 @@ class TestEntryView(TestCase):
         from c2cgeoportal_geoportal.views.entry import Entry
 
         request = self._create_request_obj()
-        request.current_route_url = lambda **kwargs: "http://example.com/current/view"
         request.registry.settings.update(
             {
                 "layers": {"enum": {"layer_test": {"attributes": {"label": None}}}},

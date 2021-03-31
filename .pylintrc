@@ -20,7 +20,8 @@ disable=missing-docstring,
     global-statement,
     fixme,
     broad-except,
-    invalid-name
+    invalid-name,
+    wrong-import-order
 known-third-party=c2cwsgiutils,c2cgeoform
 known-first-party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin
 

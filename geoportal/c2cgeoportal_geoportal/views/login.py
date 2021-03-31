@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,13 @@ from random import Random
 from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
 
 import pyotp
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPFound, HTTPUnauthorized
+from pyramid.httpexceptions import (
+    HTTPBadRequest,
+    HTTPForbidden,
+    HTTPFound,
+    HTTPUnauthorized,
+    exception_response,
+)
 from pyramid.response import Response
 from pyramid.security import forget, remember
 from pyramid.view import view_config
@@ -46,7 +52,7 @@ from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal import is_valid_referer
-from c2cgeoportal_geoportal.lib import get_setting, is_intranet
+from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2
 from c2cgeoportal_geoportal.lib.caching import NO_CACHE, PUBLIC_CACHE, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 
@@ -61,6 +67,7 @@ class Login:
         self.lang = request.locale_name
 
         authentication_settings = self.settings.get("authentication", {})
+
         self.two_factor_auth = authentication_settings.get("two_factor", False)
         self.two_factor_issuer_name = authentication_settings.get("two_factor_issuer_name")
 
@@ -117,6 +124,8 @@ class Login:
                     user.is_password_changed = False
                 if not user.is_password_changed:
                     user.tech_data["2fa_totp_secret"] = pyotp.random_base32()
+                    if self.request.GET.get("type") == "oauth2":
+                        raise HTTPFound(location=self.request.route_url("notlogin"))
                     return set_common_headers(
                         self.request,
                         "login",
@@ -126,7 +135,7 @@ class Login:
                                 {
                                     "username": user.username,
                                     "is_password_changed": False,
-                                    "two_factor_enable": True,
+                                    "two_factor_enable": self.two_factor_auth,
                                     "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
                                     "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
                                         user.email, issuer_name=self.two_factor_issuer_name
@@ -146,6 +155,8 @@ class Login:
             user.tech_data["consecutive_failed"] = "0"
 
             if not user.is_password_changed:
+                if self.request.GET.get("type") == "oauth2":
+                    raise HTTPFound(location=self.request.route_url("notlogin"))
                 return set_common_headers(
                     self.request,
                     "login",
@@ -155,15 +166,18 @@ class Login:
                             {
                                 "username": user.username,
                                 "is_password_changed": False,
-                                "two_factor_enable": True,
+                                "two_factor_enable": self.two_factor_auth,
                             }
                         ),
                         headers=(("Content-Type", "text/json"),),
                     ),
                 )
 
-            headers = remember(self.request, username)
             LOG.info("User '%s' logged in.", username)
+            if self.request.GET.get("type") == "oauth2":
+                self._oauth2_login(user)
+
+            headers = remember(self.request, username)
             came_from = self.request.params.get("came_from")
             if came_from:
                 return HTTPFound(location=came_from, headers=headers)
@@ -188,6 +202,39 @@ class Login:
         if hasattr(self.request, "tm"):
             self.request.tm.commit()
         raise HTTPUnauthorized("See server logs for details")
+
+    def _oauth2_login(self, user):
+        self.request.user_ = user
+        LOG.debug(
+            "Call OAuth create_authorization_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
+            self.request.current_route_url(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+        )
+        headers, body, status = oauth2.get_oauth_client(
+            self.request.registry.settings
+        ).create_authorization_response(
+            self.request.current_route_url(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+            self.request.headers,
+        )
+        if hasattr(self.request, "tm"):
+            self.request.tm.commit()
+        LOG.debug("OAuth create_authorization_response return\nstatus: %s\nbody:\n%s", status, body)
+
+        if status == 302:
+            raise HTTPFound(location=headers["Location"])
+        if status != 200:
+            if body:
+                raise exception_response(status, details=body)
+            raise exception_response(status)
+        return set_common_headers(
+            self.request,
+            "login",
+            NO_CACHE,
+            response=Response(body, headers=headers.items()),
+        )
 
     @view_config(route_name="logout")
     def logout(self):
@@ -330,3 +377,55 @@ class Login:
         )
 
         return {"success": True}
+
+    @view_config(route_name="oauth2token")
+    def oauth2token(self):
+        set_common_headers(self.request, "login", PUBLIC_CACHE)
+
+        LOG.debug(
+            "Call OAuth create_token_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
+            self.request.current_route_url(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+        )
+        headers, body, status = oauth2.get_oauth_client(self.request.registry.settings).create_token_response(
+            self.request.current_route_url(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+            self.request.headers,
+            {},
+        )
+        LOG.debug("OAuth create_token_response return status: %s", status)
+
+        if hasattr(self.request, "tm"):
+            self.request.tm.commit()
+
+        # All requests to /token will return a json response, no redirection.
+        if status != 200:
+            if body:
+                raise exception_response(status, detail=body)
+            raise exception_response(status)
+        return set_common_headers(
+            self.request,
+            "login",
+            NO_CACHE,
+            response=Response(body, headers=headers.items()),
+        )
+
+    @view_config(route_name="oauth2loginform", renderer="login.html")
+    def oauth2loginform(self):
+        set_common_headers(self.request, "login", PUBLIC_CACHE)
+
+        login_param = {"type": "oauth2"}
+        login_param.update(self.request.params)
+        return {
+            "lang": self.lang,
+            "login_params": login_param,
+            "two_fa": self.two_factor_auth,
+        }
+
+    @view_config(route_name="notlogin", renderer="notlogin.html")
+    def notlogin(self):
+        set_common_headers(self.request, "login", PUBLIC_CACHE)
+
+        return {"lang": self.lang}

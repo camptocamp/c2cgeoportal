@@ -80,7 +80,8 @@ should uncheck the 'The user changed his password' field on the user in the admi
 
 .. note::
 
-   For security reasons, basic authentication and two factor authentication should not be enabled together.
+   For security reasons, basic authentication and two factor authentication should not be enabled together,
+   you should use :ref:`OAuth2<integrator_authentication_oauth2>` for that.
 
 Account lockout
 ~~~~~~~~~~~~~~~
