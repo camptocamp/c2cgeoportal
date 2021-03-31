@@ -3,6 +3,10 @@
 Adding a new user interface
 ---------------------------
 
+.. note::
+
+    This is not possible in the simple application mode
+
 This section describes how to add a new user interface to be named <interface>
 (for example, "new") in a package named ``<package>``.
 
