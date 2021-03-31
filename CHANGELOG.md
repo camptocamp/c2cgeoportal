@@ -1,3 +1,6 @@
+##### 2.5.0.123
+* [Backport 2.5] Fix open pull request in changelog [c2cgeoportal#8029](https://github.com/camptocamp/c2cgeoportal/pull/8029)
+* [Backport 2.5] Fix Sentry [ngeo#7006](https://github.com/camptocamp/ngeo/pull/7006)
 ##### 2.5.0.122
 * [Backport 2.5] Add missing default value [c2cgeoportal#8018](https://github.com/camptocamp/c2cgeoportal/pull/8018)
 ##### 2.5.0.121
