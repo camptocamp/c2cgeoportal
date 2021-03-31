@@ -1,3 +1,5 @@
+##### 2.6.rc.38
+* Add OAuth2 authentication server [c2cgeoportal#7955](https://github.com/camptocamp/c2cgeoportal/pull/7955)
 ##### 2.6.rc.37
 * Be able to configure the pool on OpenShift [c2cgeoportal#8006](https://github.com/camptocamp/c2cgeoportal/pull/8006)
 ##### 2.6.rc.36
