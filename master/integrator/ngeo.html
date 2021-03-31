@@ -42,12 +42,21 @@
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code> and
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>
 where <code class="docutils literal notranslate"><span class="pre">&lt;interface&gt;</span></code> is the interface name.</p>
+<p>In all application modes (simple and full):</p>
+<p>The style sheet file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/css/&lt;interface&gt;.css</span></code>.</p>
+<p>The header file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/header.html</span></code>.</p>
+<p>The images used from the admin interface should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/images/</span></code>.</p>
+<p>Not available in simple application mode:</p>
+<p>The style sheet vars file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/sass/vars_&lt;interface&gt;.scss</span></code>.</p>
 <p>The style sheet file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/sass/&lt;interface&gt;.scss</span></code>.</p>
 <p>The images used by the application code should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/images/</span></code>.</p>
-<p>The images used from the admin interface should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/images/</span></code>.</p>
 </div>
 <div class="section" id="html-file">
 <h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not possible in the simple application mode</p>
+</div>
 <p>In this file, you can add some blocks like</p>
 <div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">gmf-authentication</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;login&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;slide&quot;</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">gmf-authentication</span><span class="p">&gt;</span>
@@ -75,6 +84,10 @@ from the controller by doing the following (here, the controller is the <code cl
 </div>
 <div class="section" id="controller-js-file">
 <h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not possible in the simple application mode</p>
+</div>
 <p>In the controller you have some lines like:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Component</span> <span class="nx">from</span> <span class="s1">&#39;gmf/&lt;component&gt;/component.js&#39;</span><span class="p">;</span>
 </pre></div>
@@ -129,6 +142,10 @@ related to those variable as it’s done in the SCSS, to be able to change the m
 </div>
 <div class="section" id="creating-your-own-component">
 <h2>Creating your own component<a class="headerlink" href="#creating-your-own-component" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not possible in the simple application mode</p>
+</div>
 <p>Create your <code class="docutils literal notranslate"><span class="pre">.js</span></code> and <code class="docutils literal notranslate"><span class="pre">.html</span></code> (partial) files in a dedicated folder under:
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/</span></code>. We encourage you to write standard ECMAScript and
 use AngularJS only to display your component.</p>
@@ -176,6 +193,10 @@ component: <code class="docutils literal notranslate"><span class="pre">template
 </div>
 <div class="section" id="extending-or-overriding-an-existing-component">
 <h2>Extending or overriding an existing component<a class="headerlink" href="#extending-or-overriding-an-existing-component" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not possible in the simple application mode</p>
+</div>
 <p>Overriding an existing partial (HTML) or JS element is possible but you have to test carefully your code
 after each GMF update as the original code may have changed.</p>
 <p>AngularJS is still ECMAScript. You can define some new functions or new variables to a class via the

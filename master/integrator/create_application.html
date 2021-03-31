@@ -123,13 +123,16 @@ Following this rule is important for easier updates.</p>
 </pre></div></div></div>
 <div class="section" id="simple-application">
 <h2>Simple application<a class="headerlink" href="#simple-application" title="Permalink to this headline">¶</a></h2>
-<p>A simple application is an application for which no custom code is needed (Python or JavaScript).</p>
+<p>In contrast, a full application is an application for which the all possibilities for customization are
+made available, a simple application is an application for which no custom code is needed
+(Python or JavaScript).</p>
+<p>See also <a class="reference internal" href="structure.html#integrator-structure"><span class="std std-ref">Project structure</span></a> for more information.</p>
+<p>The documentation sections, in administrator and integrator guides, indicate whether the current
+section applies to the simple application mode or not.</p>
 <p>To create a simple application you should:</p>
 <ul class="simple">
-<li><p>Remove the geoportal job in the <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> file.</p></li>
-<li><p>Build the application by adding <code class="docutils literal notranslate"><span class="pre">--config</span></code> to the <code class="docutils literal notranslate"><span class="pre">./build</span></code> command.</p></li>
-<li><p>Add the image to the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>:
-<code class="docutils literal notranslate"><span class="pre">image:</span> <span class="pre">camptocamp/geomapfishapp-geoportal:2.7</span></code>.</p></li>
+<li><p>Add the image to the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> and <code class="docutils literal notranslate"><span class="pre">alembic</span></code> service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>:
+<code class="docutils literal notranslate"><span class="pre">image:</span> <span class="pre">camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}</span></code>.</p></li>
 <li><p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file:</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Simple mode
