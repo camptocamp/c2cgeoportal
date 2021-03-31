@@ -118,14 +118,19 @@ Go to your new project:
 Simple application
 ------------------
 
-A simple application is an application for which no custom code is needed (Python or JavaScript).
+In contrast, a full application is an application for which the all possibilities for customization are
+made available, a simple application is an application for which no custom code is needed
+(Python or JavaScript).
+
+See also :ref:`integrator_structure` for more information.
+
+The documentation sections, in administrator and integrator guides, indicate whether the current
+section applies to the simple application mode or not.
 
 To create a simple application you should:
 
-- Remove the geoportal job in the ``.github/workflows/main.yaml`` file.
-- Build the application by adding ``--config`` to the ``./build`` command.
-- Add the image to the ``geoportal`` service in the ``docker-compose.yaml``:
-  ``image: camptocamp/geomapfishapp-geoportal:2.6``.
+- Add the image to the ``geoportal`` and ``alembic`` service in the ``docker-compose.yaml``:
+  ``image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}``.
 - Add the following lines in the ``.gitignore`` file:
 
 .. code::

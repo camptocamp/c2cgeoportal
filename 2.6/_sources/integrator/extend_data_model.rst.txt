@@ -1,6 +1,10 @@
 Extend the data model
 ---------------------
 
+.. note::
+
+    Extending the data model is not possible in the simple application mode.
+
 The data model can be extended in the file ``geoportal/<package>_geoportal/models.py``.
 
 For example, to add some user details, including a link to a new class named "Title",

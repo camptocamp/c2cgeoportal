@@ -36,7 +36,8 @@
             
   <div class="section" id="internationalization">
 <span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h1>
-<p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default):</p>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default),
+in the simple application mode, the list of languages is constant: en fr de it.</p>
 <div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">LANGUAGES</span> <span class="o">?=</span> en fr de
 </pre></div>
 </div>
@@ -88,6 +89,10 @@ for translation.</p>
 </div>
 <div class="section" id="collect-custom-strings">
 <h2>Collect custom strings<a class="headerlink" href="#collect-custom-strings" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not possible in the simple application mode</p>
+</div>
 <p>If the standard system can not collect some strings, you can add them manually in
 one of your JavaScript application controllers:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="cm">/** @type {angular.gettext.gettextCatalog} */</span>
