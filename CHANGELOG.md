@@ -1,3 +1,8 @@
+##### 2.6.rc.39
+* Add documentation for the simple application mode [c2cgeoportal#8007](https://github.com/camptocamp/c2cgeoportal/pull/8007)
+* Fix admin i18n in simple application mode [c2cgeoportal#8012](https://github.com/camptocamp/c2cgeoportal/pull/8012)
+* Fix entrypoint in haproxy [c2cgeoportal#8020](https://github.com/camptocamp/c2cgeoportal/pull/8020)
+* [Backport 2.6] Put the command in quote to be clearer [c2cgeoportal#8028](https://github.com/camptocamp/c2cgeoportal/pull/8028)
 ##### 2.6.rc.38
 * Add OAuth2 authentication server [c2cgeoportal#7955](https://github.com/camptocamp/c2cgeoportal/pull/7955)
 ##### 2.6.rc.37
