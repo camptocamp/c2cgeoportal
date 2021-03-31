@@ -5,6 +5,8 @@ Security
 
 .. _integrator_authentication:
 .. include:: authentication.rst
+.. _integrator_authentication_oauth2:
+.. include:: authentication_oauth2.rst
 .. include:: https.rst
 .. include:: reset_password.rst
 

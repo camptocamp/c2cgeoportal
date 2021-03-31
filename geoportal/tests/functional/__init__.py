@@ -32,8 +32,11 @@
 Pyramid application test package
 """
 
+import logging
 from configparser import ConfigParser
 
+import pyramid.registry
+import sqlalchemy.exc
 import tests
 import transaction
 import webob.acceptparse
@@ -45,6 +48,7 @@ import c2cgeoportal_geoportal.lib
 from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import caching
 
+LOG = logging.getLogger(__name__)
 mapserv_url = "http://mapserver:8080/"
 config = None
 
@@ -61,9 +65,13 @@ def cleanup_db():
         Role,
         TreeItem,
     )
-    from c2cgeoportal_commons.models.static import Shorturl, User
+    from c2cgeoportal_commons.models.static import OAuth2Client, Shorturl, User
 
-    transaction.commit()
+    try:
+        transaction.commit()
+    except sqlalchemy.exc.InvalidRequestError:
+        models.DBSession.rollback()
+
     for ra in models.DBSession.query(RestrictionArea).all():
         ra.roles = []
         models.DBSession.delete(ra)
@@ -78,6 +86,7 @@ def cleanup_db():
     models.DBSession.query(Functionality).delete()
     models.DBSession.query(FullTextSearch).delete()
     models.DBSession.query(Shorturl).delete()
+    models.DBSession.query(OAuth2Client).delete()
     transaction.commit()
 
 
@@ -100,8 +109,8 @@ def setup_db():
     caching.invalidate_region()
 
 
-def setup_common():
-    global config
+def get_settings():
+    logging.getLogger("c2cgeoportal_geoportal").setLevel(logging.DEBUG)
 
     configfile = "/opt/c2cgeoportal/geoportal/tests/tests.ini"
     cfg = ConfigParser()
@@ -121,7 +130,14 @@ def setup_common():
         "enable_admin_interface": True,
         "getitfixed": {"enabled": False},
     }
-    config = testing.setUp(settings=configuration.get_config())
+
+    return configuration.get_config()
+
+
+def setup_common():
+    global config
+
+    config = testing.setUp(settings=get_settings())
 
     c2cgeoportal_geoportal.init_dbsessions(config.get_settings(), config)
 
@@ -158,10 +174,20 @@ def _get_user(username):
     return DBSession.query(User).filter(User.username == username).one()
 
 
+def init_registry(registry=None):
+    from c2cgeoportal_geoportal import default_user_validator
+
+    registry = registry if registry is not None else pyramid.registry.Registry()
+
+    registry.validate_user = default_user_validator
+
+    return registry
+
+
 def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
     if additional_settings is None:
         additional_settings = {}
-    from c2cgeoportal_geoportal import create_get_user_from_request, default_user_validator
+    from c2cgeoportal_geoportal import create_get_user_from_request
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
 
     request = tests.create_dummy_request(
@@ -185,12 +211,13 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.path_info_peek = lambda: "main"
     request.interface_name = "main"
     request.get_user = _get_user
-    request.registry.validate_user = default_user_validator
     request.c2c_request_id = "test"
+    init_registry(request.registry)
     if authentication and user is None:
         authentication_settings = {
             "authtkt_cookie_name": "__test",
             "authtkt_secret": "long enough secret!!  00000000000000000000000000000000000000000000000",
+            "authentication": {},
         }
         authentication_settings.update(additional_settings)
         request._get_authentication_policy = lambda: create_authentication(authentication_settings)

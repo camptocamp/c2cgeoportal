@@ -192,6 +192,12 @@ mapping:
           max_consecutive_failures:
             type: int
             required: false
+          oauth2_authorization_expire_minutes:
+            type: int
+            required: false
+          oauth2_token_expire_minutes:
+            type: int
+            required: false
       intranet:
         type: map
         required: false

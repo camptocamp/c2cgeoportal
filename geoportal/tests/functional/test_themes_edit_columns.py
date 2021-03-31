@@ -211,7 +211,6 @@ class TestThemesEditColumns(TestCase):
             params = {}
 
         request = create_dummy_request(user=username)
-        request.static_url = lambda url: "/dummy/static/url"
         request.route_url = lambda name, _query: "http://server/{}?{}".format(name, urlencode(_query))
         request.matchdict = {"layer_id": str(layerid)}
         request.params = params
