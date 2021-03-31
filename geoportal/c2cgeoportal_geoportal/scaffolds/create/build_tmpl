@@ -52,6 +52,8 @@ def main():
     parser.add_argument("--verbose", help="Display the docker build commands")
     parser.add_argument("--config", action="store_true", help="Build only the configuration image")
     parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
+    parser.add_argument("--simple", action="store_true", help="Force simple application mode")
+    parser.add_argument("--not-simple", action="store_true", help="Force not simple application mode")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
     parser.add_argument(
         "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
@@ -117,11 +119,17 @@ def main():
         docker_build.append("--pull")
 
     if default or args.config:
+        simple = not os.path.exists("geoportal/Dockerfile")
+        if args.simple:
+            simple = True
+        if args.not_simple:
+            simple = False
         call(
             args.verbose,
             docker_build
             + [
                 "--tag={}-config{}".format(base, tag),
+                "--build-arg=SIMPLE=" + str(simple).upper(),
                 "--build-arg=PGSCHEMA=" + schema,
                 ".",
             ],

@@ -1,0 +1,29 @@
+#!/bin/bash -eux
+
+package=$1
+
+cd "/tmp/config/geoportal/${package}_geoportal/locale"
+
+for lang in $(ls -d */ | sed "s#/##"); do
+    msgfmt -o "${lang}/LC_MESSAGES/${package}_geoportal-client.mo" \
+        "${lang}/LC_MESSAGES/${package}_geoportal-client.po"
+    if [ -e "${lang}/LC_MESSAGES/${package}_geoportal-server.mo" ]; then
+        msgfmt -o "${lang}/LC_MESSAGES/${package}_geoportal-server.mo" \
+            "${lang}/LC_MESSAGES/${package}_geoportal-server.po"
+    fi
+    node /usr/bin/compile-catalog \
+        "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/ngeo.po" \
+        "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/gmf.po" \
+        "${lang}/LC_MESSAGES/${package}-client.po" \
+        >"../static/${lang}.json"
+    if [ "${SIMPLE}" == TRUE ]; then
+        mv "${lang}/LC_MESSAGES/${package}_geoportal-client.mo" \
+            "${lang}/LC_MESSAGES/geomapfishapp_geoportal-client.mo"
+        if [ -e "${lang}/LC_MESSAGES/${package}_geoportal-server.mo" ]; then
+            mv "${lang}/LC_MESSAGES/${package}_geoportal-server.mo" \
+                "${lang}/LC_MESSAGES/geomapfishapp_geoportal-server.mo"
+        fi
+    fi
+done
+
+rm -rf */LC_MESSAGES/*.po

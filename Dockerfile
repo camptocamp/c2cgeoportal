@@ -82,7 +82,7 @@ RUN \
     pipenv sync --system --clear --dev && \
     rm --recursive --force /tmp/* /root/.cache/*
 
-COPY bin/npm-packages bin/update-po /usr/bin/
+COPY bin/npm-packages bin/update-po bin/build-l10n /usr/bin/
 COPY geoportal/package.json /opt/c2cgeoportal/geoportal/
 WORKDIR /opt/c2cgeoportal/geoportal
 
