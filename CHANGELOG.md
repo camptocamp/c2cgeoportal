@@ -1,3 +1,5 @@
+##### 2.6.rc.41
+* Add tests for admin OAuth2 clients [c2cgeoportal#8031](https://github.com/camptocamp/c2cgeoportal/pull/8031)
 ##### 2.6.rc.40
 * Fix open pull request in changelog [c2cgeoportal#8023](https://github.com/camptocamp/c2cgeoportal/pull/8023)
 * [Backport 2.6] Put the command in quote to be clearer [c2cgeoportal#8028](https://github.com/camptocamp/c2cgeoportal/pull/8028)
