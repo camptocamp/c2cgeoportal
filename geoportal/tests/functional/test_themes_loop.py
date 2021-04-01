@@ -89,6 +89,7 @@ class TestLoopTheme(TestCase):
         request = DummyRequest()
         request.static_url = lambda url: "http://example.com/dummy/static/url"
         request.route_url = lambda url, _query={}: mapserv_url
+        request.get_organization_role = lambda role_type: role_type
         request.user = None
         theme_view = Theme(request)
         _, errors = theme_view._themes("desktop2", True, 2)

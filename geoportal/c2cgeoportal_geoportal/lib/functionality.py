@@ -115,17 +115,29 @@ def get_functionality(
         )
         if not result:
             result = _get_db_functionality(
-                name, _get_role("registered"), _get_functionalities_type(request), request, errors
+                name,
+                _get_role(request.get_organization_role("registered")),
+                _get_functionalities_type(request),
+                request,
+                errors,
             )
 
     if not result and is_intranet_:
         result = _get_db_functionality(
-            name, _get_role("intranet"), _get_functionalities_type(request), request, errors
+            name,
+            _get_role(request.get_organization_role("intranet")),
+            _get_functionalities_type(request),
+            request,
+            errors,
         )
 
     if not result:
         result = _get_db_functionality(
-            name, _get_role("anonymous"), _get_functionalities_type(request), request, errors
+            name,
+            _get_role(request.get_organization_role("anonymous")),
+            _get_functionalities_type(request),
+            request,
+            errors,
         )
 
     if errors != set():

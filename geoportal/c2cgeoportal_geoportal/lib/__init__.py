@@ -206,21 +206,21 @@ def get_role_id(name: str) -> int:
 
 
 def get_roles_id(request: pyramid.request.Request) -> List[int]:
-    result = [get_role_id("anonymous")]
+    result = [get_role_id(request.get_organization_role("anonymous"))]
     if is_intranet(request):
-        result.append(get_role_id("intranet"))
+        result.append(get_role_id(request.get_organization_role("intranet")))
     if request.user is not None:
-        result.append(get_role_id("registered"))
+        result.append(get_role_id(request.get_organization_role("registered")))
         result.extend([r.id for r in request.user.roles])
     return result
 
 
 def get_roles_name(request: pyramid.request.Request) -> pyramid.response.Response:
-    result = ["anonymous"]
+    result = [request.get_organization_role("anonymous")]
     if is_intranet(request):
-        result.append("intranet")
+        result.append(request.get_organization_role("intranet"))
     if request.user is not None:
-        result.append("registered")
+        result.append(request.get_organization_role("registered"))
         result.extend([r.name for r in request.user.roles])
     return result
 
