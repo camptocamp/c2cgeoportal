@@ -87,12 +87,14 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):
 
         return None
 
-    def remember(self, request, userid, **kw):  # pylint: disable=unused-argument, no-self-use
+    def remember(self, request, userid, **kw):  # pylint: disable=no-self-use
         """A no-op."""
+        del request, userid, kw
         return []
 
-    def forget(self, request):  # pylint: disable=unused-argument, no-self-use
+    def forget(self, request):  # pylint: disable= no-self-use
         """A no-op."""
+        del request
         return []
 
 
@@ -125,6 +127,16 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):
 
             return request.user_.username
         return None
+
+    def remember(self, request, userid, **kw):  # pylint: disable=no-self-use
+        """A no-op."""
+        del request, userid, kw
+        return []
+
+    def forget(self, request):  # pylint: disable= no-self-use
+        """A no-op."""
+        del request
+        return []
 
 
 def create_authentication(settings):
