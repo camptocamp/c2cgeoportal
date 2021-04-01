@@ -353,13 +353,10 @@
       used_by:
         - short: 2.5
           long: GeoMapFish 2.5
-    '3.12':
-      workflows:
-        - workflow: main.yaml
-    '3.14':
-      workflows:
-        - workflow: main.yaml
     '3.16':
+      workflows:
+        - workflow: main.yaml
+    '3.18':
       workflows:
         - workflow: main.yaml
     master:
@@ -440,11 +437,6 @@
     - workflow: backport.yaml
       norunfor: false
   versions:
-    '1':
-      branch: release_1
-      workflows:
-        - workflow: main.yaml
-        - workflow: codeql.yaml
     '2':
       branch: release_2
       workflows:
