@@ -132,6 +132,18 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):
             return cast(str, request.user_.username)
         return None
 
+    def remember(  # pylint: disable=no-self-use
+        self, request: pyramid.request.Request, userid: str, **kw: Any
+    ) -> List:
+        """A no-op."""
+        del request, userid, kw
+        return []
+
+    def forget(self, request: pyramid.request.Request) -> List:  # pylint: disable=no-self-use
+        """A no-op."""
+        del request
+        return []
+
 
 def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy:
     timeout = settings.get("authtkt_timeout")
