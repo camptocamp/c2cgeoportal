@@ -1,3 +1,5 @@
+##### 2.5.0.124
+* [Backport 2.5] Allows the attributes from the WFS DescribeFeatures to be None [c2cgeoportal#8047](https://github.com/camptocamp/c2cgeoportal/pull/8047)
 ##### 2.5.0.123
 * [Backport 2.5] Fix open pull request in changelog [c2cgeoportal#8029](https://github.com/camptocamp/c2cgeoportal/pull/8029)
 * [Backport 2.5] Fix Sentry [ngeo#7006](https://github.com/camptocamp/ngeo/pull/7006)
