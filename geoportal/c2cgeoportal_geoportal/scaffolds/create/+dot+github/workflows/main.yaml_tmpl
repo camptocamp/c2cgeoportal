@@ -68,16 +68,22 @@ jobs:
 
       - name: Build geoportal
         run: ./build --geoportal
+        if: hashFiles('geoportal/Dockerfile') != ''
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
+        if: hashFiles('geoportal/Dockerfile') != ''
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+        if: hashFiles('geoportal/Dockerfile') != ''
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
+        if: hashFiles('geoportal/Dockerfile') != ''
 
       - name: Publish
         run: c2cciutils-publish --group=geoportal
+        if: hashFiles('geoportal/Dockerfile') != ''
       - run: ci/trigger --image=geoportal
+        if: hashFiles('geoportal/Dockerfile') != ''

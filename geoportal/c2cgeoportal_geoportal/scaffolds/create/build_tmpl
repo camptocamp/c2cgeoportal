@@ -134,7 +134,7 @@ def main():
                 ".",
             ],
         )
-    if default or args.geoportal:
+    if (default and os.path.exists("geoportal/Dockerfile")) or args.geoportal:
         git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
         call(
             args.verbose,
