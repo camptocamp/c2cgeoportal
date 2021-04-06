@@ -14,7 +14,7 @@ for lang in $(ls -d */ | sed "s#/##"); do
     node /usr/bin/compile-catalog \
         "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/ngeo.po" \
         "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/gmf.po" \
-        "${lang}/LC_MESSAGES/${package}-client.po" \
+        "${lang}/LC_MESSAGES/${package}_geoportal-client.po" \
         >"../static/${lang}.json"
     if [ "${SIMPLE}" == TRUE ]; then
         mv "${lang}/LC_MESSAGES/${package}_geoportal-client.mo" \
