@@ -1,3 +1,5 @@
+##### 2.6.rc.44
+* Allows the attributes from the WFS DescribeFeatures to be None [c2cgeoportal#8045](https://github.com/camptocamp/c2cgeoportal/pull/8045)
 ##### 2.6.rc.43
 * Fix l10n generation [c2cgeoportal#8043](https://github.com/camptocamp/c2cgeoportal/pull/8043)
 ##### 2.6.rc.42
