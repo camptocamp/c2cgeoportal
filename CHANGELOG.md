@@ -1,3 +1,5 @@
+##### 2.6.rc.42
+* Fix OAuth2 authentication [c2cgeoportal#8038](https://github.com/camptocamp/c2cgeoportal/pull/8038)
 ##### 2.6.rc.41
 * Add tests for admin OAuth2 clients [c2cgeoportal#8031](https://github.com/camptocamp/c2cgeoportal/pull/8031)
 ##### 2.6.rc.40
