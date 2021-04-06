@@ -1,3 +1,5 @@
+##### 2.6.rc.43
+* Fix l10n generation [c2cgeoportal#8043](https://github.com/camptocamp/c2cgeoportal/pull/8043)
 ##### 2.6.rc.42
 * Fix OAuth2 authentication [c2cgeoportal#8038](https://github.com/camptocamp/c2cgeoportal/pull/8038)
 ##### 2.6.rc.41
