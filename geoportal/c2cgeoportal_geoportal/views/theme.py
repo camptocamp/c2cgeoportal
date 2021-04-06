@@ -1006,7 +1006,8 @@ class Theme:
                 if ogc_server.wfs_support:
                     attributes, namespace, errors = self._get_features_attributes(url_internal_wfs)
                     # Create a local copy (don't modify the cache)
-                    attributes = dict(attributes)
+                    if attributes is not None:
+                        attributes = dict(attributes)
                     all_errors |= errors
 
                     all_private_layers = get_private_layers([ogc_server.id]).values()
