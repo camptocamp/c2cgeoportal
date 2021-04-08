@@ -1,3 +1,5 @@
+##### 2.6.rc.46
+* Move scaffold variable from docker-compose* to the env.default file [c2cgeoportal#8011](https://github.com/camptocamp/c2cgeoportal/pull/8011)
 ##### 2.6.rc.45
 * Some documentation about editing [c2cgeoportal#8040](https://github.com/camptocamp/c2cgeoportal/pull/8040)
 ##### 2.6.rc.44
