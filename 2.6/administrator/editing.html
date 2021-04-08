@@ -40,7 +40,7 @@
 <p>Just like most administrative tasks, setting up editing in a c2cgeoportal application involves intervening
 in the database, through the c2cgeoportal administration interface.</p>
 <div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<span id="administrator-editing-requirements"></span><h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>To be editable, a layer should satisfy the following requirements:</p>
 <ol class="arabic">
 <li><p>It should be accessible with WMS, and correctly configured in the
@@ -100,6 +100,45 @@ corresponding to this field is <em>Related Postgres table</em> in the admin inte
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>It is recommended to limit the editing to 30 editable layers per user.</p>
+</div>
+</div>
+<div class="section" id="configure-layer-editing">
+<span id="administrator-editing-configuration"></span><h2>Configure layer editing<a class="headerlink" href="#configure-layer-editing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="registering-edit-time-and-user">
+<h3>Registering edit time and user<a class="headerlink" href="#registering-edit-time-and-user" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>To register the time of the change of an edited item, a column of type
+<code class="docutils literal notranslate"><span class="pre">timestamp</span> <span class="pre">without</span> <span class="pre">timezone</span></code> is needed in the table of the layer. In
+the configuration of the layer <code class="docutils literal notranslate"><span class="pre">lastUpdateDateColumn</span></code> has to be added
+in the metadata with the column name as value;</p></li>
+<li><p>To register the user who edited a an item, a column of type <code class="docutils literal notranslate"><span class="pre">integer</span></code>
+is needed in the table of the layer. In the configuration of the layer
+<code class="docutils literal notranslate"><span class="pre">lastUpdateUserColumn</span></code> has to be added in the metadata with the column
+name as value.</p></li>
+</ul>
+</div>
+<div class="section" id="order-the-editable-attributes-in-the-editing-panel">
+<h3>Order the editable attributes in the editing panel<a class="headerlink" href="#order-the-editable-attributes-in-the-editing-panel" title="Permalink to this headline">¶</a></h3>
+<p>To put the attributes of a table in a specific order in the edit table, in the
+configuration of the layer <code class="docutils literal notranslate"><span class="pre">editingAttributeOrder</span></code> has to be added in the
+metadata with the list of the column names
+in the wanted order as value, separated by commas without blanks.</p>
+</div>
+<div class="section" id="make-some-attributes-visible-but-not-editable">
+<h3>Make some attributes visible but not editable<a class="headerlink" href="#make-some-attributes-visible-but-not-editable" title="Permalink to this headline">¶</a></h3>
+<p>In the configuration of the layer <code class="docutils literal notranslate"><span class="pre">readonlyAttributes</span></code> has to be added in the metadata
+with the list of the attributes which cannot be edited as value, separated by commas without blanks.</p>
+</div>
+<div class="section" id="validate-geometries">
+<h3>Validate geometries<a class="headerlink" href="#validate-geometries" title="Permalink to this headline">¶</a></h3>
+<p>If in the configuration of the layer <code class="docutils literal notranslate"><span class="pre">geometryValidation</span></code> is added in the the metadata and the box is checked,
+created geometries will be validated according to the type (point,line, polygon),
+for example to prevent creation of a 2-point polygon.</p>
+</div>
+<div class="section" id="configure-enumeration-values">
+<h3>Configure enumeration values<a class="headerlink" href="#configure-enumeration-values" title="Permalink to this headline">¶</a></h3>
+<p>The configuration of enumerations values (e.g. for drop-down list) is explained
+at point 6 of <a class="reference internal" href="#administrator-editing-requirements"><span class="std std-ref">Requirements</span></a>.</p>
 </div>
 </div>
 <div class="section" id="configuring-security">

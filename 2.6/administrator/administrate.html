@@ -72,17 +72,8 @@ files in <code class="docutils literal notranslate"><span class="pre">admin_inte
 Regarding effect on the referenced tree item on the client side, you will find a description for each sort
 of metadata in the <code class="docutils literal notranslate"><span class="pre">GmfMetaData</span></code> definition in
 <a class="reference external" href="https://github.com/camptocamp/ngeo/blob/2.6/contribs/gmf/src/themes.js">themes.js</a>.</p>
-<p>Some metadata items are used by the <code class="docutils literal notranslate"><span class="pre">layers</span></code> views (for editing) on the server side:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">editingAttributesOrder</span></code>: Specify the order of the editable attributes in the edit interface.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">editingEnumerations</span></code>: Specify the value column and the order column on the relationship’s
-target table of the enumeration.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">geometryValidation</span></code>: Force validation of the geometries according to the layer type (point, line,
-polygon), for example, to prevent creation of a 2-point polygon.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lastUpdateDateColumn</span></code>: Define a column which will be automatically filled with the date of the last edit.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lastUpdateUserColumn</span></code>: Define a column which will be automatically filled with the user of the last edit.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">readonlyAttributes</span></code>: Set attributes as read only in the <a class="reference internal" href="editing.html#administrator-editing"><span class="std std-ref">Editing</span></a> form.</p></li>
-</ul>
+<p>Some metadata items are used by the <code class="docutils literal notranslate"><span class="pre">layers</span></code> views (for editing) on the server side. They are specified
+in the editing section: <a class="reference internal" href="editing.html#administrator-editing-configuration"><span class="std std-ref">Configure layer editing</span></a>.</p>
 <p>Some metadata items are used by the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> script:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">searchAlias</span></code>: Comma separated list of search aliases (keywords) to be added to the <code class="docutils literal notranslate"><span class="pre">tsearch.ts</span></code>

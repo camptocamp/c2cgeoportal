@@ -8,6 +8,8 @@ This section explains how to configure the edit function in c2cgeoportal.
 Just like most administrative tasks, setting up editing in a c2cgeoportal application involves intervening
 in the database, through the c2cgeoportal administration interface.
 
+.. _administrator_editing_requirements:
+
 Requirements
 ------------
 
@@ -75,6 +77,47 @@ corresponding to this field is *Related Postgres table* in the admin interface.
 .. warning::
 
     It is recommended to limit the editing to 30 editable layers per user.
+
+.. _administrator_editing_configuration:
+
+Configure layer editing
+-----------------------
+
+Registering edit time and user
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* To register the time of the change of an edited item, a column of type
+  ``timestamp without timezone`` is needed in the table of the layer. In
+  the configuration of the layer ``lastUpdateDateColumn`` has to be added
+  in the metadata with the column name as value;
+
+* To register the user who edited a an item, a column of type ``integer``
+  is needed in the table of the layer. In the configuration of the layer
+  ``lastUpdateUserColumn`` has to be added in the metadata with the column
+  name as value.
+
+
+Order the editable attributes in the editing panel
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To put the attributes of a table in a specific order in the edit table, in the
+configuration of the layer ``editingAttributeOrder`` has to be added in the
+metadata with the list of the column names
+in the wanted order as value, separated by commas without blanks.
+
+Make some attributes visible but not editable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In the configuration of the layer ``readonlyAttributes`` has to be added in the metadata
+with the list of the attributes which cannot be edited as value, separated by commas without blanks.
+
+Validate geometries
+~~~~~~~~~~~~~~~~~~~
+If in the configuration of the layer ``geometryValidation`` is added in the the metadata and the box is checked,
+created geometries will be validated according to the type (point,line, polygon),
+for example to prevent creation of a 2-point polygon.
+
+Configure enumeration values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The configuration of enumerations values (e.g. for drop-down list) is explained
+at point 6 of :ref:`administrator_editing_requirements`.
 
 
 Configuring security
