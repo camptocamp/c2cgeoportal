@@ -1,3 +1,5 @@
+##### 2.6.rc.45
+* Some documentation about editing [c2cgeoportal#8040](https://github.com/camptocamp/c2cgeoportal/pull/8040)
 ##### 2.6.rc.44
 * Allows the attributes from the WFS DescribeFeatures to be None [c2cgeoportal#8045](https://github.com/camptocamp/c2cgeoportal/pull/8045)
 ##### 2.6.rc.43
