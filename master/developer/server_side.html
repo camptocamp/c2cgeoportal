@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Server-side development &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="server-side-development">
+  <section id="server-side-development">
 <span id="developer-server-side"></span><h1>Server-side development<a class="headerlink" href="#server-side-development" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="creating-a-development-environment-in-a-project">
+<section id="creating-a-development-environment-in-a-project">
 <h2>Creating a development environment in a project<a class="headerlink" href="#creating-a-development-environment-in-a-project" title="Permalink to this headline">¶</a></h2>
 <p>c2cgeoportal developers often need to test c2cgeoportal changes in the context
 of an existing c2cgeoportal application. Here is how:</p>
@@ -49,8 +50,8 @@ span.prompt1:before {
 <span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
 <span class="prompt1">make build</span>
 </pre></div></div><p>Now, the new containers are ready to use in the application on the same host.</p>
-</div>
-<div class="section" id="docker-images">
+</section>
+<section id="docker-images">
 <h2>Docker images<a class="headerlink" href="#docker-images" title="Permalink to this headline">¶</a></h2>
 <p>GeoMapFish provides the following Docker images:</p>
 <ul class="simple">
@@ -65,15 +66,15 @@ span.prompt1:before {
 <li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;project&gt;-geoportal</span></code> the geoportal image</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;project&gt;-config</span></code> the config image</p></li>
 </ul>
-</div>
-<div class="section" id="tests">
+</section>
+<section id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="running-tests">
+<section id="running-tests">
 <h3>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
 <p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
 tests require to run with <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>.</p>
-<div class="section" id="unit-tests">
+<section id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
 <p>Before running the tests, install and build all dependencies:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make preparetest</span>
@@ -82,26 +83,26 @@ tests require to run with <code class="docutils literal notranslate"><span class
 </pre></div></div><p>To run only a specific test, use the <code class="docutils literal notranslate"><span class="pre">-k</span></code> switch. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tests pytest --verbose --color<span class="o">=</span>yes <span class="se">\</span>
     -k test_catalogue /opt/c2cgeoportal/geoportal/tests</span>
-</pre></div></div></div>
-</div>
-</div>
-<div class="section" id="database">
+</pre></div></div></section>
+</section>
+</section>
+<section id="database">
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="object-model">
+<section id="object-model">
 <h3>Object model<a class="headerlink" href="#object-model" title="Permalink to this headline">¶</a></h3>
 <img alt="../_images/database.png" src="../_images/database.png" />
 <p><code class="docutils literal notranslate"><span class="pre">TreeItem</span></code> and <code class="docutils literal notranslate"><span class="pre">TreeGroup</span></code> are abstract classes used to create the tree.</p>
 <p><code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal notranslate"><span class="pre">LayerGroup</span></code>, but without any constraints.</p>
-<div class="section" id="metadata-vs-functionality">
+<section id="metadata-vs-functionality">
 <h4><code class="docutils literal notranslate"><span class="pre">metadata</span></code> vs <code class="docutils literal notranslate"><span class="pre">functionality</span></code><a class="headerlink" href="#metadata-vs-functionality" title="Permalink to this headline">¶</a></h4>
 <p>The same <code class="docutils literal notranslate"><span class="pre">functionality</span></code> can be reused by more than one element.</p>
 <p><code class="docutils literal notranslate"><span class="pre">functionalities</span></code> are designed to configure and customize various parts of the application.
 For instance, via a functionality you can define which basemap is to be used when a new theme is loaded.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> contains attributes that are directly related to the element;
 for example, the layer disclaimer.</p>
-</div>
-</div>
-<div class="section" id="migration">
+</section>
+</section>
+<section id="migration">
 <h3>Migration<a class="headerlink" href="#migration" title="Permalink to this headline">¶</a></h3>
 <p>We use the <code class="docutils literal notranslate"><span class="pre">alembic</span></code> module for database migration. <code class="docutils literal notranslate"><span class="pre">alembic</span></code> works with a
 so-called <em>migration repository</em>, which is a simple directory <code class="docutils literal notranslate"><span class="pre">/opt/alembic</span></code> in the
@@ -128,9 +129,9 @@ docker image. So developers who modify the <code class="docutils literal notrans
 </dd>
 </dl>
 <p>To use alembic scripts on custom schemas or tables see <a class="reference internal" href="custom_alembic.html#custom-alembic"><span class="std std-ref">Alembic on custom tables</span></a>.</p>
-</div>
-</div>
-<div class="section" id="dependencies">
+</section>
+</section>
+<section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>Major dependencies docs:</p>
 <ul class="simple">
@@ -143,8 +144,8 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <li><p><a class="reference external" href="https://docutils.sourceforge.net/docs/ref/rst/introduction.html">reStructuredText</a></p></li>
 <li><p><a class="reference external" href="https://sphinx.pocoo.org/">Sphinx</a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

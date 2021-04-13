@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Configure the admin interface &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,16 +35,16 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="configure-the-admin-interface">
+  <section id="configure-the-admin-interface">
 <span id="integrator-admin-interface"></span><h1>Configure the admin interface<a class="headerlink" href="#configure-the-admin-interface" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Configuration of the admin interface is not possible in the simple application mode.</p>
 </div>
 <p>You can activate or deactivate (tabs, modules, models or tables) in administration interface using configuration key <code class="docutils literal notranslate"><span class="pre">exclude_pages</span></code> and <code class="docutils literal notranslate"><span class="pre">include_pages</span></code>.</p>
-<div class="section" id="include-and-excludes-tabs">
+<section id="include-and-excludes-tabs">
 <h2>Include and excludes tabs<a class="headerlink" href="#include-and-excludes-tabs" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="default-tabs-modules">
+<section id="default-tabs-modules">
 <h3>Default tabs/modules<a class="headerlink" href="#default-tabs-modules" title="Permalink to this headline">¶</a></h3>
 <p>The active default tabs (route urls) are:
 - layertree
@@ -57,14 +58,14 @@
 - roles
 - functionalities
 - interfaces</p>
-</div>
-<div class="section" id="optional-tabs-modules">
+</section>
+<section id="optional-tabs-modules">
 <h3>Optional tabs/modules<a class="headerlink" href="#optional-tabs-modules" title="Permalink to this headline">¶</a></h3>
 <p>There are optional tabs, not available if not explicitly included.</p>
 <p>The list is:
 - layers_vectortiles</p>
-</div>
-<div class="section" id="include-a-new-page">
+</section>
+<section id="include-a-new-page">
 <h3>Include a new page<a class="headerlink" href="#include-a-new-page" title="Permalink to this headline">¶</a></h3>
 <p>We need a url path and a class to include a new page.</p>
 <p>Here is an example using the existing vector tiles page:</p>
@@ -79,14 +80,14 @@
 <p class="admonition-title">Note</p>
 <p>It is possible also to add totally new tables, models, tabs.</p>
 </div>
-</div>
-<div class="section" id="exclude-a-page">
+</section>
+<section id="exclude-a-page">
 <h3>Exclude a page<a class="headerlink" href="#exclude-a-page" title="Permalink to this headline">¶</a></h3>
 <p>We can exclude any of the default tabs.
 The syntax use a list under <code class="docutils literal notranslate"><span class="pre">vars/admin_interface/exclude_pages</span></code>.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Caching &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="caching">
+  <section id="caching">
 <span id="integrator-caching"></span><h1>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="headers">
+<section id="headers">
 <h2>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
 <p>By default, the static elements will be cached for 10 days by the browser.</p>
 <p>To change this value for the whole application, change in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file the
@@ -52,15 +53,15 @@ To change this value, add the following structure in the <code class="docutils l
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;service_name&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">entry</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code>, <code class="docutils literal notranslate"><span class="pre">mapserver</span></code>,
 <code class="docutils literal notranslate"><span class="pre">print</span></code> or <code class="docutils literal notranslate"><span class="pre">layers</span></code> (editing).</p>
-</div>
-<div class="section" id="internal">
+</section>
+<section id="internal">
 <h2>Internal<a class="headerlink" href="#internal" title="Permalink to this headline">¶</a></h2>
 <p>The application also has an internal cache. The internal cache will be invalidated on
 application start and after each modification in the <code class="docutils literal notranslate"><span class="pre">Theme</span></code> or the <code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code>.</p>
 <p>The internal cache can also be invalidated by calling the URL
 <code class="docutils literal notranslate"><span class="pre">https://&lt;server&gt;/&lt;instance&gt;/invalidate</span></code>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

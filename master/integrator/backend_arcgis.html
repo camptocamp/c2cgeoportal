@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Specific configuration for Arcgis &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="specific-configuration-for-arcgis">
+  <section id="specific-configuration-for-arcgis">
 <span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="differentiating-wms-and-wfs-services">
+<section id="differentiating-wms-and-wfs-services">
 <h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
 <p>It may be necessary to differentiate the WMS and WFS services url.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">OgcServer</span></code> file, define:</p>
@@ -46,14 +47,14 @@
 </div>
 <p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
 <em>WFS GetCapabilities</em>.</p>
-</div>
-<div class="section" id="note">
+</section>
+<section id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
 <p>ArcGis (even 10.2) does not understand “application/vnd.ogc.gml” for <em>INFO_FORMAT</em> in
 a <em>GetFeatureInfo</em> request and returns only a simple XML formatted response
 instead of GML.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

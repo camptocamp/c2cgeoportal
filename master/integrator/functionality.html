@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Functionalities &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -32,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="functionalities">
+  <section id="functionalities">
 <h1>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h1>
 <p>c2cgeoportal provides the concept of <em>functionality</em> that can be used to customize
 the application according to the user’s permissions.</p>
@@ -53,7 +54,7 @@ they are named <cite>anonymous</cite>, <cite>registered</cite> and <cite>intrane
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- role named `anonymous`
 </pre></div>
 </div>
-<div class="section" id="configuration">
+<section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file includes variables for managing <em>functionalities</em>.</p>
 <dl>
@@ -87,13 +88,13 @@ then the <code class="docutils literal notranslate"><span class="pre">functional
 key/value pair: <code class="docutils literal notranslate"><span class="pre">&quot;&lt;functionality_name&gt;&quot;:</span> <span class="pre">[&quot;value1&quot;,&quot;value2&quot;]</span></code>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="usage-in-javascript-client">
+</section>
+<section id="usage-in-javascript-client">
 <h2>Usage in JavaScript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this headline">¶</a></h2>
 <p>The functionalities will be sent to the JavaScript client application through the user web service.
 To be published, a functionality should be present in the parameter <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code>
 parameter in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
-<div class="section" id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
+<section id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
 <h3>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Permalink to this headline">¶</a></h3>
 <p>A default basemap may be automatically loaded when the user selects a given
 theme. This can be configured in the administration interface, as follows:
@@ -102,9 +103,9 @@ if not available yet, define a
 theme and select the basemap to load in the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> list. If
 several <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> items are selected, only the first one will be
 taken into account.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

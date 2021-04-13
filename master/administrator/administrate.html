@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Administrate a c2cgeoportal application &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,12 +35,12 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="administrate-a-c2cgeoportal-application">
+  <section id="administrate-a-c2cgeoportal-application">
 <span id="administrator-administrate"></span><h1>Administrate a c2cgeoportal application<a class="headerlink" href="#administrate-a-c2cgeoportal-application" title="Permalink to this headline">¶</a></h1>
 <p>The administration interface is located at <code class="docutils literal notranslate"><span class="pre">https://&lt;server&gt;/&lt;project&gt;/admin</span></code>.</p>
 <p>Authentication for the administration interface is done through the main application interface. Role
 <code class="docutils literal notranslate"><span class="pre">role_admin</span></code> is required.</p>
-<div class="section" id="ogc-server">
+<section id="ogc-server">
 <span id="administrator-administrate-ogc-server"></span><h2>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
 <p>This is the description of an OGC server (WMS/WFS).
 For one server we try to create only one request when it is possible.</p>
@@ -56,8 +57,8 @@ you should define two <code class="docutils literal notranslate"><span class="pr
 <li><p><code class="docutils literal notranslate"><span class="pre">WFS</span> <span class="pre">support</span></code>: whether WFS is supported by the server.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Single</span> <span class="pre">tile</span></code>: whether to use the single tile mode (For future use).</p></li>
 </ul>
-</div>
-<div class="section" id="metadata">
+</section>
+<section id="metadata">
 <span id="administrator-administrate-metadata"></span><h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
 <p>You can associate metadata to all theme elements (tree items).
 The purpose of this metadata is to trigger specific features, mainly UI features.
@@ -89,8 +90,8 @@ polygon), for example, to prevent creation of a 2-point polygon.</p></li>
 field for the considered tree item (theme, layer group or layer),
 that is to say that considered tree item will match when searching for the search aliases.</p></li>
 </ul>
-</div>
-<div class="section" id="functionalities">
+</section>
+<section id="functionalities">
 <h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Roles</span></code> and <code class="docutils literal notranslate"><span class="pre">Themes</span></code> can have some functionalities. Attributes:</p>
 <ul class="simple">
@@ -99,8 +100,8 @@ files in <code class="docutils literal notranslate"><span class="pre">admin_inte
 <li><p><code class="docutils literal notranslate"><span class="pre">Description</span></code>: a description.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Value</span></code>: the value of the functionality.</p></li>
 </ul>
-</div>
-<div class="section" id="layers">
+</section>
+<section id="layers">
 <span id="administrator-administrate-layers"></span><h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
 <p>Layer definitions are found in two tables: <code class="docutils literal notranslate"><span class="pre">layer_wms</span></code> and <code class="docutils literal notranslate"><span class="pre">layer_wmts</span></code>.</p>
 <div class="admonition note">
@@ -108,7 +109,7 @@ files in <code class="docutils literal notranslate"><span class="pre">admin_inte
 <p>The layers named <code class="docutils literal notranslate"><span class="pre">wms-defaults</span></code> and <code class="docutils literal notranslate"><span class="pre">wmts-defaults</span></code> contain the values used when we create a new
 <code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">layer``and</span> <span class="pre">respectively</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">``WMTS</span> <span class="pre">layer</span></code>.</p>
 </div>
-<div class="section" id="common-attributes">
+<section id="common-attributes">
 <h3>Common attributes<a class="headerlink" href="#common-attributes" title="Permalink to this headline">¶</a></h3>
 <p>All the layers in the admin interface have the following attributes:</p>
 <ul class="simple">
@@ -126,8 +127,8 @@ For enumerable attributes (foreign key), the column name should end with ‘_id�
 <li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span></code>: Additional metadata.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Dimensions</span></code>: the dimensions, if not provided default values are used.</p></li>
 </ul>
-</div>
-<div class="section" id="wms-layer">
+</section>
+<section id="wms-layer">
 <h3>WMS layer<a class="headerlink" href="#wms-layer" title="Permalink to this headline">¶</a></h3>
 <p>On internal WMS layers, we have the following specific attributes:</p>
 <ul class="simple">
@@ -139,8 +140,8 @@ layer icon on the first layer, and to support the legend you should define a leg
 <li><p><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">mode</span></code>: used for the WMS time component.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">widget</span></code>: the component type used for the WMS time.</p></li>
 </ul>
-</div>
-<div class="section" id="wmts-layer">
+</section>
+<section id="wmts-layer">
 <h3>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this headline">¶</a></h3>
 <p>On WMTS layers, we have the following specific attributes:</p>
 <ul class="simple">
@@ -153,8 +154,8 @@ layer icon on the first layer, and to support the legend you should define a leg
 <p>When using self generated WMTS tiles, you should use the following url: <code class="docutils literal notranslate"><span class="pre">config://local/tiles/1.0.0/WMTSCapabilities.xml</span></code>.
 * <code class="docutils literal notranslate"><span class="pre">config://local</span></code> is a dynamic path based on the project configuration.
 * <code class="docutils literal notranslate"><span class="pre">/tiles</span></code> is a proxy in the tilecloudchain container.</p>
-</div>
-<div class="section" id="queryable-wmts">
+</section>
+<section id="queryable-wmts">
 <h3>Queryable WMTS<a class="headerlink" href="#queryable-wmts" title="Permalink to this headline">¶</a></h3>
 <p>To make the WMTS queryable, you should add the following <code class="docutils literal notranslate"><span class="pre">Metadata</span></code>:</p>
 <ul class="simple">
@@ -165,8 +166,8 @@ layer icon on the first layer, and to support the legend you should define a leg
 <code class="docutils literal notranslate"><span class="pre">maxResolution</span></code> metadata value(s) of the WMTS layer. These values correspond to the WMTS layer
 resolution(s) which should be the zoom limit. You can also set a <code class="docutils literal notranslate"><span class="pre">minQueryResolution</span></code> and/or a
 <code class="docutils literal notranslate"><span class="pre">maxQueryResolution</span></code> to set a query zoom limits independent of the WMTS layer.</p>
-</div>
-<div class="section" id="print-wmts-in-high-quality">
+</section>
+<section id="print-wmts-in-high-quality">
 <h3>Print WMTS in high quality<a class="headerlink" href="#print-wmts-in-high-quality" title="Permalink to this headline">¶</a></h3>
 <p>To print the layers in high quality, you can define that the image shall be retrieved with a
 <code class="docutils literal notranslate"><span class="pre">GetMap</span></code> on the original WMS server.
@@ -179,9 +180,9 @@ To activate this, you should add the following <code class="docutils literal not
 <p class="admonition-title">Note</p>
 <p>See also: <a class="reference internal" href="#administrator-administrate-metadata"><span class="std std-ref">Metadata</span></a>, <a class="reference internal" href="#administrator-administrate-ogc-server"><span class="std std-ref">OGC Server</span></a>.</p>
 </div>
-</div>
-</div>
-<div class="section" id="layergroup">
+</section>
+</section>
+<section id="layergroup">
 <h2>LayerGroup<a class="headerlink" href="#layergroup" title="Permalink to this headline">¶</a></h2>
 <p>Attributes:</p>
 <ul class="simple">
@@ -190,13 +191,13 @@ To activate this, you should add the following <code class="docutils literal not
 <li><p><code class="docutils literal notranslate"><span class="pre">Children</span></code>: the ordered children elements.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span></code>: Additional metadata.</p></li>
 </ul>
-</div>
-<div class="section" id="background-layers">
+</section>
+<section id="background-layers">
 <h2>Background layers<a class="headerlink" href="#background-layers" title="Permalink to this headline">¶</a></h2>
 <p>The background layers are configured in the database, with the layer group named
 <strong>background</strong> (by default).</p>
-</div>
-<div class="section" id="theme">
+</section>
+<section id="theme">
 <h2>Theme<a class="headerlink" href="#theme" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Name</span></code>: It is used through the i18n tools to display the name on the layers tree.</p></li>
@@ -210,8 +211,8 @@ a private theme accessible.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Children</span></code>: the ordered children elements.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Metadata</span></code>: Additional metadata.</p></li>
 </ul>
-</div>
-<div class="section" id="restricted-area">
+</section>
+<section id="restricted-area">
 <h2>Restricted area<a class="headerlink" href="#restricted-area" title="Permalink to this headline">¶</a></h2>
 <p>A restricted area is an area for which a user must possess a specific role in order to be able
 to see (and edit, if applicable) the features within this area.</p>
@@ -222,8 +223,8 @@ to see (and edit, if applicable) the features within this area.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Read/write</span></code>: Allows the linked users to change the objects.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Area</span></code>: Active in the following area; if not defined, it is active everywhere.</p></li>
 </ul>
-</div>
-<div class="section" id="users">
+</section>
+<section id="users">
 <h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
 <p>Each user may have from 1 to n roles, but each user has a default role from
 which are taken some settings. The default role (defined through the
@@ -244,8 +245,8 @@ following functionalities are of <code class="docutils literal notranslate"><spa
 </ul>
 <p>Any other functionality (with <code class="docutils literal notranslate"><span class="pre">single</span></code> not set or set to <code class="docutils literal notranslate"><span class="pre">false</span></code>) can
 be defined in any role linked to the user.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

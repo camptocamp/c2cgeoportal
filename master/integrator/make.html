@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Build configuration &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="build-configuration">
+  <section id="build-configuration">
 <span id="integrator-make"></span><h1>Build configuration<a class="headerlink" href="#build-configuration" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="env-files">
+<section id="env-files">
 <h2>Env files<a class="headerlink" href="#env-files" title="Permalink to this headline">¶</a></h2>
 <p>Usually we have the following env files:</p>
 <ul class="simple">
@@ -84,8 +85,8 @@ and one for production, not needed for projects managed in an OpenShift platform
   <span class="nt">help</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;town&gt; &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="vars-files">
+</section>
+<section id="vars-files">
 <h2>Vars files<a class="headerlink" href="#vars-files" title="Permalink to this headline">¶</a></h2>
 <p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> file,
 which extends the default <code class="docutils literal notranslate"><span class="pre">geoportal/CONST_vars.yaml</span></code>.</p>
@@ -112,15 +113,15 @@ you should export your variable as follows:</p>
 </div>
 <p>For more information, see the
 <a class="reference external" href="https://github.com/camptocamp/c2c.template">c2c.template</a> documentation.</p>
-</div>
-<div class="section" id="dockefile-config-variables">
+</section>
+<section id="dockefile-config-variables">
 <h2>Dockefile config variables<a class="headerlink" href="#dockefile-config-variables" title="Permalink to this headline">¶</a></h2>
 <p>The following variables may be set in the Dockerfile:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project YAML configuration file.</p></li>
 </ul>
-</div>
-<div class="section" id="makefile-config-variables">
+</section>
+<section id="makefile-config-variables">
 <h2>Makefile config variables<a class="headerlink" href="#makefile-config-variables" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -132,8 +133,8 @@ you should export your variable as follows:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code>: List of available languages, default is <code class="docutils literal notranslate"><span class="pre">en</span> <span class="pre">fr</span> <span class="pre">de</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>: List of ngeo interfaces, default is <code class="docutils literal notranslate"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</p></li>
 </ul>
-</div>
-<div class="section" id="custom-rules">
+</section>
+<section id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -157,8 +158,8 @@ Here is an example:</p>
 </pre></div>
 </div>
 <p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

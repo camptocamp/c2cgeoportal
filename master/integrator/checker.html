@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Automated check &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,7 +35,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="automated-check">
+  <section id="automated-check">
 <span id="integrator-checker"></span><h1>Automated check<a class="headerlink" href="#automated-check" title="Permalink to this headline">¶</a></h1>
 <p>c2cgeoportal applications include functionality for testing and assessing that the application is
 functioning correctly, i.e. that its web services respond as expected.</p>
@@ -72,7 +73,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <blockquote>
 <div><p>&lt;project_url&gt;/c2c/health_check?max_level=9</p>
 </div></blockquote>
-<div class="section" id="checker">
+<section id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
 <p>The checker uses the following configuration structure in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
@@ -111,17 +112,17 @@ define a <code class="docutils literal notranslate"><span class="pre">checker_ur
 </pre></div>
 </div>
 </div>
-<div class="section" id="print">
+<section id="print">
 <h3><code class="docutils literal notranslate"><span class="pre">print</span></code><a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h3>
 <p>Check the print version 3.x (try to print a page).</p>
 <p>Uses as spec the <code class="docutils literal notranslate"><span class="pre">spec</span></code> from configuration.</p>
-</div>
-<div class="section" id="fulltextsearch">
+</section>
+<section id="fulltextsearch">
 <h3><code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code><a class="headerlink" href="#fulltextsearch" title="Permalink to this headline">¶</a></h3>
 <p>Check that the Full-text search service returns an element.</p>
 <p>Uses the <code class="docutils literal notranslate"><span class="pre">search</span></code> from configuration as text to search.</p>
-</div>
-<div class="section" id="themes">
+</section>
+<section id="themes">
 <h3><code class="docutils literal notranslate"><span class="pre">themes</span></code><a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h3>
 <p>Check that the theme has no error for all interfaces present in the database.</p>
 <p>Uses the <code class="docutils literal notranslate"><span class="pre">themes</span></code> configuration:</p>
@@ -134,14 +135,14 @@ define a <code class="docutils literal notranslate"><span class="pre">checker_ur
     <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="lang">
+</section>
+<section id="lang">
 <h3><code class="docutils literal notranslate"><span class="pre">lang</span></code><a class="headerlink" href="#lang" title="Permalink to this headline">¶</a></h3>
 <p>Check that all the language files are present.</p>
 <p>Uses the global configuration <code class="docutils literal notranslate"><span class="pre">available_locale_names</span></code>, and the checker configuration <code class="docutils literal notranslate"><span class="pre">files</span></code>,
 an array of strings that must be in <code class="docutils literal notranslate"><span class="pre">[ngeo]</span></code>.</p>
-</div>
-<div class="section" id="routes">
+</section>
+<section id="routes">
 <h3><code class="docutils literal notranslate"><span class="pre">routes</span></code><a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h3>
 <p>Check some routes, configured in <code class="docutils literal notranslate"><span class="pre">routes</span></code> as array of objects with:</p>
 <ul class="simple">
@@ -151,8 +152,8 @@ an array of strings that must be in <code class="docutils literal notranslate"><
 <li><p><code class="docutils literal notranslate"><span class="pre">level</span></code></p></li>
 </ul>
 <p>In the configuration, we can also fill the <code class="docutils literal notranslate"><span class="pre">routes_disable</span></code> to disable some routes.</p>
-</div>
-<div class="section" id="phantomjs">
+</section>
+<section id="phantomjs">
 <h3><code class="docutils literal notranslate"><span class="pre">phantomjs</span></code><a class="headerlink" href="#phantomjs" title="Permalink to this headline">¶</a></h3>
 <p>Check with phantomjs that the pages load correctly without errors,
 using the <code class="docutils literal notranslate"><span class="pre">routes</span></code> configuration as an array of route names to check:</p>
@@ -161,9 +162,9 @@ using the <code class="docutils literal notranslate"><span class="pre">routes</s
 <li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: the query string to use, configured as a dictionary.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">level</span></code></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="infrastructure">
+</section>
+</section>
+<section id="infrastructure">
 <h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
 <p>If you experience connection issues with your checker, the following configuration options may be useful for you:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
@@ -172,8 +173,8 @@ using the <code class="docutils literal notranslate"><span class="pre">routes</s
     <span class="p p-Indicator">[</span><span class="nv">forward_host</span><span class="p p-Indicator">]:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;True|False&gt;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="check-collector">
+</section>
+<section id="check-collector">
 <h2>Check collector<a class="headerlink" href="#check-collector" title="Permalink to this headline">¶</a></h2>
 <p>Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.</p>
@@ -201,8 +202,8 @@ for a host to override it.</p>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">check_collector.hosts</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

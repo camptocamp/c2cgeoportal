@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Full-text search &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,16 +35,16 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="full-text-search">
+  <section id="full-text-search">
 <span id="integrator-fulltext-search"></span><h1>Full-text search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="the-full-text-search-table">
+<section id="the-full-text-search-table">
 <h2>The full-text search table<a class="headerlink" href="#the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
 <p>The <em>text search</em> feature uses a dedicated PostgreSQL table. The full-text search table is named <code class="docutils literal notranslate"><span class="pre">tsearch</span></code>
 (for <em>text search</em>) and is in the application-specific schema.</p>
 <p>You do not need to create the table yourself, as it was already created during application installation
 (see the section <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
-</div>
-<div class="section" id="populate-the-full-text-search-table">
+</section>
+<section id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
 <p>Here is an example of an insertion in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
@@ -86,8 +87,8 @@ the application configuration (<code class="docutils literal notranslate"><span 
 be <code class="docutils literal notranslate"><span class="pre">fr</span></code>. In other words, c2cgeoportal assumes that the database language
 and the application’s default language match.</p>
 </div>
-</div>
-<div class="section" id="populate-with-the-themes">
+</section>
+<section id="populate-with-the-themes">
 <h2>Populate with the themes<a class="headerlink" href="#populate-with-the-themes" title="Permalink to this headline">¶</a></h2>
 <p>A script is available to fill the full-text search table, for more information type:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
@@ -101,8 +102,8 @@ span.prompt1:before {
 field for the considered tree item (theme, layer group or layer),
 that is to say that considered tree item will match when searching for the search aliases.</p></li>
 </ul>
-</div>
-<div class="section" id="security">
+</section>
+<section id="security">
 <h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table includes two security-related columns, namely <code class="docutils literal notranslate"><span class="pre">public</span></code>
 and <code class="docutils literal notranslate"><span class="pre">role_id</span></code>. If <code class="docutils literal notranslate"><span class="pre">public</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>, then the row is available to any
@@ -143,8 +144,8 @@ are <code class="docutils literal notranslate"><span class="pre">1</span></code>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="params">
+</section>
+<section id="params">
 <span id="integrator-fulltext-search-params"></span><h2>Params<a class="headerlink" href="#params" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">params</span></code> column can contain a JSON with a dictionary of parameters.
 For instance to specify a <code class="docutils literal notranslate"><span class="pre">floor</span></code>:</p>
@@ -154,8 +155,8 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 <p>Query string <code class="docutils literal notranslate"><span class="pre">floor=1</span></code> is then automatically appended to all WMS requests.</p>
-</div>
-<div class="section" id="actions">
+</section>
+<section id="actions">
 <h2>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">actions</span></code> column contains a JSON with an array of actions like:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -181,16 +182,16 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 <span class="k">VALUES</span> <span class="p">(...,</span> <span class="s1">&#39;[{&quot;action&quot;: &quot;add_layer&quot;, &quot;data&quot;: &quot;cadastre&quot;}]&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="interface">
+</section>
+<section id="interface">
 <h2>Interface<a class="headerlink" href="#interface" title="Permalink to this headline">¶</a></h2>
 <p>If the <code class="docutils literal notranslate"><span class="pre">interface_id</span></code> column contains a value, it means that the result is only for this interface.</p>
-</div>
-<div class="section" id="lang">
+</section>
+<section id="lang">
 <h2>Lang<a class="headerlink" href="#lang" title="Permalink to this headline">¶</a></h2>
 <p>If the <code class="docutils literal notranslate"><span class="pre">lang</span></code> column contains a value, it means that the result is only for this language.</p>
-</div>
-<div class="section" id="configuration">
+</section>
+<section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>In the configuration file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> you can add the following variables:</p>
 <ul class="simple">
@@ -209,8 +210,8 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 </dl>
 </li>
 </ul>
-</div>
-<div class="section" id="ranking-system">
+</section>
+<section id="ranking-system">
 <h2>Ranking system<a class="headerlink" href="#ranking-system" title="Permalink to this headline">¶</a></h2>
 <p>By default, the full-text search uses the <cite>similarity</cite> system of the
 <a class="reference external" href="https://www.postgresql.org/docs/9.0/static/pgtrgm.html">pg_trgm module</a>. This
@@ -228,8 +229,8 @@ your search word exists in the result. That means that if you search <cite>B 12 
 <cite>B 120 Zug</cite> has the same weight because the system only see that the <cite>12</cite> exists
 in each case. To use this system, your request must contain the
 parameter <code class="docutils literal notranslate"><span class="pre">rank_system=ts_rank_cd</span></code>.</p>
-</div>
-<div class="section" id="using-the-unaccent-extension">
+</section>
+<section id="using-the-unaccent-extension">
 <h2>Using the unaccent extension<a class="headerlink" href="#using-the-unaccent-extension" title="Permalink to this headline">¶</a></h2>
 <p>The full-text search is accent-sensitive by default.
 To make it accent-insensitive Postgres’s
@@ -269,8 +270,8 @@ instead of ‘french’. For example:</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and the text search configuration, by default it is
 <code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">french</span></code> because the default french text search configuration is named ‘french’.</p>
-</div>
-<div class="section" id="synonym-and-thesaurus-dictionary">
+</section>
+<section id="synonym-and-thesaurus-dictionary">
 <h2>Synonym and Thesaurus Dictionary<a class="headerlink" href="#synonym-and-thesaurus-dictionary" title="Permalink to this headline">¶</a></h2>
 <p>You may wish to avoid using the Synonym and Thesaurus dictionaries, because when these are used,
 a word like ‘alignement’ is simplified as ‘align’:</p>
@@ -293,8 +294,8 @@ a word like ‘alignement’ is simplified as ‘align’:</p>
 <p class="admonition-title">Note</p>
 <p>We keep the stop words to remove the French short words.</p>
 </div>
-</div>
-<div class="section" id="add-synonyms">
+</section>
+<section id="add-synonyms">
 <h2>Add Synonyms<a class="headerlink" href="#add-synonyms" title="Permalink to this headline">¶</a></h2>
 <p>Create a new search configuration:
 <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TEXT</span> <span class="pre">SEARCH</span> <span class="pre">CONFIGURATION</span> <span class="pre">de</span> <span class="pre">(COPY</span> <span class="pre">=</span> <span class="pre">german);</span></code></p>
@@ -312,8 +313,8 @@ a word like ‘alignement’ is simplified as ‘align’:</p>
         <span class="nt">de</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">de</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

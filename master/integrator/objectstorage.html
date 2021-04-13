@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Working with Object storage (like S3) &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,14 +35,14 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="working-with-object-storage-like-s3">
+  <section id="working-with-object-storage-like-s3">
 <span id="integrator-objectstorage"></span><h1>Working with Object storage (like S3)<a class="headerlink" href="#working-with-object-storage-like-s3" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="prepare-files">
+<section id="prepare-files">
 <h2>Prepare files<a class="headerlink" href="#prepare-files" title="Permalink to this headline">¶</a></h2>
 <p>We can prepare a GeoTIFF for the Cloud, see the <a class="reference external" href="https://www.cogeo.org/">COG file format</a>
 and the <a class="reference external" href="https://gdal.org/drivers/raster/cog.html">GDAL output driver options</a>.</p>
-</div>
-<div class="section" id="generalities">
+</section>
+<section id="generalities">
 <h2>Generalities<a class="headerlink" href="#generalities" title="Permalink to this headline">¶</a></h2>
 <p>In this section, we explain how to use the S3-like storage from Exoscale.</p>
 <p>First of all, you should set the following variables
@@ -71,8 +72,8 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
      <span class="s1">&#39;gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt \</span>
 <span class="s1">     $(list4vrt &lt;bucket&gt; &lt;folder&gt;/ .tif)&#39;</span></span>
-</pre></div></div></div>
-<div class="section" id="mapserver">
+</pre></div></div></section>
+<section id="mapserver">
 <h2>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
 <p>Create the shape index file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
@@ -115,8 +116,8 @@ span.prompt1:before {
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/mapserver/mapserver/wiki/Render-images-straight-out-of-S3-with-the-vsicurl-driver">Some more information</a></p>
-</div>
-<div class="section" id="qgis-client">
+</section>
+<section id="qgis-client">
 <h2>QGIS client<a class="headerlink" href="#qgis-client" title="Permalink to this headline">¶</a></h2>
 <p>Open settings, Option and define the following environment variables:</p>
 <ul class="simple">
@@ -139,8 +140,8 @@ span.prompt1:before {
 <li><p>Object key: &lt;folder&gt;/index.vrt</p></li>
 </ul>
 <p>You can add a vector layer in an analogous manner.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

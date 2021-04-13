@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Transactional WFS with TinyOWS &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,7 +35,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="transactional-wfs-with-tinyows">
+  <section id="transactional-wfs-with-tinyows">
 <span id="administrator-tinyows"></span><h1>Transactional WFS with TinyOWS<a class="headerlink" href="#transactional-wfs-with-tinyows" title="Permalink to this headline">¶</a></h1>
 <p>Based on <a class="reference external" href="https://mapserver.org/tinyows/">TinyOWS</a>, c2cgeoportal mapserver layers can be
 edited via Transactional WFS (WFS-T), for example using QGIS as a client. c2cgeoportal acts as a
@@ -44,7 +45,7 @@ proxy to TinyOWS to limit access to authorized users.</p>
 <p>This is not needed for QGIS server, because it natively supports Transactional WFS.</p>
 </div>
 <p>The following explains how to configure WFS-T for a c2cgeoportal layer.</p>
-<div class="section" id="tinyows-configuration">
+<section id="tinyows-configuration">
 <h2>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Permalink to this headline">¶</a></h2>
 <p>The configuration of TinyOWS is made in an XML file, which is located at
 <code class="docutils literal notranslate"><span class="pre">mapserver/tinyows.xml.tmpl</span></code>:</p>
@@ -129,16 +130,16 @@ TinyOWS XML configuration. Please refer to the
 for more information.</p>
 </div>
 <p>After the configuration is made, re-build your c2cgeoportal application as usual.</p>
-</div>
-<div class="section" id="editing-a-layer-with-wfs-t">
+</section>
+<section id="editing-a-layer-with-wfs-t">
 <h2>Editing a layer with WFS-T<a class="headerlink" href="#editing-a-layer-with-wfs-t" title="Permalink to this headline">¶</a></h2>
 <p>The configured layers can now be edited using your favorite GIS supporting
 WFS-T. For example, in QGIS, add a new WFS layer with the URL
 <code class="docutils literal notranslate"><span class="pre">https://${host}/tinyows_proxy</span></code> (e.g.
 <code class="docutils literal notranslate"><span class="pre">https://geomapfish.demo-camptocamp.com/demo/tinyows_proxy</span></code>). For the
 authentication use your c2cgeoportal account details.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

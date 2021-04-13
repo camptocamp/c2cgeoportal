@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Customize the application &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,7 +35,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="customize-the-application">
+  <section id="customize-the-application">
 <span id="integrator-customise"></span><h1>Customize the application<a class="headerlink" href="#customize-the-application" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
@@ -61,7 +62,7 @@ It is a list of objects which have a <code class="docutils literal notranslate">
 <p>Check <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> for examples of usage.</p>
 <p>In order to inherit the default values from <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>, make sure the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> section contains
 the item <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">admin_interface.available_metadata</span></code>.</p>
-<div class="section" id="url">
+<section id="url">
 <h2>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
 <p>In the admin interface, we can use for all URL definitions the following special schema:</p>
 <ul>
@@ -81,8 +82,8 @@ the item <code class="docutils literal notranslate"><span class="pre">admin_inte
 the URL <code class="docutils literal notranslate"><span class="pre">https://example.com/test/icon.png</span></code>.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="functionalities">
+</section>
+<section id="functionalities">
 <span id="integrator-functionality"></span><h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this headline">¶</a></h2>
 <p>c2cgeoportal provides the concept of <em>functionality</em> that can be used to customize
 the application according to the user’s permissions.</p>
@@ -103,7 +104,7 @@ they are named <cite>anonymous</cite>, <cite>registered</cite> and <cite>intrane
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- role named `anonymous`
 </pre></div>
 </div>
-<div class="section" id="configuration">
+<section id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file includes variables for managing <em>functionalities</em>.</p>
 <dl>
@@ -137,13 +138,13 @@ then the <code class="docutils literal notranslate"><span class="pre">functional
 key/value pair: <code class="docutils literal notranslate"><span class="pre">&quot;&lt;functionality_name&gt;&quot;:</span> <span class="pre">[&quot;value1&quot;,&quot;value2&quot;]</span></code>.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="usage-in-javascript-client">
+</section>
+<section id="usage-in-javascript-client">
 <h3>Usage in JavaScript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this headline">¶</a></h3>
 <p>The functionalities will be sent to the JavaScript client application through the user web service.
 To be published, a functionality should be present in the parameter <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code>
 parameter in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
-<div class="section" id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
+<section id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
 <h4>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Permalink to this headline">¶</a></h4>
 <p>A default basemap may be automatically loaded when the user selects a given
 theme. This can be configured in the administration interface, as follows:
@@ -152,10 +153,10 @@ if not available yet, define a
 theme and select the basemap to load in the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> list. If
 several <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> items are selected, only the first one will be
 taken into account.</p>
-</div>
-</div>
-</div>
-<div class="section" id="extend-the-data-model">
+</section>
+</section>
+</section>
+<section id="extend-the-data-model">
 <h2>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -463,8 +464,8 @@ span.prompt1:before {
 <p>Run pSQL console:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tools psql</span>
 </pre></div></div><p>And enter the SQL commands</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

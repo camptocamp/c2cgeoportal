@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Create a new release &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="create-a-new-release">
+  <section id="create-a-new-release">
 <span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="vocabulary">
+<section id="vocabulary">
 <h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
 <p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
 Geoportal (2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
@@ -46,8 +47,8 @@ since 2014, both projects are synchronizing their major versions.</p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0.0rc1</span></code> for the first release candidate
 of the version <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">2.0.1</span></code> for
 the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.1</span></code>, …</p>
-</div>
-<div class="section" id="tasks-to-do">
+</section>
+<section id="tasks-to-do">
 <span id="developer-build-release-pre-release-task"></span><h2>Tasks to do<a class="headerlink" href="#tasks-to-do" title="Permalink to this headline">¶</a></h2>
 <p>On branch creation (start of the integration phase):</p>
 <ul class="simple">
@@ -69,8 +70,8 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 <p class="admonition-title">Note</p>
 <p>All changes should be committed.</p>
 </div>
-</div>
-<div class="section" id="create-the-branches">
+</section>
+<section id="create-the-branches">
 <h2>Create the branches<a class="headerlink" href="#create-the-branches" title="Permalink to this headline">¶</a></h2>
 <p>On the demo you should create the new version branch.</p>
 <p>On <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> you should create the new version branch.</p>
@@ -104,8 +105,8 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 <code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p></li>
 <li><p>in the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/audit.yaml</span></code> and the new branch.</p></li>
 </ul>
-</div>
-<div class="section" id="configure-the-rebuild">
+</section>
+<section id="configure-the-rebuild">
 <h2>Configure the rebuild<a class="headerlink" href="#configure-the-rebuild" title="Permalink to this headline">¶</a></h2>
 <p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> from new version branch to master branch as
 <code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
@@ -253,17 +254,17 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <li><p><cite>github.ref != format(‘refs/heads/{0}’, env.MAIN_BRANCH)</cite></p></li>
 <li><p><cite>github.repository == ‘camptocamp/c2cgeoportal’</cite></p></li>
 </ul>
-</div>
-<div class="section" id="configure-the-audit">
+</section>
+<section id="configure-the-audit">
 <h2>Configure the audit<a class="headerlink" href="#configure-the-audit" title="Permalink to this headline">¶</a></h2>
 <p>Add the new version branch in the <code class="docutils literal notranslate"><span class="pre">.github/workflows/audit.yaml</span></code> file.</p>
-</div>
-<div class="section" id="use-the-ngeo-package-linked-to-the-branch">
+</section>
+<section id="use-the-ngeo-package-linked-to-the-branch">
 <h2>Use the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> package linked to the branch<a class="headerlink" href="#use-the-ngeo-package-linked-to-the-branch" title="Permalink to this headline">¶</a></h2>
 <p>In <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> new version branch, in the file <code class="docutils literal notranslate"><span class="pre">geoportal/package.json</span></code>, set the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> version to
 <code class="docutils literal notranslate"><span class="pre">version-&lt;new</span> <span class="pre">version&gt;-latest</span></code>.</p>
-</div>
-<div class="section" id="reset-the-changelog">
+</section>
+<section id="reset-the-changelog">
 <h2>Reset the changelog<a class="headerlink" href="#reset-the-changelog" title="Permalink to this headline">¶</a></h2>
 <p>On the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> new version branch:</p>
 <ul>
@@ -280,50 +281,50 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 </div>
 </li>
 </ul>
-</div>
-<div class="section" id="security-information">
+</section>
+<section id="security-information">
 <h2>Security information<a class="headerlink" href="#security-information" title="Permalink to this headline">¶</a></h2>
 <p>On the master branch, update the file <code class="docutils literal notranslate"><span class="pre">SECURITY.md</span></code> with the security information by adding:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">|</span> <span class="n">x</span><span class="o">.</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span> <span class="o">|</span> <span class="n">To</span> <span class="n">be</span> <span class="n">defined</span> <span class="o">|</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="version-check">
+</section>
+<section id="version-check">
 <h2>Version check<a class="headerlink" href="#version-check" title="Permalink to this headline">¶</a></h2>
 <p>On the &lt;new_version&gt; branch disable version check by adding in the <code class="docutils literal notranslate"><span class="pre">ci/config.yaml</span></code>:</p>
 <div class="highlight-diff notranslate"><div class="highlight"><pre><span></span> checks:
 <span class="gi">+  versions: False</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="backport-label">
+</section>
+<section id="backport-label">
 <h2>Backport label<a class="headerlink" href="#backport-label" title="Permalink to this headline">¶</a></h2>
 <p>Create the new backport label named <code class="docutils literal notranslate"><span class="pre">backport_&lt;new_version&gt;</span></code>.</p>
-</div>
-<div class="section" id="protect-branch">
+</section>
+<section id="protect-branch">
 <h2>Protect branch<a class="headerlink" href="#protect-branch" title="Permalink to this headline">¶</a></h2>
 <p>In GitHub project settings, protect the new branch with the same settings as the master branch.</p>
-</div>
-<div class="section" id="check">
+</section>
+<section id="check">
 <h2>Check<a class="headerlink" href="#check" title="Permalink to this headline">¶</a></h2>
 <p>Run <cite>c2cciutils-checks</cite> on each branch before pushing to be sure that everything is OK.</p>
-</div>
-<div class="section" id="publish-it">
+</section>
+<section id="publish-it">
 <h2>Publish it<a class="headerlink" href="#publish-it" title="Permalink to this headline">¶</a></h2>
 <p>Send a release email to the <code class="docutils literal notranslate"><span class="pre">geomapfish&#64;googlegroups.com</span></code> and
 <code class="docutils literal notranslate"><span class="pre">geomapfish-dev&#64;lists.camptocamp.com</span></code> mailing lists.</p>
-</div>
-<div class="section" id="create-the-new-demo">
+</section>
+<section id="create-the-new-demo">
 <h2>Create the new demo<a class="headerlink" href="#create-the-new-demo" title="Permalink to this headline">¶</a></h2>
 <p>Create the new demo on OpenShift</p>
-</div>
-<div class="section" id="use-the-new-demo">
+</section>
+<section id="use-the-new-demo">
 <h2>Use the new demo<a class="headerlink" href="#use-the-new-demo" title="Permalink to this headline">¶</a></h2>
 <p>On <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> master branch change all the URL
 from <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;new</span> <span class="pre">version&gt;.camptocamp.com</span></code>
 to  <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;next</span> <span class="pre">version&gt;.camptocamp.com</span></code>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

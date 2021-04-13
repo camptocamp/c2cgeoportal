@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Project structure &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,10 +35,10 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="project-structure">
+  <section id="project-structure">
 <span id="integrator-structure"></span><h1>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h1>
 <p>We can split the project in 3 parts.</p>
-<div class="section" id="configuration">
+<section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>These files are use to build the config image.</p>
 <p><code class="docutils literal notranslate"><span class="pre">mapserver</span></code>: all the files needed by Mapserver will be in the folder <code class="docutils literal notranslate"><span class="pre">/etc/mapserver</span></code> in the config
@@ -55,8 +56,8 @@ available in the static view with cache buster will be in the folder <code class
 config image.</p>
 <p><code class="docutils literal notranslate"><span class="pre">geoportal/geomapfish_geoportal/locale</span></code>: Contains the files needed to localise your application will be in
 the folder <code class="docutils literal notranslate"><span class="pre">/etc/geomapfish/locale</span></code> in the config image.</p>
-</div>
-<div class="section" id="custom-application">
+</section>
+<section id="custom-application">
 <h2>Custom application<a class="headerlink" href="#custom-application" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -67,15 +68,15 @@ the folder <code class="docutils literal notranslate"><span class="pre">/etc/geo
 <p>other files in <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> essentially files related to the build.</p>
 <p>In the image everything will be in the <code class="docutils literal notranslate"><span class="pre">/app</span></code> folder except the result of the webpack build which will be
 in the directory <code class="docutils literal notranslate"><span class="pre">/etc/static-ngeo/</span></code>.</p>
-</div>
-<div class="section" id="other-files">
+</section>
+<section id="other-files">
 <h2>Other files<a class="headerlink" href="#other-files" title="Permalink to this headline">¶</a></h2>
 <p>The files in <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code> is the clean instantiation or the create scaffold during the last
 upgrade. It is used the create the diff during the migration.</p>
 <p>The files in <code class="docutils literal notranslate"><span class="pre">.github</span></code>, <code class="docutils literal notranslate"><span class="pre">ci</span></code>, or directly in the project base are used by the CI, by the IDE, or by
 the build part out of Docker.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

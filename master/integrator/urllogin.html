@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>URL login &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,7 +35,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="url-login">
+  <section id="url-login">
 <span id="integrator-urllogin"></span><h1>URL login<a class="headerlink" href="#url-login" title="Permalink to this headline">¶</a></h1>
 <p>You can generate a permalink of your application to give a user direct access to protected data.</p>
 <p>First, you should configure <code class="docutils literal notranslate"><span class="pre">urllogin</span></code> in the vars file:</p>
@@ -55,7 +56,7 @@ that the session timeout is not too big.</p>
             <span class="nt">AUTHTKT_TIMEOUT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">86400</span>
 </pre></div>
 </div>
-<div class="section" id="how-to-build-your-token-in-your-application">
+<section id="how-to-build-your-token-in-your-application">
 <h2>How to build your token in your application<a class="headerlink" href="#how-to-build-your-token-in-your-application" title="Permalink to this headline">¶</a></h2>
 <p>The content of the token is a json-encoded text like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -66,8 +67,8 @@ that the session timeout is not too big.</p>
 </pre></div>
 </div>
 <p>This content is then encrypted in AES with the provided key, and encoded in hexadecimal.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

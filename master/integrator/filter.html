@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Filter (Querier) &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="filter-querier">
+  <section id="filter-querier">
 <span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="filterable-layers">
+<section id="filterable-layers">
 <h2>Filterable layers<a class="headerlink" href="#filterable-layers" title="Permalink to this headline">¶</a></h2>
 <p>Per default, layers are not filterable.
 If you wish to provide filter functionality for some layers, proceed as follows:</p>
@@ -49,17 +50,17 @@ and the layer name as value.</p></li>
 <p class="admonition-title">Note</p>
 <p>Ngeo offers the filter functionality only for single layers, not for grouped layers.</p>
 </div>
-</div>
-<div class="section" id="available-attributes-and-operators-in-filters">
+</section>
+<section id="available-attributes-and-operators-in-filters">
 <h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this headline">¶</a></h2>
 <p>All attributes defined as “exported” in the layer of your map server will be automatically available as
 filterable attribute. If the type, and so the operator on the attribute, is not adequate for
 filtering, you should adapt the type in your layer definition.
 See <a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-wfs-getfeature"><span class="std std-ref">WFS GetFeature</span></a> for more information (MapServer only).</p>
-</div>
-<div class="section" id="enumerate-available-attributes-for-a-layer">
+</section>
+<section id="enumerate-available-attributes-for-a-layer">
 <h2>Enumerate available attributes for a layer<a class="headerlink" href="#enumerate-available-attributes-for-a-layer" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="project-configuration-file">
+<section id="project-configuration-file">
 <h3>Project Configuration file<a class="headerlink" href="#project-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>In the filter panel, instead of the standard text field, it is possible to display combos providing the
 available values of the attributes. The values are automatically retrieved using a web service that does a
@@ -95,8 +96,8 @@ attribute level. <code class="docutils literal notranslate"><span class="pre">ta
                 <span class="nt">country</span><span class="p">:</span> <span class="nv">*layers-enum-mapserver-layer-defaults</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="administration-interface">
+</section>
+<section id="administration-interface">
 <h3>Administration interface<a class="headerlink" href="#administration-interface" title="Permalink to this headline">¶</a></h3>
 <p>You can add some additional configuration in the administration interface as follows.</p>
 <p>It is possible to define enumerated or directed attributes, to WMS layers only, via metadata.
@@ -110,16 +111,16 @@ while directed attributes are ready-to-use values that come directly from the ma
 <p>Client-side documentation related to the <code class="docutils literal notranslate"><span class="pre">enumeratedAttributes</span></code> and <code class="docutils literal notranslate"><span class="pre">directedFilterAttributes</span></code> metadata
 is available here:
 <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">gmfThemes.GmfMetaData</a>.</p>
-</div>
-<div class="section" id="using-db-sessions">
+</section>
+<section id="using-db-sessions">
 <h3>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to get attribute lists also
 for a layer whose data is hosted in an external database, using the
 <code class="docutils literal notranslate"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> parameter.</p>
 <p>See <a class="reference internal" href="multiple_databases.html#integrator-multiple-databases"><span class="std std-ref">Using multiple databases</span></a> for more information.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

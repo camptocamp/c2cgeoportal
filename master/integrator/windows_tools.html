@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Configuring Windows tools required to connect to servers &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="configuring-windows-tools-required-to-connect-to-servers">
+  <section id="configuring-windows-tools-required-to-connect-to-servers">
 <span id="integrator-preparative-work"></span><h1>Configuring Windows tools required to connect to servers<a class="headerlink" href="#configuring-windows-tools-required-to-connect-to-servers" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="creating-a-ssh-key-with-windows">
+<section id="creating-a-ssh-key-with-windows">
 <h2>Creating a SSH Key with Windows<a class="headerlink" href="#creating-a-ssh-key-with-windows" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Download PuTTYgen:</p>
@@ -50,14 +51,14 @@
 <li><p>Enter a password into “Key passphrase” and confirm with “confirm passphrase”</p></li>
 <li><p>Save the private and public part of the key. Send the public part to the system administrators of the server you want to have access.</p></li>
 </ol>
-</div>
-<div class="section" id="add-your-ssh-public-key-to-github">
+</section>
+<section id="add-your-ssh-public-key-to-github">
 <h2>Add your SSH Public Key to GitHub<a class="headerlink" href="#add-your-ssh-public-key-to-github" title="Permalink to this headline">¶</a></h2>
 <p>In order to pull and push to GitHub from your server, you need to add the key to GitHub: <a class="reference external" href="https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account">https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account</a></p>
-</div>
-<div class="section" id="connecting-to-a-server-from-windows">
+</section>
+<section id="connecting-to-a-server-from-windows">
 <h2>Connecting to a server from Windows<a class="headerlink" href="#connecting-to-a-server-from-windows" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="command-line">
+<section id="command-line">
 <h3>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h3>
 <p>The following instructions are based on the PuTTY software, which is useful to launch commands on the server.</p>
 <ol class="arabic simple">
@@ -75,8 +76,8 @@ c. Click on “Open” and type your passphrase when prompted</p></li>
 <li><p>if you get disconnected because of your network configuration (proxies etc.), you should follow
 <a class="reference external" href="https://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">this explanation</a></p></li>
 </ol>
-</div>
-<div class="section" id="visual-interface">
+</section>
+<section id="visual-interface">
 <h3>Visual Interface<a class="headerlink" href="#visual-interface" title="Permalink to this headline">¶</a></h3>
 <p>The following instructions are based on the WinSCP software,
 which is useful to browse the server, download/upload/edit files in a Windows-like interface.
@@ -91,8 +92,8 @@ WinSCP manual is available online at <a class="reference external" href="https:/
 you should follow
 <a class="reference external" href="https://superuser.com/questions/389378/winscp-and-putty-drop-out-constantly-on-other-computer-they-dont">this explanation</a></p></li>
 </ol>
-</div>
-<div class="section" id="saving-your-passphrase-with-putty-or-winscp">
+</section>
+<section id="saving-your-passphrase-with-putty-or-winscp">
 <h3>Saving your Passphrase with PuTTY or WinSCP<a class="headerlink" href="#saving-your-passphrase-with-putty-or-winscp" title="Permalink to this headline">¶</a></h3>
 <p>To avoid having to type your passphrase every time you connect to the server using PuTTY or WinSCP,
 you may use Pageant, an authentication agent program, part of WinSCP (Windows Start Menu &gt; All Programs &gt; WinSCP &gt; Key Tools &gt; Pageant):</p>
@@ -101,15 +102,15 @@ you may use Pageant, an authentication agent program, part of WinSCP (Windows St
 <li><p>Click on “Add Key” and choose your private key</p></li>
 <li><p>Type your passphrase when prompted.</p></li>
 </ol>
-</div>
-<div class="section" id="using-putty-to-access-the-server-database">
+</section>
+<section id="using-putty-to-access-the-server-database">
 <h3>Using PuTTY to Access the Server Database<a class="headerlink" href="#using-putty-to-access-the-server-database" title="Permalink to this headline">¶</a></h3>
 <p>The following page explains how to set up an SSH tunnel using PuTTY:
 <a class="reference external" href="https://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html">https://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html</a></p>
 <p>We recommend to use the PuTTY SSH tunnel and not the PGAdminIII tunnelling functionality.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>

@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Use Docker to deploy your application &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,16 +35,16 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="use-docker-to-deploy-your-application">
+  <section id="use-docker-to-deploy-your-application">
 <span id="integrator-docker"></span><h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="architecture-schema">
+<section id="architecture-schema">
 <h2>Architecture schema<a class="headerlink" href="#architecture-schema" title="Permalink to this headline">¶</a></h2>
 <p>For OpenShift projects:</p>
 <img alt="../_images/docker-openshift.png" src="../_images/docker-openshift.png" />
 <p>For stand alone projects:</p>
 <img alt="../_images/docker-apache.png" src="../_images/docker-apache.png" />
-</div>
-<div class="section" id="docker-images">
+</section>
+<section id="docker-images">
 <h2>Docker Images<a class="headerlink" href="#docker-images" title="Permalink to this headline">¶</a></h2>
 <p>When you build your application, the following images will be generated:</p>
 <ul class="simple">
@@ -51,8 +52,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;package&gt;_config:latest</span></code></p></li>
 </ul>
 <p>The tag is by default <code class="docutils literal notranslate"><span class="pre">latest</span></code>, but you can change it by setting the <code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
-</div>
-<div class="section" id="docker-compose-files">
+</section>
+<section id="docker-compose-files">
 <h2>Docker compose files<a class="headerlink" href="#docker-compose-files" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>: The main file that describes the composition.</p></li>
@@ -61,8 +62,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose.override[.sample].yaml</span></code>: Some rules for debuggung.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">.env</span></code>: The variable used in the compose files.</p></li>
 </ul>
-</div>
-<div class="section" id="run-the-developer-composition">
+</section>
+<section id="run-the-developer-composition">
 <h2>Run the developer composition<a class="headerlink" href="#run-the-developer-composition" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
@@ -70,15 +71,15 @@ span.prompt1:before {
 }
 </style><span class="prompt1">docker-compose up -d</span>
 </pre></div></div><p>You can then access your application with <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
-</div>
-<div class="section" id="clean">
+</section>
+<section id="clean">
 <h2>Clean<a class="headerlink" href="#clean" title="Permalink to this headline">¶</a></h2>
 <p>Docker does not clean anything automatically, in particular it does not clean any images,
 therefore disk space may become problematic after a certain number of builds.
 You can use the following commands to manually remove Docker files.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">system</span> <span class="pre">prune</span></code> to clean files; you can add the <code class="docutils literal notranslate"><span class="pre">--all</span></code> option to do a deeper clean.</p>
-</div>
-<div class="section" id="environment-variables">
+</section>
+<section id="environment-variables">
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
 <p>The GeoMapFish containers can be customised with some environment variables:</p>
 <p>Config:</p>
@@ -141,8 +142,8 @@ see also the <code class="docutils literal notranslate"><span class="pre">produc
 <li><p><a class="reference external" href="https://gdal.org/user/configoptions.html#list-of-configuration-options-and-where-they-apply">Other GDAL environment variables</a>.</p></li>
 </ul>
 </div></blockquote>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>

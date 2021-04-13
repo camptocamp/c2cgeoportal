@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Webservices documentation &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -34,12 +35,12 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="webservices-documentation">
+  <section id="webservices-documentation">
 <span id="developer-webservices"></span><h1>Webservices documentation<a class="headerlink" href="#webservices-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="theme-webservice">
+<section id="theme-webservice">
 <h2>Theme webservice<a class="headerlink" href="#theme-webservice" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../themes</span></code></p>
-<div class="section" id="parameters">
+<section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: <code class="docutils literal notranslate"><span class="pre">2</span></code>, API version, default is <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p></li>
@@ -58,8 +59,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p>themes?group=Transport</p></li>
 <li><p>themes?group=Transport&amp;sets=group</p></li>
 </ul>
-</div>
-<div class="section" id="result">
+</section>
+<section id="result">
 <h3>Result<a class="headerlink" href="#result" title="Permalink to this headline">¶</a></h3>
 <p>Base for all possible results:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -74,7 +75,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="ogc-server">
+<section id="ogc-server">
 <h4>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
      <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
@@ -98,8 +99,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
  <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="theme">
+</section>
+<section id="theme">
 <h4>Theme<a class="headerlink" href="#theme" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
@@ -114,8 +115,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="group">
+</section>
+<section id="group">
 <h4>Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
@@ -139,8 +140,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="layer">
+</section>
+<section id="layer">
 <h4>Layer<a class="headerlink" href="#layer" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
@@ -154,8 +155,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="wms-layer">
+</section>
+<section id="wms-layer">
 <h4>WMS Layer<a class="headerlink" href="#wms-layer" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
@@ -216,8 +217,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="wmts-layer">
+</section>
+<section id="wmts-layer">
 <h4>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wmts_capabilities_url&gt;&quot;</span><span class="p">,</span>
@@ -227,12 +228,12 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="authentication">
+</section>
+</section>
+</section>
+<section id="authentication">
 <h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="login">
+<section id="login">
 <h3>Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h3>
 <p>Used to login in the application.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../login</span></code></p>
@@ -249,8 +250,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p>302 Found: Success -&gt; redirect to <code class="docutils literal notranslate"><span class="pre">came_from</span></code>.</p></li>
 <li><p>400 Bad request: When something is wrong.</p></li>
 </ul>
-</div>
-<div class="section" id="logout">
+</section>
+<section id="logout">
 <h3>Logout<a class="headerlink" href="#logout" title="Permalink to this headline">¶</a></h3>
 <p>Used to log out of the application.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../logout</span></code></p>
@@ -260,8 +261,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p>200 Success: Success.</p></li>
 <li><p>400 Bad request: When something is wrong.</p></li>
 </ul>
-</div>
-<div class="section" id="user-information">
+</section>
+<section id="user-information">
 <h3>User information<a class="headerlink" href="#user-information" title="Permalink to this headline">¶</a></h3>
 <p>Used to get the user information.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginuser</span></code></p>
@@ -269,7 +270,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <ul class="simple">
 <li><p>200 Success: Success.</p></li>
 </ul>
-<div class="section" id="anonymous-json-result">
+<section id="anonymous-json-result">
 <h4>Anonymous JSON result<a class="headerlink" href="#anonymous-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -281,8 +282,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="connected-json-result">
+</section>
+<section id="connected-json-result">
 <span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
@@ -299,9 +300,9 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="user-login">
+</section>
+</section>
+<section id="user-login">
 <h3>User login<a class="headerlink" href="#user-login" title="Permalink to this headline">¶</a></h3>
 <p>Login to the application.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../login</span></code></p>
@@ -318,10 +319,10 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p>400 Bad request: When <code class="docutils literal notranslate"><span class="pre">login</span></code> or <code class="docutils literal notranslate"><span class="pre">password</span></code> is missing.</p></li>
 <li><p>401 Unauthorized: On login failed.</p></li>
 </ul>
-<div class="section" id="login-successful">
+<section id="login-successful">
 <h4>Login successful<a class="headerlink" href="#login-successful" title="Permalink to this headline">¶</a></h4>
-</div>
-<div class="section" id="init-without-two-factor-authentication-json-result">
+</section>
+<section id="init-without-two-factor-authentication-json-result">
 <h4>Init without two-factor authentication JSON result<a class="headerlink" href="#init-without-two-factor-authentication-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
@@ -330,8 +331,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="init-two-factor-authentication-json-result">
+</section>
+<section id="init-two-factor-authentication-json-result">
 <h4>Init two-factor authentication JSON result<a class="headerlink" href="#init-two-factor-authentication-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
@@ -342,9 +343,9 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="change-password">
+</section>
+</section>
+<section id="change-password">
 <h3>Change password<a class="headerlink" href="#change-password" title="Permalink to this headline">¶</a></h3>
 <p>Used to change the user password.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginchangepassword</span></code></p>
@@ -361,16 +362,16 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p>200 Success: Success.</p></li>
 <li><p>400 Bad request: When something is wrong.</p></li>
 </ul>
-<div class="section" id="json-result">
+<section id="json-result">
 <h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;success&quot;</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="generate-a-new-password">
+</section>
+</section>
+<section id="generate-a-new-password">
 <h3>Generate a new password<a class="headerlink" href="#generate-a-new-password" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginresetpassword</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
@@ -384,20 +385,20 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p>200 Success: Success.</p></li>
 <li><p>400 Bad request: When something is wrong.</p></li>
 </ul>
-<div class="section" id="success-json-result">
+<section id="success-json-result">
 <h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;success&quot;</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="full-text-search">
+</section>
+</section>
+</section>
+<section id="full-text-search">
 <span id="developer-webservices-fts"></span><h2>Full-text search<a class="headerlink" href="#full-text-search" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../fulltextsearch</span></code></p>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: Text to search.</p></li>
@@ -406,8 +407,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p><code class="docutils literal notranslate"><span class="pre">lang</span></code>: The language used (optional).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: The interface used (optional).</p></li>
 </ul>
-</div>
-<div class="section" id="id2">
+</section>
+<section id="id2">
 <h3>Result<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>A GeoJSON of a feature collection with the properties:</p>
 <ul class="simple">
@@ -421,27 +422,27 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p><code class="docutils literal notranslate"><span class="pre">action</span></code>: the type of action (add_theme|add_group|add_layer).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: data needed for the action (the item name).</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="layers">
+</section>
+</section>
+<section id="layers">
 <h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="layer-description">
+<section id="layer-description">
 <h3>Layer description<a class="headerlink" href="#layer-description" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_id&gt;/md.xsd</span></code></p>
-<div class="section" id="id3">
+<section id="id3">
 <h4>Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <p>A standard xsd document that describes the layer.</p>
-</div>
-</div>
-<div class="section" id="mapfish-protocol">
+</section>
+</section>
+<section id="mapfish-protocol">
 <h3>MapFish protocol<a class="headerlink" href="#mapfish-protocol" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_id&gt;/....</span></code></p>
 <p><a class="reference external" href="https://github.com/elemoine/papyrus/wiki/Protocol">Parameters and results, see the MapFish protocol</a>.</p>
-</div>
-<div class="section" id="enumerate-attributes">
+</section>
+<section id="enumerate-attributes">
 <h3>Enumerate attributes<a class="headerlink" href="#enumerate-attributes" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/values/&lt;field_name&gt;</span></code></p>
-<div class="section" id="id4">
+<section id="id4">
 <h4>Result<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[{</span>
@@ -450,9 +451,9 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="update-feature">
+</section>
+</section>
+<section id="update-feature">
 <h3>Update feature<a class="headerlink" href="#update-feature" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/&lt;layer_id&gt;/&lt;feature_id&gt;</span></code></p>
 <p>Success:</p>
@@ -493,8 +494,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id5">
+</section>
+<section id="id5">
 <h3>Update feature<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/&lt;layer_id&gt;</span></code></p>
 <p>Success:</p>
@@ -535,20 +536,20 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="raster">
+</section>
+</section>
+<section id="raster">
 <h2>Raster<a class="headerlink" href="#raster" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../raster</span></code></p>
-<div class="section" id="id6">
+<section id="id6">
 <h3>Parameters<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">lon</span></code>: The longitude.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lat</span></code>: The latitude.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: The raster layers we want to query.</p></li>
 </ul>
-</div>
-<div class="section" id="id7">
+</section>
+<section id="id7">
 <h3>Result<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
@@ -556,58 +557,58 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="digital-elevation-model">
+</section>
+</section>
+<section id="digital-elevation-model">
 <h2>Digital Elevation Model<a class="headerlink" href="#digital-elevation-model" title="Permalink to this headline">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../profile.json</span></code></p>
 <p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
-<div class="section" id="id8">
+<section id="id8">
 <h3>Parameters<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">geom</span></code>: Geometry field used to get the profile data.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: On which layers; default to all.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nbPoints</span></code>: Maximum number of points.</p></li>
 </ul>
-</div>
-<div class="section" id="id9">
+</section>
+<section id="id9">
 <h3>Result<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>A JSON file, with ‘dist’, ‘value’, ‘x’, ‘y’.</p>
-</div>
-</div>
-<div class="section" id="shortener">
+</section>
+</section>
+<section id="shortener">
 <h2>Shortener<a class="headerlink" href="#shortener" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="create">
+<section id="create">
 <h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../short/create</span></code></p>
 <p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
-<div class="section" id="id10">
+<section id="id10">
 <h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">url</span></code>: URL to shorten.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">email</span></code>: Email address to send a message to (optional).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">message</span></code>: The user message to add in the email (optional).</p></li>
 </ul>
-</div>
-<div class="section" id="id11">
+</section>
+<section id="id11">
 <h4>Result<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="get">
+</section>
+</section>
+<section id="get">
 <h3>Get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">short/&lt;ref&gt;</span></code></p>
 <p>Result: code: 302, redirect to the original URL.</p>
-</div>
-</div>
-<div class="section" id="geometry-processing">
+</section>
+</section>
+<section id="geometry-processing">
 <h2>Geometry processing<a class="headerlink" href="#geometry-processing" title="Permalink to this headline">¶</a></h2>
 <p>This service provides geometry processing (currently only one)</p>
-<div class="section" id="difference">
+<section id="difference">
 <h3>Difference<a class="headerlink" href="#difference" title="Permalink to this headline">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../difference</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
@@ -620,9 +621,9 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;geomA&gt;</span></code> is a GeoJSON geometry to extrude,
 and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&gt;</span></code> is the geometry used to do the extrude.</p>
 <p>Result: the new <code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> geometry.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
           </div>
