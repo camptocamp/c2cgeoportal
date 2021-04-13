@@ -38,6 +38,7 @@ import yaml
 
 parser = argparse.ArgumentParser(description="Get and upgrade the minor version.")
 parser.add_argument("--auto-increment", action="store_true")
+parser.add_argument("--force-increment", action="store_true")
 parser.add_argument("--full", action="store_true")
 parser.add_argument("--major", action="store_true")
 parser.add_argument("--github", action="store_true")
@@ -50,7 +51,11 @@ tag = None
 match = re.match(r"refs/tags/([0-9]+\.[0-9]+\.[0-9]+)$", os.environ.get("GITHUB_REF", "dev"))
 if match is not None:
     tag = match.group(1)
-if args.auto_increment:
+if args.force_increment:
+    ci["minor"] = ci["minor"] + 1
+    with open("ci/ci.yaml", "w") as ci_file:
+        ci_file.write(yaml.dump(ci, default_flow_style=False, explicit_start=True))
+elif args.auto_increment:
     if tag is not None:
         ci["minor"] = 0
     elif os.environ.get("MAIN_BRANCH", "master") != "master" and os.environ.get(
