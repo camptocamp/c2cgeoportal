@@ -38,7 +38,7 @@ jobs:
       - name: Checks
         run: c2cciutils-checks
 
-      - run: scripts/get-version --auto-increment --github
+      - run: scripts/get-version --force-increment --github
         id: version
 
       - run: python3 -m pip install --user --requirement=requirements.txt
