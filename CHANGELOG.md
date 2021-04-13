@@ -1,3 +1,7 @@
+##### 2.5.0.125
+* [Backport 2.5] Force new release on build from ngeo [c2cgeoportal#8062](https://github.com/camptocamp/c2cgeoportal/pull/8062)
+* Computed arrow position [ngeo#7049](https://github.com/camptocamp/ngeo/pull/7049)
+* [Backport 2.5] Clean permalink only of removed groups [ngeo#7070](https://github.com/camptocamp/ngeo/pull/7070)
 ##### 2.5.0.124
 * [Backport 2.5] Allows the attributes from the WFS DescribeFeatures to be None [c2cgeoportal#8047](https://github.com/camptocamp/c2cgeoportal/pull/8047)
 ##### 2.5.0.123
