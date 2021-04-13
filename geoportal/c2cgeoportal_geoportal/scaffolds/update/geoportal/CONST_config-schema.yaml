@@ -184,19 +184,19 @@ mapping:
         required: false
         mapping:
           two_factor:
-            type: bool
+            type: scalar
             required: false
           two_factor_issuer_name:
             type: str
             required: false
           max_consecutive_failures:
-            type: int
+            type: scalar
             required: false
           oauth2_authorization_expire_minutes:
-            type: int
+            type: scalar
             required: false
           oauth2_token_expire_minutes:
-            type: int
+            type: scalar
             required: false
       intranet:
         type: map
@@ -238,10 +238,10 @@ mapping:
                   - type: str
               access_control_max_age:
                 required: True
-                type: int
+                type: scalar
               cache_control_max_age:
                 required: True
-                type: int
+                type: scalar
               headers:
                 type: map
                 mapping:
@@ -392,7 +392,7 @@ mapping:
         required: True
         mapping:
           enabled:
-            type: bool
+            type: scalar
             required: True
           map:
             <<: *map_config
@@ -404,7 +404,7 @@ mapping:
         required: True
         mapping:
           geometry_validation:
-            type: bool
+            type: scalar
             required: True
           enum:
             type: map
@@ -508,13 +508,13 @@ mapping:
             type: str
             required: True
           ssl:
-            type: bool
+            type: scalar
           user:
             type: str
           password:
             type: str
           starttls:
-            type: bool
+            type: scalar
 
       servers:
         <<: *free_dict
@@ -539,9 +539,9 @@ mapping:
             sequence:
               - type: str
           length:
-            type: int
+            type: scalar
       hide_capabilities:
-        type: bool
+        type: scalar
         required: True
       resourceproxy:
         type: map
@@ -638,7 +638,7 @@ mapping:
         required: True
         mapping:
           forward_host:
-            type: bool
+            type: scalar
           base_internal_url:
             type: str
           fulltextsearch:
@@ -646,19 +646,19 @@ mapping:
             required: True
             mapping:
               level:
-                type: int
+                type: scalar
                 required: True
               search:
                 type: str
                 required: True
               disable:
-                type: bool
+                type: scalar
           lang:
             type: map
             required: True
             mapping:
               level:
-                type: int
+                type: scalar
                 required: True
               files:
                 type: seq
@@ -670,7 +670,7 @@ mapping:
             required: True
             mapping:
               level:
-                type: int
+                type: scalar
                 required: True
               spec:
                 type: any
@@ -691,7 +691,7 @@ mapping:
                   - type: map
                     mapping: &route
                       level:
-                        type: int
+                        type: scalar
                         required: True
                       name:
                         type: str
@@ -727,7 +727,7 @@ mapping:
             required: True
             mapping:
               level:
-                type: int
+                type: scalar
                 required: True
               params: *params
               interfaces:
@@ -756,12 +756,12 @@ mapping:
                     type: str
                     required: True
                   level:
-                    type: int
+                    type: scalar
           max_level:
-            type: int
+            type: scalar
             required: True
           level:
-            type: int
+            type: scalar
             required: True
       regex;(.+):
         type: any
@@ -771,19 +771,19 @@ mapping:
         mapping:
           memory_maps_rss:
             required: True
-            type: bool
+            type: scalar
           memory_maps_size:
             required: True
-            type: bool
+            type: scalar
           memory_cache:
             required: True
-            type: bool
+            type: scalar
           memory_cache_all:
             required: True
-            type: bool
+            type: scalar
           raster_data:
             required: True
-            type: bool
+            type: scalar
           total_python_object_memory:
             required: True
-            type: bool
+            type: scalar

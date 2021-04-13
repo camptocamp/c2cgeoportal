@@ -1,7 +1,7 @@
 ---
 vars:
   # The package name
-  package: {{package}}
+  package: '{{package}}'
   main_ogc_server: source for image/png
 
   srid: EPSG:-1
@@ -39,9 +39,10 @@ vars:
 
   authentication:
     two_factor: false
-    two_factor_issuer_name: {{project}}
+    two_factor_issuer_name: '{{project}}'
     oauth2_token_expire_minutes: 60
     oauth2_authorization_expire_minutes: 10
+    max_consecutive_failures: 10
 
   intranet:
     networks: []
@@ -401,7 +402,7 @@ vars:
           dynamic_params:
             interface: interface
         localeUrl:
-            name: localejson
+          name: localejson
         searchUrl:
           name: fulltextsearch
           params:
@@ -603,6 +604,7 @@ vars:
     base_url: '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}s/'
     allowed_hosts:
       - '{VISIBLE_WEB_HOST}'
+    length: 4
 
   # Define whether the MapServer proxy should hide the OGC capabilities.
   hide_capabilities: false
@@ -807,6 +809,7 @@ vars:
   # Checker configuration
   checker_ogc_server: source for image/png
   checker:
+    forward_host: False
     base_internal_url: http://localhost:8080
     fulltextsearch:
       level: 3
@@ -986,6 +989,65 @@ runtime_postprocess:
       - sqlalchemy_slave.pool_recycle
       - sqlalchemy_slave.pool_size
       - sqlalchemy_slave.max_overflow
+      - authentication.max_consecutive_failures
+      - authentication.oauth2_authorization_expire_minutes
+      - authentication.oauth2_token_expire_minutes
+      - headers.login.access_control_max_age
+      - headers.login.cache_control_max_age
+      - headers.index.access_control_max_age
+      - headers.index.cache_control_max_age
+      - headers.dynamic.access_control_max_age
+      - headers.dynamic.cache_control_max_age
+      - headers.config.access_control_max_age
+      - headers.config.cache_control_max_age
+      - headers.api.access_control_max_age
+      - headers.api.cache_control_max_age
+      - headers.apihelp.access_control_max_age
+      - headers.apihelp.cache_control_max_age
+      - headers.themes.access_control_max_age
+      - headers.themes.cache_control_max_age
+      - headers.fulltextsearch.access_control_max_age
+      - headers.fulltextsearch.cache_control_max_age
+      - headers.mapserver.access_control_max_age
+      - headers.mapserver.cache_control_max_age
+      - headers.tinyows.access_control_max_age
+      - headers.tinyows.cache_control_max_age
+      - headers.layers.access_control_max_age
+      - headers.layers.cache_control_max_age
+      - headers.print.access_control_max_age
+      - headers.print.cache_control_max_age
+      - headers.profile.access_control_max_age
+      - headers.profile.cache_control_max_age
+      - headers.raster.access_control_max_age
+      - headers.raster.cache_control_max_age
+      - headers.shortener.access_control_max_age
+      - headers.shortener.cache_control_max_age
+      - headers.error.access_control_max_age
+      - headers.error.cache_control_max_age
+      - shortener.length
+      - checker.fulltextsearch.level
+      - checker.lang.level
+      - checker.print.level
+      - checker.themes.level
+      - check_collector.max_level
+      - check_collector.level
+
+  - expression: str({}).lower() in ("true", "yes", "1")
+    vars:
+      - authentication.two_factor
+      - getitfixed.enabled
+      - layers.geometry_validation
+      - smtp.ssl
+      - smtp.starttls
+      - hide_capabilities
+      - checker.forward_host
+      - checker.fulltextsearch.disable
+      - metrics.memory_maps_rss
+      - metrics.memory_maps_size
+      - metrics.memory_cache
+      - metrics.memory_cache_all
+      - metrics.raster_data
+      - metrics.total_python_object_memory
 
 no_interpreted:
   - interfaces_config.default.static.angularLocaleScript.append
