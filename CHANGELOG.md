@@ -1,3 +1,9 @@
+##### 2.6.rc.47
+* Make standard roles customisable [c2cgeoportal#8036](https://github.com/camptocamp/c2cgeoportal/pull/8036)
+* Allows nearly all variable to be from environment variable [c2cgeoportal#8046](https://github.com/camptocamp/c2cgeoportal/pull/8046)
+* Move apihelp marker in dist [ngeo#7050](https://github.com/camptocamp/ngeo/pull/7050)
+* Better printed legend for qgis [ngeo#7051](https://github.com/camptocamp/ngeo/pull/7051)
+* Clean permalink only of removed groups [ngeo#7064](https://github.com/camptocamp/ngeo/pull/7064)
 ##### 2.6.rc.46
 * Move scaffold variable from docker-compose* to the env.default file [c2cgeoportal#8011](https://github.com/camptocamp/c2cgeoportal/pull/8011)
 ##### 2.6.rc.45
