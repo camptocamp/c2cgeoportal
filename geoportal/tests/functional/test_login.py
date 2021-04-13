@@ -274,6 +274,7 @@ class TestLoginView(TestCase):
         from c2cgeoportal_geoportal.views.login import Login
 
         request = DummyRequest()
+        request.get_organization_role = lambda role_type: role_type
         request.is_valid_referer = True
         request.user = None
         login = Login(request)
