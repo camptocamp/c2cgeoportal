@@ -812,6 +812,7 @@ vars:
     forward_host: False
     base_internal_url: http://localhost:8080
     fulltextsearch:
+      disable: False
       level: 3
       search: text to search
     lang:
@@ -983,12 +984,12 @@ runtime_postprocess:
     vars:
       - cache.std.arguments.socket_timeout
       - cache.std.arguments.db
-      - sqlalchemy.pool_recycle
-      - sqlalchemy.pool_size
-      - sqlalchemy.max_overflow
-      - sqlalchemy_slave.pool_recycle
-      - sqlalchemy_slave.pool_size
-      - sqlalchemy_slave.max_overflow
+      - sqlalchemy\.pool_recycle
+      - sqlalchemy\.pool_size
+      - sqlalchemy\.max_overflow
+      - sqlalchemy_slave\.pool_recycle
+      - sqlalchemy_slave\.pool_size
+      - sqlalchemy_slave\.max_overflow
       - authentication.max_consecutive_failures
       - authentication.oauth2_authorization_expire_minutes
       - authentication.oauth2_token_expire_minutes
