@@ -256,6 +256,78 @@ def project(elem):
                 )
             )
 
+    vulnerabilities_response = requests.post(
+        "https://api.github.com/graphql",
+        headers={"Authorization": AUTH_HEADER},
+        json={
+            "query": """query Vulnerabilities($org: String!, $repo: String!) {
+  organization(login: $org) {
+    repository(name: $repo) {
+      vulnerabilityAlerts(first: 10) {
+        nodes {
+          dismissReason
+          vulnerableManifestPath
+          vulnerableRequirements
+          securityVulnerability {
+            package {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}
+""",
+            "variables": {"org": repo.split("/")[0], "repo": repo.split("/")[1]},
+        },
+    )
+    first = True
+    for vuln in vulnerabilities_response.json()["data"]["organization"]["repository"]["vulnerabilityAlerts"][
+        "nodes"
+    ]:
+        if first:
+            print()
+            print(f"[Vulnerabilities](https://github.com/{repo}/security/dependabot):")
+            first = False
+        if vuln["dismissReason"]:
+            print(
+                f"* {vuln['vulnerableManifestPath']}[{vuln['securityVulnerability']['package']['name']}{vuln['vulnerableRequirements']}]: {vuln['dismissReason']}"
+            )
+        else:
+            print(
+                f"* File: {vuln['vulnerableManifestPath']}, Package: {vuln['securityVulnerability']['package']['name']}{vuln['vulnerableRequirements']}"
+            )
+
+    first = True
+    for author in ("dependabot-preview[bot]", "dependabot-preview", "dependabot[bot]", "dependabot"):
+        issues_response = requests.post(
+            "https://api.github.com/graphql",
+            headers={"Authorization": AUTH_HEADER},
+            json={
+                "query": """query Query($org: String!, $repo: String!, $author: String!) {
+    organization(login: $org) {
+        repository(name: $repo) {
+        issues(filterBy: {createdBy: $author, states: OPEN}, first: 10) {
+            nodes {
+                url
+                title
+            }
+        }
+        }
+    }
+    }
+    """,
+                "variables": {"org": repo.split("/")[0], "repo": repo.split("/")[1], "author": author},
+            },
+        )
+        for issue in issues_response.json()["data"]["organization"]["repository"]["issues"]["nodes"]:
+            if first:
+                print()
+                print("Dependabot issues:")
+                first = False
+            print(f"* [{issue['title']}]({issue['url']})")
+
 
 def version(elem, ver, repo, status, all_workflows_name, all_workflows_by_name):
     """
