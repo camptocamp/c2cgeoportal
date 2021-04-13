@@ -18,4 +18,5 @@ WORKDIR /doc
 
 RUN ./eval-templates
 RUN  mkdir --parent _build/html
+RUN sphinx-build -b html -d _build/doctrees . _build/html
 RUN  ./build.sh
