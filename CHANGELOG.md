@@ -1,3 +1,5 @@
+##### 2.6.rc.48
+* [Backport 2.6] Force new release on build from ngeo [c2cgeoportal#8063](https://github.com/camptocamp/c2cgeoportal/pull/8063)
 ##### 2.6.rc.47
 * Make standard roles customisable [c2cgeoportal#8036](https://github.com/camptocamp/c2cgeoportal/pull/8036)
 * Allows nearly all variable to be from environment variable [c2cgeoportal#8046](https://github.com/camptocamp/c2cgeoportal/pull/8046)
