@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -110,17 +110,29 @@ def get_functionality(
         )
         if not result:
             result = _get_db_functionality(
-                name, _get_role("registered"), _get_functionalities_type(request), request, errors
+                name,
+                _get_role(request.get_organization_role("registered")),
+                _get_functionalities_type(request),
+                request,
+                errors,
             )
 
     if not result and is_intranet_:
         result = _get_db_functionality(
-            name, _get_role("intranet"), _get_functionalities_type(request), request, errors
+            name,
+            _get_role(request.get_organization_role("intranet")),
+            _get_functionalities_type(request),
+            request,
+            errors,
         )
 
     if not result:
         result = _get_db_functionality(
-            name, _get_role("anonymous"), _get_functionalities_type(request), request, errors
+            name,
+            _get_role(request.get_organization_role("anonymous")),
+            _get_functionalities_type(request),
+            request,
+            errors,
         )
 
     if errors != set():  # pragma: no cover
