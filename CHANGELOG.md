@@ -1,3 +1,6 @@
+##### 2.6.rc.49
+* Tiny OWS didn't support _ in query string [c2cgeoportal#8061](https://github.com/camptocamp/c2cgeoportal/pull/8061)
+* Fix the vars [c2cgeoportal#8064](https://github.com/camptocamp/c2cgeoportal/pull/8064)
 ##### 2.6.rc.48
 * [Backport 2.6] Force new release on build from ngeo [c2cgeoportal#8063](https://github.com/camptocamp/c2cgeoportal/pull/8063)
 ##### 2.6.rc.47
