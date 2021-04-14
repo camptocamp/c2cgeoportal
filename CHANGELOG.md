@@ -1,3 +1,5 @@
+##### 2.6.rc.51
+* Fix admin login [c2cgeoportal#8068](https://github.com/camptocamp/c2cgeoportal/pull/8068)
 ##### 2.6.rc.50
 * Do not clear search field [ngeo#7055](https://github.com/camptocamp/ngeo/pull/7055)
 ##### 2.6.rc.49
