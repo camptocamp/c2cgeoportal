@@ -344,8 +344,6 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     settings = config.get_settings()
 
-    config.include("c2cgeoportal_commons")
-
     if "available_locale_names" not in settings:
         settings["available_locale_names"] = available_locale_names()
 
