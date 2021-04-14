@@ -61,7 +61,6 @@ class TestIncludeme(TestCase):
                 "schema": "main",
                 "schema_static": "main_static",
                 "default_max_age": 86400,
-                "app.cfg": "/opt/c2cgeoportal/geoportal/tests/config.yaml",
                 "package": "c2cgeoportal",
                 "enable_admin_interface": False,
                 "getitfixed": {"enabled": False},
@@ -75,6 +74,7 @@ class TestIncludeme(TestCase):
                 },
             }
         )
+        config.init("/opt/c2cgeoportal/geoportal/tests/config.yaml")
 
     @patch("c2cgeoportal_geoportal.available_locale_names", return_value=["de", "en", "fr"])
     def test_available_locale_names(self, locales_mock):

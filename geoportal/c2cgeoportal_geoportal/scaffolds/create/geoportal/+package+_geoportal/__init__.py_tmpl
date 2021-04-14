@@ -23,15 +23,17 @@ def main(global_config, **settings):
         locale_negotiator=locale_negotiator,
     )
 
+    config.include("c2cgeoportal_commons")
+
+    config.set_authorization_policy(ACLAuthorizationPolicy())
+    config.set_authentication_policy(create_authentication(config.get_settings()))
+
     config.add_translation_dirs(LOCALE_PATH)
 
     # Workaround to not have the error: distutils.errors.DistutilsArgError: no commands supplied
     distutils.core._setup_stop_after = "config"  # pylint: disable=protected-access
     config.include("c2cgeoportal_geoportal")
     distutils.core._setup_stop_after = None  # pylint: disable=protected-access
-
-    config.set_authorization_policy(ACLAuthorizationPolicy())
-    config.set_authentication_policy(create_authentication(config.get_settings()))
 
     # Scan view decorator for adding routes
     config.scan()
