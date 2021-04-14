@@ -1,3 +1,5 @@
+##### 2.6.rc.50
+* Do not clear search field [ngeo#7055](https://github.com/camptocamp/ngeo/pull/7055)
 ##### 2.6.rc.49
 * Tiny OWS didn't support _ in query string [c2cgeoportal#8061](https://github.com/camptocamp/c2cgeoportal/pull/8061)
 * Fix the vars [c2cgeoportal#8064](https://github.com/camptocamp/c2cgeoportal/pull/8064)
