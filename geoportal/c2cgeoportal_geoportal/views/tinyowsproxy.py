@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2015-2020, Camptocamp SA
+# Copyright (c) 2015-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -115,7 +115,7 @@ class TinyOWSProxy(OGCProxy):
             operation,
             cache_control,
             url=self._get_wfs_url(),
-            params=dict(self.request.params),
+            params={k: v for k, v in self.request.params.items() if "_" not in k},
             cache=use_cache,
             headers=self._get_headers(),
             body=self.request.body,
