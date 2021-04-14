@@ -81,11 +81,10 @@
         },
         "c2c.template": {
             "hashes": [
-                "sha256:522fde9e180d4895035e2fe32e53103d2e4b7c81c3b72c547e6a3108eafd6f85",
-                "sha256:55e8c11f876ffbc7c8fa9b9da78e0c5f639d044dd2bd2dce116e94a5d0789a3c"
+                "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"
             ],
             "index": "pypi",
-            "version": "==2.2.1"
+            "version": "==2.3.0"
         },
         "c2cgeoform": {
             "hashes": [
