@@ -1,3 +1,7 @@
+##### 2.4.2.44
+* [Backport 2.4] Do spell on pull request title [c2cgeoportal#8078](https://github.com/camptocamp/c2cgeoportal/pull/8078)
+* Fix API Help instructions [ngeo#6979](https://github.com/camptocamp/ngeo/pull/6979)
+* [Backport 2.4] [Backport master] Do spell on pull request title [ngeo#7081](https://github.com/camptocamp/ngeo/pull/7081)
 ##### 2.4.2.43
 * Fix GitHub CI template [c2cgeoportal#7974](https://github.com/camptocamp/c2cgeoportal/pull/7974)
 ##### 2.4.2.42
