@@ -144,7 +144,7 @@ class TinyOWSProxy(OGCProxy):
         return typenames.issubset(writable_layers)
 
     def _get_headers(self) -> Dict[str, str]:
-        headers = OGCProxy._get_headers(self)
+        headers = OGCProxy.get_headers(self)
         if "tinyows_host" in self.settings:
             headers["Host"] = self.settings.get("tinyows_host")
         return headers

@@ -28,15 +28,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-from typing import Optional, Set, cast
+from typing import Dict, Optional, Set, cast
 
 import pyramid.request
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons.lib.url import Url, get_url2
-from c2cgeoportal_commons.models import DBSession
-from c2cgeoportal_commons.models.main import OGCServer
+from c2cgeoportal_commons.models import DBSession, main
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
@@ -64,15 +63,15 @@ class OGCProxy(Proxy):
             self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
 
     @CACHE_REGION.cache_on_arguments()
-    def _get_ogcserver_byname(self, name: str) -> OGCServer:  # pylint: disable=no-self-use
+    def _get_ogcserver_byname(self, name: str) -> main.OGCServer:  # pylint: disable=no-self-use
         try:
-            result = DBSession.query(OGCServer).filter(OGCServer.name == name).one()
+            result = DBSession.query(main.OGCServer).filter(main.OGCServer.name == name).one()
             DBSession.expunge(result)
-            return cast(OGCServer, result)
+            return cast(main.OGCServer, result)
         except NoResultFound:
             raise HTTPBadRequest(
                 "OGSServer '{}' does not exists (existing: {}).".format(
-                    name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
+                    name, ",".join([t[0] for t in DBSession.query(main.OGCServer.name).all()])
                 )
             )
 
@@ -94,3 +93,11 @@ class OGCProxy(Proxy):
         if errors:
             LOG.error("\n".join(errors))
         return url
+
+    def get_headers(self) -> Dict[str, str]:
+        headers: Dict[str, str] = super().get_headers()
+        if self.ogc_server.type == main.OGCSERVER_TYPE_QGISSERVER:
+            headers["X-Qgis-Service-Url"] = self.request.current_route_url(
+                _query={"ogcserver": self.ogc_server.name}
+            )
+        return headers
