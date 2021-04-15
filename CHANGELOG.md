@@ -1,3 +1,5 @@
+##### 2.5.0.126
+* [Backport 2.5] Do spell on pull request title [c2cgeoportal#8079](https://github.com/camptocamp/c2cgeoportal/pull/8079)
 ##### 2.5.0.125
 * [Backport 2.5] Force new release on build from ngeo [c2cgeoportal#8062](https://github.com/camptocamp/c2cgeoportal/pull/8062)
 * Computed arrow position [ngeo#7049](https://github.com/camptocamp/ngeo/pull/7049)
