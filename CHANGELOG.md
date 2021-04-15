@@ -1,3 +1,6 @@
+##### 2.6.rc.52
+* Update c2c.template and sentry [c2cgeoportal#8070](https://github.com/camptocamp/c2cgeoportal/pull/8070)
+* Fix to work with both streetviews [ngeo#7038](https://github.com/camptocamp/ngeo/pull/7038)
 ##### 2.6.rc.51
 * Fix admin login [c2cgeoportal#8068](https://github.com/camptocamp/c2cgeoportal/pull/8068)
 ##### 2.6.rc.50
