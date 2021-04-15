@@ -1,3 +1,5 @@
+##### 2.6.rc.54
+* [Backport 2.6] [Backport master] Do spell on pull request title [ngeo#7083](https://github.com/camptocamp/ngeo/pull/7083)
 ##### 2.6.rc.53
 * Do spell on pull request title [c2cgeoportal#8074](https://github.com/camptocamp/c2cgeoportal/pull/8074)
 ##### 2.6.rc.52
