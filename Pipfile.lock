@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ea1cafcc196d277628ba919274bfda41b7d702bf9fac70030917b2a3dbbc04a0"
+            "sha256": "4656de74f4ecf2223bb379ec65c11b7a92f3fd5ee14d8629ca05dc49016ed28d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1101,7 +1101,6 @@
                 "sha256:2f4da4594db7e1e110a944bb1b551fdf4e6c136ad42e4234131391e21eb5b0df",
                 "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
             ],
-            "index": "pypi",
             "version": "==1.26.4"
         },
         "venusian": {
@@ -1221,11 +1220,10 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:11b1488ebaa3e7740686838b16aba141edbfe96fbf36359755bed948b6d72d69",
-                "sha256:c52730ae341aa8faacb2e15352b4eb2d54485279c5a753a41c08c00353297095"
+                "sha256:a58d23d834f2fceb4810190f0d69951fcdfbf27233b3def68e59e6a59dcbe547"
             ],
             "index": "pypi",
-            "version": "==1.19.27"
+            "version": "==1.19.53"
         },
         "babel": {
             "hashes": [
@@ -1253,10 +1251,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:4477803f07649f4d80b17d054820e7a09bb2cb0792d0decc2812108bc3759c4a",
-                "sha256:57e45c9d443163da7312cae61bcc60382e6d0b3aecda68e850d6438162fe7b5b"
+                "sha256:d5e70d17b91c9b5867be7d6de0caa7dde9ed789bed62f03ea9b60718dc9350bf",
+                "sha256:e303500c4e80f6a706602da53daa6f751cfa8f491665c99a24ee732ab6321573"
             ],
-            "version": "==1.20.27"
+            "version": "==1.20.53"
         },
         "certifi": {
             "hashes": [
@@ -1817,7 +1815,6 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.6'",
             "version": "==4.7.2"
         },
         "s3transfer": {
@@ -1938,7 +1935,6 @@
                 "sha256:2f4da4594db7e1e110a944bb1b551fdf4e6c136ad42e4234131391e21eb5b0df",
                 "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
             ],
-            "index": "pypi",
             "version": "==1.26.4"
         },
         "waitress": {
