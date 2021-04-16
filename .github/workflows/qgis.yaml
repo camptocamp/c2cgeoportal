@@ -3,6 +3,10 @@ name: QGIS build
 
 on:
   push:
+  pull_request:
+
+env:
+  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
 jobs:
   main:
@@ -36,7 +40,7 @@ jobs:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: docker
-        if: github.repository == 'camptocamp/c2cgeoportal'
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -70,18 +74,18 @@ jobs:
 
       - run: scripts/get-version --auto-increment --github
         id: version
-        if: github.repository == 'camptocamp/c2cgeoportal'
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Publish feature branch
         run: |
           c2cciutils-publish --group=qgis-${{ matrix.version }}
         if: >
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
       - name: Publish version branch
         run: |
           c2cciutils-publish --group=qgis-${{ matrix.version }} --type=version_branch \
             --version=${{ steps.version.outputs.major }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
