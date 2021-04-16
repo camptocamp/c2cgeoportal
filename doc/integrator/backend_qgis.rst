@@ -152,7 +152,7 @@ so that you can change the database connection without rebuilding your applicati
 OGC server
 ==========
 
-In the project file, you should set the online resource URL
+For QGIS version < 3.20, in the project file, you should set the online resource URL
 (Project/Properties.../QGIS Server/General information/Online resource) to
 ``https://<host>/<entrypoint>/mapservproxy?ogcserver=<name>``, e.-g.
 ``https://geomapfish-demo-ci.camptocamp.com/mapservproxy?ogcserver=QGIS%20server``.

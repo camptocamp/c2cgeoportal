@@ -156,9 +156,7 @@ class Proxy:
         return response
 
     @CACHE_REGION.cache_on_arguments()
-    def _proxy_cache(
-        self, method: str, *args: Any, **kwargs: Any
-    ) -> pyramid.response.Response:
+    def _proxy_cache(self, method: str, *args: Any, **kwargs: Any) -> pyramid.response.Response:
         # Method is only for the cache
         del method
         kwargs["cache"] = True
@@ -232,7 +230,7 @@ class Proxy:
     def _get_lower_params(params: Dict[str, str]) -> Dict[str, str]:
         return dict((k.lower(), str(v).lower()) for k, v in params.items())
 
-    def _get_headers(self) -> Dict[str, str]:
+    def get_headers(self) -> Dict[str, str]:
         headers: Dict[str, str] = self.request.headers
         if "Cookie" in headers:
             headers.pop("Cookie")

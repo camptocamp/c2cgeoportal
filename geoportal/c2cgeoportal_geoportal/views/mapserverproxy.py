@@ -135,7 +135,7 @@ class MapservProxy(OGCProxy):
         elif method != "GET":
             cache_control = Cache.NO
 
-        headers = self._get_headers()
+        headers = self.get_headers()
         # Add headers for Geoserver
         if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER:
             headers["sec-username"] = self.user.username
