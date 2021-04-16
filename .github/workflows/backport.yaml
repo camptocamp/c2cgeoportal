@@ -1,5 +1,4 @@
 ---
-
 name: Backport
 
 on:
@@ -7,6 +6,9 @@ on:
     types:
       - closed
       - labeled
+
+env:
+  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
 jobs:
   backport:
@@ -18,3 +20,4 @@ jobs:
       - uses: camptocamp/backport-action@master
         with:
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+        if: env.HAS_SECRETS == 'HAS_SECRETS'

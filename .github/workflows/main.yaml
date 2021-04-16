@@ -3,6 +3,10 @@ name: Continuous integration
 
 on:
   push:
+  pull_request:
+
+env:
+  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
 jobs:
   not-failed-backport:
@@ -38,7 +42,7 @@ jobs:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker transifex
-        if: github.repository == 'camptocamp/c2cgeoportal'
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -48,7 +52,7 @@ jobs:
 
       - run: scripts/get-version --auto-increment --github
         id: version
-        if: github.repository == 'camptocamp/c2cgeoportal'
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: python3 -m pip install --user --requirement=requirements.txt
 
@@ -185,14 +189,14 @@ jobs:
           c2cciutils-publish --group=full
         if: >
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
       - name: Publish version branch
         run: |
           c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
           c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Push version and changelog
         run: |
@@ -204,7 +208,7 @@ jobs:
           )
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Notify demo
         run: >
@@ -216,7 +220,7 @@ jobs:
             "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Publish to Transifex
         run: |
@@ -227,13 +231,13 @@ jobs:
           docker stop transifex
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Publish documentation to GitHub.io
         run: ci/publish-documentation
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
+          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: >
           docker run --rm --volume=/var/run/docker.sock:/var/run/docker.sock nate/dockviz

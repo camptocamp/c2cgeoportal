@@ -1,0 +1,142 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/dependabot-2.0.json
+
+# yamllint disable rule:line-length
+
+---
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: pip
+    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/ci'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: pip
+    directory: '/docker/qgisserver/python/3.6'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: pip
+    directory: '/docker/qgisserver/python/3.8'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: pip
+    directory: '/ci'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: pip
+    directory: '/doc'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: pip
+    directory: '/docker/qgisserver/tests'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+
+  - package-ecosystem: docker
+    directory: '/'
+    schedule:
+      interval: weekly
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/doc'
+    schedule:
+      interval: weekly
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/admin'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/docker/config'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/docker/qgisserver'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/docker/test-app-db'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/docker/test-db'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/docker/test-external-db'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/docker/test-mapserver'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+
+  - package-ecosystem: npm
+    directory: '/geoportal'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: npm
+    directory: '/admin'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '02:00'
+    ignore:
+      - dependency-name: none
