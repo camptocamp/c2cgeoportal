@@ -7,3 +7,4 @@ checks:
       - CONST_create_template/.*
       - geoportal/testgeomapfishapp_geoportal/locale/.*
       - geoportal/testgeomapfishapp_geoportal/static-ngeo/js/apps/Controller.*\.js
+  dependabot_config: False

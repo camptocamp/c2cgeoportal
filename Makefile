@@ -1,8 +1,6 @@
 MAJOR_VERSION ?= $(shell scripts/get-version --major)
 VERSION ?= $(shell scripts/get-version --full)
 DOCKER_TAG ?= latest
-PIPENV_PIPFILE ?= ci/Pipfile
-export PIPENV_PIPFILE
 
 .PHONY: help
 help: ## Display this help message
@@ -18,19 +16,7 @@ build: build-tools build-runner build-config
 
 .PHONY: checks
 checks: ## Run the application checks
-checks: yamllint otherchecks
-
-pipenv.timestamp: Pipfile.lock
-	pipenv sync
-	touch $@
-
-.PHONY: yamllint
-yamllint: ## YAML lint
-yamllint: pipenv.timestamp
-	pipenv run yamllint --strict --config-file=yamllint.yaml --format=github $(shell \
-		find -name .git -prune -or -name changelog.yaml -prune -or \
-		\( -name "*.yml" -or -name "*.yaml" \) -print \
-	)
+checks: otherchecks
 
 prospector: ## prospector lint (Quick, use otherchecks to get an exact result)
 prospector: pipenv.timestamp
