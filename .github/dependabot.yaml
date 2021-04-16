@@ -1,7 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/dependabot-2.0.json
 
-# yamllint disable rule:line-length
-
 ---
 version: 2
 updates:
