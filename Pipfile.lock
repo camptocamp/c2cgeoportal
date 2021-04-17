@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c1a2851172eed729bf3973171ca18c7ac96ea454a7439d9a02419194d0224ee6"
+            "sha256": "38b51cc86220bfe27076202145d6b0aeb456fe78156a7d0f053e7eb7653aca11"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -901,18 +901,18 @@
         },
         "rasterio": {
             "hashes": [
-                "sha256:35dd649effb1acd7ae1fb263dfa95f21d83bb5e20b195012249a32f4f5661d38",
-                "sha256:441b0e95ee89d100ab8db950c2de7ba57632f8d8940cc9a5592f0f87d6e36f0c",
-                "sha256:538ebcf0d0978cef446efa9610f9651348b166b5cbc0d83d93b628e4e4daff32",
-                "sha256:81d4181514c67dc660d7b8cf943ad55c4fb3e0a17ac893d92628ac928cfab3d8",
-                "sha256:907686a165877c7133b283c2dee57fa52b4bbcdc622bb455b005cacd16dba411",
-                "sha256:c6103e58494f97e309a1dc6034c4df26006a12414a82f96d35c5420b79e2c4c9",
-                "sha256:c72741e681863fc505812252a696b4983f22733aefc00cc6ae5f22ab241c7064",
-                "sha256:d9c9e7a968ef8b89700d3a14497ac61c6178e8342a2cbf717d725d85404d8e97",
-                "sha256:f255a98673b1bf52eb439c25bf6340c833e606fb48cea36bb82e341f67d84db4"
+                "sha256:1738347677a5e807bf45b8cb9660958caaa2ac13a3ea419ddba78b3addc14ab0",
+                "sha256:17b6d634e185a85683a918c2c0f0ffc04d77266e285bde5ae8909a4ad796c39b",
+                "sha256:21393250452066fb67cad554da9563717324d8da5ad34f1cd7cb7aa3877314c6",
+                "sha256:56ef392561631a51eb3689ec0ac6e900c9f2f8c1ef11e23ac6da03a7b872ea5e",
+                "sha256:71cbbfaad680f646b41c73d9ceadc32718c74f0c903754647d32773d60cf623b",
+                "sha256:7bbc021e795e02465936ad4fc9c4ed821233fbe3b33548c170d8c13b86f654d7",
+                "sha256:8187d01f30d4e01e93f0a434df6a4cc63dd026a18b5287c242b066cb56223424",
+                "sha256:8b39ffc424d8910835c08582f92b8e0b1427aed3e99d4a0c49dc719c2c30d3b5",
+                "sha256:ca8f6676e72e78f5131ebe370379d9120eb73a4e2a2c12cdb01a843d3606398d"
             ],
             "index": "pypi",
-            "version": "==1.2.1"
+            "version": "==1.2.2"
         },
         "redis": {
             "hashes": [
