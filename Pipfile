@@ -31,7 +31,7 @@ deform = "==2.0.15"  # commons, admin
 defusedxml = "==0.7.1"  # geoportal
 "dogpile.cache" = "==1.1.2"  # geoportal
 Fiona = "==1.8.19"  # geoportal raster
-GeoAlchemy2 = "==0.8.4"  # commons, geoportal
+GeoAlchemy2 = "==0.8.5"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.27"  # geoportal
 isodate = "==0.6.0"  # geoportal
