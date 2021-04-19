@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alembic on custom tables &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <section id="alembic-on-custom-tables">
+  <div class="section" id="alembic-on-custom-tables">
 <span id="custom-alembic"></span><h1>Alembic on custom tables<a class="headerlink" href="#alembic-on-custom-tables" title="Permalink to this headline">¶</a></h1>
 <p>If you want to manage custom tables (GMF tables; not in the <code class="docutils literal notranslate"><span class="pre">main</span></code> nor the <code class="docutils literal notranslate"><span class="pre">static</span></code> schema)
 with alembic you must setup a custom alembic process. Here’s an example. Others solutions
@@ -42,7 +41,7 @@ are possible, but do not try to reuse the existing <code class="docutils literal
 schema through the configuration levels).</p>
 <p>The following example uses <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">cp</span></code>. You can achieve the same with a volume, but you will
 have to set the owner (root) of copied files.</p>
-<section id="init-alembic">
+<div class="section" id="init-alembic">
 <h2>Init alembic<a class="headerlink" href="#init-alembic" title="Permalink to this headline">¶</a></h2>
 <p>In your project, add a <code class="docutils literal notranslate"><span class="pre">geoportal/alembic_&lt;project_name&gt;</span></code> folder.</p>
 <p>Build and run your project.</p>
@@ -61,8 +60,8 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">PROJECT</span><span class="o">=</span>&lt;your_project&gt;</span>
 <span class="prompt1">docker cp &lt;geoportal_container_name&gt;:/tmp/new_alembic geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>You can now customize the <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code> and the <code class="docutils literal notranslate"><span class="pre">env.py</span></code>.</p>
-</section>
-<section id="configure-alembic-ini">
+</div>
+<div class="section" id="configure-alembic-ini">
 <h2>Configure <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code><a class="headerlink" href="#configure-alembic-ini" title="Permalink to this headline">¶</a></h2>
 <p>The main change to apply is to use environment variables to run alembic on the right database.
 To do so, use a <code class="docutils literal notranslate"><span class="pre">tmpl</span></code> file:</p>
@@ -83,8 +82,8 @@ Add the following lines in the <code class="docutils literal notranslate"><span 
     <span class="n">chown</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">alembic_</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;/</span><span class="n">alembic</span><span class="o">.</span><span class="n">ini</span><span class="o">.</span><span class="n">tmpl</span>
 </pre></div>
 </div>
-</section>
-<section id="configure-env-py">
+</div>
+<div class="section" id="configure-env-py">
 <h2>Configure <code class="docutils literal notranslate"><span class="pre">env.py</span></code><a class="headerlink" href="#configure-env-py" title="Permalink to this headline">¶</a></h2>
 <p>Edit the file <code class="docutils literal notranslate"><span class="pre">geoportal/alembic_${PROJECT}/alembic/env.py</span></code>.</p>
 <p>In there, update the <code class="docutils literal notranslate"><span class="pre">run_migrations_offline</span></code> function by adding
@@ -93,20 +92,20 @@ name from the <code class="docutils literal notranslate"><span class="pre">alemb
 function.</p>
 <p>Do the same in the <code class="docutils literal notranslate"><span class="pre">run_migrations_online</span></code> function.</p>
 <p>At this point, you should be able to run your (currently empty) first revision file.</p>
-</section>
-<section id="run-an-alembic-upgrade">
+</div>
+<div class="section" id="run-an-alembic-upgrade">
 <h2>Run an alembic upgrade<a class="headerlink" href="#run-an-alembic-upgrade" title="Permalink to this headline">¶</a></h2>
 <p>Once your revision file completed, build and run docker-compose up on your project.
 Your alembic files should be in the running container. You can now run manually an upgrade with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic upgrade head&quot;</span></span>
-</pre></div></div></section>
-<section id="create-a-new-revision-file">
+</pre></div></div></div>
+<div class="section" id="create-a-new-revision-file">
 <h2>Create a new revision file<a class="headerlink" href="#create-a-new-revision-file" title="Permalink to this headline">¶</a></h2>
 <p>With a running instance, execute:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic revision -m &#39;&lt;msg&gt;&#39;&quot;</span></span>
 <span class="prompt1">docker cp &lt;geoportal_container_name&gt;:/app/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/&lt;the_new_file&gt; geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/.</span>
-</pre></div></div></section>
-</section>
+</pre></div></div></div>
+</div>
 
 
           </div>
@@ -160,7 +159,7 @@ Your alembic files should be in the running container. You can now run manually 
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -177,7 +176,7 @@ Your alembic files should be in the running container. You can now run manually 
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

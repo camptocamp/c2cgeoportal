@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Specific configuration for QGIS server &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,11 +34,11 @@
 
           <div class="body" role="main">
             
-  <section id="specific-configuration-for-qgis-server">
+  <div class="section" id="specific-configuration-for-qgis-server">
 <span id="integrator-backend-qgis"></span><h1>Specific configuration for QGIS server<a class="headerlink" href="#specific-configuration-for-qgis-server" title="Permalink to this headline">¶</a></h1>
-<section id="qgis-desktop-configuration">
+<div class="section" id="qgis-desktop-configuration">
 <h2>QGIS Desktop configuration<a class="headerlink" href="#qgis-desktop-configuration" title="Permalink to this headline">¶</a></h2>
-<section id="create-a-tunnel-on-the-database-server">
+<div class="section" id="create-a-tunnel-on-the-database-server">
 <h3>Create a tunnel on the database server<a class="headerlink" href="#create-a-tunnel-on-the-database-server" title="Permalink to this headline">¶</a></h3>
 <p>If you cannot connect directly to the database, you can create a tunnel to be able to connect:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
@@ -50,14 +49,14 @@ span.prompt1:before {
 </pre></div></div><p>If you run QGIS in Docker, you should bind to a specific IP:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>ip addr show dev <span class="k">$(</span>route <span class="p">|</span> grep default <span class="p">|</span> awk <span class="s1">&#39;{print $(NF)}&#39;</span> <span class="p">|</span> head -1<span class="k">)</span> <span class="p">|</span> awk <span class="s1">&#39;$1 ~ /^inet/ { sub(&quot;/.*&quot;, &quot;&quot;, $2); print $2 }&#39;</span> <span class="p">|</span> head -1<span class="k">)</span></span>
 <span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>
-</pre></div></div></section>
-<section id="run-the-client-with-docker">
+</pre></div></div></div>
+<div class="section" id="run-the-client-with-docker">
 <h3>Run the client with Docker<a class="headerlink" href="#run-the-client-with-docker" title="Permalink to this headline">¶</a></h3>
 <p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
 run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make edit-qgis-project</span>
-</pre></div></div></section>
-<section id="ows-configuration">
+</pre></div></div></div>
+<div class="section" id="ows-configuration">
 <h3>OWS configuration<a class="headerlink" href="#ows-configuration" title="Permalink to this headline">¶</a></h3>
 <p>You should setup your OWS service in the QGIS project properties in the OWS tab.</p>
 <p>You should <strong>check</strong> <em>Service Capabilities</em> and <strong>fill</strong> <em>Online resource</em> to correctly generate
@@ -72,8 +71,8 @@ API.</p>
 <p>Your QGIS project layers’ CRS should all be in the same CRS. This is subject to change.</p>
 <p>Finally, in the project settings, in the QGIS server section, set all the published URL to:
 <code class="docutils literal notranslate"><span class="pre">https://&lt;application_base_url&gt;/mapserv_proxy?ogcserver=&lt;name&gt;</span></code>.</p>
-</section>
-<section id="connect-to-postgres-database">
+</div>
+<div class="section" id="connect-to-postgres-database">
 <h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this headline">¶</a></h3>
 <p>If you want to add PostGIS layers on the main DB, create/edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code> file
 and add a section for the DB you want to access:</p>
@@ -122,8 +121,8 @@ dbname=${PGDATABASE}
 </pre></div>
 </div>
 <p>Do not forget to gracefully restart Apache.</p>
-</section>
-<section id="extra-postgis-connection">
+</div>
+<div class="section" id="extra-postgis-connection">
 <h3>Extra PostGIS connection<a class="headerlink" href="#extra-postgis-connection" title="Permalink to this headline">¶</a></h3>
 <p>If you need to add another database connection, add a new section in the <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code>.
 In the <code class="docutils literal notranslate"><span class="pre">qgisserver/pg_service.conf.tmpl</span></code> files, add a new section:</p>
@@ -148,9 +147,9 @@ port=${EXTRA_PGPORT}
 </div>
 <p>With this configuration, the connection will be passed through the environment variables,
 so that you can change the database connection without rebuilding your application.</p>
-</section>
-</section>
-<section id="ogc-server">
+</div>
+</div>
+<div class="section" id="ogc-server">
 <h2>OGC server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
 <p>For QGIS version &lt; 3.20, in the project file, you should set the online resource URL
 (Project/Properties…/QGIS Server/General information/Online resource) to
@@ -168,7 +167,7 @@ and the configuration should be as follows:</p>
 <li><p>WFS support: recommended to be <code class="docutils literal notranslate"><span class="pre">[X]</span></code></p></li>
 <li><p>Is single tile:  recommended to be <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code></p></li>
 </ul>
-<section id="access-restriction">
+<div class="section" id="access-restriction">
 <h3>Access Restriction<a class="headerlink" href="#access-restriction" title="Permalink to this headline">¶</a></h3>
 <p>The access restriction is available only for Docker projects.</p>
 <p>We provide a Docker image named <code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> with tag pattern:
@@ -186,17 +185,17 @@ and the configuration should be as follows:</p>
 value of the OGC server.</p>
 <p>Finally, you should provide the <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code> to point to a config file e.-g.
 <code class="docutils literal notranslate"><span class="pre">/etc/qgisserver/accesscontrol_config.yaml</span></code>, and <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> to be empty.</p>
-</section>
-<section id="project-in-database">
+</div>
+<div class="section" id="project-in-database">
 <h3>Project in Database<a class="headerlink" href="#project-in-database" title="Permalink to this headline">¶</a></h3>
 <p>If you store the project in the database, you should set the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable
 to something like that:
 <code class="docutils literal notranslate"><span class="pre">postgresql://&lt;dbuser&gt;:&lt;dbpass&gt;&#64;&lt;dbhost&gt;:&lt;dbport&gt;?sslmode=disable&amp;dbname=&lt;dbname&gt;&amp;schema=&lt;dbschema&gt;&amp;project=&lt;projectname&gt;</span></code>.</p>
 <p>If you specify it in the <cite>MAP</cite> parameter for the  OGC proxy, don’t forget to correctly encode it, you can use this
 <a class="reference external" href="https://www.url-encode-decode.com/">service</a> to encode it.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -255,7 +254,7 @@ to something like that:
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -272,7 +271,7 @@ to something like that:
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editing &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,12 +34,12 @@
 
           <div class="body" role="main">
             
-  <section id="editing">
+  <div class="section" id="editing">
 <span id="administrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h1>
 <p>This section explains how to configure the edit function in c2cgeoportal.</p>
 <p>Just like most administrative tasks, setting up editing in a c2cgeoportal application involves intervening
 in the database, through the c2cgeoportal administration interface.</p>
-<section id="requirements">
+<div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>To be editable, a layer should satisfy the following requirements:</p>
 <ol class="arabic">
@@ -84,8 +83,8 @@ by the <code class="docutils literal notranslate"><span class="pre">editingEnume
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-<section id="adding-or-making-layers-editable">
+</div>
+<div class="section" id="adding-or-making-layers-editable">
 <span id="administrator-editing-editable"></span><h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this headline">¶</a></h2>
 <p>The application’s layers are defined in the <code class="docutils literal notranslate"><span class="pre">layer</span></code> table, which is managed
 by selecting the <em>Layers</em> item in the admin interface’s menu.</p>
@@ -102,8 +101,8 @@ corresponding to this field is <em>Related Postgres table</em> in the admin inte
 <p class="admonition-title">Warning</p>
 <p>It is recommended to limit the editing to 30 editable layers per user.</p>
 </div>
-</section>
-<section id="configuring-security">
+</div>
+<div class="section" id="configuring-security">
 <h2>Configuring security<a class="headerlink" href="#configuring-security" title="Permalink to this headline">¶</a></h2>
 <p>Editing the features of a layer implies to write changes in the database. To make
 sure that only authorized users may edit a feature, editable layers (including
@@ -113,15 +112,15 @@ roles of authorized users.</p>
 administration interface.</p>
 <p>Binding restriction areas and layers together can be done from the <code class="docutils literal notranslate"><span class="pre">Layer</span></code> objects in the admin interface.
 Likewise for binding from the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</p>
-</section>
-<section id="edit-views">
+</div>
+<div class="section" id="edit-views">
 <h2>Edit views<a class="headerlink" href="#edit-views" title="Permalink to this headline">¶</a></h2>
 <p>To be able to edit PostgreSQL views a primary key must be manually configured.
 Add a layer metadata <code class="docutils literal notranslate"><span class="pre">geotablePrimaryKey</span></code> with value the name of the column to use as primary key.
 That column must be of type <code class="docutils literal notranslate"><span class="pre">Integer</span></code>.</p>
 <p>Example: <code class="docutils literal notranslate"><span class="pre">geotablePrimaryKey</span></code>: <code class="docutils literal notranslate"><span class="pre">id</span></code></p>
-</section>
-<section id="enable-snapping">
+</div>
+<div class="section" id="enable-snapping">
 <h2>Enable snapping<a class="headerlink" href="#enable-snapping" title="Permalink to this headline">¶</a></h2>
 <p>To be able to snap while editing, the <code class="docutils literal notranslate"><span class="pre">snappingConfig</span></code> must be set on the layer metadata.
 The value is a <code class="docutils literal notranslate"><span class="pre">json</span></code> object containing the following optional properties:</p>
@@ -130,16 +129,16 @@ The value is a <code class="docutils literal notranslate"><span class="pre">json
 <li><p>vertex (boolean): whether to allow snapping on vertices or not;</p></li>
 <li><p>tolerance (number): the pixel tolerance.</p></li>
 </ul>
-</section>
-<section id="managing-attributes">
+</div>
+<div class="section" id="managing-attributes">
 <h2>Managing attributes<a class="headerlink" href="#managing-attributes" title="Permalink to this headline">¶</a></h2>
 <p>To exclude some attributes from the editing form, list them as a comma-separated string
 (with no blank spaces) in the <code class="docutils literal notranslate"><span class="pre">Exclude</span> <span class="pre">properties</span></code> field of the WMS/WMTS layer forms
 in the admin interface.</p>
 <p>To make some attributes readonly, add a <code class="docutils literal notranslate"><span class="pre">readonlyAttributes</span></code> metadata in the same form,
 also as a comma-separated list of attributes.</p>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -194,7 +193,7 @@ also as a comma-separated list of attributes.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -211,7 +210,7 @@ also as a comma-separated list of attributes.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

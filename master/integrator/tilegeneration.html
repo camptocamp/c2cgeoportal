@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TileGeneration &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,9 +34,9 @@
 
           <div class="body" role="main">
             
-  <section id="tilegeneration">
+  <div class="section" id="tilegeneration">
 <span id="administrator-tilegeneration"></span><h1>TileGeneration<a class="headerlink" href="#tilegeneration" title="Permalink to this headline">¶</a></h1>
-<section id="introduction">
+<div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>With this solution, we solve the following issues:</p>
 <ul class="simple">
@@ -61,8 +60,8 @@ And the tiles should be deleted after the expiry time.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/camptocamp/tilecloud-chain">TileCloud-Chain</a> for the tile generation.</p></li>
 </ul>
-</section>
-<section id="id1">
+</div>
+<div class="section" id="id1">
 <h2>TileCloud-chain<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>TileCloud-chain is a TileCloud-based tool that offers a build chain for
 generating tiles from WMS of Mapnik on a local storage or S3 using a
@@ -70,7 +69,7 @@ WMTS layout.</p>
 <p>It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.</p>
 <p>See the <a class="reference external" href="https://pypi.python.org/pypi/tilecloud-chain">readme</a>.</p>
-<section id="configuration">
+<div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>The configuration is done in the file <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code>.</p>
 <p>The main thing to do is to:</p>
@@ -104,8 +103,8 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 <li><p>Make sure to not generate tiles with a resolution higher than the one in the raster sources.</p></li>
 </ul>
 </div>
-</section>
-<section id="tile-generation-and-management">
+</div>
+<div class="section" id="tile-generation-and-management">
 <h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
 <p>This package offers two tools, one to generate the tiles locally, see help:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles --help</span>
@@ -115,8 +114,8 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_controller --cost</span>
 </pre></div></div><p>If you setup all the default options, you can generate the tiles by using the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles</span>
-</pre></div></div></section>
-<section id="aws-credentials">
+</pre></div></div></div>
+<div class="section" id="aws-credentials">
 <h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Permalink to this headline">¶</a></h3>
 <p>To be able to connect to the S3 service, you should define the following variables in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code>
 file:</p>
@@ -131,29 +130,29 @@ file:</p>
 <span class="n">export</span> <span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-</section>
-<section id="web-interface">
+</div>
+<div class="section" id="web-interface">
 <h3>Web Interface<a class="headerlink" href="#web-interface" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to run tile generation commands through a web interface located at URL
 <code class="docutils literal notranslate"><span class="pre">&lt;application</span> <span class="pre">main</span> <span class="pre">URL&gt;/tiles/admin/</span></code>. This interface is protected by a password that
 must be specified in the <code class="docutils literal notranslate"><span class="pre">C2C_SECRET</span></code> environment variable in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
 <p>Predefined commands may be set in parameter <code class="docutils literal notranslate"><span class="pre">server</span> <span class="pre">&gt;</span> <span class="pre">predefined_commands</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
-</section>
-<section id="see-also">
+</div>
+<div class="section" id="see-also">
 <h3>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a></p></li>
 <li><p><a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-perepare-raster"><span class="std std-ref">Prepare raster files</span></a></p></li>
 </ul>
-</section>
-<section id="upstream-documentation">
+</div>
+<div class="section" id="upstream-documentation">
 <h3>Upstream documentation<a class="headerlink" href="#upstream-documentation" title="Permalink to this headline">¶</a></h3>
-</section>
-</section>
-<section id="configure">
+</div>
+</div>
+<div class="section" id="configure">
 <h2>Configure<a class="headerlink" href="#configure" title="Permalink to this headline">¶</a></h2>
-<section id="configure-grids">
+<div class="section" id="configure-grids">
 <h3>Configure grids<a class="headerlink" href="#configure-grids" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> describes how the tiles are arranged.</p>
 <p>Especially on <code class="docutils literal notranslate"><span class="pre">s3</span></code> be careful to choose every of the grid settings before generating the tiles. If you
@@ -171,8 +170,8 @@ parameter to generate the tile on a restricted area</strong>: use the <code clas
 index is build to store the tiles, for example, for the resolutions <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0.5]</span></code> the used values are
 <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code> based on the zoom and <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0_5]</span></code> based on the resolution. The second has the advantage of
 allowing to add a new resolution without regenerating all the tiles, but it does not work with MapCache.</p>
-</section>
-<section id="configure-caches">
+</div>
+<div class="section" id="configure-caches">
 <h3>Configure caches<a class="headerlink" href="#configure-caches" title="Permalink to this headline">¶</a></h3>
 <p>The available tile caches are: <code class="docutils literal notranslate"><span class="pre">s3</span></code>, <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, <code class="docutils literal notranslate"><span class="pre">mbtile</span></code> and <code class="docutils literal notranslate"><span class="pre">filesystem</span></code>.</p>
 <p>The best solution to store the tiles, <code class="docutils literal notranslate"><span class="pre">s3</span></code>, <code class="docutils literal notranslate"><span class="pre">mbtiles</span></code> and <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, have the advantage of using only one
@@ -188,16 +187,16 @@ needed to generate the capabilities. We can specify:</p>
 <code class="docutils literal notranslate"><span class="pre">http_url</span></code>.</p></li>
 </ul>
 <p>In all case <code class="docutils literal notranslate"><span class="pre">http_url</span></code> or <code class="docutils literal notranslate"><span class="pre">http_urls</span></code> can include all attributes of this cache as <code class="docutils literal notranslate"><span class="pre">%(attribute)s</span></code>.</p>
-<section id="mbtiles-vs-berkeley-db-bsddb">
+<div class="section" id="mbtiles-vs-berkeley-db-bsddb">
 <h4>MBTiles vs Berkeley DB (<code class="docutils literal notranslate"><span class="pre">bsddb</span></code>)<a class="headerlink" href="#mbtiles-vs-berkeley-db-bsddb" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p>Read performance: similar, eventually the MBTiles is 10% faster.</p></li>
 <li><p>Write performance: The Berkeley DB is largely faster, about 10 times.</p></li>
 <li><p>List the tiles: the MBTiles is largely faster, but we usually don’t need it.</p></li>
 </ul>
-</section>
-</section>
-<section id="configure-layers">
+</div>
+</div>
+<div class="section" id="configure-layers">
 <h3>Configure layers<a class="headerlink" href="#configure-layers" title="Permalink to this headline">¶</a></h3>
 <p>First, all the attributes in <code class="docutils literal notranslate"><span class="pre">layer_default</span></code> are copied in all the layers to define the default values.</p>
 <p>We have two <code class="docutils literal notranslate"><span class="pre">type</span></code> of layer: <code class="docutils literal notranslate"><span class="pre">wms</span></code> or <code class="docutils literal notranslate"><span class="pre">mapnik</span></code>.</p>
@@ -205,7 +204,7 @@ needed to generate the capabilities. We can specify:</p>
 <p><code class="docutils literal notranslate"><span class="pre">min_resolution_seed</span></code> the minimum resolution that is seeded, other resolutions are served by MapCache.</p>
 <p><code class="docutils literal notranslate"><span class="pre">bbox</span></code> used to limit the tiles generation.</p>
 <p><code class="docutils literal notranslate"><span class="pre">px_buffer</span></code> a buffer in px around the object area (geoms or extent).</p>
-<section id="wmts-layout">
+<div class="section" id="wmts-layout">
 <h4>WMTS layout<a class="headerlink" href="#wmts-layout" title="Permalink to this headline">¶</a></h4>
 <p>To generate the file paths and the WMTS capabilities we need additional information:</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> of the tiles, it’s also used by the WMS GetMap and to upload the tiles.</p>
@@ -232,16 +231,16 @@ in the capabilities, a <code class="docutils literal notranslate"><span class="p
 </div>
 <p>We will have two set of tiles <code class="docutils literal notranslate"><span class="pre">2012</span></code> and <code class="docutils literal notranslate"><span class="pre">2013</span></code>, both accessible by the capabilities, and by default we
 will see the first set of tiles.</p>
-</section>
-<section id="meta-tiles">
+</div>
+<div class="section" id="meta-tiles">
 <h4>Meta tiles<a class="headerlink" href="#meta-tiles" title="Permalink to this headline">¶</a></h4>
 <p>The meta tiles are activated by setting <code class="docutils literal notranslate"><span class="pre">meta</span></code> to <code class="docutils literal notranslate"><span class="pre">on</span></code> (by default it’s <code class="docutils literal notranslate"><span class="pre">off</span></code>).</p>
 <p>The meta tiles are used for two things: first to generate multiple tiles with only one WMS query. By setting
 <code class="docutils literal notranslate"><span class="pre">meta_size</span></code> to 8 we will generate a square of 8 by 8 tiles in one shot.</p>
 <p>The second usage of meta tiles is prevent cut label names: this is solved by getting a bigger image and cutting
 the borders. The <code class="docutils literal notranslate"><span class="pre">meta_buffer</span></code> should be set to a bigger value than half the size of the longest label.</p>
-</section>
-<section id="configure-hash">
+</div>
+<div class="section" id="configure-hash">
 <h4>Configure hash<a class="headerlink" href="#configure-hash" title="Permalink to this headline">¶</a></h4>
 <p>We can filter tiles and meta tiles by using an hash.</p>
 <p>The configuration of this hash is in the layer like this:</p>
@@ -259,8 +258,8 @@ the borders. The <code class="docutils literal notranslate"><span class="pre">me
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;z/x/y&gt;</span></code> should refer to an empty tile/metatile. Generally it’s a good idea to use z as the maximum
 zoom, x and y as 0.</p>
-</section>
-<section id="configure-geom-sql">
+</div>
+<div class="section" id="configure-geom-sql">
 <h4>Configure geom/sql<a class="headerlink" href="#configure-geom-sql" title="Permalink to this headline">¶</a></h4>
 <p>We can generate the tiles only on some geometries stored in PostGis.</p>
 <p>The configuration is in the layer like this:</p>
@@ -282,8 +281,8 @@ zoom, x and y as 0.</p>
 </pre></div>
 </div>
 <p>It’s preferable to use simple geometries, too complex geometries can slow down the generation.</p>
-</section>
-<section id="legends">
+</div>
+<div class="section" id="legends">
 <h4>Legends<a class="headerlink" href="#legends" title="Permalink to this headline">¶</a></h4>
 <p>To be able to generate legends with <code class="docutils literal notranslate"><span class="pre">generate-controller</span> <span class="pre">--generate-legend-images</span></code> you should have
 <code class="docutils literal notranslate"><span class="pre">legend_mime</span></code> and <code class="docutils literal notranslate"><span class="pre">legend_extension</span></code> in the layer configuration.</p>
@@ -308,23 +307,23 @@ generate a layer configuration like this:</p>
 </pre></div>
 </div>
 <p>If you define a legends array in the layer configuration it is directly used to generate the capabilities.</p>
-</section>
-<section id="wms-layers">
+</div>
+<div class="section" id="wms-layers">
 <h4>WMS layers<a class="headerlink" href="#wms-layers" title="Permalink to this headline">¶</a></h4>
 <p>The additional value needed by the WMS is the URL of the server and the <code class="docutils literal notranslate"><span class="pre">layers</span></code>.</p>
 <p>The previously defined <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> is also used in the WMS requests.</p>
 <p>To customize the request you also have the attributes <code class="docutils literal notranslate"><span class="pre">params</span></code>, <code class="docutils literal notranslate"><span class="pre">headers</span></code> and <code class="docutils literal notranslate"><span class="pre">generate_salt</span></code>. In
 <code class="docutils literal notranslate"><span class="pre">params</span></code> you can specify additional parameter of the WMS request, in <code class="docutils literal notranslate"><span class="pre">headers</span></code> you can modify the request
 headers. In <code class="docutils literal notranslate"><span class="pre">version</span></code>, you can change the WMS version. See the Proxy/cache issue for additional information.</p>
-</section>
-<section id="mapnik-layers">
+</div>
+<div class="section" id="mapnik-layers">
 <h4>Mapnik layers<a class="headerlink" href="#mapnik-layers" title="Permalink to this headline">¶</a></h4>
 <p>We need to specify the <code class="docutils literal notranslate"><span class="pre">mapfile</span></code> path.</p>
 <p>With Mapnik we have the possibility to specify a <code class="docutils literal notranslate"><span class="pre">data_buffer</span></code> then we should set the unneeded
 <code class="docutils literal notranslate"><span class="pre">meta_buffer</span></code> to 0.</p>
 <p>And the <code class="docutils literal notranslate"><span class="pre">output_format</span></code> used for the Mapnik renderer, can be <code class="docutils literal notranslate"><span class="pre">png</span></code>, <code class="docutils literal notranslate"><span class="pre">png256</span></code>, <code class="docutils literal notranslate"><span class="pre">jpeg</span></code>, <code class="docutils literal notranslate"><span class="pre">grid</span></code>
 (grid_renderer).</p>
-<section id="mapnik-grid-layers">
+<div class="section" id="mapnik-grid-layers">
 <h5>Mapnik grid layers<a class="headerlink" href="#mapnik-grid-layers" title="Permalink to this headline">¶</a></h5>
 <p>With Mapnik we can generate UTFGrid tiles (JSON format that describes the tiles present on a corresponding
 tile) by using the <code class="docutils literal notranslate"><span class="pre">output_format</span></code> ‘grid’, see also:
@@ -352,10 +351,10 @@ the <code class="docutils literal notranslate"><span class="pre">meta</span></co
         <span class="nt">buildings</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">name</span><span class="p p-Indicator">,</span> <span class="nv">street</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="process">
+</div>
+</div>
+</div>
+<div class="section" id="process">
 <h3>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h3>
 <p>We can configure some tile commands to process the tiles. They can be automatically be called in the tile
 generation it we set the property <code class="docutils literal notranslate"><span class="pre">post_process</span></code> or <code class="docutils literal notranslate"><span class="pre">pre_hash_post_process</span></code> in the layer configuration.</p>
@@ -377,8 +376,8 @@ generation it we set the property <code class="docutils literal notranslate"><sp
 <li><p><code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span></code> the input and output files.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code> the tile coordinates.</p></li>
 </ul>
-</section>
-<section id="logging">
+</div>
+<div class="section" id="logging">
 <h3>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h3>
 <p>Tile logs can be saved to a PostgreSQL database with this configuration:</p>
 <p>..code:: yaml</p>
@@ -396,8 +395,8 @@ table: tilecloud_logs</p>
 <p>PostgreSQL authentication can be specified with the <code class="docutils literal notranslate"><span class="pre">PGUSER</span></code> and <code class="docutils literal notranslate"><span class="pre">PGPASSWORD</span></code> environment variables.
 If the database is not reachable, the process will wait until it is.</p>
 </div></blockquote>
-</section>
-<section id="configure-apache-deprecated">
+</div>
+<div class="section" id="configure-apache-deprecated">
 <h3>Configure Apache (deprecated)<a class="headerlink" href="#configure-apache-deprecated" title="Permalink to this headline">¶</a></h3>
 <p>To generate the Apache configuration we use the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --generate-apache-config</span>
@@ -417,8 +416,8 @@ If the database is not reachable, the process will wait until it is.</p>
 </div>
 <p>If we use a proxy to access to the tiles we can specify a different URL to access to the tiles by adding the
 parameter <code class="docutils literal notranslate"><span class="pre">tiles_url</span></code> in the cache.</p>
-</section>
-<section id="configure-mapcache-deprecated">
+</div>
+<div class="section" id="configure-mapcache-deprecated">
 <h3>Configure MapCache (deprecated)<a class="headerlink" href="#configure-mapcache-deprecated" title="Permalink to this headline">¶</a></h3>
 <p>For the last zoom levels we can use MapCache.</p>
 <p>To select the levels we switch from pre-generate the tiles to generate tiles on run-time by using MapCache
@@ -437,8 +436,8 @@ parameter <code class="docutils literal notranslate"><span class="pre">tiles_url
 </div>
 <p>To generate the MapCache configuration we use the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --generate-mapcache-config</span>
-</pre></div></div></section>
-<section id="tiles-error-file">
+</pre></div></div></div>
+<div class="section" id="tiles-error-file">
 <h3>Tiles error file<a class="headerlink" href="#tiles-error-file" title="Permalink to this headline">¶</a></h3>
 <p>If we set a file path in configuration file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">generation</span><span class="p">:</span>
@@ -453,8 +452,8 @@ run.</p>
 <p><code class="docutils literal notranslate"><span class="pre">{.sourceCode</span> <span class="pre">.}</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">some</span> <span class="pre">comments</span> <span class="pre">z/x/y</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">the</span> <span class="pre">error</span> <span class="pre">z/x/y:+m/+m</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">the</span> <span class="pre">error</span></code></p>
 <p>The first line is just a comment, the second, is for an error on a tile, and the third is for an error on a
 meta tile.</p>
-</section>
-<section id="proxy-cache-issue">
+</div>
+<div class="section" id="proxy-cache-issue">
 <h3>Proxy/cache issue<a class="headerlink" href="#proxy-cache-issue" title="Permalink to this headline">¶</a></h3>
 <p>In general we shouldn’t generate tiles throw a proxy, to do that you should configure the layers as this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers_name</span><span class="p">:</span>
@@ -473,21 +472,21 @@ VirtualHost.</p>
 </div>
 <p>And if you steal have issue you can add a <code class="docutils literal notranslate"><span class="pre">SALT</span></code> random argument by setting the layer parameter
 <code class="docutils literal notranslate"><span class="pre">generate_salt</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
-</section>
-<section id="alternate-mime-type">
+</div>
+<div class="section" id="alternate-mime-type">
 <h3>Alternate mime type<a class="headerlink" href="#alternate-mime-type" title="Permalink to this headline">¶</a></h3>
 <p>By default TileCloud support only the <code class="docutils literal notranslate"><span class="pre">image/jpeg</span></code> and <code class="docutils literal notranslate"><span class="pre">image/png</span></code> mime type.</p>
-</section>
-</section>
-<section id="amazon-services">
+</div>
+</div>
+<div class="section" id="amazon-services">
 <h2>Amazon services<a class="headerlink" href="#amazon-services" title="Permalink to this headline">¶</a></h2>
-<section id="authentication">
+<div class="section" id="authentication">
 <h3>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h3>
 <p>To be authenticated by Amazon you should set those environments variable before running a command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>...</span>
 <span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>...</span>
-</pre></div></div></section>
-<section id="configure-s3">
+</pre></div></div></div>
+<div class="section" id="configure-s3">
 <h3>Configure S3<a class="headerlink" href="#configure-s3" title="Permalink to this headline">¶</a></h3>
 <p>The cache configuration is like this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">s3</span><span class="p">:</span>
@@ -505,8 +504,8 @@ VirtualHost.</p>
 </div>
 <p>The bucket should already exists. If you don’t use Amazon’s S3, you must specify the <code class="docutils literal notranslate"><span class="pre">host</span></code> and the
 <code class="docutils literal notranslate"><span class="pre">tiles_url</span></code> configuration parameter.</p>
-</section>
-<section id="configure-sqs">
+</div>
+<div class="section" id="configure-sqs">
 <h3>Configure SQS<a class="headerlink" href="#configure-sqs" title="Permalink to this headline">¶</a></h3>
 <p>The configuration in layer is like this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sqs</span><span class="p">:</span>
@@ -524,8 +523,8 @@ VirtualHost.</p>
 </pre></div></div><p>For the slave to keep listening when the queue is empty and be able to support more than one layer, you must
 enable the daemon mode and must not specify the layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --role slave --daemon</span>
-</pre></div></div></section>
-<section id="configure-sns">
+</pre></div></div></div>
+<div class="section" id="configure-sns">
 <h3>Configure SNS<a class="headerlink" href="#configure-sns" title="Permalink to this headline">¶</a></h3>
 <p>SNS can be used to send a message when the generation ends.</p>
 <p>The configuration is like this:</p>
@@ -535,8 +534,8 @@ enable the daemon mode and must not specify the layer:</p>
 </pre></div>
 </div>
 <p>The topic should already exists.</p>
-</section>
-<section id="amazon-tool">
+</div>
+<div class="section" id="amazon-tool">
 <h3>Amazon tool<a class="headerlink" href="#amazon-tool" title="Permalink to this headline">¶</a></h3>
 <p>Amazon has a command line tool (<a class="reference external" href="http://aws.amazon.com/fr/cli/">homepage</a>).</p>
 <p>To use it, add in the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
@@ -556,11 +555,11 @@ enable the daemon mode and must not specify the layer:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws s3 rm --recursive s3://your_bucket_name/folder
 </pre></div>
 </div>
-</section>
-</section>
-<section id="other-related-configuration">
+</div>
+</div>
+<div class="section" id="other-related-configuration">
 <h2>Other related configuration<a class="headerlink" href="#other-related-configuration" title="Permalink to this headline">¶</a></h2>
-<section id="openlayers-pink-tiles">
+<div class="section" id="openlayers-pink-tiles">
 <h3>OpenLayers pink tiles<a class="headerlink" href="#openlayers-pink-tiles" title="Permalink to this headline">¶</a></h3>
 <p>To avoid the OpenLayers red tiles on missing empty tiles we can add the following CSS rule:</p>
 <div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">olImageLoadError</span> <span class="p">{</span>
@@ -574,9 +573,9 @@ enable the daemon mode and must not specify the layer:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="distribute-the-tiles">
+</div>
+</div>
+<div class="section" id="distribute-the-tiles">
 <h2>Distribute the tiles<a class="headerlink" href="#distribute-the-tiles" title="Permalink to this headline">¶</a></h2>
 <p>There two ways to serve the tiles, with Apache configuration, or with an internal server.</p>
 <p>The advantage of the internal server are:</p>
@@ -608,7 +607,7 @@ enable the daemon mode and must not specify the layer:</p>
 <p>You should also configure the <code class="docutils literal notranslate"><span class="pre">http_url</span></code> of the used cache, to something like
 <code class="docutils literal notranslate"><span class="pre">https://%(host)s/${instanceid}/tiles</span></code> or like <code class="docutils literal notranslate"><span class="pre">https://%(host)s/${instanceid}/wsgi/tiles</span></code> if you use the
 Pyramid view.</p>
-<section id="pyramid-view">
+<div class="section" id="pyramid-view">
 <h3>Pyramid view<a class="headerlink" href="#pyramid-view" title="Permalink to this headline">¶</a></h3>
 <p>To use the pyramid view use the following configuration:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
@@ -618,8 +617,8 @@ Pyramid view.</p>
 <span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;tilecloud_chain.server:PyramidView&#39;</span><span class="p">,</span> <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;tiles&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="internal-wsgi-server">
+</div>
+<div class="section" id="internal-wsgi-server">
 <h3>Internal WSGI server<a class="headerlink" href="#internal-wsgi-server" title="Permalink to this headline">¶</a></h3>
 <p>in <code class="docutils literal notranslate"><span class="pre">production.ini</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">app</span><span class="p">:</span><span class="n">tiles</span><span class="p">]</span>
@@ -636,11 +635,11 @@ WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
 &lt;/Location&gt;
 </pre></div>
 </div>
-</section>
-</section>
-<section id="commands">
+</div>
+</div>
+<div class="section" id="commands">
 <h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
-<section id="available-commands">
+<div class="section" id="available-commands">
 <h3>Available commands<a class="headerlink" href="#available-commands" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">generate-controller</span></code> generate the annex files like capabilities, legend, OpenLayers test page, MapCache
@@ -652,8 +651,8 @@ configuration, Apache configuration.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">import_expiretiles</span></code> import the osm2pgsql expire-tiles file as geoms in the database.</p></li>
 </ul>
 <p>Each commands have a <code class="docutils literal notranslate"><span class="pre">--help</span></code> option to give a full arguments help.</p>
-</section>
-<section id="generate-tiles">
+</div>
+<div class="section" id="generate-tiles">
 <h3>Generate tiles<a class="headerlink" href="#generate-tiles" title="Permalink to this headline">¶</a></h3>
 <p>Generate all the tiles:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles</span>
@@ -675,14 +674,14 @@ configuration, Apache configuration.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --cache &lt;a_cache&gt;</span>
 </pre></div></div><p>And don’t forget to generate the WMTS Capabilities:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --capabilities</span>
-</pre></div></div></section>
-<section id="openlayers-test-page">
+</pre></div></div></div>
+<div class="section" id="openlayers-test-page">
 <h3>OpenLayers test page<a class="headerlink" href="#openlayers-test-page" title="Permalink to this headline">¶</a></h3>
 <p>To generate a test page use:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --openlayers</span>
-</pre></div></div></section>
-</section>
-<section id="explain-cost">
+</pre></div></div></div>
+</div>
+<div class="section" id="explain-cost">
 <h2>Explain cost<a class="headerlink" href="#explain-cost" title="Permalink to this headline">¶</a></h2>
 <p>Configuration (default values):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span>
@@ -711,7 +710,7 @@ configuration, Apache configuration.</p></li>
 </div>
 <p>The following commands can be used to know the time and cost to do generation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --cost</span>
-</pre></div></div><section id="useful-options">
+</pre></div></div><div class="section" id="useful-options">
 <h3>Useful options<a class="headerlink" href="#useful-options" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--quiet</span></code> or <code class="docutils literal notranslate"><span class="pre">-q</span></code>: used to display only errors.</p>
 <p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code> or <code class="docutils literal notranslate"><span class="pre">-v</span></code>: used to display info messages.</p>
@@ -720,17 +719,17 @@ mode we don’t catch exceptions, and we don’t log time messages.</p>
 <p><code class="docutils literal notranslate"><span class="pre">--test</span> <span class="pre">&lt;n&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">&lt;n&gt;</span></code>: used to generate only <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> tiles, useful for test.</p>
 <p>The logging format is configurable in the<code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> - <code class="docutils literal notranslate"><span class="pre">generation/log_format</span></code>,
 <a class="reference external" href="http://docs.python.org/2/library/logging.html#logrecord-attributes">See</a>.</p>
-</section>
-</section>
-<section id="important-remarks">
+</div>
+</div>
+<div class="section" id="important-remarks">
 <h2>Important remarks<a class="headerlink" href="#important-remarks" title="Permalink to this headline">¶</a></h2>
 <p>Especially on S3 the grid name, the layer name, the dimensions, can’t be changed (understand if we want to
 change them we should regenerate all the tiles).</p>
 <p>By default we also can’t insert a zoom level, if you think that you need it we can set the grid property
 <code class="docutils literal notranslate"><span class="pre">matrix_identifier:</span> <span class="pre">resolution</span></code>, bit it don’t work with MapCache.</p>
 <p>Please use the <code class="docutils literal notranslate"><span class="pre">--debug</span></code> to report issue.</p>
-</section>
-<section id="environment-variables">
+</div>
+<div class="section" id="environment-variables">
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">2</span></code>, The number of thread used to generate the tiles (If we use meta tiles)</p></li>
@@ -740,7 +739,7 @@ meta tiles, also to generate the tiles)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILE_QUEUE_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">2</span></code>, The queue size just after the Redis queue</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>, The chunk size to process the tiles after the meta tiles.</p></li>
 </ul>
-<section id="tilecloud-chain-configuration">
+<div class="section" id="tilecloud-chain-configuration">
 <span id="tilecloud-chain-configuration"></span><h3>TileCloud-chain configuration<a class="headerlink" href="#tilecloud-chain-configuration" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
@@ -1068,7 +1067,7 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-<section id="grid">
+<div class="section" id="grid">
 <span id="grid"></span><h4>Grid<a class="headerlink" href="#grid" title="Permalink to this headline">¶</a></h4>
 <p>The WMTS grid definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids</a></p>
 <table class="docutils align-default">
@@ -1197,8 +1196,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-type">
+</div>
+<div class="section" id="cache-type">
 <span id="cache-type"></span><h4>Cache type<a class="headerlink" href="#cache-type" title="Permalink to this headline">¶</a></h4>
 <p>The cache type, s3, filesystem, mbtiles or bsddb</p>
 <table class="docutils align-default">
@@ -1215,8 +1214,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-wmst-capabilities-file">
+</div>
+<div class="section" id="cache-wmst-capabilities-file">
 <span id="cache-wmst-capabilities-file"></span><h4>Cache WMST capabilities file<a class="headerlink" href="#cache-wmst-capabilities-file" title="Permalink to this headline">¶</a></h4>
 <p>The generated WMTS capabilities file name (by ‘default 1.0.0/WMTSCapabilities.xml’)</p>
 <table class="docutils align-default">
@@ -1230,8 +1229,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-http-url">
+</div>
+<div class="section" id="cache-http-url">
 <span id="cache-http-url"></span><h4>Cache HTTP URL<a class="headerlink" href="#cache-http-url" title="Permalink to this headline">¶</a></h4>
 <p>The HTTP URL %host will be replaces by one of the hosts</p>
 <table class="docutils align-default">
@@ -1245,8 +1244,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-host">
+</div>
+<div class="section" id="cache-host">
 <span id="cache-host"></span><h4>Cache host<a class="headerlink" href="#cache-host" title="Permalink to this headline">¶</a></h4>
 <p>The host used to build the HTTP URLs</p>
 <table class="docutils align-default">
@@ -1265,8 +1264,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-http-urls">
+</div>
+<div class="section" id="cache-http-urls">
 <span id="cache-http-urls"></span><h4>Cache HTTP URLs<a class="headerlink" href="#cache-http-urls" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -1284,8 +1283,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-folder">
+</div>
+<div class="section" id="cache-folder">
 <span id="cache-folder"></span><h4>Cache folder<a class="headerlink" href="#cache-folder" title="Permalink to this headline">¶</a></h4>
 <p>The root folder of the cache, default to ‘’</p>
 <table class="docutils align-default">
@@ -1299,8 +1298,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-filesystem">
+</div>
+<div class="section" id="cache-filesystem">
 <span id="cache-filesystem"></span><h4>cache_filesystem<a class="headerlink" href="#cache-filesystem" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -1353,8 +1352,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-s3">
+</div>
+<div class="section" id="cache-s3">
 <span id="cache-s3"></span><h4>cache_s3<a class="headerlink" href="#cache-s3" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -1451,8 +1450,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-mbtiles">
+</div>
+<div class="section" id="cache-mbtiles">
 <span id="cache-mbtiles"></span><h4>cache_mbtiles<a class="headerlink" href="#cache-mbtiles" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -1505,8 +1504,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache-bsddb">
+</div>
+<div class="section" id="cache-bsddb">
 <span id="cache-bsddb"></span><h4>cache_bsddb<a class="headerlink" href="#cache-bsddb" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -1559,8 +1558,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cache">
+</div>
+<div class="section" id="cache">
 <span id="cache"></span><h4>Cache<a class="headerlink" href="#cache" title="Permalink to this headline">¶</a></h4>
 <p>The tiles cache definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches</a></p>
 <table class="docutils align-default">
@@ -1643,8 +1642,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-type">
+</div>
+<div class="section" id="layer-type">
 <span id="layer-type"></span><h4>Layer type<a class="headerlink" href="#layer-type" title="Permalink to this headline">¶</a></h4>
 <p>The layer type, wms or mapnik</p>
 <table class="docutils align-default">
@@ -1661,8 +1660,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-title">
+</div>
+<div class="section" id="layer-title">
 <span id="layer-title"></span><h4>Layer title<a class="headerlink" href="#layer-title" title="Permalink to this headline">¶</a></h4>
 <p>The title, use to generate the capabilities</p>
 <table class="docutils align-default">
@@ -1676,8 +1675,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-grid">
+</div>
+<div class="section" id="layer-grid">
 <span id="layer-grid"></span><h4>Layer grid<a class="headerlink" href="#layer-grid" title="Permalink to this headline">¶</a></h4>
 <p>The used grid name</p>
 <table class="docutils align-default">
@@ -1691,8 +1690,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-bounding-box">
+</div>
+<div class="section" id="layer-bounding-box">
 <span id="layer-bounding-box"></span><h4>Layer bounding box<a class="headerlink" href="#layer-bounding-box" title="Permalink to this headline">¶</a></h4>
 <p>The bounding box where we will generate the tiles</p>
 <table class="docutils align-default">
@@ -1717,8 +1716,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-min-resolution-seed">
+</div>
+<div class="section" id="layer-min-resolution-seed">
 <span id="layer-min-resolution-seed"></span><h4>layer min resolution seed<a class="headerlink" href="#layer-min-resolution-seed" title="Permalink to this headline">¶</a></h4>
 <p>The minimum resolutions to pre-generate</p>
 <table class="docutils align-default">
@@ -1732,8 +1731,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-pixel-buffer">
+</div>
+<div class="section" id="layer-pixel-buffer">
 <span id="layer-pixel-buffer"></span><h4>Layer pixel buffer<a class="headerlink" href="#layer-pixel-buffer" title="Permalink to this headline">¶</a></h4>
 <p>The buffer in pixel used to calculate geometry intersection, default to 0</p>
 <table class="docutils align-default">
@@ -1747,8 +1746,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-meta">
+</div>
+<div class="section" id="layer-meta">
 <span id="layer-meta"></span><h4>Layer meta<a class="headerlink" href="#layer-meta" title="Permalink to this headline">¶</a></h4>
 <p>Used meta-tiles, default to False, see see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles</a></p>
 <table class="docutils align-default">
@@ -1762,8 +1761,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-meta-size">
+</div>
+<div class="section" id="layer-meta-size">
 <span id="layer-meta-size"></span><h4>Layer meta size<a class="headerlink" href="#layer-meta-size" title="Permalink to this headline">¶</a></h4>
 <p>The meta-tile size in tiles, default to 5</p>
 <table class="docutils align-default">
@@ -1777,8 +1776,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-meta-buffer">
+</div>
+<div class="section" id="layer-meta-buffer">
 <span id="layer-meta-buffer"></span><h4>Layer meta buffer<a class="headerlink" href="#layer-meta-buffer" title="Permalink to this headline">¶</a></h4>
 <p>The meta-tiles buffer in pixels, default to 128</p>
 <table class="docutils align-default">
@@ -1792,8 +1791,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-layers">
+</div>
+<div class="section" id="layer-layers">
 <span id="layer-layers"></span><h4>Layer layers<a class="headerlink" href="#layer-layers" title="Permalink to this headline">¶</a></h4>
 <p>The WMS layers</p>
 <table class="docutils align-default">
@@ -1807,8 +1806,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-wmts-style">
+</div>
+<div class="section" id="layer-wmts-style">
 <span id="layer-wmts-style"></span><h4>Layer WMTS style<a class="headerlink" href="#layer-wmts-style" title="Permalink to this headline">¶</a></h4>
 <p>The WMTS style</p>
 <table class="docutils align-default">
@@ -1821,12 +1820,12 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>pattern</p></td>
-<td><p>^[a-zA-Z0-9_-\+~.]+$</p></td>
+<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-mime-type">
+</div>
+<div class="section" id="layer-mime-type">
 <span id="layer-mime-type"></span><h4>Layer MIME type<a class="headerlink" href="#layer-mime-type" title="Permalink to this headline">¶</a></h4>
 <p>The MIME type of the tiles</p>
 <table class="docutils align-default">
@@ -1839,12 +1838,12 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>pattern</p></td>
-<td><p>^[a-zA-Z0-9!#$%^&amp;\*_-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_-\+{}\|’.`~]+$</p></td>
+<td><p>^[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+$</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-extension">
+</div>
+<div class="section" id="layer-extension">
 <span id="layer-extension"></span><h4>Layer extension<a class="headerlink" href="#layer-extension" title="Permalink to this headline">¶</a></h4>
 <p>The layer extension</p>
 <table class="docutils align-default">
@@ -1858,8 +1857,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-dimension-name">
+</div>
+<div class="section" id="layer-dimension-name">
 <span id="layer-dimension-name"></span><h4>Layer dimension name<a class="headerlink" href="#layer-dimension-name" title="Permalink to this headline">¶</a></h4>
 <p>The dimension name</p>
 <table class="docutils align-default">
@@ -1872,12 +1871,12 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>pattern</p></td>
-<td><p>^(?!(?i)(SERVICE|VERSION|REQUEST|LAYERS|STYLES|SRS|CRS|BBOX|WIDTH|HEIGHT|FORMAT|BGCOLOR|TRANSPARENT|SLD|EXCEPTIONS|SALT))[a-z0-9_-~.]+$</p></td>
+<td><p>^(?!(?i)(SERVICE|VERSION|REQUEST|LAYERS|STYLES|SRS|CRS|BBOX|WIDTH|HEIGHT|FORMAT|BGCOLOR|TRANSPARENT|SLD|EXCEPTIONS|SALT))[a-z0-9_\-~\.]+$</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-dimensions">
+</div>
+<div class="section" id="layer-dimensions">
 <span id="layer-dimensions"></span><h4>layer dimensions<a class="headerlink" href="#layer-dimensions" title="Permalink to this headline">¶</a></h4>
 <p>The WMTS dimensions</p>
 <table class="docutils align-default">
@@ -1920,7 +1919,7 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>pattern</p></td>
-<td><p>^[a-zA-Z0-9_-\+~.]+$</p></td>
+<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
 </tr>
 <tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p><strong>values</strong></p></li>
@@ -1938,7 +1937,7 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>pattern</p></td>
-<td><p>^[a-zA-Z0-9_-\+~.]+$</p></td>
+<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p><strong>default</strong></p></li>
@@ -1952,15 +1951,15 @@ meta tiles, also to generate the tiles)</p></li>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>pattern</p></td>
-<td colspan="2"><p>^[a-zA-Z0-9_-\+~.]+$</p></td>
+<td colspan="2"><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-legends">
+</div>
+<div class="section" id="layer-legends">
 <span id="layer-legends"></span><h4>Layer legends<a class="headerlink" href="#layer-legends" title="Permalink to this headline">¶</a></h4>
 <p>The provided legend</p>
 <table class="docutils align-default">
@@ -1992,7 +1991,7 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>pattern</p></td>
-<td><p>^[a-zA-Z0-9!#$%^&amp;\*_-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_-\+{}\|’.`~]+$</p></td>
+<td><p>^[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+$</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>href</strong></p></li>
@@ -2076,8 +2075,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-legend-mime">
+</div>
+<div class="section" id="layer-legend-mime">
 <span id="layer-legend-mime"></span><h4>Layer legend MIME<a class="headerlink" href="#layer-legend-mime" title="Permalink to this headline">¶</a></h4>
 <p>The mime type used to store the generated legend</p>
 <table class="docutils align-default">
@@ -2090,12 +2089,12 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>pattern</p></td>
-<td><p>^[a-zA-Z0-9!#$%^&amp;\*_-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_-\+{}\|’.`~]+$</p></td>
+<td><p>^[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+$</p></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-legend-extension">
+</div>
+<div class="section" id="layer-legend-extension">
 <span id="layer-legend-extension"></span><h4>Layer legend extension<a class="headerlink" href="#layer-legend-extension" title="Permalink to this headline">¶</a></h4>
 <p>The extension used to store the generated legend</p>
 <table class="docutils align-default">
@@ -2112,8 +2111,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-pre-hash-post-process">
+</div>
+<div class="section" id="layer-pre-hash-post-process">
 <span id="layer-pre-hash-post-process"></span><h4>Layer pre hash post process<a class="headerlink" href="#layer-pre-hash-post-process" title="Permalink to this headline">¶</a></h4>
 <p>Do an image post process before the empty hash check</p>
 <table class="docutils align-default">
@@ -2127,8 +2126,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-post-process">
+</div>
+<div class="section" id="layer-post-process">
 <span id="layer-post-process"></span><h4>Layer post process<a class="headerlink" href="#layer-post-process" title="Permalink to this headline">¶</a></h4>
 <p>Do an image post process after the empty hash check</p>
 <table class="docutils align-default">
@@ -2142,8 +2141,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-geometries">
+</div>
+<div class="section" id="layer-geometries">
 <span id="layer-geometries"></span><h4>Layer geometries<a class="headerlink" href="#layer-geometries" title="Permalink to this headline">¶</a></h4>
 <p>The geometries used to determine where we should create the tiles, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-geomsql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-geomsql</a></p>
 <table class="docutils align-default">
@@ -2212,8 +2211,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-empty-tile-detection">
+</div>
+<div class="section" id="layer-empty-tile-detection">
 <span id="layer-empty-tile-detection"></span><h4>Layer empty tile detection<a class="headerlink" href="#layer-empty-tile-detection" title="Permalink to this headline">¶</a></h4>
 <p>The rules used to detect the empty tiles, use <cite>generate-tiles –get-hash</cite> to get what we can use, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash</a></p>
 <table class="docutils align-default">
@@ -2255,8 +2254,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-empty-meta-tile-detection">
+</div>
+<div class="section" id="layer-empty-meta-tile-detection">
 <span id="layer-empty-meta-tile-detection"></span><h4>Layer empty meta-tile detection<a class="headerlink" href="#layer-empty-meta-tile-detection" title="Permalink to this headline">¶</a></h4>
 <p>The rules used to detect the empty meta-tiles, use <cite>generate-tiles –get-hash</cite> to get what we can use, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash</a></p>
 <table class="docutils align-default">
@@ -2298,8 +2297,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-cost">
+</div>
+<div class="section" id="layer-cost">
 <span id="layer-cost"></span><h4>Layer cost<a class="headerlink" href="#layer-cost" title="Permalink to this headline">¶</a></h4>
 <p>The rules used to calculate the cost (unmaintained)</p>
 <table class="docutils align-default">
@@ -2363,8 +2362,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-wms">
+</div>
+<div class="section" id="layer-wms">
 <span id="layer-wms"></span><h4>layer_wms<a class="headerlink" href="#layer-wms" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -2612,8 +2611,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer-mapnik">
+</div>
+<div class="section" id="layer-mapnik">
 <span id="layer-mapnik"></span><h4>layer_mapnik<a class="headerlink" href="#layer-mapnik" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -2859,8 +2858,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="layer">
+</div>
+<div class="section" id="layer">
 <span id="layer"></span><h4>Layer<a class="headerlink" href="#layer" title="Permalink to this headline">¶</a></h4>
 <p>The layer definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers</a></p>
 <table class="docutils align-default">
@@ -2913,8 +2912,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="process">
+</div>
+<div class="section" id="process">
 <span id="id2"></span><h4>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h4>
 <p>A command</p>
 <table class="docutils align-default">
@@ -3022,8 +3021,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="generation">
+</div>
+<div class="section" id="generation">
 <span id="generation"></span><h4>Generation<a class="headerlink" href="#generation" title="Permalink to this headline">¶</a></h4>
 <p>The configuration used for the generation</p>
 <table class="docutils align-default">
@@ -3125,8 +3124,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="aws-region">
+</div>
+<div class="section" id="aws-region">
 <span id="aws-region"></span><h4>AWS region<a class="headerlink" href="#aws-region" title="Permalink to this headline">¶</a></h4>
 <p>The region, default to ‘eu-west-1’</p>
 <table class="docutils align-default">
@@ -3143,8 +3142,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="redis">
+</div>
+<div class="section" id="redis">
 <span id="redis"></span><h4>Redis<a class="headerlink" href="#redis" title="Permalink to this headline">¶</a></h4>
 <p>The Redis configuration</p>
 <table class="docutils align-default">
@@ -3344,8 +3343,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="server">
+</div>
+<div class="section" id="server">
 <span id="server"></span><h4>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h4>
 <p>Configuration used by the tile server, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#distribute-the-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#distribute-the-tiles</a></p>
 <table class="docutils align-default">
@@ -3557,8 +3556,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="cost">
+</div>
+<div class="section" id="cost">
 <span id="cost"></span><h4>Cost<a class="headerlink" href="#cost" title="Permalink to this headline">¶</a></h4>
 <p>The configuration use to calculate the cast (unmaintained)</p>
 <table class="docutils align-default">
@@ -3715,8 +3714,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="metadata">
+</div>
+<div class="section" id="metadata">
 <span id="metadata"></span><h4>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h4>
 <p>The configuration of the WMTS capabilities metadata</p>
 <table class="docutils align-default">
@@ -3807,8 +3806,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="provider">
+</div>
+<div class="section" id="provider">
 <span id="provider"></span><h4>Provider<a class="headerlink" href="#provider" title="Permalink to this headline">¶</a></h4>
 <p>The provider</p>
 <table class="docutils align-default">
@@ -4021,8 +4020,8 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="logging">
+</div>
+<div class="section" id="logging">
 <span id="id3"></span><h4>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h4>
 <p>The logging configuration to database, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#logging">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#logging</a></p>
 <table class="docutils align-default">
@@ -4125,10 +4124,10 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -4185,7 +4184,7 @@ meta tiles, also to generate the tiles)</p></li>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -4202,7 +4201,7 @@ meta tiles, also to generate the tiles)</p></li>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Security &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,11 +34,11 @@
 
           <div class="body" role="main">
             
-  <section id="security">
+  <div class="section" id="security">
 <span id="integrator-security"></span><h1>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h1>
-<section id="authentication">
+<div class="section" id="authentication">
 <span id="integrator-authentication"></span><h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
-<section id="the-default-policy">
+<div class="section" id="the-default-policy">
 <h3>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this headline">¶</a></h3>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
 policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy, the user name is
@@ -63,23 +62,23 @@ application’s main <code class="docutils literal notranslate"><span class="pre
 served on <code class="docutils literal notranslate"><span class="pre">https</span></code>.</p>
 </div>
 <p>See also <a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy">the official documentation</a>.</p>
-</section>
-<section id="using-another-policy">
+</div>
+<div class="section" id="using-another-policy">
 <h3>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this headline">¶</a></h3>
 <p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>, an “auth ticket” cookie should be
 set in the request for the user to be identified. In some applications, using
 a custom identification mechanism may be needed instead, for instance to use SSO.
 Our knowledge base has an example of how this can be achieved.</p>
-</section>
-<section id="user-validation">
+</div>
+<div class="section" id="user-validation">
 <h3>User validation<a class="headerlink" href="#user-validation" title="Permalink to this headline">¶</a></h3>
 <p>For logging in, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
 (username/password) by reading the user information from the <code class="docutils literal notranslate"><span class="pre">user</span></code> database
 table. If a c2cgeoportal application should work with another user information
 source, like LDAP, a custom <em>client validation</em> mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.</p>
-</section>
-<section id="basic-auth">
+</div>
+<div class="section" id="basic-auth">
 <h3>Basic auth<a class="headerlink" href="#basic-auth" title="Permalink to this headline">¶</a></h3>
 <p>To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
 by setting <code class="docutils literal notranslate"><span class="pre">BASICAUTH</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
@@ -89,8 +88,8 @@ in your query string.</p>
 <p class="admonition-title">Note</p>
 <p>For security reasons, basic authentication and two factor authentication should not be enabled together.</p>
 </div>
-</section>
-<section id="two-factors-authentication">
+</div>
+<div class="section" id="two-factors-authentication">
 <h3>Two factors authentication<a class="headerlink" href="#two-factors-authentication" title="Permalink to this headline">¶</a></h3>
 <p>GeoMapFish support TOTP (Time-Based One-Time Password Algorithm) two factors authentication
 (<a class="reference external" href="https://tools.ietf.org/html/rfc6238">RFC 6238</a>).
@@ -108,8 +107,8 @@ should uncheck the ‘The user changed his password’ field on the user in the 
 <p>For security reasons, basic authentication and two factor authentication should not be enabled together,
 you should use <a class="reference internal" href="#integrator-authentication-oauth2"><span class="std std-ref">OAuth2</span></a> for that.</p>
 </div>
-</section>
-<section id="account-lockout">
+</div>
+<div class="section" id="account-lockout">
 <h3>Account lockout<a class="headerlink" href="#account-lockout" title="Permalink to this headline">¶</a></h3>
 <p>To lock an account after a certain number of authentication failures, set the following settings:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
@@ -119,8 +118,8 @@ you should use <a class="reference internal" href="#integrator-authentication-oa
 </div>
 <p>To unlock a user, the administrator should uncheck the ‘Deactivated’ field on the user in the
 admin interface.</p>
-</section>
-<section id="intranet">
+</div>
+<div class="section" id="intranet">
 <h3>Intranet<a class="headerlink" href="#intranet" title="Permalink to this headline">¶</a></h3>
 <p>To configure the intranet networks fill in the configuration like:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
@@ -141,8 +140,8 @@ however, please be aware that Intranet detection is not a secure mechanism. To s
 data, do not rely on Intranet detection; for that, you must use user authentication.</p>
 <p>A user can easily manually set the <cite>Forwarded</cite> or <cite>X-Forwarded-For</cite> header to spoof his IP.</p>
 </div>
-</section>
-<section id="oauth2-with-qgis">
+</div>
+<div class="section" id="oauth2-with-qgis">
 <span id="integrator-authentication-oauth2"></span><h3>OAuth2 with QGIS<a class="headerlink" href="#oauth2-with-qgis" title="Permalink to this headline">¶</a></h3>
 <p>In the admin interface create an ‘OAuth2 Client’ with:</p>
 <ul class="simple">
@@ -166,9 +165,9 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
 <p>For security reason a user can only have one active session per client.</p>
 <p>If you need to have more than one active session you should provide more than one client.</p>
 </div>
-</section>
-</section>
-<section id="https">
+</div>
+</div>
+<div class="section" id="https">
 <h2>HTTPS<a class="headerlink" href="#https" title="Permalink to this headline">¶</a></h2>
 <p>If your application is accessed in HTTPS, you have to make sure that all URLs
 generated by the application (CSS and JavaScript files, images, MapServer
@@ -179,7 +178,7 @@ prompt “unsecure content” warnings.</p>
 <li><p>application behind a proxy</p></li>
 <li><p>application and SSL certificate on the same server</p></li>
 </ul>
-<section id="application-behind-a-proxy">
+<div class="section" id="application-behind-a-proxy">
 <h3>Application behind a proxy<a class="headerlink" href="#application-behind-a-proxy" title="Permalink to this headline">¶</a></h3>
 <p>If the application is placed behind some proxy that removes the SSL encryption
 (plain HTTP is used between the proxy and the server), then some specific
@@ -201,8 +200,8 @@ value of <code class="docutils literal notranslate"><span class="pre">request.sc
 <span class="p">};</span>
 </pre></div>
 </div>
-</section>
-<section id="application-and-ssl-certificate-on-the-same-server">
+</div>
+<div class="section" id="application-and-ssl-certificate-on-the-same-server">
 <h3>Application and SSL certificate on the same server<a class="headerlink" href="#application-and-ssl-certificate-on-the-same-server" title="Permalink to this headline">¶</a></h3>
 <p>If the SSL certificate and the application are located on the same server, all
 requests will be redirected to https. So you should change the scheme to https
@@ -214,8 +213,8 @@ tiles url to use https scheme to avoid mixing secure and insecure contents.</p>
 environment, you may need to request this via your infrastructure support.</p>
 <p>In case you load http external resources into your application, you should use
 the resourceproxy service as described below.</p>
-</section>
-<section id="loading-non-https-external-resources">
+</div>
+<div class="section" id="loading-non-https-external-resources">
 <h3>Loading non https external resources<a class="headerlink" href="#loading-non-https-external-resources" title="Permalink to this headline">¶</a></h3>
 <p>If you want to load non https external resources in your https application, you
 should use the <code class="docutils literal notranslate"><span class="pre">resourceproxy</span></code> service and add the list of hosts you want to access in your project
@@ -231,8 +230,8 @@ should use the <code class="docutils literal notranslate"><span class="pre">reso
 <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/resourceproxy?target=&lt;targetname&gt;&amp;values=(&lt;valueparam1&gt;,...)</span></code>.</p>
 <p>For example:</p>
 <p><code class="docutils literal notranslate"><span class="pre">https://geoportail.camptocamp.com/main/resourceproxy?target=rfinfo&amp;values=(175,2633)</span></code></p>
-</section>
-<section id="local-certificate-checks">
+</div>
+<div class="section" id="local-certificate-checks">
 <h3>Local certificate checks<a class="headerlink" href="#local-certificate-checks" title="Permalink to this headline">¶</a></h3>
 <p>Certain c2cgeoportal features open a http session to your c2cgeoportal services,
 for example the <code class="docutils literal notranslate"><span class="pre">checker</span></code> or the <code class="docutils literal notranslate"><span class="pre">lingua_extractor</span></code>.
@@ -245,9 +244,9 @@ connections, you can achieve this by adding the following configuration element 
 </div>
 <p>See other options in parameters of
 <a class="reference external" href="https://docs.python-requests.org/en/latest/api.html#requests.Request">requests.Request</a></p>
-</section>
-</section>
-<section id="reset-password">
+</div>
+</div>
+<div class="section" id="reset-password">
 <h2>Reset password<a class="headerlink" href="#reset-password" title="Permalink to this headline">¶</a></h2>
 <p>When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.</p>
@@ -279,19 +278,19 @@ in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</s
 there is no port specified, that suffix will be stripped off and the
 number interpreted as the port number to use.</p>
 <p>Replace the <code class="docutils literal notranslate"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.</p>
-</section>
-<section id="access-to-wms-getcapability">
+</div>
+<div class="section" id="access-to-wms-getcapability">
 <h2>Access to WMS GetCapability<a class="headerlink" href="#access-to-wms-getcapability" title="Permalink to this headline">¶</a></h2>
 <p>Set <code class="docutils literal notranslate"><span class="pre">hide_capabilities</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> to disable
 the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).</p>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
-</section>
-<section id="access-to-the-admin-interface">
+</div>
+<div class="section" id="access-to-the-admin-interface">
 <h2>Access to the admin interface<a class="headerlink" href="#access-to-the-admin-interface" title="Permalink to this headline">¶</a></h2>
 <p>To disable the admin interface, set <code class="docutils literal notranslate"><span class="pre">enable_admin_interface</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.</p>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
-</section>
-<section id="access-to-services-by-external-servers">
+</div>
+<div class="section" id="access-to-services-by-external-servers">
 <h2>Access to services by external servers<a class="headerlink" href="#access-to-services-by-external-servers" title="Permalink to this headline">¶</a></h2>
 <p>By default, only localhost can access c2cgeoportal’s services.
 To permit access to a specific service by an external server, you must set CORS headers (<code class="docutils literal notranslate"><span class="pre">Access-Control-Allow-Origin</span></code>)
@@ -324,8 +323,8 @@ access, but no credentials will be passed in this case.</p>
 <li><p>login</p></li>
 <li><p>error</p></li>
 </ul>
-</section>
-<section id="authorized-referrers">
+</div>
+<div class="section" id="authorized-referrers">
 <h2>Authorized referrers<a class="headerlink" href="#authorized-referrers" title="Permalink to this headline">¶</a></h2>
 <p>To mitigate <a class="reference external" href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>
 attacks, the server validates the referrer against a list of authorized referrers.</p>
@@ -333,8 +332,8 @@ attacks, the server validates the referrer against a list of authorized referrer
 list in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.</p>
 <p>This solution is not the most secure (some people have browser extensions that reset the referrer),
 but that is the most consistent approach with regard to the different JS frameworks.</p>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -389,7 +388,7 @@ but that is the most consistent approach with regard to the different JS framewo
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -406,7 +405,7 @@ but that is the most consistent approach with regard to the different JS framewo
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

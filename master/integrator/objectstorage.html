@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Working with Object storage (like S3) &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,14 +34,14 @@
 
           <div class="body" role="main">
             
-  <section id="working-with-object-storage-like-s3">
+  <div class="section" id="working-with-object-storage-like-s3">
 <span id="integrator-objectstorage"></span><h1>Working with Object storage (like S3)<a class="headerlink" href="#working-with-object-storage-like-s3" title="Permalink to this headline">¶</a></h1>
-<section id="prepare-files">
+<div class="section" id="prepare-files">
 <h2>Prepare files<a class="headerlink" href="#prepare-files" title="Permalink to this headline">¶</a></h2>
 <p>We can prepare a GeoTIFF for the Cloud, see the <a class="reference external" href="https://www.cogeo.org/">COG file format</a>
 and the <a class="reference external" href="https://gdal.org/drivers/raster/cog.html">GDAL output driver options</a>.</p>
-</section>
-<section id="generalities">
+</div>
+<div class="section" id="generalities">
 <h2>Generalities<a class="headerlink" href="#generalities" title="Permalink to this headline">¶</a></h2>
 <p>In this section, we explain how to use the S3-like storage from Exoscale.</p>
 <p>First of all, you should set the following variables
@@ -72,8 +71,8 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
      <span class="s1">&#39;gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt \</span>
 <span class="s1">     $(list4vrt &lt;bucket&gt; &lt;folder&gt;/ .tif)&#39;</span></span>
-</pre></div></div></section>
-<section id="mapserver">
+</pre></div></div></div>
+<div class="section" id="mapserver">
 <h2>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
 <p>Create the shape index file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
@@ -116,8 +115,8 @@ span.prompt1:before {
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/mapserver/mapserver/wiki/Render-images-straight-out-of-S3-with-the-vsicurl-driver">Some more information</a></p>
-</section>
-<section id="qgis-client">
+</div>
+<div class="section" id="qgis-client">
 <h2>QGIS client<a class="headerlink" href="#qgis-client" title="Permalink to this headline">¶</a></h2>
 <p>Open settings, Option and define the following environment variables:</p>
 <ul class="simple">
@@ -140,8 +139,8 @@ span.prompt1:before {
 <li><p>Object key: &lt;folder&gt;/index.vrt</p></li>
 </ul>
 <p>You can add a vector layer in an analogous manner.</p>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -198,7 +197,7 @@ span.prompt1:before {
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -215,7 +214,7 @@ span.prompt1:before {
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

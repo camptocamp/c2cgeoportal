@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Use Docker to deploy your application &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,16 +34,16 @@
 
           <div class="body" role="main">
             
-  <section id="use-docker-to-deploy-your-application">
+  <div class="section" id="use-docker-to-deploy-your-application">
 <span id="integrator-docker"></span><h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Permalink to this headline">¶</a></h1>
-<section id="architecture-schema">
+<div class="section" id="architecture-schema">
 <h2>Architecture schema<a class="headerlink" href="#architecture-schema" title="Permalink to this headline">¶</a></h2>
 <p>For OpenShift projects:</p>
 <img alt="../_images/docker-openshift.png" src="../_images/docker-openshift.png" />
 <p>For stand alone projects:</p>
 <img alt="../_images/docker-apache.png" src="../_images/docker-apache.png" />
-</section>
-<section id="docker-images">
+</div>
+<div class="section" id="docker-images">
 <h2>Docker Images<a class="headerlink" href="#docker-images" title="Permalink to this headline">¶</a></h2>
 <p>When you build your application, the following images will be generated:</p>
 <ul class="simple">
@@ -52,8 +51,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;package&gt;_config:latest</span></code></p></li>
 </ul>
 <p>The tag is by default <code class="docutils literal notranslate"><span class="pre">latest</span></code>, but you can change it by setting the <code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
-</section>
-<section id="docker-compose-files">
+</div>
+<div class="section" id="docker-compose-files">
 <h2>Docker compose files<a class="headerlink" href="#docker-compose-files" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>: The main file that describes the composition.</p></li>
@@ -62,8 +61,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose.override[.sample].yaml</span></code>: Some rules for debuggung.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">.env</span></code>: The variable used in the compose files.</p></li>
 </ul>
-</section>
-<section id="run-the-developer-composition">
+</div>
+<div class="section" id="run-the-developer-composition">
 <h2>Run the developer composition<a class="headerlink" href="#run-the-developer-composition" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
@@ -71,15 +70,15 @@ span.prompt1:before {
 }
 </style><span class="prompt1">docker-compose up -d</span>
 </pre></div></div><p>You can then access your application with <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
-</section>
-<section id="clean">
+</div>
+<div class="section" id="clean">
 <h2>Clean<a class="headerlink" href="#clean" title="Permalink to this headline">¶</a></h2>
 <p>Docker does not clean anything automatically, in particular it does not clean any images,
 therefore disk space may become problematic after a certain number of builds.
 You can use the following commands to manually remove Docker files.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">system</span> <span class="pre">prune</span></code> to clean files; you can add the <code class="docutils literal notranslate"><span class="pre">--all</span></code> option to do a deeper clean.</p>
-</section>
-<section id="environment-variables">
+</div>
+<div class="section" id="environment-variables">
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
 <p>The GeoMapFish containers can be customised with some environment variables:</p>
 <p>Config:</p>
@@ -142,8 +141,8 @@ see also the <code class="docutils literal notranslate"><span class="pre">produc
 <li><p><a class="reference external" href="https://gdal.org/user/configoptions.html#list-of-configuration-options-and-where-they-apply">Other GDAL environment variables</a>.</p></li>
 </ul>
 </div></blockquote>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -198,7 +197,7 @@ see also the <code class="docutils literal notranslate"><span class="pre">produc
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -215,7 +214,7 @@ see also the <code class="docutils literal notranslate"><span class="pre">produc
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

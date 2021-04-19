@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cache management &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,7 +34,7 @@
 
           <div class="body" role="main">
             
-  <section id="cache-management">
+  <div class="section" id="cache-management">
 <span id="developer-cache"></span><h1>Cache management<a class="headerlink" href="#cache-management" title="Permalink to this headline">¶</a></h1>
 <p>Here we describe the strategy we use to manage the cache.</p>
 <dl class="simple">
@@ -48,7 +47,7 @@
 </dl>
 <p>For some services, we also set the header <code class="docutils literal notranslate"><span class="pre">Vary</span></code> to <code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code>
 to have one cache per language.</p>
-<section id="server-side">
+<div class="section" id="server-side">
 <h2>Server side<a class="headerlink" href="#server-side" title="Permalink to this headline">¶</a></h2>
 <p>On the server side, we set the <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> header with a different value
 depending on the cache type.</p>
@@ -60,8 +59,8 @@ depending on the cache type.</p>
 </ul>
 </div></blockquote>
 <p>The <code class="docutils literal notranslate"><span class="pre">max-age</span></code> is configurable in a <code class="docutils literal notranslate"><span class="pre">vars</span></code> file in the <code class="docutils literal notranslate"><span class="pre">default_max_age</span></code> attribute.</p>
-</section>
-<section id="client-side">
+</div>
+<div class="section" id="client-side">
 <h2>Client side<a class="headerlink" href="#client-side" title="Permalink to this headline">¶</a></h2>
 <p>On the client side, some attributes are added in the URL parameters to
 force to have the right version of the cache.
@@ -73,10 +72,10 @@ It will be done automatically by the <code class="docutils literal notranslate">
 <li><p><strong>private_cache</strong>: add the query param named <code class="docutils literal notranslate"><span class="pre">cache_version</span></code> and <code class="docutils literal notranslate"><span class="pre">role</span></code>.</p></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="service-list">
+</div>
+<div class="section" id="service-list">
 <h2>Service list<a class="headerlink" href="#service-list" title="Permalink to this headline">¶</a></h2>
-<section id="no-cache">
+<div class="section" id="no-cache">
 <h3>No cache<a class="headerlink" href="#no-cache" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
@@ -109,8 +108,8 @@ It will be done automatically by the <code class="docutils literal notranslate">
 <li><p>shortener</p></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="public-cache">
+</div>
+<div class="section" id="public-cache">
 <h3>Public cache<a class="headerlink" href="#public-cache" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
@@ -119,8 +118,8 @@ It will be done automatically by the <code class="docutils literal notranslate">
 <li><p>WMS/GetLegendGraphic</p></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="private-cache">
+</div>
+<div class="section" id="private-cache">
 <h3>Private cache<a class="headerlink" href="#private-cache" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
@@ -133,9 +132,9 @@ It will be done automatically by the <code class="docutils literal notranslate">
 <li><p>print/capabilities.json</p></li>
 </ul>
 </div></blockquote>
-</section>
-</section>
-<section id="internal-cache">
+</div>
+</div>
+<div class="section" id="internal-cache">
 <h2>Internal cache<a class="headerlink" href="#internal-cache" title="Permalink to this headline">¶</a></h2>
 <p>We have two different internal cache types, one (<code class="docutils literal notranslate"><span class="pre">std</span></code>) for the serializable objects (Like JSON) and
 one (<code class="docutils literal notranslate"><span class="pre">obj</span></code>) for the non serializable objects.</p>
@@ -159,8 +158,8 @@ one (<code class="docutils literal notranslate"><span class="pre">obj</span></co
   <span class="k">return</span> <span class="n">AnyObject</span><span class="p">()</span>
 </pre></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -215,7 +214,7 @@ one (<code class="docutils literal notranslate"><span class="pre">obj</span></co
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -232,7 +231,7 @@ one (<code class="docutils literal notranslate"><span class="pre">obj</span></co
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

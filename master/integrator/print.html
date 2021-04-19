@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Print &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,9 +34,9 @@
 
           <div class="body" role="main">
             
-  <section id="print">
+  <div class="section" id="print">
 <span id="integrator-print"></span><h1>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h1>
-<section id="template-configuration">
+<div class="section" id="template-configuration">
 <h2>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this headline">¶</a></h2>
 <p>All print-related files are located in the <code class="docutils literal notranslate"><span class="pre">print/</span></code> folder, notably the print templates in the
 <code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;</span></code> folder.</p>
@@ -46,26 +45,26 @@
 <li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapFish Print documentation</a></p></li>
 <li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></p></li>
 </ul>
-</section>
-<section id="notes-about-the-scales">
+</div>
+<div class="section" id="notes-about-the-scales">
 <h2>Notes about the scales<a class="headerlink" href="#notes-about-the-scales" title="Permalink to this headline">¶</a></h2>
 <p>The web map and the map printing do not use the same scales. Therefore, if you change the configuration
 of min/max scaling, you should also test map printing to be sure that it also works as expected.</p>
-</section>
-<section id="infrastructure">
+</div>
+<div class="section" id="infrastructure">
 <h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
 <p>By default, the configuration is set up to the <cite>mutualized print platform as a service from Camptocamp &lt;https://www.camptocamp.com/en/actualite/saas-printing-service-offer/&gt;</cite>.</p>
 <p>To use this platform, you should ask Camptocamp to create e.-g. two new applications on the platform,
 one for the integration, one for the production.</p>
 <p>Configure the application name in the <code class="docutils literal notranslate"><span class="pre">MUTUALIZED_PRINT_APP</span></code> variable of a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
-</section>
-<section id="development">
+</div>
+<div class="section" id="development">
 <h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
 <p>To test the print locally, you can copy the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and uncomment the <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> environment variable and the
 <code class="docutils literal notranslate"><span class="pre">print</span></code> service.</p>
-</section>
-<section id="local-print">
+</div>
+<div class="section" id="local-print">
 <h2>Local print<a class="headerlink" href="#local-print" title="Permalink to this headline">¶</a></h2>
 <p>To use a local print service, you should:</p>
 <ul class="simple">
@@ -74,8 +73,8 @@ one for the integration, one for the production.</p>
 <li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">!mapUri</span></code>, <code class="docutils literal notranslate"><span class="pre">!forwardHeaders</span></code> and <code class="docutils literal notranslate"><span class="pre">!hostnameMatch</span></code> in the print configuration.</p></li>
 <li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">print</span></code>/<code class="docutils literal notranslate"><span class="pre">spec</span></code> configuration section of the <code class="docutils literal notranslate"><span class="pre">checker</span></code> in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>.</p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -132,7 +131,7 @@ one for the integration, one for the production.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -149,7 +148,7 @@ one for the integration, one for the production.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

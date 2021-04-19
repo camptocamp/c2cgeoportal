@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Database &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,9 +34,9 @@
 
           <div class="body" role="main">
             
-  <section id="database">
+  <div class="section" id="database">
 <span id="integrator-database"></span><h1>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h1>
-<section id="update-lifecycle">
+<div class="section" id="update-lifecycle">
 <h2>Update lifecycle<a class="headerlink" href="#update-lifecycle" title="Permalink to this headline">¶</a></h2>
 <p>The recommended setup is to have integration and production data on the same database, using
 separate schemas. This setup allows for simpler switches between integration and production.</p>
@@ -78,11 +77,11 @@ The following example shows how an update can be performed from a version <code 
 </tr>
 </tbody>
 </table>
-<section id="initial-state">
+<div class="section" id="initial-state">
 <h3>Initial state<a class="headerlink" href="#initial-state" title="Permalink to this headline">¶</a></h3>
 <p>Starting point is that the current version is the same on integration and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</p>
-</section>
-<section id="prepare-the-project">
+</div>
+<div class="section" id="prepare-the-project">
 <h3>Prepare the project<a class="headerlink" href="#prepare-the-project" title="Permalink to this headline">¶</a></h3>
 <p>To be able to proceed like this, the variables <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code>
 should be managed in your makefiles:</p>
@@ -94,8 +93,8 @@ for production e.-g. <code class="docutils literal notranslate"><span class="pre
 Makefile, and to <code class="docutils literal notranslate"><span class="pre">production_static</span></code> in the production makefile.</p></li>
 <li><p>The line <code class="docutils literal notranslate"><span class="pre">PGSCHEMA=main</span></code> should be removed from your <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p></li>
 </ul>
-</section>
-<section id="start-a-new-version">
+</div>
+<div class="section" id="start-a-new-version">
 <h3>Start a new version<a class="headerlink" href="#start-a-new-version" title="Permalink to this headline">¶</a></h3>
 <p>When starting changes such as an application change and/or administration settings,
 create a new schema <code class="docutils literal notranslate"><span class="pre">main_2020</span></code> and use it on integration. Now, integration uses <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>,
@@ -119,8 +118,8 @@ span.prompt1:before {
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> to <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
-</section>
-<section id="do-the-changes">
+</div>
+<div class="section" id="do-the-changes">
 <h3>Do the changes<a class="headerlink" href="#do-the-changes" title="Permalink to this headline">¶</a></h3>
 <p>Now you can do the changes including upgrades.</p>
 <p>If you want to restructure a geodata table, you should create a new table, use the new table name in your
@@ -132,21 +131,21 @@ mapfiles and your QGIS projects. The new table will be automatically used when y
 <p>Use the new table in the ‘Geo table’ field of your layer in the administration interface.</p>
 <p>Do your tests.</p>
 <p>Don’t forget to put back your old value before publishing the new version.</p>
-</section>
-<section id="publish-the-new-version">
+</div>
+<div class="section" id="publish-the-new-version">
 <h3>Publish the new version<a class="headerlink" href="#publish-the-new-version" title="Permalink to this headline">¶</a></h3>
 <p>Publish the new version on production: now, integration and production both use <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
 <p>For OpenShift projects, just push the integration branch into the production branch.</p>
 <p>The schema <code class="docutils literal notranslate"><span class="pre">main_2019</span></code> still exists, so if needed, the production can be rolled back to this content.</p>
-</section>
-<section id="editing">
+</div>
+<div class="section" id="editing">
 <h3>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h3>
 <p>To have a different schema for the geodata used in the editing, we can define the geo_table as follows:
 <code class="docutils literal notranslate"><span class="pre">{GEODATA_SCHEMA}.table</span></code> where <code class="docutils literal notranslate"><span class="pre">{GEODATA_SCHEMA}</span></code> will be replaced by the <code class="docutils literal notranslate"><span class="pre">GEODATA_SCHEMA</span></code>
 environment variable.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -201,7 +200,7 @@ environment variable.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -218,7 +217,7 @@ environment variable.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

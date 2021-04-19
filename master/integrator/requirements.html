@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Requirements &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,7 +34,7 @@
 
           <div class="body" role="main">
             
-  <section id="requirements">
+  <div class="section" id="requirements">
 <span id="integrator-requirements"></span><h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
 <p>To install a GeoMapFish application, you need to have the following
 components installed on your system:</p>
@@ -46,7 +45,7 @@ components installed on your system:</p>
 <li><p><strong>Apache</strong> &gt;= 2.4 (optional, can be used as a front for SSL)</p></li>
 <li><p><strong>PostgreSQL</strong> &gt;= 9.1/<strong>PostGIS</strong> &gt;= 2.1</p></li>
 </ul>
-<section id="required-python-packages">
+<div class="section" id="required-python-packages">
 <h2>Required Python packages<a class="headerlink" href="#required-python-packages" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">PyYAML</span></code></p></li>
@@ -60,25 +59,25 @@ components installed on your system:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/bin:<span class="nv">$PATH</span>
 </pre></div>
 </div>
-</section>
-<section id="required-apache-modules">
+</div>
+<div class="section" id="required-apache-modules">
 <h2>Required Apache modules<a class="headerlink" href="#required-apache-modules" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">mod_proxy</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mod_proxy_http</span></code></p></li>
 </ul>
-</section>
-<section id="required-postgresql-extensions">
+</div>
+<div class="section" id="required-postgresql-extensions">
 <h2>Required PostgreSQL extensions<a class="headerlink" href="#required-postgresql-extensions" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">postgis</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">hstore</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> (optional)</p></li>
 </ul>
-</section>
-<section id="additional-notes-for-windows-users">
+</div>
+<div class="section" id="additional-notes-for-windows-users">
 <h2>Additional notes for Windows users<a class="headerlink" href="#additional-notes-for-windows-users" title="Permalink to this headline">¶</a></h2>
-<section id="cygwin">
+<div class="section" id="cygwin">
 <h3>Cygwin<a class="headerlink" href="#cygwin" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Go to <a class="reference external" href="https://cygwin.com/">https://cygwin.com/</a></p></li>
@@ -106,8 +105,8 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">none /cygdrive cygdrive binary,noacl,posix<span class="o">=</span><span class="m">0</span>,user <span class="m">0</span> <span class="m">0</span></span>
-</pre></div></div></section>
-<section id="configure-git">
+</pre></div></div></div>
+<div class="section" id="configure-git">
 <h3>Configure Git<a class="headerlink" href="#configure-git" title="Permalink to this headline">¶</a></h3>
 <p>Cygwin comes with its own git package. Configure
 Cygwin’s git for Windows as follows:</p>
@@ -115,9 +114,9 @@ Cygwin’s git for Windows as follows:</p>
 <li><p>Open a Cygwin bash</p></li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">core.autocrlf</span> <span class="pre">true</span></code></p></li>
 </ul>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -172,7 +171,7 @@ Cygwin’s git for Windows as follows:</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -189,7 +188,7 @@ Cygwin’s git for Windows as follows:</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

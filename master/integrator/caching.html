@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Caching &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,9 +34,9 @@
 
           <div class="body" role="main">
             
-  <section id="caching">
+  <div class="section" id="caching">
 <span id="integrator-caching"></span><h1>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h1>
-<section id="headers">
+<div class="section" id="headers">
 <h2>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
 <p>By default, the static elements will be cached for 10 days by the browser.</p>
 <p>To change this value for the whole application, change in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file the
@@ -53,15 +52,15 @@ To change this value, add the following structure in the <code class="docutils l
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;service_name&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">entry</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code>, <code class="docutils literal notranslate"><span class="pre">mapserver</span></code>,
 <code class="docutils literal notranslate"><span class="pre">print</span></code> or <code class="docutils literal notranslate"><span class="pre">layers</span></code> (editing).</p>
-</section>
-<section id="internal">
+</div>
+<div class="section" id="internal">
 <h2>Internal<a class="headerlink" href="#internal" title="Permalink to this headline">¶</a></h2>
 <p>The application also has an internal cache. The internal cache will be invalidated on
 application start and after each modification in the <code class="docutils literal notranslate"><span class="pre">Theme</span></code> or the <code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code>.</p>
 <p>The internal cache can also be invalidated by calling the URL
 <code class="docutils literal notranslate"><span class="pre">https://&lt;server&gt;/&lt;instance&gt;/invalidate</span></code>.</p>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -118,7 +117,7 @@ application start and after each modification in the <code class="docutils liter
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -135,7 +134,7 @@ application start and after each modification in the <code class="docutils liter
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

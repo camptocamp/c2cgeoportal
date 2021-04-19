@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Install an existing application &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,7 +34,7 @@
 
           <div class="body" role="main">
             
-  <section id="install-an-existing-application">
+  <div class="section" id="install-an-existing-application">
 <span id="integrator-install-application"></span><h1>Install an existing application<a class="headerlink" href="#install-an-existing-application" title="Permalink to this headline">¶</a></h1>
 <p>On this page, we explain the procedure to build an application from only the current application code.</p>
 <p>If you want to use an existing database, you should ignore all the commands concerning the database.</p>
@@ -47,7 +46,7 @@
 </dd>
 </dl>
 <p>For specific environments, this page contains some notes to give some help.</p>
-<section id="set-up-the-database">
+<div class="section" id="set-up-the-database">
 <span id="integrator-install-application-setup-database"></span><h2>Set up the database<a class="headerlink" href="#set-up-the-database" title="Permalink to this headline">¶</a></h2>
 <p>Every c2cgeoportal application requires a PostgreSQL/PostGIS database. The
 application works with its own tables, which store users, layers, etc. These
@@ -59,7 +58,7 @@ layers</em>), where joining user/role tables to PostGIS layer tables is necessar
 <p>If you wish to use the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> function within the full-text search, create the <code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> extension.</p>
 <p>Create the <code class="docutils literal notranslate"><span class="pre">unaccent</span></code> extension to have accent-insensitive search within the full-text search.</p>
 <p>By default, c2cgeoportal assumes that the <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user exists with all rights on the application schemas.</p>
-<section id="create-the-schemas">
+<div class="section" id="create-the-schemas">
 <span id="integrator-install-application-create-schema"></span><h3>Create the schemas<a class="headerlink" href="#create-the-schemas" title="Permalink to this headline">¶</a></h3>
 <p>Each application needs two application-specific schemas.
 To create them, do:</p>
@@ -71,11 +70,11 @@ span.prompt1:before {
 <span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
 <span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
-</pre></div></div></section>
-</section>
-<section id="install-the-application">
+</pre></div></div></div>
+</div>
+<div class="section" id="install-the-application">
 <h2>Install the application<a class="headerlink" href="#install-the-application" title="Permalink to this headline">¶</a></h2>
-<section id="windows-specific-configuration">
+<div class="section" id="windows-specific-configuration">
 <h3>Windows Specific Configuration<a class="headerlink" href="#windows-specific-configuration" title="Permalink to this headline">¶</a></h3>
 <p>Some Python modules cannot currently be installed through the Python Package
 Index (PyPI) and they have to be downloaded manually and stored. This is
@@ -86,7 +85,7 @@ required to make c2cgeoportal work on Windows.</p>
 <p>Also, between all the different command interfaces available on Windows (cmd,
 Cygwin, git mingw), only Windows default cmd interface handles paths correctly
 in all stages of the application setup.</p>
-<section id="command-interface-and-environment-variable">
+<div class="section" id="command-interface-and-environment-variable">
 <h4>Command interface and environment variable<a class="headerlink" href="#command-interface-and-environment-variable" title="Permalink to this headline">¶</a></h4>
 <p>Only use Windows default command interface:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Start</span> <span class="o">&gt;</span> <span class="n">Run</span><span class="o">...</span> <span class="o">&gt;</span> <span class="n">cmd</span>
@@ -95,16 +94,16 @@ in all stages of the application setup.</p>
 <p>Cygwin and git mingw are not compatible. Powershell is untested.</p>
 <p>In addition, you need to add all the resource paths to your system PATH
 environment variable, for cygwin, git and node binaries.</p>
-</section>
-<section id="cygwin">
+</div>
+<div class="section" id="cygwin">
 <h4>Cygwin<a class="headerlink" href="#cygwin" title="Permalink to this headline">¶</a></h4>
 <p>You must install the following packages:</p>
 <ul class="simple">
 <li><p>git</p></li>
 </ul>
-</section>
-</section>
-<section id="integrator-install-application-install-application">
+</div>
+</div>
+<div class="section" id="integrator-install-application-install-application">
 <span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Permalink to this headline">¶</a></h3>
 <p>You can build and install the application with the command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./build</span>
@@ -139,9 +138,9 @@ add in the <code class="docutils literal notranslate"><span class="pre">/var/www
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;application_port&gt;</span></code> is the value of <code class="docutils literal notranslate"><span class="pre">DOCKER_PORT</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">/&lt;instance&gt;</span></code> the value of <code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>.</p>
 <p>The root instance should be at the end.</p>
-</section>
-</section>
-<section id="migrating-to-a-new-server">
+</div>
+</div>
+<div class="section" id="migrating-to-a-new-server">
 <h2>Migrating to a new server<a class="headerlink" href="#migrating-to-a-new-server" title="Permalink to this headline">¶</a></h2>
 <p>If you are migrating to a new server, keep in mind that your variable
 <code class="docutils literal notranslate"><span class="pre">DOCKER_WEB_HOST</span></code> must contain the exact host name that browsers should use
@@ -166,8 +165,8 @@ at <code class="docutils literal notranslate"><span class="pre">https://new-site
 </li>
 </ul>
 </div></blockquote>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -222,7 +221,7 @@ at <code class="docutils literal notranslate"><span class="pre">https://new-site
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -239,7 +238,7 @@ at <code class="docutils literal notranslate"><span class="pre">https://new-site
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

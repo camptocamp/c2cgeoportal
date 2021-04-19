@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mapfile configuration &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,7 +34,7 @@
 
           <div class="body" role="main">
             
-  <section id="mapfile-configuration">
+  <div class="section" id="mapfile-configuration">
 <span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Permalink to this headline">¶</a></h1>
 <p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>), the application
 administrator manages the application through the database and via
@@ -52,7 +51,7 @@ These variables are substituted at container start.</p>
 </div>
 <p>This section describes how to make layers <em>printable</em> and/or <em>queryable</em>
 and/or <em>private</em> (a.k.a <em>restricted</em>).</p>
-<section id="print">
+<div class="section" id="print">
 <h2>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h2>
 <p>MapFish Print performs single tile requests to the WMS server. For that reason, we
 need to use a relatively large value for the <code class="docutils literal notranslate"><span class="pre">MAXSIZE</span></code> parameter (of the
@@ -76,8 +75,8 @@ web application on the screen). Using <code class="docutils literal notranslate"
 therefore not recommended. <code class="docutils literal notranslate"><span class="pre">LABEL</span></code>/<code class="docutils literal notranslate"><span class="pre">MINSIZE</span></code> and <code class="docutils literal notranslate"><span class="pre">LABEL</span></code>/<code class="docutils literal notranslate"><span class="pre">MAXSIZE</span></code>
 should be used when necessary only, as these parameters do not take the <code class="docutils literal notranslate"><span class="pre">MAP</span></code>
 resolution into account.</p>
-</section>
-<section id="wfs-getfeature">
+</div>
+<div class="section" id="wfs-getfeature">
 <span id="administrator-mapfile-wfs-getfeature"></span><h2>WFS GetFeature<a class="headerlink" href="#wfs-getfeature" title="Permalink to this headline">¶</a></h2>
 <p>Layers that you want to use in a query (box and point), in filters, or for WFS permalink features must
 support WFS GetFeature.
@@ -127,8 +126,8 @@ well as <code class="docutils literal notranslate"><span class="pre">box</span> 
 return features that are not visible at the current resolution of the map.
 This is because of a limitation in MapServer, where <code class="docutils literal notranslate"><span class="pre">MINSCALE</span></code>/<code class="docutils literal notranslate"><span class="pre">MAXSCALE</span></code>
 values defined in the layer’s classes (<code class="docutils literal notranslate"><span class="pre">CLASS</span></code>) have no effect.</p>
-</section>
-<section id="wms-getfeatureinfo">
+</div>
+<div class="section" id="wms-getfeatureinfo">
 <h2>WMS GetFeatureInfo<a class="headerlink" href="#wms-getfeatureinfo" title="Permalink to this headline">¶</a></h2>
 <p>To support WMS GetFeatureInfo, a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWMSGetFeatureInfo</span>
@@ -165,12 +164,12 @@ for multi geometries, only the first will be visible on the map.
 See also <a class="reference external" href="https://mapserver.org/ogc/wms_server.html#index-71">gml_&lt;geometry name&gt;_type</a>.</p>
 </div></blockquote>
 <p>See the <a class="reference external" href="https://mapserver.org/ogc/wms_server.html">WMS Server MapFile Documentation</a> for more detail.</p>
-</section>
-<section id="restricted-layer">
+</div>
+<div class="section" id="restricted-layer">
 <h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Permalink to this headline">¶</a></h2>
 <p>The restricted layers work only with PostgreSQL data.  All layers defined as restricted in the mapfile
 should be defined as well in the administration interface and vice versa.</p>
-<section id="with-a-restrictionarea-area">
+<div class="section" id="with-a-restrictionarea-area">
 <h3>With a RestrictionArea area<a class="headerlink" href="#with-a-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
 <p>A RestrictionArea is used to restrict the layer displaying to a given area.
 This area is specified in the administration interface while defining the <code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code> element.</p>
@@ -233,8 +232,8 @@ area. These features will not be displayed as they are not in the area (ie not
 In this situation, if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to an empty value for this layer, then there is
 no access; if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to the anonymous role id, then the access rights of
 anonymous users apply.</p>
-</section>
-<section id="without-restriction-on-the-restrictionarea-area">
+</div>
+<div class="section" id="without-restriction-on-the-restrictionarea-area">
 <h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this headline">¶</a></h3>
 <p>If we do not need to restrict on an area, we can use the following
 <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
@@ -284,13 +283,13 @@ anonymous users apply.</p>
 In this situation, if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to <code class="docutils literal notranslate"><span class="pre">-1</span></code> for this layer, then there is
 no access; if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to the anonymous role id, then the access rights of
 anonymous users apply.</p>
-</section>
-<section id="filename">
+</div>
+<div class="section" id="filename">
 <h3>Filename<a class="headerlink" href="#filename" title="Permalink to this headline">¶</a></h3>
 <p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.tmpl</span></code> file, for the variable to be substituted at container start.</p>
-</section>
-</section>
-<section id="variable-substitution">
+</div>
+</div>
+<div class="section" id="variable-substitution">
 <h2>Variable Substitution<a class="headerlink" href="#variable-substitution" title="Permalink to this headline">¶</a></h2>
 <p>It is possible to adapt some values in the mapfile according to the user’s role
 by using variable substitution, for instance to hide some layer objects
@@ -343,12 +342,12 @@ but beware that these attributes are not available for cached queries like:
 <code class="docutils literal notranslate"><span class="pre">GetCapabilities</span></code>, <code class="docutils literal notranslate"><span class="pre">GetLegendGraphic</span></code>, <code class="docutils literal notranslate"><span class="pre">DescribeFeatureType</span></code>.</p>
 </div>
 <p><a class="reference external" href="https://mapserver.org/cgi/runsub.html">MapServer documentation</a></p>
-</section>
-<section id="performance-improvement">
+</div>
+<div class="section" id="performance-improvement">
 <h2>Performance improvement<a class="headerlink" href="#performance-improvement" title="Permalink to this headline">¶</a></h2>
 <p>Adding an <code class="docutils literal notranslate"><span class="pre">EXTENT</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> section may significantly improve performance
 because it saves MapServer from computing the extent of all layer features.</p>
-<section id="prepare-raster-files">
+<div class="section" id="prepare-raster-files">
 <span id="administrator-mapfile-perepare-raster"></span><h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this headline">¶</a></h3>
 <p>To achieve good performance, you should have tiled files with overviews, and ideally
 a tileindex. You can achieve this with these steps:</p>
@@ -363,9 +362,9 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaladdo -r average filename.tif <span class="m">2</span> <span class="m">4</span> <span class="m">8</span> <span class="m">16</span></span>
 </pre></div></div><p>You can generate a shapefile indexing all your rasters:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex filename_index.shp *.tif</span>
-</pre></div></div></section>
-</section>
-<section id="note-about-ecw">
+</pre></div></div></div>
+</div>
+<div class="section" id="note-about-ecw">
 <h2>Note about ECW<a class="headerlink" href="#note-about-ecw" title="Permalink to this headline">¶</a></h2>
 <p>In general using ECW is not recommended, as MapServer often generates broken
 images and has memory leaks with ECW. See this
@@ -374,8 +373,8 @@ for example.</p>
 <p>If you still want to use it, then replace <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">fcgid-script</span></code>
 by <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">cgi-script</span></code> in the <code class="docutils literal notranslate"><span class="pre">apache/mapserver.conf.tmpl</span></code>
 file. But note that this affects performance.</p>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -430,7 +429,7 @@ file. But note that this affects performance.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -447,7 +446,7 @@ file. But note that this affects performance.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

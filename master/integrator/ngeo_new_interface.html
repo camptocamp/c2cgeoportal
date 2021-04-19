@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Adding a new user interface &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,7 +34,7 @@
 
           <div class="body" role="main">
             
-  <section id="adding-a-new-user-interface">
+  <div class="section" id="adding-a-new-user-interface">
 <span id="integrator-ngeo-new-interface"></span><h1>Adding a new user interface<a class="headerlink" href="#adding-a-new-user-interface" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -43,15 +42,15 @@
 </div>
 <p>This section describes how to add a new user interface to be named &lt;interface&gt;
 (for example, “new”) in a package named <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;</span></code>.</p>
-<section id="makefile">
+<div class="section" id="makefile">
 <h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
 <p>In your project’s makefile, add the new interface to <code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>.
 For example, to have two NGEO interfaces called “mobile” and “new”, set:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">NGEO_INTERFACES</span> <span class="o">=</span> mobile new
 </pre></div>
 </div>
-</section>
-<section id="copy-files-from-template">
+</div>
+<div class="section" id="copy-files-from-template">
 <h2>Copy files from template<a class="headerlink" href="#copy-files-from-template" title="Permalink to this headline">¶</a></h2>
 <p>If you want a new mobile interface, get the default files as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
@@ -67,8 +66,8 @@ span.prompt1:before {
 <span class="prompt1">  geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
 <span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllerdesktop.js <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
 <span class="prompt1">  geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
-</pre></div></div></section>
-<section id="edit-interface-files">
+</pre></div></div></div>
+<div class="section" id="edit-interface-files">
 <h2>Edit interface files<a class="headerlink" href="#edit-interface-files" title="Permalink to this headline">¶</a></h2>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>,
 adapt the following lines:</p>
@@ -92,8 +91,8 @@ adapt the name of the controller and the referenced css and js files to the new 
 <p>Add the new interface files to Git:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
 <span class="prompt1">git add geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
-</pre></div></div></section>
-<section id="package-file">
+</pre></div></div></div>
+<div class="section" id="package-file">
 <h2>Package file<a class="headerlink" href="#package-file" title="Permalink to this headline">¶</a></h2>
 <p>Update the interface in your <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
@@ -111,8 +110,8 @@ also used to create the route path,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">interface_type</span></code> may be either <code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO</span></code> or
 <code class="docutils literal notranslate"><span class="pre">INTERFACE_TYPE_NGEO_CATALOGUE</span></code>.</p></li>
 </ul>
-</section>
-<section id="site-specific-configuration">
+</div>
+<div class="section" id="site-specific-configuration">
 <h2>Site-specific configuration<a class="headerlink" href="#site-specific-configuration" title="Permalink to this headline">¶</a></h2>
 <p>After rebuilding your project and verifying that the new interface has no technical errors,
 some site-specific configuration issues must be considered:</p>
@@ -127,15 +126,15 @@ the browser cache and your URL parameters, and maybe in addition wait some minut
 in order for the server-side to also be completely up-to-date.</p></li>
 </ul>
 </div></blockquote>
-</section>
-<section id="database">
+</div>
+<div class="section" id="database">
 <h2>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h2>
 <p>The administration interface gives access to an <code class="docutils literal notranslate"><span class="pre">interface</span></code> table that lists the
 available interfaces (or pages) of the application.
 The default interfaces are <code class="docutils literal notranslate"><span class="pre">desktop</span></code> and <code class="docutils literal notranslate"><span class="pre">mobile</span></code>.
 Add the name of your interface to the table. This can be done using the admin interface.</p>
-</section>
-<section id="checker">
+</div>
+<div class="section" id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this headline">¶</a></h2>
 <p>This section describes how to enable the checker for the new interface.</p>
 <p>We suggest to add only the main checker in the <code class="docutils literal notranslate"><span class="pre">defaults</span></code>. It is what is done by default.
@@ -152,8 +151,8 @@ and debug mode:</p>
 </pre></div>
 </div>
 <p>By default, the checker is enabled for the desktop and mobile interfaces.</p>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -210,7 +209,7 @@ and debug mode:</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -227,7 +226,7 @@ and debug mode:</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

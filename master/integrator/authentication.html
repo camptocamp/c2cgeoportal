@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Authentication &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -33,9 +32,9 @@
 
           <div class="body" role="main">
             
-  <section id="authentication">
+  <div class="section" id="authentication">
 <h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
-<section id="the-default-policy">
+<div class="section" id="the-default-policy">
 <h2>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this headline">¶</a></h2>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
 policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy, the user name is
@@ -59,23 +58,23 @@ application’s main <code class="docutils literal notranslate"><span class="pre
 served on <code class="docutils literal notranslate"><span class="pre">https</span></code>.</p>
 </div>
 <p>See also <a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy">the official documentation</a>.</p>
-</section>
-<section id="using-another-policy">
+</div>
+<div class="section" id="using-another-policy">
 <h2>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this headline">¶</a></h2>
 <p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>, an “auth ticket” cookie should be
 set in the request for the user to be identified. In some applications, using
 a custom identification mechanism may be needed instead, for instance to use SSO.
 Our knowledge base has an example of how this can be achieved.</p>
-</section>
-<section id="user-validation">
+</div>
+<div class="section" id="user-validation">
 <h2>User validation<a class="headerlink" href="#user-validation" title="Permalink to this headline">¶</a></h2>
 <p>For logging in, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
 (username/password) by reading the user information from the <code class="docutils literal notranslate"><span class="pre">user</span></code> database
 table. If a c2cgeoportal application should work with another user information
 source, like LDAP, a custom <em>client validation</em> mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.</p>
-</section>
-<section id="basic-auth">
+</div>
+<div class="section" id="basic-auth">
 <h2>Basic auth<a class="headerlink" href="#basic-auth" title="Permalink to this headline">¶</a></h2>
 <p>To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
 by setting <code class="docutils literal notranslate"><span class="pre">BASICAUTH</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
@@ -85,8 +84,8 @@ in your query string.</p>
 <p class="admonition-title">Note</p>
 <p>For security reasons, basic authentication and two factor authentication should not be enabled together.</p>
 </div>
-</section>
-<section id="two-factors-authentication">
+</div>
+<div class="section" id="two-factors-authentication">
 <h2>Two factors authentication<a class="headerlink" href="#two-factors-authentication" title="Permalink to this headline">¶</a></h2>
 <p>GeoMapFish support TOTP (Time-Based One-Time Password Algorithm) two factors authentication
 (<a class="reference external" href="https://tools.ietf.org/html/rfc6238">RFC 6238</a>).
@@ -104,8 +103,8 @@ should uncheck the ‘The user changed his password’ field on the user in the 
 <p>For security reasons, basic authentication and two factor authentication should not be enabled together,
 you should use <a class="reference internal" href="security.html#integrator-authentication-oauth2"><span class="std std-ref">OAuth2</span></a> for that.</p>
 </div>
-</section>
-<section id="account-lockout">
+</div>
+<div class="section" id="account-lockout">
 <h2>Account lockout<a class="headerlink" href="#account-lockout" title="Permalink to this headline">¶</a></h2>
 <p>To lock an account after a certain number of authentication failures, set the following settings:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
@@ -115,8 +114,8 @@ you should use <a class="reference internal" href="security.html#integrator-auth
 </div>
 <p>To unlock a user, the administrator should uncheck the ‘Deactivated’ field on the user in the
 admin interface.</p>
-</section>
-<section id="intranet">
+</div>
+<div class="section" id="intranet">
 <h2>Intranet<a class="headerlink" href="#intranet" title="Permalink to this headline">¶</a></h2>
 <p>To configure the intranet networks fill in the configuration like:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
@@ -137,8 +136,8 @@ however, please be aware that Intranet detection is not a secure mechanism. To s
 data, do not rely on Intranet detection; for that, you must use user authentication.</p>
 <p>A user can easily manually set the <cite>Forwarded</cite> or <cite>X-Forwarded-For</cite> header to spoof his IP.</p>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -189,7 +188,7 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -206,7 +205,7 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

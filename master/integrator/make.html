@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Build configuration &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,9 +34,9 @@
 
           <div class="body" role="main">
             
-  <section id="build-configuration">
+  <div class="section" id="build-configuration">
 <span id="integrator-make"></span><h1>Build configuration<a class="headerlink" href="#build-configuration" title="Permalink to this headline">¶</a></h1>
-<section id="env-files">
+<div class="section" id="env-files">
 <h2>Env files<a class="headerlink" href="#env-files" title="Permalink to this headline">¶</a></h2>
 <p>Usually we have the following env files:</p>
 <ul class="simple">
@@ -85,8 +84,8 @@ and one for production, not needed for projects managed in an OpenShift platform
   <span class="nt">help</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;town&gt; &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span>
 </pre></div>
 </div>
-</section>
-<section id="vars-files">
+</div>
+<div class="section" id="vars-files">
 <h2>Vars files<a class="headerlink" href="#vars-files" title="Permalink to this headline">¶</a></h2>
 <p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> file,
 which extends the default <code class="docutils literal notranslate"><span class="pre">geoportal/CONST_vars.yaml</span></code>.</p>
@@ -113,15 +112,15 @@ you should export your variable as follows:</p>
 </div>
 <p>For more information, see the
 <a class="reference external" href="https://github.com/camptocamp/c2c.template">c2c.template</a> documentation.</p>
-</section>
-<section id="dockefile-config-variables">
+</div>
+<div class="section" id="dockefile-config-variables">
 <h2>Dockefile config variables<a class="headerlink" href="#dockefile-config-variables" title="Permalink to this headline">¶</a></h2>
 <p>The following variables may be set in the Dockerfile:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project YAML configuration file.</p></li>
 </ul>
-</section>
-<section id="makefile-config-variables">
+</div>
+<div class="section" id="makefile-config-variables">
 <h2>Makefile config variables<a class="headerlink" href="#makefile-config-variables" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -133,8 +132,8 @@ you should export your variable as follows:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code>: List of available languages, default is <code class="docutils literal notranslate"><span class="pre">en</span> <span class="pre">fr</span> <span class="pre">de</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>: List of ngeo interfaces, default is <code class="docutils literal notranslate"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</p></li>
 </ul>
-</section>
-<section id="custom-rules">
+</div>
+<div class="section" id="custom-rules">
 <h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -158,8 +157,8 @@ Here is an example:</p>
 </pre></div>
 </div>
 <p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -216,7 +215,7 @@ Here is an example:</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -233,7 +232,7 @@ Here is an example:</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

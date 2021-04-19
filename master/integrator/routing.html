@@ -1,19 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Routing interface &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,16 +34,16 @@
 
           <div class="body" role="main">
             
-  <section id="routing-interface">
+  <div class="section" id="routing-interface">
 <span id="integrator-routing"></span><h1>Routing interface<a class="headerlink" href="#routing-interface" title="Permalink to this headline">¶</a></h1>
 <p>This section describes how to add the <a class="reference external" href="https://project-osrm.org/">OSRM routing</a> interface to a
 c2cgeoportal application.</p>
-<section id="requirements">
+<div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>To add this feature, you need a <a class="reference external" href="https://github.com/Project-OSRM/osrm-backend">OSRM backend server</a>
 with version &gt;= 5.8.</p>
-</section>
-<section id="adding-the-routing-interface-to-the-template">
+</div>
+<div class="section" id="adding-the-routing-interface-to-the-template">
 <h2>Adding the routing interface to the template<a class="headerlink" href="#adding-the-routing-interface-to-the-template" title="Permalink to this headline">¶</a></h2>
 <p>For a working example, check the
 <a class="reference external" href="https://geomapfish-demo-${major_version.replace('.','-')}.camptocamp.com/desktop_alt">Demo alternative UI</a>.</p>
@@ -70,8 +69,8 @@ with version &gt;= 5.8.</p>
 </div>
 <p><cite>mainCtrl.routingfeatureActive</cite> and <cite>mainCtrl.map</cite> are part of <cite>gmf.AbstractDesktopController</cite> and do not
 need to be defined in your interface controller, as long as it extends AbstractDesktopController.</p>
-</section>
-<section id="configuration">
+</div>
+<div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>To configure the routing feature, the constants <code class="docutils literal notranslate"><span class="pre">ngeoRoutingOptions</span></code> and <code class="docutils literal notranslate"><span class="pre">ngeoNominatimSearchDefaultParams</span></code>
 can be defined. Add them to your <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code> section in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
@@ -92,12 +91,12 @@ can be defined. Add them to your <code class="docutils literal notranslate"><spa
                     <span class="nt">countrycodes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CH</span>
 </pre></div>
 </div>
-<section id="backendurl">
+<div class="section" id="backendurl">
 <h3>backendUrl<a class="headerlink" href="#backendurl" title="Permalink to this headline">¶</a></h3>
 <p>required, string
 URL to an <a class="reference external" href="https://github.com/Project-OSRM/osrm-backend">OSRM backend server instance</a> with version &gt;= 5.8</p>
-</section>
-<section id="profiles">
+</div>
+<div class="section" id="profiles">
 <h3>profiles<a class="headerlink" href="#profiles" title="Permalink to this headline">¶</a></h3>
 <p>not required, ngeox.RoutingProfile</p>
 <p>label: string, label to display in the drop-down-menu for the profile</p>
@@ -109,17 +108,17 @@ URL to an <a class="reference external" href="https://github.com/Project-OSRM/os
 </pre></div>
 </div>
 <p>If more than one profile is supplied, the component will show a drop-down-menu for the user to select a profile.</p>
-</section>
-<section id="ngeonominatimsearchdefaultparams">
+</div>
+<div class="section" id="ngeonominatimsearchdefaultparams">
 <h3>ngeoNominatimSearchDefaultParams<a class="headerlink" href="#ngeonominatimsearchdefaultparams" title="Permalink to this headline">¶</a></h3>
 <p>not required, dictionary of string-parameters</p>
 <p>Configures the nominatim search, which is used to search for addresses and features in the routing search
 fields.
 Check the  OpenStreetMap wiki for a <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Nominatim#Parameters">list of all available parameters</a>.</p>
 <p>In the example, <code class="docutils literal notranslate"><span class="pre">'countrycodes':</span> <span class="pre">'CH'</span></code> restricts the search to Switzerland.</p>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -176,7 +175,7 @@ Check the  OpenStreetMap wiki for a <a class="reference external" href="https://
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -193,7 +192,7 @@ Check the  OpenStreetMap wiki for a <a class="reference external" href="https://
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
