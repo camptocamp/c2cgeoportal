@@ -52,7 +52,6 @@ CACHE_REGION = get_region("std")
 class PrintProxy(Proxy):
     def __init__(self, request: pyramid.request.Request):
         Proxy.__init__(self, request)
-        self.config = self.request.registry.settings
 
     @view_config(route_name="printproxy_capabilities")
     def capabilities(self) -> pyramid.response.Response:
@@ -75,7 +74,7 @@ class PrintProxy(Proxy):
         del query_string  # Just for caching
         del method  # Just for caching
         # get URL
-        _url = self.config["print_url"] + "/capabilities.json"
+        _url = self.request.get_organization_print_url() + "/capabilities.json"
 
         response = self._proxy(_url)
 
@@ -108,7 +107,11 @@ class PrintProxy(Proxy):
         """ Create PDF. """
         return self._proxy_response(
             "print",
-            Url("{}/report.{}".format(self.config["print_url"], self.request.matchdict.get("format"))),
+            Url(
+                "{}/report.{}".format(
+                    self.request.get_organization_print_url(), self.request.matchdict.get("format")
+                )
+            ),
         )
 
     @view_config(route_name="printproxy_status")
@@ -116,20 +119,33 @@ class PrintProxy(Proxy):
         """ PDF status. """
         return self._proxy_response(
             "print",
-            Url("{}/status/{}.json".format(self.config["print_url"], self.request.matchdict.get("ref"))),
+            Url(
+                "{}/status/{}.json".format(
+                    self.request.get_organization_print_url(), self.request.matchdict.get("ref")
+                )
+            ),
         )
 
     @view_config(route_name="printproxy_cancel")
     def cancel(self) -> pyramid.response.Response:
         """ PDF cancel. """
         return self._proxy_response(
-            "print", Url("{}/cancel/{}".format(self.config["print_url"], self.request.matchdict.get("ref")))
+            "print",
+            Url(
+                "{}/cancel/{}".format(
+                    self.request.get_organization_print_url(), self.request.matchdict.get("ref")
+                )
+            ),
         )
 
     @view_config(route_name="printproxy_report_get")
     def report_get(self) -> pyramid.response.Response:
         """ Get the PDF. """
-        url = Url("{0!s}/report/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref")))
-        if self.config.get("print_get_redirect", False):
+        url = Url(
+            "{}/report/{}".format(
+                self.request.get_organization_print_url(), self.request.matchdict.get("ref")
+            )
+        )
+        if self.request.registry.settings.get("print_get_redirect", False):
             raise HTTPFound(location=url.url())
         return self._proxy_response("print", url)
