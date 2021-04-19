@@ -1,3 +1,5 @@
+##### 2.6.rc.55
+* Fix markers URL in the new applications [c2cgeoportal#8099](https://github.com/camptocamp/c2cgeoportal/pull/8099)
 ##### 2.6.rc.54
 * [Backport 2.6] [Backport master] Do spell on pull request title [ngeo#7083](https://github.com/camptocamp/ngeo/pull/7083)
 ##### 2.6.rc.53
