@@ -1,3 +1,5 @@
+##### 2.6.rc.56
+* Be able to change the print URL for different organisations [c2cgeoportal#8117](https://github.com/camptocamp/c2cgeoportal/pull/8117)
 ##### 2.6.rc.55
 * Fix markers URL in the new applications [c2cgeoportal#8099](https://github.com/camptocamp/c2cgeoportal/pull/8099)
 ##### 2.6.rc.54
