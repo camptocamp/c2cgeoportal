@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,6 @@ CACHE_REGION = get_region("std")
 class PrintProxy(Proxy):  # pragma: no cover
     def __init__(self, request):
         Proxy.__init__(self, request)
-        self.config = self.request.registry.settings
 
     @view_config(route_name="printproxy_capabilities")
     def capabilities(self):
@@ -68,7 +67,7 @@ class PrintProxy(Proxy):  # pragma: no cover
         del query_string  # Just for caching
         del method  # Just for caching
         # get URL
-        _url = self.config["print_url"] + "/capabilities.json"
+        _url = self.request.get_organization_print_url() + "/capabilities.json"
 
         response = self._proxy(_url)
 
@@ -101,7 +100,9 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ Create PDF. """
         return self._proxy_response(
             "print",
-            "{0!s}/report.{1!s}".format(self.config["print_url"], self.request.matchdict.get("format")),
+            "{0!s}/report.{1!s}".format(
+                self.request.get_organization_print_url(), self.request.matchdict.get("format")
+            ),
         )
 
     @view_config(route_name="printproxy_status")
@@ -109,20 +110,27 @@ class PrintProxy(Proxy):  # pragma: no cover
         """ PDF status. """
         return self._proxy_response(
             "print",
-            "{0!s}/status/{1!s}.json".format(self.config["print_url"], self.request.matchdict.get("ref")),
+            "{0!s}/status/{1!s}.json".format(
+                self.request.get_organization_print_url(), self.request.matchdict.get("ref")
+            ),
         )
 
     @view_config(route_name="printproxy_cancel")
     def cancel(self):
         """ PDF cancel. """
         return self._proxy_response(
-            "print", "{0!s}/cancel/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
+            "print",
+            "{0!s}/cancel/{1!s}".format(
+                self.request.get_organization_print_url(), self.request.matchdict.get("ref")
+            ),
         )
 
     @view_config(route_name="printproxy_report_get")
     def report_get(self):
         """ Get the PDF. """
-        url = "{0!s}/report/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
-        if self.config.get("print_get_redirect", False):
+        url = "{0!s}/report/{1!s}".format(
+            self.request.get_organization_print_url(), self.request.matchdict.get("ref")
+        )
+        if self.request.registry.settings.get("print_get_redirect", False):
             raise HTTPFound(location=url)
         return self._proxy_response("print", url)
