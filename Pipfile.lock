@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8db418296219566b37f35a88c802525372b8fab37a8ae28d659dd5a3233a37ab"
+            "sha256": "0aacea374cc3150b16444b9bd71ef9be49f341f09475784b1e4aea56f5036bdb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1217,11 +1217,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:c93110f958cb5f8f32fefff5613b61a75e76d6263e9a545f6c0d441d5fbccc88",
-                "sha256:cfb9922699c1c3a7e3650c15196afc99baf0264be537162a728aabdeb77cd238"
+                "sha256:33cd9850eebe4419720bc07d664eadf1285cd3e10fa8fa90d820ec8d2b29e378",
+                "sha256:ba0093ab16458aaae86bf6f75c26b38a7b5972d160c8f3578f873b5b2150d1d3"
             ],
             "index": "pypi",
-            "version": "==1.19.55"
+            "version": "==1.19.56"
         },
         "babel": {
             "hashes": [
@@ -1249,10 +1249,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:5632c129e6c1c1a15e273fd3ec6f4431490e99ec61b6cff833538f456202e833",
-                "sha256:94a62f7f848b37757c3419193727e183bccdf5cb74167df30bafee5d8d649b7a"
+                "sha256:134a7b1d21030b6323b6094226d0cc898a8f2a2b5d27e1e5c0a0071372eab68d",
+                "sha256:367a7eaee80fdf7718f50461432ac2c4bd73363835a1ad011f99fdc592ba775d"
             ],
-            "version": "==1.20.55"
+            "version": "==1.20.56"
         },
         "certifi": {
             "hashes": [
@@ -1818,10 +1818,10 @@
         },
         "s3transfer": {
             "hashes": [
-                "sha256:81b7b3516739b0cfbecaa9077a1baf783e7a790c0e49261fcc6ceda468765efa",
-                "sha256:b5130849df909773254099d085790456665f8d7e0032bbef6e3407f28adb1ad9"
+                "sha256:9b3752887a2880690ce628bc263d6d13a3864083aeacff4890c1c9839a5eb0bc",
+                "sha256:cb022f4b16551edebbb31a377d3f09600dbada7363d8c5db7976e7f47732e1b2"
             ],
-            "version": "==0.4.1"
+            "version": "==0.4.2"
         },
         "setoptconf": {
             "hashes": [
