@@ -55,7 +55,7 @@ class PdfReport(OGCProxy):
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec: Dict[str, Any]) -> pyramid.response.Response:
-        """ Create and get report PDF. """
+        """Create and get report PDF."""
 
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"

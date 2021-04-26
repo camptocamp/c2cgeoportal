@@ -55,7 +55,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_capabilities")
     def capabilities(self) -> pyramid.response.Response:
-        """ Get print capabilities. """
+        """Get print capabilities."""
 
         templates = get_functionality("print_template", self.request, is_intranet(self.request))
 
@@ -104,7 +104,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_report_create")
     def report_create(self) -> pyramid.response.Response:
-        """ Create PDF. """
+        """Create PDF."""
         return self._proxy_response(
             "print",
             Url(
@@ -116,7 +116,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_status")
     def status(self) -> pyramid.response.Response:
-        """ PDF status. """
+        """PDF status."""
         return self._proxy_response(
             "print",
             Url(
@@ -128,7 +128,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_cancel")
     def cancel(self) -> pyramid.response.Response:
-        """ PDF cancel. """
+        """PDF cancel."""
         return self._proxy_response(
             "print",
             Url(
@@ -140,7 +140,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_report_get")
     def report_get(self) -> pyramid.response.Response:
-        """ Get the PDF. """
+        """Get the PDF."""
         url = Url(
             "{}/report/{}".format(
                 self.request.get_organization_print_url(), self.request.matchdict.get("ref")

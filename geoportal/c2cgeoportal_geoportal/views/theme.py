@@ -549,7 +549,7 @@ class Theme:
         return isinstance(tree_item, main.Layer)
 
     def _get_ogc_servers(self, group: main.LayerGroup, depth: int) -> Set[Union[str, bool]]:
-        """ Recurse on all children to get unique identifier for each child. """
+        """Recurse on all children to get unique identifier for each child."""
 
         ogc_servers: Set[Union[str, bool]] = set()
 

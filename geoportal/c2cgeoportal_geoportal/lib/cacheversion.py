@@ -55,7 +55,7 @@ def version_cache_buster(
 
 
 class CachebusterTween:
-    """ Get back the cachebuster URL. """
+    """Get back the cachebuster URL."""
 
     def __init__(
         self,

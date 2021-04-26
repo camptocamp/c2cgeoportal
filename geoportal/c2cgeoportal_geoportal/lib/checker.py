@@ -46,7 +46,7 @@ LOG = logging.getLogger(__name__)
 def build_url(
     name: str, path: str, request: pyramid.request.Request, headers: Dict[str, str] = None
 ) -> Dict[str, Union[str, Dict[str, str]]]:
-    """ Build an URL and headers for the checkers """
+    """Build an URL and headers for the checkers"""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
     url = urljoin(base_internal_url, path)
 
@@ -287,7 +287,7 @@ output:
 
 
 def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
-    """ Init the ckeckers """
+    """Init the ckeckers"""
     global_settings = config.get_settings()
     if "checker" not in global_settings:
         return

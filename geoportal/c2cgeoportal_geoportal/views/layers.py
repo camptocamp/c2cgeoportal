@@ -99,7 +99,7 @@ class Layers:
 
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":
-        """ Return a ``Layer`` object for ``layer_id``. """
+        """Return a ``Layer`` object for ``layer_id``."""
         from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
 
         layer_id = int(layer_id)
@@ -135,7 +135,7 @@ class Layers:
         return next(self._get_layers_for_request())
 
     def _get_protocol_for_layer(self, layer: "main.Layer", **kwargs: Any) -> Protocol:
-        """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
+        """Returns a papyrus ``Protocol`` for the ``Layer`` object."""
         cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
@@ -147,7 +147,7 @@ class Layers:
         return self._get_protocol_for_layer(layer, **kwargs)
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
-        """ Read features for the layer based on the self.request. """
+        """Read features for the layer based on the self.request."""
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
