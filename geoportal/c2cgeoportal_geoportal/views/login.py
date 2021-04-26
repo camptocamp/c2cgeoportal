@@ -84,7 +84,7 @@ class Login:
         if not self.request.is_valid_referer:
             LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
 
-    @view_config(context=HTTPForbidden, renderer="login.html")
+    @view_config(context=HTTPForbidden, renderer="login.html")  # type: ignore
     def loginform403(self) -> Dict[str, Any]:
         if self.request.authenticated_userid:
             raise HTTPUnauthorized()
@@ -93,7 +93,7 @@ class Login:
 
         return {"lang": self.lang, "came_from": self.request.path, "two_fa": self.two_factor_auth}
 
-    @view_config(route_name="loginform", renderer="login.html")
+    @view_config(route_name="loginform", renderer="login.html")  # type: ignore
     def loginform(self) -> Dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
@@ -109,7 +109,7 @@ class Login:
             return True
         return False
 
-    @view_config(route_name="login")
+    @view_config(route_name="login")  # type: ignore
     def login(self) -> pyramid.response.Response:
         self._referer_log()
 
@@ -237,7 +237,7 @@ class Login:
             response=Response(body, headers=headers.items()),
         )
 
-    @view_config(route_name="logout")
+    @view_config(route_name="logout")  # type: ignore
     def logout(self) -> pyramid.response.Response:
         headers = forget(self.request)
 
@@ -250,7 +250,7 @@ class Login:
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(self.request, "login", Cache.NO, response=Response("true", headers=headers))
 
-    def _user(self, user: static.User = None) -> Dict[str, Any]:
+    def _user(self, user: Optional[static.User] = None) -> Dict[str, Any]:
         result = {
             "functionalities": self._functionality(),
             "is_intranet": is_intranet(self.request),
@@ -267,13 +267,13 @@ class Login:
             )
         return result
 
-    @view_config(route_name="loginuser", renderer="json")
+    @view_config(route_name="loginuser", renderer="json")  # type: ignore
     def loginuser(self) -> Dict[str, Any]:
         LOG.info("Client IP address: %s", self.request.client_addr)
         set_common_headers(self.request, "login", Cache.NO)
         return self._user()
 
-    @view_config(route_name="change_password", renderer="json")
+    @view_config(route_name="change_password", renderer="json")  # type: ignore
     def change_password(self) -> pyramid.response.Response:
         set_common_headers(self.request, "login", Cache.NO)
 
@@ -363,7 +363,7 @@ class Login:
 
         return user, username, password, None
 
-    @view_config(route_name="loginresetpassword", renderer="json")
+    @view_config(route_name="loginresetpassword", renderer="json")  # type: ignore
     def loginresetpassword(self) -> Dict[str, Any]:
         set_common_headers(self.request, "login", Cache.NO)
 
@@ -383,7 +383,7 @@ class Login:
 
         return {"success": True}
 
-    @view_config(route_name="oauth2token")
+    @view_config(route_name="oauth2token")  # type: ignore
     def oauth2token(self) -> pyramid.response.Response:
         LOG.debug(
             "Call OAuth create_token_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
@@ -415,7 +415,7 @@ class Login:
             response=Response(body, headers=headers.items()),
         )
 
-    @view_config(route_name="oauth2loginform", renderer="login.html")
+    @view_config(route_name="oauth2loginform", renderer="login.html")  # type: ignore
     def oauth2loginform(self) -> Dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
@@ -427,7 +427,7 @@ class Login:
             "two_fa": self.two_factor_auth,
         }
 
-    @view_config(route_name="notlogin", renderer="notlogin.html")
+    @view_config(route_name="notlogin", renderer="notlogin.html")  # type: ignore
     def notlogin(self) -> Dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 

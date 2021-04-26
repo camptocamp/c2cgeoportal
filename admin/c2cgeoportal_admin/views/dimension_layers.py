@@ -32,6 +32,7 @@ from functools import partial
 from itertools import groupby
 from typing import cast
 
+import sqlalchemy
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
@@ -55,5 +56,5 @@ class DimensionLayerViews(LayerViews):
         )
     ] + LayerViews._extra_list_fields
 
-    def _base_query(self, query):
+    def _base_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
         return super()._base_query(query.options(subqueryload("dimensions")))

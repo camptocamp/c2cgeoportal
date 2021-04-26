@@ -72,7 +72,7 @@ Metadata = Union[str, int, float, bool, List[Any], Dict[str, Any]]
 
 
 def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, str]) -> requests.Response:
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def do_get_http_cached(url: str) -> requests.Response:
         response = requests.get(url, headers=headers, timeout=300, **http_options)
         LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
@@ -180,7 +180,7 @@ class Theme:
         if errors or preload or url is None:
             return None, errors
 
-        @CACHE_REGION.cache_on_arguments()
+        @CACHE_REGION.cache_on_arguments()  # type: ignore
         def build_web_map_service(ogc_server_id: int) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
             del ogc_server_id  # Just for cache
 
@@ -366,8 +366,8 @@ class Theme:
     def _layer(
         self,
         layer: main.Layer,
-        time_: TimeInformation = None,
-        dim: DimensionInformation = None,
+        time_: Optional[TimeInformation] = None,
+        dim: Optional[DimensionInformation] = None,
         mixed: bool = True,
     ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         errors: Set[str] = set()
@@ -579,10 +579,10 @@ class Theme:
         depth: int = 1,
         min_levels: int = 1,
         mixed: bool = True,
-        time_: TimeInformation = None,
-        dim: DimensionInformation = None,
-        wms_layers: List[str] = None,
-        layers_name: List[str] = None,
+        time_: Optional[TimeInformation] = None,
+        dim: Optional[DimensionInformation] = None,
+        wms_layers: Optional[List[str]] = None,
+        layers_name: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         if wms_layers is None:
@@ -668,7 +668,7 @@ class Theme:
                 if not mixed:
                     assert time_ is not None
                     assert dim is not None
-                    group_theme["ogcServer"] = cast(List, ogc_servers)[0]
+                    group_theme["ogcServer"] = cast(List[Any], ogc_servers)[0]
                     if time_.has_time() and time_.layer is None:
                         group_theme["time"] = time_.to_dict()
 
@@ -783,10 +783,10 @@ class Theme:
                 result[functionality.name] = [functionality.value]
         return result
 
-    @view_config(route_name="invalidate", renderer="json")
+    @view_config(route_name="invalidate", renderer="json")  # type: ignore
     def invalidate_cache(self) -> Dict[str, bool]:
         auth_view(self.request)
-        main.cache_invalidate_cb()
+        models.cache_invalidate_cb()
         return {"success": True}
 
     def _get_children(
@@ -816,7 +816,7 @@ class Theme:
                         children.append(layer_theme)
         return children, errors
 
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _get_layers_enum(self) -> Dict[str, Dict[str, str]]:
         layers_enum = {}
         if "enum" in self.settings.get("layers", {}):
@@ -928,7 +928,7 @@ class Theme:
 
         await asyncio.gather(*tasks)
 
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _get_features_attributes(
         self, url_internal_wfs: Url
     ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
@@ -1000,7 +1000,7 @@ class Theme:
 
         return attributes, namespace, all_errors
 
-    @view_config(route_name="themes", renderer="json")
+    @view_config(route_name="themes", renderer="json")  # type: ignore
     def themes(self) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
         interface = self.request.params.get("interface", "desktop")
         sets = self.request.params.get("set", "all")
@@ -1085,7 +1085,7 @@ class Theme:
                 LOG.info("Theme errors:\n%s", "\n".join(all_errors))
             return result
 
-        @CACHE_REGION.cache_on_arguments()
+        @CACHE_REGION.cache_on_arguments()  # type: ignore
         def get_theme_anonymous(
             intranet: bool,
             interface: str,

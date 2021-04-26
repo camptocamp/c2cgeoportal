@@ -77,7 +77,7 @@ class _Request:
     matchdict: Dict[str, str] = {}
     GET: Dict[str, str] = {}
 
-    def __init__(self, settings: Dict[str, Any] = None):
+    def __init__(self, settings: Optional[Dict[str, Any]] = None):
         self.registry: _Registry = _Registry(settings)
 
     @staticmethod
@@ -105,7 +105,7 @@ class _Request:
         return ""
 
 
-class GeomapfishAngularExtractor(Extractor):
+class GeomapfishAngularExtractor(Extractor):  # type: ignore
     """
     GeoMapFish angular extractor
     """
@@ -122,7 +122,11 @@ class GeomapfishAngularExtractor(Extractor):
         self.tpl = None
 
     def __call__(
-        self, filename: str, options: Dict[str, Any], fileobj: Dict[str, Any] = None, lineno: int = 0
+        self,
+        filename: str,
+        options: Dict[str, Any],
+        fileobj: Optional[Dict[str, Any]] = None,
+        lineno: int = 0,
     ) -> List[Message]:
         del fileobj, lineno
 
@@ -134,13 +138,13 @@ class GeomapfishAngularExtractor(Extractor):
             try:
                 empty_template = Template("")  # nosec
 
-                class Lookup(TemplateLookup):
+                class Lookup(TemplateLookup):  # type: ignore
                     @staticmethod
                     def get_template(uri: str) -> Template:
                         del uri  # unused
                         return empty_template
 
-                class MyTemplate(MakoTemplate):
+                class MyTemplate(MakoTemplate):  # type: ignore
                     tpl = None
 
                     def prepare(self, **kwargs: Any) -> None:
@@ -204,7 +208,7 @@ class GeomapfishAngularExtractor(Extractor):
             raise
 
 
-class GeomapfishConfigExtractor(Extractor):
+class GeomapfishConfigExtractor(Extractor):  # type: ignore
     """
     GeoMapFish config extractor (raster layers, and print templates)
     """
@@ -212,7 +216,11 @@ class GeomapfishConfigExtractor(Extractor):
     extensions = [".yaml", ".tmpl"]
 
     def __call__(
-        self, filename: str, options: Dict[str, Any], fileobj: Dict[str, Any] = None, lineno: int = 0
+        self,
+        filename: str,
+        options: Dict[str, Any],
+        fileobj: Optional[Dict[str, Any]] = None,
+        lineno: int = 0,
     ) -> List[Message]:
         del fileobj, lineno
         init_region({"backend": "dogpile.cache.memory"}, "std")
@@ -366,14 +374,14 @@ class GeomapfishConfigExtractor(Extractor):
         return result
 
 
-class GeomapfishThemeExtractor(Extractor):
+class GeomapfishThemeExtractor(Extractor):  # type: ignore
     """
     GeoMapFish theme extractor
     """
 
     # Run on the development.ini file
     extensions = [".ini"]
-    featuretype_cache: Dict[str, Optional[Dict]] = {}
+    featuretype_cache: Dict[str, Optional[Dict[str, Any]]] = {}
     wmscap_cache: Dict[str, WebMapService] = {}
 
     def __init__(self) -> None:
@@ -386,7 +394,7 @@ class GeomapfishThemeExtractor(Extractor):
         self.env = None
 
     def __call__(
-        self, filename: str, options: Dict[str, Any], fileobj: str = None, lineno: int = 0
+        self, filename: str, options: Dict[str, Any], fileobj: Optional[str] = None, lineno: int = 0
     ) -> List[Message]:
         del fileobj, lineno
         messages: List[Message] = []
@@ -478,7 +486,9 @@ class GeomapfishThemeExtractor(Extractor):
 
     @staticmethod
     def _import(
-        object_type: Type, messages: List[str], callback: Callable[["main.Layer", List[str]], None] = None
+        object_type: Type[Any],
+        messages: List[str],
+        callback: Optional[Callable[["main.Layer", List[str]], None]] = None,
     ) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 

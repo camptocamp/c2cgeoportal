@@ -48,7 +48,7 @@ class Profile(Raster):
     def __init__(self, request: pyramid.request.Request):
         Raster.__init__(self, request)
 
-    @view_config(route_name="profile.json", renderer="fast_json")
+    @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore
     def json(self) -> Dict[str, Any]:
         """answers to /profile.json"""
         _, points = self._compute_points()

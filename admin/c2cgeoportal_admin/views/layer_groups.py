@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,9 @@
 
 
 from functools import partial
+from typing import Optional
 
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
@@ -48,7 +50,7 @@ base_schema = GeoFormSchemaNode(LayerGroup, widget=FormWidget(fields_template="l
 base_schema.add(children_schema_node())
 base_schema.add(metadatas_schema_node.clone())
 base_schema.add_unique_validator(LayerGroup.name, LayerGroup.id)
-base_schema.add(parent_id_node(TreeGroup))
+base_schema.add(parent_id_node(TreeGroup))  # type: ignore
 
 
 @view_defaults(match_param="table=layer_groups")
@@ -62,7 +64,7 @@ class LayerGroupsViews(TreeItemViews):
     _model = LayerGroup
     _base_schema = base_schema
 
-    def _base_query(self, query=None):
+    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
         return super()._base_query(self._request.dbsession.query(LayerGroup).distinct())
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")

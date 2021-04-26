@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,9 @@
 
 
 from functools import partial
+from typing import Any, Dict, List, Optional
 
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ItemAction, ListField
 from deform.widget import FormWidget
@@ -56,7 +58,7 @@ base_schema.add(metadatas_schema_node.clone())
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
 base_schema.add_unique_validator(LayerWMTS.name, LayerWMTS.id)
-base_schema.add(parent_id_node(LayerGroup))
+base_schema.add(parent_id_node(LayerGroup))  # type: ignore
 
 
 @view_defaults(match_param="table=layers_wmts")
@@ -76,19 +78,19 @@ class LayerWmtsViews(DimensionLayerViews):
     _model = LayerWMTS
     _base_schema = base_schema
 
-    def _base_query(self, query=None):
+    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
         return super()._base_query(self._request.dbsession.query(LayerWMTS).distinct())
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
-    def index(self):
-        return super().index()
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
+    def index(self) -> Dict[str, Any]:
+        return super().index()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")
-    def grid(self):
-        return super().grid()
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore
+    def grid(self) -> Dict[str, Any]:
+        return super().grid()  # type: ignore
 
-    def _item_actions(self, item, readonly=False):
-        actions = super()._item_actions(item, readonly)
+    def _item_actions(self, item: LayerWMTS, readonly: bool = False) -> List[ItemAction]:
+        actions: List[ItemAction] = super()._item_actions(item, readonly)
         if inspect(item).persistent:
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
@@ -103,31 +105,35 @@ class LayerWmtsViews(DimensionLayerViews):
             )
         return actions
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
+    @view_config(  # type: ignore
+        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+    )
+    def view(self) -> Dict[str, Any]:
         if self._is_new():
             dbsession = self._request.dbsession
             default_wmts = LayerWMTS.get_default(dbsession)
             if default_wmts:
-                return self.copy(default_wmts, excludes=["name", "layer"])
-        return super().edit()
+                return self.copy(default_wmts, excludes=["name", "layer"])  # type: ignore
+        return super().edit()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
-        return super().save()
+    @view_config(  # type: ignore
+        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
+    )
+    def save(self) -> Dict[str, Any]:
+        return super().save()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
-    def delete(self):
-        return super().delete()
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
+    def delete(self) -> Dict[str, Any]:
+        return super().delete()  # type: ignore
 
-    @view_config(
+    @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self):
-        return super().duplicate()
+    def duplicate(self) -> Dict[str, Any]:
+        return super().duplicate()  # type: ignore
 
-    @view_config(route_name="convert_to_wms", request_method="POST", renderer="fast_json")
-    def convert_to_wms(self):
+    @view_config(route_name="convert_to_wms", request_method="POST", renderer="fast_json")  # type: ignore
+    def convert_to_wms(self) -> Dict[str, Any]:
         src = self._get_object()
         dbsession = self._request.dbsession
         default_wms = LayerWMS.get_default(dbsession)

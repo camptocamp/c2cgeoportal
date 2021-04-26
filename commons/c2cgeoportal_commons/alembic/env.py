@@ -93,9 +93,8 @@ def run_migrations_online() -> None:
 
     # Autogenerate config
     alembic_name = context.config.get_main_option("type")
-    from c2cgeoportal_commons.models import main, static
+    from c2cgeoportal_commons.models import Base, main, static
 
-    Base = main.Base if alembic_name == "main" else static.Base  # nopep8
     _schema = main._schema if alembic_name == "main" else static._schema
 
     def include_object(

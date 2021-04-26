@@ -37,7 +37,7 @@ from pylint.checkers import BaseChecker
 from pylint.interfaces import IRawChecker
 
 
-class CopyrightChecker(BaseChecker):
+class CopyrightChecker(BaseChecker):  # type: ignore
     """
     Check the first line for copyright notice
     """

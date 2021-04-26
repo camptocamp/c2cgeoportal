@@ -118,7 +118,7 @@ def get_region(region: str) -> CacheRegion:
     return _REGION[region]
 
 
-def invalidate_region(region: str = None) -> None:
+def invalidate_region(region: Optional[str] = None) -> None:
     if region is None:
         for cache_region in _REGION.values():
             cache_region.invalidate()
@@ -126,7 +126,7 @@ def invalidate_region(region: str = None) -> None:
         get_region(region).invalidate()
 
 
-class HybridRedisBackend(RedisBackend):
+class HybridRedisBackend(RedisBackend):  # type: ignore
     """
     A memory and redis backend
     """
@@ -162,7 +162,7 @@ class HybridRedisBackend(RedisBackend):
         super().delete(key)
 
 
-class HybridRedisSentinelBackend(RedisSentinelBackend):
+class HybridRedisSentinelBackend(RedisSentinelBackend):  # type: ignore
     """
     A memory and redis sentinel backend
     """
@@ -309,7 +309,7 @@ def set_common_headers(
     cache: Cache,
     response: pyramid.response.Response = None,
     credentials: bool = True,
-    content_type: str = None,
+    content_type: Optional[str] = None,
 ) -> pyramid.response.Response:
     """
     Set the common headers

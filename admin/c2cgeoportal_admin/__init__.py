@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,8 +28,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any
+
 import c2cgeoform
 import c2cwsgiutils.pretty_json
+import sqlalchemy
 import zope.sqlalchemy
 from c2c.template.config import config as configuration
 from pkg_resources import resource_filename
@@ -37,6 +40,7 @@ from pyramid.config import Configurator
 from pyramid.events import BeforeRender, NewRequest
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import configure_mappers, sessionmaker
+from transaction import TransactionManager
 from translationstring import TranslationStringFactory
 
 from c2cgeoportal_admin.subscribers import add_localizer, add_renderer_globals
@@ -68,7 +72,9 @@ def main(_, **settings):
     session_factory = sessionmaker()
     session_factory.configure(bind=engine)
 
-    def get_tm_session(session_factory, transaction_manager):
+    def get_tm_session(
+        session_factory: sessionmaker, transaction_manager: TransactionManager
+    ) -> sqlalchemy.orm.session.Session:
         dbsession = session_factory()
         zope.sqlalchemy.register(dbsession, transaction_manager=transaction_manager)
         return dbsession
@@ -88,7 +94,7 @@ def main(_, **settings):
 
 
 class PermissionSetter:
-    def __init__(self, config):
+    def __init__(self, config: Configurator):
         self.default_permission_to_revert = None
         self.config = config
 
@@ -100,12 +106,12 @@ class PermissionSetter:
             ]["introspectable"]["value"]
         self.config.set_default_permission("admin")
 
-    def __exit__(self, _type, value, traceback):
+    def __exit__(self, _type: Any, value: Any, traceback: Any) -> None:
         self.config.commit()  # avoid .ConfigurationConflictError
         self.config.set_default_permission(self.default_permission_to_revert)
 
 
-def includeme(config: Configurator):
+def includeme(config: Configurator) -> None:
     config.include("pyramid_jinja2")
     config.include("c2cgeoform")
     config.include("c2cgeoportal_commons")

@@ -29,8 +29,9 @@
 
 
 from functools import partial
-from typing import cast
+from typing import Optional, cast
 
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
@@ -51,7 +52,7 @@ _list_field = partial(ListField, Theme)
 base_schema = GeoFormSchemaNode(Theme, widget=FormWidget(fields_template="theme_fields"))
 base_schema.add(children_schema_node(only_groups=True))
 base_schema.add(functionalities_schema_node.clone())
-base_schema.add(roles_schema_node("restricted_roles"))
+base_schema.add(roles_schema_node("restricted_roles"))  # type: ignore
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(metadatas_schema_node.clone())
 base_schema.add_unique_validator(Theme.name, Theme.id)
@@ -96,7 +97,7 @@ class ThemeViews(TreeItemViews):
     _model = Theme
     _base_schema = base_schema
 
-    def _base_query(self, query=None):
+    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
         return super()._base_query(
             self._request.dbsession.query(Theme)
             .distinct()

@@ -1427,9 +1427,10 @@
         },
         "lazy-object-proxy": {
             "hashes": [
-                "sha256:ffebfdcd3dd88452e3e7a5f6d91a909b6c6542f823a7d6440ce104cdf0ed24dc"
+                "sha256:a6ae12d08c0bf9909ce12385803a543bfe99b95fe01e752536a60af2b7797c62",
+                "sha256:f3900e8a5de27447acbf900b4750b0ddfd7ec1ea7fbaf11dfa911141bc522af0"
             ],
-            "version": "==1.4.4"
+            "version": "==1.4.3"
         },
         "lingua": {
             "hashes": [

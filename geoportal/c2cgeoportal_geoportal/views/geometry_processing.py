@@ -46,7 +46,7 @@ class GeometryProcessing:
     def __init__(self, request: pyramid.request.Request):
         self.request = request
 
-    @view_config(route_name="difference", renderer="geojson")
+    @view_config(route_name="difference", renderer="geojson")  # type: ignore
     def difference(self) -> Optional[BaseGeometry]:
         body = loads(self.request.body)
         if (

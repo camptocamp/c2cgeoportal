@@ -42,7 +42,7 @@ from pyramid.compat import input_
 from pyramid.scaffolds.template import Template
 
 
-class BaseTemplate(Template):
+class BaseTemplate(Template):  # type: ignore
     """
     A class that can be used as a base class for c2cgeoportal scaffolding
     templates.
@@ -102,7 +102,7 @@ class BaseTemplate(Template):
         print(msg)
 
     @staticmethod
-    def _get_vars(vars_: Dict[str, Any], name: str, prompt: str, type_: Type = None) -> None:
+    def _get_vars(vars_: Dict[str, Any], name: str, prompt: str, type_: Optional[Type[Any]] = None) -> None:
         """
         Set an attribute in the vars dict.
         """

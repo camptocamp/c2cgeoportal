@@ -29,7 +29,7 @@
 
 
 import os
-from typing import Any, Dict, cast
+from typing import Any, Dict, Optional, cast
 
 from c2c.template.config import config as configuration
 from plaster_pastedeploy import Loader as BaseLoader
@@ -37,15 +37,17 @@ from plaster_pastedeploy import Loader as BaseLoader
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 
 
-class Loader(BaseLoader):
-    def _get_defaults(self, defaults: Dict[str, str] = None) -> Dict[str, str]:
+class Loader(BaseLoader):  # type: ignore
+    def _get_defaults(self, defaults: Optional[Dict[str, str]] = None) -> Dict[str, str]:
         d: Dict[str, str] = {}
         d.update({k: v.replace("%", "%%") for k, v in os.environ.items()})
         if defaults:
             d.update(defaults)
         return cast(Dict[str, str], super()._get_defaults(d))
 
-    def get_wsgi_app_settings(self, name: str = None, defaults: Dict[str, str] = None) -> Dict[str, Any]:
+    def get_wsgi_app_settings(
+        self, name: Optional[str] = None, defaults: Optional[Dict[str, str]] = None
+    ) -> Dict[str, Any]:
         settings = cast(Dict[str, Any], super().get_wsgi_app_settings(name, defaults))
         configuration.init(settings.get("app.cfg"))
         settings.update(configuration.get_config())

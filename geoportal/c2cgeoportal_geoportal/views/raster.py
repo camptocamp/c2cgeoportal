@@ -58,7 +58,7 @@ class Raster:
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
 
-        @zope.event.classhandler.handler(InvalidateCacheEvent)
+        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
         def handle(event: InvalidateCacheEvent) -> None:  # pylint: disable=unused-variable
             del event
             for _, v in Raster.data.items():
@@ -80,7 +80,7 @@ class Raster:
             )
         return result
 
-    @view_config(route_name="raster", renderer="fast_json")
+    @view_config(route_name="raster", renderer="fast_json")  # type: ignore
     def raster(self) -> Dict[str, Any]:
         lon = self._get_required_finite_float_param("lon")
         lat = self._get_required_finite_float_param("lat")

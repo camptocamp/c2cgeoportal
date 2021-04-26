@@ -64,7 +64,7 @@ def cache_invalidate_cb(*args: List[Any]) -> None:
 try:
     from c2cwsgiutils import broadcast
 
-    @broadcast.decorator()
+    @broadcast.decorator()  # type: ignore
     def _cache_invalidate_cb() -> None:
         zope.event.notify(InvalidateCacheEvent())
 

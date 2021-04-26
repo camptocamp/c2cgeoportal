@@ -33,7 +33,7 @@ import ipaddress
 import json
 import logging
 from string import Formatter
-from typing import Any, Dict, Iterable, List, Set, Tuple, Union, cast
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union, cast
 
 import dateutil
 import pyramid.request
@@ -60,7 +60,7 @@ def get_typed(
     types: Dict[str, Any],
     request: pyramid.request.Request,
     errors: Set[str],
-    layer_name: str = None,
+    layer_name: Optional[str] = None,
 ) -> Union[str, int, float, bool, None, List[Any], Dict[str, Any]]:
     prefix = "Layer '{}': ".format(layer_name) if layer_name is not None else ""
     type_ = {"type": "not init"}
@@ -135,7 +135,7 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
     return value if value else default
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
@@ -149,7 +149,7 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, Li
     return servers
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
@@ -188,7 +188,7 @@ class C2CPregenerator:
 _formatter = Formatter()
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def _get_intranet_networks(
     request: pyramid.request.Request,
 ) -> List[Union[ipaddress.IPv4Network, ipaddress.IPv6Network]]:
@@ -198,7 +198,7 @@ def _get_intranet_networks(
     ]
 
 
-@CACHE_REGION.cache_on_arguments()
+@CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_role_id(name: str) -> int:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 

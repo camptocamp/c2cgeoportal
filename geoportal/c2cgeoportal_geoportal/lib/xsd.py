@@ -29,7 +29,7 @@
 
 
 from io import BytesIO
-from typing import Any, Callable, Dict, Optional, Type, cast
+from typing import Any, Callable, Dict, Optional, Type, Union, cast
 
 import sqlalchemy.sql.schema
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
@@ -39,7 +39,7 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
 
-class XSDGenerator(PapyrusXSDGenerator):
+class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
     def add_class_properties_xsd(self, tb: str, cls: DeclarativeMeta) -> None:
         """Add the XSD for the class properties to the ``TreeBuilder``. And
         call the user ``sequence_callback``."""
@@ -112,8 +112,8 @@ class XSD:
         self,
         include_primary_keys: bool = False,
         include_foreign_keys: bool = False,
-        sequence_callback: str = None,
-        element_callback: str = None,
+        sequence_callback: Optional[str] = None,
+        element_callback: Optional[str] = None,
     ):
         self.generator = XSDGenerator(
             include_primary_keys=include_primary_keys,
@@ -122,8 +122,10 @@ class XSD:
             element_callback=element_callback,
         )
 
-    def __call__(self, table: str) -> Callable[[Type, Dict[str, Any]], Optional[bytes]]:
-        def _render(cls: Type, system: Dict[str, Any]) -> Optional[bytes]:
+    def __call__(
+        self, table: str
+    ) -> Callable[[Union[Type[str], Type[bytes]], Dict[str, Any]], Optional[bytes]]:
+        def _render(cls: Union[Type[str], Type[bytes]], system: Dict[str, Any]) -> Optional[bytes]:
             request = system.get("request")
             if request is not None:
                 response = request.response

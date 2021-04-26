@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 
 
 from functools import partial
+from typing import Any, Dict, List, cast
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField
@@ -48,7 +49,7 @@ base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
 
 
 @view_defaults(match_param="table=ogc_servers")
-class OGCServerViews(AbstractViews):
+class OGCServerViews(AbstractViews):  # type: ignore
     _list_fields = [
         _list_field("id"),
         _list_field("name"),
@@ -65,15 +66,15 @@ class OGCServerViews(AbstractViews):
     _model = OGCServer
     _base_schema = base_schema
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
-    def index(self):
-        return super().index()
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
+    def index(self) -> Dict[str, Any]:
+        return super().index()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")
-    def grid(self):
-        return super().grid()
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore
+    def grid(self) -> Dict[str, Any]:
+        return super().grid()  # type: ignore
 
-    def schema(self):
+    def schema(self) -> GeoFormSchemaNode:
         try:
             obj = self._get_object()
         except HTTPNotFound:
@@ -84,8 +85,8 @@ class OGCServerViews(AbstractViews):
         schema["url_wfs"].description = obj.url_wfs_description(self._request)
         return schema
 
-    def _item_actions(self, item, readonly=False):
-        actions = super()._item_actions(item, readonly)
+    def _item_actions(self, item: OGCServer, readonly: bool = False) -> List[Any]:
+        actions = cast(List[Any], super()._item_actions(item, readonly))
         if inspect(item).persistent:
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
@@ -98,26 +99,32 @@ class OGCServerViews(AbstractViews):
             )
         return actions
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
-        return super().edit(self.schema())
+    @view_config(  # type: ignore
+        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+    )
+    def view(self) -> Dict[str, Any]:
+        return super().edit(self.schema())  # type: ignore
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
-        return super().save()
+    @view_config(  # type: ignore
+        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
+    )
+    def save(self) -> Dict[str, Any]:
+        return super().save()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
-    def delete(self):
-        return super().delete()
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
+    def delete(self) -> Dict[str, Any]:
+        return super().delete()  # type: ignore
 
-    @view_config(
+    @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self):
-        return super().duplicate()
+    def duplicate(self) -> Dict[str, Any]:
+        return super().duplicate()  # type: ignore
 
-    @view_config(route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2")
-    def synchronize(self):
+    @view_config(  # type: ignore
+        route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2"
+    )
+    def synchronize(self) -> Dict[str, Any]:
         obj = self._get_object()
 
         if self._request.method == "GET":

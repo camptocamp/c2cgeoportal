@@ -71,7 +71,7 @@ class TinyOWSProxy(OGCProxy):
     def _get_wfs_url(self, errors: Set[str]) -> Optional[Url]:
         return Url(self.settings.get("tinyows_url"))
 
-    @view_config(route_name="tinyowsproxy")
+    @view_config(route_name="tinyowsproxy")  # type: ignore
     def proxy(self) -> pyramid.response.Response:
         if self.user is None:
             raise HTTPUnauthorized(

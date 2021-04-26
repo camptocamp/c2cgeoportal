@@ -32,7 +32,7 @@ import logging
 import os
 import subprocess
 from time import sleep
-from typing import Any, Dict, List, Union, cast
+from typing import Any, Dict, List, Optional, Union, cast
 from urllib.parse import urljoin
 
 import c2cwsgiutils.health_check
@@ -44,7 +44,7 @@ LOG = logging.getLogger(__name__)
 
 
 def build_url(
-    name: str, path: str, request: pyramid.request.Request, headers: Dict[str, str] = None
+    name: str, path: str, request: pyramid.request.Request, headers: Optional[Dict[str, str]] = None
 ) -> Dict[str, Union[str, Dict[str, str]]]:
     """Build an URL and headers for the checkers"""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
@@ -59,7 +59,9 @@ def build_url(
     return {"url": url, "headers": headers}
 
 
-def _build_headers(request: pyramid.request.Request, headers: Dict[str, str] = None) -> Dict[str, str]:
+def _build_headers(
+    request: pyramid.request.Request, headers: Optional[Dict[str, str]] = None
+) -> Dict[str, str]:
     if headers is None:
         headers = {}
     headers["Cache-Control"] = "no-cache"

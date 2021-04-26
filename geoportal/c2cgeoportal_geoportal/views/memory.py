@@ -44,7 +44,7 @@ from c2cgeoportal_geoportal.views import raster
 LOG = logging.getLogger(__name__)
 
 
-@view_config(route_name="memory", renderer="fast_json")
+@view_config(route_name="memory", renderer="fast_json")  # type: ignore
 def memory(request: pyramid.request.Request) -> Dict[str, Any]:
     auth_view(request)
     return cast(Dict[str, Any], _memory())
@@ -58,7 +58,7 @@ def _nice_type_name(obj: Any, dogpile_cache: bool = False) -> str:
     return "{}.{}".format(type_.__module__, type_.__name__)
 
 
-def _process_dict(dict_: Dict, dogpile_cache: bool = False) -> Dict[str, Any]:
+def _process_dict(dict_: Dict[str, Any], dogpile_cache: bool = False) -> Dict[str, Any]:
     # Timeout after one minute, must be set to a bit less that the timeout of the broadcast
     timeout = time.monotonic() + 20
 
@@ -82,7 +82,7 @@ def _process_dict(dict_: Dict, dogpile_cache: bool = False) -> Dict[str, Any]:
     }
 
 
-@broadcast.decorator(expect_answers=True, timeout=110)
+@broadcast.decorator(expect_answers=True, timeout=110)  # type: ignore  # type: ignore
 def _memory() -> Dict[str, Any]:
     return {
         "raster_data": _process_dict(raster.Raster.data),

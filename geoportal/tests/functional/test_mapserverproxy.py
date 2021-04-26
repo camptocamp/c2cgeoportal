@@ -86,7 +86,7 @@ NO_POINT = ["ef33223235b26c782736c88933b35331", "aaa27d9450664d34fd8f53b6e76af1e
 Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
 
 
-class PointTest(Base):
+class PointTest(Base):  # type: ignore
     __tablename__ = "testpoint"
     __table_args__ = {"schema": "geodata"}
     id = Column(types.Integer, primary_key=True)

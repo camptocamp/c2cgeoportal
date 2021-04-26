@@ -56,7 +56,7 @@ SQL_GEOMETRY_COLUMNS = """
 class _AssociationProxy:
     # A specific "association proxy" implementation
 
-    def __init__(self, target: str, value_attr: str, nullable: bool = True, order_by: str = None):
+    def __init__(self, target: str, value_attr: str, nullable: bool = True, order_by: Optional[str] = None):
         self.target = target
         self.value_attr = value_attr
         self.nullable = nullable
@@ -102,7 +102,12 @@ def _get_schema(tablename: str) -> Tuple[str, str]:
 _get_table_lock = threading.RLock()
 
 
-def get_table(tablename: str, schema: str = None, session: Session = None, primary_key: str = None) -> Table:
+def get_table(
+    tablename: str,
+    schema: Optional[str] = None,
+    session: Optional[Session] = None,
+    primary_key: Optional[str] = None,
+) -> Table:
     if schema is None:
         tablename, schema = _get_schema(tablename)
 
@@ -110,8 +115,8 @@ def get_table(tablename: str, schema: str = None, session: Session = None, prima
         engine = session.bind.engine
         metadata = MetaData(bind=engine)
     else:
+        from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
 
         engine = DBSession.bind.engine
         metadata = Base.metadata
@@ -128,14 +133,14 @@ def get_table(tablename: str, schema: str = None, session: Session = None, prima
     return table
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def get_class(
     tablename: str,
-    exclude_properties: List[str] = None,
-    primary_key: str = None,
-    attributes_order: List[str] = None,
-    enumerations_config: Dict[str, str] = None,
-    readonly_attributes: List[str] = None,
+    exclude_properties: Optional[List[str]] = None,
+    primary_key: Optional[str] = None,
+    attributes_order: Optional[List[str]] = None,
+    enumerations_config: Optional[Dict[str, str]] = None,
+    readonly_attributes: Optional[List[str]] = None,
 ) -> sqlalchemy.ext.declarative.api.DeclarativeMeta:
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
@@ -163,13 +168,13 @@ def get_class(
 
 def _create_class(
     table: Table,
-    exclude_properties: Iterable[str] = None,
-    attributes_order: List[str] = None,
-    enumerations_config: Dict[str, str] = None,
-    readonly_attributes: List[str] = None,
-    pk_name: str = None,
+    exclude_properties: Optional[Iterable[str]] = None,
+    attributes_order: Optional[List[str]] = None,
+    enumerations_config: Optional[Dict[str, str]] = None,
+    readonly_attributes: Optional[List[str]] = None,
+    pk_name: Optional[str] = None,
 ) -> sqlalchemy.ext.declarative.api.DeclarativeMeta:
-    from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
 
     exclude_properties = exclude_properties or ()
     attributes = dict(

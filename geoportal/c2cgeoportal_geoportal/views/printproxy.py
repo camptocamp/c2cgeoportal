@@ -53,7 +53,7 @@ class PrintProxy(Proxy):
     def __init__(self, request: pyramid.request.Request):
         Proxy.__init__(self, request)
 
-    @view_config(route_name="printproxy_capabilities")
+    @view_config(route_name="printproxy_capabilities")  # type: ignore
     def capabilities(self) -> pyramid.response.Response:
         """Get print capabilities."""
 
@@ -67,7 +67,7 @@ class PrintProxy(Proxy):
 
         return self._build_response(resp, content, Cache.PRIVATE, "print")
 
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _capabilities(
         self, templates: List[str], query_string: Dict[str, str], method: str
     ) -> Tuple[requests.Response, str]:
@@ -102,7 +102,7 @@ class PrintProxy(Proxy):
 
         return response, content
 
-    @view_config(route_name="printproxy_report_create")
+    @view_config(route_name="printproxy_report_create")  # type: ignore
     def report_create(self) -> pyramid.response.Response:
         """Create PDF."""
         return self._proxy_response(
@@ -114,7 +114,7 @@ class PrintProxy(Proxy):
             ),
         )
 
-    @view_config(route_name="printproxy_status")
+    @view_config(route_name="printproxy_status")  # type: ignore
     def status(self) -> pyramid.response.Response:
         """PDF status."""
         return self._proxy_response(
@@ -126,7 +126,7 @@ class PrintProxy(Proxy):
             ),
         )
 
-    @view_config(route_name="printproxy_cancel")
+    @view_config(route_name="printproxy_cancel")  # type: ignore
     def cancel(self) -> pyramid.response.Response:
         """PDF cancel."""
         return self._proxy_response(
@@ -138,7 +138,7 @@ class PrintProxy(Proxy):
             ),
         )
 
-    @view_config(route_name="printproxy_report_get")
+    @view_config(route_name="printproxy_report_get")  # type: ignore
     def report_get(self) -> pyramid.response.Response:
         """Get the PDF."""
         url = Url(

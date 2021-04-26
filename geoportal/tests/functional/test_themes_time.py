@@ -47,7 +47,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
 
 
-class PointTest(Base):
+class PointTest(Base):  # type: ignore
     __tablename__ = "testpointtime"
     __table_args__ = {"schema": "geodata"}
     id = Column(Integer, primary_key=True)

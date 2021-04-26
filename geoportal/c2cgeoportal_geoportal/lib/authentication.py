@@ -53,8 +53,10 @@ LOG = logging.getLogger(__name__)
 
 
 @implementer(IAuthenticationPolicy)
-class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):
-    def __init__(self, aes_key: str, callback: Callable[[str, Any], List[str]] = None, debug: bool = False):
+class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+    def __init__(
+        self, aes_key: str, callback: Optional[Callable[[str, Any], List[str]]] = None, debug: bool = False
+    ):
         self.aeskey = aes_key
         self.callback = callback
         self.debug = debug
@@ -91,19 +93,19 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def remember(  # pylint: disable=no-self-use
         self, request: pyramid.request.Request, userid: str, **kw: Any
-    ) -> List:
+    ) -> List[Dict[str, str]]:
         """A no-op."""
         del request, userid, kw
         return []
 
-    def forget(self, request: pyramid.request.Request) -> List:  # pylint: disable=no-self-use
+    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
         """A no-op."""
         del request
         return []
 
 
 @implementer(IAuthenticationPolicy)
-class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):
+class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     @staticmethod
     def unauthenticated_userid(request: pyramid.request.Request) -> Optional[str]:
         route_url = ""
@@ -134,12 +136,12 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def remember(  # pylint: disable=no-self-use
         self, request: pyramid.request.Request, userid: str, **kw: Any
-    ) -> List:
+    ) -> List[Dict[str, str]]:
         """A no-op."""
         del request, userid, kw
         return []
 
-    def forget(self, request: pyramid.request.Request) -> List:  # pylint: disable=no-self-use
+    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
         """A no-op."""
         del request
         return []

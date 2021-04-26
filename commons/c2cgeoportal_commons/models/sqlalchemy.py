@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2020, Camptocamp SA
+# Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import json
-from typing import Any, Optional, Type
+from typing import Any, Dict, Optional, Type
 
 from sqlalchemy.engine import Dialect
 from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
@@ -35,7 +35,7 @@ from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
 
 # get from https://docs.sqlalchemy.org/en/latest/orm/extensions/
 # mutable.html#establishing-mutability-on-scalar-column-values
-class JSONEncodedDict(TypeDecorator):
+class JSONEncodedDict(TypeDecorator):  # type: ignore
     """
     Represents an immutable structure as a json-encoded string.
     """
@@ -43,15 +43,15 @@ class JSONEncodedDict(TypeDecorator):
     impl = VARCHAR
 
     @staticmethod
-    def process_bind_param(value: Optional[dict], _: Dialect) -> Optional[str]:
+    def process_bind_param(value: Optional[Dict[str, Any]], _: Dialect) -> Optional[str]:
         return json.dumps(value) if value is not None else None
 
     @staticmethod
-    def process_result_value(value: Optional[str], _: Dialect) -> Optional[dict]:
+    def process_result_value(value: Optional[str], _: Dialect) -> Optional[Dict[str, Any]]:
         return json.loads(value) if value is not None else None
 
     @property
-    def python_type(self) -> Type:
+    def python_type(self) -> Type[Any]:
         return dict
 
     @staticmethod
@@ -60,12 +60,12 @@ class JSONEncodedDict(TypeDecorator):
         return json.dumps(value)
 
 
-class TsVector(UserDefinedType):
+class TsVector(UserDefinedType):  # type: ignore
     """A custom type for PostgreSQL's tsvector type."""
 
     def get_col_spec(self) -> str:  # pylint: disable=no-self-use
         return "TSVECTOR"
 
     @property
-    def python_type(self) -> Type:
+    def python_type(self) -> Type[Any]:
         return dict
