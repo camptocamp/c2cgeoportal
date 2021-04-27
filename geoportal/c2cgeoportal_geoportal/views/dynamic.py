@@ -101,7 +101,7 @@ class DynamicView:
 
     @view_config(route_name="dynamic", renderer="json")  # type: ignore
     def dynamic(self) -> Dict[str, Any]:
-        interface_name = self.request.params.get("interface")
+        interface_name = self.request.get_organization_interface(self.request.params.get("interface"))
 
         if interface_name not in self.interfaces_config:
             raise HTTPNotFound("Interface {} doesn't exists in the 'interfaces_config'.")
