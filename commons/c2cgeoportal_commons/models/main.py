@@ -78,14 +78,14 @@ _schema: str = config["schema"] or "main"
 _srid: int = cast(int, config["srid"]) or 3857
 
 # Set some default values for the admin interface
-_admin_config: Dict = config.get_config().get("admin_interface", {})
-_map_config: Dict = {**default_map_settings, **_admin_config.get("map", {})}
+_admin_config: Dict[str, Any] = config.get_config().get("admin_interface", {})
+_map_config: Dict[str, Any] = {**default_map_settings, **_admin_config.get("map", {})}
 view_srid_match = re.match(r"EPSG:(\d+)", _map_config["view"]["projection"])
 if "map_srid" not in _admin_config and view_srid_match is not None:
     _admin_config["map_srid"] = view_srid_match.group(1)
 
 
-class FullTextSearch(GeoInterface, Base):
+class FullTextSearch(GeoInterface, Base):  # type: ignore
     __tablename__ = "tsearch"
     __table_args__ = (Index("tsearch_ts_idx", "ts", postgresql_using="gin"), {"schema": _schema})
 
@@ -105,7 +105,7 @@ class FullTextSearch(GeoInterface, Base):
     from_theme = Column(Boolean, server_default="false")
 
 
-class Functionality(Base):
+class Functionality(Base):  # type: ignore
     __tablename__ = "functionality"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("Functionality"), "plural": _("Functionalities")}
@@ -159,7 +159,7 @@ theme_functionality = Table(
 )
 
 
-class Role(Base):
+class Role(Base):  # type: ignore
     __tablename__ = "role"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("Role"), "plural": _("Roles")}
@@ -190,7 +190,7 @@ class Role(Base):
         self,
         name: str = "",
         description: str = "",
-        functionalities: List[Functionality] = None,
+        functionalities: Optional[List[Functionality]] = None,
         extent: Geometry = None,
     ) -> None:
         if functionalities is None:
@@ -215,9 +215,9 @@ event.listen(Role.functionalities, "append", cache_invalidate_cb)
 event.listen(Role.functionalities, "remove", cache_invalidate_cb)
 
 
-class TreeItem(Base):
+class TreeItem(Base):  # type: ignore
     __tablename__ = "treeitem"
-    __table_args__: Union[Tuple, Dict[str, Any]] = (
+    __table_args__: Union[Tuple[Any, ...], Dict[str, Any]] = (
         UniqueConstraint("type", "name"),
         {"schema": _schema},
     )
@@ -256,7 +256,7 @@ event.listen(TreeItem, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 # association table TreeGroup <> TreeItem
-class LayergroupTreeitem(Base):
+class LayergroupTreeitem(Base):  # type: ignore
     __tablename__ = "layergroup_treeitem"
     __table_args__ = {"schema": _schema}
 
@@ -301,7 +301,9 @@ class LayergroupTreeitem(Base):
     )
     ordering = Column(Integer, info={"colanderalchemy": {"widget": HiddenWidget()}})
 
-    def __init__(self, group: "TreeGroup" = None, item: TreeItem = None, ordering: int = 0) -> None:
+    def __init__(
+        self, group: Optional["TreeGroup"] = None, item: Optional[TreeItem] = None, ordering: int = 0
+    ) -> None:
         self.treegroup = group
         self.treeitem = item
         self.ordering = ordering
@@ -463,7 +465,7 @@ OGCSERVER_AUTH_GEOSERVER = "Geoserver auth"
 OGCSERVER_AUTH_PROXY = "Proxy"
 
 
-class OGCServer(Base):
+class OGCServer(Base):  # type: ignore
     __tablename__ = "ogc_server"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("OGC Server"), "plural": _("OGC Servers")}
@@ -541,7 +543,7 @@ class OGCServer(Base):
         name: str = "",
         description: Optional[str] = None,
         url: str = "https://wms.example.com",
-        url_wfs: str = None,
+        url_wfs: Optional[str] = None,
         type_: str = "mapserver",
         image_type: str = "image/png",
         auth: str = "Standard auth",
@@ -794,7 +796,7 @@ class LayerVectorTiles(DimensionLayer):
     )
 
 
-class RestrictionArea(Base):
+class RestrictionArea(Base):  # type: ignore
     __tablename__ = "restrictionarea"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("Restriction area"), "plural": _("Restriction areas")}
@@ -839,8 +841,8 @@ class RestrictionArea(Base):
         self,
         name: str = "",
         description: str = "",
-        layers: List[Layer] = None,
-        roles: List[Role] = None,
+        layers: Optional[List[Layer]] = None,
+        roles: Optional[List[Role]] = None,
         area: Geometry = None,
         readwrite: bool = False,
     ) -> None:
@@ -887,7 +889,7 @@ interface_theme = Table(
 )
 
 
-class Interface(Base):
+class Interface(Base):  # type: ignore
     __tablename__ = "interface"
     __table_args__ = {"schema": _schema}
     __c2cgeoform_config__ = {"duplicate": True}
@@ -921,7 +923,7 @@ class Interface(Base):
         return self.name or ""
 
 
-class Metadata(Base):
+class Metadata(Base):  # type: ignore
     __tablename__ = "metadata"
     __table_args__ = {"schema": _schema}
 
@@ -950,7 +952,7 @@ class Metadata(Base):
         ),
     )
 
-    def __init__(self, name: str = "", value: str = "", description: str = None) -> None:
+    def __init__(self, name: str = "", value: str = "", description: Optional[str] = None) -> None:
         self.name = name
         self.value = value
         self.description = description
@@ -964,7 +966,7 @@ event.listen(Metadata, "after_update", cache_invalidate_cb, propagate=True)
 event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 
 
-class Dimension(Base):
+class Dimension(Base):  # type: ignore
     __tablename__ = "dimension"
     __table_args__ = {"schema": _schema}
 
@@ -994,7 +996,12 @@ class Dimension(Base):
     )
 
     def __init__(
-        self, name: str = "", value: str = "", layer: str = None, field: str = None, description: str = None
+        self,
+        name: str = "",
+        value: str = "",
+        layer: Optional[str] = None,
+        field: Optional[str] = None,
+        description: Optional[str] = None,
     ) -> None:
         self.name = name
         self.value = value

@@ -200,7 +200,7 @@ class Import:
     def _add_theme(
         self,
         theme: "c2cgeoportal_commons.models.main.Theme",
-        role: "c2cgeoportal_commons.models.main.Role" = None,
+        role: Optional["c2cgeoportal_commons.models.main.Role"] = None,
     ) -> None:
         fill = False
         for interface in self.interfaces:

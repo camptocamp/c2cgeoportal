@@ -48,8 +48,8 @@ revision = "166ff2dcc48d"
 down_revision = None
 
 
-class TsVector(UserDefinedType):
-    """ A custom type for PostgreSQL's tsvector type. """
+class TsVector(UserDefinedType):  # type: ignore
+    """A custom type for PostgreSQL's tsvector type."""
 
     def get_col_spec(self) -> str:
         return "TSVECTOR"

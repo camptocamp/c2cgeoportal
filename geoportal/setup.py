@@ -63,6 +63,7 @@ setup(
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         "License :: OSI Approved :: BSD License",
         "Development Status :: 6 - Mature",
+        "Typed",
     ],
     author="Camptocamp",
     author_email="info@camptocamp.com",

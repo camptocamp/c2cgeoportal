@@ -33,7 +33,7 @@ import logging
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
-from typing import Any, List
+from typing import Any, List, Optional
 
 import pytz
 import sqlalchemy.schema
@@ -79,7 +79,7 @@ user_role = Table(
 )
 
 
-class User(Base):
+class User(Base):  # type: ignore
     __tablename__ = "user"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("User"), "plural": _("Users")}
@@ -154,9 +154,9 @@ class User(Base):
         password: str = "",
         email: str = "",
         is_password_changed: bool = False,
-        settings_role: Role = None,
-        roles: List[Role] = None,
-        expire_on: datetime = None,
+        settings_role: Optional[Role] = None,
+        roles: Optional[List[Role]] = None,
+        expire_on: Optional[datetime] = None,
         deactivated: bool = False,
     ) -> None:
         self.username = username
@@ -233,7 +233,7 @@ class User(Base):
         return self.username or ""
 
 
-class Shorturl(Base):
+class Shorturl(Base):  # type: ignore
     __tablename__ = "shorturl"
     __table_args__ = {"schema": _schema}
     id = Column(Integer, primary_key=True)
@@ -245,7 +245,7 @@ class Shorturl(Base):
     nb_hits = Column(Integer)
 
 
-class OAuth2Client(Base):
+class OAuth2Client(Base):  # type: ignore
     __tablename__ = "oauth2_client"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
@@ -256,7 +256,7 @@ class OAuth2Client(Base):
     redirect_uri = Column(Unicode, info={"colanderalchemy": {"title": _("Redirect URI")}})
 
 
-class OAuth2BearerToken(Base):
+class OAuth2BearerToken(Base):  # type: ignore
     __tablename__ = "oauth2_bearertoken"
     __table_args__ = (
         sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),
@@ -274,7 +274,7 @@ class OAuth2BearerToken(Base):
     expire_at = Column(DateTime(timezone=True))  # in one hour
 
 
-class OAuth2AuthorizationCode(Base):
+class OAuth2AuthorizationCode(Base):  # type: ignore
     __tablename__ = "oauth2_authorizationcode"
     __table_args__ = (
         sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),

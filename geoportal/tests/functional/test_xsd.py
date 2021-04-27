@@ -58,7 +58,7 @@ class TestXSDGenerator(TestCase):
 
         Base = declarative_base(bind=DBSession.c2c_rw_bind)  # noqa
 
-        class Child(Base):
+        class Child(Base):  # type: ignore
             __tablename__ = "child"
             id = Column(types.Integer, primary_key=True)
             name = Column(types.Unicode)
@@ -68,7 +68,7 @@ class TestXSDGenerator(TestCase):
                 self.name = name
                 self.custom_order = custom_order
 
-        class Parent(Base):
+        class Parent(Base):  # type: ignore
             __tablename__ = "parent"
             id = Column(types.Integer, primary_key=True)
             child1_id = Column(types.Integer, ForeignKey("child.id"))

@@ -62,7 +62,7 @@ class OGCProxy(Proxy):
         if "ogcserver" in self.params:
             self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
 
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _get_ogcserver_byname(self, name: str) -> main.OGCServer:  # pylint: disable=no-self-use
         try:
             result = DBSession.query(main.OGCServer).filter(main.OGCServer.name == name).one()

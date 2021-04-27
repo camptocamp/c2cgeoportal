@@ -43,13 +43,13 @@ CACHE_REGION_OBJ = get_region("obj")
 CACHE_REGION = get_region("std")
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def _get_role(name: str) -> Dict[str, Any]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
     role = (
-        DBSession.query(static.Role)
-        .filter(static.Role.name == name)
+        DBSession.query(main.Role)
+        .filter(main.Role.name == name)
         .options(joinedload(main.Role.functionalities))
         .one_or_none()
     )
@@ -96,7 +96,7 @@ def _get_db_functionality(
     return [r for r in values if r is not None]
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def _get_functionalities_type(request: pyramid.request.Request) -> Dict[str, Dict[str, Any]]:
     return get_types_map(
         request.registry.settings.get("admin_interface", {}).get("available_functionalities", [])

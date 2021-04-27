@@ -28,7 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import pyramid.request
 from c2cgeoform.views.abstract_views import ItemAction
@@ -53,13 +53,13 @@ class LayerTreeViews:
         self._request = request
         self._dbsession = request.dbsession
 
-    @view_config(route_name="layertree", renderer="../templates/layertree.jinja2")
+    @view_config(route_name="layertree", renderer="../templates/layertree.jinja2")  # type: ignore
     def index(self) -> Dict[str, int]:
         node_limit = self._request.registry.settings["admin_interface"].get("layer_tree_max_nodes")
         limit_exceeded = self._dbsession.query(LayergroupTreeitem).count() < node_limit
         return {"limit_exceeded": limit_exceeded}
 
-    @view_config(route_name="layertree_children", renderer="fast_json")
+    @view_config(route_name="layertree_children", renderer="fast_json")  # type: ignore
     def children(self) -> List[Dict[str, Any]]:
         group_id = self._request.params.get("group_id", None)
         path = self._request.params.get("path", "")
@@ -89,7 +89,7 @@ class LayerTreeViews:
             for item in items
         ]
 
-    def _item_actions(self, item, parent_id=None) -> List[ItemAction]:
+    def _item_actions(self, item: TreeItem, parent_id: Optional[int] = None) -> List[ItemAction]:
         actions = []
         actions.append(
             ItemAction(
@@ -173,7 +173,7 @@ class LayerTreeViews:
 
         return actions
 
-    @view_config(route_name="layertree_unlink", request_method="DELETE", renderer="fast_json")
+    @view_config(route_name="layertree_unlink", request_method="DELETE", renderer="fast_json")  # type: ignore
     def unlink(self) -> Dict[str, Any]:
         group_id = self._request.matchdict.get("group_id")
         item_id = self._request.matchdict.get("item_id")
@@ -189,7 +189,7 @@ class LayerTreeViews:
         self._request.dbsession.flush()
         return {"success": True, "redirect": self._request.route_url("layertree")}
 
-    @view_config(route_name="layertree_delete", request_method="DELETE", renderer="fast_json")
+    @view_config(route_name="layertree_delete", request_method="DELETE", renderer="fast_json")  # type: ignore
     def delete(self) -> Dict[str, Any]:
         item_id = self._request.matchdict.get("item_id")
         item = self._request.dbsession.query(TreeItem).get(item_id)

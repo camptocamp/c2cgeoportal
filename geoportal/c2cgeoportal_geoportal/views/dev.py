@@ -50,7 +50,7 @@ class Dev(Proxy):
         super().__init__(request)
         self.dev_url = self.request.registry.settings["devserver_url"]
 
-    @view_config(route_name="dev")
+    @view_config(route_name="dev")  # type: ignore
     def dev(self) -> pyramid.response.Response:
         path = self.THEME_RE.sub("", self.request.path_info)
         if self.request.path.endswith("/dynamic.js"):

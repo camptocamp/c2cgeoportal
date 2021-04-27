@@ -37,7 +37,7 @@ from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 
-@view_config(route_name="localejson")
+@view_config(route_name="localejson")  # type: ignore
 def locale(request: pyramid.request.Request) -> pyramid.response.Response:
     response = HTTPFound(
         request.static_url(

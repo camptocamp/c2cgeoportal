@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Theme, TreeItem
 
 
-class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
+class ThemeOrderSchema(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
     def objectify(self, dict_, context=None):
         context = self.dbsession.query(Theme).get(dict_["id"])
         context = super().objectify(dict_, context)
@@ -66,7 +66,7 @@ def themes_validator(node, cstruct):
             )
 
 
-class ThemesOrderingSchema(colander.MappingSchema):
+class ThemesOrderingSchema(colander.MappingSchema):  # type: ignore
     themes = colander.SequenceSchema(
         ThemeOrderSchema(
             Theme,
@@ -87,7 +87,7 @@ class ThemesOrderingSchema(colander.MappingSchema):
     )
 
 
-class ThemesOrdering(AbstractViews):
+class ThemesOrdering(AbstractViews):  # type: ignore
 
     _base_schema = ThemesOrderingSchema()
 

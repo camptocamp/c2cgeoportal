@@ -99,7 +99,7 @@ class Layers:
 
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":
-        """ Return a ``Layer`` object for ``layer_id``. """
+        """Return a ``Layer`` object for ``layer_id``."""
         from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
 
         layer_id = int(layer_id)
@@ -135,7 +135,7 @@ class Layers:
         return next(self._get_layers_for_request())
 
     def _get_protocol_for_layer(self, layer: "main.Layer", **kwargs: Any) -> Protocol:
-        """ Returns a papyrus ``Protocol`` for the ``Layer`` object. """
+        """Returns a papyrus ``Protocol`` for the ``Layer`` object."""
         cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
@@ -147,7 +147,7 @@ class Layers:
         return self._get_protocol_for_layer(layer, **kwargs)
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
-        """ Read features for the layer based on the self.request. """
+        """Read features for the layer based on the self.request."""
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -187,7 +187,7 @@ class Layers:
             raise feature  # pylint: disable=raising-non-exception
         return feature
 
-    @view_config(route_name="layers_read_many", renderer="geojson")
+    @view_config(route_name="layers_read_many", renderer="geojson")  # type: ignore
     def read_many(self) -> FeatureCollection:
         set_common_headers(self.request, "layers", Cache.NO)
 
@@ -199,7 +199,7 @@ class Layers:
 
         return FeatureCollection(features)
 
-    @view_config(route_name="layers_read_one", renderer="geojson")
+    @view_config(route_name="layers_read_one", renderer="geojson")  # type: ignore
     def read_one(self) -> Feature:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
@@ -238,7 +238,7 @@ class Layers:
 
         return feature
 
-    @view_config(route_name="layers_count", renderer="string")
+    @view_config(route_name="layers_count", renderer="string")  # type: ignore
     def count(self) -> int:
         set_common_headers(self.request, "layers", Cache.NO)
 
@@ -248,7 +248,7 @@ class Layers:
             raise count
         return cast(int, count)
 
-    @view_config(route_name="layers_create", renderer="geojson")
+    @view_config(route_name="layers_create", renderer="geojson")  # type: ignore
     def create(self) -> Optional[FeatureCollection]:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
@@ -305,7 +305,7 @@ class Layers:
             self.request.response.status_int = 400
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
 
-    @view_config(route_name="layers_update", renderer="geojson")
+    @view_config(route_name="layers_update", renderer="geojson")  # type: ignore
     def update(self) -> Feature:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
@@ -388,7 +388,7 @@ class Layers:
             setattr(feature, last_update_user, self.request.user.id)
 
     @staticmethod
-    def get_metadata(layer: "main.Layer", key: str, default: str = None) -> Optional[str]:
+    def get_metadata(layer: "main.Layer", key: str, default: Optional[str] = None) -> Optional[str]:
         metadatas = layer.get_metadatas(key)
         if len(metadatas) == 1:
             metadata = metadatas[0]
@@ -402,7 +402,7 @@ class Layers:
             return should_validate.lower() != "false"
         return cast(bool, self.settings.get("geometry_validation", False))
 
-    @view_config(route_name="layers_delete")
+    @view_config(route_name="layers_delete")  # type: ignore
     def delete(self) -> pyramid.response.Response:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
@@ -437,7 +437,7 @@ class Layers:
         set_common_headers(self.request, "layers", Cache.NO, response=response)
         return response
 
-    @view_config(route_name="layers_metadata", renderer="xsd")
+    @view_config(route_name="layers_metadata", renderer="xsd")  # type: ignore
     def metadata(self) -> pyramid.response.Response:
         set_common_headers(self.request, "layers", Cache.PRIVATE)
 
@@ -447,7 +447,7 @@ class Layers:
 
         return get_layer_class(layer, with_last_update_columns=True)
 
-    @view_config(route_name="layers_enumerate_attribute_values", renderer="json")
+    @view_config(route_name="layers_enumerate_attribute_values", renderer="json")  # type: ignore
     def enumerate_attribute_values(self) -> Dict[str, Any]:
         set_common_headers(self.request, "layers", Cache.PUBLIC)
 
@@ -459,7 +459,7 @@ class Layers:
 
         return cast(Dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
 
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _enumerate_attribute_values(self, layername: str, fieldname: str) -> Dict[str, Any]:
         if layername not in self.layers_enum_config:
             raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))

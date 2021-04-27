@@ -55,7 +55,7 @@ class Shortener:
         if "base_url" in self.settings:
             self.short_bases.append(self.settings["base_url"])
 
-    @view_config(route_name="shortener_get")
+    @view_config(route_name="shortener_get")  # type: ignore
     def get(self) -> HTTPFound:
         ref = self.request.matchdict["ref"]
         short_urls = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
@@ -69,7 +69,7 @@ class Shortener:
         set_common_headers(self.request, "shortener", Cache.NO)
         return HTTPFound(location=short_urls[0].url)
 
-    @view_config(route_name="shortener_create", renderer="json")
+    @view_config(route_name="shortener_create", renderer="json")  # type: ignore
     def create(self) -> Dict[str, str]:
 
         if "url" not in self.request.params:

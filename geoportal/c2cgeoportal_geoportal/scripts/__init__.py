@@ -30,7 +30,7 @@
 
 import os
 from argparse import ArgumentParser, Namespace
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 from urllib.parse import urlsplit, urlunsplit
 
 import pyramid.config
@@ -64,14 +64,16 @@ def get_config_uri(options: Namespace) -> str:
     )
 
 
-def get_appsettings(options: Namespace, defaults: Dict[str, Any] = None) -> pyramid.config.Configurator:
+def get_appsettings(
+    options: Namespace, defaults: Optional[Dict[str, Any]] = None
+) -> pyramid.config.Configurator:
     config_uri = get_config_uri(options)
     loader = get_config_loader(config_uri)
     loader.setup_logging()
     return loader.get_wsgi_app_settings(defaults=defaults)
 
 
-def get_session(settings: dict, transaction_manager: transaction.TransactionManager) -> Session:
+def get_session(settings: Dict[str, Any], transaction_manager: transaction.TransactionManager) -> Session:
     configure_mappers()
     engine = engine_from_config(settings)
     session_factory = sessionmaker()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@
 
 from functools import partial
 
+import sqlalchemy
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
@@ -40,7 +41,7 @@ from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeG
 _list_field = partial(ListField, TreeItem)
 
 
-class TreeItemViews(AbstractViews):
+class TreeItemViews(AbstractViews):  # type: ignore
     _list_fields = [
         _list_field("id"),
         _list_field("name"),
@@ -81,7 +82,9 @@ class TreeItemViews(AbstractViews):
             self._request.dbsession.add(rel)
         return response
 
-    def _base_query(self, query):  # pylint: disable=arguments-differ
+    def _base_query(  # pylint: disable=arguments-differ
+        self, query: sqlalchemy.orm.query.Query
+    ) -> sqlalchemy.orm.query.Query:
         return (
             query.outerjoin("metadatas")
             .options(subqueryload("parents_relation").joinedload("treegroup"))

@@ -94,7 +94,7 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict
     return {r.id: r for r in results}
 
 
-@CACHE_REGION.cache_on_arguments()
+@CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_private_layers(ogc_server_ids: Iterable[int]) -> Dict[int, Any]:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 

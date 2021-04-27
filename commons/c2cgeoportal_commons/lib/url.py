@@ -46,7 +46,7 @@ class Url:
     query: Dict[str, str] = {}
     fragment = ""
 
-    def __init__(self, url: str = None):
+    def __init__(self, url: Optional[str] = None):
         if url:
             url_split = urllib.parse.urlsplit(url)
             self.scheme = url_split.scheme

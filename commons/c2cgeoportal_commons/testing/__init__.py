@@ -28,6 +28,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any, Dict
+
 import zope.sqlalchemy
 from sqlalchemy import engine_from_config
 from sqlalchemy.engine import Engine
@@ -35,7 +37,7 @@ from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 from transaction import TransactionManager
 
 
-def get_engine(settings: dict, prefix: str = "sqlalchemy.") -> Engine:
+def get_engine(settings: Dict[str, Any], prefix: str = "sqlalchemy.") -> Engine:
     return engine_from_config(settings, prefix)
 
 
@@ -86,7 +88,7 @@ def generate_mappers() -> None:
 
 
 def get_session(
-    settings: dict, transaction_manager: TransactionManager, prefix: str = "sqlalchemy."
+    settings: Dict[str, Any], transaction_manager: TransactionManager, prefix: str = "sqlalchemy."
 ) -> Session:
     configure_mappers()
     engine = get_engine(settings, prefix)

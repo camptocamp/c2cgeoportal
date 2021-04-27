@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@ import json
 from typing import Any, Dict, List, Optional, cast
 
 import colander
+import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 
@@ -46,13 +47,14 @@ def metadata_definitions(node, kw):
     return {m["name"]: m for m in kw["request"].registry.settings["admin_interface"]["available_metadata"]}
 
 
-class MetadataSelectWidget(SelectWidget):
-    """Extends class SelectWidget to support undefined metadatas.
+class MetadataSelectWidget(SelectWidget):  # type: ignore
+    """
+    Extends class SelectWidget to support undefined metadatas.
 
     Override serialize to add option in values for current cstruct when needed.
     """
 
-    def serialize(self, field, cstruct, **kw):
+    def serialize(self, field: Any, cstruct: Any, **kw: Any) -> Any:
         values = kw.get("values", self.values)
         if isinstance(cstruct, str) and (cstruct, cstruct) not in values:
             values = values.copy()
@@ -61,15 +63,15 @@ class MetadataSelectWidget(SelectWidget):
         return super().serialize(field, cstruct, **kw)
 
 
-@colander.deferred
-def metadata_name_widget(node, kw):
+@colander.deferred  # type: ignore
+def metadata_name_widget(node: Any, kw: Dict[str, pyramid.request.Request]) -> MetadataSelectWidget:
     del node
     return MetadataSelectWidget(
         values=[
             (m["name"], m["name"])
             for m in sorted(
                 kw["request"].registry.settings["admin_interface"]["available_metadata"],
-                key=lambda m: m["name"],
+                key=lambda m: cast(str, m["name"]),
             )
         ]
     )
@@ -94,11 +96,11 @@ def regex_validator(node, value):
             raise error
 
 
-class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
+class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
 
     metadata_definitions: Optional[Dict[str, Any]] = None
 
-    def __init__(self, *args, **kw):
+    def __init__(self, *args: Any, **kw: Any):
         super().__init__(*args, **kw)
 
         self.available_types: List[str] = []
@@ -113,7 +115,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
             "json", colander.String(), widget=TextAreaWidget(rows=10), validator=json_validator
         )
 
-    def _add_value_node(self, type_name, colander_type, **kw):
+    def _add_value_node(self, type_name: str, colander_type: colander.SchemaType, **kw: Any) -> None:
         self.add_before(
             "description",
             colander.SchemaNode(colander_type, name=type_name, title=_("Value"), missing=colander.null, **kw),
@@ -132,9 +134,11 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         dict_[self._ui_type(obj.name)] = value
         return dict_
 
-    def _ui_type(self, metadata_name: str):
+    def _ui_type(self, metadata_name: str) -> str:
         metadata_type = (
-            cast(Dict[str, Any], self.metadata_definitions).get(metadata_name, {}).get("type", "string")
+            cast(Dict[str, Dict[str, str]], self.metadata_definitions)
+            .get(metadata_name, {})
+            .get("type", "string")
         )
         return metadata_type if metadata_type in self.available_types else "string"
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ base_schema = GeoFormSchemaNode(Interface)
 
 
 @view_defaults(match_param="table=interfaces")
-class InterfacesViews(AbstractViews):
+class InterfacesViews(AbstractViews):  # type: ignore
     _list_fields = [
         _list_field("id"),
         _list_field("name"),

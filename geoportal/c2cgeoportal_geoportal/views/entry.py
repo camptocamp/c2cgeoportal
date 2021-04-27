@@ -45,7 +45,7 @@ class Entry:
     def __init__(self, request: pyramid.request.Request):
         self.request = request
 
-    @view_config(route_name="testi18n", renderer="testi18n.html")
+    @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore
     def testi18n(self) -> Dict[str, Any]:
         _ = self.request.translate
         return {"title": _("title i18n")}

@@ -31,7 +31,7 @@ import importlib
 import logging
 import os
 import re
-from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, cast
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
 from urllib.parse import urlsplit
 
 import c2cgeoform
@@ -117,8 +117,8 @@ def add_interface_ngeo(
     config: pyramid.config.Configurator,
     route_name: str,
     route: str,
-    renderer: str = None,
-    permission: str = None,
+    renderer: Optional[str] = None,
+    permission: Optional[str] = None,
 ) -> None:
 
     config.add_route(route_name, route, request_method="GET")
@@ -180,7 +180,7 @@ def locale_negotiator(request: pyramid.request.Request) -> str:
     return lang
 
 
-def _match_url_start(reference: str, value: str) -> bool:
+def _match_url_start(reference: str, value: List[str]) -> bool:
     """
     Checks that the val URL starts like the ref URL.
     """
@@ -189,7 +189,7 @@ def _match_url_start(reference: str, value: str) -> bool:
     return reference_parts == value_parts
 
 
-def is_valid_referer(request: pyramid.request.Request, settings: Dict[str, Any] = None) -> bool:
+def is_valid_referer(request: pyramid.request.Request, settings: Optional[Dict[str, Any]] = None) -> bool:
     if request.referer is not None:
         referer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
         if settings is None:
@@ -203,7 +203,7 @@ def create_get_user_from_request(
     settings: Dict[str, Any]
 ) -> Callable[[pyramid.request.Request, Optional[str]], Optional["static.User"]]:
     def get_user_from_request(
-        request: pyramid.request.Request, username: str = None
+        request: pyramid.request.Request, username: Optional[str] = None
     ) -> Optional["static.User"]:
         """Return the User object for the request.
 
@@ -394,7 +394,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
 
-            @zope.event.classhandler.handler(InvalidateCacheEvent)
+            @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
             def handle(event: InvalidateCacheEvent) -> None:  # pylint: disable=unused-variable
                 del event
                 caching.invalidate_region()
@@ -627,7 +627,9 @@ def includeme(config: pyramid.config.Configurator) -> None:
     c2cwsgiutils.index.additional_noauth.append("</div></div><hr>")
 
 
-def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck = None) -> None:
+def init_dbsessions(
+    settings: Dict[str, Any], config: Configurator, health_check: Optional[HealthCheck] = None
+) -> None:
     db_chooser = settings.get("db_chooser", {})
     master_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("master", [])]
     slave_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("slave", [])]

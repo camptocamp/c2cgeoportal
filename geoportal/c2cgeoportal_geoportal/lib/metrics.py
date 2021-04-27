@@ -39,7 +39,7 @@ from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views.raster import Raster
 
 
-class MemoryCacheSizeProvider(Provider):
+class MemoryCacheSizeProvider(Provider):  # type: ignore
     def __init__(self, all_: bool = False):
         super().__init__("pod_process_memory_cache_kb", "Used memory cache")
         self.all = all_
@@ -55,7 +55,7 @@ class MemoryCacheSizeProvider(Provider):
         return result
 
 
-@broadcast.decorator(expect_answers=True, timeout=15)
+@broadcast.decorator(expect_answers=True, timeout=15)  # type: ignore
 def _get_memory_cache(all_: bool) -> Dict[str, List[Tuple[Dict[str, Any], float]]]:
     values = (
         [({"key": key}, get_size(value) / 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
@@ -66,7 +66,7 @@ def _get_memory_cache(all_: bool) -> Dict[str, List[Tuple[Dict[str, Any], float]
     return {"values": values}
 
 
-class RasterDataSizeProvider(Provider):
+class RasterDataSizeProvider(Provider):  # type: ignore
     def __init__(self) -> None:
         super().__init__("pod_process_raster_data_kb", "Memory used by raster")
 
@@ -80,12 +80,12 @@ class RasterDataSizeProvider(Provider):
         return result
 
 
-@broadcast.decorator(expect_answers=True, timeout=15)
+@broadcast.decorator(expect_answers=True, timeout=15)  # type: ignore
 def _get_raster_data() -> Dict[str, List[Tuple[Dict[str, str], float]]]:
     return {"values": [({"key": key}, get_size(value) / 1024) for key, value in list(Raster.data.items())]}
 
 
-class TotalPythonObjectMemoryProvider(Provider):
+class TotalPythonObjectMemoryProvider(Provider):  # type: ignore
     def __init__(self) -> None:
         super().__init__("total_python_object_memory_kb", "Memory used by raster")
 
@@ -97,6 +97,6 @@ class TotalPythonObjectMemoryProvider(Provider):
         ]
 
 
-@broadcast.decorator(expect_answers=True, timeout=15)
+@broadcast.decorator(expect_answers=True, timeout=15)  # type: ignore
 def _get_python_object_size() -> Dict[str, float]:
     return {"value": sum([sys.getsizeof(o) / 1024 for o in gc.get_objects()])}

@@ -54,7 +54,7 @@ class DynamicView:
     def get(self, value: Dict[str, Any], interface: str) -> Dict[str, Any]:
         return cast(Dict[str, Any], self.interfaces_config.get(interface, {}).get(value, {}))
 
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _fulltextsearch_groups(self) -> List[str]:  # pylint: disable=no-self-use
         return [
             group[0]
@@ -101,7 +101,7 @@ class DynamicView:
 
         return constants
 
-    @view_config(route_name="dynamic", renderer="fast_json")
+    @view_config(route_name="dynamic", renderer="fast_json")  # type: ignore
     def dynamic(self) -> Dict[str, Any]:
         interface_name = self.request.params.get("interface")
 

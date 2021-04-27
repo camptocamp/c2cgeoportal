@@ -29,6 +29,7 @@
 
 
 from functools import partial
+from typing import Any, Dict
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
@@ -43,7 +44,7 @@ base_schema.add_unique_validator(OAuth2Client.client_id, OAuth2Client.id)
 
 
 @view_defaults(match_param="table=oauth2_clients")
-class OAuth2ClientViews(AbstractViews):
+class OAuth2ClientViews(AbstractViews):  # type: ignore
     _list_fields = [
         _list_field("id"),
         _list_field("client_id"),
@@ -57,28 +58,32 @@ class OAuth2ClientViews(AbstractViews):
     def _base_query(self):
         return self._request.dbsession.query(OAuth2Client)
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
-    def index(self):
-        return super().index()
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
+    def index(self) -> Dict[str, Any]:
+        return super().index()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")
-    def grid(self):
-        return super().grid()
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore
+    def grid(self) -> Dict[str, Any]:
+        return super().grid()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
-        return super().edit()
+    @view_config(  # type: ignore
+        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+    )
+    def view(self) -> Dict[str, Any]:
+        return super().edit()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
-        return super().save()
+    @view_config(  # type: ignore
+        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
+    )
+    def save(self) -> Dict[str, Any]:
+        return super().save()  # type: ignore
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
-    def delete(self):
-        return super().delete()
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
+    def delete(self) -> Dict[str, Any]:
+        return super().delete()  # type: ignore
 
-    @view_config(
+    @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self):
-        return super().duplicate()
+    def duplicate(self) -> Dict[str, Any]:
+        return super().duplicate()  # type: ignore

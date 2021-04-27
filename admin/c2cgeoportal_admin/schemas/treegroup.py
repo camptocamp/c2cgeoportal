@@ -30,6 +30,7 @@
 
 import logging
 from functools import partial
+from typing import Any, Dict, List, Optional
 
 import colander
 import pyramid.request
@@ -39,7 +40,7 @@ from sqlalchemy.sql.expression import case, func
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
-from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
+from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeGroup, TreeItem
 
 LOG = logging.getLogger(__name__)
 
@@ -53,7 +54,7 @@ ITEM_TYPE_ROUTE_MAP = {
 }
 
 
-class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
+class ChildSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
     def objectify(self, dict_, context=None):
         if dict_.get("id", None):
             context = self.dbsession.query(LayergroupTreeitem).get(dict_["id"])
@@ -62,7 +63,10 @@ class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         return context
 
 
-def treeitems(node, kw, only_groups=False):  # pylint: disable=unused-argument
+def treeitems(
+    node: TreeGroup, kw: Dict[str, pyramid.request.Request], only_groups: bool = False
+) -> List[Dict[str, Any]]:
+    del node
     dbsession = kw["request"].dbsession
 
     group = case([(func.count(LayergroupTreeitem.id) == 0, "Unlinked")], else_="Others")
@@ -121,7 +125,9 @@ def children_validator(node, cstruct):
             )
 
 
-def base_deferred_parent_id_validator(node, kw, model):  # pylint: disable=unused-argument
+def base_deferred_parent_id_validator(node, kw, model):
+    del node
+
     def validator(node, cstruct):
         if kw["dbsession"].query(model).filter(model.id == cstruct).count() == 0:
             raise colander.Invalid(
@@ -131,21 +137,21 @@ def base_deferred_parent_id_validator(node, kw, model):  # pylint: disable=unuse
     return validator
 
 
-def treeitem_edit_url(request: pyramid.request.Request, treeitem):
+def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> Optional[str]:
     if treeitem.item_type is None:
         return None
     table = ITEM_TYPE_ROUTE_MAP.get(treeitem.item_type, None)
     if table is None:
         LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
         return None
-    return request.route_url(
+    return request.route_url(  # type: ignore
         "c2cgeoform_item",
         table=ITEM_TYPE_ROUTE_MAP[treeitem.item_type],
         id=treeitem.id,
     )
 
 
-def children_schema_node(only_groups=False):
+def children_schema_node(only_groups: bool = False) -> colander.SequenceSchema:
     return colander.SequenceSchema(
         ChildSchemaNode(
             LayergroupTreeitem,

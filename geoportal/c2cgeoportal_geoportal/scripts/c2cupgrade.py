@@ -174,7 +174,11 @@ class C2cUpgradeTool:
             return cast(Union[List[Any], Dict[str, Any]], yaml.safe_load(project_file)[section])
 
     def print_step(
-        self, step: int, error: bool = False, message: str = None, prompt: str = "To continue, type:"
+        self,
+        step: int,
+        error: bool = False,
+        message: Optional[str] = None,
+        prompt: str = "To continue, type:",
     ) -> None:
         with open(".UPGRADE_INSTRUCTIONS", "w") as instructions:
             print("")
@@ -200,7 +204,7 @@ class C2cUpgradeTool:
             self.project["checker_url"],
         )
         try:
-            requests.packages.urllib3.disable_warnings()
+            requests.packages.urllib3.disable_warnings()  # type: ignore
             resp = requests.get(
                 self.project["checker_url"], headers=self.project.get("checker_headers"), verify=False
             )
@@ -823,7 +827,7 @@ rules:
         print("git push {} {}.".format(self.options.git_remote, branch))
 
 
-def check_git_status_output(args: List[str] = None) -> str:
+def check_git_status_output(args: Optional[List[str]] = None) -> str:
     return check_output(["git", "status", "--short"] + (args if args is not None else [])).decode("utf-8")
 
 

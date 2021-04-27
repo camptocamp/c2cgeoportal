@@ -42,7 +42,7 @@ LOG = logging.getLogger(__name__)
 OBJECT_CACHE_REGION = get_region("obj")
 
 
-class RequestValidator(oauthlib.oauth2.RequestValidator):
+class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
     def __init__(self, authorization_expires_in: int) -> None:
         # in minutes
         self.authorization_expires_in = authorization_expires_in
@@ -955,7 +955,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):
         raise NotImplementedError("Not implemented.")
 
 
-@OBJECT_CACHE_REGION.cache_on_arguments()
+@OBJECT_CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_oauth_client(settings: Dict[str, Any]) -> oauthlib.oauth2.WebApplicationServer:
     authentication_settings = settings.get("authentication", {})
     return oauthlib.oauth2.WebApplicationServer(

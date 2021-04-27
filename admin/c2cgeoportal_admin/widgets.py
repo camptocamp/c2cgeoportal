@@ -27,7 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from typing import Optional
+from typing import Any, Optional
 
 import colander
 import pyramid.request
@@ -56,7 +56,7 @@ widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=prot
 )
 
 
-class ChildWidget(MappingWidget):
+class ChildWidget(MappingWidget):  # type: ignore
     """
     Extension of the widget ````deform.widget.MappingWidget`` to be used in conjunction with ChildrenWidget,
     to manage n-m relationships.
@@ -91,12 +91,12 @@ class ChildWidget(MappingWidget):
     model = TreeItem
     label_field = "name"
 
-    def icon_class(self, child) -> Optional[str]:  # pylint: disable=no-self-use,useless-return
+    def icon_class(self, child: Any) -> Optional[str]:  # pylint: disable=no-self-use,useless-return
         del child
         return None
 
     def edit_url(  # pylint: disable=no-self-use,useless-return
-        self, request: pyramid.request.Request, child
+        self, request: pyramid.request.Request, child: Any
     ) -> Optional[str]:
         del request
         del child
@@ -110,7 +110,7 @@ class ChildWidget(MappingWidget):
         return super().serialize(field, cstruct, **kw)
 
 
-class ChildrenWidget(SequenceWidget):
+class ChildrenWidget(SequenceWidget):  # type: ignore
     """
     Extension of the widget ````deform.widget.SequenceWidget``, to be used in conjunction with ChildWidget,
     to manage n-m relationships.

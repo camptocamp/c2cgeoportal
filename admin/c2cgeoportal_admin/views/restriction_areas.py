@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 _list_field = partial(ListField, RestrictionArea)
 
 base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template="restriction_area_fields"))
-base_schema.add_before("area", roles_schema_node("roles"))
+base_schema.add_before("area", roles_schema_node("roles"))  # type: ignore
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 
 
@@ -88,7 +88,7 @@ base_schema.add(
 
 
 @view_defaults(match_param="table=restriction_areas")
-class RestrictionAreaViews(AbstractViews):
+class RestrictionAreaViews(AbstractViews):  # type: ignore
     _list_fields = [
         _list_field("id"),
         _list_field("name"),

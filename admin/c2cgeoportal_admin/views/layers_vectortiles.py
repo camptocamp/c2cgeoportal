@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,9 @@
 
 
 from functools import partial
+from typing import Optional
 
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
@@ -50,7 +52,7 @@ base_schema.add(metadatas_schema_node.clone())
 base_schema.add(interfaces_schema_node.clone())
 base_schema.add(restrictionareas_schema_node.clone())
 base_schema.add_unique_validator(LayerVectorTiles.name, LayerVectorTiles.id)
-base_schema.add(parent_id_node(LayerGroup))
+base_schema.add(parent_id_node(LayerGroup))  # type: ignore
 
 
 @view_defaults(match_param="table=layers_vectortiles")
@@ -64,7 +66,7 @@ class LayerVectorTilesViews(DimensionLayerViews):
     _model = LayerVectorTiles
     _base_schema = base_schema
 
-    def _base_query(self, query=None):
+    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
         del query
         return super()._base_query(self._request.dbsession.query(LayerVectorTiles).distinct())
 

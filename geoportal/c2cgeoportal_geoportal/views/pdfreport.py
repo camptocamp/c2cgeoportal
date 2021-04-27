@@ -55,7 +55,7 @@ class PdfReport(OGCProxy):
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec: Dict[str, Any]) -> pyramid.response.Response:
-        """ Create and get report PDF. """
+        """Create and get report PDF."""
 
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
@@ -103,7 +103,7 @@ class PdfReport(OGCProxy):
             ],
         }
 
-    @view_config(route_name="pdfreport", renderer="json")
+    @view_config(route_name="pdfreport", renderer="json")  # type: ignore
     def get_report(self) -> pyramid.response.Response:
         self.layername = self.request.matchdict["layername"]
         layer_config = self.config["layers"].get(self.layername)

@@ -30,7 +30,7 @@
 
 import logging
 import sys
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import pyramid.request
 import pyramid.response
@@ -53,11 +53,11 @@ class Proxy:
     def _proxy(
         self,
         url: Url,
-        params: Dict[str, str] = None,
-        method: str = None,
+        params: Optional[Dict[str, str]] = None,
+        method: Optional[str] = None,
         cache: bool = False,
-        body: bytes = None,
-        headers: Dict[str, str] = None,
+        body: Optional[bytes] = None,
+        headers: Optional[Dict[str, str]] = None,
     ) -> pyramid.response.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
@@ -155,7 +155,7 @@ class Proxy:
 
         return response
 
-    @CACHE_REGION.cache_on_arguments()
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _proxy_cache(self, method: str, *args: Any, **kwargs: Any) -> pyramid.response.Response:
         # Method is only for the cache
         del method
@@ -166,7 +166,7 @@ class Proxy:
         self,
         service_name: str,
         url: Url,
-        headers_update: Dict[str, str] = None,
+        headers_update: Optional[Dict[str, str]] = None,
         public: bool = False,
         **kwargs: Any,
     ) -> pyramid.response.Response:
@@ -189,9 +189,9 @@ class Proxy:
         content: str,
         cache_control: Cache,
         service_name: str,
-        headers: Dict[str, str] = None,
-        headers_update: Dict[str, str] = None,
-        content_type: str = None,
+        headers: Optional[Dict[str, str]] = None,
+        headers_update: Optional[Dict[str, str]] = None,
+        content_type: Optional[str] = None,
     ) -> pyramid.response.Response:
         if headers_update is None:
             headers_update = {}
