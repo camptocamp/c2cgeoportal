@@ -273,7 +273,7 @@ Changes to apply
    be moved to the new roles `anonymous` and `registered` that will be created once the database has been upgraded.
 
 3. The 'INSTANCE' configuration variable is removed, it should be in the '.env' files, and also the
-   environment makefiles, these contents should also be moved to the '.env' files. In a multi-organisation
+   environment makefiles, these contents should also be moved to the '.env' files. In a multi-organization
    project you can have a chain of multiple '.env' files see the build configuration documentation.
 
 4. A new PostgreSQL extension is required, install it by running in psql:
