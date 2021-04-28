@@ -84,8 +84,7 @@ vars:
           attachStacktrace: True
           tags:
             service: js
-        gmfAuthenticationConfig:
-          forcePasswordChange: true
+        gmfAuthenticationConfig: {}
         ngeoWfsPermalinkOptions:
           wfsTypes: []
           defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
