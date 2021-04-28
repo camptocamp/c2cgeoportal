@@ -1,3 +1,6 @@
+##### 2.6.rc.57
+* Eliminate forcePasswordChange option [c2cgeoportal#8146](https://github.com/camptocamp/c2cgeoportal/pull/8146)
+* Eliminate forcePasswordChange option [ngeo#7104](https://github.com/camptocamp/ngeo/pull/7104)
 ##### 2.6.rc.56
 * Be able to change the print URL for different organisations [c2cgeoportal#8117](https://github.com/camptocamp/c2cgeoportal/pull/8117)
 ##### 2.6.rc.55
