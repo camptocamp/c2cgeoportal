@@ -1,3 +1,5 @@
+##### 2.6.rc.58
+* Separate with a dash like in GitHub workflows [c2cgeoportal#8144](https://github.com/camptocamp/c2cgeoportal/pull/8144)
 ##### 2.6.rc.57
 * Eliminate forcePasswordChange option [c2cgeoportal#8146](https://github.com/camptocamp/c2cgeoportal/pull/8146)
 * Eliminate forcePasswordChange option [ngeo#7104](https://github.com/camptocamp/ngeo/pull/7104)
