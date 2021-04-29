@@ -32,7 +32,7 @@ from functools import partial
 from typing import Any, Dict, List, cast
 
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField
+from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField, UserMessage
 from deform.widget import FormWidget
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config, view_defaults
@@ -65,6 +65,14 @@ class OGCServerViews(AbstractViews):  # type: ignore
     _id_field = "id"
     _model = OGCServer
     _base_schema = base_schema
+
+    MSG_COL = {
+        **AbstractViews.MSG_COL,
+        "cannot_delete": UserMessage(
+            _("Impossible to delete this server while it contains WMS layers."),
+            "alert-danger",
+        ),
+    }
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
     def index(self) -> Dict[str, Any]:
@@ -113,6 +121,17 @@ class OGCServerViews(AbstractViews):  # type: ignore
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
     def delete(self) -> Dict[str, Any]:
+        obj = self._get_object()
+        if len(obj.layers) > 0:
+            return {
+                "success": True,
+                "redirect": self._request.route_url(
+                    "c2cgeoform_item",
+                    action="edit",
+                    id=obj.id,
+                    _query=[("msg_col", "cannot_delete")],
+                ),
+            }
         return super().delete()  # type: ignore
 
     @view_config(  # type: ignore
