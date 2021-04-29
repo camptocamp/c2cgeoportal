@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -94,6 +94,15 @@ def regex_validator(node, value):
             raise error
 
 
+class CustomBoolean(colander.Boolean):
+    def serialize(self, node, appstruct):
+        if appstruct is colander.null:
+            return colander.null
+        if appstruct == "true":
+            return self.true_val
+        return self.false_val
+
+
 class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
     metadata_definitions: Optional[Dict[str, Any]] = None
@@ -105,7 +114,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
         self._add_value_node("string", colander.String())
         self._add_value_node("liste", colander.String())
-        self._add_value_node("boolean", colander.Boolean())
+        self._add_value_node("boolean", CustomBoolean())
         self._add_value_node("int", colander.Int())
         self._add_value_node("float", colander.Float())
         self._add_value_node("url", colander.String(), validator=url)
