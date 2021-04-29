@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -655,7 +655,9 @@ class LayerWMS(DimensionLayer):
 
     # relationship with OGCServer
     ogc_server = relationship(
-        "OGCServer", info={"colanderalchemy": {"title": _("OGC server"), "exclude": True}}
+        "OGCServer",
+        backref=backref("layers", info={"colanderalchemy": {"exclude": True, "title": _("WMS Layers")}}),
+        info={"colanderalchemy": {"title": _("OGC server"), "exclude": True}},
     )
 
     def __init__(
