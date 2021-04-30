@@ -10,7 +10,7 @@ Usually we have the following env files:
 
 * ``env.default`` for the c2cgeoportal default configuration.
 * ``env.project`` for the project configuration.
-* ``env.<organisation>`` in a multi-organisation project these files will contain organisation-specific
+* ``env.<organization>`` in a multi-organization project these files will contain organization-specific
   configurations.
 * ``env.(dev|int|prod)`` environment specific settings, for example one for development, one for integration
   and one for production, not needed for projects managed in an OpenShift platform.
