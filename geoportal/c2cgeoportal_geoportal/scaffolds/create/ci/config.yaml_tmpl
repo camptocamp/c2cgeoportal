@@ -9,9 +9,9 @@ checks:
 
 version:
   branch_to_version_re:
-    - from: (prod-[0-9]+\.[0-9]+)
+    - from: (prod-[0-9]+-[0-9]+)
       to: \1
-    - from: (int-[0-9]+\.[0-9]+)
+    - from: (int-[0-9]+-[0-9]+)
       to: \1
 
 publish:
