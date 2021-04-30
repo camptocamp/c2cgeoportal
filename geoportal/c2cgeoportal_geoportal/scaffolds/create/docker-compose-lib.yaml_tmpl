@@ -81,7 +81,7 @@ services:
       - QGIS_SERVER_LOG_LEVEL=2
 
   tinyows:
-    image: camptocamp/tinyows
+    image: camptocamp/tinyows:master
     user: www-data
     restart: unless-stopped
 
