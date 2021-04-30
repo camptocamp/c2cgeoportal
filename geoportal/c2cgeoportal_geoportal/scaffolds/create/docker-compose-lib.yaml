@@ -87,7 +87,7 @@ services:
       - OTHER_LOG_LEVEL
 
   tinyows:
-    image: camptocamp/tinyows
+    image: camptocamp/tinyows:master
     user: www-data
     restart: unless-stopped
 
