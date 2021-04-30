@@ -25,7 +25,7 @@ in the config image.
 ``geoportal/vars*.yaml``, ``geoportal/CONST_vars.yaml``, ``geoportal/CONST_config-schema.yaml``: All the
 files needed to build the config will be in the file ``/etc/geomapfish/config.yaml`` in the config image.
 
-``geoportal/geomapfish_geoportal/static``: All the static files needed for your application that arebe
+``geoportal/geomapfish_geoportal/static``: All the static files needed for your application that are
 available in the static view with cache buster will be in the folder ``/etc/geomapfish/static`` in the
 config image.
 
