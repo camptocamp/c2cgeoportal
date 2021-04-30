@@ -80,6 +80,7 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
         kwargs.get("_query", {})
     )
     request.get_organization_role = lambda role_type: role_type
+    request.get_organization_interface = lambda interface: interface
 
     return request
 

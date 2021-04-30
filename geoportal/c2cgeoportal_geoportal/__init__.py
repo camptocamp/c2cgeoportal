@@ -325,13 +325,15 @@ def includeme(config: pyramid.config.Configurator):
     get_user_from_request = create_get_user_from_request(settings)
     config.add_request_method(get_user_from_request, name="user", property=True)
     config.add_request_method(get_user_from_request, name="get_user")
-    # Be able for an organisation to override the method to use alternate roles name for
-    # the standard roles 'anonymous', 'registred' and 'intranet'.
+    # Be able for an organization to override the method to use alternate:
+    # - Organization roles name for the standard roles 'anonymous', 'registred' and 'intranet'.
     config.add_request_method(lambda request, role_type: role_type, name="get_organization_role")
-    # Same for Print URL
+    # - Organization print URL
     config.add_request_method(
         lambda request: request.registry.settings["print_url"], name="get_organization_print_url"
     )
+    # - Organization interface name (in the config and in the admin interface)
+    config.add_request_method(lambda request, interface: interface, name="get_organization_interface")
 
     # Configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs("c2cgeoportal_geoportal:locale/")
