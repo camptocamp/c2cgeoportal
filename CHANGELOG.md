@@ -1,3 +1,5 @@
+##### 2.6.rc.61
+* Add possibility to have custom interface name per organisation instance [c2cgeoportal#8145](https://github.com/camptocamp/c2cgeoportal/pull/8145)
 ##### 2.6.rc.60
 * Be able to inject custom Javascript or Stylesheet for multi-organisations [ngeo#7105](https://github.com/camptocamp/ngeo/pull/7105)
 ##### 2.6.rc.59
