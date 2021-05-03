@@ -2,6 +2,7 @@
 checks:
   required_workflows: False
   versions: False
+  dependabot_config: False
   codespell:
     ignore_re:
       - CONST_create_template/.*
