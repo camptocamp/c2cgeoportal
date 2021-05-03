@@ -1,3 +1,5 @@
+##### 2.6.rc.63
+* Show message on ogcserver delete if contains layers [c2cgeoportal#8157](https://github.com/camptocamp/c2cgeoportal/pull/8157)
 ##### 2.6.rc.62
 * Search result highlight [ngeo#7111](https://github.com/camptocamp/ngeo/pull/7111)
 ##### 2.6.rc.61
