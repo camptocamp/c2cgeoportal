@@ -657,7 +657,9 @@ class LayerWMS(DimensionLayer):
 
     # relationship with OGCServer
     ogc_server = relationship(
-        "OGCServer", info={"colanderalchemy": {"title": _("OGC server"), "exclude": True}}
+        "OGCServer",
+        backref=backref("layers", info={"colanderalchemy": {"exclude": True, "title": _("WMS Layers")}}),
+        info={"colanderalchemy": {"title": _("OGC server"), "exclude": True}},
     )
 
     def __init__(
