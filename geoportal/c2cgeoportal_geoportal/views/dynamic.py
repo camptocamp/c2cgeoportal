@@ -98,7 +98,7 @@ class DynamicView:
 
         return constants
 
-    @view_config(route_name="dynamic", renderer="fast_json")
+    @view_config(route_name="dynamic", renderer="json")
     def dynamic(self):
         interface_name = self.request.get_organization_interface(self.request.params.get("interface"))
 
