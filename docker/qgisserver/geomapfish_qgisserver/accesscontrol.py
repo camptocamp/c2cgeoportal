@@ -128,7 +128,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         return self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
 
     def layerFilterSubsetString(self, layer):  # NOQA
-        """ Return an additional subset string (typically SQL) filter """
+        """Return an additional subset string (typically SQL) filter"""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -139,7 +139,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def layerFilterExpression(self, layer):  # NOQA
-        """ Return an additional expression filter """
+        """Return an additional expression filter"""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -150,7 +150,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def layerPermissions(self, layer):  # NOQA
-        """ Return the layer rights """
+        """Return the layer rights"""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -163,7 +163,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(self, layer, attributes):  # NOQA
-        """ Return the authorised layer attributes """
+        """Return the authorised layer attributes"""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -174,7 +174,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def allowToEdit(self, layer, feature):  # NOQA
-        """ Are we authorise to modify the following geometry """
+        """Are we authorise to modify the following geometry"""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -193,7 +193,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
 
 class OGCServerAccessControl(QgsAccessControlFilter):
-    """ Implements GeoMapFish access restriction """
+    """Implements GeoMapFish access restriction"""
 
     SUBSETSTRING_TYPE = ["PostgreSQL database with PostGIS extension"]
 
@@ -427,7 +427,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         return (Access.AREA, area)
 
     def layerFilterSubsetString(self, layer):  # NOQA
-        """ Returns an additional subset string (typically SQL) filter """
+        """Returns an additional subset string (typically SQL) filter"""
 
         LOG.debug("layerFilterSubsetString %s %s", layer.name(), layer.dataProvider().storageType())
 
@@ -469,7 +469,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def layerFilterExpression(self, layer):  # NOQA
-        """ Returns an additional expression filter """
+        """Returns an additional expression filter"""
 
         LOG.debug("layerFilterExpression %s %s", layer.name(), layer.dataProvider().storageType())
 
@@ -508,7 +508,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def layerPermissions(self, layer):  # NOQA
-        """ Returns the layer rights """
+        """Returns the layer rights"""
 
         LOG.debug("layerPermissions %s", layer.name())
 
@@ -548,7 +548,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(self, layer, attributes):  # NOQA
-        """ Returns the authorised layer attributes """
+        """Returns the authorised layer attributes"""
         del layer
 
         if self.ogcserver is None:
@@ -563,7 +563,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         return attributes
 
     def allowToEdit(self, layer, feature):  # NOQA
-        """ Are we authorise to modify the following geometry """
+        """Are we authorise to modify the following geometry"""
         LOG.debug("allowToEdit")
 
         if self.ogcserver is None:

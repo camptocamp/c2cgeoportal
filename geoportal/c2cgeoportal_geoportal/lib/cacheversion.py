@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ def version_cache_buster(request, subpath, kw):  # pragma: no cover
 
 
 class CachebusterTween:
-    """ Get back the cachebuster URL. """
+    """Get back the cachebuster URL."""
 
     def __init__(self, handler, registry: pyramid.registry.Registry):
         self.handler = handler
