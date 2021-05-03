@@ -7,6 +7,8 @@ checks:
     main.yaml: False
     clean.yaml: False
     audit.yaml: False
+    dependabot-auto-merge.yaml: False
+  dependabot_config: False
 
 audit:
   pipenv:
