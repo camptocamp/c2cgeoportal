@@ -1,3 +1,5 @@
+##### 2.6.rc.62
+* Search result highlight [ngeo#7111](https://github.com/camptocamp/ngeo/pull/7111)
 ##### 2.6.rc.61
 * Add possibility to have custom interface name per organisation instance [c2cgeoportal#8145](https://github.com/camptocamp/c2cgeoportal/pull/8145)
 ##### 2.6.rc.60
