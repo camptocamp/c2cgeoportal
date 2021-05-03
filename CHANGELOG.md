@@ -1,7 +1,10 @@
+##### 2.4.2.45
+* [Backport 2.4] Change the Tinyows Docker image tag to master which is regularly rebuilt [c2cgeoportal#8172](https://github.com/camptocamp/c2cgeoportal/pull/8172)
+* [Backport 2.4] [Backport master] Do spell on pull request title [ngeo#7081](https://github.com/camptocamp/ngeo/pull/7081)
+* [Backport 2.4] Clean permalink only of removed groups [ngeo#7098](https://github.com/camptocamp/ngeo/pull/7098)
 ##### 2.4.2.44
 * [Backport 2.4] Do spell on pull request title [c2cgeoportal#8078](https://github.com/camptocamp/c2cgeoportal/pull/8078)
 * Fix API Help instructions [ngeo#6979](https://github.com/camptocamp/ngeo/pull/6979)
-* [Backport 2.4] [Backport master] Do spell on pull request title [ngeo#7081](https://github.com/camptocamp/ngeo/pull/7081)
 ##### 2.4.2.43
 * Fix GitHub CI template [c2cgeoportal#7974](https://github.com/camptocamp/c2cgeoportal/pull/7974)
 ##### 2.4.2.42
