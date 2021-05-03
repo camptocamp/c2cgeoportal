@@ -1,3 +1,5 @@
+##### 2.6.rc.64
+* Change the Tinyows Docker image tag to master which is regularly rebuilt [c2cgeoportal#8162](https://github.com/camptocamp/c2cgeoportal/pull/8162)
 ##### 2.6.rc.63
 * Show message on ogcserver delete if contains layers [c2cgeoportal#8157](https://github.com/camptocamp/c2cgeoportal/pull/8157)
 ##### 2.6.rc.62
