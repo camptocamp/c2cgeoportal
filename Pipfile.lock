@@ -87,11 +87,11 @@
         },
         "c2cgeoform": {
             "hashes": [
-                "sha256:2812185fd6cee9a5b285eca36c699485d074027befabdaf0b335cd179c31ffb9",
-                "sha256:834b8376dbe4a1f65912d5f9d64134827bb70eab247d602e1193834bf6e00a9a"
+                "sha256:7a5f05df929fde4ba007ec1e7db473c1257e92d332ccecf86f3abdbdcd5db707",
+                "sha256:d81d69d1f54072b96be198419bb894a9249f8197266c5d983c8d15334cd81f71"
             ],
             "index": "pypi",
-            "version": "==2.1.21"
+            "version": "==2.1.23"
         },
         "c2cwsgiutils": {
             "extras": [
