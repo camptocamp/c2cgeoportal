@@ -1,3 +1,6 @@
+##### 2.5.0.127
+* [Backport 2.5] Bump c2cciutils from 1.1.dev20210427101151 to 1.1.dev20210428132049 in /ci [c2cgeoportal#8168](https://github.com/camptocamp/c2cgeoportal/pull/8168)
+* [Backport 2.5] [Backport master] Do spell on pull request title [ngeo#7082](https://github.com/camptocamp/ngeo/pull/7082)
 ##### 2.5.0.126
 * [Backport 2.5] Do spell on pull request title [c2cgeoportal#8079](https://github.com/camptocamp/c2cgeoportal/pull/8079)
 ##### 2.5.0.125
