@@ -101,7 +101,7 @@ class DynamicView:
 
         return constants
 
-    @view_config(route_name="dynamic", renderer="fast_json")  # type: ignore
+    @view_config(route_name="dynamic", renderer="json")  # type: ignore
     def dynamic(self) -> Dict[str, Any]:
         interface_name = self.request.params.get("interface")
 
