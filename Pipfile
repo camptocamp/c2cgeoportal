@@ -22,7 +22,7 @@ mypy = "==0.812"
 flake8 = "==3.8.4"
 
 [packages]
-alembic = "==1.5.8"  # geoportal
+alembic = "==1.6.0"  # geoportal
 "c2c.template" = "==2.3.0"  # geoportal
 c2cgeoform = "==2.1.23"  # commons
 colander = "==1.8.3"  # commons, admin
