@@ -89,7 +89,7 @@ from the controller by doing the following (here, the controller is the <code cl
 <p>This is not possible in the simple application mode</p>
 </div>
 <p>In the controller you have some lines like:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Component</span> <span class="nx">from</span> <span class="s1">&#39;gmf/&lt;component&gt;/component.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Component</span> <span class="k">from</span> <span class="s1">&#39;gmf/&lt;component&gt;/component.js&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>This is needed to include the javascript of the used directives.</p>
@@ -152,7 +152,7 @@ use AngularJS only to display your component.</p>
 <p>For the structure, you can be inspired by one of the components in ngeo.</p>
 <p>You should register each of your AngularJS element (component, controller, service, etc.) in a module. First
 declare your module:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">angular</span> <span class="nx">from</span> <span class="s1">&#39;angular&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">angular</span> <span class="k">from</span> <span class="s1">&#39;angular&#39;</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;&lt;projectElementname&gt;&#39;</span><span class="p">,</span> <span class="p">[</span>
   <span class="c1">// dependencies to load within this module.</span>
 <span class="p">]);</span>
@@ -170,7 +170,7 @@ declare your module:</p>
 </pre></div>
 </div>
 <p>Finally add your module in your main controller app file:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">myCustomComponent</span> <span class="nx">from</span> <span class="s1">&#39;../myComponent/Component.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">myCustomComponent</span> <span class="k">from</span> <span class="s1">&#39;../myComponent/Component.js&#39;</span><span class="p">;</span>
 <span class="c1">// Update the already declared module at the end of the controller with:</span>
 <span class="kd">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;&lt;AppInterface&gt;&#39;</span><span class="p">,</span> <span class="p">[</span>
   <span class="p">...</span>
@@ -218,7 +218,7 @@ prototype. Here’s an example with the ngeo draw controller:</p>
 can extend it.</p>
 <p>To override a partial (HMTL) file, you have to copy-paste the whole original file. Then you can adapt it.
 To make the original component use your own partial file, you must set the template cache of the module:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">GmfDrawFeatureComponent</span> <span class="nx">from</span> <span class="s1">&#39;gmf/drawing/drawFeatureComponent.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">GmfDrawFeatureComponent</span> <span class="k">from</span> <span class="s1">&#39;gmf/drawing/drawFeatureComponent.js&#39;</span><span class="p">;</span>
 <span class="cm">/**</span>
 <span class="cm"> * Override gmf/drawing/drawFeatureComponent partial with a custom one.</span>
 <span class="cm"> */</span>
