@@ -1,3 +1,4 @@
+##### 2.4.2.46
 ##### 2.4.2.45
 * [Backport 2.4] Change the Tinyows Docker image tag to master which is regularly rebuilt [c2cgeoportal#8172](https://github.com/camptocamp/c2cgeoportal/pull/8172)
 * [Backport 2.4] [Backport master] Do spell on pull request title [ngeo#7081](https://github.com/camptocamp/ngeo/pull/7081)
