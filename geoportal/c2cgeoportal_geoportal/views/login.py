@@ -91,7 +91,11 @@ class Login:
 
         set_common_headers(self.request, "login", Cache.NO)
 
-        return {"lang": self.lang, "came_from": self.request.path, "two_fa": self.two_factor_auth}
+        return {
+            "lang": self.lang,
+            "login_params": {"came_from": self.request.path},
+            "two_fa": self.two_factor_auth,
+        }
 
     @view_config(route_name="loginform", renderer="login.html")  # type: ignore
     def loginform(self) -> Dict[str, Any]:
@@ -99,7 +103,7 @@ class Login:
 
         return {
             "lang": self.lang,
-            "came_from": self.request.params.get("came_from") or "/",
+            "login_params": {"came_from": self.request.params.get("came_from") or "/"},
             "two_fa": self.two_factor_auth,
         }
 
