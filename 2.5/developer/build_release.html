@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Create a new release &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="create-a-new-release">
+  <section id="create-a-new-release">
 <span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="vocabulary">
+<section id="vocabulary">
 <h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
 <p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
 Geoportal (2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
@@ -46,8 +47,8 @@ since 2014, both projects are synchronizing their major versions.</p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0.0rc1</span></code> for the first release candidate
 of the version <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code> for the final release, <code class="docutils literal notranslate"><span class="pre">2.0.1</span></code> for
 the first bug fix release, and <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">2.1</span></code>, …</p>
-</div>
-<div class="section" id="pre-release-task">
+</section>
+<section id="pre-release-task">
 <span id="developer-build-release-pre-release-task"></span><h2>Pre release task<a class="headerlink" href="#pre-release-task" title="Permalink to this headline">¶</a></h2>
 <p>Before doing a release, you should merge all the previous branches on this one:</p>
 <ul>
@@ -73,14 +74,14 @@ span.prompt1:before {
 </div>
 </li>
 </ul>
-</div>
-<div class="section" id="ngeo">
+</section>
+<section id="ngeo">
 <h2>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/camptocamp/ngeo/blob/2.5/docs/developer-guide.md#create-a-package-on-npm">For ngeo see here</a>.</p>
-</div>
-<div class="section" id="c2cgeoportal">
+</section>
+<section id="c2cgeoportal">
 <h2>c2cgeoportal<a class="headerlink" href="#c2cgeoportal" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="new-version">
+<section id="new-version">
 <h3>New version<a class="headerlink" href="#new-version" title="Permalink to this headline">¶</a></h3>
 <p>Checkout the code:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git fetch</span>
@@ -125,8 +126,8 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git push origin master</span>
 </pre></div></div><p>Update the references in the <cite>index.html</cite> file of the <cite>gh-pages</cite> branch.</p>
 <p>Then continue by creating the release.</p>
-</div>
-<div class="section" id="do-the-new-release">
+</section>
+<section id="do-the-new-release">
 <h3>Do the new release<a class="headerlink" href="#do-the-new-release" title="Permalink to this headline">¶</a></h3>
 <p>Checkout the code:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git fetch</span>
@@ -141,14 +142,14 @@ span.prompt1:before {
 <p>It is possible to do a version only on the latest commit on a branch.
 If you really need to do that, you should create a new branch.</p>
 </div>
-</div>
-<div class="section" id="notes-about-travis">
+</section>
+<section id="notes-about-travis">
 <h3>Notes about Travis<a class="headerlink" href="#notes-about-travis" title="Permalink to this headline">¶</a></h3>
 <p>When you push a tag with the pattern <code class="docutils literal notranslate"><span class="pre">^[0-9]+\.[0-9]+\..+$</span></code>,
 a new release will automatically be created on Travis CI.</p>
-</div>
-</div>
-<div class="section" id="post-release-tasks">
+</section>
+</section>
+<section id="post-release-tasks">
 <h2>Post release tasks<a class="headerlink" href="#post-release-tasks" title="Permalink to this headline">¶</a></h2>
 <p>When a new release or a new version is done, you should do the following tasks:</p>
 <ul class="simple">
@@ -160,8 +161,8 @@ a new release will automatically be created on Travis CI.</p>
 <li><p>Some specific things for the demo:
 <a class="reference external" href="https://github.com/camptocamp/demo_geomapfish/blob/2.4/UPGRADE.rst">UPGRADE.rst</a>.</p></li>
 </ul>
-</div>
-<div class="section" id="for-non-dev-release">
+</section>
+<section id="for-non-dev-release">
 <h2>For non dev release<a class="headerlink" href="#for-non-dev-release" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Rename the milestone on <a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/milestones">c2cgeoportal</a>
@@ -174,8 +175,8 @@ and in <a class="reference external" href="https://github.com/camptocamp/c2cgeop
 <li><p>Send a release email to the <code class="docutils literal notranslate"><span class="pre">geomapfish&#64;googlegroups.com</span></code>
 and <code class="docutils literal notranslate"><span class="pre">gmf2&#64;lists.camptocamp.com</span></code> mailing lists.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -230,7 +231,7 @@ and <code class="docutils literal notranslate"><span class="pre">gmf2&#64;lists.
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -247,7 +248,7 @@ and <code class="docutils literal notranslate"><span class="pre">gmf2&#64;lists.
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
