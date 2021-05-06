@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ LOG = logging.getLogger(__name__)
 
 
 def build_url(name, path, request, headers=None):
-    """ Build an URL and headers for the checkers """
+    """Build an URL and headers for the checkers"""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
     url = urljoin(base_internal_url, path)
 
@@ -279,7 +279,7 @@ output:
 
 
 def init(config, health_check):
-    """ Init the ckeckers """
+    """Init the ckeckers"""
     global_settings = config.get_settings()
     if "checker" not in global_settings:
         return

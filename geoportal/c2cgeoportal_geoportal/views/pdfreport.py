@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ class PdfReport(OGCProxy):  # pragma: no cover
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec):
-        """ Create and get report PDF. """
+        """Create and get report PDF."""
 
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"

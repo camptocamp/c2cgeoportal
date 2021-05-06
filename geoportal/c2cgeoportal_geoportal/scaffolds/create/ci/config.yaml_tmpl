@@ -5,6 +5,7 @@ checks:
   codespell: False
   eof: False
   required_workflows: False
+  dependabot_config: False
 
 version:
   branch_to_version_re:
