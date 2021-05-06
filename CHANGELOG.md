@@ -1,3 +1,5 @@
+##### 2.6.rc.66
+* [Backport 2.6] Bump c2cciutils from 1.1.dev20210427101151 to 1.1.dev20210428132049 in /ci [c2cgeoportal#8169](https://github.com/camptocamp/c2cgeoportal/pull/8169)
 ##### 2.6.rc.65
 * Ujson used by fast_json didn't handle correctly the value infinity [c2cgeoportal#8176](https://github.com/camptocamp/c2cgeoportal/pull/8176)
 ##### 2.6.rc.64
