@@ -7,3 +7,4 @@ verify_ssl = true
 
 [packages]
 yamllint = "==1.22.0"
+pyyaml = "==5.4.1"
