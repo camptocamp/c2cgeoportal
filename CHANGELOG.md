@@ -1,3 +1,5 @@
+##### 2.5.0.130
+* Fix dependencies against security issues [c2cgeoportal#8189](https://github.com/camptocamp/c2cgeoportal/pull/8189)
 ##### 2.5.0.128
 * [Backport 2.5] Change the Tinyows Docker image tag to master which is regularly rebuilt [c2cgeoportal#8173](https://github.com/camptocamp/c2cgeoportal/pull/8173)
 ##### 2.5.0.127
