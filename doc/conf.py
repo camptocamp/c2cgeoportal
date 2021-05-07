@@ -243,4 +243,4 @@ texinfo_documents = [
 
 
 def setup(app):
-    app.add_stylesheet("css/c2c.css")
+    app.add_css_file("css/c2c.css")
