@@ -281,17 +281,17 @@ class TestLoginView(TestCase):
 
         request.path = "/for_test"
         response = login.loginform403()
-        assert response["came_from"] == "/for_test"
+        assert response["login_params"] == {"came_from": "/for_test"}
 
         request.params = {"came_from": "/for_a_second_test"}
         login = Login(request)
         response = login.loginform()
-        assert response["came_from"] == "/for_a_second_test"
+        assert response["login_params"] == {"came_from": "/for_a_second_test"}
 
         login = Login(request)
         request.params = {}
         response = login.loginform()
-        assert response["came_from"] == "/"
+        assert response["login_params"] == {"came_from": "/"}
 
         request.registry.settings = {
             "functionalities": {"available_in_templates": ["func"]},
