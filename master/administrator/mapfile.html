@@ -351,17 +351,19 @@ because it saves MapServer from computing the extent of all layer features.</p>
 <span id="administrator-mapfile-perepare-raster"></span><h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this headline">¶</a></h3>
 <p>To achieve good performance, you should have tiled files with overviews, and ideally
 a tileindex. You can achieve this with these steps:</p>
-<p>Convert your rasters in tiled GeoTIFF:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">gdal_translate -of GTiff -co <span class="s2">&quot;TILED=YES&quot;</span> -co <span class="s2">&quot;TFW=YES&quot;</span> <span class="se">\</span>
-  &lt;filename_in.tif&gt; &lt;filename_out.tif&gt;</span>
-</pre></div></div><p>Then build overviews for your rasters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaladdo -r average filename.tif <span class="m">2</span> <span class="m">4</span> <span class="m">8</span> <span class="m">16</span></span>
+</style><span class="prompt1">mkdir optimized</span>
+<span class="prompt1"><span class="k">do</span></span>
+<span class="prompt1">    gdal_translate <span class="si">${</span><span class="nv">file</span><span class="si">}</span> -co <span class="nv">TILED</span><span class="o">=</span>YES -co <span class="nv">COMPRESS</span><span class="o">=</span>DEFLATE</span>
+<span class="prompt1">    gdaladdo -r average  <span class="si">${</span><span class="nv">file</span><span class="si">}</span> <span class="m">2</span> <span class="m">4</span> <span class="m">8</span> <span class="m">16</span> <span class="m">32</span></span>
+<span class="prompt1">    gdal_translate <span class="si">${</span><span class="nv">file</span><span class="si">}</span> optimized/<span class="si">${</span><span class="nv">file</span><span class="si">}</span> <span class="se">\</span>
+        -co <span class="nv">TILED</span><span class="o">=</span>YES -co <span class="nv">COMPRESS</span><span class="o">=</span>JPEG -co <span class="nv">PHOTOMETRIC</span><span class="o">=</span>YCBCR -co <span class="nv">COPY_SRC_OVERVIEWS</span><span class="o">=</span>YES</span>
+<span class="prompt1"><span class="k">done</span></span>
 </pre></div></div><p>You can generate a shapefile indexing all your rasters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex filename_index.shp *.tif</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex filename_index.shp optimized/*.tif</span>
 </pre></div></div></div>
 </div>
 <div class="section" id="note-about-ecw">

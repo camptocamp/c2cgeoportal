@@ -381,24 +381,22 @@ Prepare raster files
 To achieve good performance, you should have tiled files with overviews, and ideally
 a tileindex. You can achieve this with these steps:
 
-Convert your rasters in tiled GeoTIFF:
-
 .. prompt:: bash
 
-  gdal_translate -of GTiff -co "TILED=YES" -co "TFW=YES" \
-    <filename_in.tif> <filename_out.tif>
-
-Then build overviews for your rasters:
-
-.. prompt:: bash
-
-  gdaladdo -r average filename.tif 2 4 8 16
+   mkdir optimized
+   do
+       gdal_translate ${file} -co TILED=YES -co COMPRESS=DEFLATE
+       gdaladdo -r average  ${file} 2 4 8 16 32
+       gdal_translate ${file} optimized/${file} \
+           -co TILED=YES -co COMPRESS=JPEG -co PHOTOMETRIC=YCBCR -co COPY_SRC_OVERVIEWS=YES
+   done
 
 You can generate a shapefile indexing all your rasters:
 
 .. prompt:: bash
 
-  gdaltindex filename_index.shp *.tif
+  gdaltindex filename_index.shp optimized/*.tif
+
 
 Note about ECW
 --------------
