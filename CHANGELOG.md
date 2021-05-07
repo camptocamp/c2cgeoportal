@@ -1,3 +1,5 @@
+##### 2.5.0.131
+* Fix dependencies against security issues [c2cgeoportal#8198](https://github.com/camptocamp/c2cgeoportal/pull/8198)
 ##### 2.5.0.130
 * Fix dependencies against security issues [c2cgeoportal#8189](https://github.com/camptocamp/c2cgeoportal/pull/8189)
 ##### 2.5.0.128
