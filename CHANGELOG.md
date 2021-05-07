@@ -1,3 +1,6 @@
+##### 2.6.rc.67
+* Fix came_from in the login panel [c2cgeoportal#8190](https://github.com/camptocamp/c2cgeoportal/pull/8190)
+* Fix dependencies against security issues [c2cgeoportal#8199](https://github.com/camptocamp/c2cgeoportal/pull/8199)
 ##### 2.6.rc.66
 * [Backport 2.6] Bump c2cciutils from 1.1.dev20210427101151 to 1.1.dev20210428132049 in /ci [c2cgeoportal#8169](https://github.com/camptocamp/c2cgeoportal/pull/8169)
 ##### 2.6.rc.65
