@@ -13,11 +13,6 @@ checks:
       steps: []
   dependabot_config: False
 
-audit:
-  pipenv:
-    python_versions:
-      - 3.6.12
-
 publish:
   docker:
     images:
