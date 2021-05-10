@@ -186,8 +186,7 @@
               type: $(this).data('method'),
               success: function(data) {
                 if (this.type == 'DELETE') {
-                  //$grid.bootstrapTable('refresh');
-                  $jstree.jstree(true).delete_node(node_id);
+                  $jstree.jstree(true).refresh();
                 } else {
                   window.location = data.redirect;
                 }
