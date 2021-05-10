@@ -1,3 +1,5 @@
+##### 2.6.rc.68
+* Fix Content-Security-Policy for Mapillary [c2cgeoportal#8194](https://github.com/camptocamp/c2cgeoportal/pull/8194)
 ##### 2.6.rc.67
 * Fix came_from in the login panel [c2cgeoportal#8190](https://github.com/camptocamp/c2cgeoportal/pull/8190)
 * Fix dependencies against security issues [c2cgeoportal#8199](https://github.com/camptocamp/c2cgeoportal/pull/8199)
