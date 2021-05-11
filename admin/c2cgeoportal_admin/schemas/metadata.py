@@ -96,6 +96,27 @@ def regex_validator(node, value):
             raise error
 
 
+class BooleanMetadata(colander.Boolean):  # type: ignore
+    """Boolean metadata values are stored as string in database"""
+
+    def serialize(self, node, appstruct):
+        if appstruct == "true":
+            appstruct = True
+        elif appstruct == "false":
+            appstruct = False
+        else:
+            appstruct = colander.null
+        return super().serialize(node, appstruct)
+
+    def deserialize(self, node, cstruct):
+        appstruct = super().deserialize(node, cstruct)
+        if appstruct is True:
+            return "true"
+        if appstruct is False:
+            return "false"
+        return None
+
+
 class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
 
     metadata_definitions: Optional[Dict[str, Any]] = None
@@ -107,7 +128,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
 
         self._add_value_node("string", colander.String())
         self._add_value_node("liste", colander.String())
-        self._add_value_node("boolean", colander.Boolean())
+        self._add_value_node("boolean", BooleanMetadata())
         self._add_value_node("int", colander.Int())
         self._add_value_node("float", colander.Float())
         self._add_value_node("url", colander.String(), validator=url)
