@@ -1,3 +1,6 @@
+##### 2.6.rc.71
+* Fix metadata checkbox display [c2cgeoportal#8175](https://github.com/camptocamp/c2cgeoportal/pull/8175)
+* Handle uninitialized plugin on cacheKey [c2cgeoportal#8215](https://github.com/camptocamp/c2cgeoportal/pull/8215)
 ##### 2.6.rc.70
 * Improve infowindow resize [ngeo#7116](https://github.com/camptocamp/ngeo/pull/7116)
 * [Backport 2.6] Bump c2cciutils from 1.1.dev20210428132049 to 1.1.dev20210504062412 [ngeo#7117](https://github.com/camptocamp/ngeo/pull/7117)
