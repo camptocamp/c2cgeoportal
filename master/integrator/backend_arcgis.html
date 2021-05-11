@@ -4,12 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Specific configuration for Arcgis &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="specific-configuration-for-arcgis">
+  <section id="specific-configuration-for-arcgis">
 <span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="differentiating-wms-and-wfs-services">
+<section id="differentiating-wms-and-wfs-services">
 <h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
 <p>It may be necessary to differentiate the WMS and WFS services url.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">OgcServer</span></code> file, define:</p>
@@ -46,14 +47,14 @@
 </div>
 <p>These are the urls which respond respectively to the <em>WMS GetCapabilities</em> and
 <em>WFS GetCapabilities</em>.</p>
-</div>
-<div class="section" id="note">
+</section>
+<section id="note">
 <h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
 <p>ArcGis (even 10.2) does not understand “application/vnd.ogc.gml” for <em>INFO_FORMAT</em> in
 a <em>GetFeatureInfo</em> request and returns only a simple XML formatted response
 instead of GML.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -129,7 +130,7 @@ instead of GML.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
