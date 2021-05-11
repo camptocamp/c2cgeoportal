@@ -1,3 +1,6 @@
+##### 2.6.rc.70
+* Improve infowindow resize [ngeo#7116](https://github.com/camptocamp/ngeo/pull/7116)
+* [Backport 2.6] Bump c2cciutils from 1.1.dev20210428132049 to 1.1.dev20210504062412 [ngeo#7117](https://github.com/camptocamp/ngeo/pull/7117)
 ##### 2.6.rc.69
 * Fix layer tree refresh after delete [c2cgeoportal#8207](https://github.com/camptocamp/c2cgeoportal/pull/8207)
 * Set styles related to the number of layers to print [ngeo#7115](https://github.com/camptocamp/ngeo/pull/7115)
