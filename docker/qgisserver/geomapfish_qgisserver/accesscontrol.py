@@ -10,6 +10,7 @@
 import json
 import logging
 import os
+import random
 import re
 from enum import Enum
 from threading import Lock
@@ -186,6 +187,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def cacheKey(self):  # NOQA
         try:
+            if not self.initialized:
+                LOG.error("Call on uninitialized plugin")
+                return str(random.randrange(1000000))  # nosec
             return self.get_ogcserver_accesscontrol().cacheKey()
         except Exception:
             LOG.error("Unhandle error", exc_info=True)
