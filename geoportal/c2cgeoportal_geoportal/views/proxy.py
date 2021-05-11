@@ -159,6 +159,8 @@ class Proxy:
             LOG.error("\n".join(errors), *args2)
 
             raise exception_response(response.status_code)
+        if not response.headers.get("Content-Type", "").startswith("image/"):
+            LOG.debug("Get result for URL: %s:\n%s.", url, body)
 
         return response
 
