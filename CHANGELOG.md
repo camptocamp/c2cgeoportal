@@ -1,3 +1,6 @@
+##### 2.6.rc.69
+* Fix layer tree refresh after delete [c2cgeoportal#8207](https://github.com/camptocamp/c2cgeoportal/pull/8207)
+* Set styles related to the number of layers to print [ngeo#7115](https://github.com/camptocamp/ngeo/pull/7115)
 ##### 2.6.rc.68
 * Fix Content-Security-Policy for Mapillary [c2cgeoportal#8194](https://github.com/camptocamp/c2cgeoportal/pull/8194)
 ##### 2.6.rc.67
