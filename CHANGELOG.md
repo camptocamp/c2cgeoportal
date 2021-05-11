@@ -1,3 +1,6 @@
+##### 2.6.rc.72
+* Add a message for debug [c2cgeoportal#8214](https://github.com/camptocamp/c2cgeoportal/pull/8214)
+* Avoid logout call [ngeo#7120](https://github.com/camptocamp/ngeo/pull/7120)
 ##### 2.6.rc.71
 * Fix metadata checkbox display [c2cgeoportal#8175](https://github.com/camptocamp/c2cgeoportal/pull/8175)
 * Handle uninitialized plugin on cacheKey [c2cgeoportal#8215](https://github.com/camptocamp/c2cgeoportal/pull/8215)
