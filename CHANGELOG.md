@@ -1,3 +1,5 @@
+##### 2.4.2.48
+* [Backport 2.4] Fix duplicated -q argument [c2cgeoportal#8226](https://github.com/camptocamp/c2cgeoportal/pull/8226)
 ##### 2.4.2.47
 ##### 2.4.2.46
 ##### 2.4.2.45
