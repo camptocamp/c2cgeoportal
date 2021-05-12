@@ -1,3 +1,5 @@
+##### 2.6.rc.74
+* Fix duplicated -q argument [c2cgeoportal#8219](https://github.com/camptocamp/c2cgeoportal/pull/8219)
 ##### 2.6.rc.73
 * [Backport 2.6] Bump c2cciutils from 1.1.dev20210504062412 to 1.1.dev20210511092229 [ngeo#7129](https://github.com/camptocamp/ngeo/pull/7129)
 ##### 2.6.rc.72
