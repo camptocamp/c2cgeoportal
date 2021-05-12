@@ -1,3 +1,5 @@
+##### 2.5.0.133
+* [Backport 2.5] Fix duplicated -q argument [c2cgeoportal#8227](https://github.com/camptocamp/c2cgeoportal/pull/8227)
 ##### 2.5.0.131
 * Fix dependencies against security issues [c2cgeoportal#8198](https://github.com/camptocamp/c2cgeoportal/pull/8198)
 ##### 2.5.0.130
