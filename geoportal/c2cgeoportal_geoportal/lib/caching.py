@@ -33,7 +33,7 @@ from typing import Any, Callable, Dict, List, Optional, cast
 
 import pyramid.request
 import pyramid.response
-import sqlalchemy.ext.declarative.api
+import sqlalchemy.ext.declarative
 from dogpile.cache.api import NO_VALUE, SerializedReturnType
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
 from dogpile.cache.region import CacheRegion, make_region
@@ -49,8 +49,8 @@ MEMORY_CACHE_DICT: Dict[str, Any] = {}
 
 
 def map_dbobject(
-    item: sqlalchemy.ext.declarative.api.ConcreteBase,
-) -> sqlalchemy.ext.declarative.api.ConcreteBase:
+    item: sqlalchemy.ext.declarative.ConcreteBase,
+) -> sqlalchemy.ext.declarative.ConcreteBase:
 
     return identity_key(item) if isinstance(item, Base) else item
 

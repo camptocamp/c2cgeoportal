@@ -69,7 +69,7 @@ class LayerTreeViews:
         else:
             items = (
                 self._dbsession.query(TreeItem)
-                .join(TreeItem.parents_relation)  # pylint: disable=no-member
+                .join(TreeItem.parents_relation)
                 .filter(LayergroupTreeitem.treegroup_id == group_id)
             )
 
