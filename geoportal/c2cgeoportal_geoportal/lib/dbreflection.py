@@ -30,7 +30,7 @@ import threading
 import warnings
 from typing import Dict, Iterable, List, Optional, Tuple, Union
 
-import sqlalchemy.ext.declarative.api
+import sqlalchemy.ext.declarative
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, Integer, MetaData, Table
 from sqlalchemy.exc import SAWarning
@@ -62,8 +62,8 @@ class _AssociationProxy:
 
     def __get__(
         self,
-        obj: sqlalchemy.ext.declarative.api.ConcreteBase,
-        type_: sqlalchemy.ext.declarative.api.DeclarativeMeta = None,
+        obj: sqlalchemy.ext.declarative.ConcreteBase,
+        type_: sqlalchemy.ext.declarative.DeclarativeMeta = None,
     ) -> Optional[Union["_AssociationProxy", str]]:
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
@@ -140,7 +140,7 @@ def get_class(
     attributes_order: Optional[List[str]] = None,
     enumerations_config: Optional[Dict[str, str]] = None,
     readonly_attributes: Optional[List[str]] = None,
-) -> sqlalchemy.ext.declarative.api.DeclarativeMeta:
+) -> sqlalchemy.ext.declarative.DeclarativeMeta:
     """
     Get the SQLAlchemy mapped class for "tablename".
 
@@ -172,7 +172,7 @@ def _create_class(
     enumerations_config: Optional[Dict[str, str]] = None,
     readonly_attributes: Optional[List[str]] = None,
     pk_name: Optional[str] = None,
-) -> sqlalchemy.ext.declarative.api.DeclarativeMeta:
+) -> sqlalchemy.ext.declarative.DeclarativeMeta:
     from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
 
     exclude_properties = exclude_properties or ()
@@ -200,7 +200,7 @@ def _create_class(
 
 
 def _add_association_proxy(
-    cls: sqlalchemy.ext.declarative.api.DeclarativeMeta, col: sqlalchemy.sql.schema.Column
+    cls: sqlalchemy.ext.declarative.DeclarativeMeta, col: sqlalchemy.sql.schema.Column
 ) -> None:
     if len(col.foreign_keys) != 1:
         raise NotImplementedError
