@@ -31,7 +31,7 @@
 from typing import Any, Dict, Iterable, Optional
 
 from pyramid.request import Request
-from sqlalchemy.ext.declarative.api import DeclarativeMeta
+from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm.query import Query
 
 from c2cgeoportal_geoportal.lib import caching, get_roles_id
@@ -43,7 +43,7 @@ def _get_layers_query(request: Request, what: DeclarativeMeta) -> Query:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = DBSession.query(what)
-    q = q.join(main.Layer.restrictionareas)  # pylint: disable=no-member
+    q = q.join(main.Layer.restrictionareas)
     q = q.join(main.RestrictionArea.roles)
     q = q.filter(main.Role.id.in_(get_roles_id(request)))
 
