@@ -36,7 +36,7 @@ from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Tuple, U
 import geojson.geometry
 import pyramid.request
 import pyramid.response
-import sqlalchemy.ext.declarative.api
+import sqlalchemy.ext.declarative
 from geoalchemy2 import Geometry
 from geoalchemy2 import func as ga_func
 from geoalchemy2.shape import from_shape, to_shape
@@ -496,7 +496,7 @@ class Layers:
 
 def get_layer_class(
     layer: "main.Layer", with_last_update_columns: bool = False
-) -> sqlalchemy.ext.declarative.api.ConcreteBase:
+) -> sqlalchemy.ext.declarative.ConcreteBase:
     """
     Get the SQLAlchemy class to edit a GeoMapFish layer
 

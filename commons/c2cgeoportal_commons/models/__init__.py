@@ -32,7 +32,6 @@ import logging
 from typing import Any, Dict, List
 
 import sqlalchemy.ext.declarative
-import sqlalchemy.ext.declarative.api
 import sqlalchemy.orm
 import zope.event
 
@@ -46,7 +45,7 @@ except ModuleNotFoundError:
 
 # Should be filed on application initialisation
 DBSession: sqlalchemy.orm.Session = None
-Base: sqlalchemy.ext.declarative.api.ConcreteBase = sqlalchemy.ext.declarative.declarative_base()
+Base: sqlalchemy.ext.declarative.ConcreteBase = sqlalchemy.ext.declarative.declarative_base()
 DBSessions: Dict[str, sqlalchemy.orm.Session] = {}
 
 

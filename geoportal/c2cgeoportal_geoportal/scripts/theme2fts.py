@@ -127,9 +127,7 @@ class Import:
         )
 
         self.session = session
-        self.session.execute(
-            FullTextSearch.__table__.delete().where(FullTextSearch.from_theme)  # pylint: disable=no-member
-        )
+        self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
 
         self._: Dict[str, gettext.NullTranslations] = {}
         for lang in self.languages:

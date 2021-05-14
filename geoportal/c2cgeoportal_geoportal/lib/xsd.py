@@ -34,7 +34,7 @@ from typing import Any, Callable, Dict, Optional, Type, Union, cast
 import sqlalchemy.sql.schema
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
-from sqlalchemy.ext.declarative.api import DeclarativeMeta
+from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
