@@ -96,7 +96,7 @@ RUN \
 RUN npm-packages \
     @types @typescript-eslint ol-cesium jasmine-core karma karma-chrome-launcher \
     karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
-    typedoc \
+    typedoc jsdoc jsdoc-plugin-typescript prettier typescript \
     --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
 
 COPY admin/package.json /opt/c2cgeoportal/admin/
