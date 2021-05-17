@@ -1,3 +1,5 @@
+##### 2.6.rc.76
+* Add missing *.html.ejs and *.yml in the editorconfig [c2cgeoportal#8235](https://github.com/camptocamp/c2cgeoportal/pull/8235)
 ##### 2.6.rc.74
 * Fix duplicated -q argument [c2cgeoportal#8219](https://github.com/camptocamp/c2cgeoportal/pull/8219)
 ##### 2.6.rc.73
