@@ -29,7 +29,7 @@ import json
 import logging
 import os
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Set, Tuple, Union, cast
 
 import geojson.geometry
 import pyramid.request
@@ -52,7 +52,7 @@ from pyramid.view import view_config
 from shapely.geometry import asShape
 from shapely.geos import TopologicalError
 from shapely.ops import cascaded_union
-from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, distinct, exc, func
+from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, exc, func
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
@@ -479,14 +479,14 @@ class Layers:
             raise HTTPInternalServerError(
                 f"No dbsession found for layer '{layername!s}' ({dbsession_name!s})"
             )
-        values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
+        values = sorted(self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname))
         enum = {"items": [{"value": value[0]} for value in values]}
         return enum
 
     @staticmethod
     def query_enumerate_attribute_values(
         dbsession: sqlalchemy.orm.Session, layerinfos: Dict[str, Any], fieldname: str
-    ) -> List[str]:
+    ) -> Set[str]:
         attrinfos = layerinfos["attributes"][fieldname]
         table = attrinfos["table"]
         layertable = get_table(table, session=dbsession)
@@ -497,7 +497,7 @@ class Layers:
         if "separator" in attrinfos:
             separator = attrinfos["separator"]
             attribute = func.unnest(func.string_to_array(func.string_agg(attribute, separator), separator))
-        return cast(List[str], dbsession.query(distinct(attribute)).order_by(attribute).all())
+        return set(cast(List[str], dbsession.query(attribute).order_by(attribute).all()))
 
 
 def get_layer_class(
