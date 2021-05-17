@@ -50,10 +50,11 @@ def upgrade() -> None:
     schema = config["schema"]
 
     engine = op.get_bind().engine
-    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(  # type: ignore
-        engine, "restricted_role_theme", schema=schema
-    ):
-        return
+    with engine.connect() as connection:
+        if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(  # type: ignore
+            connection, "restricted_role_theme", schema=schema
+        ):
+            return
 
     op.add_column("theme", Column("public", Boolean, server_default="t", nullable=False), schema=schema)
     op.create_table(
