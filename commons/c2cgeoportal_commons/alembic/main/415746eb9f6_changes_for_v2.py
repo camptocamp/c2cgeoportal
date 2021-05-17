@@ -49,10 +49,11 @@ def upgrade() -> None:
     schema = config["schema"]
 
     engine = op.get_bind().engine
-    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
-        engine, "interface", schema=schema
-    ):
-        return
+    with engine.connect() as connection:
+        if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
+            connection, "interface", schema=schema
+        ):
+            return
 
     op.drop_table("user_functionality", schema=schema)
 
