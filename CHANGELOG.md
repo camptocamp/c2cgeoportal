@@ -1,3 +1,5 @@
+##### 2.6.rc.78
+* Fix search point result visibility [c2cgeoportal#8239](https://github.com/camptocamp/c2cgeoportal/pull/8239)
 ##### 2.6.rc.77
 * Add list of upgraded packages [c2cgeoportal#8234](https://github.com/camptocamp/c2cgeoportal/pull/8234)
 ##### 2.6.rc.76
