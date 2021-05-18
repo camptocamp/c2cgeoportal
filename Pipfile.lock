@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b0cfa23afb6217748596caa1386939377dd3d39ee0ec8f53621238245e73f3af"
+            "sha256": "2c9775b1c6889bd6bf18e61bca3fd19620f8d91c3cefabea6d1a89d31727002c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1210,11 +1210,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:04550b91e0901041160b298b021c2dd23188afa96716cdd80d9824d0a7dc9f19",
-                "sha256:69b15872eac862ba8c42de3d30530d2ec04a56b418b1e0b5f7b01bdb19739020"
+                "sha256:b563051d485d2c8d594825a52d799f0966d282d48d1918776aced9ec387618fc",
+                "sha256:b6f448dd952b199bbb6abaa72b3deff29d26c7cb8a086f580c86bf59345b1e66"
             ],
             "index": "pypi",
-            "version": "==1.19.73"
+            "version": "==1.19.74"
         },
         "babel": {
             "hashes": [
@@ -1242,10 +1242,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:4b4aa58c61d4b125bc6ec1597924b2749e19de8f2c9a374ac087aa2561e71828",
-                "sha256:69dc0b6fdc0855f5a4f8b1d29c96b9cec44e71054fea0f968e5904d6ccfd4fd9"
+                "sha256:2061cf3d17615aa4114c91dbed8917adc5287a88354a7693c96aa8e9f9dedd6e",
+                "sha256:6937954ce6dabc00eb157e9fbd21edd45b4dfe3de738e68dbca4c042bfda0954"
             ],
-            "version": "==1.20.73"
+            "version": "==1.20.74"
         },
         "certifi": {
             "hashes": [
@@ -1627,10 +1627,10 @@
         },
         "pydocstyle": {
             "hashes": [
-                "sha256:164befb520d851dbcf0e029681b91f4f599c62c5cd8933fd54b1bfbd50e89e1f",
-                "sha256:d4449cf16d7e6709f63192146706933c7a334af7c0f083904799ccb851c50f6d"
+                "sha256:1d41b7c459ba0ee6c345f2eb9ae827cab14a7533a88c5c6f7e94923f72df92dc",
+                "sha256:6987826d6775056839940041beef5c08cc7e3d71d63149b48e36727f70144dc4"
             ],
-            "version": "==6.0.0"
+            "version": "==6.1.1"
         },
         "pyflakes": {
             "hashes": [
