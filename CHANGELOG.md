@@ -1,3 +1,6 @@
+##### 2.6.rc.80
+* Rebuild the right branch [c2cgeoportal#8244](https://github.com/camptocamp/c2cgeoportal/pull/8244)
+* Don't have duplicated cache version [c2cgeoportal#8245](https://github.com/camptocamp/c2cgeoportal/pull/8245)
 ##### 2.6.rc.79
 * Force update of circle [ngeo#7146](https://github.com/camptocamp/ngeo/pull/7146)
 ##### 2.6.rc.78
