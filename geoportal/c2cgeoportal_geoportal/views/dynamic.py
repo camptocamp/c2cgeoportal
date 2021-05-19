@@ -117,7 +117,6 @@ class DynamicView:
             "lang_urls": {
                 lang: self.request.static_url(
                     "/etc/geomapfish/static/{lang}.json".format(lang=lang),
-                    _query={"cache": get_cache_version()},
                 )
                 for lang in self.request.registry.settings["available_locale_names"]
             },
