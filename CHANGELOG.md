@@ -1,3 +1,5 @@
+##### 2.5.0.134
+* Fix build by rollbacking canvas and prettier [ngeo#7159](https://github.com/camptocamp/ngeo/pull/7159)
 ##### 2.5.0.133
 * [Backport 2.5] Fix duplicated -q argument [c2cgeoportal#8227](https://github.com/camptocamp/c2cgeoportal/pull/8227)
 ##### 2.5.0.131
