@@ -1,3 +1,5 @@
+##### 2.6.rc.79
+* Force update of circle [ngeo#7146](https://github.com/camptocamp/ngeo/pull/7146)
 ##### 2.6.rc.78
 * Fix search point result visibility [c2cgeoportal#8239](https://github.com/camptocamp/c2cgeoportal/pull/8239)
 ##### 2.6.rc.77
