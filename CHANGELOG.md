@@ -1,3 +1,5 @@
+##### 2.6.rc.82
+* Make the redis lock timeout and the redis expiration time configurabl… [c2cgeoportal#8253](https://github.com/camptocamp/c2cgeoportal/pull/8253)
 ##### 2.6.rc.81
 * Documentation: fix short_url instructions [c2cgeoportal#8251](https://github.com/camptocamp/c2cgeoportal/pull/8251)
 ##### 2.6.rc.80
