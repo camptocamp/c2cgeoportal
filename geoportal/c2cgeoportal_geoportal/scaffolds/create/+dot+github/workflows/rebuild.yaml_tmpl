@@ -25,6 +25,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{'{{'}} matrix.branch }}
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
