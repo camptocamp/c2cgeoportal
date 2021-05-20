@@ -24,11 +24,14 @@ The configuration in ``vars.yaml`` looks like this:
         email_body: |
             Hello,
 
-            You have created the following short URL:
-            short URL: %(short_url)s
-            full URL: %(full_url)s
+            Somebody sent you the following link:
+            {short_url}
 
-            The Mapfish team
+            With the message:
+            {message}
+
+            Sincerely yours
+            The GeoMapFish team
         # length (default) of ref of new short url
         # Can be change when you want
         # max 20 (size of the column)
@@ -43,3 +46,5 @@ there is no port specified, that suffix will be stripped off and the
 number interpreted as the port number to use.
 
 Replace the ``smtp.example.com`` value by a working SMTP server name.
+If your SMTP server does not require user login, then remove the configuration
+for user and password.
