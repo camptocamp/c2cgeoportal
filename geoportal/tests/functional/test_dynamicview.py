@@ -192,10 +192,7 @@ class TestDynamicView(TestCase):
 
         assert "XTest" in dynamic["constants"], dynamic
         assert "fr" in dynamic["constants"]["XTest"], dynamic
-        assert (
-            dynamic["constants"]["XTest"]["fr"][:-32]
-            == "/dummy/static/url//etc/geomapfish/static/fr.json?cache="
-        )
+        assert dynamic["constants"]["XTest"]["fr"] == "/dummy/static/url//etc/geomapfish/static/fr.json"
 
     def test_constant_dynamic_fulltextsearch_groups(self):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
