@@ -55,11 +55,14 @@
      <span class="nt">email_body</span><span class="p">:</span> <span class="p p-Indicator">|</span>
          <span class="no">Hello,</span>
 
-         <span class="no">You have created the following short URL:</span>
-         <span class="no">short URL: %(short_url)s</span>
-         <span class="no">full URL: %(full_url)s</span>
+         <span class="no">Somebody sent you the following link:</span>
+         <span class="no">{short_url}</span>
 
-         <span class="no">The Mapfish team</span>
+         <span class="no">With the message:</span>
+         <span class="no">{message}</span>
+
+         <span class="no">Sincerely yours</span>
+         <span class="no">The GeoMapFish team</span>
      <span class="c1"># length (default) of ref of new short url</span>
      <span class="c1"># Can be change when you want</span>
      <span class="c1"># max 20 (size of the column)</span>
@@ -72,7 +75,9 @@ viewer interface.</p>
 <p>If the SMTP host ends with a colon (<cite>:</cite>) followed by a number, and
 there is no port specified, that suffix will be stripped off and the
 number interpreted as the port number to use.</p>
-<p>Replace the <code class="docutils literal notranslate"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.</p>
+<p>Replace the <code class="docutils literal notranslate"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.
+If your SMTP server does not require user login, then remove the configuration
+for user and password.</p>
 </section>
 
 
