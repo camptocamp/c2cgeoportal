@@ -1,3 +1,5 @@
+##### 2.6.rc.81
+* Documentation: fix short_url instructions [c2cgeoportal#8251](https://github.com/camptocamp/c2cgeoportal/pull/8251)
 ##### 2.6.rc.80
 * Rebuild the right branch [c2cgeoportal#8244](https://github.com/camptocamp/c2cgeoportal/pull/8244)
 * Don't have duplicated cache version [c2cgeoportal#8245](https://github.com/camptocamp/c2cgeoportal/pull/8245)
