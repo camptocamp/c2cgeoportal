@@ -414,11 +414,11 @@ vars:
     std:
       backend: c2cgeoportal.hybridsentinel
       arguments:
-        lock_timeout: 120 # Two minutes
-        redis_expiration_time: 86400 # One day
+        lock_timeout: '{REDIS_LOCK_TIMEOUT}' # secounds
+        redis_expiration_time: '{REDIS_EXPIRATION_TIME}' # secounds
         distributed_lock: True
         service_name: '{REDIS_SERVICENAME}'
-        socket_timeout: '{REDIS_TIMEOUT}'
+        socket_timeout: '{REDIS_TIMEOUT}' # secounds
         db: 0
     obj:
       backend: dogpile.cache.memory
@@ -968,7 +968,11 @@ runtime_environment:
   - name: REDIS_SERVICENAME
     default: 'mymaster'
   - name: REDIS_TIMEOUT
-    default: '3'
+    default: '30'
+  - name: REDIS_LOCK_TIMEOUT
+    default: '120' # Two minutes
+  - name: REDIS_EXPIRATION_TIME
+    default: '86400' # One day
   - name: TILEGENERATION_SQS_QUEUE
     default: queue_name
   - name: TILEGENERATION_S3_BUCKET
@@ -983,6 +987,8 @@ runtime_environment:
 runtime_postprocess:
   - expression: int({})
     vars:
+      - cache.std.arguments.lock_timeout
+      - cache.std.arguments.redis_expiration_time
       - cache.std.arguments.socket_timeout
       - cache.std.arguments.db
       - sqlalchemy\.pool_recycle
