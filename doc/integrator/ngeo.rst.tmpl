@@ -99,13 +99,16 @@ The sub section is the interface name, and after that we have:
     (but can not be removed via interface configuration).
 * ``constants``: Directly define an ``angular`` constant in the vars file.
 * ``dynamic_constants``: Define an ``angular`` constant from a dynamic values.
-* ``static``: key: Constant name, value: name of the static view that we want to have the URL.
-* ``routes``: key: Constant name, value:
-    ``name``: Name of the route witch one we want to have the URL.
-    ``kw``: Keyword arguments to supply for dynamic path elements in the route definition.
-    ``elements``: Additional positional path segments to append the URL after it is generated.
-    ``params``: Query string parameters to append to the URL.
-    ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
+* ``static``, the ``key`` is the constant name:
+    * ``name``: The path of the resource witch one we want to have the URL e.g.
+        ``/etc/geomapfish/static/contextualdata.html``.
+    * ``append``: A text we want to append.
+* ``routes``, the ``key`` is the constant name:
+    * ``name``: Name of the route witch one we want to have the URL.
+    * ``kw``: Keyword arguments to supply for dynamic path elements in the route definition.
+    * ``elements``: Additional positional path segments to append the URL after it is generated.
+    * ``params``: Query string parameters to append to the URL.
+    * ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
 
     For more information regarding the ``elements`` and ``kw`` properties see the *Pyramid*
     ``Request.route_url`` `documentation
