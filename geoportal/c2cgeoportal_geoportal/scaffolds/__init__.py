@@ -92,6 +92,7 @@ class BaseTemplate(Template):  # pragma: no cover
         vars_["package_logger"] = package_logger
         vars_["geomapfish_version"] = os.environ["VERSION"]
         vars_["geomapfish_main_version"] = os.environ["MAJOR_VERSION"]
+        vars_["geomapfish_main_version_dash"] = os.environ["MAJOR_VERSION"].replace(".", "-")
 
     @staticmethod
     def out(msg):

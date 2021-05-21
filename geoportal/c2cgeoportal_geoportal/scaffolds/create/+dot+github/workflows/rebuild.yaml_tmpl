@@ -20,8 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         branch:
-          - int-{{geomapfish_main_version}}
-          - prod-{{geomapfish_main_version}}
+          - int-{{geomapfish_main_version_dash}}
+          - prod-{{geomapfish_main_version_dash}}
 
     steps:
       - uses: actions/checkout@v2
@@ -53,11 +53,13 @@ jobs:
       fail-fast: false
       matrix:
         branch:
-          - int_{{geomapfish_main_version}}
-          - prod_{{geomapfish_main_version}}
+          - int-{{geomapfish_main_version_dash}}
+          - prod-{{geomapfish_main_version_dash}}
 
     steps:
       - uses: actions/checkout@v1
+        with:
+          ref: ${{'{{'}} matrix.branch }}
 
       - name: Build geoportal
         run: ./build --geoportal
