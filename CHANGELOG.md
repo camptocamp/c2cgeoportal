@@ -1,3 +1,7 @@
+##### 2.6.rc.83
+* Fix the documentation about the static in dynamics [c2cgeoportal#8246](https://github.com/camptocamp/c2cgeoportal/pull/8246)
+* Fix the geoportal rebuild branch [c2cgeoportal#8252](https://github.com/camptocamp/c2cgeoportal/pull/8252)
+* Fix typo [c2cgeoportal#8259](https://github.com/camptocamp/c2cgeoportal/pull/8259)
 ##### 2.6.rc.82
 * Make the redis lock timeout and the redis expiration time configurabl… [c2cgeoportal#8253](https://github.com/camptocamp/c2cgeoportal/pull/8253)
 ##### 2.6.rc.81
