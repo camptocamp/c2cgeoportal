@@ -32,7 +32,7 @@ import logging
 import os
 import subprocess
 from time import sleep
-from typing import Any, Dict, List, Optional, Union, cast
+from typing import Any, Dict, List, Mapping, Optional, Union, cast
 from urllib.parse import urljoin
 
 import c2cwsgiutils.health_check
@@ -92,10 +92,10 @@ def _routes(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.He
                     return build_url("route", request.route_path(self.route_name), request)[self.type]
 
             health_check.add_url_check(
-                url=GetRequest(route["name"], "url"),
+                url=GetRequest(route["name"], "url"),  # type: ignore
                 name=name,
                 params=route.get("params", None),
-                headers=GetRequest(route["name"], "headers"),
+                headers=GetRequest(route["name"], "headers"),  # type: ignore
                 level=route["level"],
                 timeout=30,
             )
@@ -142,7 +142,7 @@ def _fts(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
     if fts_settings.get("disable", False):
         return
 
-    def get_both(request: pyramid.request.Request) -> Dict[str, Any]:
+    def get_both(request: pyramid.request.Request) -> Dict[str, Union[str, Dict[str, str]]]:
         return build_url("Check the fulltextsearch", request.route_path("fulltextsearch"), request)
 
     def check(_request: pyramid.request.Request, response: pyramid.response.Response) -> None:
@@ -150,8 +150,8 @@ def _fts(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
 
     health_check.add_url_check(
         name="checker_fulltextsearch",
-        url=lambda r: get_both(r)["url"],
-        headers=lambda r: get_both(r)["headers"],
+        url=lambda r: get_both(r)["url"],  # type: ignore
+        headers=lambda r: get_both(r)["headers"],  # type: ignore
         params={"query": fts_settings["search"], "limit": "1"},
         check_cb=check,
         level=fts_settings["level"],
@@ -226,7 +226,7 @@ def _lang_files(
                     self.lang = lang
                     self.type = type_
 
-                def __call__(self, request: pyramid.request.Request) -> Union[str, Dict[str, str]]:
+                def __call__(self, request: pyramid.request.Request) -> Union[str, Mapping[str, str]]:
                     return build_url(
                         self.name,
                         request.static_path(
@@ -237,8 +237,8 @@ def _lang_files(
 
             health_check.add_url_check(
                 name=name,
-                url=GetRequest(name, url, lang, "url"),
-                headers=GetRequest(name, url, lang, "headers"),
+                url=GetRequest(name, url, lang, "url"),  # type: ignore
+                headers=GetRequest(name, url, lang, "headers"),  # type: ignore
                 level=lang_settings["level"],
             )
 

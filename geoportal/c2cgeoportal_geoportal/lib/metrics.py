@@ -39,14 +39,16 @@ from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views.raster import Raster
 
 
-class MemoryCacheSizeProvider(Provider):  # type: ignore
+class MemoryCacheSizeProvider(Provider):
     def __init__(self, all_: bool = False):
         super().__init__("pod_process_memory_cache_kb", "Used memory cache")
         self.all = all_
 
-    def get_data(self) -> List[List[Dict[str, Any]]]:
+    def get_data(self) -> List[Tuple[Dict[str, Any], float]]:
+        elements = _get_memory_cache(all_=self.all)
+        assert elements is not None
         result = []
-        for elem in _get_memory_cache(all_=self.all):
+        for elem in elements:
             if elem is not None:
                 for value in elem["values"]:
                     value[0]["pid"] = str(elem["pid"])
@@ -55,7 +57,7 @@ class MemoryCacheSizeProvider(Provider):  # type: ignore
         return result
 
 
-@broadcast.decorator(expect_answers=True, timeout=15)  # type: ignore
+@broadcast.decorator(expect_answers=True, timeout=15)
 def _get_memory_cache(all_: bool) -> Dict[str, List[Tuple[Dict[str, Any], float]]]:
     values = (
         [({"key": key}, get_size(value) / 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
@@ -66,37 +68,41 @@ def _get_memory_cache(all_: bool) -> Dict[str, List[Tuple[Dict[str, Any], float]
     return {"values": values}
 
 
-class RasterDataSizeProvider(Provider):  # type: ignore
+class RasterDataSizeProvider(Provider):
     def __init__(self) -> None:
         super().__init__("pod_process_raster_data_kb", "Memory used by raster")
 
-    def get_data(self) -> List[List[Dict[str, Any]]]:
+    def get_data(self) -> List[Tuple[Dict[str, Any], float]]:
+        elements = _get_raster_data()
+        assert elements is not None
         result = []
-        for elem in _get_raster_data():
+        for elem in elements:
             for value in elem["values"]:
                 value[0]["pid"] = str(elem["pid"])
-                value[0]["hostname"] = elem["hostname"]
+                value[0]["hostname"] = str(elem["hostname"])
                 result.append(value)
         return result
 
 
-@broadcast.decorator(expect_answers=True, timeout=15)  # type: ignore
+@broadcast.decorator(expect_answers=True, timeout=15)
 def _get_raster_data() -> Dict[str, List[Tuple[Dict[str, str], float]]]:
     return {"values": [({"key": key}, get_size(value) / 1024) for key, value in list(Raster.data.items())]}
 
 
-class TotalPythonObjectMemoryProvider(Provider):  # type: ignore
+class TotalPythonObjectMemoryProvider(Provider):
     def __init__(self) -> None:
         super().__init__("total_python_object_memory_kb", "Memory used by raster")
 
     def get_data(self) -> List[Tuple[Dict[str, str], float]]:
+        object_size = _get_python_object_size()
+        assert object_size is not None
         return [
-            ({"pid": str(val["pid"]), "hostname": val["hostname"]}, val["value"])
-            for val in _get_python_object_size()
+            ({"pid": str(val["pid"]), "hostname": str(val["hostname"])}, val["value"])
+            for val in object_size
             if val is not None
         ]
 
 
-@broadcast.decorator(expect_answers=True, timeout=15)  # type: ignore
+@broadcast.decorator(expect_answers=True, timeout=15)
 def _get_python_object_size() -> Dict[str, float]:
     return {"value": sum([sys.getsizeof(o) / 1024 for o in gc.get_objects()])}

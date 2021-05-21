@@ -82,7 +82,7 @@ def _process_dict(dict_: Dict[str, Any], dogpile_cache: bool = False) -> Dict[st
     }
 
 
-@broadcast.decorator(expect_answers=True, timeout=110)  # type: ignore  # type: ignore
+@broadcast.decorator(expect_answers=True, timeout=110)
 def _memory() -> Dict[str, Any]:
     return {
         "raster_data": _process_dict(raster.Raster.data),
