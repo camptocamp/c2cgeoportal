@@ -30,7 +30,6 @@
 import importlib
 import logging
 import os
-import re
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
 from urllib.parse import urlsplit
 
@@ -631,8 +630,8 @@ def init_dbsessions(
     settings: Dict[str, Any], config: Configurator, health_check: Optional[HealthCheck] = None
 ) -> None:
     db_chooser = settings.get("db_chooser", {})
-    master_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("master", [])]
-    slave_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("slave", [])]
+    master_paths = [i.replace("//", "/") for i in db_chooser.get("master", [])]
+    slave_paths = [i.replace("//", "/") for i in db_chooser.get("slave", [])]
 
     slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
 
