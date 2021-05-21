@@ -414,11 +414,11 @@ vars:
     std:
       backend: c2cgeoportal.hybridsentinel
       arguments:
-        lock_timeout: '{REDIS_LOCK_TIMEOUT}' # secounds
-        redis_expiration_time: '{REDIS_EXPIRATION_TIME}' # secounds
+        lock_timeout: '{REDIS_LOCK_TIMEOUT}' # seconds
+        redis_expiration_time: '{REDIS_EXPIRATION_TIME}' # seconds
         distributed_lock: True
         service_name: '{REDIS_SERVICENAME}'
-        socket_timeout: '{REDIS_TIMEOUT}' # secounds
+        socket_timeout: '{REDIS_TIMEOUT}' # seconds
         db: 0
     obj:
       backend: dogpile.cache.memory
