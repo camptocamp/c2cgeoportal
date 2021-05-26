@@ -14,101 +14,133 @@ Direct dependencies updates
 Now we are based on the image `osgeo/gdal` (`ubuntu-small-3.2.1`) which is based on Ubuntu 20.04.
 Previously we were based on image `camptocamp/c2cwsgiutils` (`release_3`) which is based on Ubuntu 18.04
 
-This implies that Python is updated from version 3.6 to 3.8.
+Main version update
+-------------------
+Ubuntu is updated from 18.04.5 to 20.04.1
+Python is updated from 3.7.5 to 3.8.5
+Node is updated from 10.24.1 to 14.17.0
+Npm is updated from 6.14.12 to 6.14.13
+Postgres is updated from 13+226.pgdg18.04+1 to 13+226.pgdg20.04+1
 
-Python packages
-~~~~~~~~~~~~~~~
+Python package update
+---------------------
+New packages:
+* c2cwsgiutils at version 4.1.1
+* GDAL at version 3.2.1
+* linesman at version 0.3.2
+* networkx at version 1.7
+* oauthlib at version 3.1.0
+* Paste at version 3.5.0
+* pbr at version 5.5.1
+* Pillow at version 8.1.2
+* pipfile at version 0.0.2
+* pkgconfig at version 1.5.1
+* pygraphviz at version 1.7
+* pyyaml-include at version 1.2.post2
+* stevedore at version 3.3.0
+* toml at version 0.10.2
 
-Major updates::
+Removed packages:
+* importlib-metadata
+* simplejson
+* typing-extensions
+* zipp
 
-* `c2cwsgiutils` from 3 to 4.
-* `pyproj` from 2.6 to 3.0.
+Major updates:
+* attrs from 19.3.0 to 20.3.0
+* chardet from 3.0.4 to 4.0.0
+* cornice from 4.0.1 to 5.0.3
+* dogpile.cache from 0.9.0 to 1.0.2
+* Jinja2 from 3.0.0a1 to 2.11.3
+* MarkupSafe from 2.0.0a1 to 1.1.1
+* pyparsing from 3.0.0a1 to 2.4.7
+* pyproj from 2.6.0 to 3.0.0.post1
+* pytz from 2019.3 to 2021.1
+* sentry-sdk from 0.14.3 to 1.0.0
+* ujson from 2.0.3 to 4.0.2
 
-Minor updates::
+Minor updates:
+* alembic from 1.4.2 to 1.5.3
+* Babel from 2.8.0 to 2.9.0
+* boltons from 20.1.0 to 20.2.1
+* c2c.template from 2.1.0 to 2.3.0
+* cee-syslog-handler from 0.5.0 to 0.6.0
+* certifi from 2020.4.5.1 to 2020.12.5
+* cligj from 0.5.0 to 0.7.1
+* colander from 1.7.0 to 1.8.3
+* GeoAlchemy2 from 0.7.0 to 0.8.4
+* idna from 2.9 to 2.10
+* numpy from 1.18.3 to 1.20.0
+* objgraph from 3.4.1 to 3.5.0
+* OWSLib from 0.19.2 to 0.22.0
+* pipenv from 2020.5.28 to 2020.11.15
+* Pygments from 2.6.1 to 2.7.4
+* pyotp from 2.3.0 to 2.5.1
+* pyramid-debugtoolbar from 4.6.1 to 4.9
+* PyYAML from 5.3.1 to 5.4.1
+* rasterio from 1.1.3 to 1.2.0
+* redis from 3.4.1 to 3.5.3
+* requests from 2.23.0 to 2.25.1
+* six from 1.14.0 to 1.15.0
+* translationstring from 1.3 to 1.4
+* urllib3 from 1.25.9 to 1.26.4
+* zope.interface from 5.1.0 to 5.2.0
 
-* `alembic` from 1.4 to 1.5.
-* `c2c.template` from 2.1 to 2.3.
-* `colander` from 1.7 to 1.8.
-* `dogpile.cache` from 0.9 to 1.0.
-* `GeoAlchemy2` from 0.7 to 0.8.
-* `OWSLib` from 0.19 to 0.22.
-* `pyotp` from 2.3 to 2.5.
-* `pyramid_debugtoolbar` from 4.6 to 4.9.
-* `rasterio` from 1.1 to 1.2.
-* `requests` from 2.23 to 2.25.
-* `redis` from 3.4 to 3.5.
-* `translationstring` from 1.3 to 1.4.
+Npm package update
+------------------
+New packages:
+* @sentry/tracing at version 6.2.3
+* babel-plugin-angularjs-annotate at version 0.10.0
+* eslint at version 7.19.0
+* event-hooks-webpack-plugin at version 2.2.0
+* mapillary-js at version 2.21.0
+* tinycolor2 at version 1.4.2
 
-Npm packages
-~~~~~~~~~~~~
+Removed packages:
+* @camptocamp/babel-plugin-angularjs-annotate
+* jsdoc
+* jsdoc-plugin-typescript
+* tsconfig-paths
+* typescript
 
-New packages::
+Major updates:
+* @sentry/browser from 5.15.4 to 6.2.3
+* commander from 5.0.0 to 7.0.0
+* copy-webpack-plugin from 5.1.1 to 6.4.1
+* css-loader from 3.5.2 to 5.0.1
+* expose-loader from 0.7.5 to 1.0.3
+* html-webpack-plugin from 3.2.0 to 4.5.1
+* node-sass-importer from 1.0.0 to 2.0.2
+* puppeteer from 2.1.1 to 5.5.0
+* ts-node from 8.8.2 to 9.1.1
+* webpack-merge from 4.2.2 to 5.7.3
 
-* `@babel/plugin-proposal-class-properties`.
-* `event-hooks-webpack-plugin`.
-* `mapillary-js`.
-* `tinycolor2`.
-
-Removed packages::
-
-* `@sentry/tracing`.
-* `jsdoc`.
-* `jsdoc-plugin-typescript`.
-* `typescript`.
-* `prettier`.
-* `eslint-plugin-import`.
-* `eslint-plugin-prettier`.
-
-Major updates::
-
-* `@sentry/browser` from 5.15 to 6.2.
-* `@sentry/types` from 5.15 to 6.2.
-* `chokidar` from 2.1 to 3.5.
-* `commander` from 5.0 to 7.0.
-* `copy-webpack-plugin` from 5.1 to 6.4.
-* `css-loader` from 3.5 to 5.0.
-* `eslint` from 6.8 to 7.19.
-* `html-webpack-plugin` from 3.2 to 4.5.
-* `node-sass-importer` from 1.0 to 2.0.
-* `puppeteer` from 2.1 to 5.5.
-* `terser` from 4.6 to 5.5.
-* `ts-node` from 8.8 to 9.1.
-* `webpack-merge` from 4.2 to 5.7.
-
-Minor updates::
-
-* `@babel/core` from 7.9 to 7.12.
-* `@babel/plugin-transform-spread` from 7.9 to 7.12.
-* `@babel/preset-env` from 7.9 to 7.12.
-* `@fortawesome/fontawesome-free` from 5.13 to 5.15.
-* `@trevoreyre/autocomplete-js` from 2.1 to 2.2.
-* `angular` from 1.7 to 1.8.
-* `angular-animate` from 1.7 to 1.8.
-* `angular-mocks` from 1.7 to 1.8.
-* `angular-sanitize` from 1.7 to 1.8.
-* `angular-touch` from 1.7 to 1.8.
-* `babel-loader` from 8.1 to 8.2.
-* `bootstrap` from 4.4 to 4.6.
-* from `@camptocamp/babel-plugin-angularjs-annotate@0.8` to `babel-plugin-angularjs-annotate@0.10.0`.
-* `d3` from 5.15 to 5.16.
-* `ejs-loader` from 0.3 to 0.5.
-* `expose-loader` from 0.7 to 1.0.
-* `extract-loader` from 5.0 to 5.1.
-* `eslint-plugin-import` from 2.20 to 2.22.
-* `eslint-plugin-prettier` from 3.1 to 3.3.
-* `file-loader` from 6.0 to 6.2.
-* `floatthead` from 2.1 to 2.2.
-* `fs-extra` from 9.0 to 9.1.
-* `jsts` from 2.1 to 2.6.
-* `localforage` from 1.7 to 1.9.
-* `moment` from 2.24 to 2.29.
-* `node-sass` from 4.13 to 4.14.
-* `ol` from 6.1 to 6.5.
-* `ol-layerswitcher` from 3.6 to 3.8.
-* `proj4` from 2.6 to 2.8.
-* `sinon` from 9.0 to 9.2.
-* `terser-webpack-plugin` from 4.1 to 4.2.
-* `webpack` from 4.42 to 4.46.
+Minor updates:
+* @babel/core from 7.9.0 to 7.12.10
+* @babel/preset-env from 7.9.5 to 7.12.11
+* @fortawesome/fontawesome-free from 5.13.0 to 5.15.2
+* @trevoreyre/autocomplete-js from 2.1.1 to 2.2.0
+* angular-animate from 1.7.9 to 1.8.2
+* angular-mocks from 1.7.9 to 1.8.2
+* angular-sanitize from 1.7.9 to 1.8.2
+* angular-touch from 1.7.9 to 1.8.2
+* babel-loader from 8.1.0 to 8.2.2
+* bootstrap from 4.4.1 to 4.6.0
+* d3 from 5.15.1 to 5.16.0
+* ejs-loader from 0.3.6 to 0.5.0
+* extract-loader from 5.0.1 to 5.1.0
+* file-loader from 6.0.0 to 6.2.0
+* floatthead from 2.1.4 to 2.2.1
+* fs-extra from 9.0.0 to 9.1.0
+* jsts from 2.1.2 to 2.6.1
+* localforage from 1.7.3 to 1.9.0
+* moment from 2.24.0 to 2.29.1
+* node-sass from 4.13.1 to 4.14.1
+* ol-layerswitcher from 3.6.0 to 3.8.3
+* proj4 from 2.6.1 to 2.7.0
+* sinon from 9.0.2 to 9.2.4
+* terser-webpack-plugin from 4.1.0 to 4.2.3
+* webpack from 4.42.1 to 4.46.0
 
 Other Docker images
 ~~~~~~~~~~~~~~~~~~~
