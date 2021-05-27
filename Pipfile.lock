@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0557fa3b8ee014ad7517ef2f52537e51b05402923fe2391c9e83606ad05d87f7"
+            "sha256": "20365127d0f47e9ddc0199751b3dd62ed15832b2e4ec7de6c50d24289f3e1a25"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1134,10 +1134,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:2f4da4594db7e1e110a944bb1b551fdf4e6c136ad42e4234131391e21eb5b0df",
-                "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
+                "sha256:753a0374df26658f99d826cfe40394a686d05985786d946fbe4165b5148f5a7c",
+                "sha256:a7acd0977125325f516bda9735fa7142b909a8d01e8b2e4c8108d0984e6e0098"
             ],
-            "version": "==1.26.4"
+            "version": "==1.26.5"
         },
         "venusian": {
             "hashes": [
@@ -1256,10 +1256,10 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:3a7d43d2d000f53e1627b7dff0a1e6d3a88bd0dc30b23d911342591dec5ee01f"
+                "sha256:86b95f7851f2cea2b7698662362d19b9f387539ec8cf657dc9978a1f42534fe0"
             ],
             "index": "pypi",
-            "version": "==1.19.80"
+            "version": "==1.19.81"
         },
         "babel": {
             "hashes": [
@@ -1287,10 +1287,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:a67923f9faa47833f13b4f3a3fc9a7f12499a58f51982faad4ddcc9132e59a1e",
-                "sha256:e47726efd7ebebc20f0747502747dab982489e6337ad24ca257b568e8216d300"
+                "sha256:4e2ce4e4bb1e9b9cc2227b8cde22d710218c43f290babfc0479c3e738fde083b",
+                "sha256:c33bc3f964dcd147e93d52973763a4f1ae28c9c76670656f7acef45c469eebb0"
             ],
-            "version": "==1.20.80"
+            "version": "==1.20.81"
         },
         "certifi": {
             "hashes": [
@@ -1953,10 +1953,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:2f4da4594db7e1e110a944bb1b551fdf4e6c136ad42e4234131391e21eb5b0df",
-                "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
+                "sha256:753a0374df26658f99d826cfe40394a686d05985786d946fbe4165b5148f5a7c",
+                "sha256:a7acd0977125325f516bda9735fa7142b909a8d01e8b2e4c8108d0984e6e0098"
             ],
-            "version": "==1.26.4"
+            "version": "==1.26.5"
         },
         "waitress": {
             "hashes": [
