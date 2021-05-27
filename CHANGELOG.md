@@ -1,3 +1,6 @@
+##### 2.6.rc.85
+* Update the package version in the changelog [c2cgeoportal#8271](https://github.com/camptocamp/c2cgeoportal/pull/8271)
+* External WMS query [ngeo#7164](https://github.com/camptocamp/ngeo/pull/7164)
 ##### 2.6.rc.83
 * Fix the documentation about the static in dynamics [c2cgeoportal#8246](https://github.com/camptocamp/c2cgeoportal/pull/8246)
 * Fix the geoportal rebuild branch [c2cgeoportal#8252](https://github.com/camptocamp/c2cgeoportal/pull/8252)
