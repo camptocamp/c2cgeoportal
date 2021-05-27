@@ -568,13 +568,16 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             session = self.DBSession()
             try:
+                roles = self.get_roles(session)
+
+                if roles == "ROOT":
+                    rights.canRead = True
+
                 layers = self.get_layers(session)
                 ogc_layer_name = self.ogc_layer_name(layer)
                 if ogc_layer_name not in layers:
                     return rights
                 gmf_layers = self.get_layers(session)[ogc_layer_name]
-
-                roles = self.get_roles(session)
             finally:
                 session.close()
             access, _ = self.get_restriction_areas(gmf_layers, roles=roles)
