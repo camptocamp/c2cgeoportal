@@ -1,3 +1,5 @@
+##### 2.6.rc.87
+* Root should always have read access [c2cgeoportal#8275](https://github.com/camptocamp/c2cgeoportal/pull/8275)
 ##### 2.6.rc.85
 * Update the package version in the changelog [c2cgeoportal#8271](https://github.com/camptocamp/c2cgeoportal/pull/8271)
 * External WMS query [ngeo#7164](https://github.com/camptocamp/ngeo/pull/7164)
