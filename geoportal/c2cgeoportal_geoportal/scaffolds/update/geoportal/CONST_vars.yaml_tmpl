@@ -24,9 +24,9 @@ vars:
     executemany_mode: batch
   sqlalchemy_slave:
     url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}?sslmode={PGSSLMODE}
-    pool_recycle: '{SQLALCHEMY_POOL_RECYCLE}'
-    pool_size: '{SQLALCHEMY_POOL_SIZE}'
-    max_overflow: '{SQLALCHEMY_MAX_OVERFLOW}'
+    pool_recycle: '{SQLALCHEMY_SLAVE_POOL_RECYCLE}'
+    pool_size: '{SQLALCHEMY_SLAVE_POOL_SIZE}'
+    max_overflow: '{SQLALCHEMY_SLAVE_MAX_OVERFLOW}'
     executemany_mode: batch
 
   # Session backend
@@ -948,6 +948,12 @@ runtime_environment:
   - name: SQLALCHEMY_POOL_SIZE
     default: '5'
   - name: SQLALCHEMY_MAX_OVERFLOW
+    default: '25'
+  - name: SQLALCHEMY_SLAVE_POOL_RECYCLE
+    default: '30'
+  - name: SQLALCHEMY_SLAVE_POOL_SIZE
+    default: '5'
+  - name: SQLALCHEMY_SLAVE_MAX_OVERFLOW
     default: '25'
   - name: TINYOWS_URL
     default: http://tinyows:8080/
