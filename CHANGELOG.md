@@ -1,3 +1,5 @@
+##### 2.6.rc.88
+* Separate SQLAlchemy master and salve config [c2cgeoportal#8285](https://github.com/camptocamp/c2cgeoportal/pull/8285)
 ##### 2.6.rc.87
 * Root should always have read access [c2cgeoportal#8275](https://github.com/camptocamp/c2cgeoportal/pull/8275)
 ##### 2.6.rc.85
