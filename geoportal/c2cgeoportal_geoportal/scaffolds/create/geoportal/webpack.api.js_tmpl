@@ -62,7 +62,7 @@ module.exports = (env, argv) => {
       ],
       alias: {
         api: '/usr/lib/node_modules/ngeo/api/src',
-        '@geoblocks/proj': '@geoblocks/proj/src',
+        ngeo: '/usr/lib/node_modules/ngeo/src',
       }
     },
     resolveLoader: {
