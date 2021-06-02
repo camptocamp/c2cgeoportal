@@ -10,6 +10,9 @@ rules:
   no-console: 0
   comma-dangle: 0
   import/no-unresolved: 0
+  import/extensions: 0
   valid-jsdoc: 0
+  jsdoc/check-tag-names: 0
+  jsdoc/require-param-description: 0
   sort-imports-es6-autofix/sort-imports-es6: 0
   prettier/prettier: 0
