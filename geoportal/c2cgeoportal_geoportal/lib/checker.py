@@ -271,7 +271,9 @@ def _phantomjs(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check
                 except subprocess.CalledProcessError as exception:
                     raise Exception(
                         "{} exit with code: {}\n{}".format(
-                            " ".join(exception.cmd), exception.returncode, exception.output.decode("utf-8")
+                            " ".join(exception.cmd),
+                            exception.returncode,
+                            exception.output.decode("utf-8")[:10000],
                         )
                     )
                 except subprocess.TimeoutExpired as exception:
