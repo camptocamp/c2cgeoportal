@@ -1,3 +1,5 @@
+##### 2.5.0.137
+* [Security] Upgrade aws-cli [c2cgeoportal#8294](https://github.com/camptocamp/c2cgeoportal/pull/8294)
 ##### 2.5.0.134
 * Fix build by rollbacking canvas and prettier [ngeo#7159](https://github.com/camptocamp/ngeo/pull/7159)
 ##### 2.5.0.133
