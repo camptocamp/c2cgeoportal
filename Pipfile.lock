@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "46c2af24f0ce3ceb0c96ef3cb87b95d0336e1647bd6d4a45a5659b74a44d3f76"
+            "sha256": "e0e1a4d6775fad289258b0ae9830441edef8002b5d4e4eb7d7b20b7e96ab0925"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -938,11 +938,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:b9cf7c4b90dff10886097d8bb3259822ca06d3f2a4c0014b155d246b4517df76",
-                "sha256:d863435d80741a46d09b22c928fa338ad552b1668b53319689f227167d5a25d1"
+                "sha256:0e49182a85365c0a824758ffe9405b6e2cf7cee74f627fbaf8f5789df5a067b7",
+                "sha256:7d743a227dc104cbf2d49cfaf8e3bc09761579f215aec5405101db344ae84882"
             ],
             "index": "pypi",
-            "version": "==1.18.39"
+            "version": "==1.19.4"
         },
         "babel": {
             "hashes": [
@@ -971,10 +971,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:94232b44e1540b7e043e220bd43f855400d0a243e926b26b3fb72994e971d518",
-                "sha256:e20ba56476b1031ce5ac8e22b59dabc75bd0e03231f124ed6b9ff99fe0b0c96b"
+                "sha256:61657a1e4b3cdda9627084184bdf9dca4637c1523daead31a36974be0d51686d",
+                "sha256:96f9e0920ac91b6caae3039e5de09b80648ad57b4a97fc7d81a369afae34fb10"
             ],
-            "version": "==1.15.39"
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'",
+            "version": "==1.20.4"
         },
         "certifi": {
             "hashes": [
@@ -1005,7 +1006,7 @@
                 "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff",
                 "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
             ],
-            "markers": "python_version != '3.4'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==0.4.3"
         },
         "coverage": {
