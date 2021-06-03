@@ -32,6 +32,7 @@ import datetime
 import ipaddress
 import json
 import logging
+import urllib.parse
 from string import Formatter
 from typing import Any, Dict, List, Set, Union
 
@@ -223,3 +224,7 @@ def is_intranet(request):
         if address in network:
             return True
     return False
+
+
+def server_url(spec):
+    return "{}?{}".format(spec["url"], urllib.parse.urlencode(spec.get("params", {})))
