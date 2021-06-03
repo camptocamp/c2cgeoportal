@@ -423,6 +423,9 @@ class Login:
     def oauth2loginform(self) -> Dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
+        if self.request.user:
+            self._oauth2_login(self.request.user)
+
         login_param = {"type": "oauth2"}
         login_param.update(self.request.params)
         return {
