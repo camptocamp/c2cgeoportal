@@ -420,6 +420,9 @@ class Login:
     def oauth2loginform(self):
         set_common_headers(self.request, "login", PUBLIC_CACHE)
 
+        if self.request.user:
+            self._oauth2_login(self.request.user)
+
         login_param = {"type": "oauth2"}
         login_param.update(self.request.params)
         return {
