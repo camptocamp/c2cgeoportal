@@ -1,3 +1,5 @@
+##### 2.6.rc.90
+* [Security] Upgrade aws-cli [c2cgeoportal#8300](https://github.com/camptocamp/c2cgeoportal/pull/8300)
 ##### 2.6.rc.89
 * [Security] Upgrade aws-cli [c2cgeoportal#8295](https://github.com/camptocamp/c2cgeoportal/pull/8295)
 ##### 2.6.rc.88
