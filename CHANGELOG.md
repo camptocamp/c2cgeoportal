@@ -1,3 +1,5 @@
+##### 2.5.0.138
+* [Security] Upgrade aws-cli [c2cgeoportal#8299](https://github.com/camptocamp/c2cgeoportal/pull/8299)
 ##### 2.5.0.137
 * [Security] Upgrade aws-cli [c2cgeoportal#8294](https://github.com/camptocamp/c2cgeoportal/pull/8294)
 ##### 2.5.0.134
