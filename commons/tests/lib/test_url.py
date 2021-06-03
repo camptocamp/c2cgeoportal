@@ -180,3 +180,16 @@ class TestUrl(TestCase):
                 ]
             ),
         )
+
+    def test_get_url2_dict(self):
+        request = DummyRequest()
+        request.registry.settings = {
+            "package": "my_project",
+            "servers": {"srv": {"url": "https://example.com/test_params", "params": {"MAP": "éàè"}}},
+        }
+        request.scheme = "https"
+
+        self.assertEqual(
+            get_url2("test", "config://srv/icon.png?SALT=456", request, set()).url(),
+            "https://example.com/test_params/icon.png?MAP=%C3%A9%C3%A0%C3%A8&SALT=456",
+        )

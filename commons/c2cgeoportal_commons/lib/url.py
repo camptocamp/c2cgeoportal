@@ -190,14 +190,18 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
                 )
             )
             return None
-        if url_obj.path != "":
-            if server[-1] != "/":
-                server += "/"
-            new_url_obj = Url(urllib.parse.urljoin(server, url_obj.path[1:]))
-            new_url_obj.query = url_obj.query
-            new_url_obj.fragment = url_obj.fragment
-            url_obj = new_url_obj
+
+        if isinstance(server, dict):
+            url_obj_server = Url(server["url"])
+            url_obj_server.add_query(server.get("params", {}))
         else:
-            url_obj = Url(server)
-        return url_obj
+            url_obj_server = Url(server)
+
+        if url_obj.path != "":
+            if url_obj_server.path[-1] != "/":
+                url_obj_server.path += "/"
+            url_obj_server.path = urllib.parse.urljoin(url_obj_server.path, url_obj.path[1:])
+            url_obj_server.add_query(url_obj.query, force=True)
+            url_obj_server.fragment = url_obj.fragment
+        return url_obj_server
     return None
