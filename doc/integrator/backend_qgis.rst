@@ -200,7 +200,25 @@ Project in Database
 
 If you store the project in the database, you should set the ``QGIS_PROJECT_FILE`` environment variable
 to something like that:
-``postgresql://<dbuser>:<dbpass>@<dbhost>:<dbport>?sslmode=disable&dbname=<dbname>&schema=<dbschema>&project=<projectname>``.
+``postgresql://<dbuser>:<dbpass>@<dbhost>:<dbport>?sslmode=require&dbname=<dbname>&schema=<dbschema>&project=<projectname>``.
 
 If you specify it in the `MAP` parameter for the  OGC proxy, don't forget to correctly encode it, you can use this
 `service <https://www.url-encode-decode.com/>`__ to encode it.
+
+In multi project mode the best is to use in the OGC server URL like this `config://qgis1`, `config://qgis2`,
+in the vars file add:
+
+.. code:: yaml
+
+   vars:
+     servers:
+       qgis1:
+         url: '{QGISSERVER_URL}'
+         params:
+           MAP: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&dbname={PGDATABASE}&schema=qgis&project=qgis1
+       qgis2:
+         url: '{QGISSERVER_URL}'
+         params:
+           MAP: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&dbname={PGDATABASE}&schema=qgis&project=qgis2
+
+With that you will not have URL encoding issues.
