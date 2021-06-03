@@ -50,8 +50,13 @@ def load_env(env_files):
 def main():
     parser = argparse.ArgumentParser(description="Build the project")
     parser.add_argument("--verbose", help="Display the docker build commands")
-    parser.add_argument("--config", action="store_true", help="Build only the configuration image")
-    parser.add_argument("--geoportal", action="store_true", help="Build only the geoportal image")
+    parser.add_argument(
+        "--config", action="store_true", help="Build the configuration image and the .env file"
+    )
+    parser.add_argument(
+        "--geoportal", action="store_true", help="Build the geoportal image and the .env file"
+    )
+    parser.add_argument("--env", action="store_true", help="Build only the .env file")
     parser.add_argument("--simple", action="store_true", help="Force simple application mode")
     parser.add_argument("--not-simple", action="store_true", help="Force not simple application mode")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
@@ -112,7 +117,7 @@ def main():
     tag = ":" + env["DOCKER_TAG"] if "DOCKER_TAG" in env else ""
     schema = env["PGSCHEMA"]
 
-    default = not (args.config or args.geoportal)
+    default = not (args.config or args.geoportal or args.env)
 
     docker_build = ["docker", "build"]
     if os.environ.get("CI", "FALSE").upper() != "TRUE":

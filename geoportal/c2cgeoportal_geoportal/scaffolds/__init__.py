@@ -189,7 +189,7 @@ class TemplateCreate(BaseTemplate):
         Overrides the base template class to print the next step.
         """
 
-        fix_executables(output_dir, ("bin/*", "build", "ci/trigger"))
+        fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"))
 
         super().post(command, output_dir, vars_)
 
@@ -230,6 +230,6 @@ class TemplateUpdate(BaseTemplate):
         after a successful scaffolding rendering.
         """
 
-        fix_executables(output_dir, ("bin/*", "build", "ci/trigger"), True)
+        fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"), True)
 
         super().post(command, output_dir, vars_)
