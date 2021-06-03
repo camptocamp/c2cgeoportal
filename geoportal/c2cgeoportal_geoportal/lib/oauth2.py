@@ -85,7 +85,6 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):
         request.client = (
             DBSession.query(static.OAuth2Client)
             .filter(static.OAuth2Client.client_id == params["client_id"])
-            .filter(static.OAuth2Client.secret == params["client_secret"])
             .one_or_none()
         )
 
@@ -120,9 +119,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        params = dict(request.decoded_body)
+
         request.client = (
             DBSession.query(static.OAuth2Client)
             .filter(static.OAuth2Client.client_id == client_id)
+            .filter(static.OAuth2Client.secret == params["client_secret"])
             .one_or_none()
         )
 
