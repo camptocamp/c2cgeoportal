@@ -1,3 +1,6 @@
+##### 2.6.rc.91
+* Add asserts to be sure that the messageid are not None [c2cgeoportal#8305](https://github.com/camptocamp/c2cgeoportal/pull/8305)
+* Be able to have deep layer structure [c2cgeoportal#8306](https://github.com/camptocamp/c2cgeoportal/pull/8306)
 ##### 2.6.rc.90
 * [Security] Upgrade aws-cli [c2cgeoportal#8300](https://github.com/camptocamp/c2cgeoportal/pull/8300)
 ##### 2.6.rc.89
