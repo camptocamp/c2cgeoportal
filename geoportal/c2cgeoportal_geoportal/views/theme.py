@@ -564,6 +564,10 @@ class Theme:
 
         return ogc_servers
 
+    @staticmethod
+    def is_mixed(ogc_servers):
+        return len(ogc_servers) != 1 or ogc_servers[0] is False
+
     def _group(
         self,
         path,
@@ -598,7 +602,7 @@ class Theme:
         if depth == 1:
             ogc_servers = list(self._get_ogc_servers(group, 1))
             # check if mixed content
-            mixed = len(ogc_servers) != 1 or ogc_servers[0] is False
+            mixed = self.is_mixed(ogc_servers)
             if not mixed:
                 time_ = TimeInformation()
             dim = DimensionInformation()
