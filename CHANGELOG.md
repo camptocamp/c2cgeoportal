@@ -1,3 +1,7 @@
+##### 2.6.rc.92
+* Some OAuth2 fix for php [c2cgeoportal#8301](https://github.com/camptocamp/c2cgeoportal/pull/8301)
+* [Backport 2.6] Fix build with BuildKit [c2cgeoportal#8310](https://github.com/camptocamp/c2cgeoportal/pull/8310)
+* [Backport 2.6] Allow override theme mixed property in projects [c2cgeoportal#8312](https://github.com/camptocamp/c2cgeoportal/pull/8312)
 ##### 2.6.rc.91
 * Add asserts to be sure that the messageid are not None [c2cgeoportal#8305](https://github.com/camptocamp/c2cgeoportal/pull/8305)
 * Be able to have deep layer structure [c2cgeoportal#8306](https://github.com/camptocamp/c2cgeoportal/pull/8306)
