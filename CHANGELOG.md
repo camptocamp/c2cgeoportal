@@ -1,3 +1,5 @@
+##### 2.6.rc.93
+* If zoom is undefined or null condition [ngeo#7198](https://github.com/camptocamp/ngeo/pull/7198)
 ##### 2.6.rc.92
 * Some OAuth2 fix for php [c2cgeoportal#8301](https://github.com/camptocamp/c2cgeoportal/pull/8301)
 * [Backport 2.6] Fix build with BuildKit [c2cgeoportal#8310](https://github.com/camptocamp/c2cgeoportal/pull/8310)
