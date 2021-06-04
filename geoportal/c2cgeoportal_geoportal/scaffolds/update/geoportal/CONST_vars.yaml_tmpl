@@ -915,6 +915,7 @@ vars:
     # This supersedes the slave list.
     master:
       - GET {VISIBLE_ENTRY_POINT}s/.* # The shortener updates the last_hit column on GET
+      - GET {VISIBLE_ENTRY_POINT}oauth/login # The oauth2 login when we are already logged
     # List of {method path} regexes to force the usage of the slave
     slave:
       - \w+ {VISIBLE_ENTRY_POINT}printproxy/.* # The print proxy is never writing to the DB
