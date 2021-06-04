@@ -199,6 +199,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
             messages = []
             for contexts, message in json.loads(message_str):
                 for context in contexts.split(", "):
+                    assert message is not None
                     messages.append(Message(None, message, None, [], "", "", context.split(":")))
             return messages
         except Exception:
@@ -239,6 +240,9 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     def _collect_app_config(self, filename: str) -> List[Message]:
         config.init(filename)
         settings = config.get_config()
+        assert not [
+            raster_layer for raster_layer in list(settings.get("raster", {}).keys()) if raster_layer is None
+        ]
         # Collect raster layers names
         raster = [
             Message(None, raster_layer, None, [], "", "", (filename, "raster/{}".format(raster_layer)))
@@ -284,6 +288,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                             fieldname,
                             value.encode("ascii", errors="replace").decode("ascii"),
                         )
+                        assert msgid is not None
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 
         metadata_list = []
@@ -299,6 +304,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             query = session.query(Metadata).filter(Metadata.name.in_(names))  # pylint: disable=no-member
             for metadata in query.all():
                 location = "metadata/{}/{}".format(metadata.name, metadata.id)
+                assert metadata.value is not None
                 metadata_list.append(Message(None, metadata.value, None, [], "", "", (filename, location)))
 
         interfaces_messages = []
@@ -311,6 +317,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                         "interfaces_config/{}/constants/gmfSearchOptions/datasources[{}]/"
                         "groupActions[{}]/title".format(interface, ds_index, a_index)
                     )
+                    assert action["title"] is not None
                     interfaces_messages.append(
                         Message(None, action["title"], None, [], "", "", (filename, location))
                     )
@@ -324,6 +331,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                 location = "interfaces_config/{}/constants/gmfDisplayQueryGridOptions/mergeTabs/{}/".format(
                     interface, merge_tab
                 )
+                assert merge_tab is not None
                 interfaces_messages.append(Message(None, merge_tab, None, [], "", "", (filename, location)))
 
         return raster + enums + metadata_list + interfaces_messages
@@ -356,9 +364,15 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     def _collect_print_config(print_config: Dict[str, Any], filename: str) -> List[Message]:
         result = []
         for template_ in list(cast(Dict[str, Any], print_config.get("templates")).keys()):
+            assert template_ is not None
             result.append(
                 Message(None, template_, None, [], "", "", (filename, "template/{}".format(template_)))
             )
+            assert not [
+                attribute
+                for attribute in list(print_config["templates"][template_]["attributes"].keys())
+                if attribute is None
+            ]
             result += [
                 Message(
                     None,
@@ -422,6 +436,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
                 for (layer_name,) in db_session.query(FullTextSearch.layer_name).distinct().all():
                     if layer_name is not None and layer_name != "":
+                        assert layer_name is not None
                         messages.append(
                             Message(
                                 None,
@@ -437,6 +452,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 for (actions,) in db_session.query(FullTextSearch.actions).distinct().all():
                     if actions is not None and actions != "":
                         for action in actions:
+                            assert action["data"] is not None
                             messages.append(
                                 Message(
                                     None,
@@ -494,6 +510,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
         items = DBSession.query(object_type)
         for item in items:
+            assert item.name is not None
             messages.append(
                 Message(
                     None,
@@ -533,6 +550,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                                     name = column.name + "_"
                             else:
                                 name = column_property.key
+                            assert name is not None
                             messages.append(
                                 Message(
                                     None,
@@ -593,6 +611,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
     ) -> None:
         attributes, layers = self._layer_attributes(url, layer)
         for sub_layer in layers:
+            assert sub_layer is not None
             messages.append(
                 Message(
                     None,
@@ -605,6 +624,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 )
             )
         for attribute in attributes:
+            assert attribute is not None
             messages.append(
                 Message(
                     None,
