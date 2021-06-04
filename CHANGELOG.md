@@ -1,3 +1,5 @@
+##### 2.5.0.139
+* Allow override theme mixed property in projects [c2cgeoportal#8311](https://github.com/camptocamp/c2cgeoportal/pull/8311)
 ##### 2.5.0.138
 * [Security] Upgrade aws-cli [c2cgeoportal#8299](https://github.com/camptocamp/c2cgeoportal/pull/8299)
 ##### 2.5.0.137
