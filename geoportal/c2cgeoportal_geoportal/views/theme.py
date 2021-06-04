@@ -447,6 +447,13 @@ class Theme:
             errors.add(str(exception))
         return errors
 
+    def _fill_child_layer(self, layer_theme, layer_name, wms, wms_layer_obj):
+        if not wms_layer_obj["children"]:
+            layer_theme["childLayers"].append(wms["layers"][layer_name]["info"])
+        else:
+            for child_layer in wms_layer_obj["children"]:
+                self._fill_child_layer(layer_theme, layer_name, wms, wms["layers"][child_layer])
+
     def _fill_wms(self, layer_theme, layer, errors, mixed):
         wms, wms_errors = self._wms_layers(layer.ogc_server)
         errors |= wms_errors
@@ -461,12 +468,7 @@ class Theme:
         layer_theme["childLayers"] = []
         for layer_name in layer.layer.split(","):
             if layer_name in wms["layers"]:
-                wms_layer_obj = wms["layers"][layer_name]
-                if not wms_layer_obj["children"]:
-                    layer_theme["childLayers"].append(wms["layers"][layer_name]["info"])
-                else:
-                    for child_layer in wms_layer_obj["children"]:
-                        layer_theme["childLayers"].append(wms["layers"][child_layer]["info"])
+                self._fill_child_layer(layer_theme, layer_name, wms, wms["layers"][layer_name])
             else:
                 errors.add(
                     "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
