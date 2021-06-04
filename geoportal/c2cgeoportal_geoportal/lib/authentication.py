@@ -121,7 +121,7 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):
             request.headers,
             [],
         )
-        LOG.info("OAuth verify_request: %s", valid)
+        LOG.debug("OAuth verify_request: %s", valid)
         if valid:
             request.user_ = oauth2_request.user
 
