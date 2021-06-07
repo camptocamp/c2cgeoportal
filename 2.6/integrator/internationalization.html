@@ -101,6 +101,30 @@ one of your JavaScript application controllers:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="different-localisation-sets">
+<h2>Different localisation sets<a class="headerlink" href="#different-localisation-sets" title="Permalink to this headline">¶</a></h2>
+<p>If you use the application with different database that contain tow different layertree you should
+have a suffix on your po files.</p>
+<p>Before calling the <cite>update-po</cite> command you should rename the po files you want to update without the suffix,
+and after you should rename them with the right name.</p>
+<p>In the config <cite>Dockerfile</cite> you should replace:</p>
+<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span> build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span>
+</pre></div>
+</div>
+<p>by:</p>
+<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span> build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span> suffix_1
+<span class="k">RUN</span> build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span> suffix_2
+</pre></div>
+</div>
+<p>in the <cite>geoportal/&lt;package&gt;_geoportal/__init__.py</cite> file you should add:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">languages</span><span class="o">&gt;</span><span class="p">):</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+        <span class="n">f</span><span class="s1">&#39;/app/&lt;package&gt;_geoportal/locale/{lang}/LC_MESSAGES/&lt;package&gt;_geoportal-client{&lt;suffix&gt;}.mo&#39;</span><span class="p">,</span>
+        <span class="n">f</span><span class="s1">&#39;/app/&lt;package&gt;_geoportal/locale/{lang}/LC_MESSAGES/&lt;package&gt;_geoportal-client.mo&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
