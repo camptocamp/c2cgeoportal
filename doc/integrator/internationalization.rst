@@ -78,3 +78,36 @@ one of your JavaScript application controllers:
     /** @type {angular.gettext.gettextCatalog} */
     const gettextCatalog = $injector.get('gettextCatalog');
     gettextCatalog.getString('My previously not collected string');
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Different localisation sets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you use the application with different database that contain tow different layertree you should
+have a suffix on your po files.
+
+Before calling the `update-po` command you should rename the po files you want to update without the suffix,
+and after you should rename them with the right name.
+
+In the config `Dockerfile` you should replace:
+
+.. code:: Dockerfile
+
+   RUN build-l10n "<package>"
+
+by:
+
+.. code:: Dockerfile
+
+   RUN build-l10n "<package>" suffix_1
+   RUN build-l10n "<package>" suffix_2
+
+in the `geoportal/<package>_geoportal/__init__.py` file you should add:
+
+.. code:: python
+
+    for lang in (<languages>):
+        shutil.move(
+            f'/app/<package>_geoportal/locale/{lang}/LC_MESSAGES/<package>_geoportal-client{<suffix>}.mo',
+            f'/app/<package>_geoportal/locale/{lang}/LC_MESSAGES/<package>_geoportal-client.mo',
+        )
