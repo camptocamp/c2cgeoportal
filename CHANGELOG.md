@@ -1,3 +1,5 @@
+##### 2.6.rc.94
+* Add optional suffix in l10n [c2cgeoportal#8297](https://github.com/camptocamp/c2cgeoportal/pull/8297)
 ##### 2.6.rc.93
 * If zoom is undefined or null condition [ngeo#7198](https://github.com/camptocamp/ngeo/pull/7198)
 ##### 2.6.rc.92
