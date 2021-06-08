@@ -99,8 +99,7 @@ by:
 
 .. code:: Dockerfile
 
-   RUN build-l10n "<package>" suffix_1
-   RUN build-l10n "<package>" suffix_2
+   RUN build-l10n --suffix=suffix_1 --suffix=suffix_2 "<package>"
 
 in the `geoportal/<package>_geoportal/__init__.py` file you should add:
 
