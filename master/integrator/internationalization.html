@@ -113,8 +113,7 @@ and after you should rename them with the right name.</p>
 </pre></div>
 </div>
 <p>by:</p>
-<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span> build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span> suffix_1
-<span class="k">RUN</span> build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span> suffix_2
+<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span> build-l10n --suffix<span class="o">=</span>suffix_1 --suffix<span class="o">=</span>suffix_2 <span class="s2">&quot;&lt;package&gt;&quot;</span>
 </pre></div>
 </div>
 <p>in the <cite>geoportal/&lt;package&gt;_geoportal/__init__.py</cite> file you should add:</p>
