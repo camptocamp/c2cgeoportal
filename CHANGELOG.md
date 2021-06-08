@@ -1,3 +1,5 @@
+##### 2.6.rc.95
+* Fix issue with Different localisation sets [c2cgeoportal#8325](https://github.com/camptocamp/c2cgeoportal/pull/8325)
 ##### 2.6.rc.94
 * Add optional suffix in l10n [c2cgeoportal#8297](https://github.com/camptocamp/c2cgeoportal/pull/8297)
 ##### 2.6.rc.93
