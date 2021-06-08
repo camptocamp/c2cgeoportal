@@ -1,34 +1,113 @@
-#!/bin/bash -eux
+#!/usr/bin/env python3
 
-package=$1
-suffix=
-if [ $# -ge 2 ]
-then
-    suffix=$2
-fi
+import argparse
+import glob
+import os
+import shutil
+import subprocess
 
-cd "/tmp/config/geoportal/${package}_geoportal/locale"
 
-for lang in $(ls -d */ | sed "s#/##"); do
-    msgfmt -o "${lang}/LC_MESSAGES/${package}_geoportal-client${suffix}.mo" \
-        "${lang}/LC_MESSAGES/${package}_geoportal-client${suffix}.po"
-    if [ -e "${lang}/LC_MESSAGES/${package}_geoportal-server${suffix}.mo" ]; then
-        msgfmt -o "${lang}/LC_MESSAGES/${package}_geoportal-server${suffix}.mo" \
-            "${lang}/LC_MESSAGES/${package}_geoportal-server${suffix}.po"
-    fi
-    node /usr/bin/compile-catalog \
-        "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/ngeo.po" \
-        "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/gmf.po" \
-        "${lang}/LC_MESSAGES/${package}_geoportal-client${suffix}.po" \
-        >"../static/${lang}${suffix}.json"
-    if [ "${SIMPLE}" == TRUE ]; then
-        mv "${lang}/LC_MESSAGES/${package}_geoportal-client${suffix}.mo" \
-            "${lang}/LC_MESSAGES/geomapfishapp_geoportal-client${suffix}.mo"
-        if [ -e "${lang}/LC_MESSAGES/${package}_geoportal-server${suffix}.mo" ]; then
-            mv "${lang}/LC_MESSAGES/${package}_geoportal-server${suffix}.mo" \
-                "${lang}/LC_MESSAGES/geomapfishapp_geoportal-server${suffix}.mo"
-        fi
-    fi
-done
+def main():
+    parser = argparse.ArgumentParser(description="Generate the l10n for a project.")
+    parser.add_argument("package", help="the package name")
+    parser.add_argument("--suffix", action="append", help="a suffix added to the po and mo files")
+    parser.add_argument("--dry-run", action="store_true", help="run in dry-run mode")
+    args = parser.parse_args()
 
-rm -rf */LC_MESSAGES/*.po
+    all_suffix = [""] if args.suffix is None else args.suffix
+
+    package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"
+    base_path = f"{package_base_path}/locale"
+
+    for lang in os.listdir(base_path):
+        for suffix in all_suffix:
+            if args.dry_run:
+                print(
+                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo => "
+                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"
+                )
+            else:
+                subprocess.run(
+                    [
+                        "msgfmt",
+                        "-o",
+                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo",
+                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
+                    ],
+                    cwd=base_path,
+                    check=True,
+                )
+
+            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"):
+                if args.dry_run:
+                    print(
+                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo => "
+                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po"
+                    )
+                else:
+                    subprocess.run(
+                        [
+                            "msgfmt",
+                            "-o",
+                            f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo",
+                            f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po",
+                        ],
+                        cwd=base_path,
+                        check=True,
+                    )
+
+        if args.dry_run:
+            print(
+                f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
+                f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po, "
+                f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
+                f"{package_base_path}/static/{lang}{suffix}.json"
+            )
+        else:
+            with open(f"{package_base_path}/static/{lang}{suffix}.json", "w") as out:
+                subprocess.run(
+                    [
+                        "node",
+                        "/usr/bin/compile-catalog",
+                        f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
+                        f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po",
+                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
+                    ],
+                    stdout=out,
+                    check=True,
+                )
+
+        if os.environ.get("SIMPLE", "false").lower() == "true":
+            if args.suffix is not None:
+                print("ERROR: simple mod is not compatible with suffix")
+            if args.dry_run:
+                print(
+                    f"mv {base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client.mo"
+                    f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-client.mo"
+                )
+            else:
+                shutil.move(
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client.mo",
+                    f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-client.mo",
+                )
+            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server.mo"):
+                if args.dry_run:
+                    print(
+                        f"mv {base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server.mo"
+                        f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-server.mo"
+                    )
+                else:
+                    shutil.move(
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server.mo",
+                        f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-server.mo",
+                    )
+
+    for po_file in glob.glob(f"{base_path}/*/LC_MESSAGES/*.po"):
+        if args.dry_run:
+            print(f"rm {po_file}")
+        else:
+            os.remove(po_file)
+
+
+if __name__ == "__main__":
+    main()
