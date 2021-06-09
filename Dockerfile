@@ -17,9 +17,10 @@ ENV \
 RUN \
     . /etc/os-release && \
     apt-get update && \
+    apt-get --assume-yes upgrade && \
     apt-get install --assume-yes --no-install-recommends apt-utils && \
     apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less gnupg libpq5 \
-         python3-pip python3-dev python3-wheel python3-pkgconfig libgraphviz-dev libpq-dev binutils gcc && \
+         python3-pip python3-dev python3-wheel python3-pkgconfig libgraphviz-dev libpq-dev binutils gcc g++ cython3 && \
     echo "For Chrome installed by Pupetter" && \
     apt-get install --assume-yes --no-install-recommends libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
     libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
@@ -29,7 +30,8 @@ RUN \
     apt-get update && \
     apt-get install --assume-yes --no-install-recommends 'nodejs=16.*' && \
     apt-get clean && \
-    rm --recursive --force /var/lib/apt/lists/*
+    rm --recursive --force /var/lib/apt/lists/* && \
+    ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so
 
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
@@ -37,9 +39,11 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY Pipfile Pipfile.lock /tmp/
 # hadolint disable=DL3003
-RUN cd /tmp && pipenv sync --system --clear && \
+RUN cd /tmp && PIP_NO_BINARY=fiona,rasterio,shapely PROJ_DIR=/usr/local/ pipenv sync --system --clear && \
     rm --recursive --force /usr/local/lib/python3.*/dist-packages/tests/ /tmp/* /root/.cache/* && \
     strip /usr/local/lib/python3.*/dist-packages/*/*.so
+
+RUN apt-get auto-remove --assume-yes binutils gcc g++
 
 ENV NODE_PATH=/usr/lib/node_modules
 ENV TEST=false
