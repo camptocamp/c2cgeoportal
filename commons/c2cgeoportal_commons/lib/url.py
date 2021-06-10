@@ -95,11 +95,21 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
                 )
             )
             return None
-        if url_split.path != "":
-            if server[-1] != "/":
-                server += "/"
-            url = urllib.parse.urljoin(server, url_split.path[1:])
+
+        if isinstance(server, dict):
+            url = server["url"]
+            params: Dict[str, str] = server.get("params", {})
         else:
-            url = server
-        return url if not url_split.query else "{}?{}".format(url, url_split.query)
+            url_split_server = urllib.parse.urlsplit(server)
+            params = dict(urllib.parse.parse_qsl(url_split_server.query))
+            url = urllib.parse.urlunsplit(url_split_server._replace(query=""))
+        params.update(dict(urllib.parse.parse_qsl(url_split.query)))
+
+        if url_split.path != "":
+            if url[-1] != "/":
+                url += "/"
+            url = urllib.parse.urljoin(url, url_split.path[1:])
+
+        return url if not params else "{}?{}".format(url, urllib.parse.urlencode(params))
+
     return None
