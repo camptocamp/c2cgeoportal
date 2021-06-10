@@ -92,10 +92,6 @@ LAYER
                 COLOR 255 255 255 # normal line styles are supported
                 WIDTH 3
             END
-            STYLE
-                COLOR 0 0 0 # normal line styles are supported
-                WIDTH 1
-            END
         END
     END
     CLASS
@@ -124,10 +120,6 @@ LAYER
             STYLE
                 COLOR 255 255 255 # normal line styles are supported
                 WIDTH 3
-            END
-            STYLE
-                COLOR 0 0 0 # normal line styles are supported
-                WIDTH 1
             END
         END
     END
@@ -158,10 +150,6 @@ LAYER
                 COLOR 255 255 255 # normal line styles are supported
                 WIDTH 3
             END
-            STYLE
-                COLOR 0 0 0 # normal line styles are supported
-                WIDTH 1
-            END
         END
     END
     CLASS
@@ -191,10 +179,6 @@ LAYER
                 COLOR 255 255 255 # normal line styles are supported
                 WIDTH 3
             END
-            STYLE
-                COLOR 0 0 0 # normal line styles are supported
-                WIDTH 1
-            END
         END
     END
     CLASS
@@ -223,10 +207,6 @@ LAYER
             STYLE
                 COLOR 255 255 255 # normal line styles are supported
                 WIDTH 3
-            END
-            STYLE
-                COLOR 0 0 0 # normal line styles are supported
-                WIDTH 1
             END
         END
     END
