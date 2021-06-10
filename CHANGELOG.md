@@ -1,3 +1,5 @@
+##### 2.6.rc.96
+* Fix encoding issue for QGIS projects in database [c2cgeoportal#8302](https://github.com/camptocamp/c2cgeoportal/pull/8302)
 ##### 2.6.rc.95
 * Fix issue with Different localisation sets [c2cgeoportal#8325](https://github.com/camptocamp/c2cgeoportal/pull/8325)
 ##### 2.6.rc.94
