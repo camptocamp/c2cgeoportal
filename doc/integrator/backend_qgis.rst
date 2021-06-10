@@ -177,23 +177,12 @@ The access restriction is available only for Docker projects.
 We provide a Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
 ``gmf<Major GeoMapFish version}-qgis${Major QGIS}``.
 
-To configure a single project, just provide the OGC server name in the environment variable named:
-``GEOMAPFISH_OGCSERVER``.
+From version 2.7 the config is just made with the ``GEOMAPFISH_ACCESSCONTROL_BASE_URL`` environment
+variable which contains the base URL of the OGC servers, by default it's set to
+``QGISSERVER_URL``. And the plugin will search for the OGC servers that match with this base URL.
 
-If you need to provide more than one QGIS project, you should write a config file named, e.g.
-``qgisserver/accesscontrol_config.yaml``, with the content:
-
-.. code:: yaml
-
-   map_config:
-     <project file path>:
-       ogc_server: <OGC server name>
-
-``<project file path>`` should have exactly the same value as the ``MAP`` parameter in the ``Base URL``
-value of the OGC server.
-
-Finally, you should provide the ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` to point to a config file e.-g.
-``/etc/qgisserver/accesscontrol_config.yaml``, and ``QGIS_PROJECT_FILE`` to be empty.
+The configuration that use the ``QGIS_PROJECT_FILE`` or ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` are still
+working but are deprecated.
 
 Project in Database
 *******************
