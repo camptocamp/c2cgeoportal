@@ -18,6 +18,9 @@ build: build-tools build-runner build-config
 checks: ## Run the application checks
 checks: otherchecks
 
+pipenv.timestamp: Pipfile.lock
+	pipenv sync
+
 prospector: ## prospector lint (Quick, use otherchecks to get an exact result)
 prospector: pipenv.timestamp
 	pipenv run prospector --output-format=pylint
