@@ -191,9 +191,24 @@ value of the OGC server.</p>
 <h3>Project in Database<a class="headerlink" href="#project-in-database" title="Permalink to this headline">¶</a></h3>
 <p>If you store the project in the database, you should set the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable
 to something like that:
-<code class="docutils literal notranslate"><span class="pre">postgresql://&lt;dbuser&gt;:&lt;dbpass&gt;&#64;&lt;dbhost&gt;:&lt;dbport&gt;?sslmode=disable&amp;dbname=&lt;dbname&gt;&amp;schema=&lt;dbschema&gt;&amp;project=&lt;projectname&gt;</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">postgresql://&lt;dbuser&gt;:&lt;dbpass&gt;&#64;&lt;dbhost&gt;:&lt;dbport&gt;?sslmode=require&amp;dbname=&lt;dbname&gt;&amp;schema=&lt;dbschema&gt;&amp;project=&lt;projectname&gt;</span></code>.</p>
 <p>If you specify it in the <cite>MAP</cite> parameter for the  OGC proxy, don’t forget to correctly encode it, you can use this
 <a class="reference external" href="https://www.url-encode-decode.com/">service</a> to encode it.</p>
+<p>In multi project mode the best is to use in the OGC server URL like this <cite>config://qgis1</cite>, <cite>config://qgis2</cite>,
+in the vars file add:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+  <span class="nt">servers</span><span class="p">:</span>
+    <span class="nt">qgis1</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="s">&#39;{QGISSERVER_URL}&#39;</span>
+      <span class="nt">params</span><span class="p">:</span>
+        <span class="nt">MAP</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis1</span>
+    <span class="nt">qgis2</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="s">&#39;{QGISSERVER_URL}&#39;</span>
+      <span class="nt">params</span><span class="p">:</span>
+        <span class="nt">MAP</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis2</span>
+</pre></div>
+</div>
+<p>With that you will not have URL encoding issues.</p>
 </section>
 </section>
 </section>
