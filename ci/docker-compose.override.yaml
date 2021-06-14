@@ -18,15 +18,22 @@ services:
       - QGIS_SERVER_LOG_LEVEL=0
 
   db:
-    image: camptocamp/geomapfish-test-app-db
-    environment:
-      POSTGRES_PASSWORD: www-data
-      POSTGRES_USER: www-data
-      POSTGRES_DB: gmf_testgeomapfishapp
+    extends:
+      file: docker-compose-lib.yaml
+      service: db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+      - ./ci/test-app-db:/docker-entrypoint-initdb.d
 
   externaldb:
-    image: camptocamp/geomapfish-test-external-db
+    extends:
+      file: docker-compose-lib.yaml
+      service: db
     environment:
       POSTGRES_PASSWORD: www-data
       POSTGRES_USER: www-data
       POSTGRES_DB: test
+    volumes:
+      - ./ci/test-external-db:/docker-entrypoint-initdb.d

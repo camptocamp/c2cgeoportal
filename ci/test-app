@@ -5,9 +5,9 @@ rm -rf ${HOME}/workspace/testgeomapfishapp
 ci/create-new-project ${HOME}/workspace
 cp ci/docker-compose.override.yaml ${HOME}/workspace/testgeomapfishapp/
 cp ci/empty.qgz ${HOME}/workspace/testgeomapfishapp/qgisserver/project.qgz
+cp -r ci/test-app-db ${HOME}/workspace/testgeomapfishapp/ci/
+cp -r ci/test-external-db ${HOME}/workspace/testgeomapfishapp/ci/
 PROJECT_DIR=$(pwd)
-docker build --tag=camptocamp/geomapfish-test-app-db docker/test-app-db
-docker build --tag=camptocamp/geomapfish-test-external-db docker/test-external-db
 
 cd ${HOME}/workspace/testgeomapfishapp/
 c2cciutils-checks
@@ -18,6 +18,7 @@ docker-compose down
 docker-compose up -d
 docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
 docker-compose exec -T geoportal wait-db
+docker-compose ps
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
 docker-compose exec -T geoportal create-demo-theme
@@ -40,6 +41,14 @@ ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/ad
 docker-compose stop qgisserver
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
+
+cp .env env.int
+echo PGHOST_SLAVE=$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+') >> env.int
+ci/run-dc-logs scripts/db-backup --env=env.int dump.backup
+ci/run-dc-logs scripts/db-backup --env=env.int --arg=--schema=main dump.backup
+ci/run-dc-logs docker-compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
+ci/run-dc-logs scripts/db-restore --arg=--clean --arg=--schema=main dump.backup
+
 docker-compose down
 rm -rf ${HOME}/workspace/testgeomapfishapp
 

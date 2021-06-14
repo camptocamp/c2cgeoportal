@@ -356,3 +356,16 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
+
+  db:
+    image: camptocamp/postgres:${POSTGRES_TAG}
+    environment:
+      - PGHOST
+      - PGPORT
+      - PGUSER
+      - PGPASSWORD
+      - PGDATABASE
+      - PGSSLMODE
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${PGDATABASE}
+      - POSTGRES_USER=${PGUSER}

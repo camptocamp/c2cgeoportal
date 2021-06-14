@@ -3,6 +3,9 @@
 
 version: '2.0'
 
+volumes:
+  postgresql_data:
+
 services:
   config:
     extends:
@@ -116,3 +119,10 @@ services:
     extends:
       file: docker-compose-lib.yaml
       service: tools
+
+  # db:
+  #   extends:
+  #     file: docker-compose-lib.yaml
+  #     service: db
+  #   volumes:
+  #     - postgresql_data:/var/lib/postgresql/data
