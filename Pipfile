@@ -21,7 +21,7 @@ prospector = {extras = ["with_mypy", "with_bandit", "with_pyroma"],version = "==
 mypy = "==0.902"
 flake8 = "==3.8.4"
 types-pytz = "==0.1.0"
-types-pyyaml = "==0.1.6"
+types-pyyaml = "==0.1.8"
 types-python-dateutil = "==0.1.2"
 types-requests = "==0.1.9"
 types-pkg-resources = "==0.1.2"
