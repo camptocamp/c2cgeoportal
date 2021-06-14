@@ -56,26 +56,26 @@ def main():
                         check=True,
                     )
 
-        if args.dry_run:
-            print(
-                f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
-                f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po, "
-                f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                f"{package_base_path}/static/{lang}{suffix}.json"
-            )
-        else:
-            with open(f"{package_base_path}/static/{lang}{suffix}.json", "w") as out:
-                subprocess.run(
-                    [
-                        "node",
-                        "/usr/bin/compile-catalog",
-                        f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
-                        f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po",
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
-                    ],
-                    stdout=out,
-                    check=True,
+            if args.dry_run:
+                print(
+                    f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
+                    f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po, "
+                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
+                    f"{package_base_path}/static/{lang}{suffix}.json"
                 )
+            else:
+                with open(f"{package_base_path}/static/{lang}{suffix}.json", "w") as out:
+                    subprocess.run(
+                        [
+                            "node",
+                            "/usr/bin/compile-catalog",
+                            f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
+                            f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po",
+                            f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
+                        ],
+                        stdout=out,
+                        check=True,
+                    )
 
         if os.environ.get("SIMPLE", "false").lower() == "true":
             if args.suffix is not None:
