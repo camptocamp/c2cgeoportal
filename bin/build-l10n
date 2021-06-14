@@ -23,8 +23,8 @@ def main():
         for suffix in all_suffix:
             if args.dry_run:
                 print(
-                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo => "
-                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo => "
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"
                 )
             else:
                 subprocess.run(
@@ -41,8 +41,8 @@ def main():
             if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"):
                 if args.dry_run:
                     print(
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo => "
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po"
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo => "
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po"
                     )
                 else:
                     subprocess.run(
@@ -56,26 +56,27 @@ def main():
                         check=True,
                     )
 
-        if args.dry_run:
-            print(
-                f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
-                f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po, "
-                f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                f"{package_base_path}/static/{lang}{suffix}.json"
-            )
-        else:
-            with open(f"{package_base_path}/static/{lang}{suffix}.json", "w") as out:
-                subprocess.run(
-                    [
-                        "node",
-                        "/usr/bin/compile-catalog",
-                        f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
-                        f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po",
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
-                    ],
-                    stdout=out,
-                    check=True,
+            if args.dry_run:
+                print(
+                    f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
+                    f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po, "
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
+                    f"{package_base_path}/static/{lang}{suffix}.json"
                 )
+            else:
+                with open(f"{package_base_path}/static/{lang}{suffix}.json", "w") as out:
+                    subprocess.run(
+                        [
+                            "node",
+                            "/usr/bin/compile-catalog",
+                            f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
+                            f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po",
+                            f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
+                        ],
+                        stdout=out,
+                        cwd=base_path,
+                        check=True,
+                    )
 
         if os.environ.get("SIMPLE", "false").lower() == "true":
             if args.suffix is not None:
