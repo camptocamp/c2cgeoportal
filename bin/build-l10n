@@ -74,6 +74,7 @@ def main():
                             f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
                         ],
                         stdout=out,
+                        cwd=base_path,
                         check=True,
                     )
 
