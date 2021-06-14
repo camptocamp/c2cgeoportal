@@ -1,3 +1,6 @@
+##### 2.6.rc.97
+* Don't copy the pot files in the container [c2cgeoportal#8337](https://github.com/camptocamp/c2cgeoportal/pull/8337)
+* Fix l10n, see commits [c2cgeoportal#8344](https://github.com/camptocamp/c2cgeoportal/pull/8344)
 ##### 2.6.rc.96
 * Fix encoding issue for QGIS projects in database [c2cgeoportal#8302](https://github.com/camptocamp/c2cgeoportal/pull/8302)
 ##### 2.6.rc.95
