@@ -23,8 +23,8 @@ def main():
         for suffix in all_suffix:
             if args.dry_run:
                 print(
-                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo => "
-                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo => "
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"
                 )
             else:
                 subprocess.run(
@@ -41,8 +41,8 @@ def main():
             if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"):
                 if args.dry_run:
                     print(
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo => "
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po"
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo => "
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po"
                     )
                 else:
                     subprocess.run(
@@ -60,7 +60,7 @@ def main():
                 print(
                     f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
                     f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po, "
-                    f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
                     f"{package_base_path}/static/{lang}{suffix}.json"
                 )
             else:
