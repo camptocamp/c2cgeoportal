@@ -1,5 +1,4 @@
 ---
-
 # The list (by include, exclude) of default files that will not be overwritten by the upgrade.
 # That that can be extended with managed_files or reduced with unmanaged_files from the
 # project.yaml file in the project root directory.
@@ -177,3 +176,6 @@ upgrade_files:
   - action: remove
     paths:
       - scripts/publish-docker
+  - action: remove
+    paths:
+      - geoportal/{{package}}_geoportal/locale/.emptyfolder
