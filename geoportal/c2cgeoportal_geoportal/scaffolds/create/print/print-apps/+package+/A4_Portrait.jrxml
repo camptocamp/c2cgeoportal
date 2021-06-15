@@ -39,7 +39,7 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[
-					"Le " + java.time.ZonedDateTime.now().format(
+					$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
 						java.time.format.DateTimeFormatter.
 						ofPattern("EEEE dd MMMM yyyy HH:mm").
 						withLocale($P{REPORT_LOCALE}).
@@ -118,13 +118,13 @@
 				</textElement>
 				<text><![CDATA[Detail band 3]]></text>
 			</staticText>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="2" width="460" height="20" forecolor="#424242"/>
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[LÉGENDE]]></text>
-			</staticText>
+				<text><![CDATA[$R{legend}]]></text>
+			</textField>
 			<subreport>
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="255" height="56"/>
 				<dataSourceExpression><![CDATA[$P{legendDataSource}]]></dataSourceExpression>
@@ -146,14 +146,14 @@
 				</textElement>
 				<text><![CDATA[Pied de page, sur chaque page]]></text>
 			</staticText>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="1" width="300" height="14"/>
-				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$R{info}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="496" y="21" width="38" height="30"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="534" y="21" width="22" height="30"/>

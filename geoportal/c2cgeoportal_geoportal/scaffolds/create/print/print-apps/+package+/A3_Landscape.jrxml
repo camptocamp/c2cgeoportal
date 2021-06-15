@@ -38,7 +38,7 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[
-					"Le " + java.time.ZonedDateTime.now().format(
+					$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
 						java.time.format.DateTimeFormatter.
 						ofPattern("EEEE dd MMMM yyyy HH:mm").
 						withLocale($P{REPORT_LOCALE}).
@@ -153,13 +153,13 @@ $P{mapContext}.getScale().getDenominator()).replace(",","\'")]]></textFieldExpre
 				</textElement>
 				<text><![CDATA[Detail band 3]]></text>
 			</staticText>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="1" width="460" height="20" forecolor="#424242" uuid="385742e7-a286-4456-b687-395a1a540023"/>
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[LÉGENDE]]></text>
-			</staticText>
+				<text><![CDATA[$R{legend}]]></text>
+			</textField>
 			<subreport>
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="1150" height="56" uuid="6a01e0f0-7ebb-40f6-97eb-2979e6fff149"/>
 				<dataSourceExpression><![CDATA[$P{legendDataSource}]]></dataSourceExpression>
@@ -183,14 +183,14 @@ $P{mapContext}.getScale().getDenominator()).replace(",","\'")]]></textFieldExpre
 				</textElement>
 				<text><![CDATA[Pied de page, sur chaque page]]></text>
 			</staticText>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="1" width="300" height="14" uuid="54e7e518-a3ee-41f1-b000-9550cad968e1"/>
-				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$R{info}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="1087" y="21" width="38" height="30" uuid="7db93d89-f1a1-4135-8143-661152955717"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="1125" y="21" width="22" height="30" uuid="c3450c45-a812-40a4-9a5e-c62dd7cef852"/>
