@@ -38,7 +38,7 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[
-					"Le " + java.time.ZonedDateTime.now().format(
+					$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
 						java.time.format.DateTimeFormatter.
 						ofPattern("EEEE dd MMMM yyyy HH:mm").
 						withLocale($P{REPORT_LOCALE}).
@@ -141,13 +141,13 @@
 				</textElement>
 				<text><![CDATA[Detail band 3]]></text>
 			</staticText>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="1" width="460" height="20" forecolor="#424242" uuid="385742e7-a286-4456-b687-395a1a540023"/>
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[LÉGENDE]]></text>
-			</staticText>
+				<text><![CDATA[$R{legend}]]></text>
+			</textField>
 			<subreport>
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="580" height="56" uuid="6a01e0f0-7ebb-40f6-97eb-2979e6fff149"/>
 				<dataSourceExpression><![CDATA[$P{legendDataSource}]]></dataSourceExpression>
@@ -179,17 +179,17 @@
 			<textField>
 				<reportElement x="741" y="21" width="38" height="30" uuid="b2c857a3-3a9d-42ec-8d90-7d315106ff48"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="779" y="21" width="22" height="30" uuid="8202adcc-191c-4c6c-9bf4-aba39ca0c12a"/>
 				<textElement verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="1" width="300" height="14" uuid="dc102ea9-973f-4717-a872-0d24d4de1e17"/>
-				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$R{info}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -40,7 +40,7 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[
-					"Le " + java.time.ZonedDateTime.now().format(
+					$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
 						java.time.format.DateTimeFormatter.
 						ofPattern("EEEE dd MMMM yyyy HH:mm").
 						withLocale($P{REPORT_LOCALE}).
@@ -127,13 +127,13 @@
 				</textElement>
 				<text><![CDATA[Detail band 3]]></text>
 			</staticText>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="2" width="460" height="20" forecolor="#424242" uuid="29fb8881-15f4-4235-8d78-003175bd408f"/>
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[LÉGENDE]]></text>
-			</staticText>
+				<text><![CDATA[$R{legend}]]></text>
+			</textField>
 			<subreport>
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="800" height="56" uuid="4c32d050-9b4f-448e-97f0-072a4606c164">
 					<property name="local_mesure_unitwidth" value="pixel"/>
@@ -161,14 +161,14 @@
 				</textElement>
 				<text><![CDATA[Pied de page, sur chaque page]]></text>
 			</staticText>
-			<staticText>
+			<textField>
 				<reportElement x="0" y="1" width="300" height="14" uuid="323e51d1-9bf3-4a1b-961f-69c339a07d28"/>
-				<text><![CDATA[Développé par Camptocamp SA, info@camptocamp.com]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$R{info}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="738" y="21" width="38" height="30" uuid="e0567a18-8d1d-4e04-9658-0eb2fb648f2f"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="776" y="21" width="22" height="30" uuid="4574386a-cbc9-4529-896b-c402fb4236c1"/>
