@@ -1,3 +1,5 @@
+##### 2.6.rc.98
+* Remove extra emptyfolder [c2cgeoportal#8345](https://github.com/camptocamp/c2cgeoportal/pull/8345)
 ##### 2.6.rc.97
 * Don't copy the pot files in the container [c2cgeoportal#8337](https://github.com/camptocamp/c2cgeoportal/pull/8337)
 * Fix l10n, see commits [c2cgeoportal#8344](https://github.com/camptocamp/c2cgeoportal/pull/8344)
