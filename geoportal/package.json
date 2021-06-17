@@ -5,6 +5,6 @@
   "author": "",
   "dependencies": {
     "ngeo": "2.7.0-latest.20210616T102609Z.fd2e93503.HEAD",
-    "eslint-plugin-jsdoc": "35.2.0"
+    "eslint-plugin-jsdoc": "35.3.0"
   }
 }
