@@ -45,7 +45,7 @@ from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_hea
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
 
 CACHE_REGION = get_region("std")
-IGNORED_CHARS_RE = re.compile(r"[()&|!:<>]")
+IGNORED_CHARS_RE = re.compile(r"[()&|!:<>\t]")
 IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 
 
