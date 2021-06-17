@@ -1,3 +1,5 @@
+##### 2.4.2.50
+* [Backport 2.4] Fix error when we introduce a tab [c2cgeoportal#8367](https://github.com/camptocamp/c2cgeoportal/pull/8367)
 ##### 2.4.2.49
 * [Security] Upgrade aws-cli [c2cgeoportal#8293](https://github.com/camptocamp/c2cgeoportal/pull/8293)
 ##### 2.4.2.48
