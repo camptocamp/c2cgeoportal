@@ -1,3 +1,5 @@
+##### 2.5.0.140
+* [Backport 2.5] Fix error when we introduce a tab [c2cgeoportal#8368](https://github.com/camptocamp/c2cgeoportal/pull/8368)
 ##### 2.5.0.139
 * Allow override theme mixed property in projects [c2cgeoportal#8311](https://github.com/camptocamp/c2cgeoportal/pull/8311)
 ##### 2.5.0.138
