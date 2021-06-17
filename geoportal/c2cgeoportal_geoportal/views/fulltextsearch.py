@@ -43,7 +43,7 @@ from c2cgeoportal_geoportal.lib.caching import NO_CACHE, get_region, set_common_
 
 cache_region = get_region()
 
-IGNORED_CHARS_RE = re.compile(r"[()&|!:<>]")
+IGNORED_CHARS_RE = re.compile(r"[()&|!:<>\t]")
 IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 
 
