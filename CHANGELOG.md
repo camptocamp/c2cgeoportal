@@ -1,3 +1,5 @@
+##### 2.6.rc.99
+* Fix error when we introduce a tab [c2cgeoportal#8366](https://github.com/camptocamp/c2cgeoportal/pull/8366)
 ##### 2.6.rc.98
 * Remove extra emptyfolder [c2cgeoportal#8345](https://github.com/camptocamp/c2cgeoportal/pull/8345)
 ##### 2.6.rc.97
