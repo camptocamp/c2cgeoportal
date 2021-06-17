@@ -17,7 +17,7 @@ Usually we have the following env files:
 
 The usage of env file should be configured in the ``project.yaml`` file, in the ``env`` section.
 
-Project env confguration:
+Project env configuration:
 
 * ``files``: the env files interpreted with the build env arguments.
 * ``required_args``: the number of required build env arguments.
