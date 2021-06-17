@@ -534,9 +534,8 @@ class Theme:
             layer_theme["ogcServer"] = layer.ogc_server.name
 
     def _fill_wmts(self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str]) -> None:
-        layer_theme["url"] = get_url2(
-            "The WMTS layer '{}'".format(layer.name), layer.url, self.request, errors=errors
-        )
+        url = get_url2("The WMTS layer '{}'".format(layer.name), layer.url, self.request, errors=errors)
+        layer_theme["url"] = url.url() if url is not None else None
 
         if layer.style:
             layer_theme["style"] = layer.style
@@ -767,9 +766,14 @@ class Theme:
 
             # Test if the theme is visible for the current user
             if children:
-                icon = (
+                url = (
                     get_url2("The Theme '{}'".format(theme.name), theme.icon, self.request, errors)
                     if theme.icon is not None and theme.icon
+                    else None
+                )
+                icon = (
+                    url.url()
+                    if url is not None
                     else self.request.static_url("/etc/geomapfish/static/images/blank.png")
                 )
 
