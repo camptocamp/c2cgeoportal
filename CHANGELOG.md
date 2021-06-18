@@ -1,3 +1,5 @@
+##### 2.6.rc.101
+* [Backport 2.6] Allow to draw elements without the 1 meter limit [ngeo#7245](https://github.com/camptocamp/ngeo/pull/7245)
 ##### 2.6.rc.100
 * [Backport 2.6] Bump c2cciutils from 1.1.dev20210615102932 to 1.1.dev20210617081616 [ngeo#7242](https://github.com/camptocamp/ngeo/pull/7242)
 ##### 2.6.rc.99
