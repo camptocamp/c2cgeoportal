@@ -1,3 +1,5 @@
+##### 2.5.0.141
+* [Backport 2.5] Bump c2cciutils from 1.1.dev20210615102932 to 1.1.dev20210617081616 [ngeo#7241](https://github.com/camptocamp/ngeo/pull/7241)
 ##### 2.5.0.140
 * [Backport 2.5] Fix error when we introduce a tab [c2cgeoportal#8368](https://github.com/camptocamp/c2cgeoportal/pull/8368)
 ##### 2.5.0.139
