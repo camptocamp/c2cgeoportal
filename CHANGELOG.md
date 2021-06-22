@@ -1,3 +1,5 @@
+##### 2.6.rc.102
+* Don't use QGIS master in GMF 2.6 [c2cgeoportal#8388](https://github.com/camptocamp/c2cgeoportal/pull/8388)
 ##### 2.6.rc.101
 * [Backport 2.6] Allow to draw elements without the 1 meter limit [ngeo#7245](https://github.com/camptocamp/ngeo/pull/7245)
 ##### 2.6.rc.100
