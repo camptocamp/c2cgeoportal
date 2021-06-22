@@ -76,7 +76,7 @@ class PrintProxy(Proxy):
         # get URL
         _url = self.request.get_organization_print_url() + "/capabilities.json"
 
-        response = self._proxy(_url)
+        response = self._proxy(Url(_url))
 
         if self.request.method == "GET":
             if response.ok:
