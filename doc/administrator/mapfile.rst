@@ -409,3 +409,15 @@ for example.
 If you still want to use it, then replace ``SetHandler fcgid-script``
 by ``SetHandler cgi-script`` in the ``apache/mapserver.conf.tmpl``
 file. But note that this affects performance.
+
+mappyfile
+---------
+
+The tool container contains mappyfile, he can be used to 'Pretty Printing', 'Validate', ...
+See the `project documentation <https://mappyfile.readthedocs.io/>`_.
+
+For example to validate the map files run:
+
+.. prompt:: bash
+
+   docker-compose exec tools mappyfile validate --version=7.6 /etc/mapserver/*.map
