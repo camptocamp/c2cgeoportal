@@ -19,10 +19,10 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          # Old LTR
-          - '3.10'
           # Last LTR
           - '3.16'
+          # 3.20
+          - '3.20'
           # Master
           - master
 
