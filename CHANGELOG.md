@@ -1,3 +1,4 @@
+##### 2.4.2.51
 ##### 2.4.2.50
 * [Backport 2.4] Fix error when we introduce a tab [c2cgeoportal#8367](https://github.com/camptocamp/c2cgeoportal/pull/8367)
 ##### 2.4.2.49
