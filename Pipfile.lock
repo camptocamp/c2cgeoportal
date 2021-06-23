@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a07a877e45a18528efcf85f7bb4839b1fd34c5ef2d0088dd47e773d2b28dc536"
+            "sha256": "ff8d4d09330654ec48f65df22b44de9842e2a3c9fa1fe145ef97fe51ca070f89"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1456,7 +1456,7 @@
                 "sha256:b838a895977b45ab6f0cc926a9045c8d1c44e2b653c1fcc39fe91f42c6e8f05b",
                 "sha256:fce760879cd2aebd2991b3542876dc5c4a909b30c9d69dfc488e504a8db37ee8"
             ],
-            "markers": "python_full_version >= '3.6.0'",
+            "markers": "python_version >= '3.6'",
             "version": "==3.1.18"
         },
         "idna": {
@@ -1724,7 +1724,7 @@
                 "sha256:1d41b7c459ba0ee6c345f2eb9ae827cab14a7533a88c5c6f7e94923f72df92dc",
                 "sha256:6987826d6775056839940041beef5c08cc7e3d71d63149b48e36727f70144dc4"
             ],
-            "markers": "python_full_version >= '3.6.0'",
+            "markers": "python_version >= '3.6'",
             "version": "==6.1.1"
         },
         "pyflakes": {
@@ -1805,7 +1805,7 @@
                 "sha256:50bcad0a0b9c5a72c8e4e7c9855a3ad496ca6a881a3641b4260605450772c54b",
                 "sha256:91ef2131a9bd6be8f76f1f08eac5c5317221d6ad1e143ae03894b862e8976890"
             ],
-            "markers": "python_full_version >= '3.6.0'",
+            "markers": "python_version >= '3.6'",
             "version": "==6.2.4"
         },
         "pytest-cov": {
@@ -1999,11 +1999,11 @@
         },
         "types-requests": {
             "hashes": [
-                "sha256:08323ce2be816c4c107ef605e66369cb26dfda99d278dd502ee32bbf37f9a285",
-                "sha256:59b218da05de6eb58e0ab9d096af5e258359365cdf52cf3a1206a8ea87244301"
+                "sha256:ee0d0c507210141b7d5b8639cc43eaa726084178775db2a5fb06fbf85c185808",
+                "sha256:fa5c1e5e832ff6193507d8da7e1159281383908ee193a2f4b37bc08140b51844"
             ],
             "index": "pypi",
-            "version": "==0.1.12"
+            "version": "==2.25.0"
         },
         "typing-extensions": {
             "hashes": [
