@@ -12,7 +12,6 @@
 # WMS GetFeatureInfo:
 # /mapserv?service=wms&version=1.1.1&request=getfeatureinfo&bbox=-180,-90,180,90&layers=countries&query_layers=countries&width=600&height=400&srs=EPSG:4326&format=image/png&x=180&y=90&info_format=application/vnd.ogc.gml
 #
-
 MAP
     NAME "{{package}}"
 
@@ -32,7 +31,6 @@ MAP
 
     # MAXSIZE should not be less than 5000 for MF print on A3
     MAXSIZE 5000
-
     IMAGECOLOR 255 255 255
     STATUS ON
 
@@ -45,17 +43,16 @@ MAP
     CONFIG "GDAL_DISABLE_READDIR_ON_OPEN" "TRUE"
 
     OUTPUTFORMAT
-        NAME jpeg
+        NAME "jpeg"
         DRIVER "AGG/JPEG"
         MIMETYPE "image/jpeg"
         IMAGEMODE RGB
         EXTENSION "jpeg"
         FORMATOPTION "QUALITY=75,PROGRESSIVE=TRUE"
     END
-
     OUTPUTFORMAT
-        NAME png
-        DRIVER AGG/PNG
+        NAME "png"
+        DRIVER "AGG/PNG"
         MIMETYPE "image/png"
         IMAGEMODE RGBA
         EXTENSION "png"
@@ -64,11 +61,9 @@ MAP
         FORMATOPTION "QUANTIZE_FORCE=ON"
         FORMATOPTION "QUANTIZE_COLORS=256"
     END
-
     PROJECTION
         "init=epsg:{{srid}}"
     END
-
     WEB
         METADATA
             "wms_title" "changeme"
@@ -81,7 +76,6 @@ MAP
             "wfs_encoding" "UTF-8"
         END
     END
-
     LEGEND
         LABEL
             ENCODING "UTF-8"
@@ -90,7 +84,5 @@ MAP
             SIZE 9
         END
     END
-
     INCLUDE "demo.map"
-
 END

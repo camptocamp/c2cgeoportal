@@ -1,49 +1,39 @@
 MAP
     NAME "c2cgeoportail"
-
     EXTENT 420000 40500 839000 306400
-    UNITS dd
-
-    # MAXSIZE should not be less than 4000 for MF print
-    MAXSIZE 4000
-
+    UNITS DD
+    MAXSIZE 4000 # MAXSIZE should not be less than 4000 for MF print
     IMAGECOLOR 255 255 255
     STATUS ON
-
     #FONTSET "fonts.conf"
     #SYMBOLSET "symbole.sym"
-
     OUTPUTFORMAT
-        NAME jpeg
+        NAME "jpeg"
         DRIVER "AGG/JPEG"
         IMAGEMODE RGB
         EXTENSION "jpeg"
         FORMATOPTION "QUALITY=75,PROGRESSIVE=TRUE"
     END
-
     OUTPUTFORMAT
-        NAME png
-        DRIVER AGG/PNG
+        NAME "png"
+        DRIVER "AGG/PNG"
         MIMETYPE "image/png"
         IMAGEMODE RGBA
         EXTENSION "png"
         FORMATOPTION "INTERLACE=OFF"
     END
-
     PROJECTION
         "init=epsg:21781"
     END
-
     WEB
         METADATA
             "ows_enable_request" "*"
             "ows_encoding" "UTF-8"
         END
     END
-
     SYMBOL
         NAME "square"
-        TYPE vector
+        TYPE VECTOR
         POINTS
             0 0
             0 1
@@ -51,16 +41,15 @@ MAP
             1 0
             0 0
         END
-        FILLED true
+        FILLED TRUE
     END
-
     LAYER
         NAME "testpoint_unprotected"
         GROUP "testpoint_group"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -76,7 +65,7 @@ MAP
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "testpoint_unprotected"
@@ -88,14 +77,13 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "testpoint_protected"
         GROUP "testpoint_group"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected') as foo USING unique id USING srid=21781"
         METADATA
@@ -113,7 +101,7 @@ MAP
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "testpoint_protected"
@@ -125,14 +113,13 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "testpoint_protected_2"
         EXTENT 420000 40500 839000 306400
         GROUP "testpoint_group_2"
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected_2') as foo USING unique id USING srid=21781"
         METADATA
@@ -150,7 +137,7 @@ MAP
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "testpoint_protected"
@@ -162,13 +149,12 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "testpoint_protected_query_with_collect"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo USING unique id USING srid=21781"
         METADATA
@@ -186,7 +172,7 @@ MAP
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "testpoint_protected"
@@ -198,13 +184,12 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "testpoint_substitution"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING unique id USING srid=21781"
         METADATA
@@ -223,7 +208,7 @@ MAP
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "testpoint_substitution"
@@ -235,13 +220,12 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "testpoint_column_restriction"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING unique id USING srid=21781"
         METADATA
@@ -260,7 +244,7 @@ MAP
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "testpoint_column_restriction"
@@ -272,14 +256,13 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "test_wmsfeatures"
         GROUP "test_wmsfeaturesgroup"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -299,7 +282,7 @@ MAP
         MINSCALEDENOM 5000
         MAXSCALEDENOM 25000
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "test_wmsfeatures"
@@ -311,14 +294,13 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "test_wmstime"
         GROUP "test_wmstimegroup"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -328,7 +310,7 @@ MAP
             "wms_timedefault" "2000"
         END
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         MINSCALEDENOM 5000
         MAXSCALEDENOM 25000
@@ -342,14 +324,13 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "test_wmstime2"
         GROUP "test_wmstimegroup"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -359,7 +340,7 @@ MAP
             "wms_timedefault" "2015"
         END
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         MINSCALEDENOM 5000
         MAXSCALEDENOM 25000
@@ -373,19 +354,18 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "__test_public_layer"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
         END
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             STYLE
@@ -396,17 +376,16 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "__test_private_layer"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             STYLE
@@ -417,17 +396,16 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "__test_private_layer0"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom FROM (SELECT geo.* FROM geodata.testpoint as geo) as foo USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -435,11 +413,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -447,11 +425,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -459,11 +437,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -471,11 +449,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -483,11 +461,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -495,11 +473,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -507,11 +485,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -519,11 +497,11 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
     LAYER
@@ -531,24 +509,23 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
     END
-
     LAYER
         NAME "__test_public_layer_bis"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             STYLE
@@ -559,17 +536,16 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "__test_private_layer_bis"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             STYLE
@@ -580,17 +556,16 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "__test_layer_internal_wms"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         FEATURE
-          WKT "POINT(0 0)"
+            WKT "POINT(0 0)"
         END
         CLASS
             STYLE
@@ -601,13 +576,12 @@ MAP
             END
         END
     END
-
     LAYER
         NAME "test_noscale"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -625,7 +599,7 @@ MAP
         DUMP TRUE # for GetFeatureInfo
         TEMPLATE "template"
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "test_wmsfeatures"
@@ -642,7 +616,7 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -661,7 +635,7 @@ MAP
         TEMPLATE "template"
         MINSCALEDENOM 5000
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "test_wmsfeatures"
@@ -678,7 +652,7 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -697,7 +671,7 @@ MAP
         TEMPLATE "template"
         MAXSCALEDENOM 25000
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "test_wmsfeatures"
@@ -714,7 +688,7 @@ MAP
         EXTENT 420000 40500 839000 306400
         TYPE POINT
         STATUS ON
-        CONNECTIONTYPE postgis
+        CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
         METADATA
@@ -734,7 +708,7 @@ MAP
         MINSCALEDENOM 5000
         MAXSCALEDENOM 25000
         PROJECTION
-           "init=epsg:21781"
+            "init=epsg:21781"
         END
         CLASS
             NAME "test_wmsfeatures"
