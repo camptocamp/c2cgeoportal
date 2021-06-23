@@ -1,3 +1,5 @@
+##### 2.6.rc.103
+* Copy the UI metadata from ngeo, to be able to find them with the search [c2cgeoportal#8394](https://github.com/camptocamp/c2cgeoportal/pull/8394)
 ##### 2.6.rc.102
 * Don't use QGIS master in GMF 2.6 [c2cgeoportal#8388](https://github.com/camptocamp/c2cgeoportal/pull/8388)
 ##### 2.6.rc.101
