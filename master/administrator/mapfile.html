@@ -377,6 +377,13 @@ for example.</p>
 by <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">cgi-script</span></code> in the <code class="docutils literal notranslate"><span class="pre">apache/mapserver.conf.tmpl</span></code>
 file. But note that this affects performance.</p>
 </section>
+<section id="mappyfile">
+<h2>mappyfile<a class="headerlink" href="#mappyfile" title="Permalink to this headline">¶</a></h2>
+<p>The tool container contains mappyfile, he can be used to ‘Pretty Printing’, ‘Validate’, …
+See the <a class="reference external" href="https://mappyfile.readthedocs.io/">project documentation</a>.</p>
+<p>For example to validate the map files run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tools mappyfile validate --version<span class="o">=</span><span class="m">7</span>.6 /etc/mapserver/*.map</span>
+</pre></div></div></section>
 </section>
 
 
