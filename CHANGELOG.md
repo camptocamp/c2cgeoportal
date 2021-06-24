@@ -1,3 +1,6 @@
+##### 2.6.rc.104
+* Fix undefined text style for geometries imported from KML [ngeo#7254](https://github.com/camptocamp/ngeo/pull/7254)
+* With permalink upper can be NaN [ngeo#7255](https://github.com/camptocamp/ngeo/pull/7255)
 ##### 2.6.rc.103
 * Copy the UI metadata from ngeo, to be able to find them with the search [c2cgeoportal#8394](https://github.com/camptocamp/c2cgeoportal/pull/8394)
 ##### 2.6.rc.102
