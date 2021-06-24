@@ -80,14 +80,18 @@ class MapservProxy(OGCProxy):
 
         # Do not allows direct variable substitution
         for k in list(self.params.keys()):
-            if k[:2].capitalize() == "S_":
+            if len(k) > 1 and k[:2].capitalize() == "S_":
                 LOG.warning("Direct substitution not allowed (%s=%s).", k, self.params[k])
                 del self.params[k]
 
-        # add functionalities params
-        self.params.update(get_mapserver_substitution_params(self.request))
+        if (
+            self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD
+            and self.ogc_server.type == main.OGCSERVER_TYPE_MAPSERVER
+        ):
+            # Add functionalities params
+            self.params.update(get_mapserver_substitution_params(self.request))
 
-        # get method
+        # Get method
         method = self.request.method
 
         # we want the browser to cache GetLegendGraphic and
