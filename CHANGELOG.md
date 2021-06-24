@@ -1,3 +1,5 @@
+##### 2.6.rc.105
+* [Backport 2.6] Send MapServer substitution only on MapServer with standard auth [c2cgeoportal#8402](https://github.com/camptocamp/c2cgeoportal/pull/8402)
 ##### 2.6.rc.104
 * Fix undefined text style for geometries imported from KML [ngeo#7254](https://github.com/camptocamp/ngeo/pull/7254)
 * With permalink upper can be NaN [ngeo#7255](https://github.com/camptocamp/ngeo/pull/7255)
