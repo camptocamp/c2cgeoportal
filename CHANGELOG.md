@@ -1,3 +1,5 @@
+##### 2.5.0.143
+* [Backport 2.5] With permalink upper can be NaN [ngeo#7259](https://github.com/camptocamp/ngeo/pull/7259)
 ##### 2.5.0.141
 * [Backport 2.5] Bump c2cciutils from 1.1.dev20210615102932 to 1.1.dev20210617081616 [ngeo#7241](https://github.com/camptocamp/ngeo/pull/7241)
 ##### 2.5.0.140
