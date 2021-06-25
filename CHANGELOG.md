@@ -1,3 +1,5 @@
+##### 2.6.rc.106
+* Fix messages in pull requests [ngeo#7263](https://github.com/camptocamp/ngeo/pull/7263)
 ##### 2.6.rc.105
 * [Backport 2.6] Send MapServer substitution only on MapServer with standard auth [c2cgeoportal#8402](https://github.com/camptocamp/c2cgeoportal/pull/8402)
 ##### 2.6.rc.104
