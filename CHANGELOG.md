@@ -1,3 +1,5 @@
+##### 2.6.rc.107
+* Fix no theme after logout [ngeo#7262](https://github.com/camptocamp/ngeo/pull/7262)
 ##### 2.6.rc.106
 * Fix messages in pull requests [ngeo#7263](https://github.com/camptocamp/ngeo/pull/7263)
 ##### 2.6.rc.105
