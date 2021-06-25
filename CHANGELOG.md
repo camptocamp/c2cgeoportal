@@ -1,3 +1,5 @@
+##### 2.5.0.144
+* [Backport 2.5] Send MapServer substitution only on MapServer with standard auth [c2cgeoportal#8401](https://github.com/camptocamp/c2cgeoportal/pull/8401)
 ##### 2.5.0.143
 * [Backport 2.5] With permalink upper can be NaN [ngeo#7259](https://github.com/camptocamp/ngeo/pull/7259)
 ##### 2.5.0.141
