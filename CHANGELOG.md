@@ -1,3 +1,5 @@
+##### 2.6.rc.108
+* Fix static legend on printing [ngeo#7274](https://github.com/camptocamp/ngeo/pull/7274)
 ##### 2.6.rc.107
 * Fix no theme after logout [ngeo#7262](https://github.com/camptocamp/ngeo/pull/7262)
 ##### 2.6.rc.106
