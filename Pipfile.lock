@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4769b25e3a61e8c53711c43ed92ebff83f8fcc600b86fccf7985514d68aaa72a"
+            "sha256": "2c47b019385004bc7ca195ed998379e87eba734818df41124fda154b8f686b01"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1154,10 +1154,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:753a0374df26658f99d826cfe40394a686d05985786d946fbe4165b5148f5a7c",
-                "sha256:a7acd0977125325f516bda9735fa7142b909a8d01e8b2e4c8108d0984e6e0098"
+                "sha256:39fb8672126159acb139a7718dd10806104dec1e2f0f6c88aab05d17df10c8d4",
+                "sha256:f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"
             ],
-            "version": "==1.26.5"
+            "version": "==1.26.6"
         },
         "venusian": {
             "hashes": [
@@ -1279,11 +1279,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:0ae3895806228bee255f2fa9bd9576976821fba5fcd6248e442890cf10761528",
-                "sha256:2743492e9b74cace088c316361555bc3c036e1f3063bb81b8b6cc8f0490c76ce"
+                "sha256:16068aea5ebd0c7b1bda44a5222df0ab5a27f7e7148b33e16a92f78838f3b7eb",
+                "sha256:6479dced7ff3e465c7765d337807d7ca42d8737f2d153bc0f8e9af06794a4ec7"
             ],
             "index": "pypi",
-            "version": "==1.19.100"
+            "version": "==1.19.101"
         },
         "babel": {
             "hashes": [
@@ -1312,11 +1312,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:1331c6a9aafa1a893b20d9ee71abdb52c9bb4e5f7197e82153c371e1856e645d",
-                "sha256:55da43d99d1ed5f51fa65d71f30ecdfb5f9d8b0874c0c3e63264121bd88e0cab"
+                "sha256:2c56644dc1fdfc3f7cc5c690371d0770d8e6b9edb3f4e15f206e5bc27422dcd6",
+                "sha256:f7a44fab1a3739ca54e7f72e8625b71574f8218f05349e59d3b871c887444edd"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'",
-            "version": "==1.20.100"
+            "version": "==1.20.101"
         },
         "certifi": {
             "hashes": [
@@ -2055,10 +2055,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:753a0374df26658f99d826cfe40394a686d05985786d946fbe4165b5148f5a7c",
-                "sha256:a7acd0977125325f516bda9735fa7142b909a8d01e8b2e4c8108d0984e6e0098"
+                "sha256:39fb8672126159acb139a7718dd10806104dec1e2f0f6c88aab05d17df10c8d4",
+                "sha256:f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"
             ],
-            "version": "==1.26.5"
+            "version": "==1.26.6"
         },
         "waitress": {
             "hashes": [
