@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019-2020, Camptocamp SA
+# Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import logging
 import os
 from typing import Dict
 
@@ -36,11 +37,23 @@ from plaster_pastedeploy import Loader as BaseLoader
 
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 
+LOG = logging.getLogger(__name__)
+
 
 class Loader(BaseLoader):
     def _get_defaults(self, defaults: Dict[str, str] = None) -> Dict[str, str]:
         d: Dict[str, str] = {}
-        d.update({k: v.replace("%", "%%") for k, v in os.environ.items()})
+        lowercase_keys = set()
+        for key, value in os.environ.items():
+            if key.lower() in lowercase_keys:
+                LOG.warning(
+                    "The environment variable '%s' is already present with different key, ignoring",
+                    key,
+                )
+                continue
+            lowercase_keys.add(key.lower())
+            d[key] = value.replace("%", "%%")
+
         if defaults:
             d.update(defaults)
         return super()._get_defaults(d)
