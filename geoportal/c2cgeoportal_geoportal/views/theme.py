@@ -475,13 +475,13 @@ class Theme:
         layer_theme: Dict[str, Any],
         layer_name: str,
         wms: Dict[str, Dict[str, Any]],
-        wms_layer_obj: Dict[str, Any],
     ) -> None:
+        wms_layer_obj = wms["layers"][layer_name]
         if not wms_layer_obj["children"]:
             layer_theme["childLayers"].append(wms["layers"][layer_name]["info"])
         else:
             for child_layer in wms_layer_obj["children"]:
-                self._fill_child_layer(layer_theme, layer_name, wms, wms["layers"][child_layer])
+                self._fill_child_layer(layer_theme, child_layer, wms)
 
     def _fill_wms(
         self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str], mixed: bool
@@ -499,7 +499,7 @@ class Theme:
         layer_theme["childLayers"] = []
         for layer_name in layer.layer.split(","):
             if layer_name in wms["layers"]:
-                self._fill_child_layer(layer_theme, layer_name, wms, wms["layers"][layer_name])
+                self._fill_child_layer(layer_theme, layer_name, wms)
             else:
                 errors.add(
                     "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
