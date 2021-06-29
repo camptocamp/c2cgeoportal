@@ -30,7 +30,6 @@
 import importlib
 import logging
 import os
-import re
 from urllib.parse import urlsplit
 
 import c2cgeoform
@@ -604,8 +603,8 @@ def includeme(config: pyramid.config.Configurator):
 
 def init_dbsessions(settings: dict, config: Configurator, health_check: HealthCheck = None) -> None:
     db_chooser = settings.get("db_chooser", {})
-    master_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("master", [])]
-    slave_paths = [re.compile(i.replace("//", "/")) for i in db_chooser.get("slave", [])]
+    master_paths = [i.replace("//", "/") for i in db_chooser.get("master", [])]
+    slave_paths = [i.replace("//", "/") for i in db_chooser.get("slave", [])]
 
     slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
 
