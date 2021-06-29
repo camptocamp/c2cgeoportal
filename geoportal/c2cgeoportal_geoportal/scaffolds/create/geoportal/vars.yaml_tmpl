@@ -164,9 +164,6 @@ vars:
       de: german
       it: italian
 
-  # proxies:
-  #   http: https://someproxy
-
   shortener:
     # Used to send a confirmation email
     email_from: info@example.com
