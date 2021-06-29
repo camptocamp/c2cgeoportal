@@ -1,3 +1,5 @@
+##### 2.6.rc.109
+* Remove unused vars section [c2cgeoportal#8336](https://github.com/camptocamp/c2cgeoportal/pull/8336)
 ##### 2.6.rc.108
 * Fix static legend on printing [ngeo#7274](https://github.com/camptocamp/ngeo/pull/7274)
 ##### 2.6.rc.107
