@@ -26,19 +26,22 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import os
+import logging
 from typing import Any, Dict, Optional, cast
 
+import c2cwsgiutils.pyramid_logging
 from c2c.template.config import config as configuration
 from plaster_pastedeploy import Loader as BaseLoader
 
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 
+LOG = logging.getLogger(__name__)
+
 
 class Loader(BaseLoader):  # type: ignore
     def _get_defaults(self, defaults: Optional[Dict[str, str]] = None) -> Dict[str, str]:
-        d: Dict[str, str] = {}
-        d.update({k: v.replace("%", "%%") for k, v in os.environ.items()})
+        env: Dict[str, str] = c2cwsgiutils.pyramid_logging.get_defaults()
+        d: Dict[str, str] = {key: env[key].replace("%", "%%") for key in env}
         if defaults:
             d.update(defaults)
         return cast(Dict[str, str], super()._get_defaults(d))
