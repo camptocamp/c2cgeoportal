@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9ad64003a12d8c016adc0c2d9f2fdf909eea44e612df7757ebfa0b9c15c88a18"
+            "sha256": "327bb9a0a5d78d9929532ecc5eff69820c28647b8aa9425c061206d304b256e1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -2020,10 +2020,10 @@
         },
         "transifex-client": {
             "hashes": [
-                "sha256:b458c56d6d07d2d8269b43d5049026304ed9a34d31bdf655d9e1864807e7555b"
+                "sha256:b0aa25ebb9516983c56bb060f4a35ad6b0eb3684fd0ed51de3c358f23a8ad62c"
             ],
             "index": "pypi",
-            "version": "==0.14.2"
+            "version": "==0.14.3"
         },
         "types-pkg-resources": {
             "hashes": [
