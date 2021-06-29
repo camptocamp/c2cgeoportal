@@ -29,9 +29,9 @@
 
 
 import logging.config
-import os
 from typing import Dict
 
+import c2cwsgiutils.pyramid_logging
 from alembic import context
 from c2c.template.config import config
 from sqlalchemy import engine_from_config, pool
@@ -39,24 +39,9 @@ from sqlalchemy import engine_from_config, pool
 LOG = logging.getLogger(__name__)
 
 
-def get_defaults() -> Dict[str, str]:
-    """
-    Get the logging configuration variables
-    """
-    results = {}
-    lowercase_keys = set()
-    for key, value in os.environ.items():
-        if key.lower() in lowercase_keys:
-            LOG.warning("The environment variable '%s' is already present with different key, ignoring", key)
-            continue
-        lowercase_keys.add(key.lower())
-        results[key] = value
-    return results
-
-
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-logging.config.fileConfig(context.config.config_file_name, defaults=get_defaults())
+c2cwsgiutils.pyramid_logging.init(context.config.config_file_name)
 
 
 def get_config():

@@ -29,9 +29,9 @@
 
 
 import logging
-import os
 from typing import Dict
 
+import c2cwsgiutils.pyramid_logging
 from c2c.template.config import config as configuration
 from plaster_pastedeploy import Loader as BaseLoader
 
@@ -42,18 +42,8 @@ LOG = logging.getLogger(__name__)
 
 class Loader(BaseLoader):
     def _get_defaults(self, defaults: Dict[str, str] = None) -> Dict[str, str]:
-        d: Dict[str, str] = {}
-        lowercase_keys = set()
-        for key, value in os.environ.items():
-            if key.lower() in lowercase_keys:
-                LOG.warning(
-                    "The environment variable '%s' is already present with different key, ignoring",
-                    key,
-                )
-                continue
-            lowercase_keys.add(key.lower())
-            d[key] = value.replace("%", "%%")
-
+        env: Dict[str, str] = c2cwsgiutils.pyramid_logging.get_defaults()
+        d: Dict[str, str] = {key: env[key].replace("%", "%%") for key in env}
         if defaults:
             d.update(defaults)
         return super()._get_defaults(d)
