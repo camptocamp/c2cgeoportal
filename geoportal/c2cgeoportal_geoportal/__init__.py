@@ -48,7 +48,7 @@ from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal.views
@@ -206,7 +206,9 @@ def create_get_user_from_request(settings):
             if username is not None:
                 # We know we will need the role object of the
                 # user so we use joined loading
-                request.user_ = DBSession.query(User).filter_by(username=username).first()
+                request.user_ = (
+                    DBSession.query(User).filter_by(username=username).options(joinedload("roles")).first()
+                )
 
         return request.user_
 
