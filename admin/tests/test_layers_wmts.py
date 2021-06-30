@@ -157,9 +157,7 @@ class TestLayerWMTS(AbstractViewsTests):
                 assert value == getattr(layer, key)
             else:
                 assert str(value or "") == str(getattr(layer, key) or "")
-        assert {interfaces[1].id, interfaces[3].id} == {
-            interface.id for interface in layer.interfaces
-        }
+        assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in layer.interfaces}
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
     def test_duplicate(self, layer_wmts_test_data, test_app, dbsession):
@@ -219,9 +217,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert 1 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
 
         resp = test_app.post(f"/admin/layers_wmts/{layer.id}/convert_to_wms", status=200)
-        assert (
-            f"http://localhost/admin/layers_wms/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
-        )
+        assert f"http://localhost/admin/layers_wms/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
         assert 1 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
         assert 0 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()

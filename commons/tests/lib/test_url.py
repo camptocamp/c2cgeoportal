@@ -173,7 +173,7 @@ class TestUrl(TestCase):
         self.assertEqual(
             errors,
             {
-                    "test: The server 'srv2' (config://srv2/icon.png) is not found in the config: [srv, srv_alt, full_url]"
+                "test: The server 'srv2' (config://srv2/icon.png) is not found in the config: [srv, srv_alt, full_url]"
             },
         )
 

@@ -69,9 +69,7 @@ class Raster:
         try:
             result = float(self.request.params[name])
         except ValueError:
-            raise HTTPBadRequest(
-                f"'{name}' ({self.request.params[name]}) parameters should be a number"
-            )
+            raise HTTPBadRequest(f"'{name}' ({self.request.params[name]}) parameters should be a number")
         if not math.isfinite(result):
             raise HTTPBadRequest(
                 f"'{name}' ({self.request.params[name]}) parameters should be a finite number"

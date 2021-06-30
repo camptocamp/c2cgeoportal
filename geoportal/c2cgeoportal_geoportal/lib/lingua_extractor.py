@@ -174,11 +174,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                     with open(int_filename, "wb") as file_open:
                         file_open.write(processed.encode("utf-8"))
                 except Exception:
-                    print(
-                        colorize(
-                            f"ERROR! Occurred during the '{filename}' template generation", Color.RED
-                        )
-                    )
+                    print(colorize(f"ERROR! Occurred during the '{filename}' template generation", Color.RED))
                     print(colorize(traceback.format_exc(), Color.RED))
                     if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                         # Continue with the original one
@@ -363,9 +359,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         result = []
         for template_ in list(cast(Dict[str, Any], print_config.get("templates")).keys()):
             assert template_ is not None
-            result.append(
-                Message(None, template_, None, [], "", "", (filename, f"template/{template_}"))
-            )
+            result.append(Message(None, template_, None, [], "", "", (filename, f"template/{template_}")))
             assert not [
                 attribute
                 for attribute in list(print_config["templates"][template_]["attributes"].keys())

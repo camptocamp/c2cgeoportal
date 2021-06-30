@@ -128,9 +128,7 @@ def base_deferred_parent_id_validator(node, kw, model):
 
     def validator(node, cstruct):
         if kw["dbsession"].query(model).filter(model.id == cstruct).count() == 0:
-            raise colander.Invalid(
-                node, f"Value {cstruct} does not exist in table {model.__tablename__}"
-            )
+            raise colander.Invalid(node, f"Value {cstruct} does not exist in table {model.__tablename__}")
 
     return validator
 

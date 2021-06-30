@@ -248,7 +248,7 @@ class TestThemesView(TestCase):
         self.assertEqual(
             self._get_filtered_errors(themes),
             {
-                    "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
+                "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
             },
         )
 
@@ -257,12 +257,12 @@ class TestThemesView(TestCase):
         self.assertEqual(
             self._get_filtered_errors(themes),
             {
-                    "The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
-                    "The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
-                    "The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
-                    "The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
-                    "The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
-                    "The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
+                "The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
+                "The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
+                "The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
+                "The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
+                "The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
+                "The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
             },
         )
 

@@ -77,9 +77,7 @@ class TestRequestProperty(TestCase):
             {"basicauth": "true"},
             headers={
                 "Authorization": "Basic "
-                + base64.b64encode(b"__test_user:__test_user")
-                .decode("utf-8")
-                .replace("\n", "")
+                + base64.b64encode(b"__test_user:__test_user").decode("utf-8").replace("\n", "")
             },
         )
 
@@ -89,9 +87,7 @@ class TestRequestProperty(TestCase):
         request = create_dummy_request(
             headers={
                 "Authorization": "Basic "
-                + base64.b64encode(b"__test_user:__wrong_pass")
-                .decode("utf-8")
-                .replace("\n", "")
+                + base64.b64encode(b"__test_user:__wrong_pass").decode("utf-8").replace("\n", "")
             }
         )
 

@@ -621,11 +621,7 @@ rules:
                 managed = self.is_managed(destination, True)
                 source = os.path.join("CONST_create_template", destination)
                 if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
-                    print(
-                        colorize(
-                            f"Get the file '{destination}' from the create template.", Color.GREEN
-                        )
-                    )
+                    print(colorize(f"Get the file '{destination}' from the create template.", Color.GREEN))
                     if not pre:
                         if os.path.dirname(destination) != "":
                             os.makedirs(os.path.dirname(destination), exist_ok=True)

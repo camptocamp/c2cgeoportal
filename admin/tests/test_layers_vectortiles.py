@@ -155,9 +155,7 @@ class TestLayerVectortiles(AbstractViewsTests):
                 assert value == getattr(layer, key)
             else:
                 assert str(value or "") == str(getattr(layer, key) or "")
-        assert {interfaces[1].id, interfaces[3].id} == {
-            interface.id for interface in layer.interfaces
-        }
+        assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in layer.interfaces}
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
     def test_submit_new(self, dbsession, test_app, layer_vectortiles_test_data):

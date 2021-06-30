@@ -91,9 +91,7 @@ class Layers:
             col = p.columns[0]
             if isinstance(col.type, Geometry):
                 return col.name, col.type.srid
-        raise HTTPInternalServerError(
-            f'Failed getting geometry column info for table "{layer.geo_table!s}".'
-        )
+        raise HTTPInternalServerError(f'Failed getting geometry column info for table "{layer.geo_table!s}".')
 
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":

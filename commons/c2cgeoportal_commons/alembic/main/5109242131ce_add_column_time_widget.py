@@ -50,9 +50,7 @@ def upgrade() -> None:
     # Instructions
     for table in ["layerv1", "layer_internal_wms", "layer_external_wms"]:
         op.add_column(table, Column("time_widget", Unicode(10), default="slider"), schema=schema)
-        op.execute(
-            f"UPDATE {schema!s}.{table!s} SET time_widget = 'slider'"
-        )
+        op.execute(f"UPDATE {schema!s}.{table!s} SET time_widget = 'slider'")
 
 
 def downgrade() -> None:

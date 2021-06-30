@@ -220,12 +220,8 @@ class TestTheme(TestTreeGroup):
                 assert value == getattr(theme, key)
             else:
                 assert str(value or "") == str(getattr(theme, key) or "")
-        assert {interfaces[1].id, interfaces[3].id} == {
-            interface.id for interface in theme.interfaces
-        }
-        assert {functionalities[2].id} == {
-            functionality.id for functionality in theme.functionalities
-        }
+        assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in theme.interfaces}
+        assert {functionalities[2].id} == {functionality.id for functionality in theme.functionalities}
         assert 0 == len(theme.restricted_roles)
 
     def test_post_new_with_children_invalid(self, test_app, theme_test_data):

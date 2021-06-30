@@ -136,9 +136,7 @@ class TestThemesEditColumns(TestCase):
             tablename,
             self.metadata,
             Column("id", types.Integer, primary_key=True),
-            Column(
-                "child_id", types.Integer, ForeignKey(f"{schemaname!s}.{tablename!s}_child.id")
-            ),
+            Column("child_id", types.Integer, ForeignKey(f"{schemaname!s}.{tablename!s}_child.id")),
             Column("name", types.Unicode, nullable=False),
             Column("deleted", types.Boolean),
             Column("last_update_user", types.Unicode),

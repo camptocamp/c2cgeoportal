@@ -385,9 +385,7 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(
-            {feature.properties["label"] for feature in response.features}, {"label5", "label6"}
-        )
+        self.assertEqual({feature.properties["label"] for feature in response.features}, {"label5", "label6"})
 
     def test_rank_order_with_similarity(self):
         from geojson.feature import FeatureCollection

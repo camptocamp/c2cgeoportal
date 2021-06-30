@@ -209,9 +209,7 @@ class TestLayerWMSViews(AbstractViewsTests):
                 assert value == getattr(layer, key)
             else:
                 assert str(value or "") == str(getattr(layer, key) or "")
-        assert {interfaces[1].id, interfaces[3].id} == {
-            interface.id for interface in layer.interfaces
-        }
+        assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in layer.interfaces}
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
     def test_submit_new(self, dbsession, test_app, layer_wms_test_data):
@@ -291,10 +289,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
         assert resp.json["success"]
-        assert (
-            f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok"
-            == resp.json["redirect"]
-        )
+        assert f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
         assert 1 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
         assert 0 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
@@ -330,10 +325,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
         assert resp.json["success"]
-        assert (
-            f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok"
-            == resp.json["redirect"]
-        )
+        assert f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
         resp = test_app.get(resp.json["redirect"], status=200)
         assert "image/png" == resp.form["image_type"].value
@@ -341,10 +333,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         layer = layer_wms_test_data["layers"][2]
         resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
         assert resp.json["success"]
-        assert (
-            f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok"
-            == resp.json["redirect"]
-        )
+        assert f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
         resp = test_app.get(resp.json["redirect"], status=200)
         assert "image/jpeg" == resp.form["image_type"].value

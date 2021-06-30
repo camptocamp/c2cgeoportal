@@ -207,8 +207,8 @@ class TestThemesTimeView(TestCase):
         self.assertEqual(
             set(themes["errors"]),
             {
-                    "Error while handling time for layer '__test_layer_time_group_1': Could not mix time mode 'range' and 'value'",
-                    "Error: time layer '__test_layer_without_time_info' has no time information in capabilities",
+                "Error while handling time for layer '__test_layer_time_group_1': Could not mix time mode 'range' and 'value'",
+                "Error: time layer '__test_layer_without_time_info' has no time information in capabilities",
             },
         )
         self.assertEqual(

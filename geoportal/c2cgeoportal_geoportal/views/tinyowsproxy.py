@@ -78,9 +78,7 @@ class TinyOWSProxy(OGCProxy):
 
         operation = self.lower_params.get("request")
         typenames = (
-            {normalize_typename(self.lower_params["typename"])}
-            if "typename" in self.lower_params
-            else set()
+            {normalize_typename(self.lower_params["typename"])} if "typename" in self.lower_params else set()
         )
 
         method = self.request.method

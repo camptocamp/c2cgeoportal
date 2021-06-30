@@ -181,9 +181,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         # Ensure restriction_area.layers is loaded with relationship "order_by"
         dbsession.expire(restriction_area)
 
-        form = test_app.get(
-            f"/admin/restriction_areas/{restriction_area.id}/duplicate", status=200
-        ).form
+        form = test_app.get(f"/admin/restriction_areas/{restriction_area.id}/duplicate", status=200).form
 
         assert "" == self.get_first_field_named(form, "id").value
         self._check_roles(form, roles, restriction_area)

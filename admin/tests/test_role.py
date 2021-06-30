@@ -147,7 +147,8 @@ class TestRole(TestTreeGroup):
         assert role.name == "new_name"
         assert role.description == "new_description"
         assert set(role.functionalities) == {
-            functionalities["default_basemap"][0], functionalities["location"][1]
+            functionalities["default_basemap"][0],
+            functionalities["location"][1],
         }
         assert set(role.restrictionareas) == {restrictionareas[0], restrictionareas[1]}
         assert set(role.users) == {users[0], users[1]}
@@ -174,14 +175,11 @@ class TestRole(TestTreeGroup):
         assert expected.almost_equals(shape(json.loads(form["extent"].value)), decimal=0)
 
         functionalities = roles_test_data["functionalities"]
-        assert (
-            {
-                    functionalities["default_basemap"][0].id,
-                    functionalities["location"][0].id,
-                    functionalities["location"][1].id,
-            }
-            == {f.id for f in role.functionalities}
-        )
+        assert {
+            functionalities["default_basemap"][0].id,
+            functionalities["location"][0].id,
+            functionalities["location"][1].id,
+        } == {f.id for f in role.functionalities}
         self.check_checkboxes(
             form,
             "functionalities",

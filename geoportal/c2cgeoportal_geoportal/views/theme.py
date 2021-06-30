@@ -103,9 +103,7 @@ class DimensionInformation:
                     )
                 )
             elif dimension.name in dimensions:  # pragma: nocover
-                errors.add(
-                    f"The layer '{layer.name}' has a duplicated dimension name '{dimension.name}'."
-                )
+                errors.add(f"The layer '{layer.name}' has a duplicated dimension name '{dimension.name}'.")
             else:
                 if dimension.field:
                     dimensions_filters[dimension.name] = {"field": dimension.field, "value": dimension.value}
@@ -916,9 +914,7 @@ class Theme:
                 errors=errors,
             )
         else:
-            url = get_url2(
-                f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors=errors
-            )
+            url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors=errors)
             url_wfs = (
                 get_url2(
                     f"The OGC server (WFS) '{ogc_server.name}'",
@@ -1139,9 +1135,9 @@ class Theme:
             return (
                 None,
                 {
-                        "Unable to find the Group named: {}, Available Groups: {}".format(
-                            group,
-                            ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()]),
-                        )
+                    "Unable to find the Group named: {}, Available Groups: {}".format(
+                        group,
+                        ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()]),
+                    )
                 },
             )
