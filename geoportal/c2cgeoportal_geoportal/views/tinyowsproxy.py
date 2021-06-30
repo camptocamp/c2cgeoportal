@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2015-2021, Camptocamp SA
 # All rights reserved.
 
@@ -80,7 +78,7 @@ class TinyOWSProxy(OGCProxy):
 
         operation = self.lower_params.get("request")
         typenames = (
-            set([normalize_typename(self.lower_params["typename"])])
+            {normalize_typename(self.lower_params["typename"])}
             if "typename" in self.lower_params
             else set()
         )

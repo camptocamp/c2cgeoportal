@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2011-2019, Camptocamp SA
 # All rights reserved.
@@ -45,7 +44,7 @@ def _ngeo_version():
         match = RE_NPM_VERSION.match(os.environ["RELEASE_TAG"])
         prerelease_match = RE_NPM_PRERELEASE_VERSION.match(os.environ["RELEASE_TAG"])
         if match is not None:
-            return "{}.{}.{}".format(match.group(1), match.group(2), match.group(3))
+            return f"{match.group(1)}.{match.group(2)}.{match.group(3)}"
         if prerelease_match is not None:
             return "{}.{}.{}-{}.{}".format(
                 prerelease_match.group(1),
@@ -100,10 +99,10 @@ def main():
                 used = True
                 del packages[package]
         if not used:
-            print("Package '{}' not used.".format(package))
+            print(f"Package '{package}' not used.")
             sys.exit(1)
 
-    data = " ".join(["{}@{}".format(p, v) for p, v in packages.items()])
+    data = " ".join([f"{p}@{v}" for p, v in packages.items()])
     data = data + "\n"
 
     with open(args.dst, "wt") as dst:

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -69,7 +67,7 @@ class TestReflection(TestCase):
             self._tables = []
 
         ctable = Table(
-            "{0!s}_child".format(tablename),
+            f"{tablename!s}_child",
             Base.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
@@ -82,11 +80,11 @@ class TestReflection(TestCase):
             tablename,
             Base.metadata,
             Column("id", types.Integer, primary_key=True),
-            Column("child1_id", types.Integer, ForeignKey("public.{0!s}_child.id".format(tablename))),
+            Column("child1_id", types.Integer, ForeignKey(f"public.{tablename!s}_child.id")),
             Column(
                 "child2_id",
                 types.Integer,
-                ForeignKey("public.{0!s}_child.id".format(tablename)),
+                ForeignKey(f"public.{tablename!s}_child.id"),
                 nullable=False,
             ),
             Column("point", Geometry("POINT")),

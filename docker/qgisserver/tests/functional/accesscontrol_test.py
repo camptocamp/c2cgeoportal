@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2020, Camptocamp SA
 # All rights reserved.
 
@@ -337,7 +335,7 @@ class TestOGCServerAccessControl:
             assert expected == (
                 access,
                 area.wkt if area else None,
-            ), 'get_area with "{}", "{}" should return {}'.format(user_name, layer_name, expected)
+            ), f'get_area with "{user_name}", "{layer_name}" should return {expected}'
 
     @staticmethod
     def test_layer_permissions(server_iface, DBSession, test_data):  # noqa: ignore=N803

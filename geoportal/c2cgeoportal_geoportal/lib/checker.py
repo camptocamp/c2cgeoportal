@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -126,7 +124,7 @@ def _pdf3(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.Heal
 
             status = resp.json()
             if "error" in status:
-                raise Exception("Failed to do the printing: {0!s}".format(status["error"]))
+                raise Exception("Failed to do the printing: {!s}".format(status["error"]))
             done = status["done"]
 
         path = request.route_path("printproxy_report_get", ref=job["ref"])
@@ -183,7 +181,7 @@ def _themes_errors(settings: Dict[str, Any], health_check: c2cwsgiutils.health_c
             result = response.json()
             if result["errors"]:
                 raise c2cwsgiutils.health_check.JsonCheckException(
-                    "Interface '{}' has error in Theme.".format(interface), result["errors"]
+                    f"Interface '{interface}' has error in Theme.", result["errors"]
                 )
 
     health_check.add_custom_check(name="checker_themes", check_cb=check, level=themes_settings["level"])
@@ -213,7 +211,7 @@ def _lang_files(
                     "Your language type value '%s' is not valid, " "available values [ngeo]" % type_
                 )
 
-            name = "checker_lang_{}_{}".format(type_, lang)
+            name = f"checker_lang_{type_}_{lang}"
 
             class GetRequest:
                 """

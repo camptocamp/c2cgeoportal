@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -37,7 +35,7 @@ def includeme(config):
         to_override="c2cgeoportal_admin:node_modules/", override_with="/opt/c2cgeoportal/admin/node_modules"
     )
     # Because c2cgeoform widgets target {root_package}:node_modules/...
-    asset_spec = "{}:node_modules/".format(config.root_package.__name__)
+    asset_spec = f"{config.root_package.__name__}:node_modules/"
     config.add_static_view("root_package_node_modules", asset_spec)
     config.override_asset(to_override=asset_spec, override_with="/opt/c2cgeoportal/admin/node_modules")
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -121,11 +119,11 @@ class TestThemesEditColumns(TestCase):
         if not self.metadata:
             self.metadata = declarative_base(bind=engine).metadata
 
-        tablename = "geo_table_{0:d}".format(id)
+        tablename = f"geo_table_{id:d}"
         schemaname = "geodata"
 
         table1 = Table(
-            "{0!s}_child".format(tablename),
+            f"{tablename!s}_child",
             self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column("name", types.Unicode),
@@ -139,7 +137,7 @@ class TestThemesEditColumns(TestCase):
             self.metadata,
             Column("id", types.Integer, primary_key=True),
             Column(
-                "child_id", types.Integer, ForeignKey("{0!s}.{1!s}_child.id".format(schemaname, tablename))
+                "child_id", types.Integer, ForeignKey(f"{schemaname!s}.{tablename!s}_child.id")
             ),
             Column("name", types.Unicode, nullable=False),
             Column("deleted", types.Boolean),
@@ -178,7 +176,7 @@ class TestThemesEditColumns(TestCase):
         layer = LayerWMS(name="test_WMS_1", public=True)
         layer.layer = "testpoint_unprotected"
         layer.id = id
-        layer.geo_table = "{0!s}.{1!s}".format(schemaname, tablename)
+        layer.geo_table = f"{schemaname!s}.{tablename!s}"
         layer.interfaces = [self.main]
         layer.ogc_server = self.ogc_server
 
@@ -211,7 +209,7 @@ class TestThemesEditColumns(TestCase):
             params = {}
 
         request = create_dummy_request(user=username)
-        request.route_url = lambda name, _query: "http://server/{}?{}".format(name, urlencode(_query))
+        request.route_url = lambda name, _query: f"http://server/{name}?{urlencode(_query)}"
         request.matchdict = {"layer_id": str(layerid)}
         request.params = params
         return request

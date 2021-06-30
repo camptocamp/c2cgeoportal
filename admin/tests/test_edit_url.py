@@ -24,12 +24,12 @@ def edit_url_test_data(dbsession, transact):
         Theme,
     )
 
-    restrictionareas = [RestrictionArea(name="restrictionarea_{}".format(i)) for i in range(0, 5)]
+    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(0, 5)]
     functionalities = {}
     for name in ("default_basemap", "location"):
         functionalities[name] = []
         for v in range(0, 4):
-            functionality = Functionality(name=name, value="value_{}".format(v))
+            functionality = Functionality(name=name, value=f"value_{v}")
             dbsession.add(functionality)
             functionalities[name].append(functionality)
 
@@ -38,10 +38,10 @@ def edit_url_test_data(dbsession, transact):
 
     layers_wmts = []
     for i in range(0, 5):
-        name = "layer_wmts_{}".format(i)
+        name = f"layer_wmts_{i}"
         layer_wmts = LayerWMTS(name=name)
         layer_wmts.layer = name
-        layer_wmts.url = "https://server{}.net/wmts".format(i)
+        layer_wmts.url = f"https://server{i}.net/wmts"
         layer_wmts.restrictionareas = [restrictionareas[i % 5], restrictionareas[(i + 2) % 5]]
         if i % 10 != 1:
             layer_wmts.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
@@ -52,8 +52,8 @@ def edit_url_test_data(dbsession, transact):
 
     layers_wms = []
     for i in range(0, 5):
-        layer_wms = LayerWMS(name="layer_wms_{}".format(i))
-        layer_wms.layer = "wms_layer_{}".format(i)
+        layer_wms = LayerWMS(name=f"layer_wms_{i}")
+        layer_wms.layer = f"wms_layer_{i}"
         layer_wms.ogc_server = ogc_server
         layers_wms.append(layer_wms)
         dbsession.add(layer_wms)
@@ -98,12 +98,12 @@ class TestUrlEdit(AbstractViewsTests):
     _prefix = "/admin/"
 
     def _get(self, test_app, tablename, pk):
-        path = "/{}/{}".format(tablename, pk)
+        path = f"/{tablename}/{pk}"
         return test_app.get(path, status=200)
 
     def _check_link(self, test_app, resp, item, table, status):
-        link = resp.html.select_one(".form-group.item-{} a".format(item))
-        assert re.match(r"http://localhost/admin/{}/\d+".format(table), link["href"]) is not None
+        link = resp.html.select_one(f".form-group.item-{item} a")
+        assert re.match(fr"http://localhost/admin/{table}/\d+", link["href"]) is not None
         test_app.get(link.get("href"), status=status)
 
     def test_layer_wms_edit(self, edit_url_test_data, test_app):

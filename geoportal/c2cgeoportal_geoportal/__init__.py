@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -102,12 +100,12 @@ def add_interface(
     **kwargs: Any,
 ) -> None:
     del interface_type  # unused
-    route = "/" if default else "/{}".format(interface_name)
+    route = "/" if default else f"/{interface_name}"
     add_interface_ngeo(
         config,
         route_name=interface_name,
         route=route,
-        renderer="/etc/static-ngeo/{}.html".format(interface_name),
+        renderer=f"/etc/static-ngeo/{interface_name}.html",
         **kwargs,
     )
 
@@ -126,14 +124,14 @@ def add_interface_ngeo(
     )
     # Permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
-        "{}theme".format(route_name),
+        f"{route_name}theme",
         "{}{}theme/{{themes}}".format(route, "" if route[-1] == "/" else "/"),
         request_method="GET",
     )
     config.add_view(
         Entry,
         attr="get_ngeo_index_vars",
-        route_name="{}theme".format(route_name),
+        route_name=f"{route_name}theme",
         renderer=renderer,
         permission=permission,
     )
@@ -292,7 +290,7 @@ class MapserverproxyRoutePredicate:
         hide_capabilities = request.registry.settings.get("hide_capabilities")
         if not hide_capabilities:
             return True
-        params = dict((k.lower(), v.lower()) for k, v in request.params.items())
+        params = {k.lower(): v.lower() for k, v in request.params.items()}
         return "request" not in params or params["request"] not in ("getcapabilities", "capabilities")
 
     @staticmethod

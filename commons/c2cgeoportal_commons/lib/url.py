@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
@@ -152,16 +150,16 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
         if url_obj.netloc == "" and url_obj.path not in ("", "/"):
             # Relative URL like: /dummy/static/url or dummy/static/url
             return url_obj
-        errors.add("{}='{}' is not an URL.".format(name, url))
+        errors.add(f"{name}='{url}' is not an URL.")
         return None
     if url_obj.scheme in ("http", "https"):
         if url_obj.netloc == "":
-            errors.add("{}='{}' is not a valid URL.".format(name, url))
+            errors.add(f"{name}='{url}' is not a valid URL.")
             return None
         return url_obj
     if url_obj.scheme == "static":
         if url_obj.path in ("", "/"):
-            errors.add("{}='{}' cannot have an empty path.".format(name, url))
+            errors.add(f"{name}='{url}' cannot have an empty path.")
             return None
         proj = url_obj.netloc
         package = request.registry.settings["package"]
@@ -173,11 +171,11 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
                     "{}='{}' static-ngeo shouldn't be used out of webpack because it don't has "
                     "cache bustering.".format(name, url)
                 )
-            proj = "{}_geoportal:{}".format(package, proj)
-        return Url(request.static_url("{}{}".format(proj, url_split.path)))
+            proj = f"{package}_geoportal:{proj}"
+        return Url(request.static_url(f"{proj}{url_split.path}"))
     if url_obj.scheme == "config":
         if url_obj.netloc == "":
-            errors.add("{}='{}' cannot have an empty netloc.".format(name, url))
+            errors.add(f"{name}='{url}' cannot have an empty netloc.")
             return None
         server = request.registry.settings.get("servers", {}).get(url_obj.netloc)
         if server is None:

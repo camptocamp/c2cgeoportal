@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -41,7 +39,7 @@ from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 def locale(request: pyramid.request.Request) -> pyramid.response.Response:
     response = HTTPFound(
         request.static_url(
-            "/etc/geomapfish/static/{lang}.json".format(lang=request.locale_name),
+            f"/etc/geomapfish/static/{request.locale_name}.json",
             _query={"cache": get_cache_version()},
         )
     )

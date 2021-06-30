@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2016-2019, Camptocamp SA
 # All rights reserved.
 
@@ -78,11 +76,11 @@ def upgrade() -> None:
     )
     op.alter_column("ogc_server", "image_type", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.ogc_server SET type = 'mapserver' where type IS NULL".format(schema=schema)
+        f"UPDATE ONLY {schema}.ogc_server SET type = 'mapserver' where type IS NULL"
     )
     op.alter_column("ogc_server", "type", nullable=False, schema=schema)
     op.execute(
-        "UPDATE ONLY {schema}.ogc_server SET auth = 'Standard auth' where auth IS NULL".format(schema=schema)
+        f"UPDATE ONLY {schema}.ogc_server SET auth = 'Standard auth' where auth IS NULL"
     )
     op.alter_column("ogc_server", "auth", nullable=False, schema=schema)
 

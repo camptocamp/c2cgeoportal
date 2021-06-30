@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pyramid.request
 from pyramid.security import ALL_PERMISSIONS, Allow
 

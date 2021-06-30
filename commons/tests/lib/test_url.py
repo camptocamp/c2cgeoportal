@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -174,11 +172,9 @@ class TestUrl(TestCase):
         self.assertEqual(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
         self.assertEqual(
             errors,
-            set(
-                [
+            {
                     "test: The server 'srv2' (config://srv2/icon.png) is not found in the config: [srv, srv_alt, full_url]"
-                ]
-            ),
+            },
         )
 
     def test_get_url2_dict(self):

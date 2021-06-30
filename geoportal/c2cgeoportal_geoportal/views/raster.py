@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -67,16 +65,16 @@ class Raster:
 
     def _get_required_finite_float_param(self, name: str) -> float:
         if name not in self.request.params:
-            raise HTTPBadRequest("'{}' should be in the query string parameters".format(name))
+            raise HTTPBadRequest(f"'{name}' should be in the query string parameters")
         try:
             result = float(self.request.params[name])
         except ValueError:
             raise HTTPBadRequest(
-                "'{}' ({}) parameters should be a number".format(name, self.request.params[name])
+                f"'{name}' ({self.request.params[name]}) parameters should be a number"
             )
         if not math.isfinite(result):
             raise HTTPBadRequest(
-                "'{}' ({}) parameters should be a finite number".format(name, self.request.params[name])
+                f"'{name}' ({self.request.params[name]}) parameters should be a finite number"
             )
         return result
 
@@ -92,7 +90,7 @@ class Raster:
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
                 else:
-                    raise HTTPNotFound("Layer {} not found".format(layer))
+                    raise HTTPNotFound(f"Layer {layer} not found")
         else:
             rasters = self.rasters
 

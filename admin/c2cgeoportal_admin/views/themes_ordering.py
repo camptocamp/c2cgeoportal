@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -52,7 +50,7 @@ class ThemeOrderSchema(GeoFormSchemaNode):  # type: ignore # pylint: disable=abs
 def themes(node, kw):  # pylint: disable=unused-argument
     query = kw["dbsession"].query(Theme).order_by(Theme.ordering, Theme.name)
     return [
-        {"id": item.id, "label": item.name, "icon_class": "icon-{}".format(item.item_type), "group": "All"}
+        {"id": item.id, "label": item.name, "icon_class": f"icon-{item.item_type}", "group": "All"}
         for item in query
     ]
 
@@ -76,7 +74,7 @@ class ThemesOrderingSchema(colander.MappingSchema):  # type: ignore
                 input_name="id",
                 model=TreeItem,
                 label_field="name",
-                icon_class=lambda item: "icon-{}".format(item.item_type),
+                icon_class=lambda item: f"icon-{item.item_type}",
                 edit_url=treeitem_edit_url,
             ),
         ),

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -94,7 +92,7 @@ class Layers:
             if isinstance(col.type, Geometry):
                 return col.name, col.type.srid
         raise HTTPInternalServerError(
-            'Failed getting geometry column info for table "{0!s}".'.format(layer.geo_table)
+            f'Failed getting geometry column info for table "{layer.geo_table!s}".'
         )
 
     @staticmethod
@@ -108,11 +106,11 @@ class Layers:
             query = query.filter(Layer.id == layer_id)
             layer, geo_table = query.one()
         except NoResultFound:
-            raise HTTPNotFound("Layer {:d} not found".format(layer_id))
+            raise HTTPNotFound(f"Layer {layer_id:d} not found")
         except MultipleResultsFound:
-            raise HTTPInternalServerError("Too many layers found with id {:d}".format(layer_id))
+            raise HTTPInternalServerError(f"Too many layers found with id {layer_id:d}")
         if not geo_table:
-            raise HTTPNotFound("Layer {:d} has no geo table".format(layer_id))
+            raise HTTPNotFound(f"Layer {layer_id:d} has no geo table")
         return cast("main.Layer", layer)
 
     def _get_layers_for_request(self) -> Generator["main.Layer", None, None]:
@@ -126,7 +124,7 @@ class Layers:
                 yield self._get_layer(layer_id)
         except ValueError:
             raise HTTPBadRequest(
-                "A Layer id in '{0!s}' is not an integer".format(self.request.matchdict["layer_id"])
+                "A Layer id in '{!s}' is not an integer".format(self.request.matchdict["layer_id"])
             )
 
     def _get_layer_for_request(self) -> "main.Layer":
@@ -462,16 +460,16 @@ class Layers:
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _enumerate_attribute_values(self, layername: str, fieldname: str) -> Dict[str, Any]:
         if layername not in self.layers_enum_config:
-            raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))
+            raise HTTPBadRequest(f"Unknown layer: {layername!s}")
 
         layerinfos = self.layers_enum_config[layername]
         if fieldname not in layerinfos["attributes"]:
-            raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
+            raise HTTPBadRequest(f"Unknown attribute: {fieldname!s}")
         dbsession_name = layerinfos.get("dbsession", "dbsession")
         dbsession = models.DBSessions.get(dbsession_name)
         if dbsession is None:
             raise HTTPInternalServerError(
-                "No dbsession found for layer '{0!s}' ({1!s})".format(layername, dbsession_name)
+                f"No dbsession found for layer '{layername!s}' ({dbsession_name!s})"
             )
         values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         enum = {"items": [{"value": value[0]} for value in values]}

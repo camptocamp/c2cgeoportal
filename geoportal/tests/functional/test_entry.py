@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -278,7 +276,7 @@ class TestEntryView(TestCase):
         self.assertIn(error, errors)
         assert (
             len([e for e in errors if e == error]) == 1
-        ), "Error '{}' more than one time in errors:\n{!r}".format(error, errors)
+        ), f"Error '{error}' more than one time in errors:\n{errors!r}"
 
     def test_json_extent(self):
         from c2cgeoportal_commons.models import DBSession

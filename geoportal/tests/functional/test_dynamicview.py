@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2019, Camptocamp SA
 # All rights reserved.
 
@@ -107,14 +105,14 @@ class TestDynamicView(TestCase):
         query_.update(query)
         request = DummyRequest(query_)
         request.route_url = (
-            lambda url, _query=None: "/dummy/route/url/{}".format(url)
+            lambda url, _query=None: f"/dummy/route/url/{url}"
             if _query is None
-            else "/dummy/route/url/{}?{}".format(url, pyramid.url.urlencode(_query))
+            else f"/dummy/route/url/{url}?{pyramid.url.urlencode(_query)}"
         )
         request.static_url = (
-            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+            lambda url, _query=None: f"/dummy/static/url/{url}"
             if _query is None
-            else "/dummy/static/url/{}?{}".format(url, pyramid.url.urlencode(_query))
+            else f"/dummy/static/url/{url}?{pyramid.url.urlencode(_query)}"
         )
         return request
 
@@ -181,7 +179,7 @@ class TestDynamicView(TestCase):
 
         request = self._request()
         request.static_url = (
-            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+            lambda url, _query=None: f"/dummy/static/url/{url}"
             if _query is None
             else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
         )
@@ -199,7 +197,7 @@ class TestDynamicView(TestCase):
 
         request = self._request()
         request.static_url = (
-            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+            lambda url, _query=None: f"/dummy/static/url/{url}"
             if _query is None
             else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
         )

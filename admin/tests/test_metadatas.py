@@ -131,7 +131,7 @@ class TestMetadatasView(AbstractViewsTests):
         resp = self._post_metadata(test_app, url, base_mapping, name, value, 200)
         assert (
             error_msg
-            == resp.html.select_one(".item-{} .help-block".format(self.__metadata_ui_type(test_app, name)))
+            == resp.html.select_one(f".item-{self.__metadata_ui_type(test_app, name)} .help-block")
             .getText()
             .strip()
         )
@@ -305,7 +305,7 @@ class TestMetadatasView(AbstractViewsTests):
         )
 
     def _test_edit_treeitem(self, prefix, item, test_app):
-        resp = self.get(test_app, "{}/{}".format(prefix, item.id))
+        resp = self.get(test_app, f"{prefix}/{item.id}")
         self._check_metadatas(test_app, resp.html.select_one(".item-metadatas"), item.metadatas)
         resp.form.submit("submit", status=302)
 
@@ -328,7 +328,7 @@ class TestMetadatasView(AbstractViewsTests):
         layer = metadatas_test_data["layer_wms"]
         layer.metadatas = [Metadata("_undefined", "This is an undefined metadata")]
 
-        resp = self.get(test_app, "layers_wms/{}".format(layer.id))
+        resp = self.get(test_app, f"layers_wms/{layer.id}")
         resp.form.submit("submit", status=302)
 
         metadata = layer.metadatas[0]

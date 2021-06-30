@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -106,7 +104,7 @@ class DimensionInformation:
                 )
             elif dimension.name in dimensions:  # pragma: nocover
                 errors.add(
-                    "The layer '{}' has a duplicated dimension name '{}'.".format(layer.name, dimension.name)
+                    f"The layer '{layer.name}' has a duplicated dimension name '{dimension.name}'."
                 )
             else:
                 if dimension.field:
@@ -204,8 +202,8 @@ class Theme:
                 resolution = self._get_layer_resolution_hint(wms_layer)
                 info = {
                     "name": wms_layer.name,
-                    "minResolutionHint": float("{:0.2f}".format(resolution[0])),
-                    "maxResolutionHint": float("{:0.2f}".format(resolution[1])),
+                    "minResolutionHint": float(f"{resolution[0]:0.2f}"),
+                    "maxResolutionHint": float(f"{resolution[1]:0.2f}"),
                 }
                 if hasattr(wms_layer, "queryable"):
                     info["queryable"] = wms_layer.queryable == 1
@@ -228,7 +226,7 @@ class Theme:
         self, ogc_server: main.OGCServer
     ) -> Tuple[Optional[Url], Optional[bytes], Set[str]]:
         errors: Set[str] = set()
-        url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
+        url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors)
         if errors or url is None:
             return url, None, errors
 
@@ -264,7 +262,7 @@ class Theme:
                 None, get_http_cached, self.http_options, url, headers
             )
         except Exception:
-            error = "Unable to GetCapabilities from URL {}".format(url)
+            error = f"Unable to GetCapabilities from URL {url}"
             errors.add(error)
             LOG.error(error, exc_info=True)
             return url, None, errors
@@ -373,9 +371,9 @@ class Theme:
         errors: Set[str] = set()
         layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadatas(layer, errors)}
         if re.search("[/?#]", layer.name):
-            errors.add("The layer has an unsupported name '{}'.".format(layer.name))
+            errors.add(f"The layer has an unsupported name '{layer.name}'.")
         if isinstance(layer, main.LayerWMS) and re.search("[/?#]", layer.layer):
-            errors.add("The layer has an unsupported layers '{}'.".format(layer.layer))
+            errors.add(f"The layer has an unsupported layers '{layer.layer}'.")
         if layer.geo_table:
             errors |= self._fill_editable(layer_info, layer)
         if mixed:
@@ -392,7 +390,7 @@ class Theme:
             if wms is None:
                 return None if errors else layer_info, errors
             if layer.layer is None or layer.layer == "":
-                errors.add("The layer '{}' do not have any layers".format(layer.name))
+                errors.add(f"The layer '{layer.name}' do not have any layers")
                 return None, errors
             layer_info["type"] = "WMS"
             layer_info["layers"] = layer.layer
@@ -446,7 +444,7 @@ class Theme:
                         )
 
         except ValueError:  # pragma no cover
-            errors.add("Error while handling time for layer '{}': {}".format(layer.name, sys.exc_info()[1]))
+            errors.add(f"Error while handling time for layer '{layer.name}': {sys.exc_info()[1]}")
 
         return errors
 
@@ -534,7 +532,7 @@ class Theme:
             layer_theme["ogcServer"] = layer.ogc_server.name
 
     def _fill_wmts(self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str]) -> None:
-        url = get_url2("The WMTS layer '{}'".format(layer.name), layer.url, self.request, errors=errors)
+        url = get_url2(f"The WMTS layer '{layer.name}'", layer.url, self.request, errors=errors)
         layer_theme["url"] = url.url() if url is not None else None
 
         if layer.style:
@@ -604,11 +602,11 @@ class Theme:
         errors = set()
 
         if re.search("[/?#]", group.name):
-            errors.add("The group has an unsupported name '{}'.".format(group.name))
+            errors.add(f"The group has an unsupported name '{group.name}'.")
 
         # escape loop
         if depth > 30:
-            errors.add("Too many recursions with group '{}'".format(group.name))
+            errors.add(f"Too many recursions with group '{group.name}'")
             return None, errors
 
         ogc_servers = None
@@ -624,7 +622,7 @@ class Theme:
         for tree_item in group.children:
             if isinstance(tree_item, main.LayerGroup):
                 group_theme, gp_errors = self._group(
-                    "{}/{}".format(path, tree_item.name),
+                    f"{path}/{tree_item.name}",
                     tree_item,
                     layers,
                     depth=depth + 1,
@@ -758,7 +756,7 @@ class Theme:
         export_themes = []
         for theme in themes.all():
             if re.search("[/?#]", theme.name):
-                errors.add("The theme has an unsupported name '{}'.".format(theme.name))
+                errors.add(f"The theme has an unsupported name '{theme.name}'.")
                 continue
 
             children, children_errors = self._get_children(theme, layers, min_levels)
@@ -767,7 +765,7 @@ class Theme:
             # Test if the theme is visible for the current user
             if children:
                 url = (
-                    get_url2("The Theme '{}'".format(theme.name), theme.icon, self.request, errors)
+                    get_url2(f"The Theme '{theme.name}'", theme.icon, self.request, errors)
                     if theme.icon is not None and theme.icon
                     else None
                 )
@@ -813,7 +811,7 @@ class Theme:
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
                 group_theme, gp_errors = self._group(
-                    "{}/{}".format(theme.name, item.name), item, layers, min_levels=min_levels
+                    f"{theme.name}/{item.name}", item, layers, min_levels=min_levels
                 )
                 errors |= gp_errors
                 if group_theme is not None:
@@ -878,7 +876,7 @@ class Theme:
                 None, get_http_cached, self.http_options, wfs_url, headers
             )
         except Exception:
-            errors.add("Unable to get DescribeFeatureType from URL {}".format(wfs_url))
+            errors.add(f"Unable to get DescribeFeatureType from URL {wfs_url}")
             return None, errors
 
         if not response.ok:
@@ -912,18 +910,18 @@ class Theme:
             )
             url_wfs: Optional[Url] = url
             url_internal_wfs = get_url2(
-                "The OGC server (WFS) '{}'".format(ogc_server.name),
+                f"The OGC server (WFS) '{ogc_server.name}'",
                 ogc_server.url_wfs or ogc_server.url,
                 self.request,
                 errors=errors,
             )
         else:
             url = get_url2(
-                "The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors=errors
+                f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors=errors
             )
             url_wfs = (
                 get_url2(
-                    "The OGC server (WFS) '{}'".format(ogc_server.name),
+                    f"The OGC server (WFS) '{ogc_server.name}'",
                     ogc_server.url_wfs,
                     self.request,
                     errors=errors,
@@ -1140,12 +1138,10 @@ class Theme:
         except NoResultFound:
             return (
                 None,
-                set(
-                    [
+                {
                         "Unable to find the Group named: {}, Available Groups: {}".format(
                             group,
                             ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()]),
                         )
-                    ]
-                ),
+                },
             )

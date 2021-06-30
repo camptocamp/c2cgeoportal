@@ -35,7 +35,7 @@ def main():
     )
     subprocess.check_call(["wget", "--quiet", openshift_url], cwd="/tmp")
     subprocess.check_call(["tar", "xfz", openshift_file], cwd="/tmp")
-    oc = "/tmp/{}/oc".format(openshift_version_name)  # pylint: disable=invalid-name
+    oc = f"/tmp/{openshift_version_name}/oc"  # pylint: disable=invalid-name
 
     subprocess.check_call(
         [

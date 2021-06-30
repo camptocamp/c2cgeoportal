@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
@@ -61,7 +59,7 @@ class Shortener:
         short_urls = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
 
         if len(short_urls) != 1:
-            raise HTTPNotFound("Ref '{0!s}' not found".format(ref))
+            raise HTTPNotFound(f"Ref '{ref!s}' not found")
 
         short_urls[0].nb_hits += 1
         short_urls[0].last_hit = datetime.now()
@@ -79,7 +77,7 @@ class Shortener:
 
         # see: https://httpd.apache.org/docs/2.2/mod/core.html#limitrequestline
         if len(url) > 8190:
-            raise HTTPBadRequest("The parameter url is too long ({} > {})".format(len(url), 8190))
+            raise HTTPBadRequest(f"The parameter url is too long ({len(url)} > {8190})")
 
         # Check that it is an internal URL...
         uri_parts = urlparse(url)
@@ -94,7 +92,7 @@ class Shortener:
             hostname = uri_parts.hostname
             if hostname != self.request.server_name:
                 raise HTTPBadRequest(
-                    "The requested host '{0!s}' should be '{1!s}'".format(hostname, self.request.server_name)
+                    f"The requested host '{hostname!s}' should be '{self.request.server_name!s}'"
                 )
 
         shortened = False

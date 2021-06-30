@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2016-2019, Camptocamp SA
 # All rights reserved.
 
@@ -50,9 +48,9 @@ def upgrade() -> None:
     schema = config["schema"]
 
     for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:
-        op.drop_constraint("{}_id_fkey".format(source), source, schema=schema)
+        op.drop_constraint(f"{source}_id_fkey", source, schema=schema)
         op.create_foreign_key(
-            "{}_id_fkey".format(source),
+            f"{source}_id_fkey",
             source,
             source_schema=schema,
             local_cols=["id"],
@@ -67,9 +65,9 @@ def downgrade() -> None:
     schema = config["schema"]
 
     for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:
-        op.drop_constraint("{}_id_fkey".format(source), source, schema=schema)
+        op.drop_constraint(f"{source}_id_fkey", source, schema=schema)
         op.create_foreign_key(
-            "{}_id_fkey".format(source),
+            f"{source}_id_fkey",
             source,
             source_schema=schema,
             local_cols=["id"],

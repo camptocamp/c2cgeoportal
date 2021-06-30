@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -176,7 +174,7 @@ class TestThemesViewMetadata(TestCase):
             {"name": "datetime2", "type": "datetime"},
             {"name": "unknown", "type": "unknown"},
         ]
-        types += [{"name": "url{}".format(n), "type": "url"} for n in range(1, 21)]
+        types += [{"name": f"url{n}", "type": "url"} for n in range(1, 21)]
 
         request = create_dummy_request(
             additional_settings={
@@ -195,7 +193,7 @@ class TestThemesViewMetadata(TestCase):
 
         def static_url(url, **kwargs):
             del kwargs
-            return "http://dummy.org/{}".format(url)
+            return f"http://dummy.org/{url}"
 
         request.static_url = static_url
         request.params = {"interface": "desktop"}
@@ -204,8 +202,7 @@ class TestThemesViewMetadata(TestCase):
         themes = theme_view.themes()
         self.assertEqual(
             set(themes["errors"]),
-            set(
-                [
+            {
                     "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
                     "The attribute 'json_wrong'='{\"test\": 123' has an error: Expecting ',' delimiter: line 1 column 13 (char 12)",
                     "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
@@ -222,8 +219,7 @@ class TestThemesViewMetadata(TestCase):
                     "The attribute 'url19'='' is not an URL.",
                     "The attribute 'url20'='/' is not an URL.",
                     "Unknown type 'unknown'.",
-                ]
-            ),
+            },
         )
         self.assertEqual(
             [self._only_name(t, "metadata") for t in themes["themes"]],

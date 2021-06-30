@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -69,7 +67,7 @@ class FullTextSearchView:
         try:
             language = self.languages[lang]
         except KeyError:
-            return HTTPInternalServerError(detail="{0!s} not defined in languages".format(lang))
+            return HTTPInternalServerError(detail=f"{lang!s} not defined in languages")
 
         if "query" not in self.request.params:
             return HTTPBadRequest(detail="no query")

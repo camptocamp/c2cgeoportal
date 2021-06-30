@@ -14,13 +14,13 @@ def layer_vectortiles_test_data(dbsession, transact):
 
     from c2cgeoportal_commons.models.main import LayerVectorTiles, OGCServer
 
-    servers = [OGCServer(name="server_{}".format(i)) for i in range(0, 4)]
+    servers = [OGCServer(name=f"server_{i}") for i in range(0, 4)]
     for i, server in enumerate(servers):
-        server.url = "http://wms.geo.admin.ch_{}".format(i)
+        server.url = f"http://wms.geo.admin.ch_{i}"
         server.image_type = "image/jpeg" if i % 2 == 0 else "image/png"
 
     def layer_builder(i):
-        name = "layer_vectortiles_{}".format(i)
+        name = f"layer_vectortiles_{i}"
         layer = LayerVectorTiles(name=name)
         layer.layer = name
         layer.public = 1 == i % 2
@@ -122,11 +122,11 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert str(layer.xyz or "") == form["xyz"].value
 
         interfaces = layer_vectortiles_test_data["interfaces"]
-        assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in layer.interfaces)
+        assert {interfaces[0].id, interfaces[2].id} == {i.id for i in layer.interfaces}
         self._check_interfaces(form, interfaces, layer)
 
         ras = layer_vectortiles_test_data["restrictionareas"]
-        assert set((ras[0].id, ras[2].id)) == set(i.id for i in layer.restrictionareas)
+        assert {ras[0].id, ras[2].id} == {i.id for i in layer.restrictionareas}
         self._check_restrictionsareas(form, ras, layer)
 
         new_values = {
@@ -146,7 +146,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         resp = form.submit("submit")
         assert str(layer.id) == re.match(
-            r"http://localhost{}/(.*)\?msg_col=submit_ok".format(self._prefix), resp.location
+            fr"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         dbsession.expire(layer)
@@ -155,10 +155,10 @@ class TestLayerVectortiles(AbstractViewsTests):
                 assert value == getattr(layer, key)
             else:
                 assert str(value or "") == str(getattr(layer, key) or "")
-        assert set([interfaces[1].id, interfaces[3].id]) == set(
-            [interface.id for interface in layer.interfaces]
-        )
-        assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
+        assert {interfaces[1].id, interfaces[3].id} == {
+            interface.id for interface in layer.interfaces
+        }
+        assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
     def test_submit_new(self, dbsession, test_app, layer_vectortiles_test_data):
         from c2cgeoportal_commons.models.main import LayerVectorTiles
@@ -185,7 +185,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = layer_vectortiles_test_data["layers"][3]
 
-        resp = test_app.get("/admin/layers_vectortiles/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get(f"/admin/layers_vectortiles/{layer.id}/duplicate", status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -198,7 +198,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert str(layer.style or "") == form["style"].value
         assert str(layer.xyz or "") == form["xyz"].value
         interfaces = layer_vectortiles_test_data["interfaces"]
-        assert set((interfaces[3].id, interfaces[1].id)) == set(i.id for i in layer.interfaces)
+        assert {interfaces[3].id, interfaces[1].id} == {i.id for i in layer.interfaces}
         self._check_interfaces(form, interfaces, layer)
 
         self.set_first_field_named(form, "name", "clone")
@@ -218,7 +218,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer_id = dbsession.query(LayerVectorTiles.id).first().id
 
-        test_app.delete("/admin/layers_vectortiles/{}".format(layer_id), status=200)
+        test_app.delete(f"/admin/layers_vectortiles/{layer_id}", status=200)
 
         assert dbsession.query(LayerVectorTiles).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None

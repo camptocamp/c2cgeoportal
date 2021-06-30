@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2021, Camptocamp SA
 # All rights reserved.
 
@@ -92,7 +90,7 @@ class TimeInformation:
         if mode != "disabled":
             if self.mode is not None:
                 if self.mode != mode:
-                    raise ValueError("Could not mix time mode '{0!s}' and '{1!s}'".format(mode, self.mode))
+                    raise ValueError(f"Could not mix time mode '{mode!s}' and '{self.mode!s}'")
             else:
                 self.mode = mode
 
@@ -102,7 +100,7 @@ class TimeInformation:
 
         if self.widget is not None:
             if self.widget != widget:
-                raise ValueError("Could not mix time widget '{0!s}' and '{1!s}'".format(widget, self.widget))
+                raise ValueError(f"Could not mix time widget '{widget!s}' and '{self.widget!s}'")
         else:
             self.widget = widget
 
@@ -258,7 +256,7 @@ def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
         if extent[0].count("/") > 0:
             # case "start/end/interval"
             if len(extent) > 1 or extent[0].count("/") != 2:
-                raise ValueError("Unsupported time definition '{0!s}'".format(extent))
+                raise ValueError(f"Unsupported time definition '{extent!s}'")
             s, e, i = extent[0].split("/")
             start = _parse_date(s)
             end = _parse_date(e)
@@ -268,10 +266,10 @@ def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
         # case "value1, value2, ..., valueN"
         dates = [_parse_date(d) for d in extent]
         resolution = dates[0][0]
-        values = set(d[1] for d in dates)
+        values = {d[1] for d in dates}
 
         return TimeExtentValue(values, resolution, min_def_value, max_def_value)
-    raise ValueError("Invalid time extent format '{}'".format(extent))
+    raise ValueError(f"Invalid time extent format '{extent}'")
 
 
 def _parse_default_values(default_values: str) -> Tuple[datetime.datetime, Optional[datetime.datetime]]:
@@ -319,7 +317,7 @@ def _parse_date(date: str) -> Tuple[str, datetime.datetime]:
             dt = dt.replace(tzinfo=isodate.UTC)
         return "second", dt
     except Exception:
-        raise ValueError("Invalid date format '{0!s}'".format(date))
+        raise ValueError(f"Invalid date format '{date!s}'")
 
 
 def _format_date(date: datetime.datetime) -> str:

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -178,7 +176,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                 except Exception:
                     print(
                         colorize(
-                            "ERROR! Occurred during the '{}' template generation".format(filename), Color.RED
+                            f"ERROR! Occurred during the '{filename}' template generation", Color.RED
                         )
                     )
                     print(colorize(traceback.format_exc(), Color.RED))
@@ -245,7 +243,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         ]
         # Collect raster layers names
         raster = [
-            Message(None, raster_layer, None, [], "", "", (filename, "raster/{}".format(raster_layer)))
+            Message(None, raster_layer, None, [], "", "", (filename, f"raster/{raster_layer}"))
             for raster_layer in list(settings.get("raster", {}).keys())
         ]
 
@@ -303,7 +301,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
 
             query = session.query(Metadata).filter(Metadata.name.in_(names))  # pylint: disable=no-member
             for metadata in query.all():
-                location = "metadata/{}/{}".format(metadata.name, metadata.id)
+                location = f"metadata/{metadata.name}/{metadata.id}"
                 assert metadata.value is not None
                 metadata_list.append(Message(None, metadata.value, None, [], "", "", (filename, location)))
 
@@ -366,7 +364,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         for template_ in list(cast(Dict[str, Any], print_config.get("templates")).keys()):
             assert template_ is not None
             result.append(
-                Message(None, template_, None, [], "", "", (filename, "template/{}".format(template_)))
+                Message(None, template_, None, [], "", "", (filename, f"template/{template_}"))
             )
             assert not [
                 attribute
@@ -381,7 +379,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                     [],
                     "",
                     "",
-                    (filename, "template/{}/{}".format(template_, attribute)),
+                    (filename, f"template/{template_}/{attribute}"),
                 )
                 for attribute in list(print_config["templates"][template_]["attributes"].keys())
             ]
@@ -565,7 +563,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             except NoSuchTableError:
                 print(
                     colorize(
-                        "ERROR! No such table '{}' for layer '{}'.".format(layer.geo_table, layer.name),
+                        f"ERROR! No such table '{layer.geo_table}' for layer '{layer.name}'.",
                         Color.RED,
                     )
                 )
@@ -661,13 +659,13 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             print("\n".join(errors))
             return [], []
         if not url_obj_:
-            print("No URL for: {}".format(url))
+            print(f"No URL for: {url}")
             return [], []
         url_obj: Url = url_obj_
         url_obj, headers, kwargs = self._build_url(url_obj)
 
         if url not in self.wmscap_cache:
-            print("Get WMS GetCapabilities for URL: {}".format(url_obj))
+            print(f"Get WMS GetCapabilities for URL: {url_obj}")
             self.wmscap_cache[url] = None
 
             wms_getcap_url = (
@@ -707,7 +705,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         )
                     )
                     print(colorize(str(e), Color.RED))
-                    print("URL: {}\nxml:\n{}".format(wms_getcap_url, response.text))
+                    print(f"URL: {wms_getcap_url}\nxml:\n{response.text}")
                     if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
             except Exception as e:
@@ -732,7 +730,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         wmscap = self.wmscap_cache[url]
 
         if url not in self.featuretype_cache:
-            print("Get WFS DescribeFeatureType for URL: {}".format(url_obj))
+            print(f"Get WFS DescribeFeatureType for URL: {url_obj}")
             self.featuretype_cache[url] = None
 
             wfs_descrfeat_url = (
@@ -754,7 +752,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 print(colorize(str(e), Color.RED))
                 print(
                     colorize(
-                        "ERROR! Unable to DescribeFeatureType from URL: {}".format(wfs_descrfeat_url),
+                        f"ERROR! Unable to DescribeFeatureType from URL: {wfs_descrfeat_url}",
                         Color.RED,
                     )
                 )
@@ -791,7 +789,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     )
                 )
                 print(colorize(str(e), Color.RED))
-                print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
+                print(f"URL: {wfs_descrfeat_url}\nxml:\n{response.text}")
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 raise
@@ -803,7 +801,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         Color.RED,
                     )
                 )
-                print("URL: {}\nxml:\n{}".format(wfs_descrfeat_url, response.text))
+                print(f"URL: {wfs_descrfeat_url}\nxml:\n{response.text}")
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 raise
@@ -822,7 +820,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         attributes: List[str] = []
         for sub_layer in layers:
             # Should probably be adapted for other king of servers
-            type_element = featurestype.get("{}Type".format(sub_layer))
+            type_element = featurestype.get(f"{sub_layer}Type")
             if type_element is not None:
                 for element in type_element.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "element"

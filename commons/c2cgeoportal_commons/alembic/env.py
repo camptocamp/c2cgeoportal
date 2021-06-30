@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2014-2019, Camptocamp SA
 # All rights reserved.
 
@@ -49,7 +47,7 @@ def get_config() -> Dict[str, Union[str, bool]]:
     settings: Dict[str, Union[str, bool]] = {}
     settings.update(config.get_config())
     alembic_name = context.config.get_main_option("type")
-    schema_config_name = "schema{}".format("_{}".format(alembic_name) if alembic_name != "main" else "")
+    schema_config_name = "schema{}".format(f"_{alembic_name}" if alembic_name != "main" else "")
     settings.update(
         {
             "script_location": context.config.get_main_option("script_location"),

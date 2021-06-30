@@ -22,7 +22,7 @@ def layer_groups_test_data(dbsession, transact):
 
     groups = []
     for i in range(0, 12):
-        group = LayerGroup(name="groups_{num:02d}".format(num=i), is_expanded=False)
+        group = LayerGroup(name=f"groups_{i:02d}", is_expanded=False)
         group.metadatas = [
             Metadata(name=metadatas_protos[id][0], value=metadatas_protos[id][1])
             for id in [i % 3, (i + 2) % 3]
@@ -144,7 +144,7 @@ class TestLayersGroups(TestTreeGroup):
         """
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
-            "{}/new".format(self._prefix),
+            f"{self._prefix}/new",
             (
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
@@ -165,7 +165,7 @@ class TestLayersGroups(TestTreeGroup):
     def test_post_new_with_children_success(self, test_app, dbsession, layer_groups_test_data):
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
-            "{}/new".format(self._prefix),
+            f"{self._prefix}/new",
             (
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
@@ -210,7 +210,7 @@ class TestLayersGroups(TestTreeGroup):
         """Check that ancestors are refused to avoid cycles"""
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
-            "{}/{}".format(self._prefix, groups[3].id),
+            f"{self._prefix}/{groups[3].id}",
             (
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
@@ -228,7 +228,7 @@ class TestLayersGroups(TestTreeGroup):
             status=200,
         )
         assert (
-            "Value {} does not exist in table treeitem or is not allowed to avoid cycles".format(groups[1].id)
+            f"Value {groups[1].id} does not exist in table treeitem or is not allowed to avoid cycles"
             == resp.html.select_one(".item-children_relation + .help-block").getText().strip()
         )
 
@@ -237,7 +237,7 @@ class TestLayersGroups(TestTreeGroup):
 
         group = layer_groups_test_data["groups"][1]
 
-        resp = test_app.get("{}/{}/duplicate".format(self._prefix, group.id), status=200)
+        resp = test_app.get(f"{self._prefix}/{group.id}/duplicate", status=200)
         form = resp.form
 
         group = dbsession.query(LayerGroup).filter(LayerGroup.id == group.id).one()
@@ -263,7 +263,7 @@ class TestLayersGroups(TestTreeGroup):
         duplicated = dbsession.query(LayerGroup).filter(LayerGroup.name == "duplicated").one()
 
         assert str(duplicated.id) == re.match(
-            r"http://localhost{}/(.*)\?msg_col=submit_ok".format(self._prefix), resp.location
+            fr"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert duplicated.id != group.id
         assert duplicated.children_relation[0].id != group.children_relation[0].id
@@ -271,11 +271,11 @@ class TestLayersGroups(TestTreeGroup):
 
     def test_unicity_validator(self, layer_groups_test_data, test_app):
         group = layer_groups_test_data["groups"][1]
-        resp = test_app.get("{}/{}/duplicate".format(self._prefix, group.id), status=200)
+        resp = test_app.get(f"{self._prefix}/{group.id}/duplicate", status=200)
 
         resp = resp.form.submit("submit")
 
-        self._check_submission_problem(resp, "{} is already used.".format(group.name))
+        self._check_submission_problem(resp, f"{group.name} is already used.")
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
         from c2cgeoportal_commons.models.main import LayerGroup, LayergroupTreeitem, TreeGroup, TreeItem
@@ -292,7 +292,7 @@ class TestLayersGroups(TestTreeGroup):
             == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group_id).count()
         )
 
-        test_app.delete("/admin/layer_groups/{}".format(group_id), status=200)
+        test_app.delete(f"/admin/layer_groups/{group_id}", status=200)
 
         dbsession.expire_all()
 

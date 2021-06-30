@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -49,7 +47,7 @@ depends_on = None
 def upgrade() -> None:
     staticschema = config["schema_static"]
 
-    op.execute("UPDATE {staticschema}.\"user\" SET tech_data = '';".format(staticschema=staticschema))
+    op.execute(f"UPDATE {staticschema}.\"user\" SET tech_data = '';")
 
 
 def downgrade() -> None:

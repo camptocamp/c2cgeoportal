@@ -20,13 +20,13 @@ def users_test_data(dbsession, transact):
 
     roles = []
     for i in range(0, 4):
-        roles.append(Role("secretary_{}".format(i)))
+        roles.append(Role(f"secretary_{i}"))
         dbsession.add(roles[i])
     users = []
     for i in range(0, 23):
         user = User(
-            "babar_{}".format(i),
-            email="mail{}@valid.net".format(i),
+            f"babar_{i}",
+            email=f"mail{i}@valid.net",
             settings_role=roles[i % 4],
             roles=[roles[i % 4]],
         )
@@ -93,7 +93,7 @@ class TestUser(AbstractViewsTests):
         user = users_test_data["users"][9]
         roles = users_test_data["roles"]
 
-        resp = test_app.get("/admin/users/{}".format(user.id), status=200)
+        resp = test_app.get(f"/admin/users/{user.id}", status=200)
 
         assert resp.form["username"].value == user.username
         assert resp.form["email"].value == user.email
@@ -120,14 +120,14 @@ class TestUser(AbstractViewsTests):
                 assert value == getattr(user, key)
             else:
                 assert str(value or "") == str(getattr(user, key) or "")
-        assert set([roles[2].id, roles[3].id]) == set([role.id for role in user.roles])
+        assert {roles[2].id, roles[3].id} == {role.id for role in user.roles}
 
     def test_delete(self, test_app, users_test_data, dbsession):
         from c2cgeoportal_commons.models.static import User, user_role
 
         user = users_test_data["users"][9]
         deleted_id = user.id
-        test_app.delete("/admin/users/{}".format(deleted_id), status=200)
+        test_app.delete(f"/admin/users/{deleted_id}", status=200)
         assert dbsession.query(User).get(deleted_id) is None
         assert dbsession.query(user_role).filter(user_role.c.user_id == user.id).count() == 0
 
@@ -138,7 +138,7 @@ class TestUser(AbstractViewsTests):
         roles = users_test_data["roles"]
 
         resp = test_app.post(
-            "/admin/users/{}".format(user.id),
+            f"/admin/users/{user.id}",
             (
                 ("__formid__", "deform"),
                 ("_charset_", "UTF-8"),
@@ -155,13 +155,13 @@ class TestUser(AbstractViewsTests):
             ),
             status=302,
         )
-        assert resp.location == "http://localhost/admin/users/{}?msg_col=submit_ok".format(user.id)
+        assert resp.location == f"http://localhost/admin/users/{user.id}?msg_col=submit_ok"
 
         dbsession.expire(user)
         assert user.username == "new_name_withéàô"
         assert user.email == "new_mail@valid.net"
         assert user.settings_role.name == "secretary_2"
-        assert set(r.id for r in user.roles) == set(roles[i].id for i in [0, 3])
+        assert {r.id for r in user.roles} == {roles[i].id for i in [0, 3]}
         assert user.validate_password("pré$ident")
 
         assert not pw_gen_mock.called, "method should not have been called"
@@ -172,7 +172,7 @@ class TestUser(AbstractViewsTests):
         roles = users_test_data["roles"]
 
         resp = test_app.post(
-            "/admin/users/{}".format(user.id),
+            f"/admin/users/{user.id}",
             {
                 "__formid__": "deform",
                 "_charset_": "UTF-8",
@@ -199,7 +199,7 @@ class TestUser(AbstractViewsTests):
         user = users_test_data["users"][7]
         roles = users_test_data["roles"]
 
-        resp = test_app.get("/admin/users/{}/duplicate".format(user.id), status=200)
+        resp = test_app.get(f"/admin/users/{user.id}/duplicate", status=200)
         form = resp.form
 
         assert "" == form["id"].value
@@ -219,7 +219,7 @@ class TestUser(AbstractViewsTests):
         ).group(1)
         assert user.id != new_user.id
         assert user.settings_role_id == new_user.settings_role_id
-        assert set([role.id for role in user.roles]) == set([role.id for role in new_user.roles])
+        assert {role.id for role in user.roles} == {role.id for role in new_user.roles}
         assert not new_user.is_password_changed
         assert not new_user.validate_password("pré$ident")
 

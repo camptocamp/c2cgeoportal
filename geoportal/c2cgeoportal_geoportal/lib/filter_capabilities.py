@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
@@ -65,7 +63,7 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
             url.url(), headers=headers, **request.registry.settings.get("http_options", {})
         )
     except Exception:
-        raise HTTPBadGateway("Unable to GetCapabilities from wms_url {}".format(wms_url))
+        raise HTTPBadGateway(f"Unable to GetCapabilities from wms_url {wms_url}")
 
     if not response.ok:
         raise HTTPBadGateway(
@@ -92,13 +90,13 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 
     except AttributeError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
-        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
+        error = f"{error!s}\nurl: {wms_url!s}\nxml:\n{response.text!s}"
         LOG.exception(error)
         raise HTTPBadGateway(error)
 
     except SyntaxError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
-        error = "{0!s}\nurl: {1!s}\nxml:\n{2!s}".format(error, wms_url, response.text)
+        error = f"{error!s}\nurl: {wms_url!s}\nxml:\n{response.text!s}"
         LOG.exception(error)
         raise HTTPBadGateway(error)
 

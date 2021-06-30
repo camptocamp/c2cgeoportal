@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -56,7 +54,7 @@ def upgrade() -> None:
             ");"
         ).format(schema=schema)
     )
-    op.execute("DELETE from {schema}.treeitem WHERE type = 'layerv1';".format(schema=schema))
+    op.execute(f"DELETE from {schema}.treeitem WHERE type = 'layerv1';")
 
 
 def downgrade() -> None:

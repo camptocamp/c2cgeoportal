@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
@@ -496,9 +494,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("layerFilterSubsetString not allowed")
                 return "0"
 
-            area = "ST_GeomFromText('{}', {})".format(area.wkt, self.srid)
+            area = f"ST_GeomFromText('{area.wkt}', {self.srid})"
             if self.srid != layer.crs().postgisSrid():
-                area = "ST_transform({}, {})".format(area, layer.crs().postgisSrid())
+                area = f"ST_transform({area}, {layer.crs().postgisSrid()})"
             result = "ST_intersects({}, {})".format(
                 QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn(), area
             )

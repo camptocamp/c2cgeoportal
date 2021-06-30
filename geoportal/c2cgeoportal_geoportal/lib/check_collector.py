@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -60,7 +58,7 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
                 if "host" not in params or display == params["host"]:
                     url_headers = build_url(
                         "check_collector",
-                        "%s/%s/health_check" % (self.host["url"].rstrip("/"), c2c_base.strip("/")),
+                        "{}/{}/health_check".format(self.host["url"].rstrip("/"), c2c_base.strip("/")),
                         request,
                     )
                     r = requests.get(

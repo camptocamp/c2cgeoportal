@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -68,7 +66,7 @@ def main() -> None:
     aeskey = urllogin.get("aes_key")
     auth_enc = create_token(aeskey, args.user, args.password, args.valid)
 
-    print(("Use: auth={}".format(auth_enc)))
+    print(f"Use: auth={auth_enc}")
 
 
 if __name__ == "__main__":

@@ -34,7 +34,7 @@ response = requests.get(
     },
 )
 
-assert response.status_code == 403, "{}\n{}".format(response.status_code, response.text)
+assert response.status_code == 403, f"{response.status_code}\n{response.text}"
 
 response = requests.get(
     "http://qgisserver",

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -77,7 +75,7 @@ class OGCProxy(Proxy):
 
     def _get_wms_url(self, errors: Set[str]) -> Optional[Url]:
         ogc_server = self.ogc_server
-        url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
+        url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors)
         if errors:
             LOG.error("\n".join(errors))
         return url
@@ -85,7 +83,7 @@ class OGCProxy(Proxy):
     def _get_wfs_url(self, errors: Set[str]) -> Optional[Url]:
         ogc_server = self.ogc_server
         url = get_url2(
-            "The OGC server (WFS) '{}'".format(ogc_server.name),
+            f"The OGC server (WFS) '{ogc_server.name}'",
             ogc_server.url_wfs or ogc_server.url,
             self.request,
             errors,

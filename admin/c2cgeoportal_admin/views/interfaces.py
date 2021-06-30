@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -53,7 +51,7 @@ class InterfacesViews(AbstractViews):  # type: ignore
         _list_field(
             "theme",
             renderer=lambda interface: ", ".join(
-                ["{}-{}".format(t.name, t.name) or "" for t in interface.theme]
+                [f"{t.name}-{t.name}" or "" for t in interface.theme]
             ),
         ),
     ]

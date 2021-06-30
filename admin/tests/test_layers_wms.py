@@ -14,16 +14,16 @@ def layer_wms_test_data(dbsession, transact):
 
     from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
-    servers = [OGCServer(name="server_{}".format(i)) for i in range(0, 4)]
+    servers = [OGCServer(name=f"server_{i}") for i in range(0, 4)]
     for i, server in enumerate(servers):
-        server.url = "http://wms.geo.admin.ch_{}".format(i)
+        server.url = f"http://wms.geo.admin.ch_{i}"
         server.image_type = "image/jpeg" if i % 2 == 0 else "image/png"
 
     def layer_builder(i):
-        layer = LayerWMS(name="layer_wms_{}".format(i))
-        layer.layer = "layer_{}".format(i)
+        layer = LayerWMS(name=f"layer_wms_{i}")
+        layer.layer = f"layer_{i}"
         layer.public = 1 == i % 2
-        layer.geo_table = "geotable_{}".format(i)
+        layer.geo_table = f"geotable_{i}"
         layer.ogc_server = servers[i % 4]
         layer.style = "décontrasté"
         return layer
@@ -173,11 +173,11 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert str(layer.time_widget) == form["time_widget"].value
 
         interfaces = layer_wms_test_data["interfaces"]
-        assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in layer.interfaces)
+        assert {interfaces[0].id, interfaces[2].id} == {i.id for i in layer.interfaces}
         self._check_interfaces(form, interfaces, layer)
 
         ras = layer_wms_test_data["restrictionareas"]
-        assert set((ras[0].id, ras[2].id)) == set(i.id for i in layer.restrictionareas)
+        assert {ras[0].id, ras[2].id} == {i.id for i in layer.restrictionareas}
         self._check_restrictionsareas(form, ras, layer)
 
         new_values = {
@@ -200,7 +200,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         resp = form.submit("submit")
         assert str(layer.id) == re.match(
-            r"http://localhost{}/(.*)\?msg_col=submit_ok".format(self._prefix), resp.location
+            fr"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         dbsession.expire(layer)
@@ -209,10 +209,10 @@ class TestLayerWMSViews(AbstractViewsTests):
                 assert value == getattr(layer, key)
             else:
                 assert str(value or "") == str(getattr(layer, key) or "")
-        assert set([interfaces[1].id, interfaces[3].id]) == set(
-            [interface.id for interface in layer.interfaces]
-        )
-        assert set([ras[1].id, ras[3].id]) == set([ra.id for ra in layer.restrictionareas])
+        assert {interfaces[1].id, interfaces[3].id} == {
+            interface.id for interface in layer.interfaces
+        }
+        assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
     def test_submit_new(self, dbsession, test_app, layer_wms_test_data):
         from c2cgeoportal_commons.models.main import LayerWMS
@@ -244,7 +244,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer = layer_wms_test_data["layers"][3]
 
-        resp = test_app.get("/admin/layers_wms/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get(f"/admin/layers_wms/{layer.id}/duplicate", status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -260,11 +260,11 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert str(layer.time_mode) == form["time_mode"].value
         assert str(layer.time_widget) == form["time_widget"].value
         interfaces = layer_wms_test_data["interfaces"]
-        assert set((interfaces[3].id, interfaces[1].id)) == set(i.id for i in layer.interfaces)
+        assert {interfaces[3].id, interfaces[1].id} == {i.id for i in layer.interfaces}
         self._check_interfaces(form, interfaces, layer)
 
         ras = layer_wms_test_data["restrictionareas"]
-        assert set((ras[3].id, ras[0].id)) == set(i.id for i in layer.restrictionareas)
+        assert {ras[3].id, ras[0].id} == {i.id for i in layer.restrictionareas}
         self._check_restrictionsareas(form, ras, layer)
 
         self._check_dimensions(resp.html, layer.dimensions, duplicated=True)
@@ -289,10 +289,10 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert 0 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
         assert 1 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
 
-        resp = test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
         assert resp.json["success"]
         assert (
-            "http://localhost/admin/layers_wmts/{}?msg_col=submit_ok".format(layer.id)
+            f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok"
             == resp.json["redirect"]
         )
 
@@ -328,10 +328,10 @@ class TestLayerWMSViews(AbstractViewsTests):
     def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data["layers"][3]
 
-        resp = test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
         assert resp.json["success"]
         assert (
-            "http://localhost/admin/layers_wmts/{}?msg_col=submit_ok".format(layer.id)
+            f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok"
             == resp.json["redirect"]
         )
 
@@ -339,10 +339,10 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert "image/png" == resp.form["image_type"].value
 
         layer = layer_wms_test_data["layers"][2]
-        resp = test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
         assert resp.json["success"]
         assert (
-            "http://localhost/admin/layers_wmts/{}?msg_col=submit_ok".format(layer.id)
+            f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok"
             == resp.json["redirect"]
         )
 
@@ -354,15 +354,15 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         dbsession.delete(LayerWMTS.get_default(dbsession))
         layer = layer_wms_test_data["layers"][3]
-        test_app.post("/admin/layers_wms/{}/convert_to_wmts".format(layer.id), status=200)
+        test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
 
     def test_unicity_validator(self, layer_wms_test_data, test_app):
         layer = layer_wms_test_data["layers"][2]
-        resp = test_app.get("/admin/layers_wms/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get(f"/admin/layers_wms/{layer.id}/duplicate", status=200)
 
         resp = resp.form.submit("submit")
 
-        self._check_submission_problem(resp, "{} is already used.".format(layer.name))
+        self._check_submission_problem(resp, f"{layer.name} is already used.")
 
     def test_unicity_validator_does_not_matter_amongst_cousin(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS
@@ -372,7 +372,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert dbsession.query(LayerWMS).filter(LayerWMS.name == "layer_group_0").one_or_none() is None
 
         layer = layer_wms_test_data["layers"][2]
-        resp = test_app.get("/admin/layers_wms/{}/duplicate".format(layer.id), status=200)
+        resp = test_app.get(f"/admin/layers_wms/{layer.id}/duplicate", status=200)
         self.set_first_field_named(resp.form, "name", "layer_group_0")
         resp = resp.form.submit("submit")
 
@@ -386,7 +386,7 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer_id = dbsession.query(LayerWMS.id).first().id
 
-        test_app.delete("/admin/layers_wms/{}".format(layer_id), status=200)
+        test_app.delete(f"/admin/layers_wms/{layer_id}", status=200)
 
         assert dbsession.query(LayerWMS).get(layer_id) is None
         assert dbsession.query(Layer).get(layer_id) is None
@@ -417,5 +417,5 @@ class TestLayerWMSViews(AbstractViewsTests):
             "Errors have been highlighted below" == resp.html.select_one('div[class="error-msg-detail"]').text
         )
         assert ["WMS layer name"] == sorted(
-            [(x.select_one("label").text.strip()) for x in resp.html.select("[class~='has-error']")]
+            (x.select_one("label").text.strip()) for x in resp.html.select("[class~='has-error']")
         )

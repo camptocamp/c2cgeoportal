@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2019, Camptocamp SA
 # All rights reserved.
 
@@ -79,7 +77,7 @@ class TestRequestProperty(TestCase):
             {"basicauth": "true"},
             headers={
                 "Authorization": "Basic "
-                + base64.b64encode("__test_user:__test_user".encode("utf-8"))
+                + base64.b64encode(b"__test_user:__test_user")
                 .decode("utf-8")
                 .replace("\n", "")
             },
@@ -91,7 +89,7 @@ class TestRequestProperty(TestCase):
         request = create_dummy_request(
             headers={
                 "Authorization": "Basic "
-                + base64.b64encode("__test_user:__wrong_pass".encode("utf-8"))
+                + base64.b64encode(b"__test_user:__wrong_pass")
                 .decode("utf-8")
                 .replace("\n", "")
             }

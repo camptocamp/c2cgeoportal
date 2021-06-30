@@ -86,7 +86,7 @@ class TestOGCServerSynchronizer:
             "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_ID=0&USER_ID=0"
         )
         assert re.match(
-            r"Get WMS GetCapabilities from: {url}\nGot response 200 in \d+.\d+s.\n".format(url=url),
+            fr"Get WMS GetCapabilities from: {url}\nGot response 200 in \d+.\d+s.\n",
             synchronizer.report(),
         ), synchronizer.report()
 

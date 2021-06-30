@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
@@ -105,4 +103,4 @@ class TotalPythonObjectMemoryProvider(Provider):
 
 @broadcast.decorator(expect_answers=True, timeout=15)
 def _get_python_object_size() -> Dict[str, float]:
-    return {"value": sum([sys.getsizeof(o) / 1024 for o in gc.get_objects()])}
+    return {"value": sum(sys.getsizeof(o) / 1024 for o in gc.get_objects())}

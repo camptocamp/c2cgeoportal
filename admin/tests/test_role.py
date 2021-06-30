@@ -23,13 +23,13 @@ def roles_test_data(dbsession, transact):
     for name in ("default_basemap", "location"):
         functionalities[name] = []
         for v in range(0, 4):
-            functionality = Functionality(name=name, value="value_{}".format(v))
+            functionality = Functionality(name=name, value=f"value_{v}")
             dbsession.add(functionality)
             functionalities[name].append(functionality)
 
     restrictionareas = []
     for i in range(0, 5):
-        restrictionarea = RestrictionArea(name="restrictionarea_{}".format(i))
+        restrictionarea = RestrictionArea(name=f"restrictionarea_{i}")
         dbsession.add(restrictionarea)
         restrictionareas.append(restrictionarea)
 
@@ -146,11 +146,11 @@ class TestRole(TestTreeGroup):
 
         assert role.name == "new_name"
         assert role.description == "new_description"
-        assert set(role.functionalities) == set(
-            [functionalities["default_basemap"][0], functionalities["location"][1]]
-        )
-        assert set(role.restrictionareas) == set([restrictionareas[0], restrictionareas[1]])
-        assert set(role.users) == set([users[0], users[1]])
+        assert set(role.functionalities) == {
+            functionalities["default_basemap"][0], functionalities["location"][1]
+        }
+        assert set(role.restrictionareas) == {restrictionareas[0], restrictionareas[1]}
+        assert set(role.users) == {users[0], users[1]}
 
     def test_edit(self, dbsession, test_app, roles_test_data):
         role = roles_test_data["roles"][10]
@@ -175,32 +175,30 @@ class TestRole(TestTreeGroup):
 
         functionalities = roles_test_data["functionalities"]
         assert (
-            set(
-                (
+            {
                     functionalities["default_basemap"][0].id,
                     functionalities["location"][0].id,
                     functionalities["location"][1].id,
-                )
-            )
-            == set(f.id for f in role.functionalities)
+            }
+            == {f.id for f in role.functionalities}
         )
         self.check_checkboxes(
             form,
             "functionalities",
             [
                 {
-                    "label": "{}={}".format(f.name, f.value),
+                    "label": f"{f.name}={f.value}",
                     "value": str(f.id),
                     "checked": f in role.functionalities,
                 }
                 for f in sum(
-                    [roles_test_data["functionalities"][name] for name in ("default_basemap", "location")], []
+                    (roles_test_data["functionalities"][name] for name in ("default_basemap", "location")), []
                 )
             ],
         )
 
         ras = roles_test_data["restrictionareas"]
-        assert set((ras[0].id, ras[1].id)) == set(ra.id for ra in role.restrictionareas)
+        assert {ras[0].id, ras[1].id} == {ra.id for ra in role.restrictionareas}
         self.check_checkboxes(
             form,
             "restrictionareas",
@@ -268,15 +266,15 @@ class TestRole(TestTreeGroup):
         )
         assert expected.almost_equals(to_shape(role.extent), decimal=0)
 
-        assert set(functionality_ids) == set([f.id for f in role.functionalities])
-        assert set(ra_ids) == set([f.id for f in role.restrictionareas])
+        assert set(functionality_ids) == {f.id for f in role.functionalities}
+        assert set(ra_ids) == {f.id for f in role.restrictionareas}
 
     def test_duplicate(self, roles_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Role
 
         role_proto = roles_test_data["roles"][7]
 
-        resp = test_app.get("/admin/roles/{}/duplicate".format(role_proto.id), status=200)
+        resp = test_app.get(f"/admin/roles/{role_proto.id}/duplicate", status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -298,16 +296,16 @@ class TestRole(TestTreeGroup):
         from c2cgeoportal_commons.models.main import Role
 
         role_id = dbsession.query(Role.id).first().id
-        test_app.delete("/admin/roles/{}".format(role_id), status=200)
+        test_app.delete(f"/admin/roles/{role_id}", status=200)
         assert dbsession.query(Role).get(role_id) is None
 
     def test_unicity_validator(self, roles_test_data, test_app):
         role_proto = roles_test_data["roles"][7]
-        resp = test_app.get("/admin/roles/{}/duplicate".format(role_proto.id), status=200)
+        resp = test_app.get(f"/admin/roles/{role_proto.id}/duplicate", status=200)
 
         resp = resp.form.submit("submit")
 
-        self._check_submission_problem(resp, "{} is already used.".format(role_proto.name))
+        self._check_submission_problem(resp, f"{role_proto.name} is already used.")
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):

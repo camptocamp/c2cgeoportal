@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -249,27 +247,23 @@ class TestThemesView(TestCase):
         themes = theme_view.themes()
         self.assertEqual(
             self._get_filtered_errors(themes),
-            set(
-                [
+            {
                     "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
-                ]
-            ),
+            },
         )
 
         theme_view = self._create_theme_obj(params={"min_levels": "2"})
         themes = theme_view.themes()
         self.assertEqual(
             self._get_filtered_errors(themes),
-            set(
-                [
+            {
                     "The Layer '__test_theme/__test_layer_group_1/__test_layer_internal_wms' is under indented (1/2).",
                     "The Layer '__test_theme/__test_layer_group_1/__test_layer_wmts' is under indented (1/2).",
                     "The Layer '__test_theme/__test_layer_group_2/__test_layer_external_wms' is under indented (1/2).",
                     "The Layer '__test_theme/__test_layer_group_2/__test_layer_internal_wms' is under indented (1/2).",
                     "The Layer '__test_theme/__test_layer_group_1/__test_layer_external_wms' is under indented (1/2).",
                     "The Layer '__test_theme/__test_layer_group_2/__test_layer_wmts' is under indented (1/2).",
-                ]
-            ),
+            },
         )
 
     def test_theme_layer(self):

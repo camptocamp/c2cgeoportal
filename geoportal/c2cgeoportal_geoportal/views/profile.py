@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -67,7 +65,7 @@ class Profile(Raster):
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
                 else:
-                    raise HTTPNotFound("Layer {0!s} not found".format(layer))
+                    raise HTTPNotFound(f"Layer {layer!s} not found")
         else:
             rasters = self.rasters
             layers = list(rasters.keys())
