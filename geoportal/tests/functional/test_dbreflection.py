@@ -53,10 +53,11 @@ class TestReflection(TestCase):
                 table.drop()
 
     def _create_table(self, tablename):
-        """Test functions use this function to create a table object.
-        Each test function should call this function only once. And
-        there should not be two test functions that call this function
-        with the same ptable_name value.
+        """
+        Test functions use this function to create a table object.
+
+        Each test function should call this function only once. And there should not be two test functions
+        that call this function with the same ptable_name value.
         """
         from geoalchemy2 import Geometry
         from sqlalchemy import Column, ForeignKey, Table, types
@@ -188,8 +189,9 @@ class TestReflection(TestCase):
         self.assertEqual(modelclass.__table__.schema, "public")
 
     def test_mixing_get_class_and_queries(self):
-        """This test shows that we can mix the use of DBSession
-        and the db reflection API."""
+        """
+        This test shows that we can mix the use of DBSession and the db reflection API.
+        """
         import transaction
         from sqlalchemy import text
 

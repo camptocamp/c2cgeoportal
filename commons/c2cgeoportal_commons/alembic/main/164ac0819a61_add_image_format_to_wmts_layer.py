@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add image format to WMTS layer
+"""
+Add image format to WMTS layer.
 
 Revision ID: 164ac0819a61
 Revises: 20137477bd02

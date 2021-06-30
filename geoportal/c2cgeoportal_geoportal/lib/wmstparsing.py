@@ -241,8 +241,7 @@ class TimeExtentInterval:
 
 def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
     """
-    Parse a time extend from OWSLib to a `̀ TimeExtentValue`` or a
-    ``TimeExtentInterval``
+    Parse a time extend from OWSLib to a `̀ TimeExtentValue`` or a ``TimeExtentInterval``
 
     Two formats are supported:
     * ['start/end/interval']
@@ -274,10 +273,9 @@ def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
 
 def _parse_default_values(default_values: str) -> Tuple[datetime.datetime, Optional[datetime.datetime]]:
     """
-    Parse the 'default' value from OWSLib's defaulttimeposition
-    and return a maximum of two dates. default value must be a
-    slash separated String.
-    return None on the seconde value if it does not exist.
+    Parse the 'default' value from OWSLib's defaulttimeposition and return a maximum of two dates.
+
+    default value must be a slash separated String. return None on the seconde value if it does not exist.
     """
     if default_values is None:
         return None, None

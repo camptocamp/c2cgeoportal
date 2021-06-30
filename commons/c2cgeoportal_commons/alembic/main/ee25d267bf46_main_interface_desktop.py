@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""main interface => desktop
+"""
+main interface => desktop.
 
 Revision ID: ee25d267bf46
 Revises: 596ba21e3833

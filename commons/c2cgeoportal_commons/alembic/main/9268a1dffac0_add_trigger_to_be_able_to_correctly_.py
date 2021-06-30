@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add trigger to be able to correctly change the role name
+"""
+Add trigger to be able to correctly change the role name.
 
 Revision ID: 9268a1dffac0
 Revises: 32b21aa1d0ed

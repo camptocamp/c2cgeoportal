@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add ordering in relation
+"""
+Add ordering in relation.
 
 Revision ID: 54645a535ad6
 Revises: 415746eb9f6

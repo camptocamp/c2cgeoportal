@@ -41,7 +41,9 @@ CACHE_REGION = get_region("std")
 
 @CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_cache_version() -> str:
-    """Return a cache version that is regenerate after each cache invalidation"""
+    """
+    Return a cache version that is regenerate after each cache invalidation.
+    """
     return uuid.uuid4().hex
 
 
@@ -53,7 +55,9 @@ def version_cache_buster(
 
 
 class CachebusterTween:
-    """Get back the cachebuster URL."""
+    """
+    Get back the cachebuster URL.
+    """
 
     def __init__(
         self,

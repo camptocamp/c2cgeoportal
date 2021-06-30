@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Fix removing layerv1
+"""
+Fix removing layerv1.
 
 Revision ID: 56dc90838d90
 Revises: 1de20166b274

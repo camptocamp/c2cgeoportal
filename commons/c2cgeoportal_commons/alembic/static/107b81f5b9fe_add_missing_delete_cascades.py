@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add missing delete cascades
+"""
+Add missing delete cascades.
 
 Revision ID: 107b81f5b9fe
 Revises: bd029dbfc11a

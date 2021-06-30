@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Update icons url
+"""
+Update icons url.
 
 Revision ID: 20137477bd02
 Revises: 415746eb9f6

@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Remove trigger on_role_name_change
+"""
+Remove trigger on_role_name_change.
 
 Revision ID: 338b57593823
 Revises: dba87f2647f9

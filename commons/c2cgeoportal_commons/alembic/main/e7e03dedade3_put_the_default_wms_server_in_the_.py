@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Put the default WMS server in the servers part, add some constrains
+"""
+Put the default WMS server in the servers part, add some constrains.
 
 Revision ID: e7e03dedade3
 Revises: daf738d5bae4

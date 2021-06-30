@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add missing on delete cascade on layer tree
+"""
+Add missing on delete cascade on layer tree.
 
 Revision ID: ec82a8906649
 Revises: e7e03dedade3

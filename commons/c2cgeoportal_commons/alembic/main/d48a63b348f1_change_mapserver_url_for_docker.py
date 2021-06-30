@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Change mapserver URL for Docker
+"""
+Change mapserver URL for Docker.
 
 Revision ID: d48a63b348f1
 Revises: 9268a1dffac0

@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Convert the metadata to the right case
+"""
+Convert the metadata to the right case.
 
 Revision ID: 6d87fdad275a
 Revises: 9268a1dffac0

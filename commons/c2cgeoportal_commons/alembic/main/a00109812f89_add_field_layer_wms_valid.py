@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add field layer_wms.valid
+"""
+Add field layer_wms.valid.
 
 Revision ID: a00109812f89
 Revises: 87f8330ed64e

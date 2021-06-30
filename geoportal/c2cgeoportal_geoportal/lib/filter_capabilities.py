@@ -168,9 +168,9 @@ class _Layer:
 class _CapabilitiesFilter(XMLFilterBase):
     """
     SAX filter to show only the allowed layers in a GetCapabilities request.
-    The filter removes elements of type `tag_name` where the `name`
-    attribute is part of the set `layers_blacklist` (when `layers_blacklist`
-    is given) or is not part of the set `layers_whitelist` (when
+
+    The filter removes elements of type `tag_name` where the `name` attribute is part of the set
+    `layers_blacklist` (when `layers_blacklist` is given) or is not part of the set `layers_whitelist` (when
     `layers_whitelist` is given).
     """
 
@@ -309,6 +309,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 def normalize_tag(tag: str) -> str:
     """
     Drops the namespace from a tag and converts to lower case.
+
     e.g. '{https://....}TypeName' -> 'TypeName'
     """
     normalized = tag
@@ -321,6 +322,7 @@ def normalize_tag(tag: str) -> str:
 def normalize_typename(typename: str) -> str:
     """
     Drops the namespace from a type name and converts to lower case.
+
     e.g. 'tows:parks' -> 'parks'
     """
     normalized = typename

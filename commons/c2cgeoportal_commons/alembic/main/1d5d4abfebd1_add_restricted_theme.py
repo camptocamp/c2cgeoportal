@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add restricted theme
+"""
+Add restricted theme.
 
 Revision ID: 1d5d4abfebd1
 Revises: 54645a535ad6

@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""separate local internal
+"""
+separate local internal.
 
 Revision ID: 596ba21e3833
 Revises: ec82a8906649

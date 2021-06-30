@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add API's intrfaces
+"""
+Add API's intrfaces.
 
 Revision ID: 78fd093c8393
 Revises: e85afd327ab3

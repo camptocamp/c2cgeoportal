@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""internal and external layer tables refactoring, new ogc table
+"""
+internal and external layer tables refactoring, new ogc table.
 
 Revision ID: 116b9b79fc4d
 Revises: 1418cb05921b

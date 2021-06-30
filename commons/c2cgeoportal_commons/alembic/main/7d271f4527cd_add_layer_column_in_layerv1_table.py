@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add layer column in layerv1 table
+"""
+Add layer column in layerv1 table.
 
 Revision ID: 7d271f4527cd
 Revises: 8117bb9bba16

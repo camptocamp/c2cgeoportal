@@ -39,8 +39,11 @@ from sqlalchemy.orm.util import class_mapper
 
 class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
     def add_class_properties_xsd(self, tb: str, cls: DeclarativeMeta) -> None:
-        """Add the XSD for the class properties to the ``TreeBuilder``. And
-        call the user ``sequence_callback``."""
+        """
+        Add the XSD for the class properties to the ``TreeBuilder``.
+
+        And call the user ``sequence_callback``.
+        """
         mapper = class_mapper(cls)
         properties = []
         if cls.__attributes_order__:

@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Remove deprecated columns
+"""
+Remove deprecated columns.
 
 Revision ID: c75124553bf3
 Revises: dba87f2647f9

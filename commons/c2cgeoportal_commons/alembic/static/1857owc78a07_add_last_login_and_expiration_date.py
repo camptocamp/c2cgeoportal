@@ -28,8 +28,7 @@
 # pylint: disable=no-member
 
 """
-Add columns last_login, expire_on (both datetime) and deactivated (boolean) on
-table main_static."user".
+Add columns last_login, expire_on (both datetime) and deactivated (boolean) on table main_static."user".
 
 Revision ID: 1857owc78a07
 Revises: 5472fbc19f39

@@ -170,21 +170,29 @@ class User(Base):  # type: ignore
 
     @property
     def password(self) -> str:
-        """returns password"""
+        """
+        returns password.
+        """
         return self._password  # type: ignore
 
     @password.setter
     def password(self, password: str) -> None:
-        """encrypts password on the fly."""
+        """
+        encrypts password on the fly.
+        """
         self._password = self.__encrypt_password(password)
 
     def set_temp_password(self, password: str) -> None:
-        """encrypts password on the fly."""
+        """
+        encrypts password on the fly.
+        """
         self.temp_password = self.__encrypt_password(password)
 
     @staticmethod
     def __encrypt_password_legacy(password: str) -> str:
-        """Hash the given password with SHA1."""
+        """
+        Hash the given password with SHA1.
+        """
         return sha1(password.encode("utf8")).hexdigest()  # nosec
 
     @staticmethod
@@ -192,8 +200,8 @@ class User(Base):  # type: ignore
         return crypt.crypt(password, crypt.METHOD_SHA512)
 
     def validate_password(self, passwd: str) -> bool:
-        """Check the password against existing credentials.
-        this method _MUST_ return a boolean.
+        """
+        Check the password against existing credentials. this method _MUST_ return a boolean.
 
         @param passwd: the password that was provided by the user to
         try and authenticate. This is the clear text version that we will

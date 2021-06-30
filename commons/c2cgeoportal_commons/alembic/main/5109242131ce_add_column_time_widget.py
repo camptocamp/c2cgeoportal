@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""add column time_widget
+"""
+add column time_widget.
 
 Revision ID: 5109242131ce
 Revises: 164ac0819a61

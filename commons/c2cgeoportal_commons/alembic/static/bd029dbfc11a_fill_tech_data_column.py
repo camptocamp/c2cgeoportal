@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Fill tech_data column
+"""
+Fill tech_data column.
 
 Revision ID: bd029dbfc11a
 Revises: 0c640a58a09a

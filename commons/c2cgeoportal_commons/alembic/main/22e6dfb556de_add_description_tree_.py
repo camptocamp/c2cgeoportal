@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add description column in the tree
+"""
+Add description column in the tree.
 
 Revision ID: 22e6dfb556de
 Revises: 2b8ed8c1df94

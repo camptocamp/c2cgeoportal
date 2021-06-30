@@ -289,8 +289,7 @@ class Theme:
 
     def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.Query:
         """
-        Create an SQLAlchemy query for Layer and for the role
-        identified to by ``role_id``.
+        Create an SQLAlchemy query for Layer and for the role identified to by ``role_id``.
         """
 
         query = models.DBSession.query(main.Layer.name).filter(main.Layer.public.is_(True))
@@ -552,7 +551,9 @@ class Theme:
         return isinstance(tree_item, main.Layer)
 
     def _get_ogc_servers(self, group: main.LayerGroup, depth: int) -> Set[Union[str, bool]]:
-        """Recurse on all children to get unique identifier for each child."""
+        """
+        Recurse on all children to get unique identifier for each child.
+        """
 
         ogc_servers: Set[Union[str, bool]] = set()
 
@@ -729,8 +730,7 @@ class Theme:
         self, interface: str = "desktop", filter_themes: bool = True, min_levels: int = 1
     ) -> Tuple[List[Dict[str, Any]], Set[str]]:
         """
-        This function returns theme information for the role identified
-        by ``role_id``.
+        This function returns theme information for the role identified by ``role_id``.
         """
         self._load_tree_items()
         errors = set()

@@ -25,7 +25,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Add OAuth2 tables
+"""
+Add OAuth2 tables.
 
 Revision ID: 7ef947f30f20
 Revises: 107b81f5b9fe

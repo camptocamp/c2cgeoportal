@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add technical roles
+"""
+Add technical roles.
 
 Revision ID: 028477929d13
 Revises: eeb345672454

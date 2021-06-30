@@ -77,12 +77,12 @@ class Layers:
 
     @staticmethod
     def _get_geom_col_info(layer: "main.Layer") -> Tuple[str, int]:
-        """Return information about the layer's geometry column, namely
-        a ``(name, srid)`` tuple, where ``name`` is the name of the
-        geometry column, and ``srid`` its srid.
+        """
+        Return information about the layer's geometry column, namely a ``(name, srid)`` tuple, where ``name``
+        is the name of the geometry column, and ``srid`` its srid.
 
-        This function assumes that the names of geometry attributes
-        in the mapped class are the same as those of geometry columns.
+        This function assumes that the names of geometry attributes in the mapped class are the same as those
+        of geometry columns.
         """
         mapped_class = get_layer_class(layer)
         for p in class_mapper(mapped_class).iterate_properties:
@@ -95,7 +95,9 @@ class Layers:
 
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":
-        """Return a ``Layer`` object for ``layer_id``."""
+        """
+        Return a ``Layer`` object for ``layer_id``.
+        """
         from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
 
         layer_id = int(layer_id)
@@ -112,8 +114,10 @@ class Layers:
         return cast("main.Layer", layer)
 
     def _get_layers_for_request(self) -> Generator["main.Layer", None, None]:
-        """A generator function that yields ``Layer`` objects based
-        on the layer ids found in the ``layer_id`` matchdict."""
+        """
+        A generator function that yields ``Layer`` objects based on the layer ids found in the ``layer_id``
+        matchdict.
+        """
         try:
             layer_ids = (
                 int(layer_id) for layer_id in self.request.matchdict["layer_id"].split(",") if layer_id
@@ -126,24 +130,30 @@ class Layers:
             )
 
     def _get_layer_for_request(self) -> "main.Layer":
-        """Return a ``Layer`` object for the first layer id found
-        in the ``layer_id`` matchdict."""
+        """
+        Return a ``Layer`` object for the first layer id found in the ``layer_id`` matchdict.
+        """
         return next(self._get_layers_for_request())
 
     def _get_protocol_for_layer(self, layer: "main.Layer", **kwargs: Any) -> Protocol:
-        """Returns a papyrus ``Protocol`` for the ``Layer`` object."""
+        """
+        Returns a papyrus ``Protocol`` for the ``Layer`` object.
+        """
         cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
 
     def _get_protocol_for_request(self, **kwargs: Any) -> Protocol:
-        """Returns a papyrus ``Protocol`` for the first layer
-        id found in the ``layer_id`` matchdict."""
+        """
+        Returns a papyrus ``Protocol`` for the first layer id found in the ``layer_id`` matchdict.
+        """
         layer = self._get_layer_for_request()
         return self._get_protocol_for_layer(layer, **kwargs)
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
-        """Read features for the layer based on the self.request."""
+        """
+        Read features for the layer based on the self.request.
+        """
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -494,7 +504,7 @@ def get_layer_class(
     layer: "main.Layer", with_last_update_columns: bool = False
 ) -> sqlalchemy.ext.declarative.api.ConcreteBase:
     """
-    Get the SQLAlchemy class to edit a GeoMapFish layer
+    Get the SQLAlchemy class to edit a GeoMapFish layer.
 
     :param layer:
     :param with_last_update_columns: False to just have a class to access to the table and be able to

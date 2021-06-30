@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Move user table to static schema
+"""
+Move user table to static schema.
 
 Revision ID: 1da396a88908
 Revises: 3f89a7d71a5e

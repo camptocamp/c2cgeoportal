@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add missing not null
+"""
+Add missing not null.
 
 Revision ID: e004f76e951a
 Revises: ee25d267bf46

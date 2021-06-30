@@ -206,7 +206,9 @@ class TestOGCServerSynchronizer:
         )
 
     def test_get_layer_wms_defaut(self, web_request, dbsession):
-        """We should copy properties from default LayerWMS"""
+        """
+        We should copy properties from default LayerWMS.
+        """
         from c2cgeoportal_commons.models import main
 
         synchronizer = self.synchronizer(web_request)
@@ -251,7 +253,9 @@ class TestOGCServerSynchronizer:
             assert layer.style == "default_style"
 
     def test_get_layer_wms_defaut_style_not_exists(self, web_request, dbsession):
-        """We should not copy style from default LayerWMS if does not exist in capabilities"""
+        """
+        We should not copy style from default LayerWMS if does not exist in capabilities.
+        """
         from c2cgeoportal_commons.models import main
 
         synchronizer = self.synchronizer(web_request)

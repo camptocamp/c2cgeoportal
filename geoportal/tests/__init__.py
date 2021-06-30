@@ -27,7 +27,7 @@
 
 
 """
-Pyramid application test package
+Pyramid application test package.
 """
 
 import logging

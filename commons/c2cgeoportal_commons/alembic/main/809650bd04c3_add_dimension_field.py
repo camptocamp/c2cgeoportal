@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add dimension field
+"""
+Add dimension field.
 
 Revision ID: 809650bd04c3
 Revises: d8ef99bc227e

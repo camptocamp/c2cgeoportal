@@ -105,7 +105,7 @@ class _Request:
 
 class GeomapfishAngularExtractor(Extractor):  # type: ignore
     """
-    GeoMapFish angular extractor
+    GeoMapFish angular extractor.
     """
 
     extensions = [".js", ".html"]
@@ -382,7 +382,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
 
 class GeomapfishThemeExtractor(Extractor):  # type: ignore
     """
-    GeoMapFish theme extractor
+    GeoMapFish theme extractor.
     """
 
     # Run on the development.ini file

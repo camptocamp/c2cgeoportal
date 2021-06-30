@@ -322,7 +322,9 @@ class TestMetadatasView(AbstractViewsTests):
         self._test_edit_treeitem("layer_groups", metadatas_test_data["group"], test_app)
 
     def test_undefined_metadata(self, metadatas_test_data, test_app):
-        """Undefined metadata must be kept intact across submissions"""
+        """
+        Undefined metadata must be kept intact across submissions.
+        """
         from c2cgeoportal_commons.models.main import Metadata
 
         layer = metadatas_test_data["layer_wms"]

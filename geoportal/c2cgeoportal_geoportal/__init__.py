@@ -202,7 +202,8 @@ def create_get_user_from_request(
     def get_user_from_request(
         request: pyramid.request.Request, username: Optional[str] = None
     ) -> Optional["static.User"]:
-        """Return the User object for the request.
+        """
+        Return the User object for the request.
 
         Return ``None`` if:
         * user is anonymous
@@ -235,7 +236,8 @@ def create_get_user_from_request(
 def set_user_validator(
     config: pyramid.config.Configurator, user_validator: Callable[[pyramid.request.Request, str, str], str]
 ) -> None:
-    """Call this function to register a user validator function.
+    """
+    Call this function to register a user validator function.
 
     The validator function is passed three arguments: ``request``,
     ``username``, and ``password``. The function should return the
@@ -253,9 +255,10 @@ def set_user_validator(
 
 def default_user_validator(request: pyramid.request.Request, username: str, password: str) -> Optional[str]:
     """
-    Validate the username/password. This is c2cgeoportal's
-    default user validator.
-    Return None if we are anonymous, the string to remember otherwise.
+    Validate the username/password.
+
+    This is c2cgeoportal's default user validator. Return None if we are anonymous, the string to remember
+    otherwise.
     """
     del request  # unused
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
@@ -278,9 +281,12 @@ def default_user_validator(request: pyramid.request.Request, username: str, pass
 
 
 class MapserverproxyRoutePredicate:
-    """Serve as a custom route predicate function for mapserverproxy.
-    If the hide_capabilities setting is set and is true then we want to
-    return 404s on GetCapabilities requests."""
+    """
+    Serve as a custom route predicate function for mapserverproxy.
+
+    If the hide_capabilities setting is set and is true then we want to return 404s on GetCapabilities
+    requests.
+    """
 
     def __init__(self, val: Any, config: pyramid.config.Configurator) -> None:
         del val, config

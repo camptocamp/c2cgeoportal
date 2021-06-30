@@ -38,14 +38,11 @@ from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_
 
 def main() -> None:
     """
-    Emergency user create and password reset script
-    example, reset toto password to foobar:
-    docker-compose exec geoportal manage-users --password=foobar toto
-    example, create user foo with password bar and role admin:
-    docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo
+    Emergency user create and password reset script example, reset toto password to foobar: docker-compose
+    exec geoportal manage-users --password=foobar toto example, create user foo with password bar and role
+    admin: docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo.
 
-    to get the options list, do:
-    docker-compose exec geoportal manage-users --help
+    to get the options list, do: docker-compose exec geoportal manage-users --help
     """
 
     usage = """Usage: %prog [options] USERNAME

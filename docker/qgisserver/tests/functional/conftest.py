@@ -64,6 +64,7 @@ def server_iface():
 def qgs_access_control_filter():
     """
     Mock some QgsAccessControlFilter methods:
+
     - __init__ which does not accept a mocked QgsServerInterface;
     - serverInterface to return the right server_iface.
     """

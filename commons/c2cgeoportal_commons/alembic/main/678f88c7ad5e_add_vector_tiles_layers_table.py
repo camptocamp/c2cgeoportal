@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add vector tiles layers table
+"""
+Add vector tiles layers table.
 
 Revision ID: 678f88c7ad5e
 Revises: 028477929d13

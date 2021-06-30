@@ -304,7 +304,9 @@ class TestUser(AbstractViewsTests):
         assert info.status_int == 500, "Expected 500 status when db error"
 
     def test_grid_settings_role_none(self, dbsession, test_app):
-        """Grid view must work even if a user's settings_role is None"""
+        """
+        Grid view must work even if a user's settings_role is None.
+        """
         from c2cgeoportal_commons.models.static import User
 
         dbsession.add(User("test", email="test@valid.net"))

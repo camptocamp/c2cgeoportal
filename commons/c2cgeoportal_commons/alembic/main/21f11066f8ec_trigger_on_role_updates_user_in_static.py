@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""trigger_on_role_updates_user_in_static
+"""
+trigger_on_role_updates_user_in_static.
 
 Revision ID: 21f11066f8ec
 Revises: d48a63b348f1

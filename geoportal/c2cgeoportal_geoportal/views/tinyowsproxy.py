@@ -129,8 +129,7 @@ class TinyOWSProxy(OGCProxy):
 
     def _is_allowed(self, typenames: Set[str]) -> bool:
         """
-        Checks if the current user has the rights to access the given
-        type-names.
+        Checks if the current user has the rights to access the given type-names.
         """
 
         writable_layers = set()
@@ -175,8 +174,7 @@ class TinyOWSProxy(OGCProxy):
     @staticmethod
     def _parse_body(body: str) -> Tuple[str, Set[str]]:
         """
-        Read the WFS-T request body and extract the referenced type-names
-        and request method.
+        Read the WFS-T request body and extract the referenced type-names and request method.
         """
         xml = ElementTree.fromstring(body)
         wfs_request = normalize_tag(xml.tag)

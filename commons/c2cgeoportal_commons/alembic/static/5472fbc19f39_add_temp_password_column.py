@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add temp_password column
+"""
+Add temp_password column.
 
 Revision ID: 5472fbc19f39
 Revises: 1da396a88908

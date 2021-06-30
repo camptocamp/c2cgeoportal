@@ -29,7 +29,8 @@
 
 # pylint: disable=no-member
 
-"""Merge e004f76e951a and e004f76e951a heads
+"""
+Merge e004f76e951a and e004f76e951a heads.
 
 Revision ID: 32b21aa1d0ed
 Revises: ('7d271f4527cd', 'e004f76e951a')

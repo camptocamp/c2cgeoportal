@@ -99,9 +99,11 @@ class TestThemesEditColumns(TestCase):
         transaction.commit()
 
     def _create_layer(self, exclude_properties=False, metadatas=None, geom_type=False):
-        """This function is central for this test class. It creates
-        a layer with two features, and associates a restriction area
-        to it."""
+        """
+        This function is central for this test class.
+
+        It creates a layer with two features, and associates a restriction area to it.
+        """
         import transaction
         from geoalchemy2 import Geometry
         from sqlalchemy import Column, ForeignKey, Table, types

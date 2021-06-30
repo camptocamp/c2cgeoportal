@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Changes to start the implementation of the version 2
+"""
+Changes to start the implementation of the version 2.
 
 Revision ID: 415746eb9f6
 Revises: None

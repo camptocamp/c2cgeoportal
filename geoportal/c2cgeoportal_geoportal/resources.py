@@ -37,8 +37,10 @@ class Root:
 
 def defaultgroupsfinder(username: str, request: pyramid.request.Request) -> List[str]:
     """
-    The c2cgeoportal default group finder. To be used as the callback of the ``AuthTktAuthenticationPolicy``
-    or any callback-based authentication policy.
+    The c2cgeoportal default group finder.
+
+    To be used as the callback of the ``AuthTktAuthenticationPolicy`` or any callback-based authentication
+    policy.
     """
     del username  # unused
     if not hasattr(request, "user") or request.user is None:

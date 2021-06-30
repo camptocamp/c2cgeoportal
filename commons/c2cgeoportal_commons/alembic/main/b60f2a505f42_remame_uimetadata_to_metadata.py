@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Remame UIMetadata to Metadata
+"""
+Remame UIMetadata to Metadata.
 
 Revision ID: b60f2a505f42
 Revises: daf738d5bae4

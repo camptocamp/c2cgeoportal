@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""create database
+"""
+create database.
 
 Revision ID: 166ff2dcc48d
 Revises:
@@ -47,7 +48,9 @@ down_revision = None
 
 
 class TsVector(UserDefinedType):  # type: ignore
-    """A custom type for PostgreSQL's tsvector type."""
+    """
+    A custom type for PostgreSQL's tsvector type.
+    """
 
     def get_col_spec(self) -> str:
         return "TSVECTOR"

@@ -42,8 +42,7 @@ from pyramid.scaffolds.template import Template
 
 class BaseTemplate(Template):  # type: ignore
     """
-    A class that can be used as a base class for c2cgeoportal scaffolding
-    templates.
+    A class that can be used as a base class for c2cgeoportal scaffolding templates.
 
     Greatly inspired from ``pyramid.scaffolds.template.PyramidTemplate``.
     """
@@ -52,10 +51,10 @@ class BaseTemplate(Template):  # type: ignore
         self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]
     ) -> None:
         """
-        Overrides ``pyramid.scaffold.template.Template.pre``, adding
-        several variables to the default variables list. Also prevents
-        common misnamings (such as naming a package "site" or naming a
-        package logger "root").
+        Overrides ``pyramid.scaffold.template.Template.pre``, adding several variables to the default
+        variables list.
+
+        Also prevents common misnamings (such as naming a package "site" or naming a package logger "root").
         """
 
         self._get_vars(vars_, "package", "Get a package name: ")
@@ -175,7 +174,7 @@ class TemplateCreate(BaseTemplate):
 
     def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         """
-        Overrides the base template
+        Overrides the base template.
         """
         super().pre(command, output_dir, vars_)
         vars_["authtkt_secret"] = _gen_authtkt_secret()
@@ -211,7 +210,7 @@ class TemplateUpdate(BaseTemplate):
 
     def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         """
-        Overrides the base template
+        Overrides the base template.
         """
         self.open_project(output_dir, vars_)
 
@@ -224,8 +223,8 @@ class TemplateUpdate(BaseTemplate):
         self, command: str, output_dir: str, vars_: Dict[str, str]
     ) -> None:
         """
-        Overrides the base template class to print "Welcome to c2cgeoportal!"
-        after a successful scaffolding rendering.
+        Overrides the base template class to print "Welcome to c2cgeoportal!" after a successful scaffolding
+        rendering.
         """
 
         fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"), True)

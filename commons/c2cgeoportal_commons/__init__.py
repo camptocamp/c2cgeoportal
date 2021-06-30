@@ -33,6 +33,7 @@ from pyramid.config import Configurator
 def includeme(config: Configurator) -> None:
     """
     Initialize the model for a Pyramid app.
+
     Activate this setup using ``config.include('c2cgeoportal_admin.commons')``.
     """
     settings = config.get_settings()

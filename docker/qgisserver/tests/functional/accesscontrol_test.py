@@ -189,7 +189,7 @@ def test_data(clean_dbsession):
 @pytest.fixture(scope="function")
 def wms_use_layer_ids(test_data):
     """
-    Activate WMSUseLayerIDs
+    Activate WMSUseLayerIDs.
     """
     project = test_data["project"]
     try:

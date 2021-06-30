@@ -29,7 +29,8 @@
 
 # pylint: disable=no-member
 
-"""Merge 1.6 and master branches
+"""
+Merge 1.6 and master branches.
 
 Revision ID: 29f2a32859ec
 Revises: ('22e6dfb556de', '116b9b79fc4d')

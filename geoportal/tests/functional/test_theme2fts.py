@@ -70,7 +70,7 @@ def transact(dbsession):
 
 def add_parent(dbsession, item, group):
     """
-    Utility function to add a TreeItem in a TreeGroup
+    Utility function to add a TreeItem in a TreeGroup.
     """
     from c2cgeoportal_commons.models import main
 
@@ -161,8 +161,9 @@ def options(**kwargs):
 @pytest.fixture(scope="module")
 def dummy_translation():
     """
-    Mock gettext.translation to return a dummy Translation class,
-    with a gettext method that returns passed text suffixed by language.
+    Mock gettext.translation to return a dummy Translation class, with a gettext method that returns passed
+    text suffixed by language.
+
     Ex: "public_theme" => "public_theme_fr"
     """
 

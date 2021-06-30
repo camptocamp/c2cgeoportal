@@ -207,7 +207,9 @@ class TestLayersGroups(TestTreeGroup):
         ]
 
     def test_post_with_ancestor(self, layer_groups_test_data, test_app):
-        """Check that ancestors are refused to avoid cycles"""
+        """
+        Check that ancestors are refused to avoid cycles.
+        """
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
             f"{self._prefix}/{groups[3].id}",

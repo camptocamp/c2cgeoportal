@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Be able to delete a linked functionality
+"""
+Be able to delete a linked functionality.
 
 Revision ID: d8ef99bc227e
 Revises: 9268a1dffac0

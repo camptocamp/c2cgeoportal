@@ -59,7 +59,7 @@ DIFF_NOTICE = (
 
 def main() -> None:
     """
-    tool used to do the application upgrade
+    tool used to do the application upgrade.
     """
 
     parser = _fill_arguments()

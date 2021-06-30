@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Rename ServerOGC to OGCServer
+"""
+Rename ServerOGC to OGCServer.
 
 Revision ID: 6a412d9437b1
 Revises: 29f2a32859ec

@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Cascade deletes to tsearch
+"""
+Cascade deletes to tsearch.
 
 Revision ID: e85afd327ab3
 Revises: c75124553bf3

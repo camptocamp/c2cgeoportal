@@ -27,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Move exclude_properties from LayerV1 to Layer
+"""
+Move exclude_properties from LayerV1 to Layer.
 
 Revision ID: 32527659d57b
 Revises: 5109242131ce
