@@ -233,8 +233,11 @@ class Theme:
             return url, None, errors
 
         # Add functionality params
-        sparams = get_mapserver_substitution_params(self.request)
-        url.add_query(sparams)
+        if (
+            ogc_server.auth == main.OGCSERVER_AUTH_STANDARD
+            and ogc_server.type == main.OGCSERVER_TYPE_MAPSERVER
+        ):
+            url.add_query(get_mapserver_substitution_params(self.request))
 
         url.add_query(
             {
