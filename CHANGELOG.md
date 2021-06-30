@@ -1,3 +1,5 @@
+##### 2.5.0.146
+* Send MapServer substitution only on MapServer with standard auth [c2cgeoportal#8416](https://github.com/camptocamp/c2cgeoportal/pull/8416)
 ##### 2.5.0.145
 * [Backport 2.5] Fix messages in pull requests [ngeo#7266](https://github.com/camptocamp/ngeo/pull/7266)
 ##### 2.5.0.144
