@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -62,11 +60,11 @@ def get_typed(
     errors: Set[str],
     layer_name: Optional[str] = None,
 ) -> Union[str, int, float, bool, None, List[Any], Dict[str, Any]]:
-    prefix = "Layer '{}': ".format(layer_name) if layer_name is not None else ""
+    prefix = f"Layer '{layer_name}': " if layer_name is not None else ""
     type_ = {"type": "not init"}
     try:
         if name not in types:
-            errors.add("{}Type '{}' not defined.".format(prefix, name))
+            errors.add(f"{prefix}Type '{name}' not defined.")
             return None
         type_ = types[name]
         if type_.get("type", "string") == "string":
@@ -90,30 +88,26 @@ def get_typed(
         elif type_["type"] == "date":
             date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))  # type: ignore
             if date.time() != datetime.time(0, 0, 0):
-                errors.add(
-                    "{}The date attribute '{}'='{}' should not have any time".format(prefix, name, value)
-                )
+                errors.add(f"{prefix}The date attribute '{name}'='{value}' should not have any time")
             else:
                 return datetime.date.strftime(date.date(), "%Y-%m-%d")
         elif type_["type"] == "time":
             date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))  # type: ignore
             if date.date() != datetime.date(1, 1, 1):
-                errors.add(
-                    "{}The time attribute '{}'='{}' should not have any date".format(prefix, name, value)
-                )
+                errors.add(f"{prefix}The time attribute '{name}'='{value}' should not have any date")
             else:
                 return datetime.time.strftime(date.time(), "%H:%M:%S")
         elif type_["type"] == "datetime":
             date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))  # type: ignore
             return datetime.datetime.strftime(date, "%Y-%m-%dT%H:%M:%S")
         elif type_["type"] == "url":
-            url = get_url2("{}The attribute '{}'".format(prefix, name), value, request, errors)
+            url = get_url2(f"{prefix}The attribute '{name}'", value, request, errors)
             return url.url() if url else ""
         elif type_["type"] == "json":
             try:
                 return cast(Dict[str, Any], json.loads(value))
             except Exception as e:
-                errors.add("{}The attribute '{}'='{}' has an error: {}".format(prefix, name, value, str(e)))
+                errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {str(e)}")
         else:
             errors.add("{}Unknown type '{}'.".format(prefix, type_["type"]))
     except Exception as e:

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
@@ -97,7 +95,9 @@ def regex_validator(node, value):
 
 
 class BooleanMetadata(colander.Boolean):  # type: ignore
-    """Boolean metadata values are stored as string in database"""
+    """
+    Boolean metadata values are stored as string in database.
+    """
 
     def serialize(self, node, appstruct):
         if appstruct == "true":

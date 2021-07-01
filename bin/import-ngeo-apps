@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2011-2019, Camptocamp SA
 # All rights reserved.
@@ -57,7 +56,7 @@ def _subs(subs, string):
             if new_string != string:
                 return new_string
     print("Unable to find the patterns:")
-    print(("\n".join([p for p, r in subs])))
+    print("\n".join([p for p, r in subs]))
     print("in")
     print(string)
     sys.exit(1)
@@ -72,7 +71,7 @@ class _RouteDest:
         query_string = matches.group(1)
         query = ""
         if len(query_string) > 0:
-            query = ", _query={0!s}".format(dumps(dict(parse_qsl(query_string))))
+            query = f", _query={dumps(dict(parse_qsl(query_string)))!s}"
         return r"module.constant('{0!s}', '${{request.route_url('{1!s}'{2!s}) | n}}');".format(
             self.constant, self.route, query
         )

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
@@ -116,7 +114,7 @@ class DynamicView:
             "two_factor": self.request.registry.settings.get("authentication", {}).get("two_factor", False),
             "lang_urls": {
                 lang: self.request.static_url(
-                    "/etc/geomapfish/static/{lang}.json".format(lang=lang),
+                    f"/etc/geomapfish/static/{lang}.json",
                 )
                 for lang in self.request.registry.settings["available_locale_names"]
             },

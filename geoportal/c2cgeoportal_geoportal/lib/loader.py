@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -56,4 +54,4 @@ class Loader(BaseLoader):  # type: ignore
         return settings
 
     def __repr__(self) -> str:
-        return 'c2cgeoportal_geoportal.lib.loader.Loader(uri="{0}")'.format(self.uri)
+        return f'c2cgeoportal_geoportal.lib.loader.Loader(uri="{self.uri}")'

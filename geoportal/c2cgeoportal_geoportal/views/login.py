@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -357,10 +355,10 @@ class Login:
         try:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
         except NoResultFound:
-            return None, None, None, "The login '{}' does not exist.".format(username)
+            return None, None, None, f"The login '{username}' does not exist."
 
         if user.email is None or user.email == "":
-            return None, None, None, "The user '{}' has no registered email address.".format(user.username)
+            return None, None, None, f"The user '{user.username}' has no registered email address."
 
         password = self.generate_password()
         user.set_temp_password(password)

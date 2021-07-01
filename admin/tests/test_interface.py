@@ -16,14 +16,14 @@ def interface_test_data(dbsession, transact):
 
     themes = []
     for i in range(0, 5):
-        theme = Theme(name="theme_{}".format(i), ordering=1)
+        theme = Theme(name=f"theme_{i}", ordering=1)
         themes.append(theme)
 
-    servers = [OGCServer(name="server_{}".format(i)) for i in range(0, 4)]
+    servers = [OGCServer(name=f"server_{i}") for i in range(0, 4)]
 
     layers = []
     for i in range(0, 15):
-        layer = LayerWMS(name="layer_wms_{}".format(i))
+        layer = LayerWMS(name=f"layer_wms_{i}")
         layer.public = 1 == i % 2
         layer.ogc_server = servers[i % 4]
         dbsession.add(layer)
@@ -31,7 +31,7 @@ def interface_test_data(dbsession, transact):
 
     interfaces = []
     for i in range(0, 5):
-        interface = Interface(name="interface_{}".format(i), description="description_{}".format(i))
+        interface = Interface(name=f"interface_{i}", description=f"description_{i}")
         interface.themes = [themes[i % 2], themes[(i + 5) % 5]]
         interface.layers = [layers[i % 2], layers[(i + 4) % 5]]
 
@@ -101,7 +101,7 @@ class TestInterface(AbstractViewsTests):
         descriptions = "{}, {}".format(
             interface_test_data["interfaces"][0].description, interface_test_data["interfaces"][1].description
         )
-        resp = test_app.get("/admin/interfaces/{}".format(interface.id), status=200)
+        resp = test_app.get(f"/admin/interfaces/{interface.id}", status=200)
         form = resp.form
         form["description"] = descriptions
         assert str(interface.id) == self.get_first_field_named(form, "id").value
@@ -114,12 +114,12 @@ class TestInterface(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import Interface
 
         interface = interface_test_data["interfaces"][0]
-        test_app.delete("/admin/interfaces/{}".format(interface.id), status=200)
+        test_app.delete(f"/admin/interfaces/{interface.id}", status=200)
         assert len(dbsession.query(Interface).filter(Interface.id == interface.id).all()) == 0
 
     def test_duplicate(self, interface_test_data, test_app):
         interface = interface_test_data["interfaces"][3]
-        resp = test_app.get("/admin/interfaces/{}/duplicate".format(interface.id), status=200)
+        resp = test_app.get(f"/admin/interfaces/{interface.id}/duplicate", status=200)
         form = resp.form
         assert "" == self.get_first_field_named(form, "id").value
         assert str(interface.description or "") == "description_3"

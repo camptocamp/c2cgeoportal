@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
@@ -55,7 +53,7 @@ def _nice_type_name(obj: Any, dogpile_cache: bool = False) -> str:
     if dogpile_cache:
         obj, _ = obj
     type_ = type(obj)
-    return "{}.{}".format(type_.__module__, type_.__name__)
+    return f"{type_.__module__}.{type_.__name__}"
 
 
 def _process_dict(dict_: Dict[str, Any], dogpile_cache: bool = False) -> Dict[str, Any]:
@@ -64,7 +62,7 @@ def _process_dict(dict_: Dict[str, Any], dogpile_cache: bool = False) -> Dict[st
 
     return {
         "elements": sorted(
-            [
+            (
                 {
                     "key": key,
                     "type": _nice_type_name(value, dogpile_cache),
@@ -73,7 +71,7 @@ def _process_dict(dict_: Dict[str, Any], dogpile_cache: bool = False) -> Dict[st
                     "size_kb": get_size(value) / 1024 if time.monotonic() < timeout else -1,
                 }
                 for key, value in dict_.items()
-            ],
+            ),
             key=lambda i: cast(float, -i["size_kb"]),
         ),
         "id": id(dict_),

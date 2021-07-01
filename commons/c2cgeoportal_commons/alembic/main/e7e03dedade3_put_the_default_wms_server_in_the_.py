@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2016-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Put the default WMS server in the servers part, add some constrains
+"""
+Put the default WMS server in the servers part, add some constrains.
 
 Revision ID: e7e03dedade3
 Revises: daf738d5bae4

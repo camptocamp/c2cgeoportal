@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2014-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Alter_column_url_to_remove_limitation
+"""
+Alter_column_url_to_remove_limitation.
 
 Revision ID: 3f89a7d71a5e
 Revises:

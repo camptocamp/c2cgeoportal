@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -35,6 +33,7 @@ from pyramid.config import Configurator
 def includeme(config: Configurator) -> None:
     """
     Initialize the model for a Pyramid app.
+
     Activate this setup using ``config.include('c2cgeoportal_admin.commons')``.
     """
     settings = config.get_settings()

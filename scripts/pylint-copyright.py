@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
@@ -39,7 +37,7 @@ from pylint.interfaces import IRawChecker
 
 class CopyrightChecker(BaseChecker):  # type: ignore
     """
-    Check the first line for copyright notice
+    Check the first line for copyright notice.
     """
 
     __implements__ = IRawChecker
@@ -55,7 +53,7 @@ class CopyrightChecker(BaseChecker):  # type: ignore
     }
     options = ()
     copyright_re = re.compile(
-        r"Copyright \(c\) ([0-9][0-9][0-9][0-9])(-[0-9][0-9][0-9][0-9])?, Camptocamp SA".encode()
+        br"Copyright \(c\) ([0-9][0-9][0-9][0-9])(-[0-9][0-9][0-9][0-9])?, Camptocamp SA"
     )
 
     def process_module(self, node: astroid.scoped_nodes.Module) -> None:
@@ -66,7 +64,7 @@ class CopyrightChecker(BaseChecker):  # type: ignore
             first_year = int(commits_date[-1][0:4])
             last_year = commits_date[0][0:4]
             copyright_re = re.compile(
-                r"Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?{}, Camptocamp SA".format(last_year).encode()
+                fr"Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?{last_year}, Camptocamp SA".encode()
             )
             with node.stream() as stream:
                 ok = False
@@ -94,7 +92,7 @@ class CopyrightChecker(BaseChecker):  # type: ignore
                         args=(
                             str(first_year)
                             if first_year == datetime.date.today().year
-                            else "{}-{}".format(first_year, datetime.date.today().year),
+                            else f"{first_year}-{datetime.date.today().year}",
                         ),
                     )
         except Exception as e:
@@ -103,6 +101,6 @@ class CopyrightChecker(BaseChecker):  # type: ignore
 
 def register(linter: pylint.lint.PyLinter) -> None:
     """
-    required method to auto register this checker
+    required method to auto register this checker.
     """
     linter.register_checker(CopyrightChecker(linter))

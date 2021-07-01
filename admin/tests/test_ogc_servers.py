@@ -17,8 +17,8 @@ def ogc_server_test_data(dbsession, transact):
     auth = ["No auth", "Standard auth", "Geoserver auth", "Proxy"]
     servers = []
     for i in range(0, 8):
-        server = OGCServer(name="server_{}".format(i), description="description_{}".format(i))
-        server.url = "https://somebasicurl_{}.com".format(i)
+        server = OGCServer(name=f"server_{i}", description=f"description_{i}")
+        server.url = f"https://somebasicurl_{i}.com"
         server.image_type = "image/jpeg" if i % 2 == 0 else "image/png"
         server.auth = auth[i % 4]
         dbsession.add(server)
@@ -81,7 +81,7 @@ class TestOGCServer(AbstractViewsTests):
 
     def test_edit(self, test_app, ogc_server_test_data):
         ogc_server = ogc_server_test_data["ogc_servers"][0]
-        resp = test_app.get("/admin/ogc_servers/{}".format(ogc_server.id), status=200)
+        resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}", status=200)
         form = resp.form
         assert str(ogc_server.id) == self.get_first_field_named(form, "id").value
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
@@ -95,14 +95,14 @@ class TestOGCServer(AbstractViewsTests):
 
         ogc_server = ogc_server_test_data["ogc_servers"][0]
         deleted_id = ogc_server.id
-        test_app.delete("/admin/ogc_servers/{}".format(deleted_id), status=200)
+        test_app.delete(f"/admin/ogc_servers/{deleted_id}", status=200)
         assert dbsession.query(OGCServer).get(deleted_id) is None
 
     def test_duplicate(self, ogc_server_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import OGCServer
 
         ogc_server = ogc_server_test_data["ogc_servers"][3]
-        resp = test_app.get("/admin/ogc_servers/{}/duplicate".format(ogc_server.id), status=200)
+        resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/duplicate", status=200)
         form = resp.form
         assert "" == self.get_first_field_named(form, "id").value
         self.set_first_field_named(form, "name", "clone")
@@ -115,16 +115,16 @@ class TestOGCServer(AbstractViewsTests):
 
     def test_unicity_validator(self, ogc_server_test_data, test_app):
         ogc_server = ogc_server_test_data["ogc_servers"][3]
-        resp = test_app.get("/admin/ogc_servers/{}/duplicate".format(ogc_server.id), status=200)
+        resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/duplicate", status=200)
 
         resp = resp.form.submit("submit")
 
-        self._check_submission_problem(resp, "{} is already used.".format(ogc_server.name))
+        self._check_submission_problem(resp, f"{ogc_server.name} is already used.")
 
     def test_check_success(self, ogc_server_test_data, test_app):
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         ogc_server.url = "config://mapserver"
-        resp = test_app.get("/admin/ogc_servers/{}/synchronize".format(ogc_server.id), status=200)
+        resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
 
         resp = resp.forms["form-check"].submit("submit")
 
@@ -135,7 +135,7 @@ class TestOGCServer(AbstractViewsTests):
     def test_dry_run_success(self, ogc_server_test_data, test_app):
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         ogc_server.url = "config://mapserver"
-        resp = test_app.get("/admin/ogc_servers/{}/synchronize".format(ogc_server.id), status=200)
+        resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
 
         resp = resp.forms["form-dry-run"].submit("submit")
 
@@ -146,7 +146,7 @@ class TestOGCServer(AbstractViewsTests):
     def test_synchronize_success(self, ogc_server_test_data, test_app):
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         ogc_server.url = "config://mapserver"
-        resp = test_app.get("/admin/ogc_servers/{}/synchronize".format(ogc_server.id), status=200)
+        resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
 
         resp = resp.forms["form-synchronize"].submit("submit")
 

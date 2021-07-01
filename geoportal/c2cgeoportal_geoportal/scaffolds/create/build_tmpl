@@ -109,7 +109,7 @@ def main():
     print("Use env files: {}".format(", ".join(env_files)))
     for env_file in env_files:
         if not os.path.exists(env_file):
-            print("Error: the env file '{}' does not exist.".format(env_file))
+            print(f"Error: the env file '{env_file}' does not exist.")
             sys.exit(1)
     env = load_env(env_files)
 
@@ -133,7 +133,7 @@ def main():
             args.verbose,
             docker_build
             + [
-                "--tag={}-config{}".format(base, tag),
+                f"--tag={base}-config{tag}",
                 "--build-arg=SIMPLE=" + str(simple).upper(),
                 "--build-arg=PGSCHEMA=" + schema,
                 ".",
@@ -145,7 +145,7 @@ def main():
             args.verbose,
             docker_build
             + [
-                "--tag={}-geoportal{}".format(base, tag),
+                f"--tag={base}-geoportal{tag}",
                 "--build-arg=PGSCHEMA=" + schema,
                 "--build-arg=GIT_HASH=" + git_hash,
                 "geoportal",
@@ -156,7 +156,7 @@ def main():
             docker_build
             + [
                 "--target=builder",
-                "--tag={}-geoportal-dev{}".format(base, tag),
+                f"--tag={base}-geoportal-dev{tag}",
                 "geoportal",
             ],
         )

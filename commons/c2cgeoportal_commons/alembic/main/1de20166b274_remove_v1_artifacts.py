@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Remove v1 artifacts
+"""
+Remove v1 artifacts.
 
 Revision ID: 1de20166b274
 Revises: e85afd327ab3

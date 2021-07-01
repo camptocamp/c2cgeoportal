@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Fix removing layerv1
+"""
+Fix removing layerv1.
 
 Revision ID: 56dc90838d90
 Revises: 1de20166b274
@@ -56,7 +55,7 @@ def upgrade() -> None:
             ");"
         ).format(schema=schema)
     )
-    op.execute("DELETE from {schema}.treeitem WHERE type = 'layerv1';".format(schema=schema))
+    op.execute(f"DELETE from {schema}.treeitem WHERE type = 'layerv1';")
 
 
 def downgrade() -> None:

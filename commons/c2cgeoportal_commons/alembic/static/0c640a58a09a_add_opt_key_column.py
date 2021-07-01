@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add tech_data hstor column
+"""
+Add tech_data hstor column.
 
 Revision ID: 0c640a58a09a
 Revises: ae5e88f35669

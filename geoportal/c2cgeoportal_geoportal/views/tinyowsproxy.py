@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2015-2021, Camptocamp SA
 # All rights reserved.
 
@@ -80,9 +78,7 @@ class TinyOWSProxy(OGCProxy):
 
         operation = self.lower_params.get("request")
         typenames = (
-            set([normalize_typename(self.lower_params["typename"])])
-            if "typename" in self.lower_params
-            else set()
+            {normalize_typename(self.lower_params["typename"])} if "typename" in self.lower_params else set()
         )
 
         method = self.request.method
@@ -133,8 +129,7 @@ class TinyOWSProxy(OGCProxy):
 
     def _is_allowed(self, typenames: Set[str]) -> bool:
         """
-        Checks if the current user has the rights to access the given
-        type-names.
+        Checks if the current user has the rights to access the given type-names.
         """
 
         writable_layers = set()
@@ -179,8 +174,7 @@ class TinyOWSProxy(OGCProxy):
     @staticmethod
     def _parse_body(body: str) -> Tuple[str, Set[str]]:
         """
-        Read the WFS-T request body and extract the referenced type-names
-        and request method.
+        Read the WFS-T request body and extract the referenced type-names and request method.
         """
         xml = ElementTree.fromstring(body)
         wfs_request = normalize_tag(xml.tag)

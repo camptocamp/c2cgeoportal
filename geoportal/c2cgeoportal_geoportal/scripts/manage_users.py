@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -40,14 +38,11 @@ from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_
 
 def main() -> None:
     """
-    Emergency user create and password reset script
-    example, reset toto password to foobar:
-    docker-compose exec geoportal manage-users --password=foobar toto
-    example, create user foo with password bar and role admin:
-    docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo
+    Emergency user create and password reset script example, reset toto password to foobar: docker-compose
+    exec geoportal manage-users --password=foobar toto example, create user foo with password bar and role
+    admin: docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo.
 
-    to get the options list, do:
-    docker-compose exec geoportal manage-users --help
+    to get the options list, do: docker-compose exec geoportal manage-users --help
     """
 
     usage = """Usage: %prog [options] USERNAME
@@ -87,7 +82,7 @@ User can be created if it does not exist yet."""
         if result == 0:
             if not options.create:
                 # If doesn't exist and no -c option, throw error
-                print("User {} does not exist in database".format(username))
+                print(f"User {username} does not exist in database")
                 sys.exit(1)
             else:
                 if options.password is None:
@@ -100,7 +95,7 @@ User can be created if it does not exist yet."""
 
                 if query_role.count() == 0:
                     # Role not found in db?
-                    print("Role matching {} does not exist in database".format(options.rolename))
+                    print(f"Role matching {options.rolename} does not exist in database")
                     sys.exit(1)
 
                 role = query_role.first()
@@ -115,10 +110,8 @@ User can be created if it does not exist yet."""
                 sess.add(user)
 
                 print(
-                    (
-                        "User {} created with password {} and role {}".format(
-                            username, options.password, options.rolename
-                        )
+                    "User {} created with password {} and role {}".format(
+                        username, options.password, options.rolename
                     )
                 )
 
@@ -127,15 +120,15 @@ User can be created if it does not exist yet."""
             user = query.first()
 
             if options.password is not None:
-                print("Password set to: {}".format(options.password))
-                user.password = "{}".format(options.password)
+                print(f"Password set to: {options.password}")
+                user.password = f"{options.password}"
 
             if options.email is not None:
                 user.email = options.email
 
             sess.add(user)
 
-            print("Password reset for user {}".format(username))
+            print(f"Password reset for user {username}")
 
 
 if __name__ == "__main__":

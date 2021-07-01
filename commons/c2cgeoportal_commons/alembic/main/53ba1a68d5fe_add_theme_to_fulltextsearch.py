@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2015-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add theme to full-text search
+"""
+Add theme to full-text search.
 
 Revision ID: 53ba1a68d5fe
 Revises: 5109242131ce

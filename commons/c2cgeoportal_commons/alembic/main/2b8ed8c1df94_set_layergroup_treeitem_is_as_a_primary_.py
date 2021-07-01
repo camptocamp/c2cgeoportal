@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2015-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Set layergroup_treeitem.id as a primary key
+"""
+Set layergroup_treeitem.id as a primary key.
 
 Revision ID: 2b8ed8c1df94
 Revises: 26a8c51827c6

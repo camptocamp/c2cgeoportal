@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -143,11 +141,11 @@ def get_class(
     readonly_attributes: Optional[List[str]] = None,
 ) -> sqlalchemy.ext.declarative.api.DeclarativeMeta:
     """
-    Get the SQLAlchemy mapped class for "tablename". If no class exists
-    for "tablename" one is created, and added to the cache. "tablename"
-    must reference a valid string. If there is no table identified by
-    tablename in the database a NoSuchTableError SQLAlchemy exception
-    is raised.
+    Get the SQLAlchemy mapped class for "tablename".
+
+    If no class exists for "tablename" one is created, and added to the cache. "tablename" must reference a
+    valid string. If there is no table identified by tablename in the database a NoSuchTableError SQLAlchemy
+    exception is raised.
     """
 
     tablename, schema = _get_schema(tablename)

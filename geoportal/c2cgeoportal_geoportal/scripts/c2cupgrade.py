@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
@@ -61,7 +59,7 @@ DIFF_NOTICE = (
 
 def main() -> None:
     """
-    tool used to do the application upgrade
+    tool used to do the application upgrade.
     """
 
     parser = _fill_arguments()
@@ -100,12 +98,12 @@ class Step:
     ) -> Callable[["C2cUpgradeTool"], None]:
         def decorate(c2cupgradetool: "C2cUpgradeTool") -> None:
             try:
-                if os.path.isfile(".UPGRADE{}".format(self.step_number - 1)):
-                    os.unlink(".UPGRADE{}".format(self.step_number - 1))
+                if os.path.isfile(f".UPGRADE{self.step_number - 1}"):
+                    os.unlink(f".UPGRADE{self.step_number - 1}")
                 if self.file_marker:
-                    with open(".UPGRADE{}".format(self.step_number), "w"):
+                    with open(f".UPGRADE{self.step_number}", "w"):
                         pass
-                print("Start step {}.".format(self.step_number))
+                print(f"Start step {self.step_number}.")
                 sys.stdout.flush()
                 current_step(c2cupgradetool, self.step_number)
             except subprocess.CalledProcessError as exception:
@@ -113,7 +111,7 @@ class Step:
                     self.step_number,
                     error=True,
                     message="The command `{}` returns the error code {}.".format(
-                        " ".join(["'{}'".format(exception) for exception in exception.cmd]),
+                        " ".join([f"'{exception}'" for exception in exception.cmd]),
                         exception.returncode,
                     ),
                     prompt="Fix the error and run the step again:",
@@ -123,7 +121,7 @@ class Step:
                 c2cupgradetool.print_step(
                     self.step_number,
                     error=True,
-                    message="There was an error: {}.".format(exception),
+                    message=f"There was an error: {exception}.",
                     prompt="Fix the error and run the step again:",
                 )
                 sys.exit(1)
@@ -137,7 +135,7 @@ class Step:
                         c2cupgradetool.print_step(
                             self.step_number,
                             error=True,
-                            message="The step had the error '{}'.".format(cautch_exception),
+                            message=f"The step had the error '{cautch_exception}'.",
                             prompt="Fix the error and run the step again:",
                         )
 
@@ -161,7 +159,7 @@ class C2cUpgradeTool:
             print(colorize("Unable to find the required 'project.yaml' file.", Color.RED))
             sys.exit(1)
 
-        with open("project.yaml", "r") as project_file:
+        with open("project.yaml") as project_file:
             return cast(Dict[str, Any], yaml.safe_load(project_file))
 
     @staticmethod
@@ -170,7 +168,7 @@ class C2cUpgradeTool:
             print(colorize("Unable to find the required '.upgrade.yaml' file.", Color.RED))
             sys.exit(1)
 
-        with open(".upgrade.yaml", "r") as project_file:
+        with open(".upgrade.yaml") as project_file:
             return cast(Union[List[Any], Dict[str, Any]], yaml.safe_load(project_file)[section])
 
     def print_step(
@@ -185,18 +183,18 @@ class C2cUpgradeTool:
             print(self.color_bar)
             if message is not None:
                 print(colorize(message, Color.RED if error else Color.YELLOW))
-                instructions.write("{}\n".format(message))
+                instructions.write(f"{message}\n")
             if step >= 0:
                 print(colorize(prompt, Color.GREEN))
-                instructions.write("{}\n".format(prompt))
+                instructions.write(f"{prompt}\n")
                 cmd = ["./upgrade", os.environ["VERSION"]]
                 if step != 0:
-                    cmd.append("{}".format(step))
+                    cmd.append(f"{step}")
                 print(colorize(" ".join(cmd), Color.GREEN))
                 instructions.write("{}\n".format(" ".join(cmd)))
 
     def run_step(self, step: int) -> None:
-        getattr(self, "step{}".format(step))()
+        getattr(self, f"step{step}")()
 
     def test_checkers(self) -> Tuple[bool, Optional[str]]:
         run_curl = "Run `curl --insecure {} '{}'` for more information.".format(
@@ -209,15 +207,15 @@ class C2cUpgradeTool:
                 self.project["checker_url"], headers=self.project.get("checker_headers"), verify=False
             )
         except requests.exceptions.ConnectionError as exception:
-            return False, "\n".join(["Connection error: {}".format(exception), run_curl])
+            return False, "\n".join([f"Connection error: {exception}", run_curl])
         except ConnectionRefusedError as exception:
-            return False, "\n".join(["Connection refused: {}".format(exception), run_curl])
+            return False, "\n".join([f"Connection refused: {exception}", run_curl])
         if resp.status_code < 200 or resp.status_code >= 300:
 
             print(colorize("=============", Color.RED))
             print(colorize("Checker error", Color.RED))
             for name, value in resp.json()["failures"].items():
-                print(colorize("Test '{}' failed with result:".format(name), Color.YELLOW))
+                print(colorize(f"Test '{name}' failed with result:", Color.YELLOW))
                 del value["level"]
                 del value["timing"]
 
@@ -460,7 +458,7 @@ rules:
                             )
                             task_to_do = True
                 if not managed:
-                    print("The file '{}' is removed.".format(file_))
+                    print(f"The file '{file_}' is removed.")
                     if "version" in element and "from" in element:
                         print(
                             "Was used in version {}, to be removed from version {}.".format(
@@ -533,9 +531,9 @@ rules:
                         )
                         task_to_do = True
             if not managed and os.path.exists(dst) and not element.get("override", False):
-                print(colorize("The destination '{}' already exists, ignoring.".format(dst), Color.YELLOW))
+                print(colorize(f"The destination '{dst}' already exists, ignoring.", Color.YELLOW))
             elif not managed:
-                print("Move the {} '{}' to '{}'.".format(type_, src, dst))
+                print(f"Move the {type_} '{src}' to '{dst}'.")
                 if "version" in element:
                     print("Needed from version {}.".format(element["version"]))
                 if os.path.dirname(dst) != "":
@@ -543,7 +541,7 @@ rules:
                 try:
                     check_call(["git", "mv", src, dst])
                 except Exception as exception:
-                    print("[Warning] Git move error: {}.".format(exception))
+                    print(f"[Warning] Git move error: {exception}.")
                     os.rename(src, dst)
         return task_to_do
 
@@ -567,23 +565,23 @@ rules:
         ):
             for pattern in default_project_file["include"]:
                 if re.match(pattern + "$", file_):
-                    print("File '{}' included by migration config pattern '{}'.".format(file_, pattern))
+                    print(f"File '{file_}' included by migration config pattern '{pattern}'.")
                     managed = True
                     break
             if managed:
                 for pattern in default_project_file["exclude"]:
                     if re.match(pattern + "$", file_):
-                        print("File '{}' excluded by migration config pattern '{}'.".format(file_, pattern))
+                        print(f"File '{file_}' excluded by migration config pattern '{pattern}'.")
                         print("managed", file_, pattern)
                         managed = False
                         break
         else:
-            print("New file '{}'.".format(file_))
+            print(f"New file '{file_}'.")
 
         if not managed and not os.path.exists(file_):
             for pattern in self.get_upgrade("extra"):
                 if re.match(pattern + "$", file_):
-                    print("File '{}' is an extra by migration config pattern '{}'.".format(file_, pattern))
+                    print(f"File '{file_}' is an extra by migration config pattern '{pattern}'.")
                     managed = True
 
         if not managed:
@@ -623,11 +621,7 @@ rules:
                 managed = self.is_managed(destination, True)
                 source = os.path.join("CONST_create_template", destination)
                 if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
-                    print(
-                        colorize(
-                            "Get the file '{}' from the create template.".format(destination), Color.GREEN
-                        )
-                    )
+                    print(colorize(f"Get the file '{destination}' from the create template.", Color.GREEN))
                     if not pre:
                         if os.path.dirname(destination) != "":
                             os.makedirs(os.path.dirname(destination), exist_ok=True)
@@ -646,11 +640,11 @@ rules:
                             )
                             sys.exit(1)
                 elif managed:
-                    print("The file '{}' is managed by the project.".format(destination))
+                    print(f"The file '{destination}' is managed by the project.")
                 elif os.path.exists(destination) and filecmp.cmp(source, destination):
-                    print("The file '{}' does not change.".format(destination))
+                    print(f"The file '{destination}' does not change.")
                 else:
-                    print("Unknown stat for the file '{}'.".format(destination))
+                    print(f"Unknown stat for the file '{destination}'.")
                     sys.exit(2)
         return error
 
@@ -682,7 +676,7 @@ rules:
         status = [s for s in status if len(s) > 3]
         status = [s[3:] for s in status if s[:3].strip() == "M"]
         for pattern in self.get_upgrade("no_diff"):
-            matcher = re.compile("CONST_create_template/{}$".format(pattern))
+            matcher = re.compile(f"CONST_create_template/{pattern}$")
             status = [s for s in status if not matcher.match(s)]
         status = [s for s in status if os.path.exists(s[len("CONST_create_template/") :])]
         status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/") :])]
@@ -824,7 +818,7 @@ rules:
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         print("Now all your files are committed; you should do a git push:")
-        print("git push {} {}.".format(self.options.git_remote, branch))
+        print(f"git push {self.options.git_remote} {branch}.")
 
 
 def check_git_status_output(args: Optional[List[str]] = None) -> str:

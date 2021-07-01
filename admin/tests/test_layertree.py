@@ -25,14 +25,14 @@ def layertree_test_data(dbsession, transact):
     ogc_server = OGCServer(name="ogc_server")
     dbsession.add(ogc_server)
     for i in range(0, 10):
-        layer_wms = LayerWMS(name="layer_wms_{}".format(i))
+        layer_wms = LayerWMS(name=f"layer_wms_{i}")
         layer_wms.ogc_server = ogc_server
         layers_wms.append(layer_wms)
         dbsession.add(layer_wms)
 
     layers_wmts = []
     for i in range(0, 10):
-        layer_wmts = LayerWMTS(name="layer_wmts_{}".format(i))
+        layer_wmts = LayerWMTS(name=f"layer_wmts_{i}")
         layer_wmts.url = "http://localhost/wmts"
         layer_wmts.layer = layer_wmts.name
         layers_wmts.append(layer_wmts)
@@ -40,7 +40,7 @@ def layertree_test_data(dbsession, transact):
 
     groups = []
     for i in range(0, 10):
-        group = LayerGroup(name="layer_group_{}".format(i))
+        group = LayerGroup(name=f"layer_group_{i}")
         groups.append(group)
         dbsession.add(group)
 
@@ -52,7 +52,7 @@ def layertree_test_data(dbsession, transact):
 
     themes = []
     for i in range(0, 5):
-        theme = Theme(name="theme_{}".format(i))
+        theme = Theme(name=f"theme_{i}")
         themes.append(theme)
         dbsession.add(theme)
 
@@ -93,13 +93,13 @@ class TestLayerTreeView(AbstractViewsTests):
     def check_edit_action(self, test_app, nodes, table, item_id):
         node = next(n for n in nodes if n["id"] == item_id)
         action = next(a for a in node["actions"] if a["name"] == "edit")
-        assert "http://localhost/admin/{}/{}".format(table, item_id) == action["url"]
+        assert f"http://localhost/admin/{table}/{item_id}" == action["url"]
         test_app.get(action["url"], status=200)
 
     def check_unlink_action(self, test_app, nodes, group_id, item_id):
         node = next(n for n in nodes if n["id"] == item_id)
         action = next(a for a in node["actions"] if a["name"] == "unlink")
-        assert "http://localhost/admin/layertree/unlink/{}/{}".format(group_id, item_id) == action["url"]
+        assert f"http://localhost/admin/layertree/unlink/{group_id}/{item_id}" == action["url"]
         test_app.delete(action["url"], status=200)
 
     def check_translation(self, nodes, item):
@@ -111,7 +111,7 @@ class TestLayerTreeView(AbstractViewsTests):
         node = next(n for n in nodes if n["id"] == parent_id)
         action = next(a for a in node["actions"] if a["name"] == action_name)
         assert label == action["label"]
-        assert "http://localhost/admin/{}/new?parent_id={}".format(route_table, parent_id) == action["url"]
+        assert f"http://localhost/admin/{route_table}/new?parent_id={parent_id}" == action["url"]
 
         form = test_app.get(action["url"], status=200).form
         assert form["parent_id"].value == str(parent_id)
@@ -210,7 +210,7 @@ class TestLayerTreeView(AbstractViewsTests):
     def test_unlink(self, test_app, layertree_test_data, dbsession):
         group = layertree_test_data["groups"][0]
         item = layertree_test_data["layers_wms"][0]
-        test_app.delete("/admin/layertree/unlink/{}/{}".format(group.id, item.id), status=200)
+        test_app.delete(f"/admin/layertree/unlink/{group.id}/{item.id}", status=200)
         dbsession.expire_all()
         assert item not in group.children
 
@@ -226,5 +226,5 @@ class TestLayerTreeView(AbstractViewsTests):
             (layers_wms[1].id, LayerWMS),
             (groups[1].id, LayerGroup),
         ):
-            test_app.delete("/admin/layertree/delete/{}".format(item_id), status=200)
+            test_app.delete(f"/admin/layertree/delete/{item_id}", status=200)
             assert dbsession.query(model).get(item_id) is None

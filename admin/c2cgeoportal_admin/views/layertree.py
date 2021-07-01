@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -64,7 +62,7 @@ class LayerTreeViews:
         group_id = self._request.params.get("group_id", None)
         path = self._request.params.get("path", "")
 
-        client_tsf = TranslationStringFactory("{}-client".format(self._request.registry.package_name))
+        client_tsf = TranslationStringFactory(f"{self._request.registry.package_name}-client")
 
         if group_id is None:
             items = self._dbsession.query(Theme).order_by(Theme.ordering)
@@ -82,7 +80,7 @@ class LayerTreeViews:
                 "name": item.name,
                 "translated_name": self._request.localizer.translate(client_tsf(item.name)),
                 "description": item.description,
-                "path": "{}_{}".format(path, item.id),
+                "path": f"{path}_{item.id}",
                 "parent_path": path,
                 "actions": [action.to_dict(self._request) for action in self._item_actions(item, group_id)],
             }

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2016-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Use dimension on all the layers
+"""
+Use dimension on all the layers.
 
 Revision ID: 8117bb9bba16
 Revises: daf738d5bae4

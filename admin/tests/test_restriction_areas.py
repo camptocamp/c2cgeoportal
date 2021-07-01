@@ -25,16 +25,16 @@ def restriction_area_test_data(dbsession, transact):
     ogc_server = OGCServer(name="test_server")
     layers = []
     for i in range(0, 4):
-        layer = LayerWMS(name="layer_{}".format(i), layer="layer_{}".format(i), public=False)
+        layer = LayerWMS(name=f"layer_{i}", layer=f"layer_{i}", public=False)
         layer.ogc_server = ogc_server
         layers.append(layer)
     dbsession.add_all(layers)
 
     restrictionareas = []
     for i in range(0, 4):
-        restrictionarea = RestrictionArea(name="restrictionarea_{}".format(i))
+        restrictionarea = RestrictionArea(name=f"restrictionarea_{i}")
         restrictionarea.area = from_shape(box(485869.5728, 76443.1884, 837076.5648, 299941.7864), srid=21781)
-        restrictionarea.description = "description_{}".format(i)
+        restrictionarea.description = f"description_{i}"
         restrictionarea.roles = [roles[i % 4], roles[(i + 2) % 4]]
         restrictionarea.layers = [layers[i % 4], layers[(i + 2) % 4]]
         dbsession.add(restrictionarea)
@@ -113,16 +113,16 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert restriction_area.name == "new_name"
         assert restriction_area.description == "new_description"
         assert restriction_area.readwrite
-        assert set(restriction_area.roles) == set([roles[0], roles[1]])
-        assert set(restriction_area.layers) == set([layers[0], layers[1]])
+        assert set(restriction_area.roles) == {roles[0], roles[1]}
+        assert set(restriction_area.layers) == {layers[0], layers[1]}
 
     def test_unicity_validator(self, restriction_area_test_data, test_app):
         restriction_area = restriction_area_test_data["restriction_areas"][2]
 
-        resp = test_app.get("/admin/restriction_areas/{}/duplicate".format(restriction_area.id), status=200)
+        resp = test_app.get(f"/admin/restriction_areas/{restriction_area.id}/duplicate", status=200)
         resp = resp.form.submit("submit")
 
-        self._check_submission_problem(resp, "{} is already used.".format(restriction_area.name))
+        self._check_submission_problem(resp, f"{restriction_area.name} is already used.")
 
     def test_edit(self, test_app, restriction_area_test_data, dbsession):
         restriction_area = restriction_area_test_data["restriction_areas"][0]
@@ -162,14 +162,14 @@ class TestRestrictionAreaViews(TestTreeGroup):
 
         dbsession.expire(restriction_area)
         assert restriction_area.description == "new_description"
-        assert set(restriction_area.roles) == set([roles[i] for i in range(0, 3)])
+        assert set(restriction_area.roles) == {roles[i] for i in range(0, 3)}
 
     def test_delete(self, test_app, restriction_area_test_data, dbsession):
         from c2cgeoportal_commons.models.main import RestrictionArea
 
         restriction_area = restriction_area_test_data["restriction_areas"][0]
         deleted_id = restriction_area.id
-        test_app.delete("/admin/restriction_areas/{}".format(deleted_id), status=200)
+        test_app.delete(f"/admin/restriction_areas/{deleted_id}", status=200)
         assert dbsession.query(RestrictionArea).get(deleted_id) is None
 
     def test_duplicate(self, restriction_area_test_data, test_app, dbsession):
@@ -181,9 +181,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         # Ensure restriction_area.layers is loaded with relationship "order_by"
         dbsession.expire(restriction_area)
 
-        form = test_app.get(
-            "/admin/restriction_areas/{}/duplicate".format(restriction_area.id), status=200
-        ).form
+        form = test_app.get(f"/admin/restriction_areas/{restriction_area.id}/duplicate", status=200).form
 
         assert "" == self.get_first_field_named(form, "id").value
         self._check_roles(form, roles, restriction_area)

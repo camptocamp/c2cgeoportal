@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -50,7 +48,7 @@ def fill_arguments(parser: ArgumentParser) -> None:
         "--app-config",
         "-i",
         default=default_app_config,
-        help="The application .ini config file (optional, default is '{}')".format(default_app_config),
+        help=f"The application .ini config file (optional, default is '{default_app_config}')",
     )
     parser.add_argument(
         "--app-name", "-n", default="app", help="The application name (optional, default is 'app')"

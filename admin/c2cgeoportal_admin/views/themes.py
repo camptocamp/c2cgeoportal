@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -71,7 +69,7 @@ class ThemeViews(TreeItemViews):
                 "functionalities",
                 renderer=lambda themes: ", ".join(
                     [
-                        "{}={}".format(f.name, f.value)
+                        f"{f.name}={f.value}"
                         for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
                     ]
                 ),

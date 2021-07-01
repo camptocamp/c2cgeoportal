@@ -16,8 +16,8 @@ def functionality_test_data(dbsession, transact):
 
     functionalities = []
     for i in range(0, 4):
-        functionality = Functionality(name="functionality_{}".format(i), value="value_{}".format(i))
-        functionality.description = "description_{}".format(i)
+        functionality = Functionality(name=f"functionality_{i}", value=f"value_{i}")
+        functionality.description = f"description_{i}"
         dbsession.add(functionality)
         functionalities.append(functionality)
 
@@ -65,7 +65,7 @@ class TestFunctionality(AbstractViewsTests):
 
     def test_edit(self, test_app, functionality_test_data):
         functionality = functionality_test_data["functionalities"][0]
-        resp = test_app.get("/admin/functionalities/{}".format(functionality.id), status=200)
+        resp = test_app.get(f"/admin/functionalities/{functionality.id}", status=200)
         form = resp.form
         assert str(functionality.id) == self.get_first_field_named(form, "id").value
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
@@ -79,14 +79,14 @@ class TestFunctionality(AbstractViewsTests):
 
         functionality = functionality_test_data["functionalities"][0]
         deleted_id = functionality.id
-        test_app.delete("/admin/functionalities/{}".format(deleted_id), status=200)
+        test_app.delete(f"/admin/functionalities/{deleted_id}", status=200)
         assert dbsession.query(Functionality).get(deleted_id) is None
 
     def test_duplicate(self, functionality_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Functionality
 
         functionality = functionality_test_data["functionalities"][3]
-        resp = test_app.get("/admin/functionalities/{}/duplicate".format(functionality.id), status=200)
+        resp = test_app.get(f"/admin/functionalities/{functionality.id}/duplicate", status=200)
         form = resp.form
         assert "" == self.get_first_field_named(form, "id").value
         self.set_first_field_named(form, "name", "clone")

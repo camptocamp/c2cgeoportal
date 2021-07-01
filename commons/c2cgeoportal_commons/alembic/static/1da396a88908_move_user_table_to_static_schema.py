@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2015-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Move user table to static schema
+"""
+Move user table to static schema.
 
 Revision ID: 1da396a88908
 Revises: 3f89a7d71a5e
@@ -103,7 +102,7 @@ def upgrade() -> None:
         op.execute(
             "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
             "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')"
-            % {"staticschema": staticschema, "pass": sha1("admin".encode("utf-8")).hexdigest()}
+            % {"staticschema": staticschema, "pass": sha1(b"admin").hexdigest()}
         )
 
 

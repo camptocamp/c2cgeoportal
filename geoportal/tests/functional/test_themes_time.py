@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -208,12 +206,10 @@ class TestThemesTimeView(TestCase):
         themes = theme_view.themes()
         self.assertEqual(
             set(themes["errors"]),
-            set(
-                [
-                    "Error while handling time for layer '__test_layer_time_group_1': Could not mix time mode 'range' and 'value'",
-                    "Error: time layer '__test_layer_without_time_info' has no time information in capabilities",
-                ]
-            ),
+            {
+                "Error while handling time for layer '__test_layer_time_group_1': Could not mix time mode 'range' and 'value'",
+                "Error: time layer '__test_layer_without_time_info' has no time information in capabilities",
+            },
         )
         self.assertEqual(
             [self._only(t) for t in themes["themes"]],

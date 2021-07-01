@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2016-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Be able to delete a WMS layer in SQL
+"""
+Be able to delete a WMS layer in SQL.
 
 Revision ID: 951ff84bd8ec
 Revises: 29f2a32859ec

@@ -14,7 +14,7 @@ def themes_ordering_test_data(dbsession, transact):
 
     themes = []
     for i in range(0, 25):
-        theme = Theme(name="theme_{}".format(i), ordering=100)
+        theme = Theme(name=f"theme_{i}", ordering=100)
         dbsession.add(theme)
         themes.append(theme)
 

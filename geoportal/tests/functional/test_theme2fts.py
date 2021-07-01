@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2020, Camptocamp SA
 # All rights reserved.
 
@@ -72,7 +70,7 @@ def transact(dbsession):
 
 def add_parent(dbsession, item, group):
     """
-    Utility function to add a TreeItem in a TreeGroup
+    Utility function to add a TreeItem in a TreeGroup.
     """
     from c2cgeoportal_commons.models import main
 
@@ -163,8 +161,9 @@ def options(**kwargs):
 @pytest.fixture(scope="module")
 def dummy_translation():
     """
-    Mock gettext.translation to return a dummy Translation class,
-    with a gettext method that returns passed text suffixed by language.
+    Mock gettext.translation to return a dummy Translation class, with a gettext method that returns passed
+    text suffixed by language.
+
     Ex: "public_theme" => "public_theme_fr"
     """
 
@@ -173,7 +172,7 @@ def dummy_translation():
             self._lang = lang
 
         def gettext(self, text):
-            return "{}_{}".format(text, self._lang)
+            return f"{text}_{self._lang}"
 
     def translation(domain, localedir=None, languages=None):
         return Translation(languages[0])
@@ -227,7 +226,7 @@ class TestImport:
                     continue
                 expected = [
                     {
-                        "label": "public_theme_{}".format(lang),
+                        "label": f"public_theme_{lang}",
                         "role": None,
                         "interface": interface,
                         "lang": lang,
@@ -241,7 +240,7 @@ class TestImport:
                         "actions": [{"action": "add_theme", "data": "public_theme"}],
                     },
                     {
-                        "label": "private_theme_{}".format(lang),
+                        "label": f"private_theme_{lang}",
                         "role": test_data["role"],
                         "interface": interface,
                         "lang": lang,
@@ -255,7 +254,7 @@ class TestImport:
                         "actions": [{"action": "add_theme", "data": "private_theme"}],
                     },
                     {
-                        "label": "first_level_group_{}".format(lang),
+                        "label": f"first_level_group_{lang}",
                         "role": None,
                         "interface": interface,
                         "lang": lang,
@@ -269,7 +268,7 @@ class TestImport:
                         "actions": [{"action": "add_group", "data": "first_level_group"}],
                     },
                     {
-                        "label": "second_level_group_{}".format(lang),
+                        "label": f"second_level_group_{lang}",
                         "role": test_data["role"],
                         "interface": interface,
                         "lang": lang,
@@ -283,7 +282,7 @@ class TestImport:
                         "actions": [{"action": "add_group", "data": "second_level_group"}],
                     },
                     {
-                        "label": "public_layer_{}".format(lang),
+                        "label": f"public_layer_{lang}",
                         "role": None,
                         "interface": interface,
                         "lang": lang,
@@ -297,7 +296,7 @@ class TestImport:
                         "actions": [{"action": "add_layer", "data": "public_layer"}],
                     },
                     {
-                        "label": "private_layer_{}".format(lang),
+                        "label": f"private_layer_{lang}",
                         "role": test_data["role"],
                         "interface": interface,
                         "lang": lang,
@@ -337,7 +336,7 @@ class TestImport:
                     continue
                 expected = [
                     {
-                        "label": "alias_layer_{}".format(lang),
+                        "label": f"alias_layer_{lang}",
                         "role": None,
                         "interface": interface,
                         "lang": lang,

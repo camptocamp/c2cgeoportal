@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Change mapserver URL for Docker
+"""
+Change mapserver URL for Docker.
 
 Revision ID: d48a63b348f1
 Revises: 9268a1dffac0

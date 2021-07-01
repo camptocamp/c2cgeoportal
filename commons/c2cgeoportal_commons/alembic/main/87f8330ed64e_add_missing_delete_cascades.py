@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add missing delete cascades
+"""
+Add missing delete cascades.
 
 Revision ID: 87f8330ed64e
 Revises: 16e43f8c0330

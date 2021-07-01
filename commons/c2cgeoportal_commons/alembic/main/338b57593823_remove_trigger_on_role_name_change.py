@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Remove trigger on_role_name_change
+"""
+Remove trigger on_role_name_change.
 
 Revision ID: 338b57593823
 Revises: dba87f2647f9
@@ -49,8 +48,8 @@ depends_on = None
 def upgrade() -> None:
     schema = config["schema"]
 
-    op.execute("DROP TRIGGER on_role_name_change ON {schema}.role".format(schema=schema))
-    op.execute("DROP FUNCTION {schema}.on_role_name_change()".format(schema=schema))
+    op.execute(f"DROP TRIGGER on_role_name_change ON {schema}.role")
+    op.execute(f"DROP FUNCTION {schema}.on_role_name_change()")
 
 
 def downgrade() -> None:

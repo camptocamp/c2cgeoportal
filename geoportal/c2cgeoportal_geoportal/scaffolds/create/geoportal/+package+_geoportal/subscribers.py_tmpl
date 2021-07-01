@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from pyramid.events import BeforeRender, NewRequest, subscriber
 from pyramid.i18n import TranslationStringFactory, get_localizer
 

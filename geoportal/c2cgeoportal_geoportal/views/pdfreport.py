@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -55,12 +53,14 @@ class PdfReport(OGCProxy):
         self.config = self.request.registry.settings.get("pdfreport", {})
 
     def _do_print(self, spec: Dict[str, Any]) -> pyramid.response.Response:
-        """Create and get report PDF."""
+        """
+        Create and get report PDF.
+        """
 
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
         response = self._proxy(
-            Url("{0!s}/buildreport.{1!s}".format(self.config["print_url"], spec["outputFormat"])),
+            Url("{!s}/buildreport.{!s}".format(self.config["print_url"], spec["outputFormat"])),
             method="POST",
             body=dumps(spec).encode("utf-8"),
             headers=headers,

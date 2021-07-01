@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
@@ -58,7 +56,7 @@ def main() -> None:
     parser.add_argument(
         "--locale-folder",
         default=LOCALE_PATH,
-        help="The folder where the locale files are stored (default to {})".format(LOCALE_PATH),
+        help=f"The folder where the locale files are stored (default to {LOCALE_PATH})",
     )
     parser.add_argument("--interfaces", action="append", help="the interfaces to export")
     parser.add_argument(
@@ -111,7 +109,7 @@ class Import:
 
         fts_missing_langs = [lang for lang in self.languages if lang not in self.fts_languages]
         if fts_missing_langs:
-            msg = "Keys {} are missing in fulltextsearch languages configuration.".format(fts_missing_langs)
+            msg = f"Keys {fts_missing_langs} are missing in fulltextsearch languages configuration."
             if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                 print(colorize(msg, Color.RED))
                 self.languages = [lang for lang in self.languages if lang in self.fts_languages]
@@ -135,13 +133,13 @@ class Import:
         for lang in self.languages:
             try:
                 self._[lang] = gettext.translation(
-                    "{}_geoportal-client".format(package),
+                    f"{package}_geoportal-client",
                     options.locale_folder.format(package=package),
                     [lang],
                 )
             except OSError as e:
                 self._[lang] = gettext.NullTranslations()
-                print("Warning: {} (language: {})".format(e, lang))
+                print(f"Warning: {e} (language: {lang})")
 
         query = self.session.query(Interface)
         if options.interfaces is not None:

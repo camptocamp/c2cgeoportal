@@ -24,7 +24,7 @@ class TestI18n(TestCase):
     )
     def test_available_locale_names(self, isdir_mock, listdir_mock, exists_mock):
         locales = available_locale_names()
-        self.assertEqual(set(locales), set(["de", "en", "fr"]))
+        self.assertEqual(set(locales), {"de", "en", "fr"})
 
     def test_available_locale_names_no_dir(self):
         locales = available_locale_names()

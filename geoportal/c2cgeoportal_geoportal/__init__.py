@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -102,12 +100,12 @@ def add_interface(
     **kwargs: Any,
 ) -> None:
     del interface_type  # unused
-    route = "/" if default else "/{}".format(interface_name)
+    route = "/" if default else f"/{interface_name}"
     add_interface_ngeo(
         config,
         route_name=interface_name,
         route=route,
-        renderer="/etc/static-ngeo/{}.html".format(interface_name),
+        renderer=f"/etc/static-ngeo/{interface_name}.html",
         **kwargs,
     )
 
@@ -126,14 +124,14 @@ def add_interface_ngeo(
     )
     # Permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
-        "{}theme".format(route_name),
+        f"{route_name}theme",
         "{}{}theme/{{themes}}".format(route, "" if route[-1] == "/" else "/"),
         request_method="GET",
     )
     config.add_view(
         Entry,
         attr="get_ngeo_index_vars",
-        route_name="{}theme".format(route_name),
+        route_name=f"{route_name}theme",
         renderer=renderer,
         permission=permission,
     )
@@ -204,7 +202,8 @@ def create_get_user_from_request(
     def get_user_from_request(
         request: pyramid.request.Request, username: Optional[str] = None
     ) -> Optional["static.User"]:
-        """Return the User object for the request.
+        """
+        Return the User object for the request.
 
         Return ``None`` if:
         * user is anonymous
@@ -239,7 +238,8 @@ def create_get_user_from_request(
 def set_user_validator(
     config: pyramid.config.Configurator, user_validator: Callable[[pyramid.request.Request, str, str], str]
 ) -> None:
-    """Call this function to register a user validator function.
+    """
+    Call this function to register a user validator function.
 
     The validator function is passed three arguments: ``request``,
     ``username``, and ``password``. The function should return the
@@ -257,9 +257,10 @@ def set_user_validator(
 
 def default_user_validator(request: pyramid.request.Request, username: str, password: str) -> Optional[str]:
     """
-    Validate the username/password. This is c2cgeoportal's
-    default user validator.
-    Return None if we are anonymous, the string to remember otherwise.
+    Validate the username/password.
+
+    This is c2cgeoportal's default user validator. Return None if we are anonymous, the string to remember
+    otherwise.
     """
     del request  # unused
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
@@ -282,9 +283,12 @@ def default_user_validator(request: pyramid.request.Request, username: str, pass
 
 
 class MapserverproxyRoutePredicate:
-    """Serve as a custom route predicate function for mapserverproxy.
-    If the hide_capabilities setting is set and is true then we want to
-    return 404s on GetCapabilities requests."""
+    """
+    Serve as a custom route predicate function for mapserverproxy.
+
+    If the hide_capabilities setting is set and is true then we want to return 404s on GetCapabilities
+    requests.
+    """
 
     def __init__(self, val: Any, config: pyramid.config.Configurator) -> None:
         del val, config
@@ -294,7 +298,7 @@ class MapserverproxyRoutePredicate:
         hide_capabilities = request.registry.settings.get("hide_capabilities")
         if not hide_capabilities:
             return True
-        params = dict((k.lower(), v.lower()) for k, v in request.params.items())
+        params = {k.lower(): v.lower() for k, v in request.params.items()}
         return "request" not in params or params["request"] not in ("getcapabilities", "capabilities")
 
     @staticmethod

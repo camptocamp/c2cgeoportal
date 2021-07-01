@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2014-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Update icons url
+"""
+Update icons url.
 
 Revision ID: 20137477bd02
 Revises: 415746eb9f6

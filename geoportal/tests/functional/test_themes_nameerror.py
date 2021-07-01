@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2013-2019, Camptocamp SA
 # All rights reserved.
 
@@ -104,4 +102,4 @@ class TestThemesNameErrorView(TestCase):
 
         theme_view = Theme(self._create_request_obj(params={"version": "2"}))
         themes = theme_view.themes()
-        self.assertEqual(set(themes["errors"]), set(["The theme has an unsupported name '__test/theme'."]))
+        self.assertEqual(set(themes["errors"]), {"The theme has an unsupported name '__test/theme'."})

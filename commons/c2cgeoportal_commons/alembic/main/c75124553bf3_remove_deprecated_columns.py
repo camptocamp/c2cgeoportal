@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Remove deprecated columns
+"""
+Remove deprecated columns.
 
 Revision ID: c75124553bf3
 Revises: dba87f2647f9

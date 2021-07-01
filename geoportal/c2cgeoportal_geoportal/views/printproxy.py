@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -55,7 +53,9 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_capabilities")  # type: ignore
     def capabilities(self) -> pyramid.response.Response:
-        """Get print capabilities."""
+        """
+        Get print capabilities.
+        """
 
         templates = get_functionality("print_template", self.request, is_intranet(self.request))
 
@@ -104,7 +104,9 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_report_create")  # type: ignore
     def report_create(self) -> pyramid.response.Response:
-        """Create PDF."""
+        """
+        Create PDF.
+        """
         return self._proxy_response(
             "print",
             Url(
@@ -116,7 +118,9 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_status")  # type: ignore
     def status(self) -> pyramid.response.Response:
-        """PDF status."""
+        """
+        PDF status.
+        """
         return self._proxy_response(
             "print",
             Url(
@@ -128,7 +132,9 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_cancel")  # type: ignore
     def cancel(self) -> pyramid.response.Response:
-        """PDF cancel."""
+        """
+        PDF cancel.
+        """
         return self._proxy_response(
             "print",
             Url(
@@ -140,7 +146,9 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_report_get")  # type: ignore
     def report_get(self) -> pyramid.response.Response:
-        """Get the PDF."""
+        """
+        Get the PDF.
+        """
         url = Url(
             "{}/report/{}".format(
                 self.request.get_organization_print_url(), self.request.matchdict.get("ref")

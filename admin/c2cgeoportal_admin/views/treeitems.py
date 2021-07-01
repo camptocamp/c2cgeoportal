@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -52,7 +50,7 @@ class TreeItemViews(AbstractViews):  # type: ignore
         _list_field(
             "metadatas",
             renderer=lambda layers_group: ", ".join(
-                ["{}: {}".format(m.name, m.value) or "" for m in layers_group.metadatas]
+                [f"{m.name}: {m.value}" or "" for m in layers_group.metadatas]
             ),
             filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),
         )

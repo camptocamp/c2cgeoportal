@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -105,7 +103,7 @@ class RoleViews(AbstractViews):  # type: ignore
         _list_field("description"),
         _list_field(
             "functionalities",
-            renderer=lambda role: ", ".join(["{}={}".format(f.name, f.value) for f in role.functionalities]),
+            renderer=lambda role: ", ".join([f"{f.name}={f.value}" for f in role.functionalities]),
         ),
         _list_field(
             "restrictionareas", renderer=lambda role: ", ".join([r.name or "" for r in role.restrictionareas])

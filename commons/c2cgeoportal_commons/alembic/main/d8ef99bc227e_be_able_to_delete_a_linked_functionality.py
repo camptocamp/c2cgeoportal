@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Be able to delete a linked functionality
+"""
+Be able to delete a linked functionality.
 
 Revision ID: d8ef99bc227e
 Revises: 9268a1dffac0
@@ -57,16 +56,16 @@ def upgrade() -> None:
         ("theme_functionality", "functionality"),
     ]:
         try:
-            op.drop_constraint("{}_{}_id_fkey".format(source, dest), source, schema=schema)
+            op.drop_constraint(f"{source}_{dest}_id_fkey", source, schema=schema)
         except psycopg2.ProgrammingError as e:
             print(e)
             print("The constraint will probably don't exists, so we continue.")
 
         op.create_foreign_key(
-            "{}_{}_id_fkey".format(source, dest),
+            f"{source}_{dest}_id_fkey",
             source,
             source_schema=schema,
-            local_cols=["{}_id".format(dest)],
+            local_cols=[f"{dest}_id"],
             referent_table=dest,
             referent_schema=schema,
             remote_cols=["id"],
@@ -83,12 +82,12 @@ def downgrade() -> None:
         ("theme_functionality", "theme"),
         ("theme_functionality", "functionality"),
     ]:
-        op.drop_constraint("{}_{}_id_fkey".format(source, dest), source, schema=schema)
+        op.drop_constraint(f"{source}_{dest}_id_fkey", source, schema=schema)
         op.create_foreign_key(
-            "{}_{}_id_fkey".format(source, dest),
+            f"{source}_{dest}_id_fkey",
             source,
             source_schema=schema,
-            local_cols=["{}_id".format(dest)],
+            local_cols=[f"{dest}_id"],
             referent_table=dest,
             referent_schema=schema,
             remote_cols=["id"],

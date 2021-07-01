@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add timezone on datetime fields
+"""
+Add timezone on datetime fields.
 
 Revision ID: 53d671b17b20
 Revises: 1857owc78a07

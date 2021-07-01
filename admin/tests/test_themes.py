@@ -26,7 +26,7 @@ def theme_test_data(dbsession, transact):
 
     interfaces = [Interface(name) for name in ["desktop", "mobile", "edit", "routing"]]
 
-    groups = [LayerGroup(name="layer_group_{}".format(i)) for i in range(0, 5)]
+    groups = [LayerGroup(name=f"layer_group_{i}") for i in range(0, 5)]
 
     layer = LayerWMS(name="layer_wms")
     layer.ogc_server = OGCServer(name="server")
@@ -34,7 +34,7 @@ def theme_test_data(dbsession, transact):
     layers = [layer]
 
     functionalities = [
-        Functionality(name=name, value="value_{}".format(v))
+        Functionality(name=name, value=f"value_{v}")
         for name in ("default_basemap", "location")
         for v in range(0, 4)
     ]
@@ -48,7 +48,7 @@ def theme_test_data(dbsession, transact):
     ]
     themes = []
     for i in range(0, 25):
-        theme = Theme(name="theme_{}".format(i), ordering=1, icon="icon_{}".format(i))
+        theme = Theme(name=f"theme_{i}", ordering=1, icon=f"icon_{i}")
         theme.public = 1 == i % 2
         theme.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
         theme.metadatas = [
@@ -146,16 +146,16 @@ class TestTheme(TestTreeGroup):
 
     def test_public_checkbox_edit(self, test_app, theme_test_data):
         theme = theme_test_data["themes"][10]
-        form10 = test_app.get("/admin/themes/{}".format(theme.id), status=200).form
+        form10 = test_app.get(f"/admin/themes/{theme.id}", status=200).form
         assert not form10["public"].checked
         theme = theme_test_data["themes"][11]
-        form11 = test_app.get("/admin/themes/{}".format(theme.id), status=200).form
+        form11 = test_app.get(f"/admin/themes/{theme.id}", status=200).form
         assert form11["public"].checked
 
     def test_edit(self, test_app, theme_test_data, dbsession):
         theme = theme_test_data["themes"][0]
 
-        resp = test_app.get("/admin/themes/{}".format(theme.id), status=200)
+        resp = test_app.get(f"/admin/themes/{theme.id}", status=200)
         form = resp.form
 
         assert str(theme.id) == self.get_first_field_named(form, "id").value
@@ -166,17 +166,17 @@ class TestTheme(TestTreeGroup):
         assert theme.public == form["public"].checked
 
         interfaces = theme_test_data["interfaces"]
-        assert set((interfaces[0].id, interfaces[2].id)) == set(i.id for i in theme.interfaces)
+        assert {interfaces[0].id, interfaces[2].id} == {i.id for i in theme.interfaces}
         self._check_interfaces(form, interfaces, theme)
 
         functionalities = theme_test_data["functionalities"]
-        assert set((functionalities[0].id, functionalities[3].id)) == set(f.id for f in theme.functionalities)
+        assert {functionalities[0].id, functionalities[3].id} == {f.id for f in theme.functionalities}
         self.check_checkboxes(
             form,
             "functionalities",
             [
                 {
-                    "label": "{}={}".format(f.name, f.value),
+                    "label": f"{f.name}={f.value}",
                     "value": str(f.id),
                     "checked": f in theme.functionalities,
                 }
@@ -220,12 +220,8 @@ class TestTheme(TestTreeGroup):
                 assert value == getattr(theme, key)
             else:
                 assert str(value or "") == str(getattr(theme, key) or "")
-        assert set([interfaces[1].id, interfaces[3].id]) == set(
-            [interface.id for interface in theme.interfaces]
-        )
-        assert set([functionalities[2].id]) == set(
-            [functionality.id for functionality in theme.functionalities]
-        )
+        assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in theme.interfaces}
+        assert {functionalities[2].id} == {functionality.id for functionality in theme.functionalities}
         assert 0 == len(theme.restricted_roles)
 
     def test_post_new_with_children_invalid(self, test_app, theme_test_data):
@@ -234,7 +230,7 @@ class TestTheme(TestTreeGroup):
         """
         groups = theme_test_data["groups"]
         resp = test_app.post(
-            "{}/new".format(self._prefix),
+            f"{self._prefix}/new",
             (
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
@@ -256,7 +252,7 @@ class TestTheme(TestTreeGroup):
     def test_post_new_with_children_success(self, test_app, dbsession, theme_test_data):
         groups = theme_test_data["groups"]
         resp = test_app.post(
-            "{}/new".format(self._prefix),
+            f"{self._prefix}/new",
             (
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
@@ -304,7 +300,7 @@ class TestTheme(TestTreeGroup):
         """
         layers = theme_test_data["layers"]
         resp = test_app.post(
-            "{}/new".format(self._prefix),
+            f"{self._prefix}/new",
             (
                 ("_charset_", "UTF-8"),
                 ("__formid__", "deform"),
@@ -324,7 +320,7 @@ class TestTheme(TestTreeGroup):
             status=200,
         )
         assert (
-            "Value {} does not exist in table treeitem or is not allowed to avoid cycles".format(layers[0].id)
+            f"Value {layers[0].id} does not exist in table treeitem or is not allowed to avoid cycles"
             == resp.html.select_one(".item-children_relation + .help-block").getText().strip()
         )
 
@@ -333,7 +329,7 @@ class TestTheme(TestTreeGroup):
 
         theme = theme_test_data["themes"][1]
 
-        resp = test_app.get("{}/{}/duplicate".format(self._prefix, theme.id), status=200)
+        resp = test_app.get(f"{self._prefix}/{theme.id}/duplicate", status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -345,18 +341,18 @@ class TestTheme(TestTreeGroup):
         assert theme.public == form["public"].checked
 
         interfaces = theme_test_data["interfaces"]
-        assert set((interfaces[1].id, interfaces[3].id)) == set(i.id for i in theme.interfaces)
+        assert {interfaces[1].id, interfaces[3].id} == {i.id for i in theme.interfaces}
 
         self._check_interfaces(form, interfaces, theme)
 
         functionalities = theme_test_data["functionalities"]
-        assert set((functionalities[1].id, functionalities[4].id)) == set(f.id for f in theme.functionalities)
+        assert {functionalities[1].id, functionalities[4].id} == {f.id for f in theme.functionalities}
         self.check_checkboxes(
             form,
             "functionalities",
             [
                 {
-                    "label": "{}={}".format(f.name, f.value),
+                    "label": f"{f.name}={f.value}",
                     "value": str(f.id),
                     "checked": f in theme.functionalities,
                 }
@@ -381,7 +377,7 @@ class TestTheme(TestTreeGroup):
         duplicated = dbsession.query(Theme).filter(Theme.name == "duplicated").one()
 
         assert str(duplicated.id) == re.match(
-            r"http://localhost{}/(.*)\?msg_col=submit_ok".format(self._prefix), resp.location
+            fr"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert duplicated.id != theme.id
         assert duplicated.children_relation[0].id != theme.children_relation[0].id
@@ -391,13 +387,13 @@ class TestTheme(TestTreeGroup):
         from c2cgeoportal_commons.models.main import Theme
 
         theme_id = dbsession.query(Theme.id).first().id
-        test_app.delete("/admin/themes/{}".format(theme_id), status=200)
+        test_app.delete(f"/admin/themes/{theme_id}", status=200)
         assert dbsession.query(Theme).get(theme_id) is None
 
     def test_unicity_validator(self, theme_test_data, test_app):
         theme = theme_test_data["themes"][1]
-        resp = test_app.get("{}/{}/duplicate".format(self._prefix, theme.id), status=200)
+        resp = test_app.get(f"{self._prefix}/{theme.id}/duplicate", status=200)
 
         resp = resp.form.submit("submit")
 
-        self._check_submission_problem(resp, "{} is already used.".format(theme.name))
+        self._check_submission_problem(resp, f"{theme.name} is already used.")

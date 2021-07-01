@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 # Copyright (c) 2019-2020, Camptocamp SA
 # All rights reserved.
@@ -75,7 +74,7 @@ def get_any(repo, ref, section, url):
         url.format(repo, ref),
         headers={
             "Accept": "application/vnd.github.groot-preview+json",
-            "Authorization": "token {}".format(token),
+            "Authorization": f"token {token}",
         },
     ).json()
 
@@ -86,7 +85,7 @@ def get_any(repo, ref, section, url):
 def get_commit(repo, ref):
     dirty, commit = get_any(repo, ref, "commits", "https://api.github.com/repos/camptocamp/{}/commits/{}")
     if "sha" not in commit:
-        print("Error on commit {}.".format(ref))
+        print(f"Error on commit {ref}.")
         print(commit)
         sys.exit(1)
 
@@ -105,7 +104,7 @@ def get_commit(repo, ref):
 def get_pulls(repo, ref):
     dirty, pulls = get_any(repo, ref, "pulls", "https://api.github.com/repos/camptocamp/{}/commits/{}/pulls")
     if not isinstance(pulls, list):
-        print("Error on commit {}.".format(ref))
+        print(f"Error on commit {ref}.")
         print(pulls)
         sys.exit(1)
     for pull in pulls:
@@ -227,7 +226,7 @@ def main():
                 for pull in sorted(pulls[repo].values(), key=lambda pull: pull["number"]):
                     if pull["base_ref"] != "master":
                         if notitle:
-                            md_file.write("##### {}\n".format(release).encode("utf-8"))
+                            md_file.write(f"##### {release}\n".encode("utf-8"))
                             notitle = False
                         md_file.write(
                             "* {} [{}#{}]({})\n".format(

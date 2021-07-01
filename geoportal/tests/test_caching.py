@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2015-2019, Camptocamp SA
 # All rights reserved.
 
@@ -63,7 +61,7 @@ class TestSetCorsHeaders(TestCase):
 
     def test_simple(self):
         """
-        Tests specified in http://www.w3.org/TR/cors/#resource-requests
+        Tests specified in http://www.w3.org/TR/cors/#resource-requests.
         """
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
@@ -110,8 +108,7 @@ class TestSetCorsHeaders(TestCase):
 
     def test_preflight(self):
         """
-        Tests specified in
-        http://www.w3.org/TR/cors/#resource-preflight-requests
+        Tests specified in http://www.w3.org/TR/cors/#resource-preflight-requests.
         """
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.

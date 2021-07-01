@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2014-2021, Camptocamp SA
 # All rights reserved.
 
@@ -94,12 +92,16 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     def remember(  # pylint: disable=no-self-use
         self, request: pyramid.request.Request, userid: str, **kw: Any
     ) -> List[Dict[str, str]]:
-        """A no-op."""
+        """
+        A no-op.
+        """
         del request, userid, kw
         return []
 
     def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
-        """A no-op."""
+        """
+        A no-op.
+        """
         del request
         return []
 
@@ -137,12 +139,16 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     def remember(  # pylint: disable=no-self-use
         self, request: pyramid.request.Request, userid: str, **kw: Any
     ) -> List[Dict[str, str]]:
-        """A no-op."""
+        """
+        A no-op.
+        """
         del request, userid, kw
         return []
 
     def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
-        """A no-op."""
+        """
+        A no-op.
+        """
         del request
         return []
 

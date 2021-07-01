@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2019-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Remove old metadata column
+"""
+Remove old metadata column.
 
 Revision ID: 16e43f8c0330
 Revises: 678f88c7ad5e

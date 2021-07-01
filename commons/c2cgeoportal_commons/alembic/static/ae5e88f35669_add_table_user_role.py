@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add table user_role and rename user.role_name to settings_role_id
+"""
+Add table user_role and rename user.role_name to settings_role_id.
 
 Revision ID: ae5e88f35669
 Revises: 53d671b17b20

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -59,7 +57,7 @@ WHERE schema_name = '{}';
 
 def truncate_tables(connection: Connection) -> None:
     for t in Base.metadata.sorted_tables:
-        connection.execute("TRUNCATE TABLE {}.{} CASCADE;".format(t.schema, t.name))
+        connection.execute(f"TRUNCATE TABLE {t.schema}.{t.name} CASCADE;")
 
 
 def setup_test_data(dbsession: Session) -> None:

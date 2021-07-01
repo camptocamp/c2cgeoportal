@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -57,7 +55,7 @@ def layers(node, kw):  # pylint: disable=unused-argument
         {
             "id": layer.id,
             "label": layer.name,
-            "icon_class": "icon-{}".format(layer.item_type),
+            "icon_class": f"icon-{layer.item_type}",
             "edit_url": treeitem_edit_url(kw["request"], layer),
             "group": "All",
         }
@@ -75,7 +73,7 @@ base_schema.add(
                 input_name="id",
                 model=Layer,
                 label_field="name",
-                icon_class=lambda layer: "icon-{}".format(layer.item_type),
+                icon_class=lambda layer: f"icon-{layer.item_type}",
                 edit_url=treeitem_edit_url,
             ),
         ),
@@ -100,7 +98,7 @@ class RestrictionAreaViews(AbstractViews):  # type: ignore
         _list_field(
             "layers",
             renderer=lambda restriction_area: ", ".join(
-                "{}-{}".format(layer.item_type, layer.name) or "" for layer in restriction_area.layers
+                f"{layer.item_type}-{layer.name}" or "" for layer in restriction_area.layers
             ),
         ),
     ]

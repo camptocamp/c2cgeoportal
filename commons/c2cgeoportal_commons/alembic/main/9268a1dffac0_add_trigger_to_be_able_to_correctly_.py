@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add trigger to be able to correctly change the role name
+"""
+Add trigger to be able to correctly change the role name.
 
 Revision ID: 9268a1dffac0
 Revises: 32b21aa1d0ed
@@ -75,5 +74,5 @@ LANGUAGE plpgsql""".format(
 def downgrade() -> None:
     schema = config["schema"]
 
-    op.execute("DROP TRIGGER on_role_name_change ON {schema}.role".format(schema=schema))
-    op.execute("DROP FUNCTION {schema}.on_role_name_change()".format(schema=schema))
+    op.execute(f"DROP TRIGGER on_role_name_change ON {schema}.role")
+    op.execute(f"DROP FUNCTION {schema}.on_role_name_change()")

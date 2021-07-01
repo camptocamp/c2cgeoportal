@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -59,12 +57,10 @@ def map_dbobject(
 
 def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..., str]:
     """
-    Return a function that generates a string
-    key, based on a given function as well as
-    arguments to the returned function itself.
+    Return a function that generates a string key, based on a given function as well as arguments to the
+    returned function itself.
 
-    This is used by :meth:`.CacheRegion.cache_on_arguments`
-    to generate a cache key from a decorated function.
+    This is used by :meth:`.CacheRegion.cache_on_arguments` to generate a cache key from a decorated function.
     """
 
     if namespace is None:
@@ -128,7 +124,7 @@ def invalidate_region(region: Optional[str] = None) -> None:
 
 class HybridRedisBackend(RedisBackend):  # type: ignore
     """
-    A memory and redis backend
+    A memory and redis backend.
     """
 
     def __init__(self, arguments: Dict[str, Any]):
@@ -164,7 +160,7 @@ class HybridRedisBackend(RedisBackend):  # type: ignore
 
 class HybridRedisSentinelBackend(RedisSentinelBackend):  # type: ignore
     """
-    A memory and redis sentinel backend
+    A memory and redis sentinel backend.
     """
 
     def __init__(self, arguments: Dict[str, Any]):
@@ -272,7 +268,7 @@ def _set_common_headers(
     content_type: Optional[str],
 ) -> pyramid.response.Response:
     """
-    Set the common headers
+    Set the common headers.
     """
 
     response.headers.update(service_headers_settings.get("headers", {}))
@@ -312,7 +308,7 @@ def set_common_headers(
     content_type: Optional[str] = None,
 ) -> pyramid.response.Response:
     """
-    Set the common headers
+    Set the common headers.
     """
     if response is None:
         response = request.response

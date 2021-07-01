@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -61,7 +59,9 @@ class JSONEncodedDict(TypeDecorator):  # type: ignore
 
 
 class TsVector(UserDefinedType):  # type: ignore
-    """A custom type for PostgreSQL's tsvector type."""
+    """
+    A custom type for PostgreSQL's tsvector type.
+    """
 
     def get_col_spec(self) -> str:  # pylint: disable=no-self-use
         return "TSVECTOR"

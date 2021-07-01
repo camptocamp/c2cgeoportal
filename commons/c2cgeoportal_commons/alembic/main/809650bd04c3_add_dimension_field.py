@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Add dimension field
+"""
+Add dimension field.
 
 Revision ID: 809650bd04c3
 Revises: d8ef99bc227e

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""Convert the metadata to the right case
+"""
+Convert the metadata to the right case.
 
 Revision ID: 6d87fdad275a
 Revises: 9268a1dffac0

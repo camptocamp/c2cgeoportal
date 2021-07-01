@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
@@ -106,7 +104,7 @@ def treeitems(
         {
             "id": item.id,
             "label": item.name,
-            "icon_class": "icon-{}".format(item.item_type),
+            "icon_class": f"icon-{item.item_type}",
             "edit_url": treeitem_edit_url(kw["request"], item),
             "group": group,
         }
@@ -130,9 +128,7 @@ def base_deferred_parent_id_validator(node, kw, model):
 
     def validator(node, cstruct):
         if kw["dbsession"].query(model).filter(model.id == cstruct).count() == 0:
-            raise colander.Invalid(
-                node, "Value {} does not exist in table {}".format(cstruct, model.__tablename__)
-            )
+            raise colander.Invalid(node, f"Value {cstruct} does not exist in table {model.__tablename__}")
 
     return validator
 
@@ -160,7 +156,7 @@ def children_schema_node(only_groups: bool = False) -> colander.SequenceSchema:
                 input_name="treeitem_id",
                 model=TreeItem,
                 label_field="name",
-                icon_class=lambda treeitem: "icon-{}".format(treeitem.item_type),
+                icon_class=lambda treeitem: f"icon-{treeitem.item_type}",
                 edit_url=treeitem_edit_url,
             ),
         ),

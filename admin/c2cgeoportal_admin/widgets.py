@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
@@ -112,8 +110,8 @@ class ChildWidget(MappingWidget):  # type: ignore
 
 class ChildrenWidget(SequenceWidget):  # type: ignore
     """
-    Extension of the widget ````deform.widget.SequenceWidget``, to be used in conjunction with ChildWidget,
-    to manage n-m relationships.
+    Extension of the widget ````deform.widget.SequenceWidget``, to be used in conjunction with ChildWidget, to
+    manage n-m relationships.
 
     Use Magicsuggest for searching into parent schema candidates property, which should be a list of
     dictionaries of the form:

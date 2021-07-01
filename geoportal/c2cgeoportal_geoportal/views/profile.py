@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -50,13 +48,17 @@ class Profile(Raster):
 
     @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore
     def json(self) -> Dict[str, Any]:
-        """answers to /profile.json"""
+        """
+        answers to /profile.json.
+        """
         _, points = self._compute_points()
         set_common_headers(self.request, "profile", Cache.NO)
         return {"profile": points}
 
     def _compute_points(self) -> Tuple[List[str], List[Dict[str, Any]]]:
-        """Compute the alt=fct(dist) array"""
+        """
+        Compute the alt=fct(dist) array.
+        """
         geom = geojson.loads(self.request.params["geom"], object_hook=geojson.GeoJSON.to_instance)
 
         layers: List[str]
@@ -67,7 +69,7 @@ class Profile(Raster):
                 if layer in self.rasters:
                     rasters[layer] = self.rasters[layer]
                 else:
-                    raise HTTPNotFound("Layer {0!s} not found".format(layer))
+                    raise HTTPNotFound(f"Layer {layer!s} not found")
         else:
             rasters = self.rasters
             layers = list(rasters.keys())
@@ -96,11 +98,15 @@ class Profile(Raster):
 
     @staticmethod
     def _dist(coord1: Tuple[float, float], coord2: Tuple[float, float]) -> float:
-        """Compute the distance between 2 points"""
+        """
+        Compute the distance between 2 points.
+        """
         return math.sqrt(math.pow(coord1[0] - coord2[0], 2.0) + math.pow(coord1[1] - coord2[1], 2.0))
 
     def _create_points(self, coords: List[Tuple[float, float]], nb_points: int) -> List[Tuple[float, float]]:
-        """Add some points in order to reach roughly the asked number of points"""
+        """
+        Add some points in order to reach roughly the asked number of points.
+        """
         total_length = 0
         prev_coord = None
         for coord in coords:

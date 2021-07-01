@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -44,8 +42,7 @@ from pyramid.scaffolds.template import Template
 
 class BaseTemplate(Template):  # type: ignore
     """
-    A class that can be used as a base class for c2cgeoportal scaffolding
-    templates.
+    A class that can be used as a base class for c2cgeoportal scaffolding templates.
 
     Greatly inspired from ``pyramid.scaffolds.template.PyramidTemplate``.
     """
@@ -54,10 +51,10 @@ class BaseTemplate(Template):  # type: ignore
         self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]
     ) -> None:
         """
-        Overrides ``pyramid.scaffold.template.Template.pre``, adding
-        several variables to the default variables list. Also prevents
-        common misnamings (such as naming a package "site" or naming a
-        package logger "root").
+        Overrides ``pyramid.scaffold.template.Template.pre``, adding several variables to the default
+        variables list.
+
+        Also prevents common misnamings (such as naming a package "site" or naming a package logger "root").
         """
 
         self._get_vars(vars_, "package", "Get a package name: ")
@@ -70,7 +67,7 @@ class BaseTemplate(Template):  # type: ignore
             "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
             "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
             if extent
-            else "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid),
+            else f"Extent (minx miny maxx maxy): in EPSG: {srid} projection: ",
         )
         match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", cast(str, vars_["extent"]))
         if match is not None:
@@ -120,7 +117,7 @@ class BaseTemplate(Template):  # type: ignore
             try:
                 value = type_(value)
             except ValueError:
-                print(("The attribute {}={} is not a {}".format(name, value, type_)))
+                print(f"The attribute {name}={value} is not a {type_}")
                 sys.exit(1)
 
         vars_[name] = value
@@ -128,7 +125,7 @@ class BaseTemplate(Template):  # type: ignore
     @staticmethod
     def _epsg2bbox(srid: int) -> Optional[List[str]]:
         try:
-            r = requests.get("https://epsg.io/?format=json&q={}".format(srid))
+            r = requests.get(f"https://epsg.io/?format=json&q={srid}")
             bbox = r.json()["results"][0]["bbox"]
             r = requests.get(
                 "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}".format(
@@ -150,7 +147,7 @@ class BaseTemplate(Template):  # type: ignore
         except IndexError:
             print("Unable to get the bbox")
         except Exception as exception:
-            print("unexpected error: {}".format(str(exception)))
+            print(f"unexpected error: {str(exception)}")
         return None
 
 
@@ -177,7 +174,7 @@ class TemplateCreate(BaseTemplate):
 
     def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         """
-        Overrides the base template
+        Overrides the base template.
         """
         super().pre(command, output_dir, vars_)
         vars_["authtkt_secret"] = _gen_authtkt_secret()
@@ -202,7 +199,7 @@ class TemplateUpdate(BaseTemplate):
     def open_project(output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         project_file = os.path.join(output_dir, "project.yaml")
         if os.path.exists(project_file):
-            with open(project_file, "r") as f:
+            with open(project_file) as f:
                 project = yaml.safe_load(f)
                 if "template_vars" in project:
                     for key, value in list(project["template_vars"].items()):
@@ -213,7 +210,7 @@ class TemplateUpdate(BaseTemplate):
 
     def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         """
-        Overrides the base template
+        Overrides the base template.
         """
         self.open_project(output_dir, vars_)
 
@@ -226,8 +223,8 @@ class TemplateUpdate(BaseTemplate):
         self, command: str, output_dir: str, vars_: Dict[str, str]
     ) -> None:
         """
-        Overrides the base template class to print "Welcome to c2cgeoportal!"
-        after a successful scaffolding rendering.
+        Overrides the base template class to print "Welcome to c2cgeoportal!" after a successful scaffolding
+        rendering.
         """
 
         fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"), True)

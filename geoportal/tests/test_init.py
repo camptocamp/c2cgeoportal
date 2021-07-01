@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2019, Camptocamp SA
 # All rights reserved.
 
@@ -103,8 +101,7 @@ class TestIncludeme(TestCase):
 
 class TestReferer(TestCase):
     """
-    Check that accessing something with a bad HTTP referer is equivalent to a
-    not authenticated query.
+    Check that accessing something with a bad HTTP referer is equivalent to a not authenticated query.
     """
 
     BASE1 = "http://example.com/app"

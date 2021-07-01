@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2016-2019, Camptocamp SA
 # All rights reserved.
 
@@ -209,12 +207,10 @@ class TestThemesView(TestCase):
         themes = theme_view.themes()
         self.assertEqual(
             set(themes["errors"]),
-            set(
-                [
-                    "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty.",
-                    "The layer '__test_layer_wmts_2' has an unsupported dimension value 'countries:\"name\" IN ( 'Germany' , 'Italy' )' ('FILTER').",
-                ]
-            ),
+            {
+                "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty.",
+                "The layer '__test_layer_wmts_2' has an unsupported dimension value 'countries:\"name\" IN ( 'Germany' , 'Italy' )' ('FILTER').",
+            },
         )
         self.assertEqual(
             [self._only_name(t, ["name", "dimensions", "dimensionsFilters"]) for t in themes["themes"]],

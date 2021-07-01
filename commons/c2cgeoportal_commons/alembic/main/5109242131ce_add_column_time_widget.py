@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2015-2019, Camptocamp SA
 # All rights reserved.
 
@@ -29,7 +27,8 @@
 
 # pylint: disable=no-member
 
-"""add column time_widget
+"""
+add column time_widget.
 
 Revision ID: 5109242131ce
 Revises: 164ac0819a61
@@ -52,9 +51,7 @@ def upgrade() -> None:
     # Instructions
     for table in ["layerv1", "layer_internal_wms", "layer_external_wms"]:
         op.add_column(table, Column("time_widget", Unicode(10), default="slider"), schema=schema)
-        op.execute(
-            "UPDATE {schema!s}.{table!s} SET time_widget = 'slider'".format(schema=schema, table=table)
-        )
+        op.execute(f"UPDATE {schema!s}.{table!s} SET time_widget = 'slider'")
 
 
 def downgrade() -> None:

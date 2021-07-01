@@ -117,7 +117,7 @@ class TestOAuth2Client(TestTreeGroup):
 
         oauth2_client_proto = oauth2_clients_test_data["oauth2_clients"][7]
 
-        resp = test_app.get("/admin/oauth2_clients/{}/duplicate".format(oauth2_client_proto.id), status=200)
+        resp = test_app.get(f"/admin/oauth2_clients/{oauth2_client_proto.id}/duplicate", status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -137,16 +137,16 @@ class TestOAuth2Client(TestTreeGroup):
         from c2cgeoportal_commons.models.static import OAuth2Client
 
         oauth2_client_id = dbsession.query(OAuth2Client.id).first().id
-        test_app.delete("/admin/oauth2_clients/{}".format(oauth2_client_id), status=200)
+        test_app.delete(f"/admin/oauth2_clients/{oauth2_client_id}", status=200)
         assert dbsession.query(OAuth2Client).get(oauth2_client_id) is None
 
     def test_unicity_validator(self, oauth2_clients_test_data, test_app):
         oauth2_client_proto = oauth2_clients_test_data["oauth2_clients"][7]
-        resp = test_app.get("/admin/oauth2_clients/{}/duplicate".format(oauth2_client_proto.id), status=200)
+        resp = test_app.get(f"/admin/oauth2_clients/{oauth2_client_proto.id}/duplicate", status=200)
 
         resp = resp.form.submit("submit")
 
-        self._check_submission_problem(resp, "{} is already used.".format(oauth2_client_proto.client_id))
+        self._check_submission_problem(resp, f"{oauth2_client_proto.client_id} is already used.")
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
     def test_grid_dberror(self, dbsession):

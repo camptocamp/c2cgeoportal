@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
@@ -73,7 +71,7 @@ class OGCServerSynchronizer:
         self._layers_added = 0
 
     def __str__(self) -> str:
-        return "OGCServerSynchronizer({})".format(self._ogc_server.name)
+        return f"OGCServerSynchronizer({self._ogc_server.name})"
 
     def logger(self) -> logging.Logger:
         return self._logger
@@ -92,15 +90,15 @@ class OGCServerSynchronizer:
             valid = True
             reason = None
             for name in layer.layer.split(","):
-                el = capabilities.find(".//Layer[Name='{}']".format(name))
+                el = capabilities.find(f".//Layer[Name='{name}']")
                 if el is None:
                     valid = False
-                    reason = "Layer {} does not exists on OGC server".format(name)
+                    reason = f"Layer {name} does not exists on OGC server"
                     self._logger.info(reason)
                     break
-                if layer.style and el.find("./Style/Name[.='{}']".format(layer.style)) is None:
+                if layer.style and el.find(f"./Style/Name[.='{layer.style}']") is None:
                     valid = False
-                    reason = "Style {} does not exists in Layer {}".format(layer.style, name)
+                    reason = f"Style {layer.style} does not exists in Layer {name}"
                     self._logger.info(reason)
                     break
             layer.valid = valid
@@ -232,7 +230,7 @@ class OGCServerSynchronizer:
             layer.layer = el.find("Name").text
             layer.style = (
                 self._default_wms.style
-                if el.find("./Style/Name[.='{}']".format(self._default_wms.style)) is not None
+                if el.find(f"./Style/Name[.='{self._default_wms.style}']") is not None
                 else None
             )
             # layer.time_mode =
@@ -260,7 +258,7 @@ class OGCServerSynchronizer:
     def wms_capabilities(self) -> bytes:
         errors: Set[str] = set()
         url = get_url2(
-            "The OGC server '{}'".format(self._ogc_server.name),
+            f"The OGC server '{self._ogc_server.name}'",
             self._ogc_server.url,
             self._request,
             errors,

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2012-2021, Camptocamp SA
 # All rights reserved.
 
@@ -79,12 +77,12 @@ class Layers:
 
     @staticmethod
     def _get_geom_col_info(layer: "main.Layer") -> Tuple[str, int]:
-        """Return information about the layer's geometry column, namely
-        a ``(name, srid)`` tuple, where ``name`` is the name of the
-        geometry column, and ``srid`` its srid.
+        """
+        Return information about the layer's geometry column, namely a ``(name, srid)`` tuple, where ``name``
+        is the name of the geometry column, and ``srid`` its srid.
 
-        This function assumes that the names of geometry attributes
-        in the mapped class are the same as those of geometry columns.
+        This function assumes that the names of geometry attributes in the mapped class are the same as those
+        of geometry columns.
         """
         mapped_class = get_layer_class(layer)
         for p in class_mapper(mapped_class).iterate_properties:
@@ -93,13 +91,13 @@ class Layers:
             col = p.columns[0]
             if isinstance(col.type, Geometry):
                 return col.name, col.type.srid
-        raise HTTPInternalServerError(
-            'Failed getting geometry column info for table "{0!s}".'.format(layer.geo_table)
-        )
+        raise HTTPInternalServerError(f'Failed getting geometry column info for table "{layer.geo_table!s}".')
 
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":
-        """Return a ``Layer`` object for ``layer_id``."""
+        """
+        Return a ``Layer`` object for ``layer_id``.
+        """
         from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
 
         layer_id = int(layer_id)
@@ -108,16 +106,18 @@ class Layers:
             query = query.filter(Layer.id == layer_id)
             layer, geo_table = query.one()
         except NoResultFound:
-            raise HTTPNotFound("Layer {:d} not found".format(layer_id))
+            raise HTTPNotFound(f"Layer {layer_id:d} not found")
         except MultipleResultsFound:
-            raise HTTPInternalServerError("Too many layers found with id {:d}".format(layer_id))
+            raise HTTPInternalServerError(f"Too many layers found with id {layer_id:d}")
         if not geo_table:
-            raise HTTPNotFound("Layer {:d} has no geo table".format(layer_id))
+            raise HTTPNotFound(f"Layer {layer_id:d} has no geo table")
         return cast("main.Layer", layer)
 
     def _get_layers_for_request(self) -> Generator["main.Layer", None, None]:
-        """A generator function that yields ``Layer`` objects based
-        on the layer ids found in the ``layer_id`` matchdict."""
+        """
+        A generator function that yields ``Layer`` objects based on the layer ids found in the ``layer_id``
+        matchdict.
+        """
         try:
             layer_ids = (
                 int(layer_id) for layer_id in self.request.matchdict["layer_id"].split(",") if layer_id
@@ -126,28 +126,34 @@ class Layers:
                 yield self._get_layer(layer_id)
         except ValueError:
             raise HTTPBadRequest(
-                "A Layer id in '{0!s}' is not an integer".format(self.request.matchdict["layer_id"])
+                "A Layer id in '{!s}' is not an integer".format(self.request.matchdict["layer_id"])
             )
 
     def _get_layer_for_request(self) -> "main.Layer":
-        """Return a ``Layer`` object for the first layer id found
-        in the ``layer_id`` matchdict."""
+        """
+        Return a ``Layer`` object for the first layer id found in the ``layer_id`` matchdict.
+        """
         return next(self._get_layers_for_request())
 
     def _get_protocol_for_layer(self, layer: "main.Layer", **kwargs: Any) -> Protocol:
-        """Returns a papyrus ``Protocol`` for the ``Layer`` object."""
+        """
+        Returns a papyrus ``Protocol`` for the ``Layer`` object.
+        """
         cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
 
     def _get_protocol_for_request(self, **kwargs: Any) -> Protocol:
-        """Returns a papyrus ``Protocol`` for the first layer
-        id found in the ``layer_id`` matchdict."""
+        """
+        Returns a papyrus ``Protocol`` for the first layer id found in the ``layer_id`` matchdict.
+        """
         layer = self._get_layer_for_request()
         return self._get_protocol_for_layer(layer, **kwargs)
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
-        """Read features for the layer based on the self.request."""
+        """
+        Read features for the layer based on the self.request.
+        """
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -462,16 +468,16 @@ class Layers:
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _enumerate_attribute_values(self, layername: str, fieldname: str) -> Dict[str, Any]:
         if layername not in self.layers_enum_config:
-            raise HTTPBadRequest("Unknown layer: {0!s}".format(layername))
+            raise HTTPBadRequest(f"Unknown layer: {layername!s}")
 
         layerinfos = self.layers_enum_config[layername]
         if fieldname not in layerinfos["attributes"]:
-            raise HTTPBadRequest("Unknown attribute: {0!s}".format(fieldname))
+            raise HTTPBadRequest(f"Unknown attribute: {fieldname!s}")
         dbsession_name = layerinfos.get("dbsession", "dbsession")
         dbsession = models.DBSessions.get(dbsession_name)
         if dbsession is None:
             raise HTTPInternalServerError(
-                "No dbsession found for layer '{0!s}' ({1!s})".format(layername, dbsession_name)
+                f"No dbsession found for layer '{layername!s}' ({dbsession_name!s})"
             )
         values = self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         enum = {"items": [{"value": value[0]} for value in values]}
@@ -498,7 +504,7 @@ def get_layer_class(
     layer: "main.Layer", with_last_update_columns: bool = False
 ) -> sqlalchemy.ext.declarative.api.ConcreteBase:
     """
-    Get the SQLAlchemy class to edit a GeoMapFish layer
+    Get the SQLAlchemy class to edit a GeoMapFish layer.
 
     :param layer:
     :param with_last_update_columns: False to just have a class to access to the table and be able to

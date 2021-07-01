@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2021, Camptocamp SA
 # All rights reserved.
 
@@ -179,8 +177,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         **kwargs: Any,
     ) -> bool:
         """
-        Ensure that the authorization process represented by this authorization
-        code began with this 'redirect_uri'.
+        Ensure that the authorization process represented by this authorization code began with this
+        'redirect_uri'.
 
         If the client specifies a redirect_uri when obtaining code then that
         redirect URI must be bound to the code and verified equal in this
@@ -218,11 +216,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
     def get_code_challenge_method(  # pylint: disable=no-self-use,useless-suppression
         self, code: str, request: oauthlib.common.Request
     ) -> None:
-        """Is called during the "token" request processing, when a
-        ``code_verifier`` and a ``code_challenge`` has been provided.
-        See ``.get_code_challenge``.
-        Must return ``plain`` or ``S256``. You can return a custom value if you have
-        implemented your own ``AuthorizationCodeGrant`` class.
+        """
+        Is called during the "token" request processing, when a ``code_verifier`` and a ``code_challenge`` has
+        been provided. See ``.get_code_challenge``. Must return ``plain`` or ``S256``. You can return a custom
+        value if you have implemented your own ``AuthorizationCodeGrant`` class.
+
         :param code: Authorization code.
         :param request: OAuthlib request.
         :type request: oauthlib.common.Request
@@ -317,11 +315,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         *args: Any,
         **kwargs: Any,
     ) -> None:
-        """Introspect an access or refresh token.
-        Called once the introspect request is validated. This method should
-        verify the *token* and either return a dictionary with the list of
-        claims associated, or `None` in case the token is unknown.
-        Below the list of registered claims you should be interested in:
+        """
+        Introspect an access or refresh token. Called once the introspect request is validated. This method
+        should verify the *token* and either return a dictionary with the list of claims associated, or `None`
+        in case the token is unknown. Below the list of registered claims you should be interested in:
+
         - scope : space-separated list of scopes
         - client_id : client identifier
         - username : human-readable identifier for the resource owner
@@ -715,8 +713,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         **kwargs: Any,
     ) -> bool:
         """
-        Verify that the authorization_code is valid and assigned to the given
-        client.
+        Verify that the authorization_code is valid and assigned to the given client.
 
         Before returning true, set the following based on the information stored
         with the code in 'save_authorization_code':

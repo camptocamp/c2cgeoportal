@@ -29,7 +29,8 @@
 
 # pylint: disable=no-member
 
-"""Merge 2.2 on 2.3
+"""
+Merge 2.2 on 2.3.
 
 Revision ID: dba87f2647f9
 Revises: ('7530011a66a7', '809650bd04c3')
