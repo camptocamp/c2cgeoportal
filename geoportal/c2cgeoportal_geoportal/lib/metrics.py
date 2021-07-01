@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ class MemoryCacheSizeProvider(Provider):
 
     def get_data(self):
         result = []
-        for elem in _get_memory_cache(all_=self.all):
+        for elem in _get_memory_cache(all_=self.all):  # type: ignore
             if elem is not None:
                 for value in elem["values"]:
                     value[0]["pid"] = str(elem["pid"])
@@ -71,7 +71,7 @@ class RasterDataSizeProvider(Provider):
 
     def get_data(self):
         result = []
-        for elem in _get_raster_data():
+        for elem in _get_raster_data():  # type: ignore
             for value in elem["values"]:
                 value[0]["pid"] = str(elem["pid"])
                 value[0]["hostname"] = elem["hostname"]
@@ -91,7 +91,7 @@ class TotalPythonObjectMemoryProvider(Provider):
     def get_data(self):
         return [
             ({"pid": str(val["pid"]), "hostname": val["hostname"]}, val["value"])
-            for val in _get_python_object_size()
+            for val in _get_python_object_size()  # type: ignore
             if val is not None
         ]
 
