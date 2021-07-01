@@ -1,3 +1,5 @@
+##### 2.6.rc.111
+* Fix duplicated environment variable with different cass [c2cgeoportal#8413](https://github.com/camptocamp/c2cgeoportal/pull/8413)
 ##### 2.6.rc.110
 * Fix the child layers on groups [c2cgeoportal#8417](https://github.com/camptocamp/c2cgeoportal/pull/8417)
 * [Backport 2.6] Send MapServer substitution only on MapServer with standard auth [c2cgeoportal#8424](https://github.com/camptocamp/c2cgeoportal/pull/8424)
