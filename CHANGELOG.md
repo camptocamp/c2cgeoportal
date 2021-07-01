@@ -1,3 +1,7 @@
+##### 2.4.2.52
+* [Backport 2.4] [Backport 2.5] Bump c2cciutils from 1.1.dev20210615102932 to 1.1.dev20210617081616 [ngeo#7243](https://github.com/camptocamp/ngeo/pull/7243)
+* [Backport 2.4] With permalink upper can be NaN [ngeo#7258](https://github.com/camptocamp/ngeo/pull/7258)
+* [Backport 2.4] Fix messages in pull requests [ngeo#7265](https://github.com/camptocamp/ngeo/pull/7265)
 ##### 2.4.2.51
 ##### 2.4.2.50
 * [Backport 2.4] Fix error when we introduce a tab [c2cgeoportal#8367](https://github.com/camptocamp/c2cgeoportal/pull/8367)
