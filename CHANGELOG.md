@@ -1,3 +1,5 @@
+##### 2.6.rc.112
+* Bump pillow to 8.2.0 [c2cgeoportal#8439](https://github.com/camptocamp/c2cgeoportal/pull/8439)
 ##### 2.6.rc.111
 * Fix duplicated environment variable with different cass [c2cgeoportal#8413](https://github.com/camptocamp/c2cgeoportal/pull/8413)
 ##### 2.6.rc.110
