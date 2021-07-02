@@ -228,7 +228,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         with self.lock:
             try:
                 config_cache = QgsConfigCache.instance()
-                self.project = config_cache.project(map_file)
+                try:
+                    self.project = config_cache.project(map_file)
+                except:
+                    self.project = None
+                    LOG.error("Unable to open project '%s'", map_file, exc_info=True)
                 self.layers = None
 
                 from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
@@ -250,9 +254,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
 
     def ogc_layer_name(self, layer):
-        use_layer_id, _ = self.project.readBoolEntry("WMSUseLayerIDs", "/", False)
-        if use_layer_id:
-            return layer.id()
+        if self.project is not None:
+            use_layer_id, _ = self.project.readBoolEntry("WMSUseLayerIDs", "/", False)
+            if use_layer_id:
+                return layer.id()
         return layer.shortName() or layer.name()
 
     def get_layers(self, session):
@@ -278,27 +283,28 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 return self.layers
 
             nodes = {}  # dict { node name: list of ancestor node names }
+            if self.project is not None:
 
-            def browse(path, node):
-                if isinstance(node, QgsLayerTreeLayer):
-                    ogc_name = self.ogc_layer_name(node.layer())
-                elif isinstance(node, QgsLayerTreeGroup):
-                    ogc_name = node.customProperty("wmsShortName") or node.name()
-                else:
-                    ogc_name = node.name()
+                def browse(path, node):
+                    if isinstance(node, QgsLayerTreeLayer):
+                        ogc_name = self.ogc_layer_name(node.layer())
+                    elif isinstance(node, QgsLayerTreeGroup):
+                        ogc_name = node.customProperty("wmsShortName") or node.name()
+                    else:
+                        ogc_name = node.name()
 
-                nodes[ogc_name] = [ogc_name]
+                    nodes[ogc_name] = [ogc_name]
 
-                for name in path:
-                    nodes[ogc_name].append(name)
+                    for name in path:
+                        nodes[ogc_name].append(name)
 
-                for layer in node.children():
-                    browse(path + [ogc_name], layer)
+                    for layer in node.children():
+                        browse(path + [ogc_name], layer)
 
-            browse([], self.project.layerTreeRoot())
+                browse([], self.project.layerTreeRoot())
 
-            for ogc_layer_name, ancestors in nodes.items():
-                LOG.debug("QGIS layer: %s", ogc_layer_name)
+                for ogc_layer_name, ancestors in nodes.items():
+                    LOG.debug("QGIS layer: %s", ogc_layer_name)
 
             # Transform ancestor names in LayerWMS instances
             layers = {}  # type: Dict[str, List[LayerWMS]]
@@ -308,15 +314,16 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 .filter(LayerWMS.ogc_server_id == self.ogcserver.id)
                 .all()
             ):
-                found = False
-                for ogc_layer_name, ancestors in nodes.items():
-                    for ancestor in ancestors:
-                        if ancestor in layer.layer.split(","):
-                            found = True
-                            LOG.debug("GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
-                            layers.setdefault(ogc_layer_name, []).append(layer)
-                if not found:
-                    LOG.info("Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
+                if self.project is not None:
+                    found = False
+                    for ogc_layer_name, ancestors in nodes.items():
+                        for ancestor in ancestors:
+                            if ancestor in layer.layer.split(","):
+                                found = True
+                                LOG.debug("GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
+                                layers.setdefault(ogc_layer_name, []).append(layer)
+                    if not found:
+                        LOG.info("Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
 
             session.expunge_all()
             LOG.debug(
