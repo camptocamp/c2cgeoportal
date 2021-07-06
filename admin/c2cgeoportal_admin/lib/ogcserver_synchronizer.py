@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -90,6 +90,11 @@ class OGCServerSynchronizer:
             valid = True
             reason = None
             for name in layer.layer.split(","):
+                if "'" in name:
+                    valid = False
+                    reason = "Layer name contains quote"
+                    self._logger.info(reason)
+                    break
                 el = capabilities.find(".//Layer[Name='{}']".format(name))
                 if el is None:
                     valid = False
