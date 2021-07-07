@@ -1,3 +1,6 @@
+##### 2.6.rc.113
+* Avoid error with OGCServerSynchronizer.check_layers when quote in WMS layer name [c2cgeoportal#8444](https://github.com/camptocamp/c2cgeoportal/pull/8444)
+* Typo, features in featuresStyle has an ending s [c2cgeoportal#8446](https://github.com/camptocamp/c2cgeoportal/pull/8446)
 ##### 2.6.rc.112
 * Bump pillow to 8.2.0 [c2cgeoportal#8439](https://github.com/camptocamp/c2cgeoportal/pull/8439)
 ##### 2.6.rc.111
