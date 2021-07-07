@@ -103,10 +103,10 @@
                 "standard"
             ],
             "hashes": [
-                "sha256:605fe728d0072b1ea76031f7a4edc3c061330fabbe918e1411f390a80484de06"
+                "sha256:3f6babada5a61d65a70d339af7ef45b31841c4f65b3a1de61a8546dea1e48e7a"
             ],
             "index": "pypi",
-            "version": "==5.0.0.dev20210623070322"
+            "version": "==5.0.0.dev20210630091312"
         },
         "cee-syslog-handler": {
             "hashes": [
@@ -209,11 +209,11 @@
         },
         "dogpile.cache": {
             "hashes": [
-                "sha256:2134464672a3deb7ef1366a8691726686d8c62540e4208f1a40c9aaa1a0b6a45",
-                "sha256:b13740e8100ed459928ac50d5ba9a4512934adecd6c0b9af93978789184076f4"
+                "sha256:40a4dde7566d7ea731a7418ff8af6e40807ce2a5761a50336fd778b995acde66",
+                "sha256:6f0bcf97c73bfec1a7bf14e5a248488cee00c2d494bf63f3789ea6d95a57c1cf"
             ],
             "index": "pypi",
-            "version": "==1.1.2"
+            "version": "==1.1.3"
         },
         "fiona": {
             "hashes": [
