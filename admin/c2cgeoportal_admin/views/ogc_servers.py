@@ -147,7 +147,8 @@ class OGCServerViews(AbstractViews):
             }
 
         if self._request.method == "POST":
-            synchronizer = OGCServerSynchronizer(self._request, obj)
+            force_parents = self._request.POST.get("force-parents", "false") == "true"
+            synchronizer = OGCServerSynchronizer(self._request, obj, force_parents=force_parents)
             if "check" in self._request.params:
                 synchronizer.check_layers()
             elif "dry-run" in self._request.params:
