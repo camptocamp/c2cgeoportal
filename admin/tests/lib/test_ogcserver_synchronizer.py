@@ -69,10 +69,14 @@ def ogc_server(**kwargs):
 
 @pytest.mark.usefixtures("test_app", "transact")
 class TestOGCServerSynchronizer:
-    def synchronizer(self, request, server=None):
+    def synchronizer(self, request, server=None, force_parents=False):
         from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
 
-        return OGCServerSynchronizer(request=request, ogc_server=server or ogc_server())
+        return OGCServerSynchronizer(
+            request=request,
+            ogc_server=server or ogc_server(),
+            force_parents=force_parents,
+        )
 
     def test_wms_service_mapserver(self, web_request):
         synchronizer = self.synchronizer(web_request)
@@ -203,6 +207,54 @@ class TestOGCServerSynchronizer:
             "1 themes were added\n"
             "1 groups were added\n"
             "3 layers were added\n"
+        )
+
+    @patch(
+        "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
+        return_value=wms_capabilities(),
+    )
+    def test_synchronize_force_parents(self, cap_mock, web_request, dbsession):
+        from c2cgeoportal_commons.models import main
+
+        interface = main.Interface(name="desktop")
+        dbsession.add(interface)
+
+        # Run first synchronization
+        synchronizer = self.synchronizer(web_request)
+        synchronizer.synchronize()
+
+        # Change some parents
+        theme2 = main.Theme(name="theme2")
+        dbsession.add(theme2)
+        group1 = dbsession.query(main.LayerGroup).one()
+        group1.parents_relation = [main.LayergroupTreeitem(group=theme2)]
+
+        group2 = main.LayerGroup(name="group2")
+        dbsession.add(theme2)
+        layer1 = dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == "layer1").one()
+        layer1.parents_relation = [main.LayergroupTreeitem(group=group2)]
+
+        dbsession.flush()
+
+        # Run new synchronization with force_parents
+        synchronizer = self.synchronizer(web_request, force_parents=True)
+        synchronizer.synchronize()
+
+        theme1 = dbsession.query(main.Theme).filter(main.Theme.name == "theme1").one()
+        assert group1.parents == [theme1]
+        assert layer1.parents == [group1]
+
+        assert synchronizer.report() == (
+            "Group group1 was moved\n"
+            "Layer layer1: another layer already exists with the same name in OGC server Test server\n"
+            "Layer layer1 was moved\n"
+            "Layer layer_in_theme: another layer already exists with the same name in OGC server Test server\n"
+            "Layer layer_in_theme was moved\n"
+            "Layer layer_with_no_parent: another layer already exists with the same name in OGC server Test server\n"
+            "5 items were found\n"
+            "0 themes were added\n"
+            "0 groups were added\n"
+            "0 layers were added\n"
         )
 
     def test_get_layer_wms_defaut(self, web_request, dbsession):
