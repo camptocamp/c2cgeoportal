@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c4adb36263d52dda911e91c5c82a417f4da3e2bde0fa9ae509bbd601c73772a4"
+            "sha256": "2bdced2945992ce904da1479bdd537faa0706a227734161b4da9b0fa46162abc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -953,10 +953,10 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:593f6118cc6d3eba4786c3f802567c937bdb81b3c8e90436e8a29e84071c6936",
-                "sha256:9907adbdd30a55b818914512cc143e6beae0bb3ba78b2649f4b079752eb0e424"
+                "sha256:5210a712dd57d88d225c1fc3fe3a3626fee493637bcd54e204826cf04b8d769c",
+                "sha256:6864dcb6f7dec692635e5518c2a5c80010adf673c70340817f1a1b713d65bb41"
             ],
-            "version": "==1.2.0"
+            "version": "==1.3.0"
         },
         "shapely": {
             "hashes": [
@@ -1241,11 +1241,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:1fd08aa6dcc6d0e46b9e17c246bbaf48eff20418741a7bd82d0caaae9ec33b88",
-                "sha256:7f7c8bc8225ae8cbde6f3581c3b469fb3a0975ced627ed09dfeb381369179dee"
+                "sha256:9765461f73ebb96dc4feb02feaf6eff7c2255056cdc29aad0047abef9be7265b",
+                "sha256:9b1be64398622c9b202cabf14f9493252a818d2e1334641bd91d0d177175558b"
             ],
             "index": "pypi",
-            "version": "==1.19.107"
+            "version": "==1.19.108"
         },
         "babel": {
             "hashes": [
@@ -1274,11 +1274,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:59539432640d1b0324c375b906f1e3a37935b4e589c133cd7f50490be7ab7986",
-                "sha256:bfd08ae511ed27095ce4cb9c3bba953909a02d62114e7560cb4bdfa045747e54"
+                "sha256:7667ef69001708afa796d2e79910230715e8542a910820581bf4623a5d3b0d47",
+                "sha256:f4686d2ccf68dfcd90d2591695938fd0906ae0a7121f792d193b0f000a5d8872"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'",
-            "version": "==1.20.107"
+            "version": "==1.20.108"
         },
         "certifi": {
             "hashes": [
