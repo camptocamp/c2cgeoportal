@@ -80,7 +80,7 @@ elif main_branch == "master":
 else:
     full = major_version + ".rc." + minor
 upgrade_version = "master" if os.environ.get("MAIN_BRANCH") == "master" else full
-major = os.environ.get("MAJOR_VERSION", "2.6")
+major = os.environ.get("MAJOR_VERSION", "2.7")
 
 if args.major:
     print(major)

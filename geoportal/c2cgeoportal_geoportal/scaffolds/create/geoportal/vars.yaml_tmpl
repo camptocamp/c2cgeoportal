@@ -1,9 +1,7 @@
 ---
-
 extends: CONST_vars.yaml
 
 vars:
-
   srid: {{srid}}
 
   alternate_projections: &alternate_projections
@@ -140,7 +138,7 @@ vars:
     # Default values for the admin interface's maps.
     map:
       baseLayers:
-        - type_: "OSM"
+        - type_: OSM
       view:
         projection: 'EPSG:3857'
         center: [829170, 5933942]
@@ -167,7 +165,7 @@ vars:
   shortener:
     # Used to send a confirmation email
     email_from: info@example.com
-    email_subject: "Geoportal URL"
+    email_subject: Geoportal URL
     email_body: |
       Hello,
 
@@ -322,7 +320,7 @@ no_interpreted:
   - reset_password.email_body
   - shortener.email_body
   - welcome_email.email_body
-
+#
 # Standalone version
 # runtime_postprocess:
 #   - expression: "int({})"

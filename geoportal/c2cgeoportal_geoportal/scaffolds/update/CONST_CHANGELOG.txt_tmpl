@@ -2,6 +2,22 @@ This file includes migration steps for each release of c2cgeoportal.
 
 
 =============
+Version 2.7.0
+=============
+
+Information to know before starting the upgrade
+===============================================
+
+Information
+===========
+
+1. All the files will be formatted with isort, Black and Prettier to be similar than the initial scaffolds
+
+Changes to apply
+================
+
+
+=============
 Version 2.6.0
 =============
 

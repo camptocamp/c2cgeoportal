@@ -1,9 +1,7 @@
 {
-    "compilerOptions": {
-      "module": "system",
-      "lib": ["es2017", "dom"],
-    },
-    "include": [
-      "{{package}}_geoportal/static-ngeo/js/**/*.js",
-    ],
+  "compilerOptions": {
+    "module": "system",
+    "lib": ["es2017", "dom"]
+  },
+  "include": ["{{package}}_geoportal/static-ngeo/js/**/*.js"]
 }

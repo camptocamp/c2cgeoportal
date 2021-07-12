@@ -179,3 +179,6 @@ upgrade_files:
   - action: remove
     paths:
       - geoportal/{{package}}_geoportal/locale/.emptyfolder
+  - action: move
+    from: geoportal/.eslintrc
+    to: geoportal/.eslintrc.yaml

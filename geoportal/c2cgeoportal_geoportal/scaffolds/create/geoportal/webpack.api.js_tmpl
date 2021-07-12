@@ -3,13 +3,18 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const destDir = '/etc/static-ngeo/';
 
-const babelPresets = [[require.resolve('@babel/preset-env'), {
-  targets: {
-    browsers: ['> 0.5% in CH', '> 0.5% in FR', 'Firefox ESR', 'ie 11'],
-  },
-  modules: false,
-  loose: true
-}]];
+const babelPresets = [
+  [
+    require.resolve('@babel/preset-env'),
+    {
+      targets: {
+        browsers: ['> 0.5% in CH', '> 0.5% in FR', 'Firefox ESR', 'ie 11'],
+      },
+      modules: false,
+      loose: true,
+    },
+  ],
+];
 
 module.exports = (env, argv) => {
   const library = argv.library ? argv.library : '{{package}}';
@@ -18,22 +23,24 @@ module.exports = (env, argv) => {
     devtool: 'source-map',
     mode: 'production',
     module: {
-      rules: [{
-        test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: babelPresets,
-            babelrc: false,
-            comments: false,
-            plugins: [
-              require.resolve('@babel/plugin-syntax-object-rest-spread'),
-              require.resolve('@babel/plugin-transform-spread'),
-              require.resolve('babel-plugin-angularjs-annotate'),
-            ]
-          }
-        }
-      }]
+      rules: [
+        {
+          test: /\.js$/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: babelPresets,
+              babelrc: false,
+              comments: false,
+              plugins: [
+                require.resolve('@babel/plugin-syntax-object-rest-spread'),
+                require.resolve('@babel/plugin-transform-spread'),
+                require.resolve('babel-plugin-angularjs-annotate'),
+              ],
+            },
+          },
+        },
+      ],
     },
     output: {
       filename: 'api.js',
@@ -41,7 +48,7 @@ module.exports = (env, argv) => {
       libraryTarget: 'umd',
       globalObject: 'this',
       libraryExport: 'default',
-      library: library
+      library: library,
     },
     optimization: {
       minimizer: [
@@ -49,10 +56,10 @@ module.exports = (env, argv) => {
           parallel: true,
           sourceMap: true,
           terserOptions: {
-            compress: false
-          }
-        })
-      ]
+            compress: false,
+          },
+        }),
+      ],
     },
     resolve: {
       modules: [
@@ -63,10 +70,10 @@ module.exports = (env, argv) => {
       alias: {
         api: '/usr/lib/node_modules/ngeo/api/src',
         ngeo: '/usr/lib/node_modules/ngeo/src',
-      }
+      },
     },
     resolveLoader: {
       modules: ['/usr/lib/node_modules'],
-    }
+    },
   };
 };

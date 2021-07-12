@@ -64,7 +64,6 @@
   padding-left: 0px;
 }
 
-
 .jstree-grid-wrapper .jstree-node,
 .jstree-grid-wrapper .jstree-grid-cell-regular {
   border-top: 1px solid #ddd;
@@ -115,11 +114,11 @@
 }
 
 .jstree-open .jstree-icon.jstree-ocl:before {
-  content: "\e252";
+  content: '\e252';
 }
 .jstree-closed .jstree-icon.jstree-ocl:before {
-  content: "\e250";
+  content: '\e250';
 }
 .jstree-leaf .jstree-icon.jstree-ocl:before {
-  content: "";
+  content: '';
 }

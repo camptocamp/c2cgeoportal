@@ -186,9 +186,12 @@ class TemplateCreate(BaseTemplate):
         Overrides the base template class to print the next step.
         """
 
+        print("Fix executable")
         fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"))
 
         super().post(command, output_dir, vars_)
+
+        print("Welcome to GeoMapFish!")
 
 
 class TemplateUpdate(BaseTemplate):
@@ -227,6 +230,7 @@ class TemplateUpdate(BaseTemplate):
         rendering.
         """
 
+        print("Fix executable")
         fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"), True)
 
         super().post(command, output_dir, vars_)
