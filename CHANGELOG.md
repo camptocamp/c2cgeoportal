@@ -1,3 +1,5 @@
+##### 2.6.0.2
+* Add option to force parents in OGCServerSynchronizer [c2cgeoportal#8454](https://github.com/camptocamp/c2cgeoportal/pull/8454)
 ##### 2.6.rc.113
 * Avoid error with OGCServerSynchronizer.check_layers when quote in WMS layer name [c2cgeoportal#8444](https://github.com/camptocamp/c2cgeoportal/pull/8444)
 * Typo, features in featuresStyle has an ending s [c2cgeoportal#8446](https://github.com/camptocamp/c2cgeoportal/pull/8446)
