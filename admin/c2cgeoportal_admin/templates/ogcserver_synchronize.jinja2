@@ -59,6 +59,10 @@
         <li>else it will create a <code>Group</code> object.</li>
       </ul>
       <form method="POST" class="deform" id="form-synchronize">
+        <div class="form-group">
+            <input type="checkbox" name="force-parents" id="force-parents-field">
+            <label for="force-parents-field" class="control-label">{{_("Force parents re-initialization.")}}</label>
+        </div>
         <button type="submit" name="synchronize" class="btn btn-primary">{{_("Synchronize")}}</button>
       </form>
     </div>

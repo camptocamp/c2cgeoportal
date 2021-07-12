@@ -54,9 +54,12 @@ class dry_run_transaction:  # noqa ignore=N801: class names should use CapWords 
 
 
 class OGCServerSynchronizer:
-    def __init__(self, request: pyramid.request.Request, ogc_server: main.OGCServer) -> None:
+    def __init__(
+        self, request: pyramid.request.Request, ogc_server: main.OGCServer, force_parents: bool = False
+    ) -> None:
         self._request = request
         self._ogc_server = ogc_server
+        self._force_parents = force_parents
         self._default_wms = main.LayerWMS()
         self._interfaces = None
 
@@ -190,6 +193,10 @@ class OGCServerSynchronizer:
         else:
             self._items_found += 1
 
+            if self._force_parents and group.parents != [parent]:
+                group.parents_relation = [main.LayergroupTreeitem(group=parent)]  # noqa, pylint: no-member
+                self._logger.info("Group %s was moved", name)
+
         return group
 
     def get_layer_wms(self, el: ElementTree, parent: ElementTree) -> main.LayerWMS:
@@ -252,6 +259,12 @@ class OGCServerSynchronizer:
                     name,
                     self._ogc_server.name,
                 )
+
+            if self._force_parents and layer.parents != ([parent] if parent else []):
+                layer.parents_relation = (
+                    [main.LayergroupTreeitem(group=parent)] if parent else None
+                )  # noqa, pylint: no-member
+                self._logger.info("Layer %s was moved", name)
 
         return layer
 
