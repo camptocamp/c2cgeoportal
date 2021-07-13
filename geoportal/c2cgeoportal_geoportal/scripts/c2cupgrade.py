@@ -293,7 +293,7 @@ rules:
   import/no-unresolved: 0
   valid-jsdoc: 0
   sort-imports-es6-autofix/sort-imports-es6: 0
-  prettier/prettier: 1
+  prettier/prettier: 0
 """.format(
                     self.project["project_package"]
                 )

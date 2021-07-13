@@ -100,7 +100,7 @@ RUN \
 RUN npm-packages \
     @types @typescript-eslint ol-cesium jasmine-core karma karma-chrome-launcher \
     karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
-    typedoc jsdoc jsdoc-plugin-typescript prettier typescript \
+    typedoc jsdoc jsdoc-plugin-typescript typescript \
     --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
 
 COPY admin/package.json /opt/c2cgeoportal/admin/
@@ -114,7 +114,8 @@ RUN \
 RUN \
     npm install --no-optional --global --unsafe-perm --no-package-lock $(cat /opt/c2cgeoportal/geoportal/npm-packages) && \
     npm cache clear --force && \
-    rm -rf /tmp/*
+    rm -rf /tmp/* && \
+    ln -s /usr/lib/node_modules/eslint-config-openlayers/node_modules/eslint-* /usr/lib/node_modules/
 RUN \
     git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git \
     /tmp/angular && \
