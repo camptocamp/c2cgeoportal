@@ -1,3 +1,5 @@
+##### 2.6.0.3
+* Ignore beaker CVE [c2cgeoportal#8478](https://github.com/camptocamp/c2cgeoportal/pull/8478)
 ##### 2.6.0.2
 * Add option to force parents in OGCServerSynchronizer [c2cgeoportal#8454](https://github.com/camptocamp/c2cgeoportal/pull/8454)
 ##### 2.6.rc.113
