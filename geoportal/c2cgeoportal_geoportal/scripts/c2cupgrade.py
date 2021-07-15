@@ -57,6 +57,25 @@ DIFF_NOTICE = (
 )
 
 
+def fix_style() -> None:
+    if not os.path.exists(".prettierignore"):
+        with open(".prettierignore", "w") as file_:
+            file_.write("*.min.js\n")
+    if not os.path.exists(".prettierrc.yaml"):
+        with open(".prettierrc.yaml", "w") as file_:
+            file_.write("bracketSpacing: false\nquoteProps: preserve\n")
+
+    subprocess.run(  # pylint: disable=subprocess-run-check
+        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=isort"]
+    )
+    subprocess.run(  # pylint: disable=subprocess-run-check
+        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=black"]
+    )
+    subprocess.run(  # pylint: disable=subprocess-run-check
+        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=prettier"]
+    )
+
+
 def main() -> None:
     """
     tool used to do the application upgrade.
@@ -277,54 +296,9 @@ class C2cUpgradeTool:
 
     @Step(2)
     def step2(self, step: int) -> None:
-        with open(".eslintrc", "w") as eslintrc_file:
-            eslintrc_file.write(
-                """extends:
-  - openlayers
-globals:
-  '{}': false
-env:
-  jquery: true
-parserOptions:
-  ecmaVersion: 2017
-rules:
-  no-console: 0
-  comma-dangle: 0
-  import/no-unresolved: 0
-  valid-jsdoc: 0
-  sort-imports-es6-autofix/sort-imports-es6: 0
-  prettier/prettier: 0
-""".format(
-                    self.project["project_package"]
-                )
-            )
-
-        app_js_files = []
-        for base in ("CONST_create_template/", ""):
-            try:
-                app_js_files.extend(
-                    check_output(
-                        [
-                            "find",
-                            base + self.project["project_package"] + "_geoportal/static-ngeo/js",
-                            "-type",
-                            "f",
-                            "-name",
-                            "*.js",
-                        ]
-                    )
-                    .decode()
-                    .split()
-                )
-            except Exception:
-                pass
-
-        if app_js_files:
-            call(["eslint", "--fix"] + app_js_files)
-
-        os.remove(".eslintrc")
-        check_call(["git", "add"] + app_js_files)
-        call(["git", "commit", "--message=Run code style"])
+        fix_style()
+        subprocess.run(["git", "add", "-A"])  # pylint: disable=subprocess-run-check
+        subprocess.run(["git", "commit", "--message=Run code style"])  # pylint: disable=subprocess-run-check
 
         self.run_step(step + 1)
 
@@ -376,6 +350,7 @@ rules:
             ]
         )
         os.remove(project_path)
+        fix_style()
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])

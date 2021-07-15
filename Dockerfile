@@ -68,9 +68,9 @@ RUN \
     /etc/apt/sources.list.d/pgdg.list && \
     curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && \
-    apt-get install --assume-yes --no-install-recommends git make python3.8-dev gcc postgresql-client \
-    net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils \
-    bash-completion pwgen redis-tools && \
+    apt-get install --assume-yes --no-install-recommends git make python3.8-dev python3.8-venv gcc \
+    postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
+    libxml2-utils bash-completion pwgen redis-tools libmagic1 && \
     apt-get clean && \
     rm --recursive --force /var/lib/apt/lists/* && \
     curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets && \
@@ -84,6 +84,12 @@ COPY Pipfile Pipfile.lock /tmp/
 RUN \
     cd /tmp && \
     pipenv sync --system --clear --dev && \
+    rm --recursive --force /tmp/* /root/.cache/*
+
+COPY ci/requirements.txt /tmp/
+RUN \
+    python3 -m venv /venv/c2cciutils && \
+    /venv/c2cciutils/bin/pip install --requirement=/tmp/requirements.txt && \
     rm --recursive --force /tmp/* /root/.cache/*
 
 COPY bin/npm-packages bin/update-po bin/build-l10n /usr/bin/

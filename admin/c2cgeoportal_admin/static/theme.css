@@ -21,33 +21,32 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-@import "navbar.css";
+@import 'navbar.css';
 
-.nav>li>a {
+.nav > li > a {
   padding-left: 8px;
   padding-right: 8px;
 }
 
 .bootstrap-table th.actions,
-.bootstrap-table td.actions
-{
+.bootstrap-table td.actions {
   width: 30px;
 }
 
 .icon-theme:before {
-  content: "\e139";
+  content: '\e139';
 }
 .icon-group:before {
-  content: "\e118";
+  content: '\e118';
 }
 .icon-l_wms:before {
-  content: "\e060";
+  content: '\e060';
 }
 .icon-l_wmts:before {
-  content: "\e011";
+  content: '\e011';
 }
 .icon-user:before {
-  content: "\e008";
+  content: '\e008';
 }
 
 .ms-res-ctn .ms-res-item {
