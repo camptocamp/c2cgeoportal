@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tilecloud-chain/1.16/tilecloud_chain/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json
 
 grids:
     # grid name, I just recommends to add the min resolution because it's common to not generate all the layers at the same resolution.
@@ -62,8 +62,8 @@ defaults:
         #        generate: ['2012']
         #        # all the available values in the WMTS capabilities
         #        values: ['2012']
-        # the meta tiles definition [default to off]
-        meta: on
+        # the meta tiles definition [default to false]
+        meta: true
         # the meta tiles size [default to 8]
         meta_size: 5
         # the meta tiles buffer [default to 128]
@@ -125,7 +125,6 @@ server:
     static_path: tiles/static
     admin_path: tiles/admin
     expires: 8  # 8 hours
-    mapcache_internal: True
     predefined_commands:
     -   name: Generation all layers
         command: generate_tiles --role=master
