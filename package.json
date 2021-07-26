@@ -7,6 +7,6 @@
     "angular-gettext-tools": "2.5.3",
     "commander": "8.0.0",
     "puppeteer": "10.1.0",
-    "url-parse": "1.5.1"
+    "url-parse": "1.5.3"
   }
 }
