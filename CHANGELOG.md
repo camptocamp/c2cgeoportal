@@ -1,3 +1,5 @@
+##### 2.6.0.5
+* Add missing ngeo-geolocation-loading to make atLoadingTime working di… [ngeo#7343](https://github.com/camptocamp/ngeo/pull/7343)
 ##### 2.6.0.3
 * Ignore beaker CVE [c2cgeoportal#8478](https://github.com/camptocamp/c2cgeoportal/pull/8478)
 ##### 2.6.0.2
