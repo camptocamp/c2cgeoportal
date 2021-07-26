@@ -114,6 +114,7 @@ class TestDynamicView(TestCase):
             if _query is None
             else f"/dummy/static/url/{url}?{pyramid.url.urlencode(_query)}"
         )
+        request.get_organization_interface = lambda interface: interface
         return request
 
     def test_constant(self):
@@ -251,6 +252,7 @@ class TestDynamicView(TestCase):
             config.add_route("test", "/test")
             config.add_route("route_with_keywords", "/test/{key1}/{key2}")
             request = DummyRequest({"interface": "test"})
+            request.get_organization_interface = lambda interface: interface
             dynamic = DynamicView(request).dynamic()
 
         assert "XTest" in dynamic["constants"], dynamic
@@ -268,6 +270,7 @@ class TestDynamicView(TestCase):
             config.add_route("test", "/test")
             config.add_route("route_with_segments", "/test")
             request = DummyRequest({"interface": "test"})
+            request.get_organization_interface = lambda interface: interface
             dynamic = DynamicView(request).dynamic()
 
         assert "XTest" in dynamic["constants"], dynamic
@@ -296,6 +299,7 @@ class TestDynamicView(TestCase):
             config.add_route("test", "/test")
             config.add_route("route_with_all", "/test/{key1}/{key2}")
             request = DummyRequest({"interface": "test"})
+            request.get_organization_interface = lambda interface: interface
             dynamic = DynamicView(request).dynamic()
 
         assert "XTest" in dynamic["constants"], dynamic
