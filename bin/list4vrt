@@ -41,10 +41,18 @@ def main():
         endpoint_url=f"https://{os.environ['AWS_S3_ENDPOINT']}/",
         region_name=os.environ["AWS_DEFAULT_REGION"],
     )
-    keys = [i["Key"] for i in s3_client.list_objects(Bucket=args.bucket, Prefix=args.prefix)["Contents"]]
-    filtered_keys = list(filter(lambda i: i.endswith(args.postfix), keys))
-    full_keys = [f"/vsis3/{args.bucket}/{i}" for i in filtered_keys]
-    print("\n".join(full_keys))
+    # According to S3 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2
+    # doc this function return at most 1000 keys. To ensure we retreive all the key from the prefix, use continuation token.
+    kwargs = {"Bucket": bucket, "Prefix": prefix}
+    while True:
+        obj_list_metadata = s3_client.list_objects_v2(**kwargs)
 
-
-main()
+        for obj in obj_list_metadata['Contents']:
+            if obj["Key"].endswith(postfix):
+                print(f"/vsis3/{args.bucket}/obj['Key']")
+        try:
+            kwargs["ContinuationToken"] = obj_list_metadata["NextContinuationToken"]
+        except KeyError:
+            break
+if __name__ == '__main__':
+    main()
