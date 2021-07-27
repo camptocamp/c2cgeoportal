@@ -47,12 +47,14 @@ def main():
     while True:
         obj_list_metadata = s3_client.list_objects_v2(**kwargs)
 
-        for obj in obj_list_metadata['Contents']:
+        for obj in obj_list_metadata["Contents"]:
             if obj["Key"].endswith(postfix):
-                print(f"/vsis3/{args.bucket}/obj['Key']")
+                print(f"/vsis3/{args.bucket}/{obj['Key']}")
         try:
             kwargs["ContinuationToken"] = obj_list_metadata["NextContinuationToken"]
         except KeyError:
             break
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     main()
