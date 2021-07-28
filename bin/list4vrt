@@ -42,7 +42,7 @@ def main():
         region_name=os.environ["AWS_DEFAULT_REGION"],
     )
     # According to S3 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.list_objects_v2
-    # doc this function return at most 1000 keys. To ensure we retreive all the key from the prefix, use continuation token.
+    # doc this function return at most 1000 keys. To ensure we retrieve all the key from the prefix, use continuation token.
     kwargs = {"Bucket": bucket, "Prefix": prefix}
     while True:
         obj_list_metadata = s3_client.list_objects_v2(**kwargs)
