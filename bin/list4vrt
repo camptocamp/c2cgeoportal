@@ -50,9 +50,9 @@ def main():
         for obj in obj_list_metadata["Contents"]:
             if obj["Key"].endswith(postfix):
                 print(f"/vsis3/{args.bucket}/{obj['Key']}")
-        try:
+        if "NextContinuationToken" in obj_list_metadata:
             kwargs["ContinuationToken"] = obj_list_metadata["NextContinuationToken"]
-        except KeyError:
+        else:
             break
 
 
