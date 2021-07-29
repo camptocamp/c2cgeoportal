@@ -93,6 +93,11 @@ class OGCServerSynchronizer:
             valid = True
             reason = None
             for name in layer.layer.split(","):
+                if "'" in name:
+                    valid = False
+                    reason = "Layer name contains quote"
+                    self._logger.info(reason)
+                    break
                 el = capabilities.find(f".//Layer[Name='{name}']")
                 if el is None:
                     valid = False
