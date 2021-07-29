@@ -358,7 +358,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_request_method(get_user_from_request, name="user", property=True)
     config.add_request_method(get_user_from_request, name="get_user")
     # Be able for an organization to override the method to use alternate:
-    # - Organization roles name for the standard roles 'anonymous', 'registred' and 'intranet'.
+    # - Organization roles name for the standard roles 'anonymous', 'registered' and 'intranet'.
     config.add_request_method(lambda request, role_type: role_type, name="get_organization_role")
     # - Organization print URL
     config.add_request_method(

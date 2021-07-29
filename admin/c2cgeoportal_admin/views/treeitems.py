@@ -71,11 +71,11 @@ class TreeItemViews(AbstractViews):  # type: ignore
     def save(self):
         response = super().save()
         # correctly handles the validation error as if there is a validation error, cstruct is empty
-        has_to_be_registred_in_parent = (
+        has_to_be_registered_in_parent = (
             hasattr(self, "_appstruct") and self._appstruct is not None and self._appstruct.get("parent_id")
         )
-        if has_to_be_registred_in_parent:
-            parent = self._request.dbsession.query(TreeGroup).get(has_to_be_registred_in_parent)
+        if has_to_be_registered_in_parent:
+            parent = self._request.dbsession.query(TreeGroup).get(has_to_be_registered_in_parent)
             rel = LayergroupTreeitem(parent, self._obj, 100)
             self._request.dbsession.add(rel)
         return response
