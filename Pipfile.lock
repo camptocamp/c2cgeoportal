@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8f320a18c0d420428f8f221aa0305705501524351809b77cb1a5637040c764f3"
+            "sha256": "e6bcaf41b444ff3e951a2f2b6cecb4044333c031d018fdd13074cc6c78f77474"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1246,11 +1246,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:34c3e8419b4752262443123710a97e58dfd1fa5d1b3f588cd0c711fa463e6044",
-                "sha256:3e4bc43477f5242f0eef631c5c35cc69360524959c2df172f16ab09fe9938407"
+                "sha256:004e60fe009544a022ef0bfa51d6ae2d9eed11a9ae562e388eb05ef9216602d0",
+                "sha256:b3e38404d340fb355ef4025f5bc4ff28772c11be716d6b71b69eebb9488d44b3"
             ],
             "index": "pypi",
-            "version": "==1.20.8"
+            "version": "==1.20.9"
         },
         "babel": {
             "hashes": [
@@ -1279,11 +1279,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:437cdcd518e6f9db72ec87f170cc66d54081c8abc347abb9f9a3cd9c8e993bd1",
-                "sha256:e51ac230169af1325ab64c9935e679fb54f6d3fdf0978fe67a31931febdf94f9"
+                "sha256:08e1d028934e8d14610bbbb2f716378a2882d9651c20cb9e1ae873169362a79b",
+                "sha256:c9a60ecf9dbae5d678008dda2b8850fc68203d82a6b31513a654601422f8f451"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.21.8"
+            "version": "==1.21.9"
         },
         "certifi": {
             "hashes": [
@@ -1429,11 +1429,11 @@
         },
         "gitpython": {
             "hashes": [
-                "sha256:b1e1c269deab1b08ce65403cf14e10d2ef1f6c89e33ea7c5e5bb0222ea593b8a",
-                "sha256:df0e072a200703a65387b0cfdf0466e3bab729c0458cf6b7349d0e9877636519"
+                "sha256:b838a895977b45ab6f0cc926a9045c8d1c44e2b653c1fcc39fe91f42c6e8f05b",
+                "sha256:fce760879cd2aebd2991b3542876dc5c4a909b30c9d69dfc488e504a8db37ee8"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==3.1.20"
+            "version": "==3.1.18"
         },
         "idna": {
             "hashes": [
@@ -1973,7 +1973,7 @@
                 "sha256:052774848f448cf19c7e959adf5566904d525f33a3f8b6ba6f6f8f26ec7de0cc",
                 "sha256:c2c1c2d44f158cdbddab7824a9af8c4f83c76b1e23e049479aa432feb6c4c23b"
             ],
-            "markers": "python_version >= '3'",
+            "markers": "python_full_version >= '3.0.0'",
             "version": "==2.2.1"
         },
         "stevedore": {
