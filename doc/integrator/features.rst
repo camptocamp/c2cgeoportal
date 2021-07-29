@@ -18,3 +18,4 @@ Features that require additional steps (most of the time):
    urllogin
    pdfreport
    routing
+   multi_organization
