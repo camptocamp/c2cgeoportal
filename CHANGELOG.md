@@ -1,3 +1,5 @@
+##### 2.6.0.6
+* Multi-organization documentation [c2cgeoportal#8516](https://github.com/camptocamp/c2cgeoportal/pull/8516)
 ##### 2.6.0.5
 * Add missing ngeo-geolocation-loading to make atLoadingTime working di… [ngeo#7343](https://github.com/camptocamp/ngeo/pull/7343)
 ##### 2.6.0.3
