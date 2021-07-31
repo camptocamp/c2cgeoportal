@@ -350,8 +350,9 @@ class C2cUpgradeTool:
             ]
         )
         os.remove(project_path)
-        fix_style()
 
+        check_call(["git", "add", "--all", "CONST_create_template/"])
+        fix_style()
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
         self.run_step(step + 1)
