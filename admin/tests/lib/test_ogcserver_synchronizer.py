@@ -69,13 +69,14 @@ def ogc_server(**kwargs):
 
 @pytest.mark.usefixtures("test_app", "transact")
 class TestOGCServerSynchronizer:
-    def synchronizer(self, request, server=None, force_parents=False):
+    def synchronizer(self, request, server=None, force_parents=False, clean=False):
         from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
 
         return OGCServerSynchronizer(
             request=request,
             ogc_server=server or ogc_server(),
             force_parents=force_parents,
+            clean=clean,
         )
 
     def test_wms_service_mapserver(self, web_request):
@@ -157,7 +158,9 @@ class TestOGCServerSynchronizer:
             "0 items were found\n"
             "1 themes were added\n"
             "1 groups were added\n"
+            "0 groups were removed\n"
             "3 layers were added\n"
+            "0 layers were removed\n"
             "Rolling back transaction due to dry run\n"
         )
 
@@ -206,7 +209,9 @@ class TestOGCServerSynchronizer:
             "0 items were found\n"
             "1 themes were added\n"
             "1 groups were added\n"
+            "0 groups were removed\n"
             "3 layers were added\n"
+            "0 layers were removed\n"
         )
 
     @patch(
@@ -254,7 +259,56 @@ class TestOGCServerSynchronizer:
             "5 items were found\n"
             "0 themes were added\n"
             "0 groups were added\n"
+            "0 groups were removed\n"
             "0 layers were added\n"
+            "0 layers were removed\n"
+        )
+
+    @patch(
+        "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
+        return_value=wms_capabilities(),
+    )
+    def test_synchronize_clean(self, cap_mock, web_request, dbsession):
+        from c2cgeoportal_commons.models import main
+
+        server = ogc_server()
+        dbsession.add(server)
+
+        layer1 = main.LayerWMS(name="layer1", layer="layer1")
+        layer1.ogc_server = server
+        dbsession.add(layer1)
+
+        layer_missing = main.LayerWMS(name="layer_missing", layer="layer_missing")
+        layer_missing.ogc_server = server
+        dbsession.add(layer_missing)
+
+        empty_group = main.LayerGroup(name="empty_group")
+        dbsession.add(empty_group)
+
+        dbsession.flush()
+
+        synchronizer = self.synchronizer(web_request, server, clean=True)
+        synchronizer.synchronize()
+
+        assert dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == "layer_missing").count() == 0
+        assert dbsession.query(main.LayerGroup).filter(main.LayerGroup.name == "empty_group").count() == 0
+
+        assert synchronizer.report() == (
+            "Layer theme1 added as new theme\n"
+            "Layer group1 added as new group in theme theme1\n"
+            "Layer layer_in_theme added as new layer with no parent\n"
+            "Layer layer_with_no_parent added as new layer with no parent\n"
+            "Layer layer_missing does not exists on OGC server\n"
+            "Removed layer layer_missing\n"
+            "Removed empty group empty_group\n"
+            "Removed empty group group1\n"
+            "Checked 4 layers, 1 are invalid\n"
+            "1 items were found\n"
+            "1 themes were added\n"
+            "1 groups were added\n"
+            "2 groups were removed\n"
+            "2 layers were added\n"
+            "1 layers were removed\n"
         )
 
     def test_get_layer_wms_defaut(self, web_request, dbsession):
