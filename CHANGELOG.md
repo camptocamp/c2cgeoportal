@@ -1,3 +1,5 @@
+##### 2.5.0.148
+* [Backport 2.5] Ignore CWE-22 [c2cgeoportal#8540](https://github.com/camptocamp/c2cgeoportal/pull/8540)
 ##### 2.5.0.146
 * Send MapServer substitution only on MapServer with standard auth [c2cgeoportal#8416](https://github.com/camptocamp/c2cgeoportal/pull/8416)
 ##### 2.5.0.145
