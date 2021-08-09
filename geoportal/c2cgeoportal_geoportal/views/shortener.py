@@ -115,7 +115,7 @@ class Shortener:
             tries += 1
             if tries > 20:
                 message = "No free ref found, considered to increase the length"
-                logging.error(message)
+                logger.error(message)
                 raise HTTPInternalServerError(message)
 
         user_email = self.request.user.email if self.request.user is not None else None

@@ -123,7 +123,7 @@ services:
       - MASTER=redis_master
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.15
+    image: camptocamp/tilecloud-chain:master
     user: www-data
     restart: unless-stopped
     environment:
@@ -155,7 +155,7 @@ services:
       - LOG_TYPE
 
   tilegeneration_slave:
-    image: camptocamp/tilecloud-chain:1.15
+    image: camptocamp/tilecloud-chain:master
     user: www-data
     restart: unless-stopped
     entrypoint:
