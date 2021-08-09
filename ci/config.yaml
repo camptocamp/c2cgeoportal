@@ -12,6 +12,9 @@ audit:
   pipenv:
     python_versions:
       - 3.6.12
+  npm:
+    cwe_ignore:
+      - CWE-22 # Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
 
 publish:
   docker:
