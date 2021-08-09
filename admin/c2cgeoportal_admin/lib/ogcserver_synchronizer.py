@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import functools
 import logging
 from io import StringIO
 from typing import Set, cast  # noqa, pylint: disable=unused-import
@@ -54,10 +55,11 @@ class dry_run_transaction:  # noqa N801: class names should use CapWords convent
 
 
 class OGCServerSynchronizer:
-    def __init__(self, request, ogc_server, force_parents=False):
+    def __init__(self, request, ogc_server, force_parents=False, clean=False):
         self._request = request
         self._ogc_server = ogc_server
         self._force_parents = force_parents
+        self._clean = clean
         self._default_wms = main.LayerWMS()
         self._interfaces = None
 
@@ -69,7 +71,9 @@ class OGCServerSynchronizer:
         self._items_found = 0
         self._themes_added = 0
         self._groups_added = 0
+        self._groups_removed = 0
         self._layers_added = 0
+        self._layers_removed = 0
 
     def __str__(self):
         return "OGCServerSynchronizer({})".format(self._ogc_server.name)
@@ -101,6 +105,10 @@ class OGCServerSynchronizer:
                     valid = False
                     reason = "Layer {} does not exists on OGC server".format(name)
                     self._logger.info(reason)
+                    if self._clean:
+                        self._request.dbsession.delete(layer)
+                        self._logger.info("Removed layer %s", name)
+                        self._layers_removed += 1
                     break
                 if layer.style and el.find("./Style/Name[.='{}']".format(layer.style)) is None:
                     valid = False
@@ -112,6 +120,15 @@ class OGCServerSynchronizer:
                 invalids += 1
             layer.invalid_reason = reason
             items += 1
+
+        if self._clean:
+            groups = self._request.dbsession.query(main.LayerGroup)
+            for group in groups:
+                if len(group.children_relation) == 0:
+                    self._request.dbsession.delete(group)
+                    self._logger.info("Removed empty group %s", group.name)
+                    self._groups_removed += 1
+
         self._logger.info("Checked %s layers, %s are invalid", items, invalids)
 
     def synchronize(self, dry_run=False):
@@ -124,7 +141,9 @@ class OGCServerSynchronizer:
         self._items_found = 0
         self._themes_added = 0
         self._groups_added = 0
+        self._groups_removed = 0
         self._layers_added = 0
+        self._layers_removed = 0
 
         self._default_wms = cast(
             main.LayerWMS, main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS()
@@ -136,10 +155,15 @@ class OGCServerSynchronizer:
         for theme_layer in theme_layers:
             self.synchronize_layer(theme_layer)
 
+        if self._clean:
+            self.check_layers()
+
         self._logger.info("%s items were found", self._items_found)
         self._logger.info("%s themes were added", self._themes_added)
         self._logger.info("%s groups were added", self._groups_added)
+        self._logger.info("%s groups were removed", self._groups_removed)
         self._logger.info("%s layers were added", self._layers_added)
+        self._logger.info("%s layers were removed", self._layers_removed)
 
     def synchronize_layer(self, el, parent=None):
         if el.find("Layer") is None:
@@ -260,6 +284,7 @@ class OGCServerSynchronizer:
 
         return layer
 
+    @functools.lru_cache()
     def wms_capabilities(self):
         errors: Set[str] = set()
         url = get_url2(
