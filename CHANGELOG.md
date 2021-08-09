@@ -1,3 +1,7 @@
+##### 2.6.0.7
+* Be able to have multiple instance of an application [c2cgeoportal#8520](https://github.com/camptocamp/c2cgeoportal/pull/8520)
+* [Backport 2.6] Ignore CWE-22 [c2cgeoportal#8541](https://github.com/camptocamp/c2cgeoportal/pull/8541)
+* [Backport 2.6] Ignore CWE-22: Improper Limitation of a Pathname to a Restricted Dire… [ngeo#7371](https://github.com/camptocamp/ngeo/pull/7371)
 ##### 2.6.0.6
 * Multi-organization documentation [c2cgeoportal#8516](https://github.com/camptocamp/c2cgeoportal/pull/8516)
 ##### 2.6.0.5
