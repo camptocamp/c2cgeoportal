@@ -9,6 +9,15 @@ import sys
 def main():
     parser = argparse.ArgumentParser(description="Publish Docker images")
     parser.add_argument("--image", dest="images", action="append", help="The image to be exported")
+    parser.add_argument(
+        "--image-stream-name",
+        dest="imagestreams",
+        action="append",
+        help=(
+            "The image stream names can use template values: {version}, {image}, {env}, {version_only}. "
+            "Default to {version}-c2cgeoportal-{image}:{version}."
+        ),
+    )
     args = parser.parse_args()
 
     ref = os.environ["GITHUB_REF"].split("/")
@@ -51,17 +60,26 @@ def main():
         ]
     )
     for image in args.images:
-        openshift_image_ref = "{version}-c2cgeoportal-{image}:{version}".format(version=version, image=image)
-        subprocess.check_call(
-            [
-                oc,
-                "import-image",
-                openshift_image_ref,
-                "--scheduled=true",
-                "--reference-policy=local",
-                "--namespace=" + os.environ["OPENSHIFT_PROJECT"],
-            ]
-        )
+        version_split = version.split("-")
+        env = version_split[0]
+        version_only = "-".join(version_split[1:])
+
+        for imagestream in (
+            args.imagestreams if imagestreams else ["{version}-c2cgeoportal-{image}:{version}"]
+        ):
+            openshift_image_ref = imagestream.format(
+                version=version, image=image, env=env, version_only=version_only
+            )
+            subprocess.check_call(
+                [
+                    oc,
+                    "import-image",
+                    openshift_image_ref,
+                    "--scheduled=true",
+                    "--reference-policy=local",
+                    "--namespace=" + os.environ["OPENSHIFT_PROJECT"],
+                ]
+            )
 
 
 if __name__ == "__main__":
