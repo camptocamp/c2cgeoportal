@@ -10,6 +10,11 @@ checks:
     dependabot-auto-merge.yaml: False
   dependabot_config: False
 
+audit:
+  npm:
+    cwe_ignore:
+      - CWE-22 # Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
+
 publish:
   docker:
     images:
