@@ -29,6 +29,7 @@
 import binascii
 import json
 import logging
+import os
 import time
 from typing import Any, Callable, Dict, List, Optional, cast
 
@@ -153,6 +154,17 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         return []
 
 
+@implementer(IAuthenticationPolicy)
+class DevAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+    @staticmethod
+    def unauthenticated_userid(request: pyramid.request.Request) -> Optional[str]:
+        """
+        Get the user name from the environmant variable
+        """
+        del request
+        return os.environ["DEV_LOGINNAME"]
+
+
 def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy:
     timeout = settings.get("authtkt_timeout")
     timeout = None if timeout is None or timeout.lower() == "none" else int(timeout)
@@ -208,6 +220,10 @@ def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy
 
         basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
         policies.append(basic_authentication_policy)
+
+    # Consider empty string as not configured
+    if "DEV_LOGINNAME" in os.environ and os.environ["DEV_LOGINNAME"]:
+        policies.append(DevAuthenticationPolicy())
 
     return MultiAuthenticationPolicy(policies)
 
