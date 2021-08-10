@@ -23,6 +23,8 @@ basicauth = %(BASICAUTH)s
 
 app.cfg = /etc/geomapfish/config.yaml
 
+tm.annotate_user = false
+
 [filter:proxy-prefix]
 use = egg:PasteDeploy#prefix
 prefix = %(VISIBLE_ENTRY_POINT)s
