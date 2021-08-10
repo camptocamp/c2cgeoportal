@@ -1,3 +1,5 @@
+##### 2.6.0.8
+* Fix currentInterface URL for multi-organization [c2cgeoportal#8515](https://github.com/camptocamp/c2cgeoportal/pull/8515)
 ##### 2.6.0.7
 * Be able to have multiple instance of an application [c2cgeoportal#8520](https://github.com/camptocamp/c2cgeoportal/pull/8520)
 * [Backport 2.6] Ignore CWE-22 [c2cgeoportal#8541](https://github.com/camptocamp/c2cgeoportal/pull/8541)
