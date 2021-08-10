@@ -46,6 +46,13 @@
       <div class="btn-group">
         <a id="layertree-ordering" class="btn btn-default" href="{{request.route_url('layertree_ordering')}}"><span class="glyphicon glyphicon-sort"></span> {{_("Edit themes order")}}</a>
       </div>
+      <label for="interface">{{ _("Interface") }}</label>
+      <select class="form-control" id="interface">
+        <option value="all">{{ _("All") }}</option>
+        {% for interface in interfaces %}
+        <option>{{ interface.name }}</option>
+        {% endfor %}
+      </select>
     </div>
 
     <div id="tree"></div>
@@ -56,8 +63,14 @@
         core: {
           data: function(node, callback) {
             var url = "{{ request.route_url('layertree_children') }}";
+            let separator = '?';
             if (node.id != '#') {
               url += "?group_id=" + node.data.id + "&path=" + node.id;
+              separator = '&';
+            }
+            const interface = $('#interface')[0].value;
+            if (interface != 'all') {
+              url += separator + "interface=" + interface;
             }
             $.ajax({ url: url })
             .done(function(data) {
@@ -225,6 +238,11 @@
       $(window).resize(function() {
         $('.jstree-grid-wrapper').height($(window).height() - $('nav').height() - $('#toolbar').height() - 50);
         $('.jstree-grid-wrapper').width('100%');
+      });
+
+      const interfaceField = $('#interface');
+      interfaceField.on('change', function(e) {
+        $jstree.jstree(true).refresh();
       });
     });
     </script>
