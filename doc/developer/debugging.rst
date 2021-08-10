@@ -61,6 +61,22 @@ With the default configuration in the file ``docker-compose.override.yaml``, you
 available in ``https``, and the authentication will work.
 
 
+Auto login
+----------
+
+To be automatically logged in with a user present in the database you should set in the
+``docker-compose.override.yaml``:
+
+.. code:: yaml
+
+   services:
+     geoportal:
+       environment:
+         - DEV_LOGINNAME=<username>
+
+Then you will directly be logged in to the user.
+
+
 Mapserver
 ---------
 
