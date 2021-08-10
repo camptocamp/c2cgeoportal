@@ -1,3 +1,5 @@
+##### 2.5.0.149
+* [Backport 2.5] Ignore CWE-22: Improper Limitation of a Pathname to a Restricted Dire… [ngeo#7370](https://github.com/camptocamp/ngeo/pull/7370)
 ##### 2.5.0.148
 * [Backport 2.5] Ignore CWE-22 [c2cgeoportal#8540](https://github.com/camptocamp/c2cgeoportal/pull/8540)
 ##### 2.5.0.146
