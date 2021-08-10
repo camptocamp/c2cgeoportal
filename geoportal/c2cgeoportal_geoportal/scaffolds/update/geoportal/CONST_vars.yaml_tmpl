@@ -819,7 +819,7 @@ vars:
       level: 3
       files: [ngeo]
     phantomjs:
-      disable: []
+      disable: [apihelp]
       routes:
         - name: desktop
           params:
