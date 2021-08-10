@@ -74,6 +74,18 @@ For this reason, you should have your application running on https also in your 
 <p>With the default configuration in the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, your application will be
 available in <code class="docutils literal notranslate"><span class="pre">https</span></code>, and the authentication will work.</p>
 </section>
+<section id="auto-login">
+<h2>Auto login<a class="headerlink" href="#auto-login" title="Permalink to this headline">¶</a></h2>
+<p>To be automatically logged in with a user present in the database you should set in the
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+  <span class="nt">geoportal</span><span class="p">:</span>
+    <span class="nt">environment</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DEV_LOGINNAME=&lt;username&gt;</span>
+</pre></div>
+</div>
+<p>Then you will directly be logged in to the user.</p>
+</section>
 <section id="mapserver">
 <h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes, more information can be obtained by using this command:</p>
