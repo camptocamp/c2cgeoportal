@@ -62,11 +62,21 @@ class DynamicView:
             .all()
         ]
 
-    def _interface(self, interface_config, interface_name, dynamic):
+    def _interface(self, interface_config, interface_name, original_interface_name, dynamic):
+        """
+        Arguments:
+            interface_config: Current interface configuration
+            interface_name: Interface name (we use in the configuration)
+            original_interface_name: Original interface name (directly for the query string)
+            dynamic: The values that's dynamically generated
+        """
 
         if "extends" in interface_config:
             constants = self._interface(
-                self.interfaces_config[interface_config["extends"]], interface_name, dynamic
+                self.interfaces_config[interface_config["extends"]],
+                interface_name,
+                original_interface_name,
+                dynamic,
             )
         else:
             constants = {}
@@ -87,7 +97,7 @@ class DynamicView:
         )
 
         for constant, config in interface_config.get("routes", {}).items():
-            route_name = interface_name if config.get("currentInterface", False) else config["name"]
+            route_name = original_interface_name if config.get("currentInterface", False) else config["name"]
             params: Dict[str, str] = {}
             params.update(config.get("params", {}))
             for name, dyn in config.get("dynamic_params", {}).items():
@@ -100,7 +110,8 @@ class DynamicView:
 
     @view_config(route_name="dynamic", renderer="json")
     def dynamic(self):
-        interface_name = self.request.get_organization_interface(self.request.params.get("interface"))
+        original_interface_name = self.request.params.get("interface")
+        interface_name = self.request.get_organization_interface(original_interface_name)
 
         if interface_name not in self.interfaces_config:
             raise HTTPNotFound("Interface {} doesn't exists in the 'interfaces_config'.")
@@ -120,7 +131,7 @@ class DynamicView:
             "fulltextsearch_groups": self._fulltextsearch_groups(),
         }
 
-        constants = self._interface(interface_config, interface_name, dynamic)
+        constants = self._interface(interface_config, interface_name, original_interface_name, dynamic)
 
         do_redirect = False
         url = None
