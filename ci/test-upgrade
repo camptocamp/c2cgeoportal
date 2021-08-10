@@ -47,6 +47,13 @@ function create {
     cd -
     cd $1/testgeomapfish
     git add --all
+    if [ $2 == ${MAJOR_VERSION} ]
+    then
+        c2cciutils-checks --fix --check=isort
+        c2cciutils-checks --fix --check=black
+        c2cciutils-checks --fix --check=prettier
+        git add --all
+    fi
     # Workaround for issue in 2.4.0
     git add -f tilegeneration/config.yaml.tmpl || true
     git commit --quiet --message="Initial commit"
