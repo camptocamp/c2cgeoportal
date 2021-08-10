@@ -1,3 +1,6 @@
+##### 2.6.0.9
+* Add clean option in OGCServerSynchronizer [c2cgeoportal#8543](https://github.com/camptocamp/c2cgeoportal/pull/8543)
+* Don't annotate the transaction with the user [c2cgeoportal#8548](https://github.com/camptocamp/c2cgeoportal/pull/8548)
 ##### 2.6.0.8
 * Fix currentInterface URL for multi-organization [c2cgeoportal#8515](https://github.com/camptocamp/c2cgeoportal/pull/8515)
 ##### 2.6.0.7
