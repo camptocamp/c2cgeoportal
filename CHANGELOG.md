@@ -1,3 +1,5 @@
+##### 2.6.0.10
+* Bump Pillow to 8.3.1 [c2cgeoportal#8559](https://github.com/camptocamp/c2cgeoportal/pull/8559)
 ##### 2.6.0.9
 * Add clean option in OGCServerSynchronizer [c2cgeoportal#8543](https://github.com/camptocamp/c2cgeoportal/pull/8543)
 * Don't annotate the transaction with the user [c2cgeoportal#8548](https://github.com/camptocamp/c2cgeoportal/pull/8548)
