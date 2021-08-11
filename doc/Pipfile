@@ -7,6 +7,6 @@ verify_ssl = true
 alabaster = "==0.7.12"  # theme
 Pygments = "==2.9.0"
 Sphinx = "==4.1.2"
-sphinx-prompt = "==1.4.0"
+sphinx-prompt = "==1.5.0"
 sphinx-jsonschema = "==1.16.11"
 tilecloud-chain = "==1.16.1"
