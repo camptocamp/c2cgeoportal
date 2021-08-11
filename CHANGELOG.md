@@ -1,3 +1,5 @@
+##### 2.5.0.151
+* Ignore CVE [1776] Open Redirect in url-parse [c2cgeoportal#8558](https://github.com/camptocamp/c2cgeoportal/pull/8558)
 ##### 2.5.0.149
 * [Backport 2.5] Ignore CWE-22: Improper Limitation of a Pathname to a Restricted Dire… [ngeo#7370](https://github.com/camptocamp/ngeo/pull/7370)
 ##### 2.5.0.148
