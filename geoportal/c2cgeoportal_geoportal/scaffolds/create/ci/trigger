@@ -9,6 +9,7 @@ import sys
 def main():
     parser = argparse.ArgumentParser(description="Publish Docker images")
     parser.add_argument("--image", dest="images", action="append", help="The image to be exported")
+    parser.add_argument("--version", help="The version to be exported")
     parser.add_argument(
         "--image-stream-name",
         dest="imagestreams",
@@ -20,18 +21,20 @@ def main():
     )
     args = parser.parse_args()
 
-    ref = os.environ["GITHUB_REF"].split("/")
+    if args.version:
+        version = args.version
+    else:
+        ref = os.environ["GITHUB_REF"].split("/")
 
-    if ref[1] != "heads":
-        print("Not a branch")
-        sys.exit(0)
+        if ref[1] != "heads":
+            print("Not a branch")
+            sys.exit(0)
 
-    version = "/".join(ref[2:])
+        version = "/".join(ref[2:])
 
-    # TODO
-    if version not in os.environ.get("HELM_RELEASE_NAMES", "").split(","):
-        print("Not a release branch")
-        sys.exit(0)
+        if version not in os.environ.get("HELM_RELEASE_NAMES", "").split(","):
+            print("Not a release branch")
+            sys.exit(0)
 
     openshift_version = "3.11.0"
     openshift_hash = "0cbc58b"
