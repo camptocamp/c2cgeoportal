@@ -37,22 +37,26 @@
 {% block content %}
 <div id="layertree" class="container-fluid">
     <div id="toolbar">
-      <div class="btn-group">
-        {% if limit_exceeded %}
-        <button id="layertree-expand" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span> {{_("Expand all")}}</button>
-        {% endif %}
-        <button id="layertree-collapse" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span> {{_("Collapse all")}}</button>
-      </div>
-      <div class="btn-group">
-        <a id="layertree-ordering" class="btn btn-default" href="{{request.route_url('layertree_ordering')}}"><span class="glyphicon glyphicon-sort"></span> {{_("Edit themes order")}}</a>
-      </div>
-      <label for="interface">{{ _("Interface") }}</label>
-      <select class="form-control" id="interface">
-        <option value="all">{{ _("All") }}</option>
-        {% for interface in interfaces %}
-        <option>{{ interface.name }}</option>
-        {% endfor %}
-      </select>
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="interface">{{ _("Interface") }}</label>
+          <select class="form-control" id="interface">
+            <option value="all">{{ _("All") }}</option>
+            {% for interface in interfaces %}
+            <option>{{ interface.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="btn-group">
+          {% if limit_exceeded %}
+          <button id="layertree-expand" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-down"></span> {{_("Expand all")}}</button>
+          {% endif %}
+          <button id="layertree-collapse" type="button" class="btn btn-default"><span class="glyphicon glyphicon-chevron-up"></span> {{_("Collapse all")}}</button>
+        </div>
+        <div class="btn-group">
+          <a id="layertree-ordering" class="btn btn-default" href="{{request.route_url('layertree_ordering')}}"><span class="glyphicon glyphicon-sort"></span> {{_("Edit themes order")}}</a>
+        </div>
+      </form>
     </div>
 
     <div id="tree"></div>
