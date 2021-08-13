@@ -68,7 +68,7 @@ def main():
         version_only = "-".join(version_split[1:])
 
         for imagestream in (
-            args.imagestreams if imagestreams else ["{version}-c2cgeoportal-{image}:{version}"]
+            args.imagestreams if args.imagestreams else ["{version}-c2cgeoportal-{image}:{version}"]
         ):
             openshift_image_ref = imagestream.format(
                 version=version, image=image, env=env, version_only=version_only
