@@ -41,8 +41,8 @@ jobs:
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Publish
-        run: c2cciutils-publish --group=config
-      - run: ci/trigger --image=config
+        run: c2cciutils-publish --group=config --version=$${{'{{'}} matrix.branch }}
+      - run: ci/trigger --image=config --version=$${{'{{'}} matrix.branch }}
 
   geoportal:
     runs-on: ubuntu-20.04
@@ -74,5 +74,5 @@ jobs:
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Publish
-        run: c2cciutils-publish --group=geoportal
-      - run: ci/trigger --image=geoportal
+        run: c2cciutils-publish --group=geoportal --version=$${{'{{'}} matrix.branch }}
+      - run: ci/trigger --image=geoportal --version=$${{'{{'}} matrix.branch }}
