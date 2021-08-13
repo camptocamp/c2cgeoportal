@@ -148,12 +148,14 @@ class OGCServerViews(AbstractViews):
 
         if self._request.method == "POST":
             force_parents = self._request.POST.get("force-parents", "false") == "on"
+            force_ordering = self._request.POST.get("force-ordering", "false") == "on"
             clean = self._request.POST.get("clean", "false") == "on"
 
             synchronizer = OGCServerSynchronizer(
                 self._request,
                 obj,
                 force_parents=force_parents,
+                force_ordering=force_ordering,
                 clean=clean,
             )
             if "check" in self._request.params:

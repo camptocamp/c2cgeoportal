@@ -31,17 +31,20 @@
 import functools
 import logging
 from io import StringIO
-from typing import Set, cast  # noqa, pylint: disable=unused-import
+from typing import Set, TypedDict, cast  # noqa, pylint: disable=unused-import
+from xml.etree.ElementTree import Element
 
 import requests
 from defusedxml import ElementTree
+from pyramid.request import Request
+from sqlalchemy.orm.session import Session
 
 from c2cgeoportal_commons.lib.url import add_url_params, get_url2
 from c2cgeoportal_commons.models import main
 
 
 class dry_run_transaction:  # noqa N801: class names should use CapWords convention
-    def __init__(self, dbsession, dry_run):
+    def __init__(self, dbsession: Session, dry_run: bool):
         self.dbsession = dbsession
         self.dry_run = dry_run
 
@@ -55,11 +58,43 @@ class dry_run_transaction:  # noqa N801: class names should use CapWords convent
 
 
 class OGCServerSynchronizer:
-    def __init__(self, request, ogc_server, force_parents=False, clean=False):
+    """
+    A processor which imports WMS Capabilities in layer tree.
+    """
+
+    def __init__(
+        self,
+        request: Request,
+        ogc_server: main.OGCServer,
+        force_parents: bool = False,
+        force_ordering: bool = False,
+        clean: bool = False,
+    ):
+        """
+        Synchronizer constructor.
+
+        request
+            The current pyramid request object. Used to retrieve the SQLAlchemy Session object,
+            and to construct the capabilities URL.
+
+        ogc_server
+            The considered OGCServer from witch to import the capabilities.
+
+        force_parents
+            When set to True, overwrite parents of each node with those from the capabilities.
+
+        force_ordering
+            When set to True, sort children of each node in order from the capabilities.
+
+        clean
+            When set to True, remove layers which do not exist in capabilities and remove all empty groups.
+        """
         self._request = request
         self._ogc_server = ogc_server
         self._force_parents = force_parents
+        self._force_ordering = force_ordering
         self._clean = clean
+
         self._default_wms = main.LayerWMS()
         self._interfaces = None
 
@@ -75,16 +110,16 @@ class OGCServerSynchronizer:
         self._layers_added = 0
         self._layers_removed = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "OGCServerSynchronizer({})".format(self._ogc_server.name)
 
-    def logger(self):
+    def logger(self) -> logging.Logger:
         return self._logger
 
-    def report(self):
+    def report(self) -> str:
         return self._log.getvalue()
 
-    def check_layers(self):
+    def check_layers(self) -> None:
         capabilities = ElementTree.fromstring(self.wms_capabilities())
         layers = self._request.dbsession.query(main.LayerWMS).filter(
             main.LayerWMS.ogc_server == self._ogc_server
@@ -131,13 +166,19 @@ class OGCServerSynchronizer:
 
         self._logger.info("Checked %s layers, %s are invalid", items, invalids)
 
-    def synchronize(self, dry_run=False):
+    def synchronize(self, dry_run=False) -> None:
+        """
+        Run the import of capabilities in layer tree.
+
+        dry_run
+            When set to True, do not commit but roll back transaction at end of synchronization.
+        """
         with dry_run_transaction(self._request.dbsession, dry_run):
             self.do_synchronize()
             if dry_run:
                 self._logger.info("Rolling back transaction due to dry run")
 
-    def do_synchronize(self):
+    def do_synchronize(self) -> None:
         self._items_found = 0
         self._themes_added = 0
         self._groups_added = 0
@@ -158,14 +199,14 @@ class OGCServerSynchronizer:
         if self._clean:
             self.check_layers()
 
-        self._logger.info("%s items were found", self._items_found)
-        self._logger.info("%s themes were added", self._themes_added)
-        self._logger.info("%s groups were added", self._groups_added)
-        self._logger.info("%s groups were removed", self._groups_removed)
-        self._logger.info("%s layers were added", self._layers_added)
-        self._logger.info("%s layers were removed", self._layers_removed)
+        self._logger.info("%s items found", self._items_found)
+        self._logger.info("%s themes added", self._themes_added)
+        self._logger.info("%s groups added", self._groups_added)
+        self._logger.info("%s groups removed", self._groups_removed)
+        self._logger.info("%s layers added", self._layers_added)
+        self._logger.info("%s layers removed", self._layers_removed)
 
-    def synchronize_layer(self, el, parent=None):
+    def synchronize_layer(self, el: Element, parent: main.TreeGroup = None) -> main.TreeItem:
         if el.find("Layer") is None:
             tree_item = self.get_layer_wms(el, parent)
         elif parent is None:
@@ -173,11 +214,26 @@ class OGCServerSynchronizer:
         else:
             tree_item = self.get_layer_group(el, parent)
 
+        server_children = []
         for child in el.findall("Layer"):
-            self.synchronize_layer(child, tree_item)
+            server_children.append(self.synchronize_layer(child, tree_item))
 
-    def get_theme(self, el):
-        name = el.find("Name").text
+        if self._force_ordering and isinstance(tree_item, main.TreeGroup):
+            # Force children ordering, server_children first, external_children last
+            external_children = [item for item in tree_item.children if item not in server_children]
+            children = server_children + external_children
+            if tree_item.children != children:
+                tree_item._set_children(  # noqa, pylint: protected-access
+                    server_children + external_children, order=True
+                )
+                self._logger.info("Children of %s have been sorted", tree_item.name)
+
+        return tree_item
+
+    def get_theme(self, el: Element):
+        name_el = el.find("Name")
+        assert name_el is not None
+        name = name_el.text
 
         theme = self._request.dbsession.query(main.Theme).filter(main.Theme.name == name).one_or_none()
 
@@ -195,15 +251,18 @@ class OGCServerSynchronizer:
 
         return theme
 
-    def get_layer_group(self, el, parent):
-        name = el.find("Name").text
+    def get_layer_group(self, el: Element, parent: main.TreeGroup):
+        name_el = el.find("Name")
+        assert name_el is not None
+        name = name_el.text
+        assert name is not None
 
         group = (
             self._request.dbsession.query(main.LayerGroup).filter(main.LayerGroup.name == name).one_or_none()
         )
 
         if group is None:
-            group = main.LayerGroup(name=el.find("Name").text)
+            group = main.LayerGroup(name=name)
             group.parents_relation.append(main.LayergroupTreeitem(group=parent))  # noqa, pylint: no-member
 
             self._request.dbsession.add(group)
@@ -214,12 +273,14 @@ class OGCServerSynchronizer:
 
             if self._force_parents and group.parents != [parent]:
                 group.parents_relation = [main.LayergroupTreeitem(group=parent)]  # noqa, pylint: no-member
-                self._logger.info("Group %s was moved", name)
+                self._logger.info("Group %s moved to %s", name, parent.name)
 
         return group
 
-    def get_layer_wms(self, el, parent):
-        name = el.find("Name").text
+    def get_layer_wms(self, el: Element, parent: main.TreeGroup = None):
+        name_el = el.find("Name")
+        assert name_el is not None
+        name = name_el.text
 
         layer = self._request.dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == name).one_or_none()
 
@@ -227,7 +288,7 @@ class OGCServerSynchronizer:
             layer = main.LayerWMS()
 
             # TreeItem
-            layer.name = el.find("Name").text
+            layer.name = name
             layer.description = self._default_wms.description
             layer.metadatas = [main.Metadata(name=m.name, value=m.value) for m in self._default_wms.metadatas]
 
@@ -250,7 +311,7 @@ class OGCServerSynchronizer:
 
             # LayerWMS
             layer.ogc_server = self._ogc_server
-            layer.layer = el.find("Name").text
+            layer.layer = name
             layer.style = (
                 self._default_wms.style
                 if el.find("./Style/Name[.='{}']".format(self._default_wms.style)) is not None
@@ -280,12 +341,12 @@ class OGCServerSynchronizer:
                 layer.parents_relation = (
                     [main.LayergroupTreeitem(group=parent)] if parent else None
                 )  # noqa, pylint: no-member
-                self._logger.info("Layer %s was moved", name)
+                self._logger.info("Layer %s moved to %s", name, parent.name if parent else "root")
 
         return layer
 
     @functools.lru_cache()
-    def wms_capabilities(self):
+    def wms_capabilities(self) -> bytes:
         errors: Set[str] = set()
         url = get_url2(
             "The OGC server '{}'".format(self._ogc_server.name),
