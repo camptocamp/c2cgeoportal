@@ -12,6 +12,10 @@ pep8:
   options:
     max-line-length: 110
 
+pyflakes:
+  disable:
+    - F401 # imported but unused
+
 mypy:
   run: true
 
