@@ -1,3 +1,6 @@
+##### 2.6.0.11
+* Fix typo in image stream [c2cgeoportal#8560](https://github.com/camptocamp/c2cgeoportal/pull/8560)
+* Fix the rebuild [c2cgeoportal#8563](https://github.com/camptocamp/c2cgeoportal/pull/8563)
 ##### 2.6.0.10
 * Bump Pillow to 8.3.1 [c2cgeoportal#8559](https://github.com/camptocamp/c2cgeoportal/pull/8559)
 ##### 2.6.0.9
