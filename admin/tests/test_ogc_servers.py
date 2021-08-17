@@ -153,3 +153,14 @@ class TestOGCServer(AbstractViewsTests):
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
             "OGC Server has been successfully synchronized."
         ]
+
+        form = resp.forms["form-synchronize"]
+        form["force-parents"].checked = True
+        form["force-ordering"].checked = True
+        form["clean"].checked = True
+
+        resp = form.submit("submit")
+
+        assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
+            "OGC Server has been successfully synchronized."
+        ]

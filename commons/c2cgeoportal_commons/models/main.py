@@ -323,6 +323,16 @@ class TreeGroup(TreeItem):
         return [c.treeitem for c in self.children_relation]
 
     def _set_children(self, children: List[TreeItem], order: bool = False) -> None:
+        """
+        Set the current TreeGroup children TreeItem instances by managing related LayergroupTreeitem
+        instances.
+
+        If order is False:
+            Append new children at end of current ones.
+
+        If order is True:
+            Force order of children.
+        """
         for child in self.children_relation:
             if child.treeitem not in children:
                 child.treeitem = None
@@ -336,9 +346,9 @@ class TreeGroup(TreeItem):
                     LayergroupTreeitem(self, child, index * 10)
             self.children_relation.sort(key=lambda child: child.ordering)
         else:
-            current_item = [child.treeitem for child in self.children_relation]
+            current_children = [child.treeitem for child in self.children_relation]
             for index, item in enumerate(children):
-                if item not in current_item:
+                if item not in current_children:
                     LayergroupTreeitem(self, item, 1000000 + index)
             for index, child in enumerate(self.children_relation):
                 child.ordering = index * 10
