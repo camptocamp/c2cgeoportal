@@ -100,13 +100,13 @@ The sub section is the interface name, and after that we have:
 * ``constants``: Directly define an ``angular`` constant in the vars file.
 * ``dynamic_constants``: Define an ``angular`` constant from a dynamic values.
 * ``static``, the ``key`` is the constant name:
-    * ``name``: The path of the resource witch one we want to have the URL e.g.
+    * ``name``: The path of the resource whose URL we want to have e.g.
         ``/etc/geomapfish/static/contextualdata.html``.
     * ``append``: A text we want to append.
 * ``routes``, the ``key`` is the constant name:
-    * ``name``: Name of the route witch one we want to have the URL.
+    * ``name``: Name of the route whose URL we want to have.
     * ``kw``: Keyword arguments to supply for dynamic path elements in the route definition.
-    * ``elements``: Additional positional path segments to append the URL after it is generated.
+    * ``elements``: Additional positional path segments to append to the URL after it is generated.
     * ``params``: Query string parameters to append to the URL.
     * ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
 
@@ -131,7 +131,7 @@ value to be set to the CSS variable.
 For the CSS variables named ``brand-primary`` and ``brand-secondary`` we also calculated the other colors
 related to those variable as it's done in the SCSS, to be able to change the major application colors.
 
-You can in addition define an `<interface>.css` file to override the CSS rules.
+In addition, you can define an `<interface>.css` file to override the CSS rules.
 
 Creating your own component
 ---------------------------
