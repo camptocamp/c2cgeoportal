@@ -70,7 +70,7 @@ class OGCProxy(Proxy):
             return result
         except NoResultFound:  # pragma nocover
             raise HTTPBadRequest(
-                "OGSServer '{}' does not exists (existing: {}).".format(
+                "The OGC Server '{}' does not exist (existing: {}).".format(
                     name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
                 )
             )
