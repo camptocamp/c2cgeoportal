@@ -1,3 +1,5 @@
+##### 2.6.0.14
+* Fix rebuild: Remove extra $  [c2cgeoportal#8583](https://github.com/camptocamp/c2cgeoportal/pull/8583)
 ##### 2.6.0.13
 * Fix typo in ogcserver error text [c2cgeoportal#8571](https://github.com/camptocamp/c2cgeoportal/pull/8571)
 ##### 2.6.0.12
