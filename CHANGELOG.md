@@ -1,3 +1,5 @@
+##### 2.6.0.15
+* Add interface filter in the admin interface [c2cgeoportal#8552](https://github.com/camptocamp/c2cgeoportal/pull/8552)
 ##### 2.6.0.14
 * Fix rebuild: Remove extra $  [c2cgeoportal#8583](https://github.com/camptocamp/c2cgeoportal/pull/8583)
 ##### 2.6.0.13
