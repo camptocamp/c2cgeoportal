@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@ class OGCProxy(Proxy):
             return result
         except NoResultFound:  # pragma nocover
             raise HTTPBadRequest(
-                "OGSServer '{}' does not exists (existing: {}).".format(
+                "The OGC Server '{}' does not exist (existing: {}).".format(
                     name, ",".join([t[0] for t in DBSession.query(OGCServer.name).all()])
                 )
             )
