@@ -13,6 +13,7 @@ def layertree_test_data(dbsession, transact):
     del transact
 
     from c2cgeoportal_commons.models.main import (
+        Interface,
         LayerGroup,
         LayergroupTreeitem,
         LayerWMS,
@@ -21,25 +22,38 @@ def layertree_test_data(dbsession, transact):
         Theme,
     )
 
+    interface1 = Interface("interface1")
+    dbsession.add(interface1)
+    interface2 = Interface("interface2")
+    dbsession.add(interface2)
+
     layers_wms = []
     ogc_server = OGCServer(name="ogc_server")
     dbsession.add(ogc_server)
-    for i in range(0, 10):
+    for i in range(10):
         layer_wms = LayerWMS(name="layer_wms_{}".format(i))
+        if i == 1:
+            layer_wms.interfaces = [interface1]
+        elif i > 1:
+            layer_wms.interfaces = [interface1, interface2]
         layer_wms.ogc_server = ogc_server
         layers_wms.append(layer_wms)
         dbsession.add(layer_wms)
 
     layers_wmts = []
-    for i in range(0, 10):
+    for i in range(10):
         layer_wmts = LayerWMTS(name="layer_wmts_{}".format(i))
+        if i == 1:
+            layer_wmts.interfaces = [interface1]
+        elif i > 1:
+            layer_wmts.interfaces = [interface1, interface2]
         layer_wmts.url = "http://localhost/wmts"
         layer_wmts.layer = layer_wmts.name
         layers_wmts.append(layer_wmts)
         dbsession.add(layer_wmts)
 
     groups = []
-    for i in range(0, 10):
+    for i in range(10):
         group = LayerGroup(name="layer_group_{}".format(i))
         groups.append(group)
         dbsession.add(group)
@@ -51,10 +65,14 @@ def layertree_test_data(dbsession, transact):
     dbsession.add(LayergroupTreeitem(group=groups[9], item=groups[8], ordering=3))
 
     themes = []
-    for i in range(0, 5):
+    for i in range(5):
         theme = Theme(name="theme_{}".format(i))
         themes.append(theme)
         dbsession.add(theme)
+        if i == 1:
+            theme.interfaces = [interface1]
+        elif i > 1:
+            theme.interfaces = [interface1, interface2]
 
         dbsession.add(LayergroupTreeitem(group=theme, item=groups[i], ordering=0))
         dbsession.add(LayergroupTreeitem(group=theme, item=groups[i + 5], ordering=1))
@@ -74,6 +92,7 @@ def layertree_test_data(dbsession, transact):
             "layers_wms": layers_wms,
             "layers_wmts": layers_wmts,
             "ogc_servers": [ogc_server],
+            "interfaces": [interface1, interface2],
         }
     )
 
@@ -228,3 +247,40 @@ class TestLayerTreeView(AbstractViewsTests):
         ):
             test_app.delete("/admin/layertree/delete/{}".format(item_id), status=200)
             assert dbsession.query(model).get(item_id) is None
+
+    @pytest.mark.parametrize(
+        "params,expected",
+        [
+            ({}, ["theme_0", "theme_3", "theme_1", "theme_2", "theme_4"]),
+            ({"interface": "interface1"}, ["theme_3", "theme_1", "theme_2", "theme_4"]),
+            ({"interface": "interface2"}, ["theme_3", "theme_2", "theme_4"]),
+        ],
+    )
+    def test_themes_interfaces(self, test_app, layertree_test_data, params, expected):
+        resp = self.get(test_app, "/children", status=200, params=params)
+        nodes = resp.json
+        assert expected == [node["name"] for node in nodes if node["item_type"] == "theme"]
+
+    @pytest.mark.parametrize(
+        "interface,index,length",
+        [
+            (None, 0, 2),
+            (None, 1, 2),
+            (None, 2, 2),
+            ("interface1", 0, 0),
+            ("interface1", 1, 2),
+            ("interface1", 2, 2),
+            ("interface2", 0, 0),
+            ("interface2", 1, 0),
+            ("interface2", 2, 2),
+        ],
+    )
+    def test_layers_interface(self, test_app, layertree_test_data, interface, index, length):
+        theme = layertree_test_data["themes"][index]
+        group = layertree_test_data["groups"][index]
+        params = {"group_id": group.id, "path": f"_{theme.id}_{group.id}"}
+        if interface:
+            params["interface"] = interface
+        resp = self.get(test_app, "/children", status=200, params=params)
+        nodes = resp.json
+        assert length == len(nodes)
