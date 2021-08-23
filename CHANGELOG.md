@@ -1,3 +1,5 @@
+##### 2.6.0.13
+* Fix typo in ogcserver error text [c2cgeoportal#8571](https://github.com/camptocamp/c2cgeoportal/pull/8571)
 ##### 2.6.0.12
 * OGC server synchronizer force ordering [c2cgeoportal#8567](https://github.com/camptocamp/c2cgeoportal/pull/8567)
 ##### 2.6.0.11
