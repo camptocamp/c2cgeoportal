@@ -69,13 +69,14 @@ def ogc_server(**kwargs):
 
 @pytest.mark.usefixtures("test_app", "transact")
 class TestOGCServerSynchronizer:
-    def synchronizer(self, request, server=None, force_parents=False, clean=False):
+    def synchronizer(self, request, server=None, force_parents=False, force_ordering=False, clean=False):
         from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
 
         return OGCServerSynchronizer(
             request=request,
             ogc_server=server or ogc_server(),
             force_parents=force_parents,
+            force_ordering=force_ordering,
             clean=clean,
         )
 
@@ -155,12 +156,12 @@ class TestOGCServerSynchronizer:
             "Layer layer1 added as new layer in group group1\n"
             "Layer layer_in_theme added as new layer with no parent\n"
             "Layer layer_with_no_parent added as new layer with no parent\n"
-            "0 items were found\n"
-            "1 themes were added\n"
-            "1 groups were added\n"
-            "0 groups were removed\n"
-            "3 layers were added\n"
-            "0 layers were removed\n"
+            "0 items found\n"
+            "1 themes added\n"
+            "1 groups added\n"
+            "0 groups removed\n"
+            "3 layers added\n"
+            "0 layers removed\n"
             "Rolling back transaction due to dry run\n"
         )
 
@@ -206,12 +207,12 @@ class TestOGCServerSynchronizer:
             "Layer layer1 added as new layer in group group1\n"
             "Layer layer_in_theme added as new layer with no parent\n"
             "Layer layer_with_no_parent added as new layer with no parent\n"
-            "0 items were found\n"
-            "1 themes were added\n"
-            "1 groups were added\n"
-            "0 groups were removed\n"
-            "3 layers were added\n"
-            "0 layers were removed\n"
+            "0 items found\n"
+            "1 themes added\n"
+            "1 groups added\n"
+            "0 groups removed\n"
+            "3 layers added\n"
+            "0 layers removed\n"
         )
 
     @patch(
@@ -250,18 +251,139 @@ class TestOGCServerSynchronizer:
         assert layer1.parents == [group1]
 
         assert synchronizer.report() == (
-            "Group group1 was moved\n"
+            "Group group1 moved to theme1\n"
             "Layer layer1: another layer already exists with the same name in OGC server Test server\n"
-            "Layer layer1 was moved\n"
+            "Layer layer1 moved to group1\n"
             "Layer layer_in_theme: another layer already exists with the same name in OGC server Test server\n"
-            "Layer layer_in_theme was moved\n"
+            "Layer layer_in_theme moved to theme1\n"
             "Layer layer_with_no_parent: another layer already exists with the same name in OGC server Test server\n"
-            "5 items were found\n"
-            "0 themes were added\n"
-            "0 groups were added\n"
-            "0 groups were removed\n"
-            "0 layers were added\n"
-            "0 layers were removed\n"
+            "5 items found\n"
+            "0 themes added\n"
+            "0 groups added\n"
+            "0 groups removed\n"
+            "0 layers added\n"
+            "0 layers removed\n"
+        )
+
+    @patch(
+        "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
+        return_value=wms_capabilities(),
+    )
+    def test_synchronize_force_ordering(self, cap_mock, web_request, dbsession):
+        from c2cgeoportal_commons.models import main
+
+        interface = main.Interface(name="desktop")
+        dbsession.add(interface)
+
+        server = ogc_server()
+
+        # Run first synchronization
+        with patch(
+            "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
+            return_value=wms_capabilities(
+                """
+                <Layer>
+                    <Name>root</Name>
+                    <Layer>
+                        <Name>theme1</Name>
+                        <Layer>
+                            <Name>theme1_group1</Name>
+                            <Layer>
+                                <Name>theme1_group1_layer1</Name>
+                            </Layer>
+                            <Layer>
+                                <Name>theme1_group1_layer2</Name>
+                            </Layer>
+                        </Layer>
+                        <Layer>
+                            <Name>theme1_group2</Name>
+                            <Layer>
+                                <Name>theme1_group2_layer1</Name>
+                            </Layer>
+                        </Layer>
+                    </Layer>
+                    <Layer>
+                        <Name>theme2</Name>
+                        <Layer>
+                            <Name>theme2_group1</Name>
+                            <Layer>
+                                <Name>theme2_group1_layer1</Name>
+                            </Layer>
+                        </Layer>
+                    </Layer>
+                </Layer>
+                """
+            ),
+        ):
+            synchronizer = self.synchronizer(web_request, server)
+            synchronizer.synchronize()
+
+        # Run second synchronization with force_order=True
+        with patch(
+            "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
+            return_value=wms_capabilities(
+                """
+                <Layer>
+                    <Name>root</Name>
+                    <Layer>
+                        <Name>theme2</Name>
+                        <Layer>
+                            <Name>theme2_group1</Name>
+                            <Layer>
+                                <Name>theme2_group1_layer1</Name>
+                            </Layer>
+                        </Layer>
+                    </Layer>
+                    <Layer>
+                        <Name>theme1</Name>
+                        <Layer>
+                            <Name>theme1_group2</Name>
+                            <Layer>
+                                <Name>theme1_group2_layer1</Name>
+                            </Layer>
+                        </Layer>
+                        <Layer>
+                            <Name>theme1_group1</Name>
+                            <Layer>
+                                <Name>theme1_group1_layer2</Name>
+                            </Layer>
+                            <Layer>
+                                <Name>theme1_group1_layer1</Name>
+                            </Layer>
+                        </Layer>
+                    </Layer>
+                </Layer>
+                """
+            ),
+        ):
+            synchronizer = self.synchronizer(
+                web_request, server, force_parents=True, force_ordering=True, clean=True
+            )
+            synchronizer.synchronize()
+
+        theme1 = dbsession.query(main.Theme).filter(main.Theme.name == "theme1").one()
+        # theme2 = dbsession.query(main.Theme).filter(main.Theme.name == "theme2").one()
+        # assert theme1.ordering > theme2.ordering
+        # Difficult to do as layer tree can contain themes from multiple OGCServer
+
+        groups = theme1._get_children()
+        assert groups[0].name == "theme1_group2"
+        assert groups[1].name == "theme1_group1"
+
+        layers = groups[1]._get_children()
+        assert layers[0].name == "theme1_group1_layer2"
+        assert layers[1].name == "theme1_group1_layer1"
+
+        assert synchronizer.report() == (
+            "Children of theme1_group1 have been sorted\n"
+            "Children of theme1 have been sorted\n"
+            "Checked 4 layers, 0 are invalid\n"
+            "9 items found\n"
+            "0 themes added\n"
+            "0 groups added\n"
+            "0 groups removed\n"
+            "0 layers added\n"
+            "0 layers removed\n"
         )
 
     @patch(
@@ -303,12 +425,12 @@ class TestOGCServerSynchronizer:
             "Removed empty group empty_group\n"
             "Removed empty group group1\n"
             "Checked 4 layers, 1 are invalid\n"
-            "1 items were found\n"
-            "1 themes were added\n"
-            "1 groups were added\n"
-            "2 groups were removed\n"
-            "2 layers were added\n"
-            "1 layers were removed\n"
+            "1 items found\n"
+            "1 themes added\n"
+            "1 groups added\n"
+            "2 groups removed\n"
+            "2 layers added\n"
+            "1 layers removed\n"
         )
 
     def test_get_layer_wms_defaut(self, web_request, dbsession):
