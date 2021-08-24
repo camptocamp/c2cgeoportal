@@ -74,5 +74,5 @@ jobs:
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Publish
-        run: c2cciutils-publish --group=geoportal --version=$${{'{{'}} matrix.branch }}
-      - run: ci/trigger --image=geoportal --version=$${{'{{'}} matrix.branch }}
+        run: c2cciutils-publish --group=geoportal --version=${{'{{'}} matrix.branch }}
+      - run: ci/trigger --image=geoportal --version=${{'{{'}} matrix.branch }}
