@@ -72,12 +72,14 @@ def test_data(clean_dbsession):
     ogc_server1 = OGCServer(
         name="qgisserver1",
         type_=OGCSERVER_TYPE_QGISSERVER,
+        url="http://qgis?MAP=qgisserver1",
         image_type="image/png",
         auth=OGCSERVER_AUTH_STANDARD,
     )
     ogc_server2 = OGCServer(
         name="qgisserver2",
         type_=OGCSERVER_TYPE_QGISSERVER,
+        url="http://qgis",
         image_type="image/png",
         auth=OGCSERVER_AUTH_STANDARD,
     )
@@ -491,7 +493,6 @@ class TestGeoMapFishAccessControlSingleOGCServer:
     "test_data",
 )
 class TestGeoMapFishAccessControlMultipleOGCServer:
-    @pytest.mark.usefixtures()
     def test_init(self, server_iface, test_data):
         plugin = GeoMapFishAccessControl(server_iface)
         assert plugin.single is False
@@ -510,3 +511,36 @@ class TestGeoMapFishAccessControlMultipleOGCServer:
         assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "unavailable"
         with pytest.raises(GMFException):
             plugin.get_ogcserver_accesscontrol()
+
+
+@pytest.mark.usefixtures(
+    "qgs_access_control_filter",
+    "auto_multi_ogc_server_env",
+    "test_data",
+)
+class TestGeoMapFishAccessControlAutoMultiOGCServer:
+    def test_init(self, server_iface, test_data):
+        plugin = GeoMapFishAccessControl(server_iface)
+        assert plugin.single is False
+
+        assert plugin.serverInterface() is server_iface
+
+        set_request_parameters(server_iface, {"MAP": "qgisserver1"})
+        assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "qgisserver1"
+        assert plugin.get_ogcserver_accesscontrol().ogcserver.name == "qgisserver1"
+
+
+@pytest.mark.usefixtures(
+    "qgs_access_control_filter",
+    "auto_single_ogc_server_env",
+    "test_data",
+)
+class TestGeoMapFishAccessControlAutoSingleOGCServer:
+    def test_init(self, server_iface, test_data):
+        plugin = GeoMapFishAccessControl(server_iface)
+        assert plugin.single is True
+        assert isinstance(plugin.ogcserver_accesscontrol, OGCServerAccessControl)
+        assert plugin.ogcserver_accesscontrol.ogcserver.name == "qgisserver2"
+
+        set_request_parameters(server_iface, {})
+        assert plugin.get_ogcserver_accesscontrol().ogcserver.name == "qgisserver2"

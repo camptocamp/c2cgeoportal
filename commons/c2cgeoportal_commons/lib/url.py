@@ -128,6 +128,10 @@ class Url:
                     self.query[key] = value
         return self
 
+    @property
+    def query_lower(self) -> Dict[str, str]:
+        return {k.lower(): v for k, v in self.query.items()}
+
     def url(self) -> str:
         return urllib.parse.urlunsplit(
             (

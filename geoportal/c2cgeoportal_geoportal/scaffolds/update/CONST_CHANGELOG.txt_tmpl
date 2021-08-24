@@ -13,9 +13,14 @@ Information
 
 1. All the files will be formatted with isort, Black and Prettier to be similar than the initial scaffolds
 
+2. The configuration of the QGIS authentication module is simplified,
+   now a new environment variable `GEOMAPFISH_ACCESSCONTROL_BASE_URL` is set to the base URL of
+   qgisserver, and we search for all the OGC servers that correspond to this URL.
+   Then the configuration file  (`qgisserver/accesscontrol_config.yaml`) and the specified configuration
+   in the `docker-compose.yaml` file can be removed.
+
 Changes to apply
 ================
-
 
 =============
 Version 2.6.0

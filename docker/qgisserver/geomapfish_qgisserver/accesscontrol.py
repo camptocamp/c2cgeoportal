@@ -5,7 +5,6 @@
 # GNU General Public License as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
 
-
 import json
 import logging
 import os
@@ -13,7 +12,7 @@ import random
 import re
 from enum import Enum
 from threading import Lock
-from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union, cast
 
 import c2cwsgiutils.broadcast
 import geoalchemy2
@@ -27,6 +26,7 @@ from qgis.core import (
     QgsFeature,
     QgsLayerTreeGroup,
     QgsLayerTreeLayer,
+    QgsLayerTreeNode,
     QgsProject,
     QgsVectorLayer,
 )
@@ -36,9 +36,10 @@ from shapely.geometry.base import BaseGeometry
 from sqlalchemy.orm import configure_mappers, sessionmaker, subqueryload
 from sqlalchemy.orm.session import Session
 
+from c2cgeoportal_commons.lib.url import Url, get_url2
+
 if TYPE_CHECKING:
     from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports,useless-suppression
-
 
 LOG = logging.getLogger(__name__)
 
@@ -108,10 +109,107 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     self.ogcserver_accesscontrols[map_] = map_config
                 LOG.info("Use config '%s'.", os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"])
                 self.initialized = True
+            elif "GEOMAPFISH_ACCESSCONTROL_BASE_URL" in os.environ:
+                self.ogcserver_accesscontrols = {}
+                single_ogc_server = None
+                base_url = Url(os.environ["GEOMAPFISH_ACCESSCONTROL_BASE_URL"])
+                session = DBSession()
+                try:
+                    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+                        OGCServer,
+                    )
+
+                    for ogcserver in session.query(OGCServer).all():  # pylint: disable=no-member
+                        errors: Set[str] = set()
+                        url = get_url2(
+                            "The OGC server '{}'".format(ogcserver.name),
+                            ogcserver.url,
+                            None,
+                            errors,
+                        )
+                        if errors:
+                            LOG.warning(
+                                "Ignoring OGC server '%s', get error on parsing URL:\n%s",
+                                ogcserver.name,
+                                "\n".join(errors),
+                            )
+                            continue
+                        if url is None:
+                            LOG.warning("Ignoring OGC server '%s', the URL is None", ogcserver.name)
+                            continue
+                        if (
+                            base_url.scheme == url.scheme
+                            and base_url.netloc == url.netloc
+                            and base_url.path == url.path
+                        ):
+                            query = url.query_lower
+                            if "map" not in query:
+                                if single_ogc_server is None:
+                                    single_ogc_server = ogcserver
+                                    LOG.debug(
+                                        "OGC server '%s', 'map' is not in the parameters => single server?",
+                                        ogcserver.name,
+                                    )
+                                else:
+                                    LOG.error(
+                                        "OGC server '%s', 'map' is not in the parameters and we already have a single OCG server '%s'",
+                                        ogcserver.name,
+                                        single_ogc_server.name,
+                                    )
+                                continue
+
+                            map_ = url.query_lower["map"]
+                            self.ogcserver_accesscontrols[map_] = {
+                                "ogcserver": ogcserver.name,
+                                "access_control": OGCServerAccessControl(
+                                    server_iface,
+                                    ogcserver.name,
+                                    map_,
+                                    config.get("srid"),
+                                    DBSession,
+                                    ogcserver=ogcserver,
+                                ),
+                            }
+                            LOG.info("OGC server '%s' registered for map", ogcserver.name)
+                        else:
+                            LOG.debug(
+                                "Ignoring OGC server '%s', Don't match the base URL '%s' and '%s'",
+                                ogcserver.name,
+                                base_url,
+                                url,
+                            )
+                    if self.ogcserver_accesscontrols and single_ogc_server is not None:
+                        if os.environ.get("QGIS_PROJECT_FILE"):
+                            LOG.error(
+                                "We have OGC servers with and without parameter MAP and a value in QGIS_PROJECT_FILE, fallback to single OGC server mode."
+                            )
+                            self.ogcserver_accesscontrols = {}
+                        else:
+                            LOG.error(
+                                "We have OGC servers with and without parameter MAP but no value in QGIS_PROJECT_FILE, fallback to multiple OGC server mode."
+                            )
+                            single_ogc_server = None
+                    if single_ogc_server is not None:
+                        self.single = True
+                        self.ogcserver_accesscontrol = OGCServerAccessControl(
+                            server_iface,
+                            single_ogc_server.name,
+                            os.environ["QGIS_PROJECT_FILE"],
+                            config.get("srid"),
+                            DBSession,
+                            single_ogc_server,
+                        )
+
+                        LOG.info("Use OGC server named '%s'.", single_ogc_server.name)
+                    else:
+                        self.single = False
+                    self.initialized = True
+                finally:
+                    session.close()  # pylint: disable=no-member
             else:
                 LOG.error(
-                    "The environment variable 'GEOMAPFISH_OGCSERVER' or "
-                    "'GEOMAPFISH_ACCESSCONTROL_CONFIG' is not defined.",
+                    "The environment variable 'GEOMAPFISH_OGCSERVER', 'GEOMAPFISH_ACCESSCONTROL_CONFIG' "
+                    "or 'GEOMAPFISH_ACCESSCONTROL_BASE_URL' should be defined.",
                 )
 
         except Exception:  # pylint: disable=broad-except
@@ -143,7 +241,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             "OGCServerAccessControl", self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
         )
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str:  # noqa: ignore=N802
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
         """
         Return an additional subset string (typically SQL) filter.
         """
@@ -156,7 +254,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             LOG.error("Unhandle error", exc_info=True)
             raise
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> str:  # noqa: ignore=N802
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
         """
         Return an additional expression filter.
         """
@@ -239,16 +337,17 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         map_file: str,
         srid: int,
         DBSession: Session,  # noqa: ignore=N803
+        ogcserver: Optional["main.OGCServer"] = None,
     ):
         super().__init__(server_iface)
 
         self.server_iface = server_iface
         self.DBSession = DBSession  # pylint: disable=invalid-name
         self.area_cache: Dict[Any, Tuple[Access, BaseGeometry]] = {}
-        self.layers = None
+        self.layers: Optional[Dict[str, List["main.LayerWMS"]]] = None
         self.lock = Lock()
         self.srid = srid
-        self.ogcserver = None
+        self.ogcserver = ogcserver
         self.project = QgsProject.instance()
 
         from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
@@ -273,13 +372,14 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                     OGCServer,
                 )
 
-                session = self.DBSession()
-                try:
-                    self.ogcserver = (
-                        session.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
-                    )
-                finally:
-                    session.close()
+                if self.ogcserver is None:
+                    session = self.DBSession()
+                    try:
+                        self.ogcserver = (
+                            session.query(OGCServer).filter(OGCServer.name == ogcserver_name).one_or_none()
+                        )
+                    finally:
+                        session.close()
                 if self.ogcserver is None:
                     LOG.error(
                         "No OGC server found for '%s', project: '%s' => no rights", ogcserver_name, map_file
@@ -318,7 +418,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             nodes = {}  # dict { node name: list of ancestor node names }
 
-            def browse(path: List[str], node: str) -> None:
+            def browse(path: List[str], node: QgsLayerTreeNode) -> None:
                 if isinstance(node, QgsLayerTreeLayer):
                     ogc_name = self.ogc_layer_name(node.layer())
                 elif isinstance(node, QgsLayerTreeGroup):
@@ -394,7 +494,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     @staticmethod
     def get_restriction_areas(
-        gmf_layers: "main.Layer", read_write: bool = False, roles: List["main.Role"] = None
+        gmf_layers: "main.Layer",
+        read_write: bool = False,
+        roles: Optional[Union[str, List["main.Role"]]] = None,
     ) -> Tuple[Access, BaseGeometry]:
         """
         Get access areas given by GMF layers and user roles for an access mode.
@@ -420,10 +522,13 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if not roles:
             return Access.NO, None
 
+        from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
+
         restriction_areas = set()
         for layer in gmf_layers:
             for restriction_area in layer.restrictionareas:
                 for role in roles or []:
+                    assert isinstance(role, Role)  # nosec
                     restriction_area_roles_ids = [ra_role.id for ra_role in restriction_area.roles]
                     if role.id in restriction_area_roles_ids and (
                         read_write is False or restriction_area.readwrite is True
@@ -477,7 +582,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.area_cache[key] = (Access.AREA, area)
         return (Access.AREA, area)
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str:  # noqa: ignore=N802
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
         """
         Returns an additional subset string (typically SQL) filter.
         """
@@ -521,7 +626,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             LOG.error("Cannot run layerFilterSubsetString", exc_info=True)
             raise
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> str:  # noqa: ignore=N802
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
         """
         Returns an additional expression filter.
         """

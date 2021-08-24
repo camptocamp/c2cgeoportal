@@ -86,13 +86,45 @@ def qgs_access_control_filter():
 
 @pytest.fixture(scope="class")
 def single_ogc_server_env():
-    os.environ["GEOMAPFISH_OGCSERVER"] = "qgisserver1"
-    yield
-    del os.environ["GEOMAPFISH_OGCSERVER"]
+    with patch.dict(
+        "os.environ",
+        {
+            "GEOMAPFISH_OGCSERVER": "qgisserver1",
+        },
+    ):
+        yield
 
 
 @pytest.fixture(scope="class")
 def multiple_ogc_server_env():
-    os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"] = "/etc/qgisserver/multiple_ogc_server.yaml"
-    yield
-    del os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]
+    with patch.dict(
+        "os.environ",
+        {
+            "GEOMAPFISH_ACCESSCONTROL_CONFIG": "/etc/qgisserver/multiple_ogc_server.yaml",
+        },
+    ):
+        yield
+
+
+@pytest.fixture(scope="class")
+def auto_multi_ogc_server_env():
+    with patch.dict(
+        "os.environ",
+        {
+            "GEOMAPFISH_ACCESSCONTROL_BASE_URL": "http://qgis",
+            "QGIS_PROJECT_FILE": "",
+        },
+    ):
+        yield
+
+
+@pytest.fixture(scope="class")
+def auto_single_ogc_server_env():
+    with patch.dict(
+        "os.environ",
+        {
+            "GEOMAPFISH_ACCESSCONTROL_BASE_URL": "http://qgis",
+            "QGIS_PROJECT_FILE": "qgisserver2",
+        },
+    ):
+        yield
