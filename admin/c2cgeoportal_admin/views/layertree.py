@@ -35,7 +35,7 @@ from pyramid.view import view_config, view_defaults
 from translationstring import TranslationStringFactory
 
 from c2cgeoportal_admin import _
-from c2cgeoportal_commons.models.main import LayergroupTreeitem, Theme, TreeItem
+from c2cgeoportal_commons.models.main import Interface, Layer, LayergroupTreeitem, Theme, TreeItem
 
 itemtypes_tables = {
     "theme": "themes",
@@ -55,10 +55,11 @@ class LayerTreeViews:
     def index(self) -> Dict[str, int]:
         node_limit = self._request.registry.settings["admin_interface"].get("layer_tree_max_nodes")
         limit_exceeded = self._dbsession.query(LayergroupTreeitem).count() < node_limit
-        return {"limit_exceeded": limit_exceeded}
+        return {"limit_exceeded": limit_exceeded, "interfaces": self._dbsession.query(Interface).all()}
 
     @view_config(route_name="layertree_children", renderer="fast_json")  # type: ignore
     def children(self) -> List[Dict[str, Any]]:
+        interface = self._request.params.get("interface", None)
         group_id = self._request.params.get("group_id", None)
         path = self._request.params.get("path", "")
 
@@ -66,6 +67,11 @@ class LayerTreeViews:
 
         if group_id is None:
             items = self._dbsession.query(Theme).order_by(Theme.ordering)
+            if interface is not None:
+                items = items.join(Theme.interfaces).filter(  # pylint: disable=no-member
+                    Interface.name == interface
+                )
+
         else:
             items = (
                 self._dbsession.query(TreeItem)
@@ -85,6 +91,9 @@ class LayerTreeViews:
                 "actions": [action.to_dict(self._request) for action in self._item_actions(item, group_id)],
             }
             for item in items
+            if interface is None
+            or not isinstance(item, Layer)
+            or interface in [interface.name for interface in item.interfaces]
         ]
 
     def _item_actions(self, item: TreeItem, parent_id: Optional[int] = None) -> List[ItemAction]:
