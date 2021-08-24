@@ -173,19 +173,11 @@ and the configuration should be as follows:</p>
 <p>The access restriction is available only for Docker projects.</p>
 <p>We provide a Docker image named <code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> with tag pattern:
 <code class="docutils literal notranslate"><span class="pre">gmf&lt;Major</span> <span class="pre">GeoMapFish</span> <span class="pre">version}-qgis${Major</span> <span class="pre">QGIS}</span></code>.</p>
-<p>To configure a single project, just provide the OGC server name in the environment variable named:
-<code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_OGCSERVER</span></code>.</p>
-<p>If you need to provide more than one QGIS project, you should write a config file named, e.g.
-<code class="docutils literal notranslate"><span class="pre">qgisserver/accesscontrol_config.yaml</span></code>, with the content:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">map_config</span><span class="p">:</span>
-  <span class="nt">&lt;project file path&gt;</span><span class="p">:</span>
-    <span class="nt">ogc_server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;OGC server name&gt;</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">&lt;project</span> <span class="pre">file</span> <span class="pre">path&gt;</span></code> should have exactly the same value as the <code class="docutils literal notranslate"><span class="pre">MAP</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">Base</span> <span class="pre">URL</span></code>
-value of the OGC server.</p>
-<p>Finally, you should provide the <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code> to point to a config file e.-g.
-<code class="docutils literal notranslate"><span class="pre">/etc/qgisserver/accesscontrol_config.yaml</span></code>, and <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> to be empty.</p>
+<p>From version 2.7 the config is just made with the <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_BASE_URL</span></code> environment
+variable which contains the base URL of the OGC servers, by default it’s set to
+<code class="docutils literal notranslate"><span class="pre">QGISSERVER_URL</span></code>. And the plugin will search for the OGC servers that match with this base URL.</p>
+<p>The configuration that use the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> or <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code> are still
+working but are deprecated.</p>
 </section>
 <section id="project-in-database">
 <h3>Project in Database<a class="headerlink" href="#project-in-database" title="Permalink to this headline">¶</a></h3>
