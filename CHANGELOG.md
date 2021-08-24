@@ -1,3 +1,5 @@
+##### 2.6.0.16
+* Same as for config [c2cgeoportal#8588](https://github.com/camptocamp/c2cgeoportal/pull/8588)
 ##### 2.6.0.15
 * Add interface filter in the admin interface [c2cgeoportal#8552](https://github.com/camptocamp/c2cgeoportal/pull/8552)
 ##### 2.6.0.14
