@@ -533,7 +533,7 @@ mapping:
           <<: *send_email
           base_url:
             type: str
-            required: True
+            required: False
           allowed_hosts:
             type: seq
             sequence:
