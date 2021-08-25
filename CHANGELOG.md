@@ -1,3 +1,5 @@
+##### 2.6.0.18
+* Add missing rebuild type in publish [c2cgeoportal#8594](https://github.com/camptocamp/c2cgeoportal/pull/8594)
 ##### 2.6.0.17
 * The short URL is not required [c2cgeoportal#8589](https://github.com/camptocamp/c2cgeoportal/pull/8589)
 ##### 2.6.0.16
