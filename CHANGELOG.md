@@ -1,3 +1,5 @@
+##### 2.6.0.17
+* The short URL is not required [c2cgeoportal#8589](https://github.com/camptocamp/c2cgeoportal/pull/8589)
 ##### 2.6.0.16
 * Same as for config [c2cgeoportal#8588](https://github.com/camptocamp/c2cgeoportal/pull/8588)
 ##### 2.6.0.15
