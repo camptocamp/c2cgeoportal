@@ -1,3 +1,5 @@
+##### 2.6.0.19
+* [admin] Add missing order_by in layertree [c2cgeoportal#8599](https://github.com/camptocamp/c2cgeoportal/pull/8599)
 ##### 2.6.0.18
 * Add missing rebuild type in publish [c2cgeoportal#8594](https://github.com/camptocamp/c2cgeoportal/pull/8594)
 ##### 2.6.0.17
