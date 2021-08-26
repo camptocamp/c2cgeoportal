@@ -169,11 +169,25 @@ class TestLayerTreeView(AbstractViewsTests):
             {"name": "new_name_from_layer_group"},
         )
 
-    def test_groups(self, test_app, layertree_test_data):
+    def test_groups(self, test_app, layertree_test_data, dbsession):
         theme = layertree_test_data["themes"][0]
+
+        # Invert children order (to test ordering)
+        theme.children_relation[0].ordering = 1
+        theme.children_relation[1].ordering = 0
+        dbsession.flush()
+
         resp = self.get(test_app, "/children?group_id={0}&path=_{0}".format(theme.id), status=200)
         nodes = resp.json
         assert 2 == len(nodes)
+
+        # check groups are sorted by ordering
+        expected = [
+            relation.treeitem.name
+            for relation in sorted(theme.children_relation, key=lambda relation: relation.ordering)
+        ]
+        group_names = [node["name"] for node in nodes]
+        assert expected == group_names
 
         group = layertree_test_data["groups"][0]
         self.check_edit_action(test_app, nodes, "layer_groups", group.id)
@@ -205,14 +219,28 @@ class TestLayerTreeView(AbstractViewsTests):
             },
         )
 
-    def test_layers(self, test_app, layertree_test_data):
+    def test_layers(self, test_app, layertree_test_data, dbsession):
         theme = layertree_test_data["themes"][0]
         group = layertree_test_data["groups"][0]
+
+        # Invert children order (to test ordering)
+        group.children_relation[0].ordering = 1
+        group.children_relation[1].ordering = 0
+        dbsession.flush()
+
         resp = self.get(
             test_app, "/children?group_id={0}&path=_{1}_{0}".format(group.id, theme.id), status=200
         )
         nodes = resp.json
         assert len(nodes) == 2
+
+        # check layers are sorted by ordering
+        expected = [
+            relation.treeitem.name
+            for relation in sorted(group.children_relation, key=lambda relation: relation.ordering)
+        ]
+        layer_names = [node["name"] for node in nodes]
+        assert expected == layer_names
 
         layer_wms = layertree_test_data["layers_wms"][0]
         layer_wmts = layertree_test_data["layers_wmts"][0]
