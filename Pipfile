@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 awscli = "==1.20.32"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
-bandit = "==1.7.0"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
 coverage = "==5.5"  # Build coverage XML for Codacy
 Jinja2 = "==2.11.3"  # c2c.template
@@ -18,8 +17,6 @@ pytest-cov = "==2.12.1"  # tests
 transifex-client = "==0.14.3"  # Makefile
 WebTest = "==3.0.0"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit", "with_pyroma"],version = "==1.4.0"}
-mypy = "==0.910"
-flake8 = "==3.8.4"
 types-pytz = "==2021.1.2"
 types-pyyaml = "==5.4.8"
 types-python-dateutil = "==0.1.6"
