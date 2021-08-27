@@ -59,10 +59,10 @@ DIFF_NOTICE = (
 
 def fix_style() -> None:
     if not os.path.exists(".prettierignore"):
-        with open(".prettierignore", "w") as file_:
+        with open(".prettierignore", "w", encoding="utf8") as file_:
             file_.write("*.min.js\n")
     if not os.path.exists(".prettierrc.yaml"):
-        with open(".prettierrc.yaml", "w") as file_:
+        with open(".prettierrc.yaml", "w", encoding="utf8") as file_:
             file_.write("bracketSpacing: false\nquoteProps: preserve\n")
 
     subprocess.run(  # pylint: disable=subprocess-run-check
@@ -120,7 +120,7 @@ class Step:
                 if os.path.isfile(f".UPGRADE{self.step_number - 1}"):
                     os.unlink(f".UPGRADE{self.step_number - 1}")
                 if self.file_marker:
-                    with open(f".UPGRADE{self.step_number}", "w"):
+                    with open(f".UPGRADE{self.step_number}", "w", encoding="utf8"):
                         pass
                 print(f"Start step {self.step_number}.")
                 sys.stdout.flush()
@@ -178,7 +178,7 @@ class C2cUpgradeTool:
             print(colorize("Unable to find the required 'project.yaml' file.", Color.RED))
             sys.exit(1)
 
-        with open("project.yaml") as project_file:
+        with open("project.yaml", encoding="utf8") as project_file:
             return cast(Dict[str, Any], yaml.safe_load(project_file))
 
     @staticmethod
@@ -187,7 +187,7 @@ class C2cUpgradeTool:
             print(colorize("Unable to find the required '.upgrade.yaml' file.", Color.RED))
             sys.exit(1)
 
-        with open(".upgrade.yaml") as project_file:
+        with open(".upgrade.yaml", encoding="utf8") as project_file:
             return cast(Union[List[Any], Dict[str, Any]], yaml.safe_load(project_file)[section])
 
     def print_step(
@@ -197,7 +197,7 @@ class C2cUpgradeTool:
         message: Optional[str] = None,
         prompt: str = "To continue, type:",
     ) -> None:
-        with open(".UPGRADE_INSTRUCTIONS", "w") as instructions:
+        with open(".UPGRADE_INSTRUCTIONS", "w", encoding="utf8") as instructions:
             print("")
             print(self.color_bar)
             if message is not None:
@@ -626,7 +626,7 @@ class C2cUpgradeTool:
 
     @Step(8)
     def step8(self, step: int) -> None:
-        with open("changelog.diff", "w") as diff_file:
+        with open("changelog.diff", "w", encoding="utf8") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
         from210 = False
@@ -668,7 +668,7 @@ class C2cUpgradeTool:
         )
         status += ["CONST_create_template/geoportal/vars.yaml"]
 
-        with open("ngeo.diff", "w") as diff_file:
+        with open("ngeo.diff", "w", encoding="utf8") as diff_file:
             if status:
                 check_call(
                     ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
@@ -703,7 +703,7 @@ class C2cUpgradeTool:
         status = [s for s in status if s != "CONST_create_template/geoportal/vars.yaml"]
 
         if status:
-            with open("create.diff", "w") as diff_file:
+            with open("create.diff", "w", encoding="utf8") as diff_file:
                 if status:
                     check_call(
                         ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
@@ -736,7 +736,7 @@ class C2cUpgradeTool:
 
         if os.path.isfile(".upgrade.yaml"):
             os.unlink(".upgrade.yaml")
-        with open(".UPGRADE_SUCCESS", "w"):
+        with open(".UPGRADE_SUCCESS", "w", encoding="utf8"):
             pass
         self.print_step(step + 1, message="\n".join(message))
 

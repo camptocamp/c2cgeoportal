@@ -55,7 +55,7 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
     url = wms_url.clone().add_query({"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
 
     # Forward request to target (without Host Header)
-    headers = dict()
+    headers = {}
     if url.hostname == "localhost" and host is not None:
         headers["Host"] = host
     try:
@@ -63,13 +63,15 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
             url.url(), headers=headers, **request.registry.settings.get("http_options", {})
         )
     except Exception:
-        raise HTTPBadGateway(f"Unable to GetCapabilities from wms_url {wms_url}")
+        LOG.exception("Unable to GetCapabilities from wms_url '%s'", wms_url)
+        raise HTTPBadGateway(  # pylint: disable=raise-missing-from
+            "Unable to GetCapabilities, see logs for details"
+        )
 
     if not response.ok:
         raise HTTPBadGateway(
-            "GetCapabilities from wms_url {} return the error: {:d} {}".format(
-                url.url(), response.status_code, response.reason
-            )
+            f"GetCapabilities from wms_url {url.url()} return the error: "
+            f"{response.status_code:d} {response.reason}"
         )
 
     try:
@@ -90,15 +92,15 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 
     except AttributeError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
-        error = f"{error!s}\nurl: {wms_url!s}\nxml:\n{response.text!s}"
+        error = f"{error}\nurl: {wms_url}\nxml:\n{response.text}"
         LOG.exception(error)
-        raise HTTPBadGateway(error)
+        raise HTTPBadGateway(error)  # pylint: disable=raise-missing-from
 
     except SyntaxError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
-        error = f"{error!s}\nurl: {wms_url!s}\nxml:\n{response.text!s}"
+        error = f"{error}\nurl: {wms_url}\nxml:\n{response.text}"
         LOG.exception(error)
-        raise HTTPBadGateway(error)
+        raise HTTPBadGateway(error)  # pylint: disable=raise-missing-from
 
 
 def filter_capabilities(

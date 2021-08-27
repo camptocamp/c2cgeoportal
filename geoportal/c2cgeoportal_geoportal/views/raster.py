@@ -57,7 +57,7 @@ class Raster:
         self.rasters = self.request.registry.settings["raster"]
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
-        def handle(event: InvalidateCacheEvent) -> None:  # pylint: disable=unused-variable
+        def handle(event: InvalidateCacheEvent) -> None:
             del event
             for _, v in Raster.data.items():
                 v.close()
@@ -69,7 +69,9 @@ class Raster:
         try:
             result = float(self.request.params[name])
         except ValueError:
-            raise HTTPBadRequest(f"'{name}' ({self.request.params[name]}) parameters should be a number")
+            raise HTTPBadRequest(  # pylint: disable=raise-missing-from
+                f"'{name}' ({self.request.params[name]}) parameters should be a number"
+            )
         if not math.isfinite(result):
             raise HTTPBadRequest(
                 f"'{name}' ({self.request.params[name]}) parameters should be a finite number"

@@ -106,9 +106,9 @@ class Layers:
             query = query.filter(Layer.id == layer_id)
             layer, geo_table = query.one()
         except NoResultFound:
-            raise HTTPNotFound(f"Layer {layer_id:d} not found")
+            raise HTTPNotFound(f"Layer {layer_id:d} not found") from None
         except MultipleResultsFound:
-            raise HTTPInternalServerError(f"Too many layers found with id {layer_id:d}")
+            raise HTTPInternalServerError(f"Too many layers found with id {layer_id:d}") from None
         if not geo_table:
             raise HTTPNotFound(f"Layer {layer_id:d} has no geo table")
         return cast("main.Layer", layer)
@@ -125,8 +125,8 @@ class Layers:
             for layer_id in layer_ids:
                 yield self._get_layer(layer_id)
         except ValueError:
-            raise HTTPBadRequest(
-                "A Layer id in '{!s}' is not an integer".format(self.request.matchdict["layer_id"])
+            raise HTTPBadRequest(  # pylint: disable=raise-missing-from
+                f"A Layer id in '{self.request.matchdict['layer_id']}' is not an integer"
             )
 
     def _get_layer_for_request(self) -> "main.Layer":

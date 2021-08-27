@@ -297,7 +297,7 @@ class Login:
                     raise HTTPUnauthorized("See server logs for details")
             except NoResultFound:
                 LOG.info("The login '%s' does not exist.", login)
-                raise HTTPUnauthorized("See server logs for details")
+                raise HTTPUnauthorized("See server logs for details")  # pylint: disable=raise-missing-from
 
             if self.two_factor_auth:
                 otp = self.request.POST.get("otp")

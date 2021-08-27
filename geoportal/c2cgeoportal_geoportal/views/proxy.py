@@ -119,9 +119,11 @@ class Proxy:
             if method in ("POST", "PUT") and body is not None:
                 errors += ["--- Query with body ---", "%s"]
                 args1.append(body.decode("utf-8"))
-            LOG.error("\n".join(errors), *args1, exc_info=True)
+            LOG.exception("\n".join(errors), *args1)
 
-            raise HTTPBadGateway("Error on backend, See logs for detail")
+            raise HTTPBadGateway(  # pylint: disable=raise-missing-from
+                "Error on backend, See logs for detail"
+            )
 
         if not response.ok:
             errors = [

@@ -221,7 +221,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
-        with open(filename) as config_file:
+        with open(filename, encoding="utf8") as config_file:
             gmf_config = yaml.load(config_file, Loader=yaml.BaseLoader)  # nosec
             # For application config (config.yaml)
             if "vars" in gmf_config:
@@ -295,7 +295,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             DBSession.configure(bind=engine)
             session = DBSession()
 
-            query = session.query(Metadata).filter(Metadata.name.in_(names))  # pylint: disable=no-member
+            query = session.query(Metadata).filter(Metadata.name.in_(names))
             for metadata in query.all():
                 location = f"metadata/{metadata.name}/{metadata.id}"
                 assert metadata.value is not None

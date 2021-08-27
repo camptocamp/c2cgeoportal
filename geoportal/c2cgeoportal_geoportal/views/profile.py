@@ -122,9 +122,7 @@ class Profile(Raster):
         for coord in coords:
             if prev_coord is not None:
                 cur_length = self._dist(prev_coord, coord)
-                cur_nb_points = int(nb_points * cur_length / total_length + 0.5)
-                if cur_nb_points < 1:
-                    cur_nb_points = 1
+                cur_nb_points = max(int(nb_points * cur_length / total_length + 0.5), 1)
                 dx = (coord[0] - prev_coord[0]) / float(cur_nb_points)
                 dy = (coord[1] - prev_coord[1]) / float(cur_nb_points)
                 for i in range(1, cur_nb_points + 1):

@@ -402,7 +402,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
             caching.init_region(cache_config, name)
 
             @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
-            def handle(event: InvalidateCacheEvent) -> None:  # pylint: disable=unused-variable
+            def handle(event: InvalidateCacheEvent) -> None:
                 del event
                 caching.invalidate_region()
                 if caching.MEMORY_CACHE_DICT:

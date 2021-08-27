@@ -67,7 +67,7 @@ class OGCProxy(Proxy):
             DBSession.expunge(result)
             return cast(main.OGCServer, result)
         except NoResultFound:
-            raise HTTPBadRequest(
+            raise HTTPBadRequest(  # pylint: disable=raise-missing-from
                 "The OGC Server '{}' does not exist (existing: {}).".format(
                     name, ",".join([t[0] for t in DBSession.query(main.OGCServer.name).all()])
                 )

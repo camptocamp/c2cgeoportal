@@ -41,7 +41,7 @@ LOG = logging.getLogger(__name__)
 class Loader(BaseLoader):  # type: ignore
     def _get_defaults(self, defaults: Optional[Dict[str, str]] = None) -> Dict[str, str]:
         env: Dict[str, str] = c2cwsgiutils.pyramid_logging.get_defaults()
-        d: Dict[str, str] = {key: env[key].replace("%", "%%") for key in env}
+        d: Dict[str, str] = {key: item.replace("%", "%%") for key, item in env.items()}
         if defaults:
             d.update(defaults)
         return cast(Dict[str, str], super()._get_defaults(d))

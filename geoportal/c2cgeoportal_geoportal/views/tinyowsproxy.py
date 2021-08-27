@@ -85,10 +85,11 @@ class TinyOWSProxy(OGCProxy):
         if method == "POST":
             try:
                 (operation, typenames_post) = self._parse_body(self.request.body)
-            except Exception as exception:
-                LOG.error("Error while parsing POST request body")
-                LOG.exception(exception)
-                raise HTTPBadRequest("Error parsing the request (see logs for more details)")
+            except Exception:
+                LOG.exception("Error while parsing POST request body")
+                raise HTTPBadRequest(  # pylint: disable=raise-missing-from
+                    "Error parsing the request (see logs for more details)"
+                )
 
             typenames = typenames.union(typenames_post)
 

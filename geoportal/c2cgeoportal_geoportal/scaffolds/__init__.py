@@ -47,7 +47,7 @@ class BaseTemplate(Template):  # type: ignore
     Greatly inspired from ``pyramid.scaffolds.template.PyramidTemplate``.
     """
 
-    def pre(  # pylint: disable=arguments-differ
+    def pre(  # pylint: disable=arguments-renamed
         self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]
     ) -> None:
         """
@@ -179,7 +179,7 @@ class TemplateCreate(BaseTemplate):
         super().pre(command, output_dir, vars_)
         vars_["authtkt_secret"] = _gen_authtkt_secret()
 
-    def post(  # pylint: disable=arguments-differ
+    def post(  # pylint: disable=arguments-renamed
         self, command: str, output_dir: str, vars_: Dict[str, str]
     ) -> None:
         """
@@ -202,7 +202,7 @@ class TemplateUpdate(BaseTemplate):
     def open_project(output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
         project_file = os.path.join(output_dir, "project.yaml")
         if os.path.exists(project_file):
-            with open(project_file) as f:
+            with open(project_file, encoding="utf8") as f:
                 project = yaml.safe_load(f)
                 if "template_vars" in project:
                     for key, value in list(project["template_vars"].items()):
@@ -222,7 +222,7 @@ class TemplateUpdate(BaseTemplate):
 
         super().pre(command, output_dir, vars_)
 
-    def post(  # pylint: disable=arguments-differ
+    def post(  # pylint: disable=arguments-renamed
         self, command: str, output_dir: str, vars_: Dict[str, str]
     ) -> None:
         """

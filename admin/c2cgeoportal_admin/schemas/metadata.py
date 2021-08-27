@@ -91,7 +91,7 @@ def regex_validator(node, value):
         except colander.Invalid as e:
             error = colander.Invalid(node)
             error.add(e, node.children.index(node["string"]))
-            raise error
+            raise error from e
 
 
 class BooleanMetadata(colander.Boolean):  # type: ignore

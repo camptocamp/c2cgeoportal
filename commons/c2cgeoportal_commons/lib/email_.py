@@ -58,8 +58,8 @@ def send_email_config(settings: Dict[str, Any], email_config_name: str, email: s
             smtp_config,
         )
     except gaierror:
-        LOG.error("Unable to send the email.", exc_info=True)
-        raise HTTPInternalServerError("See server logs for details")
+        LOG.exception("Unable to send the email.")
+        raise HTTPInternalServerError("See server logs for details")  # pylint: disable=raise-missing-from
 
 
 def send_email(

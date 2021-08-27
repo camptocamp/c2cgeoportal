@@ -82,12 +82,9 @@ class PrintProxy(Proxy):
             if response.ok:
                 try:
                     capabilities = response.json()
-                except json.decoder.JSONDecodeError as e:
-                    # log and raise
-                    LOG.error("Unable to parse capabilities.")
-                    LOG.exception(e)
-                    LOG.error(response.text)
-                    raise HTTPBadGateway(response.text)
+                except json.decoder.JSONDecodeError:
+                    LOG.exception("Unable to parse capabilities: %s", response.text)
+                    raise HTTPBadGateway(response.text)  # pylint: disable=raise-missing-from
 
                 capabilities["layouts"] = list(
                     layout for layout in capabilities["layouts"] if layout["name"] in templates
