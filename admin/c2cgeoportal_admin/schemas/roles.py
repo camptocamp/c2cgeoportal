@@ -7,10 +7,12 @@ from c2cgeoform.schema import (
 from c2cgeoportal_commons.models.main import Role
 
 
-def roles_schema_node(name):
+def roles_schema_node(prop):
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Role),
-        name=name,
+        name=prop.key,
+        title=prop.info['colanderalchemy']['title'],
+        description=prop.info['colanderalchemy'].get('description'),
         widget=RelationCheckBoxListWidget(
             Role,
             'id',

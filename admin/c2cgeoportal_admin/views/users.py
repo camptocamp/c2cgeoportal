@@ -18,7 +18,7 @@ from c2cgeoportal_admin.schemas.roles import roles_schema_node
 _list_field = partial(ListField, User)
 
 base_schema = GeoFormSchemaNode(User, widget=FormWidget(fields_template='user_fields'))
-base_schema.add(roles_schema_node('roles'))
+base_schema.add(roles_schema_node(User.roles))
 base_schema.add_unique_validator(User.username, User.id)
 
 settings_role = aliased(Role)

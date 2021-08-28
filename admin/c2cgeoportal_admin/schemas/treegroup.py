@@ -3,6 +3,7 @@ from functools import partial
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import func, case
 from c2cgeoform.schema import GeoFormSchemaNode
+from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeItem
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
@@ -84,6 +85,16 @@ def children_schema_node(only_groups=False):
         ),
         name='children_relation',
         title=_('Children'),
+        description=Literal(
+            _(
+                """
+                <div class="help-block">
+                    <p>The ordered children elements.</p>
+                </div>
+                <hr>
+                """
+            ),
+        ),
         treeitems=colander.deferred(partial(treeitems, only_groups=only_groups)),
         validator=children_validator,
         widget=ChildrenWidget(category='structural')

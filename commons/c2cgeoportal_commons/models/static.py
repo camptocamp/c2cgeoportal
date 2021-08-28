@@ -43,6 +43,7 @@ from deform.widget import HiddenWidget, DateTimeInputWidget
 from c2cgeoform.ext import deform_ext
 
 from c2c.template.config import config
+from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
 
@@ -66,7 +67,40 @@ class User(Base):
     __table_args__ = {'schema': _schema}
     __colanderalchemy_config__ = {
         'title': _('User'),
-        'plural': _('Users')
+        'plural': _('Users'),
+        'description': Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>Each user may have from 1 to n roles, but each user has a default role from
+                    which are taken some settings. The default role (defined through the
+                    "Settings from role" selection) has an influence on the role extent and on some
+                    functionalities regarding their configuration.</p>
+
+                <p>Role extents for users can only be set in one role, because the application
+                    is currently not able to check multiple extents for one user, thus it is the
+                    default role which defines this unique extent.</p>
+
+                <p>Any functionality specified as <b>single</b> can be defined only once per user.
+                    Hence, these functionalities have to be defined in the default role.</p>
+
+                <p>By default, functionalities are not specified as <b>single</b>. Currently, the
+                    following functionalities are of <b>single</b> type:</p>
+
+                <ul>
+                    <li><code>default_basemap</code></li>
+                    <li><code>default_theme</code></li>
+                    <li><code>preset_layer_filter</code></li>
+                    <li><code>open_panel</code></li>
+                </ul>
+
+                <p>Any other functionality (with <b>single</b> not set or set to <code>false</code>) can
+                    be defined in any role linked to the user.</p>
+            </div>
+            <hr>
+                """
+            )
+        ),
     }
     __c2cgeoform_config__ = {
         'duplicate': True
@@ -88,7 +122,8 @@ class User(Base):
     })
     username = Column(Unicode, unique=True, nullable=False, info={
         'colanderalchemy': {
-            'title': _('Username')
+            'title': _('Username'),
+            'description': _('Name used for authentication (must be unique).'),
         }
     })
     _password = Column('password', Unicode, nullable=False,
@@ -98,16 +133,24 @@ class User(Base):
     email = Column(Unicode, nullable=False, info={
         'colanderalchemy': {
             'title': _('Email'),
+            'description': _(
+                'Used to send emails to the user, for example in case of password recovery.'
+            ),
             'validator': colander.Email()
         }
     })
-    is_password_changed = Column(Boolean, default=False,
-                                 info={'colanderalchemy': {'exclude': True}})
+    is_password_changed = Column(Boolean, default=False, info={
+        'colanderalchemy': {
+            'title': _('The user changed his password'),
+            'description': _('Indicates in user has customized his password.'),
+            'exclude': True,
+        }
+    })
 
     settings_role_id = Column(Integer, info={
         'colanderalchemy': {
             'title': _('Settings from role'),
-            'description': 'Only used for settings not for permissions',
+            'description': _('Used to get some settings for the user (not for permissions).'),
             'widget': deform_ext.RelationSelect2Widget(
                 Role,
                 'id',
@@ -133,10 +176,17 @@ class User(Base):
         Role,
         secondary=user_role,
         secondaryjoin=Role.id == user_role.c.role_id,
-        backref=backref('users', info={'colanderalchemy': {'exclude': True}}),
+        backref=backref('users', info={
+            'colanderalchemy': {
+                'title': _('Users'),
+                'description': _('Users granted with this role.'),
+                'exclude': True,
+            }
+        }),
         info={
             'colanderalchemy': {
                 'title': _('Roles'),
+                'description': _('Roles granted to the user.'),
                 'exclude': True
             }
         }
@@ -145,6 +195,7 @@ class User(Base):
     last_login = Column(DateTime(timezone=True), info={
         'colanderalchemy': {
             'title': _('Last login'),
+            'description': _('Date of the user's last login.'),
             'missing': colander.drop,
             'widget': DateTimeInputWidget(readonly=True)
         }
@@ -152,13 +203,15 @@ class User(Base):
 
     expire_on = Column(DateTime(timezone=True), info={
         'colanderalchemy': {
-            'title': _('Expiration date')
+            'title': _('Expiration date'),
+            'description': _('After this date the user will not be able to login anymore.'),
         }
     })
 
     deactivated = Column(Boolean, default=False, info={
         'colanderalchemy': {
-            'title': _('Deactivated')
+            'title': _('Deactivated'),
+            'description': _('Deactivate a user without removing it completely.'),
         }
     })
 
