@@ -5,13 +5,14 @@ from c2cgeoportal_commons.models.main import Dimension
 from c2cgeoportal_admin import _
 
 
-dimensions_schema_node = colander.SequenceSchema(
-    GeoFormSchemaNode(
-        Dimension,
-        name='dimension',
-        widget=MappingWidget(template='dimension'),
-    ),
-    name='dimensions',
-    title=_('Dimensions'),
-    widget=SequenceWidget(category='structural', template='dimensions')
-)
+def dimensions_schema_node(prop):
+    return colander.SequenceSchema(
+        GeoFormSchemaNode(
+            Dimension,
+            name='dimension',
+            widget=MappingWidget(template='dimension')),
+        name=prop.key,
+        title=prop.info['colanderalchemy']['title'],
+        description=prop.info['colanderalchemy']['description'],
+        widget=SequenceWidget(category='structural', template='dimensions'),
+    )

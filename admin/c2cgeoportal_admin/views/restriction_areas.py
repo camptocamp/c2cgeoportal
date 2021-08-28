@@ -16,7 +16,7 @@ _list_field = partial(ListField, RestrictionArea)
 
 base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template='restriction_area_fields'))
 base_schema['area'].widget = map_widget
-base_schema.add_before('area', roles_schema_node('roles'))
+base_schema.add_before('area', roles_schema_node(RestrictionArea.roles))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 
 

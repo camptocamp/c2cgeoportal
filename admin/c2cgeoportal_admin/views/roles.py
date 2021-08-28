@@ -12,14 +12,12 @@ from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_no
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from deform.widget import FormWidget
 
-
 _list_field = partial(ListField, Role)
-
 
 base_schema = GeoFormSchemaNode(Role, widget=FormWidget(fields_template='role_fields'))
 base_schema['extent'].widget = map_widget
-base_schema.add_before('extent', functionalities_schema_node.clone())
-base_schema.add_before('extent', restrictionareas_schema_node.clone())
+base_schema.add_before("extent", functionalities_schema_node(Role.functionalities))
+base_schema.add_before("extent", restrictionareas_schema_node(Role.restrictionareas))
 base_schema.add_unique_validator(Role.name, Role.id)
 
 

@@ -16,9 +16,9 @@ from c2cgeoportal_admin.views.layers import LayerViews
 _list_field = partial(ListField, LayerV1)
 
 base_schema = GeoFormSchemaNode(LayerV1, widget=FormWidget(fields_template='layer_v1_fields'))
-base_schema.add(interfaces_schema_node.clone())
-base_schema.add(restrictionareas_schema_node.clone())
-base_schema.add(metadatas_schema_node.clone())
+base_schema.add(interfaces_schema_node(LayerV1.interfaces))
+base_schema.add(restrictionareas_schema_node(LayerV1.restrictionareas))
+base_schema.add(metadatas_schema_node(LayerV1.metadatas))
 base_schema.add_unique_validator(LayerV1.name, LayerV1.id)
 
 
