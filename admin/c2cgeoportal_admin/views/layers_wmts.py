@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -51,10 +51,10 @@ from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, OG
 _list_field = partial(ListField, LayerWMTS)
 
 base_schema = GeoFormSchemaNode(LayerWMTS, widget=FormWidget(fields_template="layer_fields"))
-base_schema.add(dimensions_schema_node.clone())
-base_schema.add(metadatas_schema_node.clone())
-base_schema.add(interfaces_schema_node.clone())
-base_schema.add(restrictionareas_schema_node.clone())
+base_schema.add(dimensions_schema_node(LayerWMTS.dimensions))
+base_schema.add(metadatas_schema_node(LayerWMTS.metadatas))
+base_schema.add(interfaces_schema_node(LayerWMTS.interfaces))
+base_schema.add(restrictionareas_schema_node(LayerWMTS.restrictionareas))
 base_schema.add_unique_validator(LayerWMTS.name, LayerWMTS.id)
 base_schema.add(parent_id_node(LayerGroup))
 

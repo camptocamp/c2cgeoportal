@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2021-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,19 +27,22 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from typing import Union
 
-import colander
-from c2cgeoform.schema import GeoFormSchemaNode
-from deform.widget import MappingWidget, SequenceWidget
-
-from c2cgeoportal_commons.models.main import Dimension
+from pyramid.i18n import TranslationString
+from pyramid.threadlocal import get_current_request
 
 
-def dimensions_schema_node(prop):
-    return colander.SequenceSchema(
-        GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),
-        name=prop.key,
-        title=prop.info["colanderalchemy"]["title"],
-        description=prop.info["colanderalchemy"]["description"],
-        widget=SequenceWidget(category="structural", template="dimensions"),
-    )
+class Literal:
+    """
+    For use in templates to mark a string as safe and avoid HTML escaping.
+    """
+
+    def __init__(self, s: Union[str, TranslationString]) -> None:
+        self.s = s
+
+    def __html__(self) -> str:
+        return get_current_request().translate(self.s)
+
+    def __bool__(self) -> bool:
+        return len(self.s) > 0
