@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2020, Camptocamp SA
+# Copyright (c) 2018-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,10 +35,12 @@ from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
 from c2cgeoportal_commons.models.main import Role
 
 
-def roles_schema_node(name):
+def roles_schema_node(prop):
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Role),
-        name=name,
+        name=prop.key,
+        title=prop.info["colanderalchemy"]["title"],
+        description=prop.info["colanderalchemy"].get("description"),
         widget=RelationCheckBoxListWidget(
             Role,
             "id",

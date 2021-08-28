@@ -39,6 +39,7 @@ from sqlalchemy import inspect
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
+from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import OGCServer
 
 _list_field = partial(ListField, OGCServer)
@@ -88,8 +89,18 @@ class OGCServerViews(AbstractViews):
             obj = None
 
         schema = self._base_schema.clone()
-        schema["url"].description = obj.url_description(self._request)
-        schema["url_wfs"].description = obj.url_wfs_description(self._request)
+        schema["url"].description = Literal(
+            _("{}<br>Current runtime value is: {}").format(
+                schema["url"].description,
+                obj.url_description(self._request),
+            )
+        )
+        schema["url_wfs"].description = Literal(
+            _("{}<br>Current runtime value is: {}").format(
+                schema["url_wfs"].description,
+                obj.url_wfs_description(self._request),
+            )
+        )
         return schema
 
     def _item_actions(self, item, readonly=False):

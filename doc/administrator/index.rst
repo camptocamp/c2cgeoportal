@@ -19,7 +19,6 @@ Content:
 .. toctree::
    :maxdepth: 1
 
-   administrate
    editing
    mapfile
    tinyows
