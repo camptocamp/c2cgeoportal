@@ -42,6 +42,7 @@ from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
 
+from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import Role
 
@@ -80,7 +81,43 @@ user_role = Table(
 class User(Base):  # type: ignore
     __tablename__ = "user"
     __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("User"), "plural": _("Users")}
+    __colanderalchemy_config__ = {
+        "title": _("User"),
+        "plural": _("Users"),
+        "description": Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>Each user may have from 1 to n roles, but each user has a default role from
+                    which are taken some settings. The default role (defined through the
+                    "Settings from role" selection) has an influence on the role extent and on some
+                    functionalities regarding their configuration.</p>
+
+                <p>Role extents for users can only be set in one role, because the application
+                    is currently not able to check multiple extents for one user, thus it is the
+                    default role which defines this unique extent.</p>
+
+                <p>Any functionality specified as <b>single</b> can be defined only once per user.
+                    Hence, these functionalities have to be defined in the default role.</p>
+
+                <p>By default, functionalities are not specified as <b>single</b>. Currently, the
+                    following functionalities are of <b>single</b> type:</p>
+
+                <ul>
+                    <li><code>default_basemap</code></li>
+                    <li><code>default_theme</code></li>
+                    <li><code>preset_layer_filter</code></li>
+                    <li><code>open_panel</code></li>
+                </ul>
+
+                <p>Any other functionality (with <b>single</b> not set or set to <code>false</code>) can
+                    be defined in any role linked to the user.</p>
+            </div>
+            <hr>
+                """
+            )
+        ),
+    }
     __c2cgeoform_config__ = {"duplicate": True}
     item_type = Column(
         "type", String(10), nullable=False, info={"colanderalchemy": {"widget": HiddenWidget()}}
@@ -89,7 +126,15 @@ class User(Base):  # type: ignore
 
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
     username = Column(
-        Unicode, unique=True, nullable=False, info={"colanderalchemy": {"title": _("Username")}}
+        Unicode,
+        unique=True,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Username"),
+                "description": _("Name used for authentication (must be unique)."),
+            }
+        },
     )
     _password = Column("password", Unicode, nullable=False, info={"colanderalchemy": {"exclude": True}})
     temp_password = Column(
@@ -97,10 +142,27 @@ class User(Base):  # type: ignore
     )
     tech_data = Column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})
     email = Column(
-        Unicode, nullable=False, info={"colanderalchemy": {"title": _("Email"), "validator": Email()}}
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Email"),
+                "description": _(
+                    "Used to send emails to the user, for example in case of password recovery."
+                ),
+                "validator": Email(),
+            }
+        },
     )
     is_password_changed = Column(
-        Boolean, default=False, info={"colanderalchemy": {"title": _("The user changed his password")}}
+        Boolean,
+        default=False,
+        info={
+            "colanderalchemy": {
+                "title": _("The user changed his password"),
+                "description": _("Indicates in user has customized his password."),
+            }
+        },
     )
 
     settings_role_id = Column(
@@ -108,7 +170,7 @@ class User(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Settings from role"),
-                "description": "Only used for settings not for permissions",
+                "description": _("Used to get some settings for the user (not for permissions)."),
                 "widget": RelationSelect2Widget(
                     Role, "id", "name", order_by="name", default_value=("", _("- Select -"))
                 ),
@@ -127,8 +189,24 @@ class User(Base):  # type: ignore
         Role,
         secondary=user_role,
         secondaryjoin=Role.id == user_role.c.role_id,
-        backref=backref("users", order_by="User.username", info={"colanderalchemy": {"exclude": True}}),
-        info={"colanderalchemy": {"title": _("Roles"), "exclude": True}},
+        backref=backref(
+            "users",
+            order_by="User.username",
+            info={
+                "colanderalchemy": {
+                    "title": _("Users"),
+                    "description": _("Users granted with this role."),
+                    "exclude": True,
+                }
+            },
+        ),
+        info={
+            "colanderalchemy": {
+                "title": _("Roles"),
+                "description": _("Roles granted to the user."),
+                "exclude": True,
+            }
+        },
     )
 
     last_login = Column(
@@ -136,15 +214,33 @@ class User(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Last login"),
+                "description": _("Date of the user's last login."),
                 "missing": drop,
                 "widget": DateTimeInputWidget(readonly=True),
             }
         },
     )
 
-    expire_on = Column(DateTime(timezone=True), info={"colanderalchemy": {"title": _("Expiration date")}})
+    expire_on = Column(
+        DateTime(timezone=True),
+        info={
+            "colanderalchemy": {
+                "title": _("Expiration date"),
+                "description": _("After this date the user will not be able to login anymore."),
+            }
+        },
+    )
 
-    deactivated = Column(Boolean, default=False, info={"colanderalchemy": {"title": _("Deactivated")}})
+    deactivated = Column(
+        Boolean,
+        default=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Deactivated"),
+                "description": _("Deactivate a user without removing it completely."),
+            }
+        },
+    )
 
     def __init__(
         self,
@@ -257,9 +353,39 @@ class OAuth2Client(Base):  # type: ignore
     __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
     __c2cgeoform_config__ = {"duplicate": True}
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    client_id = Column(Unicode, unique=True, info={"colanderalchemy": {"title": _("Client ID")}})
-    secret = Column(Unicode, info={"colanderalchemy": {"title": _("Secret")}})
-    redirect_uri = Column(Unicode, info={"colanderalchemy": {"title": _("Redirect URI")}})
+    client_id = Column(
+        Unicode,
+        unique=True,
+        info={
+            "colanderalchemy": {
+                "title": _("Client ID"),
+                "description": _("The client identifier as e.-g. 'qgis'."),
+            }
+        },
+    )
+    secret = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Secret"),
+                "description": _("The secret."),
+            }
+        },
+    )
+    redirect_uri = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Redirect URI"),
+                "description": _(
+                    """
+                    URI where user should be redirected after authentication
+                    as e.-g. 'http://127.0.0.1:7070/' in case of QGIS desktop.
+                    """
+                ),
+            }
+        },
+    )
 
 
 class OAuth2BearerToken(Base):  # type: ignore

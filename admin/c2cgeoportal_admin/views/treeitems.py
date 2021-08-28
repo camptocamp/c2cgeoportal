@@ -49,9 +49,7 @@ class TreeItemViews(AbstractViews):  # type: ignore
     _extra_list_fields_no_parents = [
         _list_field(
             "metadatas",
-            renderer=lambda layers_group: ", ".join(
-                [f"{m.name}: {m.value}" or "" for m in layers_group.metadatas]
-            ),
+            renderer=lambda treeitem: ", ".join([f"{m.name}: {m.value}" or "" for m in treeitem.metadatas]),
             filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),
         )
     ]

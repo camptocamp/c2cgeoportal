@@ -118,5 +118,7 @@ def includeme(config: Configurator) -> None:
     config.include("pyramid_tm")
     config.add_translation_dirs("c2cgeoportal_admin:locale")
 
+    configure_mappers()
+
     with PermissionSetter(config):
         config.scan()

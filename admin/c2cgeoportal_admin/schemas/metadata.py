@@ -139,7 +139,14 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
     def _add_value_node(self, type_name: str, colander_type: colander.SchemaType, **kw: Any) -> None:
         self.add_before(
             "description",
-            colander.SchemaNode(colander_type, name=type_name, title=_("Value"), missing=colander.null, **kw),
+            colander.SchemaNode(
+                colander_type,
+                name=type_name,
+                title=Metadata.value.info["colanderalchemy"]["title"],
+                description=Metadata.value.info["colanderalchemy"]["description"],
+                missing=colander.null,
+                **kw,
+            ),
         )
         self.available_types.append(type_name)
 
@@ -164,17 +171,19 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
         return metadata_type if metadata_type in self.available_types else "string"
 
 
-metadatas_schema_node = colander.SequenceSchema(
-    MetadataSchemaNode(
-        Metadata,
-        name="metadata",
+def metadatas_schema_node(prop):
+    return colander.SequenceSchema(
+        MetadataSchemaNode(
+            Metadata,
+            name="metadata",
+            metadata_definitions=metadata_definitions,
+            validator=regex_validator,
+            widget=MappingWidget(template="metadata"),
+            overrides={"name": {"widget": metadata_name_widget}},
+        ),
+        name=prop.key,
+        title=prop.info["colanderalchemy"]["title"],
+        description=prop.info["colanderalchemy"]["description"],
         metadata_definitions=metadata_definitions,
-        validator=regex_validator,
-        widget=MappingWidget(template="metadata"),
-        overrides={"name": {"widget": metadata_name_widget}},
-    ),
-    name="metadatas",
-    title=_("Metadatas"),
-    metadata_definitions=metadata_definitions,
-    widget=SequenceWidget(template="metadatas", category="structural"),
-)
+        widget=SequenceWidget(template="metadatas", category="structural"),
+    )
