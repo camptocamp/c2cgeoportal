@@ -58,22 +58,34 @@ DIFF_NOTICE = (
 
 
 def fix_style() -> None:
-    if not os.path.exists(".prettierignore"):
-        with open(".prettierignore", "w", encoding="utf8") as file_:
-            file_.write("*.min.js\n")
-    if not os.path.exists(".prettierrc.yaml"):
-        with open(".prettierrc.yaml", "w", encoding="utf8") as file_:
-            file_.write("bracketSpacing: false\nquoteProps: preserve\n")
 
-    subprocess.run(  # pylint: disable=subprocess-run-check
-        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=isort"]
-    )
-    subprocess.run(  # pylint: disable=subprocess-run-check
-        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=black"]
-    )
-    subprocess.run(  # pylint: disable=subprocess-run-check
-        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=prettier"]
-    )
+    file_to_clean = []
+    for filename, content in (
+        (".prettierignore", "*.min.js\n"),
+        ("pyproject.toml", "[tool.black]\nline-length = 110\ntarget-version = ['py38']\n"),
+        (".prettierrc.yaml", "bracketSpacing: false\nquoteProps: preserve\n"),
+        (
+            ".editorconfig",
+            """root = true
+[*]
+max_line_length = 110
+""",
+        ),
+    ):
+        if not os.path.exists(filename):
+            file_to_clean.append(filename)
+            if os.path.exists(os.path.join("CONST_create_template", filename)):
+                shutil.copyfile(os.path.join("CONST_create_template", filename), filename)
+            else:
+                with open(filename, "w", encoding="utf8") as file_:
+                    file_.write(content)
+
+    subprocess.run(["c2cciutils-checks", "--fix", "--check=isort"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["c2cciutils-checks", "--fix", "--check=black"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["c2cciutils-checks", "--fix", "--check=prettier"])  # pylint: disable=subprocess-run-check
+
+    for filename in file_to_clean:
+        os.remove(filename)
 
 
 def main() -> None:
@@ -352,7 +364,26 @@ class C2cUpgradeTool:
         os.remove(project_path)
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
+
+        def changed_files() -> List[str]:
+            status = [
+                [s for s in status.split(" ") if s]
+                for status in check_git_status_output().strip().split("\n")
+                if status
+            ]
+            return [file for state, file in status if state == "M" and not file.startswith("CONST_")]
+
+        changed_before_style = changed_files()
+
         fix_style()
+
+        # Revert code style changes in the project otherwise we get an  error: does not match index
+        # on git apply.
+        changed_after_style = changed_files()
+        to_checkout = [file for file in changed_after_style if file not in changed_before_style]
+        if to_checkout:
+            subprocess.run(["git", "checkout"] + to_checkout, check=True)
+
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
         self.run_step(step + 1)

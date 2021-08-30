@@ -92,13 +92,14 @@ else:
             subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
             subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-config:{major_version}"])
 
-    debug_volumes = []
-    if args.debug:
-        debug_volumes = [
-            "--volume={}/../c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py".format(
-                os.getcwd()
-            ),
+    debug_volumes = (
+        [
+            f"--volume={args.debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:"
+            "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py"
         ]
+        if args.debug
+        else []
+    )
 
     win = platform.system() == "Windows"
     sys.exit(
