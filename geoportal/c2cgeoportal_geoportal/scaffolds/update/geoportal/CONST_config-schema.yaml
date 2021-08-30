@@ -558,7 +558,7 @@ mapping:
             required: True
             sequence:
               - type: str
-                unique: yes
+                unique: True
       print_url:
         type: str
         required: True
