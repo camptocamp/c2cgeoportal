@@ -1,3 +1,5 @@
+##### 2.4.2.55
+* [Backport 2.4] Fix metadata checkbox display [c2cgeoportal#8614](https://github.com/camptocamp/c2cgeoportal/pull/8614)
 ##### 2.4.2.54
 * Ignore CWE-22: Improper Limitation of a Pathname to a Restricted Dire… [ngeo#7368](https://github.com/camptocamp/ngeo/pull/7368)
 ##### 2.4.2.53
