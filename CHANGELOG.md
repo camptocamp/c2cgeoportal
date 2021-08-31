@@ -1,3 +1,5 @@
+##### 2.5.0.152
+* [Backport 2.5] Fix metadata checkbox display [c2cgeoportal#8616](https://github.com/camptocamp/c2cgeoportal/pull/8616)
 ##### 2.5.0.151
 * Ignore CVE [1776] Open Redirect in url-parse [c2cgeoportal#8558](https://github.com/camptocamp/c2cgeoportal/pull/8558)
 ##### 2.5.0.149
