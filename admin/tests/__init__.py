@@ -193,7 +193,7 @@ class AbstractViewsTests():
             if 'value' in exp:
                 if input_tag.attrs.get('type') == 'checkbox':
                     if exp['value'] is True:
-                        assert input_tag.attrs.get('checked') == 'checked'
+                        assert input_tag.attrs.get('checked') == 'True'
                     else:
                         assert input_tag.attrs.get('checked') is None
                 elif input_tag.name == 'select':
