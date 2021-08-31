@@ -29,6 +29,7 @@
 import json
 import logging
 import sys
+import urllib.parse
 from random import Random
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -91,7 +92,9 @@ class Login:
 
         return {
             "lang": self.lang,
-            "login_params": {"came_from": self.request.path},
+            "login_params": {
+                "came_from": (f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}")
+            },
             "two_fa": self.two_factor_auth,
         }
 
