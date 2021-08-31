@@ -191,7 +191,12 @@ class AbstractViewsTests():
         for exp in expected:
             input_tag = mapping_item.select_one('[name="{}"]'.format(exp['name']))
             if 'value' in exp:
-                if input_tag.name == 'select':
+                if input_tag.attrs.get('type') == 'checkbox':
+                    if exp['value'] is True:
+                        assert input_tag.attrs.get('checked') == 'True'
+                    else:
+                        assert input_tag.attrs.get('checked') is None
+                elif input_tag.name == 'select':
                     self._check_select(input_tag, exp['value'])
                 elif input_tag.name == 'textarea':
                     assert (exp['value'] or '') == (input_tag.string or '')
