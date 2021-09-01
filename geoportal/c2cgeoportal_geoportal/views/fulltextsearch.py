@@ -79,15 +79,13 @@ class FullTextSearchView:
             limit = int(self.request.params.get("limit", self.settings.get("defaultlimit", 30)))
         except ValueError:
             return HTTPBadRequest(detail="limit value is incorrect")
-        if limit > maxlimit:
-            limit = maxlimit
+        limit = min(limit, maxlimit)
 
         try:
             partitionlimit = int(self.request.params.get("partitionlimit", 0))
         except ValueError:
             return HTTPBadRequest(detail="partitionlimit value is incorrect")
-        if partitionlimit > maxlimit:
-            partitionlimit = maxlimit
+        partitionlimit = min(partitionlimit, maxlimit)
 
         terms_array = [
             IGNORED_STARTUP_CHARS_RE.sub("", elem) for elem in IGNORED_CHARS_RE.sub(" ", terms).split(" ")

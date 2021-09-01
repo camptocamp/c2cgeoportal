@@ -314,8 +314,8 @@ def _parse_date(date: str) -> Tuple[str, datetime.datetime]:
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=isodate.UTC)
         return "second", dt
-    except Exception:
-        raise ValueError(f"Invalid date format '{date!s}'")
+    except Exception as e:
+        raise ValueError(f"Invalid date format '{date}'") from e
 
 
 def _format_date(date: datetime.datetime) -> str:

@@ -58,22 +58,34 @@ DIFF_NOTICE = (
 
 
 def fix_style() -> None:
-    if not os.path.exists(".prettierignore"):
-        with open(".prettierignore", "w") as file_:
-            file_.write("*.min.js\n")
-    if not os.path.exists(".prettierrc.yaml"):
-        with open(".prettierrc.yaml", "w") as file_:
-            file_.write("bracketSpacing: false\nquoteProps: preserve\n")
 
-    subprocess.run(  # pylint: disable=subprocess-run-check
-        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=isort"]
-    )
-    subprocess.run(  # pylint: disable=subprocess-run-check
-        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=black"]
-    )
-    subprocess.run(  # pylint: disable=subprocess-run-check
-        ["/venv/c2cciutils/bin/c2cciutils-checks", "--fix", "--check=prettier"]
-    )
+    file_to_clean = []
+    for filename, content in (
+        (".prettierignore", "*.min.js\n"),
+        ("pyproject.toml", "[tool.black]\nline-length = 110\ntarget-version = ['py38']\n"),
+        (".prettierrc.yaml", "bracketSpacing: false\nquoteProps: preserve\n"),
+        (
+            ".editorconfig",
+            """root = true
+[*]
+max_line_length = 110
+""",
+        ),
+    ):
+        if not os.path.exists(filename):
+            file_to_clean.append(filename)
+            if os.path.exists(os.path.join("CONST_create_template", filename)):
+                shutil.copyfile(os.path.join("CONST_create_template", filename), filename)
+            else:
+                with open(filename, "w", encoding="utf8") as file_:
+                    file_.write(content)
+
+    subprocess.run(["c2cciutils-checks", "--fix", "--check=isort"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["c2cciutils-checks", "--fix", "--check=black"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["c2cciutils-checks", "--fix", "--check=prettier"])  # pylint: disable=subprocess-run-check
+
+    for filename in file_to_clean:
+        os.remove(filename)
 
 
 def main() -> None:
@@ -120,7 +132,7 @@ class Step:
                 if os.path.isfile(f".UPGRADE{self.step_number - 1}"):
                     os.unlink(f".UPGRADE{self.step_number - 1}")
                 if self.file_marker:
-                    with open(f".UPGRADE{self.step_number}", "w"):
+                    with open(f".UPGRADE{self.step_number}", "w", encoding="utf8"):
                         pass
                 print(f"Start step {self.step_number}.")
                 sys.stdout.flush()
@@ -178,7 +190,7 @@ class C2cUpgradeTool:
             print(colorize("Unable to find the required 'project.yaml' file.", Color.RED))
             sys.exit(1)
 
-        with open("project.yaml") as project_file:
+        with open("project.yaml", encoding="utf8") as project_file:
             return cast(Dict[str, Any], yaml.safe_load(project_file))
 
     @staticmethod
@@ -187,7 +199,7 @@ class C2cUpgradeTool:
             print(colorize("Unable to find the required '.upgrade.yaml' file.", Color.RED))
             sys.exit(1)
 
-        with open(".upgrade.yaml") as project_file:
+        with open(".upgrade.yaml", encoding="utf8") as project_file:
             return cast(Union[List[Any], Dict[str, Any]], yaml.safe_load(project_file)[section])
 
     def print_step(
@@ -197,7 +209,7 @@ class C2cUpgradeTool:
         message: Optional[str] = None,
         prompt: str = "To continue, type:",
     ) -> None:
-        with open(".UPGRADE_INSTRUCTIONS", "w") as instructions:
+        with open(".UPGRADE_INSTRUCTIONS", "w", encoding="utf8") as instructions:
             print("")
             print(self.color_bar)
             if message is not None:
@@ -352,7 +364,26 @@ class C2cUpgradeTool:
         os.remove(project_path)
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
+
+        def changed_files() -> List[str]:
+            status = [
+                [s for s in status.split(" ") if s]
+                for status in check_git_status_output().strip().split("\n")
+                if status
+            ]
+            return [file for state, file in status if state == "M" and not file.startswith("CONST_")]
+
+        changed_before_style = changed_files()
+
         fix_style()
+
+        # Revert code style changes in the project otherwise we get an  error: does not match index
+        # on git apply.
+        changed_after_style = changed_files()
+        to_checkout = [file for file in changed_after_style if file not in changed_before_style]
+        if to_checkout:
+            subprocess.run(["git", "checkout"] + to_checkout, check=True)
+
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
         self.run_step(step + 1)
@@ -626,7 +657,7 @@ class C2cUpgradeTool:
 
     @Step(8)
     def step8(self, step: int) -> None:
-        with open("changelog.diff", "w") as diff_file:
+        with open("changelog.diff", "w", encoding="utf8") as diff_file:
             check_call(["git", "diff", "--", "CONST_CHANGELOG.txt"], stdout=diff_file)
 
         from210 = False
@@ -668,7 +699,7 @@ class C2cUpgradeTool:
         )
         status += ["CONST_create_template/geoportal/vars.yaml"]
 
-        with open("ngeo.diff", "w") as diff_file:
+        with open("ngeo.diff", "w", encoding="utf8") as diff_file:
             if status:
                 check_call(
                     ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
@@ -703,7 +734,7 @@ class C2cUpgradeTool:
         status = [s for s in status if s != "CONST_create_template/geoportal/vars.yaml"]
 
         if status:
-            with open("create.diff", "w") as diff_file:
+            with open("create.diff", "w", encoding="utf8") as diff_file:
                 if status:
                     check_call(
                         ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
@@ -736,7 +767,7 @@ class C2cUpgradeTool:
 
         if os.path.isfile(".upgrade.yaml"):
             os.unlink(".upgrade.yaml")
-        with open(".UPGRADE_SUCCESS", "w"):
+        with open(".UPGRADE_SUCCESS", "w", encoding="utf8"):
             pass
         self.print_step(step + 1, message="\n".join(message))
 

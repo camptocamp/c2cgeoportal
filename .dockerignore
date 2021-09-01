@@ -26,5 +26,4 @@
 !package.json
 !scripts/pylint-copyright.py
 !.git
-!ci/requirements.txt
 **/__pycache__/
