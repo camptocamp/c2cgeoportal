@@ -1,3 +1,5 @@
+##### 2.6.0.20
+* Fix the came_from on HTTP Forbidden [c2cgeoportal#8617](https://github.com/camptocamp/c2cgeoportal/pull/8617)
 ##### 2.6.0.19
 * [admin] Add missing order_by in layertree [c2cgeoportal#8599](https://github.com/camptocamp/c2cgeoportal/pull/8599)
 ##### 2.6.0.18
