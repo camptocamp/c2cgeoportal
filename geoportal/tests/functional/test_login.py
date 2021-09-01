@@ -281,7 +281,12 @@ class TestLoginView(TestCase):
 
         request.path = "/for_test"
         response = login.loginform403()
-        assert response["login_params"] == {"came_from": "/for_test"}
+        assert response["login_params"] == {"came_from": "/for_test?"}
+
+        request.path = "/for_test"
+        request.GET = {"test": "123"}
+        response = login.loginform403()
+        assert response["login_params"] == {"came_from": "/for_test?test=123"}
 
         request.params = {"came_from": "/for_a_second_test"}
         login = Login(request)

@@ -31,6 +31,7 @@
 import json
 import logging
 import sys
+import urllib.parse
 import xml.dom.minidom  # noqa # pylint: disable=unused-import
 from random import Random
 from typing import Dict, Set, Tuple  # noqa # pylint: disable=unused-import
@@ -92,7 +93,9 @@ class Login:
 
         return {
             "lang": self.lang,
-            "login_params": {"came_from": self.request.path},
+            "login_params": {
+                "came_from": (f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}")
+            },
             "two_fa": self.two_factor_auth,
         }
 
