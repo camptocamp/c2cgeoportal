@@ -99,7 +99,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             elif "GEOMAPFISH_ACCESSCONTROL_CONFIG" in os.environ:
                 self.single = False
                 self.ogcserver_accesscontrols = {}
-                with open(os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"]) as ac_config_file:
+                with open(os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"], encoding="utf-8") as ac_config_file:
                     ac_config = yaml.safe_load(ac_config_file.read())
 
                 for map_, map_config in ac_config.get("map_config").items():
@@ -119,7 +119,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                         OGCServer,
                     )
 
-                    for ogcserver in session.query(OGCServer).all():  # pylint: disable=no-member
+                    for ogcserver in session.query(OGCServer).all():
                         errors: Set[str] = set()
                         url = get_url2(
                             "The OGC server '{}'".format(ogcserver.name),
@@ -205,7 +205,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                         self.single = False
                     self.initialized = True
                 finally:
-                    session.close()  # pylint: disable=no-member
+                    session.close()
             else:
                 LOG.error(
                     "The environment variable 'GEOMAPFISH_OGCSERVER', 'GEOMAPFISH_ACCESSCONTROL_CONFIG' "
@@ -355,7 +355,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         )
 
         @zope.event.classhandler.handler(InvalidateCacheEvent)
-        def handle(_: InvalidateCacheEvent) -> None:  # pylint: disable=unused-variable
+        def handle(_: InvalidateCacheEvent) -> None:
             LOG.info("=== invalidate ===")
             self._init(ogcserver_name, map_file)
 
