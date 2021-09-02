@@ -16,7 +16,7 @@ prospector:
 	@mypy --version
 	@pylint --version --rcfile=/dev/null
 	@echo pyflakes $(shell pyflakes --version)
-	prospector --output-format=pylint
+	prospector --output-format=pylint -X
 
 .PHONY: additionallint
 additionallint:
