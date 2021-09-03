@@ -168,8 +168,8 @@ def children_schema_node(only_groups: bool = False) -> colander.SequenceSchema:
                 """
                 <div class="help-block">
                     <p>The ordered children elements.</p>
+                    <hr>
                 </div>
-                <hr>
                 """
             ),
         ),

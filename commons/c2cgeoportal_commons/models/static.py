@@ -112,8 +112,8 @@ class User(Base):  # type: ignore
 
                 <p>Any other functionality (with <b>single</b> not set or set to <code>false</code>) can
                     be defined in any role linked to the user.</p>
+                <hr>
             </div>
-            <hr>
                 """
             )
         ),
