@@ -429,8 +429,8 @@ class LayerGroup(TreeGroup):
                 <h4>Background layers</h4>
                 <p>The background layers are configured in the database, with the layer group named
                 <b>background</b> (by default).</p>
+                <hr>
             </div>
-            <hr>
                 """
             )
         ),
@@ -790,8 +790,8 @@ class OGCServer(Base):
                 For one server we try to create only one request when it is possible.</p>
                 <p>If you want to query the same server to get PNG and JPEG images,\n
                 you should define two <code>OGC servers</code>.</p>
+                <hr>
             </div>
-            <hr>
                 """
             )
         ),
@@ -946,8 +946,8 @@ class LayerWMS(DimensionLayer):
                 <p>Definition of a <code>WMS Layer</code>.</p>
                 <p>Note: The layers named <code>wms-defaults</code> contains the values
                 used when we create a new <code>WMS layer</code>.</p>
+                <hr>
             </div>
-            <hr>
                 """
             )
         ),
@@ -1093,8 +1093,8 @@ class LayerWMTS(DimensionLayer):
                     <li><code>wmsLayers</code> or <code>printLayers</code> with the layers to print
                         (comma separated list).</li>
                 </ul>
+                <hr>
             </div>
-            <hr>
                 """
             )
         ),
@@ -1250,8 +1250,8 @@ class RestrictionArea(Base):
                         """
                         <div class="help-block">
                             <p>This restriction area will grant access to the checked layers.</p>
+                            <hr>
                         </div>
-                        <hr>
                         """
                     )
                 ),
@@ -1449,8 +1449,8 @@ class Metadata(Base):
                 >
                     https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js
                 </a>.</p>
+            <hr>
         </div>
-        <hr>
                             """.format(
                                 MAIN_BRANCH="master",
                             )
@@ -1536,8 +1536,8 @@ class Dimension(Base):
                             """
         <div class="help-block">
             <p>The dimensions, if not provided default values are used.</p>
+            <hr>
         </div>
-        <hr>
                             """
                         )
                     ),
