@@ -367,7 +367,7 @@ class OGCServerSynchronizer:
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
                 "REQUEST": "GetCapabilities",
-                "ROLE_ID": "0",
+                "ROLE_IDS": "0",
                 "USER_ID": "0",
             },
         )

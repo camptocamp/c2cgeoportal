@@ -230,7 +230,7 @@ class Theme:
                 "SERVICE": "WMS",
                 "VERSION": "1.1.1",
                 "REQUEST": "GetCapabilities",
-                "ROLE_ID": "0",
+                "ROLE_IDS": "0",
                 "USER_ID": "0",
             },
         )
@@ -837,7 +837,7 @@ class Theme:
             "SERVICE": "WFS",
             "VERSION": "1.0.0",
             "REQUEST": "DescribeFeatureType",
-            "ROLE_ID": "0",
+            "ROLE_IDS": "0",
             "USER_ID": "0",
         }
         wfs_url = add_url_params(wfs_url, params)
