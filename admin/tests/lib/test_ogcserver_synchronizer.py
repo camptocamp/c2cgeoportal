@@ -89,7 +89,7 @@ class TestOGCServerSynchronizer:
         assert wms_service.identification.type == "OGC:WMS"
 
         url = re.escape(
-            "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_ID=0&USER_ID=0"
+            "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0"
         )
         assert re.match(
             fr"Get WMS GetCapabilities from: {url}\nGot response 200 in \d+.\d+s.\n",
