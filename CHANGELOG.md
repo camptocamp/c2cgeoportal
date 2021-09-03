@@ -1,3 +1,5 @@
+##### 2.6.0.21
+* Apply some missing conversion from ROLE_ID to ROLE_IDS [c2cgeoportal#8622](https://github.com/camptocamp/c2cgeoportal/pull/8622)
 ##### 2.6.0.20
 * Fix the came_from on HTTP Forbidden [c2cgeoportal#8617](https://github.com/camptocamp/c2cgeoportal/pull/8617)
 ##### 2.6.0.19
