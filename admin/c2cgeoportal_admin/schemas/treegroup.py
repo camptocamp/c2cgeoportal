@@ -165,8 +165,8 @@ def children_schema_node(only_groups=False):
                 """
                 <div class="help-block">
                     <p>The ordered children elements.</p>
+                    <hr>
                 </div>
-                <hr>
                 """
             ),
         ),
