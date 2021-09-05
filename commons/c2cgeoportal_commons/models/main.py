@@ -121,6 +121,16 @@ class Functionality(Base):
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": _("Name of the functionality."),
+                "widget": SelectWidget(
+                    values=[("", _("- Select -"))]
+                    + [
+                        (f["name"], f["name"])
+                        for f in sorted(
+                            _admin_config.get("available_functionalities", []),
+                            key=lambda f: f["name"],
+                        )
+                    ],
+                ),
             }
         },
     )

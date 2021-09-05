@@ -9,14 +9,17 @@ from . import AbstractViewsTests
 
 @pytest.fixture(scope="function")
 @pytest.mark.usefixtures("dbsession", "transact")
-def functionality_test_data(dbsession, transact):
+def functionality_test_data(dbsession, transact, settings):
     del transact
 
     from c2cgeoportal_commons.models.main import Functionality
 
     functionalities = []
     for i in range(0, 4):
-        functionality = Functionality(name="functionality_{}".format(i), value="value_{}".format(i))
+        functionality = Functionality(
+            settings["admin_interface"]["available_functionalities"][i]["name"],
+            value="value_{}".format(i),
+        )
         functionality.description = "description_{}".format(i)
         dbsession.add(functionality)
         functionalities.append(functionality)
@@ -47,7 +50,7 @@ class TestFunctionality(AbstractViewsTests):
 
     def test_grid_search(self, test_app):
         # search on functionality name
-        self.check_search(test_app, "functionality_0", total=1)
+        self.check_search(test_app, "default_basemap", total=1)
 
     def test_submit_new(self, dbsession, test_app):
         from c2cgeoportal_commons.models.main import Functionality
@@ -87,12 +90,21 @@ class TestFunctionality(AbstractViewsTests):
 
         functionality = functionality_test_data["functionalities"][3]
         resp = test_app.get("/admin/functionalities/{}/duplicate".format(functionality.id), status=200)
+
         form = resp.form
-        assert "" == self.get_first_field_named(form, "id").value
-        self.set_first_field_named(form, "name", "clone")
+        assert form["name"].value == functionality.name
+        assert form["description"].value == functionality.description
+        assert form["value"].value == functionality.value
+        form["value"].value = "another_value"
         resp = form.submit("submit")
+
         assert resp.status_int == 302
-        functionality = dbsession.query(Functionality).filter(Functionality.name == "clone").one()
+        functionality = (
+            dbsession.query(Functionality)
+            .filter(Functionality.name == functionality.name)
+            .filter(Functionality.value == "another_value")
+            .one()
+        )
         assert str(functionality.id) == re.match(
             r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
