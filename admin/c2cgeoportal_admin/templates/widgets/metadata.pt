@@ -52,13 +52,19 @@
          $metadataItem.find('.col-value .form-group').hide();
          $metadataItem.find('.col-value .form-group .form-control').attr('disabled', true);
 
-         var type = c2cgeoportalAdmin.metadata_definitions[$name.val()].type || 'string';
+         var metadataDef = c2cgeoportalAdmin.metadata_definitions[$name.val()] || {};
+         var type = metadataDef.type || 'string';
+         var description = metadataDef.description || '';
+
          $typedFormgroup = $metadataItem.find('.item-' + type);
          if ($typedFormgroup.length == 0) {
            $typedFormgroup = $metadataItem.find('.item-string');
          }
          $typedFormgroup.show();
          $typedFormgroup.find('.form-control').attr('disabled', false);
+
+         $helpBlock = $typedFormgroup.find('p.help-block');
+         $helpBlock.text(description);
        };
        $name.change(function() {
          updateType();

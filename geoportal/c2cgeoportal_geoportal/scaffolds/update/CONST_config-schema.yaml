@@ -289,6 +289,8 @@ mapping:
                     type: str
                   translate:
                     type: bool
+                  description:
+                    type: str
           available_functionalities:
             type: seq
             required: True
