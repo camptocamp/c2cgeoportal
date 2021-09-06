@@ -27,11 +27,33 @@
       <button id="help-button" type="button" class="btn btn-default navbar-btn navbar-right">{{_("Show help")}}</button>
       <script>
       $(function() {
+        const key = 'adminShowHelp';
+
+        const getCurrentValue = function() {
+          // Get current value from localStorage
+          // True by default
+          return localStorage.getItem(key) !== 'false'
+        }
+
+        const apply = function(value) {
+          // Apply some value on UI
+          if (value) {
+            $("#help-button").addClass("active")
+            $(".help-block").removeClass("hidden")
+          } else {
+            $("#help-button").removeClass("active")
+            $(".help-block").addClass("hidden")
+          }
+        }
+
         $("#help-button").click(function() {
-          $(this).toggleClass("active")
-          $(".help-block").toggleClass("hidden")
+          // Toggle value in localStorage and apply on UI
+          localStorage.setItem(key, getCurrentValue() ? 'false' : 'true');
+          apply(getCurrentValue())
         })
-        $(".help-block").addClass("hidden")
+
+        // Apply current value from localStorage on UI
+        apply(getCurrentValue())
       });
       </script>
 
