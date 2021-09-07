@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ from c2cgeoportal_commons.models.static import User
 _list_field = partial(ListField, User)
 
 base_schema = GeoFormSchemaNode(User, widget=FormWidget(fields_template="user_fields"))
-base_schema.add(roles_schema_node("roles"))
+base_schema.add(roles_schema_node(User.roles))
 base_schema.add_unique_validator(User.username, User.id)
 
 settings_role = aliased(Role)

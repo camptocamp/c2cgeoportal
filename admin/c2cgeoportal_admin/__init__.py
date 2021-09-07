@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -113,6 +113,8 @@ def includeme(config: Configurator):
     # Use pyramid_tm to hook the transaction lifecycle to the request
     config.include("pyramid_tm")
     config.add_translation_dirs("c2cgeoportal_admin:locale")
+
+    configure_mappers()
 
     with PermissionSetter(config):
         config.scan()

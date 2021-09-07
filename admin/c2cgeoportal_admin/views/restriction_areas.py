@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,6 @@ from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 
-from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
@@ -46,7 +45,7 @@ from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 _list_field = partial(ListField, RestrictionArea)
 
 base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template="restriction_area_fields"))
-base_schema.add_before("area", roles_schema_node("roles"))
+base_schema.add_before("area", roles_schema_node(RestrictionArea.roles))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 
 
@@ -80,7 +79,8 @@ base_schema.add(
             ),
         ),
         name="layers",
-        title=_("Layers"),
+        title=RestrictionArea.layers.info["colanderalchemy"]["title"],
+        description=RestrictionArea.layers.info["colanderalchemy"]["description"],
         candidates=colander.deferred(layers),
         widget=ChildrenWidget(child_input_name="id", orderable=False),
     )

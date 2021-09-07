@@ -44,6 +44,7 @@ from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
 from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode
 
+from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
@@ -113,9 +114,45 @@ class Functionality(Base):
     __c2cgeoform_config__ = {"duplicate": True}
 
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    name = Column(Unicode, nullable=False, info={"colanderalchemy": {"title": _("Name")}})
-    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
-    value = Column(Unicode, nullable=False, info={"colanderalchemy": {"title": _("Value")}})
+    name = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": _("Name of the functionality."),
+                "widget": SelectWidget(
+                    values=[("", _("- Select -"))]
+                    + [
+                        (f["name"], f["name"])
+                        for f in sorted(
+                            _admin_config.get("available_functionalities", []),
+                            key=lambda f: f["name"],
+                        )
+                    ],
+                ),
+            }
+        },
+    )
+    description = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "description": _("An optional description."),
+            }
+        },
+    )
+    value = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Value"),
+                "description": _("A value for the functionality."),
+            }
+        },
+    )
 
     def __init__(self, name: str = "", value: str = "", description: str = "") -> None:
         self.name = name
@@ -166,12 +203,32 @@ class Role(Base):
     __c2cgeoform_config__ = {"duplicate": True}
 
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    name = Column(Unicode, unique=True, nullable=False, info={"colanderalchemy": {"title": _("Name")}})
-    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
+    name = Column(
+        Unicode,
+        unique=True,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": _("A name for this role."),
+            }
+        },
+    )
+    description = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "description": _("An optional description."),
+            }
+        },
+    )
     extent = Column(
         Geometry("POLYGON", srid=_srid),
         info={
             "colanderalchemy": {
+                "title": _("Extent"),
+                "description": _("Initial extent for this role."),
                 "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config["map_srid"]),
                 "widget": MapWidget(map_options=_map_config),
             }
@@ -183,7 +240,13 @@ class Role(Base):
         "Functionality",
         secondary=role_functionality,
         cascade="save-update,merge,refresh-expire",
-        info={"colanderalchemy": {"exclude": True, "title": _("Functionalities")}},
+        info={
+            "colanderalchemy": {
+                "title": _("Functionalities"),
+                "description": _("Functionality values for this role."),
+                "exclude": True,
+            }
+        },
     )
 
     def __init__(
@@ -225,8 +288,30 @@ class TreeItem(Base):
     __mapper_args__ = {"polymorphic_on": item_type}
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode, nullable=False, info={"colanderalchemy": {"title": _("Name")}})
-    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
+    name = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": _(
+                    """
+                    The name of the node, it is used through the i18n tools to display the name on the layers
+                    tree.
+                    """
+                ),
+            }
+        },
+    )
+    description = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "description": _("An optional description."),
+            }
+        },
+    )
 
     @property
     # Better: def parents(self) -> List[TreeGroup]:  # pragma: no cover
@@ -362,7 +447,22 @@ class TreeGroup(TreeItem):
 class LayerGroup(TreeGroup):
     __tablename__ = "layergroup"
     __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("Layers group"), "plural": _("Layers groups")}
+    __colanderalchemy_config__ = {
+        "title": _("Layers group"),
+        "plural": _("Layers groups"),
+        "description": Literal(
+            _(
+                """
+            <div class="help-block">
+                <h4>Background layers</h4>
+                <p>The background layers are configured in the database, with the layer group named
+                <b>background</b> (by default).</p>
+                <hr>
+            </div>
+                """
+            )
+        ),
+    }
     __mapper_args__ = {"polymorphic_identity": "group"}
     __c2cgeoform_config__ = {"duplicate": True}
 
@@ -373,7 +473,14 @@ class LayerGroup(TreeGroup):
         info={"colanderalchemy": {"missing": drop, "widget": HiddenWidget()}},
     )
     is_expanded = Column(
-        Boolean, info={"colanderalchemy": {"title": _("Expanded"), "column": 2}}
+        Boolean,
+        info={
+            "colanderalchemy": {
+                "title": _("Expanded"),
+                "description": _("Show this group expanded."),
+                "column": 2,
+            }
+        },
     )  # shouldn't be used in V3
 
     def __init__(self, name: str = "", is_expanded: bool = False) -> None:
@@ -407,15 +514,39 @@ class Theme(TreeGroup):
     ordering = Column(
         Integer, nullable=False, info={"colanderalchemy": {"title": _("Order"), "widget": HiddenWidget()}}
     )
-    public = Column(Boolean, default=True, nullable=False, info={"colanderalchemy": {"title": _("Public")}})
-    icon = Column(Unicode, info={"colanderalchemy": {"title": _("Icon")}})
+    public = Column(
+        Boolean,
+        default=True,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Public"),
+                "description": _("Makes the theme public."),
+            }
+        },
+    )
+    icon = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Icon"),
+                "description": _("The icon URL."),
+            }
+        },
+    )
 
     # functionality
     functionalities = relationship(
         "Functionality",
         secondary=theme_functionality,
         cascade="save-update,merge,refresh-expire",
-        info={"colanderalchemy": {"exclude": True, "title": _("Functionalities")}},
+        info={
+            "colanderalchemy": {
+                "title": _("Functionalities"),
+                "description": _("The linked functionalities."),
+                "exclude": True,
+            }
+        },
     )
 
     # restricted to role
@@ -423,7 +554,13 @@ class Theme(TreeGroup):
         "Role",
         secondary=restricted_role_theme,
         cascade="save-update,merge,refresh-expire",
-        info={"colanderalchemy": {"exclude": True, "title": _("Roles")}},
+        info={
+            "colanderalchemy": {
+                "title": _("Roles"),
+                "description": _("Users with checked roles will get access to this theme."),
+                "exclude": True,
+            }
+        },
     )
 
     def __init__(self, name: str = "", ordering: int = 100, icon: str = "") -> None:
@@ -448,9 +585,40 @@ class Layer(TreeItem):
         primary_key=True,
         info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
-    public = Column(Boolean, default=True, info={"colanderalchemy": {"title": _("Public")}})
-    geo_table = Column(Unicode, info={"colanderalchemy": {"title": _("Geo table")}})
-    exclude_properties = Column(Unicode, info={"colanderalchemy": {"title": _("Exclude properties")}})
+    public = Column(
+        Boolean,
+        default=True,
+        info={
+            "colanderalchemy": {
+                "title": _("Public"),
+                "description": _("Makes the layer public."),
+            }
+        },
+    )
+    geo_table = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Geo table"),
+                "description": _("The related database table, used by the editing module."),
+            }
+        },
+    )
+    exclude_properties = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Exclude properties"),
+                "description": _(
+                    """
+                    The list of attributes (database columns) that should not appear in
+                    the editing form so that they cannot be modified by the end user.
+                    For enumerable attributes (foreign key), the column name should end with '_id'.
+                    """
+                ),
+            }
+        },
+    )
 
     def __init__(self, name: str = "", public: bool = True) -> None:
         TreeItem.__init__(self, name=name)
@@ -476,13 +644,64 @@ OGCSERVER_AUTH_PROXY = "Proxy"
 class OGCServer(Base):
     __tablename__ = "ogc_server"
     __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("OGC Server"), "plural": _("OGC Servers")}
+    __colanderalchemy_config__ = {
+        "title": _("OGC Server"),
+        "plural": _("OGC Servers"),
+        "description": Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>This is the description of an OGC server (WMS/WFS).\n
+                For one server we try to create only one request when it is possible.</p>
+                <p>If you want to query the same server to get PNG and JPEG images,\n
+                you should define two <code>OGC servers</code>.</p>
+                <hr>
+            </div>
+                """
+            )
+        ),
+    }
     __c2cgeoform_config__ = {"duplicate": True}
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    name = Column(Unicode, nullable=False, unique=True, info={"colanderalchemy": {"title": _("Name")}})
-    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
-    url = Column(Unicode, nullable=False, info={"colanderalchemy": {"title": _("Basic URL")}})
-    url_wfs = Column(Unicode, info={"colanderalchemy": {"title": _("WFS URL")}})
+    name = Column(
+        Unicode,
+        nullable=False,
+        unique=True,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": _("The name of the OGC Server"),
+            }
+        },
+    )
+    description = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "description": _("A description"),
+            }
+        },
+    )
+    url = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Basic URL"),
+                "description": _("The server URL"),
+            }
+        },
+    )
+    url_wfs = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("WFS URL"),
+                "description": _("The WFS server URL. If empty, the ``Basic URL`` is used."),
+            }
+        },
+    )
     type = Column(
         Enum(
             OGCSERVER_TYPE_MAPSERVER,
@@ -496,6 +715,9 @@ class OGCServer(Base):
         info={
             "colanderalchemy": {
                 "title": _("Server type"),
+                "description": _(
+                    "The server type which is used to know which custom attribute will be used."
+                ),
                 "widget": SelectWidget(
                     values=(
                         (OGCSERVER_TYPE_MAPSERVER, OGCSERVER_TYPE_MAPSERVER),
@@ -514,6 +736,7 @@ class OGCServer(Base):
         info={
             "colanderalchemy": {
                 "title": _("Image type"),
+                "description": _("The MIME type of the images (e.g.: ``image/png``)."),
                 "widget": SelectWidget(values=(("image/jpeg", "image/jpeg"), ("image/png", "image/png"))),
                 "column": 2,
             }
@@ -531,6 +754,7 @@ class OGCServer(Base):
         info={
             "colanderalchemy": {
                 "title": _("Authentication type"),
+                "description": "The kind of authentication to use.",
                 "widget": SelectWidget(
                     values=(
                         (OGCSERVER_AUTH_NOAUTH, OGCSERVER_AUTH_NOAUTH),
@@ -543,8 +767,26 @@ class OGCServer(Base):
             }
         },
     )
-    wfs_support = Column(Boolean, info={"colanderalchemy": {"title": _("WFS support"), "column": 2}})
-    is_single_tile = Column(Boolean, info={"colanderalchemy": {"title": _("Single tile"), "column": 2}})
+    wfs_support = Column(
+        Boolean,
+        info={
+            "colanderalchemy": {
+                "title": _("WFS support"),
+                "description": _("Whether WFS is supported by the server."),
+                "column": 2,
+            }
+        },
+    )
+    is_single_tile = Column(
+        Boolean,
+        info={
+            "colanderalchemy": {
+                "title": _("Single tile"),
+                "description": _("Whether to use the single tile mode (For future use)."),
+                "column": 2,
+            }
+        },
+    )
 
     def __init__(
         self,
@@ -592,7 +834,22 @@ event.listen(OGCServer, "after_delete", cache_invalidate_cb, propagate=True)
 class LayerWMS(DimensionLayer):
     __tablename__ = "layer_wms"
     __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("WMS Layer"), "plural": _("WMS Layers")}
+    __colanderalchemy_config__ = {
+        "title": _("WMS Layer"),
+        "plural": _("WMS Layers"),
+        "description": Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>Definition of a <code>WMS Layer</code>.</p>
+                <p>Note: The layers named <code>wms-defaults</code> contains the values
+                used when we create a new <code>WMS layer</code>.</p>
+                <hr>
+            </div>
+                """
+            )
+        ),
+    }
 
     __c2cgeoform_config__ = {"duplicate": True}
 
@@ -619,18 +876,50 @@ class LayerWMS(DimensionLayer):
         },
     )
     layer = Column(
-        Unicode, nullable=False, info={"colanderalchemy": {"title": _("WMS layer name"), "column": 2}}
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("WMS layer name"),
+                "description": _(
+                    """
+                    The WMS layers. Can be one layer, one group, or a comma separated list of layers.
+                    In the case of a comma separated list of layers, you will get the legend rule for the
+                    layer icon on the first layer, and to support the legend you should define a legend
+                    metadata.
+                    """
+                ),
+                "column": 2,
+            }
+        },
     )
-    style = Column(Unicode, info={"colanderalchemy": {"title": _("Style"), "column": 2}})
+    style = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Style"),
+                "description": _("The style to use for this layer, can be empty."),
+                "column": 2,
+            }
+        },
+    )
     valid = Column(
         Boolean,
-        info={"colanderalchemy": {"title": _("Valid"), "column": 2, "widget": CheckboxWidget(readonly=True)}},
+        info={
+            "colanderalchemy": {
+                "title": _("Valid"),
+                "description": _("The status reported by latest synchronization (readonly)."),
+                "column": 2,
+                "widget": CheckboxWidget(readonly=True),
+            }
+        },
     )
     invalid_reason = Column(
         Unicode,
         info={
             "colanderalchemy": {
                 "title": _("Reason why I am not valid"),
+                "description": _("The reason for status reported by latest synchronization (readonly)."),
                 "column": 2,
                 "widget": TextInputWidget(readonly=True),
             }
@@ -643,6 +932,7 @@ class LayerWMS(DimensionLayer):
         info={
             "colanderalchemy": {
                 "title": _("Time mode"),
+                "description": _("Used for the WMS time component."),
                 "column": 2,
                 "widget": SelectWidget(
                     values=(("disabled", _("Disabled")), ("value", _("Value")), ("range", _("Range")))
@@ -657,6 +947,7 @@ class LayerWMS(DimensionLayer):
         info={
             "colanderalchemy": {
                 "title": _("Time widget"),
+                "description": _("The component type used for the WMS time."),
                 "column": 2,
                 "widget": SelectWidget(values=(("slider", _("Slider")), ("datepicker", _("Datepicker")))),
             }
@@ -667,7 +958,13 @@ class LayerWMS(DimensionLayer):
     ogc_server = relationship(
         "OGCServer",
         backref=backref("layers", info={"colanderalchemy": {"exclude": True, "title": _("WMS Layers")}}),
-        info={"colanderalchemy": {"title": _("OGC server"), "exclude": True}},
+        info={
+            "colanderalchemy": {
+                "title": _("OGC server"),
+                "description": _("The OGC server to use for this layer."),
+                "exclude": True,
+            }
+        },
     )
 
     def __init__(
@@ -691,7 +988,56 @@ class LayerWMS(DimensionLayer):
 class LayerWMTS(DimensionLayer):
     __tablename__ = "layer_wmts"
     __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("WMTS Layer"), "plural": _("WMTS Layers")}
+    __colanderalchemy_config__ = {
+        "title": _("WMTS Layer"),
+        "plural": _("WMTS Layers"),
+        "description": Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>Definition of a <code>WMTS Layer</code>.</p>
+                <p>Note: The layers named <code>wmts-defaults</code> contains the values used when
+                    we create a new <code>WMTS layer</code>.</p>
+
+                <h4>Self generated WMTS tiles</h4>
+                <p>When using self generated WMTS tiles, you should use URL
+                    <code>config://local/tiles/1.0.0/WMTSCapabilities.xml</code> where:<p>
+                <ul>
+                    <li><code>config://local</code> is a dynamic path based on the project
+                        configuration.</li>
+                    <li><code>/tiles</code> is a proxy in the tilecloudchain container.</li>
+                </ul>
+
+                <h4>Queryable WMTS</h4>
+                <p>To make the WMTS queryable, you should add the following <code>Metadata</code>:
+                <ul>
+                    <li><code>ogcServer</code> with the name of the used <code>OGC server</code>,
+                    <li><code>wmsLayers</code> or <code>queryLayers</code> with the layers to query
+                        (comma separated list. Groups are not supported).
+                </ul>
+                <p>By default the scale limits for the queryable layers are the
+                    <code>minResolution</code> and/or the <code>maxResolution</code>a metadata
+                    value(s) of the WMTS layer. These values correspond to the WMTS layer
+                    resolution(s) which should be the zoom limit.
+                    You can also set a <code>minQueryResolution</code> and/or a
+                    <code>maxQueryResolution</code> to set a query zoom limits independent of the
+                    WMTS layer.</p>
+
+                <h4>Print WMTS in high quality</h4>
+                <p>To print the layers in high quality, you can define that the image shall be
+                    retrieved with a <code>GetMap</code> on the original WMS server.
+                <p>To activate this, you should add the following <code>Metadata</code>:</p>
+                <ul>
+                    <li><code>ogcServer</code> with the name of the used <code>OGC server</code>,</li>
+                    <li><code>wmsLayers</code> or <code>printLayers</code> with the layers to print
+                        (comma separated list).</li>
+                </ul>
+                <hr>
+            </div>
+                """
+            )
+        ),
+    }
     __c2cgeoform_config__ = {"duplicate": True}
     __mapper_args__ = {"polymorphic_identity": "l_wmts"}
 
@@ -702,19 +1048,63 @@ class LayerWMTS(DimensionLayer):
         info={"colanderalchemy": {"missing": None, "widget": HiddenWidget()}},
     )
     url = Column(
-        Unicode, nullable=False, info={"colanderalchemy": {"title": _("GetCapabilities URL"), "column": 2}}
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("GetCapabilities URL"),
+                "description": _("The URL to the WMTS capabilities."),
+                "column": 2,
+            }
+        },
     )
     layer = Column(
-        Unicode, nullable=False, info={"colanderalchemy": {"title": _("WMTS layer name"), "column": 2}}
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("WMTS layer name"),
+                "description": _("The name of the WMTS layer to use"),
+                "column": 2,
+            }
+        },
     )
-    style = Column(Unicode, info={"colanderalchemy": {"title": _("Style"), "column": 2}})
-    matrix_set = Column(Unicode, info={"colanderalchemy": {"title": _("Matrix set"), "column": 2}})
+    style = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Style"),
+                "description": _("The style to use; if not present, the default style is used."),
+                "column": 2,
+            }
+        },
+    )
+    matrix_set = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Matrix set"),
+                "description": _(
+                    "The matrix set to use; if there is only one matrix set in the capabilities, it can be"
+                    "left empty."
+                ),
+                "column": 2,
+            }
+        },
+    )
     image_type = Column(
         Enum("image/jpeg", "image/png", native_enum=False),
         nullable=False,
         info={
             "colanderalchemy": {
                 "title": _("Image type"),
+                "description": Literal(
+                    _(
+                        """
+                        The MIME type of the images (e.g.: <code>image/png</code>).
+                        """
+                    )
+                ),
                 "column": 2,
                 "widget": SelectWidget(values=(("image/jpeg", "image/jpeg"), ("image/png", "image/png"))),
             }
@@ -807,13 +1197,40 @@ class RestrictionArea(Base):
     __c2cgeoform_config__ = {"duplicate": True}
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
 
-    name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
-    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
-    readwrite = Column(Boolean, default=False, info={"colanderalchemy": {"title": _("Read/write")}})
+    name = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": _("A name."),
+            }
+        },
+    )
+    description = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "description": _("An optional description"),
+            }
+        },
+    )
+    readwrite = Column(
+        Boolean,
+        default=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Read/write"),
+                "description": _("Allows the linked users to change the objects."),
+            }
+        },
+    )
     area = Column(
         Geometry("POLYGON", srid=_srid),
         info={
             "colanderalchemy": {
+                "title": _("Area"),
+                "description": _("Active in the following area, if not defined, it is active everywhere."),
                 "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_map_config["srid"]),
                 "widget": MapWidget(map_options=_map_config),
             }
@@ -824,20 +1241,57 @@ class RestrictionArea(Base):
     roles = relationship(
         "Role",
         secondary=role_ra,
-        info={"colanderalchemy": {"title": _("Roles"), "exclude": True}},
+        info={
+            "colanderalchemy": {
+                "title": _("Roles"),
+                "description": _("Checked roles will grant access to this restriction area."),
+                "exclude": True,
+            }
+        },
         cascade="save-update,merge,refresh-expire",
         backref=backref(
-            "restrictionareas", info={"colanderalchemy": {"exclude": True, "title": _("Restriction areas")}}
+            "restrictionareas",
+            info={
+                "colanderalchemy": {
+                    "title": _("Restriction areas"),
+                    "description": _(
+                        "Users with this role will be granted with access to those restriction areas."
+                    ),
+                    "exclude": True,
+                }
+            },
         ),
     )
     layers = relationship(
         "Layer",
         secondary=layer_ra,
         order_by=Layer.name,
-        info={"colanderalchemy": {"title": _("Layers"), "exclude": True}},
+        info={
+            "colanderalchemy": {
+                "title": _("Layers"),
+                "exclude": True,
+                "description": Literal(
+                    _(
+                        """
+                        <div class="help-block">
+                            <p>This restriction area will grant access to the checked layers.</p>
+                            <hr>
+                        </div>
+                        """
+                    )
+                ),
+            }
+        },
         cascade="save-update,merge,refresh-expire",
         backref=backref(
-            "restrictionareas", info={"colanderalchemy": {"title": _("Restriction areas"), "exclude": True}}
+            "restrictionareas",
+            info={
+                "colanderalchemy": {
+                    "title": _("Restriction areas"),
+                    "exclude": True,
+                    "description": _("The areas through which the user can see the layer."),
+                }
+            },
         ),
     )
 
@@ -900,8 +1354,24 @@ class Interface(Base):
     __colanderalchemy_config__ = {"title": _("Interface"), "plural": _("Interfaces")}
 
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
-    description = Column(Unicode, info={"colanderalchemy": {"title": _("Description")}})
+    name = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": _("The name of the interface, as used in request URL."),
+            }
+        },
+    )
+    description = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "description": _("An optional description."),
+            }
+        },
+    )
 
     # relationship with Layer and Theme
     layers = relationship(
@@ -909,14 +1379,32 @@ class Interface(Base):
         secondary=interface_layer,
         cascade="save-update,merge,refresh-expire",
         info={"colanderalchemy": {"title": _("Layers"), "exclude": True}, "c2cgeoform": {"duplicate": False}},
-        backref=backref("interfaces", info={"colanderalchemy": {"title": _("Interfaces"), "exclude": True}}),
+        backref=backref(
+            "interfaces",
+            info={
+                "colanderalchemy": {
+                    "title": _("Interfaces"),
+                    "exclude": True,
+                    "description": _("Make it visible in the checked interfaces."),
+                }
+            },
+        ),
     )
     theme = relationship(
         "Theme",
         secondary=interface_theme,
         cascade="save-update,merge,refresh-expire",
         info={"colanderalchemy": {"title": _("Themes"), "exclude": True}, "c2cgeoform": {"duplicate": False}},
-        backref=backref("interfaces", info={"colanderalchemy": {"title": _("Interfaces"), "exclude": True}}),
+        backref=backref(
+            "interfaces",
+            info={
+                "colanderalchemy": {
+                    "title": _("Interfaces"),
+                    "description": _("Make it visible in the checked interfaces."),
+                    "exclude": True,
+                }
+            },
+        ),
     )
 
     def __init__(self, name: str = "", description: str = "") -> None:
@@ -930,12 +1418,40 @@ class Interface(Base):
 class Metadata(Base):
     __tablename__ = "metadata"
     __table_args__ = {"schema": _schema}
+    __colanderalchemy_config__ = {
+        "title": _("Metadata"),
+        "plural": _("Metadatas"),
+    }
 
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
-    value = Column(Unicode, info={"colanderalchemy": {"exclude": True}})
+    name = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": Literal(_("The type of <code>Metadata</code> we want to set.")),
+            }
+        },
+    )
+    value = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Value"),
+                "exclude": True,
+                "description": _("The value of the metadata entry."),
+            }
+        },
+    )
     description = Column(
-        Unicode, info={"colanderalchemy": {"title": _("Description"), "widget": TextAreaWidget()}}
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "widget": TextAreaWidget(),
+                "description": _("An optional description."),
+            }
+        },
     )
 
     item_id = Column(
@@ -952,7 +1468,40 @@ class Metadata(Base):
             "metadatas",
             cascade="save-update,merge,delete,delete-orphan,expunge",
             order_by="Metadata.name",
-            info={"colanderalchemy": {"title": _("Metadatas"), "exclude": True}},
+            info={
+                "colanderalchemy": {
+                    "title": _("Metadatas"),
+                    "description": Literal(
+                        _(
+                            """
+        <div class="help-block">
+            <p>You can associate metadata to all theme elements (tree items).
+                The purpose of this metadata is to trigger specific features, mainly UI features.
+                Each metadata entry has the following attributes:</p>
+            <p>The available names are configured in the <code>vars.yaml</code>
+                files in <code>admin_interface/available_metadata</code>.</p>
+            <p>To set a metadata entry, create or edit an entry in the Metadata view of the
+                administration UI.
+                Regarding effect on the referenced tree item on the client side,
+                you will find an official description for each sort of metadata in the
+                <code>GmfMetaData</code> definition in <code>themes.js</code>
+                <a
+                    target="_blank"
+                    href="https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js"
+                >
+                    https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js
+                </a>.</p>
+            <hr>
+        </div>
+                            """.format(
+                                MAIN_BRANCH="master",
+                            )
+                            # TODO: give the right branch name
+                        )
+                    ),
+                    "exclude": True,
+                }
+            },
         ),
     )
 
@@ -973,13 +1522,50 @@ event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 class Dimension(Base):
     __tablename__ = "dimension"
     __table_args__ = {"schema": _schema}
+    __colanderalchemy_config__ = {
+        "title": _("Dimension"),
+        "plural": _("Dimensions"),
+    }
 
     id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    name = Column(Unicode, info={"colanderalchemy": {"title": _("Name")}})
-    value = Column(Unicode, info={"colanderalchemy": {"title": _("Value")}})
-    field = Column(Unicode, info={"colanderalchemy": {"title": _("Field")}})
+    name = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Name"),
+                "description": _("The name of the dimension as it will be sent in requests."),
+            }
+        },
+    )
+    value = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Value"),
+                "description": _("The default value for this dimension."),
+            }
+        },
+    )
+    field = Column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Field"),
+                "description": _(
+                    "The name of the field to use for filtering (leave empty when not using OGC filters)."
+                ),
+            }
+        },
+    )
     description = Column(
-        Unicode, info={"colanderalchemy": {"title": _("Description"), "widget": TextAreaWidget()}}
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Description"),
+                "description": _("An optional description."),
+                "widget": TextAreaWidget(),
+            }
+        },
     )
 
     layer_id = Column(
@@ -995,7 +1581,22 @@ class Dimension(Base):
         backref=backref(
             "dimensions",
             cascade="save-update,merge,delete,delete-orphan,expunge",
-            info={"colanderalchemy": {"title": _("Dimensions"), "exclude": True}},
+            info={
+                "colanderalchemy": {
+                    "title": _("Dimensions"),
+                    "exclude": True,
+                    "description": Literal(
+                        _(
+                            """
+        <div class="help-block">
+            <p>The dimensions, if not provided default values are used.</p>
+            <hr>
+        </div>
+                            """
+                        )
+                    ),
+                }
+            },
         ),
     )
 
