@@ -125,7 +125,7 @@ class Functionality(Base):  # type: ignore
                         (f["name"], f["name"])
                         for f in sorted(
                             _admin_config.get("available_functionalities", []),
-                            key=lambda f: f["name"],
+                            key=lambda f: cast(str, f["name"]),
                         )
                     ],
                 ),

@@ -44,7 +44,6 @@ from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
 
 _list_field = partial(ListField, LayerGroup)
 
-
 base_schema = GeoFormSchemaNode(LayerGroup, widget=FormWidget(fields_template="layer_group_fields"))
 base_schema.add(children_schema_node())
 base_schema.add(metadatas_schema_node(LayerGroup.metadatas))

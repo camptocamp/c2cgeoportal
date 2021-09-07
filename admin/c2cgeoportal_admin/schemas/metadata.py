@@ -33,6 +33,7 @@ import colander
 import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_commons.lib.validators import url
@@ -171,7 +172,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
         return metadata_type if metadata_type in self.available_types else "string"
 
 
-def metadatas_schema_node(prop):
+def metadatas_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
     return colander.SequenceSchema(
         MetadataSchemaNode(
             Metadata,

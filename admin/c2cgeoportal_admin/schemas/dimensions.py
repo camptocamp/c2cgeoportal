@@ -29,11 +29,12 @@
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SequenceWidget
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from c2cgeoportal_commons.models.main import Dimension
 
 
-def dimensions_schema_node(prop):
+def dimensions_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
     return colander.SequenceSchema(
         GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),
         name=prop.key,

@@ -30,12 +30,13 @@ import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
 from sqlalchemy import select
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_commons.models.main import Functionality
 
 
-def functionalities_schema_node(prop):
+def functionalities_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Functionality),
         name=prop.key,

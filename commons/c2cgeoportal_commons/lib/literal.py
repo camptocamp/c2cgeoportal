@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from typing import Union
+from typing import Union, cast
 
 from pyramid.i18n import TranslationString
 from pyramid.threadlocal import get_current_request
@@ -40,7 +40,7 @@ class Literal:
         self.s = s
 
     def __html__(self) -> str:
-        return get_current_request().translate(self.s)
+        return cast(str, get_current_request().translate(self.s))
 
     def __bool__(self) -> bool:
         return len(self.s) > 0
