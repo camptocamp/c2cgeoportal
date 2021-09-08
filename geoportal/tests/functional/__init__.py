@@ -167,7 +167,6 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
 
     request = tests.create_dummy_request(
         {
-            "host_forward_host": [],
             "functionalities": {"available_in_templates": []},
             "layers": {"geometry_validation": True},
             "admin_interface": {

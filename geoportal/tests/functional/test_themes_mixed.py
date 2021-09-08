@@ -215,7 +215,8 @@ class TestThemesView(TestCase):
         themes = theme_view.themes()
         self.assertEqual(
             self._get_filtered_errors(themes),
-            {"WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3"}
+            {"WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
+            'DescribeFeatureType from URL http://wms.geo.admin.ch/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeat'}
             )
         self.assertEqual(
             [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],

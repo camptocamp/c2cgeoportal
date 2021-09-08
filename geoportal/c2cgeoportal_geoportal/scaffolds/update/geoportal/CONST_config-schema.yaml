@@ -516,6 +516,14 @@ mapping:
         type: seq
         sequence:
           - type: str
+      headers_whitelist:
+        type: seq
+        sequence:
+          - type: str
+      headers_blacklist:
+        type: seq
+        sequence:
+          - type: str
       raster:
         <<: *free_dict
         required: True
