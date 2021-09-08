@@ -212,7 +212,8 @@ class TestThemesView(TestCase):
         self.assertEqual(
             self._get_filtered_errors(themes),
             {
-                "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3"
+                "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
+                "Unable to get WFS DescribeFeatureType from the URL 'http://wms.geo.admin.ch/?SERVICE=WFS&VERSION=1.0",
             },
         )
         self.assertEqual(
