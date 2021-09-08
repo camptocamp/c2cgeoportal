@@ -1,3 +1,5 @@
+##### 2.5.0.153
+* Add blacklist whitelist for headers [c2cgeoportal#8650](https://github.com/camptocamp/c2cgeoportal/pull/8650)
 ##### 2.5.0.152
 * [Backport 2.5] Fix metadata checkbox display [c2cgeoportal#8616](https://github.com/camptocamp/c2cgeoportal/pull/8616)
 ##### 2.5.0.151
