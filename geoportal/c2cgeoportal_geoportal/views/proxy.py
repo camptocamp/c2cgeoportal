@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -103,7 +103,7 @@ class Proxy:
             headers["Forwarded"] = forwarded_str
 
         if not cache:
-           headers["Cache-Control"] = "no-cache"
+            headers["Cache-Control"] = "no-cache"
 
         if method in ("POST", "PUT") and body is None:  # pragma: no cover
             body = self.request.body
@@ -111,15 +111,11 @@ class Proxy:
         # Filters headers with a whitelist.
         # Some default pyramid headers will be added back by pyramid.
         if len(self.headers_whitelist) > 0:
-            for header in list(headers):
-                if header not in self.headers_whitelist:
-                    headers.pop(header)
+            headers = {key: value for key, value in headers.items() if key in self.headers_whitelist}
 
         # Filters headers with a blacklist.
         # Some default pyramid headers will be added back by pyramid.
-        for header in list(headers):
-            if header in self.headers_blacklist:
-                headers.pop(header)
+        headers = {key: value for key, value in headers.items() if key not in self.headers_blacklist}
 
         try:
             if method in ("POST", "PUT"):
