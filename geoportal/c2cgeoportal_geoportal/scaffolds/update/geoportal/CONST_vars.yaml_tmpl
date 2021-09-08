@@ -392,6 +392,8 @@ vars:
     qgisserver: '{QGISSERVER_URL}'
 
   host_forward_host: []
+  headers_whitelist: []
+  headers_blacklist: []
 
   # The "raster web services" configuration. See the "raster"
   # chapter in the integrator documentation.
