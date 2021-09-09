@@ -47,7 +47,9 @@ CACHE_REGION = get_region("std")
 class Proxy:
     def __init__(self, request: pyramid.request.Request):
         self.request = request
-        self.host_forward_host = request.registry.settings["host_forward_host"]
+        self.host_forward_host = request.registry.settings.get("host_forward_host", [])
+        self.headers_whitelist = request.registry.settings.get("headers_whitelist", [])
+        self.headers_blacklist = request.registry.settings.get("headers_blacklist", [])
         self.http_options = self.request.registry.settings.get("http_options", {})
 
     def _proxy(
@@ -71,7 +73,8 @@ class Proxy:
         if headers is None:
             headers = dict(self.request.headers)
 
-        # Forward request to target (without Host Header)
+        # Forward request to target (without Host Header).
+        # The original Host will be added back by pyramid.
         if url.hostname not in self.host_forward_host and "Host" in headers:
             headers.pop("Host")
 
@@ -95,6 +98,15 @@ class Proxy:
 
         if method in ("POST", "PUT") and body is None:
             body = self.request.body
+
+        # Filters headers with a whitelist.
+        # Some default pyramid headers will be added back by pyramid.
+        if len(self.headers_whitelist) > 0:
+            headers = {key: value for key, value in headers.items() if key in self.headers_whitelist}
+
+        # Filters headers with a blacklist.
+        # Some default pyramid headers will be added back by pyramid.
+        headers = {key: value for key, value in headers.items() if key not in self.headers_blacklist}
 
         try:
             if method in ("POST", "PUT"):
