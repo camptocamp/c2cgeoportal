@@ -23,7 +23,7 @@ pipenv.timestamp: Pipfile.lock
 
 prospector: ## prospector lint (Quick, use otherchecks to get an exact result)
 prospector: pipenv.timestamp
-	pipenv run prospector --output-format=pylint
+	pipenv run prospector --output-format=pylint -X
 
 .PHONY: otherchecks
 otherchecks:
