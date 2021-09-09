@@ -1,3 +1,5 @@
+##### 2.6.0.23
+* [Backport 2.6] Add blacklist whitelist for headers [c2cgeoportal#8653](https://github.com/camptocamp/c2cgeoportal/pull/8653)
 ##### 2.6.0.22
 * Move Admin doc to SQLA model [c2cgeoportal#8601](https://github.com/camptocamp/c2cgeoportal/pull/8601)
 ##### 2.6.0.21
