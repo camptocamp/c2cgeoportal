@@ -1,3 +1,5 @@
+##### 2.5.0.154
+* Filter headers in theme.py too [c2cgeoportal#8665](https://github.com/camptocamp/c2cgeoportal/pull/8665)
 ##### 2.5.0.153
 * Add blacklist whitelist for headers [c2cgeoportal#8650](https://github.com/camptocamp/c2cgeoportal/pull/8650)
 ##### 2.5.0.152
