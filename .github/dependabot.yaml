@@ -94,7 +94,7 @@ updates:
     schedule:
       interval: weekly
     ignore:
-      - dependency-name: none
+      - dependency-name: bootstrap
   - package-ecosystem: npm
     directory: '/'
     schedule:
