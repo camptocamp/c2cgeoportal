@@ -64,6 +64,7 @@ from c2cgeoportal_geoportal.lib.layers import (
     get_protected_layers_query,
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
+from c2cgeoportal_geoportal.views import restrict_headers
 from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
 
 LOG = logging.getLogger(__name__)
@@ -136,7 +137,9 @@ class Theme:
     def __init__(self, request):
         self.request = request
         self.settings = request.registry.settings
-        self.http_options = self.request.registry.settings.get("http_options", {})
+        self.http_options = self.settings.get("http_options", {})
+        self.headers_whitelist = self.settings.get("headers_whitelist", [])
+        self.headers_blacklist = self.settings.get("headers_blacklist", [])
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
@@ -264,6 +267,8 @@ class Theme:
 
         if urllib.parse.urlsplit(url).hostname != "localhost" and "Host" in headers:  # pragma: no cover
             headers.pop("Host")
+
+        headers = restrict_headers(headers, self.headers_whitelist, self.headers_blacklist)
 
         try:
             response = await asyncio.get_event_loop().run_in_executor(
@@ -863,6 +868,8 @@ class Theme:
         headers = dict(self.request.headers)
         if urllib.parse.urlsplit(wfs_url).hostname != "localhost" and "Host" in headers:
             headers.pop("Host")  # pragma nocover
+
+        headers = restrict_headers(headers, self.headers_whitelist, self.headers_blacklist)
 
         try:
             response = await asyncio.get_event_loop().run_in_executor(
