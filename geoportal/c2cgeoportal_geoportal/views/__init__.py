@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -41,3 +41,15 @@ def add_redirect(config, name, from_, to):
 
     config.add_route(name, from_, request_method="GET")
     config.add_view(redirect_view, route_name=name)
+
+
+def restrict_headers(headers, whitelist, blacklist):
+    """
+    Filters headers with a whitelist then a blacklist.
+    Some default pyramid headers will be added back by pyramid.
+    """
+    if len(whitelist) > 0:
+        headers = {key: value for key, value in headers.items() if key in whitelist}
+
+    headers = {key: value for key, value in headers.items() if key not in blacklist}
+    return headers
