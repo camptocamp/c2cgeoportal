@@ -4,7 +4,7 @@
   "description": "GeoMapFish geoportal interface",
   "author": "",
   "dependencies": {
-    "ngeo": "2.7.0-latest.20210809T155200Z.3f0502654.HEAD",
+    "ngeo": "2.7.0-latest.20210911T124836Z.bbbf89649.HEAD",
     "eslint-plugin-jsdoc": "36.1.0"
   }
 }
