@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (c) 2011-2021, Camptocamp SA
 # All rights reserved.
 
@@ -25,6 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from typing import Dict, List
 
 import pyramid.config
 import pyramid.request
@@ -41,3 +44,15 @@ def add_redirect(config: pyramid.config.Configurator, name: str, from_: str, to:
 
     config.add_route(name, from_, request_method="GET")
     config.add_view(redirect_view, route_name=name)
+
+
+def restrict_headers(headers: Dict[str, str], whitelist: List[str], blacklist: List[str]) -> Dict[str, str]:
+    """
+    Filters headers with a whitelist then a blacklist.
+    Some default pyramid headers will be added back by pyramid.
+    """
+    if len(whitelist) > 0:
+        headers = {key: value for key, value in headers.items() if key in whitelist}
+
+    headers = {key: value for key, value in headers.items() if key not in blacklist}
+    return headers

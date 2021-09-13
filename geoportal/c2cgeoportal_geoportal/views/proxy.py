@@ -39,6 +39,7 @@ from pyramid.httpexceptions import HTTPBadGateway, exception_response
 
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
+from c2cgeoportal_geoportal.views import restrict_headers
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
@@ -99,14 +100,7 @@ class Proxy:
         if method in ("POST", "PUT") and body is None:
             body = self.request.body
 
-        # Filters headers with a whitelist.
-        # Some default pyramid headers will be added back by pyramid.
-        if len(self.headers_whitelist) > 0:
-            headers = {key: value for key, value in headers.items() if key in self.headers_whitelist}
-
-        # Filters headers with a blacklist.
-        # Some default pyramid headers will be added back by pyramid.
-        headers = {key: value for key, value in headers.items() if key not in self.headers_blacklist}
+        headers = restrict_headers(headers, self.headers_whitelist, self.headers_blacklist)
 
         try:
             if method in ("POST", "PUT"):
