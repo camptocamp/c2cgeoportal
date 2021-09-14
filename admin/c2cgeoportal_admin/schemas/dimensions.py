@@ -29,13 +29,16 @@
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SequenceWidget
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 
-from c2cgeoportal_admin import _
 from c2cgeoportal_commons.models.main import Dimension
 
-dimensions_schema_node = colander.SequenceSchema(
-    GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),
-    name="dimensions",
-    title=_("Dimensions"),
-    widget=SequenceWidget(category="structural", template="dimensions"),
-)
+
+def dimensions_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+    return colander.SequenceSchema(
+        GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),
+        name=prop.key,
+        title=prop.info["colanderalchemy"]["title"],
+        description=prop.info["colanderalchemy"]["description"],
+        widget=SequenceWidget(category="structural", template="dimensions"),
+    )

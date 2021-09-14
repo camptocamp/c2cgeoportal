@@ -25,6 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
 
 from functools import partial
 from typing import Optional
@@ -46,9 +47,9 @@ _list_field = partial(ListField, LayerVectorTiles)
 
 
 base_schema = GeoFormSchemaNode(LayerVectorTiles, widget=FormWidget(fields_template="layer_fields"))
-base_schema.add(metadatas_schema_node.clone())
-base_schema.add(interfaces_schema_node.clone())
-base_schema.add(restrictionareas_schema_node.clone())
+base_schema.add(metadatas_schema_node(LayerVectorTiles.metadatas))
+base_schema.add(interfaces_schema_node(LayerVectorTiles.interfaces))
+base_schema.add(restrictionareas_schema_node(LayerVectorTiles.restrictionareas))
 base_schema.add_unique_validator(LayerVectorTiles.name, LayerVectorTiles.id)
 base_schema.add(parent_id_node(LayerGroup))  # type: ignore
 

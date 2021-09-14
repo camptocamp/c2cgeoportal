@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2021-2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,30 +25,22 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from typing import Union, cast
 
-import colander
-from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
-from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
-from sqlalchemy.orm.attributes import InstrumentedAttribute
-
-from c2cgeoportal_commons.models.main import Interface
+from pyramid.i18n import TranslationString
+from pyramid.threadlocal import get_current_request
 
 
-def interfaces_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
-    return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Interface),
-        name=prop.key,
-        title=prop.info["colanderalchemy"]["title"],
-        description=prop.info["colanderalchemy"]["description"],
-        widget=RelationCheckBoxListWidget(
-            Interface,
-            "id",
-            "name",
-            order_by="name",
-            edit_url=lambda request, value: request.route_url(
-                "c2cgeoform_item", table="interfaces", id=value
-            ),
-        ),
-        validator=manytomany_validator,
-        missing=colander.drop,
-    )
+class Literal:
+    """
+    For use in templates to mark a string as safe and avoid HTML escaping.
+    """
+
+    def __init__(self, s: Union[str, TranslationString]) -> None:
+        self.s = s
+
+    def __html__(self) -> str:
+        return cast(str, get_current_request().translate(self.s))
+
+    def __bool__(self) -> bool:
+        return len(self.s) > 0

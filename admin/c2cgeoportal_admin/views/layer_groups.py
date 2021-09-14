@@ -25,6 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
 
 from functools import partial
 from typing import Optional
@@ -43,10 +44,9 @@ from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
 
 _list_field = partial(ListField, LayerGroup)
 
-
 base_schema = GeoFormSchemaNode(LayerGroup, widget=FormWidget(fields_template="layer_group_fields"))
 base_schema.add(children_schema_node())
-base_schema.add(metadatas_schema_node.clone())
+base_schema.add(metadatas_schema_node(LayerGroup.metadatas))
 base_schema.add_unique_validator(LayerGroup.name, LayerGroup.id)
 base_schema.add(parent_id_node(TreeGroup))  # type: ignore
 

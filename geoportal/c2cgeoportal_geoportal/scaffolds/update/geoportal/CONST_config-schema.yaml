@@ -354,6 +354,8 @@ mapping:
                     type: str
                   translate:
                     type: bool
+                  description:
+                    type: str
           available_functionalities:
             type: seq
             required: True
@@ -371,6 +373,8 @@ mapping:
                     type: str
                   single:
                     type: bool
+                  description:
+                    type: str
           exclude_pages:
             type: seq
             sequence:

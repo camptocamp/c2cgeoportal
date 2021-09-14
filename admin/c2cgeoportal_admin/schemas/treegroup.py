@@ -38,6 +38,7 @@ from sqlalchemy.sql.expression import case, func
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
+from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeGroup, TreeItem
 
 LOG = logging.getLogger(__name__)
@@ -162,6 +163,16 @@ def children_schema_node(only_groups: bool = False) -> colander.SequenceSchema:
         ),
         name="children_relation",
         title=_("Children"),
+        description=Literal(
+            _(
+                """
+                <div class="help-block">
+                    <p>The ordered children elements.</p>
+                    <hr>
+                </div>
+                """
+            ),
+        ),
         candidates=colander.deferred(partial(treeitems, only_groups=only_groups)),
         validator=children_validator,
         widget=ChildrenWidget(child_input_name="treeitem_id", add_subitem=True, orderable=True),

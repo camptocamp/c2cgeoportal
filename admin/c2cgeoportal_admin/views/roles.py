@@ -25,6 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
 
 from functools import partial
 
@@ -35,7 +36,6 @@ from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 
-from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
@@ -45,8 +45,8 @@ from c2cgeoportal_commons.models.static import User
 _list_field = partial(ListField, Role)
 
 base_schema = GeoFormSchemaNode(Role, widget=FormWidget(fields_template="role_fields"))
-base_schema.add_before("extent", functionalities_schema_node.clone())
-base_schema.add_before("extent", restrictionareas_schema_node.clone())
+base_schema.add_before("extent", functionalities_schema_node(Role.functionalities))
+base_schema.add_before("extent", restrictionareas_schema_node(Role.restrictionareas))
 base_schema.add_unique_validator(Role.name, Role.id)
 
 
@@ -73,7 +73,7 @@ base_schema.add(
     colander.SequenceSchema(
         GeoFormManyToManySchemaNode(
             User,
-            name="layer",
+            name="user",
             includes=["id"],
             widget=ChildWidget(
                 input_name="id",
@@ -87,12 +87,15 @@ base_schema.add(
                 ),
             ),
         ),
-        name="users",
-        title=_("Users"),
+        name=Role.users.key,
+        title=Role.users.info["colanderalchemy"]["title"],
+        description=Role.users.info["colanderalchemy"]["description"],
         candidates=colander.deferred(users),
         widget=ChildrenWidget(child_input_name="id", orderable=False, category="structural"),
     )
 )
+# Not possible to overwrite this in constructor.
+base_schema["users"].children[0].description = ""
 
 
 @view_defaults(match_param="table=roles")

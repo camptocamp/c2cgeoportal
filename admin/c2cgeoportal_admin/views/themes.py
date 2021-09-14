@@ -25,6 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=no-member
 
 from functools import partial
 from typing import Optional, cast
@@ -49,10 +50,10 @@ _list_field = partial(ListField, Theme)
 
 base_schema = GeoFormSchemaNode(Theme, widget=FormWidget(fields_template="theme_fields"))
 base_schema.add(children_schema_node(only_groups=True))
-base_schema.add(functionalities_schema_node.clone())
-base_schema.add(roles_schema_node("restricted_roles"))  # type: ignore
-base_schema.add(interfaces_schema_node.clone())
-base_schema.add(metadatas_schema_node.clone())
+base_schema.add(functionalities_schema_node(Theme.functionalities))
+base_schema.add(roles_schema_node(Theme.restricted_roles))
+base_schema.add(interfaces_schema_node(Theme.interfaces))
+base_schema.add(metadatas_schema_node(Theme.metadatas))
 base_schema.add_unique_validator(Theme.name, Theme.id)
 
 

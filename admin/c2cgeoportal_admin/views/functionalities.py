@@ -30,13 +30,18 @@ from functools import partial
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
-from c2cgeoportal_commons.models.main import Functionality
+from c2cgeoportal_commons.models.main import Functionality, _admin_config
 
 _list_field = partial(ListField, Functionality)
 
-base_schema = GeoFormSchemaNode(Functionality)
+base_schema = GeoFormSchemaNode(
+    Functionality,
+    widget=FormWidget(fields_template="functionality_fields"),
+    functionalities={f["name"]: f for f in _admin_config["available_functionalities"]},
+)
 
 
 @view_defaults(match_param="table=functionalities")
