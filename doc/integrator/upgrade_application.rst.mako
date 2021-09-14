@@ -199,7 +199,7 @@ From CGXP to ngeo
 ~~~~~~~~~~~~~~~~~
 
 Layer definition for ngeo clients is separate and different from layer
-definition for CGXP clients, see :ref:`administrator_administrate_layers` for details.
+definition for CGXP clients.
 To migrate the layer definitions from the CGXP structure to the ngeo
 structure, you can use the script ``themev1tov2``.
 

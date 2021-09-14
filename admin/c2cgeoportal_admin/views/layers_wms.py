@@ -23,10 +23,10 @@ from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 _list_field = partial(ListField, LayerWMS)
 
 base_schema = GeoFormSchemaNode(LayerWMS, widget=FormWidget(fields_template='layer_fields'))
-base_schema.add(dimensions_schema_node.clone())
-base_schema.add(metadatas_schema_node.clone())
-base_schema.add(interfaces_schema_node.clone())
-base_schema.add(restrictionareas_schema_node.clone())
+base_schema.add(dimensions_schema_node(LayerWMS.dimensions))
+base_schema.add(metadatas_schema_node(LayerWMS.metadatas))
+base_schema.add(interfaces_schema_node(LayerWMS.interfaces))
+base_schema.add(restrictionareas_schema_node(LayerWMS.restrictionareas))
 base_schema.add_unique_validator(LayerWMS.name, LayerWMS.id)
 base_schema.add(parent_id_node(LayerGroup))
 

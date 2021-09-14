@@ -2,6 +2,7 @@ from translationstring import TranslationStringFactory
 from pyramid.config import Configurator
 from c2cwsgiutils.health_check import HealthCheck
 from pyramid.events import BeforeRender, NewRequest
+from sqlalchemy.orm import configure_mappers
 
 import c2cgeoform
 from pkg_resources import resource_filename
@@ -90,6 +91,8 @@ def includeme(config: Configurator):
     # Use pyramid_tm to hook the transaction lifecycle to the request
     config.include('pyramid_tm')
     config.add_translation_dirs('c2cgeoportal_admin:locale')
+
+    configure_mappers()
 
     with PermissionSetter(config):
         config.scan()

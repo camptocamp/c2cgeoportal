@@ -94,9 +94,12 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
             colander.SchemaNode(
                 colander_type,
                 name=type_name,
-                title=_('Value'),
+                title=Metadata.value.info['colanderalchemy']['title'],
+                description=Metadata.value.info['colanderalchemy']['description'],
                 missing=colander.null,
-                **kw))
+                **kw,
+            ),
+        )
         self.available_types.append(type_name)
 
     def objectify(self, dict_, context=None):
@@ -117,23 +120,26 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         return metadata_type if metadata_type in self.available_types else 'string'
 
 
-metadatas_schema_node = colander.SequenceSchema(
-    MetadataSchemaNode(
-        Metadata,
-        name='metadata',
+def metadatas_schema_node(prop):
+    return colander.SequenceSchema(
+        MetadataSchemaNode(
+            Metadata,
+            name='metadata',
+            metadata_definitions=metadata_definitions,
+            validator=regex_validator,
+            widget=MappingWidget(template='metadata'),
+            overrides={
+                'name': {
+                    'widget': metadata_name_widget
+                }
+            },
+        ),
+        name=prop.key,
+        title=prop.info['colanderalchemy']['title'],
+        description=prop.info['colanderalchemy']['description'],
         metadata_definitions=metadata_definitions,
-        validator=regex_validator,
-        widget=MappingWidget(template='metadata'),
-        overrides={
-            'name': {
-                'widget': metadata_name_widget
-            }
-        }
-    ),
-    name='metadatas',
-    title=_('Metadatas'),
-    metadata_definitions=metadata_definitions,
-    widget=SequenceWidget(
-        template='metadatas',
-        category='structural')
-)
+        widget=SequenceWidget(
+            template='metadatas',
+            category='structural'
+        ),
+    )
