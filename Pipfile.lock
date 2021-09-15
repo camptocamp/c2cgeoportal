@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "24be85e0f8933bc6802589a380af6a881562e70d675428f38059ae03d2e54427"
+            "sha256": "e1352b91dc30e8ebf262cf527e533adba95e00b451a3025d954bd1bcc1793326"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -131,11 +131,11 @@
         },
         "charset-normalizer": {
             "hashes": [
-                "sha256:0c8911edd15d19223366a194a513099a302055a962bca2cec0f54b8b63175d8b",
-                "sha256:f23667ebe1084be45f6ae0538e4a5a865206544097e4e8bbcacf42cd02a348f3"
+                "sha256:7098e7e862f6370a2a8d1a6398cd359815c45d12626267652c3f13dec58e2367",
+                "sha256:fa471a601dfea0f492e4f4fca035cd82155e65dc45c9b83bf4322dfab63755dd"
             ],
             "markers": "python_version >= '3'",
-            "version": "==2.0.4"
+            "version": "==2.0.5"
         },
         "click": {
             "hashes": [
@@ -1306,11 +1306,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:2671512dafe09c6de8f6351499e6a9dfd8faadb03af33555a22a841be0081f6c",
-                "sha256:7f9c71d76c2173779fbb6bf21c4eb9fcc126e8c6fe8cd181d4f115eaef2007b7"
+                "sha256:1768f8318ad958d41ea06117c9ed1a00837abda91198cbd33b8d9d6c9b74093e",
+                "sha256:26f573499cb0f3112c9ffcf65cd375275e76657bccbd0887a0bd13bf0471f43b"
             ],
             "index": "pypi",
-            "version": "==1.20.41"
+            "version": "==1.20.42"
         },
         "babel": {
             "hashes": [
@@ -1361,11 +1361,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:b877f9175843939db6fde3864ffc47611863710b85dc0336bb2433e921dc8790",
-                "sha256:efad68a52ee2d939618e0fcb3da0a46dff10cb2e0e128c1e2749bbfc58953a12"
+                "sha256:0952d1200968365b440045efe8e45bbae38cf603fee12bcfc3d7b5f963cbfa18",
+                "sha256:6de4fec4ee10987e4dea96f289553c2f45109fcaafcb74a5baee1221926e1306"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.21.41"
+            "version": "==1.21.42"
         },
         "c2cciutils": {
             "hashes": [
