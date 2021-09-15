@@ -1,3 +1,5 @@
+##### 2.6.0.26
+* [Backport 2.6] Don't cache HTTP errors [c2cgeoportal#8671](https://github.com/camptocamp/c2cgeoportal/pull/8671)
 ##### 2.6.0.25
 * Workaround to fix the chokidar error [c2cgeoportal#8673](https://github.com/camptocamp/c2cgeoportal/pull/8673)
 * Don't reverse the original array [ngeo#7456](https://github.com/camptocamp/ngeo/pull/7456)
