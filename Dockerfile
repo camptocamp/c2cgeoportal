@@ -103,6 +103,9 @@ RUN npm-packages \
     typedoc jsdoc jsdoc-plugin-typescript typescript \
     --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
 
+# Workaround to fix the chokidar error
+RUN ln -s /usr/lib/node_modules/webpack-dev-server/node_modules/chokidar /usr/lib/node_modules/
+
 COPY admin/package.json /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
 RUN \
