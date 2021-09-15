@@ -72,8 +72,9 @@ def get_http_cached(http_options, url, headers):
     @CACHE_REGION.cache_on_arguments()
     def do_get_http_cached(url):
         response = requests.get(url, headers=headers, timeout=300, **http_options)
+        response.raise_for_status()
         LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
-        return response
+        return response.content, response.headers.get("Content-Type", "")
 
     return do_get_http_cached(url)
 
@@ -168,8 +169,15 @@ class Theme:
         return metadatas
 
     async def _wms_getcap(self, ogc_server, preload=False):
-        url, content, errors = await self._wms_getcap_cached(ogc_server)
-
+        try:
+            url, content, errors = await self._wms_getcap_cached(ogc_server)
+        except requests.exceptions.RequestException as exception:
+            error = (
+                f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', "
+                f"return the error: {exception.response.status_code} {exception.response.reason}"
+            )
+            LOG.exception(error)
+            return None, {error}
         if errors or preload:
             return None, errors
 
@@ -254,7 +262,7 @@ class Theme:
         headers = restrict_headers(headers, self.headers_whitelist, self.headers_blacklist)
 
         try:
-            response = await asyncio.get_event_loop().run_in_executor(
+            content, content_type = await asyncio.get_event_loop().run_in_executor(
                 None, get_http_cached, self.http_options, url, headers
             )
         except Exception:  # pragma: no cover
@@ -263,27 +271,19 @@ class Theme:
             LOG.error(error, exc_info=True)
             return url, None, errors
 
-        if not response.ok:  # pragma: no cover
-            error = "GetCapabilities from URL {} return the error: {:d} {}".format(
-                url, response.status_code, response.reason
-            )
-            errors.add(error)
-            LOG.error(error)
-            return url, None, errors
-
         # With wms 1.3 it returns text/xml also in case of error :-(
-        if response.headers.get("Content-Type", "").split(";")[0].strip() not in [
+        if content_type.split(";")[0].strip() not in [
             "application/vnd.ogc.wms_xml",
             "text/xml",
         ]:
             error = "GetCapabilities from URL {} returns a wrong Content-Type: {}\n{}".format(
-                url, response.headers.get("Content-Type", ""), response.text
+                url, content_type, content.decode()
             )
             errors.add(error)
             LOG.error(error)
             return url, None, errors
 
-        return url, response.content, errors
+        return url, content, errors
 
     def _create_layer_query(self, interface):
         """
@@ -847,7 +847,7 @@ class Theme:
         }
         wfs_url = add_url_params(wfs_url, params)
 
-        LOG.debug("WFS DescribeFeatureType for base URL: %s", wfs_url)
+        LOG.debug("WFS DescribeFeatureType for the URL: %s", wfs_url)
 
         # forward request to target (without Host Header)
         headers = dict(self.request.headers)
@@ -857,30 +857,32 @@ class Theme:
         headers = restrict_headers(headers, self.headers_whitelist, self.headers_blacklist)
 
         try:
-            response = await asyncio.get_event_loop().run_in_executor(
+            content, _ = await asyncio.get_event_loop().run_in_executor(
                 None, get_http_cached, self.http_options, wfs_url, headers
             )
-        except Exception:  # pragma: no cover
-            errors.add("Unable to get DescribeFeatureType from URL {}".format(wfs_url))
-            return None, errors
-
-        if not response.ok:  # pragma: no cover
-            errors.add(
-                "DescribeFeatureType from URL {} return the error: {:d} {}".format(
-                    wfs_url, response.status_code, response.reason
-                )
+        except requests.exceptions.RequestException as exception:  # pragma: no cover
+            error = (
+                f"Unable to get WFS DescribeFeatureType from the URL '{wfs_url}', "
+                f"return the error: {exception.response.status_code} {exception.response.reason}"
             )
+            errors.add(error)
+            LOG.exception(error)
+            return None, errors
+        except Exception:  # pragma: no cover
+            error = f"Unable to get WFS DescribeFeatureType from the URL {wfs_url}"
+            errors.add(error)
+            LOG.exception(error)
             return None, errors
 
         if preload:
             return None, errors
 
         try:
-            return lxml.XML(response.text.encode("utf-8")), errors
-        except Exception as e:  # pragma: no cover
+            return lxml.XML(content), errors
+        except Exception as e:
             errors.add(
                 "Error '{}' on reading DescribeFeatureType from URL {}:\n{}".format(
-                    str(e), wfs_url, response.text
+                    str(e), wfs_url, content.decode()
                 )
             )
             return None, errors
