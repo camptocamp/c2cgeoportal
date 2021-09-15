@@ -1,3 +1,6 @@
+##### 2.6.0.25
+* Workaround to fix the chokidar error [c2cgeoportal#8673](https://github.com/camptocamp/c2cgeoportal/pull/8673)
+* Don't reverse the original array [ngeo#7456](https://github.com/camptocamp/ngeo/pull/7456)
 ##### 2.6.0.24
 * [Backport 2.6] Filter headers in theme.py too [c2cgeoportal#8669](https://github.com/camptocamp/c2cgeoportal/pull/8669)
 ##### 2.6.0.23
