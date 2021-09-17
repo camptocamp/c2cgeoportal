@@ -59,7 +59,7 @@ FROM base AS tools
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-CMD ["sleep", "infinity"]
+CMD ["tail", "-f", "/dev/null"]
 
 # hadolint ignore=SC1091,DL3008
 RUN \
