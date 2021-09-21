@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 mypy = "==0.910"  # lint
 prospector = {extras = ["with_mypy", "with_bandit"],version = "==1.5.1"}
-flake8 = "==3.8.4"
+flake8 = "==3.9.2"
 types-pyyaml = "==5.4.10"
 
 [packages]
