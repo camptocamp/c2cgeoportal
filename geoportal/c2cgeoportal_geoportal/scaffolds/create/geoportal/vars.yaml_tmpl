@@ -259,6 +259,25 @@ vars:
       #   connection_kwargs:
       #     db: '{REDIS_DB}'
 
+  # Control the HTTP headers
+  headers:
+    dynamic: &header {}
+    index: *header
+    api: *header
+    apihelp: *header
+    profile: *header
+    raster: *header
+    error: *header
+    themes: &auth_header {}
+    config: *auth_header
+    print: *auth_header
+    fulltextsearch: *auth_header
+    mapserver: *auth_header
+    tinyows: *auth_header
+    layers: *auth_header
+    shortener: *auth_header
+    login: {}
+
 update_paths:
   - admin_interface.available_functionalities
   - admin_interface.available_metadata
@@ -282,20 +301,22 @@ update_paths:
   - fulltextsearch
   - functionalities.available_in_templates
   - global_headers
-  - headers.index
-  - headers.api
-  - headers.profile
-  - headers.raster
-  - headers.error
-  - headers.themes
-  - headers.config
-  - headers.print
-  - headers.fulltextsearch
-  - headers.mapserver
-  - headers.tinyows
-  - headers.layers
-  - headers.shortener
-  - headers.login
+  - headers.dynamic.headers
+  - headers.index.headers
+  - headers.api.headers
+  - headers.apihelp.headers
+  - headers.profile.headers
+  - headers.raster.headers
+  - headers.error.headers
+  - headers.themes.headers
+  - headers.config.headers
+  - headers.print.headers
+  - headers.fulltextsearch.headers
+  - headers.mapserver.headers
+  - headers.tinyows.headers
+  - headers.layers.headers
+  - headers.shortener.headers
+  - headers.login.headers
   - interfaces_config.default.constants.ngeoWfsPermalinkOptions
   - interfaces_config.default.constants.gmfSearchOptions
   - interfaces_config.default.constants.gmfPermalinkOptions
