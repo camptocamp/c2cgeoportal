@@ -383,7 +383,7 @@ class TestOGCServerAccessControl:
 
         set_request_parameters(server_iface, {"USER_ID": "0"}, {"HTTP_HOST": "example.com"})
         assert "0" == server_iface.requestHandler().parameter("USER_ID")
-        assert "example.com--1" == ogcserver_accesscontrol.cacheKey()
+        assert "example.com-ROOT" == ogcserver_accesscontrol.cacheKey()
 
         user = test_data["users"]["user12"]
         role1 = test_data["roles"]["role1"]

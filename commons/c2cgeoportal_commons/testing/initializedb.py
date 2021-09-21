@@ -38,18 +38,16 @@ from c2cgeoportal_commons.models import Base
 
 def usage(argv: List[str]) -> None:
     cmd = os.path.basename(argv[0])
-    print("usage: %s <config_uri> [var=value]\n" '(example: "%s development.ini")' % (cmd, cmd))
+    print(f"usage: {cmd} <config_uri> [var=value]\n" '(example: "{cmd} development.ini")')
     sys.exit(1)
 
 
 def schema_exists(connection: Connection, schema_name: str) -> bool:
-    sql = """
+    sql = f"""
 SELECT count(*) AS count
 FROM information_schema.schemata
-WHERE schema_name = '{}';
-""".format(
-        schema_name
-    )
+WHERE schema_name = '{schema_name}';
+"""
     result = connection.execute(sql)
     row = result.first()
     return cast(bool, row[0] == 1)

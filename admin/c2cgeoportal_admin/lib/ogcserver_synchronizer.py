@@ -397,9 +397,8 @@ class OGCServerSynchronizer:
             "text/xml",
         ]:
             raise Exception(
-                "GetCapabilities from URL {} returns a wrong Content-Type: {}\n{}".format(
-                    url, response.headers.get("Content-Type", ""), response.text
-                )
+                f"GetCapabilities from URL '{url}' returns a wrong Content-Type: "
+                f"{response.headers.get('Content-Type', '')}\n{response.text}"
             )
 
         return response.content

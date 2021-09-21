@@ -58,7 +58,7 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
                 if "host" not in params or display == params["host"]:
                     url_headers = build_url(
                         "check_collector",
-                        "{}/{}/health_check".format(self.host["url"].rstrip("/"), c2c_base.strip("/")),
+                        f"{self.host['url'].rstrip('/')}/{c2c_base.strip('/')}/health_check",
                         request,
                     )
                     r = requests.get(

@@ -50,7 +50,7 @@ def create_session_factory(url: str, configuration: Dict[str, Any]):
     LOG.info(
         "Connect to the database: ***%s, with config: %s",
         db_match.group(1) if db_match else "",
-        ", ".join(["{}={}".format(*e) for e in configuration.items()]),
+        ", ".join([f"{e[0]}={e[1]}" for e in configuration.items()]),
     )
     engine = sqlalchemy.create_engine(url, **configuration)
     session_factory = sessionmaker(autocommit=True)
@@ -122,7 +122,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     for ogcserver in session.query(OGCServer).all():
                         errors: Set[str] = set()
                         url = get_url2(
-                            "The OGC server '{}'".format(ogcserver.name),
+                            f"The OGC server '{ogcserver.name}'",
                             ogcserver.url,
                             None,
                             errors,
@@ -233,9 +233,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise GMFException("The map parameter should be provided")
         if parameters["MAP"] not in self.ogcserver_accesscontrols:
             raise GMFException(
-                "The map '{}' is not found possible values: {}".format(
-                    parameters["MAP"], ", ".join(self.ogcserver_accesscontrols.keys())
-                )
+                f"The map '{parameters['MAP']}' is not found possible values: "
+                f"{', '.join(self.ogcserver_accesscontrols.keys())}"
             )
         return cast(
             "OGCServerAccessControl", self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
@@ -567,9 +566,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         gmf_layers = self.get_layers(session).get(ogc_name, None)
         if gmf_layers is None:
             raise Exception(
-                "Access to an unknown layer '{}', from [{}]".format(
-                    ogc_name, ", ".join(self.get_layers(session).keys())
-                )
+                f"Access to an unknown layer '{ogc_name}', "
+                f"from [{', '.join(self.get_layers(session).keys())}]"
             )
 
         access, restriction_areas = self.get_restriction_areas(gmf_layers, read_write, roles=roles)
@@ -617,9 +615,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             area = f"ST_GeomFromText('{area.wkt}', {self.srid})"
             if self.srid != layer.crs().postgisSrid():
                 area = f"ST_transform({area}, {layer.crs().postgisSrid()})"
-            result = "ST_intersects({}, {})".format(
-                QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn(), area
-            )
+            result = f"ST_intersects({QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn()}, {area})"
             LOG.debug("layerFilterSubsetString filter: %s", result)
             return result
         except Exception:
@@ -658,9 +654,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("layerFilterExpression not allowed")
                 return "0"
 
-            result = "intersects($geometry, transform(geom_from_wkt('{}'), 'EPSG:{}', '{}'))".format(
-                area.wkt, self.srid, layer.crs().authid()
+            result = (
+                f"intersects($geometry, transform(geom_from_wkt('{area.wkt}'), 'EPSG:{self.srid}', "
+                f"'{layer.crs().authid()}'))"
             )
+
             LOG.debug("layerFilterExpression filter: %s", result)
             return result
         except Exception:
@@ -772,8 +770,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         finally:
             session.close()
         if roles == "ROOT":
-            return "{}-{}".format(self.serverInterface().getEnv("HTTP_HOST"), -1)
-        return "{}-{}".format(
-            self.serverInterface().getEnv("HTTP_HOST"),
-            ",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id)),
+            return f"{self.serverInterface().getEnv('HTTP_HOST')}-ROOT"
+        return (
+            f'{self.serverInterface().getEnv("HTTP_HOST")}-'
+            f'{",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id))}'
         )

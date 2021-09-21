@@ -125,7 +125,7 @@ def add_interface_ngeo(
     # Permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         f"{route_name}theme",
-        "{}{}theme/{{themes}}".format(route, "" if route[-1] == "/" else "/"),
+        f"{route}{'' if route[-1] == '/' else '/'}theme/{{themes}}",
         request_method="GET",
     )
     config.add_view(

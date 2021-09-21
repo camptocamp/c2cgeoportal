@@ -172,8 +172,8 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
         elif ":" not in proj:
             if proj == "static-ngeo":
                 errors.add(
-                    "{}='{}' static-ngeo shouldn't be used out of webpack because it don't has "
-                    "cache bustering.".format(name, url)
+                    f"{name}='{url}' static-ngeo shouldn't be used out of webpack because it don't has "
+                    "cache bustering."
                 )
             proj = f"{package}_geoportal:{proj}"
         return Url(request.static_url(f"{proj}{url_split.path}"))
@@ -184,12 +184,8 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
         server = request.registry.settings.get("servers", {}).get(url_obj.netloc)
         if server is None:
             errors.add(
-                "{}: The server '{}' ({}) is not found in the config: [{}]".format(
-                    name,
-                    url_obj.netloc,
-                    url,
-                    ", ".join(request.registry.settings.get("servers", {}).keys()),
-                )
+                f"{name}: The server '{url_obj.netloc}' ({url}) is not found in the config: "
+                f"[{', '.join(request.registry.settings.get('servers', {}).keys())}]"
             )
             return None
 

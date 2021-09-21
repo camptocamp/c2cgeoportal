@@ -126,7 +126,7 @@ def _pdf3(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.Heal
 
             status = resp.json()
             if "error" in status:
-                raise Exception("Failed to do the printing: {!s}".format(status["error"]))
+                raise Exception(f"Failed to do the printing: {status['error']}")
             done = status["done"]
 
         path = request.route_path("printproxy_report_get", ref=job["ref"])
@@ -198,20 +198,17 @@ def _lang_files(
     available_locale_names = global_settings["available_locale_names"]
 
     default_name = global_settings["default_locale_name"]
-    assert (
-        default_name in available_locale_names
-    ), "default_locale_name '{}' not in available_locale_names: {}".format(
-        default_name, ", ".join(available_locale_names)
+    assert default_name in available_locale_names, (
+        f"default_locale_name '{default_name}' not in available_locale_names: "
+        f"{', '.join(available_locale_names)}"
     )
 
     for type_ in lang_settings.get("files", []):
         for lang in available_locale_names:
             if type_ == "ngeo":
-                url = "/etc/geomapfish/static/{lang}.json"
+                url = f"/etc/geomapfish/static/{lang}.json"
             else:
-                raise Exception(
-                    "Your language type value '%s' is not valid, " "available values [ngeo]" % type_
-                )
+                raise Exception(f"Your language type value '{type_}' is not valid, available values [ngeo]")
 
             name = f"checker_lang_{type_}_{lang}"
 
@@ -270,20 +267,15 @@ def _phantomjs(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check
                     subprocess.check_output(cmd, env=env, timeout=70)
                 except subprocess.CalledProcessError as exception:
                     raise Exception(
-                        "{} exit with code: {}\n{}".format(
-                            " ".join(exception.cmd),
-                            exception.returncode,
-                            exception.output.decode("utf-8")[:10000],
-                        )
+                        f"{' '.join(exception.cmd)} exit with code: {exception.returncode}\n"
+                        f"{exception.output.decode('utf-8')[:10000]}"
                     ) from exception
                 except subprocess.TimeoutExpired as exception:
                     raise Exception(
-                        """Timeout:
-command: {}
+                        f"""Timeout:
+command: {' '.join(exception.cmd)}
 output:
-{}""".format(
-                            " ".join(exception.cmd), exception.output.decode("utf-8")
-                        )
+{exception.output.decode('utf-8')}"""
                     ) from exception
 
         name = "checker_phantomjs_" + route.get("checker_name", route["name"])

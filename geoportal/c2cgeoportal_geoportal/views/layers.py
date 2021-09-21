@@ -622,9 +622,8 @@ def _convert_column_type(column_type: object) -> Dict[str, Any]:
             return {"type": xsd_type, "srid": int(column_type.srid)}
 
         raise NotImplementedError(
-            "The geometry type '{}' is not supported, supported types: {}".format(
-                geometry_type, ",".join(XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES)
-            )
+            f"The geometry type '{geometry_type}' is not supported, supported types: "
+            f"{','.join(XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES)}"
         )
 
     # Enumeration type
@@ -654,6 +653,6 @@ def _convert_column_type(column_type: object) -> Dict[str, Any]:
         return xsd_type2
 
     raise NotImplementedError(
-        "The type '{}' is not supported, supported types: "
-        "Geometry, Enum, String, Text, Unicode, UnicodeText, Numeric".format(type(column_type).__name__)
+        f"The type '{type(column_type).__name__}' is not supported, supported types: "
+        "Geometry, Enum, String, Text, Unicode, UnicodeText, Numeric"
     )

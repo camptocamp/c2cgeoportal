@@ -68,9 +68,8 @@ class OGCProxy(Proxy):
             return cast(main.OGCServer, result)
         except NoResultFound:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
-                "The OGC Server '{}' does not exist (existing: {}).".format(
-                    name, ",".join([t[0] for t in DBSession.query(main.OGCServer.name).all()])
-                )
+                f"The OGC Server '{name}' does not exist (existing: "
+                f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])})."
             )
 
     def _get_wms_url(self, errors: Set[str]) -> Optional[Url]:

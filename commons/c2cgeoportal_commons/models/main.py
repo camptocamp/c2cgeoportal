@@ -158,7 +158,7 @@ class Functionality(Base):  # type: ignore
         self.description = description
 
     def __str__(self) -> str:
-        return "{} - {}".format(self.name or "", self.value or "")
+        return f"{self.name or ''} - {self.value or ''}"
 
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
@@ -1517,7 +1517,7 @@ class Metadata(Base):  # type: ignore
         self.description = description
 
     def __str__(self) -> str:
-        return "{}: {}".format(self.name or "", self.value or "")
+        return f"{self.name or ''}: {self.value or ''}"
 
 
 event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
