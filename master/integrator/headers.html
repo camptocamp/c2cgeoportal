@@ -37,76 +37,11 @@
             
   <section id="headers">
 <span id="integrator-headers"></span><h1>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h1>
-<section id="id1">
-<h2>Headers<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> adds some HTTP headers on its responses with certain default values.
-You may wish to override the values being written. All this is done in the configuration with the
-<code class="docutils literal notranslate"><span class="pre">headers</span></code> section in the vars file with the following syntax:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>vars:
-  headers:
-    &lt;view&gt;:
-      cache_control_max_age: 600 # 10 minutes
-      access_control_max_age: 600 # 10 minutes
-      access_control_allow_origin: [] # list oh hosts (e.g. https://example.com) or &#39;*&#39;
-      headers: {} @ list of additional headers
-</pre></div>
-</div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;view&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">dynamic</span></code>, <code class="docutils literal notranslate"><span class="pre">index</span></code>, <code class="docutils literal notranslate"><span class="pre">api</span></code>, <code class="docutils literal notranslate"><span class="pre">apihelp</span></code>, <code class="docutils literal notranslate"><span class="pre">profile</span></code>, <code class="docutils literal notranslate"><span class="pre">raster</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>,
-<code class="docutils literal notranslate"><span class="pre">themes</span></code>, <code class="docutils literal notranslate"><span class="pre">config</span></code>, <code class="docutils literal notranslate"><span class="pre">print</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code>, <code class="docutils literal notranslate"><span class="pre">mapserver</span></code>, <code class="docutils literal notranslate"><span class="pre">tinyows</span></code>, <code class="docutils literal notranslate"><span class="pre">layers</span></code>,
-<code class="docutils literal notranslate"><span class="pre">shortener</span></code>, <code class="docutils literal notranslate"><span class="pre">login</span></code>.</p>
-</section>
-<section id="content-security-policy">
-<h2>Content-Security-Policy<a class="headerlink" href="#content-security-policy" title="Permalink to this headline">¶</a></h2>
-<p>For the <code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code> header, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> includes specific variables in its standard
-template, to facilitate the customization of these values.
-The naming of these variables follows this pattern: <code class="docutils literal notranslate"><span class="pre">content_security_policy_&lt;path&gt;_&lt;directive&gt;[_extra]</span></code>.</p>
-<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">admin</span></code>, <code class="docutils literal notranslate"><span class="pre">apihelp</span></code> or <code class="docutils literal notranslate"><span class="pre">c2c</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&lt;directive&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">default_src</span></code>, <code class="docutils literal notranslate"><span class="pre">script_src</span></code>, <cite>style_src`</cite>, <code class="docutils literal notranslate"><span class="pre">img_src</span></code>,
-<code class="docutils literal notranslate"><span class="pre">connect_src</span></code> or <code class="docutils literal notranslate"><span class="pre">worker_src</span></code>,
-<code class="docutils literal notranslate"><span class="pre">[_extra]</span></code> is a suffix to be able to extend a directive instance of completely overriding it.</p>
-</section>
-<section id="access-control-allow-origin">
-<h2>Access-Control-Allow-Origin<a class="headerlink" href="#access-control-allow-origin" title="Permalink to this headline">¶</a></h2>
-<p>To add domain that can access to the authenticated routes you should have something like that
-in the vars file:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>  headers:
-    dynamic: &amp;header {}
-    index: *header
-    api: *header
-    apihelp: *header
-    profile: *header
-    raster: *header
-    error: *header
-<span class="gd">-   themes: &amp;auth_header {}</span>
-<span class="gi">+   themes: &amp;auth_header</span>
-<span class="gi">+     access_control_allow_origin:</span>
-<span class="gi">+         - &quot;{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}&quot;</span>
-<span class="gi">+         - &quot;https://your.custom.domain&quot;</span>
-<span class="gi">+         - &quot;*&quot;</span>
-    config: *auth_header
-    print: *auth_header
-    fulltextsearch: *auth_header
-    mapserver: *auth_header
-    tinyows: *auth_header
-    layers: *auth_header
-    shortener: *auth_header
-<span class="gd">-   login: *auth_header</span>
-<span class="gi">+   login:</span>
-<span class="gi">+     access_control_allow_origin:</span>
-<span class="gi">+         - &quot;{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}&quot;</span>
-<span class="gi">+         - &quot;https://your.custom.domain&quot;</span>
-</pre></div>
-</div>
-<p>Notes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">According</span> <span class="n">the</span> <span class="s1">&#39;Access-Control-Allow-Origin&#39;</span> <span class="n">standard</span><span class="p">,</span> <span class="n">when</span> <span class="n">we</span> <span class="n">specify</span> <span class="n">a</span> <span class="s1">&#39;*&#39;</span> <span class="n">the</span> <span class="n">browser</span> <span class="n">can</span> <span class="n">read</span> <span class="n">the</span>
-<span class="n">content</span> <span class="kn">from</span> <span class="nn">all</span> <span class="n">origins</span><span class="p">,</span> <span class="n">but</span> <span class="n">the</span> <span class="n">browser</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">send</span> <span class="n">the</span> <span class="n">credentials</span><span class="o">.</span>
-</pre></div>
-</div>
-</section>
 <section id="global-headers">
 <h2>Global headers<a class="headerlink" href="#global-headers" title="Permalink to this headline">¶</a></h2>
-<p>For path the not manage with the <code class="docutils literal notranslate"><span class="pre">headers</span></code> section we can use the <code class="docutils literal notranslate"><span class="pre">global_headers</span></code> section
-in the vars file with the following syntax:</p>
+<p><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> adds some HTTP headers on its responses with certain default values.
+You may wish to override the values being written. All this is done in the configuration with the
+<code class="docutils literal notranslate"><span class="pre">global</span> <span class="pre">_headers</span></code> section in the vars file with the following syntax:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
   <span class="nt">global_headers</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">pattern</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;regex&gt;</span>
@@ -116,6 +51,13 @@ in the vars file with the following syntax:</p>
 </div>
 <p>If a path matches more than one pattern, all headers listed in each match will be applied.
 If the same header is matched more than once, the last value is kept.</p>
+<p>For the <code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code> header, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> includes specific variables in its standard
+template, to facilitate the customization of these values.
+The naming of these variables follows this pattern: <code class="docutils literal notranslate"><span class="pre">content_security_policy_&lt;path&gt;_&lt;directive&gt;[_extra]</span></code>.</p>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">admin</span></code>, <code class="docutils literal notranslate"><span class="pre">apihelp</span></code> or <code class="docutils literal notranslate"><span class="pre">c2c</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;directive&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">default_src</span></code>, <code class="docutils literal notranslate"><span class="pre">script_src</span></code>, <cite>style_src`</cite>, <code class="docutils literal notranslate"><span class="pre">img_src</span></code>,
+<code class="docutils literal notranslate"><span class="pre">connect_src</span></code> or <code class="docutils literal notranslate"><span class="pre">worker_src</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[_extra]</span></code> is a suffix to be able to extend a directive instance of completely overriding it.</p>
 </section>
 <section id="forward-host">
 <h2>Forward host<a class="headerlink" href="#forward-host" title="Permalink to this headline">¶</a></h2>
