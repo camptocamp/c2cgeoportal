@@ -107,12 +107,10 @@ def upgrade() -> None:
         schema=schema,
     )
 
-    op.execute(
-        "UPDATE ONLY %(schema)s.treeitem SET type = 'layerv1' " "WHERE type='layer'" % {"schema": schema}
-    )
+    op.execute(f"UPDATE ONLY {schema}.treeitem SET type = 'layerv1' WHERE type='layer'")
 
     op.execute(
-        "INSERT INTO %(schema)s.layerv1 ("
+        f"INSERT INTO {schema}.layerv1 ("
         "id, is_checked, icon, layer_type, url, image_type, style, dimensions, matrix_set, "
         "wms_url, wms_layers, query_layers, kml, is_single_tile, legend, "
         "legend_image, legend_rule, is_legend_expanded, min_resolution, max_resolution, "
@@ -126,7 +124,7 @@ def upgrade() -> None:
         '"minResolution" AS min_resolution, "maxResolution" AS max_resolution, disclaimer, '
         '"identifierAttributeField" AS identifier_attribute_field, '
         '"excludeProperties" AS exclude_properties, "timeMode" AS time_mode '
-        "FROM %(schema)s.layer)" % {"schema": schema}
+        f"FROM {schema}.layer)"
     )
 
     op.drop_column("layer", "isChecked", schema=schema)

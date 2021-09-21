@@ -107,11 +107,7 @@ User can be created if it does not exist yet."""
                 )
                 sess.add(user)
 
-                print(
-                    "User {} created with password {} and role {}".format(
-                        username, options.password, options.rolename
-                    )
-                )
+                print(f"User {username} created with password {options.password} and role {options.rolename}")
 
         else:
             # If user exists (assuming username are unique)

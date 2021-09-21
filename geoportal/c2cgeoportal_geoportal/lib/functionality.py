@@ -158,5 +158,5 @@ def get_mapserver_substitution_params(request: pyramid.request.Request) -> Dict[
                 else:
                     params[attribute] = value
             else:
-                LOG.warning("Mapserver Substitution '%s' does not " "respect pattern: <attribute>=<value>", s)
+                LOG.warning("Mapserver Substitution '%s' does not respect pattern: <attribute>=<value>", s)
     return params

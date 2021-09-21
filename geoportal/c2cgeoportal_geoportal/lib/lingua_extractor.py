@@ -132,7 +132,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
         int_filename = filename
-        if re.match("^" + re.escape("./{}/templates".format(self.config["package"])), filename):
+        if re.match("^" + re.escape(f"./{self.config['package']}/templates"), filename):
             try:
                 empty_template = Template("")  # nosec
 
@@ -277,10 +277,9 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                 for (value,) in values:
                     if isinstance(value, str) and value != "":
                         msgid = value
-                        location = "/layers/{}/values/{}/{}".format(
-                            layername,
-                            fieldname,
-                            value.encode("ascii", errors="replace").decode("ascii"),
+                        location = (
+                            f"/layers/{layername}/values/{fieldname}/"
+                            f"{value.encode('ascii', errors='replace').decode('ascii')}"
                         )
                         assert msgid is not None
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
@@ -308,8 +307,8 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             ):
                 for a_index, action in enumerate(datasource.get("groupActions", [])):
                     location = (
-                        "interfaces_config/{}/constants/gmfSearchOptions/datasources[{}]/"
-                        "groupActions[{}]/title".format(interface, ds_index, a_index)
+                        f"interfaces_config/{interface}/constants/gmfSearchOptions/datasources[{ds_index}]/"
+                        f"groupActions[{a_index}]/title"
                     )
                     assert action["title"] is not None
                     interfaces_messages.append(
@@ -322,8 +321,9 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                 .get("mergeTabs", {})
                 .keys()
             ):
-                location = "interfaces_config/{}/constants/gmfDisplayQueryGridOptions/mergeTabs/{}/".format(
-                    interface, merge_tab
+                location = (
+                    f"interfaces_config/{interface}/constants/gmfDisplayQueryGridOptions/"
+                    f"mergeTabs/{merge_tab}/"
                 )
                 assert merge_tab is not None
                 interfaces_messages.append(Message(None, merge_tab, None, [], "", "", (filename, location)))
@@ -346,7 +346,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             print(
                 colorize(
                     "ERROR! Unable to collect enumerate attributes for "
-                    "db: {}, table: {}, column: {} ({})".format(dbname, table, fieldname, e),
+                    f"db: {dbname}, table: {table}, column: {fieldname} ({e!s})",
                     Color.RED,
                 )
             )
@@ -589,9 +589,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 except NoResultFound:
                     print(
                         colorize(
-                            "ERROR! the OGC server '{}' from the WMTS layer '{}' does not exist.".format(
-                                server[0], layer.name
-                            ),
+                            f"ERROR! the OGC server '{server[0]}' from the "
+                            f"WMTS layer '{layer.name}' does not exist.",
                             Color.RED,
                         )
                     )
@@ -676,17 +675,13 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 .url()
             )
             try:
-                print(
-                    "Get WMS GetCapabilities for URL {},\nwith headers: {}".format(
-                        wms_getcap_url,
-                        " ".join(
-                            [
-                                "{}={}".format(h, v if h not in ("Authorization", "Cookies") else "***")
-                                for h, v in headers.items()
-                            ]
-                        ),
-                    )
+                rendered_headers = " ".join(
+                    [
+                        f"{h}={v if h not in ('Authorization', 'Cookies') else '***'}"
+                        for h, v in headers.items()
+                    ]
                 )
+                print(f"Get WMS GetCapabilities for URL {wms_getcap_url},\nwith headers: {rendered_headers}")
                 response = requests.get(wms_getcap_url, headers=headers, **kwargs)
 
                 try:
@@ -694,7 +689,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 except Exception as e:
                     print(
                         colorize(
-                            "ERROR! an error occurred while trying to " "parse the GetCapabilities document.",
+                            "ERROR! an error occurred while trying to parse the GetCapabilities document.",
                             Color.RED,
                         )
                     )
@@ -704,17 +699,16 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         raise
             except Exception as e:
                 print(colorize(str(e), Color.RED))
+                rendered_headers = " ".join(
+                    [
+                        f"{h}={v if h not in ('Authorization', 'Cookies') else '***'}"
+                        for h, v in headers.items()
+                    ]
+                )
                 print(
                     colorize(
-                        "ERROR! Unable to GetCapabilities from URL: {},\nwith headers: {}".format(
-                            wms_getcap_url,
-                            " ".join(
-                                [
-                                    "{}={}".format(h, v if h not in ("Authorization", "Cookies") else "***")
-                                    for h, v in headers.items()
-                                ]
-                            ),
-                        ),
+                        f"ERROR! Unable to GetCapabilities from URL: {wms_getcap_url},\n"
+                        f"with headers: {rendered_headers}",
                         Color.RED,
                     )
                 )
@@ -757,9 +751,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             if not response.ok:
                 print(
                     colorize(
-                        "ERROR! DescribeFeatureType from URL {} return the error: {:d} {}".format(
-                            wfs_descrfeat_url, response.status_code, response.reason
-                        ),
+                        f"ERROR! DescribeFeatureType from URL {wfs_descrfeat_url} return the error: "
+                        f"{response.status_code:d} {response.reason}",
                         Color.RED,
                     )
                 )

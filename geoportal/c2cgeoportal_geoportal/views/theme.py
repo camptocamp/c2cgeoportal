@@ -100,9 +100,8 @@ class DimensionInformation:
                 and not self.URL_PART_RE.match(dimension.value)
             ):
                 errors.add(
-                    "The layer '{}' has an unsupported dimension value '{}' ('{}').".format(
-                        layer.name, dimension.value, dimension.name
-                    )
+                    f"The layer '{layer.name}' has an unsupported dimension value "
+                    f"'{dimension.value}' ('{dimension.name}')."
                 )
             elif dimension.name in dimensions:  # pragma: nocover
                 errors.add(f"The layer '{layer.name}' has a duplicated dimension name '{dimension.name}'.")
@@ -122,8 +121,8 @@ class DimensionInformation:
                     self._dimensions[name] = value
                 elif self._dimensions[name] != value and value is not None:
                     errors.add(
-                        "The layer '{}' has a wrong dimension value '{}' for '{}', "
-                        "expected '{}' or empty.".format(layer.name, value, name, self._dimensions[name])
+                        f"The layer '{layer.name}' has a wrong dimension value '{value}' for '{name}', "
+                        f"expected '{self._dimensions[name]}' or empty."
                     )
         return errors
 
@@ -200,8 +199,9 @@ class Theme:
                 wms = WebMapService(None, xml=content, version=version)
             except Exception as e:
                 error = (
-                    "WARNING! an error '{}' occurred while trying to read the mapfile and recover the themes."
-                    "\nURL: {}\n{}".format(e, url, content.decode() if content else None)
+                    f"WARNING! an error '{e!s}' occurred while trying to read the mapfile and "
+                    "recover the themes."
+                    f"\nURL: {url}\n{content.decode() if content else None}"
                 )
                 LOG.error(error, exc_info=True)
                 return None, {error}
@@ -286,8 +286,9 @@ class Theme:
             "application/vnd.ogc.wms_xml",
             "text/xml",
         ]:
-            error = "GetCapabilities from URL {} returns a wrong Content-Type: {}\n{}".format(
-                url, content_type, content.decode()
+            error = (
+                f"GetCapabilities from URL '{url}' returns a wrong Content-Type: {content_type}\n"
+                f"{content.decode()}"
             )
             errors.add(error)
             LOG.error(error)
@@ -443,9 +444,7 @@ class Theme:
 
                     if not has_time:
                         errors.add(
-                            "Error: time layer '{}' has no time information in capabilities".format(
-                                layer.name
-                            )
+                            f"Error: time layer '{layer.name}' has no time information in capabilities"
                         )
 
         except ValueError:  # pragma no cover
@@ -505,9 +504,8 @@ class Theme:
                 self._fill_child_layer(layer_theme, layer_name, wms)
             else:
                 errors.add(
-                    "The layer '{}' ({}) is not defined in WMS capabilities from '{}'".format(
-                        layer_name, layer.name, layer.ogc_server.name
-                    )
+                    f"The layer '{layer_name}' ({layer.name}) is not defined in WMS capabilities "
+                    f"from '{layer.ogc_server.name}'"
                 )
 
         if "minResolutionHint" not in layer_theme:
@@ -655,9 +653,8 @@ class Theme:
                     if layer_theme is not None:
                         if depth < min_levels:
                             errors.add(
-                                "The Layer '{}' is under indented ({:d}/{:d}).".format(
-                                    path + "/" + tree_item.name, depth, min_levels
-                                )
+                                f"The Layer '{path + '/' + tree_item.name}' is under indented "
+                                f"({depth:d}/{min_levels:d})."
                             )
                         else:
                             children.append(layer_theme)
@@ -675,8 +672,8 @@ class Theme:
                 for name, nb in Counter(layers_name).items():
                     if nb > 1:
                         errors.add(
-                            "The GeoMapFish layer name '{}', cannot be two times "
-                            "in the same block (first level group).".format(name)
+                            f"The GeoMapFish layer name '{name}', cannot be two times "
+                            "in the same block (first level group)."
                         )
 
             group_theme["mixed"] = mixed
@@ -825,9 +822,8 @@ class Theme:
             elif self._layer_included(item):
                 if min_levels > 0:
                     errors.add(
-                        "The Layer '{}' cannot be directly in the theme '{}' (0/{:d}).".format(
-                            item.name, theme.name, min_levels
-                        )
+                        f"The Layer '{item.name}' cannot be directly in the theme '{theme.name}' "
+                        f"(0/{min_levels:d})."
                     )
                 elif item.name in layers:
                     layer_theme, l_errors = self._layer(item, dim=DimensionInformation())
@@ -904,9 +900,7 @@ class Theme:
             return lxml.XML(content), errors
         except Exception as e:
             errors.add(
-                "Error '{}' on reading DescribeFeatureType from URL {}:\n{}".format(
-                    str(e), wfs_url, content.decode()
-                )
+                f"Error '{e!s}' on reading DescribeFeatureType from URL {wfs_url}:\n{content.decode()}"
             )
             return None, errors
 
@@ -1147,9 +1141,7 @@ class Theme:
             return (
                 None,
                 {
-                    "Unable to find the Group named: {}, Available Groups: {}".format(
-                        group,
-                        ", ".join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()]),
-                    )
+                    f"Unable to find the Group named: {group}, Available Groups: "
+                    f"{', '.join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])}"
                 },
             )

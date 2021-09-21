@@ -47,7 +47,7 @@ class DimensionLayerViews(LayerViews):
             "dimensions",
             renderer=lambda layer_wms: "; ".join(
                 [
-                    "{}: {}".format(group[0], ", ".join([d.value or "NULL" for d in group[1]]))
+                    f"{group[0]}: {', '.join([d.value or 'NULL' for d in group[1]])}"
                     for group in groupby(layer_wms.dimensions, lambda d: cast(str, d.name))
                 ]
             ),

@@ -116,9 +116,8 @@ class LayerTreeViews:
                     name="new_layer_group",
                     label=_("New layer group"),
                     icon="glyphicon glyphicon-plus",
-                    url="{}?parent_id={}".format(
-                        self._request.route_url("c2cgeoform_item", table="layer_groups", id="new"), item.id
-                    ),
+                    url=f"{self._request.route_url('c2cgeoform_item', table='layer_groups', id='new')}?"
+                    f"parent_id={item.id}",
                 )
             )
 
@@ -128,9 +127,8 @@ class LayerTreeViews:
                     name="new_layer_wms",
                     label=_("New WMS layer"),
                     icon="glyphicon glyphicon-plus",
-                    url="{}?parent_id={}".format(
-                        self._request.route_url("c2cgeoform_item", table="layers_wms", id="new"), item.id
-                    ),
+                    url=f"{self._request.route_url('c2cgeoform_item', table='layers_wms', id='new')}?"
+                    f"parent_id={item.id}",
                 )
             )
 
@@ -139,9 +137,8 @@ class LayerTreeViews:
                     name="new_layer_wmts",
                     label=_("New WMTS layer"),
                     icon="glyphicon glyphicon-plus",
-                    url="{}?parent_id={}".format(
-                        self._request.route_url("c2cgeoform_item", table="layers_wmts", id="new"), item.id
-                    ),
+                    url=f"{self._request.route_url('c2cgeoform_item', table='layers_wmts', id='new')}?"
+                    f"parent_id={item.id}",
                 )
             )
 

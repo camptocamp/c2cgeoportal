@@ -138,13 +138,11 @@ class Step:
                 sys.stdout.flush()
                 current_step(c2cupgradetool, self.step_number)
             except subprocess.CalledProcessError as exception:
+                command = " ".join([f"'{exception}'" for exception in exception.cmd])
                 c2cupgradetool.print_step(
                     self.step_number,
                     error=True,
-                    message="The command `{}` returns the error code {}.".format(
-                        " ".join([f"'{exception}'" for exception in exception.cmd]),
-                        exception.returncode,
-                    ),
+                    message=f"The command `{command}` returns the error code {exception.returncode}.",
                     prompt="Fix the error and run the step again:",
                 )
                 sys.exit(1)
@@ -159,7 +157,6 @@ class Step:
             except Exception as exception:
                 cautch_exception = exception
 
-                global current_step_number
                 if self.step_number == current_step_number:
 
                     def message() -> None:
@@ -222,16 +219,16 @@ class C2cUpgradeTool:
                 if step != 0:
                     cmd.append(f"{step}")
                 print(colorize(" ".join(cmd), Color.GREEN))
-                instructions.write("{}\n".format(" ".join(cmd)))
+                instructions.write(f"{' '.join(cmd)}\n")
 
     def run_step(self, step: int) -> None:
         getattr(self, f"step{step}")()
 
     def test_checkers(self) -> Tuple[bool, Optional[str]]:
-        run_curl = "Run `curl --insecure {} '{}'` for more information.".format(
-            " ".join(["--header {}={}".format(*i) for i in self.project.get("checker_headers", {}).items()]),
-            self.project["checker_url"],
+        headers = " ".join(
+            [f"--header {i[0]}={i[1]}" for i in self.project.get("checker_headers", {}).items()]
         )
+        run_curl = f"Run `curl --insecure {headers} '{self.project['checker_url']}'` for more information."
         try:
             requests.packages.urllib3.disable_warnings()  # type: ignore
             resp = requests.get(
@@ -292,7 +289,7 @@ class C2cUpgradeTool:
                 message="Here is the output of 'git status'. Please make sure to commit all your "
                 "changes before going further. All uncommitted changes will be lost.\n"
                 "Note that for debugging purpose it is possible to pass directly to step 2 "
-                "e.-g.: ./upgrade --debug=../c2cgeoportal {version} 2".format(version=os.environ["VERSION"]),
+                f"e.-g.: ./upgrade --debug=../c2cgeoportal {os.environ['VERSION']} 2",
             )
 
     @Step(1)
@@ -391,13 +388,13 @@ class C2cUpgradeTool:
     @Step(5)
     def step5(self, step: int) -> None:
         if "managed_files" not in self.project:
+            unmanaged_files = "\n".join(["- " + e for e in self.project.get("unmanaged_files", [])])
             self.print_step(
                 step,
-                message="In the new version, we will also manage almost all the create "
-                "template files.\n"
-                "By default, files conforming to the following regex pattern will not be replaced:\n{}"
-                "Therefore, you should fill the 'managed_files' in you 'project.yaml' file with at least "
-                "`[]`.".format("\n".join(["- " + e for e in self.project.get("unmanaged_files", [])])),
+                message="In the new version, we will also manage almost all the create template files.\n"
+                "By default, files conforming to the following regex pattern will not be replaced:\n"
+                f"{unmanaged_files} Therefore, you should fill the 'managed_files' in you 'project.yaml' "
+                "file with at least `[]`.",
                 prompt="Fill it and run the step again:",
             )
         else:
@@ -468,9 +465,8 @@ class C2cUpgradeTool:
                     print(f"The file '{file_}' is removed.")
                     if "version" in element and "from" in element:
                         print(
-                            "Was used in version {}, to be removed from version {}.".format(
-                                element["from"], element["version"]
-                            )
+                            f"Was used in version {element['from']}, to be removed from version "
+                            f"{element['version']}."
                         )
                     if os.path.isdir(file_):
                         shutil.rmtree(file_)
@@ -499,8 +495,8 @@ class C2cUpgradeTool:
                         else:
                             print(
                                 colorize(
-                                    "The {} '{}' is present in the `managed_files` as '{}', "
-                                    "but it has been moved to '{}'.".format(type_, src, pattern, dst),
+                                    f"The {type_} '{src}' is present in the `managed_files` as '{pattern}', "
+                                    f"but it has been moved to '{dst}'.",
                                     Color.RED,
                                 )
                             )
@@ -508,10 +504,8 @@ class C2cUpgradeTool:
                     if re.match(pattern + "$", dst):
                         print(
                             colorize(
-                                "The {} '{}' is present in the `managed_files` as '{}', "
-                                "but a file have been moved on it from '{}'.".format(
-                                    type_, dst, pattern, src
-                                ),
+                                f"The {type_} '{dst}' is present in the `managed_files` as '{pattern}', "
+                                f"but a file have been moved on it from '{src}'.",
                                 Color.RED,
                             )
                         )
@@ -520,8 +514,8 @@ class C2cUpgradeTool:
                     if re.match(pattern + "$", src):
                         print(
                             colorize(
-                                "The {} '{}' is present in the `unmanaged_files` as '{}', "
-                                "but it has been moved to '{}'.".format(type_, src, pattern, dst),
+                                f"The {type_} '{src}' is present in the `unmanaged_files` as '{pattern}', "
+                                f"but it has been moved to '{dst}'.",
                                 Color.YELLOW,
                             )
                         )
@@ -529,10 +523,8 @@ class C2cUpgradeTool:
                     if re.match(pattern + "$", dst):
                         print(
                             colorize(
-                                "The {} '{}' is present in the `unmanaged_files` as '{}', "
-                                "but a file have been moved on it from '{}'.".format(
-                                    type_, dst, pattern, src
-                                ),
+                                f"The {type_} '{dst}' is present in the `unmanaged_files` as '{pattern}', "
+                                f"but a file have been moved on it from '{src}'.",
                                 Color.YELLOW,
                             )
                         )
@@ -542,7 +534,7 @@ class C2cUpgradeTool:
             elif not managed:
                 print(f"Move the {type_} '{src}' to '{dst}'.")
                 if "version" in element:
-                    print("Needed from version {}.".format(element["version"]))
+                    print(f"Needed from version {element['version']}.")
                 if os.path.dirname(dst) != "":
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
                 try:
@@ -598,22 +590,14 @@ class C2cUpgradeTool:
                 else:
                     pattern = files["pattern"]
                 if re.match(pattern + "$", file_):
-                    print(
-                        "File '{}' included by project config pattern `managed_files` '{}'.".format(
-                            file_, pattern
-                        )
-                    )
+                    print(f"File '{file_}' included by project config pattern `managed_files` '{pattern}'.")
                     print("managed", file_, pattern)
                     managed = True
                     break
         if managed:
             for pattern in self.project.get("unmanaged_files", []):
                 if re.match(pattern + "$", file_):
-                    print(
-                        "File '{}' excluded by project config pattern `unmanaged_files` '{}'.".format(
-                            file_, pattern
-                        )
-                    )
+                    print(f"File '{file_}' excluded by project config pattern `unmanaged_files` '{pattern}'.")
                     managed = False
                     break
 
@@ -695,7 +679,7 @@ class C2cUpgradeTool:
             os.unlink("changelog.diff")
 
         status = self.get_modified(
-            "CONST_create_template/geoportal/{}_geoportal/static-ngeo".format(self.project["project_package"])
+            f"CONST_create_template/geoportal/{self.project['project_package']}_geoportal/static-ngeo"
         )
         status += ["CONST_create_template/geoportal/vars.yaml"]
 
@@ -726,9 +710,7 @@ class C2cUpgradeTool:
             s
             for s in status
             if not s.startswith(
-                "CONST_create_template/geoportal/{}_geoportal/static-ngeo/".format(
-                    self.project["project_package"]
-                )
+                f"CONST_create_template/geoportal/{self.project['project_package']}_geoportal/static-ngeo/"
             )
         ]
         status = [s for s in status if s != "CONST_create_template/geoportal/vars.yaml"]
@@ -762,7 +744,7 @@ class C2cUpgradeTool:
         message = [
             "The upgrade is nearly done, now you should:",
             "- Build your application with `./upgrade --finalize [build arguments]`",
-            "- Test your application on '{}'.".format(self.project.get("application_url", "... missing ...")),
+            f"- Test your application on '{self.project.get('application_url', '... missing ...')}'.",
         ]
 
         if os.path.isfile(".upgrade.yaml"):
@@ -800,7 +782,7 @@ class C2cUpgradeTool:
             step + 1,
             message="We will commit all the above files!\n"
             "If there are some files which should not be committed, then you should "
-            "add them into the `.gitignore` file and launch upgrade {} again.".format(step),
+            f"add them into the `.gitignore` file and launch upgrade {step} again.",
             prompt="Then to commit your changes type:",
         )
 
@@ -812,9 +794,8 @@ class C2cUpgradeTool:
             [
                 "git",
                 "commit",
-                "--message=Upgrade to GeoMapFish {}".format(
-                    pkg_resources.get_distribution("c2cgeoportal_commons").version
-                ),
+                "--message=Upgrade to GeoMapFish "
+                f"{pkg_resources.get_distribution('c2cgeoportal_commons').version}",
             ]
         )
 

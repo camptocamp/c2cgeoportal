@@ -144,9 +144,7 @@ class TimeExtentValue:
 
     def merge(self, extent: TimeExtent) -> None:
         if not isinstance(extent, TimeExtentValue):
-            raise ValueError(
-                "Could not mix time defined as a list of " "values with other type of definition"
-            )
+            raise ValueError("Could not mix time defined as a list of values with other type of definition")
         self.values.update(extent.values)
         self.min_def_value = min_none(self.min_def_value, extent.min_def_value)
         self.max_def_value = max_none(self.max_def_value, extent.max_def_value)
@@ -199,11 +197,9 @@ class TimeExtentInterval:
 
     def merge(self, extent: TimeExtent) -> None:
         if not isinstance(extent, TimeExtentInterval):
-            raise ValueError(
-                "Could not merge time defined as with an " " interval with other type of definition"
-            )
+            raise ValueError("Could not merge time defined as with an interval with other type of definition")
         if self.interval != extent.interval:
-            raise ValueError("Could not merge times defined with a " "different interval")
+            raise ValueError("Could not merge times defined with a different interval")
         start = min_none(self.start, extent.start)
         assert start is not None
         self.start = start

@@ -117,7 +117,7 @@ class Proxy:
                 method,
                 "\n".join(
                     [
-                        "{}: {}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                        f"{h}: {v if h not in ('Authorization', 'Cookies') else '***'}"
                         for h, v in list(headers.items())
                     ]
                 ),
@@ -147,7 +147,7 @@ class Proxy:
                 method,
                 "\n".join(
                     [
-                        "{}: {}".format(h, v if h not in ("Authorization", "Cookies") else "***")
+                        f"{h}: {v if h not in ('Authorization', 'Cookies') else '***'}"
                         for h, v in list(headers.items())
                     ]
                 ),

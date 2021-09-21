@@ -253,16 +253,9 @@ def upgrade() -> None:
         schema=schema,
     )
 
-    op.execute(
-        'INSERT INTO {schema}.treeitem (type, name, "order") '
-        "VALUES ('group', 'background', 0)".format(schema=schema)
-    )
-    op.execute(
-        "INSERT INTO {schema}.treegroup (id) SELECT id " "FROM {schema}.treeitem".format(schema=schema)
-    )
-    op.execute(
-        "INSERT INTO {schema}.layergroup (id) SELECT id " "FROM {schema}.treeitem".format(schema=schema)
-    )
+    op.execute(f'INSERT INTO {schema}.treeitem (type, name, "order") ' "VALUES ('group', 'background', 0)")
+    op.execute(f"INSERT INTO {schema}.treegroup (id) SELECT id FROM {schema}.treeitem")
+    op.execute(f"INSERT INTO {schema}.layergroup (id) SELECT id FROM {schema}.treeitem")
 
 
 def downgrade() -> None:

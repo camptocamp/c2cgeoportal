@@ -107,9 +107,7 @@ class PrintProxy(Proxy):
         return self._proxy_response(
             "print",
             Url(
-                "{}/report.{}".format(
-                    self.request.get_organization_print_url(), self.request.matchdict.get("format")
-                )
+                f"{ self.request.get_organization_print_url()}/report.{self.request.matchdict.get('format')}"
             ),
         )
 
@@ -121,9 +119,7 @@ class PrintProxy(Proxy):
         return self._proxy_response(
             "print",
             Url(
-                "{}/status/{}.json".format(
-                    self.request.get_organization_print_url(), self.request.matchdict.get("ref")
-                )
+                f"{self.request.get_organization_print_url()}/status/{self.request.matchdict.get('ref')}.json"
             ),
         )
 
@@ -134,11 +130,7 @@ class PrintProxy(Proxy):
         """
         return self._proxy_response(
             "print",
-            Url(
-                "{}/cancel/{}".format(
-                    self.request.get_organization_print_url(), self.request.matchdict.get("ref")
-                )
-            ),
+            Url(f"{self.request.get_organization_print_url()}/cancel/{self.request.matchdict.get('ref')}"),
         )
 
     @view_config(route_name="printproxy_report_get")  # type: ignore
@@ -146,11 +138,7 @@ class PrintProxy(Proxy):
         """
         Get the PDF.
         """
-        url = Url(
-            "{}/report/{}".format(
-                self.request.get_organization_print_url(), self.request.matchdict.get("ref")
-            )
-        )
+        url = Url(f"{self.request.get_organization_print_url()}/report/{self.request.matchdict.get('ref')}")
         if self.request.registry.settings.get("print_get_redirect", False):
             raise HTTPFound(location=url.url())
         return self._proxy_response("print", url)

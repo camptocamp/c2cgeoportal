@@ -95,7 +95,6 @@ def init_region(conf: Dict[str, Any], region: str) -> CacheRegion:
 
 
 def _configure_region(conf: Dict[str, Any], cache_region: CacheRegion) -> None:
-    global MEMORY_CACHE_DICT
     kwargs: Dict[str, Any] = {"replace_existing_backend": True}
     backend = conf["backend"]
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
@@ -108,7 +107,6 @@ def get_region(region: str) -> CacheRegion:
     """
     Return a cache region.
     """
-    global _REGION
     if region not in _REGION:
         _REGION[region] = make_region(function_key_generator=keygen_function)
     return _REGION[region]

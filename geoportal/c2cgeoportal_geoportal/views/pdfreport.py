@@ -60,7 +60,7 @@ class PdfReport(OGCProxy):
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
         response = self._proxy(
-            Url("{!s}/buildreport.{!s}".format(self.config["print_url"], spec["outputFormat"])),
+            Url(f"{self.config['print_url']}/buildreport.{spec['outputFormat']}"),
             method="POST",
             body=dumps(spec).encode("utf-8"),
             headers=headers,

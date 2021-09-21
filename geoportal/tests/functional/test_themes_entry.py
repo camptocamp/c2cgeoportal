@@ -307,7 +307,7 @@ class TestThemeEntryView(TestCase):
         themes, errors = theme_view._themes("interface_notmapfile")
         assert len(themes) == 0
         assert {e[:90] for e in errors} == {
-            "GetCapabilities from URL http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1.",
+            "GetCapabilities from URL 'http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1",
         }
 
     def test_theme_geoserver(self):

@@ -78,8 +78,8 @@ def get_typed(
             if value in ["no", "n", "off", "0", "false"]:
                 return False
             errors.add(
-                "{}The boolean attribute '{}'='{}' is not in "
-                "[yes, y, on, 1, true, no, n, off, 0, false].".format(prefix, name, value.lower())
+                f"{prefix}The boolean attribute '{name}'='{value.lower()}' is not in "
+                "[yes, y, on, 1, true, no, n, off, 0, false]."
             )
         elif type_["type"] == "integer":
             return int(value)
@@ -109,12 +109,11 @@ def get_typed(
             except Exception as e:
                 errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {str(e)}")
         else:
-            errors.add("{}Unknown type '{}'.".format(prefix, type_["type"]))
+            errors.add(f"{prefix}Unknown type '{type_['type']}'.")
     except Exception as e:
         errors.add(
-            "{}Unable to parse the attribute '{}'='{}' with the type '{}', error:\n{}".format(
-                prefix, name, value, type_.get("type", "string"), str(e)
-            )
+            f"{prefix}Unable to parse the attribute '{name}'='{value}' with the type "
+            f"'{type_.get('type', 'string')}', error:\n{e!s}"
         )
     return None
 

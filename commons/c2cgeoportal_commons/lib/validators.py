@@ -33,5 +33,5 @@ import re
 import colander
 
 # Custom url validator that allow c2cgeoportal static urls.
-URL_REGEX = r"(?:{}|^(:?static|config)://\S+$)".format(colander.URL_REGEX)
+URL_REGEX = rf"(?:{colander.URL_REGEX}|^(:?static|config)://\S+$)"
 url = colander.Regex(URL_REGEX, msg=colander._("Must be a URL"), flags=re.IGNORECASE)
