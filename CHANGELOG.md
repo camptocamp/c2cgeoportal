@@ -1,3 +1,5 @@
+##### 2.6.0.27
+* Exit tool container on CTRL+C signal [c2cgeoportal#8679](https://github.com/camptocamp/c2cgeoportal/pull/8679)
 ##### 2.6.0.26
 * [Backport 2.6] Don't cache HTTP errors [c2cgeoportal#8671](https://github.com/camptocamp/c2cgeoportal/pull/8671)
 ##### 2.6.0.25
