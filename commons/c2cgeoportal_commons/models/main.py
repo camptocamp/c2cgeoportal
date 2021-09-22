@@ -1158,7 +1158,40 @@ layer_ra = Table(
 class LayerVectorTiles(DimensionLayer):
     __tablename__ = "layer_vectortiles"
     __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("Vector Tiles Layer"), "plural": _("Vector Tiles Layers")}
+    __colanderalchemy_config__ = {
+        "title": _("Vector Tiles Layer"),
+        "plural": _("Vector Tiles Layers"),
+        "description": Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>Definition of a <code>Vector Tiles Layer</code>.</p>
+                <p>Note: The layers named <code>vector-tiles-defaults</code> contains the values used when
+                    we create a new <code>Vector Tiles layer</code>.</p>
+
+                <h4>Queryable Vector Tiles</h4>
+                <p>To make the Vector Tiles queryable, you should add the following <code>Metadata</code>:
+                <ul>
+                    <li><code>ogcServer</code> with the name of the used <code>OGC server</code>,
+                    <li><code>wmsLayers</code> or <code>queryLayers</code> with the layers to query
+                        (comma separated list. Groups are not supported).
+                </ul>
+
+                <h4>Print Vector Tiles in high quality</h4>
+                <p>To print the layers in high quality, you can define that the image shall be
+                    retrieved with a <code>GetMap</code> on the original WMS server.
+                <p>To activate this, you should add the following <code>Metadata</code>:</p>
+                <ul>
+                    <li><code>ogcServer</code> with the name of the used <code>OGC server</code>,</li>
+                    <li><code>wmsLayers</code> or <code>printLayers</code> with the layers to print
+                        (comma separated list).</li>
+                </ul>
+                <hr>
+            </div>
+                """
+            )
+        ),
+    }
 
     __c2cgeoform_config__ = {"duplicate": True}
 
@@ -1183,17 +1216,51 @@ class LayerVectorTiles(DimensionLayer):
         },
     )
 
+    sql = Column(
+        Unicode,
+        nullable=True,
+        info={
+            "colanderalchemy": {
+                "title": _("SQL query"),
+                "description": _(
+                    """
+                    A SQL query to get the vector tiles data.
+                    """
+                ),
+                "column": 2,
+            }
+        },
+    )
+
     xyz = Column(
         Unicode,
         nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Raster URL"),
-                "description": "The raster url. Example: https://url/{z}/{x}/{y}.png",
+                "description": _(
+                    """
+                    The raster url. Example: https://url/{z}/{x}/{y}.png. Alternative to print the
+                    layer with a service which rasterises the vector tiles.
+                    """
+                ),
                 "column": 2,
             }
         },
     )
+
+    def __init__(self, name: str = "", public: bool = True, style: str = "") -> None:
+        DimensionLayer.__init__(self, name=name, public=public)
+        self.style = style
+
+    @staticmethod
+    def get_default(dbsession: Session) -> Optional[DimensionLayer]:
+        return cast(
+            Optional[DimensionLayer],
+            dbsession.query(LayerVectorTiles)
+            .filter(LayerVectorTiles.name == "vector-tiles-defaults")
+            .one_or_none(),
+        )
 
 
 class RestrictionArea(Base):  # type: ignore
