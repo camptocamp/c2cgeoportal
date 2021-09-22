@@ -249,3 +249,10 @@ jobs:
         if: always()
       - run: df -h
         if: always()
+
+      # Lighthouse CI: https://github.com/GoogleChrome/lighthouse-ci
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm install -g @lhci/cli
+      - run: lhci autorun
