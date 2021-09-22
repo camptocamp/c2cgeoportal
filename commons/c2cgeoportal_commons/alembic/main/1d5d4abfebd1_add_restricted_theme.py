@@ -49,7 +49,7 @@ def upgrade() -> None:
     schema = config["schema"]
 
     engine = op.get_bind().engine
-    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
+    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(  # type: ignore
         engine, "restricted_role_theme", schema=schema
     ):
         return

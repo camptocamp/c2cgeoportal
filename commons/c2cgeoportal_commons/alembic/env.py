@@ -51,11 +51,17 @@ def get_config() -> Dict[str, Union[str, bool]]:
     settings.update(config.get_config())
     alembic_name = context.config.get_main_option("type")
     schema_config_name = "schema{}".format(f"_{alembic_name}" if alembic_name != "main" else "")
+    script_location = context.config.get_main_option("script_location")
+    version_table = context.config.get_main_option("version_table")
+    version_locations = context.config.get_main_option("version_locations")
+    assert script_location
+    assert version_table
+    assert version_locations
     settings.update(
         {
-            "script_location": context.config.get_main_option("script_location"),
-            "version_table": context.config.get_main_option("version_table"),
-            "version_locations": context.config.get_main_option("version_locations"),
+            "script_location": script_location,
+            "version_table": version_table,
+            "version_locations": version_locations,
             "version_table_schema": config[schema_config_name],
         }
     )
@@ -75,7 +81,7 @@ def run_migrations_offline() -> None:
     script output.
     """
     conf = get_config()
-    context.configure(url=conf["sqlalchemy.url"], **conf)
+    context.configure(url=conf["sqlalchemy.url"], **conf)  # type: ignore
 
     with context.begin_transaction():
         context.run_migrations()

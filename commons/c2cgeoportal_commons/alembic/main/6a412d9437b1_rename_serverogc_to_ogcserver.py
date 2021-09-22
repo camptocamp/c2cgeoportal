@@ -49,7 +49,7 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("server_ogc", "ogc_server", schema=schema)
-    with op.batch_alter_table("layer_wms", schema=schema) as table_op:
+    with op.batch_alter_table("layer_wms", schema=schema) as table_op:  # type: ignore
         table_op.alter_column("server_ogc_id", new_column_name="ogc_server_id")
 
 
@@ -57,5 +57,5 @@ def downgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("ogc_server", "server_ogc", schema=schema)
-    with op.batch_alter_table("layer_wms", schema=schema) as table_op:
+    with op.batch_alter_table("layer_wms", schema=schema) as table_op:  # type: ignore
         table_op.alter_column("ogc_server_id", new_column_name="server_ogc_id")
