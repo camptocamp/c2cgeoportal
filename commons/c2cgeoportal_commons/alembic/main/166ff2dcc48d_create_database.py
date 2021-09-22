@@ -63,7 +63,7 @@ def upgrade() -> None:
     srid = config.get("srid")
 
     engine = op.get_bind().engine
-    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
+    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(  # type: ignore
         engine, "functionality", schema=schema
     ):
         return

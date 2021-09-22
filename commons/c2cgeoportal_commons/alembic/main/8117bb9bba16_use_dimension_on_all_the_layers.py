@@ -49,7 +49,7 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.rename_table("wmts_dimension", "dimension", schema=schema)
-    with op.batch_alter_table("dimension", schema=schema) as table_op:
+    with op.batch_alter_table("dimension", schema=schema) as table_op:  # type: ignore
         table_op.drop_constraint("wmts_dimension_layer_id_fkey", type_="foreignkey")
         table_op.create_foreign_key(
             "dimension_layer_id_fkey",
@@ -63,7 +63,7 @@ def upgrade() -> None:
 def downgrade() -> None:
     schema = config["schema"]
 
-    with op.batch_alter_table("dimension", schema=schema) as table_op:
+    with op.batch_alter_table("dimension", schema=schema) as table_op:  # type: ignore
         table_op.drop_constraint("dimension_layer_id_fkey", type_="foreignkey")
         table_op.create_foreign_key(
             "wmts_dimension_layer_id_fkey",
