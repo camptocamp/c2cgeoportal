@@ -175,6 +175,8 @@ mapping:
                         required: True
                       append:
                         type: str
+              lang_urls_suffix:
+                type: str
               redirect_interface:
                 type: str
               do_redirect:
