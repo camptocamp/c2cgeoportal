@@ -24,29 +24,29 @@
 OWNER=$1:$2
 shift 2
 
-pot-create --config geoportal/lingua-client.cfg \
-    --output geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot \
+pot-create --config geoportal/lingua-client${SUFFIX}.cfg \
+    --output geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot \
     $(find geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/ -type f -name '*.html.ejs') \
     $(find geoportal/${PACKAGE}_geoportal/static-ngeo/js/ -type f -name '*.js') \
     $(find geoportal/${PACKAGE}_geoportal/static-ngeo/js -type f -name '*.html') \
     $(find /usr/local/tomcat/webapps/ROOT -type f -name config.yaml) \
     /etc/geomapfish/config.yaml geoportal/development.ini
-chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot
+chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
 
 for LANG in "$@"
 do
-    ls geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po -als || true
+    ls geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po -als || true
 
     mkdir --parent geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/
-    [ -f geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po ] || \
-        msginit --no-translator --input=geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot \
-            --output-file=geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po \
+    [ -f geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po ] || \
+        msginit --no-translator --input=geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot \
+            --output-file=geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po \
             -l ${LANG}
 
-    cat geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po
+    cat geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po
 
     msgmerge --backup=none --update --sort-output --no-location \
-        geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po \
-        geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot
-    chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po
+        geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po \
+        geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
+    chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po
 done
