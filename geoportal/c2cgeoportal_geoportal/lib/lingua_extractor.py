@@ -421,10 +421,20 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     Theme,
                 )
 
-                self._import(Theme, messages)
-                self._import(LayerGroup, messages)
-                self._import(LayerWMS, messages, self._import_layer_wms)
-                self._import(LayerWMTS, messages, self._import_layer_wmts)
+                self._import(Theme, messages, theme_filter=os.environ.get("THEME_FILTER", ".*"))
+                self._import(LayerGroup, messages, theme_filter=os.environ.get("GROUP_FILTER", ".*"))
+                self._import(
+                    LayerWMS,
+                    messages,
+                    self._import_layer_wms,
+                    theme_filter=os.environ.get("WMSLAYER_FILTER", ".*"),
+                )
+                self._import(
+                    LayerWMTS,
+                    messages,
+                    self._import_layer_wmts,
+                    theme_filter=os.environ.get("WMTSLAYER_FILTER", ".*"),
+                )
 
                 for (layer_name,) in db_session.query(FullTextSearch.layer_name).distinct().all():
                     if layer_name is not None and layer_name != "":
@@ -497,23 +507,27 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         object_type: Type[Any],
         messages: List[str],
         callback: Optional[Callable[["main.Layer", List[str]], None]] = None,
+        theme_filter: str = ".*",
     ) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+
+        filter_re = re.compile(theme_filter)
 
         items = DBSession.query(object_type)
         for item in items:
             assert item.name is not None
-            messages.append(
-                Message(
-                    None,
-                    item.name,
-                    None,
-                    [],
-                    "",
-                    "",
-                    (item.item_type, item.name.encode("ascii", errors="replace")),
+            if filter_re.match(item.name):
+                messages.append(
+                    Message(
+                        None,
+                        item.name,
+                        None,
+                        [],
+                        "",
+                        "",
+                        (item.item_type, item.name.encode("ascii", errors="replace")),
+                    )
                 )
-            )
 
             if callback is not None:
                 callback(item, messages)
