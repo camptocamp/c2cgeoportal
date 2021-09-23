@@ -408,14 +408,22 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                     Theme,
                 )
 
-                self._import(Theme, messages, theme_filter=os.environ.get("THEME_FILTER", '.*'))
-                self._import(LayerGroup, messages, theme_filter=os.environ.get("GROUP_FILTER", '.*'))
+                self._import(Theme, messages, name_regex=os.environ.get("THEME_REGEX", ".*"))
                 self._import(
-                    LayerWMS, messages, self._import_layer_wms,
-                    theme_filter=os.environ.get("WMSLAYER_FILTER", '.*'))
+                    LayerGroup, messages, name_regex=os.environ.get("GROUP_REGEX", ".*"), has_interfaces=False
+                )
                 self._import(
-                    LayerWMTS, messages, self._import_layer_wmts,
-                    theme_filter=os.environ.get("WMTSLAYER_FILTER", '.*'))
+                    LayerWMS,
+                    messages,
+                    self._import_layer_wms,
+                    name_regex=os.environ.get("WMSLAYER_REGEX", ".*"),
+                )
+                self._import(
+                    LayerWMTS,
+                    messages,
+                    self._import_layer_wmts,
+                    name_regex=os.environ.get("WMTSLAYER_REGEX", ".*"),
+                )
 
                 for (layer_name,) in db_session.query(FullTextSearch.layer_name).distinct().all():
                     if layer_name is not None and layer_name != "":
@@ -484,13 +492,19 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         return messages
 
     @staticmethod
-    def _import(object_type, messages, callback=None, theme_filter='.*'):
+    def _import(object_type, messages, callback=None, has_interfaces=True, name_regex=".*"):
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
 
-        filter_re = re.compile(theme_filter)
+        filter_re = re.compile(name_regex)
 
-        items = DBSession.query(object_type)
-        for item in items:
+        query = DBSession.query(object_type)
+
+        if has_interfaces and "INTERFACES" in os.environ:
+            interfaces = os.environ["INTERFACES"].split(",")
+            query.join(object_type.interface).filter(Interface.name in interfaces)
+
+        for item in query.all():
             assert item.name is not None
             if filter_re.match(item.name):
                 messages.append(
