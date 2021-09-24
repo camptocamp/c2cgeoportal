@@ -1,3 +1,5 @@
+##### 2.5.0.155
+* Add alternative X-Forward headers in proxy [c2cgeoportal#8701](https://github.com/camptocamp/c2cgeoportal/pull/8701)
 ##### 2.5.0.154
 * Filter headers in theme.py too [c2cgeoportal#8665](https://github.com/camptocamp/c2cgeoportal/pull/8665)
 ##### 2.5.0.153
