@@ -1,3 +1,5 @@
+##### 2.4.2.57
+* Manually [Backport 2.4] Add alternative X-Forward headers in proxy   [c2cgeoportal#8704](https://github.com/camptocamp/c2cgeoportal/pull/8704)
 ##### 2.4.2.56
 * [Backport 2.4] Move Admin doc to SQLA model [c2cgeoportal#8643](https://github.com/camptocamp/c2cgeoportal/pull/8643)
 ##### 2.4.2.55
