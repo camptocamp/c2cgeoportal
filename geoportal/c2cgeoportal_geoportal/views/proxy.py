@@ -92,21 +92,22 @@ class Proxy(object):
         # If we really want to respect the specification, we should chain with the content of the previous
         # proxy, see also:
         # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
-        forwarded = {"for": self.request.client_addr, "proto": self.request.scheme}
-        if "Host" in self.request.headers:
-            forwarded["host"] = self.request.headers["Host"]
-        forwarded_str = ";".join(["=".join(e) for e in forwarded.items()])
-        if "Forwarded" in headers:
-            headers["Forwarded"] = ",".join([headers["Forwarded"], forwarded_str])
-        else:
-            headers["Forwarded"] = forwarded_str
-        # Set alternative "X-Forwarded" headers
-        for forwarded_elements in reversed(headers["Forwarded"].split(",")):
-            for element in forwarded_elements.split(";"):
-                key, value = element.split("=")
-                header_key = "X-Forwarded-{}".format(key.capitalize())
-                header_value = headers.get(header_key)
-                headers[header_key] = value if header_value is None else ", ".join([header_value, value])
+        if self.request.client_addr is not None:
+            forwarded = {"for": self.request.client_addr, "proto": self.request.scheme}
+            if "Host" in self.request.headers:
+                forwarded["host"] = self.request.headers["Host"]
+            forwarded_str = ";".join(["=".join(e) for e in forwarded.items()])
+            if "Forwarded" in headers:
+                headers["Forwarded"] = ",".join([headers["Forwarded"], forwarded_str])
+            else:
+                headers["Forwarded"] = forwarded_str
+            # Set alternative "X-Forwarded" headers
+            for forwarded_elements in reversed(headers["Forwarded"].split(",")):
+                for element in forwarded_elements.split(";"):
+                    key, value = element.split("=")
+                    header_key = "X-Forwarded-{}".format(key.capitalize())
+                    header_value = headers.get(header_key)
+                    headers[header_key] = value if header_value is None else ", ".join([header_value, value])
 
         if not cache:
             headers["Cache-Control"] = "no-cache"
