@@ -1,3 +1,5 @@
+##### 2.6.0.28
+* [Backport 2.6] Add alternative X-Forward headers in proxy [c2cgeoportal#8703](https://github.com/camptocamp/c2cgeoportal/pull/8703)
 ##### 2.6.0.27
 * Exit tool container on CTRL+C signal [c2cgeoportal#8679](https://github.com/camptocamp/c2cgeoportal/pull/8679)
 ##### 2.6.0.26
