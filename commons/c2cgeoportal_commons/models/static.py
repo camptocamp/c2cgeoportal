@@ -242,7 +242,7 @@ class User(Base):  # type: ignore
         },
     )
 
-    def __init__(
+    def __init__(  # nosec
         self,
         username: str = "",
         password: str = "",

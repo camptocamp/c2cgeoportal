@@ -16,7 +16,7 @@ def main():
 
     all_suffix = [""] if args.suffix is None else args.suffix
 
-    package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"
+    package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"  # nosec
     base_path = f"{package_base_path}/locale"
 
     for lang in os.listdir(base_path):

@@ -342,7 +342,7 @@ class Login:
         allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         rand = Random()
 
-        password = ""
+        password = ""  # nosec
         for _ in range(8):
             password += rand.choice(allchars)
 

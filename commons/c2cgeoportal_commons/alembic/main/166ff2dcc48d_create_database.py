@@ -202,7 +202,7 @@ def upgrade() -> None:
         "INSERT INTO %(schema)s.user (type, username, email, password, role_id) "
         "(SELECT 'user', 'admin', 'info@example.com', '%(pass)s', r.id "
         "FROM %(schema)s.role AS r "
-        "WHERE r.name = 'role_admin')" % {"schema": schema, "pass": sha1(b"admin").hexdigest()}
+        "WHERE r.name = 'role_admin')" % {"schema": schema, "pass": sha1(b"admin").hexdigest()}  # nosec
     )
 
     op.create_table(

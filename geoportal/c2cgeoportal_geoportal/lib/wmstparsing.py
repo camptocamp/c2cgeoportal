@@ -302,7 +302,7 @@ def _parse_date(date: str) -> Tuple[str, datetime.datetime]:
         try:
             dt = datetime.datetime.strptime(date, pattern)
             return resolution, dt.replace(tzinfo=isodate.UTC)
-        except Exception:
+        except Exception:  # nosec
             pass
 
     try:

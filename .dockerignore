@@ -23,6 +23,7 @@
 !setup.cfg
 !lingua.cfg
 !.prospector.yaml
+!.bandit.yaml
 !package.json
 !scripts/pylint-copyright.py
 !.git

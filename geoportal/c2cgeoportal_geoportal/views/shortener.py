@@ -105,7 +105,7 @@ class Shortener:
         tries = 0
         while not shortened:
             ref = "".join(
-                random.choice(string.ascii_letters + string.digits)
+                random.choice(string.ascii_letters + string.digits)  # nosec
                 for i in range(self.settings.get("length", 4))
             )
             test_url = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()

@@ -19,5 +19,10 @@ pyflakes:
 mypy:
   run: true
 
+bandit:
+  run: true
+  options:
+    config: .bandit.yaml
+
 mccabe:
   run: false

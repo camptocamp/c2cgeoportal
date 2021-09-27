@@ -102,7 +102,7 @@ def upgrade() -> None:
         op.execute(
             "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
             "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')"
-            % {"staticschema": staticschema, "pass": sha1(b"admin").hexdigest()}
+            % {"staticschema": staticschema, "pass": sha1(b"admin").hexdigest()}  # nosec
         )
 
 
