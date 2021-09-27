@@ -35,7 +35,7 @@ jobs:
           patterns: docker
 
       - name: Build config
-        run: ./build --config
+        run: ./build --service=config
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -62,7 +62,7 @@ jobs:
           ref: ${{'{{'}} matrix.branch }}
 
       - name: Build geoportal
-        run: ./build --geoportal
+        run: ./build --service=geoportal
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
