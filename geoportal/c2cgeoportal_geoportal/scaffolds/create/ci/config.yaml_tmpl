@@ -2,6 +2,7 @@
 checks:
   black: False
   isort: False
+  prettier: False
   codespell: False
   eof: False
   required_workflows: False

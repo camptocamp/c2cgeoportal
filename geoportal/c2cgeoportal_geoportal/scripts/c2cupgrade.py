@@ -80,9 +80,13 @@ max_line_length = 110
                 with open(filename, "w", encoding="utf8") as file_:
                     file_.write(content)
 
+    if os.path.exists("ci/config.yaml"):
+        os.rename("ci/config.yaml", "ci/config.yaml_")
     subprocess.run(["c2cciutils-checks", "--fix", "--check=isort"])  # pylint: disable=subprocess-run-check
     subprocess.run(["c2cciutils-checks", "--fix", "--check=black"])  # pylint: disable=subprocess-run-check
     subprocess.run(["c2cciutils-checks", "--fix", "--check=prettier"])  # pylint: disable=subprocess-run-check
+    if os.path.exists("ci/config.yaml_"):
+        os.rename("ci/config.yaml_", "ci/config.yaml")
 
     for filename in file_to_clean:
         os.remove(filename)
