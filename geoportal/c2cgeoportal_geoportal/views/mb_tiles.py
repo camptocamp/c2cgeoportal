@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2021, Camptocamp SA
+# Copyright (c) 2021, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,10 +25,48 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import logging
+
+from pyramid.request import Request
+from pyramid.response import Response
+from tilecloud import TileCoord
+from tilecloud.grid.free import FreeTileGrid
+
+from c2cgeoportal_commons.models import DBSession, main
+
+LOG = logging.getLogger(__name__)
+
 
 class MbTilesViews:
-    def __init__(self, request):
+    def __init__(self, request: Request) -> None:
         self.request = request
 
-    def mb_tiles(self):
-        return {}
+    def mb_tiles(self) -> Response:
+
+        settings = self.request.registry.settings["vectortile"]
+        grid = FreeTileGrid(settings["resolutions"], max_extent=settings["extent"], tile_size=256)
+
+        layerid = self.request.matchdict["layerid"]
+        z = int(self.request.matchdict["z"])
+        x = int(self.request.matchdict["x"])
+        y = int(self.request.matchdict["y"])
+        coord = TileCoord(z, x, y)
+        minx, miny, maxx, maxy = grid.extent(coord, 0)
+
+        LOG.warning(layerid)
+        result = DBSession.query(main.LayerVectorTiles.id).all()
+        for r in result:
+            LOG.warning(r)
+        sql = DBSession.query(main.LayerVectorTiles.sql).filter(main.LayerVectorTiles.id == layerid).one()[0]
+
+        raw_sql = sql.format(envelope=f"{minx}, {miny}, {maxx}, {maxy}")
+
+        result = DBSession.execute(raw_sql)
+
+        response = self.request.response
+        response.content_type = "application/x-protobuf"
+        for row in result:
+            response.body = row[0].tobytes()
+            response.conditional_response = True
+            response.md5_etag()
+            return response

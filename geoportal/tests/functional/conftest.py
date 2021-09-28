@@ -28,16 +28,13 @@
 import pytest
 from c2c.template.config import config as configuration
 from pyramid.testing import DummyRequest
-
 from tests.functional import setup_common as setup_module
 
 
 @pytest.fixture(scope="session")
 def settings():
     setup_module()
-    yield {
-        **configuration.get_config()
-    }
+    yield {**configuration.get_config()}
 
 
 @pytest.fixture(scope="session")
@@ -69,7 +66,7 @@ def dummy_request(dbsession):
 
     """
     request = DummyRequest()
-    request.host = 'example.com'
+    request.host = "example.com"
     request.dbsession = dbsession
 
     return request

@@ -806,3 +806,16 @@ mapping:
           total_python_object_memory:
             required: True
             type: scalar
+      vectortile:
+        type: map
+        mapping:
+          srid:
+            type: int
+          extent:
+            type: seq
+            sequence:
+              - type: scalar
+          resolutions:
+            type: seq
+            sequence:
+              - type: scalar

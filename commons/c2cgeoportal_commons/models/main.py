@@ -1280,9 +1280,10 @@ class LayerVectorTiles(DimensionLayer):
         },
     )
 
-    def __init__(self, name: str = "", public: bool = True, style: str = "") -> None:
+    def __init__(self, name: str = "", public: bool = True, style: str = "", sql: str = "") -> None:
         DimensionLayer.__init__(self, name=name, public=public)
         self.style = style
+        self.sql = sql
 
     @staticmethod
     def get_default(dbsession: Session) -> Optional[DimensionLayer]:

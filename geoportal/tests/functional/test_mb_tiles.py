@@ -27,7 +27,10 @@
 
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
+import mapbox_vector_tile
 import pytest
+from geoalchemy2 import WKTElement
+from tests.functional.geodata_model import PointTest
 
 
 @pytest.fixture
@@ -36,10 +39,37 @@ def test_data(dbsession, transact):
 
     del transact
 
+    points = {
+        "p1": PointTest(
+            geom=WKTElement("POINT(599910 199955)", srid=21781), name="foo", city="Lausanne", country="Swiss"
+        ),
+        "p2": PointTest(
+            geom=WKTElement("POINT(599910 200045)", srid=21781), name="bar", city="Chambéry", country="France"
+        ),
+        "p3": PointTest(
+            geom=WKTElement("POINT(600090 200045)", srid=21781), name="éàè", city="Paris", country="France"
+        ),
+        "p4": PointTest(
+            geom=WKTElement("POINT(600090 199955)", srid=21781), name="123", city="Londre", country="UK"
+        ),
+    }
+    dbsession.add_all(points.values())
+
     layers = {
-        "layer_vector_tiles" : LayerVectorTiles(
+        "layer_vector_tiles": LayerVectorTiles(
             name="layer_vector_tiles",
             style="https://example.com/style.json",
+            sql="""
+            SELECT ST_AsMVT(q, 'mvt_routes') FROM (
+            SELECT
+                name,
+                city,
+                country,
+                ST_AsMVTGeom("geom", ST_MakeEnvelope({envelope}, 21781)) as geom
+                FROM geodata.testpoint
+                WHERE ST_Intersects("geom", ST_MakeEnvelope({envelope}, 21781))
+            ) AS q
+            """,
         )
     }
     dbsession.add_all(layers.values())
@@ -48,16 +78,24 @@ def test_data(dbsession, transact):
 
     yield {
         "layers": layers,
+        "points": points,
     }
 
 
-class TestMbTilesViews():
-
+class TestMbTilesViews:
     def test_mb_tiles_success(self, dummy_request, test_data):
         from c2cgeoportal_geoportal.views.mb_tiles import MbTilesViews
 
         request = dummy_request
+        request.matchdict["layerid"] = test_data["layers"]["layer_vector_tiles"].id
+        request.matchdict["z"] = 11
+        request.matchdict["x"] = 0
+        request.matchdict["y"] = 0
 
         resp = MbTilesViews(request).mb_tiles()
 
-        assert resp == {}
+        # assert False
+        assert isinstance(resp.body, bytes)
+
+        data = mapbox_vector_tile.decode(resp.body)
+        assert data["mvt_routes"]["features"][0]["properties"]["city"] == test_data["points"]["p1"].city
