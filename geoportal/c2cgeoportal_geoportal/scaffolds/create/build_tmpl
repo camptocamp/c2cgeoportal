@@ -10,11 +10,12 @@ import stat
 import subprocess
 import sys
 import urllib.request
+from typing import Any, Dict, List
 
 import yaml
 
 
-def call(verbose, arguments, **kwargs):
+def call(verbose: bool, arguments: List[str], **kwargs: Any) -> None:
     print_args = [a.replace(" ", "\\ ") for a in arguments]
     print_args = [a.replace('"', '\\"') for a in print_args]
     print_args = [a.replace("'", "\\'") for a in print_args]
@@ -27,7 +28,7 @@ def call(verbose, arguments, **kwargs):
         sys.exit(e.returncode)
 
 
-def load_env(env_files):
+def load_env(env_files: List[str]) -> Dict[str, str]:
     """
     Parse env files and return environment as dict
     """
@@ -35,7 +36,7 @@ def load_env(env_files):
     if os.path.exists("env.personal"):
         env_files.append("env.personal")
     for env_file in env_files:
-        with open(env_file) as f:
+        with open(env_file, encoding="utf-8") as f:
             for line in f:
                 if line and line[0] != "#":
                     try:
@@ -47,7 +48,7 @@ def load_env(env_files):
     return env
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Build the project")
     parser.add_argument("--verbose", help="Display the docker build commands")
     parser.add_argument(
@@ -75,17 +76,15 @@ def main():
         if match is not None:
             major_version = match.group(1)
         full_version = args.upgrade if args.upgrade != "master" else "latest"
-        with open("upgrade", "w") as f:
-            result = urllib.request.urlopen(  # nosec
-                "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{}/scripts/upgrade".format(
-                    major_version
-                )
-            )
-            if result.code != 200:
-                print("ERROR:")
-                print(result.read())
-                sys.exit(1)
-            f.write(result.read().decode())
+        with open("upgrade", "w", encoding="utf-8") as f:
+            with urllib.request.urlopen(  # nosec
+                f"https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{major_version}/scripts/upgrade"
+            ) as result:
+                if result.code != 200:
+                    print("ERROR:")
+                    print(result.read())
+                    sys.exit(1)
+                f.write(result.read().decode())
         debug_args = []
         if args.debug:
             shutil.copyfile(os.path.join(args.debug, "scripts", "upgrade"), "upgrade")
@@ -100,7 +99,7 @@ def main():
             sys.exit(1)
         sys.exit(0)
 
-    with open("project.yaml") as project_file:
+    with open("project.yaml", encoding="utf-8") as project_file:
         project_env = yaml.load(project_file, Loader=yaml.SafeLoader)["env"]
     if len(args.env) != project_env["required_args"]:
         print(project_env["help"])
@@ -161,9 +160,9 @@ def main():
             ],
         )
 
-    with open(".env", "w") as dest:
+    with open(".env", "w", encoding="utf-8") as dest:
         for file_ in env_files:
-            with open(file_) as src:
+            with open(file_, encoding="utf-8") as src:
                 dest.write(src.read() + "\n")
         dest.write("# Used env files: {}\n".format(" ".join(env_files)))
 
