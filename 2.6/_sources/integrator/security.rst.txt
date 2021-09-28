@@ -10,11 +10,31 @@ Security
 .. include:: https.rst
 .. include:: reset_password.rst
 
+
+Security update
+---------------
+
+To be sure that we regularly get the security updates, every night the GeoMapFish Docker images are rebuild.
+And every time we do a build we pull the new images to use them.
+
+For project on Kubernetes we also deploy fresh built images every day.
+
+This is good for security but with that we can't guarantee that the result of a new build works exactly
+as the previous one.
+
+To avoid incidents on production service, Kubernetes will publish a service only if he start correctly.
+we are on docker-compose we have to choose ourself. The best is to build the image only on
+integration when the result is correct we push it on a repository, and on production we will use the
+images from the repository. The other solution is to use fixed tag for the base image, this imply that we
+should do a minor update of the application to get the security fix. To do that you should set
+in the ``project.yaml`` file the parameter ``unsafe_long_version`` to ``True``.
+
+
 Access to WMS GetCapability
 ---------------------------
 
 Set ``hide_capabilities`` to ``true`` in your ``vars.yaml`` to disable
-the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).
+the WMS GetCapability when accessing the MapServer proxy (mapserverproxy).
 
 Default: ``false``
 
