@@ -33,7 +33,7 @@ import time
 from typing import cast
 
 from Crypto.Cipher import AES  # nosec
-from Crypto.Cipher.ChaCha20_Poly1305 import ChaCha20Poly1305Cipher
+from Crypto.Cipher.ChaCha20_Poly1305 import ChaCha20Poly1305Cipher  # nosec
 
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 

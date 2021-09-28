@@ -29,8 +29,8 @@
 import functools
 import logging
 from io import StringIO
-from typing import Any, Optional, Set, TypedDict, cast  # pylint: disable=unused-import
-from xml.etree.ElementTree import Element
+from typing import Any, Optional, Set, cast
+from xml.etree.ElementTree import Element  # nosec
 
 import pyramid.request
 import requests

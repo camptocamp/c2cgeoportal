@@ -27,7 +27,7 @@
 
 import datetime
 import re
-import subprocess
+import subprocess  # nosec
 
 import astroid.scoped_nodes
 import pylint.lint
@@ -59,7 +59,9 @@ class CopyrightChecker(BaseChecker):  # type: ignore
     def process_module(self, node: astroid.scoped_nodes.Module) -> None:
         try:
             commits_date = (
-                subprocess.check_output(["git", "log", "--pretty=format:%ci", node.file]).decode().split("\n")
+                subprocess.check_output(["git", "log", "--pretty=format:%ci", node.file])  # nosec
+                .decode()
+                .split("\n")
             )
             first_year = int(commits_date[-1][0:4])
             last_year = commits_date[0][0:4]

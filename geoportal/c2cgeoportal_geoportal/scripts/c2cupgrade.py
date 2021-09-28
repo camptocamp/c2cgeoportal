@@ -232,7 +232,9 @@ class C2cUpgradeTool:
         try:
             requests.packages.urllib3.disable_warnings()  # type: ignore
             resp = requests.get(
-                self.project["checker_url"], headers=self.project.get("checker_headers"), verify=False
+                self.project["checker_url"],
+                headers=self.project.get("checker_headers"),
+                verify=False,  # nosec
             )
         except requests.exceptions.ConnectionError as exception:
             return False, "\n".join([f"Connection error: {exception}", run_curl])

@@ -76,7 +76,7 @@ def main():
             major_version = match.group(1)
         full_version = args.upgrade if args.upgrade != "master" else "latest"
         with open("upgrade", "w") as f:
-            result = urllib.request.urlopen(
+            result = urllib.request.urlopen(  # nosec
                 "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{}/scripts/upgrade".format(
                     major_version
                 )

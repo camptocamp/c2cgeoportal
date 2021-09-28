@@ -28,10 +28,10 @@
 
 import copy
 import logging
-import xml.sax.handler
+import xml.sax.handler  # nosec
 from io import StringIO
 from typing import Any, Callable, Dict, List, Optional, Set, Union
-from xml.sax.saxutils import XMLFilterBase, XMLGenerator
+from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
 
 import defusedxml.expatreader
 import pyramid.request

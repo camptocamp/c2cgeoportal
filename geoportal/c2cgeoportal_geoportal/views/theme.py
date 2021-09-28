@@ -43,7 +43,7 @@ import requests
 import sqlalchemy.orm.query
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
-from lxml import etree
+from lxml import etree  # nosec
 from owslib.wms import WebMapService
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
