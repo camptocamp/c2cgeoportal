@@ -850,7 +850,7 @@ class Theme:
     def _get_role_ids(self):
         return None if self.request.user is None else {role.id for role in self.request.user.roles}
 
-    async def _wms_get_features_type(self, wfs_url, preload=False):
+    async def _wfs_get_features_type(self, wfs_url, preload=False):
         errors = set()
 
         params = {
@@ -932,7 +932,8 @@ class Theme:
         tasks = set()
         for ogc_server in models.DBSession.query(main.OGCServer).all():
             url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
-            tasks.add(self._wms_get_features_type(url_internal_wfs, True))
+            if ogc_server.wfs_support:
+                tasks.add(self._wfs_get_features_type(url_internal_wfs, True))
             tasks.add(self._wms_getcap(ogc_server, True))
 
         await asyncio.gather(*tasks)
@@ -940,7 +941,7 @@ class Theme:
     @CACHE_REGION.cache_on_arguments()
     def _get_features_attributes(self, url_internal_wfs):
         all_errors: Set[str] = set()
-        feature_type, errors = asyncio.run(self._wms_get_features_type(url_internal_wfs))
+        feature_type, errors = asyncio.run(self._wfs_get_features_type(url_internal_wfs))
         LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
         if errors:
             all_errors |= errors
