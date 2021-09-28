@@ -22,7 +22,7 @@ import sqlalchemy
 import yaml
 import zope.event.classhandler
 from c2c.template.config import config
-from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer, QgsProject
+from qgis.core import QgsDataSourceUri, QgsLayerTreeGroup, QgsLayerTreeLayer
 from qgis.server import QgsAccessControlFilter, QgsConfigCache
 from shapely import ops, wkb
 from sqlalchemy.orm import configure_mappers, sessionmaker, subqueryload
@@ -205,13 +205,14 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         super().__init__(server_iface)
 
         self.server_iface = server_iface
+        self.map_file = map_file
+        self.srid = srid
         self.DBSession = DBSession  # pylint: disable=invalid-name
+
         self.area_cache = {}
         self.layers = None
         self.lock = Lock()
-        self.srid = srid
         self.ogcserver = None
-        self.project = QgsProject.instance()
 
         from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
             InvalidateCacheEvent,
@@ -220,15 +221,16 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         @zope.event.classhandler.handler(InvalidateCacheEvent)
         def handle(_: InvalidateCacheEvent):  # pylint: disable=unused-variable
             LOG.info("=== invalidate ===")
-            self._init(ogcserver_name, map_file)
+            self._init(ogcserver_name)
 
-        self._init(ogcserver_name, map_file)
+        self._init(ogcserver_name)
 
-    def _init(self, ogcserver_name, map_file):
+    def project(self):
+        return QgsConfigCache.instance().project(self.map_file)
+
+    def _init(self, ogcserver_name):
         with self.lock:
             try:
-                config_cache = QgsConfigCache.instance()
-                self.project = config_cache.project(map_file)
                 self.layers = None
 
                 from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
@@ -244,13 +246,15 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                     session.close()
                 if self.ogcserver is None:
                     LOG.error(
-                        "No OGC server found for '%s', project: '%s' => no rights", ogcserver_name, map_file
+                        "No OGC server found for '%s', project: '%s' => no rights",
+                        ogcserver_name,
+                        self.map_file,
                     )
             except Exception:  # pylint: disable=broad-except
                 LOG.error("Cannot setup OGCServerAccessControl", exc_info=True)
 
     def ogc_layer_name(self, layer):
-        use_layer_id, _ = self.project.readBoolEntry("WMSUseLayerIDs", "/", False)
+        use_layer_id, _ = self.project().readBoolEntry("WMSUseLayerIDs", "/", False)
         if use_layer_id:
             return layer.id()
         return layer.shortName() or layer.name()
@@ -295,7 +299,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 for layer in node.children():
                     browse(path + [ogc_name], layer)
 
-            browse([], self.project.layerTreeRoot())
+            browse([], self.project().layerTreeRoot())
 
             for ogc_layer_name, ancestors in nodes.items():
                 LOG.debug("QGIS layer: %s", ogc_layer_name)
