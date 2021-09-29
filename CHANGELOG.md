@@ -1,3 +1,5 @@
+##### 2.6.0.30
+* Fix the i18n for multi organization application [c2cgeoportal#8698](https://github.com/camptocamp/c2cgeoportal/pull/8698)
 ##### 2.6.0.29
 * Be able to use fixed tag [c2cgeoportal#8713](https://github.com/camptocamp/c2cgeoportal/pull/8713)
 ##### 2.6.0.28
