@@ -39,16 +39,16 @@
 <h1>Multi organization<a class="headerlink" href="#multi-organization" title="Permalink to this headline">¶</a></h1>
 <p>The geoportal can host multiple organizations, with configuration differences for each organization.
 In a multi-organization geoportal, each organization will have the same program code
-(Python, Javascript, SCSS).</p>
+(Python, Javascript, SCSS). In this mode all the organizations are served by the same infrastructure.</p>
 <p>In this example we will have the came CSS but we can do some variations by using CSS var,
-see <cite>cssVars</cite> in <cite>gmfOptions</cite> in the ngeo GMF constants definitions
+see <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> in <code class="docutils literal notranslate"><span class="pre">gmfOptions</span></code> in the ngeo GMF constants definitions
 <a class="reference external" href="https://camptocamp.github.io/ngeo/2.6/jsdoc/module-contribs_gmf_src_options.html">gmf constants</a>.</p>
-<p>The following lines will profide a basic implementation for multi-organization.</p>
+<p>The following lines will provide a basic implementation for multi-organization.</p>
 <p>The code should be adapted, currently it handles the hostnames ‘org1.camptocamp.com’ and
 ‘org2.camptocamp.com’, and you probably want to put the hardcoded values in the config.</p>
 <div class="section" id="init-py">
-<h2><cite>__init__.py</cite><a class="headerlink" href="#init-py" title="Permalink to this headline">¶</a></h2>
-<p>In the file <cite>geoportal/&lt;package&gt;_geoportal/__init__.py</cite> add the following lines:</p>
+<h2><code class="docutils literal notranslate"><span class="pre">__init__.py</span></code><a class="headerlink" href="#init-py" title="Permalink to this headline">¶</a></h2>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> add the following lines:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org1.camptocamp.com&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;org1&quot;</span>
@@ -75,34 +75,41 @@ see <cite>cssVars</cite> in <cite>gmfOptions</cite> in the ngeo GMF constants de
     <span class="k">return</span> <span class="n">print_url</span>
 
 
-<span class="c1"># In `main` function, after `config.include(&quot;c2cgeoportal_geoportal&quot;)`</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_organization_role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_role&quot;</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_organization_interface</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_interface&quot;</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_organization_print_url</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_print_url&quot;</span><span class="p">)</span>
+<span class="c1"># In ``main`` function, after ``config.include(&quot;c2cgeoportal_geoportal&quot;)``</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
+        <span class="n">get_organization_role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_role&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
+        <span class="n">get_organization_interface</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_interface&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
+        <span class="n">get_organization_print_url</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_print_url&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="vars-yaml">
-<h2><cite>vars.yaml</cite><a class="headerlink" href="#vars-yaml" title="Permalink to this headline">¶</a></h2>
-<p>In the file <cite>geoportal/vars.yaml</cite> add the following in interfaces the <cite>interfaces_config</cite>:</p>
+<h2><code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code><a class="headerlink" href="#vars-yaml" title="Permalink to this headline">¶</a></h2>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> add the following in interfaces the <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">org1-desktop</span><span class="p">:</span>
     <span class="nt">extends</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
     <span class="nt">redirect_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mobile</span>
+    <span class="nt">lang_urls_suffix</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-org1</span>
     <span class="nt">constants</span><span class="p">:</span>
         <span class="l l-Scalar l-Scalar-Plain">...</span>
 <span class="nt">org1-mobile</span><span class="p">:</span>
     <span class="nt">extends</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mobile</span>
     <span class="nt">redirect_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
+    <span class="nt">lang_urls_suffix</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-org1</span>
     <span class="nt">constants</span><span class="p">:</span>
         <span class="l l-Scalar l-Scalar-Plain">...</span>
 <span class="nt">org2-desktop</span><span class="p">:</span>
     <span class="nt">extends</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
     <span class="nt">redirect_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mobile</span>
+    <span class="nt">lang_urls_suffix</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-org2</span>
     <span class="nt">constants</span><span class="p">:</span>
         <span class="l l-Scalar l-Scalar-Plain">...</span>
 <span class="nt">org2-mobile</span><span class="p">:</span>
     <span class="nt">extends</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mobile</span>
     <span class="nt">redirect_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
+    <span class="nt">lang_urls_suffix</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-org2</span>
     <span class="nt">constants</span><span class="p">:</span>
         <span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
@@ -111,7 +118,7 @@ see <cite>cssVars</cite> in <cite>gmfOptions</cite> in the ngeo GMF constants de
 <div class="section" id="roles">
 <h2>Roles<a class="headerlink" href="#roles" title="Permalink to this headline">¶</a></h2>
 <p>The following roles should be created and completed as needed
-(the original roles ‘anonymous’, ‘registered’ and ‘intranet’ are no more used):</p>
+(the original roles <code class="docutils literal notranslate"><span class="pre">anonymous</span></code>, <code class="docutils literal notranslate"><span class="pre">registered</span></code> and <code class="docutils literal notranslate"><span class="pre">intranet</span></code> are no more used):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">org1</span><span class="o">-</span><span class="n">anonymous</span>
 <span class="o">-</span> <span class="n">org1</span><span class="o">-</span><span class="n">registered</span>
 <span class="o">-</span> <span class="n">org1</span><span class="o">-</span><span class="n">intranet</span>
@@ -121,9 +128,67 @@ see <cite>cssVars</cite> in <cite>gmfOptions</cite> in the ngeo GMF constants de
 </pre></div>
 </div>
 </div>
+<div class="section" id="internationalization">
+<h2>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this headline">¶</a></h2>
+<p>For each organization, a set of localization file should be created.</p>
+<p>The general workflow is:</p>
+<ul class="simple">
+<li><p>The integrator performs <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">update-client-po</span></code>.</p></li>
+<li><p>This will run one <code class="docutils literal notranslate"><span class="pre">update-po</span></code> script for each organization with different environment variables.</p></li>
+<li><p>The result is one po file set for each organization with the defined suffix.</p></li>
+<li><p>The integrator needs to complete the po files with translations.</p></li>
+<li><p>When the config Docker image is built, all po files are automatically converted to JSON files
+with the same suffix.</p></li>
+<li><p>At runtime, the <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> view will return the appropriate URLs for the translations.</p></li>
+</ul>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>Add this rule in the <code class="docutils literal notranslate"><span class="pre">geoportal/Makefile</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.PHONY: update-client-po
+update-client-po:
+    # Generate po file for org1
+    cd .. &amp;&amp; SUFFIX=-org1 INTERFACES=desktop-org1,mobile-org1 \
+        update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+    # Generate po file for org2
+    cd .. &amp;&amp; SUFFIX=-org2 INTERFACES=desktop-org2,mobile-org2 \
+        update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+
+    # Example with all environment variables
+    cd .. &amp;&amp; \
+        SUFFIX=-test \
+        INTERFACES=desktop-test,mobile-test \
+        THEME_REGEX=.*-test \
+        GROUP_REGEX=.*-test \
+        WMSLAYER_REGEX=.*-test \
+        WMTSLAYER_REGEX=.*-test \
+        update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+</pre></div>
+</div>
+<p>The environment variables that are used by the <code class="docutils literal notranslate"><span class="pre">update-po</span></code> command are the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACES</span></code>: List of interfaces we want to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THEME_REGEX</span></code>: Regular expression used to filter the themes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP_REGEX</span></code>: Regular expression used to filter the layer groups.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WMSLAYER_REGEX</span></code>: Regular expression used to filter the WMS layers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WMTSLAYER_REGEX</span></code>: Regular expression used to filter the WMTS layers.</p></li>
+</ul>
+</div></blockquote>
+<p>Note that the extractor is able to filter themes and layers based on the given interfaces but there is no
+link between layer groups and interfaces.</p>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> to create all the needed localization JSON files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="s2">&quot;&lt;package&gt;&quot;</span>
+<span class="o">+</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org1</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org2</span> <span class="s2">&quot;&lt;package&gt;&quot;</span>
+</pre></div>
+</div>
+<p>When loading the frontend, the <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> view will return the appropriate localization URLs based on the
+<code class="docutils literal notranslate"><span class="pre">lang_urls_suffix</span></code> defined in the corresponding interface (in <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>).
+See the definition above.</p>
+</div>
+</div>
 <div class="section" id="warning">
 <h2>Warning<a class="headerlink" href="#warning" title="Permalink to this headline">¶</a></h2>
-<p>With that, one user of the org1 can login to the organization org2 and will have the ‘registered’ rights.</p>
+<p>With that, one user of the org1 can login to the organization org2 and will have the <code class="docutils literal notranslate"><span class="pre">registered</span></code> rights.</p>
 </div>
 </div>
 
