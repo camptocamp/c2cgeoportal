@@ -113,6 +113,14 @@ then
     create ${WORKSPACE}/v240 2.4.0
     docker rmi camptocamp/geomapfish-tools:2.6.0
     docker rmi camptocamp/geomapfish-build:2.4.0
+
+    cd ${WORKSPACE}/ref/testgeomapfish
+    mv ci/config.yaml{,_}
+    c2cciutils-checks --fix --check=black
+    c2cciutils-checks --fix --check=isort
+    c2cciutils-checks --fix --check=prettier
+    mv ci/config.yaml{_,}
+    cd -
 fi
 
 if [ "$1" = "240" ]

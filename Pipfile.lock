@@ -1304,13 +1304,6 @@
         }
     },
     "develop": {
-        "appdirs": {
-            "hashes": [
-                "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41",
-                "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"
-            ],
-            "version": "==1.4.4"
-        },
         "astroid": {
             "hashes": [
                 "sha256:dcc06f6165f415220013801642bd6c9808a02967070919c4b746c6864c205471",
@@ -1368,11 +1361,11 @@
         },
         "black": {
             "hashes": [
-                "sha256:1c7aa6ada8ee864db745b22790a32f94b2795c253a75d6d9b5e439ff10d23116",
-                "sha256:c8373c6491de9362e39271630b65b964607bc5c79c83783547d76c839b3aa219"
+                "sha256:380f1b5da05e5a1429225676655dddb96f5ae8c75bdf91e53d798871b902a115",
+                "sha256:7de4cfc7eb6b710de325712d40125689101d21d25283eed7e9998722cf10eb91"
             ],
             "markers": "python_full_version >= '3.6.2'",
-            "version": "==21.7b0"
+            "version": "==21.9b0"
         },
         "bleach": {
             "hashes": [
@@ -1392,10 +1385,10 @@
         },
         "c2cciutils": {
             "hashes": [
-                "sha256:7facf85793c996b92cee9e0fdf451e1b1d2fc185be219e0916ee5c5a1fdfef58"
+                "sha256:7c44f1e86f8a6b4e533bd915976eb5a690b8b2de7fbb123109c90d0b9e3054a7"
             ],
             "index": "pypi",
-            "version": "==1.1.dev20210810100526"
+            "version": "==1.1.dev20210921153209"
         },
         "cachetools": {
             "hashes": [
@@ -2456,11 +2449,11 @@
         },
         "ruamel.yaml": {
             "hashes": [
-                "sha256:106bc8d6dc6a0ff7c9196a47570432036f41d556b779c6b4e618085f57e39e67",
-                "sha256:ffb9b703853e9e8b7861606dfdab1026cf02505bade0653d1880f4b2db47f815"
+                "sha256:1a771fc92d3823682b7f0893ad56cb5a5c87c48e62b5399d6f42c8759a583b33",
+                "sha256:ea21da1198c4b41b8e7a259301cc9710d3b972bf8ba52f06218478e6802dd1f1"
             ],
             "markers": "python_version >= '3'",
-            "version": "==0.17.10"
+            "version": "==0.17.16"
         },
         "ruamel.yaml.clib": {
             "hashes": [

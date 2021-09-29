@@ -76,9 +76,11 @@ git config user.name CI
 git remote add origin . # add a fake remote
 git add --all
 
+mv ci/config.yaml{,_}
 c2cciutils-checks --fix --check=isort
 c2cciutils-checks --fix --check=black
 c2cciutils-checks --fix --check=prettier
+mv ci/config.yaml{_,}
 
 git diff
 git add --all
