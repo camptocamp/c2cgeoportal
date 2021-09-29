@@ -117,6 +117,7 @@ class DynamicView:
             raise HTTPNotFound("Interface {} doesn't exists in the 'interfaces_config'.")
 
         interface_config = self.interfaces_config[interface_name]
+        lang_urls_suffix = interface_config.get("lang_urls_suffix", "")
 
         dynamic = {
             "interface": interface_name,
@@ -124,7 +125,7 @@ class DynamicView:
             "two_factor": self.request.registry.settings.get("authentication", {}).get("two_factor", False),
             "lang_urls": {
                 lang: self.request.static_url(
-                    "/etc/geomapfish/static/{lang}.json".format(lang=lang),
+                    f"/etc/geomapfish/static/{lang}{lang_urls_suffix}.json",
                 )
                 for lang in self.request.registry.settings["available_locale_names"]
             },

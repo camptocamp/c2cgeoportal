@@ -408,10 +408,22 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
                     Theme,
                 )
 
-                self._import(Theme, messages)
-                self._import(LayerGroup, messages)
-                self._import(LayerWMS, messages, self._import_layer_wms)
-                self._import(LayerWMTS, messages, self._import_layer_wmts)
+                self._import(Theme, messages, name_regex=os.environ.get("THEME_REGEX", ".*"))
+                self._import(
+                    LayerGroup, messages, name_regex=os.environ.get("GROUP_REGEX", ".*"), has_interfaces=False
+                )
+                self._import(
+                    LayerWMS,
+                    messages,
+                    self._import_layer_wms,
+                    name_regex=os.environ.get("WMSLAYER_REGEX", ".*"),
+                )
+                self._import(
+                    LayerWMTS,
+                    messages,
+                    self._import_layer_wmts,
+                    name_regex=os.environ.get("WMTSLAYER_REGEX", ".*"),
+                )
 
                 for (layer_name,) in db_session.query(FullTextSearch.layer_name).distinct().all():
                     if layer_name is not None and layer_name != "":
@@ -480,23 +492,32 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
         return messages
 
     @staticmethod
-    def _import(object_type, messages, callback=None):
+    def _import(object_type, messages, callback=None, has_interfaces=True, name_regex=".*"):
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
 
-        items = DBSession.query(object_type)
-        for item in items:
+        filter_re = re.compile(name_regex)
+
+        query = DBSession.query(object_type)
+
+        if has_interfaces and "INTERFACES" in os.environ:
+            interfaces = os.environ["INTERFACES"].split(",")
+            query.join(object_type.interface).filter(Interface.name in interfaces)
+
+        for item in query.all():
             assert item.name is not None
-            messages.append(
-                Message(
-                    None,
-                    item.name,
-                    None,
-                    [],
-                    "",
-                    "",
-                    (item.item_type, item.name.encode("ascii", errors="replace")),
+            if filter_re.match(item.name):
+                messages.append(
+                    Message(
+                        None,
+                        item.name,
+                        None,
+                        [],
+                        "",
+                        "",
+                        (item.item_type, item.name.encode("ascii", errors="replace")),
+                    )
                 )
-            )
 
             if callback is not None:
                 callback(item, messages)

@@ -93,7 +93,7 @@ update-server-po: $(PO_FILES)
 
 .PHONY: update-client-po
 update-client-po:
-	cd .. && update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+	cd .. && SUFFIX= update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
 
 .PHONY: update-po
 update-po: update-server-po update-client-po
