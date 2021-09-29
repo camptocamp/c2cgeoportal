@@ -280,10 +280,24 @@ there is no port specified, that suffix will be stripped off and the
 number interpreted as the port number to use.</p>
 <p>Replace the <code class="docutils literal notranslate"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.</p>
 </section>
+<section id="security-update">
+<h2>Security update<a class="headerlink" href="#security-update" title="Permalink to this headline">¶</a></h2>
+<p>To be sure that we regularly get the security updates, every night the GeoMapFish Docker images are rebuild.
+And every time we do a build we pull the new images to use them.</p>
+<p>For project on Kubernetes we also deploy fresh built images every day.</p>
+<p>This is good for security but with that we can’t guarantee that the result of a new build works exactly
+as the previous one.</p>
+<p>To avoid incidents on production service, Kubernetes will publish a service only if he start correctly.
+we are on docker-compose we have to choose ourself. The best is to build the image only on
+integration when the result is correct we push it on a repository, and on production we will use the
+images from the repository. The other solution is to use fixed tag for the base image, this imply that we
+should do a minor update of the application to get the security fix. To do that you should set
+in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file the parameter <code class="docutils literal notranslate"><span class="pre">unsafe_long_version</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</section>
 <section id="access-to-wms-getcapability">
 <h2>Access to WMS GetCapability<a class="headerlink" href="#access-to-wms-getcapability" title="Permalink to this headline">¶</a></h2>
 <p>Set <code class="docutils literal notranslate"><span class="pre">hide_capabilities</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> to disable
-the WMS GetCapability when accessing the Mapserver proxy (mapserverproxy).</p>
+the WMS GetCapability when accessing the MapServer proxy (mapserverproxy).</p>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </section>
 <section id="access-to-the-admin-interface">
