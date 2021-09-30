@@ -244,3 +244,21 @@ class TemplateUpdate(BaseTemplate):
         fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"), True)
 
         super().post(command, output_dir, vars_)
+
+
+class TemplateAdvanceCreate(TemplateCreate):
+    """
+    The create template for advance application.
+
+    Not used on application update but is copied in the CONST_create_template folder of the update template.
+    """
+
+    _template_dir = "advance_create"
+    summary = "Template used to create a advance c2cgeoportal project"
+
+
+class TemplateAdvanceUpdate(TemplateUpdate):
+    """The update template for advance application."""
+
+    _template_dir = "advance_update"
+    summary = "Template used to update a advance c2cgeoportal project"

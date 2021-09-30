@@ -29,7 +29,9 @@ DOCKER_RUN_ENV_ARGS="--env=SRID=2056 --env=EXTENT=2489246.36,1078873.44,2837119.
 DOCKER_RUN_ARGS="--volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-tools:${TAG}"
 PCREATE_CMD="run $(id -u) $(id -g) /src pcreate --ignore-conflicting-name --overwrite ${PACKAGE}"
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_create
+docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_advance_create
 docker run --rm ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
+docker run --rm ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_advance_update
 
 if [ $BASE_APP != true ]
 then
@@ -45,6 +47,8 @@ then
 fi
 
 cd ${WORKSPACE}/${PACKAGE}
+sed -i 's/service: geoportal/\0-advance/g' docker-compose.yaml
+sed -i 's/service: alembic/\0-advance/g' docker-compose.yaml
 echo 'PGHOST=db' >> env.project
 echo 'PGHOST_SLAVE=db' >> env.project
 echo 'PGPORT=5432' >> env.project

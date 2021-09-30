@@ -9,7 +9,8 @@ ADMIN_SRC_FILES = $(shell ls -1 commons/c2cgeoportal_commons/models/*.py 2> /dev
 	$(shell find admin/c2cgeoportal_admin/templates/widgets -name "*.pt" -print 2> /dev/null)
 
 APPS += desktop mobile iframe_api
-APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal
+STATIC_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static
+APPS_PACKAGE_PATH = geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/geoportal/+package+_geoportal
 APPS_HTML_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS)))
 APPS_JS_FILES = $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS)))
 APPS_SASS_FILES += $(addprefix $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(filter-out iframe_api, $(APPS))))
@@ -19,34 +20,31 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) $(APPS_SASS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/background-layer-button.png \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.png \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg \
-	$(APPS_PACKAGE_PATH)/static/images/favicon.ico
+	$(STATIC_PATH)/images/favicon.ico
 
 APPS_ALT += desktop_alt mobile_alt oeedit
-APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/geoportal/+package+_geoportal
+APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/CONST_create_template/geoportal/+package+_geoportal
 APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
 APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))
 APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/, $(addsuffix .scss, $(APPS_ALT)))
 APPS_SASS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_, $(addsuffix .scss, $(APPS_ALT)))
 APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(APPS_SASS_FILES_ALT)
 
-API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static/apihelp
+API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(STATIC_PATH)/apihelp
 
 include dependencies.mk
-
-.PHONY: dependencies-touch
-dependencies-touch:
-	touch $(TRANSIFEX_PO_FILES)
 
 .PHONY: build
 build: \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \
+	geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/CONST_create_template/ \
 	$(APPS_FILES_ALT) \
 	$(MO_FILES)
 
 # Import ngeo templates
 
 .PHONY: import-ngeo-apps
-import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT) $(APPS_PACKAGE_PATH)/static/header.html
+import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT) $(STATIC_PATH)/header.html
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs_tmpl: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	mkdir --parent $(dir $@)
@@ -90,11 +88,11 @@ $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: /usr/lib/node_modu
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static/header.html:  /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/header.html
+$(STATIC_PATH)/header.html:  /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/header.html
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static/images/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
+$(STATIC_PATH)/images/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
@@ -113,7 +111,7 @@ $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: /usr/lib/node_modules/ngeo/api/src
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
+$(STATIC_PATH)/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
 	rm --recursive --force $@
 	cp -r $< $@
 	mv $@/apihelp.html $@/index.html.tmpl_tmpl
@@ -131,9 +129,16 @@ $(APPS_PACKAGE_PATH)/static/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
 geoportal/c2cgeoportal_geoportal/scaffolds%update/CONST_create_template/: \
 		geoportal/c2cgeoportal_geoportal/scaffolds%create/ \
 		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES))) \
-		$(API_FILES) \
+		$(STATIC_PATH)/header.html \
+		$(STATIC_PATH)/apihelp
+	rm -rf $@ || true
+	cp -r $< $@
+
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%advance_update/CONST_create_template/
+geoportal/c2cgeoportal_geoportal/scaffolds%advance_update/CONST_create_template/: \
+		geoportal/c2cgeoportal_geoportal/scaffolds%advance_create/ \
 		$(APPS_FILES) \
-		$(APPS_PACKAGE_PATH)/static/header.html
+		$(APPS_PACKAGE_PATH)/static-ngeo/api/api.css
 	rm -rf $@ || true
 	cp -r $< $@
 

@@ -19,8 +19,24 @@ Information
    Then the configuration file  (`qgisserver/accesscontrol_config.yaml`) and the specified configuration
    in the `docker-compose.yaml` file can be removed.
 
+3. Now the simple application is the default mode for new project, to continue with the advance application
+   mode you also should:
+
+   Add an attribute ``advance: true`` in your ``project.yaml`` file before starting the upgrade.
+
+   In the ``docker-compose.yaml`` file in the service ``geoportal`` you should replace
+   ``service: geoportal`` by ``service: geoportal-advance``, and in service ``alembic`` you should replace
+   ``service: alembic`` by ``service: alembic-advance``.
+
 Changes to apply
 ================
+
+1. for advance application:
+
+   In the ``docker-compose.yaml`` file in the service ``geoportal`` you should replace
+   ``service: geoportal`` by ``service: geoportal-advance``, and in service ``alembic`` you should replace
+   ``service: alembic`` by ``service: alembic-advance``.
+
 
 =============
 Version 2.6.0

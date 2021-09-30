@@ -8,6 +8,8 @@ services:
     environment:
       - TEST=%
       - test=1234
+    volumes:
+      - ./geoportal/ci/:/app/ci/
 
   qgisserver:
     extends:
