@@ -26,23 +26,90 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import glob
+import logging
+
 import pyramid.request
 import pyramid.response
-from pyramid.httpexceptions import HTTPFound
+from lingua.extract import (  # strip_linenumbers,
+    ExtractorOptions,
+    POEntry,
+    create_catalog,
+    find_file,
+    list_files,
+    no_duplicates,
+    read_config,
+)
+from lingua.extractors import get_extractor, register_extractors
+from lingua.extractors.babel import register_babel_plugins
+from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
+LOG = logging.getLogger(__name__)
+_INITIALIZED = False
 
-@view_config(route_name="localejson")  # type: ignore
-def locale(request: pyramid.request.Request) -> pyramid.response.Response:
-    """View to get the local json files."""
-    response = HTTPFound(
-        request.static_url(
-            f"/etc/geomapfish/static/{request.locale_name}.json",
-            _query={"cache": get_cache_version()},
-        )
+
+@view_config(route_name="localepot")  # type: ignore
+def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
+    """Get the pot from an HTTP request."""
+
+    # Build the list of files to be processed
+    sources = []
+    sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/apps/*.html.ejs")
+    sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/**/*.js", recursive=True)
+    sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/**/*.html", recursive=True)
+    sources += glob.glob("/usr/local/tomcat/webapps/ROOT/**/config.yaml", recursive=True)
+    sources += ["/etc/geomapfish/config.yaml", "/app/development.ini"]
+
+    # The following code is a modified version of the main function of this file:
+    # https://github.com/wichert/lingua/blob/master/src/lingua/extract.py
+
+    global _INITIALIZED
+    if not _INITIALIZED:
+        register_extractors()
+        register_babel_plugins()
+        _INITIALIZED = True
+
+        with open("/app/lingua-client.cfg", encoding="utf-8") as config_file:
+            read_config(config_file)
+        _INITIALIZED = True
+
+    catalog = create_catalog(
+        width=110,
+        copyright_holder="",
+        package_name="GeoMapFish-project",
+        package_version="1.0",
+        msgid_bugs_address=None,
     )
-    set_common_headers(request, "api", Cache.PUBLIC, response=response)
-    return response
+
+    for filename in no_duplicates(list_files(None, sources)):
+        real_filename = find_file(filename)
+        if real_filename is None:
+            LOG.error("Can not find file %s", filename)
+            raise HTTPInternalServerError(f"Can not find file {filename}")
+        extractor = get_extractor(real_filename)
+        if extractor is None:
+            LOG.error("No extractor available for file %s", filename)
+            raise HTTPInternalServerError(f"No extractor available for file {filename}")
+
+        extractor_options = ExtractorOptions(
+            comment_tag=True,
+            domain=None,
+            keywords=None,
+        )
+        for message in extractor(real_filename, extractor_options):
+            entry = catalog.find(message.msgid, msgctxt=message.msgctxt)
+            if entry is None:
+                entry = POEntry(msgctxt=message.msgctxt, msgid=message.msgid)
+                catalog.append(entry)
+            entry.update(message)
+
+    # for entry in catalog:
+    #     strip_linenumbers(entry)
+
+    # Build the response
+    request.response.text = catalog.__unicode__()
+    set_common_headers(request, "api", Cache.PUBLIC, content_type="text/x-gettext-translation")
+    return request.response

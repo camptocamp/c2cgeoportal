@@ -542,6 +542,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_renderer(".css", AssetRendererFactory)
     config.add_renderer(".ico", AssetRendererFactory)
     config.add_route("localejson", "/locale.json", request_method="GET")
+    config.add_route("localepot", "/locale.pot", request_method="GET")
 
     def add_static_route(name: str, attr: str, path: str, renderer: str) -> None:
         config.add_route(name, path, request_method="GET")
