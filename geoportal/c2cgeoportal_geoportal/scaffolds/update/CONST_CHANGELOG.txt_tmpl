@@ -252,6 +252,14 @@ Minor updates:
 * webpack from 4.30.0 to 4.42.1
 * webpack-dev-server from 3.3.1 to 3.11.0
 
+Application build
+.................
+
+In the new version the build of the application becomes more Docker friendly.
+We didn't anymore have a build container that builds files in the local filesystem, now everything is done
+in Docker. The only thing that runs out of docker is the `build` script (that needs Python 3.x) which runs
+some `docker build`, and `docker-compose` commands.
+
 Information
 -----------
 
