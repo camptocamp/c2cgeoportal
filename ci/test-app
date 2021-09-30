@@ -41,6 +41,7 @@ ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project 'http://qgis
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure 'https://front/dynamic.json?interface=desktop&query=&path=%2F'
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/static-geomapfish/0/locales/fr.json
+ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/locale.pot | grep msgid
 docker-compose stop qgisserver
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base

@@ -671,3 +671,23 @@ Where ``<geomA>`` is a GeoJSON geometry to extrude,
 and the ``<geomB>`` is the geometry used to do the extrude.
 
 Result: the new ``GeoJSON`` geometry.
+
+
+Localization pot
+================
+
+This service create and return the pot needed for the localization.
+
+URL: ``.../locale.pot``
+
+Method: ``GET``
+
+Parameters
+~~~~~~~~~~
+
+ - ``INTERFACES``: List of interfaces we want to use.
+ - ``THEME_REGEX``: Regular expression used to filter the themes.
+ - ``GROUP_REGEX``: Regular expression used to filter the layer groups.
+ - ``WMSLAYER_REGEX``: Regular expression used to filter the WMS layers.
+ - ``WMTSLAYER_REGEX``: Regular expression used to filter the WMTS layers.
+ - ``IGNORE_I18N_ERRORS``: ``TRUE`` to ignore most of the error expected during the extraction.

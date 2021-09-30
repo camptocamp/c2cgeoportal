@@ -59,7 +59,7 @@ To update your ``po`` files, you should proceed as follows.
 
 .. note::
 
-   In MapFiles, attributes added by mapserver substitution will not be collected
+   In Mapfiles, attributes added by MapServer substitution will not be collected
    for translation.
 
 ~~~~~~~~~~~~~~~~~~~~~~

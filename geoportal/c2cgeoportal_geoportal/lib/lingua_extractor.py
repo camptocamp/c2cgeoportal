@@ -63,6 +63,27 @@ if TYPE_CHECKING:
     from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports,useless-suppression
 
 
+CONFIG: Dict[str, str] = {}
+
+
+def _get_config(key: str, default: Optional[str] = None) -> Optional[str]:
+    """
+    Get the config.
+
+    Passet throw environment variable for the command line,
+    or throw the query string on HTTP request.
+    """
+    if key in CONFIG:
+        return CONFIG[key]
+    return os.environ.get(key, default)
+
+
+def _get_config_str(key: str, default: str) -> str:
+    result = _get_config(key, default)
+    assert result is not None
+    return result
+
+
 class _Registry:
     settings = None
 
@@ -174,7 +195,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                 except Exception:
                     print(colorize(f"ERROR! Occurred during the '{filename}' template generation", Color.RED))
                     print(colorize(traceback.format_exc(), Color.RED))
-                    if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
+                    if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                         # Continue with the original one
                         int_filename = filename
                     else:
@@ -199,6 +220,46 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
             print(colorize(message_str, Color.RED))
             print("------")
             raise
+
+
+def init_db(settings: Dict[str, Any]) -> None:
+    """
+    Initialise the database.
+
+    First test the connection, on wen environment it should be OK, with the command line we should get
+    an exception ind initialise the connection.
+    """
+
+    try:
+        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import Theme  # pylint: disable=import-outside-toplevel
+
+        session = DBSession()
+        session.query(Theme).count()
+    except:  # pylint: disable=bare-except
+
+        # Init db sessions
+
+        class R:
+            settings: Dict[str, Any] = {}
+
+        class C:
+            registry = R()
+
+            def get_settings(self) -> Dict[str, Any]:
+                return self.registry.settings
+
+            def add_tween(self, *args: Any, **kwargs: Any) -> None:
+                pass
+
+        config_ = C()
+        config_.registry.settings = settings
+
+        c2cgeoportal_geoportal.init_db_sessions(settings, config_)
+        engine = sqlalchemy.engine_from_config(settings, "sqlalchemy_slave.")
+        factory = sqlalchemy.orm.sessionmaker(bind=engine)
+        c2cgeoportal_commons.models.DBSession = sqlalchemy.orm.scoped_session(factory)
+        c2cgeoportal_commons.models.Base.metadata.bind = engine
 
 
 class GeomapfishConfigExtractor(Extractor):  # type: ignore
@@ -239,28 +300,14 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             for raster_layer in list(settings.get("raster", {}).keys())
         ]
 
-        # Init db sessions
-
-        class R:
-            settings: Dict[str, Any] = {}
-
-        class C:
-            registry = R()
-
-            def get_settings(self) -> Dict[str, Any]:
-                return self.registry.settings
-
-            def add_tween(self, *args: Any, **kwargs: Any) -> None:
-                pass
-
-        config_ = C()
-        config_.registry.settings = settings
-
-        c2cgeoportal_geoportal.init_db_sessions(settings, config_)
+        init_db(settings)
 
         # Collect layers enum values (for filters)
 
-        from c2cgeoportal_commons.models import DBSessions  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            DBSessions,
+        )
         from c2cgeoportal_commons.models.main import Metadata  # pylint: disable=import-outside-toplevel
 
         enums = []
@@ -285,9 +332,6 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         names = [e["name"] for e in defs if e.get("translate", False)]
 
         if names:
-            engine = sqlalchemy.create_engine(config["sqlalchemy.url"])
-            DBSession = sqlalchemy.orm.session.sessionmaker()  # noqa: disable=N806
-            DBSession.configure(bind=engine)
             session = DBSession()
 
             query = session.query(Metadata).filter(Metadata.name.in_(names))
@@ -346,7 +390,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                     Color.RED,
                 )
             )
-            if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
+            if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                 return []
             raise
 
@@ -400,11 +444,10 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         messages: List[Message] = []
 
         try:
-            engine = sqlalchemy.engine_from_config(self.config, "sqlalchemy_slave.")
-            factory = sqlalchemy.orm.sessionmaker(bind=engine)
-            db_session = sqlalchemy.orm.scoped_session(factory)
-            c2cgeoportal_commons.models.DBSession = db_session
-            c2cgeoportal_commons.models.Base.metadata.bind = engine
+            init_db(self.config)
+            from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+
+            db_session = DBSession()
 
             try:
                 from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
@@ -415,21 +458,24 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     Theme,
                 )
 
-                self._import(Theme, messages, name_regex=os.environ.get("THEME_REGEX", ".*"))
+                self._import(Theme, messages, name_regex=_get_config_str("THEME_REGEX", ".*"))
                 self._import(
-                    LayerGroup, messages, name_regex=os.environ.get("GROUP_REGEX", ".*"), has_interfaces=False
+                    LayerGroup,
+                    messages,
+                    name_regex=_get_config_str("GROUP_REGEX", ".*"),
+                    has_interfaces=False,
                 )
                 self._import(
                     LayerWMS,
                     messages,
                     self._import_layer_wms,
-                    name_regex=os.environ.get("WMSLAYER_REGEX", ".*"),
+                    name_regex=_get_config_str("WMSLAYER_REGEX", ".*"),
                 )
                 self._import(
                     LayerWMTS,
                     messages,
                     self._import_layer_wmts,
-                    name_regex=os.environ.get("WMTSLAYER_REGEX", ".*"),
+                    name_regex=_get_config_str("WMTSLAYER_REGEX", ".*"),
                 )
 
                 for (layer_name,) in db_session.query(FullTextSearch.layer_name).distinct().all():
@@ -471,7 +517,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     )
                 )
                 print(colorize(e, Color.RED))
-                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+                if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
         except NoSuchTableError as e:
             print(
@@ -482,7 +528,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 )
             )
             print(colorize(e, Color.RED))
-            if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+            if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
         except OperationalError as e:
             print(
@@ -493,7 +539,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 )
             )
             print(colorize(e, Color.RED))
-            if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+            if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
 
         return messages
@@ -513,9 +559,9 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
         query = DBSession.query(object_type)
 
-        if has_interfaces and "INTERFACES" in os.environ:
-            interfaces = os.environ["INTERFACES"].split(",")
-            query.join(object_type.interface).filter(Interface.name in interfaces)
+        interfaces = _get_config("INTERFACES")
+        if has_interfaces and interfaces is not None:
+            query.join(object_type.interface).filter(Interface.name in interfaces.split("."))
 
         for item in query.all():
             assert item.name is not None
@@ -579,7 +625,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     )
                 )
                 print(colorize(traceback.format_exc(), Color.RED))
-                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+                if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
     def _import_layer_wmts(self, layer: "main.Layer", messages: List[str]) -> None:
@@ -611,7 +657,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                             Color.RED,
                         )
                     )
-                    if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+                    if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
 
     def _import_layer_attributes(
@@ -712,7 +758,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     )
                     print(colorize(str(e), Color.RED))
                     print(f"URL: {wms_getcap_url}\nxml:\n{response.text}")
-                    if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+                    if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
             except Exception as e:
                 print(colorize(str(e), Color.RED))
@@ -729,16 +775,16 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         Color.RED,
                     )
                 )
-                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+                if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
-        wmscap = self.wms_capabilities_cache[url]
+        wms_capabilities = self.wms_capabilities_cache[url]
 
         if url not in self.featuretype_cache:
             print(f"Get WFS DescribeFeatureType for URL: {url_obj}")
             self.featuretype_cache[url] = None
 
-            wfs_descrfeat_url = (
+            wfs_describe_feature_url = (
                 url_obj.clone()
                 .add_query(
                     {
@@ -752,28 +798,28 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 .url()
             )
             try:
-                response = requests.get(wfs_descrfeat_url, headers=headers, **kwargs)
+                response = requests.get(wfs_describe_feature_url, headers=headers, **kwargs)
             except Exception as e:
                 print(colorize(str(e), Color.RED))
                 print(
                     colorize(
-                        f"ERROR! Unable to DescribeFeatureType from URL: {wfs_descrfeat_url}",
+                        f"ERROR! Unable to DescribeFeatureType from URL: {wfs_describe_feature_url}",
                         Color.RED,
                     )
                 )
-                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
+                if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 raise
 
             if not response.ok:
                 print(
                     colorize(
-                        f"ERROR! DescribeFeatureType from URL {wfs_descrfeat_url} return the error: "
+                        f"ERROR! DescribeFeatureType from URL {wfs_describe_feature_url} return the error: "
                         f"{response.status_code:d} {response.reason}",
                         Color.RED,
                     )
                 )
-                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
+                if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 raise Exception("Aborted")
 
@@ -793,8 +839,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     )
                 )
                 print(colorize(str(e), Color.RED))
-                print(f"URL: {wfs_descrfeat_url}\nxml:\n{response.text}")
-                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
+                print(f"URL: {wfs_describe_feature_url}\nxml:\n{response.text}")
+                if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 raise
             except AttributeError:
@@ -805,8 +851,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         Color.RED,
                     )
                 )
-                print(f"URL: {wfs_descrfeat_url}\nxml:\n{response.text}")
-                if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
+                print(f"URL: {wfs_describe_feature_url}\nxml:\n{response.text}")
+                if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
                 raise
         else:
@@ -816,8 +862,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             return [], []
 
         layers: List[str] = [layer]
-        if wmscap is not None and layer in list(wmscap.contents):
-            layer_obj = wmscap[layer]
+        if wms_capabilities is not None and layer in list(wms_capabilities.contents):
+            layer_obj = wms_capabilities[layer]
             if layer_obj.layers:
                 layers = [layer.name for layer in layer_obj.layers]
 
