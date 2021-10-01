@@ -48,24 +48,20 @@ class Entry:
         _ = self.request.translate
         return {"title": _("title i18n")}
 
-    def get_ngeo_index_vars(self) -> Dict[str, Any]:
-        set_common_headers(self.request, "index", Cache.NO, content_type="text/html")
-        return {}
-
     def apijs(self) -> Dict[str, Any]:
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/javascript")
         return {}
 
     def favicon(self) -> Dict[str, Any]:
-        set_common_headers(self.request, "index", Cache.NO, content_type="image/vnd.microsoft.icon")
+        set_common_headers(self.request, "index", Cache.PUBLIC, content_type="image/vnd.microsoft.icon")
         return {}
 
     def robot_txt(self) -> Dict[str, Any]:
-        set_common_headers(self.request, "index", Cache.NO, content_type="text/plain")
+        set_common_headers(self.request, "index", Cache.PUBLIC, content_type="text/plain")
         return {}
 
     def apijsmap(self) -> Dict[str, Any]:
-        set_common_headers(self.request, "api", Cache.NO, content_type="application/octet-stream")
+        set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/octet-stream")
         return {}
 
     def apicss(self) -> Dict[str, Any]:
@@ -73,5 +69,5 @@ class Entry:
         return {}
 
     def apihelp(self) -> Dict[str, Any]:
-        set_common_headers(self.request, "apihelp", Cache.NO)
+        set_common_headers(self.request, "apihelp", Cache.PUBLIC)
         return {}

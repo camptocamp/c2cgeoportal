@@ -314,7 +314,7 @@ def add_cors_route(config: pyramid.config.Configurator, pattern: str, service: s
     """
 
     def view(request: pyramid.request.Request) -> pyramid.response.Response:
-        return set_common_headers(request, service, Cache.NO)
+        return set_common_headers(request, service, Cache.PRIVATE_NO)
 
     name = pattern + "_options"
     config.add_route(name, pattern, request_method="OPTIONS")
@@ -328,7 +328,7 @@ def error_handler(
     View callable for handling all the exceptions that are not already handled.
     """
     LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
-    return caching.set_common_headers(request, "error", caching.Cache.NO, http_exception)
+    return caching.set_common_headers(request, "error", caching.Cache.PRIVATE_NO, http_exception)
 
 
 def call_hook(settings: pyramid.config.Configurator, name: str, *args: Any, **kwargs: Any) -> None:

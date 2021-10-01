@@ -176,5 +176,5 @@ class DynamicView:
                 else:
                     constants["redirectUrl"] = no_redirect_url
 
-        set_common_headers(self.request, "dynamic", Cache.NO)
+        set_common_headers(self.request, "dynamic", Cache.PUBLIC_NO)
         return {"constants": constants, "doRedirect": do_redirect, "redirectUrl": url}

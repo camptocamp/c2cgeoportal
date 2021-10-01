@@ -43,5 +43,5 @@ def locale(request: pyramid.request.Request) -> pyramid.response.Response:
             _query={"cache": get_cache_version()},
         )
     )
-    set_common_headers(request, "api", Cache.NO, response=response)
+    set_common_headers(request, "api", Cache.PUBLIC, response=response)
     return response

@@ -136,7 +136,7 @@ class TestLoginView(TestCase):
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
         assert response.headers["Vary"] == "Origin"
-        assert response.headers["Cache-Control"] == "max-age=0, no-cache, no-store"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600

@@ -98,7 +98,7 @@ class Raster:
         for ref in list(rasters.keys()):
             result[ref] = self._get_raster_value(rasters[ref], ref, lon, lat)
 
-        set_common_headers(self.request, "raster", Cache.NO)
+        set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
         return result
 
     def _get_data(self, layer: Dict[str, Any], name: str) -> "fiona.collection.Collection":

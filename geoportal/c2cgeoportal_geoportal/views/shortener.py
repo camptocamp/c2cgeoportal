@@ -64,7 +64,7 @@ class Shortener:
         short_urls[0].nb_hits += 1
         short_urls[0].last_hit = datetime.now()
 
-        set_common_headers(self.request, "shortener", Cache.NO)
+        set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
         return HTTPFound(location=short_urls[0].url)
 
     @view_config(route_name="shortener_create", renderer="json")  # type: ignore
@@ -144,5 +144,5 @@ class Shortener:
                 message=self.request.params.get("message", ""),
             )
 
-        set_common_headers(self.request, "shortener", Cache.NO)
+        set_common_headers(self.request, "shortener", Cache.PRIVATE_NO)
         return {"short_url": s_url}
