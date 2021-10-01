@@ -111,6 +111,9 @@ vars:
 
     api:
       constants:
+        # The JavaScript package name
+        package: '{{package}}'
+
         # The resolutions list.
         resolutions: *resolutions
 
