@@ -11,6 +11,7 @@ ENV \
 RUN \
     . /etc/os-release && \
     apt-get update && \
+    apt-get dist-upgrade --assume-yes --no-install-recommends && \
     apt-get install --assume-yes --no-install-recommends apt-utils && \
     apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less && \
     echo "For Chrome installed by Pupetter" && \
