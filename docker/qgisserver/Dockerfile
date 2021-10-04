@@ -6,6 +6,7 @@ COPY requirements.txt /tmp/
 RUN \
   . /etc/os-release && \
   apt-get update && \
+  apt-get dist-upgrade --assume-yes --no-install-recommends && \
   apt-get install --assume-yes --no-install-recommends gcc g++ && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/* && \
