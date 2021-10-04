@@ -257,20 +257,20 @@ def main() -> None:
     main_old, python_old, npm_old = get_versions(args.old_version, old_major_version)
     main_new, python_new, npm_new = get_versions(args.new_version, old_major_version)
 
-    print("Main version update")
+    print("Main versions updates")
     print("-------------------")
     for major_old, major_new in zip(main_old, main_new):
         # if major_old[1] != major_new[1]:
         print(f"{major_old[0]} is updated from {major_old[1]} to {major_new[1]}")
 
     print()
-    print("Python package update")
+    print("Python packages updates")
     print("---------------------")
 
     print_package_update(python_old, python_new)
 
     print()
-    print("Npm package update")
+    print("Npm packages updates")
     print("------------------")
 
     print_package_update(npm_old, npm_new)
