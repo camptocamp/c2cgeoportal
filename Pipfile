@@ -40,7 +40,7 @@ OWSLib = "==0.22.0"  # geoportal
 papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # # geoportal
 psycopg2-binary = "==2.8.6"  # geoportal
-pycryptodome = "==3.9.9"  # geoportal
+pycryptodome = "==3.10.3"  # geoportal
 pyproj = "==3.0.0.post1"  # admin, other?
 pyotp = "==2.5.1"  # geoportal
 pyramid = "==1.10.5"  # geoportal
@@ -98,7 +98,7 @@ paste = "==3.5.0"
 pastedeploy = "==2.1.1"
 pbr = "==5.5.1"
 peppercorn = "==0.6"
-pillow = "==8.3.1"
+pillow = "==8.3.2"
 pipfile = "==0.0.2"
 plaster = "==1.0"
 plaster-pastedeploy = "==0.7"
