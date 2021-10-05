@@ -1,3 +1,5 @@
+##### 2.5.0.157
+* Add updated package version [c2cgeoportal#8722](https://github.com/camptocamp/c2cgeoportal/pull/8722)
 ##### 2.5.0.156
 * Bump pycryptodome from 3.8.1 to 3.10.3 [c2cgeoportal#8734](https://github.com/camptocamp/c2cgeoportal/pull/8734)
 ##### 2.5.0.155
