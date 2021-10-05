@@ -1,3 +1,5 @@
+##### 2.5.0.156
+* Bump pycryptodome from 3.8.1 to 3.10.3 [c2cgeoportal#8734](https://github.com/camptocamp/c2cgeoportal/pull/8734)
 ##### 2.5.0.155
 * Add alternative X-Forward headers in proxy [c2cgeoportal#8701](https://github.com/camptocamp/c2cgeoportal/pull/8701)
 ##### 2.5.0.154
