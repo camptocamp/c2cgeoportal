@@ -8,7 +8,7 @@ This chapter describes advanced configuration settings.
 .. toctree::
    :maxdepth: 1
 
-   make
+   build
    ngeo
    backend
    caching

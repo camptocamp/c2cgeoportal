@@ -92,9 +92,15 @@ class BaseTemplate(Template):  # type: ignore
             package_logger = "app"
         vars_["package_logger"] = package_logger
         vars_["geomapfish_version"] = os.environ["VERSION"]
-        vars_["geomapfish_major_version_tag"] = (
-            os.environ["VERSION"] if vars_.get("unsafe_long_version", False) else os.environ["MAJOR_VERSION"]
+        # Used in the Docker files to shoos the version of the build image
+        vars_["geomapfish_version_tag"] = "GEOMAPFISH_VERSION"
+        vars_["geomapfish_version_tag_env"] = "${GEOMAPFISH_VERSION}"
+        geomapfish_major_version_tag = (
+            "GEOMAPFISH_VERSION" if vars_.get("unsafe_long_version", False) else "GEOMAPFISH_MAIN_VERSION"
         )
+        # Used in the Docker files to shoos the version of the run image
+        vars_["geomapfish_major_version_tag"] = geomapfish_major_version_tag
+        vars_["geomapfish_major_version_tag_env"] = "${" + geomapfish_major_version_tag + "}"
         vars_["geomapfish_main_version"] = os.environ["MAJOR_VERSION"]
         vars_["geomapfish_main_version_dash"] = os.environ["MAJOR_VERSION"].replace(".", "-")
 
