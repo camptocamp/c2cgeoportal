@@ -145,3 +145,24 @@ Here is an example:
 
 
 Upstream `make documentation <https://www.gnu.org/software/make/manual/make.html>`_.
+
+Custom image
+------------
+
+In the build script we use `docker-compose build` as it's easy to add a new service from another `Dockerfile`.
+
+By adding the following in the `docker-compose.yaml` file:
+
+.. code:: yaml
+
+   custom:
+      image: -custom:
+      build:
+        context: custom
+        args:
+          GIT_HASH: 
+
+An new image with the suffix `-custom` will be built with the standard `./build` command and a build
+argument is passed to the build with the hash of the latest Git commit.
+
+Everything that present in the `.env` file can be used.
