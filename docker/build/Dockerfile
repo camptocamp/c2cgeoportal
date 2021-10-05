@@ -7,6 +7,7 @@ RUN \
     /etc/apt/sources.list.d/pgdg.list && \
   curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
   apt-get update && \
+  apt-get dist-upgrade --assume-yes --no-install-recommends && \
   apt-get install --assume-yes --no-install-recommends tree apt-transport-https gettext libxml2-utils postgresql-client && \
   echo "deb https://deb.nodesource.com/node_10.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list && \
   curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
