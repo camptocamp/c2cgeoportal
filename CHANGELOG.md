@@ -1,3 +1,6 @@
+##### 2.6.0.31
+* Don't do WFS query on server that didn't support WFS [c2cgeoportal#8714](https://github.com/camptocamp/c2cgeoportal/pull/8714)
+* Bump pycryptodome from 3.8.1 to 3.10.3 and pillow from 8.3.1 to 8.3.2 [c2cgeoportal#8735](https://github.com/camptocamp/c2cgeoportal/pull/8735)
 ##### 2.6.0.30
 * Fix the i18n for multi organization application [c2cgeoportal#8698](https://github.com/camptocamp/c2cgeoportal/pull/8698)
 ##### 2.6.0.29
