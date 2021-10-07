@@ -1,3 +1,5 @@
+##### 2.6.0.32
+* Do not load the project ourself as we cannot access QgsServerSettings [c2cgeoportal#8717](https://github.com/camptocamp/c2cgeoportal/pull/8717)
 ##### 2.6.0.31
 * Don't do WFS query on server that didn't support WFS [c2cgeoportal#8714](https://github.com/camptocamp/c2cgeoportal/pull/8714)
 * Bump pycryptodome from 3.8.1 to 3.10.3 and pillow from 8.3.1 to 8.3.2 [c2cgeoportal#8735](https://github.com/camptocamp/c2cgeoportal/pull/8735)
