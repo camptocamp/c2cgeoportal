@@ -7,7 +7,7 @@
 # GNU General Public License as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
 
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import pytest
 from geoalchemy2.shape import from_shape
@@ -201,7 +201,16 @@ def wms_use_layer_ids(test_data):
         project.writeEntry("WMSUseLayerIDs", "/", False)
 
 
-@pytest.mark.usefixtures("server_iface", "qgs_access_control_filter", "test_data")
+@pytest.fixture(scope="class")
+def project_mock(test_data):
+    with patch(
+        "geomapfish_qgisserver.accesscontrol.OGCServerAccessControl.project",
+        return_value=test_data["project"],
+    ):
+        yield
+
+
+@pytest.mark.usefixtures("server_iface", "qgs_access_control_filter", "test_data", "project_mock")
 class TestOGCServerAccessControl:
     def test_init(self, server_iface, DBSession, test_data):  # noqa: N803
         dbsession = DBSession()
@@ -215,7 +224,6 @@ class TestOGCServerAccessControl:
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
-        ogcserver_accesscontrol.project = test_data["project"]
         for layer_name, expected in (
             ("private_layer1", "private_layer1"),
             ("private_layer3", "pl3"),
@@ -229,7 +237,6 @@ class TestOGCServerAccessControl:
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
-        ogcserver_accesscontrol.project = test_data["project"]
         layer = test_data["project"].mapLayersByName("private_layer1")[0]
         assert layer.id() == ogcserver_accesscontrol.ogc_layer_name(layer)
 
@@ -238,7 +245,6 @@ class TestOGCServerAccessControl:
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
-        ogcserver_accesscontrol.project = test_data["project"]
 
         expected = {
             "public_group": ["public_group"],
@@ -316,7 +322,6 @@ class TestOGCServerAccessControl:
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
-        ogcserver_accesscontrol.project = test_data["project"]
 
         for user_name, layer_name, expected in [
             ("root", layer_name, (Access.FULL, None))
@@ -345,7 +350,6 @@ class TestOGCServerAccessControl:
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
-        ogcserver_accesscontrol.project = test_data["project"]
 
         for user_name, layer_name, expected in (
             (
