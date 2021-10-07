@@ -1,3 +1,5 @@
+##### 2.5.0.158
+* [Backport 2.5] Don't do WFS query on server that didn't support WFS [c2cgeoportal#8737](https://github.com/camptocamp/c2cgeoportal/pull/8737)
 ##### 2.5.0.157
 * Add updated package version [c2cgeoportal#8722](https://github.com/camptocamp/c2cgeoportal/pull/8722)
 ##### 2.5.0.156
