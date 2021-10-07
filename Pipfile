@@ -28,7 +28,7 @@ chardet = "==4.0.0" # for Transifex
 c2cciutils = "==1.1.dev20210921153209"
 
 [packages]
-alembic = "==1.7.3"  # geoportal
+alembic = "==1.7.4"  # geoportal
 "c2c.template" = "==2.3.0"  # geoportal
 c2cgeoform = "==2.1.23"  # commons
 colander = "==1.8.3"  # commons, admin
