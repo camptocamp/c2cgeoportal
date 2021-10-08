@@ -5,6 +5,7 @@
 # GNU General Public License as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
 
+from unittest.mock import patch
 
 import pytest
 from geoalchemy2.shape import from_shape
@@ -110,10 +111,20 @@ def test_data2(clean_dbsession):
     }
 
 
+@pytest.fixture(scope="class")
+def project_mock(test_data2):
+    with patch(
+        "geomapfish_qgisserver.accesscontrol.OGCServerAccessControl.project",
+        return_value=test_data2["project"],
+    ):
+        yield
+
+
 @pytest.mark.usefixtures(
     "server_iface",
     "qgs_access_control_filter",
     "test_data2",
+    "project_mock",
 )
 class TestAccessControlAllowToEdit:
     def test_allow_to_edit(self, server_iface, DBSession, test_data2):  # noqa: ignore=N803
@@ -121,7 +132,6 @@ class TestAccessControlAllowToEdit:
         ogcserver_accesscontrol = OGCServerAccessControl(
             server_iface, "qgisserver", "no_project", 21781, lambda: session
         )
-        ogcserver_accesscontrol.project = test_data2["project"]
 
         for user_name, expected, geometry in [
             ["user_no_access", False, geom_in],
