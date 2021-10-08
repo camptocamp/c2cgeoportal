@@ -1,3 +1,5 @@
+##### 2.5.0.159
+* Update the ignored cve to the new id's [c2cgeoportal#8754](https://github.com/camptocamp/c2cgeoportal/pull/8754)
 ##### 2.5.0.158
 * [Backport 2.5] Don't do WFS query on server that didn't support WFS [c2cgeoportal#8737](https://github.com/camptocamp/c2cgeoportal/pull/8737)
 ##### 2.5.0.157
