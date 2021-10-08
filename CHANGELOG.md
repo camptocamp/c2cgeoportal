@@ -1,3 +1,5 @@
+##### 2.4.2.59
+* Update the ignored cve to the new id's [c2cgeoportal#8753](https://github.com/camptocamp/c2cgeoportal/pull/8753)
 ##### 2.4.2.58
 * Bump pycryptodome from 3.8.1 to 3.10.3 [c2cgeoportal#8733](https://github.com/camptocamp/c2cgeoportal/pull/8733)
 ##### 2.4.2.57
