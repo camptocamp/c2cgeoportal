@@ -1,3 +1,5 @@
+##### 2.6.0.33
+* Update the ignored cve to the new id's [ngeo#7525](https://github.com/camptocamp/ngeo/pull/7525)
 ##### 2.6.0.32
 * Do not load the project ourself as we cannot access QgsServerSettings [c2cgeoportal#8717](https://github.com/camptocamp/c2cgeoportal/pull/8717)
 ##### 2.6.0.31
