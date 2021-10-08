@@ -1,3 +1,5 @@
+##### 2.6.0.34
+* Update the ignored cve to the new id's [c2cgeoportal#8755](https://github.com/camptocamp/c2cgeoportal/pull/8755)
 ##### 2.6.0.33
 * Update the ignored cve to the new id's [ngeo#7525](https://github.com/camptocamp/ngeo/pull/7525)
 ##### 2.6.0.32
