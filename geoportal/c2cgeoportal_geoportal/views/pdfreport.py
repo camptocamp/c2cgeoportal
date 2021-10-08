@@ -66,7 +66,7 @@ class PdfReport(OGCProxy):
             headers=headers,
         )
 
-        return self._build_response(response, response.content, Cache.NO, "pdfreport")
+        return self._build_response(response, response.content, Cache.PRIVATE_NO, "pdfreport")
 
     @staticmethod
     def _build_map(

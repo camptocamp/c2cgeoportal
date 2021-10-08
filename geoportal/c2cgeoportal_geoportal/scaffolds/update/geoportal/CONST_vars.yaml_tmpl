@@ -870,6 +870,7 @@ vars:
   headers:
     dynamic: &header
       cache_control_max_age: 600 # 10 minutes
+      cache_control_max_age_nocache: 10 # 10 seconds, to avoid too many call
       access_control_max_age: 600 # 10 minutes
       access_control_allow_origin:
         - '*'
@@ -901,6 +902,7 @@ vars:
     error: *header
     themes: &auth_header
       cache_control_max_age: 600 # 10 minutes
+      cache_control_max_age_nocache: 10 # 10 seconds, to avoid too many call
       access_control_max_age: 600 # 10 minutes
       access_control_allow_origin:
         - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}'
@@ -912,7 +914,9 @@ vars:
     fulltextsearch: *auth_header
     mapserver: *auth_header
     tinyows: *auth_header
-    layers: *auth_header
+    layers:
+      <<: *auth_header
+      cache_control_max_age_nocache: 0 # to refresh issue in editing
     shortener: *auth_header
     login:
       <<: *auth_header
@@ -1121,36 +1125,52 @@ runtime_postprocess:
       - authentication.oauth2_token_expire_minutes
       - headers.login.access_control_max_age
       - headers.login.cache_control_max_age
+      - headers.login.cache_control_max_age_nocache
       - headers.index.access_control_max_age
       - headers.index.cache_control_max_age
+      - headers.index.cache_control_max_age_nocache
       - headers.dynamic.access_control_max_age
       - headers.dynamic.cache_control_max_age
+      - headers.dynamic.cache_control_max_age_nocache
       - headers.config.access_control_max_age
       - headers.config.cache_control_max_age
+      - headers.config.cache_control_max_age_nocache
       - headers.api.access_control_max_age
       - headers.api.cache_control_max_age
+      - headers.api.cache_control_max_age_nocache
       - headers.apihelp.access_control_max_age
       - headers.apihelp.cache_control_max_age
+      - headers.apihelp.cache_control_max_age_nocache
       - headers.themes.access_control_max_age
       - headers.themes.cache_control_max_age
+      - headers.themes.cache_control_max_age_nocache
       - headers.fulltextsearch.access_control_max_age
       - headers.fulltextsearch.cache_control_max_age
+      - headers.fulltextsearch.cache_control_max_age_nocache
       - headers.mapserver.access_control_max_age
       - headers.mapserver.cache_control_max_age
+      - headers.mapserver.cache_control_max_age_nocache
       - headers.tinyows.access_control_max_age
       - headers.tinyows.cache_control_max_age
+      - headers.tinyows.cache_control_max_age_nocache
       - headers.layers.access_control_max_age
       - headers.layers.cache_control_max_age
+      - headers.layers.cache_control_max_age_nocache
       - headers.print.access_control_max_age
       - headers.print.cache_control_max_age
+      - headers.print.cache_control_max_age_nocache
       - headers.profile.access_control_max_age
       - headers.profile.cache_control_max_age
+      - headers.profile.cache_control_max_age_nocache
       - headers.raster.access_control_max_age
       - headers.raster.cache_control_max_age
+      - headers.raster.cache_control_max_age_nocache
       - headers.shortener.access_control_max_age
       - headers.shortener.cache_control_max_age
+      - headers.shortener.cache_control_max_age_nocache
       - headers.error.access_control_max_age
       - headers.error.cache_control_max_age
+      - headers.error.cache_control_max_age_nocache
       - shortener.length
       - checker.fulltextsearch.level
       - checker.lang.level

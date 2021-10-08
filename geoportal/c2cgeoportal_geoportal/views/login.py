@@ -88,7 +88,7 @@ class Login:
         if self.request.authenticated_userid:
             raise HTTPUnauthorized()
 
-        set_common_headers(self.request, "login", Cache.NO)
+        set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
         return {
             "lang": self.lang,
@@ -135,7 +135,7 @@ class Login:
                     return set_common_headers(
                         self.request,
                         "login",
-                        Cache.NO,
+                        Cache.PRIVATE_NO,
                         response=Response(
                             json.dumps(
                                 {
@@ -166,7 +166,7 @@ class Login:
                 return set_common_headers(
                     self.request,
                     "login",
-                    Cache.NO,
+                    Cache.PRIVATE_NO,
                     response=Response(
                         json.dumps(
                             {
@@ -191,7 +191,7 @@ class Login:
             return set_common_headers(
                 self.request,
                 "login",
-                Cache.NO,
+                Cache.PRIVATE_NO,
                 response=Response(json.dumps(self._user(self.request.get_user(username))), headers=headers),
             )
         user = models.DBSession.query(static.User).filter(static.User.username == login).one_or_none()
@@ -238,7 +238,7 @@ class Login:
         return set_common_headers(
             self.request,
             "login",
-            Cache.NO,
+            Cache.PRIVATE_NO,
             response=Response(body, headers=headers.items()),
         )
 
@@ -253,7 +253,9 @@ class Login:
         LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
 
         headers.append(("Content-Type", "text/json"))
-        return set_common_headers(self.request, "login", Cache.NO, response=Response("true", headers=headers))
+        return set_common_headers(
+            self.request, "login", Cache.PRIVATE_NO, response=Response("true", headers=headers)
+        )
 
     def _user(self, user: Optional[static.User] = None) -> Dict[str, Any]:
         result = {
@@ -275,12 +277,12 @@ class Login:
     @view_config(route_name="loginuser", renderer="json")  # type: ignore
     def loginuser(self) -> Dict[str, Any]:
         LOG.info("Client IP address: %s", self.request.client_addr)
-        set_common_headers(self.request, "login", Cache.NO)
+        set_common_headers(self.request, "login", Cache.PRIVATE_NO)
         return self._user()
 
     @view_config(route_name="change_password", renderer="json")  # type: ignore
     def change_password(self) -> pyramid.response.Response:
-        set_common_headers(self.request, "login", Cache.NO)
+        set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
         login = self.request.POST.get("login")
         old_password = self.request.POST.get("oldPassword")
@@ -334,7 +336,10 @@ class Login:
         headers = remember(self.request, username)
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(
-            self.request, "login", Cache.NO, response=Response(json.dumps(self._user(user)), headers=headers)
+            self.request,
+            "login",
+            Cache.PRIVATE_NO,
+            response=Response(json.dumps(self._user(user)), headers=headers),
         )
 
     @staticmethod
@@ -370,7 +375,7 @@ class Login:
 
     @view_config(route_name="loginresetpassword", renderer="json")  # type: ignore
     def loginresetpassword(self) -> Dict[str, Any]:
-        set_common_headers(self.request, "login", Cache.NO)
+        set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
         user, username, password, error = self._loginresetpassword()
         if error is not None:
@@ -416,7 +421,7 @@ class Login:
         return set_common_headers(
             self.request,
             "login",
-            Cache.NO,
+            Cache.PRIVATE_NO,
             response=Response(body, headers=headers.items()),
         )
 

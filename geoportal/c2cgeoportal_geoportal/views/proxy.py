@@ -195,7 +195,11 @@ class Proxy:
         else:
             response = self._proxy(url, **kwargs)
 
-        cache_control = (Cache.PUBLIC if public else Cache.PRIVATE) if cache else Cache.NO
+        cache_control = (
+            (Cache.PUBLIC if public else Cache.PRIVATE)
+            if cache
+            else (Cache.PUBLIC_NO if public else Cache.PRIVATE_NO)
+        )
         return self._build_response(
             response, response.content, cache_control, service_name, headers_update=headers_update
         )

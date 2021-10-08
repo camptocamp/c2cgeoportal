@@ -50,7 +50,7 @@ IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 class FullTextSearchView:
     def __init__(self, request: pyramid.request.Request):
         self.request = request
-        set_common_headers(request, "fulltextsearch", Cache.NO)
+        set_common_headers(request, "fulltextsearch", Cache.PUBLIC_NO)
         self.settings = request.registry.settings.get("fulltextsearch", {})
         self.languages = self.settings.get("languages", {})
         self.fts_normiliser = Normalize(self.settings)

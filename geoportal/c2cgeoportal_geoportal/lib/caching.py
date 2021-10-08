@@ -193,9 +193,18 @@ class HybridRedisSentinelBackend(RedisSentinelBackend):  # type: ignore
 
 
 class Cache(Enum):
-    NO = 0
-    PUBLIC = 1
+    # For responses that can be put in a public cache (proxy+browser)
+    PUBLIC = 0
+    # For responses that can be put in a public cache (proxy+browser),
+    # But with a smalls max-age (10s), for tow possible reason:
+    # - The resource can change and the browser need to get the new version
+    # - The chance of cache hit is too small to put it in a cache
+    # We use a small cache instead of no cache to protect the service against too high traffic.
+    PUBLIC_NO = 1
+    # For responses that can be put in a private cache (browser)
     PRIVATE = 2
+    # See PUBLIC_NO and PRIVATE
+    PRIVATE_NO = 3
 
 
 CORS_METHODS = "HEAD, GET, POST, PUT, DELETE"
@@ -271,25 +280,24 @@ def _set_common_headers(
 
     response.headers.update(service_headers_settings.get("headers", {}))
 
-    if cache == Cache.NO:
+    maxage = (
+        service_headers_settings.get("cache_control_max_age", 3600)
+        if cache in (Cache.PUBLIC, Cache.PRIVATE)
+        else service_headers_settings.get("cache_control_max_age_nocache", 10)
+    )
+    response.cache_control.max_age = maxage
+    if maxage == 0:
         response.cache_control.no_cache = True
-        response.cache_control.max_age = 0
-    elif cache == Cache.PUBLIC:
+        response.cache_control.no_store = True
+    elif cache in (Cache.PUBLIC, Cache.PUBLIC_NO):
         response.cache_control.public = True
-    elif cache == Cache.PRIVATE:
-        if request.user is not None:
+    elif cache in (Cache.PRIVATE, Cache.PRIVATE_NO):
+        if hasattr(request, "user") and request.user is not None:
             response.cache_control.private = True
         else:
             response.cache_control.public = True
     else:
         raise Exception("Invalid cache type")
-
-    if cache != Cache.NO:
-        max_age = service_headers_settings.get("cache_control_max_age", 3600)
-
-        response.cache_control.max_age = max_age
-        if max_age == 0:
-            response.cache_control.no_cache = True
 
     if content_type is not None:
         response.content_type = content_type

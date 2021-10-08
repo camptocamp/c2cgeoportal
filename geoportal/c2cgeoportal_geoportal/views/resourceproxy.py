@@ -57,7 +57,7 @@ class ResourceProxy(Proxy):
 
             response = self._proxy(url=url)
 
-            cache_control = Cache.NO
+            cache_control = Cache.PRIVATE_NO
             content_type = response.headers["Content-Type"]
 
             response = self._build_response(

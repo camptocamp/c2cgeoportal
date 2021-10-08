@@ -244,6 +244,9 @@ mapping:
               cache_control_max_age:
                 required: True
                 type: scalar
+              cache_control_max_age_nocache:
+                required: True
+                type: scalar
               headers:
                 type: map
                 mapping:

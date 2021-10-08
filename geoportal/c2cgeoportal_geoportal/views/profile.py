@@ -52,7 +52,7 @@ class Profile(Raster):
         answers to /profile.json.
         """
         _, points = self._compute_points()
-        set_common_headers(self.request, "profile", Cache.NO)
+        set_common_headers(self.request, "profile", Cache.PUBLIC_NO)
         return {"profile": points}
 
     def _compute_points(self) -> Tuple[List[str], List[Dict[str, Any]]]:

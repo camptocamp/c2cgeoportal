@@ -195,7 +195,7 @@ class Layers:
 
     @view_config(route_name="layers_read_many", renderer="geojson")  # type: ignore
     def read_many(self) -> FeatureCollection:
-        set_common_headers(self.request, "layers", Cache.NO)
+        set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         features = []
         for layer in self._get_layers_for_request():
@@ -213,7 +213,7 @@ class Layers:
             Role,
         )
 
-        set_common_headers(self.request, "layers", Cache.NO)
+        set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         layer = self._get_layer_for_request()
         protocol = self._get_protocol_for_layer(layer)
@@ -246,7 +246,7 @@ class Layers:
 
     @view_config(route_name="layers_count", renderer="string")  # type: ignore
     def count(self) -> int:
-        set_common_headers(self.request, "layers", Cache.NO)
+        set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         protocol = self._get_protocol_for_request()
         count = protocol.count(self.request)
@@ -262,7 +262,7 @@ class Layers:
             Role,
         )
 
-        set_common_headers(self.request, "layers", Cache.NO)
+        set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         if self.request.user is None:
             raise HTTPForbidden()
@@ -319,7 +319,7 @@ class Layers:
             Role,
         )
 
-        set_common_headers(self.request, "layers", Cache.NO)
+        set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         if self.request.user is None:
             raise HTTPForbidden()
@@ -440,7 +440,7 @@ class Layers:
         response = protocol.delete(self.request, feature_id)
         if isinstance(response, HTTPException):
             raise response  # pylint: disable=raising-non-exception
-        set_common_headers(self.request, "layers", Cache.NO, response=response)
+        set_common_headers(self.request, "layers", Cache.PRIVATE_NO, response=response)
         return response
 
     @view_config(route_name="layers_metadata", renderer="xsd")  # type: ignore

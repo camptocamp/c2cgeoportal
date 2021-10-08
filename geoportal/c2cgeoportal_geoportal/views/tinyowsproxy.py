@@ -109,7 +109,7 @@ class TinyOWSProxy(OGCProxy):
 
         # we want clients to cache GetCapabilities and DescribeFeatureType req.
         use_cache = method == "GET" and operation in ("getcapabilities", "describefeaturetype")
-        cache_control = Cache.PRIVATE if use_cache else Cache.NO
+        cache_control = Cache.PRIVATE if use_cache else Cache.PRIVATE_NO
 
         errors: Set[str] = set()
         url = super()._get_wfs_url(errors)
