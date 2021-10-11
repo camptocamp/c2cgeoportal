@@ -48,6 +48,10 @@ class Entry:
         _ = self.request.translate
         return {"title": _("title i18n")}
 
+    def get_ngeo_index_vars(self) -> Dict[str, Any]:
+        set_common_headers(self.request, "index", Cache.PUBLIC_NO, content_type="text/html")
+        return {}
+
     def apijs(self) -> Dict[str, Any]:
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/javascript")
         return {}
