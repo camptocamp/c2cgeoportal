@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.execute(f"UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'")
@@ -55,6 +56,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.execute(f"UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'")

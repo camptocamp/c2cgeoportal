@@ -44,6 +44,8 @@ CACHE_REGION = get_region("std")
 
 
 class DynamicView:
+    """The dynamic vies that provide the configuration of the client application."""
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings
@@ -69,7 +71,10 @@ class DynamicView:
         dynamic: Dict[str, Any],
     ) -> Dict[str, Any]:
         """
+        Get the interface configuration.
+
         Arguments:
+
             interface_config: Current interface configuration
             interface_name: Interface name (we use in the configuration)
             original_interface_name: Original interface name (directly for the query string)

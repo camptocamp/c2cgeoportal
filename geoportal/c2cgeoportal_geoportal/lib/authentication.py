@@ -53,6 +53,8 @@ LOG = logging.getLogger(__name__)
 
 @implementer(IAuthenticationPolicy)
 class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+    """An authentication policy based on information given in the URL."""
+
     def __init__(
         self, aes_key: str, callback: Optional[Callable[[str, Any], List[str]]] = None, debug: bool = False
     ):
@@ -93,22 +95,20 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     def remember(  # pylint: disable=no-self-use
         self, request: pyramid.request.Request, userid: str, **kw: Any
     ) -> List[Dict[str, str]]:
-        """
-        A no-op.
-        """
+        """Do no-op."""
         del request, userid, kw
         return []
 
     def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
-        """
-        A no-op.
-        """
+        """Do no-op."""
         del request
         return []
 
 
 @implementer(IAuthenticationPolicy)
 class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+    """The oauth2 authentication policy."""
+
     @staticmethod
     def unauthenticated_userid(request: pyramid.request.Request) -> Optional[str]:
         route_url = ""
@@ -140,32 +140,29 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     def remember(  # pylint: disable=no-self-use
         self, request: pyramid.request.Request, userid: str, **kw: Any
     ) -> List[Dict[str, str]]:
-        """
-        A no-op.
-        """
+        """Do no-op."""
         del request, userid, kw
         return []
 
     def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
-        """
-        A no-op.
-        """
+        """Do no-op."""
         del request
         return []
 
 
 @implementer(IAuthenticationPolicy)
 class DevAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+    """An authentication policy for the dev base on an environment variable."""
+
     @staticmethod
     def unauthenticated_userid(request: pyramid.request.Request) -> Optional[str]:
-        """
-        Get the user name from the environmant variable
-        """
+        """Get the user name from the environment variable."""
         del request
         return os.environ["DEV_LOGINNAME"]
 
 
 def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy:
+    """Create all the authentication policies."""
     timeout = settings.get("authtkt_timeout")
     timeout = None if timeout is None or timeout.lower() == "none" else int(timeout)
     reissue_time = settings.get("authtkt_reissue_time")
@@ -214,7 +211,7 @@ def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy
     if basicauth:
         if settings["authentication"].get("two_factor", False):
             LOG.warning(
-                "Basic auth and tow factor auth should not be anhable toogether, "
+                "Basic auth and tow factor auth should not be enable toogether, "
                 "you should use OAuth2 instead of Basic auth"
             )
 
@@ -229,6 +226,7 @@ def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy
 
 
 def c2cgeoportal_check(username: str, password: str, request: pyramid.request.Request) -> Optional[List[str]]:
+    """Check the user authentication."""
     if request.registry.validate_user(request, username, password):
         return defaultgroupsfinder(username, request)
     return None

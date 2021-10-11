@@ -79,6 +79,8 @@ GEOJSON_CONTENT_TYPE = r"Content-Type:application/geo\+json"
 
 
 class AssetRendererFactory:
+    """Get a renderer for the assets."""
+
     def __init__(self, info: Any):
         del info  # unused
         self.resolver = AssetResolver("c2cgeoportal_geoportal")
@@ -99,6 +101,7 @@ def add_interface(
     default: bool = False,
     **kwargs: Any,
 ) -> None:
+    """Add the interface (desktop, mobile, ...) views and routes."""
     del interface_type  # unused
     route = "/" if default else f"/{interface_name}"
     add_interface_ngeo(
@@ -117,6 +120,7 @@ def add_interface_ngeo(
     renderer: Optional[str] = None,
     permission: Optional[str] = None,
 ) -> None:
+    """Add the ngeo interfaces views and routes."""
 
     config.add_route(route_name, route, request_method="GET")
     config.add_view(
@@ -138,6 +142,7 @@ def add_interface_ngeo(
 
 
 def add_admin_interface(config: pyramid.config.Configurator) -> None:
+    """Add the administration interface views and routes."""
     if config.get_settings().get("enable_admin_interface", False):
         config.add_request_method(
             lambda request: c2cgeoportal_commons.models.DBSession(),
@@ -150,6 +155,7 @@ def add_admin_interface(config: pyramid.config.Configurator) -> None:
 
 
 def add_getitfixed(config: pyramid.config.Configurator) -> None:
+    """Add the get it fixed views and routes."""
     if config.get_settings()["getitfixed"].get("enabled", False):
         for route_name, pattern in (
             ("getitfixed_add_ending_slash", "/getitfixed"),
@@ -163,6 +169,7 @@ def add_getitfixed(config: pyramid.config.Configurator) -> None:
 
 
 def locale_negotiator(request: pyramid.request.Request) -> str:
+    """Get the current language."""
     lang: str = request.params.get("lang")
     if lang is None:
         lang = request.cookies.get("_LOCALE_")
@@ -178,27 +185,28 @@ def locale_negotiator(request: pyramid.request.Request) -> str:
 
 
 def _match_url_start(reference: str, value: List[str]) -> bool:
-    """
-    Checks that the val URL starts like the ref URL.
-    """
+    """Check that the val URL starts like the ref URL."""
     reference_parts = reference.rstrip("/").split("/")
     value_parts = value[0 : len(reference_parts)]
     return reference_parts == value_parts
 
 
-def is_valid_referer(request: pyramid.request.Request, settings: Optional[Dict[str, Any]] = None) -> bool:
+def is_valid_referrer(request: pyramid.request.Request, settings: Optional[Dict[str, Any]] = None) -> bool:
+    """Check if the referrer is valid."""
     if request.referer is not None:
-        referer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
+        referrer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
         if settings is None:
             settings = request.registry.settings
         list_ = settings.get("authorized_referers", [])
-        return any(_match_url_start(e, referer) for e in list_)
+        return any(_match_url_start(e, referrer) for e in list_)
     return True
 
 
 def create_get_user_from_request(
     settings: Dict[str, Any]
 ) -> Callable[[pyramid.request.Request, Optional[str]], Optional["static.User"]]:
+    """Get the get_user_from_request function."""
+
     def get_user_from_request(
         request: pyramid.request.Request, username: Optional[str] = None
     ) -> Optional["static.User"]:
@@ -214,7 +222,7 @@ def create_get_user_from_request(
         from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 
         if not hasattr(request, "is_valid_referer"):
-            request.is_valid_referer = is_valid_referer(request, settings)
+            request.is_valid_referer = is_valid_referrer(request, settings)
         if not request.is_valid_referer:
             LOG.debug("Invalid referer for %s: %s", request.path_qs, repr(request.referer))
             return None
@@ -268,7 +276,7 @@ def default_user_validator(request: pyramid.request.Request, username: str, pass
 
     user = DBSession.query(User).filter_by(username=username).first()
     if user is None:
-        LOG.info('Unknow user "%s" tried to log in', username)
+        LOG.info('Unknown user "%s" tried to log in', username)
         return None
     if user.deactivated:
         LOG.info('Deactivated user "%s" tried to log in', username)
@@ -309,9 +317,7 @@ class MapserverproxyRoutePredicate:
 
 
 def add_cors_route(config: pyramid.config.Configurator, pattern: str, service: str) -> None:
-    """
-    Add the OPTIONS route and view need for services supporting CORS.
-    """
+    """Add the OPTIONS route and view need for services supporting CORS."""
 
     def view(request: pyramid.request.Request) -> pyramid.response.Response:
         return set_common_headers(request, service, Cache.PRIVATE_NO)
@@ -324,14 +330,13 @@ def add_cors_route(config: pyramid.config.Configurator, pattern: str, service: s
 def error_handler(
     http_exception: HTTPException, request: pyramid.request.Request
 ) -> pyramid.response.Response:
-    """
-    View callable for handling all the exceptions that are not already handled.
-    """
+    """View callable for handling all the exceptions that are not already handled."""
     LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
     return caching.set_common_headers(request, "error", caching.Cache.PRIVATE_NO, http_exception)
 
 
 def call_hook(settings: pyramid.config.Configurator, name: str, *args: Any, **kwargs: Any) -> None:
+    """Call the hook defined in the settings."""
     hooks = settings.get("hooks", {})
     hook = hooks.get(name)
     if hook is None:
@@ -343,10 +348,7 @@ def call_hook(settings: pyramid.config.Configurator, name: str, *args: Any, **kw
 
 
 def includeme(config: pyramid.config.Configurator) -> None:
-    """
-    This function returns a Pyramid WSGI application.
-    """
-
+    """Get the Pyramid WSGI application."""
     settings = config.get_settings()
 
     if "available_locale_names" not in settings:
@@ -387,7 +389,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         add_provider(TotalPythonObjectMemoryProvider())
 
     # Initialise DBSessions
-    init_dbsessions(settings, config, health_check)
+    init_db_sessions(settings, config, health_check)
 
     checker.init(config, health_check)
     check_collector.init(config, health_check)
@@ -634,9 +636,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
     c2cwsgiutils.index.additional_noauth.append("</div></div><hr>")
 
 
-def init_dbsessions(
+def init_db_sessions(
     settings: Dict[str, Any], config: Configurator, health_check: Optional[HealthCheck] = None
 ) -> None:
+    """Initialize the database sessions."""
     db_chooser = settings.get("db_chooser", {})
     master_paths = [i.replace("//", "/") for i in db_chooser.get("master", [])]
     slave_paths = [i.replace("//", "/") for i in db_chooser.get("slave", [])]

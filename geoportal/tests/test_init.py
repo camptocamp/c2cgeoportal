@@ -40,7 +40,7 @@ from c2cgeoportal_geoportal import (
     call_hook,
     create_get_user_from_request,
     default_user_validator,
-    is_valid_referer,
+    is_valid_referrer,
     set_user_validator,
 )
 
@@ -125,7 +125,7 @@ class TestReferer(TestCase):
         def match(reference, value, expected):
             r = DummyRequest()
             r.referer = value
-            self.assertEqual(is_valid_referer(r, {"authorized_referers": [reference]}), expected)
+            self.assertEqual(is_valid_referrer(r, {"authorized_referers": [reference]}), expected)
 
         match("http://example.com/app/", "http://example.com/app?k=v", True)
         match("http://example.com/app/", "http://example.com/app?k=v#link", True)

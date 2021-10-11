@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.drop_constraint("layergroup_treeitem_treeitem_id_fkey", "layergroup_treeitem", schema=schema)
@@ -134,6 +135,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_constraint("layergroup_treeitem_treeitem_id_fkey", "layergroup_treeitem", schema=schema)

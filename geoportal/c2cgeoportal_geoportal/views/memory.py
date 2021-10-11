@@ -44,6 +44,7 @@ LOG = logging.getLogger(__name__)
 
 @view_config(route_name="memory", renderer="fast_json")  # type: ignore
 def memory(request: pyramid.request.Request) -> Dict[str, Any]:
+    """Offer an authenticated view throw c2cwsgiutils to provide some memory information."""
     auth_view(request)
     return cast(Dict[str, Any], _memory())
 

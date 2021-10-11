@@ -39,6 +39,7 @@ from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
 
 def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
+    """Create the authenticated URL token."""
     auth = {"u": user, "p": password, "t": int(time.time()) + valid * 3600 * 24}
 
     if aeskey is None:
@@ -54,6 +55,7 @@ def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
 
 
 def main() -> None:
+    """Run the command."""
     parser = argparse.ArgumentParser(description="Generate an auth token")
     fill_arguments(parser)
     parser.add_argument("user", help="The username")

@@ -34,9 +34,7 @@ from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
 # get from https://docs.sqlalchemy.org/en/latest/orm/extensions/
 # mutable.html#establishing-mutability-on-scalar-column-values
 class JSONEncodedDict(TypeDecorator):  # type: ignore
-    """
-    Represents an immutable structure as a json-encoded string.
-    """
+    """Represent an immutable structure as a json-encoded string."""
 
     impl = VARCHAR
 
@@ -59,9 +57,7 @@ class JSONEncodedDict(TypeDecorator):  # type: ignore
 
 
 class TsVector(UserDefinedType):  # type: ignore
-    """
-    A custom type for PostgreSQL's tsvector type.
-    """
+    """A custom type for PostgreSQL's tsvector type."""
 
     def get_col_spec(self) -> str:  # pylint: disable=no-self-use
         return "TSVECTOR"

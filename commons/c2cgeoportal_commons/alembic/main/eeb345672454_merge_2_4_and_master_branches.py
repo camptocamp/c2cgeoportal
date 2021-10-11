@@ -46,8 +46,8 @@ depends_on = None
 
 
 def upgrade() -> None:
-    pass
+    """Upgrade."""
 
 
 def downgrade() -> None:
-    pass
+    """Downgrade."""

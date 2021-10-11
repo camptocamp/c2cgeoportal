@@ -48,12 +48,14 @@ IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 
 
 class FullTextSearchView:
+    """All the full-text search view."""
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
         set_common_headers(request, "fulltextsearch", Cache.PUBLIC_NO)
         self.settings = request.registry.settings.get("fulltextsearch", {})
         self.languages = self.settings.get("languages", {})
-        self.fts_normiliser = Normalize(self.settings)
+        self.fts_normalizer = Normalize(self.settings)
 
     @staticmethod
     @CACHE_REGION.cache_on_arguments()  # type: ignore
@@ -71,7 +73,7 @@ class FullTextSearchView:
 
         if "query" not in self.request.params:
             return HTTPBadRequest(detail="no query")
-        terms = self.fts_normiliser(self.request.params.get("query"))
+        terms = self.fts_normalizer(self.request.params.get("query"))
 
         maxlimit = self.settings.get("maxlimit", 200)
 
@@ -142,21 +144,26 @@ class FullTextSearchView:
                 .over(partition_by=FullTextSearch.layer_name, order_by=(desc(rank), FullTextSearch.label))
                 .label("row_number")
             )
-            subq = DBSession.query(FullTextSearch).add_columns(row_number).filter(_filter).subquery()
+            sub_query = DBSession.query(FullTextSearch).add_columns(row_number).filter(_filter).subquery()
             query = DBSession.query(
-                subq.c.id, subq.c.label, subq.c.params, subq.c.layer_name, subq.c.the_geom, subq.c.actions
+                sub_query.c.id,
+                sub_query.c.label,
+                sub_query.c.params,
+                sub_query.c.layer_name,
+                sub_query.c.the_geom,
+                sub_query.c.actions,
             )
-            query = query.filter(subq.c.row_number <= partitionlimit)
+            query = query.filter(sub_query.c.row_number <= partitionlimit)
         else:
             query = DBSession.query(FullTextSearch).filter(_filter)
             query = query.order_by(desc(rank))
             query = query.order_by(FullTextSearch.label)
 
         query = query.limit(limit)
-        objs = query.all()
+        objects = query.all()
 
         features = []
-        for o in objs:
+        for o in objects:
             properties = {"label": o.label}
             if o.layer_name is not None:
                 properties["layer_name"] = o.layer_name

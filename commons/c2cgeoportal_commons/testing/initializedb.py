@@ -37,12 +37,14 @@ from c2cgeoportal_commons.models import Base
 
 
 def usage(argv: List[str]) -> None:
+    """Get the usage."""
     cmd = os.path.basename(argv[0])
     print(f"usage: {cmd} <config_uri> [var=value]\n" '(example: "{cmd} development.ini")')
     sys.exit(1)
 
 
 def schema_exists(connection: Connection, schema_name: str) -> bool:
+    """Get if the schema exist."""
     sql = f"""
 SELECT count(*) AS count
 FROM information_schema.schemata
@@ -54,11 +56,13 @@ WHERE schema_name = '{schema_name}';
 
 
 def truncate_tables(connection: Connection) -> None:
+    """Truncate all the tables defined in the model."""
     for t in Base.metadata.sorted_tables:
         connection.execute(f"TRUNCATE TABLE {t.schema}.{t.name} CASCADE;")
 
 
 def setup_test_data(dbsession: Session) -> None:
+    """Initialize the testing data."""
     from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 

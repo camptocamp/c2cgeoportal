@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.alter_column("layer_wmts", "url", nullable=False, schema=schema)
@@ -83,6 +84,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.alter_column("layer_wmts", "url", nullable=True, schema=schema)

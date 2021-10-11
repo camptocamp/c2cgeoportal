@@ -48,12 +48,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     staticschema = config["schema_static"]
 
     op.add_column("user", Column("tech_data", HSTORE), schema=staticschema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     staticschema = config["schema_static"]
 
     op.drop_column("user", "tech_data", schema=staticschema)

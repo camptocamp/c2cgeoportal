@@ -45,6 +45,7 @@ down_revision = "5109242131ce"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.add_column(
@@ -65,6 +66,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_index("tsearch_search_index", schema=schema)

@@ -56,8 +56,9 @@ widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=prot
 
 class ChildWidget(MappingWidget):  # type: ignore
     """
-    Extension of the widget ````deform.widget.MappingWidget`` to be used in conjunction with ChildrenWidget,
-    to manage n-m relationships.
+    Extension of the widget ````deform.widget.MappingWidget``.
+
+    To be used in conjunction with ChildrenWidget, to manage n-m relationships.
 
     Do not embed complete children forms, but just an hidden input for child primary key.
 
@@ -110,8 +111,9 @@ class ChildWidget(MappingWidget):  # type: ignore
 
 class ChildrenWidget(SequenceWidget):  # type: ignore
     """
-    Extension of the widget ````deform.widget.SequenceWidget``, to be used in conjunction with ChildWidget, to
-    manage n-m relationships.
+    Extension of the widget ````deform.widget.SequenceWidget``.
+
+    To be used in conjunction with ChildWidget, to manage n-m relationships.
 
     Use Magicsuggest for searching into parent schema candidates property, which should be a list of
     dictionaries of the form:

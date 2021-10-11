@@ -47,6 +47,8 @@ itemtypes_tables = {
 
 @view_defaults(match_param=("application=admin"))
 class LayerTreeViews:
+    """The layer tree administration view."""
+
     def __init__(self, request: pyramid.request.Request):
         self._request = request
         self._dbsession = request.dbsession

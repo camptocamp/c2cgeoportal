@@ -36,10 +36,12 @@ from transaction import TransactionManager
 
 
 def get_engine(settings: Dict[str, Any], prefix: str = "sqlalchemy.") -> Engine:
+    """Get the engine."""
     return engine_from_config(settings, prefix)
 
 
 def get_session_factory(engine: Engine) -> sessionmaker:
+    """Get the session factory."""
     factory = sessionmaker()
     factory.configure(bind=engine)
     return factory
@@ -71,9 +73,7 @@ def get_tm_session(session_factory: sessionmaker, transaction_manager: Transacti
 
 
 def generate_mappers() -> None:
-    """
-    Initialize the model for a Pyramid app.
-    """
+    """Initialize the model for a Pyramid app."""
 
     # import or define all models here to ensure they are attached to the
     # Base.metadata prior to any initialization routines
@@ -87,6 +87,7 @@ def generate_mappers() -> None:
 def get_session(
     settings: Dict[str, Any], transaction_manager: TransactionManager, prefix: str = "sqlalchemy."
 ) -> Session:
+    """Get the session."""
     configure_mappers()
     engine = get_engine(settings, prefix)
     session_factory = get_session_factory(engine)

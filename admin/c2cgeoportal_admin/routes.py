@@ -30,6 +30,7 @@ from c2cgeoform.routes import register_route, register_routes
 
 
 def includeme(config):
+    """Initialize the Pyramid routes."""
     config.add_static_view("c2cgeoportal_admin_node_modules", "c2cgeoportal_admin:node_modules")
     config.override_asset(
         to_override="c2cgeoportal_admin:node_modules/", override_with="/opt/c2cgeoportal/admin/node_modules"

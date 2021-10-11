@@ -37,7 +37,7 @@ from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
+from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
@@ -47,7 +47,7 @@ _list_field = partial(ListField, LayerVectorTiles)
 
 
 base_schema = GeoFormSchemaNode(LayerVectorTiles, widget=FormWidget(fields_template="layer_fields"))
-base_schema.add(metadatas_schema_node(LayerVectorTiles.metadatas))
+base_schema.add(metadata_schema_node(LayerVectorTiles.metadatas))
 base_schema.add(interfaces_schema_node(LayerVectorTiles.interfaces))
 base_schema.add(restrictionareas_schema_node(LayerVectorTiles.restrictionareas))
 base_schema.add_unique_validator(LayerVectorTiles.name, LayerVectorTiles.id)
@@ -56,6 +56,8 @@ base_schema.add(parent_id_node(LayerGroup))  # type: ignore
 
 @view_defaults(match_param="table=layers_vectortiles")
 class LayerVectorTilesViews(DimensionLayerViews):
+    """The vector tiles administration view."""
+
     _list_fields = (
         DimensionLayerViews._list_fields
         + [_list_field("style"), _list_field("xyz")]

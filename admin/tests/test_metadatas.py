@@ -156,11 +156,11 @@ class TestMetadatasView(AbstractViewsTests):
         )
 
     def test_get_true_boolean_metadata(self, metadatas_test_data, test_app):
-        metadatas_test_data["layer_wms"].get_metadatas("_boolean")[0].value = "true"
+        metadatas_test_data["layer_wms"].get_metadata("_boolean")[0].value = "true"
         self._test_edit_treeitem("layers_wms", metadatas_test_data["layer_wms"], test_app)
 
     def test_get_false_boolean_metadata(self, metadatas_test_data, test_app):
-        metadatas_test_data["layer_wms"].get_metadatas("_boolean")[0].value = "false"
+        metadatas_test_data["layer_wms"].get_metadata("_boolean")[0].value = "false"
         self._test_edit_treeitem("layers_wms", metadatas_test_data["layer_wms"], test_app)
 
     def test_post_true_boolean_metadata(self, test_app, metadatas_test_data, dbsession):
@@ -175,7 +175,7 @@ class TestMetadatasView(AbstractViewsTests):
             302,
         )
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "new_name").one()
-        assert layer.get_metadatas("_boolean")[0].value == "true"
+        assert layer.get_metadata("_boolean")[0].value == "true"
 
     def test_post_false_boolean_metadata(self, test_app, metadatas_test_data, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS
@@ -189,7 +189,7 @@ class TestMetadatasView(AbstractViewsTests):
             302,
         )
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "new_name").one()
-        assert layer.get_metadatas("_boolean")[0].value == "false"
+        assert layer.get_metadata("_boolean")[0].value == "false"
 
     def test_valid_float_metadata(self, test_app, metadatas_test_data):
         self._post_metadata(

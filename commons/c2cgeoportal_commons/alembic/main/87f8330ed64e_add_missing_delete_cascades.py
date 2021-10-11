@@ -47,6 +47,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.drop_constraint(
@@ -179,6 +180,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.alter_column("theme", "ordering", existing_type=sa.INTEGER(), nullable=True, schema=schema)

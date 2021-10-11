@@ -141,7 +141,7 @@ def setup_common():
 
     config = testing.setUp(settings=get_settings())
 
-    c2cgeoportal_geoportal.init_dbsessions(config.get_settings(), config)
+    c2cgeoportal_geoportal.init_db_sessions(config.get_settings(), config)
 
     setup_db()
 

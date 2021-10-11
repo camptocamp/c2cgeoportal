@@ -43,6 +43,8 @@ base_schema.add_unique_validator(OAuth2Client.client_id, OAuth2Client.id)
 
 @view_defaults(match_param="table=oauth2_clients")
 class OAuth2ClientViews(AbstractViews):  # type: ignore
+    """The oAuth2 client administration view."""
+
     _list_fields = [
         _list_field("id"),
         _list_field("client_id"),

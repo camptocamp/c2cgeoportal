@@ -48,6 +48,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.add_column("layerv1", Column("layer", Unicode), schema=schema)
@@ -60,6 +61,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_column("layerv1", "layer", schema=schema)

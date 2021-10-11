@@ -46,6 +46,8 @@ CACHE_REGION = get_region("std")
 
 
 class Proxy:
+    """Some methodes used by all the proxy."""
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.host_forward_host = request.registry.settings.get("host_forward_host", [])

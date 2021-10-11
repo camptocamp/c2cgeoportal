@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.drop_constraint("tsearch_role_id_fkey", "tsearch", schema=schema, type_="foreignkey")
@@ -74,6 +75,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_constraint("tsearch_role_id_fkey", "tsearch", schema=schema, type_="foreignkey")

@@ -54,6 +54,8 @@ ITEM_TYPE_ROUTE_MAP = {
 
 
 class ChildSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+    """Schema of the child nodes."""
+
     def objectify(self, dict_, context=None):
         if dict_.get("id", None):
             context = self.dbsession.query(LayergroupTreeitem).get(dict_["id"])
@@ -65,6 +67,7 @@ class ChildSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abst
 def treeitems(
     node: TreeGroup, kw: Dict[str, pyramid.request.Request], only_groups: bool = False
 ) -> List[Dict[str, Any]]:
+    """Get a serializable representation of the tree items."""
     del node
     dbsession = kw["request"].dbsession
 
@@ -114,6 +117,7 @@ def treeitems(
 
 
 def children_validator(node, cstruct):
+    """Get the validator on the children nodes."""
     for dict_ in cstruct:
         if not dict_["treeitem_id"] in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
@@ -125,6 +129,7 @@ def children_validator(node, cstruct):
 
 
 def base_deferred_parent_id_validator(node, kw, model):
+    """Get the validator on the parent node ID."""
     del node
 
     def validator(node, cstruct):
@@ -135,6 +140,7 @@ def base_deferred_parent_id_validator(node, kw, model):
 
 
 def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> Optional[str]:
+    """Get the tree item editing URL."""
     if treeitem.item_type is None:
         return None
     table = ITEM_TYPE_ROUTE_MAP.get(treeitem.item_type, None)
@@ -149,6 +155,7 @@ def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> 
 
 
 def children_schema_node(only_groups: bool = False) -> colander.SequenceSchema:
+    """Geth the sequence to the children nodes."""
     return colander.SequenceSchema(
         ChildSchemaNode(
             LayergroupTreeitem,

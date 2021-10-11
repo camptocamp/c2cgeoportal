@@ -40,6 +40,7 @@ _list_field = partial(ListField, Layer)
 
 
 class LayerViews(TreeItemViews):
+    """The layer administration view."""
 
     _list_fields = TreeItemViews._list_fields + [
         _list_field("public"),

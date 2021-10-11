@@ -56,9 +56,7 @@ class dry_run_transaction:  # noqa ignore=N801: class names should use CapWords 
 
 
 class OGCServerSynchronizer:
-    """
-    A processor which imports WMS Capabilities in layer tree.
-    """
+    """A processor which imports WMS Capabilities in layer tree."""
 
     def __init__(
         self,
@@ -69,7 +67,7 @@ class OGCServerSynchronizer:
         clean: bool = False,
     ) -> None:
         """
-        Synchronizer constructor.
+        Initialize the Synchronizer.
 
         request
             The current pyramid request object. Used to retrieve the SQLAlchemy Session object,

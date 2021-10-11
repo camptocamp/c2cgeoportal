@@ -32,6 +32,7 @@ from pyramid.i18n import TranslationStringFactory, get_localizer
 
 
 def add_renderer_globals(event):
+    """Add the localizer to the global event."""
     request = event["request"]
     event["_"] = request.translate
     event["localizer"] = request.localizer
@@ -42,6 +43,7 @@ tsf2 = TranslationStringFactory("c2cgeoform")
 
 
 def add_localizer(event):
+    """Add the localizer to the request."""
     request = event.request
     localizer = get_localizer(request)
 

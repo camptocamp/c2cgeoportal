@@ -51,12 +51,12 @@ class BaseTemplate(Template):  # type: ignore
         self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]
     ) -> None:
         """
-        Overrides ``pyramid.scaffold.template.Template.pre``, adding several variables to the default
-        variables list.
+        Override ``pyramid.scaffold.template.Template.pre``.
 
-        Also prevents common misnamings (such as naming a package "site" or naming a package logger "root").
+        Adding several variables to the default variables list.
+
+        Also prevents common misnaming (such as naming a package "site" or naming a package logger "root").
         """
-
         self._get_vars(vars_, "package", "Get a package name: ")
         self._get_vars(vars_, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast(int, vars_["srid"])
@@ -110,10 +110,7 @@ class BaseTemplate(Template):  # type: ignore
 
     @staticmethod
     def _get_vars(vars_: Dict[str, Any], name: str, prompt: str, type_: Optional[Type[Any]] = None) -> None:
-        """
-        Set an attribute in the vars dict.
-        """
-
+        """Set an attribute in the vars dict."""
         if name.upper() in os.environ and os.environ[name.upper()] != "":
             value = os.environ.get(name.upper())
         else:
@@ -161,6 +158,7 @@ class BaseTemplate(Template):  # type: ignore
 
 
 def fix_executables(output_dir: str, patterns: Iterable[str], in_const_create_template: bool = False) -> None:
+    """Fix the executable flag."""
     if os.name == "posix":
         for pattern in patterns:
             if in_const_create_template:
@@ -178,22 +176,24 @@ def _gen_authtkt_secret() -> str:
 
 
 class TemplateCreate(BaseTemplate):
+    """
+    The create template.
+
+    Not used on application update but is copied in the CONST_create_template folder of the update template.
+    """
+
     _template_dir = "create"
     summary = "Template used to create a c2cgeoportal project"
 
     def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
-        """
-        Overrides the base template.
-        """
+        """Override the base template."""
         super().pre(command, output_dir, vars_)
         vars_["authtkt_secret"] = _gen_authtkt_secret()
 
     def post(  # pylint: disable=arguments-renamed
         self, command: str, output_dir: str, vars_: Dict[str, str]
     ) -> None:
-        """
-        Overrides the base template class to print the next step.
-        """
+        """Override the base template class to print the next step."""
 
         print("Fix executable")
         fix_executables(output_dir, ("bin/*", "scripts/*", "build", "ci/trigger"))
@@ -204,6 +204,8 @@ class TemplateCreate(BaseTemplate):
 
 
 class TemplateUpdate(BaseTemplate):
+    """The update template."""
+
     _template_dir = "update"
     summary = "Template used to update a c2cgeoportal project"
 
@@ -221,9 +223,7 @@ class TemplateUpdate(BaseTemplate):
             sys.exit(1)
 
     def pre(self, command: str, output_dir: str, vars_: Dict[str, Union[str, int]]) -> None:
-        """
-        Overrides the base template.
-        """
+        """Override the base template."""
         self.open_project(output_dir, vars_)
 
         if "authtkt_secret" not in vars_:
@@ -235,8 +235,9 @@ class TemplateUpdate(BaseTemplate):
         self, command: str, output_dir: str, vars_: Dict[str, str]
     ) -> None:
         """
-        Overrides the base template class to print "Welcome to c2cgeoportal!" after a successful scaffolding
-        rendering.
+        Override the base template class to print "Welcome to c2cgeoportal!".
+
+        After a successful scaffolding        rendering.
         """
 
         print("Fix executable")

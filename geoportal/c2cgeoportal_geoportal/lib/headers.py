@@ -35,6 +35,8 @@ import pyramid.response
 
 
 class HeadersTween:
+    """Add the header on all the application."""
+
     def __init__(
         self,
         handler: Callable[[pyramid.request.Request], pyramid.response.Response],

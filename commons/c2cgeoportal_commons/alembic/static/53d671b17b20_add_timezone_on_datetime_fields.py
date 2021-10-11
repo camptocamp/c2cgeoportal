@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     staticschema = config["schema_static"]
 
     op.execute(
@@ -61,6 +62,7 @@ ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp with time 
 
 
 def downgrade() -> None:
+    """Downgrade."""
     staticschema = config["schema_static"]
 
     op.execute(

@@ -45,6 +45,7 @@ down_revision = "1da396a88908"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     staticschema = config["schema_static"]
 
     # Instructions
@@ -52,6 +53,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     staticschema = config["schema_static"]
 
     # Instructions

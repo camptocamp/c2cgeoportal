@@ -48,6 +48,7 @@ down_revision = "3f89a7d71a5e"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
     staticschema = config["schema_static"]
     parentschema = config.get("parentschema")
@@ -107,6 +108,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
     staticschema = config.get("schema_static")
     parentschema = config.get("parentschema")

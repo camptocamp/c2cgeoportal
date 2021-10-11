@@ -35,10 +35,13 @@ from pyramid.httpexceptions import HTTPFound
 
 
 def add_ending_slash(request: pyramid.request.Request) -> HTTPFound:
+    """Add an ending slash view."""
     return HTTPFound(location=request.path + "/")
 
 
 def add_redirect(config: pyramid.config.Configurator, name: str, from_: str, to: str) -> None:
+    """Add a redirect view."""
+
     def redirect_view(request: pyramid.request.Request) -> HTTPFound:
         return HTTPFound(location=request.route_url(to))
 
@@ -48,7 +51,8 @@ def add_redirect(config: pyramid.config.Configurator, name: str, from_: str, to:
 
 def restrict_headers(headers: Dict[str, str], whitelist: List[str], blacklist: List[str]) -> Dict[str, str]:
     """
-    Filters headers with a whitelist then a blacklist.
+    Filter headers with a whitelist then a blacklist.
+
     Some default pyramid headers will be added back by pyramid.
     """
     if len(whitelist) > 0:

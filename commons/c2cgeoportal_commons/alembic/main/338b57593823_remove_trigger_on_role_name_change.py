@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.execute(f"DROP TRIGGER on_role_name_change ON {schema}.role")
@@ -53,6 +54,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
     staticschema = config["schema_static"]
 

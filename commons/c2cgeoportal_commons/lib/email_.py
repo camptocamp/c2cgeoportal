@@ -39,13 +39,14 @@ try:
 except ModuleNotFoundError:
 
     class HTTPInternalServerError(BaseException):  # type: ignore
-        pass
+        """Fallback class."""
 
 
 LOG = logging.getLogger(__name__)
 
 
 def send_email_config(settings: Dict[str, Any], email_config_name: str, email: str, **kwargs: Any) -> None:
+    """Send an email from the config information."""
     smtp_config = settings["smtp"]
     email_config = cast(Dict[str, str], settings[email_config_name])
 
@@ -63,11 +64,12 @@ def send_email_config(settings: Dict[str, Any], email_config_name: str, email: s
 
 
 def send_email(
-    from_addr: str, to_addrs: List[str], body: str, subject: str, smtp_config: Dict[str, str]
+    from_addr: str, to_address: List[str], body: str, subject: str, smtp_config: Dict[str, str]
 ) -> None:
+    """Send an email."""
     msg = MIMEMultipart()
     msg["From"] = from_addr
-    msg["To"] = ", ".join(to_addrs)
+    msg["To"] = ", ".join(to_address)
     msg["Date"] = formatdate(localtime=True)
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain", "utf-8"))
@@ -82,5 +84,5 @@ def send_email(
     if smtp_config.get("user", False):
         smtp.login(smtp_config["user"], smtp_config["password"])
 
-    smtp.sendmail(from_addr, to_addrs, msg.as_string())
+    smtp.sendmail(from_addr, to_address, msg.as_string())
     smtp.close()

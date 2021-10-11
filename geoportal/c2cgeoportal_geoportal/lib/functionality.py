@@ -104,6 +104,7 @@ def _get_functionalities_type(request: pyramid.request.Request) -> Dict[str, Dic
 def get_functionality(
     name: str, request: pyramid.request.Request, is_intranet_: bool
 ) -> List[Union[str, int, float, bool, List[Any], Dict[str, Any]]]:
+    """Get all the functionality for the current user."""
     result: List[Union[str, int, float, bool, List[Any], Dict[str, Any]]] = []
     errors: Set[str] = set()
 
@@ -144,6 +145,7 @@ def get_functionality(
 
 
 def get_mapserver_substitution_params(request: pyramid.request.Request) -> Dict[str, str]:
+    """Get the parameters used by the mapserver substitution."""
     params: Dict[str, str] = {}
     mss = get_functionality("mapserver_substitution", request, is_intranet(request))
     if mss:

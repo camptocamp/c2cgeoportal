@@ -52,10 +52,11 @@ LOG = logging.getLogger(__name__)
 
 
 class InvalidateCacheEvent:
-    pass
+    """Event to be broadcast."""
 
 
 def cache_invalidate_cb(*args: List[Any]) -> None:
+    """Invalidate the cache on a broadcast event."""
     _cache_invalidate_cb()
 
 

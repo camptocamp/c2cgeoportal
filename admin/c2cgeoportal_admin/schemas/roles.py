@@ -35,6 +35,7 @@ from c2cgeoportal_commons.models.main import Role
 
 
 def roles_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+    """Get the schema of all the items."""
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Role),
         name=prop.key,

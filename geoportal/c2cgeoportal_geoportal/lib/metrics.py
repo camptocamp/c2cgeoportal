@@ -38,6 +38,8 @@ from c2cgeoportal_geoportal.views.raster import Raster
 
 
 class MemoryCacheSizeProvider(Provider):
+    """Get the memory used by the cache."""
+
     def __init__(self, all_: bool = False):
         super().__init__("pod_process_memory_cache_kb", "Used memory cache")
         self.all = all_
@@ -67,6 +69,8 @@ def _get_memory_cache(all_: bool) -> Dict[str, List[Tuple[Dict[str, Any], float]
 
 
 class RasterDataSizeProvider(Provider):
+    """Get the memory used by Raster data cache."""
+
     def __init__(self) -> None:
         super().__init__("pod_process_raster_data_kb", "Memory used by raster")
 
@@ -88,6 +92,8 @@ def _get_raster_data() -> Dict[str, List[Tuple[Dict[str, str], float]]]:
 
 
 class TotalPythonObjectMemoryProvider(Provider):
+    """Get the memory used by Python objects."""
+
     def __init__(self) -> None:
         super().__init__("total_python_object_memory_kb", "Memory used by raster")
 

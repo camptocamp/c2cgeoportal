@@ -51,7 +51,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import static
-from c2cgeoportal_geoportal import is_valid_referer
+from c2cgeoportal_geoportal import is_valid_referrer
 from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2
 from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
@@ -61,6 +61,12 @@ CACHE_REGION = get_region("std")
 
 
 class Login:
+    """
+    All the login, logout, oauth2, user information views.
+
+    Also manage the 2fa.
+    """
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings
@@ -79,7 +85,7 @@ class Login:
 
     def _referer_log(self) -> None:
         if not hasattr(self.request, "is_valid_referer"):
-            self.request.is_valid_referer = is_valid_referer(self.request)
+            self.request.is_valid_referer = is_valid_referrer(self.request)
         if not self.request.is_valid_referer:
             LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
 

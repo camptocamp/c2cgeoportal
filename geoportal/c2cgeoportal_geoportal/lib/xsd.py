@@ -38,6 +38,8 @@ from sqlalchemy.orm.util import class_mapper
 
 
 class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
+    """Extends the PapyrusXSDGenerator."""
+
     def add_class_properties_xsd(self, tb: str, cls: DeclarativeMeta) -> None:
         """
         Add the XSD for the class properties to the ``TreeBuilder``.
@@ -109,6 +111,8 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
 
 
 class XSD:
+    """The XSD file generator on a pyramid view."""
+
     def __init__(
         self,
         include_primary_keys: bool = False,

@@ -33,4 +33,5 @@ from pyramid.view import view_config
 
 @view_config(route_name="admin")  # type: ignore  # type: ignore
 def home_view(request: pyramid.request.Request) -> HTTPFound:
+    """Get the main administration view, redirect to the layertree."""
     return HTTPFound(request.route_url("layertree", application="admin"))

@@ -41,6 +41,7 @@ _list_field = partial(ListField, DimensionLayer)
 
 
 class DimensionLayerViews(LayerViews):
+    """The layer with dimensions administration view."""
 
     _extra_list_fields = [
         _list_field(

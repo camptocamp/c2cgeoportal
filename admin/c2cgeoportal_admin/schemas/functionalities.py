@@ -37,6 +37,7 @@ from c2cgeoportal_commons.models.main import Functionality
 
 
 def functionalities_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+    """Get the schema of the functionalities."""
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Functionality),
         name=prop.key,

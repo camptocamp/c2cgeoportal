@@ -54,6 +54,8 @@ except ModuleNotFoundError:
     drop = None
 
     class GenericClass:
+        """Generic class."""
+
         def __init__(self, *args: Any, **kwargs: Any):
             pass
 
@@ -79,6 +81,8 @@ user_role = Table(
 
 
 class User(Base):  # type: ignore
+    """The user table representation."""
+
     __tablename__ = "user"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {
@@ -266,29 +270,21 @@ class User(Base):  # type: ignore
 
     @property
     def password(self) -> str:
-        """
-        returns password.
-        """
+        """Get the password."""
         return self._password  # type: ignore
 
     @password.setter
     def password(self, password: str) -> None:
-        """
-        encrypts password on the fly.
-        """
+        """Encrypt password on the fly."""
         self._password = self.__encrypt_password(password)
 
     def set_temp_password(self, password: str) -> None:
-        """
-        encrypts password on the fly.
-        """
+        """Encrypt password on the fly."""
         self.temp_password = self.__encrypt_password(password)
 
     @staticmethod
     def __encrypt_password_legacy(password: str) -> str:
-        """
-        Hash the given password with SHA1.
-        """
+        """Hash the given password with SHA1."""
         return sha1(password.encode("utf8")).hexdigest()  # nosec
 
     @staticmethod
@@ -336,6 +332,8 @@ class User(Base):  # type: ignore
 
 
 class Shorturl(Base):  # type: ignore
+    """The shorturl table representation."""
+
     __tablename__ = "shorturl"
     __table_args__ = {"schema": _schema}
     id = Column(Integer, primary_key=True)
@@ -348,6 +346,8 @@ class Shorturl(Base):  # type: ignore
 
 
 class OAuth2Client(Base):  # type: ignore
+    """The oauth2_client table representation."""
+
     __tablename__ = "oauth2_client"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
@@ -389,6 +389,8 @@ class OAuth2Client(Base):  # type: ignore
 
 
 class OAuth2BearerToken(Base):  # type: ignore
+    """The oauth2_bearertoken table representation."""
+
     __tablename__ = "oauth2_bearertoken"
     __table_args__ = (
         sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),
@@ -407,6 +409,8 @@ class OAuth2BearerToken(Base):  # type: ignore
 
 
 class OAuth2AuthorizationCode(Base):  # type: ignore
+    """The oauth2_authorizationcode table representation."""
+
     __tablename__ = "oauth2_authorizationcode"
     __table_args__ = (
         sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),

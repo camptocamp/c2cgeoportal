@@ -41,6 +41,7 @@ logger = logging.getLogger(__name__)
 
 
 class Dev(Proxy):
+    """All the development views."""
 
     THEME_RE = re.compile(r"/theme/.*$")
 

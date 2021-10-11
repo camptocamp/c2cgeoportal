@@ -45,9 +45,10 @@ down_revision = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema_static"]
     op.alter_column("shorturl", "url", type_=types.Unicode, schema=schema)
 
 
 def downgrade() -> None:
-    pass
+    """Downgrade."""

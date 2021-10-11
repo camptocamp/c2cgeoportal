@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.execute(
@@ -72,6 +73,7 @@ LANGUAGE plpgsql""".format(
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.execute(f"DROP TRIGGER on_role_name_change ON {schema}.role")

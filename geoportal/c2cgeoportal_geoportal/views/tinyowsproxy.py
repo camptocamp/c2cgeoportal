@@ -50,6 +50,8 @@ LOG = logging.getLogger(__name__)
 
 
 class TinyOWSProxy(OGCProxy):
+    """Proxy for the tiny OWN server."""
+
     def __init__(self, request: pyramid.request.Request):
         OGCProxy.__init__(self, request, has_default_ogc_server=True)
         self.settings = request.registry.settings.get("tinyowsproxy", {})
@@ -129,10 +131,7 @@ class TinyOWSProxy(OGCProxy):
         return response
 
     def _is_allowed(self, typenames: Set[str]) -> bool:
-        """
-        Checks if the current user has the rights to access the given type-names.
-        """
-
+        """Check if the current user has the rights to access the given type-names."""
         writable_layers = set()
         for gmflayer in list(get_writable_layers(self.request, [self.ogc_server.id]).values()):
             for ogclayer in gmflayer.layer.split(","):
@@ -174,9 +173,7 @@ class TinyOWSProxy(OGCProxy):
 
     @staticmethod
     def _parse_body(body: str) -> Tuple[str, Set[str]]:
-        """
-        Read the WFS-T request body and extract the referenced type-names and request method.
-        """
+        """Read the WFS-T request body and extract the referenced type-names and request method."""
         xml = ElementTree.fromstring(body)
         wfs_request = normalize_tag(xml.tag)
 

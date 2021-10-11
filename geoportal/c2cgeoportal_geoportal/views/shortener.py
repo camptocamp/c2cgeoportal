@@ -46,6 +46,8 @@ logger = logging.getLogger(__name__)
 
 
 class Shortener:
+    """All the views conserne the shortener."""
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings.get("shortener", {})

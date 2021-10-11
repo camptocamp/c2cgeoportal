@@ -25,7 +25,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-"""Add sql fields to vector tiles
+"""
+Add sql fields to vector tiles.
 
 Revision ID: 52916d8fde8b
 Revises: a00109812f89
@@ -44,12 +45,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
     table = "layer_vectortiles"
     op.add_column(table, Column("sql", Unicode, nullable=True), schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
     table = "layer_vectortiles"
     op.drop_column(table, "sql", schema)

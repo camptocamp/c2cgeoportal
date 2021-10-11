@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.rename_table("wmts_dimension", "dimension", schema=schema)
@@ -61,6 +62,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     with op.batch_alter_table("dimension", schema=schema) as table_op:  # type: ignore

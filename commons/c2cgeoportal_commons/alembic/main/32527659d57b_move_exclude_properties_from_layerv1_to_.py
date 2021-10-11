@@ -46,6 +46,7 @@ down_revision = "5109242131ce"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.add_column("layer", Column("exclude_properties", Unicode), schema=schema)
@@ -58,6 +59,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.add_column("layerv1", Column("exclude_properties", Unicode), schema=schema)

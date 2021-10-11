@@ -42,7 +42,7 @@ from zope.sqlalchemy import mark_changed
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.dimensions import dimensions_schema_node
 from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
+from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
@@ -52,7 +52,7 @@ _list_field = partial(ListField, LayerWMTS)
 
 base_schema = GeoFormSchemaNode(LayerWMTS, widget=FormWidget(fields_template="layer_fields"))
 base_schema.add(dimensions_schema_node(LayerWMTS.dimensions))
-base_schema.add(metadatas_schema_node(LayerWMTS.metadatas))
+base_schema.add(metadata_schema_node(LayerWMTS.metadatas))
 base_schema.add(interfaces_schema_node(LayerWMTS.interfaces))
 base_schema.add(restrictionareas_schema_node(LayerWMTS.restrictionareas))
 base_schema.add_unique_validator(LayerWMTS.name, LayerWMTS.id)
@@ -61,6 +61,8 @@ base_schema.add(parent_id_node(LayerGroup))  # type: ignore
 
 @view_defaults(match_param="table=layers_wmts")
 class LayerWmtsViews(DimensionLayerViews):
+    """The WMTS layer administration view."""
+
     _list_fields = (
         DimensionLayerViews._list_fields
         + [
