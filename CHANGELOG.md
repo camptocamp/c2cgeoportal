@@ -1,3 +1,5 @@
+##### 2.6.0.35
+* [Backport 2.6] Sanitize directly edited values [ngeo#7545](https://github.com/camptocamp/ngeo/pull/7545)
 ##### 2.6.0.34
 * Update the ignored cve to the new id's [c2cgeoportal#8755](https://github.com/camptocamp/c2cgeoportal/pull/8755)
 ##### 2.6.0.33
