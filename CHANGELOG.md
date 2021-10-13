@@ -1,3 +1,5 @@
+##### 2.6.0.36
+* The unsafe_long_version is in the template_vars [c2cgeoportal#8765](https://github.com/camptocamp/c2cgeoportal/pull/8765)
 ##### 2.6.0.35
 * [Backport 2.6] Sanitize directly edited values [ngeo#7545](https://github.com/camptocamp/ngeo/pull/7545)
 ##### 2.6.0.34
