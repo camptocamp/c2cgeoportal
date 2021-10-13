@@ -1,3 +1,5 @@
+##### 2.5.0.161
+* [Backport 2.5] Sanitize directly edited values [ngeo#7544](https://github.com/camptocamp/ngeo/pull/7544)
 ##### 2.5.0.160
 * Update the ignored cve to the new id's [ngeo#7524](https://github.com/camptocamp/ngeo/pull/7524)
 ##### 2.5.0.159
