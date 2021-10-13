@@ -27,7 +27,8 @@ we are on docker-compose we have to choose ourself. The best is to build the ima
 integration when the result is correct we push it on a repository, and on production we will use the
 images from the repository. The other solution is to use fixed tag for the base image, this imply that we
 should do a minor update of the application to get the security fix. To do that you should set
-in the ``project.yaml`` file the parameter ``unsafe_long_version`` to ``True``.
+in the ``project.yaml`` file the template parameter ``unsafe_long_version`` to ``True`` in the
+``template_vars`` section.
 
 
 Access to WMS GetCapability
