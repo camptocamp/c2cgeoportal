@@ -806,7 +806,7 @@ mapping:
           total_python_object_memory:
             required: True
             type: scalar
-      vectortile:
+      vector_tiles:
         type: map
         mapping:
           srid:

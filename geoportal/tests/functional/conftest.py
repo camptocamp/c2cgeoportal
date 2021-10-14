@@ -25,6 +25,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from unittest.mock import patch
+
 import pytest
 from c2c.template.config import config as configuration
 from pyramid.testing import DummyRequest
@@ -41,7 +43,8 @@ def settings():
 def dbsession(settings):
     from c2cgeoportal_commons.models import DBSession
 
-    yield DBSession
+    with patch("c2cgeoportal_geoportal.views.vector_tiles.DBSession", new=DBSession):
+        yield DBSession
 
 
 @pytest.fixture

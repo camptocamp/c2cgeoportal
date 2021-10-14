@@ -34,13 +34,16 @@ import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config, view_defaults
 
+from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
 from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
+from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayerGroup, LayerVectorTiles
 
 _list_field = partial(ListField, LayerVectorTiles)
@@ -79,9 +82,24 @@ class LayerVectorTilesViews(DimensionLayerViews):
     def grid(self):
         return super().grid()
 
+    def schema(self) -> GeoFormSchemaNode:
+        try:
+            obj = self._get_object()
+        except HTTPNotFound:
+            obj = None
+
+        schema = self._base_schema.clone()
+        schema["style"].description = Literal(
+            _("{}<br>Current runtime value is: {}").format(
+                schema["style"].description,
+                obj.style_description(self._request),
+            )
+        )
+        return schema
+
     @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
     def view(self):
-        return super().edit()
+        return super().edit(self.schema())
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
     def save(self):

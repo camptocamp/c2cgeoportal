@@ -29,6 +29,7 @@ import logging
 
 from pyramid.request import Request
 from pyramid.response import Response
+from pyramid.view import view_config
 from tilecloud import TileCoord
 from tilecloud.grid.free import FreeTileGrid
 
@@ -37,36 +38,37 @@ from c2cgeoportal_commons.models import DBSession, main
 LOG = logging.getLogger(__name__)
 
 
-class MbTilesViews:
+class VectorTilesViews:
     def __init__(self, request: Request) -> None:
         self.request = request
 
-    def mb_tiles(self) -> Response:
-
-        settings = self.request.registry.settings["vectortile"]
+    @view_config(route_name="vector_tiles")  # type: ignore
+    def vector_tiles(self) -> Response:
+        settings = self.request.registry.settings["vector_tiles"]
         grid = FreeTileGrid(settings["resolutions"], max_extent=settings["extent"], tile_size=256)
 
-        layerid = self.request.matchdict["layerid"]
+        layer_name = self.request.matchdict["layer_name"]
+
         z = int(self.request.matchdict["z"])
         x = int(self.request.matchdict["x"])
         y = int(self.request.matchdict["y"])
         coord = TileCoord(z, x, y)
         minx, miny, maxx, maxy = grid.extent(coord, 0)
 
-        LOG.warning(layerid)
-        result = DBSession.query(main.LayerVectorTiles.id).all()
-        for r in result:
-            LOG.warning(r)
-        sql = DBSession.query(main.LayerVectorTiles.sql).filter(main.LayerVectorTiles.id == layerid).one()[0]
+        sql_template = (
+            DBSession.query(main.LayerVectorTiles.sql)
+            .filter(main.LayerVectorTiles.name == layer_name)
+            .one()[0]
+        )
 
-        raw_sql = sql.format(envelope=f"{minx}, {miny}, {maxx}, {maxy}")
+        raw_sql = sql_template.format(
+            envelope=f"ST_MakeEnvelope({minx}, {miny}, {maxx}, {maxy}, {settings['srid']})"
+        )
 
         result = DBSession.execute(raw_sql)
 
-        response = self.request.response
-        response.content_type = "application/x-protobuf"
         for row in result:
+            response = self.request.response
+            response.content_type = "application/vnd.mapbox-vector-tile"
             response.body = row[0].tobytes()
-            response.conditional_response = True
-            response.md5_etag()
             return response

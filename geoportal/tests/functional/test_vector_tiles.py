@@ -65,9 +65,9 @@ def test_data(dbsession, transact):
                 name,
                 city,
                 country,
-                ST_AsMVTGeom("geom", ST_MakeEnvelope({envelope}, 21781)) as geom
+                ST_AsMVTGeom("geom", {envelope}) as geom
                 FROM geodata.testpoint
-                WHERE ST_Intersects("geom", ST_MakeEnvelope({envelope}, 21781))
+                WHERE ST_Intersects("geom", {envelope})
             ) AS q
             """,
         )
@@ -82,17 +82,17 @@ def test_data(dbsession, transact):
     }
 
 
-class TestMbTilesViews:
-    def test_mb_tiles_success(self, dummy_request, test_data):
-        from c2cgeoportal_geoportal.views.mb_tiles import MbTilesViews
+class TestVectorTilesViews:
+    def test_vector_tiles_success(self, dummy_request, test_data):
+        from c2cgeoportal_geoportal.views.vector_tiles import VectorTilesViews
 
         request = dummy_request
-        request.matchdict["layerid"] = test_data["layers"]["layer_vector_tiles"].id
+        request.matchdict["layer_name"] = test_data["layers"]["layer_vector_tiles"].name
         request.matchdict["z"] = 11
         request.matchdict["x"] = 0
         request.matchdict["y"] = 0
 
-        resp = MbTilesViews(request).mb_tiles()
+        resp = VectorTilesViews(request).vector_tiles()
 
         # assert False
         assert isinstance(resp.body, bytes)

@@ -1259,6 +1259,7 @@ class LayerVectorTiles(DimensionLayer):
                     """
                 ),
                 "column": 2,
+                "widget": TextAreaWidget(rows=15),
             }
         },
     )
@@ -1293,6 +1294,11 @@ class LayerVectorTiles(DimensionLayer):
             .filter(LayerVectorTiles.name == "vector-tiles-defaults")
             .one_or_none(),
         )
+
+    def style_description(self, request: pyramid.request.Request) -> str:
+        errors: Set[str] = set()
+        url = get_url2(self.name, self.style, request, errors)
+        return url.url() if url else "\n".join(errors)
 
 
 class RestrictionArea(Base):  # type: ignore
