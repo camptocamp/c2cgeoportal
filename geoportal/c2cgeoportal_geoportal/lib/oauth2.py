@@ -41,6 +41,8 @@ OBJECT_CACHE_REGION = get_region("obj")
 
 
 class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
+    """The oauth2 request validator implementation."""
+
     def __init__(self, authorization_expires_in: int) -> None:
         # in minutes
         self.authorization_expires_in = authorization_expires_in
@@ -62,8 +64,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         both body and query can be obtained by direct attribute access, i.e.
         request.client_id for client_id in the URL query.
 
-        :param request: oauthlib.common.Request
-        :rtype: True or False
+        Arguments:
+
+            request: oauthlib.common.Request
+
+        Returns: True or False
 
         Method is used by:
             - Authorization Code Grant
@@ -106,9 +111,6 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         to set request.client to the client object associated with the
         given client_id.
 
-        :param request: oauthlib.common.Request
-        :rtype: True or False
-
         Method is used by:
             - Authorization Code Grant
         """
@@ -149,8 +151,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
               client credentials or whenever Client provided client authentication, see
               `Section 6`_
 
-        :param request: oauthlib.common.Request
-        :rtype: True or False
+        Arguments:
+
+            request: oauthlib.common.Request
+
+        Returns: True or False
 
         Method is used by:
             - Authorization Code Grant
@@ -177,8 +182,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         **kwargs: Any,
     ) -> bool:
         """
+        Ensure that the authorization process is correct.
+
         Ensure that the authorization process represented by this authorization code began with this
-        'redirect_uri'.
+        ``redirect_uri``.
 
         If the client specifies a redirect_uri when obtaining code then that
         redirect URI must be bound to the code and verified equal in this
@@ -186,12 +193,15 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         the client's allowed redirect URIs, but against the URI used when the
         code was saved.
 
-        :param client_id: Unicode client identifier
-        :param code: Unicode authorization_code.
-        :param redirect_uri: Unicode absolute URI
-        :param client: Client object set by you, see authenticate_client.
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            client_id: Unicode client identifier
+            code: Unicode authorization_code.
+            redirect_uri: Unicode absolute URI
+            client: Client object set by you, see authenticate_client.
+            request: The HTTP Request
+
+        Returns: True or False
 
         Method is used by:
             - Authorization Code Grant (during token request)
@@ -217,14 +227,19 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         self, code: str, request: oauthlib.common.Request
     ) -> None:
         """
-        Is called during the "token" request processing, when a ``code_verifier`` and a ``code_challenge`` has
+        Is called during the "token" request processing.
+
+        When a ``code_verifier`` and a ``code_challenge`` has
         been provided. See ``.get_code_challenge``. Must return ``plain`` or ``S256``. You can return a custom
         value if you have implemented your own ``AuthorizationCodeGrant`` class.
 
-        :param code: Authorization code.
-        :param request: OAuthlib request.
-        :type request: oauthlib.common.Request
-        :rtype: code_challenge_method string
+        Arguments:
+
+            code: Authorization code.
+            request: OAuthlib request.
+
+        Returns: code_challenge_method string
+
         Method is used by:
             - Authorization Code Grant - when PKCE is active
         """
@@ -244,9 +259,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the default redirect URI for the client.
 
-        :param client_id: Unicode client identifier
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: The default redirect URI for the client
+        Arguments:
+
+            client_id: Unicode client identifier
+            request: The HTTP Request
+
+        Returns: The default redirect URI for the client
 
         Method is used by:
             - Authorization Code Grant
@@ -268,9 +286,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the default scopes for the client.
 
-        :param client_id: Unicode client identifier
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: List of default scopes
+        Arguments:
+
+            client_id: Unicode client identifier
+            request: The HTTP Request
+
+        Returns: List of default scopes
 
         Method is used by all core grant types:
             - Authorization Code Grant
@@ -294,9 +315,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the list of scopes associated with the refresh token.
 
-        :param refresh_token: Unicode refresh token
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: List of scopes.
+        Arguments:
+
+            refresh_token: Unicode refresh token
+            request: The HTTP Request
+
+        Returns: List of scopes.
 
         Method is used by:
             - Refresh token grant
@@ -316,7 +340,9 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         **kwargs: Any,
     ) -> None:
         """
-        Introspect an access or refresh token. Called once the introspect request is validated. This method
+        Introspect an access or refresh token.
+
+        Called once the introspect request is validated. This method
         should verify the *token* and either return a dictionary with the list of claims associated, or `None`
         in case the token is unknown. Below the list of registered claims you should be interested in:
 
@@ -336,12 +362,16 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         The implementation can use *token_type_hint* to improve lookup
         efficiency, but must fallback to other types to be compliant with RFC.
         The dict of claims is added to request.token after this method.
-        :param token: The token string.
-        :param token_type_hint: access_token or refresh_token.
-        :param request: OAuthlib request.
-        :type request: oauthlib.common.Request
+
+        Arguments:
+
+            token: The token string.
+            token_type_hint: access_token or refresh_token.
+            request: OAuthlib request.
+
         Method is used by:
             - Introspect Endpoint (all grants are compatible)
+
         .. _`Introspect Claims`: https://tools.ietf.org/html/rfc7662#section-2.2
         .. _`JWT Claims`: https://tools.ietf.org/html/rfc7519#section-4
         """
@@ -362,9 +392,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Invalidate an authorization code after use.
 
-        :param client_id: Unicode client identifier
-        :param code: The authorization code grant (request.code).
-        :param request: The HTTP Request (oauthlib.common.Request)
+        Arguments:
+
+            client_id: Unicode client identifier
+            code: The authorization code grant (request.code).
+            request: The HTTP Request
 
         Method is used by:
             - Authorization Code Grant
@@ -403,10 +435,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         used in situations where returning all valid scopes from the
         get_original_scopes is not practical.
 
-        :param request_scopes: A list of scopes that were requested by client
-        :param refresh_token: Unicode refresh_token
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            request_scopes: A list of scopes that were requested by client
+            refresh_token: Unicode refresh_token
+            request: The HTTP Request
 
         Method is used by:
             - Refresh token grant
@@ -428,9 +461,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Revoke an access or refresh token.
 
-        :param token: The token string.
-        :param token_type_hint: access_token or refresh_token.
-        :param request: The HTTP Request (oauthlib.common.Request)
+        Arguments:
+
+            token: The token string.
+            token_type_hint: access_token or refresh_token.
+            request: The HTTP Request
 
         Method is used by:
             - Revocation Endpoint
@@ -451,8 +486,9 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         or replaced with a new one (rotated). Return True to rotate and
         and False for keeping original.
 
-        :param request: oauthlib.common.Request
-        :rtype: True or False
+        Arguments:
+
+            request: oauthlib.common.Request
 
         Method is used by:
             - Refresh Token Grant
@@ -490,9 +526,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         chose to send one.  That value should be saved and used in
         'validate_code'.
 
-        :param client_id: Unicode client identifier
-        :param code: A dict of the authorization code grant and, optionally, state.
-        :param request: The HTTP Request (oauthlib.common.Request)
+        Arguments:
+
+            client_id: Unicode client identifier
+            code: A dict of the authorization code grant and, optionally, state.
+            request: The HTTP Request
 
         Method is used by:
             - Authorization Code Grant
@@ -558,10 +596,13 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         Note that while "scope" is a string-separated list of authorized scopes,
         the original list is still available in request.scopes
 
-        :param client_id: Unicode client identifier
-        :param token: A Bearer token dict
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: The default redirect URI for the client
+        Arguments:
+
+            client_id: Unicode client identifier
+            token: A Bearer token dict
+            request: The HTTP Request
+
+        Returns: The default redirect URI for the client
 
         Method is used by all core grant types issuing Bearer tokens:
             - Authorization Code Grant
@@ -606,9 +647,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure the Bearer token is valid and authorized access to scopes.
 
-        :param token: A string of random characters.
-        :param scopes: A list of scopes associated with the protected resource.
-        :param request: The HTTP Request (oauthlib.common.Request)
+        Arguments:
+
+            token: A string of random characters.
+            scopes: A list of scopes associated with the protected resource.
+            request: The HTTP Request
 
         A key to OAuth 2 security and restricting impact of leaked tokens is
         the short expiration time of tokens, *always ensure the token has not
@@ -640,10 +683,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         one provided for django these attributes will be made available
         in all protected views as keyword arguments.
 
-        :param token: Unicode Bearer token
-        :param scopes: List of scopes (defined by you)
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            token: Unicode Bearer token
+            scopes: List of scopes (defined by you)
+            request: The HTTP Request
 
         Method is indirectly used by all core Bearer token issuing grant types:
             - Authorization Code Grant
@@ -681,8 +725,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         to set request.client to the client object associated with the
         given client_id.
 
-        :param request: oauthlib.common.Request
-        :rtype: True or False
+        Arguments:
+
+            client_id: Unicode client identifier
+            request: oauthlib.common.Request
 
         Method is used by:
             - Authorization Code Grant
@@ -725,11 +771,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         associated with this authorization code. Similarly request.scopes
         must also be set.
 
-        :param client_id: Unicode client identifier
-        :param code: Unicode authorization code
-        :param client: Client object set by you, see authenticate_client.
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            client_id: Unicode client identifier
+            code: Unicode authorization code
+            client: Client object set by you, see authenticate_client.
+            request: The HTTP Request
 
         Method is used by:
             - Authorization Code Grant
@@ -764,11 +811,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure client is authorized to use the grant_type requested.
 
-        :param client_id: Unicode client identifier
-        :param grant_type: Unicode grant type, i.e. authorization_code, password.
-        :param client: Client object set by you, see authenticate_client.
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            client_id: Unicode client identifier
+            grant_type: Unicode grant type, i.e. authorization_code, password.
+            client: Client object set by you, see authenticate_client.
+            request: The HTTP Request
 
         Method is used by:
             - Authorization Code Grant
@@ -796,10 +844,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         All clients should register the absolute URIs of all URIs they intend
         to redirect to. The registration is outside of the scope of oauthlib.
 
-        :param client_id: Unicode client identifier
-        :param redirect_uri: Unicode absolute URI
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            client_id: Unicode client identifier
+            redirect_uri: Unicode absolute URI
+            request: The HTTP Request
 
         Method is used by:
             - Authorization Code Grant
@@ -834,10 +883,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         OBS! The request.user attribute should be set to the resource owner
         associated with this refresh token.
 
-        :param refresh_token: Unicode refresh token
-        :param client: Client object set by you, see authenticate_client.
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            refresh_token: Unicode refresh token
+            client: Client object set by you, see authenticate_client.
+            request: The HTTP Request
 
         Method is used by:
             - Authorization Code Grant (indirectly by issuing refresh tokens)
@@ -875,11 +925,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure client is authorized to use the response_type requested.
 
-        :param client_id: Unicode client identifier
-        :param response_type: Unicode response type, i.e. code, token.
-        :param client: Client object set by you, see authenticate_client.
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            client_id: Unicode client identifier
+            response_type: Unicode response type, i.e. code, token.
+            client: Client object set by you, see authenticate_client.
+            request: The HTTP Request
 
         Method is used by:
             - Authorization Code Grant
@@ -903,11 +954,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure the client is authorized access to requested scopes.
 
-        :param client_id: Unicode client identifier
-        :param scopes: List of scopes (defined by you)
-        :param client: Client object set by you, see authenticate_client.
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            client_id: Unicode client identifier
+            scopes: List of scopes (defined by you)
+            client: Client object set by you, see authenticate_client.
+            request: The HTTP Request
 
         Method is used by all core grant types:
             - Authorization Code Grant
@@ -938,11 +990,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         not set you will be unable to associate a token with a user in the
         persistence method used (commonly, save_bearer_token).
 
-        :param username: Unicode username
-        :param password: Unicode password
-        :param client: Client object set by you, see authenticate_client.
-        :param request: The HTTP Request (oauthlib.common.Request)
-        :rtype: True or False
+        Arguments:
+
+            username: Unicode username
+            password: Unicode password
+            client: Client object set by you, see authenticate_client.
+            request: The HTTP Request
 
         Method is used by:
             - Resource Owner Password Credentials Grant
@@ -956,6 +1009,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
 @OBJECT_CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_oauth_client(settings: Dict[str, Any]) -> oauthlib.oauth2.WebApplicationServer:
+    """Get the oauth2 client, with a cache."""
     authentication_settings = settings.get("authentication", {})
     return oauthlib.oauth2.WebApplicationServer(
         RequestValidator(

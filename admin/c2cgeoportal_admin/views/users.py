@@ -52,6 +52,8 @@ settings_role = aliased(Role)
 
 @view_defaults(match_param="table=users")
 class UserViews(AbstractViews):  # type: ignore
+    """The admin user view."""
+
     _list_fields = [
         _list_field("id"),
         _list_field("username"),

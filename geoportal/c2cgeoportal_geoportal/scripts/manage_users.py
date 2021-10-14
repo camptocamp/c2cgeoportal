@@ -36,7 +36,9 @@ from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_
 
 def main() -> None:
     """
-    Emergency user create and password reset script example, reset toto password to foobar: docker-compose
+    Emergency user create and password reset script example.
+
+    Reset toto password to foobar: docker-compose
     exec geoportal manage-users --password=foobar toto example, create user foo with password bar and role
     admin: docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo.
 
@@ -65,7 +67,7 @@ User can be created if it does not exist yet."""
     settings = get_appsettings(options)
 
     with transaction.manager:
-        sess = get_session(settings, transaction.manager)
+        session = get_session(settings, transaction.manager)
 
         # Must be done only once we have loaded the project config
         from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
@@ -74,7 +76,7 @@ User can be created if it does not exist yet."""
         print("\n")
 
         # Check that user exists
-        query = sess.query(User).filter_by(username=username)
+        query = session.query(User).filter_by(username=username)
 
         result = query.count()
         if result == 0:
@@ -89,7 +91,7 @@ User can be created if it does not exist yet."""
                     parser.error("The email is mandatory on user creation")
 
                 # Get roles
-                query_role = sess.query(Role).filter(Role.name == options.rolename)
+                query_role = session.query(Role).filter(Role.name == options.rolename)
 
                 if query_role.count() == 0:
                     # Role not found in db?
@@ -105,7 +107,7 @@ User can be created if it does not exist yet."""
                     settings_role=role,
                     roles=[role],
                 )
-                sess.add(user)
+                session.add(user)
 
                 print(f"User {username} created with password {options.password} and role {options.rolename}")
 
@@ -120,7 +122,7 @@ User can be created if it does not exist yet."""
             if options.email is not None:
                 user.email = options.email
 
-            sess.add(user)
+            session.add(user)
 
             print(f"Password reset for user {username}")
 

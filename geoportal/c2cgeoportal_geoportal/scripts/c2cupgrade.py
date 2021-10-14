@@ -58,6 +58,7 @@ DIFF_NOTICE = (
 
 
 def fix_style() -> None:
+    """Fix the style of all the project files using isort, Black and Prettier."""
 
     file_to_clean = []
     for filename, content in (
@@ -93,10 +94,7 @@ max_line_length = 110
 
 
 def main() -> None:
-    """
-    tool used to do the application upgrade.
-    """
-
+    """Tool used to do the application upgrade."""
     parser = _fill_arguments()
     options = parser.parse_args()
 
@@ -115,13 +113,15 @@ def _fill_arguments() -> ArgumentParser:
 
 
 class InteruptedException(Exception):
-    pass
+    """The interrupted exception."""
 
 
 current_step_number = 0
 
 
 class Step:
+    """Decorator used for en upgrade step."""
+
     def __init__(self, step_number: int, file_marker: bool = True):
         global current_step_number
         current_step_number = step_number
@@ -159,7 +159,7 @@ class Step:
                 )
                 sys.exit(1)
             except Exception as exception:
-                cautch_exception = exception
+                catch_exception = exception
 
                 if self.step_number == current_step_number:
 
@@ -167,7 +167,7 @@ class Step:
                         c2cupgradetool.print_step(
                             self.step_number,
                             error=True,
-                            message=f"The step had the error '{cautch_exception}'.",
+                            message=f"The step had the error '{catch_exception}'.",
                             prompt="Fix the error and run the step again:",
                         )
 
@@ -178,6 +178,7 @@ class Step:
 
 
 class C2cUpgradeTool:
+    """The tool used to upgrade the application."""
 
     color_bar = colorize("================================================================", Color.GREEN)
 
@@ -816,6 +817,7 @@ class C2cUpgradeTool:
 
 
 def check_git_status_output(args: Optional[List[str]] = None) -> str:
+    """Check if there is something that's not committed."""
     return check_output(["git", "status", "--short"] + (args if args is not None else [])).decode("utf-8")
 
 

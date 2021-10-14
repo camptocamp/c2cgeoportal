@@ -48,6 +48,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.drop_column("layergroup", "is_internal_wms", schema=schema)
@@ -55,6 +56,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.add_column("layergroup", Column("is_internal_wms", Boolean), schema=schema)

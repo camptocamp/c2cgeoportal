@@ -47,6 +47,7 @@ if TYPE_CHECKING:
 
 
 def main() -> None:
+    """Run the command."""
     parser = ArgumentParser(
         prog=sys.argv[0],
         add_help=True,
@@ -98,6 +99,12 @@ def main() -> None:
 
 
 class Import:
+    """
+    To import all the themes, layer groups and layers names into the full-text search table.
+
+    Done by interface and by language.
+    """
+
     def __init__(self, session: Session, settings: pyramid.config.Configurator, options: Namespace):
         self.options = options
         self.imported: Set[Any] = set()
@@ -188,7 +195,7 @@ class Import:
                     self.fts_languages[lang],
                     " ".join(
                         [self.fts_normalizer(self._[lang].gettext(item.name))]
-                        + [v.strip() for m in item.get_metadatas("searchAlias") for v in m.value.split(",")]
+                        + [v.strip() for m in item.get_metadata("searchAlias") for v in m.value.split(",")]
                     ),
                 )
                 fts.actions = [{"action": action, "data": item.name}]

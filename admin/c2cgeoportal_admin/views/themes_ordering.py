@@ -40,6 +40,8 @@ from c2cgeoportal_commons.models.main import Theme, TreeItem
 
 
 class ThemeOrderSchema(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+    """The theme order schema."""
+
     def objectify(self, dict_, context=None):
         context = self.dbsession.query(Theme).get(dict_["id"])
         context = super().objectify(dict_, context)
@@ -48,6 +50,7 @@ class ThemeOrderSchema(GeoFormSchemaNode):  # type: ignore # pylint: disable=abs
 
 @colander.deferred
 def themes(node, kw):  # pylint: disable=unused-argument
+    """Get some theme metadata."""
     query = kw["dbsession"].query(Theme).order_by(Theme.ordering, Theme.name)
     return [
         {"id": item.id, "label": item.name, "icon_class": f"icon-{item.item_type}", "group": "All"}
@@ -56,6 +59,7 @@ def themes(node, kw):  # pylint: disable=unused-argument
 
 
 def themes_validator(node, cstruct):
+    """Validate the theme."""
     for dict_ in cstruct:
         if not dict_["id"] in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
@@ -65,6 +69,8 @@ def themes_validator(node, cstruct):
 
 
 class ThemesOrderingSchema(colander.MappingSchema):  # type: ignore
+    """The theme ordering schema."""
+
     themes = colander.SequenceSchema(
         ThemeOrderSchema(
             Theme,
@@ -86,6 +92,7 @@ class ThemesOrderingSchema(colander.MappingSchema):  # type: ignore
 
 
 class ThemesOrdering(AbstractViews):  # type: ignore
+    """The theme ordering admin view."""
 
     _base_schema = ThemesOrderingSchema()
 

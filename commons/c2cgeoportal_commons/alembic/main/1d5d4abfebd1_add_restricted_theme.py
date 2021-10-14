@@ -46,6 +46,7 @@ down_revision = "54645a535ad6"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     engine = op.get_bind().engine
@@ -64,6 +65,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_table("restricted_role_theme", schema=schema)

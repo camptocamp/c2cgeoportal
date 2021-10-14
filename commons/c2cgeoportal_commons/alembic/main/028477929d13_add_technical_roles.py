@@ -48,6 +48,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     role = Table("role", MetaData(), Column("name", Unicode), Column("description", Unicode), schema=schema)
@@ -65,6 +66,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     for name in ("anonymous", "registered", "intranet"):

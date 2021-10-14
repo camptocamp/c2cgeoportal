@@ -35,6 +35,7 @@ TimeExtent = Union["TimeExtentValue", "TimeExtentInterval"]
 
 
 def min_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
+    """Return the min value, support non in input."""
     if a is None:
         return b
     if b is None:
@@ -43,6 +44,7 @@ def min_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> 
 
 
 def max_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
+    """Return the max value, support non in input."""
     if a is None:
         return b
     if b is None:
@@ -52,12 +54,13 @@ def max_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> 
 
 class TimeInformation:
     """
+    Collect the WMS time information.
+
     Arguments:
 
-    * ``extent`` A time extent instance (``TimeExtentValue`` or
-                 ``TimeExtentInterval``)
-    * ``mode`` The layer mode ("single", "range" or "disabled")
-    * ``widget`` The layer mode ("slider" (default) or "datepicker")
+        extent: A time extent instance (``TimeExtentValue`` or ``TimeExtentInterval``)
+        mode: The layer mode ("single", "range" or "disabled")
+        widget: The layer mode ("slider" (default) or "datepicker")
     """
 
     def __init__(self) -> None:
@@ -118,9 +121,7 @@ class TimeInformation:
 
 
 class TimeExtentValue:
-    """
-    Represents time as a list of values.
-    """
+    """Represents time as a list of values."""
 
     def __init__(
         self,
@@ -130,12 +131,14 @@ class TimeExtentValue:
         max_def_value: Optional[datetime.datetime],
     ):
         """
+        Initialise.
+
         Arguments:
 
-        * ``values`` A set() of datetime
-        * ``resolution`` The resolution from the mapfile time definition
-        * ``min_def_value`` the minimum default value as a datetime
-        * ``max_def_value`` the maximum default value as a datetime
+            values: A set() of datetime
+            resolution: The resolution from the mapfile time definition
+            min_def_value: the minimum default value as a datetime
+            max_def_value: the maximum default value as a datetime
         """
         self.values = values
         self.resolution = resolution
@@ -165,9 +168,7 @@ class TimeExtentValue:
 
 
 class TimeExtentInterval:
-    """
-    Represents time with the help of a start, an end and an interval.
-    """
+    """Represents time with the help of a start, an end and an interval."""
 
     def __init__(
         self,
@@ -179,14 +180,16 @@ class TimeExtentInterval:
         max_def_value: Optional[datetime.datetime],
     ):
         """
+        Initialize.
+
         Arguments:
 
-        * ``start`` The start value as a datetime
-        * ``end`` The end value as a datetime
-        * ``interval`` The interval as a tuple (years, months, days, seconds)
-        * ``resolution`` The resolution from the mapfile time definition
-        * ``min_def_value`` the minimum default value as a datetime
-        * ``max_def_value`` the maximum default value as a datetime
+            start: The start value as a datetime
+            end: The end value as a datetime
+            interval: The interval as a tuple (years, months, days, seconds)
+            resolution: The resolution from the mapfile time definition
+            min_def_value: the minimum default value as a datetime
+            max_def_value: the maximum default value as a datetime
         """
         self.start = start
         self.end = end
@@ -237,7 +240,7 @@ class TimeExtentInterval:
 
 def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
     """
-    Parse a time extend from OWSLib to a `̀ TimeExtentValue`` or a ``TimeExtentInterval``
+    Parse a time extend from OWSLib to a `̀ TimeExtentValue`` or a ``TimeExtentInterval``.
 
     Two formats are supported:
     * ['start/end/interval']
@@ -289,7 +292,9 @@ def _parse_default_values(default_values: str) -> Tuple[datetime.datetime, Optio
 
 def _parse_date(date: str) -> Tuple[str, datetime.datetime]:
     """
-    Parses a string into a tuple containing:
+    Parse a date string.
+
+    Return a tuple containing:
 
     * the resolution: "year", "month", "day" or "second"
     * the date as a datetime
@@ -324,7 +329,9 @@ def _format_date(date: datetime.datetime) -> str:
 
 def _parse_duration(duration: str) -> Tuple[int, int, int, int]:
     """
-    Parses an ISO 8601 duration (i.e. "P2DT5S") and returns a tuple containing:
+    Parse an ISO 8601 duration (i.e. "P2DT5S").
+
+    Return a tuple containing:
 
     * years
     * months

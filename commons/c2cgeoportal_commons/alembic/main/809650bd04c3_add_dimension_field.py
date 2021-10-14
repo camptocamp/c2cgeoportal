@@ -48,12 +48,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.add_column("dimension", Column("field", Unicode), schema=schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_column("dimension", "field", schema=schema)

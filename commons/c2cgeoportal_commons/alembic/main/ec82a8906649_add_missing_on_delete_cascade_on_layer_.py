@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:
@@ -63,6 +64,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     for source, dest in [("layer_wmts", "layer"), ("layerv1", "layer"), ("theme", "treegroup")]:

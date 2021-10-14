@@ -29,6 +29,8 @@ from enum import Enum
 
 
 class Color(Enum):
+    """The available colors."""
+
     BLACK = 0
     RED = 1
     GREEN = 2
@@ -40,4 +42,5 @@ class Color(Enum):
 
 
 def colorize(text: str, color: Color) -> str:
+    """Colorize a text for the bash."""
     return f"\x1b[01;3{color.value}m{text}\x1b[0m"

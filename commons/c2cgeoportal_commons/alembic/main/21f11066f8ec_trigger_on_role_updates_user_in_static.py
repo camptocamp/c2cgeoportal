@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
     staticschema = config["schema_static"]
 
@@ -68,6 +69,7 @@ LANGUAGE plpgsql""".format(
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.execute(

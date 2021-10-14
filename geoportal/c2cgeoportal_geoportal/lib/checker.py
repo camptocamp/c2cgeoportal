@@ -44,9 +44,7 @@ LOG = logging.getLogger(__name__)
 def build_url(
     name: str, path: str, request: pyramid.request.Request, headers: Optional[Dict[str, str]] = None
 ) -> Dict[str, Union[str, Dict[str, str]]]:
-    """
-    Build an URL and headers for the checkers.
-    """
+    """Build an URL and headers for the checkers."""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
     url = urljoin(base_internal_url, path)
 
@@ -80,9 +78,7 @@ def _routes(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.He
             name = "checker_routes_" + route.get("checker_name", route["name"])
 
             class GetRequest:
-                """
-                Get the request information about the current route name.
-                """
+                """Get the request information about the current route name."""
 
                 def __init__(self, route_name: str, type_: str) -> None:
                     self.route_name = route_name
@@ -213,9 +209,7 @@ def _lang_files(
             name = f"checker_lang_{type_}_{lang}"
 
             class GetRequest:
-                """
-                Get the request information about the current route name.
-                """
+                """Get the request information about the current route name."""
 
                 def __init__(self, name: str, url: str, lang: str, type_: str) -> None:
                     self.name = name
@@ -283,9 +277,7 @@ output:
 
 
 def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
-    """
-    Init the ckeckers.
-    """
+    """Initialize the checkers."""
     global_settings = config.get_settings()
     if "checker" not in global_settings:
         return

@@ -43,22 +43,20 @@ _ = TranslationStringFactory("c2cgeoportal")
 
 
 class Profile(Raster):
+    """All the view concerned the profile."""
+
     def __init__(self, request: pyramid.request.Request):
         Raster.__init__(self, request)
 
     @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore
     def json(self) -> Dict[str, Any]:
-        """
-        answers to /profile.json.
-        """
+        """Answer to /profile.json."""
         _, points = self._compute_points()
         set_common_headers(self.request, "profile", Cache.PUBLIC_NO)
         return {"profile": points}
 
     def _compute_points(self) -> Tuple[List[str], List[Dict[str, Any]]]:
-        """
-        Compute the alt=fct(dist) array.
-        """
+        """Compute the alt=fct(dist) array."""
         geom = geojson.loads(self.request.params["geom"], object_hook=geojson.GeoJSON.to_instance)
 
         layers: List[str]
@@ -98,15 +96,11 @@ class Profile(Raster):
 
     @staticmethod
     def _dist(coord1: Tuple[float, float], coord2: Tuple[float, float]) -> float:
-        """
-        Compute the distance between 2 points.
-        """
+        """Compute the distance between 2 points."""
         return math.sqrt(math.pow(coord1[0] - coord2[0], 2.0) + math.pow(coord1[1] - coord2[1], 2.0))
 
     def _create_points(self, coords: List[Tuple[float, float]], nb_points: int) -> List[Tuple[float, float]]:
-        """
-        Add some points in order to reach roughly the asked number of points.
-        """
+        """Add some points in order to reach roughly the asked number of points."""
         total_length = 0
         prev_coord = None
         for coord in coords:

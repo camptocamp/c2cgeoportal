@@ -53,6 +53,11 @@ def get_protected_layers_query(
     ogc_server_ids: Optional[Iterable[int]],
     what: DeclarativeMeta = None,
 ) -> Query:
+    """
+    Get the protected layers query.
+
+    Private layers but accessible to the user.
+    """
     from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, what)
@@ -64,6 +69,7 @@ def get_protected_layers_query(
 
 
 def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -> Query:
+    """Get the writable layers query."""
     from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
 
     q = _get_layers_query(request, main.LayerWMS)
@@ -75,6 +81,11 @@ def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -
 
 
 def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict[int, DeclarativeMeta]:
+    """
+    Get the protected layers.
+
+    Private layers but accessible to the user.
+    """
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = get_protected_layers_query(request, ogc_server_ids, what=main.LayerWMS)
@@ -84,6 +95,7 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dic
 
 
 def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict[int, DeclarativeMeta]:
+    """Get the writable layers."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
     q = get_writable_layers_query(request, ogc_server_ids)
@@ -94,6 +106,7 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict
 
 @CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_private_layers(ogc_server_ids: Iterable[int]) -> Dict[int, Any]:
+    """Get the private layers."""
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     q = (

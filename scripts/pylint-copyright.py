@@ -36,16 +36,14 @@ from pylint.interfaces import IRawChecker
 
 
 class CopyrightChecker(BaseChecker):  # type: ignore
-    """
-    Check the first line for copyright notice.
-    """
+    """Check the first line for copyright notice."""
 
     __implements__ = IRawChecker
 
     name = "copyright"
     msgs = {
         "W9902": (
-            "Your file ahould have the copyright notice: 'Copyright (c) %s, Camptocamp SA'",
+            "Your file should have the copyright notice: 'Copyright (c) %s, Camptocamp SA'",
             "missing-copyright",
             (),
         ),
@@ -102,7 +100,5 @@ class CopyrightChecker(BaseChecker):  # type: ignore
 
 
 def register(linter: pylint.lint.PyLinter) -> None:
-    """
-    required method to auto register this checker.
-    """
+    """Require method to auto register this checker."""
     linter.register_checker(CopyrightChecker(linter))

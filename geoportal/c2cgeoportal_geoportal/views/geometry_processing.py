@@ -41,6 +41,12 @@ from c2cgeoportal_commons.models import DBSession
 
 
 class GeometryProcessing:
+    """
+    View used to provide processing on a geometry.
+
+    Currently only difference between geometries.
+    """
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
 

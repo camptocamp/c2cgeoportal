@@ -46,6 +46,7 @@ down_revision = "164ac0819a61"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     # Instructions
@@ -55,6 +56,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     # Instructions

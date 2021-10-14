@@ -30,6 +30,8 @@ from typing import Any, Dict
 
 
 class Normalize:
+    """Normalize a text for the Full text search."""
+
     def __init__(self, config: Dict[str, Any]) -> None:
         split = config.get("split_regex")
         self.split_re = re.compile(split) if split is not None else None

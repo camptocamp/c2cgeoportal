@@ -48,6 +48,7 @@ base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 
 
 def layers(node, kw):  # pylint: disable=unused-argument
+    """Get the layers serializable representation."""
     dbsession = kw["request"].dbsession
     query = dbsession.query(Layer).order_by(Layer.name)
     return [
@@ -87,6 +88,8 @@ base_schema.add(
 
 @view_defaults(match_param="table=restriction_areas")
 class RestrictionAreaViews(AbstractViews):  # type: ignore
+    """The restriction area administration view."""
+
     _list_fields = [
         _list_field("id"),
         _list_field("name"),

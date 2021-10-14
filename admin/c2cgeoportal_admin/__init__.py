@@ -50,9 +50,7 @@ _ = TranslationStringFactory("c2cgeoportal_admin")
 
 
 def main(_, **settings):
-    """
-    This function returns a Pyramid WSGI application.
-    """
+    """Return a Pyramid WSGI application."""
     configuration.init(settings.get("app.cfg"))
     settings.update(configuration.get_config())
 
@@ -92,6 +90,8 @@ def main(_, **settings):
 
 
 class PermissionSetter:
+    """Set the permission to the admin user."""
+
     def __init__(self, config: Configurator):
         self.default_permission_to_revert = None
         self.config = config
@@ -110,6 +110,7 @@ class PermissionSetter:
 
 
 def includeme(config: Configurator) -> None:
+    """Initialize the Pyramid application."""
     config.include("pyramid_jinja2")
     config.include("c2cgeoform")
     config.include("c2cgeoportal_commons")

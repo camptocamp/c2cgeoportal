@@ -48,6 +48,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
     staticschema = config["schema_static"]
 
@@ -82,6 +83,7 @@ WHERE "role"."name" = "user"."role_name";""".format(
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
     staticschema = config["schema_static"]
 

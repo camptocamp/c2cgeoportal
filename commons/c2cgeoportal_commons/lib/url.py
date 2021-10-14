@@ -36,6 +36,8 @@ LOG = logging.getLogger(__name__)
 
 
 class Url:
+    """Object representation of an URI."""
+
     scheme = ""
     _netloc = ""
     _hostname: Optional[str] = None
@@ -148,6 +150,11 @@ class Url:
 
 
 def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optional[Url]:
+    """
+    Get the real URL from the URI of the administration interface.
+
+    Manage the schema: static and config.
+    """
     url_obj = Url(url)
     url_split = urllib.parse.urlsplit(url)
     if url_obj.scheme == "":

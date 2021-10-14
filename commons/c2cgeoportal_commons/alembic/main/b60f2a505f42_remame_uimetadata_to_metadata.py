@@ -46,12 +46,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.rename_table("ui_metadata", "metadata", schema=schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.rename_table("metadata", "ui_metadata", schema=schema)

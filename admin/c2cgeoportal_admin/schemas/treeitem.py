@@ -36,6 +36,7 @@ from c2cgeoportal_admin.schemas.treegroup import base_deferred_parent_id_validat
 
 # Used for the creation of a new layer/layergroup from the layertree
 def parent_id_node(model):
+    """Get the scheme to the parent node ID."""
     return colander.SchemaNode(
         colander.Integer(),
         name="parent_id",

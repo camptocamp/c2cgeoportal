@@ -1,4 +1,5 @@
----
+max-line-length: 110
+
 pep8:
   options:
     max-line-length: 110

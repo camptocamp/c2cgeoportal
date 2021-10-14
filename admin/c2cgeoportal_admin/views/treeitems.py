@@ -40,6 +40,8 @@ _list_field = partial(ListField, TreeItem)
 
 
 class TreeItemViews(AbstractViews):  # type: ignore
+    """The admin tree item view."""
+
     _list_fields = [
         _list_field("id"),
         _list_field("name"),

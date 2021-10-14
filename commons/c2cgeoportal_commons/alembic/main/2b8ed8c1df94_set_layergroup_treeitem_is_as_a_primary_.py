@@ -46,12 +46,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.create_primary_key("layergroup_treeitem_pkey", "layergroup_treeitem", ["id"], schema=schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_constraint("layergroup_treeitem_pkey", "layergroup_treeitem", schema=schema)

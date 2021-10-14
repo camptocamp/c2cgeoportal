@@ -45,12 +45,14 @@ down_revision = "20137477bd02"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.add_column("layer_wmts", Column("image_type", Unicode(10)), schema=schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_column("layer_wmts", "image_type", schema=schema)

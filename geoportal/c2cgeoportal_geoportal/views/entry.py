@@ -40,6 +40,8 @@ LOG = logging.getLogger(__name__)
 
 
 class Entry:
+    """All the entry points views."""
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
 

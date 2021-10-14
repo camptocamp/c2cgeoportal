@@ -32,9 +32,7 @@ from pyramid.threadlocal import get_current_request
 
 
 class Literal:
-    """
-    For use in templates to mark a string as safe and avoid HTML escaping.
-    """
+    """For use in templates to mark a string as safe and avoid HTML escaping."""
 
     def __init__(self, s: Union[str, TranslationString]) -> None:
         self.s = s

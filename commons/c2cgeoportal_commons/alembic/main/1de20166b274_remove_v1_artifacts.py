@@ -48,12 +48,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.drop_table("layerv1", schema=schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.create_table(

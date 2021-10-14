@@ -48,15 +48,14 @@ CACHE_REGION = get_region("std")
 
 
 class PrintProxy(Proxy):
+    """All the view concerned the print."""
+
     def __init__(self, request: pyramid.request.Request):
         Proxy.__init__(self, request)
 
     @view_config(route_name="printproxy_capabilities")  # type: ignore
     def capabilities(self) -> pyramid.response.Response:
-        """
-        Get print capabilities.
-        """
-
+        """Get print capabilities."""
         templates = get_functionality("print_template", self.request, is_intranet(self.request))
 
         # get query string
@@ -101,9 +100,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_report_create")  # type: ignore
     def report_create(self) -> pyramid.response.Response:
-        """
-        Create PDF.
-        """
+        """Create PDF."""
         return self._proxy_response(
             "print",
             Url(
@@ -113,9 +110,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_status")  # type: ignore
     def status(self) -> pyramid.response.Response:
-        """
-        PDF status.
-        """
+        """PDF status."""
         return self._proxy_response(
             "print",
             Url(
@@ -125,9 +120,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_cancel")  # type: ignore
     def cancel(self) -> pyramid.response.Response:
-        """
-        PDF cancel.
-        """
+        """PDF cancel."""
         return self._proxy_response(
             "print",
             Url(f"{self.request.get_organization_print_url()}/cancel/{self.request.matchdict.get('ref')}"),
@@ -135,9 +128,7 @@ class PrintProxy(Proxy):
 
     @view_config(route_name="printproxy_report_get")  # type: ignore
     def report_get(self) -> pyramid.response.Response:
-        """
-        Get the PDF.
-        """
+        """Get the PDF."""
         url = Url(f"{self.request.get_organization_print_url()}/report/{self.request.matchdict.get('ref')}")
         if self.request.registry.settings.get("print_get_redirect", False):
             raise HTTPFound(location=url.url())

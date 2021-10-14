@@ -36,7 +36,7 @@ from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
-from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
+from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
@@ -46,13 +46,14 @@ _list_field = partial(ListField, LayerGroup)
 
 base_schema = GeoFormSchemaNode(LayerGroup, widget=FormWidget(fields_template="layer_group_fields"))
 base_schema.add(children_schema_node())
-base_schema.add(metadatas_schema_node(LayerGroup.metadatas))
+base_schema.add(metadata_schema_node(LayerGroup.metadatas))
 base_schema.add_unique_validator(LayerGroup.name, LayerGroup.id)
 base_schema.add(parent_id_node(TreeGroup))  # type: ignore
 
 
 @view_defaults(match_param="table=layer_groups")
 class LayerGroupsViews(TreeItemViews):
+    """The layer group administration view."""
 
     _list_fields = (
         TreeItemViews._list_fields + [_list_field("is_expanded")] + TreeItemViews._extra_list_fields

@@ -42,13 +42,14 @@ from c2cgeoportal_commons.models.main import Metadata
 
 @colander.deferred
 def metadata_definitions(node, kw):
+    """Get the metadata serializable representation."""
     del node
     return {m["name"]: m for m in kw["request"].registry.settings["admin_interface"]["available_metadata"]}
 
 
 class MetadataSelectWidget(SelectWidget):  # type: ignore
     """
-    Extends class SelectWidget to support undefined metadatas.
+    Extends class SelectWidget to support undefined metadata.
 
     Override serialize to add option in values for current cstruct when needed.
     """
@@ -64,6 +65,7 @@ class MetadataSelectWidget(SelectWidget):  # type: ignore
 
 @colander.deferred  # type: ignore
 def metadata_name_widget(node: Any, kw: Dict[str, pyramid.request.Request]) -> MetadataSelectWidget:
+    """Widget used to render a metadata."""
     del node
     return MetadataSelectWidget(
         values=[
@@ -77,6 +79,7 @@ def metadata_name_widget(node: Any, kw: Dict[str, pyramid.request.Request]) -> M
 
 
 def json_validator(node, value):
+    """Validate the value to be a valid JSON."""
     try:
         json.loads(value)
     except ValueError as e:
@@ -84,6 +87,7 @@ def json_validator(node, value):
 
 
 def regex_validator(node, value):
+    """Validate the value with a regexp."""
     definition = node.metadata_definitions.get(value["name"], {})
     if definition.get("type", "string") == "regex":
         validator = colander.Regex(definition["regex"], msg=_(definition["error_message"]))
@@ -96,9 +100,7 @@ def regex_validator(node, value):
 
 
 class BooleanMetadata(colander.Boolean):  # type: ignore
-    """
-    Boolean metadata values are stored as string in database.
-    """
+    """Boolean metadata values are stored as string in database."""
 
     def serialize(self, node, appstruct):
         if appstruct == "true":
@@ -119,6 +121,7 @@ class BooleanMetadata(colander.Boolean):  # type: ignore
 
 
 class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+    """The metadata schema."""
 
     metadata_definitions: Optional[Dict[str, Any]] = None
 
@@ -172,7 +175,8 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
         return metadata_type if metadata_type in self.available_types else "string"
 
 
-def metadatas_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+def metadata_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+    """Get the schema of the metadata."""
     return colander.SequenceSchema(
         MetadataSchemaNode(
             Metadata,

@@ -29,7 +29,7 @@ import json
 import logging
 import os
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Tuple, TypedDict, cast
 
 import geojson.geometry
 import pyramid.request
@@ -70,6 +70,12 @@ CACHE_REGION = get_region("std")
 
 
 class Layers:
+    """
+    All the layers view (editing).
+
+    Mapfish protocol implementation
+    """
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings.get("layers", {})
@@ -78,8 +84,10 @@ class Layers:
     @staticmethod
     def _get_geom_col_info(layer: "main.Layer") -> Tuple[str, int]:
         """
-        Return information about the layer's geometry column, namely a ``(name, srid)`` tuple, where ``name``
-        is the name of the geometry column, and ``srid`` its srid.
+        Return information about the layer's geometry column.
+
+        Namely a ``(name, srid)`` tuple, where ``name`` is the name of the geometry column,
+        and ``srid`` its srid.
 
         This function assumes that the names of geometry attributes in the mapped class are the same as those
         of geometry columns.
@@ -95,9 +103,7 @@ class Layers:
 
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":
-        """
-        Return a ``Layer`` object for ``layer_id``.
-        """
+        """Return a ``Layer`` object for ``layer_id``."""
         from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
 
         layer_id = int(layer_id)
@@ -115,8 +121,9 @@ class Layers:
 
     def _get_layers_for_request(self) -> Generator["main.Layer", None, None]:
         """
-        A generator function that yields ``Layer`` objects based on the layer ids found in the ``layer_id``
-        matchdict.
+        Get a generator function that yields ``Layer`` objects.
+
+        Based on the layer ids found in the ``layer_id`` matchdict.
         """
         try:
             layer_ids = (
@@ -130,30 +137,22 @@ class Layers:
             )
 
     def _get_layer_for_request(self) -> "main.Layer":
-        """
-        Return a ``Layer`` object for the first layer id found in the ``layer_id`` matchdict.
-        """
+        """Return a ``Layer`` object for the first layer id found in the ``layer_id`` matchdict."""
         return next(self._get_layers_for_request())
 
     def _get_protocol_for_layer(self, layer: "main.Layer", **kwargs: Any) -> Protocol:
-        """
-        Returns a papyrus ``Protocol`` for the ``Layer`` object.
-        """
+        """Return a papyrus ``Protocol`` for the ``Layer`` object."""
         cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
         return Protocol(models.DBSession, cls, geom_attr, **kwargs)
 
     def _get_protocol_for_request(self, **kwargs: Any) -> Protocol:
-        """
-        Returns a papyrus ``Protocol`` for the first layer id found in the ``layer_id`` matchdict.
-        """
+        """Return a papyrus ``Protocol`` for the first layer id found in the ``layer_id`` matchdict."""
         layer = self._get_layer_for_request()
         return self._get_protocol_for_layer(layer, **kwargs)
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
-        """
-        Read features for the layer based on the self.request.
-        """
+        """Read features for the layer based on the self.request."""
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -395,9 +394,9 @@ class Layers:
 
     @staticmethod
     def get_metadata(layer: "main.Layer", key: str, default: Optional[str] = None) -> Optional[str]:
-        metadatas = layer.get_metadatas(key)
-        if len(metadatas) == 1:
-            metadata = metadatas[0]
+        metadata = layer.get_metadata(key)
+        if len(metadata) == 1:
+            metadata = metadata[0]
             return cast(str, metadata.value)
         return default
 
@@ -506,11 +505,14 @@ def get_layer_class(
     """
     Get the SQLAlchemy class to edit a GeoMapFish layer.
 
-    :param layer:
-    :param with_last_update_columns: False to just have a class to access to the table and be able to
+    Arguments:
+
+        layer: The GeoMapFish layer
+        with_last_update_columns: False to just have a class to access to the table and be able to
            modify the last_update_columns, True to have a correct class to build the UI
            (without the hidden column).
-    :return: SQLAlchemy class
+
+    Returns: SQLAlchemy class
     """
     # Exclude the columns used to record the last features update
     exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
@@ -562,9 +564,24 @@ def get_layer_class(
     return cls
 
 
-def get_layer_metadatas(layer: "main.Layer") -> List[Dict[str, Any]]:
+class ColumnProperties(TypedDict, total=False):
+    """Collected metadata information related to an editing attribute."""
+
+    name: str
+    type: str
+    nillable: bool
+    srid: int
+    enumeration: List[str]
+    restriction: str
+    maxLength: int  # noqa
+    fractionDigits: int  # noqa
+    totalDigits: int  # noqa
+
+
+def get_layer_metadata(layer: "main.Layer") -> List[ColumnProperties]:
+    """Get the metadata related to a layer."""
     cls = get_layer_class(layer, with_last_update_columns=True)
-    edit_columns = []
+    edit_columns: List[ColumnProperties] = []
 
     for column_property in class_mapper(cls).iterate_properties:
         if isinstance(column_property, ColumnProperty):
@@ -576,7 +593,7 @@ def get_layer_metadatas(layer: "main.Layer") -> List[Dict[str, Any]]:
 
             # Exclude columns that are primary keys
             if not column.primary_key:
-                properties = _convert_column_type(column.type)
+                properties: ColumnProperties = _convert_column_type(column.type)
                 properties["name"] = column.key
 
                 if column.nullable:
@@ -605,7 +622,7 @@ def get_layer_metadatas(layer: "main.Layer") -> List[Dict[str, Any]]:
     return edit_columns
 
 
-def _convert_column_type(column_type: object) -> Dict[str, Any]:
+def _convert_column_type(column_type: object) -> ColumnProperties:
     # SIMPLE_XSD_TYPES
     for cls, xsd_type in XSDGenerator.SIMPLE_XSD_TYPES.items():
         if isinstance(column_type, cls):
@@ -628,7 +645,7 @@ def _convert_column_type(column_type: object) -> Dict[str, Any]:
 
     # Enumeration type
     if isinstance(column_type, Enum):
-        restriction: Dict[str, Union[str, List[str]]] = {}
+        restriction: ColumnProperties = {}
         restriction["restriction"] = "enumeration"
         restriction["type"] = "xsd:string"
         restriction["enumeration"] = column_type.enums
@@ -642,7 +659,7 @@ def _convert_column_type(column_type: object) -> Dict[str, Any]:
 
     # Numeric Type
     if isinstance(column_type, Numeric):
-        xsd_type2: Dict[str, Any] = {"type": "xsd:decimal"}
+        xsd_type2: ColumnProperties = {"type": "xsd:decimal"}
         if column_type.scale is None and column_type.precision is None:
             return xsd_type2
 

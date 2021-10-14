@@ -106,6 +106,7 @@ def get_table(
     session: Optional[Session] = None,
     primary_key: Optional[str] = None,
 ) -> Table:
+    """Build an SQLAlchemy table."""
     if schema is None:
         tablename, schema = _get_schema(tablename)
 

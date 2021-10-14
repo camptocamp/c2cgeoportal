@@ -104,9 +104,7 @@ class _Request:
 
 
 class GeomapfishAngularExtractor(Extractor):  # type: ignore
-    """
-    GeoMapFish angular extractor.
-    """
+    """GeoMapFish angular extractor."""
 
     extensions = [".js", ".html"]
 
@@ -204,9 +202,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
 
 
 class GeomapfishConfigExtractor(Extractor):  # type: ignore
-    """
-    GeoMapFish config extractor (raster layers, and print templates)
-    """
+    """GeoMapFish config extractor (raster layers, and print templates)."""
 
     extensions = [".yaml", ".tmpl"]
 
@@ -217,7 +213,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         fileobj: Optional[Dict[str, Any]] = None,
         lineno: int = 0,
     ) -> List[Message]:
-        del fileobj, lineno
+        del options, fileobj, lineno
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
@@ -260,7 +256,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         config_ = C()
         config_.registry.settings = settings
 
-        c2cgeoportal_geoportal.init_dbsessions(settings, config_)
+        c2cgeoportal_geoportal.init_db_sessions(settings, config_)
 
         # Collect layers enum values (for filters)
 
@@ -381,14 +377,12 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
 
 
 class GeomapfishThemeExtractor(Extractor):  # type: ignore
-    """
-    GeoMapFish theme extractor.
-    """
+    """GeoMapFish theme extractor."""
 
     # Run on the development.ini file
     extensions = [".ini"]
     featuretype_cache: Dict[str, Optional[Dict[str, Any]]] = {}
-    wmscap_cache: Dict[str, WebMapService] = {}
+    wms_capabilities_cache: Dict[str, WebMapService] = {}
 
     def __init__(self) -> None:
         super().__init__()
@@ -680,9 +674,9 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         url_obj: Url = url_obj_
         url_obj, headers, kwargs = self._build_url(url_obj)
 
-        if url not in self.wmscap_cache:
+        if url not in self.wms_capabilities_cache:
             print(f"Get WMS GetCapabilities for URL: {url_obj}")
-            self.wmscap_cache[url] = None
+            self.wms_capabilities_cache[url] = None
 
             wms_getcap_url = (
                 url_obj.clone()
@@ -708,7 +702,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 response = requests.get(wms_getcap_url, headers=headers, **kwargs)
 
                 try:
-                    self.wmscap_cache[url] = WebMapService(None, xml=response.content)
+                    self.wms_capabilities_cache[url] = WebMapService(None, xml=response.content)
                 except Exception as e:
                     print(
                         colorize(
@@ -738,7 +732,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 if os.environ.get("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
-        wmscap = self.wmscap_cache[url]
+        wmscap = self.wms_capabilities_cache[url]
 
         if url not in self.featuretype_cache:
             print(f"Get WFS DescribeFeatureType for URL: {url_obj}")

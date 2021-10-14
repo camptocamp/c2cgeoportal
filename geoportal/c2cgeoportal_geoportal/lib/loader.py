@@ -39,6 +39,8 @@ LOG = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):  # type: ignore
+    """The Pyramid configuration loader."""
+
     def _get_defaults(self, defaults: Optional[Dict[str, str]] = None) -> Dict[str, str]:
         env: Dict[str, str] = c2cwsgiutils.pyramid_logging.get_defaults()
         d: Dict[str, str] = {key: item.replace("%", "%%") for key, item in env.items()}
@@ -57,4 +59,5 @@ class Loader(BaseLoader):  # type: ignore
         return settings
 
     def __repr__(self) -> str:
+        """Get the object representation."""
         return f'c2cgeoportal_geoportal.lib.loader.Loader(uri="{self.uri}")'

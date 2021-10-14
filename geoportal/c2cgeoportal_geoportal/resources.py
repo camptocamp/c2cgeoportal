@@ -31,13 +31,15 @@ import pyramid.request
 
 
 class Root:
+    """The pyramid root object."""
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
 
 
 def defaultgroupsfinder(username: str, request: pyramid.request.Request) -> List[str]:
     """
-    The c2cgeoportal default group finder.
+    Get the c2cgeoportal default group finder.
 
     To be used as the callback of the ``AuthTktAuthenticationPolicy`` or any callback-based authentication
     policy.

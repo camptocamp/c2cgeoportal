@@ -49,6 +49,7 @@ CACHE_REGION_OBJ = get_region("obj")
 
 
 def get_types_map(types_array: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    """Get the type name of a metadata or a functionality."""
     return {type_["name"]: type_ for type_ in types_array}
 
 
@@ -60,6 +61,7 @@ def get_typed(
     errors: Set[str],
     layer_name: Optional[str] = None,
 ) -> Union[str, int, float, bool, None, List[Any], Dict[str, Any]]:
+    """Get the typed (parsed) value of a metadata or a functionality."""
     prefix = f"Layer '{layer_name}': " if layer_name is not None else ""
     type_ = {"type": "not init"}
     try:
@@ -119,6 +121,7 @@ def get_typed(
 
 
 def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
+    """Get the settings."""
     value = settings
     for p in path:
         if value and p in value:
@@ -130,6 +133,7 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
 
 @CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
+    """Get the OGCServer ids mapped on the WMS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
@@ -144,6 +148,7 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, Li
 
 @CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
+    """Get the OGCServer ids mapped on the WFS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
@@ -158,6 +163,8 @@ def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> Dict[str, Li
 
 @implementer(IRoutePregenerator)
 class C2CPregenerator:
+    """The custom pyramid pregenerator that manage the cache version."""
+
     def __init__(self, version: bool = True, role: bool = False):
         self.version = version
         self.role = role
@@ -193,12 +200,14 @@ def _get_intranet_networks(
 
 @CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_role_id(name: str) -> int:
+    """Get the role ID."""
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     return cast(int, DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
 
 
 def get_roles_id(request: pyramid.request.Request) -> List[int]:
+    """Get the user roles ID."""
     result = [get_role_id(request.get_organization_role("anonymous"))]
     if is_intranet(request):
         result.append(get_role_id(request.get_organization_role("intranet")))
@@ -209,6 +218,7 @@ def get_roles_id(request: pyramid.request.Request) -> List[int]:
 
 
 def get_roles_name(request: pyramid.request.Request) -> pyramid.response.Response:
+    """Get the user roles name."""
     result = [request.get_organization_role("anonymous")]
     if is_intranet(request):
         result.append(request.get_organization_role("intranet"))
@@ -219,6 +229,7 @@ def get_roles_name(request: pyramid.request.Request) -> pyramid.response.Respons
 
 
 def is_intranet(request: pyramid.request.Request) -> bool:
+    """Get if it's an intranet user."""
     address = ipaddress.ip_address(request.client_addr)
     for network in _get_intranet_networks(request):
         if address in network:

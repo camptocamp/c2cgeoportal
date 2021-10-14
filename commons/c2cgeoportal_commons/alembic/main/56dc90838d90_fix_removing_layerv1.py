@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.execute(
@@ -59,4 +60,4 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass
+    """Downgrade."""

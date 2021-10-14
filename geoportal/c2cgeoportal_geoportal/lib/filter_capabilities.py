@@ -52,6 +52,7 @@ ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
 
 @CACHE_REGION.cache_on_arguments()  # type: ignore
 def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> Dict[str, List[str]]:
+    """Get a simple serializable structure of the WMS capabilities."""
     url = wms_url.clone().add_query({"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
 
     # Forward request to target (without Host Header)
@@ -106,6 +107,7 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 def filter_capabilities(
     content: str, wms: bool, url: Url, headers: Dict[str, str], request: pyramid.request.Request
 ) -> str:
+    """Filter the WMS/WFS capabilities."""
 
     wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
@@ -118,11 +120,11 @@ def filter_capabilities(
             del gmf_private_layers[id_]
 
     private_layers = set()
-    for gmflayer in list(gmf_private_layers.values()):
-        for ogclayer in gmflayer.layer.split(","):
-            private_layers.add(ogclayer)
-            if ogclayer in wms_structure_:
-                private_layers.update(wms_structure_[ogclayer])
+    for gmf_layer in list(gmf_private_layers.values()):
+        for ogc_layer in gmf_layer.layer.split(","):
+            private_layers.add(ogc_layer)
+            if ogc_layer in wms_structure_:
+                private_layers.update(wms_structure_[ogc_layer])
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
@@ -139,10 +141,12 @@ def filter_capabilities(
 
 
 def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.request.Request) -> str:
+    """Filter the WTS capabilities."""
+
     writable_layers: Set[str] = set()
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
-    for gmflayer in list(get_writable_layers(request, ogc_server_ids).values()):
-        writable_layers += gmflayer.layer.split(",")
+    for gmf_layer in list(get_writable_layers(request, ogc_server_ids).values()):
+        writable_layers += gmf_layer.layer.split(",")
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
@@ -160,7 +164,7 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
 class _Layer:
     def __init__(self, self_hidden: bool = False):
-        self.accumul: List[Callable[[], None]] = []
+        self.accumulator: List[Callable[[], None]] = []
         self.hidden = True
         self.self_hidden = self_hidden
         self.has_children = False
@@ -214,17 +218,17 @@ class _CapabilitiesFilter(XMLFilterBase):
 
     def _do(self, action: Callable[[], Any]) -> None:
         if self.layers_path:
-            self.layers_path[-1].accumul.append(action)
+            self.layers_path[-1].accumulator.append(action)
         else:
             self._complete_text_node()
             action()
 
     def _add_child(self, layer: _Layer) -> None:
         if not layer.hidden and not (layer.has_children and layer.children_nb == 0):
-            for action in layer.accumul:
+            for action in layer.accumulator:
                 self._complete_text_node()
                 action()
-            layer.accumul = []
+            layer.accumulator = []
 
     def setDocumentLocator(self, locator: str) -> None:  # noqa: ignore=N802
         self._downstream.setDocumentLocator(locator)  # type: ignore
@@ -251,7 +255,7 @@ class _CapabilitiesFilter(XMLFilterBase):
                 layer = _Layer(parent_layer.self_hidden) if len(self.layers_path) > 1 else _Layer()
                 self.layers_path.append(layer)
 
-                parent_layer.accumul.append(lambda: self._add_child(layer))
+                parent_layer.accumulator.append(lambda: self._add_child(layer))
             else:
                 layer = _Layer()
                 self.layers_path.append(layer)
@@ -266,7 +270,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         if name == self.tag_name:
             self.level -= 1
             if self.level == 0 and not self.layers_path[0].hidden:
-                for action in self.layers_path[0].accumul:
+                for action in self.layers_path[0].accumulator:
                     self._complete_text_node()
                     action()
             self.layers_path.pop()
@@ -310,7 +314,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 
 def normalize_tag(tag: str) -> str:
     """
-    Drops the namespace from a tag and converts to lower case.
+    Drop the namespace from a tag and converts to lower case.
 
     e.g. '{https://....}TypeName' -> 'TypeName'
     """
@@ -323,7 +327,7 @@ def normalize_tag(tag: str) -> str:
 
 def normalize_typename(typename: str) -> str:
     """
-    Drops the namespace from a type name and converts to lower case.
+    Drop the namespace from a type name and converts to lower case.
 
     e.g. 'tows:parks' -> 'parks'
     """

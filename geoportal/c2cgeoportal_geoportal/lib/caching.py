@@ -51,14 +51,15 @@ MEMORY_CACHE_DICT: Dict[str, Any] = {}
 def map_dbobject(
     item: sqlalchemy.ext.declarative.api.ConcreteBase,
 ) -> sqlalchemy.ext.declarative.api.ConcreteBase:
-
+    """Get an cache identity key for the cache."""
     return identity_key(item) if isinstance(item, Base) else item
 
 
 def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..., str]:
     """
-    Return a function that generates a string key, based on a given function as well as arguments to the
-    returned function itself.
+    Return a function that generates a string key.
+
+    Based on a given function as well as arguments to the returned function itself.
 
     This is used by :meth:`.CacheRegion.cache_on_arguments` to generate a cache key from a decorated function.
     """
@@ -86,9 +87,7 @@ def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..
 
 
 def init_region(conf: Dict[str, Any], region: str) -> CacheRegion:
-    """
-    Initialize the caching module.
-    """
+    """Initialize the caching module."""
     cache_region = get_region(region)
     _configure_region(conf, cache_region)
     return cache_region
@@ -104,15 +103,14 @@ def _configure_region(conf: Dict[str, Any], cache_region: CacheRegion) -> None:
 
 
 def get_region(region: str) -> CacheRegion:
-    """
-    Return a cache region.
-    """
+    """Return a cache region."""
     if region not in _REGION:
         _REGION[region] = make_region(function_key_generator=keygen_function)
     return _REGION[region]
 
 
 def invalidate_region(region: Optional[str] = None) -> None:
+    """Invalidate a cache region."""
     if region is None:
         for cache_region in _REGION.values():
             cache_region.invalidate()
@@ -121,9 +119,7 @@ def invalidate_region(region: Optional[str] = None) -> None:
 
 
 class HybridRedisBackend(RedisBackend):  # type: ignore
-    """
-    A memory and redis backend.
-    """
+    """A memory and redis backend."""
 
     def __init__(self, arguments: Dict[str, Any]):
         self._cache: Dict[str, SerializedReturnType] = arguments.pop("cache_dict", {})
@@ -157,9 +153,7 @@ class HybridRedisBackend(RedisBackend):  # type: ignore
 
 
 class HybridRedisSentinelBackend(RedisSentinelBackend):  # type: ignore
-    """
-    A memory and redis sentinel backend.
-    """
+    """A memory and redis sentinel backend."""
 
     def __init__(self, arguments: Dict[str, Any]):
         self._cache: Dict[str, SerializedReturnType] = arguments.pop("cache_dict", {})
@@ -193,6 +187,8 @@ class HybridRedisSentinelBackend(RedisSentinelBackend):  # type: ignore
 
 
 class Cache(Enum):
+    """Enumeration for the possible cache values."""
+
     # For responses that can be put in a public cache (proxy+browser)
     PUBLIC = 0
     # For responses that can be put in a public cache (proxy+browser),
@@ -217,9 +213,7 @@ def _set_cors_headers(
     service_headers_settings: Dict[str, Any],
     credentials: bool,
 ) -> None:
-    """
-    Handle CORS requests, as specified in https://www.w3.org/TR/cors/
-    """
+    """Handle CORS requests, as specified in https://www.w3.org/TR/cors/."""
     response.vary = (response.vary or ()) + ("Origin",)
 
     if "Origin" not in request.headers:
@@ -274,9 +268,7 @@ def _set_common_headers(
     cache: Cache,
     content_type: Optional[str],
 ) -> pyramid.response.Response:
-    """
-    Set the common headers.
-    """
+    """Set the common headers."""
 
     response.headers.update(service_headers_settings.get("headers", {}))
 
@@ -313,9 +305,7 @@ def set_common_headers(
     credentials: bool = True,
     content_type: Optional[str] = None,
 ) -> pyramid.response.Response:
-    """
-    Set the common headers.
-    """
+    """Set the common headers."""
     if response is None:
         response = request.response
 

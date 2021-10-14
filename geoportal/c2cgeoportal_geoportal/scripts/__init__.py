@@ -40,6 +40,7 @@ from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 
 
 def fill_arguments(parser: ArgumentParser) -> None:
+    """Fill the command line argument description."""
     default_app_config = (
         "geoportal/production.ini" if os.path.isfile("geoportal/production.ini") else "production.ini"
     )
@@ -56,6 +57,7 @@ def fill_arguments(parser: ArgumentParser) -> None:
 
 
 def get_config_uri(options: Namespace) -> str:
+    """Get the configuration URI."""
     uri = urlsplit(options.app_config)
     return urlunsplit(
         (uri.scheme or "c2cgeoportal", uri.netloc, uri.path, uri.query, options.app_name or uri.fragment)
@@ -65,6 +67,7 @@ def get_config_uri(options: Namespace) -> str:
 def get_appsettings(
     options: Namespace, defaults: Optional[Dict[str, Any]] = None
 ) -> pyramid.config.Configurator:
+    """Get the application settings."""
     config_uri = get_config_uri(options)
     loader = get_config_loader(config_uri)
     loader.setup_logging()
@@ -72,6 +75,7 @@ def get_appsettings(
 
 
 def get_session(settings: Dict[str, Any], transaction_manager: transaction.TransactionManager) -> Session:
+    """Get the database session in script context."""
     configure_mappers()
     engine = engine_from_config(settings)
     session_factory = sessionmaker()

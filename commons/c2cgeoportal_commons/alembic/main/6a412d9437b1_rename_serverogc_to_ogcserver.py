@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.rename_table("server_ogc", "ogc_server", schema=schema)
@@ -54,6 +55,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.rename_table("ogc_server", "server_ogc", schema=schema)

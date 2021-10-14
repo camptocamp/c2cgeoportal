@@ -47,12 +47,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.drop_column("treeitem", "metadata_url", schema=schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.add_column("treeitem", Column("metadata_url", Unicode), schema=schema)

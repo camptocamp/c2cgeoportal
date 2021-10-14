@@ -46,6 +46,7 @@ c2cwsgiutils.pyramid_logging.init(context.config.config_file_name)
 
 
 def get_config() -> Dict[str, Union[str, bool]]:
+    """Get the application configuration."""
     config.init(context.config.get_main_option("app.cfg"))
     settings: Dict[str, Union[str, bool]] = {}
     settings.update(config.get_config())

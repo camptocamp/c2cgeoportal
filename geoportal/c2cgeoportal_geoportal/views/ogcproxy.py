@@ -42,6 +42,12 @@ LOG = logging.getLogger(__name__)
 
 
 class OGCProxy(Proxy):
+    """
+    Proxy implementation that manly manage the ogcserver parameter.
+
+    Then load the corresponding OGCServer.
+    """
+
     def __init__(self, request: pyramid.request.Request, has_default_ogc_server: bool = False):
         Proxy.__init__(self, request)
 

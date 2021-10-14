@@ -46,10 +46,11 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     staticschema = config["schema_static"]
 
     op.execute(f"UPDATE {staticschema}.\"user\" SET tech_data = '';")
 
 
 def downgrade() -> None:
-    pass
+    """Downgrade."""

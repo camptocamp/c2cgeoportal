@@ -47,12 +47,14 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
     op.add_column("layer_wms", sa.Column("valid", sa.Boolean(), nullable=True), schema=schema)
     op.add_column("layer_wms", sa.Column("invalid_reason", sa.Unicode(), nullable=True), schema=schema)
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
     op.drop_column("layer_wms", "valid", schema=schema)
     op.drop_column("layer_wms", "invalid_reason", schema=schema)

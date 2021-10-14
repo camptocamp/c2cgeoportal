@@ -46,6 +46,7 @@ down_revision = "415746eb9f6"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.drop_constraint("layergroup_treeitem_pkey", "layergroup_treeitem", schema=schema)
@@ -64,6 +65,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
     op.add_column("treeitem", Column("order", Integer), schema=schema)
     op.execute(

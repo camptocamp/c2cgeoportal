@@ -48,15 +48,14 @@ down_revision = None
 
 
 class TsVector(UserDefinedType):  # type: ignore
-    """
-    A custom type for PostgreSQL's tsvector type.
-    """
+    """A custom type for PostgreSQL's tsvector type."""
 
     def get_col_spec(self) -> str:
         return "TSVECTOR"
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
     schema_static = config["schema_static"]
     parentschema = config.get("parentschema")
@@ -259,6 +258,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
     schema_static = config["schema_static"]
 

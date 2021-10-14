@@ -47,6 +47,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     schema = config["schema"]
 
     op.create_table(
@@ -59,6 +60,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     schema = config["schema"]
 
     op.drop_table("layer_vectortiles", schema=schema)

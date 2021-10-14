@@ -51,6 +51,7 @@ base_schema.add_unique_validator(Role.name, Role.id)
 
 
 def users(node, kw):  # pylint: disable=unused-argument
+    """Get the user serializable metadata."""
     dbsession = kw["request"].dbsession
     query = dbsession.query(User).order_by(User.username)
     return [
@@ -100,6 +101,8 @@ base_schema["users"].children[0].description = ""
 
 @view_defaults(match_param="table=roles")
 class RoleViews(AbstractViews):  # type: ignore
+    """The roles administration view."""
+
     _list_fields = [
         _list_field("id"),
         _list_field("name"),

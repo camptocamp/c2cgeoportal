@@ -38,6 +38,11 @@ LOG = logging.getLogger(__name__)
 
 
 def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
+    """
+    Initialize the check collector.
+
+    Add him in the c2cwsgichecks.
+    """
     global_settings = config.get_settings()
     if "check_collector" not in global_settings:
         return

@@ -46,6 +46,7 @@ depends_on = None
 
 
 def upgrade() -> None:
+    """Upgrade."""
     staticschema = config["schema_static"]
 
     op.drop_constraint("user_role_user_id_fkey", "user_role", schema=staticschema, type_="foreignkey")
@@ -62,6 +63,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    """Downgrade."""
     staticschema = config["schema_static"]
 
     op.drop_constraint("user_role_user_id_fkey", "user_role", schema=staticschema, type_="foreignkey")

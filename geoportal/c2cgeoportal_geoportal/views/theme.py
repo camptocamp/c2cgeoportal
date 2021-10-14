@@ -62,7 +62,7 @@ from c2cgeoportal_geoportal.lib.layers import (
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views import restrict_headers
-from c2cgeoportal_geoportal.views.layers import get_layer_metadatas
+from c2cgeoportal_geoportal.views.layers import get_layer_metadata
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
@@ -71,6 +71,8 @@ Metadata = Union[str, int, float, bool, List[Any], Dict[str, Any]]
 
 
 def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, str]) -> Tuple[bytes, str]:
+    """Get the content of the URL with a cash (dogpile)."""
+
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def do_get_http_cached(url: str) -> Tuple[bytes, str]:
         response = requests.get(url, headers=headers, timeout=300, **http_options)
@@ -82,6 +84,7 @@ def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, s
 
 
 class DimensionInformation:
+    """Used to collect the dimensions information."""
 
     URL_PART_RE = re.compile(r"[a-zA-Z0-9_\-\+~\.]*$")
 
@@ -131,6 +134,8 @@ class DimensionInformation:
 
 
 class Theme:
+    """All the views conserne the theme."""
+
     def __init__(self, request: pyramid.request.Request):
         self.request = request
         self.settings = request.registry.settings
@@ -151,7 +156,7 @@ class Theme:
     def _get_metadata(
         self, item: main.TreeItem, metadata: str, errors: Set[str]
     ) -> Union[None, str, int, float, bool, List[Any], Dict[str, Any]]:
-        metadatas = item.get_metadatas(metadata)
+        metadatas = item.get_metadata(metadata)
         return (
             None
             if not metadatas
@@ -160,7 +165,7 @@ class Theme:
             )
         )
 
-    def _get_metadatas(self, item: main.TreeItem, errors: Set[str]) -> Dict[str, Metadata]:
+    def _get_metadata_list(self, item: main.TreeItem, errors: Set[str]) -> Dict[str, Metadata]:
         metadatas: Dict[str, Metadata] = {}
         metadata: main.Metadata
         for metadata in item.metadatas:
@@ -297,10 +302,7 @@ class Theme:
         return url, content, errors
 
     def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.Query:
-        """
-        Create an SQLAlchemy query for Layer and for the role identified to by ``role_id``.
-        """
-
+        """Create an SQLAlchemy query for Layer and for the role identified to by ``role_id``."""
         query = models.DBSession.query(main.Layer.name).filter(main.Layer.public.is_(True))
 
         if interface is not None:
@@ -375,7 +377,7 @@ class Theme:
         mixed: bool = True,
     ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         errors: Set[str] = set()
-        layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadatas(layer, errors)}
+        layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadata_list(layer, errors)}
         if re.search("[/?#]", layer.name):
             errors.add(f"The layer has an unsupported name '{layer.name}'.")
         if isinstance(layer, main.LayerWMS) and re.search("[/?#]", layer.layer):
@@ -465,7 +467,7 @@ class Theme:
                     .count()
                 )
                 if count > 0:
-                    layer_theme["edit_columns"] = get_layer_metadatas(layer)
+                    layer_theme["edit_columns"] = get_layer_metadata(layer)
                     layer_theme["editable"] = True
         except Exception as exception:
             LOG.exception(str(exception))
@@ -557,9 +559,7 @@ class Theme:
         return isinstance(tree_item, main.Layer)
 
     def _get_ogc_servers(self, group: main.LayerGroup, depth: int) -> Set[Union[str, bool]]:
-        """
-        Recurse on all children to get unique identifier for each child.
-        """
+        """Get unique identifier for each child by recursing on all the children."""
 
         ogc_servers: Set[Union[str, bool]] = set()
 
@@ -664,7 +664,7 @@ class Theme:
                 "id": group.id,
                 "name": group.name,
                 "children": children,
-                "metadata": self._get_metadatas(group, errors),
+                "metadata": self._get_metadata_list(group, errors),
                 "mixed": False,
             }
             if not mixed:
@@ -734,9 +734,7 @@ class Theme:
     def _themes(
         self, interface: str = "desktop", filter_themes: bool = True, min_levels: int = 1
     ) -> Tuple[List[Dict[str, Any]], Set[str]]:
-        """
-        This function returns theme information for the role identified by ``role_id``.
-        """
+        """Return theme information for the role identified by ``role_id``."""
         self._load_tree_items()
         errors = set()
         layers = self._layers(interface)
@@ -784,7 +782,7 @@ class Theme:
                     "icon": icon,
                     "children": children,
                     "functionalities": self._get_functionalities(theme),
-                    "metadata": self._get_metadatas(theme, errors),
+                    "metadata": self._get_metadata_list(theme, errors),
                 }
                 export_themes.append(theme_theme)
 

@@ -40,7 +40,7 @@ from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
 from c2cgeoportal_admin.schemas.interfaces import interfaces_schema_node
-from c2cgeoportal_admin.schemas.metadata import metadatas_schema_node
+from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
@@ -53,12 +53,13 @@ base_schema.add(children_schema_node(only_groups=True))
 base_schema.add(functionalities_schema_node(Theme.functionalities))
 base_schema.add(roles_schema_node(Theme.restricted_roles))
 base_schema.add(interfaces_schema_node(Theme.interfaces))
-base_schema.add(metadatas_schema_node(Theme.metadatas))
+base_schema.add(metadata_schema_node(Theme.metadatas))
 base_schema.add_unique_validator(Theme.name, Theme.id)
 
 
 @view_defaults(match_param="table=themes")
 class ThemeViews(TreeItemViews):
+    """The theme administration view."""
 
     _list_fields = (
         TreeItemViews._list_fields

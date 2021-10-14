@@ -50,6 +50,8 @@ LOG = logging.getLogger(__name__)
 
 
 class Raster:
+    """All the view concerned the raster (point, not the profile profile)."""
+
     data: Dict[str, "fiona.collection.Collection"] = {}
 
     def __init__(self, request: pyramid.request.Request):

@@ -35,6 +35,7 @@ from c2cgeoportal_commons.models.main import Dimension
 
 
 def dimensions_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+    """Get the scheme of the dimensions."""
     return colander.SequenceSchema(
         GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),
         name=prop.key,

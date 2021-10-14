@@ -47,6 +47,7 @@ LOG = logging.getLogger(__name__)
 
 
 class MapservProxy(OGCProxy):
+    """Proxy for OGC (WMS/WFS) servers."""
 
     params: Dict[str, str] = {}
 

@@ -37,6 +37,7 @@ LOG = logging.getLogger(__name__)
 
 
 def main() -> None:
+    """Create and populate the database tables."""
     parser = argparse.ArgumentParser(description="Create and populate the database tables.")
     fill_arguments(parser)
     options = parser.parse_args()

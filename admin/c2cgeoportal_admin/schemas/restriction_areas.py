@@ -35,6 +35,7 @@ from c2cgeoportal_commons.models.main import RestrictionArea
 
 
 def restrictionareas_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+    """Get the schema of a restriction area."""
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(RestrictionArea),
         name=prop.key,

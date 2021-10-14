@@ -33,6 +33,7 @@ LOCALE_PATH = "/etc/geomapfish/locale/"
 
 
 def available_locale_names(path: str = LOCALE_PATH) -> List[str]:
+    """Get the available locales."""
     if not os.path.exists(path):
         return []
     return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]

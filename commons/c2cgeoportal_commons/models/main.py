@@ -58,6 +58,8 @@ except ModuleNotFoundError:
     default_map_settings = {"srid": 3857, "view": {"projection": "EPSG:3857"}}
 
     class GenericClass:
+        """Fallback class implementation."""
+
         def __init__(self, *args: Any, **kwargs: Any):
             pass
 
@@ -85,6 +87,8 @@ if "map_srid" not in _admin_config and view_srid_match is not None:
 
 
 class FullTextSearch(GeoInterface, Base):  # type: ignore
+    """The tsearch table representation."""
+
     __tablename__ = "tsearch"
     __table_args__ = (Index("tsearch_ts_idx", "ts", postgresql_using="gin"), {"schema": _schema})
 
@@ -105,6 +109,8 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore
 
 
 class Functionality(Base):  # type: ignore
+    """The functionality table representation."""
+
     __tablename__ = "functionality"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("Functionality"), "plural": _("Functionalities")}
@@ -195,6 +201,8 @@ theme_functionality = Table(
 
 
 class Role(Base):  # type: ignore
+    """The role table representation."""
+
     __tablename__ = "role"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("Role"), "plural": _("Roles")}
@@ -277,6 +285,8 @@ event.listen(Role.functionalities, "remove", cache_invalidate_cb)
 
 
 class TreeItem(Base):  # type: ignore
+    """The treeitem table representation."""
+
     __tablename__ = "treeitem"
     __table_args__: Union[Tuple[Any, ...], Dict[str, Any]] = (
         UniqueConstraint("type", "name"),
@@ -326,7 +336,7 @@ class TreeItem(Base):  # type: ignore
 
         return False
 
-    def get_metadatas(self, name: str) -> List["Metadata"]:
+    def get_metadata(self, name: str) -> List["Metadata"]:
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
     def __init__(self, name: str = "") -> None:
@@ -340,6 +350,8 @@ event.listen(TreeItem, "after_delete", cache_invalidate_cb, propagate=True)
 
 # association table TreeGroup <> TreeItem
 class LayergroupTreeitem(Base):  # type: ignore
+    """The layergroup_treeitem table representation."""
+
     __tablename__ = "layergroup_treeitem"
     __table_args__ = {"schema": _schema}
 
@@ -398,6 +410,8 @@ event.listen(LayergroupTreeitem, "after_delete", cache_invalidate_cb, propagate=
 
 
 class TreeGroup(TreeItem):
+    """The treegroup table representation."""
+
     __tablename__ = "treegroup"
     __table_args__ = {"schema": _schema}
     __mapper_args__ = {"polymorphic_identity": "treegroup"}  # needed for _identity_class
@@ -409,8 +423,9 @@ class TreeGroup(TreeItem):
 
     def _set_children(self, children: List[TreeItem], order: bool = False) -> None:
         """
-        Set the current TreeGroup children TreeItem instances by managing related LayergroupTreeitem
-        instances.
+        Set the current TreeGroup children TreeItem instances.
+
+        By managing related LayergroupTreeitem instances.
 
         If order is False:
             Append new children at end of current ones.
@@ -445,6 +460,8 @@ class TreeGroup(TreeItem):
 
 
 class LayerGroup(TreeGroup):
+    """The layergroup table representation."""
+
     __tablename__ = "layergroup"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {
@@ -499,6 +516,8 @@ restricted_role_theme = Table(
 
 
 class Theme(TreeGroup):
+    """The theme table representation."""
+
     __tablename__ = "theme"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("Theme"), "plural": _("Themes")}
@@ -575,6 +594,8 @@ event.listen(Theme.functionalities, "remove", cache_invalidate_cb)
 
 
 class Layer(TreeItem):
+    """The layer table representation."""
+
     __tablename__ = "layer"
     __table_args__ = {"schema": _schema}
     __mapper_args__ = {"polymorphic_identity": "layer"}  # needed for _identity_class
@@ -626,6 +647,8 @@ class Layer(TreeItem):
 
 
 class DimensionLayer(Layer):
+    """The intermediate class for the leyser with dimension."""
+
     __mapper_args__ = {"polymorphic_identity": "dimensionlayer"}  # needed for _identity_class
 
 
@@ -642,6 +665,8 @@ OGCSERVER_AUTH_PROXY = "Proxy"
 
 
 class OGCServer(Base):  # type: ignore
+    """The ogc_server table representation."""
+
     __tablename__ = "ogc_server"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {
@@ -832,6 +857,8 @@ event.listen(OGCServer, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 class LayerWMS(DimensionLayer):
+    """The layer_wms table representation."""
+
     __tablename__ = "layer_wms"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {
@@ -989,6 +1016,8 @@ class LayerWMS(DimensionLayer):
 
 
 class LayerWMTS(DimensionLayer):
+    """The layer_wmts table representation."""
+
     __tablename__ = "layer_wmts"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {
@@ -1156,6 +1185,8 @@ layer_ra = Table(
 
 
 class LayerVectorTiles(DimensionLayer):
+    """The layer_vectortiles table representation."""
+
     __tablename__ = "layer_vectortiles"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {
@@ -1264,6 +1295,8 @@ class LayerVectorTiles(DimensionLayer):
 
 
 class RestrictionArea(Base):  # type: ignore
+    """The restrictionarea table representation."""
+
     __tablename__ = "restrictionarea"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("Restriction area"), "plural": _("Restriction areas")}
@@ -1421,6 +1454,8 @@ interface_theme = Table(
 
 
 class Interface(Base):  # type: ignore
+    """The interface table representation."""
+
     __tablename__ = "interface"
     __table_args__ = {"schema": _schema}
     __c2cgeoform_config__ = {"duplicate": True}
@@ -1489,6 +1524,8 @@ class Interface(Base):  # type: ignore
 
 
 class Metadata(Base):  # type: ignore
+    """The metadata table representation."""
+
     __tablename__ = "metadata"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {
@@ -1593,6 +1630,8 @@ event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 class Dimension(Base):  # type: ignore
+    """The dimension table representation."""
+
     __tablename__ = "dimension"
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {

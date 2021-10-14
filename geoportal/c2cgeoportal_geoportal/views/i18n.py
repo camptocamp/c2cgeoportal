@@ -37,6 +37,7 @@ from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 @view_config(route_name="localejson")  # type: ignore
 def locale(request: pyramid.request.Request) -> pyramid.response.Response:
+    """View to get the local json files."""
     response = HTTPFound(
         request.static_url(
             f"/etc/geomapfish/static/{request.locale_name}.json",
