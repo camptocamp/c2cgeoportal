@@ -1,3 +1,5 @@
+##### 2.6.0.38
+* Reset mode on self tab ctrl+key combination [ngeo#7535](https://github.com/camptocamp/ngeo/pull/7535)
 ##### 2.6.0.37
 * Reset time from timeslider like datepicker on component reset [ngeo#7549](https://github.com/camptocamp/ngeo/pull/7549)
 ##### 2.6.0.36
