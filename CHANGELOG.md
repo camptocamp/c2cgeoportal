@@ -1,3 +1,5 @@
+##### 2.6.0.37
+* Reset time from timeslider like datepicker on component reset [ngeo#7549](https://github.com/camptocamp/ngeo/pull/7549)
 ##### 2.6.0.36
 * The unsafe_long_version is in the template_vars [c2cgeoportal#8765](https://github.com/camptocamp/c2cgeoportal/pull/8765)
 ##### 2.6.0.35
