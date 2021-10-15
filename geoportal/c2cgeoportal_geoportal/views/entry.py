@@ -27,16 +27,17 @@
 
 
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import pyramid.request
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)
+CACHE_REGION = get_region("std")
 
 
 class Entry:
@@ -54,9 +55,27 @@ class Entry:
         set_common_headers(self.request, "index", Cache.PUBLIC_NO, content_type="text/html")
         return {}
 
-    def apijs(self) -> Dict[str, Any]:
+    @staticmethod
+    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    def get_apijs(api_name: Optional[str]) -> str:
+        with open("/etc/static-ngeo/api.js", encoding="utf-8") as api_file:
+            api = api_file.read().split("\n")
+        sourcemap = api.pop(-1)
+        if api_name:
+            api += [
+                f"if (window.{api_name} === undefined && window.geomapfishapp) {{",
+                f"  window.{api_name} = window.geomapfishapp;",
+                "}",
+            ]
+        api.append(sourcemap)
+
+        return "\n".join(api)
+
+    @view_config(route_name="apijs")  # type: ignore
+    def apijs(self) -> pyramid.response.Response:
+        self.request.response.text = self.get_apijs(self.request.registry.settings["api"].get("name"))
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/javascript")
-        return {}
+        return self.request.response
 
     def favicon(self) -> Dict[str, Any]:
         set_common_headers(self.request, "index", Cache.PUBLIC, content_type="image/vnd.microsoft.icon")

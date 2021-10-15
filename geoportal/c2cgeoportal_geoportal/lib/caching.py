@@ -29,12 +29,12 @@
 import inspect
 import logging
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, cast
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
 
 import pyramid.request
 import pyramid.response
 import sqlalchemy.ext.declarative.api
-from dogpile.cache.api import NO_VALUE, SerializedReturnType
+from dogpile.cache.api import NO_VALUE
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
 from dogpile.cache.region import CacheRegion, make_region
 from dogpile.cache.util import sha1_mangle_key
@@ -42,6 +42,11 @@ from pyramid.request import Request
 from sqlalchemy.orm.util import identity_key
 
 from c2cgeoportal_commons.models import Base
+
+if TYPE_CHECKING:
+    from dogpile.cache.api import SerializedReturnType
+else:
+    SerializedReturnType = Any
 
 LOG = logging.getLogger(__name__)
 _REGION: Dict[str, Any] = {}

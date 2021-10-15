@@ -484,7 +484,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     add_static_route("favicon", "favicon", "/favicon.ico", "/etc/geomapfish/static/images/favicon.ico")
     add_static_route("robot.txt", "robot_txt", "/robot.txt", "/etc/geomapfish/static/robot.txt")
-    add_static_route("apijs", "apijs", "/api.js", "/etc/static-ngeo/api.js")
+    config.add_route("apijs", "/api.js", request_method="GET")
     add_static_route("apijsmap", "apijsmap", "/api.js.map", "/etc/static-ngeo/api.js.map")
     add_static_route("apicss", "apicss", "/api.css", "/etc/static-ngeo/api.css")
     add_static_route("apihelp", "apihelp", "/apihelp/index.html", "/etc/geomapfish/static/apihelp/index.html")

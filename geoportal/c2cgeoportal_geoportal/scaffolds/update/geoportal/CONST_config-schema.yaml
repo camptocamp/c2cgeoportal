@@ -477,6 +477,8 @@ mapping:
           ogc_server:
             type: str
             required: True
+          name:
+            type: str
       fulltextsearch:
         type: map
         required: True
