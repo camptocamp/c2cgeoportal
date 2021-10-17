@@ -19,3 +19,4 @@ Features that require additional steps (most of the time):
    pdfreport
    routing
    multi_organization
+   vector_tiles
