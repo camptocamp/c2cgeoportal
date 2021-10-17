@@ -23,6 +23,7 @@ services:
       - PGDATABASE=geomapfish_tests
       - PGSCHEMA=main
       - PGSCHEMA_STATIC=main_static
+      - PGSERVICEFILE=/etc/qgisserver/pg_service.conf
       - GEOMAPFISH_OGCSERVER=qgisserver
       - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgz
       - QGIS_SERVER_IGNORE_BAD_LAYERS=true

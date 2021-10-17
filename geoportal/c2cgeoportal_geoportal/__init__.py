@@ -524,6 +524,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
     add_cors_route(config, "/profile.json", "profile")
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
+    # Access to vector tiles
+    add_cors_route(config, "/vector_tiles", "vector_tiles")
+    config.add_route("vector_tiles", "/vector_tiles/{layer_name}/{z}/{x}/{y}.pbf", request_method="GET")
+
     # Shortener
     add_cors_route(config, "/short/create", "shortener")
     config.add_route("shortener_create", "/short/create", request_method="POST")

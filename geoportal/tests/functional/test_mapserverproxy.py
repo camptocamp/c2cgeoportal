@@ -58,13 +58,10 @@
 #
 
 import hashlib
-import typing
 from unittest import TestCase
 
-import sqlalchemy.ext.declarative
 import transaction
-from geoalchemy2 import Geometry, WKTElement
-from sqlalchemy import Column, types
+from geoalchemy2 import WKTElement
 from tests.functional import (
     cleanup_db,
     create_default_ogcserver,
@@ -75,23 +72,12 @@ from tests.functional import (
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
+from tests.functional.geodata_model import PointTest
 
 # GetMap hash for MapServer 6.0 and 7.0
 FOUR_POINTS = ["61cbb0a6d18b72e4a28c1087019de245", "e2fe30a8085b0db4040c9ad0d331b6b8"]
 TWO_POINTS = ["0a4fac2209d06c6fa36048c125b1679a", "0469e20ee04f22ab7ccdfebaa125f203"]
 NO_POINT = ["ef33223235b26c782736c88933b35331", "aaa27d9450664d34fd8f53b6e76af1e1"]
-
-Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
-
-
-class PointTest(Base):  # type: ignore
-    __tablename__ = "testpoint"
-    __table_args__ = {"schema": "geodata"}
-    id = Column(types.Integer, primary_key=True)
-    geom = Column(Geometry("POINT", srid=21781))
-    name = Column(types.Unicode)
-    city = Column(types.Unicode)
-    country = Column(types.Unicode)
 
 
 GETFEATURE_REQUEST = """<?xml version='1.0' encoding="UTF-8" ?>

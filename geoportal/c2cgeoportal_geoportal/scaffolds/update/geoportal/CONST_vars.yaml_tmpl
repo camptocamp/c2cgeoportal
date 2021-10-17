@@ -701,6 +701,10 @@ vars:
   # chapter in the integrator documentation.
   raster: {}
 
+  # the "vector tiles service" configuration. See the "vector tiles"
+  # chapter in the integrator documentation.
+  vector_tiles: {}
+
   # Used by enumeration in the query builder
   layers:
     geometry_validation: True
@@ -899,6 +903,7 @@ vars:
           connect-src {content_security_policy_apihelp_connect_src}'
     profile: *header
     raster: *header
+    vector_tiles: *header
     error: *header
     themes: &auth_header
       cache_control_max_age: 600 # 10 minutes

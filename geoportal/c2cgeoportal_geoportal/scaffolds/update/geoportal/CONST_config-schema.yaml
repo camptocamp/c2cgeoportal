@@ -265,6 +265,7 @@ mapping:
           print: *header
           profile: *header
           raster: *header
+          vector_tiles: *header
           shortener: *header
           error: *header
 
@@ -806,3 +807,16 @@ mapping:
           total_python_object_memory:
             required: True
             type: scalar
+      vector_tiles:
+        type: map
+        mapping:
+          srid:
+            type: int
+          extent:
+            type: seq
+            sequence:
+              - type: scalar
+          resolutions:
+            type: seq
+            sequence:
+              - type: scalar

@@ -131,6 +131,11 @@ def get_settings():
         "package": "c2cgeoportal",
         "enable_admin_interface": True,
         "getitfixed": {"enabled": False},
+        "vector_tiles": {
+            "srid": 21781,
+            "extent": [599900, 199950, 600100, 200050],
+            "resolutions": [4000, 2000, 1000, 500, 250, 100, 50, 20, 10, 5, 2.5, 1, 0.5, 0.25, 0.1, 0.05],
+        },
     }
 
     return configuration.get_config()
