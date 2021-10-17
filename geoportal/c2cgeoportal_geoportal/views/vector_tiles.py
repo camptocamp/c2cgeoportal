@@ -39,6 +39,8 @@ LOG = logging.getLogger(__name__)
 
 
 class VectorTilesViews:
+    """All the views concerning the vector tiles."""
+
     def __init__(self, request: Request) -> None:
         self.request = request
 
