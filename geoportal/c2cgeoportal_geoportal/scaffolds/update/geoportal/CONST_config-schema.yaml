@@ -265,6 +265,7 @@ mapping:
           print: *header
           profile: *header
           raster: *header
+          vector_tiles: *header
           shortener: *header
           error: *header
 
