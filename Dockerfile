@@ -117,8 +117,7 @@ RUN \
 RUN \
     npm install --no-optional --global --unsafe-perm --no-package-lock $(cat /opt/c2cgeoportal/geoportal/npm-packages) && \
     npm cache clear --force && \
-    rm -rf /tmp/* && \
-    ln -s /usr/lib/node_modules/eslint-config-openlayers/node_modules/eslint-plugin-prettier /usr/lib/node_modules/
+    rm -rf /tmp/*
 RUN \
     git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git \
     /tmp/angular && \
