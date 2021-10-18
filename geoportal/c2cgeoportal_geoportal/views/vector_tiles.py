@@ -27,6 +27,7 @@
 
 import logging
 
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -57,18 +58,19 @@ class VectorTilesViews:
         coord = TileCoord(z, x, y)
         minx, miny, maxx, maxy = grid.extent(coord, 0)
 
-        sql_template = (
+        layer = (
             DBSession.query(main.LayerVectorTiles.sql)
             .filter(main.LayerVectorTiles.name == layer_name)
-            .one()[0]
+            .one_or_none()
         )
+        if layer is None:
+            raise HTTPNotFound(f"Not found any vector tile layer named {layer_name}")
 
-        raw_sql = sql_template.format(
+        raw_sql = layer[0].format(
             envelope=f"ST_MakeEnvelope({minx}, {miny}, {maxx}, {maxy}, {settings['srid']})"
         )
 
         result = DBSession.execute(raw_sql)
-
         for row in result:
             response = self.request.response
             response.content_type = "application/vnd.mapbox-vector-tile"
