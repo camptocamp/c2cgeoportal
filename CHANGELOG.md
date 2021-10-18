@@ -1,3 +1,5 @@
+##### 2.5.0.164
+* [Backport 2.5] Reset time from timeslider like datepicker on component reset [ngeo#7556](https://github.com/camptocamp/ngeo/pull/7556)
 ##### 2.5.0.162
 * Ignore CVE [1004722] XSS via JQLite DOM manipulation functions in Ang… [ngeo#7548](https://github.com/camptocamp/ngeo/pull/7548)
 ##### 2.5.0.161
