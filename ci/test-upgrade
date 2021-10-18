@@ -54,6 +54,28 @@ function create {
     cd -
 }
 
+# $1: folder
+# $2: version
+function create-advance {
+    rm --recursive --force $1
+    mkdir --parent $1
+    pcreate $1 c2cgeoportal_create $2
+    pcreate $1 c2cgeoportal_advance_create $2
+    pcreate $1 c2cgeoportal_update $2
+    pcreate $1 c2cgeoportal_advance_update $2
+    cd $1/testgeomapfish
+    git init
+    git config user.email ci@camptocamp.com
+    git config user.name CI
+    git remote add origin . # add a fake remote
+    git add --all
+    # Workaround for issue in 2.4.0
+    git add -f tilegeneration/config.yaml.tmpl || true
+    git commit --quiet --message="Initial commit"
+    git clean -fX
+    cd -
+}
+
 function printdiff {
     ls -l .UPGRADE*
     for f in $(ls -1 *.diff)
@@ -66,8 +88,13 @@ function printdiff {
 # $1: version
 function upgrade {
     cp scripts/upgrade ${WORKSPACE}/v$1/testgeomapfish/
+    mkdir --parent ${WORKSPACE}/v$1/testgeomapfish/ci/
+    cp ci/to-advance ${WORKSPACE}/v$1/testgeomapfish/ci/
     cd ${WORKSPACE}/v$1/testgeomapfish
     cp project.yaml.mako project.yaml || true
+    ci/to-advance
+    rm ci/to-advance
+    rmdir ci || true
     echo /upgrade >> .gitignore
     git add --force .gitignore project.yaml
     git commit -m "Add /upgrade in .gitignore"
@@ -83,12 +110,12 @@ function upgrade {
         git apply --3way ngeo.diff
         ./upgrade ${MAJOR_VERSION} 10
     fi
+    cp CONST_create_template/project.yaml .
     if [ -e .UPGRADE10 ]
     then
         # Workaround
         git status > /dev/null
         git apply --3way create.diff
-        cp CONST_create_template/project.yaml .
         ./upgrade ${MAJOR_VERSION} 11
     fi
     if [ ! -e .UPGRADE_SUCCESS ]
@@ -107,7 +134,7 @@ if [ "$1" = "init" ]
 then
     rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240  ${WORKSPACE}/v25
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
-    create ${WORKSPACE}/ref ${MAJOR_VERSION}
+    create-advance ${WORKSPACE}/ref ${MAJOR_VERSION}
     create ${WORKSPACE}/v27 ${MAJOR_VERSION}
     create ${WORKSPACE}/v260 2.6.0
     create ${WORKSPACE}/v240 2.4.0

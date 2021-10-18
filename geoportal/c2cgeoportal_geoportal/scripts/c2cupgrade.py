@@ -332,6 +332,16 @@ class C2cUpgradeTool:
                 project_path,
             ]
         )
+        if self.get_project().get("advance", False):
+            check_call(
+                [
+                    "pcreate",
+                    "--ignore-conflicting-name",
+                    "--overwrite",
+                    "--scaffold=c2cgeoportal_advance_update",
+                    project_path,
+                ]
+            )
 
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
         for upgrade_file in cast(List[Dict[str, Any]], self.get_upgrade("upgrade_files")):
@@ -365,6 +375,16 @@ class C2cUpgradeTool:
                 project_path,
             ]
         )
+        if self.get_project().get("advance", False):
+            check_call(
+                [
+                    "pcreate",
+                    "--ignore-conflicting-name",
+                    "--overwrite",
+                    "--scaffold=c2cgeoportal_advance_update",
+                    project_path,
+                ]
+            )
         os.remove(project_path)
 
         check_call(["git", "add", "--all", "CONST_create_template/"])

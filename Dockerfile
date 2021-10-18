@@ -139,7 +139,6 @@ COPY geoportal/c2cgeoportal_geoportal/scaffolds/ geoportal/c2cgeoportal_geoporta
 COPY build.mk lingua.cfg ./
 
 RUN mv bin/import-ngeo-apps bin/eval-templates bin/wait-db bin/transifex-init bin/run bin/run-git /usr/bin/
-RUN make --makefile=build.mk dependencies-touch
 RUN make --makefile=build.mk build
 
 COPY commons/ commons/

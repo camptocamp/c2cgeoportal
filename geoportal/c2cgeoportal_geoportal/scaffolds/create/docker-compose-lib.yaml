@@ -192,17 +192,10 @@ services:
       - AWS_SECRET_ACCESS_KEY
 
   geoportal:
-    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
-    build:
-      context: geoportal
-      args:
-        GIT_HASH: ${GIT_HASH}
-        PGSCHEMA: ${PGSCHEMA}
-        GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
-        GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
+    image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}
     user: www-data
     restart: unless-stopped
-    environment:
+    environment: &geoportal-env
       - DEVELOPMENT
       - VISIBLE_ENTRY_POINT
       - PACKAGE
@@ -266,6 +259,19 @@ services:
       - OTHER_LOG_LEVEL
       - DOGPILECACHE_LOG_LEVEL
       - LOG_TYPE
+
+  geoportal-advance:
+    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+    build:
+      context: geoportal
+      args:
+        GIT_HASH: ${GIT_HASH}
+        PGSCHEMA: ${PGSCHEMA}
+        GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
+        GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
+    user: www-data
+    restart: unless-stopped
+    environment: *geoportal-env
 
   tools:
     image: camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
@@ -334,8 +340,8 @@ services:
       - DOGPILECACHE_LOG_LEVEL
       - LOG_TYPE
 
-  alembic:
-    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+  alembic: &alembic
+    image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}
     user: www-data
     entrypoint: []
     command:
@@ -354,6 +360,10 @@ services:
       - PGSSLMODE
       - PGSCHEMA_STATIC
       - LOG_TYPE
+
+  alembic-advance:
+    <<: *alembic
+    image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
 
   front:
     image: haproxy:2.2
