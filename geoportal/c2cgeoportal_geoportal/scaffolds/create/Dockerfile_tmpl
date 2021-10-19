@@ -23,6 +23,9 @@ ENV SIMPLE=$SIMPLE
 
 RUN build-l10n "{{package}}"
 
+ARG PGSCHEMA
+ENV PGSCHEMA=$PGSCHEMA
+
 RUN \
     cd /tmp/config/geoportal/ && \
     c2c-template --vars ${VARS_FILE} \
