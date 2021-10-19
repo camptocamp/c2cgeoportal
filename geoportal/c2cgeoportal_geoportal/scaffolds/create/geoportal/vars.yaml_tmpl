@@ -267,6 +267,7 @@ vars:
     apihelp: *header
     profile: *header
     raster: *header
+    vector_tiles: *header
     error: *header
     themes: &auth_header {}
     config: *auth_header
@@ -307,6 +308,7 @@ update_paths:
   - headers.apihelp.headers
   - headers.profile.headers
   - headers.raster.headers
+  - headers.vector_tiles.headers
   - headers.error.headers
   - headers.themes.headers
   - headers.config.headers
