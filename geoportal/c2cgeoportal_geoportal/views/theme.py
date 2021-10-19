@@ -134,7 +134,7 @@ class DimensionInformation:
 
 
 class Theme:
-    """All the views conserne the theme."""
+    """All the views concerne the theme."""
 
     def __init__(self, request: pyramid.request.Request):
         self.request = request
@@ -411,7 +411,7 @@ class Theme:
 
         elif isinstance(layer, main.LayerVectorTiles):
             layer_info["type"] = "VectorTiles"
-            self._vectortiles_layers(layer_info, layer)
+            self._vectortiles_layers(layer_info, layer, errors)
 
         return None if errors else layer_info, errors
 
@@ -548,9 +548,9 @@ class Theme:
         layer_theme["layer"] = layer.layer
         layer_theme["imageType"] = layer.image_type
 
-    @staticmethod
-    def _vectortiles_layers(layer_theme: Dict[str, Any], layer: main.Layer) -> None:
-        layer_theme["style"] = layer.style
+    def _vectortiles_layers(self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str]) -> None:
+        style = get_url2(f"The VectorTiles layer '{layer.name}'", layer.style, self.request, errors=errors)
+        layer_theme["style"] = style
         if layer.xyz:
             layer_theme["xyz"] = layer.xyz
 
