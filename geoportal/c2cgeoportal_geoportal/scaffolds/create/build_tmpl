@@ -76,13 +76,15 @@ def main() -> None:
         for file_ in env_files:
             with open(file_, encoding="utf-8") as src:
                 dest.write(src.read() + "\n")
-        dest.write("# Used env files: {}\n".format(" ".join(env_files)))
+        dest.write(f"# Used env files: {' '.join(env_files)}\n")
 
     if not args.env:
         env = {"PATH": os.environ["PATH"]}
         docker_compose_build_cmd = ["docker-compose", "build"]
 
         if os.environ.get("CI", "FALSE").upper() != "TRUE":
+            # Pull all the images
+            subprocess.run(["docker-compose", "pull"], check=True)  # nosec
             docker_compose_build_cmd.append("--pull")
 
         simple = not os.path.exists("geoportal/Dockerfile")
