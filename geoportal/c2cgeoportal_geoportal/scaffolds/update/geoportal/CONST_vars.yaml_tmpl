@@ -284,7 +284,7 @@ vars:
           dynamic_params:
             interface: interface
         gmfVectorTilesUrl:
-          name: vector_tiles
+          name: vector_tiles_root
     desktop:
       extends: default
       redirect_interface: mobile
