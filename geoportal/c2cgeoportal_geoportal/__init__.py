@@ -527,6 +527,9 @@ def includeme(config: pyramid.config.Configurator) -> None:
     # Access to vector tiles
     add_cors_route(config, "/vector_tiles", "vector_tiles")
     config.add_route("vector_tiles", "/vector_tiles/{layer_name}/{z}/{x}/{y}.pbf", request_method="GET")
+    # There is no view corresponding to that route, it is to be used from
+    # mako templates to get the root of the "vector_tiles" web service
+    config.add_route("vector_tiles_root", "/vector_tiles", request_method="HEAD")
 
     # Shortener
     add_cors_route(config, "/short/create", "shortener")
