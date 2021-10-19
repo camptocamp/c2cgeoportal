@@ -33,11 +33,7 @@ The active default tabs (route urls) are:
 Optional tabs/modules
 ~~~~~~~~~~~~~~~~~~~~~
 
-There are optional tabs, not available if not explicitly included.
-
-The list is:
-- layers_vectortiles
-
+It's possible to have optional tabs, not available if not explicitly included.
 
 Include a new page
 ~~~~~~~~~~~~~~~~~~
