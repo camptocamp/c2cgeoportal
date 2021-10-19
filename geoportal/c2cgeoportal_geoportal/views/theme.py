@@ -134,7 +134,7 @@ class DimensionInformation:
 
 
 class Theme:
-    """All the views concerne the theme."""
+    """All the views concerning the themes."""
 
     def __init__(self, request: pyramid.request.Request):
         self.request = request
