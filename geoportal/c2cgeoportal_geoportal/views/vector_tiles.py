@@ -35,6 +35,7 @@ from tilecloud import TileCoord
 from tilecloud.grid.free import FreeTileGrid
 
 from c2cgeoportal_commons.models import DBSession, main
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 LOG = logging.getLogger(__name__)
 
@@ -72,6 +73,7 @@ class VectorTilesViews:
 
         result = DBSession.execute(raw_sql)
         for row in result:
+            set_common_headers(self.request, "vector_tiles", Cache.PUBLIC)
             response = self.request.response
             response.content_type = "application/vnd.mapbox-vector-tile"
             response.body = row[0].tobytes()
