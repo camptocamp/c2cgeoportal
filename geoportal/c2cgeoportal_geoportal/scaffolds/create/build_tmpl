@@ -53,9 +53,9 @@ def main() -> None:
         os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
         try:
             if platform.system() == "Windows":
-                subprocess.check_call(["python", "upgrade", full_version] + debug_args)
+                subprocess.run(["python", "upgrade", full_version] + debug_args, check=True)
             else:
-                subprocess.check_call(["./upgrade", full_version] + debug_args)
+                subprocess.run(["./upgrade", full_version] + debug_args, check=True)
         except subprocess.CalledProcessError:
             sys.exit(1)
         sys.exit(0)
@@ -66,7 +66,7 @@ def main() -> None:
         print(project_env["help"])
         sys.exit(1)
     env_files = [e.format(*args.env_files) for e in project_env["files"]]
-    print("Use env files: {}".format(", ".join(env_files)))
+    print(f"Use env files: {', '.join(env_files)}")
     for env_file in env_files:
         if not os.path.exists(env_file):
             print(f"Error: the env file '{env_file}' does not exist.")
@@ -76,13 +76,15 @@ def main() -> None:
         for file_ in env_files:
             with open(file_, encoding="utf-8") as src:
                 dest.write(src.read() + "\n")
-        dest.write("# Used env files: {}\n".format(" ".join(env_files)))
+        dest.write(f"# Used env files: {' '.join(env_files)}\n")
 
     if not args.env:
         env = {"PATH": os.environ["PATH"]}
         docker_compose_build_cmd = ["docker-compose", "build"]
 
         if os.environ.get("CI", "FALSE").upper() != "TRUE":
+            # Pull all the images
+            subprocess.run(["docker-compose", "pull"], check=True)  # nosec
             docker_compose_build_cmd.append("--pull")
 
         simple = not os.path.exists("geoportal/Dockerfile")
@@ -92,7 +94,11 @@ def main() -> None:
             simple = False
         env["SIMPLE"] = str(simple).upper()
 
-        env["GIT_HASH"] = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()  # nosec
+        env["GIT_HASH"] = (
+            subprocess.run(["git", "rev-parse", "HEAD"], check=True, stdout=subprocess.PIPE)
+            .stdout.strip()
+            .decode()
+        )
 
         if args.service:
             docker_compose_build_cmd.append(args.service)
@@ -103,7 +109,7 @@ def main() -> None:
         if args.verbose:
             print(" ".join(print_args))
         try:
-            subprocess.check_call(docker_compose_build_cmd, env=env)  # nosec
+            subprocess.run(docker_compose_build_cmd, env=env, check=True)  # nosec
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
