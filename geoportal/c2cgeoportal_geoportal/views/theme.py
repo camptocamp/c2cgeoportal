@@ -550,7 +550,7 @@ class Theme:
 
     def _vectortiles_layers(self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str]) -> None:
         style = get_url2(f"The VectorTiles layer '{layer.name}'", layer.style, self.request, errors=errors)
-        layer_theme["style"] = style
+        layer_theme["style"] = style.url() if style is not None else None
         if layer.xyz:
             layer_theme["xyz"] = layer.xyz
 
