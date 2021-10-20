@@ -66,7 +66,7 @@ if TYPE_CHECKING:
 class _Registry:
     settings = None
 
-    def __init__(self, settings: Optional[Dict[str, Any]]):
+    def __init__(self, settings: Optional[Dict[str, Any]]) -> None:
         self.settings = settings
 
 
@@ -75,7 +75,7 @@ class _Request:
     matchdict: Dict[str, str] = {}
     GET: Dict[str, str] = {}
 
-    def __init__(self, settings: Optional[Dict[str, Any]] = None):
+    def __init__(self, settings: Optional[Dict[str, Any]] = None) -> None:
         self.registry: _Registry = _Registry(settings)
 
     @staticmethod

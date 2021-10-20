@@ -182,3 +182,6 @@ upgrade_files:
   - action: move
     from: geoportal/.eslintrc
     to: geoportal/.eslintrc.yaml
+  - action: remove
+    paths:
+      - qgisserver/geomapfish.yaml.tmpl

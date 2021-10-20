@@ -43,7 +43,7 @@ if TYPE_CHECKING:
 LOG = logging.getLogger(__name__)
 
 
-def create_session_factory(url: str, configuration: Dict[str, Any]):
+def create_session_factory(url: str, configuration: Dict[str, Any]) -> sessionmaker:
     configure_mappers()
     db_match = re.match(".*(@[^@]+)$", url)
     LOG.info(
@@ -58,7 +58,7 @@ def create_session_factory(url: str, configuration: Dict[str, Any]):
 
 
 class GMFException(Exception):
-    pass
+    """Standard exception"""
 
 
 class Access(Enum):
@@ -125,7 +125,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                             ogcserver.url,
                             None,
                             errors,
+                            config.get_config().get("servers", {}),
                         )
+
                         if errors:
                             LOG.warning(
                                 "Ignoring OGC server '%s', get error on parsing URL:\n%s",
@@ -240,37 +242,31 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         )
 
     def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
-        """
-        Return an additional subset string (typically SQL) filter.
-        """
+        """Return an additional subset string (typically SQL) filter."""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
                 return "0"
             return self.get_ogcserver_accesscontrol().layerFilterSubsetString(layer)
         except Exception:
-            LOG.error("Unhandle error", exc_info=True)
+            LOG.error("Unhandled error", exc_info=True)
             raise
 
     def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
-        """
-        Return an additional expression filter.
-        """
+        """Return an additional expression filter."""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
                 return "0"
             return self.get_ogcserver_accesscontrol().layerFilterExpression(layer)
         except Exception:
-            LOG.error("Unhandle error", exc_info=True)
+            LOG.error("Unhandled error", exc_info=True)
             raise
 
     def layerPermissions(  # noqa: ignore=N803
         self, layer: QgsVectorLayer
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
-        """
-        Return the layer rights.
-        """
+        """Return the layer rights."""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -279,15 +275,13 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 return no_rights
             return self.get_ogcserver_accesscontrol().layerPermissions(layer)
         except Exception:
-            LOG.error("Unhandle error", exc_info=True)
+            LOG.error("Unhandled error", exc_info=True)
             raise
 
     def authorizedLayerAttributes(  # noqa: ignore=N802
         self, layer: QgsVectorLayer, attributes: List[str]
     ) -> List[str]:
-        """
-        Return the authorised layer attributes.
-        """
+        """Return the authorized layer attributes."""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -298,16 +292,14 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: ignore=N802
-        """
-        Are we authorise to modify the following geometry.
-        """
+        """Are we authorize to modify the following geometry."""
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
                 return False
             return self.get_ogcserver_accesscontrol().allowToEdit(layer, feature)
         except Exception:
-            LOG.error("Unhandle error", exc_info=True)
+            LOG.error("Unhandled error", exc_info=True)
             raise
 
     def cacheKey(self) -> str:  # noqa: ignore=N802
@@ -322,9 +314,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
 
 class OGCServerAccessControl(QgsAccessControlFilter):
-    """
-    Implements GeoMapFish access restriction.
-    """
+    """Implements GeoMapFish access restriction."""
 
     SUBSETSTRING_TYPE = ["PostgreSQL database with PostGIS extension"]
 
@@ -720,7 +710,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self, layer: QgsVectorLayer, attributes: List[str]
     ) -> List[str]:
         """
-        Returns the authorised layer attributes.
+        Returns the authorized layer attributes.
         """
         del layer
 
@@ -735,9 +725,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         return attributes
 
     def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: ignore=N802
-        """
-        Are we authorise to modify the following geometry.
-        """
+        """Are we authorize to modify the following geometry."""
         LOG.debug("allowToEdit")
 
         if self.ogcserver is None:
