@@ -2,7 +2,7 @@
 extends: CONST_vars.yaml
 
 vars:
-  srid: {{srid}}
+  srid: &srid {{srid}}
 
   alternate_projections: &alternate_projections
     - EPSG:4326
@@ -154,6 +154,13 @@ vars:
 
   layers:
     geometry_validation: True
+
+  # The "vector tiles web service" configuration. See the "vector tiles"
+  # chapter in the integrator documentation.
+  vector_tiles:
+    srid: *srid
+    extent: *extent
+    resolutions: *resolutions
 
   fulltextsearch:
     languages:
