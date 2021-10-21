@@ -35,7 +35,7 @@ const babelPresets = [
     require.resolve('@babel/preset-env'),
     {
       targets: {
-        browsers: ['> 0.5% in CH', '> 0.5% in FR', 'Firefox ESR', 'ie 11'],
+        browsers: ['> 0.7% in CH', '> 0.7% in FR', 'Firefox ESR'],
       },
       modules: false,
       loose: true,
@@ -53,14 +53,11 @@ const projectRule = {
       babelrc: false,
       comments: false,
       plugins: [
-        require.resolve('@babel/plugin-syntax-object-rest-spread'),
-        require.resolve('@babel/plugin-transform-spread'),
         require.resolve('babel-plugin-angularjs-annotate'),
       ],
     },
   },
 };
-
 const rules = [projectRule];
 
 const noDevServer = process.env['NO_DEV_SERVER'] == 'TRUE';
@@ -89,6 +86,7 @@ module.exports = {
     modules: ['/usr/lib/node_modules'],
     alias: {
       {{package}}: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js'),
+      'ol-mapbox-style': '/usr/lib/node_modules/ol/node_modules/ol-mapbox-style',
     },
   },
 };

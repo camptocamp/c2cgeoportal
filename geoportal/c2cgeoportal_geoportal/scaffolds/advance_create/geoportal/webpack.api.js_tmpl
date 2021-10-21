@@ -8,7 +8,7 @@ const babelPresets = [
     require.resolve('@babel/preset-env'),
     {
       targets: {
-        browsers: ['> 0.5% in CH', '> 0.5% in FR', 'Firefox ESR', 'ie 11'],
+        browsers: ['> 0.7% in CH', '> 0.7% in FR', 'Firefox ESR'],
       },
       modules: false,
       loose: true,
@@ -33,8 +33,6 @@ module.exports = (env, argv) => {
               babelrc: false,
               comments: false,
               plugins: [
-                require.resolve('@babel/plugin-syntax-object-rest-spread'),
-                require.resolve('@babel/plugin-transform-spread'),
                 require.resolve('babel-plugin-angularjs-annotate'),
               ],
             },

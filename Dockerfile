@@ -97,11 +97,7 @@ RUN \
     npm cache clear --force && \
     rm -rf /tmp/*
 
-RUN npm-packages \
-    @types @typescript-eslint ol-cesium jasmine-core karma karma-chrome-launcher \
-    karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
-    typedoc jsdoc jsdoc-plugin-typescript typescript \
-    --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
+RUN npm-packages --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
 
 # Workaround to fix the chokidar error
 RUN ln -s /usr/lib/node_modules/webpack-dev-server/node_modules/chokidar /usr/lib/node_modules/

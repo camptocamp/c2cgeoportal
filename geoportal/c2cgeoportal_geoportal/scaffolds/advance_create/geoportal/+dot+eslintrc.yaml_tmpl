@@ -1,18 +1,19 @@
 extends:
-  - openlayers
+  - eslint:recommended
+
 globals:
   '{{package}}': false
+
 env:
+  es6: true
+  node: true
+  browser: true
   jquery: true
+
 parserOptions:
-  ecmaVersion: 2017
+  sourceType: module
+  ecmaVersion: 2020
+
 rules:
   no-console: 0
-  comma-dangle: 0
-  import/no-unresolved: 0
-  import/extensions: 0
-  valid-jsdoc: 0
-  jsdoc/check-tag-names: 0
-  jsdoc/require-param-description: 0
-  sort-imports-es6-autofix/sort-imports-es6: 0
-  prettier/prettier: 0
+  no-unused-vars: 0
