@@ -13,6 +13,19 @@ To serve vector tiles you need to define a grid under key ``vector_tiles`` in ``
         extent: [2420000, 1030000, 2900000, 1350000]
         resolutions: [4000, 2000, 1000, 500, 250, 100, 50, 20, 10, 5, 2.5, 1, 0.5, 0.25, 0.1, 0.05]
 
+And to build the layer on the ngeo side, you must use the same parameters under key
+``interfaces_config.default.constants.gmfVectorTilesOptions``. The projection and the tileGrid must match
+the map parameters:
+
+.. code:: yaml
+
+    vars:
+      interfaces_config:
+        default:
+          gmfVectorTilesOptions:
+            projection: EPSG:2056
+            tileGrid: <Open layers ol/tilegrid/TileGrid options>
+
 You also need to define at least one "Vector Tiles" layer in admin interface with the following required attributes:
 
 name
