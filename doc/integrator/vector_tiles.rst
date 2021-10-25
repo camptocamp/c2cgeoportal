@@ -32,7 +32,7 @@ name
    Name of the layer
 
 style
-   URL to some Mapbox Style file, examples:
+   URL to a Mapbox Style file (version 8 or higher), examples:
    - https://example.com/mystyle.json
    - static:///mb_styles/osm_landuse.json
 

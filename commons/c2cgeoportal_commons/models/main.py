@@ -1241,7 +1241,11 @@ class LayerVectorTiles(DimensionLayer):
         info={
             "colanderalchemy": {
                 "title": _("Style"),
-                "description": "The path to json style. Example: https://url/style.json",
+                "description": _(
+                    """
+                    The path to a Mapbox Style file (version 8 or higher). Example: https://url/style.json
+                    """
+                ),
                 "column": 2,
             }
         },
