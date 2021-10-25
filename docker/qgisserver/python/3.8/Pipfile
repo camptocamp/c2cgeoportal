@@ -7,7 +7,7 @@ verify_ssl = true
 mypy = "==0.910"  # lint
 prospector = {extras = ["with_mypy", "with_bandit"],version = "==1.5.1"}
 flake8 = "==3.9.2"
-types-pyyaml = "==5.4.12"
+types-pyyaml = "==6.0.0"
 
 [packages]
 c2cwsgiutils = {extras = ["broadcast"],version = "==4.1.4"}
