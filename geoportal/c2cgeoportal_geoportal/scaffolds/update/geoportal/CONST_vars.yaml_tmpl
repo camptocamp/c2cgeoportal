@@ -228,6 +228,9 @@ vars:
         gmfElevationOptions:
           layers: []
           layersConfig: {}
+        gmfVectorTilesOptions:
+          projection: EPSG:{srid}
+          tileGrid: {}
         ngeoGeolocationOptions:
           positionFeatureStyle:
             circle:

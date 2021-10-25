@@ -45,6 +45,12 @@ vars:
           coordinatesProjections: *alternate_projections
         gmfPermalinkOptions:
           projectionCodes: *alternate_projections
+        gmfVectorTilesOptions:
+          projection: EPSG:{srid}
+          tileGrid:
+            extent: *extent
+            origin: [2420000, 1350000]
+            resolutions: *resolutions
       routes:
         fulltextsearchUrl:
           params:
@@ -329,6 +335,7 @@ update_paths:
   - interfaces_config.default.constants.ngeoWfsPermalinkOptions
   - interfaces_config.default.constants.gmfSearchOptions
   - interfaces_config.default.constants.gmfPermalinkOptions
+  - interfaces_config.default.constants.gmfVectorTilesOptions
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
   - interfaces_config.default.routes.fulltextsearchUrl
