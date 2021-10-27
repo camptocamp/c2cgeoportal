@@ -1,3 +1,5 @@
+##### 2.6.0.39
+* Update Mapillary to v4.0.0 [ngeo#7596](https://github.com/camptocamp/ngeo/pull/7596)
 ##### 2.6.0.38
 * Reset mode on self tab ctrl+key combination [ngeo#7535](https://github.com/camptocamp/ngeo/pull/7535)
 ##### 2.6.0.37
