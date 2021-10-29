@@ -1,3 +1,5 @@
+##### 2.6.0.40
+* [Backport 2.6] Fix key down for query ModeSelector [ngeo#7607](https://github.com/camptocamp/ngeo/pull/7607)
 ##### 2.6.0.39
 * Update Mapillary to v4.0.0 [ngeo#7596](https://github.com/camptocamp/ngeo/pull/7596)
 ##### 2.6.0.38
