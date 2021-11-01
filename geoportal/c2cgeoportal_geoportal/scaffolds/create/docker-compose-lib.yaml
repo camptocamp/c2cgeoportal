@@ -364,6 +364,13 @@ services:
   alembic-advance:
     <<: *alembic
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+    build:
+      context: geoportal
+      args:
+        GIT_HASH: ${GIT_HASH}
+        PGSCHEMA: ${PGSCHEMA}
+        GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
+        GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
 
   front:
     image: haproxy:2.2
