@@ -132,7 +132,7 @@
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
-				<text><![CDATA[$R{legend}]]></text>
+				<textFieldExpression><![CDATA[$R{legend}]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="800" height="56" uuid="4c32d050-9b4f-448e-97f0-072a4606c164">
