@@ -62,16 +62,19 @@ class PrintProxy(Proxy):
         params = dict(self.request.params)
         query_string = urllib.parse.urlencode(params)
 
-        resp, content = self._capabilities(templates, query_string, self.request.method)
+        resp, content = self._capabilities(
+            templates, query_string, self.request.method, self.request.referrer
+        )
 
         return self._build_response(resp, content, Cache.PRIVATE, "print")
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _capabilities(
-        self, templates: List[str], query_string: Dict[str, str], method: str
+        self, templates: List[str], query_string: Dict[str, str], method: str, referrer: str
     ) -> Tuple[requests.Response, str]:
         del query_string  # Just for caching
         del method  # Just for caching
+        del referrer  # Just for caching
         # get URL
         _url = self.request.get_organization_print_url() + "/capabilities.json"
 
