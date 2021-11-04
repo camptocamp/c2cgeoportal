@@ -3,6 +3,7 @@
 !mapserver/
 !qgisserver/
 !tilegeneration/
+!haproxy/
 !print/print-apps/
 !geoportal/vars*.yaml
 !geoportal/CONST_vars.yaml
