@@ -224,7 +224,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
 
 def init_db(settings: Dict[str, Any]) -> None:
     """
-    Initialise the database.
+    Initialize the SQLAlchemy Session.
 
     First test the connection, on wen environment it should be OK, with the command line we should get
     an exception ind initialise the connection.
