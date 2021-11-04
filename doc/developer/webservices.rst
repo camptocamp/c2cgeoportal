@@ -676,7 +676,7 @@ Result: the new ``GeoJSON`` geometry.
 Localization pot
 ================
 
-This service create and return the pot needed for the localization.
+This service create and returns the list of strings to translate for the locatization in gettext POT format.
 
 URL: ``.../locale.pot``
 
