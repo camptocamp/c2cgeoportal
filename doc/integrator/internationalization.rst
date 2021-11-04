@@ -92,7 +92,7 @@ Seel also `i18next Configuration Options <https://www.i18next.com/overview/confi
 Different localization sets
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you use the application with different database that contain tow different layer tree you should
+If you use the application with different databases that contains two different layer trees you should
 have a suffix on your po files.
 
 Before calling the `update-po` command you should rename the po files you want to update without the suffix,
