@@ -62,37 +62,40 @@ class PrintProxy(Proxy):
         params = dict(self.request.params)
         query_string = urllib.parse.urlencode(params)
 
-        resp, content = self._capabilities(templates, query_string, self.request.method)
+        resp, content = self._capabilities(
+            templates, query_string, self.request.method, self.request.referrer
+        )
 
         return self._build_response(resp, content, Cache.PRIVATE, "print")
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _capabilities(
-        self, templates: List[str], query_string: Dict[str, str], method: str
+        self, templates: List[str], query_string: Dict[str, str], method: str, referrer: str
     ) -> Tuple[requests.Response, str]:
         del query_string  # Just for caching
         del method  # Just for caching
+        del referrer  # Just for caching
         # get URL
         _url = self.request.get_organization_print_url() + "/capabilities.json"
 
         response = self._proxy(Url(_url))
+        response.raise_for_status()
 
         if self.request.method == "GET":
-            if response.ok:
-                try:
-                    capabilities = response.json()
-                except json.decoder.JSONDecodeError:
-                    LOG.exception("Unable to parse capabilities: %s", response.text)
-                    raise HTTPBadGateway(response.text)  # pylint: disable=raise-missing-from
+            try:
+                capabilities = response.json()
+            except json.decoder.JSONDecodeError:
+                LOG.exception("Unable to parse capabilities: %s", response.text)
+                raise HTTPBadGateway(response.text)  # pylint: disable=raise-missing-from
 
-                capabilities["layouts"] = list(
-                    layout for layout in capabilities["layouts"] if layout["name"] in templates
-                )
+            capabilities["layouts"] = list(
+                layout for layout in capabilities["layouts"] if layout["name"] in templates
+            )
 
-                pretty = self.request.params.get("pretty", "false") == "true"
-                content = json.dumps(
-                    capabilities, separators=None if pretty else (",", ":"), indent=4 if pretty else None
-                )
+            pretty = self.request.params.get("pretty", "false") == "true"
+            content = json.dumps(
+                capabilities, separators=None if pretty else (",", ":"), indent=4 if pretty else None
+            )
         else:
             content = ""
 
