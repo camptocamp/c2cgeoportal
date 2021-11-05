@@ -37,3 +37,10 @@ type = PO
 % for lang in tx_languages.split():
 trans.${lang} = geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/gmf.po
 % endfor
+
+[ngeo.webcomponent-${tx_version.strip()}]
+source_lang = en
+type = KEYVALUEJSON
+% for lang in tx_languages.split():
+trans.${lang} = geoportal/c2cgeoportal_geoportal/static/locales/${lang}.json
+% endfor

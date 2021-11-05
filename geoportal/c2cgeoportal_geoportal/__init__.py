@@ -413,7 +413,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     # Register a tween to get back the cache buster path.
     if "cache_path" not in config.get_settings():
-        config.get_settings()["cache_path"] = ["static"]
+        config.get_settings()["cache_path"] = ["static", "static-geomapfish"]
     config.add_tween("c2cgeoportal_geoportal.lib.cacheversion.CachebusterTween")
     config.add_tween("c2cgeoportal_geoportal.lib.headers.HeadersTween")
 
@@ -610,6 +610,14 @@ def includeme(config: pyramid.config.Configurator) -> None:
         path="/etc/static-ngeo",
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
+
+    # Add the c2cgeoportal static view with cache buster
+    config.add_static_view(
+        name="static-geomapfish",
+        path="c2cgeoportal_geoportal:static",
+        cache_max_age=int(config.get_settings()["default_max_age"]),
+    )
+    config.add_cache_buster("c2cgeoportal_geoportal:static", version_cache_buster)
 
     # Handles the other HTTP errors raised by the views. Without that,
     # the client receives a status=200 without content.

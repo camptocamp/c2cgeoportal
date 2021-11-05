@@ -249,6 +249,7 @@ class TestDynamicView(TestCase):
             )
         ) as config:
             config.add_static_view(name="static", path="/etc/geomapfish/static")
+            config.add_route("base", "/", static=True)
             config.add_route("test", "/test")
             config.add_route("route_with_keywords", "/test/{key1}/{key2}")
             request = DummyRequest({"interface": "test"})
@@ -267,6 +268,7 @@ class TestDynamicView(TestCase):
             )
         ) as config:
             config.add_static_view(name="static", path="/etc/geomapfish/static")
+            config.add_route("base", "/", static=True)
             config.add_route("test", "/test")
             config.add_route("route_with_segments", "/test")
             request = DummyRequest({"interface": "test"})
@@ -296,6 +298,7 @@ class TestDynamicView(TestCase):
             )
         ) as config:
             config.add_static_view(name="static", path="/etc/geomapfish/static")
+            config.add_route("base", "/", static=True)
             config.add_route("test", "/test")
             config.add_route("route_with_all", "/test/{key1}/{key2}")
             request = DummyRequest({"interface": "test"})

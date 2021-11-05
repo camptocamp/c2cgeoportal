@@ -820,3 +820,4 @@ mapping:
             type: seq
             sequence:
               - type: scalar
+      i18next: *free_dict

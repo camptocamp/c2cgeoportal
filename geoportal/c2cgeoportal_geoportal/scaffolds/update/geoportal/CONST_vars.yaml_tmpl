@@ -47,6 +47,16 @@ vars:
   intranet:
     networks: []
 
+  i18next:
+    ns:
+      - gmf
+    defaultNS: gmf
+    debug: true
+    fallbackLng: false
+    interpolation:
+      escapeValue: false
+    backend: {}
+
   interfaces_config:
     default:
       constants:
@@ -252,6 +262,7 @@ vars:
         interface: interface
         cacheVersion: cache_version
         langUrls: lang_urls
+        gmfI18nextConfiguration: i18next_configuration
         gmfTwoFactorAuth: two_factor
         gmfSearchGroups: fulltextsearch_groups
       static:
