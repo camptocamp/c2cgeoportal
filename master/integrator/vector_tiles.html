@@ -92,6 +92,12 @@ the map parameters:</p>
 </div>
 <p>Then your vector tiles will be accessible, for example in local development mode, through:</p>
 <p><a class="reference external" href="https://localhost:8484/vector_tiles">https://localhost:8484/vector_tiles</a>/{layer_name}/{z}/{x}/{y}.pbf</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently vector tiles layers in GMF have a limited support. A vector tiles layer can be only
+added as a background layer. It’s not possible to print it and it doesn’t support dimensions.
+Queries can be only done via another wms layer using the metadata <code class="docutils literal notranslate"><span class="pre">queryLayers</span></code>.</p>
+</div>
 </section>
 
 
