@@ -147,7 +147,8 @@ jobs:
 
       # Test App
       - run: ci/test-app
-      - run: |
+      - name: Logs
+        run: |
           cd ${HOME}/workspace/testgeomapfishapp/
           for service in $(docker-compose config --services)
           do

@@ -47,6 +47,11 @@ do
     evaluate $file
 done
 
+if [ -e /etc/static-ngeo_ ]
+then
+    cp -r /etc/static-ngeo_/ /etc/static-ngeo/
+fi
+
 find /etc/static-ngeo/ -name '*.tmpl' -print | while read file
 do
     evaluate $file

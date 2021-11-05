@@ -676,7 +676,7 @@ Result: the new ``GeoJSON`` geometry.
 Localization pot
 ================
 
-This service create and returns the list of strings to translate for the locatization in gettext POT format.
+This service create and returns the list of strings to translate for the localization in gettext POT format.
 
 URL: ``.../locale.pot``
 
@@ -685,9 +685,9 @@ Method: ``GET``
 Parameters
 ~~~~~~~~~~
 
- - ``INTERFACES``: List of interfaces we want to use.
- - ``THEME_REGEX``: Regular expression used to filter the themes.
- - ``GROUP_REGEX``: Regular expression used to filter the layer groups.
- - ``WMSLAYER_REGEX``: Regular expression used to filter the WMS layers.
- - ``WMTSLAYER_REGEX``: Regular expression used to filter the WMTS layers.
- - ``IGNORE_I18N_ERRORS``: ``TRUE`` to ignore most of the error expected during the extraction.
+ - ``interfaces``: List of interfaces we want to use.
+ - ``theme_regex``: Regular expression used to filter the themes.
+ - ``group_regex``: Regular expression used to filter the layer groups.
+ - ``wmslayer_regex``: Regular expression used to filter the WMS layers.
+ - ``wmtslayer_regex``: Regular expression used to filter the WMTS layers.
+ - ``ignore_i18n_errors``: ``TRUE`` to ignore most of the error expected during the extraction.

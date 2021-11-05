@@ -45,19 +45,32 @@ ENV PGSCHEMA=$PGSCHEMA
 COPY --from=builder /tmp/config/ /tmp/config/
 
 RUN \
-    if [ -e /tmp/config/mapserver ]; then mv /tmp/config/mapserver /etc/; fi && \
-    if [ -e /tmp/config/tilegeneration ]; then mv /tmp/config/tilegeneration /etc/; fi && \
-    if [ -e /tmp/config/qgisserver ]; then mv /tmp/config/qgisserver /etc/qgisserver; fi && \
-    if [ -e /tmp/config/haproxy ]; then mv /tmp/config/haproxy/* /etc/haproxy/; fi && \
-    mkdir --parent /usr/local/tomcat/webapps/ROOT/ && \
-    if [ -e /tmp/config/print ]; then mv /tmp/config/print/print-apps /usr/local/tomcat/webapps/ROOT/; fi && \
+    if [ -e /tmp/config/mapserver ]; then \
+        mv /tmp/config/mapserver /etc/ && \
+        chmod g+w -R /etc/mapserver; \
+    fi && \
+    if [ -e /tmp/config/tilegeneration ]; then \
+        mv /tmp/config/tilegeneration /etc/ && \
+        chmod g+w -R /etc/tilegeneration; \
+    fi && \
+    if [ -e /tmp/config/qgisserver ]; then \
+        mv /tmp/config/qgisserver /etc/ && \
+        chmod g+w -R /etc/qgisserver; \
+    fi && \
+    if [ -e /tmp/config/haproxy ]; then \
+        mv /tmp/config/haproxy/* /etc/haproxy/; \
+    fi && \
+    if [ -e /tmp/config/print ]; then \
+        mkdir --parent /usr/local/tomcat/webapps/ROOT/ && \
+        mv /tmp/config/print/print-apps /usr/local/tomcat/webapps/ROOT/; fi && \
+        chmod g+w -R /usr/local/tomcat/webapps/ROOT/print-apps; \
+    if [ -e /tmp/config/geoportal/{{package}}_geoportal/static-ngeo ]; then \
+        mv /tmp/config/geoportal/{{package}}_geoportal/static-ngeo /etc/static-ngeo_ && \
+        chmod g+w -R /etc/static-ngeo_; \
+    fi && \
     mv /tmp/config/geoportal/{{package}}_geoportal/ /etc/geomapfish/ && \
     chmod g+w -R \
         /etc/geomapfish \
-        /etc/mapserver \
-        /etc/qgisserver \
-        /etc/tilegeneration \
-        /usr/local/tomcat/webapps/ROOT/print-apps \
         /etc/gunicorn \
         /etc/haproxy_dev \
         /etc/haproxy && \
@@ -67,6 +80,7 @@ RUN \
     echo '    http-request set-header X-Forwarded-Proto https' >> /etc/haproxy_dev/haproxy.cfg.tmpl
 
 VOLUME /etc/geomapfish \
+    /etc/static-ngeo \
     /etc/mapserver \
     /etc/qgisserver \
     /etc/tilegeneration \

@@ -11,3 +11,10 @@
 !geoportal/{{package}}_geoportal/static
 !geoportal/{{package}}_geoportal/locale
 geoportal/{{package}}_geoportal/locale/*.pot
+!geoportal/{{package}}_geoportal/static-ngeo/
+geoportal/{{package}}_geoportal/static-ngeo/**/*.png
+geoportal/{{package}}_geoportal/static-ngeo/**/*.jpg
+geoportal/{{package}}_geoportal/static-ngeo/**/*.jpeg
+geoportal/{{package}}_geoportal/static-ngeo/**/*.css
+geoportal/{{package}}_geoportal/static-ngeo/**/*.scss
+geoportal/{{package}}_geoportal/static-ngeo/**/*.ico

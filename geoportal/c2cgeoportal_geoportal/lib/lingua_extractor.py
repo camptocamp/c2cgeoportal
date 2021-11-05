@@ -35,8 +35,8 @@ from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tupl
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
+import pyramid.threadlocal
 import requests
-import sqlalchemy
 import yaml
 from bottle import MakoTemplate, template
 from c2c.template.config import config
@@ -52,7 +52,6 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.util import class_mapper
 
-import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal
 from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
@@ -63,18 +62,17 @@ if TYPE_CHECKING:
     from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports,useless-suppression
 
 
-CONFIG: Dict[str, str] = {}
-
-
 def _get_config(key: str, default: Optional[str] = None) -> Optional[str]:
     """
-    Get the config.
+    Return the config value for passed key.
 
-    Passet throw environment variable for the command line,
+    Passed throw environment variable for the command line,
     or throw the query string on HTTP request.
     """
-    if key in CONFIG:
-        return CONFIG[key]
+    request = pyramid.threadlocal.get_current_request()
+    if request is not None:
+        return cast(Optional[str], request.params.get(key.lower(), default))
+
     return os.environ.get(key, default)
 
 
@@ -175,10 +173,12 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                             )
 
                 try:
+                    request = pyramid.threadlocal.get_current_request()
+                    request = _Request() if request is None else request
                     processed = template(
                         filename,
                         {
-                            "request": _Request(self.config),
+                            "request": request,
                             "lang": "fr",
                             "debug": False,
                             "extra_params": {},
@@ -256,10 +256,6 @@ def init_db(settings: Dict[str, Any]) -> None:
         config_.registry.settings = settings
 
         c2cgeoportal_geoportal.init_db_sessions(settings, config_)
-        engine = sqlalchemy.engine_from_config(settings, "sqlalchemy_slave.")
-        factory = sqlalchemy.orm.sessionmaker(bind=engine)
-        c2cgeoportal_commons.models.DBSession = sqlalchemy.orm.scoped_session(factory)
-        c2cgeoportal_commons.models.Base.metadata.bind = engine
 
 
 class GeomapfishConfigExtractor(Extractor):  # type: ignore
@@ -707,7 +703,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
     def _layer_attributes(self, url: str, layer: str) -> Tuple[List[str], List[str]]:
         errors: Set[str] = set()
 
-        request = _Request()
+        request = pyramid.threadlocal.get_current_request()
+        request = _Request() if request is None else request
         request.registry.settings = self.config
         # Static schema will not be supported
         url_obj_ = get_url2("Layer", url, request, errors)

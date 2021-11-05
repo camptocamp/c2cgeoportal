@@ -46,7 +46,6 @@ from lingua.extractors.babel import register_babel_plugins
 from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib import lingua_extractor
 from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 LOG = logging.getLogger(__name__)
@@ -55,18 +54,12 @@ LOG = logging.getLogger(__name__)
 @view_config(route_name="localepot")  # type: ignore
 def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     """Get the pot from an HTTP request."""
-    # Build the list of files to be process
-    package = request.registry.settings["package"]
+    # Build the list of files to be processed
     sources = ["/etc/geomapfish/config.yaml", "/app/development.ini"]
-    sources += glob.glob(f"geoportal/{package}_geoportal/static-ngeo/js/apps/**/*.html.ejs")
-    sources += glob.glob(f"geoportal/{package}_geoportal/static-ngeo/js/**/*.js")
-    sources += glob.glob(f"geoportal/{package}_geoportal/static-ngeo/js/**/*.html")
+    sources += glob.glob("/etc/static_ngeo/js/apps/**/*.html.ejs")
+    sources += glob.glob("/etc/static_ngeo/js/**/*.js")
+    sources += glob.glob("/etc/static_ngeo/js/**/*.html")
     sources += glob.glob("/usr/local/tomcat/webapps/ROOT/**/config.yaml")
-
-    # Convert the request argument into a config of our lingua extractor
-    lingua_extractor.CONFIG.clear()
-    for arg, value in request.params.items():
-        lingua_extractor.CONFIG[arg.upper()] = value[0]
 
     # The following code is a modified version of the main function of this file:
     # https://github.com/wichert/lingua/blob/master/src/lingua/extract.py
