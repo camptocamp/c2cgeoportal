@@ -26,37 +26,71 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any, Dict, List
+
 import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
-from sqlalchemy import select
+from sqlalchemy import inspect, select
+from sqlalchemy.ext.declarative.api import DeclarativeMeta
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_commons.models.main import Functionality
 
 
-def functionalities_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
-    """Get the schema of the functionalities."""
-    return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Functionality),
-        name=prop.key,
-        title=prop.info["colanderalchemy"]["title"],
-        description=prop.info["colanderalchemy"].get("description"),
-        widget=RelationCheckBoxListWidget(
+def available_functionalities_for(settings: Dict[str, Any], model: DeclarativeMeta) -> List[Dict[str, Any]]:
+    """Return filtered list of functionality definitions."""
+    mapper = inspect(model)
+    relevant_for = {mapper.local_table.name}
+    return [
+        f
+        for f in settings["admin_interface"]["available_functionalities"]
+        if relevant_for & set(f.get("relevant_for", relevant_for))
+    ]
+
+
+def functionalities_widget(model: DeclarativeMeta) -> colander.deferred:
+    """Return a colander deferred which itself returns a widget for the functionalities field."""
+
+    def create_widget(node, kw):
+        del node
+
+        return RelationCheckBoxListWidget(
             select(
                 [
                     Functionality.id,
                     concat(Functionality.name, "=", Functionality.value).label("label"),
                 ]
-            ).alias("functionality_labels"),
+            )
+            .where(
+                Functionality.name.in_(
+                    [f["name"] for f in available_functionalities_for(kw["request"].registry.settings, model)]
+                )
+            )
+            .alias("functionality_labels"),
             "id",
             "label",
             order_by="label",
             edit_url=lambda request, value: request.route_url(
                 "c2cgeoform_item", table="functionalities", id=value
             ),
-        ),
+        )
+
+    return colander.deferred(create_widget)
+
+
+def functionalities_schema_node(
+    prop: InstrumentedAttribute, model: DeclarativeMeta
+) -> colander.SequenceSchema:
+    """Get the schema of the functionalities."""
+
+    return colander.SequenceSchema(
+        GeoFormManyToManySchemaNode(Functionality),
+        name=prop.key,
+        title=prop.info["colanderalchemy"]["title"],
+        description=prop.info["colanderalchemy"].get("description"),
+        widget=functionalities_widget(model),
         validator=manytomany_validator,
         missing=colander.drop,
     )

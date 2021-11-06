@@ -25,21 +25,26 @@ def theme_test_data(dbsession, transact):
     )
 
     interfaces = [Interface(name) for name in ["desktop", "mobile", "edit", "routing"]]
+    dbsession.add_all(interfaces)
 
     groups = [LayerGroup(name=f"layer_group_{i}") for i in range(0, 5)]
+    dbsession.add_all(groups)
 
     layer = LayerWMS(name="layer_wms")
     layer.ogc_server = OGCServer(name="server")
-    dbsession.add(layer)
     layers = [layer]
+    dbsession.add_all(layers)
 
+    # Note that "default_theme" is not relevant for themes
     functionalities = [
         Functionality(name=name, value=f"value_{v}")
-        for name in ("default_basemap", "location")
+        for name in ("default_basemap", "default_theme")
         for v in range(0, 4)
     ]
+    dbsession.add_all(functionalities)
 
     roles = [Role("secretary_" + str(i)) for i in range(0, 4)]
+    dbsession.add_all(roles)
 
     metadatas_protos = [
         ("copyable", "true"),
@@ -57,7 +62,7 @@ def theme_test_data(dbsession, transact):
         ]
         for metadata in theme.metadatas:
             metadata.item = theme
-        theme.functionalities = [functionalities[i % 8], functionalities[(i + 3) % 8]]
+        theme.functionalities = [functionalities[i % 4]]
         theme.restricted_roles = [roles[i % 4], roles[(i + 2) % 4]]
 
         dbsession.add(
@@ -117,7 +122,7 @@ class TestTheme(TestTreeGroup):
 
         assert first_theme.id == int(first_row["_id_"])
         assert first_theme.name == first_row["name"]
-        assert "default_basemap=value_0, default_basemap=value_3" == first_row["functionalities"]
+        assert "default_basemap=value_0" == first_row["functionalities"]
         assert "secretary_0, secretary_2" == first_row["restricted_roles"]
         assert "desktop, edit" == first_row["interfaces"]
         assert 'copyable: true, snappingConfig: {"tolerance": 50}' == first_row["metadatas"]
@@ -170,7 +175,7 @@ class TestTheme(TestTreeGroup):
         self._check_interfaces(form, interfaces, theme)
 
         functionalities = theme_test_data["functionalities"]
-        assert {functionalities[0].id, functionalities[3].id} == {f.id for f in theme.functionalities}
+        assert {functionalities[0].id} == {f.id for f in theme.functionalities}
         self.check_checkboxes(
             form,
             "functionalities",
@@ -180,7 +185,10 @@ class TestTheme(TestTreeGroup):
                     "value": str(f.id),
                     "checked": f in theme.functionalities,
                 }
-                for f in sorted(functionalities, key=lambda f: (f.name, f.value))
+                for f in sorted(
+                    [f for f in functionalities if f.name in ("default_basemap")],
+                    key=lambda f: (f.name, f.value),
+                )
             ],
         )
 
@@ -346,7 +354,7 @@ class TestTheme(TestTreeGroup):
         self._check_interfaces(form, interfaces, theme)
 
         functionalities = theme_test_data["functionalities"]
-        assert {functionalities[1].id, functionalities[4].id} == {f.id for f in theme.functionalities}
+        assert {functionalities[1].id} == {f.id for f in theme.functionalities}
         self.check_checkboxes(
             form,
             "functionalities",
@@ -356,7 +364,10 @@ class TestTheme(TestTreeGroup):
                     "value": str(f.id),
                     "checked": f in theme.functionalities,
                 }
-                for f in sorted(functionalities, key=lambda f: (f.name, f.value))
+                for f in sorted(
+                    [f for f in functionalities if f.name in ("default_basemap")],
+                    key=lambda f: (f.name, f.value),
+                )
             ],
         )
 

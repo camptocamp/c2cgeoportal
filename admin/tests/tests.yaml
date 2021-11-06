@@ -315,25 +315,39 @@ vars:
         single: true
         description: >
           The background layer to load when the user select this theme.
+        relevant_for:
+          - theme
       - name: default_theme
         single: true
         description: >
           The theme to load when the user log in.
+        relevant_for:
+          - role
       - name: print_template
         description: >
           Grant access to considered print template.
+        relevant_for:
+          - role
       - name: mapserver_substitution
+        relevant_for:
+          - role
       - name: filterable_layers
         description: >
           Grant access for filtering considered layer.
+        relevant_for:
+          - role
       - name: preset_layer_filter
         single: true
         description: >
           Name of the layer (data source) to select in the filter tool upon loading an application.
+        relevant_for:
+          - role
       - name: open_panel
         single: true
         description: >
           Name of a panel to open upon loading an application.
+        relevant_for:
+          - role
 
   smtp:
     # Used to send email from various feature
