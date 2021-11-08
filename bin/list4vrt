@@ -23,6 +23,7 @@
 
 import argparse
 import os
+from typing import Any, Dict
 
 import boto3
 
@@ -41,10 +42,19 @@ def main():
         endpoint_url=f"https://{os.environ['AWS_S3_ENDPOINT']}/",
         region_name=os.environ["AWS_DEFAULT_REGION"],
     )
-    keys = [i["Key"] for i in s3_client.list_objects(Bucket=args.bucket, Prefix=args.prefix)["Contents"]]
-    filtered_keys = list(filter(lambda i: i.endswith(args.postfix), keys))
-    full_keys = [f"/vsis3/{args.bucket}/{i}" for i in filtered_keys]
-    print("\n".join(full_keys))
+    kwargs: Dict[str, Any] = {}
+    while True:
+        object_list_metadata = s3_client.list_objects_v2(Bucket=args.bucket, Prefix=args.prefix, **kwargs)
+
+        keys = [i["Key"] for i in object_list_metadata["Contents"]]
+        filtered_keys = list(filter(lambda i: i.endswith(args.postfix), keys))
+        full_keys = [f"/vsis3/{args.bucket}/{i}" for i in filtered_keys]
+        print("\n".join(full_keys))
+
+        if "NextContinuationToken" in object_list_metadata:
+            kwargs["ContinuationToken"] = object_list_metadata["NextContinuationToken"]
+        else:
+            break
 
 
 main()
