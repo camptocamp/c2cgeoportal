@@ -80,7 +80,7 @@ RUN \
     echo '    http-request set-header X-Forwarded-Proto https' >> /etc/haproxy_dev/haproxy.cfg.tmpl
 
 VOLUME /etc/geomapfish \
-    /etc/static-ngeo \
+    /etc/static-ngeo_ \
     /etc/mapserver \
     /etc/qgisserver \
     /etc/tilegeneration \
