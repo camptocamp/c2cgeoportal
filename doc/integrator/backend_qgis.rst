@@ -116,8 +116,8 @@ If you do not use Docker, you also should add this in the Apache QGIS configurat
 
 Do not forget to gracefully restart Apache.
 
-Extra PostGIS connexion
-***********************
+Extra PostGIS connection
+************************
 
 If you need to add another database connection, add a new section in the
 ``$HOME/.pg_service.conf``.
