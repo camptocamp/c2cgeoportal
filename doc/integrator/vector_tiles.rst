@@ -74,4 +74,4 @@ https://localhost:8484/vector_tiles/{layer_name}/{z}/{x}/{y}.pbf
 
    Currently vector tiles layers in GMF have a limited support. A vector tiles layer can be only
    added as a background layer. It's not possible to print it and it doesn't support dimensions.
-   Queries can be only done via another wms layer using the metadata ``queryLayers``.
+   Queries can be only done via another WMS layer using the metadata ``ogcServer`` and ``queryLayers``.
