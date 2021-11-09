@@ -1,3 +1,10 @@
+##### 2.4.2.60
+* Fix typo in doc [c2cgeoportal#8857](https://github.com/camptocamp/c2cgeoportal/pull/8857)
+* Update the ignored cve to the new id's [ngeo#7523](https://github.com/camptocamp/ngeo/pull/7523)
+* Sanitize directly edited values [ngeo#7533](https://github.com/camptocamp/ngeo/pull/7533)
+* Fix error introduce by #7533 [ngeo#7546](https://github.com/camptocamp/ngeo/pull/7546)
+* Ignore new cve [ngeo#7547](https://github.com/camptocamp/ngeo/pull/7547)
+* [Backport 2.4] Reset time from timeslider like datepicker on component reset [ngeo#7555](https://github.com/camptocamp/ngeo/pull/7555)
 ##### 2.4.2.59
 * Update the ignored cve to the new id's [c2cgeoportal#8753](https://github.com/camptocamp/c2cgeoportal/pull/8753)
 ##### 2.4.2.58
