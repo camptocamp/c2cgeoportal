@@ -655,6 +655,37 @@ We didn't anymore have a build container that builds files in the local filesyst
 in Docker. The only thing that runs out of docker is the `build` script (that needs Python 3.x) which runs
 some `docker build`, and `docker-compose` commands.
 
+Main Changes
+------------
+
+Environment variables are now stored in the env.default and env.project files.
+
+The migration process will do the following UI-related changes (visible in the html diffs):
+1. Predefined values in editing form
+2. Query selection panel
+3. Loading spinners on various elements of the interfaces
+4. Geolocation on desktop (add the button)
+5. Map swipper
+
+vars.yaml file is moved to geoportal/vars.yaml and now list the interfaces as follow:
+```
+vars:
+  interfaces:
+    - name: desktop
+      default: True
+    - name: mobile
+    - name: iframe_api
+```
+
+And in the same file, to the update_path:
+```
+  - cache.std.arguments
+  - cache.obj
+```
+
+Note: The list presented in this chapter is not exhaustive.
+
+
 Information
 -----------
 
