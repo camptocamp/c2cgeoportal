@@ -1,3 +1,5 @@
+##### 2.5.0.167
+* Typo changelog [c2cgeoportal#8872](https://github.com/camptocamp/c2cgeoportal/pull/8872)
 ##### 2.5.0.166
 * Bump dependency with security issue [c2cgeoportal#8869](https://github.com/camptocamp/c2cgeoportal/pull/8869)
 ##### 2.5.0.165
