@@ -1,3 +1,6 @@
+##### 2.4.2.61
+* Bump dependency with security issue [c2cgeoportal#8866](https://github.com/camptocamp/c2cgeoportal/pull/8866)
+* Bump jquery-ui who has security issues [ngeo#7663](https://github.com/camptocamp/ngeo/pull/7663)
 ##### 2.4.2.60
 * Fix typo in doc [c2cgeoportal#8857](https://github.com/camptocamp/c2cgeoportal/pull/8857)
 * Update the ignored cve to the new id's [ngeo#7523](https://github.com/camptocamp/ngeo/pull/7523)
