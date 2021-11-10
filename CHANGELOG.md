@@ -1,3 +1,5 @@
+##### 2.6.0.41
+* [Backport 2.6] Add updated package version [c2cgeoportal#8859](https://github.com/camptocamp/c2cgeoportal/pull/8859)
 ##### 2.6.0.40
 * [Backport 2.6] Fix key down for query ModeSelector [ngeo#7607](https://github.com/camptocamp/ngeo/pull/7607)
 ##### 2.6.0.39
