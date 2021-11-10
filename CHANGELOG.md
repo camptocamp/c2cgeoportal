@@ -1,3 +1,5 @@
+##### 2.5.0.166
+* Bump dependency with security issue [c2cgeoportal#8869](https://github.com/camptocamp/c2cgeoportal/pull/8869)
 ##### 2.5.0.165
 * Add generic migration changes for 2.5 [c2cgeoportal#8860](https://github.com/camptocamp/c2cgeoportal/pull/8860)
 ##### 2.5.0.164
