@@ -2,7 +2,7 @@ alabaster==0.7.12  # Doc theme
 alembic==1.0.9  # geoportal
 astroid==2.2.5  # pylint
 awscli==1.19.84  # Work with Object storage
-Babel==2.6.0  # i18n
+Babel==2.9.1  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
 boto3==1.9.130  # Tile generation
 bottle==0.12.19  # geoportal
@@ -47,7 +47,7 @@ pep8==1.7.1  # lint
 pep8-naming==0.8.2  # Lint
 polib==1.1.0  # i18n
 psycopg2-binary==2.8.2  # geoportal
-pycryptodome==3.10.3  # geoportal
+pycryptodome==3.11.0  # geoportal
 pyflakes==2.1.1  # lint, flake8
 Pygments==2.3.1  # doc
 pylint==2.7.2  # lint
