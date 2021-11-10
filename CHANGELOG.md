@@ -1,3 +1,5 @@
+##### 2.6.0.42
+* Update dependency with security issues [c2cgeoportal#8870](https://github.com/camptocamp/c2cgeoportal/pull/8870)
 ##### 2.6.0.41
 * [Backport 2.6] Add updated package version [c2cgeoportal#8859](https://github.com/camptocamp/c2cgeoportal/pull/8859)
 ##### 2.6.0.40
