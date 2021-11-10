@@ -225,8 +225,13 @@ class TestOGCServerSynchronizer:
         interface = main.Interface(name="desktop")
         dbsession.add(interface)
 
+        server = ogc_server()
+        dbsession.add(server)
+
+        dbsession.flush()
+
         # Run first synchronization
-        synchronizer = self.synchronizer(web_request)
+        synchronizer = self.synchronizer(web_request, server)
         synchronizer.synchronize()
 
         # Change some parents
@@ -243,20 +248,24 @@ class TestOGCServerSynchronizer:
         dbsession.flush()
 
         # Run new synchronization with force_parents
-        synchronizer = self.synchronizer(web_request, force_parents=True)
+        synchronizer = self.synchronizer(web_request, server, force_parents=True)
         synchronizer.synchronize()
 
         theme1 = dbsession.query(main.Theme).filter(main.Theme.name == "theme1").one()
         assert group1.parents == [theme1]
         assert layer1.parents == [group1]
 
+        layer_in_theme = dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == "layer_in_theme").one()
+        assert layer_in_theme.parents == []
+
+        layer_with_no_parent = (
+            dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == "layer_with_no_parent").one()
+        )
+        assert layer_with_no_parent.parents == []
+
         assert synchronizer.report() == (
             "Group group1 moved to theme1\n"
-            "Layer layer1: another layer already exists with the same name in OGC server Test server\n"
             "Layer layer1 moved to group1\n"
-            "Layer layer_in_theme: another layer already exists with the same name in OGC server Test server\n"
-            "Layer layer_in_theme moved to theme1\n"
-            "Layer layer_with_no_parent: another layer already exists with the same name in OGC server Test server\n"
             "5 items found\n"
             "0 themes added\n"
             "0 groups added\n"
