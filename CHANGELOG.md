@@ -1,3 +1,5 @@
+##### 2.5.0.165
+* Add generic migration changes for 2.5 [c2cgeoportal#8860](https://github.com/camptocamp/c2cgeoportal/pull/8860)
 ##### 2.5.0.164
 * [Backport 2.5] Reset time from timeslider like datepicker on component reset [ngeo#7556](https://github.com/camptocamp/ngeo/pull/7556)
 ##### 2.5.0.162
