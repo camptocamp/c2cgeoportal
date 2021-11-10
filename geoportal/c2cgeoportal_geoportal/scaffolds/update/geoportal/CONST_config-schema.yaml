@@ -362,6 +362,10 @@ mapping:
                     type: bool
                   description:
                     type: str
+                  relevant_for:
+                    type: seq
+                    sequence:
+                      - type: str
           available_functionalities:
             type: seq
             required: True
@@ -381,6 +385,10 @@ mapping:
                     type: bool
                   description:
                     type: str
+                  relevant_for:
+                    type: seq
+                    sequence:
+                      - type: str
           exclude_pages:
             type: seq
             sequence:

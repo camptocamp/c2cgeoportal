@@ -50,10 +50,10 @@ _list_field = partial(ListField, Theme)
 
 base_schema = GeoFormSchemaNode(Theme, widget=FormWidget(fields_template="theme_fields"))
 base_schema.add(children_schema_node(only_groups=True))
-base_schema.add(functionalities_schema_node(Theme.functionalities))
+base_schema.add(functionalities_schema_node(Theme.functionalities, Theme))
 base_schema.add(roles_schema_node(Theme.restricted_roles))
 base_schema.add(interfaces_schema_node(Theme.interfaces))
-base_schema.add(metadata_schema_node(Theme.metadatas))
+base_schema.add(metadata_schema_node(Theme.metadatas, Theme))
 base_schema.add_unique_validator(Theme.name, Theme.id)
 
 

@@ -52,7 +52,7 @@ _list_field = partial(ListField, LayerWMTS)
 
 base_schema = GeoFormSchemaNode(LayerWMTS, widget=FormWidget(fields_template="layer_fields"))
 base_schema.add(dimensions_schema_node(LayerWMTS.dimensions))
-base_schema.add(metadata_schema_node(LayerWMTS.metadatas))
+base_schema.add(metadata_schema_node(LayerWMTS.metadatas, LayerWMTS))
 base_schema.add(interfaces_schema_node(LayerWMTS.interfaces))
 base_schema.add(restrictionareas_schema_node(LayerWMTS.restrictionareas))
 base_schema.add_unique_validator(LayerWMTS.name, LayerWMTS.id)

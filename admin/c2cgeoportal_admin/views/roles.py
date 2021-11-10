@@ -45,7 +45,7 @@ from c2cgeoportal_commons.models.static import User
 _list_field = partial(ListField, Role)
 
 base_schema = GeoFormSchemaNode(Role, widget=FormWidget(fields_template="role_fields"))
-base_schema.add_before("extent", functionalities_schema_node(Role.functionalities))
+base_schema.add_before("extent", functionalities_schema_node(Role.functionalities, Role))
 base_schema.add_before("extent", restrictionareas_schema_node(Role.restrictionareas))
 base_schema.add_unique_validator(Role.name, Role.id)
 

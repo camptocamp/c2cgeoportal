@@ -50,7 +50,7 @@ _list_field = partial(ListField, LayerVectorTiles)
 
 
 base_schema = GeoFormSchemaNode(LayerVectorTiles, widget=FormWidget(fields_template="layer_fields"))
-base_schema.add(metadata_schema_node(LayerVectorTiles.metadatas))
+base_schema.add(metadata_schema_node(LayerVectorTiles.metadatas, LayerVectorTiles))
 base_schema.add(interfaces_schema_node(LayerVectorTiles.interfaces))
 base_schema.add(restrictionareas_schema_node(LayerVectorTiles.restrictionareas))
 base_schema.add_unique_validator(LayerVectorTiles.name, LayerVectorTiles.id)

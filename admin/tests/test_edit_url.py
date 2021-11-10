@@ -26,7 +26,7 @@ def edit_url_test_data(dbsession, transact):
 
     restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(0, 5)]
     functionalities = {}
-    for name in ("default_basemap", "location"):
+    for name in ("default_basemap", "default_theme"):
         functionalities[name] = []
         for v in range(0, 4):
             functionality = Functionality(name=name, value=f"value_{v}")
@@ -63,9 +63,7 @@ def edit_url_test_data(dbsession, transact):
     for i in range(0, 5):
         role = Role("secretary_" + str(i))
         role.functionalities = [
-            functionalities["default_basemap"][0],
-            functionalities["location"][0],
-            functionalities["location"][1],
+            functionalities["default_theme"][0],
         ]
         role.restrictionareas = [restrictionareas[0], restrictionareas[1]]
         dbsession.add(role)

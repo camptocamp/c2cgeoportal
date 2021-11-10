@@ -25,26 +25,38 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
 import json
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Dict, List, Optional, Set, Union, cast
 
 import colander
-import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
+from sqlalchemy import inspect
+from sqlalchemy.ext.declarative.api import DeclarativeMeta
 from sqlalchemy.orm.attributes import InstrumentedAttribute
+from sqlalchemy.orm.mapper import Mapper
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_commons.lib.validators import url
 from c2cgeoportal_commons.models.main import Metadata
 
 
-@colander.deferred
-def metadata_definitions(node, kw):
-    """Get the metadata serializable representation."""
-    del node
-    return {m["name"]: m for m in kw["request"].registry.settings["admin_interface"]["available_metadata"]}
+def get_relevant_for(model: Union[DeclarativeMeta, Mapper]) -> Set[str]:
+    """Return list of relevant_for values for passed class."""
+    mapper = inspect(model)
+    relevant_for = {mapper.local_table.name}  # or mapper.polymorphic_identity
+    if mapper.inherits:
+        relevant_for |= get_relevant_for(mapper.inherits)
+    return relevant_for
+
+
+def metadata_definitions(settings: Dict[str, Any], model: DeclarativeMeta) -> List[Dict[str, Any]]:
+    """Return filtered list metadata definitions."""
+    return [
+        m
+        for m in settings["admin_interface"]["available_metadata"]
+        if get_relevant_for(model) & set(m.get("relevant_for", ["treeitem"]))
+    ]
 
 
 class MetadataSelectWidget(SelectWidget):  # type: ignore
@@ -63,19 +75,22 @@ class MetadataSelectWidget(SelectWidget):  # type: ignore
         return super().serialize(field, cstruct, **kw)
 
 
-@colander.deferred  # type: ignore
-def metadata_name_widget(node: Any, kw: Dict[str, pyramid.request.Request]) -> MetadataSelectWidget:
-    """Widget used to render a metadata."""
-    del node
-    return MetadataSelectWidget(
-        values=[
-            (m["name"], m["name"])
-            for m in sorted(
-                kw["request"].registry.settings["admin_interface"]["available_metadata"],
-                key=lambda m: cast(str, m["name"]),
-            )
-        ]
-    )
+def metadata_name_widget(model: DeclarativeMeta) -> colander.deferred:
+    """Return a colander deferred which itself returns a widget for the metadata name field."""
+
+    def create_widget(node, kw):
+        del node
+        return MetadataSelectWidget(
+            values=[
+                (m["name"], m["name"])
+                for m in sorted(
+                    metadata_definitions(kw["request"].registry.settings, model),
+                    key=lambda m: cast(str, m["name"]),
+                )
+            ]
+        )
+
+    return colander.deferred(create_widget)
 
 
 def json_validator(node, value):
@@ -175,20 +190,27 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
         return metadata_type if metadata_type in self.available_types else "string"
 
 
-def metadata_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
-    """Get the schema of the metadata."""
+def metadata_schema_node(prop: InstrumentedAttribute, model: DeclarativeMeta) -> colander.SequenceSchema:
+    """Get the schema of a collection of metadatas."""
+
+    # Deferred which returns a dictionary with metadata name as key and metadata definition as value.
+    # Needed to get the metadata types on UI side.
+    metadata_definitions_dict = colander.deferred(
+        lambda node, kw: {m["name"]: m for m in metadata_definitions(kw["request"].registry.settings, model)}
+    )
+
     return colander.SequenceSchema(
         MetadataSchemaNode(
             Metadata,
             name="metadata",
-            metadata_definitions=metadata_definitions,
+            metadata_definitions=metadata_definitions_dict,
             validator=regex_validator,
             widget=MappingWidget(template="metadata"),
-            overrides={"name": {"widget": metadata_name_widget}},
+            overrides={"name": {"widget": metadata_name_widget(model)}},
         ),
         name=prop.key,
         title=prop.info["colanderalchemy"]["title"],
         description=prop.info["colanderalchemy"]["description"],
-        metadata_definitions=metadata_definitions,
+        metadata_definitions=metadata_definitions_dict,
         widget=SequenceWidget(template="metadatas", category="structural"),
     )

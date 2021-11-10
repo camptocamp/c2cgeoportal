@@ -19,8 +19,9 @@ def roles_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.main import Functionality, RestrictionArea, Role
     from c2cgeoportal_commons.models.static import User
 
+    # Note that "default_basemap" is not relevant for roles
     functionalities = {}
-    for name in ("default_basemap", "location"):
+    for name in ("default_basemap", "default_theme", "print_template"):
         functionalities[name] = []
         for v in range(0, 4):
             functionality = Functionality(name=name, value=f"value_{v}")
@@ -37,9 +38,9 @@ def roles_test_data(dbsession, transact):
     for i in range(0, 23):
         role = Role("secretary_" + str(i))
         role.functionalities = [
-            functionalities["default_basemap"][0],
-            functionalities["location"][0],
-            functionalities["location"][1],
+            functionalities["default_theme"][0],
+            functionalities["print_template"][0],
+            functionalities["print_template"][1],
         ]
         role.restrictionareas = [restrictionareas[0], restrictionareas[1]]
         role.extent = from_shape(box(485869.5728, 76443.1884, 837076.5648, 299941.7864), srid=21781)
@@ -120,7 +121,7 @@ class TestRole(TestTreeGroup):
                 ("extent", ""),
                 ("__start__", "functionalities:sequence"),
                 ("functionalities", str(functionalities["default_basemap"][0].id)),
-                ("functionalities", str(functionalities["location"][1].id)),
+                ("functionalities", str(functionalities["print_template"][1].id)),
                 ("__end__", "functionalities:sequence"),
                 ("__start__", "restrictionareas:sequence"),
                 ("restrictionareas", str(restrictionareas[0].id)),
@@ -148,7 +149,7 @@ class TestRole(TestTreeGroup):
         assert role.description == "new_description"
         assert set(role.functionalities) == {
             functionalities["default_basemap"][0],
-            functionalities["location"][1],
+            functionalities["print_template"][1],
         }
         assert set(role.restrictionareas) == {restrictionareas[0], restrictionareas[1]}
         assert set(role.users) == {users[0], users[1]}
@@ -176,9 +177,9 @@ class TestRole(TestTreeGroup):
 
         functionalities = roles_test_data["functionalities"]
         assert {
-            functionalities["default_basemap"][0].id,
-            functionalities["location"][0].id,
-            functionalities["location"][1].id,
+            functionalities["default_theme"][0].id,
+            functionalities["print_template"][0].id,
+            functionalities["print_template"][1].id,
         } == {f.id for f in role.functionalities}
         self.check_checkboxes(
             form,
@@ -189,8 +190,13 @@ class TestRole(TestTreeGroup):
                     "value": str(f.id),
                     "checked": f in role.functionalities,
                 }
-                for f in sum(
-                    (roles_test_data["functionalities"][name] for name in ("default_basemap", "location")), []
+                for f in sorted(
+                    [
+                        f
+                        for f in sum(functionalities.values(), [])
+                        if f.name in ("default_theme", "print_template")
+                    ],
+                    key=lambda f: (f.name, f.value),
                 )
             ],
         )
@@ -233,9 +239,9 @@ class TestRole(TestTreeGroup):
         )
 
         functionality_ids = [
-            roles_test_data["functionalities"]["default_basemap"][1].id,
-            roles_test_data["functionalities"]["location"][1].id,
-            roles_test_data["functionalities"]["default_basemap"][2].id,
+            roles_test_data["functionalities"]["default_theme"][1].id,
+            roles_test_data["functionalities"]["print_template"][1].id,
+            roles_test_data["functionalities"]["print_template"][2].id,
         ]
         form["functionalities"] = [str(id) for id in functionality_ids]
 
