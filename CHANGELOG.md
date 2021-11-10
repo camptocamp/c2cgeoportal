@@ -1,3 +1,5 @@
+##### 2.5.0.168
+* [Backport 2.5] Bump jquery-ui who has security issues [ngeo#7665](https://github.com/camptocamp/ngeo/pull/7665)
 ##### 2.5.0.167
 * Typo changelog [c2cgeoportal#8872](https://github.com/camptocamp/c2cgeoportal/pull/8872)
 ##### 2.5.0.166
