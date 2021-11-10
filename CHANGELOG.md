@@ -1,3 +1,6 @@
+##### 2.6.0.43
+* [Backport 2.6] Add generic migration changes for 2.5 [c2cgeoportal#8868](https://github.com/camptocamp/c2cgeoportal/pull/8868)
+* [Backport 2.6] Bump jquery-ui who has security issues [ngeo#7666](https://github.com/camptocamp/ngeo/pull/7666)
 ##### 2.6.0.42
 * Update dependency with security issues [c2cgeoportal#8870](https://github.com/camptocamp/c2cgeoportal/pull/8870)
 ##### 2.6.0.41
