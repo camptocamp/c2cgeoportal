@@ -39,6 +39,8 @@ for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?check
 done
 ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project 'http://qgisserver:8080/mapserv_proxy?SERVICE=WMS&REQUEST=GetCapabilities'
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
+ci/run-dc-logs docker-compose exec -T geoportal curl --insecure 'https://front/dynamic.json?interface=desktop&query=&path=%2F'
+ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/static-geomapfish/0/locales/fr.json
 docker-compose stop qgisserver
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base

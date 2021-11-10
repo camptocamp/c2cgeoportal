@@ -10,9 +10,10 @@ NGEO_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix
 GMF_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES)))
 ADMIN_PO_FILES = $(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES)))
 APPLICATION_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/,$(addsuffix /LC_MESSAGES/+package+_geoportal-client.po, $(ALL_LANGUAGES)))
+WEBCOMPONENTS_L10N_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/static/locales/,$(addsuffix .json, $(ALL_LANGUAGES)))
 PYTHON_PO_FILES = $(GEOPORTAL_PO_FILES) $(ADMIN_PO_FILES)
 JAVASCRIPT_PO_FILES = $(NGEO_PO_FILES) $(GMF_PO_FILES) $(APPLICATION_PO_FILES)
-TRANSIFEX_PO_FILES = $(PYTHON_PO_FILES) $(JAVASCRIPT_PO_FILES)
+TRANSIFEX_PO_FILES = $(PYTHON_PO_FILES) $(JAVASCRIPT_PO_FILES) ${WEBCOMPONENTS_L10N_FILES}
 
 .PHONY: dependencies
 dependencies: $(TRANSIFEX_PO_FILES)
@@ -84,6 +85,11 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/
 	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
+
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/static/locales/%.json
+geoportal/c2cgeoportal_geoportal/static/locales/%.json: $(TX_DEPENDENCIES)
+	mkdir --parent $(dir $@)
+	tx pull --language $* --resource ngeo.webcomponent-$(TX_VERSION) --force
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/en/LC_MESSAGES/+package+_geoportal-client.po:
 	@echo "Nothing to be done for $@"

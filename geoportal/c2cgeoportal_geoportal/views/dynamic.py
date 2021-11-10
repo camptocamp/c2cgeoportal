@@ -129,6 +129,18 @@ class DynamicView:
         interface_config = self.interfaces_config[interface_name]
         lang_urls_suffix = interface_config.get("lang_urls_suffix", "")
 
+        i18next_configuration = self.settings.get("i18next", {})
+        i18next_configuration.setdefault("backend", {})
+        if "loadPath" not in i18next_configuration["backend"]:
+            path: List[str] = [
+                self.request.route_url("base").rstrip("/"),
+                "static-{{ns}}",
+                get_cache_version(),
+                "locales",
+                "{{lng}}.json",
+            ]
+            i18next_configuration["backend"]["loadPath"] = "/".join(path)
+
         dynamic = {
             "interface": interface_name,
             "cache_version": get_cache_version(),
@@ -139,6 +151,7 @@ class DynamicView:
                 )
                 for lang in self.request.registry.settings["available_locale_names"]
             },
+            "i18next_configuration": i18next_configuration,
             "fulltextsearch_groups": self._fulltextsearch_groups(),
         }
 
