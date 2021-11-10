@@ -35,7 +35,7 @@ The files to translate are:
 .. note::
 
    All the ``#, fuzzy`` strings should be verified and the line should be removed
-   (if the line is not removed, the localisation will not be used).
+   (if the line is not removed, the localization will not be used).
 
 To update your ``po`` files, you should proceed as follows.
 
@@ -47,7 +47,7 @@ To update your ``po`` files, you should proceed as follows.
 
    You should run this command when you change something in the following:
 
-     * layer in mapfile (new or modified)
+     * layer in MapFile (new or modified)
      * layer in administration (new or modified)
      * raster layer in the vars file (new or modified)
      * print template
@@ -59,7 +59,7 @@ To update your ``po`` files, you should proceed as follows.
 
 .. note::
 
-   In mapfiles, attributes added by mapserver substitution will not be collected
+   In MapFiles, attributes added by mapserver substitution will not be collected
    for translation.
 
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -79,11 +79,20 @@ one of your JavaScript application controllers:
     const gettextCatalog = $injector.get('gettextCatalog');
     gettextCatalog.getString('My previously not collected string');
 
+~~~~~~~~~~~~~~~~~~~~~
+I18next configuration
+~~~~~~~~~~~~~~~~~~~~~
+
+In the ``vars`` in ``i18next`` you can override the default ``i18next`` configuration.
+If not provided the ``backend/loadPath`` is automatically generated.
+
+Seel also `i18next Configuration Options <https://www.i18next.com/overview/configuration-options>`_.
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Different localisation sets
+Different localization sets
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you use the application with different database that contain tow different layertree you should
+If you use the application with different database that contain tow different layer tree you should
 have a suffix on your po files.
 
 Before calling the `update-po` command you should rename the po files you want to update without the suffix,

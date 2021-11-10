@@ -60,7 +60,7 @@ in the simple application mode, the list of languages is constant: en fr de it.<
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>All the <code class="docutils literal notranslate"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
-(if the line is not removed, the localisation will not be used).</p>
+(if the line is not removed, the localization will not be used).</p>
 </div>
 <p>To update your <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you should proceed as follows.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make update-po
@@ -71,7 +71,7 @@ in the simple application mode, the list of languages is constant: en fr de it.<
 <p>You should run this command when you change something in the following:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>layer in mapfile (new or modified)</p></li>
+<li><p>layer in MapFile (new or modified)</p></li>
 <li><p>layer in administration (new or modified)</p></li>
 <li><p>raster layer in the vars file (new or modified)</p></li>
 <li><p>print template</p></li>
@@ -85,7 +85,7 @@ in the simple application mode, the list of languages is constant: en fr de it.<
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In mapfiles, attributes added by mapserver substitution will not be collected
+<p>In MapFiles, attributes added by mapserver substitution will not be collected
 for translation.</p>
 </div>
 <section id="collect-custom-strings">
@@ -102,9 +102,15 @@ one of your JavaScript application controllers:</p>
 </pre></div>
 </div>
 </section>
-<section id="different-localisation-sets">
-<h2>Different localisation sets<a class="headerlink" href="#different-localisation-sets" title="Permalink to this headline">¶</a></h2>
-<p>If you use the application with different database that contain tow different layertree you should
+<section id="i18next-configuration">
+<h2>I18next configuration<a class="headerlink" href="#i18next-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">vars</span></code> in <code class="docutils literal notranslate"><span class="pre">i18next</span></code> you can override the default <code class="docutils literal notranslate"><span class="pre">i18next</span></code> configuration.
+If not provided the <code class="docutils literal notranslate"><span class="pre">backend/loadPath</span></code> is automatically generated.</p>
+<p>Seel also <a class="reference external" href="https://www.i18next.com/overview/configuration-options">i18next Configuration Options</a>.</p>
+</section>
+<section id="different-localization-sets">
+<h2>Different localization sets<a class="headerlink" href="#different-localization-sets" title="Permalink to this headline">¶</a></h2>
+<p>If you use the application with different database that contain tow different layer tree you should
 have a suffix on your po files.</p>
 <p>Before calling the <cite>update-po</cite> command you should rename the po files you want to update without the suffix,
 and after you should rename them with the right name.</p>
