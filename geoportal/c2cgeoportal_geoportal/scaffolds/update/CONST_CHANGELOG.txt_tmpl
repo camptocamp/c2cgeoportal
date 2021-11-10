@@ -189,6 +189,16 @@ Other Docker images
 * `camptocamp/tilecloud-chain` from 1.13 to 1.15.
 * `camptocamp/haproxy` from 1.9 to 2.2.
 
+Main Changes
+------------
+
+The migration process will do the following UI-related changes (visible in the html/ejs diffs):
+1. Right panel is movable, so the handle has to be added
+2. Draw and measure panel has extra fields for arrows drawing
+
+Note: The list presented in this chapter is not exhaustive.
+
+
 Client application configuration
 --------------------------------
 
