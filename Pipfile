@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 awscli = "==1.19.84"  # Work with Object storage
-Babel = "==2.7.0"  # i18n
+Babel = "==2.9.1"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.9.0"  # admin tests
 coverage = "==5.1"  # Build coverage XML for Codacy
@@ -23,6 +23,75 @@ transifex-client = "==0.13.9"  # Makefile
 WebTest = "==2.0.34"  # admin tests
 prospector = {extras = ["with_mypy"],version = "==1.2.0"}
 mypy = "==0.761"
+# Lock dependencies
+astroid = "==2.3.3"
+attrs = "==19.3.0"
+botocore = "==1.20.84"
+certifi = "==2020.4.5.1"
+chardet = "==3.0.4"
+click = "==7.1.1"
+colorama = "==0.4.3"
+docopt = "==0.6.2"
+docutils = "==0.15.2"
+dodgy = "==0.2.1"
+gitdb = "==4.0.7"
+gitpython = "==3.1.14"
+idna = "==2.9"
+importlib-metadata = "==4.0.1"
+iniconfig = "==1.1.1"
+jmespath = "==0.10.0"
+lazy-object-proxy = "==1.4.3"
+markupsafe = "==1.1.1"
+mccabe = "==0.6.1"
+mypy-extensions = "==0.4.3"
+packaging = "==20.9"
+paste = "==3.5.0"
+pastedeploy = "==2.1.0"
+pathmatch = "==0.2.2"
+pbr = "==5.6.0"
+pep8-naming = "==0.4.1"
+pluggy = "==0.13.1"
+py = "==1.10.0"
+pyasn1 = "==0.4.8"
+pycodestyle = "==2.4.0"
+pydocstyle = "==6.0.0"
+pyflakes = "==2.0.0"
+pylint = "==2.4.4"
+pylint-celery = "==0.3"
+pylint-django = "==2.0.12"
+pylint-flask = "==0.6"
+pylint-plugin-utils = "==0.6"
+pyparsing = "==2.4.7"
+pytest = "==6.2.4"
+pytest-base-url = "==1.4.2"
+pytest-html = "==3.1.1"
+pytest-metadata = "==1.11.0"
+pytest-variables = "==1.9.0"
+python-dateutil = "==2.8.1"
+python-slugify = "==1.2.6"
+pytz = "==2019.3"
+pyyaml = "==5.4.1"
+requests = "==2.23.0"
+requirements-detector = "==0.7"
+rsa = "==3.4.2"
+s3transfer = "==0.4.2"
+selenium = "==3.141.0"
+setoptconf = "==0.2.0"
+six = "==1.14.0"
+smmap = "==4.0.0"
+snowballstemmer = "==2.1.0"
+soupsieve = "==2.2.1"
+stevedore = "==3.3.0"
+toml = "==0.10.2"
+typed-ast = "==1.4.3"
+typing = "==3.7.4.3"
+typing-extensions = "==3.10.0.0"
+unidecode = "==1.2.0"
+urllib3 = "==1.25.9"
+waitress = "==1.4.3"
+webob = "==1.8.6"
+wrapt = "==1.11.2"
+zipp = "==3.4.1"
 
 [packages]
 alembic = "==1.4.2"  # geoportal
@@ -43,7 +112,7 @@ OWSLib = "==0.19.2"  # geoportal
 papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # # geoportal
 psycopg2-binary = "==2.8.5"  # geoportal
-pycryptodome = "==3.10.3"  # geoportal
+pycryptodome = "==3.11.0"  # geoportal
 pyproj = "==2.6.0"  # admin, other?
 pyotp = "==2.3.0"  # geoportal
 pyramid = "==1.10.4"  # geoportal
@@ -66,7 +135,7 @@ translationstring = "==1.3"  # admin
 "affine" = "==2.3.0"
 "argparse" = "==1.4.0"
 "attrs" = "==19.3.0"
-"babel" = "==2.8.0"
+babel = "==2.9.1"
 "beaker" = "==1.11.0"
 "beaker-redis" = "==1.1.0"
 bottle = "==0.12.19"
