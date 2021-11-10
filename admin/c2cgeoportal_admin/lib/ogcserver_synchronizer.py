@@ -212,7 +212,13 @@ class OGCServerSynchronizer:
 
         server_children = []
         for child in el.findall("Layer"):
-            server_children.append(self.synchronize_layer(child, tree_item))
+            child_item = self.synchronize_layer(child, tree_item)
+
+            if isinstance(tree_item, main.Theme) and isinstance(child_item, main.LayerWMS):
+                # We cannot add layers in themes
+                continue
+
+            server_children.append(child_item)
 
         if self._force_ordering and isinstance(tree_item, main.TreeGroup):
             # Force children ordering, server_children first, external_children last
@@ -328,7 +334,7 @@ class OGCServerSynchronizer:
             # layer.time_widget =
 
             self._request.dbsession.add(layer)
-            if parent is None or isinstance(parent, main.Theme):
+            if not isinstance(parent, main.LayerGroup):
                 self._logger.info("Layer %s added as new layer with no parent", name)
             else:
                 layer.parents_relation.append(main.LayergroupTreeitem(group=parent))
@@ -344,8 +350,9 @@ class OGCServerSynchronizer:
                     self._ogc_server.name,
                 )
 
-            if self._force_parents and layer.parents != ([parent] if parent else []):
-                layer.parents_relation = [main.LayergroupTreeitem(group=parent)] if parent else None
+            parents = [parent] if isinstance(parent, main.LayerGroup) else []
+            if self._force_parents and layer.parents != parents:
+                layer.parents_relation = [main.LayergroupTreeitem(group=parent) for parent in parents]
                 self._logger.info("Layer %s moved to %s", name, parent.name if parent else "root")
 
         return layer
