@@ -399,6 +399,262 @@ Changes to apply
 Version 2.5.0
 =============
 
+Information to know before starting the upgrade
+-----------------------------------------------
+
+Main versions updates
+.....................
+
+Ubuntu is updated from 18.04.2 to 18.04.5
+Python is updated from 3.6.7 to 3.7.5
+Node is updated from 10.15.3 to 10.24.1
+Npm is updated from 6.4.1 to 6.14.12
+
+Python packages updates
+.......................
+New packages:
+* appdirs at version 1.4.4
+* beaker-redis at version 1.1.0
+* click at version 7.1.1
+* distlib at version 0.3.2
+* filelock at version 3.0.12
+* getitfixed at version 1.0.20
+* importlib-metadata at version 4.6.0
+* pipenv at version 2020.5.28
+* psycopg2 at version 2.8.5
+* pyotp at version 2.3.0
+* sentry-sdk at version 0.14.3
+* SQLAlchemy-Utils at version 0.36.3
+* typing-extensions at version 3.10.0.0
+* virtualenv-clone at version 0.5.4
+* zipp at version 3.4.1
+
+Removed packages:
+* alabaster
+* astroid
+* atomicwrites
+* awscli
+* beautifulsoup4
+* boto3
+* botocore
+* c2c.cssmin
+* c2cgeoportal-admin
+* c2cgeoportal-commons
+* c2cgeoportal-geoportal
+* c2cwsgiutils
+* Click
+* codacy-coverage
+* codespell
+* colorama
+* coverage
+* cssmin
+* dateutils
+* docopt
+* docutils
+* entrypoints
+* flake8
+* flake8-copyright
+* flake8-mypy
+* flake8-polyfill
+* GDAL
+* glob2
+* htmlmin
+* imagesize
+* ipcalc
+* isort
+* jmespath
+* JSTools
+* junit2html
+* lazy-object-proxy
+* linesman
+* mccabe
+* more-itertools
+* mypy
+* mypy-extensions
+* networkx
+* packaging
+* Paste
+* PasteScript
+* pathspec
+* pep8
+* pep8-naming
+* Pillow
+* pkgconfig
+* pluggy
+* py
+* pyasn1
+* pycodestyle
+* pyflakes
+* pygraphviz
+* pykwalify
+* pylint
+* Pympler
+* pytest
+* pytest-base-url
+* pytest-cov
+* pytest-html
+* pytest-metadata
+* pytest-selenium
+* pytest-variables
+* python-slugify
+* raven
+* rsa
+* s3transfer
+* selenium
+* snowballstemmer
+* Sphinx
+* sphinx-prompt
+* sphinxcontrib-websupport
+* tilecloud
+* tilecloud-chain
+* transifex-client
+* typed-ast
+* Unidecode
+* WebTest
+* wrapt
+* wsgi-lineprof
+* yamllint
+* zgitignore
+
+Major updates:
+* boltons from 19.0.0 to 20.1.0
+* certifi from 2019.3.9 to 2020.4.5.1
+* cornice from 3.5.1 to 4.0.1
+* gunicorn from 19.9.0 to 20.0.4
+* pyproj from 1.9.6 to 2.6.0
+* transaction from 2.4.0 to 3.0.0
+* ujson from 1.35 to 2.0.3
+* venusian from 1.2.0 to 3.0.0
+* virtualenv from 16.4.3 to 20.4.7
+* zope.interface from 4.6.0 to 5.1.0
+
+Minor updates:
+* affine from 2.2.2 to 2.3.0
+* alembic from 1.0.9 to 1.4.2
+* attrs from 19.1.0 to 19.3.0
+* Babel from 2.6.0 to 2.8.0
+* Beaker from 1.10.1 to 1.11.0
+* c2cgeoform from 2.0.dev20190413 to 2.1.18
+* Chameleon from 3.6.1 to 3.8.1
+* defusedxml from 0.5.0 to 0.6.0
+* dogpile.cache from 0.7.1 to 0.9.0
+* GeoAlchemy2 from 0.6.1 to 0.7.0
+* geojson from 2.4.1 to 2.5.0
+* graphviz from 0.10.1 to 0.16
+* hupper from 1.6.1 to 1.10.2
+* idna from 2.8 to 2.9
+* Jinja2 from 2.10.1 to 2.11.3
+* lingua from 4.13 to 4.14
+* lxml from 4.3.1 to 4.6.3
+* Mako from 1.0.9 to 1.1.2
+* munch from 2.3.2 to 2.5.0
+* numpy from 1.16.3 to 1.18.3
+* OWSLib from 0.17.1 to 0.19.2
+* PasteDeploy from 2.0.1 to 2.1.0
+* pycryptodome from 3.8.1 to 3.9.7
+* Pygments from 2.3.1 to 2.6.1
+* pyramid from 1.9.4 to 1.10.4
+* pyramid-debugtoolbar from 4.5 to 4.6.1
+* pyramid-mako from 1.0.2 to 1.1.0
+* pyramid-tm from 2.2.1 to 2.4
+* python-dateutil from 2.6.1 to 2.8.1
+* pytz from 2019.1 to 2019.3
+* PyYAML from 5.1 to 5.4.1
+* rasterio from 1.0.2 to 1.1.3
+* redis from 3.2.1 to 3.4.1
+* requests from 2.21.0 to 2.23.0
+* Shapely from 1.6.4.post2 to 1.7.0
+* simplejson from 3.16.0 to 3.17.2
+* six from 1.11.0 to 1.14.0
+* urllib3 from 1.23 to 1.25.9
+* waitress from 1.2.1 to 1.4.3
+* zope.sqlalchemy from 1.1 to 1.3
+
+Npm packages updates
+....................
+New packages:
+* @sentry/browser at version 5.15.4
+* @trevoreyre/autocomplete-js at version 2.1.1
+* commander at version 5.0.0
+* editorconfig-checker at version 3.3.0
+* jsdoc at version 3.6.4
+* jsdoc-plugin-typescript at version 2.0.5
+* localforage at version 1.7.3
+* ng-raven at version 1.0.1
+* parse-absolute-css-unit at version 1.0.2
+* popper.js at version 1.16.1
+* puppeteer at version 2.1.1
+* qruri at version 0.0.4
+* resize-observer-polyfill at version 1.5.1
+* simple-html-tokenizer at version 0.5.9
+* sinon at version 9.0.2
+* terser-webpack-plugin at version 4.1.0
+* typescript at version 3.8.3
+
+Removed packages:
+* @openlayers/eslint-plugin
+* @types/angular-animate
+* @types/angular-dynamic-locale
+* @types/angular-gettext
+* @types/angular-mocks
+* @types/bootstrap
+* @types/cesium
+* @types/d3
+* @types/file-saver
+* @types/googlemaps
+* @types/jasmine
+* @types/jquery.ui.datetimepicker
+* @types/jsts
+* @types/proj4
+* @types/typeahead
+* angular
+* googshift
+* html-webpack-include-assets-plugin
+* ls
+* ol
+* ol-cesium
+* phantomjs-polyfill-string-includes
+* phantomjs-prebuilt
+* raven-js
+
+Major updates:
+* css-loader from 2.1.1 to 3.5.2
+* eslint-config-openlayers from 11.0.0 to 14.0.0
+* extract-loader from 3.1.0 to 5.0.1
+* file-loader from 3.0.1 to 6.0.0
+* fs-extra from 7.0.1 to 9.0.0
+
+Minor updates:
+* @babel/core from 7.4.4 to 7.9.0
+* @babel/preset-env from 7.4.4 to 7.9.5
+* @fortawesome/fontawesome-free from 5.8.1 to 5.13.0
+* angular-gettext-tools from 2.4.1 to 2.5.3
+* babel-loader from 8.0.5 to 8.1.0
+* bootstrap from 4.3.1 to 4.4.1
+* copy-webpack-plugin from 5.0.3 to 5.1.1
+* corejs-typeahead from 1.2.1 to 1.3.1
+* d3 from 5.9.2 to 5.15.1
+* fast-sass-loader from 1.4.7 to 1.5.0
+* jsts from 2.0.4 to 2.1.2
+* moment from 2.22.2 to 2.24.0
+* node-sass from 4.12.0 to 4.13.1
+* npm from 6.4.1 to 6.14.12
+* ol-layerswitcher from 3.2.0 to 3.6.0
+* proj4 from 2.5.0 to 2.6.1
+* svgo from 1.2.2 to 1.3.2
+* ts-node from 8.1.0 to 8.8.2
+* tsconfig-paths from 3.8.0 to 3.9.0
+* webpack from 4.30.0 to 4.42.1
+* webpack-dev-server from 3.3.1 to 3.11.0
+
+Application build
+.................
+
+In the new version the build of the application becomes more Docker friendly.
+We didn't anymore have a build container that builds files in the local filesystem, now everything is done
+in Docker. The only thing that runs out of docker is the `build` script (that needs Python 3.x) which runs
+some `docker build`, and `docker-compose` commands.
+
 Information
 -----------
 
