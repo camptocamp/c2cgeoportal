@@ -31,11 +31,10 @@
 import re
 import sys
 from argparse import ArgumentParser
-from json import dumps
-from urllib.parse import parse_qsl
+from typing import Any
 
 
-def _sub(pattern, repl, string, count=0, flags=0, required=True):
+def _sub(pattern: str, repl: str, string: str, count: int = 0, flags: Any = 0, required: bool = True) -> str:
     new_string = re.sub(pattern, repl, string, count=count, flags=flags)
     if required and new_string == string:
         print("Unable to find the pattern:")
@@ -46,112 +45,150 @@ def _sub(pattern, repl, string, count=0, flags=0, required=True):
     return new_string
 
 
-def _subs(subs, string):
-    for pattern, repl in subs:
-        if repl is False:
-            if re.search(pattern, string) is not None:
-                return string
-        else:
-            new_string = re.sub(pattern, repl, string)
-            if new_string != string:
-                return new_string
-    print("Unable to find the patterns:")
-    print("\n".join([p for p, r in subs]))
-    print("in")
-    print(string)
-    sys.exit(1)
-
-
-class _RouteDest:
-    def __init__(self, constant, route):
-        self.constant = constant
-        self.route = route
-
-    def __call__(self, matches):
-        query_string = matches.group(1)
-        query = ""
-        if len(query_string) > 0:
-            query = f", _query={dumps(dict(parse_qsl(query_string)))!s}"
-        return r"module.constant('{0!s}', '${{request.route_url('{1!s}'{2!s}) | n}}');".format(
-            self.constant, self.route, query
-        )
-
-
-def main():
-    """
-    Import the ngeo apps files
-    """
+def main() -> None:
+    """Import the ngeo apps files."""
 
     parser = ArgumentParser(description="Import ngeo apps files")
 
     parser.add_argument("--html", action="store_true", help="Import the html template")
     parser.add_argument("--js", action="store_true", help="Import the javascript controller")
+    # Replace the dynamicUrl and interface meta by dynamically generated variable.
+    # Replace the CSS and Javascript entrypints by dynamically generate variable.
+    # Replace the spinner.svg and the background-layer-button.png by dynamically generate variable.
+    parser.add_argument("--canvas", action="store_true", help="Import interface base on canvas")
     parser.add_argument("interface", metavar="INTERFACE", help="The interface we import")
     parser.add_argument("src", metavar="SRC", help="The ngeo source file")
     parser.add_argument("dst", metavar="DST", help="The destination file")
 
     args = parser.parse_args()
 
-    with open(args.src) as src:
+    with open(args.src, encoding="utf-8") as src:
         data = src.read()
         data = re.sub(r"{{", r"\\{\\{", data)
         data = re.sub(r"}}", r"\\}\\}", data)
 
         if args.html:
-            data = _sub(
-                re.escape(
-                    '<link rel="shortcut icon" href="<%=require("./image/favicon.ico")%>" crossorigin="anonymous" />'
-                ),
-                r'<link rel="shortcut icon" href="{entry_point}static/{cache_version}/images/'
-                r'favicon.ico" crossorigin="anonymous">'.format(
-                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
-                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
-                ),
-                data,
-            )
-            data = _sub(
-                re.escape('<script src="../../../dist/vendor.js') + r".*",
-                r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}" crossorigin="anonymous"></script>'.format(
-                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
-                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
-                ),
-                data,
-                required=False,
-            )
-            data = _sub(
-                re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-')
-                + ".*"
-                + re.escape('.camptocamp.com/dynamic.json">'),
-                '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
-                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
-                ),
-                data,
-            )
-            data = _sub(
-                re.escape("</head>"),
-                '  <link href="{entry_point}static/{cache_version}/css/{interface}.css" rel="stylesheet" crossorigin="anonymous">\n'
-                "  </head>".format(
-                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
-                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
-                    interface=args.interface,
-                ),
-                data,
-            )
-            data = _sub(
-                re.escape('<gmf-header gmf-header-template-url="desktop')
-                + "(_alt)?"
-                + re.escape('/header.html"></gmf-header>'),
-                '<gmf-header gmf-header-template-url="{entry_point}static/{cache_version}/header.html"></gmf-header>'.format(
-                    entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
-                    cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
-                ),
-                data,
-                required=False,
-            )
+            if args.canvas:
+                data = _sub(
+                    '<meta name="dynamicUrl" .*</head>$',
+                    "\n".join(
+                        [
+                            '<link rel="shortcut icon" '
+                            "href=\"${request.static_url('/etc/geomapfish/static/images/favicon.ico')}\" "
+                            'crossorigin="anonymous" />',
+                            "<style>",
+                            "  .spinner-loading-mask {",
+                            "    width: 1em;",
+                            "  }",
+                            "</style>",
+                            "    ${header |n}",
+                            "  </head>",
+                        ]
+                    ),
+                    data,
+                    flags=re.MULTILINE | re.DOTALL,
+                )
+                data = _sub(
+                    "</gmf-([a-z]+)-canvas>.*</body>$",
+                    "\n".join(
+                        [
+                            "</gmf-\\1-canvas>",
+                            "    <script nomodule>",
+                            "      alert(",
+                            "        'Your browser is not supported, please use a recent version of "
+                            "Firefox, Chrome or Edge.\\n\\n' +",
+                            "        \"Votre navigateur n'est pas supporté, veuillez utiliser une version "
+                            'récente de Firefox, Chrome or Edge.\\n\\n" +',
+                            "        'Ihr Browser wird nicht unterstützt, bitte verwenden Sie eine aktuelle "
+                            "Version von Firefox, Chrome oder Edge.'",
+                            "      );",
+                            "    </script>",
+                            "    ${footer |n}",
+                            "  </body>",
+                        ]
+                    ),
+                    data,
+                    flags=re.MULTILINE | re.DOTALL,
+                )
+                data = _sub(
+                    re.escape("<%=require('gmf/icons/spinner.svg?viewbox&height=1em')%>"),
+                    "${static['spinner'] |n}",
+                    data,
+                )
+                data = _sub(
+                    re.escape("<%=require('./image/background-layer-button.png')%>"),
+                    "${static['background-layer-button']}",
+                    data,
+                )
+
+            else:
+                data = _sub(
+                    re.escape(
+                        '<link rel="shortcut icon" href="<%=require("./image/favicon.ico")%>" '
+                        'crossorigin="anonymous" />'
+                    ),
+                    (
+                        r'<link rel="shortcut icon" href="{entry_point}static/{cache_version}/images/'
+                        r'favicon.ico" crossorigin="anonymous">'
+                    ).format(
+                        entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                        cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
+                    ),
+                    data,
+                )
+                data = _sub(
+                    re.escape('<script src="../../../dist/vendor.js') + r".*",
+                    (
+                        r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}" '
+                        r'crossorigin="anonymous"></script>'
+                    ).format(
+                        entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                        cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
+                    ),
+                    data,
+                    required=False,
+                )
+                data = _sub(
+                    re.escape('<meta name="dynamicUrl" content="https://geomapfish-demo-')
+                    + ".*"
+                    + re.escape('.camptocamp.com/dynamic.json">'),
+                    '<meta name="dynamicUrl" content="{entry_point}dynamic.json">'.format(
+                        entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                    ),
+                    data,
+                )
+                data = _sub(
+                    re.escape("</head>"),
+                    (
+                        '  <link href="{entry_point}static/{cache_version}/css/{interface}.css" '
+                        'rel="stylesheet" crossorigin="anonymous">\n'
+                        "  </head>"
+                    ).format(
+                        entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                        cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
+                        interface=args.interface,
+                    ),
+                    data,
+                )
+                data = _sub(
+                    re.escape('<gmf-header gmf-header-template-url="desktop')
+                    + "(_alt)?"
+                    + re.escape('/header.html"></gmf-header>'),
+                    (
+                        '<gmf-header gmf-header-template-url="{entry_point}static/{cache_version}/'
+                        'header.html"></gmf-header>'
+                    ).format(
+                        entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
+                        cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
+                    ),
+                    data,
+                    required=False,
+                )
+
         else:
             data = re.sub("app", "{{package}}", data)
 
-        with open(args.dst, "wt") as dst:
+        with open(args.dst, "wt", encoding="utf-8") as dst:
             dst.write(data)
 
 

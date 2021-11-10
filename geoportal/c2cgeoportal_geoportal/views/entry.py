@@ -26,8 +26,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import glob
 import logging
-from typing import Any, Dict, Optional
+import os
+from typing import Any, Dict, List, Optional
 
 import pyramid.request
 from pyramid.i18n import TranslationStringFactory
@@ -96,3 +98,53 @@ class Entry:
     def apihelp(self) -> Dict[str, Any]:
         set_common_headers(self.request, "apihelp", Cache.PUBLIC)
         return {}
+
+
+def _get_ngeo_resources(pattern: str) -> List[str]:
+    """Return the list of ngeo dist files matching the pattern."""
+    results = glob.glob(f"/opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/{pattern}")
+    if not results:
+        LOG.error(
+            "No file found for pattern %s, in: [%s]",
+            pattern,
+            ", ".join(os.listdir("/opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/")),
+        )
+    return results
+
+
+def canvas_view(request: pyramid.request.Request, interface_config: Dict[str, Any]) -> Dict[str, Any]:
+    """Get view used as entry point of a canvas interface."""
+
+    js_files = _get_ngeo_resources(f"{interface_config['layout']}*.js")
+    css_files = _get_ngeo_resources(f"{interface_config['layout']}*.css")
+    css = "\n    ".join(
+        [
+            f'<link href="{request.static_url(css)}" rel="stylesheet" crossorigin="anonymous">'
+            for css in css_files
+        ]
+    )
+
+    set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")
+
+    spinner = ""
+    spinner_filenames = _get_ngeo_resources("spinner*.svg")
+    if spinner_filenames:
+        with open(spinner_filenames[0], encoding="utf-8") as spinner_file:
+            spinner = spinner_file.read()
+
+    return {
+        "request": request,
+        "header": f"""
+<meta name="dynamicUrl" content="{request.route_url("dynamic")}">
+<meta name="interface" content="{interface_config['name']}">
+{css}""",
+        "footer": "\n    ".join(
+            [f'<script src="{request.static_url(js)}" crossorigin="anonymous"></script>' for js in js_files]
+        ),
+        "static": {
+            "spinner": spinner,
+            "background-layer-button": request.static_url(
+                "/etc/geomapfish/static/images/background-layer-button.png"
+            ),
+        },
+    }

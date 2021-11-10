@@ -22,7 +22,7 @@ APPS_FILES = $(APPS_HTML_FILES) $(APPS_JS_FILES) $(APPS_SASS_FILES) \
 	$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/logo.svg \
 	$(STATIC_PATH)/images/favicon.ico
 
-APPS_ALT += desktop_alt mobile_alt oeedit
+APPS_ALT += mobile_alt oeedit
 APPS_PACKAGE_PATH_ALT = geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/CONST_create_template/geoportal/+package+_geoportal
 APPS_HTML_FILES_ALT = $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/, $(addsuffix .html.ejs_tmpl, $(APPS_ALT)))
 APPS_JS_FILES_ALT += $(addprefix $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller, $(addsuffix .js_tmpl, $(APPS_ALT)))

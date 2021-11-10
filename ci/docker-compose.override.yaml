@@ -1,7 +1,7 @@
 ---
 # The project Docker compose file for development.
 
-version: '2.0'
+version: '2.3'
 
 services:
   geoportal:
@@ -28,7 +28,7 @@ services:
       file: docker-compose-lib.yaml
       service: db
     ports:
-      - 5432:5432
+      - 54321:5432
     volumes:
       - postgresql_data:/var/lib/postgresql/data
       - ./ci/test-app-db:/docker-entrypoint-initdb.d

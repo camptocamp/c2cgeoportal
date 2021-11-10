@@ -20,3 +20,4 @@ Features that require additional steps (most of the time):
    routing
    multi_organization
    vector_tiles
+   extend_application

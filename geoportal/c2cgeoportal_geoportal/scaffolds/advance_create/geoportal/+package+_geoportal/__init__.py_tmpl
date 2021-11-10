@@ -3,7 +3,7 @@ import distutils.core
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
 
-from c2cgeoportal_geoportal import INTERFACE_TYPE_NGEO, add_interface, locale_negotiator
+from c2cgeoportal_geoportal import INTERFACE_TYPE_NGEO, add_interface_config, locale_negotiator
 from c2cgeoportal_geoportal.lib.authentication import create_authentication
 from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
 from {{package}}_geoportal.resources import Root
@@ -38,12 +38,7 @@ def main(global_config, **settings):
 
     # Add the interfaces
     for interface in config.get_settings().get("interfaces", []):
-        add_interface(
-            config,
-            interface["name"],
-            interface.get("type", INTERFACE_TYPE_NGEO),
-            default=interface.get("default", False),
-        )
+        add_interface_config(config, interface)
 
     try:
         import ptvsd  # pylint: disable=import-error,import-outside-toplevel

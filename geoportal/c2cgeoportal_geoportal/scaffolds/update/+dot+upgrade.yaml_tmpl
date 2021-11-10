@@ -34,18 +34,16 @@ no_diff:
 # Files that will be present in the CONST_create_template but will not be considered in the upgrade.
 # Used to provide the alt applications => does not disturb the user during upgrade.
 extra:
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/desktop_alt\.html\.ejs
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/mobile_alt\.html\.ejs
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/oeedit\.html\.ejs
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controllerdesktop_alt\.js
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controllermobile_alt\.js
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/Controlleroeedit\.js
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/desktop_alt\.scss
-  - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_desktop_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/mobile_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_mobile_alt\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/oeedit\.scss
   - geoportal/{{package}}_geoportal/static-ngeo/js/apps/sass/vars_oeedit\.scss
+  - geoportal/interfaces/desktop_alt\.html\.mako
+  - geoportal/{{package}}_geoportal/static/images/background-layer-button\.png
 
 # Automated file system operations:
 # Remove some files or directories:

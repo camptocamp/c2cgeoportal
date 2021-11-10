@@ -11,11 +11,15 @@ cp -r ci/test-external-db ${HOME}/workspace/testgeomapfishapp/ci/
 PROJECT_DIR=$(pwd)
 
 cd ${HOME}/workspace/testgeomapfishapp/
+
+folder=geoportal/interfaces
+cp -r CONST_create_template/${folder} ${folder}
+
 c2cciutils-checks
 cp ${PROJECT_DIR}/ci/project-config.yaml ci/config.yaml
 c2cciutils-checks
-./build
-docker-compose down
+CI=true ./build
+docker-compose down --volumes
 docker-compose up -d
 docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
 docker-compose exec -T geoportal wait-db
@@ -26,27 +30,24 @@ docker-compose exec -T geoportal create-demo-theme
 make update-po
 docker-compose exec -T geoportal theme2fts
 
-# Commit the l10n files modifications
-# To prevent fail on modification files check
-#git diff
-#git add geoportal/testgeomapfishapp_geoportal/locale/*/LC_MESSAGES/testgeomapfishapp_geoportal-*.po
-#git commit -m "Upgrade the po files"
-
 ci/run-dc-logs docker-compose exec -T geoportal ci/waitwsgi https://front/themes
 for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector "layers/test/values/type enum" admin/layertree admin/layertree/children; do
     ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project https://front/${path}
-    #docker-compose exec -T geoportal curl --insecure https://front/c2c/debug/stacks?secret=c2c
 done
 ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project 'http://qgisserver:8080/mapserv_proxy?SERVICE=WMS&REQUEST=GetCapabilities'
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure 'https://front/dynamic.json?interface=desktop&query=&path=%2F'
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/static-geomapfish/0/locales/fr.json
+ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/desktop_alt
+ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/desktop_alt | \
+    grep '<script src="https://front/static-ngeo-dist/desktop\..*\.js" crossorigin="anonymous"></script>'
 docker-compose stop qgisserver
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
 
 cp .env env.int
 echo PGHOST_SLAVE=$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+') >> env.int
+echo PGPORT_SLAVE=54321 >> env.int
 ci/run-dc-logs scripts/db-backup --env=env.int dump.backup
 ci/run-dc-logs scripts/db-backup --env=env.int --arg=--schema=main dump.backup
 ci/run-dc-logs docker-compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
