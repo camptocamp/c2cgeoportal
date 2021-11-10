@@ -263,7 +263,7 @@ some `docker build`, and `docker-compose` commands.
 Main Changes
 ------------
 
-Environement variables are now stored in the env.default and env.project files.
+Environment variables are now stored in the env.default and env.project files.
 
 The migration process will do the following UI-related changes (visible in the html diffs):
 1. Predefined values in editing form
