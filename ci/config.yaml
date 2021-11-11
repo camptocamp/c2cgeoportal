@@ -24,6 +24,9 @@ audit:
       - CWE-400 # Uncontrolled Resource Consumption
       - CWE-532 # Insertion of Sensitive Information into Log File
       - CWE-918 # Server-Side Request Forgery (SSRF)
+  pipfile:
+    sections:
+      - default
 
 publish:
   docker:
