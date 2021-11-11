@@ -86,7 +86,6 @@ module.exports = {
     modules: ['/usr/lib/node_modules'],
     alias: {
       {{package}}: path.resolve(__dirname, '{{package}}_geoportal/static-ngeo/js'),
-      'ol-mapbox-style': '/usr/lib/node_modules/ol/node_modules/ol-mapbox-style',
     },
   },
 };
