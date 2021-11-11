@@ -1,3 +1,5 @@
+##### 2.6.0.45
+* [Backport 2.6] Don't audit the develop part [c2cgeoportal#8880](https://github.com/camptocamp/c2cgeoportal/pull/8880)
 ##### 2.6.0.44
 * Add generic migration changes for 2.6 [c2cgeoportal#8877](https://github.com/camptocamp/c2cgeoportal/pull/8877)
 ##### 2.6.0.43
