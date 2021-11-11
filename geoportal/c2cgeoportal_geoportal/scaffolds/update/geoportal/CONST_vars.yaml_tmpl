@@ -51,7 +51,23 @@ vars:
     ns:
       - gmf
     defaultNS: gmf
-    debug: true
+    debug: false
+    detection:
+      order:
+        - querystring
+        - cookie
+        - localStorage
+        - sessionStorage
+        - navigator
+        - htmlTag
+      lookupQuerystring: lang
+      lookupCookie: i18next
+      lookupLocalStorage: i18nextLng
+      lookupSessionStorage: i18nextLng
+      caches:
+        - localStorage
+      excludeCacheFor:
+        - cimode
     fallbackLng: false
     interpolation:
       escapeValue: false
