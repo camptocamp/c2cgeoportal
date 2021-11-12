@@ -46,7 +46,7 @@ Mako = "==1.1.5"  # geoportal
 OWSLib = "==0.25.0"  # geoportal
 papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # geoportal
-psycopg2-binary = "==2.9.1"  # geoportal
+psycopg2-binary = "==2.9.2"  # geoportal
 pycryptodome = "==3.11.0"  # geoportal
 pyproj = "==3.2.1"  # admin, other?
 pyotp = "==2.6.0"  # geoportal
