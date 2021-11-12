@@ -80,19 +80,9 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("authenticate_client")
+        LOG.debug("authenticate_client => unimplemented")
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
-
-        params = dict(request.decoded_body)
-
-        request.client = (
-            DBSession.query(static.OAuth2Client)
-            .filter(static.OAuth2Client.client_id == params["client_id"])
-            .one_or_none()
-        )
-
-        return request.client is not None
+        raise NotImplementedError("Not implemented, the method `authenticate_client_id` should be used.")
 
     def authenticate_client_id(  # pylint: disable=no-self-use,useless-suppression
         self,
@@ -129,6 +119,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .one_or_none()
         )
 
+        LOG.debug("authenticate_client_id => %s", request.client is not None)
         return request.client is not None
 
     def client_authentication_required(  # pylint: disable=no-self-use,useless-suppression
@@ -168,9 +159,9 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del request, args, kwargs
 
-        LOG.debug("client_authentication_required")
+        LOG.debug("client_authentication_required => False")
 
-        return True
+        return False
 
     def confirm_redirect_uri(  # pylint: disable=no-self-use,useless-suppression
         self,
@@ -221,6 +212,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .filter(static.OAuth2AuthorizationCode.expire_at > datetime.now())
             .one_or_none()
         )
+        LOG.debug("confirm_redirect_uri => %s", authorization_code is not None)
         return authorization_code is not None
 
     def get_code_challenge_method(  # pylint: disable=no-self-use,useless-suppression
@@ -709,6 +701,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         if bearer_token is not None:
             request.user = bearer_token.user
 
+        LOG.debug("validate_bearer_token => %s", bearer_token is not None)
         return bearer_token is not None
 
     def validate_client_id(  # pylint: disable=no-self-use,useless-suppression
@@ -797,6 +790,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         )
         if authorization_code is not None:
             request.user = authorization_code.user
+        LOG.debug("validate_code => %s", authorization_code is not None)
         return authorization_code is not None
 
     def validate_grant_type(  # pylint: disable=no-self-use,useless-suppression
@@ -826,7 +820,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del client, request, args, kwargs
 
-        LOG.debug("validate_grant_type %s %s", client_id, grant_type)
+        LOG.debug(
+            "validate_grant_type %s %s => %s",
+            client_id,
+            grant_type,
+            grant_type in ("authorization_code", "refresh_token"),
+        )
 
         return grant_type in ("authorization_code", "refresh_token")
 
