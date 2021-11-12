@@ -1,3 +1,5 @@
+##### 2.5.0.170
+* Ignore unfixed upstream CVE 1004808 [c2cgeoportal#8886](https://github.com/camptocamp/c2cgeoportal/pull/8886)
 ##### 2.5.0.169
 * Don't audit the develop part [c2cgeoportal#8879](https://github.com/camptocamp/c2cgeoportal/pull/8879)
 ##### 2.5.0.168
