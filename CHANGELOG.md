@@ -1,3 +1,5 @@
+##### 2.6.0.46
+* Audit, See commits for details [c2cgeoportal#8887](https://github.com/camptocamp/c2cgeoportal/pull/8887)
 ##### 2.6.0.45
 * [Backport 2.6] Don't audit the develop part [c2cgeoportal#8880](https://github.com/camptocamp/c2cgeoportal/pull/8880)
 ##### 2.6.0.44
