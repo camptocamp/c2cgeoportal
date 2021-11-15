@@ -1,3 +1,5 @@
+##### 2.5.0.171
+* [Backport 2.5] Remove solved CVE [ngeo#7679](https://github.com/camptocamp/ngeo/pull/7679)
 ##### 2.5.0.170
 * Ignore unfixed upstream CVE 1004808 [c2cgeoportal#8886](https://github.com/camptocamp/c2cgeoportal/pull/8886)
 ##### 2.5.0.169
