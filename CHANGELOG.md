@@ -1,3 +1,5 @@
+##### 2.6.0.48
+* Do not add layers in themes in synchronize [c2cgeoportal#8874](https://github.com/camptocamp/c2cgeoportal/pull/8874)
 ##### 2.6.0.47
 * [Backport 2.6] Remove solved CVE [ngeo#7680](https://github.com/camptocamp/ngeo/pull/7680)
 ##### 2.6.0.46
