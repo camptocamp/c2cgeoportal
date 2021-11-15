@@ -1,3 +1,5 @@
+##### 2.6.0.47
+* [Backport 2.6] Remove solved CVE [ngeo#7680](https://github.com/camptocamp/ngeo/pull/7680)
 ##### 2.6.0.46
 * Audit, See commits for details [c2cgeoportal#8887](https://github.com/camptocamp/c2cgeoportal/pull/8887)
 ##### 2.6.0.45
