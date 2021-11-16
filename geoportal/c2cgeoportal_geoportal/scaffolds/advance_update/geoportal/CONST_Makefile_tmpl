@@ -122,10 +122,6 @@ apps: webpack.apps.js
 	for interface in $(NGEO_INTERFACES); \
 	do \
 		mv $(APP_OUTPUT_DIR)/$${interface}.html $(APP_OUTPUT_DIR)/$${interface}.html.tmpl; \
-		ls -1 $(APP_OUTPUT_DIR)/$${interface}.*.css|while read file; \
-		do \
-			mv $${file} $${file}.tmpl; \
-		done; \
 	done
 
 # API
