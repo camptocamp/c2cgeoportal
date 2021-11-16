@@ -1,3 +1,6 @@
+##### 2.6.0.50
+* Ignore unfixed upstream CVE 42194 [c2cgeoportal#8906](https://github.com/camptocamp/c2cgeoportal/pull/8906)
+* Add information about default action in the full-text search [c2cgeoportal#8907](https://github.com/camptocamp/c2cgeoportal/pull/8907)
 ##### 2.6.0.49
 * [Backport 2.6] Bump bootstrap-table from 1.18.3 to 1.19.1 in /admin [c2cgeoportal#8899](https://github.com/camptocamp/c2cgeoportal/pull/8899)
 ##### 2.6.0.48
