@@ -1,3 +1,5 @@
+##### 2.6.0.49
+* [Backport 2.6] Bump bootstrap-table from 1.18.3 to 1.19.1 in /admin [c2cgeoportal#8899](https://github.com/camptocamp/c2cgeoportal/pull/8899)
 ##### 2.6.0.48
 * Do not add layers in themes in synchronize [c2cgeoportal#8874](https://github.com/camptocamp/c2cgeoportal/pull/8874)
 ##### 2.6.0.47
