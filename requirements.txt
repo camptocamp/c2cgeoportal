@@ -1,2 +1,2 @@
 pipenv==2021.5.29
-setuptools==59.1.0
+setuptools==59.1.1
