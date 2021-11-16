@@ -175,6 +175,10 @@ Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on
    VALUES (..., '[{"action": "add_layer", "data": "cadastre"}]')
 
 
+If ``actions`` is not specified and the element found in the query contains a geometry, then
+the default behavior is to zoom to this geometry.
+
+
 Interface
 ---------
 
