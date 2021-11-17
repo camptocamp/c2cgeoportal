@@ -165,8 +165,8 @@ Example:
     document.querySelector('<my-component-selector>').shadowRoot.appendChild(style);
 
 Or alternatively, you can override a component to access and modify the ``render`` function. In this
-fonction, you can modify the `customCSS_` property to set directly your own style. This way is not
-recommanded if you don't have to override the component for another purpose.
+function, you can modify the `customCSS_` property to set directly your own style. This way is not
+recommended if you don't have to override the component for another purpose.
 
 Creating your own component
 ---------------------------
@@ -193,7 +193,7 @@ Here's a ``Hello <name>`` component:
 
   @customElement('hello-world')
   export default class GmfAuthForm extends GmfBaseElement {
-    @property({type: String}) name = '';
+    @property({type: String}) name = 'Unknow';
 
     connectedCallback(): void {
       super.connectedCallback();
@@ -203,7 +203,7 @@ Here's a ``Hello <name>`` component:
       ...GmfBaseElement.styles,
       css`
         .name {
-          color: darkgreen;
+          color: green;
         }
       `,
     ];
@@ -217,7 +217,6 @@ Here's a ``Hello <name>`` component:
       `;
     }
   }
-...
 
 Then load your component in the controller of one of your interfaces:
 
@@ -229,15 +228,15 @@ At this point, if in your <interface> HTML app file you declare your component, 
 
 .. code:: html
 
-   <hello-world .name="Demo"></hello-world>
+   <hello-world name="Demo"></hello-world>
 
-It should print ``Hello Demo`` (with "Demo" in a dark green color).
+It should print ``Hello Demo`` (with "Demo" in a green color).
 
 If you have no error and no result, verify that the component is correctly declared and loaded.
 A custom markup in the HTML is not an error and no error will be throw if the component is
 not loaded at all.
 
-Every informations should be stored in a ``store``. Our store are based on the
+Every information should be stored in a ``store``. Our store are based on the
 ``rxjs`` library. Existing store in ngeo are in `srcapi/store`.
 
 Logic between a store and a component should be stored in a singleton ("service").
@@ -247,54 +246,53 @@ If possible, keep as many logic out of your component, in standard classes. It w
 facilitate the maintenance.
 
 Extending or overriding an existing component
-----------------------------------------------
+---------------------------------------------
 
 .. note::
 
     This is not possible in the simple application mode
 
-Overriding an existing partial (HTML) or JS element is possible but you have to test carefully your code
+Overriding an existing component is possible but you have to test carefully your code
 after each GMF update as the original code may have changed.
 
-AngularJS is still ECMAScript. You can define some new functions or new variables to a class via the
-prototype. Here's an example with the ngeo draw controller:
+You can define some new functions or new variables to a class via the prototype. Here's an example with
+the ngeo auth form component:
 
-.. code:: javascript
+.. code:: typescript
 
-   import `import {DrawController} from 'ngeo/draw/Controller.js'`
-   /**
-    * Doctype is important for compilation.
-    * @type {string}
-    */
-   DrawController.prototype.myNewValue;
-   DrawController.prototype.newFunction = function () {};
+   import GmfAuthForm from 'ngeo/auth/FormElement';
+
+   GmfAuthForm.prototype.myNewValue;
+
+   GmfAuthForm.prototype.newFunction = function () {};
 
 To replace an existing function, just create a function with the same name than the one to replace:
 
-.. code:: javascript
+.. code:: typescript
 
-   DrawController.prototype.$onInit = function () {};
+   GmfAuthForm.prototype.logout(evt: Event): void {
+     console.log('I do nothing but print a message');
+   };
 
-You will have to copy-paste the content of the original function to keep the component working. Then you
-can extend it.
-
-To override a partial (HMTL) file, you have to copy-paste the whole original file. Then you can adapt it.
-To make the original component use your own partial file, you must set the template cache of the module:
-
-.. code:: javascript
-
-   import GmfDrawFeatureComponent from 'gmf/drawing/drawFeatureComponent.js';
-   /**
-    * Override gmf/drawing/drawFeatureComponent partial with a custom one.
-    */
-   GmfDrawFeatureComponent.run(/* @ngInject */ ($templateCache) => {
-     // @ts-ignore: webpack
-     $templateCache.put('gmf/drawing/drawFeatureComponent', require('./drawFeatureComponent.html'));
-   });
+You will have to copy-paste the content of the original function to keep the component working. But you
+can modify it.
 
 Finally be sure that the file where you override or extend existing content is read by the main
 controller file of your app:
 
 .. code:: javascript
 
-   import '../myComponent/load_and_override.js';
+   import '../custom/myOverridenComponent.js';
+
+.. note::
+
+    You can do the same with every "store", "service", "functions", etc. as long
+    as the original piece of code you want to override is exported.
+
+.. note::
+
+    The ``constructor`` of a class is not modifiable. If you want to modify to logic inside a
+    constructor, you must copy the original class to a new custom class and use it instead the original one.
+    In some case you may use inheritance (with the ``extends`` keyword) to limit the copy-paste.
+
+
