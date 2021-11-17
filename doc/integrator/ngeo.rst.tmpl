@@ -22,7 +22,7 @@ The header file is ``geoportal/<package>_geoportal/static/header.html``.
 
 The images used from the admin interface should be placed in the folder ``geoportal/<package>_geoportal/static/images/``.
 
-advanced mode only
+Advanced mode only
 ~~~~~~~~~~~~~~~~~~
 
 The style sheet vars file is ``geoportal/<package>_geoportal/static-ngeo/js/apps/sass/vars_<interface>.scss``.
@@ -152,7 +152,7 @@ your style with the ``gmfCustomCSS`` constants in the vars.yaml file. Example:
         gmfCustomCSS:
           authentication: '<selector> {<property>: <value>;}'
 
-advanced mode only
+Advanced mode only
 ~~~~~~~~~~~~~~~~~~
 
 In the advanced mode, you can set the style of a component by setting the style of the component itself.
@@ -168,8 +168,6 @@ Or alternatively, you can override a component to access and modify the ``render
 fonction, you can modify the `customCSS_` property to set directly your own style. This way is not
 recommanded if you don't have to override the component for another purpose.
 
-
-
 Creating your own component
 ---------------------------
 
@@ -177,62 +175,76 @@ Creating your own component
 
     This is not possible in the simple application mode
 
-Create your ``.js`` and ``.html`` (partial) files in a dedicated folder under:
-``geoportal/<package>_geoportal/static-ngeo/js/``. We encourage you to write standard ECMAScript and
-use AngularJS only to display your component.
+Create your ``.ts`` file in a dedicated folder under:
+``geoportal/<package>_geoportal/static-ngeo/js/``. We encourage you to use LitElement web-components.
 
-For the structure, you can be inspired by one of the components in ngeo.
+For the structure, you can be inspired by one of the (not AngularJS) components in ngeo. For instance, the
+``src/auth/FormElement.ts``.
 
-You should register each of your AngularJS element (component, controller, service, etc.) in a module. First
-declare your module:
+Here's a ``Hello <name>`` component:
+
+.. code:: typescript
+
+  // File ...static-ngeo/js/custom/helloWorld.ts;
+  import {html, TemplateResult, CSSResult, css} from 'lit';
+  import {customElement, property} from 'lit/decorators.js';
+  import GmfBaseElement from 'gmfapi/elements/BaseElement';
+  import i18next from 'i18next';
+
+  @customElement('hello-world')
+  export default class GmfAuthForm extends GmfBaseElement {
+    @property({type: String}) name = '';
+
+    connectedCallback(): void {
+      super.connectedCallback();
+    }
+
+    static styles: CSSResult[] = [
+      ...GmfBaseElement.styles,
+      css`
+        .name {
+          color: darkgreen;
+        }
+      `,
+    ];
+
+    protected render(): TemplateResult {
+      return html`
+        <div>
+          <span>${i18next.t('Hello')}&nbsp;</span>
+          <span class="name">${this.name}</span>
+        </div>
+      `;
+    }
+  }
+...
+
+Then load your component in the controller of one of your interfaces:
 
 .. code:: javascript
 
-   import angular from 'angular';
-   const module = angular.module('<projectElementname>', [
-     // dependencies to load within this module.
-   ]);
-
-Then register your component to this module:
-
-.. code:: javascript
-
-   class aController {}
-   module.controller('<projectController>', aController);
-   const aDirective = function() {};
-   module.directive('<projectDirectivename>', aDirective);
-
-And export this module:
-
-.. code:: javascript
-
-   export default module;
-
-Finally add your module in your main controller app file:
-
-.. code:: javascript
-
-   import myCustomComponent from '../myComponent/Component.js';
-   // Update the already declared module at the end of the controller with:
-   const module = angular.module('<AppInterface>', [
-     ...
-     myCustomComponent.name,
-   ];
+   import GmfAuthForm from '../custom/helloWorld';
 
 At this point, if in your <interface> HTML app file you declare your component, it should be loaded:
 
 .. code:: html
 
-   <project-directivename></project-directivename>
+   <hello-world .name="Demo"></hello-world>
 
-If you have no error and no result, verify that the module is correctly declared and loaded. AngularJS can't
-throw errors for a component that it doesn't know and having a custom markup in the HTML is not an error
-for the HTML.
+It should print ``Hello Demo`` (with "Demo" in a dark green color).
 
-.. note::
+If you have no error and no result, verify that the component is correctly declared and loaded.
+A custom markup in the HTML is not an error and no error will be throw if the component is
+not loaded at all.
 
-   To load a partial (HTML) file for a component you can use this syntax inside the declaration of your
-   component: ``template: require('./component.html')`` (from ``./Component.js`` file).
+Every informations should be stored in a ``store``. Our store are based on the
+``rxjs`` library. Existing store in ngeo are in `srcapi/store`.
+
+Logic between a store and a component should be stored in a singleton ("service").
+singleton exported instance of a class. Example in ngeo: `src/auth/service.ts`.
+
+If possible, keep as many logic out of your component, in standard classes. It will
+facilitate the maintenance.
 
 Extending or overriding an existing component
 ----------------------------------------------
