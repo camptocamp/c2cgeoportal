@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-awscli = "==1.22.6"  # Work with Object storage
+awscli = "==1.22.7"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
 beautifulsoup4 = "==4.10.0"  # admin tests
 coverage = "==6.1.2"  # Build coverage XML for Codacy
