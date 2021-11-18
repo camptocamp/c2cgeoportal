@@ -49,8 +49,8 @@ vars:
 
   i18next:
     ns:
-      - gmf
-    defaultNS: gmf
+      - geomapfish
+    defaultNS: geomapfish
     debug: false
     detection:
       order:
