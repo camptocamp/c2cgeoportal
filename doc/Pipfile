@@ -8,5 +8,5 @@ alabaster = "==0.7.12"  # theme
 Pygments = "==2.10.0"
 Sphinx = "==4.3.0"
 sphinx-prompt = "==1.5.0"
-sphinx-jsonschema = "==1.16.11"
+sphinx-jsonschema = "==1.17.1"
 tilecloud-chain = "==1.16.1"
