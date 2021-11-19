@@ -203,9 +203,12 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
             except Exception:
                 print(traceback.format_exc())
 
-        message_str = subprocess.check_output(
-            ["node", "geoportal/tools/extract-messages.js", int_filename]
-        ).decode("utf-8")
+        # Path in geomapfish-tools
+        script_path = "geoportal/tools/extract-messages.js"
+        if not os.path.isfile(script_path):
+            # Path in geomapfish runner
+            script_path = "/app/tools/extract-messages.js"
+        message_str = subprocess.check_output(["node", script_path, int_filename]).decode("utf-8")
         if int_filename != filename:
             os.unlink(int_filename)
         try:

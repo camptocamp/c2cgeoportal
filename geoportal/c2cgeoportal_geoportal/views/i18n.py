@@ -31,7 +31,7 @@ import logging
 
 import pyramid.request
 import pyramid.response
-from lingua.extract import (
+from lingua.extract import (  # strip_linenumbers,
     ExtractorOptions,
     POEntry,
     create_catalog,
@@ -39,7 +39,6 @@ from lingua.extract import (
     list_files,
     no_duplicates,
     read_config,
-    strip_linenumbers,
 )
 from lingua.extractors import get_extractor, register_extractors
 from lingua.extractors.babel import register_babel_plugins
@@ -54,12 +53,14 @@ LOG = logging.getLogger(__name__)
 @view_config(route_name="localepot")  # type: ignore
 def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     """Get the pot from an HTTP request."""
+
     # Build the list of files to be processed
-    sources = ["/etc/geomapfish/config.yaml", "/app/development.ini"]
-    sources += glob.glob("/etc/static_ngeo/js/apps/**/*.html.ejs")
-    sources += glob.glob("/etc/static_ngeo/js/**/*.js")
-    sources += glob.glob("/etc/static_ngeo/js/**/*.html")
-    sources += glob.glob("/usr/local/tomcat/webapps/ROOT/**/config.yaml")
+    sources = []
+    sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/apps/*.html.ejs")
+    sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/**.js", recursive=True)
+    sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/**.html", recursive=True)
+    sources += glob.glob("/usr/local/tomcat/webapps/ROOT/**/config.yaml", recursive=True)
+    sources += ["/etc/geomapfish/config.yaml", "/app/development.ini"]
 
     # The following code is a modified version of the main function of this file:
     # https://github.com/wichert/lingua/blob/master/src/lingua/extract.py
@@ -94,8 +95,8 @@ def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
                 catalog.append(entry)
             entry.update(message)
 
-    for entry in catalog:
-        strip_linenumbers(entry)
+    # for entry in catalog:
+    #     strip_linenumbers(entry)
 
     # Build the response
     request.response.text = catalog.__unicode__()
