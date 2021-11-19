@@ -1155,11 +1155,11 @@
         },
         "redis": {
             "hashes": [
-                "sha256:bc6832367d60e1a5f94d75314fc46e8ce6f07fee8e532ee1bfafaf4887f8b4bb",
-                "sha256:cc642f70e0ebddce960818ba35776af6a18487cc38f66deace68d55b97e6e3cf"
+                "sha256:7341184026de22b0aa80999904033a4a131771559ecde9a882ea1862b8ed435f",
+                "sha256:d10fdd7ffa0715626cb3101b5de346639ed0caa70b5b637512f19efaeeaac794"
             ],
             "index": "pypi",
-            "version": "==4.0.1"
+            "version": "==4.0.0"
         },
         "repoze.lru": {
             "hashes": [
