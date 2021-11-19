@@ -24,6 +24,7 @@ audit:
       - CWE-918 # Server-Side Request Forgery (SSRF)
       - CWE-295 # Improper Certificate Validation
       - CWE-346 # Origin Validation Error
+      - CWE-125 # Out-of-bounds Read
 
 publish:
   docker:
