@@ -83,7 +83,7 @@ vars:
             - code: EPSG:21781
               label: CH1903 / MN03
               filter: ngeoNumberCoordinates::{x}, {y} m
-            - code: EPSG:4326'
+            - code: EPSG:4326
               label: WGS84
               filter: ngeoDMSCoordinates:2:{y}, {x}
         ngeoProfileOptions:
