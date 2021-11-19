@@ -41,7 +41,15 @@ ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project 'http://qgis
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure 'https://front/dynamic.json?interface=desktop&query=&path=%2F'
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/static-geomapfish/0/locales/fr.json
-ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/locale.pot | grep msgid
+ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/locale.pot -o /tmp/locale.pot
+# cmp --silent geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot /tmp/locale.pot || echo "files are different"
+if [ "$(wc -l < /tmp/locale.pot)" -eq "$(wc -l < geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot)" ]
+then
+    echo 'View locale.pot match in size with update-po'
+else
+    echo 'Error: View locale.pot does not match in size with update-po'
+    exit 1
+fi
 docker-compose stop qgisserver
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base

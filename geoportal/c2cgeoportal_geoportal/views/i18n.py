@@ -71,7 +71,14 @@ def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     with open("/app/lingua-client.cfg", encoding="utf-8") as config_file:
         read_config(config_file)
 
-    catalog = create_catalog(110, "© (copyright)", "GeoMapFish-project", "1.0", None)
+    catalog = create_catalog(
+        width=110,
+        # copyright_holder="© (copyright)",
+        copyright_holder="",
+        package_name="GeoMapFish-project",
+        package_version="1.0",
+        msgid_bugs_address=None,
+    )
 
     for filename in no_duplicates(list_files(None, sources)):
         real_filename = find_file(filename)
