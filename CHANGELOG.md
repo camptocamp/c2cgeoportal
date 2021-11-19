@@ -1,3 +1,6 @@
+##### 2.4.2.62
+* Audit 2.4, see commits ... [c2cgeoportal#8924](https://github.com/camptocamp/c2cgeoportal/pull/8924)
+* Remove solved CVE [ngeo#7678](https://github.com/camptocamp/ngeo/pull/7678)
 ##### 2.4.2.61
 * Bump dependency with security issue [c2cgeoportal#8866](https://github.com/camptocamp/c2cgeoportal/pull/8866)
 * Bump jquery-ui who has security issues [ngeo#7663](https://github.com/camptocamp/ngeo/pull/7663)
