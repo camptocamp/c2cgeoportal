@@ -1,3 +1,5 @@
+##### 2.5.0.173
+* [Backport 2.5] Update CVE ids [ngeo#7713](https://github.com/camptocamp/ngeo/pull/7713)
 ##### 2.5.0.172
 * [Backport 2.5] Bump bootstrap-table from 1.18.3 to 1.19.1 in /admin [c2cgeoportal#8898](https://github.com/camptocamp/c2cgeoportal/pull/8898)
 ##### 2.5.0.171
