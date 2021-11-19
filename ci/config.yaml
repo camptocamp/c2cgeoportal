@@ -22,6 +22,7 @@ audit:
       - CWE-400 # Uncontrolled Resource Consumption
       - CWE-532 # Insertion of Sensitive Information into Log File
       - CWE-918 # Server-Side Request Forgery (SSRF)
+      - CWE-295 # Improper Certificate Validation
 
 publish:
   docker:
