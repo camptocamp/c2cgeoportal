@@ -9,7 +9,7 @@ Organization
 Simple and advanced modes
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The main page where we can redefine an interface is in the file:
+The HTML and the JS of an interface are in the files:
 ``geoportal/<package>_geoportal/static-ngeo/js/apps/<interface>.html.ejs`` and
 ``geoportal/<package>_geoportal/static-ngeo/js/apps/Controller<interface>.js``
 where ``<interface>`` is the interface name.
@@ -88,7 +88,8 @@ This is needed to include the javascript of the used component.
 
 You can add your own imports.
 
-Most of the configuration is in the vars file.
+Most of the component configuration and the map configuration is in the ``interfaces_config`` section
+of the vars file. See the section below.
 
 Dynamic.json view
 -----------------
@@ -155,7 +156,8 @@ your style with the ``gmfCustomCSS`` constants in the vars.yaml file. Example:
 Advanced mode only
 ~~~~~~~~~~~~~~~~~~
 
-In the advanced mode, you can set the style of a component by setting the style of the component itself.
+In the advanced mode, you can set the style of a component by selecting the component using
+the ``querySelector`` native function and by appending a new style to this element.
 Example:
 
 .. code:: js
@@ -233,17 +235,18 @@ At this point, if in your <interface> HTML app file you declare your component, 
 It should print ``Hello Demo`` (with "Demo" in a green color).
 
 If you have no error and no result, verify that the component is correctly declared and loaded.
-A custom markup in the HTML is not an error and no error will be throw if the component is
+A custom markup in the HTML is not an error and no error will be thrown if the component is
 not loaded at all.
 
-Every information should be stored in a ``store``. Our store are based on the
-``rxjs`` library. Existing store in ngeo are in `srcapi/store`.
+Every information that could be used by multiple components should be stored in a ``store``. Our stores are based on the
+``rxjs`` library. Existing stores in ngeo are in `srcapi/store`.
 
 Logic between a store and a component should be stored in a singleton ("service").
-singleton exported instance of a class. Example in ngeo: `src/auth/service.ts`.
+A singleton is a class with only one instantiation. This instance is exported and usable everywhere in
+the code. Example in ngeo: `src/auth/service.ts`.
 
-If possible, keep as many logic out of your component, in standard classes. It will
-facilitate the maintenance.
+We recommend to minimize the amount of code within your component, and to use reusable external classes,
+static functions, helper and utils files instead. It will facilitate the maintenance.
 
 Extending or overriding an existing component
 ---------------------------------------------
@@ -286,13 +289,13 @@ controller file of your app:
 
 .. note::
 
-    You can do the same with every "store", "service", "functions", etc. as long
-    as the original piece of code you want to override is exported.
+    You can do the same with every "store", "service", function, etc. as long as the original piece
+    of code you want to override is exported.
 
 .. note::
 
     The ``constructor`` of a class is not modifiable. If you want to modify to logic inside a
-    constructor, you must copy the original class to a new custom class and use it instead the original one.
-    In some case you may use inheritance (with the ``extends`` keyword) to limit the copy-paste.
+    constructor, you must copy the original class to a new custom class and use it instead of the original one.
+    In some cases, you may use inheritance (with the ``extends`` keyword) to limit the copy-paste.
 
 
