@@ -1,3 +1,5 @@
+##### 2.6.0.51
+* [Backport 2.6] [Backport 2.5] Update CVE ids [ngeo#7716](https://github.com/camptocamp/ngeo/pull/7716)
 ##### 2.6.0.50
 * Ignore unfixed upstream CVE 42194 [c2cgeoportal#8906](https://github.com/camptocamp/c2cgeoportal/pull/8906)
 * Add information about default action in the full-text search [c2cgeoportal#8907](https://github.com/camptocamp/c2cgeoportal/pull/8907)
