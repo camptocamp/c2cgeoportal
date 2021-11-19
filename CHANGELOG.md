@@ -1,3 +1,6 @@
+##### 2.6.0.52
+* [Backport 2.6] [Backport 2.5] Audit 2.4, see commits ... [c2cgeoportal#8933](https://github.com/camptocamp/c2cgeoportal/pull/8933)
+* Fix printed legend image - use layer node name [ngeo#7717](https://github.com/camptocamp/ngeo/pull/7717)
 ##### 2.6.0.51
 * [Backport 2.6] [Backport 2.5] Update CVE ids [ngeo#7716](https://github.com/camptocamp/ngeo/pull/7716)
 ##### 2.6.0.50
