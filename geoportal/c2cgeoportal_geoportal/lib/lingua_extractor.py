@@ -707,8 +707,10 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         errors: Set[str] = set()
 
         request = pyramid.threadlocal.get_current_request()
-        request = _Request() if request is None else request
-        request.registry.settings = self.config
+        if request is None:
+            request = _Request()
+            request.registry.settings = self.config
+
         # Static schema will not be supported
         url_obj_ = get_url2("Layer", url, request, errors)
         if errors:
