@@ -1,3 +1,5 @@
+##### 2.6.0.54
+* Ignore some new CVE [ngeo#7723](https://github.com/camptocamp/ngeo/pull/7723)
 ##### 2.6.0.53
 * Mouse position option typo for WGS84 [c2cgeoportal#8935](https://github.com/camptocamp/c2cgeoportal/pull/8935)
 ##### 2.6.0.52
