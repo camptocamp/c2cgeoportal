@@ -1,3 +1,5 @@
+##### 2.6.0.55
+* [Backport 2.6] Ignore some new CVE [c2cgeoportal#8945](https://github.com/camptocamp/c2cgeoportal/pull/8945)
 ##### 2.6.0.54
 * Ignore some new CVE [ngeo#7723](https://github.com/camptocamp/ngeo/pull/7723)
 ##### 2.6.0.53
