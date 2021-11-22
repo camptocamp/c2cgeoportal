@@ -21,6 +21,7 @@ checks:
 audit:
   npm:
     cwe_ignore:
+      - CWE-20 # Improper Input Validation
       - CWE-22 # Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
       - CWE-59 # Improper Link Resolution Before File Access ('Link Following')
       - CWE-61 # UNIX Symbolic Link (Symlink) Following
@@ -30,7 +31,9 @@ audit:
       - CWE-331 # Insufficient Entropy
       - CWE-346 # Origin Validation Error
       - CWE-400 # Uncontrolled Resource Consumption
+      - CWE-502 # Deserialization of Untrusted Data
       - CWE-532 # Insertion of Sensitive Information into Log File
+      - CWE-915 # Improperly Controlled Modification of Dynamically-Determined Object Attributes
       - CWE-918 # Server-Side Request Forgery (SSRF)
 
 publish:
