@@ -1,3 +1,5 @@
+##### 2.5.0.175
+* Ignore some new CVE [ngeo#7722](https://github.com/camptocamp/ngeo/pull/7722)
 ##### 2.5.0.174
 * [Backport 2.5] Audit 2.4, see commits ... [c2cgeoportal#8926](https://github.com/camptocamp/c2cgeoportal/pull/8926)
 ##### 2.5.0.173
