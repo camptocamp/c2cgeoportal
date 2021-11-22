@@ -1,0 +1,61 @@
+#!/bin/env python3
+import argparse
+import os
+
+import yaml
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        "Add some values from the GeoMapFish config to QGIS server plugin config"
+    )
+    parser.add_argument("gmf_config")
+    parser.add_argument("plugin_config")
+    args = parser.parse_args()
+
+    config = {
+        "vars": {
+            "schema": "${PGSCHEMA}",
+            "schema_static": "${PGSCHEMA_STATIC}",
+            "sqlalchemy.url": "postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=${PGSSLMODE}",
+            "sqlalchemy_slave.url": "postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST_SLAVE}:${PGPORT_SLAVE}/${PGDATABASE}?sslmode=${PGSSLMODE}",
+            "srid": "${SRID}",
+            "sqlalchemy": {
+                "pool_recycle": "${SQLALCHEMY_POOL_RECYCLE}",
+                "pool_size": "${SQLALCHEMY_POOL_SIZE}",
+                "max_overflow": "${SQLALCHEMY_MAX_OVERFLOW}",
+                "executemany_mode": "batch",
+                "pool_pre_ping": True,
+            },
+        },
+        "interpreted": {},
+        "no_interpreted": [],
+        "postprocess": [],
+    }
+
+    if os.path.exists(args.plugin_config):
+        with open(args.plugin_config, encoding="utf-8") as plugin_config_file:
+            plugin_config = yaml.load(plugin_config_file.read(), Loader=yaml.SafeLoader)
+            for key, value in plugin_config.items():
+                if key in config and isinstance(value, dict) and isinstance(config[key], dict):
+                    config[key].update(value)
+                else:
+                    config[key] = value
+
+    if os.path.exists(args.gmf_config):
+        with open(args.gmf_config, encoding="utf-8") as gmf_config_file:
+            gmf_config = yaml.load(gmf_config_file.read(), Loader=yaml.SafeLoader)
+
+        # With QGIS server plugin we interpret the value in the config container
+        for key, value in gmf_config["vars"]["servers"].items():
+            gmf_config["vars"]["servers"][key] = value.replace("{", "${")
+        for key in ("srid", "servers"):
+            if key not in config["vars"]:
+                config["vars"][key] = gmf_config["vars"][key]
+
+    with open(args.plugin_config, "w", encoding="utf-8") as plugin_config_file:
+        plugin_config_file.write(yaml.dump(config, Dumper=yaml.SafeDumper))
+
+
+if __name__ == "__main__":
+    main()

@@ -86,7 +86,7 @@ RUN \
     pipenv sync --system --clear --dev && \
     rm --recursive --force /tmp/* /root/.cache/*
 
-COPY bin/npm-packages bin/update-po bin/build-l10n /usr/bin/
+COPY bin/npm-packages /usr/bin/
 COPY geoportal/package.json /opt/c2cgeoportal/geoportal/
 WORKDIR /opt/c2cgeoportal/geoportal
 
@@ -129,12 +129,11 @@ ARG MAJOR_VERSION
 ENV MAJOR_VERSION=$MAJOR_VERSION
 RUN make --makefile=dependencies.mk dependencies
 
-COPY bin/ bin/
+COPY bin/ /usr/bin/
 COPY scripts/ scripts/
 COPY geoportal/c2cgeoportal_geoportal/scaffolds/ geoportal/c2cgeoportal_geoportal/scaffolds/
 COPY build.mk lingua.cfg ./
 
-RUN mv bin/import-ngeo-apps bin/eval-templates bin/wait-db bin/transifex-init bin/run bin/run-git /usr/bin/
 RUN make --makefile=build.mk build
 
 COPY commons/ commons/
@@ -154,7 +153,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
 
 # For awscli
 RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer
-COPY bin/bashrc ~/.bashrc
+RUN mv /usr/bin/bashrc ~/.bashrc
 COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src

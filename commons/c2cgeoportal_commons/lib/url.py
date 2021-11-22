@@ -149,12 +149,17 @@ class Url:
         return self.url()
 
 
-def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optional[Url]:
+def get_url2(
+    name: str, url: str, request: Request, errors: Set[str], servers: Optional[Dict[str, str]] = None
+) -> Optional[Url]:
     """
     Get the real URL from the URI of the administration interface.
 
     Manage the schema: static and config.
     """
+    if servers is None:
+        servers = request.registry.settings.get("servers", {})
+
     url_obj = Url(url)
     url_split = urllib.parse.urlsplit(url)
     if url_obj.scheme == "":
@@ -188,11 +193,11 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
         if url_obj.netloc == "":
             errors.add(f"{name}='{url}' cannot have an empty netloc.")
             return None
-        server = request.registry.settings.get("servers", {}).get(url_obj.netloc)
+        server = servers.get(url_obj.netloc)
         if server is None:
             errors.add(
                 f"{name}: The server '{url_obj.netloc}' ({url}) is not found in the config: "
-                f"[{', '.join(request.registry.settings.get('servers', {}).keys())}]"
+                f"[{', '.join(servers.keys())}]"
             )
             return None
 
@@ -206,7 +211,7 @@ def get_url2(name: str, url: str, request: Request, errors: Set[str]) -> Optiona
             if url_obj_server.path[-1] != "/":
                 url_obj_server.path += "/"
             url_obj_server.path = urllib.parse.urljoin(url_obj_server.path, url_obj.path[1:])
-            url_obj_server.add_query(url_obj.query, force=True)
-            url_obj_server.fragment = url_obj.fragment
+        url_obj_server.add_query(url_obj.query, force=True)
+        url_obj_server.fragment = url_obj.fragment
         return url_obj_server
     return None
