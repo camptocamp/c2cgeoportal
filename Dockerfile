@@ -95,9 +95,13 @@ RUN \
     npm-packages --src=package.json --dst=/tmp/npm-packages && \
     npm --no-optional --global --unsafe-perm --no-package-lock install $(cat /tmp/npm-packages) && \
     npm cache clear --force && \
-    rm -rf /tmp/*
-
-RUN npm-packages --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
+    rm -rf /tmp/* && \
+    npm-packages \
+    @types @typescript-eslint @storybook ol-cesium jasmine-core karma karma-chrome-launcher \
+    karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
+    react react-dom cypress chromatic jscodeshift sass start-server-and-test \
+    typedoc jsdoc jsdoc-plugin-typescript typescript \
+    --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
 
 # Workaround to fix the chokidar error
 RUN ln -s /usr/lib/node_modules/webpack-dev-server/node_modules/chokidar /usr/lib/node_modules/
