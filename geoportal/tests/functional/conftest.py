@@ -33,13 +33,13 @@ from pyramid.testing import DummyRequest
 from tests.functional import setup_common as setup_module
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def settings():
     setup_module()
     yield {**configuration.get_config()}
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def dbsession(settings):
     from c2cgeoportal_commons.models import DBSession
 
