@@ -174,6 +174,8 @@ def get_url2(
             return None
         return url_obj
     if url_obj.scheme == "static":
+        if request is None:
+            errors.add(f"{name}='{url}' The request is required for static URL.")
         if url_obj.path in ("", "/"):
             errors.add(f"{name}='{url}' cannot have an empty path.")
             return None
