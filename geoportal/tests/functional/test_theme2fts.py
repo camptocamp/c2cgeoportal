@@ -36,7 +36,7 @@ from sqlalchemy import func
 from tests.functional import setup_common as setup_module
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def settings():
     setup_module()
     yield {
@@ -53,14 +53,14 @@ def settings():
     }
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def dbsession(settings):
     from c2cgeoportal_commons.models import DBSession
 
     yield DBSession
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def transact(dbsession):
     t = dbsession.begin_nested()
     yield t
