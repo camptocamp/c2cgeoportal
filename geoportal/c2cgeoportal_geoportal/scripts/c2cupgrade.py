@@ -390,12 +390,21 @@ class C2cUpgradeTool:
         check_call(["git", "add", "--all", "CONST_create_template/"])
 
         def changed_files() -> List[str]:
-            status = [
-                [s for s in status.split(" ") if s]
-                for status in check_git_status_output().strip().split("\n")
-                if status
-            ]
-            return [file for state, file in status if state == "M" and not file.startswith("CONST_")]
+            try:
+                status = [
+                    [s for s in status.split(" ") if s]
+                    for status in check_git_status_output().strip().split("\n")
+                    if status
+                ]
+                return [file for state, file in status if state == "M" and not file.startswith("CONST_")]
+            except:  # pylint: disable=bare-except
+                self.print_step(
+                    step,
+                    error=True,
+                    message=f"Error while getting changed files:\n{check_git_status_output()}",
+                    prompt="Fix the error and run the step again:",
+                )
+                sys.exit(1)
 
         changed_before_style = changed_files()
 
