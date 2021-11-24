@@ -116,6 +116,9 @@ mapping:
               type:
                 type: str
                 default: ngeo
+              layout:
+                type: str
+                default: ngeo
       interfaces_config:
         required: True
         type: map

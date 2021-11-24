@@ -2,6 +2,15 @@
 extends: vars_origin.yaml
 
 vars:
+  interfaces:
+    - name: desktop
+      default: True
+    - name: mobile
+    - name: iframe_api
+    - name: desktop_alt
+      type: canvas
+      layout: desktop
+
   dbsessions:
     ci_test:
       url: postgresql://{PGUSER}:{PGPASSWORD}@externaldb:{PGPORT}/test

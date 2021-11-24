@@ -28,6 +28,7 @@
 import importlib
 import logging
 import os
+from functools import partial
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
 from urllib.parse import urlsplit
 
@@ -42,6 +43,7 @@ import pyramid.response
 import pyramid.security
 import zope.event.classhandler
 from c2cgeoform import Form, translator
+from c2cwsgiutils.broadcast import decorator
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
 from dogpile.cache import register_backend
@@ -65,7 +67,7 @@ from c2cgeoportal_geoportal.lib.metrics import (
     TotalPythonObjectMemoryProvider,
 )
 from c2cgeoportal_geoportal.lib.xsd import XSD
-from c2cgeoportal_geoportal.views.entry import Entry
+from c2cgeoportal_geoportal.views.entry import Entry, canvas_view
 
 if TYPE_CHECKING:
     from c2cgeoportal_commons.models import static  # pylint: disable=ungrouped-imports,useless-suppression
@@ -92,25 +94,54 @@ class AssetRendererFactory:
 
 
 INTERFACE_TYPE_NGEO = "ngeo"
+INTERFACE_TYPE_CANVAS = "canvas"
+
+
+def add_interface_config(config: pyramid.config.Configurator, interface_config: Dict[str, Any]) -> None:
+    """Add the interface (desktop, mobile, ...) views and routes with only the config."""
+    add_interface(
+        config,
+        interface_config["name"],
+        interface_config.get("type", INTERFACE_TYPE_NGEO),
+        interface_config,
+        default=interface_config.get("default", False),
+    )
 
 
 def add_interface(
     config: pyramid.config.Configurator,
     interface_name: str = "desktop",
     interface_type: str = INTERFACE_TYPE_NGEO,
+    interface_config: Optional[Dict[str, Any]] = None,
     default: bool = False,
     **kwargs: Any,
 ) -> None:
     """Add the interface (desktop, mobile, ...) views and routes."""
-    del interface_type  # unused
     route = "/" if default else f"/{interface_name}"
-    add_interface_ngeo(
-        config,
-        route_name=interface_name,
-        route=route,
-        renderer=f"/etc/static-ngeo/{interface_name}.html",
-        **kwargs,
-    )
+    if interface_type == INTERFACE_TYPE_NGEO:
+        add_interface_ngeo(
+            config,
+            route_name=interface_name,
+            route=route,
+            renderer=f"/etc/static-ngeo/{interface_name}.html",
+            **kwargs,
+        )
+    elif interface_type == INTERFACE_TYPE_CANVAS:
+        assert interface_config is not None
+        add_interface_canvas(
+            config,
+            route_name=interface_name,
+            route=route,
+            interface_config=interface_config,
+            **kwargs,
+        )
+    else:
+        LOG.error(
+            "Unknown interface type '%s', should be '%s' or '%s'.",
+            interface_type,
+            INTERFACE_TYPE_NGEO,
+            INTERFACE_TYPE_CANVAS,
+        )
 
 
 def add_interface_ngeo(
@@ -123,9 +154,6 @@ def add_interface_ngeo(
     """Add the ngeo interfaces views and routes."""
 
     config.add_route(route_name, route, request_method="GET")
-    config.add_view(
-        Entry, attr="get_ngeo_index_vars", route_name=route_name, renderer=renderer, permission=permission
-    )
     # Permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
         f"{route_name}theme",
@@ -133,8 +161,44 @@ def add_interface_ngeo(
         request_method="GET",
     )
     config.add_view(
+        Entry, attr="get_ngeo_index_vars", route_name=route_name, renderer=renderer, permission=permission
+    )
+    config.add_view(
         Entry,
         attr="get_ngeo_index_vars",
+        route_name=f"{route_name}theme",
+        renderer=renderer,
+        permission=permission,
+    )
+
+
+def add_interface_canvas(
+    config: pyramid.config.Configurator,
+    route_name: str,
+    route: str,
+    interface_config: Dict[str, Any],
+    permission: Optional[str] = None,
+) -> None:
+    """Add the ngeo interfaces views and routes."""
+
+    renderer = f"/etc/geomapfish/interfaces/{route_name}.html.mako"
+    config.add_route(route_name, route, request_method="GET")
+    # Permalink theme: recover the theme for generating custom viewer.js URL
+    config.add_route(
+        f"{route_name}theme",
+        f"{route}{'' if route[-1] == '/' else '/'}theme/{{themes}}",
+        request_method="GET",
+    )
+    view = partial(canvas_view, interface_config=interface_config)
+    view.__module__ = canvas_view.__module__
+    config.add_view(
+        view,
+        route_name=route_name,
+        renderer=renderer,
+        permission=permission,
+    )
+    config.add_view(
+        view,
         route_name=f"{route_name}theme",
         renderer=renderer,
         permission=permission,
@@ -372,6 +436,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
     # Configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs("c2cgeoportal_geoportal:locale/")
 
+    config.include("pyramid_mako")
     config.include("c2cwsgiutils.pyramid.includeme")
     health_check = HealthCheck(config)
     config.registry["health_check"] = health_check
@@ -618,6 +683,13 @@ def includeme(config: pyramid.config.Configurator) -> None:
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
     config.add_cache_buster("c2cgeoportal_geoportal:static", version_cache_buster)
+
+    # Add the project static view without cache buster
+    config.add_static_view(
+        name="static-ngeo-dist",
+        path="/opt/c2cgeoportal/geoportal/node_modules/ngeo/dist",
+        cache_max_age=int(config.get_settings()["default_max_age"]),
+    )
 
     # Handles the other HTTP errors raised by the views. Without that,
     # the client receives a status=200 without content.

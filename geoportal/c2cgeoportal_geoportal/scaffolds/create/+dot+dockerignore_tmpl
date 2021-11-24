@@ -6,6 +6,7 @@
 !haproxy/
 !print/print-apps/
 !geoportal/vars*.yaml
+!geoportal/interfaces/
 !geoportal/CONST_vars.yaml
 !geoportal/CONST_config-schema.yaml
 !geoportal/{{package}}_geoportal/static

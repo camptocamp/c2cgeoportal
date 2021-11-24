@@ -1,7 +1,7 @@
 ---
 # Used for development: please do not remove this file
 
-version: '2'
+version: '2.3'
 
 services:
   db:
