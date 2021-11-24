@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Extend the application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Use Docker to deploy your application" href="docker.html" />
+    <link rel="prev" title="Vector tiles" href="vector_tiles.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="extend-the-application">
+<span id="extend-application"></span><h1>Extend the application<a class="headerlink" href="#extend-the-application" title="Permalink to this headline">¶</a></h1>
+<p>To add an additional component in the project in simple mode we should:
+- use an interface in canvas mode
+- add a custom docker-compose service
+- add a custom JavaScript file</p>
+<section id="interface-in-canvas-mode">
+<h2>Interface in canvas mode<a class="headerlink" href="#interface-in-canvas-mode" title="Permalink to this headline">¶</a></h2>
+<p>Get the files from the <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code>:</p>
+<p>prompt:: bash</p>
+<blockquote>
+<div><p>mkdir -p geoportal/interfaces/
+cp CONST_create_template/geoportal/interfaces/desktop_alt.html.mako </p>
+<blockquote>
+<div><p>geoportal/interfaces/desktop.html.mako</p>
+</div></blockquote>
+<p>mkdir -p geoportal/&lt;package&gt;_geoportal/static/images/
+cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static/images/background-layer-button.png </p>
+<blockquote>
+<div><p>geoportal/&lt;package&gt;_geoportal/static/images/</p>
+</div></blockquote>
+</div></blockquote>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code> your can see that there is some HTML tags that
+have an attribute slot. The slot says where the component should be added:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- ``header`` -&gt; in the header part of the page.
+- ``data`` -&gt; in the data panel on the left of the map.
+- ``tool-button`` -&gt; in the tools on the right of the map.
+- ``tool-button-separate`` -&gt; in the tools on the right of the map, for the shared button.
+- ``tool-&lt;panel-name&gt;`` -&gt; in the tools panel on the right of the map, when the tool is activated.
+- ``footer-&lt;panel-name&gt;`` -&gt; in the footer part of the page, when the panel is activated.
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file your interface should be declared like that:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">interfaces</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">canvas</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-docker-compose-service">
+<h2>Custom docker-compose service<a class="headerlink" href="#custom-docker-compose-service" title="Permalink to this headline">¶</a></h2>
+<p>Will be filled later.</p>
+</section>
+<section id="custom-javascript-file">
+<h2>Custom JavaScript file<a class="headerlink" href="#custom-javascript-file" title="Permalink to this headline">¶</a></h2>
+<p>Will be filled later.</p>
+</section>
+<section id="extend-the-geoportal-image">
+<h2>Extend the geoportal image<a class="headerlink" href="#extend-the-geoportal-image" title="Permalink to this headline">¶</a></h2>
+<p>Will be filled later.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="vector_tiles.html" title="previous chapter">Vector tiles</a></li>
+      <li>Next: <a href="docker.html" title="next chapter">Use Docker to deploy your application</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2021, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/integrator/extend_application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
