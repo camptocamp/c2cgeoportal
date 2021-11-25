@@ -37,36 +37,35 @@
             
   <section id="extend-the-application">
 <span id="extend-application"></span><h1>Extend the application<a class="headerlink" href="#extend-the-application" title="Permalink to this headline">¶</a></h1>
-<p>To add an additional component in the project in simple mode we should:
-- use an interface in canvas mode
-- add a custom docker-compose service
-- add a custom JavaScript file</p>
+<p>To add an additional component in the project in simple mode we should:</p>
+<ul class="simple">
+<li><p>use an interface in canvas mode</p></li>
+<li><p>add a custom docker-compose service</p></li>
+<li><p>add a custom JavaScript file</p></li>
+</ul>
 <section id="interface-in-canvas-mode">
 <h2>Interface in canvas mode<a class="headerlink" href="#interface-in-canvas-mode" title="Permalink to this headline">¶</a></h2>
 <p>Get the files from the <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code>:</p>
-<p>prompt:: bash</p>
-<blockquote>
-<div><p>mkdir -p geoportal/interfaces/
-cp CONST_create_template/geoportal/interfaces/desktop_alt.html.mako </p>
-<blockquote>
-<div><p>geoportal/interfaces/desktop.html.mako</p>
-</div></blockquote>
-<p>mkdir -p geoportal/&lt;package&gt;_geoportal/static/images/
-cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static/images/background-layer-button.png </p>
-<blockquote>
-<div><p>geoportal/&lt;package&gt;_geoportal/static/images/</p>
-</div></blockquote>
-</div></blockquote>
-<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code> your can see that there is some HTML tags that
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">mkdir -p geoportal/interfaces/</span>
+<span class="prompt1">cp CONST_create_template/geoportal/interfaces/desktop_alt.html.mako <span class="se">\</span>
+    geoportal/interfaces/desktop.html.mako</span>
+<span class="prompt1">mkdir -p geoportal/&lt;package&gt;_geoportal/static/images/</span>
+<span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static/images/background-layer-button.png <span class="se">\</span>
+    geoportal/&lt;package&gt;_geoportal/static/images/</span>
+</pre></div></div><p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code> your can see that there is some HTML tags that
 have an attribute slot. The slot says where the component should be added:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- ``header`` -&gt; in the header part of the page.
-- ``data`` -&gt; in the data panel on the left of the map.
-- ``tool-button`` -&gt; in the tools on the right of the map.
-- ``tool-button-separate`` -&gt; in the tools on the right of the map, for the shared button.
-- ``tool-&lt;panel-name&gt;`` -&gt; in the tools panel on the right of the map, when the tool is activated.
-- ``footer-&lt;panel-name&gt;`` -&gt; in the footer part of the page, when the panel is activated.
-</pre></div>
-</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">header</span></code> -&gt; in the header part of the page.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> -&gt; in the data panel on the left of the map.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tool-button</span></code> -&gt; in the tools on the right of the map.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tool-button-separate</span></code> -&gt; in the tools on the right of the map, for the shared button.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tool-&lt;panel-name&gt;</span></code> -&gt; in the tools panel on the right of the map, when the tool is activated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">footer-&lt;panel-name&gt;</span></code> -&gt; in the footer part of the page, when the panel is activated.</p></li>
+</ul>
 <p>In the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file your interface should be declared like that:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">interfaces</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
