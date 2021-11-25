@@ -76,11 +76,11 @@ def main() -> None:
                             '<link rel="shortcut icon" '
                             "href=\"${request.static_url('/etc/geomapfish/static/images/favicon.ico')}\" "
                             'crossorigin="anonymous" />',
-                            "<style>",
-                            "  .spinner-loading-mask {",
-                            "    width: 1em;",
-                            "  }",
-                            "</style>",
+                            "    <style>",
+                            "      .spinner-loading-mask {",
+                            "        width: 1em;",
+                            "      }",
+                            "    </style>",
                             "    ${header |n}",
                             "  </head>",
                         ]
