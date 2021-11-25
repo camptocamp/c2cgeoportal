@@ -10,7 +10,8 @@ ignore-paths:
 
 pep8:
   disable:
-    - E203
+    - E203 # Whitespace before ':'
+    - E722 # Do not use bare 'except'
   options:
     max-line-length: 110
 
