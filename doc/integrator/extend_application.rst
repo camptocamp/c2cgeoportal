@@ -4,6 +4,7 @@ Extend the application
 ======================
 
 To add an additional component in the project in simple mode we should:
+
 - use an interface in canvas mode
 - add a custom docker-compose service
 - add a custom JavaScript file
@@ -13,7 +14,7 @@ Interface in canvas mode
 
 Get the files from the ``CONST_create_template``:
 
-prompt:: bash
+.. prompt:: bash
 
     mkdir -p geoportal/interfaces/
     cp CONST_create_template/geoportal/interfaces/desktop_alt.html.mako \
@@ -23,7 +24,7 @@ prompt:: bash
         geoportal/<package>_geoportal/static/images/
 
 In the file ``geoportal/interfaces/desktop.html.mako`` your can see that there is some HTML tags that
-have an attribute slot. The slot says where the component should be added::
+have an attribute slot. The slot says where the component should be added:
 
 - ``header`` -> in the header part of the page.
 - ``data`` -> in the data panel on the left of the map.
