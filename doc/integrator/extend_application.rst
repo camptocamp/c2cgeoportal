@@ -55,4 +55,55 @@ Will be filled later.
 Extend the geoportal image
 --------------------------
 
-Will be filled later.
+If you need to configure your own authentication you will need to extend the ``geoportal`` Docker image.
+
+For that you will need to create a new folder named ``geoportal_custom``.
+
+An this folder, add a file named ``authentication.py`` with the content you need, the original content is:
+
+.. code:: python:
+
+   from pyramid.config import Configurator
+
+   from pyramid.authorization import ACLAuthorizationPolicy
+   from c2cgeoportal_geoportal.lib.authentication import create_authentication
+
+
+   def includeme(config: Configurator) -> None:
+       """
+       Initialize the authentication( for a Pyramid app.
+       """
+       config.set_authorization_policy(ACLAuthorizationPolicy())
+       config.set_authentication_policy(create_authentication(config.get_settings()))
+
+Create a file named ``Dockerfile`` with the following content:
+
+.. code::
+
+   ARG GEOMAPFISH_MAIN_VERSION
+
+   FROM camptocamp/geomapfish:${GEOMAPFISH_MAIN_VERSION} as runner
+
+   COPY authentication.py /app/geomapfishapp_geoportal/
+
+In the ``docker-compose.yaml`` file do the following changes:
+
+.. code:: diff
+
+       geoportal:
+         extends:
+           file: docker-compose-lib.yaml
+           service: geoportal
+   +     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
+   +     build:
+   +       context: geoportal_custom
+   +       args:
+   +         GIT_HASH: ${GIT_HASH}
+   +         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
+   +         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
+         volumes_from:
+
+.. warning::
+
+   With these changes, you can add your own authentication logic, but be aware that this logic may need
+   to be adapted when migrating to future versions of GeoMapFish.
