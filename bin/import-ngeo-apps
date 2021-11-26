@@ -114,12 +114,12 @@ def main() -> None:
                 )
                 data = _sub(
                     re.escape("<%=require('gmf/icons/spinner.svg?viewbox&height=1em')%>"),
-                    "${static['spinner'] |n}",
+                    "${spinner |n}",
                     data,
                 )
                 data = _sub(
                     re.escape("<%=require('./image/background-layer-button.png')%>"),
-                    "${static['background-layer-button']}",
+                    "${request.static_url('/etc/geomapfish/static/images/background-layer-button.png')}",
                     data,
                 )
 
