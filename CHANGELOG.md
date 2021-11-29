@@ -1,3 +1,6 @@
+##### 2.6.0.57
+* Better error when the result is not a JSON [c2cgeoportal#8962](https://github.com/camptocamp/c2cgeoportal/pull/8962)
+* Upgrade getitfixed for mails with SSL [c2cgeoportal#8969](https://github.com/camptocamp/c2cgeoportal/pull/8969)
 ##### 2.6.0.56
 * Fix code verification in oauth2 [c2cgeoportal#8885](https://github.com/camptocamp/c2cgeoportal/pull/8885)
 ##### 2.6.0.55
