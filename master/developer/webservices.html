@@ -623,6 +623,22 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <p>Result: the new <code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> geometry.</p>
 </section>
 </section>
+<section id="localization-pot">
+<h2>Localization pot<a class="headerlink" href="#localization-pot" title="Permalink to this headline">¶</a></h2>
+<p>This service create and returns the list of strings to translate for the localization in gettext POT format.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../locale.pot</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">interfaces</span></code>: List of interfaces we want to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">theme_regex</span></code>: Regular expression used to filter the themes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group_regex</span></code>: Regular expression used to filter the layer groups.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmslayer_regex</span></code>: Regular expression used to filter the WMS layers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmtslayer_regex</span></code>: Regular expression used to filter the WMTS layers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ignore_i18n_errors</span></code>: <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to ignore most of the error expected during the extraction.</p></li>
+</ul>
+</div></blockquote>
+</section>
 </section>
 
 
