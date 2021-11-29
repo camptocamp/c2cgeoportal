@@ -145,12 +145,12 @@ geoportal/c2cgeoportal_geoportal/scaffolds%advance_update/CONST_create_template/
 geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
 		lingua.cfg $(SRC_FILES)
 	mkdir --parent $(dir $@)
-	pot-create --config $< --keyword _ --output $@ $(SRC_FILES)
+	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(SRC_FILES)
 
 admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: \
 		lingua.cfg $(ADMIN_SRC_FILES)
 	mkdir --parent $(dir $@)
-	pot-create --config $< --keyword _ --output $@ $(ADMIN_SRC_FILES)
+	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(ADMIN_SRC_FILES)
 
 .PRECIOUS: %.mo
 %.mo: %.po

@@ -27,8 +27,8 @@ docker-compose ps
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
 docker-compose exec -T geoportal create-demo-theme
-make update-po
 docker-compose exec -T geoportal theme2fts
+make update-po
 
 ci/run-dc-logs docker-compose exec -T geoportal ci/waitwsgi https://front/themes
 for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector "layers/test/values/type enum" admin/layertree admin/layertree/children; do
@@ -41,6 +41,24 @@ ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/st
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/desktop_alt
 ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/desktop_alt | \
     grep '<script src="https://front/static-ngeo-dist/desktop\..*\.js" crossorigin="anonymous"></script>'
+
+function test_pot {
+    ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/locale.pot --output /tmp/locale.pot
+    ci/run-dc-logs docker-compose exec -T geoportal cat /tmp/locale.pot > /tmp/locale.pot
+    if [ "$(wc -l < /tmp/locale.pot)" -eq "$(wc -l < geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot)" ]
+    then
+        echo 'View locale.pot match in size with update-po'
+    else
+        echo 'Error: View locale.pot does not match in size with update-po'
+        sed -i 's%/app/%./geoportal/%g' /tmp/locale.pot
+        diff geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot /tmp/locale.pot
+        exit 1
+    fi
+}
+test_pot
+# A second time to check that the initialisation is working
+test_pot
+
 docker-compose stop qgisserver
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base

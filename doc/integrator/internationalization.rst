@@ -47,7 +47,7 @@ To update your ``po`` files, you should proceed as follows.
 
    You should run this command when you change something in the following:
 
-     * layer in MapFile (new or modified)
+     * layer in Mapfile (new or modified)
      * layer in administration (new or modified)
      * raster layer in the vars file (new or modified)
      * print template
@@ -59,7 +59,7 @@ To update your ``po`` files, you should proceed as follows.
 
 .. note::
 
-   In MapFiles, attributes added by mapserver substitution will not be collected
+   In Mapfiles, attributes added by MapServer substitution will not be collected
    for translation.
 
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -92,7 +92,7 @@ Seel also `i18next Configuration Options <https://www.i18next.com/overview/confi
 Different localization sets
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you use the application with different database that contain tow different layer tree you should
+If you use the application with different databases that contains two different layer trees you should
 have a suffix on your po files.
 
 Before calling the `update-po` command you should rename the po files you want to update without the suffix,

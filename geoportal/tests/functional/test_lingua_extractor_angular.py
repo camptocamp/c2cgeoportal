@@ -1,4 +1,6 @@
-# Copyright (c) 2021-2021, Camptocamp SA
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2020, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,51 +27,27 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from unittest.mock import patch
+# pylint: disable=missing-docstring
 
-import pytest
-from c2c.template.config import config as configuration
-from pyramid.testing import DummyRequest
-from tests.functional import setup_common as setup_module
+from unittest.mock import Mock, patch
 
-
-@pytest.fixture
-def settings():
-    setup_module()
-    yield {**configuration.get_config()}
+from c2cgeoportal_geoportal.lib.lingua_extractor import GeomapfishAngularExtractor
 
 
-@pytest.fixture
-def dbsession(settings):
-    from c2cgeoportal_commons.models import DBSession
+class TestGeomapfishAngularExtractor:
+    def test_extract_desktop_html_ejs(self):
+        extractor = GeomapfishAngularExtractor()
+        extractor.config = {
+            "package": "geomapfish_geoportal",
+        }
 
-    with patch("c2cgeoportal_geoportal.views.vector_tiles.DBSession", new=DBSession):
-        yield DBSession
+        with patch(
+            "c2cgeoportal_geoportal.lib.lingua_extractor.subprocess.check_output",
+            return_value=b'[["desktop.html.ejs:34","Theme:"]]',
+        ):
+            options = Mock()
+            options.keywords = []
 
+            messages = list(extractor("desktop.html.ejs", options))
 
-@pytest.fixture
-def transact(dbsession):
-    t = dbsession.begin_nested()
-    yield t
-    t.rollback()
-    dbsession.expire_all()
-
-
-@pytest.fixture
-def dummy_request(dbsession):
-    """
-    A lightweight dummy request.
-
-    This request is ultra-lightweight and should be used only when the request
-    itself is not a large focus in the call-stack.  It is much easier to mock
-    and control side-effects using this object, however:
-
-    - It does not have request extensions applied.
-    - Threadlocals are not properly pushed.
-
-    """
-    request = DummyRequest()
-    request.host = "example.com"
-    request.dbsession = dbsession
-
-    return request
+        assert {msg.msgid for msg in messages} == {"Theme:"}
