@@ -3,7 +3,7 @@ from pyramid.security import ALL_PERMISSIONS, Allow
 
 
 class Root:
-    """The pyramid root object."""
+    """The Pyramid root object."""
 
     __acl__ = [(Allow, "role_admin", ALL_PERMISSIONS)]
 
