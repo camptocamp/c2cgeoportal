@@ -37,6 +37,7 @@ import shutil
 import subprocess
 import sys
 from argparse import ArgumentParser
+from json.decoder import JSONDecodeError
 from subprocess import call, check_call, check_output
 from typing import Any, Dict, cast
 
@@ -208,12 +209,20 @@ class C2cUpgradeTool:
 
             print(colorize("=============", RED))
             print(colorize("Checker error", RED))
-            for name, value in resp.json()["failures"].items():
-                print(colorize("Test '{}' failed with result:".format(name), YELLOW))
-                del value["level"]
-                del value["timing"]
+            try:
+                for name, value in resp.json()["failures"].items():
+                    print(colorize("Test '{}' failed with result:".format(name), YELLOW))
+                    del value["level"]
+                    del value["timing"]
 
-                print(yaml.dump(value) if value != {} else "No result")
+                    print(yaml.dump(value) if value != {} else "No result")
+            except JSONDecodeError:
+                print(
+                    colorize(
+                        "Response is not a JSON '{}', {} {}".format(resp.text, resp.reason, resp.status_code),
+                        RED,
+                    )
+                )
 
             return False, "\n".join(["Checker error:", run_curl])
 
