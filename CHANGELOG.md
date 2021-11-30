@@ -1,3 +1,6 @@
+##### 2.4.2.64
+* Update CVE ignores [c2cgeoportal#8978](https://github.com/camptocamp/c2cgeoportal/pull/8978)
+* Update CVE ignores [ngeo#7758](https://github.com/camptocamp/ngeo/pull/7758)
 ##### 2.4.2.63
 * Ignore some new CVE [c2cgeoportal#8942](https://github.com/camptocamp/c2cgeoportal/pull/8942)
 * Update CVE ids [ngeo#7711](https://github.com/camptocamp/ngeo/pull/7711)
