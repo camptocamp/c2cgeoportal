@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-prospector = {extras = ["with_mypy", "with_bandit"],version = "==1.5.1"}
+prospector = {extras = ["with_mypy", "with_bandit"],version = "==1.5.2"}
 flake8 = "==3.9.2"
 types-pyyaml = "==6.0.1"
 
