@@ -1,3 +1,5 @@
+##### 2.6.0.59
+* Ignore [1005084] Open redirect in url-parse [c2cgeoportal#8984](https://github.com/camptocamp/c2cgeoportal/pull/8984)
 ##### 2.6.0.58
 * Ignore [1005367] Arbitrary Code Execution in underscore [ngeo#7768](https://github.com/camptocamp/ngeo/pull/7768)
 ##### 2.6.0.57
