@@ -50,7 +50,7 @@ psycopg2-binary = "==2.9.2"  # geoportal
 pycryptodome = "==3.12.0"  # geoportal
 pyproj = "==3.3.0"  # admin, other?
 pyotp = "==2.6.0"  # geoportal
-pyramid = "==1.10.8"  # geoportal
+pyramid = "==2.0"  # geoportal
 pyramid_debugtoolbar = "==4.9"  # geoportal
 pyramid-jinja2 = "==2.8"  # admin
 pyramid_mako = "==1.1.0"  # geoportal
