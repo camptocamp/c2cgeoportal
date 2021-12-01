@@ -1,3 +1,5 @@
+##### 2.4.2.65
+* Audit fix, see commits [c2cgeoportal#8982](https://github.com/camptocamp/c2cgeoportal/pull/8982)
 ##### 2.4.2.64
 * Update CVE ignores [c2cgeoportal#8978](https://github.com/camptocamp/c2cgeoportal/pull/8978)
 * Update CVE ignores [ngeo#7758](https://github.com/camptocamp/ngeo/pull/7758)
