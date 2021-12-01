@@ -1,3 +1,5 @@
+##### 2.6.0.58
+* Ignore [1005367] Arbitrary Code Execution in underscore [ngeo#7768](https://github.com/camptocamp/ngeo/pull/7768)
 ##### 2.6.0.57
 * Better error when the result is not a JSON [c2cgeoportal#8962](https://github.com/camptocamp/c2cgeoportal/pull/8962)
 * Upgrade getitfixed for mails with SSL [c2cgeoportal#8969](https://github.com/camptocamp/c2cgeoportal/pull/8969)
