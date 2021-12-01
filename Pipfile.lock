@@ -1576,11 +1576,11 @@
     "develop": {
         "astroid": {
             "hashes": [
-                "sha256:5f6f75e45f15290e73b56f9dfde95b4bf96382284cde406ef4203e928335a495",
-                "sha256:cd8326b424c971e7d87678609cf6275d22028afd37d6ac59c16d47f1245882f6"
+                "sha256:5939cf55de24b92bda00345d4d0659d01b3c7dafb5055165c330bc7c568ba273",
+                "sha256:776ca0b748b4ad69c00bfe0fff38fa2d21c338e12c84aa9715ee0d473c422778"
             ],
             "markers": "python_version ~= '3.6'",
-            "version": "==2.8.6"
+            "version": "==2.9.0"
         },
         "attrs": {
             "hashes": [
@@ -2329,14 +2329,6 @@
             ],
             "version": "==0.10.0"
         },
-        "pip": {
-            "hashes": [
-                "sha256:deaf32dcd9ab821e359cd8330786bcd077604b5c5730c0b096eda46f95c24a2d",
-                "sha256:fd11ba3d0fdb4c07fbc5ecbba0b1b719809420f25038f8ee3cd913d3faa3033a"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==21.3.1"
-        },
         "pipenv": {
             "hashes": [
                 "sha256:5f28737dafd5b1a100850f97bb98dfb96bba41fd2d6beae72a287a8da10b0d3f",
@@ -2381,11 +2373,11 @@
                 "with_mypy"
             ],
             "hashes": [
-                "sha256:47f8ff3fd36ae276967eb392ca20b300a7bdea66c0d0252250a4d89a6c03ab15",
-                "sha256:851c2892cd615cfee91fd27cfaf7a5061d14daf2853aa8f012e927b98f919578"
+                "sha256:7f7081308c15e629904e7e8231458ab24f3770ed418a55eb2def5ce3efbaf861",
+                "sha256:cfe932db07849c911b12c08e8d43853e09d3e639359ccfa6a2b26c6bca3aefff"
             ],
             "index": "pypi",
-            "version": "==1.5.1"
+            "version": "==1.5.3.dev0"
         },
         "protobuf": {
             "hashes": [
@@ -2533,11 +2525,11 @@
         },
         "pylint": {
             "hashes": [
-                "sha256:0f358e221c45cbd4dad2a1e4b883e75d28acdcccd29d40c76eb72b307269b126",
-                "sha256:2c9843fff1a88ca0ad98a256806c82c5a8f86086e7ccbdb93297d86c3f90c436"
+                "sha256:4f4a52b132c05b49094b28e109febcec6bfb7bc6961c7485a5ad0a0f961df289",
+                "sha256:b4b5a7b6d04e914a11c198c816042af1fb2d3cda29bb0c98a9c637010da2a5c5"
             ],
-            "markers": "python_version ~= '3.6'",
-            "version": "==2.11.1"
+            "markers": "python_full_version >= '3.6.2'",
+            "version": "==2.12.1"
         },
         "pylint-celery": {
             "hashes": [
