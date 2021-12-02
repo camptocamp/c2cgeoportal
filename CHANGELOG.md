@@ -1,3 +1,6 @@
+##### 2.6.0.60
+* Remove some ignored CVE [c2cgeoportal#8991](https://github.com/camptocamp/c2cgeoportal/pull/8991)
+* Remove some ignored CVE [ngeo#7773](https://github.com/camptocamp/ngeo/pull/7773)
 ##### 2.6.0.59
 * Ignore [1005084] Open redirect in url-parse [c2cgeoportal#8984](https://github.com/camptocamp/c2cgeoportal/pull/8984)
 ##### 2.6.0.58
