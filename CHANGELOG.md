@@ -1,3 +1,5 @@
+##### 2.5.0.179
+* Remove some ignored CVE [c2cgeoportal#8990](https://github.com/camptocamp/c2cgeoportal/pull/8990)
 ##### 2.5.0.178
 * Fix and ignore CVE [c2cgeoportal#8983](https://github.com/camptocamp/c2cgeoportal/pull/8983)
 ##### 2.5.0.177
