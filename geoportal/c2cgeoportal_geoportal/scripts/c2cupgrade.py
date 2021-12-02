@@ -401,11 +401,15 @@ class C2cUpgradeTool:
         def changed_files() -> List[str]:
             try:
                 status = [
-                    [s for s in status.split(" ") if s]
+                    [s for s in status.strip().split(" ", maxsplit=1) if s]
                     for status in check_git_status_output().strip().split("\n")
                     if status
                 ]
-                return [file for state, file in status if state == "M" and not file.startswith("CONST_")]
+                return [
+                    file.strip().split(" ")[-1]
+                    for state, file in status
+                    if state == "M" and not file.strip().startswith("CONST_")
+                ]
             except:  # pylint: disable=bare-except
                 self.print_step(
                     step,
