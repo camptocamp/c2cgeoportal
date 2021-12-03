@@ -29,7 +29,7 @@ prospector: pipenv.timestamp
 otherchecks:
 	docker build --target=checks \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
-	if [ "`git grep demo_ doc`" != "" ]; \
+	if [ "$(git grep demo_ doc|grep -v '^doc/integrator/extend_application.rst:')" != "" ]; \
 	then \
 		echo "ERROR: You still have a demo_ in your documentation"; \
 		git grep demo_ doc; \

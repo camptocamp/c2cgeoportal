@@ -141,10 +141,5 @@ def canvas_view(request: pyramid.request.Request, interface_config: Dict[str, An
         "footer": "\n    ".join(
             [f'<script src="{request.static_url(js)}" crossorigin="anonymous"></script>' for js in js_files]
         ),
-        "static": {
-            "spinner": spinner,
-            "background-layer-button": request.static_url(
-                "/etc/geomapfish/static/images/background-layer-button.png"
-            ),
-        },
+        "spinner": spinner,
     }
