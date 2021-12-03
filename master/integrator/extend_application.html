@@ -84,7 +84,51 @@ have an attribute slot. The slot says where the component should be added:</p>
 </section>
 <section id="extend-the-geoportal-image">
 <h2>Extend the geoportal image<a class="headerlink" href="#extend-the-geoportal-image" title="Permalink to this headline">¶</a></h2>
-<p>Will be filled later.</p>
+<p>If you need to configure your own authentication you will need to extend the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> Docker image.</p>
+<p>For that you will need to create a new folder named <code class="docutils literal notranslate"><span class="pre">geoportal_custom</span></code>.</p>
+<p>An this folder, add a file named <code class="docutils literal notranslate"><span class="pre">authentication.py</span></code> with the content you need, the original content is:</p>
+<div class="highlight-python: notranslate"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
+
+from pyramid.authorization import ACLAuthorizationPolicy
+from c2cgeoportal_geoportal.lib.authentication import create_authentication
+
+
+def includeme(config: Configurator) -&gt; None:
+    &quot;&quot;&quot;
+    Initialize the authentication( for a Pyramid app.
+    &quot;&quot;&quot;
+    config.set_authorization_policy(ACLAuthorizationPolicy())
+    config.set_authentication_policy(create_authentication(config.get_settings()))
+</pre></div>
+</div>
+<p>Create a file named <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> with the following content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ARG GEOMAPFISH_MAIN_VERSION
+
+FROM camptocamp/geomapfish:${GEOMAPFISH_MAIN_VERSION} as runner
+
+COPY authentication.py /app/geomapfishapp_geoportal/
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file do the following changes:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>    geoportal:
+      extends:
+        file: docker-compose-lib.yaml
+        service: geoportal
+<span class="gi">+     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}</span>
+<span class="gi">+     build:</span>
+<span class="gi">+       context: geoportal_custom</span>
+<span class="gi">+       args:</span>
+<span class="gi">+         GIT_HASH: ${GIT_HASH}</span>
+<span class="gi">+         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}</span>
+<span class="gi">+         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}</span>
+      volumes_from:
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>With these changes, you can add your own authentication logic, but be aware that this logic may need
+to be adapted when migrating to future versions of GeoMapFish.</p>
+</div>
 </section>
 </section>
 
