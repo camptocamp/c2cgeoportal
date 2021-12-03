@@ -43,21 +43,116 @@
 <li><p>add a custom docker-compose service</p></li>
 <li><p>add a custom JavaScript file</p></li>
 </ul>
-<section id="interface-in-canvas-mode">
-<h2>Interface in canvas mode<a class="headerlink" href="#interface-in-canvas-mode" title="Permalink to this headline">¶</a></h2>
-<p>Get the files from the <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code>:</p>
+<p>In this tutorial, we will:</p>
+<ul class="simple">
+<li><p>Create a new Docker image for the new service</p></li>
+<li><p>Integrate it to the project</p></li>
+<li><p>Create the new interface based on canvas</p></li>
+<li><p>Create a new WebComponent</p></li>
+<li><p>Build it in the config image</p></li>
+<li><p>Add it to the interface template</p></li>
+<li><p>Debugging Custom JavaScript and service</p></li>
+</ul>
+<section id="create-a-new-docker-image-for-the-new-service">
+<h2>Create a new Docker image for the new service<a class="headerlink" href="#create-a-new-docker-image-for-the-new-service" title="Permalink to this headline">¶</a></h2>
+<p>In this chapter we will create a new Pyramid application that uses Cornice in a Docker image.</p>
+<p>We will use the Pyramid Cookiecutter starter, we can use it directly
+(by running <code class="docutils literal notranslate"><span class="pre">cookiecutter</span> <span class="pre">gh:Pylons/pyramid-cookiecutter-starter</span></code>) if you want to do your
+image by your own, but in this tutorial we will get the files directly from the demo.
+For that run the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">mkdir -p geoportal/interfaces/</span>
+</style><span class="prompt1"><span class="nb">cd</span> /tmp</span>
+<span class="prompt1">git clone git@github.com:camptocamp/demo_geomapfish.git</span>
+<span class="prompt1"><span class="nb">cd</span> -</span>
+<span class="prompt1">cp --recursive /tmp/demo_geomapfish/custom /tmp/demo_geomapfish/haproxy .</span>
+</pre></div></div><p>Add in <code class="docutils literal notranslate"><span class="pre">.prettierignore</span></code> the following line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">custom</span><span class="o">/</span><span class="n">Pipfile</span><span class="o">.</span><span class="n">lock</span>
+</pre></div>
+</div>
+<p>Apply the following diff in the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- known_first_party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin,geomapfish_geoportal</span>
+<span class="gi">+ known_first_party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin,geomapfish_geoportal,custom</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The important files are:</p>
+<ul class="simple">
+<li><p>The Database model <a class="reference external" href="https://github.com/camptocamp/demo_geomapfish/blob/master/custom/custom/models/feedback.py">custom/custom/models/feedback.py</a></p></li>
+<li><p>The view <a class="reference external" href="https://github.com/camptocamp/demo_geomapfish/blob/master/custom/custom/views/feedback.py">custom/custom/views/feedback.py</a></p></li>
+</ul>
+</div>
+</section>
+<section id="integrate-it-to-the-project">
+<h2>Integrate it to the project<a class="headerlink" href="#integrate-it-to-the-project" title="Permalink to this headline">¶</a></h2>
+<p>Add the following service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, with that we will be able to build and run the image:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
+  <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span>
+  <span class="nt">build</span><span class="p">:</span>
+    <span class="nt">context</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom</span>
+    <span class="nt">args</span><span class="p">:</span>
+      <span class="nt">GIT_HASH</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span>
+  <span class="nt">environment</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">GUNICORN_CMD_ARGS=${GUNICORN_PARAMS}</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">VISIBLE_WEB_HOST</span>
+</pre></div>
+</div>
+<p>Add the following service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code>, To be able to run the service
+in debugging mode with auto reloading:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
+  <span class="nt">command</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">/usr/local/bin/gunicorn</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">--reload</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">--paste</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">development.ini</span>
+  <span class="nt">volumes</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./custom/custom:/app/custom</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you need the user credentials, you can do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">&quot;http://geoportal:8080/loginuser&quot;</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Cookie&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Cookie&quot;</span><span class="p">),</span> <span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="create-the-new-interface-based-on-canvas">
+<h2>Create the new interface based on canvas<a class="headerlink" href="#create-the-new-interface-based-on-canvas" title="Permalink to this headline">¶</a></h2>
+<p>Get the files from the <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mkdir -p geoportal/interfaces/</span>
 <span class="prompt1">cp CONST_create_template/geoportal/interfaces/desktop_alt.html.mako <span class="se">\</span>
     geoportal/interfaces/desktop.html.mako</span>
 <span class="prompt1">mkdir -p geoportal/&lt;package&gt;_geoportal/static/images/</span>
 <span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static/images/background-layer-button.png <span class="se">\</span>
     geoportal/&lt;package&gt;_geoportal/static/images/</span>
-</pre></div></div><p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code> your can see that there is some HTML tags that
-have an attribute slot. The slot says where the component should be added:</p>
+</pre></div></div><p>In the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file your interface should be declared like that:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">interfaces</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">canvas</span>
+    <span class="nt">layout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> is the interface name as usual.
+The <code class="docutils literal notranslate"><span class="pre">type</span></code> should be set to ‘canvas’ to be able to get the canvas based interface present in the config image.
+The <code class="docutils literal notranslate"><span class="pre">layout</span></code> is used to get the JavaScript and CSS files from ngeo.
+The <code class="docutils literal notranslate"><span class="pre">default</span></code> is used to set the default interface as usual.</p>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code> you will use the following variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">request</span></code> -&gt; the Pyramid request.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">header</span></code> -&gt; the header additional part of the page, the <code class="docutils literal notranslate"><span class="pre">dynamicUrl</span></code> and <code class="docutils literal notranslate"><span class="pre">interface</span></code> meta, and the CSS inclusion.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spinner</span></code> -&gt; the spinner SVG image content.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">footer</span></code> -&gt; the footer additional part of the page, for the JavaScript inclusion.</p></li>
+</ul>
+<p>You can also see that there is some HTML tags that have an attribute slot.
+The slot says where the component should be added:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">header</span></code> -&gt; in the header part of the page.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> -&gt; in the data panel on the left of the map.</p></li>
@@ -66,22 +161,157 @@ have an attribute slot. The slot says where the component should be added:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">tool-&lt;panel-name&gt;</span></code> -&gt; in the tools panel on the right of the map, when the tool is activated.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">footer-&lt;panel-name&gt;</span></code> -&gt; in the footer part of the page, when the panel is activated.</p></li>
 </ul>
-<p>In the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file your interface should be declared like that:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">interfaces</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">desktop</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">canvas</span>
-    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> as <code class="docutils literal notranslate"><span class="pre">managed_files</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">geoportal/interfaces/desktop_alt\.html\.mako</span>
 </pre></div>
 </div>
 </section>
-<section id="custom-docker-compose-service">
-<h2>Custom docker-compose service<a class="headerlink" href="#custom-docker-compose-service" title="Permalink to this headline">¶</a></h2>
-<p>Will be filled later.</p>
+<section id="create-a-new-webcomponent">
+<h2>Create a new WebComponent<a class="headerlink" href="#create-a-new-webcomponent" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial we will create a new WebComponent based on <a class="reference external" href="https://lit.dev/">Lit</a>,
+and build by <a class="reference external" href="https://vitejs.dev/">Vite</a>.</p>
+<p>We will add a button in the tools bar which opens a new tool panel and that can be used to send a feedback.</p>
+<p>The tool button should be an instance of
+<a href="#id1"><span class="problematic" id="id2">`gmfapi.elements.ToolButtonElement&lt;https://camptocamp.github.io/ngeo/|main_branch|/apidoc/classes/srcapi_elements_ToolButtonElement.default.html&gt;`_</span></a>.</p>
+<p>We will directly use
+<a href="#id3"><span class="problematic" id="id4">`gmf-tool-button&lt;https://camptocamp.github.io/ngeo/|main_branch|/apidoc/classes/srcapi_elements_ToolButtonElement.ToolButtonDefault.html&gt;`_</span></a>.</p>
+<p>And panel should be an instance of:
+<a href="#id5"><span class="problematic" id="id6">`gmfapi.elements.ToolPanelElement&lt;https://camptocamp.github.io/ngeo/|main_branch|/apidoc/classes/srcapi_elements_ToolPanelElement.default.html&gt;`_</span></a>.</p>
+<p>We will directly get the existing component from the demo.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> /tmp</span>
+<span class="prompt1">git clone git@github.com:camptocamp/demo_geomapfish.git</span>
+<span class="prompt1"><span class="nb">cd</span> -</span>
+<span class="prompt1">cp --recursive /tmp/demo_geomapfish/webcomponents <span class="se">\</span>
+   /tmp/demo_geomapfish/package.json <span class="se">\</span>
+   /tmp/demo_geomapfish/package-lock.json <span class="se">\</span>
+   /tmp/demo_geomapfish/tsconfig.json <span class="se">\</span>
+   /tmp/demo_geomapfish/vite.config.ts .</span>
+</pre></div></div><p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">node_modules</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The web component file is <a class="reference external" href="https://github.com/camptocamp/demo_geomapfish/blob/master/custom/webcomponents/feedback.ts">custom/webcomponents/feedback.tspy</a>.</p>
+</div>
 </section>
-<section id="custom-javascript-file">
-<h2>Custom JavaScript file<a class="headerlink" href="#custom-javascript-file" title="Permalink to this headline">¶</a></h2>
-<p>Will be filled later.</p>
+<section id="build-it-in-the-config-image">
+<h2>Build it in the config image<a class="headerlink" href="#build-it-in-the-config-image" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> we will add two stages, one to build the WebComponent and an other just to add the
+build artifacts to the config image.</p>
+<p>Add the following lines at the end of <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">###############################################################################</span>
+
+<span class="n">FROM</span> <span class="n">node</span><span class="p">:</span><span class="mi">16</span><span class="o">-</span><span class="n">slim</span> <span class="n">AS</span> <span class="n">custom</span><span class="o">-</span><span class="n">build</span>
+
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">app</span>
+<span class="n">COPY</span> <span class="n">package</span><span class="o">.</span><span class="n">json</span> <span class="o">./</span>
+
+<span class="n">RUN</span> <span class="n">npm</span> <span class="n">install</span>
+
+<span class="n">COPY</span> <span class="n">tsconfig</span><span class="o">.</span><span class="n">json</span> <span class="n">vite</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ts</span> <span class="o">./</span>
+<span class="n">COPY</span> <span class="n">webcomponents</span><span class="o">/</span> <span class="o">./</span><span class="n">webcomponents</span><span class="o">/</span>
+<span class="n">RUN</span> <span class="n">npm</span> <span class="n">run</span> <span class="n">build</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">FROM</span> <span class="n">gmf_config</span> <span class="n">AS</span> <span class="n">config</span>
+<span class="n">COPY</span> <span class="o">--</span><span class="n">from</span><span class="o">=</span><span class="n">custom</span><span class="o">-</span><span class="n">build</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">dist</span><span class="o">/</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">geomapfish</span><span class="o">/</span><span class="n">static</span><span class="o">/</span><span class="n">custom</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!webcomponents/
+!package.json
+!package-lock.json
+!tsconfig.json
+!vite.config.ts
+</pre></div>
+</div>
+<p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> as <code class="docutils literal notranslate"><span class="pre">managed_files</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">\.dockerignore</span>
+</pre></div>
+</div>
 </section>
+<section id="add-it-to-the-interface-template">
+<h2>Add it to the interface template<a class="headerlink" href="#add-it-to-the-interface-template" title="Permalink to this headline">¶</a></h2>
+<p>Then we will include the following HTML in the canvas element, in <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`html</span>
+<span class="pre">&lt;gmf-tool-button</span> <span class="pre">slot=&quot;tool-button&quot;</span> <span class="pre">iconClasses=&quot;fas</span> <span class="pre">fa-file-signature&quot;</span> <span class="pre">panelName=&quot;feedback&quot;&gt;&lt;/gmf-tool-button&gt;</span>
+<span class="pre">`</span></code></p>
+<p>The panel will be included with the following HTML:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`html</span>
+<span class="pre">&lt;proj-feedback</span> <span class="pre">slot=&quot;tool-panel-feedback&quot;&gt;&lt;/proj-feedback&gt;</span>
+<span class="pre">`</span></code></p>
+<p>The modifications in the <code class="docutils literal notranslate"><span class="pre">vars</span></code> file are:
+- Add the JavaScript file as <code class="docutils literal notranslate"><span class="pre">gmfCustomJavascriptUrl</span></code>.
+- Be sure that we have the CSS file as <code class="docutils literal notranslate"><span class="pre">gmfCustomStylesheetUrl</span></code>.
+- Add in comment all the needed configuration to be able to debug.</p>
+<p>Apply the following diff in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>  vars:
+    interfaces_config:
+      desktop:
+        constants:
+<span class="gi">+</span>
+<span class="gi">+         # For dev, the corresponding values in static should also be commented.</span>
+<span class="gi">+         # gmfCustomJavascriptUrl:</span>
+<span class="gi">+         #   - https://localhost:3001/@vite/client</span>
+<span class="gi">+         #   - https://localhost:3001/webcomponents/index.ts</span>
+<span class="gi">+</span>
+<span class="gi">+         # Used in the web component to get the service URL based on `gmfBase`.</span>
+<span class="gi">+         sitnFeedbackPath: custom/feedback</span>
+<span class="gi">+</span>
+<span class="gi">+       static:</span>
+<span class="gi">+         # Those two lines should be commented in dev mode.</span>
+<span class="gi">+         gmfCustomJavascriptUrl:</span>
+<span class="gi">+           name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+<span class="gi">+         gmfCustomStylesheetUrl:</span>
+<span class="gi">+           name: /etc/geomapfish/static/css/desktop_alt.css</span>
+<span class="gi">+</span>
+<span class="gi">+       routes:</span>
+<span class="gi">+         gmfBase:</span>
+<span class="gi">+           name: base</span>
+
+<span class="gi">+   # For dev this line is needed to allow the page to load the files from Vite dev server.</span>
+<span class="gi">+   # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="debugging-custom-javascript-and-service">
+<h2>Debugging Custom JavaScript and service<a class="headerlink" href="#debugging-custom-javascript-and-service" title="Permalink to this headline">¶</a></h2>
+<p>The usual build and run will also work for the custom JavaScript and service.
+Build and run as usual:</p>
+<p>To have a development environment with auto-reload mode, we will start the Vite dev server
+locally on port <code class="docutils literal notranslate"><span class="pre">3001</span></code>.</p>
+<p>We also need to get the file from the Vite dev server, for that we need to do the following modifications
+in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> (don’t commit them):</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>           # For dev, the corresponding values in static should also be removed.
+<span class="gd">-          # gmfCustomJavascriptUrl:</span>
+<span class="gd">-          #   - https://localhost:3001/@vite/client</span>
+<span class="gd">-          #   - https://localhost:3001/webcomponents/index.ts</span>
+<span class="gi">+          gmfCustomJavascriptUrl:</span>
+<span class="gi">+            - https://localhost:3001/@vite/client</span>
+<span class="gi">+            - https://localhost:3001/webcomponents/index.ts</span>
+
+
+           # Those two lines should be commented in dev mode.
+<span class="gd">-          gmfCustomJavascriptUrl:</span>
+<span class="gd">-            name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+<span class="gi">+          # gmfCustomJavascriptUrl:</span>
+<span class="gi">+          #   name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+
+
+     # For dev this line is needed to allow the page to load the files from Vite dev server.
+<span class="gd">-    # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
+<span class="gi">+    content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
+</pre></div>
+</div>
+<p>Rename the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> file to <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
+<p>Build and run as usual.</p>
+<p>Download and start the Vite dev server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">npm install</span>
+<span class="prompt1">npm run dev</span>
+</pre></div></div></section>
 <section id="extend-the-geoportal-image">
 <h2>Extend the geoportal image<a class="headerlink" href="#extend-the-geoportal-image" title="Permalink to this headline">¶</a></h2>
 <p>If you need to configure your own authentication you will need to extend the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> Docker image.</p>
