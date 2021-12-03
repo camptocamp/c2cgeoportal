@@ -1,0 +1,19 @@
+extends:
+  - eslint:recommended
+
+globals:
+  '{{cookiecutter.package}}': false
+
+env:
+  es6: true
+  node: true
+  browser: true
+  jquery: true
+
+parserOptions:
+  sourceType: module
+  ecmaVersion: 2020
+
+rules:
+  no-console: 0
+  no-unused-vars: 0

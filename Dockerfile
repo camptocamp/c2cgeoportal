@@ -221,7 +221,7 @@ RUN \
     --editable=geoportal \
     --editable=admin && \
     python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.* \
-    -x '/usr/local/lib/python3.*/dist-packages/(pipenv|networkx)/'
+    -x '(/usr/local/lib/python3.*/dist-packages/(pipenv|networkx)/|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
 
 WORKDIR /opt/c2cgeoportal/geoportal
 

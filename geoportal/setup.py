@@ -84,6 +84,7 @@ setup(
             "theme2fts = c2cgeoportal_geoportal.scripts.theme2fts:main",
             "create-demo-theme = c2cgeoportal_geoportal.scripts.create_demo_theme:main",
             "urllogin = c2cgeoportal_geoportal.scripts.urllogin:main",
+            "pcreate = c2cgeoportal_geoportal.scripts.pcreate:main",
         ],
         "pyramid.scaffold": [
             "c2cgeoportal_create = c2cgeoportal_geoportal.scaffolds:TemplateCreate",

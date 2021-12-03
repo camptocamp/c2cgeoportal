@@ -1,0 +1,16 @@
+{
+    "project": "test_project",
+    "package": "test_project",
+    "srid": "2056",
+    "extent": "",
+    "extent_mapserver": "",
+    "authtkt_secret": "",
+    "unsafe_long_version": false,
+    "geomapfish_version": "",
+    "geomapfish_main_version": "",
+    "geomapfish_main_version_dash": "",
+    "geomapfish_version_tag": "",
+    "geomapfish_version_tag_env": "",
+    "geomapfish_major_version_tag": "",
+    "geomapfish_major_version_tag_env": ""
+}

@@ -1,0 +1,16 @@
+*.pyc
+*.pyo
+__pycache__/
+/.env
+/env.personal
+/docker-compose.override.yaml
+/upgrade
+/.upgrade.yaml
+/.UPGRADE*
+/geoportal/{{cookiecutter.package}}_geoportal/locale/{{cookiecutter.package}}_geoportal-client.pot
+
+# Generated with dev mode
+/geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/index.html
+/geoportal/{{cookiecutter.package}}_geoportal/static/robot.txt
+/print/print-apps/{{cookiecutter.package}}/config.yaml
+/mapserver/tinyows.xml

@@ -1,6 +1,0 @@
-Dockerfile
-vars*.yaml
-CONST_vars.yaml
-CONST_config-schema.yaml
-{{package}}_geoportal/locale
-{{package}}_geoportal/static
