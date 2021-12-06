@@ -16,7 +16,7 @@ pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==3.0.0"  # tests
 transifex-client = "==0.14.3"  # Makefile
 WebTest = "==3.0.0"  # admin tests
-prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.5.2"}
+prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.5.3"}
 flake8 = "==3.9.2"
 types-pytz = "==2021.3.1"
 types-pyyaml = "==6.0.1"
