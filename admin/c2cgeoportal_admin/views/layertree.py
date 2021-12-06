@@ -70,9 +70,7 @@ class LayerTreeViews:
         if group_id is None:
             items = self._dbsession.query(Theme).order_by(Theme.ordering)
             if interface is not None:
-                items = items.join(Theme.interfaces).filter(  # pylint: disable=no-member
-                    Interface.name == interface
-                )
+                items = items.join(Theme.interfaces).filter(Interface.name == interface)
 
         else:
             items = (
