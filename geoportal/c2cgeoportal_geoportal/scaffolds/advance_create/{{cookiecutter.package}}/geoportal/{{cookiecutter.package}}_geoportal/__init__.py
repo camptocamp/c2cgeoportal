@@ -2,9 +2,9 @@ import distutils.core
 
 from pyramid.config import Configurator
 
-import {{package}}_geoportal.authentication
-import {{package}}_geoportal.dev
-import {{package}}_geoportal.multi_organization
+import {{cookiecutter.package}}_geoportal.authentication
+import {{cookiecutter.package}}_geoportal.dev
+import {{cookiecutter.package}}_geoportal.multi_organization
 from c2cgeoportal_geoportal import INTERFACE_TYPE_NGEO, add_interface_config, locale_negotiator
 from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
 from {{cookiecutter.package}}_geoportal.resources import Root

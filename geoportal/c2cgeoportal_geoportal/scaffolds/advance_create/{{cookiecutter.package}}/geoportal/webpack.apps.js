@@ -52,9 +52,7 @@ const projectRule = {
       presets: babelPresets,
       babelrc: false,
       comments: false,
-      plugins: [
-        require.resolve('babel-plugin-angularjs-annotate'),
-      ],
+      plugins: [require.resolve('babel-plugin-angularjs-annotate')],
     },
   },
 };
@@ -85,7 +83,10 @@ module.exports = {
   resolve: {
     modules: ['/usr/lib/node_modules'],
     alias: {
-      {{cookiecutter.package}}: path.resolve(__dirname, '{{cookiecutter.package}}_geoportal/static-ngeo/js'),
+      '{{cookiecutter.package}}': path.resolve(
+        __dirname,
+        '{{cookiecutter.package}}_geoportal/static-ngeo/js'
+      ),
     },
   },
 };
