@@ -89,7 +89,7 @@ updates:
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
-    directory: 'geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}'
+    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}'
     schedule:
       interval: daily
     ignore:
