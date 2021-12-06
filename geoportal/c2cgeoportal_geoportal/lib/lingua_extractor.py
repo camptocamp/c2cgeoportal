@@ -316,7 +316,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             attributes = layerinfos.get("attributes", {})
             for fieldname in list(attributes.keys()):
                 values = self._enumerate_attributes_values(DBSessions, layerinfos, fieldname)
-                for value in values:
+                for (value,) in values:
                     if isinstance(value, str) and value != "":
                         msgid = value
                         location = (
@@ -372,7 +372,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     @staticmethod
     def _enumerate_attributes_values(
         dbsessions: Dict[str, Session], layerinfos: Dict[str, Any], fieldname: str
-    ) -> Set[str]:
+    ) -> Set[Tuple[str, ...]]:
         dbname = layerinfos.get("dbsession", "dbsession")
         translate = cast(Dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
         if not translate:

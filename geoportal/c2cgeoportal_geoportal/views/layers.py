@@ -485,7 +485,7 @@ class Layers:
     @staticmethod
     def query_enumerate_attribute_values(
         dbsession: sqlalchemy.orm.Session, layerinfos: Dict[str, Any], fieldname: str
-    ) -> Set[str]:
+    ) -> Set[Tuple[str, ...]]:
         attrinfos = layerinfos["attributes"][fieldname]
         table = attrinfos["table"]
         layertable = get_table(table, session=dbsession)
@@ -496,7 +496,7 @@ class Layers:
         if "separator" in attrinfos:
             separator = attrinfos["separator"]
             attribute = func.unnest(func.string_to_array(func.string_agg(attribute, separator), separator))
-        return set(cast(List[str], dbsession.query(attribute).order_by(attribute).all()))
+        return set(cast(List[Tuple[str, ...]], dbsession.query(attribute).order_by(attribute).all()))
 
 
 def get_layer_class(
