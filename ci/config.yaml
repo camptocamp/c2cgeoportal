@@ -4,6 +4,7 @@ checks:
     ignore_patterns_re:
       - ^commons/c2cgeoportal_commons/alembic/script\.py\.mako$
       - .*\.rst$
+      - .*\.rst.tmpl$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/.*/.*
   codespell:
     ignore_re:
