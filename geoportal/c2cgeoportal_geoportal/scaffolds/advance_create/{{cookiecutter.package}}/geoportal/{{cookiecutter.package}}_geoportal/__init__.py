@@ -24,7 +24,7 @@ def main(global_config, **settings):
 
     config.include("c2cgeoportal_commons")
 
-    config.include({{package}}_geoportal.authentication.includeme)
+    config.include({{cookiecutter.package}}_geoportal.authentication.includeme)
 
     config.add_translation_dirs(LOCALE_PATH)
 
@@ -33,7 +33,7 @@ def main(global_config, **settings):
     config.include("c2cgeoportal_geoportal")
     distutils.core._setup_stop_after = None  # pylint: disable=protected-access
 
-    config.include({{package}}_geoportal.multi_organization.includeme)
+    config.include({{cookiecutter.package}}_geoportal.multi_organization.includeme)
 
     # Scan view decorator for adding routes
     config.scan()
@@ -42,6 +42,6 @@ def main(global_config, **settings):
     for interface in config.get_settings().get("interfaces", []):
         add_interface_config(config, interface)
 
-    config.include({{package}}_geoportal.dev.includeme)
+    config.include({{cookiecutter.package}}_geoportal.dev.includeme)
 
     return config.make_wsgi_app()
