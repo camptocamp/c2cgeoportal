@@ -1,0 +1,55 @@
+---
+name: Update l10n cron job
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+
+jobs:
+  l10n:
+    runs-on: ubuntu-18.04
+    name: Update l10n cron job
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - branch: int
+            base_url: int.customer.ch
+          - branch: prod
+            base_url: prod.customer.ch
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{'{{'}} matrix.branch {{'}}'}}
+          token: ${{'{{'}} secrets.GITHUB_GOPASS_CI_TOKEN {{'}}'}}
+
+      - run: ./build --env
+      - run: PROJECT_PUBLIC_URL={{'{{'}} matrix.base_url {{'}}'}} make -e update-po-url
+
+      - name: Push l10n branch and create pull request
+        run: |
+          sudo chown -R $(id -u) .
+          git add --all || true
+          git status
+          git commit -m "Update the l10n files"
+          git push --force origin HEAD:l10n-${{'{{'}} matrix.branch {{'}}'}}
+          python3 -c 'import requests
+          response = requests.post(
+              "https://api.github.com/repos/${{'{{'}} env.GITHUB_REPOSITORY {{'}}'}}/pulls",
+              json={
+                "title": "Update the l10n files on ${{'{{'}} matrix.branch {{'}}'}}",
+                "body": "",
+                "head": "l10n-${{'{{'}} matrix.branch {{'}}'}}",
+                "base": "${{'{{'}} matrix.branch {{'}}'}}",
+                "maintainer_can_modify": True
+              },
+              headers={
+                  "Accept": "application/vnd.github.v3+json",
+                  "Authorization": "Bearer ${{'{{'}} secrets.GITHUB_GOPASS_CI_TOKEN {{'}}'}}",
+                  "Content-Type": "application/json",
+              },
+          )
+          assert response.status_code < 300, response.text'

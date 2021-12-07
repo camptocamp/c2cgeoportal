@@ -1,0 +1,46 @@
+#!/bin/bash -eux
+
+# The MIT License (MIT)
+#
+# Copyright (c) Camptocamp SA
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# Will update the po files from the current pot file.
+# Used when we update the po files in the CI from a remote application.
+
+OWNER=$1:$2
+shift 2
+
+for LANG in "$@"
+do
+    ls geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po -als || true
+
+    mkdir --parent geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/
+    [ -f geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po ] || \
+        msginit --no-translator --input=geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot \
+            --output-file=geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po \
+            -l ${LANG}
+
+    cat geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po
+
+    msgmerge --backup=none --update --sort-output --no-location \
+        geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po \
+        geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
+    chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po
+done
