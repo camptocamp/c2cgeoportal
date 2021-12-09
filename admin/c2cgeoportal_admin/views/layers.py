@@ -67,7 +67,7 @@ class LayerViews(TreeItemViews):
 
     def _base_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
         return super()._base_query(
-            query.outerjoin("interfaces")
+            query.outerjoin(Layer.interfaces)
             .options(subqueryload("interfaces"))
             .options(subqueryload("restrictionareas"))
         )

@@ -70,14 +70,12 @@ class LayerTreeViews:
         if group_id is None:
             items = self._dbsession.query(Theme).order_by(Theme.ordering)
             if interface is not None:
-                items = items.join(Theme.interfaces).filter(  # pylint: disable=no-member
-                    Interface.name == interface
-                )
+                items = items.join(Theme.interfaces).filter(Interface.name == interface)
 
         else:
             items = (
                 self._dbsession.query(TreeItem)
-                .join(TreeItem.parents_relation)  # pylint: disable=no-member
+                .join(TreeItem.parents_relation)
                 .filter(LayergroupTreeitem.treegroup_id == group_id)
                 .order_by(LayergroupTreeitem.ordering)
             )

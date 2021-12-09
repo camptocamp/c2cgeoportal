@@ -372,11 +372,11 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     @staticmethod
     def _enumerate_attributes_values(
         dbsessions: Dict[str, Session], layerinfos: Dict[str, Any], fieldname: str
-    ) -> List[Message]:
+    ) -> Set[Tuple[str, ...]]:
         dbname = layerinfos.get("dbsession", "dbsession")
         translate = cast(Dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
         if not translate:
-            return []
+            return set()
         try:
             dbsession = dbsessions.get(dbname)
             return Layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
@@ -390,7 +390,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                 )
             )
             if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
-                return []
+                return set()
             raise
 
     @staticmethod

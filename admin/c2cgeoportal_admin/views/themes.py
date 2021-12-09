@@ -25,7 +25,6 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: disable=no-member
 
 from functools import partial
 from typing import Optional, cast
@@ -102,8 +101,8 @@ class ThemeViews(TreeItemViews):
             self._request.dbsession.query(Theme)
             .distinct()
             .outerjoin("interfaces")
-            .outerjoin("restricted_roles")
-            .outerjoin("functionalities")
+            .outerjoin(Theme.restricted_roles)
+            .outerjoin(Theme.functionalities)
             .options(subqueryload("functionalities"))
             .options(subqueryload("restricted_roles"))
             .options(subqueryload("interfaces"))

@@ -32,8 +32,8 @@ import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from sqlalchemy import inspect
-from sqlalchemy.ext.declarative.api import DeclarativeMeta
 from sqlalchemy.orm.attributes import InstrumentedAttribute
+from sqlalchemy.orm.decl_api import DeclarativeMeta
 from sqlalchemy.orm.mapper import Mapper
 
 from c2cgeoportal_admin import _

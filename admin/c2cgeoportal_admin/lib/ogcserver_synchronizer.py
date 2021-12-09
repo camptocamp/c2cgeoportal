@@ -267,7 +267,7 @@ class OGCServerSynchronizer:
 
         if group is None:
             group = main.LayerGroup(name=name)
-            group.parents_relation.append(main.LayergroupTreeitem(group=parent))  # pylint: disable=no-member
+            group.parents_relation.append(main.LayergroupTreeitem(group=parent))
 
             self._request.dbsession.add(group)
             self._logger.info("Layer %s added as new group in theme %s", name, parent.name)

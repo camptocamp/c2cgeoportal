@@ -54,10 +54,11 @@ def upgrade() -> None:
     parentschema = config.get("parentschema")
 
     engine = op.get_bind().engine
-    if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(  # type: ignore
-        engine, "user", schema=staticschema
-    ):
-        return
+    with engine.connect() as connection:
+        if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(  # type: ignore
+            connection, "user", schema=staticschema
+        ):
+            return
 
     op.create_table(
         "user",

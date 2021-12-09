@@ -103,7 +103,7 @@ def run_migrations_online() -> None:
     _schema = main._schema if alembic_name == "main" else static._schema
 
     def include_object(
-        obj: sqlalchemy.ext.declarative.api.ConcreteBase,
+        obj: sqlalchemy.ext.declarative.ConcreteBase,
         name: str,
         type_: str,
         reflected: str,
