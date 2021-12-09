@@ -176,6 +176,10 @@ class PCreateCommand:
             "authtkt_secret": gen_authtkt_secret(),
         }
         context.update(self.read_project_file())
+        if os.environ.get("CI") == "true":
+            context[  # nosec
+                "authtkt_secret"
+            ] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast(int, context["srid"])
@@ -290,8 +294,6 @@ class PCreateCommand:
 
 def gen_authtkt_secret() -> str:
     """Generate a random authtkt secret."""
-    if os.environ.get("CI") == "true":
-        return "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
     return subprocess.run(["pwgen", "64"], stdout=subprocess.PIPE, check=True).stdout.decode().strip()
 
 

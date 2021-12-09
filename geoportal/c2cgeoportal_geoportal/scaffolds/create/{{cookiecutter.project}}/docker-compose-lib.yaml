@@ -51,6 +51,8 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
+      - AZURE_STORAGE_CONNECTION_STRING
+      - TILEGENERATION_AZURE_CONTAINER
 
   print:
     image: camptocamp/mapfish_print:3.27
@@ -61,7 +63,7 @@ services:
       - PGOPTIONS
 
   mapserver:
-    image: camptocamp/mapserver:7.6
+    image: camptocamp/mapserver:7.6-20-04
     user: www-data
     restart: unless-stopped
     entrypoint: []
@@ -84,6 +86,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
+      - AZURE_STORAGE_CONNECTION_STRING
       - CPL_VSIL_CURL_USE_CACHE
       - CPL_VSIL_CURL_CACHE_SIZE
       - CPL_VSIL_CURL_USE_HEAD
@@ -160,6 +163,7 @@ services:
       - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
+      - AZURE_STORAGE_CONNECTION_STRING
       - C2C_BASE_PATH
       - C2C_REDIS_URL
       - C2C_REDIS_SENTINELS
@@ -192,6 +196,7 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
+      - AZURE_STORAGE_CONNECTION_STRING
 
   geoportal:
     image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}
@@ -218,6 +223,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
+      - AZURE_STORAGE_CONNECTION_STRING
       - GUNICORN_PARAMS
       - VISIBLE_WEB_HOST
       - VISIBLE_WEB_PROTOCOL
@@ -298,6 +304,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
+      - AZURE_STORAGE_CONNECTION_STRING
       - GUNICORN_PARAMS
       - VISIBLE_WEB_HOST
       - VISIBLE_WEB_PROTOCOL
@@ -412,6 +419,7 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
+      - AZURE_STORAGE_CONNECTION_STRING
 
   db:
     image: camptocamp/postgres:${POSTGRES_TAG}

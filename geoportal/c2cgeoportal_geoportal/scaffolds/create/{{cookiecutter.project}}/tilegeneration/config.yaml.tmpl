@@ -26,6 +26,13 @@ caches:
     http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
     cache_control: 'public, max-age=14400'
     host: ${AWS_S3_ENDPOINT}
+  azure:
+    type: azure
+    container: ${TILEGENERATION_AZURE_CONTAINER}
+    folder: ''
+    # for GetCapabilities
+    http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
+    cache_control: 'public, max-age=14400'
 
 # this defines some defaults values for all the layers
 defaults:
@@ -127,13 +134,11 @@ server:
   expires: 8 # 8 hours
   predefined_commands:
     - name: Generation all layers
-      command: generate_tiles --role=master
+      command: generate_tiles
     - name: Generation layer plan
-      command: generate_tiles --role=master --layer=plan
+      command: generate_tiles --layer=plan
     - name: Generation layer ortho
-      command: generate_tiles --role=master --layer=ortho
-    - name: Generation OpenLayers example
-      command: generate_controller --openlayers
+      command: generate_tiles --layer=ortho
     - name: Generate the legend images
       command: generate_controller --generate-legend-images
 
@@ -152,10 +157,21 @@ process:
         quiet: '-q'
 
 openlayers:
-  # srs, center_x, center_y [required]
   srs: EPSG:{{cookiecutter.srid}}
   center_x: 2600000
   center_y: 1200000
+  # The proj4js definition, get it from https://epsg.io/
+  # For EPSG:2056
+  proj4js_def: |
+    +proj=somerc
+    +lat_0=46.95240555555556
+    +lon_0=7.439583333333333
+    +k_0=1
+    +x_0=2600000
+    +y_0=1200000
+    +ellps=bessel
+    +towgs84=674.374,15.056,405.346,0,0,0,0
+    +units=m +no_defs
 
 metadata:
   title: Some title

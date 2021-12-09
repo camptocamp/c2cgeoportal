@@ -70,6 +70,7 @@ translationstring = "==1.4"  # admin
 c2cwsgiutils = {version = "==5.0.0.dev20211111152235", extras = ["broadcast", "profiler", "standard"]}
 oauthlib = "==3.1.1"
 tilecloud = "==1.7.0" # geoportal
+azure-storage-blob = "==12.9.0"
 
 [requires]
 python_version = "3.8"
