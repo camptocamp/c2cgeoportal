@@ -191,11 +191,32 @@ def init_registry(registry=None):
     return registry
 
 
+def testing_legacySecurityPolicy(
+    config, userid=None, groupids=(), permissive=True, remember_result=None, forget_result=None
+):
+    """Compatibility mode for deprecated AuthorizationPolicy and AuthenticationPolicy in our tests"""
+    from pyramid.interfaces import IAuthenticationPolicy, IAuthorizationPolicy, ISecurityPolicy
+    from pyramid.security import LegacySecurityPolicy
+    from pyramid.testing import DummySecurityPolicy
+
+    policy = DummySecurityPolicy(userid, groupids, permissive, remember_result, forget_result)
+    config.registry.registerUtility(policy, IAuthorizationPolicy)
+    config.registry.registerUtility(policy, IAuthenticationPolicy)
+
+    security_policy = LegacySecurityPolicy()
+    config.registry.registerUtility(security_policy, ISecurityPolicy)
+    return policy
+
+
 def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
-    if additional_settings is None:
-        additional_settings = {}
+    from pyramid.interfaces import IAuthenticationPolicy
     from c2cgeoportal_geoportal import create_get_user_from_request
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
+
+    if additional_settings is None:
+        additional_settings = {}
+
+    pyramid.testing.tearDown()
 
     request = tests.create_dummy_request(
         {
@@ -209,6 +230,14 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
         *args,
         **kargs,
     )
+
+    global config
+    config = pyramid.testing.setUp(
+        request=request,
+        registry=request.registry,
+        settings=get_settings(),
+    )
+
     request.accept_language = webob.acceptparse.create_accept_language_header(
         "fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3"
     )
@@ -219,7 +248,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.get_user = _get_user
     request.c2c_request_id = "test"
     init_registry(request.registry)
-    config.testing_securitypolicy()
+
     if authentication and user is None:
         authentication_settings = {
             "authtkt_cookie_name": "__test",
@@ -227,12 +256,16 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
             "authentication": {},
         }
         authentication_settings.update(additional_settings)
-        request._get_authentication_policy = lambda: create_authentication(authentication_settings)
+
+        testing_legacySecurityPolicy(config)
+        config.registry.registerUtility(create_authentication(authentication_settings), IAuthenticationPolicy)
+
     elif user is not None:
         config.testing_securitypolicy(user)
     request.set_property(
         create_get_user_from_request({"authorized_referers": [request.referer]}), name="user", reify=True
     )
+
     return request
 
 
