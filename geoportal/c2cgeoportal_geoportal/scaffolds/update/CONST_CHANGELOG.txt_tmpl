@@ -263,30 +263,21 @@ some `docker build`, and `docker-compose` commands.
 Main Changes
 ------------
 
-Environment variables are now stored in the env.default and env.project files.
+The migration process impacts the following:
+1. Environment variables are now stored in the env.default and env.project files.
+2. .mako files are replaced by .tmpl, this means Python templating isn't possible anymore, (in .tmpl we just have template replacement).
+If dynamic variables are needed, you have to write a custom script in `script/config-eval-templates` and add it to the entrypoint into the config image
+3. Functionalities in the vars file (2.4) are now stored in the database (2.5) and manageable via the administration interface.
+4. In the geoportal folder, there are `static` and `static_ngeo` sub-folders. Since version 2.5 the usage is stricter.
+`static` can be used everywhere and is visible by all images, while `static_ngeo` can now only be used in the webpack build.
+5. Import of AngularJS library is required in JavaScript files using it, i.e for controllers or components: `import angular from 'angular';`.
 
-The migration process will do the following UI-related changes (visible in the html diffs):
+The migration process will also require the following UI-related changes (visible in the html diffs):
 1. Predefined values in editing form
 2. Query selection panel
 3. Loading spinners on various elements of the interfaces
 4. Geolocation on desktop (add the button)
 5. Map swipper
-
-vars.yaml file is moved to geoportal/vars.yaml and now list the interfaces as follow:
-```
-vars:
-  interfaces:
-    - name: desktop
-      default: True
-    - name: mobile
-    - name: iframe_api
-```
-
-And in the same file, to the update_path:
-```
-  - cache.std.arguments
-  - cache.obj
-```
 
 Note: The list presented in this chapter is not exhaustive.
 
