@@ -6,7 +6,7 @@ def includeme(config: Configurator) -> None:
     del config  # Unused.
 
     try:
-        import ptvsd  # pylint: disable=import-error,import-outside-toplevel
+        import ptvsd  # pylint: disable=import-outside-toplevel
 
         ptvsd.enable_attach(address=("172.17.0.1", 5678))
         # ptvsd.wait_for_attach()
