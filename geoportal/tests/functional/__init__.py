@@ -219,6 +219,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.get_user = _get_user
     request.c2c_request_id = "test"
     init_registry(request.registry)
+    config.testing_securitypolicy()
     if authentication and user is None:
         authentication_settings = {
             "authtkt_cookie_name": "__test",
