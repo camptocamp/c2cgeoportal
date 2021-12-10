@@ -12,5 +12,9 @@
   "geomapfish_version_tag": "",
   "geomapfish_version_tag_env": "",
   "geomapfish_major_version_tag": "",
-  "geomapfish_major_version_tag_env": ""
+  "geomapfish_major_version_tag_env": "",
+  "_copy_without_render": [
+    "*.po",
+    "*/contextualdata.html"
+  ]
 }

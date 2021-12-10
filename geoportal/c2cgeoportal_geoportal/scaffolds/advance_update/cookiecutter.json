@@ -3,12 +3,18 @@
   "package": "test_project",
   "srid": "2056",
   "extent": "",
+  "extent_mapserver": "",
   "authtkt_secret": "",
   "unsafe_long_version": false,
   "geomapfish_version": "",
   "geomapfish_main_version": "",
-  "geomapfish_version_tag": "GEOMAPFISH_VERSION",
-  "geomapfish_version_tag_env": "${GEOMAPFISH_VERSION}",
-  "geomapfish_major_version_tag": "{% if cookiecutter.unsafe_long_version %}GEOMAPFISH_VERSION{% else %}GEOMAPFISH_MAIN_VERSION{% endif %}",
-  "geomapfish_major_version_tag_env": "{{'${'}}{{cookiecutter.geomapfish_major_version_tag}}{{'}'}}"
+  "geomapfish_main_version_dash": "",
+  "geomapfish_version_tag": "",
+  "geomapfish_version_tag_env": "",
+  "geomapfish_major_version_tag": "",
+  "geomapfish_major_version_tag_env": "",
+  "_copy_without_render": [
+    "*.po",
+    "*/contextualdata.html"
+  ]
 }
