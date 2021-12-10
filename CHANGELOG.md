@@ -1,3 +1,5 @@
+##### 2.6.0.62
+* [Backport 2.6] Changelog [c2cgeoportal#9020](https://github.com/camptocamp/c2cgeoportal/pull/9020)
 ##### 2.6.0.60
 * Remove some ignored CVE [c2cgeoportal#8991](https://github.com/camptocamp/c2cgeoportal/pull/8991)
 * Remove some ignored CVE [ngeo#7773](https://github.com/camptocamp/ngeo/pull/7773)
