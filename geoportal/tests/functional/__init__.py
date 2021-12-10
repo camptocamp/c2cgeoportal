@@ -210,6 +210,7 @@ def testing_legacySecurityPolicy(
 
 def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
     from pyramid.interfaces import IAuthenticationPolicy
+
     from c2cgeoportal_geoportal import create_get_user_from_request
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
 

@@ -10,7 +10,7 @@ updates:
     ignore:
       - dependency-name: none
   - package-ecosystem: pip
-    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.package}}/ci'
+    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/ci'
     schedule:
       interval: daily
     ignore:
@@ -83,15 +83,15 @@ updates:
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
-    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.package}}/geoportal'
+    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal'
     schedule:
-      interval: daily
+      interval: weekly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}'
     schedule:
-      interval: daily
+      interval: weekly
     ignore:
       - dependency-name: none
 

@@ -1,22 +1,22 @@
 #!/bin/bash -eux
 
-rm -rf ${HOME}/workspace/testgeomapfishapp
+rm -rf "${HOME}/workspace/testgeomapfishapp"
 
-ci/create-new-project ${HOME}/workspace
-cp ci/docker-compose.override.yaml ${HOME}/workspace/testgeomapfishapp/
-cp ci/waitwsgi ${HOME}/workspace/testgeomapfishapp/ci/
-cp ci/empty.qgz ${HOME}/workspace/testgeomapfishapp/qgisserver/project.qgz
-cp -r ci/test-app-db ${HOME}/workspace/testgeomapfishapp/ci/
-cp -r ci/test-external-db ${HOME}/workspace/testgeomapfishapp/ci/
+ci/create-new-project "${HOME}/workspace"
+cp ci/docker-compose.override.yaml "${HOME}/workspace/testgeomapfishapp/"
+cp ci/waitwsgi "${HOME}/workspace/testgeomapfishapp/ci/"
+cp ci/empty.qgz "${HOME}/workspace/testgeomapfishapp/qgisserver/project.qgz"
+cp -r ci/test-app-db "${HOME}/workspace/testgeomapfishapp/ci/"
+cp -r ci/test-external-db "${HOME}/workspace/testgeomapfishapp/ci/"
 PROJECT_DIR=$(pwd)
 
-cd ${HOME}/workspace/testgeomapfishapp/
+cd "${HOME}/workspace/testgeomapfishapp/"
 
 folder=geoportal/interfaces
 cp -r CONST_create_template/${folder} ${folder}
 
 c2cciutils-checks
-cp ${PROJECT_DIR}/ci/project-config.yaml ci/config.yaml
+cp "${PROJECT_DIR}/ci/project-config.yaml" ci/config.yaml
 c2cciutils-checks
 CI=true ./build
 docker-compose down --volumes
@@ -66,7 +66,7 @@ ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --n
 ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
 
 cp .env env.int
-echo PGHOST_SLAVE=$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+') >> env.int
+echo PGHOST_SLAVE="$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+')" >> env.int
 echo PGPORT_SLAVE=54321 >> env.int
 ci/run-dc-logs scripts/db-backup --env=env.int dump.backup
 ci/run-dc-logs scripts/db-backup --env=env.int --arg=--schema=main dump.backup
@@ -76,6 +76,6 @@ ci/run-dc-logs scripts/db-restore --arg=--clean --arg=--schema=main dump.backup
 ci/run-dc-logs docker-compose exec -T tools rm /etc/mapserver/demo.map
 ci/run-dc-logs docker-compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
 docker-compose down
-sudo rm -rf ${HOME}/workspace/testgeomapfishapp
+sudo rm -rf "${HOME}/workspace/testgeomapfishapp"
 
 docker rmi camptocamp/testgeomapfishapp-config:latest

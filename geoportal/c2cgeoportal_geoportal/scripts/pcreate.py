@@ -68,7 +68,7 @@ class PCreateCommand:
     parser.add_argument(
         "-s",
         "--scaffold",
-        dest="scaffold_name",
+        dest="scaffold_names",
         action="append",
         help=("Add a scaffold to the create process " "(multiple -s args accepted)"),
     )
@@ -110,16 +110,12 @@ class PCreateCommand:
     def run(self) -> int:
         if self.args.list:
             return self.show_scaffolds()
-        if not self.args.scaffold_name and not self.args.output_directory:
+        if not self.args.scaffold_names and not self.args.output_directory:
             if not self.quiet:  # pragma: no cover
                 self.parser.print_help()
                 self.out("")
                 self.show_scaffolds()
             return 2
-
-        # if not self.validate_input():
-        #     return 2
-        # self._warn_pcreate_deprecated()
 
         return self.render_scaffolds()
 
@@ -134,13 +130,17 @@ class PCreateCommand:
 
         context = self.get_context()
 
-        for scaffold_name in self.args.scaffold_name:
+        for scaffold_name in self.args.scaffold_names:
+            # Needed to be backward compatible for the `test-upgrade init` command
+            if scaffold_name.startswith("c2cgeoportal_"):
+                scaffold_name = scaffold_name[len("c2cgeoportal_") :]
             self.out(f"Rendering scaffold: {scaffold_name}")
             cookiecutter(
                 template=os.path.join(SCAFFOLDS_DIR, scaffold_name),
                 extra_context=context,
                 no_input=True,
                 overwrite_if_exists=self.args.overwrite,
+                output_dir=os.path.dirname(self.output_path),
             )
         return 0
 
@@ -163,22 +163,19 @@ class PCreateCommand:
             print(msg)
 
     def get_context(self) -> Dict[str, Union[str, int]]:
-        context = self.read_project_file()
-
         output_dir = self.output_path
-        project_name = os.path.basename(os.path.split(output_dir)[1])
+        project_name = os.path.basename(output_dir)
         if self.args.package_name is None:
             pkg_name = _bad_chars_re.sub("", project_name.lower().replace("-", "_"))
         else:
             pkg_name = self.args.package_name
 
-        context.update(
-            {
-                "project": project_name,
-                "package": pkg_name,
-                "authtkt_secret": self.gen_authtkt_secret()
-            }
-        )
+        context: Dict[str, Union[str, int]] = {
+            "project": project_name,
+            "package": pkg_name,
+            "authtkt_secret": gen_authtkt_secret(),
+        }
+        context.update(self.read_project_file())
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast(int, context["srid"])
@@ -186,8 +183,8 @@ class PCreateCommand:
         self.get_var(
             context,
             "extent",
-            "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
-            "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
+            f"Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
+            f"[{extent[0]} {extent[1]} {extent[2]} {extent[3]}]: "
             if extent
             else f"Extent (minx miny maxx maxy): in EPSG: {srid} projection: ",
         )
@@ -200,8 +197,6 @@ class PCreateCommand:
         assert extent is not None
         context["extent"] = ",".join(extent)
         context["extent_mapserver"] = " ".join(extent)
-
-        # super().pre(command, output_dir, vars_)
 
         if context["package"] == "site":
             raise ValueError(
@@ -238,8 +233,6 @@ class PCreateCommand:
                 project = yaml.safe_load(f)
                 return cast(Dict[str, Union[str, int]], project.get("template_vars", {}))
         else:
-            # print("Missing project file: " + project_file)
-            # sys.exit(1)
             return {}
 
     @staticmethod
@@ -294,10 +287,12 @@ class PCreateCommand:
             print(f"unexpected error: {str(exception)}")
         return None
 
-    def gen_authtkt_secret(self) -> str:
-        if os.environ.get("CI") == "true":
-            return "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
-        return subprocess.check_output(["pwgen", "64"]).decode().strip()
+
+def gen_authtkt_secret() -> str:
+    """Generate a random authtkt secret."""
+    if os.environ.get("CI") == "true":
+        return "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
+    return subprocess.run(["pwgen", "64"], stdout=subprocess.PIPE, check=True).stdout.decode().strip()
 
 
 if __name__ == "__main__":  # pragma: no cover

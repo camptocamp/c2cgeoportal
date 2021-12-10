@@ -335,9 +335,8 @@ class C2cUpgradeTool:
         check_call(
             [
                 "pcreate",
-                "--ignore-conflicting-name",
                 "--overwrite",
-                "--scaffold=c2cgeoportal_update",
+                "--scaffold=update",
                 project_path,
             ]
         )
@@ -345,9 +344,8 @@ class C2cUpgradeTool:
             check_call(
                 [
                     "pcreate",
-                    "--ignore-conflicting-name",
                     "--overwrite",
-                    "--scaffold=c2cgeoportal_advance_update",
+                    "--scaffold=advance_update",
                     project_path,
                 ]
             )
@@ -378,9 +376,8 @@ class C2cUpgradeTool:
         check_call(
             [
                 "pcreate",
-                "--ignore-conflicting-name",
                 "--overwrite",
-                "--scaffold=c2cgeoportal_update",
+                "--scaffold=update",
                 project_path,
             ]
         )
@@ -388,9 +385,8 @@ class C2cUpgradeTool:
             check_call(
                 [
                     "pcreate",
-                    "--ignore-conflicting-name",
                     "--overwrite",
-                    "--scaffold=c2cgeoportal_advance_update",
+                    "--scaffold=advance_update",
                     project_path,
                 ]
             )

@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 WORKSPACE=$2
-PCREATE_ARGS="--ignore-conflicting-name --overwrite --package-name testgeomapfish"
+PCREATE_ARGS="--overwrite --package-name testgeomapfish"
 
 # $1: folder
 # $2: scaffold
@@ -28,7 +28,7 @@ function pcreate {
         fi
         docker run --rm ${DOCKER_ENV} \
             --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-tools:$3 \
-            run $(id -u) $(id -g) /src pcreate --scaffold=$2 testgeomapfish ${PCREATE_ARGS}
+            run "$(id -u)" "$(id -g)" /src pcreate --scaffold=$2 testgeomapfish ${PCREATE_ARGS}
     fi
 }
 
