@@ -29,6 +29,7 @@
 import json
 import os
 import re
+import subprocess
 import sys
 from argparse import ArgumentParser
 from typing import Any, Dict, List, Optional, Type, Union, cast
@@ -168,19 +169,14 @@ class PCreateCommand:
         project_name = os.path.basename(os.path.split(output_dir)[1])
         if self.args.package_name is None:
             pkg_name = _bad_chars_re.sub("", project_name.lower().replace("-", "_"))
-            # safe_name = pkg_resources.safe_name(project_name)
         else:
             pkg_name = self.args.package_name
-            # safe_name = pkg_name
-        # egg_name = pkg_resources.to_filename(safe_name)
 
         context.update(
             {
                 "project": project_name,
                 "package": pkg_name,
-                # 'egg': egg_name,
-                # 'pyramid_version': pyramid_version,
-                # 'pyramid_docs_branch': pyramid_docs_branch,
+                "authtkt_secret": self.gen_authtkt_secret()
             }
         )
 
@@ -297,6 +293,11 @@ class PCreateCommand:
         except Exception as exception:
             print(f"unexpected error: {str(exception)}")
         return None
+
+    def gen_authtkt_secret(self) -> str:
+        if os.environ.get("CI") == "true":
+            return "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
+        return subprocess.check_output(["pwgen", "64"]).decode().strip()
 
 
 if __name__ == "__main__":  # pragma: no cover
