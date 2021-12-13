@@ -31,3 +31,10 @@ To test the editing functionality, you can use the username 'demo' with the pass
 
 The
 `ngeo (client) documentation can be found here <https://camptocamp.github.io/ngeo/master/apidoc/>`_.
+
+
+Resources managed by the user group community:
+
+- `Geomapfish user-group website <https://geomapfish.org/>`_.
+- `Issue tracker (e.g. to ask for new feature) <https://github.com/camptocamp/GeoMapFish/issues>`_.
+- `Getting Started (quickly start a GeoMapFish) <https://github.com/geomapfish/getting_started>`_.
