@@ -20,3 +20,9 @@ Python packages:
 [NPM package](https://www.npmjs.com/package/ngeo).
 
 The [changelog](./CHANGELOG.md).
+
+Resources managed by the user group community:
+
+- [Geomapfish user-group website](https://geomapfish.org/)
+- [Issue tracker (e.g. to ask for new feature)](https://github.com/camptocamp/GeoMapFish/issues)
+- [Getting Started (quickly start a GeoMapFish)](https://github.com/geomapfish/getting_started)
