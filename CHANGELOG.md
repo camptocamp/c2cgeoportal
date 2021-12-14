@@ -1,3 +1,5 @@
+##### 2.6.0.63
+* Fix this in WFSAttribute.read [ngeo#7816](https://github.com/camptocamp/ngeo/pull/7816)
 ##### 2.6.0.62
 * [Backport 2.6] Changelog [c2cgeoportal#9020](https://github.com/camptocamp/c2cgeoportal/pull/9020)
 ##### 2.6.0.60
