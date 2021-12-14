@@ -1,3 +1,6 @@
+##### 2.4.2.66
+* No more ignore CVE 1006000 [c2cgeoportal#9030](https://github.com/camptocamp/c2cgeoportal/pull/9030)
+* Fix peer dependency [ngeo#7788](https://github.com/camptocamp/ngeo/pull/7788)
 ##### 2.4.2.65
 * Audit fix, see commits [c2cgeoportal#8982](https://github.com/camptocamp/c2cgeoportal/pull/8982)
 ##### 2.4.2.64
