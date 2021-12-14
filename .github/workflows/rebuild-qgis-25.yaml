@@ -68,6 +68,6 @@ jobs:
           docker-compose down
 
       - name: Publish
-        run: c2cciutils-publish --type=rebuild --branch=${{ matrix.version }}
+        run: c2cciutils-publish --type=rebuild --branch=${{ matrix.branch }}
           --group=qgis-${{ matrix.version }}
         if: github.repository == 'camptocamp/c2cgeoportal'
