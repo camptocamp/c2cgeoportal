@@ -112,3 +112,11 @@ preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgis-
 stoptest: ## Stop the compositon used to run the tests
 	docker-compose stop --timeout=0
 	docker-compose down --remove-orphans
+
+.PHONY: doc
+doc: build-tools ## Generate the documentation
+	docker build --tag=camptocamp/geomapfish-doc \
+	--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) \
+	--build-arg=MAIN_BRANCH=$(MAIN_BRANCH) \
+	doc
+	MAJOR_VERSION=$(MAJOR_VERSION) MAIN_BRANCH=$(MAIN_BRANCH) ci/extract-documentation artifacts/documentations/
