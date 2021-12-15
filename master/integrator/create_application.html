@@ -37,7 +37,7 @@
             
   <section id="create-a-new-application">
 <span id="integrator-create-application"></span><h1>Create a new application<a class="headerlink" href="#create-a-new-application" title="Permalink to this headline">¶</a></h1>
-<p>Creating a new c2cgeoportal application is done by applying two Paste scaffolds
+<p>Creating a new c2cgeoportal application is done by applying two Cookiecutter scaffolds
 (a.k.a. templates and scaffolds). These scaffolds are provided by the
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package. So to be able to create a c2cgeoportal application
 the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> package must be installed.</p>
@@ -83,7 +83,7 @@ c2cgeoportal application you want to create the new application from:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate -s create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -101,7 +101,7 @@ parameters:</p>
     --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span> <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_create <span class="se">\</span>
+    pcreate -s create <span class="se">\</span>
     --package-name <span class="si">${</span><span class="nv">GEOMAPFISH_PACKAGE</span><span class="si">}</span> <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div></div></blockquote>
 </div>
@@ -112,12 +112,12 @@ creating this application from.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_advance_create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate -s advance_create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_update <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate -s update <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -130,7 +130,7 @@ Following this rule is important for easier updates.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s c2cgeoportal_advance_update <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate -s advance_update <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>Go to your new project:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>For advance application you also should:</p>

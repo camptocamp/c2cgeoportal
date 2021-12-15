@@ -3,7 +3,7 @@
 Create a new application
 ========================
 
-Creating a new c2cgeoportal application is done by applying two Paste scaffolds
+Creating a new c2cgeoportal application is done by applying two Cookiecutter scaffolds
 (a.k.a. templates and scaffolds). These scaffolds are provided by the
 ``c2cgeoportal`` package. So to be able to create a c2cgeoportal application
 the ``c2cgeoportal`` package must be installed.
@@ -63,7 +63,7 @@ To create the application, first apply the ``c2cgeoportal_create`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_create ${GEOMAPFISH_PROJECT}
+        pcreate -s create ${GEOMAPFISH_PROJECT}
 
 .. note::
 
@@ -85,7 +85,7 @@ it later.
             --env=EXTENT="2420000,1030000,2900000,1350000" \
             camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
             run $(id -u) $(id -g) /src \
-            pcreate -s c2cgeoportal_create \
+            pcreate -s create \
             --package-name ${GEOMAPFISH_PACKAGE} ${GEOMAPFISH_PROJECT}
 
 This will create a directory named ``<project>`` that will be next to the
@@ -100,7 +100,7 @@ For an advance application, apply the ``c2cgeoportal_advance_create`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_advance_create ${GEOMAPFISH_PROJECT}
+        pcreate -s advance_create ${GEOMAPFISH_PROJECT}
 
 
 Now apply the ``c2cgeoportal_update`` scaffold:
@@ -110,7 +110,7 @@ Now apply the ``c2cgeoportal_update`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_update ${GEOMAPFISH_PROJECT}
+        pcreate -s update ${GEOMAPFISH_PROJECT}
 
 .. note::
 
@@ -129,7 +129,7 @@ For an advance application apply the ``c2cgeoportal_advance_update`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s c2cgeoportal_advance_update ${GEOMAPFISH_PROJECT}
+        pcreate -s advance_update ${GEOMAPFISH_PROJECT}
 
 
 Go to your new project:
