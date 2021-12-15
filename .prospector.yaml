@@ -7,6 +7,7 @@ ignore-paths:
   - node_modules
   - setup.py
   - CONST_create_template
+  - scaffolds
 
 pep8:
   disable:

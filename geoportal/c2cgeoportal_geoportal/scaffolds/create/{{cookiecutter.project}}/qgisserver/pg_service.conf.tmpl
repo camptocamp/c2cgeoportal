@@ -1,0 +1,15 @@
+[{{cookiecutter.package}}]
+host=${PGHOST_SLAVE}
+port=${PGPORT_SLAVE}
+#sslmode=${PGSSLMODE}
+user=${PGUSER}
+password=${PGPASSWORD}
+dbname=${PGDATABASE}
+
+[{{cookiecutter.package}}_master]
+host=${PGHOST}
+port=${PGPORT}
+#sslmode=${PGSSLMODE}
+user=${PGUSER}
+password=${PGPASSWORD}
+dbname=${PGDATABASE}

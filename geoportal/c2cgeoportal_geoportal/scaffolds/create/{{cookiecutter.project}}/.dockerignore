@@ -1,0 +1,14 @@
+*
+!bin/
+!mapserver/
+!qgisserver/
+!tilegeneration/
+!haproxy/
+!print/print-apps/
+!geoportal/vars*.yaml
+!geoportal/interfaces/
+!geoportal/CONST_vars.yaml
+!geoportal/CONST_config-schema.yaml
+!geoportal/{{cookiecutter.package}}_geoportal/static
+!geoportal/{{cookiecutter.package}}_geoportal/locale
+geoportal/{{cookiecutter.package}}_geoportal/locale/*.pot

@@ -21,7 +21,7 @@ trans.${lang} = admin/c2cgeoportal_admin/locale/${lang}/LC_MESSAGES/c2cgeoportal
 type = PO
 source_lang = en
 % for lang in tx_languages.split():
-trans.${lang} = geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/${lang}/LC_MESSAGES/+package+_geoportal-client.po
+trans.${lang} = geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/${lang}/LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po
 % endfor
 
 [ngeo.ngeo-${tx_version.strip()}]

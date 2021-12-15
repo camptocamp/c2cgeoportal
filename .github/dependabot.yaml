@@ -10,7 +10,7 @@ updates:
     ignore:
       - dependency-name: none
   - package-ecosystem: pip
-    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/ci'
+    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/ci'
     schedule:
       interval: daily
     ignore:
@@ -78,6 +78,18 @@ updates:
       - dependency-name: none
   - package-ecosystem: docker
     directory: '/docker/test-mapserver'
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal'
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: none
+  - package-ecosystem: docker
+    directory: '/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}'
     schedule:
       interval: weekly
     ignore:

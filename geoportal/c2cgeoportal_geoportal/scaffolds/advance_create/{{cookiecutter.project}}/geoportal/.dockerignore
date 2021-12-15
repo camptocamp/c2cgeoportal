@@ -1,0 +1,6 @@
+Dockerfile
+vars*.yaml
+CONST_vars.yaml
+CONST_config-schema.yaml
+{{cookiecutter.package}}_geoportal/locale
+{{cookiecutter.package}}_geoportal/static

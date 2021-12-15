@@ -72,7 +72,7 @@ class Test2faView(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
-        request = create_dummy_request(**kwargs)
+        request = create_dummy_request(authentication=True, **kwargs)
         request.registry.settings.update(
             {"authentication": {"two_factor": True, "two_factor_issuer_name": "CI"}}
         )
@@ -112,7 +112,7 @@ class Test2faView(TestCase):
             }
         )
         response = Login(request).change_password()
-        assert "Cookie" in dict(response.headers)
+        assert "Set-Cookie" in dict(response.headers)
         assert set(user.tech_data.keys()) == {"2fa_totp_secret"}
         assert user.is_password_changed is True
         assert json.loads(response.body.decode("utf-8")) == {
@@ -128,7 +128,7 @@ class Test2faView(TestCase):
             POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
         )
         response = Login(request).login()
-        assert "Cookie" in dict(response.headers)
+        assert "Set-Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
             "email": "__test_user@example.com",
@@ -177,7 +177,7 @@ class Test2faView(TestCase):
             }
         )
         response = Login(request).change_password()
-        assert "Cookie" in dict(response.headers)
+        assert "Set-Cookie" in dict(response.headers)
         assert set(user.tech_data.keys()) == {"2fa_totp_secret"}
         assert user.is_password_changed is True
         assert json.loads(response.body.decode("utf-8")) == {
@@ -193,7 +193,7 @@ class Test2faView(TestCase):
             POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
         )
         response = Login(request).login()
-        assert "Cookie" in dict(response.headers)
+        assert "Set-Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
             "email": "__test_user@example.com",
@@ -224,7 +224,7 @@ class Test2faView(TestCase):
             },
         )
         response = Login(request).change_password()
-        assert "Cookie" in dict(response.headers)
+        assert "Set-Cookie" in dict(response.headers)
         assert set(user.tech_data.keys()) == {"2fa_totp_secret"}
         assert user.is_password_changed is True
         assert json.loads(response.body.decode("utf-8")) == {
@@ -240,7 +240,7 @@ class Test2faView(TestCase):
             POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
         )
         response = Login(request).login()
-        assert "Cookie" in dict(response.headers)
+        assert "Set-Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
             "email": "__test_user@example.com",

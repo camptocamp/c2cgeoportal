@@ -75,7 +75,7 @@ class TestLoginView(TestCase):
     def teardown_method(self, _):
         cleanup_db()
 
-    def test_oauth2(self):
+    def test_oauth2_protocol(self):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -97,7 +97,7 @@ class TestLoginView(TestCase):
 
         # Test login
         url = None
-        request = create_dummy_request()
+        request = create_dummy_request(authentication=True)
         request.POST = {"login": "__test_user1", "password": "__test_user1"}
         request.GET = {
             "client_id": "qgis",
@@ -108,7 +108,6 @@ class TestLoginView(TestCase):
         }
         request.method = "POST"
         request.body = ""
-        pyramid.testing.setUp(request=request, registry=init_registry())
         try:
             response = Login(request).login()
             LOG.error(response.text)
@@ -119,10 +118,9 @@ class TestLoginView(TestCase):
         query = dict(urllib.parse.parse_qsl(url_split.query))
         assert "code" in query
         code = query["code"]
-        pyramid.testing.tearDown()
 
         # Test get token
-        request = create_dummy_request()
+        request = create_dummy_request(authentication=True)
         request.POST = {
             "client_id": "qgis",
             "client_secret": "1234",
@@ -145,7 +143,7 @@ class TestLoginView(TestCase):
         refresh_token = data["refresh_token"]
 
         # Test is login
-        request = create_dummy_request()
+        request = create_dummy_request(authentication=True)
         request.headers["Authorization"] = "Bearer " + access_token
         response = Login(request).loginuser()
         assert set(response.keys()) == {

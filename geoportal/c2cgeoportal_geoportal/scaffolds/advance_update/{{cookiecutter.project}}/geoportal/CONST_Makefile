@@ -1,0 +1,141 @@
+export PACKAGE = {{cookiecutter.package}}
+
+TEMPLATE_EXCLUDE += $(PACKAGE)_geoportal/static/lib
+FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
+
+ifneq ($(NGEO_INTERFACES), "")
+DEFAULT_WEB_RULE += $(NGEO_OUTPUT_FILES)
+endif
+ifneq ($(NGEO_API), "")
+DEFAULT_WEB_RULE += $(NGEO_API_OUTPUT_FILES)
+endif
+
+WEB_RULE ?= $(DEFAULT_WEB_RULE)
+
+DEFAULT_BUILD_RULES ?= $(WEB_RULE) \
+	alembic.ini \
+	alembic.yaml \
+	build-api
+
+
+# Make rules
+BUILD_RULES ?= $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES))
+
+OUTPUT_DIR = $(PACKAGE)_geoportal/static/build
+
+# ngeo
+NODE_ENV ?= production
+export NODE_ENV
+NO_DEV_SERVER ?= TRUE
+export NO_DEV_SERVER
+APP_OUTPUT_DIR = /etc/static-ngeo
+APP_JS_FILES = $(shell find $(PACKAGE)_geoportal/static-ngeo/js -type f -name '*.js' 2> /dev/null)
+ANGULAR_LOCALES_FILES = $(addprefix $(APP_OUTPUT_DIR)/angular-locale_, $(addsuffix .js, $(LANGUAGES)))
+NGEO_OUTPUT_FILES = $(ANGULAR_LOCALES_FILES)
+
+NGEO_API_OUTPUT_JS_FILE ?= $(APP_OUTPUT_DIR)/api.js.tmpl
+NGEO_API_OUTPUT_FILES += $(NGEO_API_OUTPUT_JS_FILE) $(APP_OUTPUT_DIR)/api.css
+
+WEBPACK_ARGS ?= --debug
+
+VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
+	$(PACKAGE)_geoportal/*.py $(PACKAGE)_geoportal/lib \
+	$(PACKAGE)_geoportal/scripts $(PACKAGE)_geoportal/views
+VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)_geoportal/tests
+
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print 2> /dev/null)
+
+# Templates
+
+
+# Disabling Make built-in rules to speed up execution time
+.SUFFIXES:
+
+.PHONY: build
+build: $(BUILD_RULES)
+
+.PHONY: checks
+checks: prospector eslint
+
+.PHONY: prospector
+prospector:
+	prospector
+
+.PHONY: eslint
+eslint: $(APP_JS_FILES)
+	eslint $?
+
+.PHONY: eslint-fix
+eslint-fix: $(APP_JS_FILES)
+	eslint --fix $?
+
+# Server localisation
+
+PO_FILES = $(addprefix $(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-server.po, $(LANGUAGES)))
+
+.INTERMEDIATE: $(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot
+$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot: lingua-server.cfg $(SRC_FILES)
+	mkdir --parent $(dir $@)
+	[ -z "$(SRC_FILES)" ] || pot-create --width=110 --config=$< --keyword=_ --output=$@ $(SRC_FILES)
+
+.PRECIOUS: $(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-server.po
+$(PACKAGE)_geoportal/locale/%/LC_MESSAGES/$(PACKAGE)_geoportal-server.po: \
+		$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot
+	mkdir --parent $(dir $@)
+	[ ! -f $< ] || [ -f $@ ] || msginit --no-translator --input=$< --output-file=$@ -l $*
+	touch --no-create $@
+	[ ! -f $< ] || msgmerge --backup=none --update --sort-output --no-location $@ $<
+	touch $@
+	chown $(USER_ID):$(GROUP_ID) $@
+
+.PHONY: update-server-po
+update-server-po: $(PO_FILES)
+
+.PHONY: update-client-po
+update-client-po:
+	cd .. && SUFFIX= update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+
+.PHONY: update-po
+update-po: update-server-po update-client-po
+
+# ngeo
+
+.PHONY: build-ngeo
+build-ngeo: $(NGEO_OUTPUT_FILES)
+
+$(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/package.json language_mapping
+	mkdir --parent $(dir $@)
+	rm --force $@
+	cp /opt/angular-locale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js $@
+
+$(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
+	mkdir --parent $@
+	cp -r $</* $@
+
+.PRECIOUS: $(APP_OUTPUT_DIR)/vendor%
+$(APP_OUTPUT_DIR)/vendor%: /opt/vendor%
+	cp $< $@
+
+apps: webpack.apps.js
+	rm --force $(addprefix $(APP_OUTPUT_DIR)/, $(addsuffix .*, $(NGEO_INTERFACES)))
+	webpack $(WEBPACK_ARGS)
+	for interface in $(NGEO_INTERFACES); \
+	do \
+		mv $(APP_OUTPUT_DIR)/$${interface}.html $(APP_OUTPUT_DIR)/$${interface}.html.tmpl; \
+	done
+
+# API
+
+.PHONY: build-api
+build-api: $(NGEO_API_OUTPUT_FILES)
+
+$(APP_OUTPUT_DIR)/api.js.tmpl: webpack.api.js $(PACKAGE)_geoportal/static-ngeo/api/index.js
+	webpack --config webpack.api.js $(WEBPACK_ARGS)
+	cp $(APP_OUTPUT_DIR)/api.js $(APP_OUTPUT_DIR)/api.js_
+	sed --in-place --expression='s/\$$/$${DOLLAR}/g' $(APP_OUTPUT_DIR)/api.js
+	sed --in-place --expression='s#{FULL_ENTRY_POINT}#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $(APP_OUTPUT_DIR)/api.js
+	mv $(APP_OUTPUT_DIR)/api.js $@
+
+
+$(APP_OUTPUT_DIR)/api.css: $(PACKAGE)_geoportal/static-ngeo/api/api.css
+	cp $< $@

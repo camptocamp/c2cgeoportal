@@ -1,0 +1,185 @@
+---
+# The list (by include, exclude) of default files that will not be overwritten by the upgrade.
+# That that can be extended with managed_files or reduced with unmanaged_files from the
+# project.yaml file in the project root directory.
+default_project_file:
+  include:
+    - geoportal/setup\.py
+    - geoportal/vars\.yaml
+    - geoportal/Makefile
+    - geoportal/{{cookiecutter.package}}_geoportal/__init__\.py
+    - geoportal/{{cookiecutter.package}}_geoportal/templates/.*
+    - geoportal/{{cookiecutter.package}}_geoportal/locale/.*
+    - geoportal/{{cookiecutter.package}}_geoportal/static/.*
+    - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/.*
+    - print/print-apps/.*
+    - mapserver/.*
+    - tilegeneration/config\.yaml\.tmpl
+    - project\.yaml
+    - docker-compose\.yaml
+    - env\.project
+    - README\.rst
+    - \.github/workflows/main\.yaml
+    - \.github/workflows/rebuild\.yaml
+  exclude:
+    - mapserver/demo\.map\.tmpl
+    - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/image/favicon\.ico
+
+# Files ignored when creating the diff files => will just be left untouched.
+no_diff:
+  - .*\.po
+  - CONST_.+
+  - .*/CONST_.+
+
+# Files that will be present in the CONST_create_template but will not be considered in the upgrade.
+# Used to provide the alt applications => does not disturb the user during upgrade.
+extra:
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/mobile_alt\.html\.ejs
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/oeedit\.html\.ejs
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/Controllermobile_alt\.js
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/Controlleroeedit\.js
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/sass/mobile_alt\.scss
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/sass/vars_mobile_alt\.scss
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/sass/oeedit\.scss
+  - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/sass/vars_oeedit\.scss
+  - geoportal/interfaces/desktop_alt\.html\.mako
+  - geoportal/{{cookiecutter.package}}_geoportal/static/images/background-layer-button\.png
+
+# Automated file system operations:
+# Remove some files or directories:
+#  - action: remove
+#    paths:
+#      - <one file or directory>
+# Move a file:
+#  - action: move
+#    from: <src file>
+#    to: <dst file>
+upgrade_files:
+  - action: remove
+    paths:
+      - docker-run
+      - .config
+      - docker-compose-run
+      - docker-compose-build.yaml
+      - geoportal/jsbuild/
+      - geoportal/{package}_geoportal/templates/api/
+      - geoportal/{package}_geoportal/static/lib/.gitignore
+      - testdb/
+      - vars_convert2tmpl.yaml
+      - CONST_convert2tmpl.mk
+      - CONST_config-schema.yaml
+      - CONST_Makefile
+      - CONST_vars.yaml
+      - project.yaml.mako
+      - geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/images
+  - action: move
+    from: .eslintrc
+    to: geoportal/.eslintrc
+  - action: move
+    from: language_mapping
+    to: geoportal/language_mapping
+  - action: move
+    from: lingua-client.cfg
+    to: geoportal/lingua-client.cfg
+  - action: move
+    from: lingua-server.cfg
+    to: geoportal/lingua-server.cfg
+  - action: move
+    from: vars.yaml
+    to: geoportal/vars.yaml
+  - action: move
+    from: geoportal/webpack.apps.js.mako
+    to: geoportal/webpack.apps.js
+  - action: move
+    from: geoportal/Dockerfile.mako
+    to: geoportal/Dockerfile
+  - action: move
+    from: geoportal/development.ini.mako
+    to: geoportal/development.ini
+  - action: move
+    from: geoportal/production.ini.mako
+    to: geoportal/production.ini
+  - action: move
+    from: .env.mako
+    to: .env.sample
+  - action: move
+    from: Dockerfile.mako
+    to: Dockerfile
+  - action: move
+    from: tools/extract-messages.js
+    to: geoportal/tools/extract-messages.js
+  - action: move
+    from: scripts/deploy-docker
+    to: scripts/publish-docker
+  - action: move
+    from: geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/api/apihelp/index.html
+    to: geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/index.html
+  - action: move
+    from: geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/api/apihelp/rainbow-custom.min.js
+    to: geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/rainbow-custom.min.js
+  - action: move
+    from: geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/api/apihelp/github.css
+    to: geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/github.css
+  - action: move
+    from: geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/api/apihelp/data.txt
+    to: geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/data.txt
+  - action: move
+    from: geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/api/apihelp/img
+    to: geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/img
+  - action: remove
+    paths:
+      - geoportal/{{cookiecutter.package}}_geoportal/static/apihelp/track0.gpx
+      - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/api/apihelp/
+  - action: remove
+    paths:
+      - geoportal/{{cookiecutter.package}}_geoportal/static/css/proj.css
+      - geoportal/{{cookiecutter.package}}_geoportal/static/css/proj-map.css
+      - geoportal/{{cookiecutter.package}}_geoportal/static/css/proj-widgets.css
+      - geoportal/{{cookiecutter.package}}_geoportal/static/js/
+  - action: remove
+    paths:
+      - scripts/CONST_clone_schema.sql
+  - action: remove
+    paths:
+      - front
+      - front_dev
+      - bin/entrypoint
+      - bin/eval-templates
+  - action: move
+    from: .env.sample
+    to: env.sample
+  - action: remove
+    paths:
+      - cgxp_revision
+  - action: remove
+    paths:
+      - .circleci/config.yml
+      - .travis.yml
+  - action: move
+    from: env.sample
+    to: env.default
+  - action: remove
+    paths:
+      - mapserver/CONST_example_map
+  - action: remove
+    paths:
+      - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/image/crosshair.svg
+  - action: move
+    from: geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/image/favicon.ico
+    to: geoportal/{{cookiecutter.package}}_geoportal/static/images/favicon.ico
+    override: True
+  - action: move
+    from: .github/workflows/ci.yaml
+    to: .github/workflows/main.yaml
+  - action: remove
+    paths:
+      - scripts/publish-docker
+  - action: remove
+    paths:
+      - geoportal/{{cookiecutter.package}}_geoportal/locale/.emptyfolder
+  - action: move
+    from: geoportal/.eslintrc
+    to: geoportal/.eslintrc.yaml
+  - action: remove
+    paths:
+      - qgisserver/geomapfish.yaml.tmpl

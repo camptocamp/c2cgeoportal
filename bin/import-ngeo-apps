@@ -65,8 +65,9 @@ def main() -> None:
     with open(args.src, encoding="utf-8") as src:
         data = src.read()
         if not args.canvas:
-            data = re.sub(r"{{", r"\\{\\{", data)
-            data = re.sub(r"}}", r"\\}\\}", data)
+            data = re.sub(r"{{", r"{{'{{'}}", data)
+            data = re.sub(r"}}", r"{{'}}'}}", data)
+            data = re.sub(r"{{'{{'{{'}}'}}", r"{{'{{'}}", data)
 
         if args.html:
             if args.canvas:
@@ -189,7 +190,7 @@ def main() -> None:
                 )
 
         elif not args.canvas:
-            data = re.sub("app", "{{package}}", data)
+            data = re.sub("app", "{{cookiecutter.package}}", data)
 
         with open(args.dst, "wt", encoding="utf-8") as dst:
             dst.write(data)

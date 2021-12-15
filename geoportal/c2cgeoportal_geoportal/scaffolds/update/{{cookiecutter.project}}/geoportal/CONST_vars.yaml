@@ -1,0 +1,1349 @@
+---
+vars:
+  # The package name
+  package: '{{cookiecutter.package}}'
+  main_ogc_server: source for image/png
+
+  srid: EPSG:-1
+
+  # Sqlalchemy schema
+  schema: '{PGSCHEMA}'
+  # Sqlalchemy static schema
+  schema_static: '{PGSCHEMA_STATIC}'
+
+  dbsessions: {}
+
+  enable_admin_interface: True
+
+  # Database information
+  sqlalchemy:
+    url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}?sslmode={PGSSLMODE}
+    pool_recycle: '{SQLALCHEMY_POOL_RECYCLE}'
+    pool_size: '{SQLALCHEMY_POOL_SIZE}'
+    max_overflow: '{SQLALCHEMY_MAX_OVERFLOW}'
+    executemany_mode: batch
+  sqlalchemy_slave:
+    url: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST_SLAVE}:{PGPORT_SLAVE}/{PGDATABASE}?sslmode={PGSSLMODE}
+    pool_recycle: '{SQLALCHEMY_SLAVE_POOL_RECYCLE}'
+    pool_size: '{SQLALCHEMY_SLAVE_POOL_SIZE}'
+    max_overflow: '{SQLALCHEMY_SLAVE_MAX_OVERFLOW}'
+    executemany_mode: batch
+
+  # Session backend
+  session:
+    type: 'ext:redis'
+    url: 'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
+
+  # 10 days of default cache
+  default_max_age: 864000
+
+  authentication:
+    two_factor: false
+    two_factor_issuer_name: '{{cookiecutter.project}}'
+    oauth2_token_expire_minutes: 60
+    oauth2_authorization_expire_minutes: 10
+    max_consecutive_failures: 10
+
+  intranet:
+    networks: []
+
+  i18next:
+    ns:
+      - geomapfish
+    defaultNS: geomapfish
+    debug: false
+    detection:
+      order:
+        - querystring
+        - cookie
+        - localStorage
+        - sessionStorage
+        - navigator
+        - htmlTag
+      lookupQuerystring: lang
+      lookupCookie: i18next
+      lookupLocalStorage: i18nextLng
+      lookupSessionStorage: i18nextLng
+      caches:
+        - localStorage
+      excludeCacheFor:
+        - cimode
+    fallbackLng: false
+    interpolation:
+      escapeValue: false
+    backend: {}
+
+  interfaces_config:
+    default:
+      constants:
+        gmfProjectionsOptions: &projections
+          'EPSG:21781':
+            definition:
+              - +proj=somerc
+              - +lat_0=46.95240555555556
+              - +lon_0=7.439583333333333
+              - +k_0=1
+              - +x_0=600000
+              - +y_0=200000
+              - +ellps=bessel
+              - +towgs84=674.374,15.056,405.346,0,0,0,0
+              - +units=m
+              - +no_defs
+            extent: [420000, 30000, 900000, 350000]
+          'EPSG:2056':
+            definition:
+              - +proj=somerc
+              - +lat_0=46.95240555555556
+              - +lon_0=7.439583333333333
+              - +k_0=1
+              - +x_0=2600000
+              - +y_0=1200000
+              - +ellps=bessel
+              - +towgs84=674.374,15.056,405.346,0,0,0,0
+              - +units=m
+              - +no_defs
+            extent: [2420000, 1030000, 2900000, 1350000]
+        sentryOptions:
+          dsn: '{SENTRY_URL}'
+          release: '{SENTRY_CLIENT_RELEASE}'
+          environment: '{SENTRY_CLIENT_ENVIRONMENT}'
+          attachStacktrace: True
+          tags:
+            service: js
+        gmfAuthenticationConfig:
+          forcePasswordChange: true
+        ngeoWfsPermalinkOptions:
+          wfsTypes: []
+          defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver
+          defaultFeaturePrefix: feature
+          crosshairStyle:
+            - regularShape:
+                stroke:
+                  color: white
+                  width: 5
+                points: 4
+                radius: 10
+                radius2: 0
+                angle: 0
+            - regularShape:
+                stroke:
+                  color: red
+                  width: 2
+                points: 4
+                radius: 10
+                radius2: 0
+                angle: 0
+        ngeoScaleSelectorOptions:
+          values: [1000000, 500000, 200000, 100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200]
+          dropup: True
+        ngeoStringToHtmlReplacements:
+          # Hyperlink
+          - expression: ^(https?:\/\/.+)$
+            tags: gm
+            template: <a target="_blank" href="$1">$1</a>
+          # Mailto
+          - expression: ^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,}$
+            tags: gim
+            template: <a href="mailto:$1">$1</a>
+        ngeoTilesPreloadingLimit:
+        ngeoUsedKeyRegexp:
+          - .*
+        ngeoQueryOptions:
+          limit: 20
+        ngeoMeasurePrecision: 3
+        ngeoMeasureDecimals: 0
+        ngeoMeasureSpherical: False
+        gmfSnappingConfig: {}
+        ngeoSnappingTolerance: 20
+        gmfObjectEditingToolsOptions: {}
+        gmfTreeManagerModeFlush: True
+        gmfThemesOptions: {}
+        ngeoPointfilter:
+        gmfAuthenticationNoReloadRole:
+        ngeoNominatimSearchDefaultParams: {}
+        ngeoNominatimUrl: https://nominatim.openstreetmap.org/
+        ngeoCsvEncoding: utf-8
+        ngeoCsvExtension: .csv
+        ngeoCsvIncludeHeader: True
+        ngeoCsvQuote: '"'
+        ngeoCsvSeparator: ','
+        gmfCsvFilename: query-results.csv
+        gmfDisplayQueryWindowOptions:
+          featuresStyle: &featureStyle
+            fill:
+              color: [255, 170, 0, 0.6]
+            stroke:
+              color: [255, 170, 0, 1]
+              width: 2
+            zIndex: 10
+            circle:
+              fill:
+                color: [255, 170, 0, 0.6]
+              stroke:
+                color: [255, 170, 0, 1]
+                width: 2
+              radius: 5
+          selectedFeatureStyle: &selectedFeatureStyle
+            fill:
+              color: [255, 0, 0, 0.6]
+            stroke:
+              color: [255, 0, 0, 1]
+              width: 2
+            zIndex: 10
+            circle:
+              fill:
+                color: [255, 0, 0, 0.6]
+              stroke:
+                color: [255, 0, 0, 1]
+                width: 2
+              radius: 5
+        gmfLayerTreeOptions:
+          openLinksInNewWindow: False
+          isExpanded: False
+        gmfDisclaimerOptions: {}
+        gmfBackgroundLayerSelectorOptions: {}
+        defaultTheme: Demo
+        defaultLang: en
+        gmfOptions:
+          map: {}
+          view:
+            srid: '{srid}'
+            center: [2600000, 1200000]
+            zoom: 3
+            resolutions: [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+            extent: [2420000, 1030000, 2900000, 1350000]
+        gmfSearchOptions:
+          styles:
+            default:
+              fill:
+                color: [65, 134, 240, 0.5]
+              stroke:
+                color: [65, 134, 240, 1]
+                width: 2
+              circle:
+                fill:
+                  color: [65, 134, 240, 0.5]
+                stroke:
+                  color: [65, 134, 240, 1]
+                  width: 2
+                radius: 5
+            gmfCoordinatesLayerName:
+              regularShape:
+                stroke:
+                  color: [0, 0, 0, 0.7]
+                  width: 2
+                points: 4
+                radius: 8
+                radius2: 0
+                angle: 0
+          datasources:
+            - labelKey: label
+              groupActions:
+                - action: add_theme
+                  title: Add a theme
+                - action: add_group
+                  title: Add a sub theme
+                - action: add_layer
+                  title: Add a layer
+              projection: EPSG:{srid}
+        gmfPermalinkOptions:
+          crosshairStyle:
+          crosshairEnabledByDefault: False
+          useLocalStorage: False
+          pointRecenterZoom:
+        gmfElevationOptions:
+          layers: []
+          layersConfig: {}
+        gmfVectorTilesOptions:
+          projection: EPSG:{srid}
+          tileGrid: {}
+        ngeoGeolocationOptions:
+          positionFeatureStyle:
+            circle:
+              radius: 6
+              fill:
+                color: rgba(230, 100, 100, 1)
+              stroke:
+                color: rgba(230, 40, 40, 1)
+                width: 2
+          accuracyFeatureStyle:
+            fill:
+              color: rgba(100, 100, 230, 0.3)
+            stroke:
+              color: rgba(40, 40, 230, 1)
+              width: 2
+          zoom:
+          autoRotate: False
+      dynamic_constants:
+        interface: interface
+        cacheVersion: cache_version
+        langUrls: lang_urls
+        gmfI18nextConfiguration: i18next_configuration
+        gmfTwoFactorAuth: two_factor
+        gmfSearchGroups: fulltextsearch_groups
+      static:
+        angularLocaleScript:
+          name: '/etc/static-ngeo/'
+          append: angular-locale_{{'{{'}}locale{{'}}'}}.js
+      routes:
+        currentInterfaceUrl:
+          currentInterface: True
+        authenticationBaseUrl:
+          name: base
+        gmfLayersUrl:
+          name: layers_root
+        gmfRasterUrl:
+          name: raster
+        gmfShortenerCreateUrl:
+          name: shortener_create
+        ngeoPermalinkOgcserverUrl:
+          name: mapserverproxy
+          params:
+            ogcserver: '{main_ogc_server}'
+        fulltextsearchUrl:
+          name: fulltextsearch
+          params:
+            limit: 30
+            partitionlimit: 5
+          dynamic_params:
+            interface: interface
+        gmfTreeUrl:
+          name: themes
+          params:
+            background: background
+          dynamic_params:
+            interface: interface
+        gmfVectorTilesUrl:
+          name: vector_tiles_root
+    desktop:
+      extends: default
+      redirect_interface: mobile
+      do_redirect: True
+      constants:
+        ngeoProfileOptions: {}
+        ngeoStreetviewOptions:
+          viewer: 'mapillary'
+        gmfPrintOptions:
+          legend:
+            # See:
+            # https://www.mapserver.org/development/rfc/ms-rfc-101.html
+            # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
+            useBbox: true
+            label:
+              qgis: false
+            params:
+              # See:
+              # https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/services.html#getlegendgraphics
+              qgis:
+                LAYERFONTFAMILY: DejaVu Sans
+                ITEMFONTFAMILY: DejaVu Sans
+                LAYERFONTSIZE: '10'
+                ITEMFONTSIZE: '8'
+          hiddenAttributes:
+            - timezone
+        gmfDisplayQueryGridOptions:
+          featuresStyle: *featureStyle
+          selectedFeatureStyle: *selectedFeatureStyle
+        gmfEditFeatureOptions:
+          tolerance: 10
+          closeAfterSave: false
+          highlightStyle:
+            circle:
+              radius: 7
+              fill:
+                color: [255, 139, 139, 0.6]
+              stroke:
+                color: [255, 0, 0, 1]
+                width: 3
+            fill:
+              color: [255, 139, 139, 0.6]
+            stroke:
+              color: [255, 0, 0, 1]
+              width: 3
+        gmfProfileOptions:
+          linesConfiguration: {}
+          hoverPointStyle:
+            circle:
+              fill:
+                color: '#ffffff'
+                radius: 3
+        gmfShareOptions:
+          enableEmail: True
+      routes:
+        gmfProfileJsonUrl:
+          name: profile.json
+        gmfPrintUrl:
+          name: printproxy
+    mobile:
+      extends: default
+      redirect_interface: desktop
+      constants:
+        gmfMobileMeasureAreaOptions:
+          precision: 2
+          sketchStyle: &mobileMeasureStyle
+            fill:
+              color: rgba(255, 128, 128, 0.2)
+            stroke:
+              color: rgba(255, 0, 0, 0.5)
+              lineDash: [10, 10]
+              width: 2
+            regularShape:
+              stroke:
+                color: rgba(0, 0, 0, 0.7)
+                width: 2
+              points: 4
+              radius: 8
+              radius2: 0
+              angle: 0
+        gmfMobileMeasureLengthOptions:
+          precision: 2
+          sketchStyle: *mobileMeasureStyle
+        gmfMobileMeasurePointOptions:
+          decimals: 0
+          rasterLayers: []
+          format: '{x}, {y}'
+          sketchStyle:
+            fill:
+              color: rgba(255, 255, 255, 0.2)
+            stroke:
+              color: rgba(0, 0, 0, 0.5)
+              lineDash: [10, 10]
+              width: 2
+            regularShape:
+              stroke:
+                color: rgba(0, 0, 0, 0.7)
+                width: 2
+              points: 4
+              radius: 8
+              radius2: 0
+              angle: 0
+    iframe_api:
+      extends: default
+      constants:
+        gmfSearchGroups: []
+    api:
+      constants:
+        projections: *projections
+        # The projection of the map
+        projection: EPSG:{srid}
+      routes:
+        themesUrl:
+          name: themes
+          params:
+            background: background
+          dynamic_params:
+            interface: interface
+        localeUrl:
+          name: localejson
+        searchUrl:
+          name: fulltextsearch
+          params:
+            limit: 30
+            partitionlimit: 5
+          dynamic_params:
+            interface: interface
+
+  cache:
+    std:
+      backend: c2cgeoportal.hybridsentinel
+      arguments:
+        lock_timeout: '{REDIS_LOCK_TIMEOUT}' # seconds
+        redis_expiration_time: '{REDIS_EXPIRATION_TIME}' # seconds
+        distributed_lock: True
+        service_name: '{REDIS_SERVICENAME}'
+        socket_timeout: '{REDIS_TIMEOUT}' # seconds
+        db: 0
+    obj:
+      backend: dogpile.cache.memory
+
+  admin_interface:
+    layer_tree_max_nodes: 1000
+
+    # The list of available variable names for the `Metadatas` form.
+    available_metadata:
+      # TreeItem
+      - name: searchAlias
+        type: list
+        description: >
+          Comma separated list of search aliases (keywords) to be added to the tsearch.ts field for
+          the considered tree item (theme, layer group or layer), that is to say that considered
+          tree item will match when searching for the search aliases.
+        relevant_for:
+          - treeitem
+      # Layers group
+      - name: exclusiveGroup
+        type: boolean
+        description: >
+          Whether the group contains children that have to be mutually exclusive, meaning that only
+          one child may be ON at any time.
+        relevant_for:
+          - layergroup
+      - name: isExpanded
+        type: boolean
+        description: >
+          Whether the layer group is expanded by default.
+        relevant_for:
+          - layergroup
+      - name: printNativeAngle
+        type: boolean
+        description: >
+          Whether the print should rotate the symbols.
+        relevant_for:
+          - layergroup
+      # Layer
+      - name: copyable
+        type: boolean
+        description: >
+          Whether the geometry from this data source can be copied to other data sources or not.
+        relevant_for:
+          - layer_wms
+      - name: legend
+        type: boolean
+        description: >
+          Display the legend of this layers.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: isLegendExpanded
+        type: boolean
+        description: >
+          Whether the legend is expanded by default.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: legendRule
+        description: >
+          The WMS "RULE" parameter used to display the icon in the layer tree. "Short version" of
+          the "iconURL" metadata.
+        relevant_for:
+          - layer_wms
+      - name: legendImage
+        type: url
+        description: >
+          The URL to the image used as a legend in the layer tree.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: hiDPILegendImages
+        type: json
+        description: >
+          The URLs to the hi DPI images used as a legend in the layer tree.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: iconUrl
+        type: url
+        description: >
+          The URL of the icon to display in the layer tree.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: metadataUrl
+        type: url
+        description: >
+          The URL to the information on this layer.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: disclaimer
+        translate: True
+        description: >
+          The disclaimer text for this element.
+        relevant_for:
+          - treeitem
+      - name: isChecked
+        type: boolean
+        description: >
+          Is the layer checked by default.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: identifierAttributeField
+        description: >
+          The field used in the "display query window" as feature title.
+        relevant_for:
+          - layer_wms
+      - name: maxResolution
+        type: float
+        description: >
+          The max resolution where the layer is visible. On WMTS layers it will
+          have an effect on the node in the layertree but not on the layertree directly.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: minResolution
+        type: float
+        description: >
+          The min resolution where the layer is visible. On WMTS layers it will
+          have an effect on the node in the layertree but not on the layer directly.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: opacity
+        type: float
+        description: >
+          Layer opacity. 1.0 means fully visible, 0 means invisible.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: thumbnail
+        type: url
+        description: >
+          The icon visible in the background selector.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: timeAttribute
+        description: >
+          The name of the time attribute. For WMS(-T) layers.
+        relevant_for:
+          - layer_wms
+      - name: geotablePrimaryKey
+        description: >
+          The name of the primary key field for edition.
+        relevant_for:
+          - layer_wms
+      - name: lastUpdateDateColumn
+        description: >
+          Define a column which will be automatically filled with the date of the last edit.
+        relevant_for:
+          - layer_wms
+      - name: lastUpdateUserColumn
+        description: >
+          Define a column which will be automatically filled with the user of the last edit.
+        relevant_for:
+          - layer_wms
+      - name: snappingConfig
+        type: json
+        description: >
+          The snapping configuration for the leaf. If set, the leaf's layer is considered to be
+          "snappable", even if the config itself is empty. Example value: {"tolerance": 50, "edge":
+          false}. For WMS layers.
+        relevant_for:
+          - layer_wms
+      - name: geometryValidation
+        type: boolean
+        description: >
+          Force validation of the geometries according to the layer type (point, line, polygon),
+          for example, to prevent creation of a 2-point polygon.
+        relevant_for:
+          - layer_wms
+      - name: customOpenLayersOptions
+        type: json
+        description: >
+          The custom OpenLayers WMS layer options.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      - name: editingAttributesOrder
+        type: list
+        description: >
+          Specify the order of the editable attributes in the edit interface.
+        relevant_for:
+          - layer_wms
+      - name: editingEnumerations
+        type: json
+        description: >
+          Specify the value column and the order column on the relationship's target table of the
+          enumeration.
+        relevant_for:
+          - layer_wms
+      - name: readonlyAttributes
+        type: list
+        description: >
+          Set attributes as read only in the Editing form.
+        relevant_for:
+          - layer_wms
+      - name: queryIconPosition
+        type: list
+        description: >
+          Values to define the shape (bbox) to use to query the layer. The values are used like a
+          padding in css with 1, 2, 3 or 4 comma separated values: all / top-bottom, left-right /
+          top, right-left, bottom / top, right, bottom, left.
+        relevant_for:
+          - layer_wms
+          - layer_wmts
+      # WMS
+      - name: directedFilterAttributes
+        type: list
+        description: >
+          List of attribute names which should have rules already ready when using the filter
+          tools.
+        relevant_for:
+          - layer_wms
+      - name: enumeratedAttributes
+        type: list
+        description: >
+          List of attribute names which have enumerated attribute values (for filters purpose).
+        relevant_for:
+          - layer_wms
+      # WMTS layers
+      - name: ogcServer
+        description: >
+          The corresponding OGC server for a WMTS layer.
+        relevant_for:
+          - layer_wmts
+      - name: wmsLayers
+        description: >
+          A corresponding WMS layers (comma separated) for WMTS layer. Used to query the WMTS layer
+          and to print them. See also printLayers and queryLayers metadata for more granularity. An
+          OGCServer metadata must be set with the name of the OGC server to use for these wms
+          layers.
+        relevant_for:
+          - layer_wmts
+      - name: queryLayers
+        description: >
+          Layers names separate by a comma. The WMS layers used as references to
+          query the WMTS layers. An OGCServer metadata must be set with the name of the OGC server
+          to use for this WMS layer. For WFS GetFeature request: The WFS layers that should be
+          queried.
+        relevant_for:
+          - layer_wmts
+      - name: printLayers
+        description: >
+          A WMS layers (comma separated) that will be used instead of the WMTS layer in the print.
+          Used to increase quality of printed WMTS layer. An OGCServer metadata must be set with
+          the name of the OGC server to use for these wms layers.
+        relevant_for:
+          - layer_wmts
+      - name: maxQueryResolution
+        type: float
+        description: >
+          The max resolution where the layer is queryable.
+        relevant_for:
+          - layer_wmts
+      - name: minQueryResolution
+        type: float
+        description: >
+          The min resolution where the layer is queryable.
+        relevant_for:
+          - layer_wmts
+
+    # The list of functionalities that can be configured
+    # through the admin interface.
+    available_functionalities:
+      - name: default_basemap
+        single: true
+        description: >
+          The background layer to load when the user select this theme.
+        relevant_for:
+          - theme
+      - name: default_theme
+        single: true
+        description: >
+          The theme to load when the user log in.
+        relevant_for:
+          - role
+      - name: print_template
+        description: >
+          Grant access to considered print template.
+        relevant_for:
+          - role
+      - name: mapserver_substitution
+        relevant_for:
+          - role
+      - name: filterable_layers
+        description: >
+          Grant access for filtering considered layer.
+        relevant_for:
+          - role
+      - name: preset_layer_filter
+        single: true
+        description: >
+          Name of the layer (data source) to select in the filter tool upon loading an application.
+        relevant_for:
+          - role
+      - name: open_panel
+        single: true
+        description: >
+          Name of a panel to open upon loading an application.
+        relevant_for:
+          - role
+
+  getitfixed:
+    enabled: false
+
+  functionalities:
+    # Functionalities that are made available to Mako templates and loginuser.
+    available_in_templates:
+      - default_basemap
+      - default_theme
+      - filterable_layers
+      - print_template
+      - preset_layer_filter
+      - open_panel
+
+  urllogin: {}
+
+  http_options:
+    timeout: 300
+
+  tinyowsproxy:
+    # URL to internal TinyOWS instance
+    tinyows_url: '{TINYOWS_URL}'
+    ogc_server: '{main_ogc_server}'
+
+    # If the `online_resource` url in the TinyOWS configuration is not set
+    # to the TinyOWS proxy url (e.g. when the service is also used without
+    # the proxy), the proxy can replace the original `online_resource`
+    # url with the proxy url.
+    # proxy_online_resource: {VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}tinyows_proxy
+    # online_resource: http://localhost{VISIBLE_ENTRY_POINT}tinyows
+    #
+    # When running a c2cgeoportal appl. in debug mode (with `make serve`)
+    # the host has to be set explicitly in a vhost environment.
+    # tinyows_host: {VISIBLE_WEB_HOST}
+
+  api:
+    ogc_server: '{main_ogc_server}'
+
+  resourceproxy:
+    # List of urls from which it is safe to load content
+    targets: {}
+    #   exempletargetname: https://www.camptocamp.com/?param1=%s&param2=%s
+
+    # List of allowed headers
+    allowed_headers:
+      - Cache-Control
+      - Content-Encoding
+      - Content-Language
+      - Content-Type
+      - Date
+      - ETag
+      - Vary
+
+  fulltextsearch:
+    defaultlimit: 30
+    maxlimit: 200
+    languages:
+      fr: french
+      en: english
+      de: german
+
+  servers:
+    internal: http://localhost/
+    local: '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}'
+    mapserver: '{MAPSERVER_URL}'
+    qgisserver: '{QGISSERVER_URL}'
+
+  host_forward_host: []
+  headers_whitelist: []
+  headers_blacklist: []
+
+  # The "raster web services" configuration. See the "raster"
+  # chapter in the integrator documentation.
+  raster: {}
+
+  # the "vector tiles service" configuration. See the "vector tiles"
+  # chapter in the integrator documentation.
+  vector_tiles: {}
+
+  # Used by enumeration in the query builder
+  layers:
+    geometry_validation: True
+
+  # Used by reset_password and shortener to send emails
+  smtp: {}
+
+  # Used to send an email on password reset
+  reset_password: {}
+
+  # The shortener base configuration
+  shortener:
+    # The base of created URL
+    base_url: '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}s/'
+    allowed_hosts:
+      - '{VISIBLE_WEB_HOST}'
+    length: 4
+
+  # Define whether the MapServer proxy should hide the OGC capabilities.
+  hide_capabilities: false
+
+  # For print proxy
+  print_url: '{PRINT_URL}'
+  print_get_redirect: false # if true, redirects (302) directly to the print to fetch the report
+
+  devserver_url: http://{DEVSERVER_HOST}{VISIBLE_ENTRY_POINT}
+
+  pdfreport:
+    print_url: '{PRINT_URL}'
+
+  lingua_extractor: {}
+
+  content_security_policy_main_default_src_extra: ''
+  content_security_policy_main_script_src_extra: '
+    https://maps.google.com/
+    https://maps.googleapis.com/
+    https://www.google-analytics.com/'
+  content_security_policy_main_style_src_extra: '
+    https://fonts.googleapis.com/'
+  content_security_policy_main_img_src_extra: ''
+  content_security_policy_main_connect_src_extra: ''
+  content_security_policy_main_default_src: "
+    'self'
+    https://*
+    {content_security_policy_main_default_src_extra}"
+  content_security_policy_main_script_src: "
+    'self'
+    'unsafe-inline'
+    https://cdn.polyfill.io/
+    {content_security_policy_main_script_src_extra}"
+  content_security_policy_main_style_src: "
+    'self'
+    'unsafe-inline'
+    {content_security_policy_main_style_src_extra}"
+  content_security_policy_main_img_src: '
+    *
+    data:
+    {content_security_policy_main_img_src_extra}'
+  content_security_policy_main_connect_src: '
+    *
+    {content_security_policy_main_connect_src_extra}'
+
+  content_security_policy_admin_default_src_extra: ''
+  content_security_policy_admin_script_src_extra: ''
+  content_security_policy_admin_style_src_extra: ''
+  content_security_policy_admin_img_src_extra: ''
+  content_security_policy_admin_worker_src_extra: ''
+  content_security_policy_admin_default_src: "
+    'self'
+    {content_security_policy_admin_default_src_extra}"
+  content_security_policy_admin_script_src: "
+    'self'
+    'unsafe-inline'
+    {content_security_policy_admin_script_src_extra}"
+  content_security_policy_admin_style_src: "
+    'self'
+    'unsafe-inline'
+    https://stackpath.bootstrapcdn.com/
+    {content_security_policy_admin_style_src_extra}"
+  content_security_policy_admin_img_src: '
+    *
+    data:
+    {content_security_policy_admin_img_src_extra}'
+  content_security_policy_admin_worker_src: "
+    'self'
+    blob:
+    {content_security_policy_admin_worker_src_extra}"
+
+  content_security_policy_apihelp_default_src_extra: ''
+  content_security_policy_apihelp_script_src_extra: ''
+  content_security_policy_apihelp_style_src_extra: ''
+  content_security_policy_apihelp_img_src_extra: ''
+  content_security_policy_apihelp_connect_src_extra: ''
+  content_security_policy_apihelp_default_src: "
+    'self'
+    https://*
+    {content_security_policy_apihelp_default_src_extra}"
+  content_security_policy_apihelp_script_src: "
+    'self'
+    'unsafe-inline'
+    'unsafe-eval'
+    https://cdn.polyfill.io/
+    {content_security_policy_apihelp_script_src_extra}"
+  content_security_policy_apihelp_style_src: "
+    'self'
+    'unsafe-inline'
+    https://stackpath.bootstrapcdn.com/
+    {content_security_policy_apihelp_style_src_extra}"
+  content_security_policy_apihelp_img_src: '
+    *
+    data:
+    {content_security_policy_apihelp_img_src_extra}'
+  content_security_policy_apihelp_connect_src: '
+    *
+    {content_security_policy_apihelp_connect_src_extra}'
+
+  content_security_policy_c2c_default_src_extra: ''
+  content_security_policy_c2c_script_src_extra: ''
+  content_security_policy_c2c_style_src_extra: ''
+  content_security_policy_c2c_default_src: "
+    'self'
+    {content_security_policy_c2c_default_src_extra}"
+  content_security_policy_c2c_script_src: "
+    'self'
+    {content_security_policy_c2c_script_src_extra}"
+  content_security_policy_c2c_style_src: "
+    'self'
+    'unsafe-inline'
+    https://stackpath.bootstrapcdn.com/
+    {content_security_policy_c2c_style_src_extra}"
+
+  global_headers:
+    - pattern: '^/admin/.*'
+      headers: &c2cgeoform_headers
+        X-Frame-Options: SAMEORIGIN
+        X-Xss-Protection: 1; mode=block
+        X-Content-Type-Options: nosniff
+        Referrer-Policy: same-origin
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
+        Content-Security-Policy: 'default-src {content_security_policy_admin_default_src};
+          script-src {content_security_policy_admin_script_src};
+          style-src {content_security_policy_admin_style_src};
+          img-src {content_security_policy_admin_img_src};
+          worker-src {content_security_policy_admin_worker_src}'
+    - pattern: '^/getitfixed.*'
+      headers: *c2cgeoform_headers
+    - pattern: '^/static/.*'
+      headers:
+        Access-Control-Allow-Origin: '*'
+        Access-Control-Allow-Headers: X-Requested-With, Content-Type
+    - pattern: '^/static-ngeo/.*'
+      headers:
+        Access-Control-Allow-Origin: '*'
+        Access-Control-Allow-Headers: X-Requested-With, Content-Type
+    - pattern: '^/c2c$'
+      headers:
+        Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
+          script-src {content_security_policy_c2c_script_src};
+          style-src {content_security_policy_c2c_style_src};'
+    - pattern: '^/c2c/.*'
+      headers:
+        Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
+          script-src {content_security_policy_c2c_script_src};
+          style-src {content_security_policy_c2c_style_src};'
+
+  # Control the HTTP headers
+  headers:
+    dynamic: &header
+      cache_control_max_age: 600 # 10 minutes
+      cache_control_max_age_nocache: 10 # 10 seconds, to avoid too many call
+      access_control_max_age: 600 # 10 minutes
+      access_control_allow_origin:
+        - '*'
+    index:
+      <<: *header
+      headers: &sec_headers
+        X-Frame-Options: SAMEORIGIN
+        X-Xss-Protection: 1; mode=block
+        X-Content-Type-Options: nosniff
+        Referrer-Policy: origin
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
+        Content-Security-Policy: 'default-src {content_security_policy_main_default_src};
+          script-src {content_security_policy_main_script_src};
+          style-src {content_security_policy_main_style_src};
+          img-src {content_security_policy_main_img_src};
+          connect-src {content_security_policy_main_connect_src}'
+    api: *header
+    apihelp:
+      <<: *header
+      headers:
+        <<: *sec_headers
+        Content-Security-Policy: 'default-src {content_security_policy_apihelp_default_src};
+          script-src {content_security_policy_apihelp_script_src};
+          style-src {content_security_policy_apihelp_style_src};
+          img-src {content_security_policy_apihelp_img_src};
+          connect-src {content_security_policy_apihelp_connect_src}'
+    profile: *header
+    raster: *header
+    vector_tiles: *header
+    error: *header
+    themes: &auth_header
+      cache_control_max_age: 600 # 10 minutes
+      cache_control_max_age_nocache: 10 # 10 seconds, to avoid too many call
+      access_control_max_age: 600 # 10 minutes
+      access_control_allow_origin:
+        - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}'
+        - '*'
+      headers:
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
+    config: *auth_header
+    print: *auth_header
+    fulltextsearch: *auth_header
+    mapserver: *auth_header
+    tinyows: *auth_header
+    layers:
+      <<: *auth_header
+      cache_control_max_age_nocache: 0 # to refresh issue in editing
+    shortener: *auth_header
+    login:
+      <<: *auth_header
+      access_control_allow_origin:
+        - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}'
+
+  # Checker configuration
+  checker_ogc_server: source for image/png
+  checker:
+    forward_host: False
+    base_internal_url: http://localhost:8080
+    fulltextsearch:
+      disable: False
+      level: 3
+      search: text to search
+    lang:
+      level: 3
+      files: [ngeo]
+    phantomjs:
+      disable: []
+      routes:
+        - name: desktop
+          params:
+            no_redirect: 'true'
+          environment: &phantomjs-env
+            HTTP_MAP:
+              https://localhost:8484/tiles/: http://localhost:8080/tiles/
+          level: 6
+        - name: mobile
+          params:
+            no_redirect: 'true'
+          environment: *phantomjs-env
+          level: 6
+        - name: iframe_api
+          params:
+            no_redirect: 'true'
+          environment: *phantomjs-env
+          level: 6
+        - name: apihelp
+          environment: *phantomjs-env
+          level: 6
+    routes:
+      disable: []
+      routes:
+        - name: apijs
+          level: 3
+          params:
+            version: '2'
+        - name: printproxy_capabilities
+          level: 3
+        - name: mapserverproxy
+          checker_name: mapserverproxy_wms
+          params:
+            SERVICE: WMS
+            VERSION: 1.1.1
+            REQUEST: GetCapabilities
+            ogcserver: '{checker_ogc_server}'
+          level: 3
+        - name: mapserverproxy
+          checker_name: mapserverproxy_wfs
+          params:
+            SERVICE: WFS
+            VERSION: 1.1.0
+            REQUEST: GetCapabilities
+            ogcserver: '{checker_ogc_server}'
+          level: 3
+    themes:
+      params:
+        version: '2'
+      level: 4
+      interfaces: {}
+    print:
+      level: 5
+
+  # Check collector configuration
+  check_collector:
+    hosts:
+      - display: Main
+        url: 'http://localhost:8080{VISIBLE_ENTRY_POINT}'
+    max_level: 3
+    level: 10
+
+  # What web page is authorized to use the API
+  authorized_referers:
+    - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}/'
+
+  metrics:
+    memory_maps_rss: False
+    memory_maps_size: False
+    memory_cache: True
+    memory_cache_all: False
+    raster_data: False
+    total_python_object_memory: True
+
+  # Hooks that can be called at different moments in the life of the
+  # application. The value is the full python name
+  # (full.module.path.function_name) of the function to call
+  hooks: {}
+  #   after_settings: {{cookiecutter.package}}.after_settings_hook
+  # Called just after the settings have been loaded. Allows to modify
+  # the settings at runtime (they are constructed at build time).
+  # The function receives one parameter: the settings object.
+
+  # Statistics are disabled by default
+  stats: {}
+
+  # The c2cwsgiutils base path
+  c2c:
+    base_path: '{VISIBLE_ENTRY_POINT}c2c'
+
+  db_chooser:
+    # List of {method path} regexes to force the usage of the master, even for GET and OPTIONS
+    # This supersedes the slave list.
+    master:
+      - GET {VISIBLE_ENTRY_POINT}s/.* # The shortener updates the last_hit column on GET
+      - GET {VISIBLE_ENTRY_POINT}oauth/login # The oauth2 login when we are already logged
+    # List of {method path} regexes to force the usage of the slave
+    slave:
+      - \w+ {VISIBLE_ENTRY_POINT}printproxy/.* # The print proxy is never writing to the DB
+
+runtime_environment:
+  - name: VISIBLE_WEB_HOST
+    default: localhost
+  - name: VISIBLE_WEB_PROTOCOL
+    default: https
+  - name: VISIBLE_ENTRY_POINT
+    default: /
+  - PGHOST
+  - PGHOST_SLAVE
+  - name: PGPORT
+    default: '5432'
+  - name: PGPORT_SLAVE
+    default: '5432'
+  - PGUSER
+  - PGPASSWORD
+  - name: PGDATABASE
+    default: geomapfish
+  - name: PGSSLMODE
+    default: prefer
+  - name: PGSCHEMA
+    default: main
+  - name: PGSCHEMA_STATIC
+    default: main_static
+  - name: SQLALCHEMY_POOL_RECYCLE
+    default: '30'
+  - name: SQLALCHEMY_POOL_SIZE
+    default: '5'
+  - name: SQLALCHEMY_MAX_OVERFLOW
+    default: '25'
+  - name: SQLALCHEMY_SLAVE_POOL_RECYCLE
+    default: '30'
+  - name: SQLALCHEMY_SLAVE_POOL_SIZE
+    default: '5'
+  - name: SQLALCHEMY_SLAVE_MAX_OVERFLOW
+    default: '25'
+  - name: TINYOWS_URL
+    default: http://tinyows:8080/
+  - name: MAPSERVER_URL
+    default: http://mapserver:8080/
+  - name: QGISSERVER_URL
+    default: http://qgisserver:8080/
+  - name: PRINT_URL
+    default: http://print:8080/print/
+  - name: DEVSERVER_HOST
+    default: webpack-dev-server:8080
+  - name: REDIS_HOST
+    default: redis
+  - name: REDIS_PORT
+    default: '6372'
+  - name: REDIS_DB
+    default: '0'
+  - name: REDIS_SERVICENAME
+    default: 'mymaster'
+  - name: REDIS_TIMEOUT
+    default: '30'
+  - name: REDIS_LOCK_TIMEOUT
+    default: '120' # Two minutes
+  - name: REDIS_EXPIRATION_TIME
+    default: '86400' # One day
+  - name: TILEGENERATION_SQS_QUEUE
+    default: queue_name
+  - name: TILEGENERATION_S3_BUCKET
+    default: bucket_name
+  - name: SENTRY_URL
+    default: ''
+  - name: SENTRY_CLIENT_RELEASE
+    default: ''
+  - name: SENTRY_CLIENT_ENVIRONMENT
+    default: ''
+
+runtime_postprocess:
+  - expression: int({})
+    vars:
+      - cache.std.arguments.lock_timeout
+      - cache.std.arguments.redis_expiration_time
+      - cache.std.arguments.socket_timeout
+      - cache.std.arguments.db
+      - sqlalchemy\.pool_recycle
+      - sqlalchemy\.pool_size
+      - sqlalchemy\.max_overflow
+      - sqlalchemy_slave\.pool_recycle
+      - sqlalchemy_slave\.pool_size
+      - sqlalchemy_slave\.max_overflow
+      - authentication.max_consecutive_failures
+      - authentication.oauth2_authorization_expire_minutes
+      - authentication.oauth2_token_expire_minutes
+      - headers.login.access_control_max_age
+      - headers.login.cache_control_max_age
+      - headers.login.cache_control_max_age_nocache
+      - headers.index.access_control_max_age
+      - headers.index.cache_control_max_age
+      - headers.index.cache_control_max_age_nocache
+      - headers.dynamic.access_control_max_age
+      - headers.dynamic.cache_control_max_age
+      - headers.dynamic.cache_control_max_age_nocache
+      - headers.config.access_control_max_age
+      - headers.config.cache_control_max_age
+      - headers.config.cache_control_max_age_nocache
+      - headers.api.access_control_max_age
+      - headers.api.cache_control_max_age
+      - headers.api.cache_control_max_age_nocache
+      - headers.apihelp.access_control_max_age
+      - headers.apihelp.cache_control_max_age
+      - headers.apihelp.cache_control_max_age_nocache
+      - headers.themes.access_control_max_age
+      - headers.themes.cache_control_max_age
+      - headers.themes.cache_control_max_age_nocache
+      - headers.fulltextsearch.access_control_max_age
+      - headers.fulltextsearch.cache_control_max_age
+      - headers.fulltextsearch.cache_control_max_age_nocache
+      - headers.mapserver.access_control_max_age
+      - headers.mapserver.cache_control_max_age
+      - headers.mapserver.cache_control_max_age_nocache
+      - headers.tinyows.access_control_max_age
+      - headers.tinyows.cache_control_max_age
+      - headers.tinyows.cache_control_max_age_nocache
+      - headers.layers.access_control_max_age
+      - headers.layers.cache_control_max_age
+      - headers.layers.cache_control_max_age_nocache
+      - headers.print.access_control_max_age
+      - headers.print.cache_control_max_age
+      - headers.print.cache_control_max_age_nocache
+      - headers.profile.access_control_max_age
+      - headers.profile.cache_control_max_age
+      - headers.profile.cache_control_max_age_nocache
+      - headers.raster.access_control_max_age
+      - headers.raster.cache_control_max_age
+      - headers.raster.cache_control_max_age_nocache
+      - headers.shortener.access_control_max_age
+      - headers.shortener.cache_control_max_age
+      - headers.shortener.cache_control_max_age_nocache
+      - headers.error.access_control_max_age
+      - headers.error.cache_control_max_age
+      - headers.error.cache_control_max_age_nocache
+      - shortener.length
+      - checker.fulltextsearch.level
+      - checker.lang.level
+      - checker.print.level
+      - checker.themes.level
+      - check_collector.max_level
+      - check_collector.level
+
+  - expression: str({}).lower() in ("true", "yes", "1")
+    vars:
+      - authentication.two_factor
+      - getitfixed.enabled
+      - layers.geometry_validation
+      - smtp.ssl
+      - smtp.starttls
+      - hide_capabilities
+      - checker.forward_host
+      - checker.fulltextsearch.disable
+      - metrics.memory_maps_rss
+      - metrics.memory_maps_size
+      - metrics.memory_cache
+      - metrics.memory_cache_all
+      - metrics.raster_data
+      - metrics.total_python_object_memory
+
+no_interpreted:
+  - admin_interface.available_functionalities[].description
+  - admin_interface.available_metadata[].description
+  - interfaces_config.default.static.angularLocaleScript.append
+  - interfaces_config.default.constants.gmfMousePositionOptions.projections[].filter
+  - interfaces_config.default.constants.gmfMobileMeasurePointOptions.format
+  - interfaces_config.default.constants.ngeoStringToHtmlReplacements[].expression
+  - interfaces_config.mobile.constants.gmfMousePositionOptions.projections[].filter
+  - interfaces_config.mobile.constants.gmfMobileMeasurePointOptions.format
+  - interfaces_config.mobile.constants.ngeoStringToHtmlReplacements[].expression
+  - interfaces_config.desktop.constants.gmfMousePositionOptions.projections[].filter
+  - interfaces_config.desktop.constants.gmfMobileMeasurePointOptions.format
+  - interfaces_config.desktop.constants.ngeoStringToHtmlReplacements[].expression

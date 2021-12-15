@@ -1,0 +1,18 @@
+---
+project_folder: {{cookiecutter.project}}
+project_package: {{cookiecutter.package}}
+application_url: https://localhost:8484/
+checker_url: https://172.17.0.1:8484/c2c/health_check?max_level=9
+managed_files: []
+unmanaged_files: []
+template_vars:
+  package: {{cookiecutter.package}}
+  srid: {{cookiecutter.srid}}
+  extent: {{cookiecutter.extent}}
+  authtkt_secret: {{cookiecutter.authtkt_secret}}
+env:
+  files:
+    - env.default
+    - env.project
+  required_args: 0
+  help: No arguments needed.

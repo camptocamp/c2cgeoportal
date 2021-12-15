@@ -6,10 +6,6 @@ checks:
       - .*\.rst$
       - .*\.rst.tmpl$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/.*/.*
-  codespell:
-    ignore_re:
-      - ^geoportal/c2cgeoportal_geoportal/scaffolds/create/print/print-apps/\+package\+/.*\.jrxml$
-      - ^geoportal/c2cgeoportal_geoportal/scaffolds/create/spell-ignore-words.txt$
   required_workflows:
     main.yaml: False
     rebuild-master.yaml:

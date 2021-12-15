@@ -83,7 +83,7 @@ class TestLoginView(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
-        request = create_dummy_request(**kwargs)
+        request = create_dummy_request(authentication=True, **kwargs)
         request.route_url = lambda url, **kwargs: mapserv_url
         request.interface_name = "desktop"
         request.params = params
@@ -97,7 +97,7 @@ class TestLoginView(TestCase):
     # login/logout tests
     #
 
-    def test_login(self):
+    def test_login_success(self):
         from pyramid.httpexceptions import HTTPUnauthorized
 
         from c2cgeoportal_commons.models import DBSession
@@ -271,7 +271,7 @@ class TestLoginView(TestCase):
 
         from c2cgeoportal_geoportal.views.login import Login
 
-        request = DummyRequest()
+        request = self._create_request_obj()
         request.get_organization_role = lambda role_type: role_type
         request.is_valid_referer = True
         request.user = None
