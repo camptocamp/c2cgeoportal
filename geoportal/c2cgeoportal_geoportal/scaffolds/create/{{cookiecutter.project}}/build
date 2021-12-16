@@ -95,7 +95,8 @@ def main() -> None:
 
         if os.environ.get("CI", "FALSE").upper() != "TRUE":
             # Pull all the images
-            run(args, ["docker-compose", "pull"], check=True)  # nosec
+            if not args.service:
+                run(args, ["docker-compose", "pull"], check=True)  # nosec
             docker_compose_build_cmd.append("--pull")
 
         simple = not os.path.exists("geoportal/Dockerfile")
