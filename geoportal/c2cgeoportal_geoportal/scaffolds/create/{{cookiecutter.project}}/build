@@ -10,16 +10,24 @@ import stat
 import subprocess
 import sys
 import urllib.request
-from typing import Any, List
+from typing import Any, Dict, List, Optional
 
 import yaml
 
 
-def run(args: argparse.Namespace, command: List[str], **kwargs: Any) -> None:
+def run(
+    args: argparse.Namespace, command: List[str], env: Optional[Dict[str, str]] = None, **kwargs: Any
+) -> None:
     if args.verbose or args.dry_run:
-        print(" ".join(command))
+        env2 = {}
+        if env is not None:
+            env2.update(env)
+            if "PATH" in env2:
+                del env2["PATH"]
+        env_str = (" ".join(["=".join(item) for item in env2.items()]) + " ") if env2 else ""
+        print(env_str + " ".join(command))
     if not args.dry_run:
-        subprocess.run(command, **kwargs)  # nosec
+        subprocess.run(command, env=env, **kwargs)  # nosec
 
 
 def main() -> None:
