@@ -34,6 +34,11 @@ def main() -> None:
     parser.add_argument("--not-simple", action="store_true", help="Force not simple application mode")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
     parser.add_argument(
+        "--fast-reload",
+        action="store_true",
+        help="Restart the composition without Redis to don't lost the cache",
+    )
+    parser.add_argument(
         "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
     )
     parser.add_argument("env_files", nargs="*", help="The environment config")
@@ -123,6 +128,18 @@ def main() -> None:
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
+
+    if args.fast_reload:
+        for service in (
+            subprocess.run(
+                ["docker-compose", "ps", "--services", "--all"], stdout=subprocess.PIPE, check=True
+            )
+            .stdout.decode()
+            .splitlines()
+        ):
+            if not service.startswith("redis"):
+                run(args, ["docker-compose", "rm", "--stop", "--force", service], check=True)
+        run(args, ["docker-compose", "up", "-d"], check=True)
 
 
 if __name__ == "__main__":
