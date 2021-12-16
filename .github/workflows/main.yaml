@@ -125,6 +125,7 @@ jobs:
           path: artifacts/qgisserver-plugin-coverage/
           if-no-files-found: ignore
           retention-days: 5
+      - run: sudo git clean -fdx
 
       # Documentation
       - run: >
