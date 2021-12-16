@@ -10,18 +10,42 @@ import stat
 import subprocess
 import sys
 import urllib.request
+from typing import Any, Dict, List, Optional
 
 import yaml
+
+
+def run(
+    args: argparse.Namespace, command: List[str], env: Optional[Dict[str, str]] = None, **kwargs: Any
+) -> None:
+    if args.verbose or args.dry_run:
+        env2 = {}
+        if env is not None:
+            env2.update(env)
+            if "PATH" in env2:
+                del env2["PATH"]
+        env_str = (" ".join(["=".join(item) for item in env2.items()]) + " ") if env2 else ""
+        print(env_str + " ".join(command))
+    if not args.dry_run:
+        subprocess.run(command, env=env, **kwargs)  # nosec
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build the project")
     parser.add_argument("--verbose", action="store_true", help="Display the docker build commands")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Display the docker build commands without executing them"
+    )
     parser.add_argument("--service", help="Build only the specified service")
     parser.add_argument("--env", action="store_true", help="Build only the .env file")
     parser.add_argument("--simple", action="store_true", help="Force simple application mode")
     parser.add_argument("--not-simple", action="store_true", help="Force not simple application mode")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
+    parser.add_argument(
+        "--fast-reload",
+        action="store_true",
+        help="Restart the composition without Redis to don't lost the cache",
+    )
     parser.add_argument(
         "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
     )
@@ -53,9 +77,9 @@ def main() -> None:
         os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
         try:
             if platform.system() == "Windows":
-                subprocess.run(["python", "upgrade", full_version] + debug_args, check=True)
+                run(args, ["python", "upgrade", full_version] + debug_args, check=True)
             else:
-                subprocess.run(["./upgrade", full_version] + debug_args, check=True)
+                run(args, ["./upgrade", full_version] + debug_args, check=True)
         except subprocess.CalledProcessError:
             sys.exit(1)
         sys.exit(0)
@@ -84,7 +108,8 @@ def main() -> None:
 
         if os.environ.get("CI", "FALSE").upper() != "TRUE":
             # Pull all the images
-            subprocess.run(["docker-compose", "pull"], check=True)  # nosec
+            if not args.service:
+                run(args, ["docker-compose", "pull"], check=True)  # nosec
             docker_compose_build_cmd.append("--pull")
 
         simple = not os.path.exists("geoportal/Dockerfile")
@@ -106,13 +131,23 @@ def main() -> None:
         print_args = [a.replace(" ", "\\ ") for a in docker_compose_build_cmd]
         print_args = [a.replace('"', '\\"') for a in print_args]
         print_args = [a.replace("'", "\\'") for a in print_args]
-        if args.verbose:
-            print(" ".join(print_args))
         try:
-            subprocess.run(docker_compose_build_cmd, env=env, check=True)  # nosec
+            run(args, docker_compose_build_cmd, env=env, check=True)  # nosec
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
+
+    if args.fast_reload:
+        for service in (
+            subprocess.run(
+                ["docker-compose", "ps", "--services", "--all"], stdout=subprocess.PIPE, check=True
+            )
+            .stdout.decode()
+            .splitlines()
+        ):
+            if not service.startswith("redis"):
+                run(args, ["docker-compose", "rm", "--stop", "--force", service], check=True)
+        run(args, ["docker-compose", "up", "-d"], check=True)
 
 
 if __name__ == "__main__":

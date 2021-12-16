@@ -69,7 +69,7 @@ setup(
     install_requires=install_requires,
     extras_require={
         "testing": ["transaction"],
-        "upgrade": ["alembic", "psycopg2-binary"],
+        "upgrade": ["alembic", "psycopg2"],
         "broadcast": ["c2cwsgiutils"],
     },
 )
