@@ -10,8 +10,15 @@ import stat
 import subprocess
 import sys
 import urllib.request
+from typing import List, Any
 
 import yaml
+
+
+def run(args: argparse.Namespace, command: List[str], **kwargs: Any) -> None:
+    if args.verbose:
+        print(" ".join(command))
+    subprocess.run(command, **kwargs)  # nosec
 
 
 def main() -> None:
@@ -53,9 +60,9 @@ def main() -> None:
         os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
         try:
             if platform.system() == "Windows":
-                subprocess.run(["python", "upgrade", full_version] + debug_args, check=True)
+                run(args, ["python", "upgrade", full_version] + debug_args, check=True)
             else:
-                subprocess.run(["./upgrade", full_version] + debug_args, check=True)
+                run(args, ["./upgrade", full_version] + debug_args, check=True)
         except subprocess.CalledProcessError:
             sys.exit(1)
         sys.exit(0)
@@ -84,7 +91,7 @@ def main() -> None:
 
         if os.environ.get("CI", "FALSE").upper() != "TRUE":
             # Pull all the images
-            subprocess.run(["docker-compose", "pull"], check=True)  # nosec
+            run(args, ["docker-compose", "pull"], check=True)  # nosec
             docker_compose_build_cmd.append("--pull")
 
         simple = not os.path.exists("geoportal/Dockerfile")
@@ -106,10 +113,8 @@ def main() -> None:
         print_args = [a.replace(" ", "\\ ") for a in docker_compose_build_cmd]
         print_args = [a.replace('"', '\\"') for a in print_args]
         print_args = [a.replace("'", "\\'") for a in print_args]
-        if args.verbose:
-            print(" ".join(print_args))
         try:
-            subprocess.run(docker_compose_build_cmd, env=env, check=True)  # nosec
+            run(args, docker_compose_build_cmd, env=env, check=True)  # nosec
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
