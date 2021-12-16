@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "29c97ca56ce8b813db14d0513f6fc7fba03bda6899d5035792971fe5ca0adef4"
+            "sha256": "12a8982c21e4822ea08c89982d61078602a9548b31a2c5c7a1d919238696bd1e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1798,10 +1798,10 @@
         },
         "c2cciutils": {
             "hashes": [
-                "sha256:cb316ddaa430c448c4d85a1e6b6049e247e3a3b7286f71c90a8a80ff82497af5"
+                "sha256:cf2d7d65a8e70633a7a4ff335a1b053bab6d3b9f9322012c7b89f56d0c64de51"
             ],
             "index": "pypi",
-            "version": "==1.1.dev20211209145632"
+            "version": "==1.1.dev20211215101636"
         },
         "cachetools": {
             "hashes": [
@@ -2173,7 +2173,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2915,7 +2915,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
