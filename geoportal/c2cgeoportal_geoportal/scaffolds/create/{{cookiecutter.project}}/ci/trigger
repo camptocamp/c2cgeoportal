@@ -5,10 +5,12 @@ import os.path
 import subprocess
 import sys
 
+import yaml
+from yaml.loader import Loader
+
 
 def main():
     parser = argparse.ArgumentParser(description="Publish Docker images")
-    parser.add_argument("--image", dest="images", action="append", help="The image to be exported")
     parser.add_argument("--version", help="The version to be exported")
     parser.add_argument(
         "--image-stream-name",
@@ -62,7 +64,21 @@ def main():
             ).decode(),
         ]
     )
-    for image in args.images:
+
+    docker_base = ""
+    with open(".env", encoding="utf-8") as env_file:
+        for env in env_file.read().splitlines():
+            if env.startswith("DOCKER_BASE="):
+                docker_base = env.split("=")[1]
+
+    images = []
+    with open("ci/config.yaml", encoding="utf-8") as config_file:
+        ci_config = yaml.load(config_file, Loader=yaml.SafeLoader)
+        for image_config in ci_config.get("publish", {}).get("docker", {}).get("images", []):
+            if image_config["name"].startswith(f"{docker_base}-"):
+                images.append(image_config["name"].substring(len(docker_base) + 1))
+
+    for image in images:
         version_split = version.split("-")
         env = version_split[0]
         version_only = "-".join(version_split[1:])
