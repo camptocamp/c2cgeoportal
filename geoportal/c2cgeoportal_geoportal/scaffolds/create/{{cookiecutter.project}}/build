@@ -10,20 +10,24 @@ import stat
 import subprocess
 import sys
 import urllib.request
-from typing import List, Any
+from typing import Any, List
 
 import yaml
 
 
 def run(args: argparse.Namespace, command: List[str], **kwargs: Any) -> None:
-    if args.verbose:
+    if args.verbose or args.dry_run:
         print(" ".join(command))
-    subprocess.run(command, **kwargs)  # nosec
+    if not args.dry_run:
+        subprocess.run(command, **kwargs)  # nosec
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build the project")
     parser.add_argument("--verbose", action="store_true", help="Display the docker build commands")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Display the docker build commands without executing them"
+    )
     parser.add_argument("--service", help="Build only the specified service")
     parser.add_argument("--env", action="store_true", help="Build only the .env file")
     parser.add_argument("--simple", action="store_true", help="Force simple application mode")
