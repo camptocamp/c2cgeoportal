@@ -76,7 +76,7 @@ def main():
         ci_config = yaml.load(config_file, Loader=yaml.SafeLoader)
         for image_config in ci_config.get("publish", {}).get("docker", {}).get("images", []):
             if image_config["name"].startswith(f"{docker_base}-"):
-                images.append(image_config["name"].substring(len(docker_base) + 1))
+                images.append(image_config["name"][len(docker_base) + 1 :])
 
     for image in images:
         version_split = version.split("-")
