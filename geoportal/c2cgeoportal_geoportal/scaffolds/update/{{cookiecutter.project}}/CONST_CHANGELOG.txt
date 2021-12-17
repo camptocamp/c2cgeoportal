@@ -192,7 +192,11 @@ Other Docker images
 Main Changes
 ------------
 
-The migration process will do the following UI-related changes (visible in the html/ejs diffs):
+The migration process impacts the following:
+1. Openlayers view has a default value set to `false` for the `constrainOnlyCenter` parameter.
+Add to the vars.yaml the following config: `constrainOnlyCenter: True` to `gmfOptions/view` if required to keep 2.5 view behavior.
+
+The migration process will also require the following UI-related changes (visible in the html diffs):
 1. Right panel is movable, so the handle has to be added
 2. Draw and measure panel has extra fields for arrows drawing
 
