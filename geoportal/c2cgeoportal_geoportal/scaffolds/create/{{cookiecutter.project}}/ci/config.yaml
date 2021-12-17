@@ -22,7 +22,4 @@ publish:
   pypi: false
   docker:
     images:
-      - group: geoportal
-        name: camptocamp/{{cookiecutter.package}}-geoportal
-      - group: config
-        name: camptocamp/{{cookiecutter.package}}-config
+      - name: camptocamp/{{cookiecutter.package}}-config
