@@ -19,6 +19,7 @@ version:
       to: \1
 
 publish:
+  pypi: false
   docker:
     images:
       - group: geoportal
