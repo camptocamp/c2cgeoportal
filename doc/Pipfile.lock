@@ -724,16 +724,16 @@
         },
         "tilecloud": {
             "hashes": [
-                "sha256:f7ede89f4fd97ba32e51823b038a44f0aecd5f20f557f5a271bb2d051a758732"
+                "sha256:31e9da7b951b8003217c879427d8c89f194e3a716a19a40ead7f55bcc24ceec9"
             ],
-            "version": "==1.6.5"
+            "version": "==1.7.0"
         },
         "tilecloud-chain": {
             "hashes": [
-                "sha256:aa8c418be6e9ed433d6ef6876f5ec1f484e0b02b864659b40636097db7547d3f"
+                "sha256:6227a9bd0517f64f2be9ced89f2e4e8defdea669233f79362225e98d8c589cce"
             ],
             "index": "pypi",
-            "version": "==1.16.1"
+            "version": "==1.17.0.dev20211216091401"
         },
         "translationstring": {
             "hashes": [

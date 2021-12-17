@@ -46,7 +46,7 @@ ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/de
 
 function test_pot {
     ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/locale.pot --output /tmp/locale.pot
-    ci/run-dc-logs docker-compose exec -T geoportal cat /tmp/locale.pot > /tmp/locale.pot
+    docker-compose exec -T geoportal cat /tmp/locale.pot > /tmp/locale.pot
     if [ "$(wc -l < /tmp/locale.pot)" -eq "$(wc -l < geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot)" ]
     then
         echo 'View locale.pot match in size with update-po'
