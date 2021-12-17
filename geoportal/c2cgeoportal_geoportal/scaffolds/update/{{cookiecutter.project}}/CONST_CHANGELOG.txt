@@ -11,7 +11,7 @@ Information to know before starting the upgrade
 Information
 ===========
 
-1. All the files will be formatted with isort, Black and Prettier to be similar than the initial scaffolds
+1. All the files will be formatted with isort, Black and Prettier to be similar to the initial scaffolds.
 
 2. The configuration of the QGIS authentication module is simplified,
    now a new environment variable `GEOMAPFISH_ACCESSCONTROL_BASE_URL` is set to the base URL of
@@ -27,6 +27,20 @@ Information
    In the ``docker-compose.yaml`` file in the service ``geoportal`` you should replace
    ``service: geoportal`` by ``service: geoportal-advance``, and in service ``alembic`` you should replace
    ``service: alembic`` by ``service: alembic-advance``.
+
+4. Some little changes in the application build:
+   - We no longer use custom build commands to build the docker images, we simply use the docker-compose
+     build command, with two additional environment variables:
+     * ``SIMPLE``: ``TRUE`` or ``FALSE`` if we compile a simple application or not.
+     * ``GIT_HASH``: the git hash of the current version.
+     The build specification has been moved to the ``docker-compose`` files.
+   - The ``--geoportal`` and ``--config`` arguments have been replaced by ``--service=geoportal`` and
+     ``--service=config`` respectively.
+   - The image used by the ``docker-compose`` will be pulled from the Docker hub.
+   - New argument ``--fast-reload`` that will recreate all containers and restart them except the redis
+     containers to keep the cache.
+   - New argument ``--dry-run``.
+
 
 Changes to apply
 ================
