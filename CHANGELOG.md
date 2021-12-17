@@ -1,3 +1,5 @@
+##### 2.6.0.65
+* Security upgrade for c2cgeoform/getitfixed [c2cgeoportal#9050](https://github.com/camptocamp/c2cgeoportal/pull/9050)
 ##### 2.6.0.64
 * Add 2.6 changelog concerning ol view changes [c2cgeoportal#9044](https://github.com/camptocamp/c2cgeoportal/pull/9044)
 ##### 2.6.0.63
