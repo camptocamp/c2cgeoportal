@@ -14,7 +14,7 @@ env:
 jobs:
   main:
     runs-on: ubuntu-20.04
-    name: Checks
+    name: Continuous integration
     timeout-minutes: 10
 
     steps:
