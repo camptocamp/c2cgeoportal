@@ -21,6 +21,11 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# Will update the pot file then the po files.
+# Used when we update the po files in the application running in a docker-compose locally.
+
+USER=$1
+GROUP=$2
 OWNER=$1:$2
 shift 2
 
@@ -33,20 +38,4 @@ pot-create --config=geoportal/lingua-client${SUFFIX}.cfg --width=110 \
     /etc/geomapfish/config.yaml geoportal/development.ini
 chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
 
-for LANG in "$@"
-do
-    ls geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po -als || true
-
-    mkdir --parent geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/
-    [ -f geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po ] || \
-        msginit --no-translator --input=geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot \
-            --output-file=geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po \
-            -l ${LANG}
-
-    cat geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po
-
-    msgmerge --backup=none --update --sort-output --no-location \
-        geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po \
-        geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
-    chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client${SUFFIX}.po
-done
+update-po-only ${USER} ${GROUP} "$@"

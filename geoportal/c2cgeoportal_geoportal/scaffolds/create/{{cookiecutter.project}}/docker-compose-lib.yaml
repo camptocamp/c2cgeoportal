@@ -284,6 +284,8 @@ services:
   tools:
     image: camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
     restart: unless-stopped
+    volumes:
+      - ./geoportal/${PACKAGE}_geoportal/locale:/app/${PACKAGE}_geoportal/locale
     environment:
       - PGSCHEMA
       # From geoportal
