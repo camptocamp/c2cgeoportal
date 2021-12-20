@@ -14,7 +14,7 @@ env:
 jobs:
   main:
     runs-on: ubuntu-20.04
-    name: Checks
+    name: Continuous integration
     timeout-minutes: 10
 
     steps:
@@ -24,6 +24,7 @@ jobs:
         with:
           ci-gpg-private-key: ${{'{{'}}secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{'{{'}}secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: docker
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
