@@ -29,17 +29,21 @@ Information
    ``service: alembic`` by ``service: alembic-advance``.
 
 4. Some little changes in the application build:
-   - We no longer use custom build commands to build the docker images, we simply use the docker-compose
-     build command, with two additional environment variables:
-     * ``SIMPLE``: ``TRUE`` or ``FALSE`` if we compile a simple application or not.
+
+   - In the ``./build`` script, we no longer call the ``docker build`` command with custom parameters,
+     but call the ``docker-compose build`` command with two additional environment variables:
+
+     * ``SIMPLE``: ``TRUE`` or ``FALSE`` if we compile a simple or advance application.
      * ``GIT_HASH``: the git hash of the current version.
+
      The build specification has been moved to the ``docker-compose`` files.
    - The ``--geoportal`` and ``--config`` arguments have been replaced by ``--service=geoportal`` and
      ``--service=config`` respectively.
-   - The image used by the ``docker-compose`` will be pulled from the Docker hub.
-   - New argument ``--fast-reload`` that will recreate all containers and restart them except the redis
-     containers to keep the cache.
-   - New argument ``--dry-run``.
+   - The external images used in the composition are pulled from the Docker hub on each build.
+   - ``./build`` script supports a new argument ``--fast-reload`` that will recreate all containers except
+     Redis containers to keep the cache.
+   - ``./build`` script supports a new argument ``--dry-run`` which only displays the ``docker`` and
+     ``docker-compose`` commands without running them.
 
 
 Changes to apply
