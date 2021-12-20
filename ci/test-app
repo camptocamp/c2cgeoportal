@@ -73,7 +73,6 @@ ci/run-dc-logs scripts/db-backup --env=env.int --arg=--schema=main dump.backup
 ci/run-dc-logs docker-compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
 ci/run-dc-logs scripts/db-restore --arg=--clean --arg=--schema=main dump.backup
 
-ci/run-dc-logs docker-compose exec -T tools rm /etc/mapserver/demo.map
 ci/run-dc-logs docker-compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
 docker-compose down
 sudo rm -rf "${HOME}/workspace/testgeomapfishapp"
