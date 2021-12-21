@@ -47,6 +47,12 @@ def main() -> None:
         help="Restart the composition without Redis to don't lost the cache",
     )
     parser.add_argument(
+        "--no-pull",
+        action="store_true",
+        default=os.environ.get("CI", "FALSE").upper() == "TRUE",
+        help="Do not pull external or base images for faster rebuild during development.",
+    )
+    parser.add_argument(
         "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
     )
     parser.add_argument("env_files", nargs="*", help="The environment config")
@@ -106,7 +112,7 @@ def main() -> None:
         env = {"PATH": os.environ["PATH"]}
         docker_compose_build_cmd = ["docker-compose", "build"]
 
-        if os.environ.get("CI", "FALSE").upper() != "TRUE":
+        if not args.no_pull:
             # Pull all the images
             if not args.service:
                 run(args, ["docker-compose", "pull"], check=True)  # nosec
