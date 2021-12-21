@@ -39,7 +39,8 @@ Information
      The build specification has been moved to the ``docker-compose`` files.
    - The ``--geoportal`` and ``--config`` arguments have been replaced by ``--service=geoportal`` and
      ``--service=config`` respectively.
-   - The external images used in the composition are pulled from the Docker hub on each build.
+   - The external images used in the composition are pulled from the Docker hub on each build, but the
+     ``./build`` script supports a new argument ``--no-pull`` for faster rebuild during development.
    - ``./build`` script supports a new argument ``--fast-reload`` that will recreate all containers except
      Redis containers to keep the cache.
    - ``./build`` script supports a new argument ``--dry-run`` which only displays the ``docker`` and
