@@ -27,7 +27,12 @@ jobs:
           token: ${{'{{'}} secrets.GITHUB_GOPASS_CI_TOKEN {{'}}'}}
 
       - run: ./build --env
-      - run: PROJECT_PUBLIC_URL={{'{{'}} matrix.base_url {{'}}'}} make -e update-po-url
+      - run: PROJECT_PUBLIC_URL=${{'{{'}} matrix.base_url {{'}}'}} make -e update-po-url
+
+      - name: Init Git
+        run: |
+          git config --global user.email "geospatial-bot@camptocamp.com"
+          git config --global user.name CI
 
       - name: Push l10n branch and create pull request
         run: |
@@ -38,7 +43,7 @@ jobs:
           git push --force origin HEAD:l10n-${{'{{'}} matrix.branch {{'}}'}}
           python3 -c 'import requests
           response = requests.post(
-              "https://api.github.com/repos/${{'{{'}} env.GITHUB_REPOSITORY {{'}}'}}/pulls",
+              "https://api.github.com/repos/${env.GITHUB_REPOSITORY}/pulls",
               json={
                 "title": "Update the l10n files on ${{'{{'}} matrix.branch {{'}}'}}",
                 "body": "",
