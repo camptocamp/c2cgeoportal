@@ -98,7 +98,7 @@ class OGCProxy(Proxy):
         return url
 
     def get_headers(self) -> Dict[str, str]:
-        headers: Dict[str, str] = super().get_headers()
+        headers: Dict[str, str] = dict(super().get_headers())
         if self.ogc_server.type == main.OGCSERVER_TYPE_QGISSERVER:
             headers["X-Qgis-Service-Url"] = self.request.current_route_url(
                 _query={"ogcserver": self.ogc_server.name}

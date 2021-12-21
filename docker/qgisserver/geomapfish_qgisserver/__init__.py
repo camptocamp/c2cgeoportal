@@ -33,6 +33,15 @@ def serverClassFactory(  # noqa: ignore=N806
             level=Qgis.Critical,
         )
 
+    LOG.info("Starting GeoMapFish filter plugin...")
+
+    try:
+        from .filter import GeoMapFishFilter  # pylint: disable=import-outside-toplevel
+
+        serverIface.registerFilter(GeoMapFishFilter(serverIface), 100)
+    except Exception:  # pylint: disable=broad-except
+        LOG.exception("Cannot setup filter plugin")
+
     LOG.info("Starting GeoMapFish access restriction...")
 
     try:
@@ -43,4 +52,6 @@ def serverClassFactory(  # noqa: ignore=N806
 
         return GeoMapFishAccessControl(serverIface)
     except GMFException:
-        LOG.error("Cannot setup GeoMapFishAccessControl", exc_info=True)
+        LOG.exception(
+            "Cannot setup GeoMapFishAccessControl",
+        )

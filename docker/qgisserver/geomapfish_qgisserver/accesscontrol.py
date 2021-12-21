@@ -756,14 +756,33 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     def cacheKey(self) -> str:  # noqa: ignore=N802
         # Root...
+        LOG.error("CACHE")
+        # LOG.error(dir(self.server_iface))
+        # LOG.error(self.server_iface.getEnv)
+        # LOG.error(dir(self.server_iface.requestHandler()))
+        # LOG.error(self.server_iface.getEnv("HTTP_X_QGIS_SERVICE_URL"))
+        # LOG.error(self.server_iface.requestHandler().requestHeaders())
+        # LOG.error(dir(self.server_iface.requestHandler().requestHeaders()))
+        LOG.error(self.server_iface.requestHandler().requestHeaders())
         session = self.DBSession()
         try:
             roles = self.get_roles(session)
         finally:
             session.close()
-        if roles == "ROOT":
-            return f"{self.serverInterface().getEnv('HTTP_HOST')}-ROOT"
-        return (
-            f'{self.serverInterface().getEnv("HTTP_HOST")}-'
-            f'{",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id))}'
+
+        roles_key = (
+            "ROOT"
+            if roles == "ROOT"
+            else ",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id))
         )
+
+        host_key = self.server_iface.getEnv("HTTP_X_QGIS_SERVICE_URL")
+        if not host_key:
+            host_key = self.server_iface.getEnv("HTTP_FORWARDED")
+        if not host_key:
+            host_key = self.server_iface.getEnv("HTTP_X_FORWARDED_HOST")
+        if not host_key:
+            host_key = self.server_iface.getEnv("HTTP_HOST")
+
+        LOG.debug(f"{host_key}-{roles_key}")
+        return f"{host_key}-{roles_key}"
