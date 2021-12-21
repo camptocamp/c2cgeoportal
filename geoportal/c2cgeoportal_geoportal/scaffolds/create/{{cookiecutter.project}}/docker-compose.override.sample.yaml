@@ -7,13 +7,13 @@ version: '2.3'
 services:
   geoportal:
     user: root
-    volumes:
-      # For Python project development.
-      # - ./geoportal/${PACKAGE}_geoportal:/app/${PACKAGE}_geoportal
-      # For Python c2cgeportal development.
-      # - ./../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons
-      # - ./../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
-      # - ./../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin
+    # volumes:
+    # For Python project development.
+    # - ./geoportal/${PACKAGE}_geoportal:/app/${PACKAGE}_geoportal
+    # For Python c2cgeportal development.
+    # - ./../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons
+    # - ./../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
+    # - ./../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin
     environment:
       - GUNICORN_CMD_ARGS=--reload
       - C2CWSGIUTILS_CONFIG=/app/development.ini
@@ -38,6 +38,10 @@ services:
     environment:
       - QGIS_SERVER_LOG_LEVEL=0
 
+  tools:
+    volumes_from:
+      - config:rw
+  #
   # For Javascript project development.
   # The debug application will be available at ``https://<host>/<entry_point>/dev/<interface>.html``.
   # webpack_dev_server:
