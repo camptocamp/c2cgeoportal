@@ -18,6 +18,8 @@ services:
       - GUNICORN_CMD_ARGS=--reload
       - C2CWSGIUTILS_CONFIG=/app/development.ini
       # - PRINT_URL=http://print:8080/print/
+      - PYTHONWARNINGS=default::DeprecationWarning
+      - SQLALCHEMY_WARN_20=true
     ports:
       - 5678:5678 # For remote debugging using Visual Studio Code
 

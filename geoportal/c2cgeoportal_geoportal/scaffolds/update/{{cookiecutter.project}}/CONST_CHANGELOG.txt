@@ -45,6 +45,29 @@ Information
    - ``./build`` script supports a new argument ``--dry-run`` which only displays the ``docker`` and
      ``docker-compose`` commands without running them.
 
+SQLAlchemy upgrade to version 1.4
+---------------------------------
+
+SQLAlchemy has been upgraded to version 1.4 which serves as potential migration point for a more dramatic
+series of API changes currently planned for release 2.0 of SQLAlchemy.
+
+For more details about SQLAlchemy 1.4 see: https://docs.sqlalchemy.org/en/14/changelog/migration_14.html
+
+To show SQLAlchemy deprecation warnings in your geoportal container logs, add this to your
+`docker-compose.override.yaml` file:
+
+```
+---
+version: '2.3'
+
+services:
+  geoportal:
+    environment:
+      - PYTHONWARNINGS=default::DeprecationWarning
+      - SQLALCHEMY_WARN_20=true
+```
+
+For more information about Python warnings configuration see: https://docs.python.org/3/library/warnings.html#describing-warning-filters
 
 Changes to apply
 ================
