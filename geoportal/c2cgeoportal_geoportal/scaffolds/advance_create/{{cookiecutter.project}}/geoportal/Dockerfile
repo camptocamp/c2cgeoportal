@@ -4,6 +4,11 @@ ARG {{cookiecutter.geomapfish_major_version_tag}}
 FROM camptocamp/geomapfish-tools:{{cookiecutter.geomapfish_version_tag_env}} as builder
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
+COPY requirements.txt /tmp/requirements.txt
+RUN \
+  python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
+  rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
+
 WORKDIR /app
 COPY webpack.*.js Makefile CONST_Makefile /app/
 COPY {{cookiecutter.package}}_geoportal/static-ngeo /app/{{cookiecutter.package}}_geoportal/static-ngeo
