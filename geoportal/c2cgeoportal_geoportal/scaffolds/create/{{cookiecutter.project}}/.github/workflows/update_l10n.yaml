@@ -27,7 +27,15 @@ jobs:
           token: ${{'{{'}} secrets.GITHUB_GOPASS_CI_TOKEN {{'}}'}}
 
       - run: ./build --env
-      - run: PROJECT_PUBLIC_URL={{'{{'}} matrix.base_url {{'}}'}} make -e update-po-url
+      - run: PROJECT_PUBLIC_URL=${{'{{'}} matrix.base_url {{'}}'}} make -e update-po-from-url
+
+      - name: Init Git
+        run: |
+          git config --global user.email "geospatial-bot@camptocamp.com"
+          git config --global user.name CI
+
+      - id: status
+        run: echo ::set-output name=status::$(git status --porcelain)
 
       - name: Push l10n branch and create pull request
         run: |
@@ -36,20 +44,22 @@ jobs:
           git status
           git commit -m "Update the l10n files"
           git push --force origin HEAD:l10n-${{'{{'}} matrix.branch {{'}}'}}
-          python3 -c 'import requests
+          python3 -c "import requests
           response = requests.post(
-              "https://api.github.com/repos/${{'{{'}} env.GITHUB_REPOSITORY {{'}}'}}/pulls",
+              'https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls',
               json={
-                "title": "Update the l10n files on ${{'{{'}} matrix.branch {{'}}'}}",
-                "body": "",
-                "head": "l10n-${{'{{'}} matrix.branch {{'}}'}}",
-                "base": "${{'{{'}} matrix.branch {{'}}'}}",
-                "maintainer_can_modify": True
+                'title': 'Update the l10n files on ${{'{{'}} matrix.branch {{'}}'}}',
+                'body': '',
+                'head': 'l10n-${{'{{'}} matrix.branch {{'}}'}}',
+                'base': '${{'{{'}} matrix.branch {{'}}'}}',
+                'maintainer_can_modify': True
               },
               headers={
-                  "Accept": "application/vnd.github.v3+json",
-                  "Authorization": "Bearer ${{'{{'}} secrets.GITHUB_GOPASS_CI_TOKEN {{'}}'}}",
-                  "Content-Type": "application/json",
+                  'Accept': 'application/vnd.github.v3+json',
+                  'Authorization': 'Bearer ${{'{{'}} secrets.GITHUB_GOPASS_CI_TOKEN {{'}}'}}',
+                  'Content-Type': 'application/json',
               },
           )
-          assert response.status_code < 300, response.text'
+          # 422 is the return code when the pull request already exists
+          assert response.status_code < 300 or response.status_code == 422, f'{response.status_code} - {response.text}'"
+        if: steps.status.outputs.status != ''
