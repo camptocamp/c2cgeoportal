@@ -598,6 +598,9 @@ vars:
         type: float
         description: >
           The min resolution where the layer is queryable. For WMTS layers.
+      - name: timeout
+        type: float
+        description: The fetch capabilities timeout in seconds. Use `300` by default. For WMTS Layers.
 
     # The list of functionalities that can be configured
     # through the admin interface.
