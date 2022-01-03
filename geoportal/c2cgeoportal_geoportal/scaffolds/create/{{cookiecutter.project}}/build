@@ -15,19 +15,11 @@ from typing import Any, Dict, List, Optional
 import yaml
 
 
-def run(
-    args: argparse.Namespace, command: List[str], env: Optional[Dict[str, str]] = None, **kwargs: Any
-) -> None:
+def run(args: argparse.Namespace, command: List[str], **kwargs: Any) -> None:
     if args.verbose or args.dry_run:
-        env2 = {}
-        if env is not None:
-            env2.update(env)
-            if "PATH" in env2:
-                del env2["PATH"]
-        env_str = (" ".join(["=".join(item) for item in env2.items()]) + " ") if env2 else ""
-        print(env_str + " ".join(command))
+        print(" ".join(command))
     if not args.dry_run:
-        subprocess.run(command, env=env, **kwargs)  # nosec
+        subprocess.run(command, **kwargs)  # nosec
 
 
 def main() -> None:
@@ -106,10 +98,25 @@ def main() -> None:
         for file_ in env_files:
             with open(file_, encoding="utf-8") as src:
                 dest.write(src.read() + "\n")
+
+            simple = not os.path.exists("geoportal/Dockerfile")
+            if args.simple:
+                simple = True
+            if args.not_simple:
+                simple = False
+
+            git_hash = (
+                subprocess.run(["git", "rev-parse", "HEAD"], check=True, stdout=subprocess.PIPE)
+                .stdout.strip()
+                .decode()
+            )
+
+            dest.write(f"SIMPLE={str(simple).upper()}\n")
+            dest.write(f"GIT_HASH={git_hash}\n")
+
         dest.write(f"# Used env files: {' '.join(env_files)}\n")
 
     if not args.env:
-        env = {"PATH": os.environ["PATH"]}
         docker_compose_build_cmd = ["docker-compose", "build"]
 
         if not args.no_pull:
@@ -118,19 +125,6 @@ def main() -> None:
                 run(args, ["docker-compose", "pull"], check=True)  # nosec
             docker_compose_build_cmd.append("--pull")
 
-        simple = not os.path.exists("geoportal/Dockerfile")
-        if args.simple:
-            simple = True
-        if args.not_simple:
-            simple = False
-        env["SIMPLE"] = str(simple).upper()
-
-        env["GIT_HASH"] = (
-            subprocess.run(["git", "rev-parse", "HEAD"], check=True, stdout=subprocess.PIPE)
-            .stdout.strip()
-            .decode()
-        )
-
         if args.service:
             docker_compose_build_cmd.append(args.service)
 
@@ -138,7 +132,7 @@ def main() -> None:
         print_args = [a.replace('"', '\\"') for a in print_args]
         print_args = [a.replace("'", "\\'") for a in print_args]
         try:
-            run(args, docker_compose_build_cmd, env=env, check=True)  # nosec
+            run(args, docker_compose_build_cmd, check=True)  # nosec
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
