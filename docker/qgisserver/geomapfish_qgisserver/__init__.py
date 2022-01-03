@@ -21,15 +21,14 @@ LOG = logging.getLogger(__name__)
 def serverClassFactory(  # noqa: ignore=N806
     serverIface: qgis.server.QgsServerInterface,  # noqa: ignore=N803
 ) -> Optional[qgis.server.QgsAccessControlFilter]:
-    LOG.info("Configure logging...")
+    QgsMessageLog.logMessage("Configure logging...", "GeoMapFish-init", level=Qgis.Info)
 
     try:
         gmf_logging.init(serverIface)
     except Exception:  # pylint: disable=broad-except
-        print("".join(traceback.format_exception(*sys.exc_info())))
         QgsMessageLog.logMessage(
             "".join(traceback.format_exception(*sys.exc_info())),
-            "GeoMapFishAccessControl",
+            "GeoMapFish-init",
             level=Qgis.Critical,
         )
 
