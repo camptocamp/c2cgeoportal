@@ -234,6 +234,7 @@ services:
       - OTHER_LOG_LEVEL
       - DOGPILECACHE_LOG_LEVEL
       - LOG_TYPE
+      - C2CGEOPORTAL_THEME_TIMEOUT=300
 
   tools:
     image: camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
