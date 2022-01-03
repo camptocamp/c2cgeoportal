@@ -1,3 +1,5 @@
+##### 2.6.0.66
+* Bump lxml to 4.6.5 [c2cgeoportal#9084](https://github.com/camptocamp/c2cgeoportal/pull/9084)
 ##### 2.6.0.65
 * Security upgrade for c2cgeoform/getitfixed [c2cgeoportal#9050](https://github.com/camptocamp/c2cgeoportal/pull/9050)
 ##### 2.6.0.64
