@@ -1,3 +1,5 @@
+##### 2.6.0.67
+* Add options name for search options [ngeo#7880](https://github.com/camptocamp/ngeo/pull/7880)
 ##### 2.6.0.66
 * Bump lxml to 4.6.5 [c2cgeoportal#9084](https://github.com/camptocamp/c2cgeoportal/pull/9084)
 ##### 2.6.0.65
