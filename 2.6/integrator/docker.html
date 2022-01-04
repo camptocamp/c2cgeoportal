@@ -80,15 +80,15 @@ You can use the following commands to manually remove Docker files.</p>
 </div>
 <div class="section" id="environment-variables">
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
-<p>The GeoMapFish containers can be customised with some environment variables:</p>
+<p>The GeoMapFish containers can be customized with some environment variables:</p>
 <p>Config:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code>: The web host visible by the browser e.-g.: ‘example.com’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: The web path visible by the browser e.-g.: ‘/main/’, default is ‘/’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The postgres schema, used by mapserver.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GEOPORTAL_INTERNAL_URL</span></code>: Used by the print in non mutualised mode.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUDCHAIN_INTERNAL_URL</span></code>: Used by the print in non mutualised mode.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code>: The web host visible by the browser e.g.: ‘example.com’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: The web path visible by the browser e.g.: ‘/main/’, default to ‘/’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The postgres schema, used by MapServer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GEOPORTAL_INTERNAL_URL</span></code>: Used by the print in non mutualize mode.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUDCHAIN_INTERNAL_URL</span></code>: Used by the print in non mutualize mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ST_JOIN</span></code>: Can be <code class="docutils literal notranslate"><span class="pre">ST_Collect</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code>, <code class="docutils literal notranslate"><span class="pre">ST_Collect</span></code> is better for performance but
 does not support restriction area intersection.</p></li>
 </ul>
@@ -96,8 +96,8 @@ does not support restriction area intersection.</p></li>
 <p>Geoportal:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: The web path visible by the browser e.-g.: ‘/main/’, default is ‘/’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The postgres schema, used by mapserver.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: The web path visible by the browser e.g.: ‘/main/’, default to ‘/’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The postgres schema, used by MapServer.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_REISSUE_TIME</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_MAXAGE</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>
@@ -108,36 +108,38 @@ does not support restriction area intersection.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_SAMESITE</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">BASICAUTH</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Should be ‘console’ with Docker Compose and ‘json’ with OpenShift.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LOG_LEVEL</span></code>: Log level for your application, default is <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, can be
+<li><p><code class="docutils literal notranslate"><span class="pre">LOG_LEVEL</span></code>: Log level for your application, default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, can be
 <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>, <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARNING</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code> or <code class="docutils literal notranslate"><span class="pre">NOTSET</span></code>,
 see also the <code class="docutils literal notranslate"><span class="pre">production.ini</span></code> file and the
 <a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/logging.html">logging documentation</a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">C2CGEOPORTAL_LOG_LEVEL</span></code>: Log level for all c2cgeoportal modules, default is <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">C2CWSGIUTILS_LOG_LEVEL</span></code>: Log level for c2cwsgiutils, default is <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GUNICORN_LOG_LEVEL</span></code>: Log level for Gunicorn, default is <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SQL_LOG_LEVEL</span></code>: Log level for the Sqlalchemy engine``, default is <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DOGPILECACHE_LOG_LEVEL</span></code>: Log level for Dogpile cache, default is <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code>: Log level for other modules, default is <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C2CGEOPORTAL_LOG_LEVEL</span></code>: Log level for all c2cgeoportal modules, default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C2CWSGIUTILS_LOG_LEVEL</span></code>: Log level for c2cwsgiutils, default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GUNICORN_LOG_LEVEL</span></code>: Log level for Gunicorn, default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SQL_LOG_LEVEL</span></code>: Log level for the SQLAlchemy engine``, default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DOGPILECACHE_LOG_LEVEL</span></code>: Log level for Dogpile cache, default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code>: Log level for other modules, default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C2CGEOPORTAL_THEME_TIMEOUT</span></code>: Timeout in seconds used in requests on OGC servers during themes
+generation, default to <code class="docutils literal notranslate"><span class="pre">300</span></code>.</p></li>
 </ul>
 </div></blockquote>
 <p>QGIS server:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_CONFIG</span></code>: The GeoMapFish config file, default is <code class="docutils literal notranslate"><span class="pre">/etc/qgisserver/geomapfish.yaml</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_CONFIG</span></code>: The GeoMapFish config file, default to <code class="docutils literal notranslate"><span class="pre">/etc/qgisserver/geomapfish.yaml</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_OGCSERVER</span></code>: The OGC server name in single QGIS project mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code>: The access control config file for multi QGIS project mode.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_POSITION</span></code>: The plugin position, Default is <code class="docutils literal notranslate"><span class="pre">100</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_POSITION</span></code>: The plugin position, default to <code class="docutils literal notranslate"><span class="pre">100</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LOG_LEVEL</span></code>: Log level for the GeoMapFish plugins, see also the <code class="docutils literal notranslate"><span class="pre">logging.ini</span></code> file.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">C2CGEOPORTAL_LOG_LEVEL</span></code>: Log level for all c2cgeoportal modules, default is <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">C2CWSGIUTILS_LOG_LEVEL</span></code>: Log level for c2cwsgiutils, default is <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SQL_LOG_LEVEL</span></code>: Log level for the Sqlalchemy engine``, default is <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code>: Log level for other modules, default is <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">QGIS_SERVER_LOG_LEVEL</span></code>: Qgis server log level, default is <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">0</span></code> for verbose.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C2CGEOPORTAL_LOG_LEVEL</span></code>: Log level for all c2cgeoportal modules, default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C2CWSGIUTILS_LOG_LEVEL</span></code>: Log level for c2cwsgiutils, default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SQL_LOG_LEVEL</span></code>: Log level for the SQLAlchemy engine``, default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code>: Log level for other modules, default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">QGIS_SERVER_LOG_LEVEL</span></code>: Qgis server log level, default to <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">0</span></code> for verbose.</p></li>
 <li><p><a class="reference external" href="https://docs.qgis.org/testing/en/docs/user_manual/working_with_ogc/server/config.html">Other QGIS server environment variables</a>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_CACHE</span></code>: GDAL option, default is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_CACHE_SIZE</span></code>: GDAL option, default is <code class="docutils literal notranslate"><span class="pre">128000000</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_HEAD</span></code>: GDAL option, default is <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GDAL_DISABLE_READDIR_ON_OPEN</span></code>: GDAL option, default is <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_CACHE</span></code>: GDAL option, default to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_CACHE_SIZE</span></code>: GDAL option, default to <code class="docutils literal notranslate"><span class="pre">128000000</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CPL_VSIL_CURL_USE_HEAD</span></code>: GDAL option, default to <code class="docutils literal notranslate"><span class="pre">FALSE</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GDAL_DISABLE_READDIR_ON_OPEN</span></code>: GDAL option, default to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>.</p></li>
 <li><p><a class="reference external" href="https://gdal.org/user/configoptions.html#list-of-configuration-options-and-where-they-apply">Other GDAL environment variables</a>.</p></li>
 </ul>
 </div></blockquote>
