@@ -249,6 +249,9 @@ ENV C2C_BASE_PATH=/c2c \
 
 # End from c2cwsgiutils
 
+ENV C2CGEOPORTAL_THEME_TIMEOUT=300
+
+
 #############################################################################################################
 # Image that run the checks
 
