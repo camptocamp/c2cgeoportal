@@ -77,11 +77,14 @@ def send_email(
     msg.attach(MIMEText(body, "plain", "utf-8"))
 
     # Connect to server
-    smtp = smtplib.SMTP(smtp_config["host"])
     if smtp_config.get("ssl", False):
-        smtp.ehlo()
+        smtp: smtplib.SMTP = smtplib.SMTP_SSL(smtp_config["host"])
+    else:
+        smtp = smtplib.SMTP(smtp_config["host"])
     if smtp_config.get("starttls", False):
         smtp.starttls()
+    else:
+        smtp.ehlo()
     if smtp_config.get("user", False):
         smtp.login(smtp_config["user"], smtp_config["password"])
 
