@@ -1,3 +1,5 @@
+##### 2.6.0.68
+* Make the timeout in theme configurable [c2cgeoportal#9085](https://github.com/camptocamp/c2cgeoportal/pull/9085)
 ##### 2.6.0.67
 * Add options name for search options [ngeo#7880](https://github.com/camptocamp/ngeo/pull/7880)
 ##### 2.6.0.66
