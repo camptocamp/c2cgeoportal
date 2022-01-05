@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 import asyncio
 import gc
 import logging
+import os
 import re
 import sys
 import time
@@ -64,6 +65,7 @@ from c2cgeoportal_geoportal.views.layers import get_layer_metadata
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
+TIMEOUT = int(os.environ.get("C2CGEOPORTAL_THEME_TIMEOUT", "300"))
 
 Metadata = Union[str, int, float, bool, List[Any], Dict[str, Any]]
 
@@ -73,7 +75,7 @@ def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, s
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def do_get_http_cached(url: str) -> Tuple[bytes, str]:
-        response = requests.get(url, headers=headers, timeout=300, **http_options)
+        response = requests.get(url, headers=headers, timeout=TIMEOUT, **http_options)
         response.raise_for_status()
         LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
         return response.content, response.headers.get("Content-Type", "")
