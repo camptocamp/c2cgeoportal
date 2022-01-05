@@ -16,7 +16,7 @@ vars:
     srid: 2056
 ```
 
-Plugin configuration file path is given by `GEOMAPFISH_CONFIG` environment variable and default to `/etc/qgisserver/geomapfish.yaml`.
+Plugin configuration file path is given by `GEOMAPFISH_CONFIG` environment variable and default is `/etc/qgisserver/geomapfish.yaml`.
 
 ### Serving only one QGIS project
 
@@ -24,7 +24,7 @@ Require this environment variable:
 
 - GEOMAPFISH_OGCSERVER: Name of `c2cgeoportal_commons.models.main.OGCServer` to serve.
 
-Service will load QGIS project file using environment variable QGIS_PROJECT_FILE that default to `/etc/qgisserver/project.qgs`.
+Service will load QGIS project file using environment variable QGIS_PROJECT_FILE that default is `/etc/qgisserver/project.qgs`.
 
 ### Serving multiple QGIS projects
 

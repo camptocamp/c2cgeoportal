@@ -604,7 +604,7 @@ Parameters
 ----------
 
 * ``geom``: Geometry field used to get the profile data.
-* ``layers``: On which layers; default to all.
+* ``layers``: On which layers; default is all.
 * ``nbPoints``: Maximum number of points.
 
 Result

@@ -60,7 +60,7 @@ defaults:
     # mime type used for the WMS request and the WMTS legend image generation
     legend_mime: image/png
     wmts_style: default
-    # the WMTS dimensions definition [default to []]
+    # the WMTS dimensions definition [default is []]
     #dimensions:
     #    -   name: DATE
     #        # the default value for the WMTS capabilities
@@ -69,18 +69,18 @@ defaults:
     #        generate: ['2012']
     #        # all the available values in the WMTS capabilities
     #        values: ['2012']
-    # the meta tiles definition [default to false]
+    # the meta tiles definition [default is false]
     meta: true
-    # the meta tiles size [default to 8]
+    # the meta tiles size [default is 8]
     meta_size: 5
-    # the meta tiles buffer [default to 128]
+    # the meta tiles buffer [default is 128]
     meta_buffer: 128
     # connection an sql to get geometries (in column named geom) where we want to generate tiles
     # Warn: too complex result can slow down the application
     #    connection: host=localhost port=5432 user=www-data password=www-data dbname=<db>
     #    geoms:
     #        -   sql: <column> AS geom FROM <table>
-    # size and hash used to detect empty tiles and metatiles [optional, default to None]
+    # size and hash used to detect empty tiles and metatiles [optional, default is None]
     empty_metatile_detection:
       size: 740
       hash: 3237839c217b51b8a9644d596982f342f8041546

@@ -299,7 +299,7 @@ def _parse_date(date: str) -> Tuple[str, datetime.datetime]:
     * the resolution: "year", "month", "day" or "second"
     * the date as a datetime
 
-    The returned datetime always has a timezone (default to UTC)
+    The returned datetime always has a timezone (default is UTC)
     """
     resolutions = {"year": "%Y", "month": "%Y-%m", "day": "%Y-%m-%d"}
 
