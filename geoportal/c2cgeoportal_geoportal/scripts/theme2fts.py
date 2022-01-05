@@ -57,7 +57,7 @@ def main() -> None:
     parser.add_argument(
         "--locale-folder",
         default=LOCALE_PATH,
-        help=f"The folder where the locale files are stored (default to {LOCALE_PATH})",
+        help=f"The folder where the locale files are stored (default is {LOCALE_PATH})",
     )
     parser.add_argument("--interfaces", action="append", help="the interfaces to export")
     parser.add_argument(
