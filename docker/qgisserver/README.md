@@ -4,7 +4,7 @@ Based on https://github.com/camptocamp/docker-qgis-server
 
 ## Configuration
 
-Expect a geomapfish.yaml configuration file for the geomapfish_qgisserver plugin.
+Expect a geomapfish.yaml configuration file for the `geomapfish_qgisserver` plugin.
 
 Example configuration file:
 
@@ -16,21 +16,24 @@ vars:
     srid: 2056
 ```
 
-Plugin configuration file path is given by `GEOMAPFISH_CONFIG` environment variable and default is `/etc/qgisserver/geomapfish.yaml`.
+Plugin configuration file path is given by `GEOMAPFISH_CONFIG` environment variable and default is
+`/etc/qgisserver/geomapfish.yaml`.
 
 ### Serving only one QGIS project
 
 Require this environment variable:
 
-- GEOMAPFISH_OGCSERVER: Name of `c2cgeoportal_commons.models.main.OGCServer` to serve.
+- `GEOMAPFISH_OGCSERVER`: Name of `c2cgeoportal_commons.models.main.OGCServer` to serve.
 
-Service will load QGIS project file using environment variable QGIS_PROJECT_FILE that default is `/etc/qgisserver/project.qgs`.
+Service will load QGIS project file using environment variable `QGIS_PROJECT_FILE` that default is
+`/etc/qgisserver/project.qgs`.
 
 ### Serving multiple QGIS projects
 
 Require this environment variable:
 
-- GEOMAPFISH_ACCESSCONTROL_CONFIG: Path to configuration file for mapping between GMF OGC servers QGIS project files.
+- `GEOMAPFISH_ACCESSCONTROL_CONFIG`: Path to configuration file for mapping between GMF OGC servers QGIS
+  project files.
 
 Example multiple QGIS projects mapping:
 
@@ -57,7 +60,7 @@ make prepare_tests
 
 ## Run the tests:
 
-Build the tests docker image with tests and required dependencies and run tests.
+Build the tests Docker image with tests and required dependencies and run tests.
 
 ```bash
 make tests
