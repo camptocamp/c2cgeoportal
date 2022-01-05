@@ -1,3 +1,5 @@
+##### 2.6.0.69
+* Add timeout used to fetch the WMTS capabilities [ngeo#7881](https://github.com/camptocamp/ngeo/pull/7881)
 ##### 2.6.0.68
 * Make the timeout in theme configurable [c2cgeoportal#9085](https://github.com/camptocamp/c2cgeoportal/pull/9085)
 ##### 2.6.0.67
