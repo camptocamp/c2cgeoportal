@@ -13,7 +13,7 @@ c2cwsgiutils = {extras = ["broadcast"],version = "==4.1.4"}
 papyrus = "==2.4"  # commons
 transaction = "==3.0.1"  # commons
 "c2c.template" = "==2.3.0"
-GeoAlchemy2 = "==0.10.0"
+GeoAlchemy2 = "==0.10.1"
 SQLAlchemy = "==1.4.28"  # commons
 "zope.event" = "==4.4"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
