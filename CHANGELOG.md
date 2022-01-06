@@ -1,3 +1,5 @@
+##### 2.5.0.182
+* CVE 1006069 is solved [ngeo#7903](https://github.com/camptocamp/ngeo/pull/7903)
 ##### 2.5.0.181
 * Ignore CVE [1006827] Prototype Pollution in dot-prop [ngeo#7897](https://github.com/camptocamp/ngeo/pull/7897)
 ##### 2.5.0.180
