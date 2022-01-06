@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021, Camptocamp SA
+# Copyright (c) 2019-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,13 +42,27 @@ from lingua.extract import (  # strip_linenumbers,
 )
 from lingua.extractors import get_extractor, register_extractors
 from lingua.extractors.babel import register_babel_plugins
-from pyramid.httpexceptions import HTTPInternalServerError
+from pyramid.httpexceptions import HTTPFound, HTTPInternalServerError
 from pyramid.view import view_config
 
+from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 LOG = logging.getLogger(__name__)
 _INITIALIZED = False
+
+
+@view_config(route_name="localejson")  # type: ignore
+def locale(request: pyramid.request.Request) -> pyramid.response.Response:
+    """Get the locale json file for the API."""
+    response = HTTPFound(
+        request.static_url(
+            f"/etc/geomapfish/static/{request.locale_name}.json",
+            _query={"cache": get_cache_version()},
+        )
+    )
+    set_common_headers(request, "api", Cache.PUBLIC_NO, response=response)
+    return response
 
 
 @view_config(route_name="localepot")  # type: ignore
