@@ -136,12 +136,12 @@ COPY geoportal/c2cgeoportal_geoportal/scaffolds/ geoportal/c2cgeoportal_geoporta
 COPY build.mk lingua.cfg ./
 
 RUN make --makefile=build.mk build && \
-    mkdir -p geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/ && \
+    mkdir -p 'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/' && \
     import-ngeo-apps --html --canvas desktop_alt /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop_alt/index.html.ejs \
-    geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/desktop_alt.html.mako && \
-    mkdir -p geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/{{cookiecutter.package}}_geoportal/static/images/ && \
+    'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/desktop_alt.html.mako' && \
+    mkdir -p 'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/{{cookiecutter.package}}_geoportal/static/images/' && \
     cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/background-layer-button.png \
-    geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/{{cookiecutter.package}}_geoportal/static/images/
+    'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/{{cookiecutter.package}}_geoportal/static/images/'
 
 COPY commons/ commons/
 COPY geoportal/ geoportal/
@@ -159,8 +159,8 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
     --editable=admin
 
 # For awscli
-RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer
-RUN mv /usr/bin/bashrc ~/.bashrc
+RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer && \
+    mv /usr/bin/bashrc ~/.bashrc
 COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src
