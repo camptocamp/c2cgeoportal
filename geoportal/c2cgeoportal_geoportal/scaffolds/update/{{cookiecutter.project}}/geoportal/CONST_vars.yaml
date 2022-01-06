@@ -718,6 +718,11 @@ vars:
           The min resolution where the layer is queryable.
         relevant_for:
           - layer_wmts
+      - name: timeout
+        type: float
+        description: The fetch capabilities timeout in seconds. Use `300` by default.
+        relevant_for:
+          - layer_wmts
 
     # The list of functionalities that can be configured
     # through the admin interface.
