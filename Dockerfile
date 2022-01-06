@@ -9,9 +9,12 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
+
+# SETUPTOOLS_USE_DISTUTILS: Workaround for setuptools >= 60.0.0
 ENV \
     DEBIAN_FRONTEND=noninteractive \
-    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+    SETUPTOOLS_USE_DISTUTILS=stdlib
 
 # hadolint ignore=SC1091,DL3008
 RUN \
