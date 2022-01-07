@@ -29,24 +29,16 @@
 import logging
 from typing import Any, Dict, Optional, cast
 
-import c2cwsgiutils.pyramid_logging
 from c2c.template.config import config as configuration
-from plaster_pastedeploy import Loader as BaseLoader
+from c2cwsgiutils.loader import Loader as BaseLoader
 
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 
 LOG = logging.getLogger(__name__)
 
 
-class Loader(BaseLoader):  # type: ignore
+class Loader(BaseLoader):
     """The Pyramid configuration loader."""
-
-    def _get_defaults(self, defaults: Optional[Dict[str, str]] = None) -> Dict[str, str]:
-        env: Dict[str, str] = c2cwsgiutils.pyramid_logging.get_defaults()
-        d: Dict[str, str] = {key: item.replace("%", "%%") for key, item in env.items()}
-        if defaults:
-            d.update(defaults)
-        return cast(Dict[str, str], super()._get_defaults(d))
 
     def get_wsgi_app_settings(
         self, name: Optional[str] = None, defaults: Optional[Dict[str, str]] = None
