@@ -1,3 +1,5 @@
+##### 2.5.0.183
+* Ignore CVE [1006839] Resource Exhaustion Denial of Service in http-pr… [ngeo#7912](https://github.com/camptocamp/ngeo/pull/7912)
 ##### 2.5.0.182
 * CVE 1006069 is solved [ngeo#7903](https://github.com/camptocamp/ngeo/pull/7903)
 ##### 2.5.0.181
