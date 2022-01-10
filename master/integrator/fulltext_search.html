@@ -43,6 +43,9 @@
 (for <em>text search</em>) and is in the application-specific schema.</p>
 <p>You do not need to create the table yourself, as it was already created during application installation
 (see the section <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
+<p>When the user types a text in the search box, it will be matched against the full-text search table,
+and the results displayed to the user. When the user clicks on one of the results, the default action is to
+zoom to the geometry. Other actions can be set, see below for the available actions.</p>
 </section>
 <section id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this headline">¶</a></h2>
@@ -51,7 +54,7 @@
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="k">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="k">VALUES</span> <span class="p">(</span>
    <span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span> <span class="mi">2056</span><span class="p">),</span>
-   <span class="s1">&#39;Group&#39;</span><span class="p">,</span>
+   <span class="s1">&#39;Section name&#39;</span><span class="p">,</span>
    <span class="s1">&#39;text to display&#39;</span><span class="p">,</span>
    <span class="s1">&#39;t&#39;</span><span class="p">,</span>
    <span class="k">NULL</span><span class="p">,</span>
@@ -60,16 +63,21 @@
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">group</span></code> is the name of the layer group that should be activated,
-<code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">display</span></code> is the text that is displayed in the results,
-<code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">to</span> <span class="pre">search</span></code> is the text that we search for,
+<p>Where the point geometry contains the coordinates to zoom to,
+<code class="docutils literal notranslate"><span class="pre">Section</span> <span class="pre">name</span></code> will be used a section header in the search result display,
+<code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">display</span></code> is the text to be displayed in the search results,
+<code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">search</span></code> is the text that we search for,
 <code class="docutils literal notranslate"><span class="pre">french</span></code> is the language used.</p>
+<p>The section header (in the database, <code class="docutils literal notranslate"><span class="pre">layer_name</span></code>) must always be provided for the
+result to appear in the search results.
+After inserting new section headers, you should invalidate the server cache for the new
+headers to be taken into account.</p>
 <p>Here is another example where rows from a <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> are inserted:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
   <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="k">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="k">SELECT</span>
   <span class="n">geom</span><span class="p">,</span>
-  <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;layer_name&#39;</span><span class="p">,</span>
   <span class="nb">text</span><span class="p">,</span>
   <span class="s1">&#39;t&#39;</span><span class="p">,</span>
   <span class="k">NULL</span><span class="p">,</span>
@@ -122,7 +130,7 @@ are <code class="docutils literal notranslate"><span class="pre">1</span></code>
    <span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="k">public</span><span class="p">,</span> <span class="n">role_id</span><span class="p">,</span> <span class="n">lang</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 <span class="k">SELECT</span>
    <span class="n">geom</span><span class="p">,</span>
-   <span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
+   <span class="s1">&#39;layer_name&#39;</span><span class="p">,</span>
    <span class="nb">text</span><span class="p">,</span>
    <span class="s1">&#39;f&#39;</span><span class="p">,</span>
    <span class="mi">1</span><span class="p">,</span>
