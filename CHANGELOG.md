@@ -1,3 +1,5 @@
+##### 2.6.0.72
+* Add more information about the required fields for fts [c2cgeoportal#9116](https://github.com/camptocamp/c2cgeoportal/pull/9116)
 ##### 2.6.0.71
 * Allows the placeholder to change dynamically with the search config [ngeo#7904](https://github.com/camptocamp/ngeo/pull/7904)
 ##### 2.6.0.70
