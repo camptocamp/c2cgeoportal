@@ -62,6 +62,11 @@ test_pot
 # A second time to check that the initialisation is working
 test_pot
 
+docker-compose exec -T geoportal proutes c2c://development.ini
+docker-compose exec -T geoportal pviews c2c://development.ini /
+docker-compose exec -T geoportal proutes c2c://production.ini
+docker-compose exec -T geoportal pviews c2c://production.ini /
+
 docker-compose stop qgisserver
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
 docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
