@@ -19,6 +19,7 @@ SQLAlchemy = "==1.4.28"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.8.0"
 cee-syslog-handler = "==0.6.0"
+setuptools = "==60.2.0"
 
 [requires]
 python_version = "3.8"
