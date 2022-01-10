@@ -12,7 +12,7 @@ The *text search* feature uses a dedicated PostgreSQL table. The full-text searc
 You do not need to create the table yourself, as it was already created during application installation
 (see the section :ref:`integrator_install_application`).
 
-When user types a text in the search box, it will be matched against the full-text search table,
+When the user types a text in the search box, it will be matched against the full-text search table,
 and the results displayed to the user. When the user clicks on one of the results, the default action is to
 zoom to the geometry. Other actions can be set, see below for the available actions.
 
@@ -28,7 +28,7 @@ Here is an example of an insertion in the ``tsearch`` table:
       (the_geom, layer_name, label, public, role_id, lang, ts)
     VALUES (
        ST_GeomFromText('POINT(2660000 1140000)', 2056),
-       'Group',
+       'Section name',
        'text to display',
        't',
        NULL,
@@ -37,15 +37,14 @@ Here is an example of an insertion in the ``tsearch`` table:
     );
 
 Where the point geometry contains the coordinates to zoom to,
-``Group`` will be used a group header in the search result display,
-is the name of the layer group that should be activated,
-``test to search`` is the text that we search for,
+``Section name`` will be used a section header in the search result display,
+``text to display`` is the text to be displayed in the search results,
+``text to search`` is the text that we search for,
 ``french`` is the language used.
 
-The search group header (in the database, ``layer_name``) must always be provided for the
+The section header (in the database, ``layer_name``) must always be provided for the
 result to appear in the search results.
-
-After inserting new group headers, you should invalidate the server cache for the new group
+After inserting new section headers, you should invalidate the server cache for the new
 headers to be taken into account.
 
 Here is another example where rows from a ``SELECT`` are inserted:
@@ -56,7 +55,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
       (the_geom, layer_name, label, public, role_id, lang, ts)
     SELECT
       geom,
-      'layer group name',
+      'layer_name',
       text,
       't',
       NULL,
@@ -114,7 +113,7 @@ available to users with the corresponding role.
            (the_geom, layer_name, label, public, role_id, lang, ts)
         SELECT
            geom,
-           'layer group name',
+           'layer_name',
            text,
            'f',
            1,
