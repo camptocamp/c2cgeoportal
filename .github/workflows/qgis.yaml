@@ -66,8 +66,11 @@ jobs:
           docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=main upgrade head
           docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=static upgrade head
           docker-compose exec -T tests /tests/fill-db
-          ../../ci/run-dc-logs docker-compose exec -T tests /tests/acceptance-tests
-          docker-compose down
+          c2cciutils-docker-logs
+          docker-compose exec -T tests /tests/acceptance-tests
+      - run: c2cciutils-docker-logs
+        if: failure()
+      - run: docker-compose down
 
       - run: scripts/get-version --auto-increment --github
         id: version

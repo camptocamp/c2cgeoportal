@@ -77,28 +77,32 @@ jobs:
         if: failure()
       # Similar to: make tests-commons
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests coverage run
+          docker-compose exec -T tests coverage run
           --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
           --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
           /opt/c2cgeoportal/commons/tests
+      - run: c2cciutils-docker-logs
       # Similar to: make tests-geoportal
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests coverage run --append
+          docker-compose exec -T tests coverage run --append
           --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
           --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
           /opt/c2cgeoportal/geoportal/tests
+      - run: c2cciutils-docker-logs
       # Similar to: make tests-admin
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests coverage run --append
+          docker-compose exec -T tests coverage run --append
           --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
           --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
           /opt/c2cgeoportal/admin/tests
+      - run: c2cciutils-docker-logs
       # Similar to: make tests-qgisserver
       - run: >
-          ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
+          docker-compose exec -T qgisserver-tests coverage run
           --source=/var/www/plugins/geomapfish_qgisserver
           --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
           /src/tests/functional
+      - run: c2cciutils-docker-logs
       - name: Extract tests artifacts
         run: |
           docker-compose exec -T tests coverage report
@@ -111,6 +115,8 @@ jobs:
           docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
         if: always()
         continue-on-error: True
+      - run: c2cciutils-docker-logs
+        if: always()
       - run: docker-compose down
 
       - uses: actions/upload-artifact@v2
@@ -148,13 +154,10 @@ jobs:
 
       # Test App
       - run: ci/test-app
-      - name: Logs
+      - name: Docker logs
         run: |
           cd ${HOME}/workspace/testgeomapfishapp/
-          for service in $(docker-compose config --services)
-          do
-            docker-compose logs ${service}
-          done
+          c2cciutils-docker-logs
         if: failure()
         continue-on-error: True
 
