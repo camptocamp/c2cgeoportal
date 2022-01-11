@@ -1,3 +1,5 @@
+##### 2.6.0.73
+* Ignore some new CVE [ngeo#7917](https://github.com/camptocamp/ngeo/pull/7917)
 ##### 2.6.0.72
 * Add more information about the required fields for fts [c2cgeoportal#9116](https://github.com/camptocamp/c2cgeoportal/pull/9116)
 ##### 2.6.0.71
