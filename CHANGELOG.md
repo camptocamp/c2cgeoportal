@@ -1,3 +1,5 @@
+##### 2.5.0.184
+* Ignore some new CVE [ngeo#7915](https://github.com/camptocamp/ngeo/pull/7915)
 ##### 2.5.0.183
 * Ignore CVE [1006839] Resource Exhaustion Denial of Service in http-pr… [ngeo#7912](https://github.com/camptocamp/ngeo/pull/7912)
 ##### 2.5.0.182
