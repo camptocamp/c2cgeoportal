@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f1076bfea40ba3b8c8211d088fe4a78e2f94b1075780d51ea16132a2d2fd3609"
+            "sha256": "81454a850503589dfee30570c53528543bcd778de98155b58226c5a076869b3b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1751,11 +1751,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:0fb7beb560df747ba4005f9787002022e369ef3b6ed5335e0b5eb013252a750c",
-                "sha256:e826bf74c32ba09cf9fc45701038d0dc3b72489149ce72637231300c3cf10a48"
+                "sha256:95abae054a6c63d36a248e42208b9d9f2ba6e9f06c4f6be4e430ffdebffe025f",
+                "sha256:b84d53ba28029def3e32e700822ae18133605059956cbc9bdcd490484432dc96"
             ],
             "index": "pypi",
-            "version": "==1.22.31"
+            "version": "==1.22.32"
         },
         "babel": {
             "hashes": [
@@ -2181,7 +2181,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2926,7 +2926,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4'",
+            "markers": "python_version >= '3.5' and python_version < '4.0'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
@@ -3161,10 +3161,10 @@
         },
         "types-urllib3": {
             "hashes": [
-                "sha256:580c784925d5902d5fb3b67c0c1019b3d20b8f2d54050f0bb07862d52b93ad03",
-                "sha256:e0c57152d7efc408a877adfc9073316dcd3e3ffb39962e90544f7597696c0d7c"
+                "sha256:35c17be09e1bcef3b1e2101c5172b97cdb78330915973c741f4c1979d8405ef9",
+                "sha256:61a0099899b1472bfbae8ee6ad196950aac46705b99216188aa962ad1e514ed5"
             ],
-            "version": "==1.26.3"
+            "version": "==1.26.4"
         },
         "typing-extensions": {
             "hashes": [
