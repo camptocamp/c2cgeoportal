@@ -42,15 +42,15 @@
 The <code class="docutils literal notranslate"><span class="pre">raster</span></code> web service allows getting information for points.
 The <code class="docutils literal notranslate"><span class="pre">profile</span></code> web service allows getting information for lines.</p>
 <p>To configure these web services, you need to set the <code class="docutils literal notranslate"><span class="pre">raster</span></code> variable in the application config (<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>). For example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">raster</span><span class="p">:</span>
-    <span class="nt">mns</span><span class="p">:</span>
-        <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mns.vrt</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gdal</span>
-        <span class="nt">round</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-    <span class="nt">mnt</span><span class="p">:</span>
-        <span class="nt">file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mnt.vrt</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gdal</span>
-        <span class="nt">round</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">raster</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mns</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mns.vrt</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdal</span><span class="w"></span>
+<span class="w">        </span><span class="nt">round</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mnt</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mnt.vrt</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdal</span><span class="w"></span>
+<span class="w">        </span><span class="nt">round</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">raster</span></code> is a list of “DEM layers”. There are only two entries in this example, but there could be more.</p>
@@ -159,7 +159,7 @@ span.prompt1:before {
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

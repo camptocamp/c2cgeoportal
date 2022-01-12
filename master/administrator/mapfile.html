@@ -180,14 +180,14 @@ This area is specified in the administration interface while defining the <code 
 may slow down the application.</p>
 </div>
 <p>To define a restricted layer in the Mapfile, the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should look like this:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DATA</span> <span class="ss">&quot;&lt;the_geom&gt; FROM (</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;&lt;the_geom&gt; FROM (</span>
 <span class="ss">    SELECT *</span>
 <span class="ss">    FROM &lt;schema&gt;.&lt;table&gt;</span>
 <span class="ss">    WHERE ST_Contains(</span>
 <span class="ss">       (${MAPSERVER_DATA_SUBSELECT} &#39;&lt;layername&gt;&#39;),</span>
 <span class="ss">       ST_SetSRID(&lt;the_geom&gt;, &lt;projection&gt;)</span>
 <span class="ss">     )</span>
-<span class="ss">) as foo USING unique gid USING srid=&lt;projection&gt;&quot;</span>
+<span class="ss">) as foo USING unique gid USING srid=&lt;projection&gt;&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;layername&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;projection&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code>
@@ -197,19 +197,19 @@ table’s geometry column. <code class="docutils literal notranslate"><span clas
 <code class="docutils literal notranslate"><span class="pre">&lt;layer_name&gt;</span></code> can be either the layer NAME or the layer GROUP, depending on
 what is configured in the administration interface for the layer.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_SUBSELECT}</span></code> is defined as follows:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
-<span class="k">FROM</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span> <span class="k">AS</span> <span class="n">ra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span> <span class="k">AS</span> <span class="n">rra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span> <span class="k">AS</span> <span class="n">lra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span> <span class="k">AS</span> <span class="n">la</span>
-<span class="k">WHERE</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
-<span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
-<span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span> <span class="o">=</span> <span class="n">la</span><span class="p">.</span><span class="n">id</span> <span class="k">AND</span> <span class="n">la</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"></span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ra</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rra</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lra</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">la</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"></span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="k">AND</span><span class="w"></span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="k">AND</span><span class="w"></span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -253,21 +253,21 @@ anonymous users apply.</p>
 </div>
 <p>Then you do not need to define an area in the admin interface.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_NOAREA_SUBSELECT}</span></code> is defined as follows:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
-<span class="k">FROM</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span> <span class="k">AS</span> <span class="n">ra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span> <span class="k">AS</span> <span class="n">rra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span> <span class="k">AS</span> <span class="n">lra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span> <span class="k">AS</span> <span class="n">la</span>
-<span class="k">WHERE</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
-<span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
-<span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span> <span class="o">=</span> <span class="n">la</span><span class="p">.</span><span class="n">id</span>
-<span class="k">AND</span>
-    <span class="n">la</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"></span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ra</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rra</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lra</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">la</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"></span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="k">AND</span><span class="w"></span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="k">AND</span><span class="w"></span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">id</span><span class="w"></span>
+<span class="k">AND</span><span class="w"></span>
+<span class="w">    </span><span class="n">la</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 </pre></div>
 </div>
 <p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
@@ -313,24 +313,24 @@ insert the variable value, but not at the start of a line (to avoid escape issue
 As a result, if you would like to adapt the list of attributes returned in a
 WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> section. For instance:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">LAYER</span>
-    <span class="p">...</span>
-    <span class="k">DATA</span> <span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056&quot;</span>
-    <span class="n">METADATA</span>
-        <span class="p">...</span>
-        <span class="ss">&quot;gml_exclude_items&quot;</span> <span class="ss">&quot;type,gid&quot;</span>
-        <span class="ss">&quot;gml_include_items&quot;</span> <span class="ss">&quot;all&quot;</span>
-    <span class="k">END</span>
-    <span class="n">VALIDATION</span>
-        <span class="ss">&quot;default_s_columns&quot;</span> <span class="ss">&quot;t.name&quot;</span>
-        <span class="ss">&quot;s_columns&quot;</span> <span class="ss">&quot;^[a-z,._]*$$&quot;</span>
-    <span class="k">END</span>
-    <span class="k">CLASS</span>
-        <span class="n">EXPRESSION</span> <span class="p">([</span><span class="k">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="p">...</span>
-    <span class="k">END</span>
-    <span class="p">...</span>
-<span class="k">END</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">LAYER</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">METADATA</span><span class="w"></span>
+<span class="w">        </span><span class="p">...</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;gml_exclude_items&quot;</span><span class="w"> </span><span class="ss">&quot;type,gid&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;gml_include_items&quot;</span><span class="w"> </span><span class="ss">&quot;all&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">END</span><span class="w"></span>
+<span class="w">    </span><span class="n">VALIDATION</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;default_s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;t.name&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;^[a-z,._]*$$&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">END</span><span class="w"></span>
+<span class="w">    </span><span class="k">CLASS</span><span class="w"></span>
+<span class="w">        </span><span class="n">EXPRESSION</span><span class="w"> </span><span class="p">([</span><span class="k">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">...</span><span class="w"></span>
+<span class="w">    </span><span class="k">END</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="k">END</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Then add a <code class="docutils literal notranslate"><span class="pre">mapserver_substitution</span></code> functionality in the administration
@@ -456,7 +456,7 @@ See the <a class="reference external" href="https://mappyfile.readthedocs.io/">p
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

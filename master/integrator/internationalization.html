@@ -43,9 +43,9 @@ in the simple application mode, the list of languages is constant: en fr de it.<
 </pre></div>
 </div>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, define the default locale:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
-     <span class="l l-Scalar l-Scalar-Plain">...</span>
-     <span class="l l-Scalar l-Scalar-Plain">default_locale_name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">fr</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
+<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">default_locale_name</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span><span class="w"></span>
 </pre></div>
 </div>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">language_mapping</span></code>, define any desired locale variants, for example:</p>
@@ -115,11 +115,11 @@ have a suffix on your po files.</p>
 <p>Before calling the <cite>update-po</cite> command you should rename the po files you want to update without the suffix,
 and after you should rename them with the right name.</p>
 <p>In the config <cite>Dockerfile</cite> you should replace:</p>
-<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span> build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span>
+<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span>
 </pre></div>
 </div>
 <p>by:</p>
-<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span> build-l10n --suffix<span class="o">=</span>suffix_1 --suffix<span class="o">=</span>suffix_2 <span class="s2">&quot;&lt;package&gt;&quot;</span>
+<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>build-l10n --suffix<span class="o">=</span>suffix_1 --suffix<span class="o">=</span>suffix_2 <span class="s2">&quot;&lt;package&gt;&quot;</span>
 </pre></div>
 </div>
 <p>in the <cite>geoportal/&lt;package&gt;_geoportal/__init__.py</cite> file you should add:</p>
@@ -205,7 +205,7 @@ and after you should rename them with the right name.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

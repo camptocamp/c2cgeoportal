@@ -78,10 +78,10 @@ available in <code class="docutils literal notranslate"><span class="pre">https<
 <h2>Auto login<a class="headerlink" href="#auto-login" title="Permalink to this headline">¶</a></h2>
 <p>To be automatically logged in with a user present in the database you should set in the
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
-  <span class="nt">geoportal</span><span class="p">:</span>
-    <span class="nt">environment</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DEV_LOGINNAME=&lt;username&gt;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">geoportal</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEV_LOGINNAME=&lt;username&gt;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Then you will directly be logged in to the user.</p>
@@ -225,10 +225,10 @@ c2cgeoportal application.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tools curl <span class="s2">&quot;http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities&quot;</span></span>
 </pre></div></div><p>You can also expose a service out of the Docker composition. For that, add a port in your
 <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, e.g.:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
-  <span class="nt">&lt;service&gt;</span><span class="p">:</span>
-    <span class="nt">port</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">8086:8080</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&lt;service&gt;</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8086:8080</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Be careful, each port can be open only one time on a server.</p>
@@ -324,7 +324,7 @@ c2cgeoportal application.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

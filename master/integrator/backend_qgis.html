@@ -136,14 +136,14 @@ port=${EXTRA_PGPORT}
 </pre></div>
 </div>
 <p>And in your <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
-  <span class="nt">qgisserver</span><span class="p">:</span>
-    <span class="nt">environment</span><span class="p">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">EXTRA_PGHOST=&lt;host&gt;</span>
-      <span class="l l-Scalar l-Scalar-Plain">EXTRA_PGDATABASE=&lt;database&gt;</span>
-      <span class="l l-Scalar l-Scalar-Plain">EXTRA_PGUSER=&lt;user&gt;</span>
-      <span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPASSWORD=&lt;pass&gt;</span>
-      <span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPORT=&lt;port&gt;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">qgisserver</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGHOST=&lt;host&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGDATABASE=&lt;database&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGUSER=&lt;user&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPASSWORD=&lt;pass&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPORT=&lt;port&gt;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>With this configuration, the connection will be passed through the environment variables,
@@ -188,16 +188,16 @@ to something like that:
 <a class="reference external" href="https://www.url-encode-decode.com/">service</a> to encode it.</p>
 <p>In multi project mode the best is to use in the OGC server URL like this <cite>config://qgis1</cite>, <cite>config://qgis2</cite>,
 in the vars file add:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
-  <span class="nt">servers</span><span class="p">:</span>
-    <span class="nt">qgis1</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="s">&#39;{QGISSERVER_URL}&#39;</span>
-      <span class="nt">params</span><span class="p">:</span>
-        <span class="nt">MAP</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis1</span>
-    <span class="nt">qgis2</span><span class="p">:</span>
-      <span class="nt">url</span><span class="p">:</span> <span class="s">&#39;{QGISSERVER_URL}&#39;</span>
-      <span class="nt">params</span><span class="p">:</span>
-        <span class="nt">MAP</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis2</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">servers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">qgis1</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{QGISSERVER_URL}&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">params</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">MAP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">qgis2</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{QGISSERVER_URL}&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">params</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">MAP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis2</span><span class="w"></span>
 </pre></div>
 </div>
 <p>With that you will not have URL encoding issues.</p>
@@ -279,7 +279,7 @@ in the vars file add:</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

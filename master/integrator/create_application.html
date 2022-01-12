@@ -203,13 +203,13 @@ can be made dynamic by means of environment variable. For this, in the main file
 <p>In this same file, you can change the value of a parameter by putting it in
 uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">'{HOST}'</span></code>). This parameter must be listed in the
 interpreted parameters section:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extends</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CONST_vars.yaml</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONST_vars.yaml</span><span class="w"></span>
 
-<span class="nt">vars</span><span class="p">:</span>
-    <span class="nt">host</span><span class="p">:</span> <span class="s">&#39;{HOST}&#39;</span>
-<span class="nn">...</span>
-<span class="nt">runtime_environment</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">HOST</span>
+<span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{HOST}&#39;</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+<span class="nt">runtime_environment</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HOST</span><span class="w"></span>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file, add parameters you want to change as exported variables:</p>
@@ -325,7 +325,7 @@ have set as environment variables.</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

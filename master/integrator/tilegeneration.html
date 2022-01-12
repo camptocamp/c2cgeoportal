@@ -216,19 +216,19 @@ needed to generate the capabilities. We can specify:</p>
 in the capabilities, a <code class="docutils literal notranslate"><span class="pre">value</span></code> to generate the tiles (it can be overwritten by an argument), and an array of
 <code class="docutils literal notranslate"><span class="pre">values</span></code> that contains all the possible values available in the capabilities.</p>
 <p>For example if you generate the tiles and capabilities with the following configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span>   <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATE</span>
-        <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2012</span>
-        <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2012</span>
-        <span class="nt">values</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">]</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span><span class="w"></span>
+<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>then with the following configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span>   <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATE</span>
-        <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2012</span>
-        <span class="nt">value</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2013</span>
-        <span class="nt">values</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">,</span> <span class="nv">2013</span><span class="p p-Indicator">]</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2013</span><span class="w"></span>
+<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2013</span><span class="p p-Indicator">]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We will have two set of tiles <code class="docutils literal notranslate"><span class="pre">2012</span></code> and <code class="docutils literal notranslate"><span class="pre">2013</span></code>, both accessible by the capabilities, and by default we
@@ -246,12 +246,12 @@ the borders. The <code class="docutils literal notranslate"><span class="pre">me
 <h4>Configure hash<a class="headerlink" href="#configure-hash" title="Permalink to this headline">¶</a></h4>
 <p>We can filter tiles and meta tiles by using an hash.</p>
 <p>The configuration of this hash is in the layer like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">empty_metatile_detection</span><span class="p">:</span>
-    <span class="nt">size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">740</span>
-    <span class="nt">hash</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3237839c217b51b8a9644d596982f342f8041546</span>
-<span class="nt">empty_tile_detection</span><span class="p">:</span>
-    <span class="nt">size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">921</span>
-    <span class="nt">hash</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1e3da153be87a493c4c71198366485f290cad43c</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">empty_metatile_detection</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">740</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3237839c217b51b8a9644d596982f342f8041546</span><span class="w"></span>
+<span class="nt">empty_tile_detection</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">921</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1e3da153be87a493c4c71198366485f290cad43c</span><span class="w"></span>
 </pre></div>
 </div>
 <p>To easily generate this configuration we can use the following command:</p>
@@ -265,21 +265,21 @@ zoom, x and y as 0.</p>
 <h4>Configure geom/sql<a class="headerlink" href="#configure-geom-sql" title="Permalink to this headline">¶</a></h4>
 <p>We can generate the tiles only on some geometries stored in PostGis.</p>
 <p>The configuration is in the layer like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
-<span class="p p-Indicator">-</span>   <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">user=www-data password=www-data dbname=&lt;db&gt; host=localhost</span>
-    <span class="nt">sql</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;column&gt; AS geom FROM &lt;table&gt;</span>
-    <span class="nt">min_resolution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span> <span class="c1"># included, optional, last win</span>
-    <span class="nt">max_resolution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span> <span class="c1"># included, optional, last win</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=www-data password=www-data dbname=&lt;db&gt; host=localhost</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;column&gt; AS geom FROM &lt;table&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span><span class="w"></span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
-<span class="p p-Indicator">-</span>   <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
-    <span class="nt">sql</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.polygon</span>
-<span class="p p-Indicator">-</span>   <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
-    <span class="nt">sql</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.point</span>
-    <span class="nt">min_resolution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-    <span class="nt">max_resolution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.polygon</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.point</span><span class="w"></span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"></span>
 </pre></div>
 </div>
 <p>It’s preferable to use simple geometries, too complex geometries can slow down the generation.</p>
@@ -289,8 +289,8 @@ zoom, x and y as 0.</p>
 <p>To be able to generate legends with <code class="docutils literal notranslate"><span class="pre">generate-controller</span> <span class="pre">--generate-legend-images</span></code> you should have
 <code class="docutils literal notranslate"><span class="pre">legend_mime</span></code> and <code class="docutils literal notranslate"><span class="pre">legend_extension</span></code> in the layer configuration.</p>
 <p>for example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legend_mime</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
-<span class="nt">legend_extension</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">png</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legend_mime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span><span class="w"></span>
+<span class="nt">legend_extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">png</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Then it will create a legend image per layer and per zoom level named
@@ -299,13 +299,13 @@ previous zoom level. If we have only one legend image it still stores in the fil
 <code class="docutils literal notranslate"><span class="pre">legend0.{{legend_extension}}</span></code>.</p>
 <p>When we do <code class="docutils literal notranslate"><span class="pre">generate-controller</span> <span class="pre">--generate-wmts-capabilities</span></code> we will at first parse the legend images to
 generate a layer configuration like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legends</span><span class="p">:</span>
-<span class="p p-Indicator">-</span>   <span class="nt">mime_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">image/png</span>
-    <span class="nt">href</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://host/tiles/layer/style/legend0.png</span>
-    <span class="nt">min_resolution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">500</span> <span class="c1"># optional, [m/px]</span>
-    <span class="nt">max_resolution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2000</span> <span class="c1"># optional, [m/px]</span>
-    <span class="nt">min_scale</span><span class="p">:</span> <span class="c1"># if define overwrite the min_resolution [m/m]</span>
-    <span class="nt">max_scale</span><span class="p">:</span> <span class="c1"># if define overwrite the max_resolution [m/m]</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legends</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span><span class="w"></span>
+<span class="w">    </span><span class="nt">href</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://host/tiles/layer/style/legend0.png</span><span class="w"></span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span><span class="w"> </span><span class="c1"># optional, [m/px]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span><span class="w"> </span><span class="c1"># optional, [m/px]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">min_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the min_resolution [m/m]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">max_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the max_resolution [m/m]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If you define a legends array in the layer configuration it is directly used to generate the capabilities.</p>
@@ -339,18 +339,18 @@ in an array as value.</p>
 <p>And don’t forget to change the <code class="docutils literal notranslate"><span class="pre">extension</span></code> to <code class="docutils literal notranslate"><span class="pre">json</span></code>, and the <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> to <code class="docutils literal notranslate"><span class="pre">application/utfgrid</span></code> and
 the <code class="docutils literal notranslate"><span class="pre">meta</span></code> to <code class="docutils literal notranslate"><span class="pre">off</span></code> (not supported).</p>
 <p>Configuration example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">grid</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mapnik</span>
-    <span class="nt">mapfile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">style.mapnik</span>
-    <span class="nt">output_format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">grid</span>
-    <span class="nt">extension</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">json</span>
-    <span class="nt">mime_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">application/utfgrid</span>
-    <span class="nt">drop_empty_utfgrid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">on</span>
-    <span class="nt">resolution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
-    <span class="nt">meta</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">off</span>
-    <span class="nt">data_buffer</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">128</span>
-    <span class="nt">layers_fields</span><span class="p">:</span>
-        <span class="nt">buildings</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">name</span><span class="p p-Indicator">,</span> <span class="nv">street</span><span class="p p-Indicator">]</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">grid</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mapnik</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mapfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">style.mapnik</span><span class="w"></span>
+<span class="w">    </span><span class="nt">output_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grid</span><span class="w"></span>
+<span class="w">    </span><span class="nt">extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">json</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/utfgrid</span><span class="w"></span>
+<span class="w">    </span><span class="nt">drop_empty_utfgrid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">    </span><span class="nt">meta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">off</span><span class="w"></span>
+<span class="w">    </span><span class="nt">data_buffer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span><span class="w"></span>
+<span class="w">    </span><span class="nt">layers_fields</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">buildings</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">name</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">street</span><span class="p p-Indicator">]</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -361,15 +361,15 @@ the <code class="docutils literal notranslate"><span class="pre">meta</span></co
 <p>We can configure some tile commands to process the tiles. They can be automatically be called in the tile
 generation it we set the property <code class="docutils literal notranslate"><span class="pre">post_process</span></code> or <code class="docutils literal notranslate"><span class="pre">pre_hash_post_process</span></code> in the layer configuration.</p>
 <p>The process is a set of names processes, and each one has a list of commands declared like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">process</span><span class="p">:</span>  <span class="c1"># root process config</span>
-    <span class="nt">optipng</span><span class="p">:</span>  <span class="c1"># the process command</span>
-    <span class="p p-Indicator">-</span>   <span class="nt">cmd</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">optipng %(args)s -q -zc9 -zm8 -zs3 -f5 -o %(out)s %(in)s</span>  <span class="c1"># the command line</span>
-        <span class="nt">need_out</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>  <span class="c1"># if false the command rewrite the input file, default to false</span>
-        <span class="nt">arg</span><span class="p">:</span>  <span class="c1"># argument used with the different log switches, all default to &#39;&#39;</span>
-            <span class="nt">default</span><span class="p">:</span> <span class="s">&#39;-q&#39;</span> <span class="c1"># the argument used by default</span>
-            <span class="nt">quiet</span><span class="p">:</span> <span class="s">&#39;-q&#39;</span> <span class="c1"># the argument used in quiet mode</span>
-            <span class="nt">verbose</span><span class="p">:</span> <span class="s">&#39;-v&#39;</span> <span class="c1"># the argument used in verbose mode</span>
-            <span class="nt">debug</span><span class="p">:</span> <span class="s">&#39;-log</span><span class="nv"> </span><span class="s">/tmp/optipng.log&#39;</span> <span class="c1"># the argument user in debug mode</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">process</span><span class="p">:</span><span class="w">  </span><span class="c1"># root process config</span><span class="w"></span>
+<span class="w">    </span><span class="nt">optipng</span><span class="p">:</span><span class="w">  </span><span class="c1"># the process command</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optipng %(args)s -q -zc9 -zm8 -zs3 -f5 -o %(out)s %(in)s</span><span class="w">  </span><span class="c1"># the command line</span><span class="w"></span>
+<span class="w">        </span><span class="nt">need_out</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># if false the command rewrite the input file, default is false</span><span class="w"></span>
+<span class="w">        </span><span class="nt">arg</span><span class="p">:</span><span class="w">  </span><span class="c1"># argument used with the different log switches, in all cases default is &#39;&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used by default</span><span class="w"></span>
+<span class="w">            </span><span class="nt">quiet</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used in quiet mode</span><span class="w"></span>
+<span class="w">            </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-v&#39;</span><span class="w"> </span><span class="c1"># the argument used in verbose mode</span><span class="w"></span>
+<span class="w">            </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-log</span><span class="nv"> </span><span class="s">/tmp/optipng.log&#39;</span><span class="w"> </span><span class="c1"># the argument user in debug mode</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">cmd</span></code> can have the following optional argument:</p>
@@ -401,8 +401,8 @@ If the database is not reachable, the process will wait until it is.</p>
 <section id="tiles-error-file">
 <h3>Tiles error file<a class="headerlink" href="#tiles-error-file" title="Permalink to this headline">¶</a></h3>
 <p>If we set a file path in configuration file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">generation</span><span class="p">:</span>
-    <span class="nt">error_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;path&gt;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">generation</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">error_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;path&gt;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The tiles that’s in error will be append to the file, ant the tiles can be regenerated with
@@ -417,18 +417,18 @@ meta tile.</p>
 <section id="proxy-cache-issue">
 <h3>Proxy/cache issue<a class="headerlink" href="#proxy-cache-issue" title="Permalink to this headline">¶</a></h3>
 <p>In general we shouldn’t generate tiles throw a proxy, to do that you should configure the layers as this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers_name</span><span class="p">:</span>
-    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost/wms</span>
-    <span class="nt">headers</span><span class="p">:</span>
-        <span class="nt">Host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">the_host_name</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers_name</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost/wms</span><span class="w"></span>
+<span class="w">    </span><span class="nt">headers</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">Host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_host_name</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The idea is to get the WMS server on <code class="docutils literal notranslate"><span class="pre">localhost</span></code> and use the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header to select the right Apache
 VirtualHost.</p>
 <p>To don’t have cache we use the as default the headers:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">headers</span><span class="p">:</span>
-    <span class="nt">Cache-Control</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">no-cache, no-store</span>
-    <span class="nt">Pragma</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">no-cache</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">headers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">Cache-Control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache, no-store</span><span class="w"></span>
+<span class="w">    </span><span class="nt">Pragma</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache</span><span class="w"></span>
 </pre></div>
 </div>
 <p>And if you steal have issue you can add a <code class="docutils literal notranslate"><span class="pre">SALT</span></code> random argument by setting the layer parameter
@@ -450,17 +450,17 @@ VirtualHost.</p>
 <section id="configure-s3">
 <h3>Configure S3<a class="headerlink" href="#configure-s3" title="Permalink to this headline">¶</a></h3>
 <p>The cache configuration is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">s3</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s3</span>
-    <span class="c1"># the s3 bucket name</span>
-    <span class="nt">bucket</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tiles</span>
-    <span class="c1"># the used folder in the bucket [default to &#39;&#39;]</span>
-    <span class="nt">folder</span><span class="p">:</span> <span class="s">&#39;&#39;</span>
-    <span class="c1"># for GetCapabilities</span>
-    <span class="nt">http_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
-    <span class="nt">cache_control</span><span class="p">:</span> <span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
-    <span class="nt">hosts</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">s3</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s3</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># the s3 bucket name</span><span class="w"></span>
+<span class="w">    </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># the used folder in the bucket [default is &#39;&#39;]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># for GetCapabilities</span><span class="w"></span>
+<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The bucket should already exists. If you don’t use Amazon’s S3, you must specify the <code class="docutils literal notranslate"><span class="pre">host</span></code> and the
@@ -469,11 +469,11 @@ VirtualHost.</p>
 <section id="configure-sqs">
 <h3>Configure SQS<a class="headerlink" href="#configure-sqs" title="Permalink to this headline">¶</a></h3>
 <p>The configuration in layer is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sqs</span><span class="p">:</span>
-    <span class="c1"># The region where the SQS queue is</span>
-    <span class="nt">region</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eu-west-1</span>
-    <span class="c1"># The SQS queue name, it should already exists</span>
-    <span class="nt">queue</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">the_name</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sqs</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># The region where the SQS queue is</span><span class="w"></span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># The SQS queue name, it should already exists</span><span class="w"></span>
+<span class="w">    </span><span class="nt">queue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_name</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The queue should be used only by one layer.</p>
@@ -489,9 +489,9 @@ enable the daemon mode and must not specify the layer:</p>
 <h3>Configure SNS<a class="headerlink" href="#configure-sns" title="Permalink to this headline">¶</a></h3>
 <p>SNS can be used to send a message when the generation ends.</p>
 <p>The configuration is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sns</span><span class="p">:</span>
-    <span class="nt">topic</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">arn:aws:sns:eu-west-1:your-account-id:tilecloud</span>
-    <span class="nt">region</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eu-west-1</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sns</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arn:aws:sns:eu-west-1:your-account-id:tilecloud</span><span class="w"></span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The topic should already exists.</p>
@@ -520,17 +520,17 @@ enable the daemon mode and must not specify the layer:</p>
 <section id="configure-azure">
 <h3>Configure Azure<a class="headerlink" href="#configure-azure" title="Permalink to this headline">¶</a></h3>
 <p>The cache configuration is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">azure</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">azure</span>
-    <span class="c1"># the Azure container name</span>
-    <span class="nt">container</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tiles</span>
-    <span class="c1"># the used folder in the container [default to &#39;&#39;]</span>
-    <span class="nt">folder</span><span class="p">:</span> <span class="s">&#39;&#39;</span>
-    <span class="c1"># for GetCapabilities</span>
-    <span class="nt">http_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
-    <span class="nt">cache_control</span><span class="p">:</span> <span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
-    <span class="nt">hosts</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">azure</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># the Azure container name</span><span class="w"></span>
+<span class="w">    </span><span class="nt">container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># the used folder in the container [default is &#39;&#39;]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># for GetCapabilities</span><span class="w"></span>
+<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The container should already exists.</p>
@@ -541,39 +541,24 @@ or <code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_AC
 </section>
 <section id="other-related-configuration">
 <h2>Other related configuration<a class="headerlink" href="#other-related-configuration" title="Permalink to this headline">¶</a></h2>
-<section id="openlayers-pink-tiles">
-<h3>OpenLayers pink tiles<a class="headerlink" href="#openlayers-pink-tiles" title="Permalink to this headline">¶</a></h3>
-<p>To avoid the OpenLayers red tiles on missing empty tiles we can add the following CSS rule:</p>
-<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">olImageLoadError</span> <span class="p">{</span>
-    <span class="k">display</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>To completely hide the missing tiles, useful for a transparent layer, or for an opaque layer:</p>
-<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">olImageLoadError</span> <span class="p">{</span>
-    <span class="k">background-color</span><span class="p">:</span> <span class="kc">white</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
 </section>
 <section id="configure-the-server">
 <h2>Configure the server<a class="headerlink" href="#configure-the-server" title="Permalink to this headline">¶</a></h2>
 <p>The server can be configure as it:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span>
-    <span class="nt">layers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">a_layer</span> <span class="c1"># Restrict to serve an certain number of layers [default to all]</span>
-    <span class="nt">cache</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mbtiles</span> <span class="c1"># The used cache [default use generation/default_cache]</span>
-    <span class="c1"># the URL without location to MapCache, [default to http://localhost/]</span>
-    <span class="nt">mapcache_base</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost/</span>
-    <span class="nt">mapcache_headers</span><span class="p">:</span> <span class="c1"># headers, can be used to access to an other Apache vhost [default to {}]</span>
-        <span class="nt">Host</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
-    <span class="nt">geoms_redirect</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span> <span class="c1"># use the geoms to redirect to MapCache [default to false]</span>
-    <span class="c1"># allowed extension in the static path (default value), not used for s3.</span>
-    <span class="nt">static_allow_extension</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">jpeg</span><span class="p p-Indicator">,</span> <span class="nv">png</span><span class="p p-Indicator">,</span> <span class="nv">xml</span><span class="p p-Indicator">,</span> <span class="nv">js</span><span class="p p-Indicator">,</span> <span class="nv">html</span><span class="p p-Indicator">,</span> <span class="nv">css</span><span class="p p-Indicator">]</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a_layer</span><span class="w"> </span><span class="c1"># Restrict to serve an certain number of layers [default is all]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mbtiles</span><span class="w"> </span><span class="c1"># The used cache [default use generation/default_cache]</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># the URL without location to MapCache, [default is http://localhost/]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mapcache_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost/</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mapcache_headers</span><span class="p">:</span><span class="w"> </span><span class="c1"># headers, can be used to access to an other Apache vhost [default is {}]</span><span class="w"></span>
+<span class="w">        </span><span class="nt">Host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
+<span class="w">    </span><span class="nt">geoms_redirect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># use the geoms to redirect to MapCache [default is false]</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># allowed extension in the static path (default value), not used for s3.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">static_allow_extension</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">jpeg</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">png</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">xml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">js</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">html</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">css</span><span class="p p-Indicator">]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The minimal configuration is to enable it:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>You should also configure the <code class="docutils literal notranslate"><span class="pre">http_url</span></code> of the used cache, to something like
@@ -614,7 +599,7 @@ WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
 <section id="available-commands">
 <h3>Available commands<a class="headerlink" href="#available-commands" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">generate-controller</span></code> generate the annex files like capabilities, legend, OpenLayers test page.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generate-controller</span></code> generate the annex files like legend.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">generate-tiles</span></code> generate the tiles.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">generate-copy</span></code> copy the tiles from a cache to an other.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">generate-process</span></code> process the tiles using a configured process.</p></li>
@@ -643,40 +628,33 @@ WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --near &lt;X&gt; &lt;Y&gt;</span>
 </pre></div></div><p>Generate a tiles in a different cache than the default one:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --cache &lt;a_cache&gt;</span>
-</pre></div></div><p>And don’t forget to generate the WMTS Capabilities:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --capabilities</span>
-</pre></div></div></section>
-<section id="openlayers-test-page">
-<h3>OpenLayers test page<a class="headerlink" href="#openlayers-test-page" title="Permalink to this headline">¶</a></h3>
-<p>To generate a test page use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --openlayers</span>
 </pre></div></div></section>
 </section>
 <section id="explain-cost">
 <h2>Explain cost<a class="headerlink" href="#explain-cost" title="Permalink to this headline">¶</a></h2>
 <p>Configuration (default values):</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span>
-    <span class="c1"># [nb/month]</span>
-    <span class="nt">request_per_layers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10000000</span>
-    <span class="nt">cloudfront</span><span class="p">:</span>
-        <span class="nt">download</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.12,</span>
-        <span class="nt">get</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.009</span>
-    <span class="nt">request_per_layers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10000000</span>
-    <span class="nt">s3</span><span class="p">:</span>
-        <span class="nt">download</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.12,</span>
-        <span class="nt">get</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.01,</span>
-        <span class="nt">put</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.01,</span>
-        <span class="nt">storage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.125</span>
-    <span class="nt">sqs</span><span class="p">:</span>
-        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># [nb/month]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cloudfront</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.009</span><span class="w"></span>
+<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span><span class="w"></span>
+<span class="w">    </span><span class="nt">s3</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">put</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.125</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sqs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">request</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Layer configuration (default values):</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span>
-    <span class="nt">metatile_generation_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.0,</span>
-    <span class="nt">tile_generation_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30.0,</span>
-    <span class="nt">tile_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20.0,</span>
-    <span class="nt">tileonly_generation_time</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60.0</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">metatile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">tile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">tile_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">tileonly_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60.0</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The following commands can be used to know the time and cost to do generation:</p>
@@ -711,13 +689,37 @@ change them we should regenerate all the tiles).</p>
 <section id="environment-variables">
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">2</span></code>, The number of thread used to generate the tiles (If we use meta tiles)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">METATILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">25</span></code>, The number of thread used to generate the meta tiles (If we use
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_CONFIGFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>, the all in one
+configuration file to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAIN_CONFIGFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>, the main
+configuration file to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTSFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>, the hosts to config file
+mapping file to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">2</span></code>, the number of thread used to generate the tiles (If we use meta tiles)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">METATILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">25</span></code>, the number of thread used to generate the meta tiles (If we use
 meta tiles, also to generate the tiles)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SERVER_NB_THREAD</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">10</span></code>, The number of thread used to generate the meta tiles in the server.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_QUEUE_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">2</span></code>, The queue size just after the Redis queue</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>, The chunk size to process the tiles after the meta tiles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SERVER_NB_THREAD</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">10</span></code>, the number of thread used to generate the meta tiles in the server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_QUEUE_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">2</span></code>, the queue size just after the Redis queue</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1</span></code>, the chunk size to process the tiles after the meta tiles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_MAX_OUTPUT_LENGTH</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1000</span></code>, the maximum number of character of the
+output to be display in the admin interface.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">console</span></code>, can also be <code class="docutils literal notranslate"><span class="pre">json</span></code> to log in JSON for <code class="docutils literal notranslate"><span class="pre">Logstash</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
+<code class="docutils literal notranslate"><span class="pre">TILECLOUD_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
+<code class="docutils literal notranslate"><span class="pre">C2CWSGI_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>,
+<code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, the logging level of deferent components, can be <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>,
+<code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> or <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_SERVER_LOGLEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">quiet</span></code> the log level used in the server part.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_MAPCACHE_LOGLEVEL``Default</span> <span class="pre">to</span> <span class="pre">``verbose</span></code> the log level used in the internal mapcache.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">0</span></code> set it to <code class="docutils literal notranslate"><span class="pre">1</span></code> to have the Pyramid development options.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code> Default to <code class="docutils literal notranslate"><span class="pre">/tiles/</span></code> the entrypoint path.</p></li>
 </ul>
+</section>
+<section id="admin-and-test-pages">
+<h2>Admin and test pages<a class="headerlink" href="#admin-and-test-pages" title="Permalink to this headline">¶</a></h2>
+<p>On the URL <cite>&lt;base URL&gt;/admin/</cite> you can see the status of the generation, a tool to generate the tiles, and a link
+to a test page.</p>
+<p>Beware, the test page assumes we have configured only one grid.</p>
 <section id="tilecloud-chain-configuration">
 <span id="tilecloud-chain-configuration"></span><h3>TileCloud-chain configuration<a class="headerlink" href="#tilecloud-chain-configuration" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
@@ -827,7 +829,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="2"><p><em>Queue</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The queue name, default to ‘tilecloud’</p></td>
+<tr class="row-odd"><td colspan="2"><p>The queue name, default is ‘tilecloud’</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
@@ -880,7 +882,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#redis">Redis</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="18"><ul class="simple">
+<tr class="row-odd"><td rowspan="26"><ul class="simple">
 <li><p>openlayers</p></li>
 </ul>
 </td>
@@ -911,6 +913,20 @@ meta tiles, also to generate the tiles)</p></li>
 <td><p>EPSG:2056</p></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>proj4js_def</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>The proj4js definition</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The proj4js definition, get it from <a class="reference external" href="https://epsg.io/">https://epsg.io/</a></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>center_x</p></li>
 </ul>
 </td>
@@ -937,6 +953,20 @@ meta tiles, also to generate the tiles)</p></li>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
 <td><p>1200000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>zoom</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Map initial zoom</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The initial zoom</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>3</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
@@ -1092,7 +1122,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Unit</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The projection unit, default to ‘m’</p></td>
+<tr class="row-even"><td colspan="3"><p>The projection unit, default is ‘m’</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -1106,7 +1136,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Tile size</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The tile size in pixel, default to 256</p></td>
+<tr class="row-even"><td colspan="3"><p>The tile size in pixel, default is 256</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
@@ -1208,7 +1238,7 @@ meta tiles, also to generate the tiles)</p></li>
 </section>
 <section id="cache-folder">
 <span id="cache-folder"></span><h4>Cache folder<a class="headerlink" href="#cache-folder" title="Permalink to this headline">¶</a></h4>
-<p>The root folder of the cache, default to ‘’</p>
+<p>The root folder of the cache, default is ‘’</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -1344,7 +1374,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="2"><p><em>Host</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The S3 host, default to ‘s3-eu-west-1.amazonaws.com’</p></td>
+<tr class="row-even"><td colspan="2"><p>The S3 host, default is ‘s3-eu-west-1.amazonaws.com’</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
@@ -1683,7 +1713,7 @@ meta tiles, also to generate the tiles)</p></li>
 </section>
 <section id="layer-pixel-buffer">
 <span id="layer-pixel-buffer"></span><h4>Layer pixel buffer<a class="headerlink" href="#layer-pixel-buffer" title="Permalink to this headline">¶</a></h4>
-<p>The buffer in pixel used to calculate geometry intersection, default to 0</p>
+<p>The buffer in pixel used to calculate geometry intersection, default is 0</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -1701,7 +1731,7 @@ meta tiles, also to generate the tiles)</p></li>
 </section>
 <section id="layer-meta">
 <span id="layer-meta"></span><h4>Layer meta<a class="headerlink" href="#layer-meta" title="Permalink to this headline">¶</a></h4>
-<p>Used meta-tiles, default to False, see see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles</a></p>
+<p>Use meta-tiles, default is False, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles</a></p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -1719,7 +1749,7 @@ meta tiles, also to generate the tiles)</p></li>
 </section>
 <section id="layer-meta-size">
 <span id="layer-meta-size"></span><h4>Layer meta size<a class="headerlink" href="#layer-meta-size" title="Permalink to this headline">¶</a></h4>
-<p>The meta-tile size in tiles, default to 5</p>
+<p>The meta-tile size in tiles, default is 5</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -1734,7 +1764,7 @@ meta tiles, also to generate the tiles)</p></li>
 </section>
 <section id="layer-meta-buffer">
 <span id="layer-meta-buffer"></span><h4>Layer meta buffer<a class="headerlink" href="#layer-meta-buffer" title="Permalink to this headline">¶</a></h4>
-<p>The meta-tiles buffer in pixels, default to 128</p>
+<p>The meta-tiles buffer in pixels, default is 128</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -2507,7 +2537,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Generate salt</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Should generate a salt to drop the cache, default to False</p></td>
+<tr class="row-even"><td colspan="3"><p>Should generate a salt to drop the cache, default is False</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>boolean</em></p></td>
@@ -2567,7 +2597,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Version</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The used WMS version (default to ‘1.1.1’)</p></td>
+<tr class="row-even"><td colspan="3"><p>The used WMS version (default is ‘1.1.1’)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -2759,7 +2789,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Data buffer</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The data buffer, default to 128</p></td>
+<tr class="row-odd"><td colspan="4"><p>The data buffer, default is 128</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
@@ -2770,7 +2800,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Output format</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>The Mapnik output format, default to ‘png’</p></td>
+<tr class="row-even"><td colspan="4"><p>The Mapnik output format, default is ‘png’</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
@@ -2795,7 +2825,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Resolution</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The resolution, default to 4</p></td>
+<tr class="row-odd"><td colspan="4"><p>The resolution, default is 4</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
@@ -2827,7 +2857,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Drop empty UTFGrid</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>Drop if the tile is empty, default to False</p></td>
+<tr class="row-even"><td colspan="4"><p>Drop if the tile is empty, default is False</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>boolean</em></p></td>
@@ -2893,7 +2923,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Need out</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The command will generate an output in a file, default to False</p></td>
+<tr class="row-even"><td colspan="3"><p>The command will generate an output in a file, default is False</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>boolean</em></p></td>
@@ -3018,7 +3048,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Log format</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The logging format (main configuration), default to ‘%(levelname)s:%(name)s:%(funcName)s:%(message)s’</p></td>
+<tr class="row-even"><td colspan="3"><p>The logging format (main configuration), default is ‘%(levelname)s:%(name)s:%(funcName)s:%(message)s’</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -3043,7 +3073,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Max consecutive errors</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The maximum number of consecutive errors (main configuration), default to 10</p></td>
+<tr class="row-odd"><td colspan="3"><p>The maximum number of consecutive errors (main configuration), default is 10</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
@@ -3068,7 +3098,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Number process</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Number of process used to generate the tiles (main configuration), default to 1</p></td>
+<tr class="row-even"><td colspan="3"><p>Number of process used to generate the tiles (main configuration), default is 1</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
@@ -3084,7 +3114,7 @@ meta tiles, also to generate the tiles)</p></li>
 </section>
 <section id="aws-region">
 <span id="aws-region"></span><h4>AWS region<a class="headerlink" href="#aws-region" title="Permalink to this headline">¶</a></h4>
-<p>The region, default to ‘eu-west-1’</p>
+<p>The region, default is ‘eu-west-1’</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -3204,7 +3234,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Service name</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="5"><p>The service name, default to ‘mymaster’ (main configuration)</p></td>
+<tr class="row-even"><td colspan="5"><p>The service name, default is ‘mymaster’ (main configuration)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="4"><p><em>string</em></p></td>
@@ -3252,7 +3282,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Timeout</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="5"><p>The timeout (main configuration), default to 5</p></td>
+<tr class="row-odd"><td colspan="5"><p>The timeout (main configuration), default is 5</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>integer</em></p></td>
@@ -3266,7 +3296,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Pending timeout</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="5"><p>The pending timeout (main configuration), default to 300</p></td>
+<tr class="row-odd"><td colspan="5"><p>The pending timeout (main configuration), default is 300</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>integer</em></p></td>
@@ -3280,7 +3310,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Max retries</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="5"><p>The max retries (main configuration), default to 5</p></td>
+<tr class="row-odd"><td colspan="5"><p>The max retries (main configuration), default is 5</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>integer</em></p></td>
@@ -3294,7 +3324,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Max errors age</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="5"><p>The max error age (main configuration), default to 86400 (1 day)</p></td>
+<tr class="row-odd"><td colspan="5"><p>The max error age (main configuration), default is 86400 (1 day)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>integer</em></p></td>
@@ -3308,7 +3338,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Max errors number</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="5"><p>The max error number (main configuration), default to 100</p></td>
+<tr class="row-odd"><td colspan="5"><p>The max error number (main configuration), default is 100</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>integer</em></p></td>
@@ -3322,7 +3352,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Prefix</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="5"><p>The prefix (main configuration), default to ‘tilecloud_cache’</p></td>
+<tr class="row-odd"><td colspan="5"><p>The prefix (main configuration), default is ‘tilecloud_cache’</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>string</em></p></td>
@@ -3336,7 +3366,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="5"><p><em>Expiration</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="5"><p>The meta-tile in queue expiration (main configuration), default to 28800 (8 hours)</p></td>
+<tr class="row-odd"><td colspan="5"><p>The meta-tile in queue expiration (main configuration), default is 28800 (8 hours)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>integer</em></p></td>
@@ -3384,7 +3414,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>WMS Layers</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>Layers available in the server, default to all layers</p></td>
+<tr class="row-odd"><td colspan="4"><p>Layers available in the server, default is all layers</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>array</em></p></td>
@@ -3399,7 +3429,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Geometries redirect</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>Take care on the geometries, default to False</p></td>
+<tr class="row-odd"><td colspan="4"><p>Take care on the geometries, default is False</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>boolean</em></p></td>
@@ -3428,7 +3458,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>WMTS path</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The sub-path for the WMTS (main configuration), default to ‘wmts’</p></td>
+<tr class="row-odd"><td colspan="4"><p>The sub-path for the WMTS (main configuration), default is ‘wmts’</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
@@ -3442,7 +3472,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Static path</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The sub-path for the static files (main configuration), default to ‘static’</p></td>
+<tr class="row-odd"><td colspan="4"><p>The sub-path for the static files (main configuration), default is ‘static’</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
@@ -3456,7 +3486,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Admin path</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The sub-path for the admin (main configuration), default to ‘admin’</p></td>
+<tr class="row-odd"><td colspan="4"><p>The sub-path for the admin (main configuration), default is ‘admin’</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
@@ -3470,7 +3500,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="4"><p><em>Expires</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The browser cache expiration, default to 8 (hours)</p></td>
+<tr class="row-odd"><td colspan="4"><p>The browser cache expiration, default is 8 (hours)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
@@ -3578,7 +3608,7 @@ meta tiles, also to generate the tiles)</p></li>
 </td>
 <td colspan="3"><p><em>Request per layers</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Tile request per hours, default to 10 000 000</p></td>
+<tr class="row-even"><td colspan="3"><p>Tile request per hours, default is 10 000 000</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
@@ -4230,7 +4260,7 @@ meta tiles, also to generate the tiles)</p></li>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
