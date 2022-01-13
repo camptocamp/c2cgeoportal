@@ -1,3 +1,5 @@
+##### 2.5.0.185
+* Ignore [1006864] Uncontrolled Resource Consumption in markdown-it [ngeo#7942](https://github.com/camptocamp/ngeo/pull/7942)
 ##### 2.5.0.184
 * Ignore some new CVE [ngeo#7915](https://github.com/camptocamp/ngeo/pull/7915)
 ##### 2.5.0.183
