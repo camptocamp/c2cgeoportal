@@ -1,3 +1,5 @@
+##### 2.6.0.75
+* Ignore new CVE [c2cgeoportal#9155](https://github.com/camptocamp/c2cgeoportal/pull/9155)
 ##### 2.6.0.74
 * Ignore [1006864] Uncontrolled Resource Consumption in markdown-it [ngeo#7943](https://github.com/camptocamp/ngeo/pull/7943)
 ##### 2.6.0.73
