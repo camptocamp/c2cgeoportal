@@ -518,6 +518,22 @@ def includeme(config: pyramid.config.Configurator) -> None:
         pregenerator=C2CPregenerator(role=True),
         request_method="POST",
     )
+    # The tow next views are used to serve the application on the URL /mapserv_proxy/<ogc server name>
+    # instead of /mapserv_proxy?ogcserver=<ogc server name>, required for QGIS server landing page
+    config.add_route(
+        "mapserverproxy_get_path",
+        "/mapserv_proxy/{ogcserver}*all",
+        mapserverproxy=True,
+        pregenerator=C2CPregenerator(role=True),
+        request_method="GET",
+    )
+    config.add_route(
+        "mapserverproxy_post_path",
+        "/mapserv_proxy/{ogcserver}*all",
+        mapserverproxy=True,
+        pregenerator=C2CPregenerator(role=True),
+        request_method="POST",
+    )
     add_cors_route(config, "/mapserv_proxy", "mapserver")
 
     # Add route to the tinyows proxy
