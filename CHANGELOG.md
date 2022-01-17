@@ -1,3 +1,9 @@
+##### 2.4.2.67
+* Ignore new CVE [c2cgeoportal#9153](https://github.com/camptocamp/c2cgeoportal/pull/9153)
+* Ignore CVE [1006827] Prototype Pollution in dot-prop [ngeo#7896](https://github.com/camptocamp/ngeo/pull/7896)
+* Ignore CVE [1006839] Resource Exhaustion Denial of Service in http-proxy-agent [ngeo#7911](https://github.com/camptocamp/ngeo/pull/7911)
+* Ignore some new CVE [ngeo#7916](https://github.com/camptocamp/ngeo/pull/7916)
+* Ignore new CVE [ngeo#7947](https://github.com/camptocamp/ngeo/pull/7947)
 ##### 2.4.2.66
 * No more ignore CVE 1006000 [c2cgeoportal#9030](https://github.com/camptocamp/c2cgeoportal/pull/9030)
 * Fix peer dependency [ngeo#7788](https://github.com/camptocamp/ngeo/pull/7788)
