@@ -203,6 +203,20 @@ in the vars file add:</p>
 <p>With that you will not have URL encoding issues.</p>
 </section>
 </section>
+<section id="landing-page">
+<h2>Landing page<a class="headerlink" href="#landing-page" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://docs.qgis.org/3.16/en/docs/server_manual/services.html#qgis-server-catalog">The QGIS documentation</a>.</p>
+<p>To have the landing page you should:</p>
+<ul class="simple">
+<li><p>Don’t define the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable (the map should be defined in the OGC server,
+in the <code class="docutils literal notranslate"><span class="pre">MAP</span></code> attribute of the query string).</p></li>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">QGIS_SERVER_LANDING_PAGE_PROJECTS_DIRECTORIES</span></code> or the
+<code class="docutils literal notranslate"><span class="pre">QGIS_SERVER_LANDING_PAGE_PROJECTS_PG_CONNECTIONS</span></code> environment variable.</p></li>
+<li><p>Create a new OGC server with a name e.g. <code class="docutils literal notranslate"><span class="pre">qgis</span></code> and no <code class="docutils literal notranslate"><span class="pre">MAP</span></code> in the query string.</p></li>
+<li><p>Define the <code class="docutils literal notranslate"><span class="pre">QGIS_SERVER_LANDING_PAGE_PREFIX</span></code> to, in our example, <code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/qgis</span></code>.</p></li>
+</ul>
+<p>Then open the landing page in your browser with <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/mapserv_proxy/qgis</span></code>.</p>
+</section>
 </section>
 
 
@@ -279,7 +293,7 @@ in the vars file add:</p>
       &copy;2011-2021, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

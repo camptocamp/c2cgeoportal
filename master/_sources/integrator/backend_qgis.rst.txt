@@ -211,3 +211,19 @@ in the vars file add:
            MAP: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&dbname={PGDATABASE}&schema=qgis&project=qgis2
 
 With that you will not have URL encoding issues.
+
+Landing page
+============
+
+`The QGIS documentation <https://docs.qgis.org/3.16/en/docs/server_manual/services.html#qgis-server-catalog>`_.
+
+To have the landing page you should:
+
+- Don't define the ``QGIS_PROJECT_FILE`` environment variable (the map should be defined in the OGC server,
+  in the ``MAP`` attribute of the query string).
+- Define the ``QGIS_SERVER_LANDING_PAGE_PROJECTS_DIRECTORIES`` or the
+  ``QGIS_SERVER_LANDING_PAGE_PROJECTS_PG_CONNECTIONS`` environment variable.
+- Create a new OGC server with a name e.g. ``qgis`` and no ``MAP`` in the query string.
+- Define the ``QGIS_SERVER_LANDING_PAGE_PREFIX`` to, in our example, ``/mapserv_proxy/qgis``.
+
+Then open the landing page in your browser with ``https://<host>/mapserv_proxy/qgis``.
