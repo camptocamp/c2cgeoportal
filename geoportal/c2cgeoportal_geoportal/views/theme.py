@@ -39,6 +39,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
 import pyramid.request
 import requests
+import sqlalchemy
 import sqlalchemy.orm.query
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
@@ -936,11 +937,19 @@ class Theme:
     async def preload(self, errors: Set[str]) -> None:
         tasks = set()
         for ogc_server in models.DBSession.query(main.OGCServer).all():
-            url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
-            if url_internal_wfs is not None:
-                if ogc_server.wfs_support:
-                    tasks.add(self._wfs_get_features_type(url_internal_wfs, True))
-                tasks.add(self._wms_getcap(ogc_server, True))
+            # Don't load unused OGC servers, required for Landigpage, because the related OGC server
+            # will be on error in those functions.
+            nb_layers = (
+                models.DBSession.query(sqlalchemy.func.count(main.LayerWMS.id))
+                .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
+                .one()
+            )
+            if nb_layers[0] > 0:
+                url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
+                if url_internal_wfs is not None:
+                    if ogc_server.wfs_support:
+                        tasks.add(self._wfs_get_features_type(url_internal_wfs, True))
+                    tasks.add(self._wms_getcap(ogc_server, True))
 
         await asyncio.gather(*tasks)
 

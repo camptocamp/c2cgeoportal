@@ -61,10 +61,12 @@ class OGCProxy(Proxy):
             del self.params["user_id"]
 
         self.lower_params = self._get_lower_params(self.params)
-        if not has_default_ogc_server and "ogcserver" not in self.params:
-            raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
-        if "ogcserver" in self.params:
+        if "ogcserver" in request.matchdict:
+            self.ogc_server = self._get_ogcserver_byname(request.matchdict["ogcserver"])
+        elif "ogcserver" in self.params:
             self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
+        elif not has_default_ogc_server:
+            raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _get_ogcserver_byname(self, name: str) -> main.OGCServer:  # pylint: disable=no-self-use

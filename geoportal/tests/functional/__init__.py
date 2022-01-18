@@ -32,6 +32,7 @@ Pyramid application test package.
 
 import logging
 from configparser import ConfigParser
+from typing import Any, Dict
 
 import pyramid.registry
 import sqlalchemy.exc
@@ -51,7 +52,14 @@ mapserv_url = "http://mapserver:8080/"
 config = None
 
 
-def cleanup_db():
+class DummyRoute:
+    """Dummy route for matched_route in testing."""
+
+    name: str = "dummy"
+    pattern: str = "dummy"
+
+
+def cleanup_db() -> None:
     """
     Cleanup the database.
     """
@@ -90,7 +98,7 @@ def cleanup_db():
     transaction.commit()
 
 
-def setup_db():
+def setup_db() -> None:
     """
     Cleanup the database.
     """
@@ -111,7 +119,7 @@ def setup_db():
     caching.invalidate_region()
 
 
-def get_settings():
+def get_settings() -> Dict[str, Any]:
     logging.getLogger("c2cgeoportal_geoportal").setLevel(logging.DEBUG)
 
     configfile = "/opt/c2cgeoportal/geoportal/tests/tests.ini"
@@ -141,7 +149,7 @@ def get_settings():
     return configuration.get_config()
 
 
-def setup_common():
+def setup_common() -> None:
     global config
 
     config = testing.setUp(settings=get_settings())
@@ -151,7 +159,7 @@ def setup_common():
     setup_db()
 
 
-def teardown_common():
+def teardown_common() -> None:
     cleanup_db()
     testing.tearDown()
 
@@ -174,7 +182,7 @@ def create_default_ogcserver():
     return ogcserver
 
 
-def _get_user(username):
+def _get_user(username: str):
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.static import User
 
@@ -248,6 +256,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     request.interface_name = "main"
     request.get_user = _get_user
     request.c2c_request_id = "test"
+    request.matched_route = DummyRoute()
     init_registry(request.registry)
 
     if authentication and user is None:
