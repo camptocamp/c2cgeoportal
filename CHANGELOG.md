@@ -1,3 +1,5 @@
+##### 2.4.2.68
+* Ignore new CVE [c2cgeoportal#9160](https://github.com/camptocamp/c2cgeoportal/pull/9160)
 ##### 2.4.2.67
 * Ignore new CVE [c2cgeoportal#9153](https://github.com/camptocamp/c2cgeoportal/pull/9153)
 * Ignore CVE [1006827] Prototype Pollution in dot-prop [ngeo#7896](https://github.com/camptocamp/ngeo/pull/7896)
