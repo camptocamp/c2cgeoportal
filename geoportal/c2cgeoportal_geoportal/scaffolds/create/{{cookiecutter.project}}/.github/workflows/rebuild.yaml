@@ -9,6 +9,8 @@ env:
   PROJECT: {{cookiecutter.package}}
   # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
   # OPENSHIFT_PROJECT: gs-gmf-{{cookiecutter.package}}
+  # The release branches
+  HELM_RELEASE_NAMES: int-{{cookiecutter.geomapfish_main_version_dash}},prod-{{cookiecutter.geomapfish_main_version_dash}}
 
 jobs:
   config:
