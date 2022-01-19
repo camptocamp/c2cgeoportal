@@ -1,3 +1,5 @@
+##### 2.6.0.78
+* Add missing HELM_RELEASE_NAMES in project rebuild [c2cgeoportal#9165](https://github.com/camptocamp/c2cgeoportal/pull/9165)
 ##### 2.6.0.77
 * Fix print legend - iter on themes node [ngeo#7852](https://github.com/camptocamp/ngeo/pull/7852)
 ##### 2.6.0.76
