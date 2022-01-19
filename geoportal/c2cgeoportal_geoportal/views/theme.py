@@ -851,7 +851,7 @@ class Theme:
         return None if self.request.user is None else {role.id for role in self.request.user.roles}
 
     async def _wfs_get_features_type(
-        self, wfs_url: Url, preload: bool = False
+        self, wfs_url: Url, ogc_server_name: str, preload: bool = False
     ) -> Tuple[Optional[etree.Element], Set[str]]:
         errors = set()
 
@@ -879,16 +879,23 @@ class Theme:
                 None, get_http_cached, self.http_options, wfs_url, headers
             )
         except requests.exceptions.RequestException as exception:
-            error = f"Unable to get WFS DescribeFeatureType from the URL '{wfs_url.url()}', " + (
-                f"return the error: {exception.response.status_code} {exception.response.reason}"
-                if exception.response is not None
-                else f"{exception}"
+            error = (
+                f"Unable to get WFS DescribeFeatureType from the URL '{wfs_url.url()}' for "
+                f"OGC server {ogc_server_name}, "
+                + (
+                    f"return the error: {exception.response.status_code} {exception.response.reason}"
+                    if exception.response is not None
+                    else f"{exception}"
+                )
             )
             errors.add(error)
             LOG.exception(error)
             return None, errors
         except Exception:
-            error = f"Unable to get WFS DescribeFeatureType from the URL {wfs_url}"
+            error = (
+                f"Unable to get WFS DescribeFeatureType from the URL {wfs_url} for "
+                f"OGC server {ogc_server_name}"
+            )
             errors.add(error)
             LOG.exception(error)
             return None, errors
@@ -944,22 +951,24 @@ class Theme:
                 .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
                 .one()
             )
+            LOG.debug("%i layers for OGC server '%s'", nb_layers[0], ogc_server.name)
             if nb_layers[0] > 0:
+                LOG.debug("Preload OGC server '%s'", ogc_server.name)
                 url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
                 if url_internal_wfs is not None:
                     if ogc_server.wfs_support:
-                        tasks.add(self._wfs_get_features_type(url_internal_wfs, True))
+                        tasks.add(self._wfs_get_features_type(url_internal_wfs, ogc_server.name, True))
                     tasks.add(self._wms_getcap(ogc_server, True))
 
         await asyncio.gather(*tasks)
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _get_features_attributes(
-        self, url_internal_wfs: Url
+        self, url_internal_wfs: Url, ogc_server_name: str
     ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
 
         all_errors: Set[str] = set()
-        feature_type, errors = asyncio.run(self._wfs_get_features_type(url_internal_wfs))
+        feature_type, errors = asyncio.run(self._wfs_get_features_type(url_internal_wfs, ogc_server_name))
         LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
         if errors:
             all_errors |= errors
@@ -1051,12 +1060,23 @@ class Theme:
                 LOG.info("Do preload in %.3fs.", time.time() - start_time)
             result["ogcServers"] = {}
             for ogc_server in models.DBSession.query(main.OGCServer).all():
+                nb_layers = (
+                    models.DBSession.query(sqlalchemy.func.count(main.LayerWMS.id))
+                    .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
+                    .one()
+                )
+                if nb_layers[0] == 0:
+                    # QGIS Server langing page requires an OGC server that can't be used here.
+                    continue
+
                 url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
 
                 attributes = None
                 namespace = None
                 if ogc_server.wfs_support:
-                    attributes, namespace, errors = self._get_features_attributes(url_internal_wfs)
+                    attributes, namespace, errors = self._get_features_attributes(
+                        url_internal_wfs, ogc_server.name
+                    )
                     # Create a local copy (don't modify the cache)
                     if attributes is not None:
                         attributes = dict(attributes)
