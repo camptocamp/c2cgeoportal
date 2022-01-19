@@ -26,52 +26,101 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import argparse
 import os
 from argparse import ArgumentParser, Namespace
-from typing import Any, Dict, Optional
-from urllib.parse import urlsplit, urlunsplit
+from typing import Any, Callable, Dict, Optional, TypedDict, cast
 
 import pyramid.config
 import transaction
 import zope.sqlalchemy
-from pyramid.scripts.common import get_config_loader
+from pyramid.paster import bootstrap
+from pyramid.scripts.common import get_config_loader, parse_vars
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
+
+# import c2cwsgiutils.setup_process
+# TODO remove on next c2c wsgi utils release
+
+
+def fill_arguments_(
+    parser: argparse.ArgumentParser,
+    config_vars_attrubute: bool = False,
+    default_config_uri: Optional[str] = None,
+) -> None:
+    """Add the needed arguments to the parser like it's don in pshell."""
+
+    parser.add_argument(
+        "config_uri",
+        nargs="?",
+        default=default_config_uri,
+        help="The URI to the configuration file.",
+    )
+    parser.add_argument(
+        "--config-vars" if config_vars_attrubute else "config_vars",
+        nargs="*",
+        default=(),
+        help="Variables required by the config file. For example, "
+        "`http_port=%%(http_port)s` would expect `http_port=8080` to be "
+        "passed here.",
+    )
+
+
+PyramidEnv = TypedDict(
+    "PyramidEnv",
+    {
+        "root": Any,
+        "closer": Callable[..., Any],
+        "registry": pyramid.registry.Registry,
+        "request": pyramid.request.Request,
+        "root_factory": object,
+        "app": Callable[[Dict[str, str], Any], Any],
+    },
+    total=True,
+)
+
+
+def bootstrap_application_options(options: argparse.Namespace) -> PyramidEnv:
+    """
+    Initialize all the application from the command line arguments.
+
+    :return: This function returns a dictionary as in bootstrap, see:
+    https://docs.pylonsproject.org/projects/pyramid/en/latest/api/paster.html?highlight=bootstrap#pyramid.paster.bootstrap
+    """
+    return bootstrap_application(
+        options.config_uri, parse_vars(options.config_vars) if options.config_vars else None
+    )
+
+
+def bootstrap_application(
+    config_uri: str = "c2c:///app/development.ini",
+    options: Optional[Dict[str, Any]] = None,
+) -> PyramidEnv:
+    """
+    Initialize all the application.
+
+    :return: This function returns a dictionary as in bootstrap, see:
+    https://docs.pylonsproject.org/projects/pyramid/en/latest/api/paster.html?highlight=bootstrap#pyramid.paster.bootstrap
+    """
+    loader = get_config_loader(config_uri)
+    loader.setup_logging(options)
+    return cast(PyramidEnv, bootstrap(config_uri, options=options))
+
+
+# End TODO remove
 
 
 def fill_arguments(parser: ArgumentParser) -> None:
     """Fill the command line argument description."""
-    default_app_config = (
-        "geoportal/production.ini" if os.path.isfile("geoportal/production.ini") else "production.ini"
+    default_config_uri = (
+        "c2c://development.ini" if os.path.isfile("development.ini") else "c2c://geoportal/development.ini"
     )
-
-    parser.add_argument(
-        "--app-config",
-        "-i",
-        default=default_app_config,
-        help=f"The application .ini config file (optional, default is '{default_app_config}')",
-    )
-    parser.add_argument(
-        "--app-name", "-n", default="app", help="The application name (optional, default is 'app')"
-    )
+    fill_arguments_(parser, default_config_uri=default_config_uri)
 
 
-def get_config_uri(options: Namespace) -> str:
-    """Get the configuration URI."""
-    uri = urlsplit(options.app_config)
-    return urlunsplit(
-        (uri.scheme or "c2cgeoportal", uri.netloc, uri.path, uri.query, options.app_name or uri.fragment)
-    )
-
-
-def get_appsettings(
-    options: Namespace, defaults: Optional[Dict[str, Any]] = None
-) -> pyramid.config.Configurator:
+def get_appsettings(options: Namespace) -> pyramid.config.Configurator:
     """Get the application settings."""
-    config_uri = get_config_uri(options)
-    loader = get_config_loader(config_uri)
-    loader.setup_logging()
-    return loader.get_wsgi_app_settings(defaults=defaults)
+    return bootstrap_application_options(options)["registry"].settings
 
 
 def get_session(settings: Dict[str, Any], transaction_manager: transaction.TransactionManager) -> Session:

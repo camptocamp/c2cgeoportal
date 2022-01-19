@@ -106,7 +106,7 @@ With the following command, you can access the logs:
    docker-compose logs -f --tail=20 [<service_name>]
 
 To have the access log on gunicorn you should add the option ``--access-logfile=-`` in the gunicorn
-arguments (``GUNICORN_PARAMS`` environment variable).
+configuration (``gunicorn.conf.py`` file).
 
 Go inside a container
 .....................

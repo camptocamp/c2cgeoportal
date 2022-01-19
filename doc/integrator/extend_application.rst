@@ -71,7 +71,6 @@ Add the following service in the ``docker-compose.yaml``, with that we will be a
       args:
         GIT_HASH: ${GIT_HASH}
     environment:
-      - GUNICORN_CMD_ARGS=${GUNICORN_PARAMS}
       - VISIBLE_WEB_HOST
 
 Add the following service in the ``docker-compose.override.sample.yaml``, To be able to run the service
@@ -81,9 +80,8 @@ in debugging mode with auto reloading:
 
   custom:
     command:
-      - /usr/local/bin/gunicorn
+      - /usr/local/bin/pcreate
       - --reload
-      - --paste
       - development.ini
     volumes:
       - ./custom/custom:/app/custom
