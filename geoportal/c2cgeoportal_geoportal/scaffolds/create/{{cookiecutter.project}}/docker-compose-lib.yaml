@@ -158,7 +158,6 @@ services:
     restart: unless-stopped
     environment:
       - DEVELOPMENT
-      - GUNICORN_PARAMS
       - VISIBLE_ENTRY_POINT
       - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
       - AWS_ACCESS_KEY_ID
@@ -224,7 +223,6 @@ services:
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
       - AZURE_STORAGE_CONNECTION_STRING
-      - GUNICORN_PARAMS
       - VISIBLE_WEB_HOST
       - VISIBLE_WEB_PROTOCOL
       - AUTHTKT_TIMEOUT
@@ -308,7 +306,6 @@ services:
       - AWS_DEFAULT_REGION
       - AWS_S3_ENDPOINT
       - AZURE_STORAGE_CONNECTION_STRING
-      - GUNICORN_PARAMS
       - VISIBLE_WEB_HOST
       - VISIBLE_WEB_PROTOCOL
       - AUTHTKT_TIMEOUT

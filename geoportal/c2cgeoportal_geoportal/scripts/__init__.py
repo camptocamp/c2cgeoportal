@@ -28,50 +28,27 @@
 
 import os
 from argparse import ArgumentParser, Namespace
-from typing import Any, Dict, Optional
-from urllib.parse import urlsplit, urlunsplit
+from typing import Any, Dict
 
+import c2cwsgiutils.setup_process
 import pyramid.config
 import transaction
 import zope.sqlalchemy
-from pyramid.scripts.common import get_config_loader
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 
 
 def fill_arguments(parser: ArgumentParser) -> None:
     """Fill the command line argument description."""
-    default_app_config = (
-        "geoportal/production.ini" if os.path.isfile("geoportal/production.ini") else "production.ini"
+    default_config_uri = (
+        "c2c://development.ini" if os.path.isfile("development.ini") else "c2c://geoportal/development.ini"
     )
-
-    parser.add_argument(
-        "--app-config",
-        "-i",
-        default=default_app_config,
-        help=f"The application .ini config file (optional, default is '{default_app_config}')",
-    )
-    parser.add_argument(
-        "--app-name", "-n", default="app", help="The application name (optional, default is 'app')"
-    )
+    c2cwsgiutils.setup_process.fill_arguments(parser, default_config_uri=default_config_uri)
 
 
-def get_config_uri(options: Namespace) -> str:
-    """Get the configuration URI."""
-    uri = urlsplit(options.app_config)
-    return urlunsplit(
-        (uri.scheme or "c2cgeoportal", uri.netloc, uri.path, uri.query, options.app_name or uri.fragment)
-    )
-
-
-def get_appsettings(
-    options: Namespace, defaults: Optional[Dict[str, Any]] = None
-) -> pyramid.config.Configurator:
+def get_appsettings(options: Namespace) -> pyramid.config.Configurator:
     """Get the application settings."""
-    config_uri = get_config_uri(options)
-    loader = get_config_loader(config_uri)
-    loader.setup_logging()
-    return loader.get_wsgi_app_settings(defaults=defaults)
+    return c2cwsgiutils.setup_process.bootstrap_application_from_options(options)["registry"].settings
 
 
 def get_session(settings: Dict[str, Any], transaction_manager: transaction.TransactionManager) -> Session:

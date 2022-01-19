@@ -35,6 +35,7 @@ import c2cwsgiutils.pyramid_logging
 import sqlalchemy
 from alembic import context
 from c2c.template.config import config
+from plaster.loaders import setup_logging
 from sqlalchemy import engine_from_config, pool
 
 LOG = logging.getLogger(__name__)
@@ -42,7 +43,7 @@ LOG = logging.getLogger(__name__)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-c2cwsgiutils.pyramid_logging.init(context.config.config_file_name)
+setup_logging(context.config.config_file_name)
 
 
 def get_config() -> Dict[str, Union[str, bool]]:
