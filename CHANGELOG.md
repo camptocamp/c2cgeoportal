@@ -1,3 +1,5 @@
+##### 2.6.0.79
+* Remove some CVE ignore [ngeo#7973](https://github.com/camptocamp/ngeo/pull/7973)
 ##### 2.6.0.78
 * Add missing HELM_RELEASE_NAMES in project rebuild [c2cgeoportal#9165](https://github.com/camptocamp/c2cgeoportal/pull/9165)
 ##### 2.6.0.77
