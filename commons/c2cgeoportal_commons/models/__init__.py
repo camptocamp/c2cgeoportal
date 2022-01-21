@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 
 
 import logging
-from typing import Any, Dict, List, Optional, Union  # noqa
+from typing import Any, Dict, List
 
 import sqlalchemy.ext.declarative
 import sqlalchemy.ext.declarative.api

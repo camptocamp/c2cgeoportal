@@ -863,10 +863,12 @@ class Theme:
                 None, get_http_cached, self.http_options, wfs_url, headers
             )
         except requests.exceptions.RequestException as exception:  # pragma: no cover
-            error = (
-                f"Unable to get WFS DescribeFeatureType from the URL '{wfs_url}', "
-                f"return the error: {exception.response.status_code} {exception.response.reason}"
-            )
+            error = f"Unable to get WFS DescribeFeatureType from the URL '{wfs_url}', " "return the error: "
+            if exception.response is not None:
+                error += f"{exception.response.status_code} {exception.response.reason}"
+            else:
+                error += str(exception)
+
             errors.add(error)
             LOG.exception(error)
             return None, errors
