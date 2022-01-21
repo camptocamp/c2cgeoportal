@@ -1,3 +1,5 @@
+##### 2.6.0.81
+* [Backport 2.6] Fix weird 575628hashKey addition in tested theme groups [ngeo#7985](https://github.com/camptocamp/ngeo/pull/7985)
 ##### 2.6.0.80
 * Fix error on building error message [c2cgeoportal#9184](https://github.com/camptocamp/c2cgeoportal/pull/9184)
 * Remove no more needed CVE ignore [ngeo#7983](https://github.com/camptocamp/ngeo/pull/7983)
