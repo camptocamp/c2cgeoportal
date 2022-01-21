@@ -1,3 +1,5 @@
+##### 2.5.0.189
+* Remove no more needed CVE ignore [ngeo#7982](https://github.com/camptocamp/ngeo/pull/7982)
 ##### 2.5.0.188
 * Remove some CVE ignore [ngeo#7972](https://github.com/camptocamp/ngeo/pull/7972)
 ##### 2.5.0.187
