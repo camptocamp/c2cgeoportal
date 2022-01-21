@@ -1,3 +1,6 @@
+##### 2.6.0.80
+* Fix error on building error message [c2cgeoportal#9184](https://github.com/camptocamp/c2cgeoportal/pull/9184)
+* Remove no more needed CVE ignore [ngeo#7983](https://github.com/camptocamp/ngeo/pull/7983)
 ##### 2.6.0.79
 * Remove some CVE ignore [ngeo#7973](https://github.com/camptocamp/ngeo/pull/7973)
 ##### 2.6.0.78
