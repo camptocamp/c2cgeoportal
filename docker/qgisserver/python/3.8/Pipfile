@@ -20,6 +20,7 @@ SQLAlchemy = "==1.4.29"  # commons
 shapely = "==1.8.0"
 cee-syslog-handler = "==0.6.0"
 setuptools = "==60.2.0"
+psycopg2 = "==2.9.3"
 
 [requires]
 python_version = "3.8"
