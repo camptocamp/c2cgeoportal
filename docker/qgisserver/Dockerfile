@@ -3,6 +3,10 @@ ARG VERSION
 FROM camptocamp/qgis-server:${VERSION} AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
+RUN apt-get update && apt-get install --assume-yes --no-install-recommends libpq-dev gcc && \
+    apt-get clean && \
+    rm --recursive --force /var/lib/apt/lists/*
+
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
@@ -12,13 +16,14 @@ RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 ".
     sync --system --clear && \
     rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs
 
+RUN apt-get remove --assume-yes libpq-dev gcc
+
 #############################################################################################################
 
 FROM ubuntu:20.04 AS lint
 
 RUN apt update
-RUN apt install --assume-yes --no-install-recommends apt-utils
-RUN apt install --assume-yes --no-install-recommends python3-pip
+RUN apt install --assume-yes --no-install-recommends python3-pip python3-dev libpq-dev gcc
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
