@@ -27,10 +27,12 @@
 
 
 import logging
+import os
 import re
 from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
 import pyramid.request
+import sqlalchemy.orm.base
 from c2c.template.config import config
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
@@ -71,6 +73,17 @@ except ModuleNotFoundError:
     TextInputWidget = GenericClass
 
 
+if os.environ.get("DEVELOPMENT", "0") == "1":
+
+    def state_str(state: Any) -> str:
+        """Return a string describing an instance via its InstanceState."""
+
+        return "None" if state is None else f"<{state.class_.__name__} {state.obj()}>"
+
+    # In the original function sqlalchemy use the id of the object that don't allow us to give some useful
+    # information
+    sqlalchemy.orm.base.state_str = state_str
+
 LOG = logging.getLogger(__name__)
 
 _schema: str = config["schema"] or "main"
@@ -104,6 +117,9 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore
     params = Column(JSONEncodedDict, nullable=True)
     actions = Column(JSONEncodedDict, nullable=True)
     from_theme = Column(Boolean, server_default="false")
+
+    def __str__(self) -> str:
+        return f"{self.label}[{self.id}]"
 
 
 class Functionality(Base):  # type: ignore
@@ -162,7 +178,7 @@ class Functionality(Base):  # type: ignore
         self.description = description
 
     def __str__(self) -> str:
-        return f"{self.name or ''} - {self.value or ''}"
+        return f"{self.name}={self.value}[{self.id}]"
 
 
 event.listen(Functionality, "after_update", cache_invalidate_cb)
@@ -268,7 +284,7 @@ class Role(Base):  # type: ignore
         self.description = description
 
     def __str__(self) -> str:
-        return self.name or ""
+        return f"{self.name}[{self.id}]>"
 
     @property
     def bounds(self) -> Optional[Tuple[float, float, float, float]]:  # TODO
@@ -340,6 +356,9 @@ class TreeItem(Base):  # type: ignore
     def __init__(self, name: str = "") -> None:
         self.name = name
 
+    def __str__(self) -> str:
+        return f"{self.name}[{self.id}]>"
+
 
 event.listen(TreeItem, "after_insert", cache_invalidate_cb, propagate=True)
 event.listen(TreeItem, "after_update", cache_invalidate_cb, propagate=True)
@@ -400,6 +419,9 @@ class LayergroupTreeitem(Base):  # type: ignore
         self.treegroup = group
         self.treeitem = item
         self.ordering = ordering
+
+    def __str__(self) -> str:
+        return f"{self.id}"
 
 
 event.listen(LayergroupTreeitem, "after_insert", cache_invalidate_cb, propagate=True)
@@ -1431,7 +1453,7 @@ class RestrictionArea(Base):  # type: ignore
         self.readwrite = readwrite
 
     def __str__(self) -> str:
-        return self.name or ""
+        return f"{self.name}[{self.id}]"
 
 
 event.listen(RestrictionArea, "after_insert", cache_invalidate_cb)
@@ -1529,7 +1551,7 @@ class Interface(Base):  # type: ignore
         self.description = description
 
     def __str__(self) -> str:
-        return self.name or ""
+        return f"{self.name}[{self.id}]"
 
 
 class Metadata(Base):  # type: ignore
@@ -1630,7 +1652,7 @@ class Metadata(Base):  # type: ignore
         self.description = description
 
     def __str__(self) -> str:
-        return f"{self.name or ''}: {self.value or ''}"
+        return f"{self.name}={self.value}[{self.id}]"
 
 
 event.listen(Metadata, "after_insert", cache_invalidate_cb, propagate=True)
@@ -1737,4 +1759,4 @@ class Dimension(Base):  # type: ignore
         self.description = description
 
     def __str__(self) -> str:
-        return self.name or ""
+        return f"{self.name}={self.value}[{self.id}]"
