@@ -1,3 +1,5 @@
+##### 2.6.0.82
+* Audit on 2.6 [ngeo#7991](https://github.com/camptocamp/ngeo/pull/7991)
 ##### 2.6.0.81
 * [Backport 2.6] Fix weird 575628hashKey addition in tested theme groups [ngeo#7985](https://github.com/camptocamp/ngeo/pull/7985)
 ##### 2.6.0.80
