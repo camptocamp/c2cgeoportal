@@ -82,6 +82,7 @@ jobs:
         if: >
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
+          && ! contains(github.ref_name, '/')
       - name: Publish version branch
         run: |
           c2cciutils-publish --group=qgis-${{ matrix.version }} --type=version_branch \
