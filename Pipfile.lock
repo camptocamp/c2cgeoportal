@@ -149,10 +149,10 @@
                 "standard"
             ],
             "hashes": [
-                "sha256:319a69b6cb4345f4fe26c835c8bf91da333ce975314a9256bc8cd2d76177119c"
+                "sha256:c3a855d7e31adcdcfc02376ab45615327d5362780b6aa8b03b53f56aa2178ca0"
             ],
             "index": "pypi",
-            "version": "==5.0.0.dev20220111084631"
+            "version": "==5.0.0.dev20220125104923"
         },
         "cee-syslog-handler": {
             "hashes": [
