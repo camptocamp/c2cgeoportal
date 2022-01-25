@@ -1,3 +1,5 @@
+##### 2.6.0.83
+* Remove no more needed CVE [ngeo#8003](https://github.com/camptocamp/ngeo/pull/8003)
 ##### 2.6.0.82
 * Audit on 2.6 [ngeo#7991](https://github.com/camptocamp/ngeo/pull/7991)
 ##### 2.6.0.81
