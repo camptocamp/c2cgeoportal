@@ -1,3 +1,5 @@
+##### 2.5.0.190
+* Ignore security issues on karma [ngeo#8002](https://github.com/camptocamp/ngeo/pull/8002)
 ##### 2.5.0.189
 * Remove no more needed CVE ignore [ngeo#7982](https://github.com/camptocamp/ngeo/pull/7982)
 ##### 2.5.0.188
