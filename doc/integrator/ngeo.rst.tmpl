@@ -115,7 +115,7 @@ The sub section is the interface name, and after that we have:
     * ``name``: Name of the route whose URL we want to have.
     * ``kw``: Keyword arguments to supply for dynamic path elements in the route definition.
     * ``elements``: Additional positional path segments to append to the URL after it is generated.
-    * ``params``: Query string parameters to append to the URL.
+    * ``params``: Query string parameters to append to the URL (available parameters of our services: :ref:`developer_webservices`).
     * ``dynamic_params``: Query string parameters from dynamic values to append to the URL.
 
     For more information regarding the ``elements`` and ``kw`` properties see the *Pyramid*
@@ -124,7 +124,14 @@ The sub section is the interface name, and after that we have:
 
 * ``lang_urls_suffix`` suffix used in l10n URL, see: :ref:`integrator_multi_organization`.
 
-The dynamic values names are: ``interface``, ``cache_version``, ``lang_urls``, ``fulltextsearch_groups``.
+The dynamic values names are:
+
+* ``interface``: The interface name given in the parameters of the dynamic view.
+* ``cache_version``: The version of the cache.
+* ``two_factor``: Two factor authentication status from `vars.authentication.two_factor`.
+* ``lang_urls``: The language URL for AngularJS dynamic locale.
+* ``i18next_configuration``: The i18next configuration from `vars.i18next.backend` with dynamically calculated `loadPath`,
+* ``fulltextsearch_groups``: The search groups from the `layer_name` of the Full-Text Search table.
 
 The possible values are described in the ngeo documentation
 `ngeo constants <https://camptocamp.github.io/ngeo/${MAIN_BRANCH}/jsdoc/module-src_options.html>`_,
