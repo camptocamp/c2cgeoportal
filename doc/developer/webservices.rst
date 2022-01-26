@@ -420,6 +420,7 @@ Parameters
 * ``partitionlimit``: The maximum number of results per layer (optional).
 * ``lang``: The language used (optional).
 * ``interface``: The interface used (optional).
+* ``ranksystem``: Can be set to ``ts_rank_cd`` to use the ``ts_rank_cd`` rank system instead of ``similarity``.
 
 Result
 ------
