@@ -476,7 +476,7 @@ class TreeGroup(TreeItem):
     children = property(_get_children, _set_children)
 
     def __init__(self, name: str = "") -> None:
-        TreeItem.__init__(self, name=name)
+        super().__init__(name=name)
 
 
 class LayerGroup(TreeGroup):
@@ -509,20 +509,9 @@ class LayerGroup(TreeGroup):
         primary_key=True,
         info={"colanderalchemy": {"missing": drop, "widget": HiddenWidget()}},
     )
-    is_expanded = Column(
-        Boolean,
-        info={
-            "colanderalchemy": {
-                "title": _("Expanded"),
-                "description": _("Show this group expanded."),
-                "column": 2,
-            }
-        },
-    )  # shouldn't be used in V3
 
-    def __init__(self, name: str = "", is_expanded: bool = False) -> None:
-        TreeGroup.__init__(self, name=name)
-        self.is_expanded = is_expanded
+    def __init__(self, name: str = "") -> None:
+        super().__init__(name=name)
 
 
 # role theme link for restricted theme
@@ -603,7 +592,7 @@ class Theme(TreeGroup):
     )
 
     def __init__(self, name: str = "", ordering: int = 100, icon: str = "") -> None:
-        TreeGroup.__init__(self, name=name)
+        super().__init__(name=name)
         self.ordering = ordering
         self.icon = icon
 
@@ -662,7 +651,7 @@ class Layer(TreeItem):
     )
 
     def __init__(self, name: str = "", public: bool = True) -> None:
-        TreeItem.__init__(self, name=name)
+        super().__init__(name=name)
         self.public = public
 
 
@@ -1022,7 +1011,7 @@ class LayerWMS(DimensionLayer):
         time_mode: str = "disabled",
         time_widget: str = "slider",
     ) -> None:
-        DimensionLayer.__init__(self, name=name, public=public)
+        super().__init__(name=name, public=public)
         self.layer = layer
         self.time_mode = time_mode
         self.time_widget = time_widget
@@ -1164,7 +1153,7 @@ class LayerWMTS(DimensionLayer):
     )
 
     def __init__(self, name: str = "", public: bool = True, image_type: str = "image/png") -> None:
-        DimensionLayer.__init__(self, name=name, public=public)
+        super().__init__(name=name, public=public)
         self.image_type = image_type
 
     @staticmethod
@@ -1306,7 +1295,7 @@ class LayerVectorTiles(DimensionLayer):
     )
 
     def __init__(self, name: str = "", public: bool = True, style: str = "", sql: str = "") -> None:
-        DimensionLayer.__init__(self, name=name, public=public)
+        super().__init__(name=name, public=public)
         self.style = style
         self.sql = sql
 

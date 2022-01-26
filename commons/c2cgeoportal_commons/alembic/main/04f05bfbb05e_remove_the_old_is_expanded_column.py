@@ -26,34 +26,35 @@
 # either expressed or implied, of the FreeBSD Project.
 
 """
-${message}.
+Remove the old is_expanded column.
 
-Revision ID: ${up_revision}
-Revises: ${down_revision}
-Create Date: ${create_date}
+Revision ID: 04f05bfbb05e
+Revises: 52916d8fde8b
+Create Date: 2022-01-26 14:48:26.003526
 """
 
 from alembic import op
 from c2c.template.config import config
+from sqlalchemy import Boolean, Column
 
 # revision identifiers, used by Alembic.
-revision = ${repr(up_revision)}
-down_revision = ${repr(down_revision)}
-branch_labels = ${repr(branch_labels)}
-depends_on = ${repr(depends_on)}
+revision = "04f05bfbb05e"
+down_revision = "52916d8fde8b"
+branch_labels = None
+depends_on = None
 
 
 def upgrade() -> None:
     """Upgrade."""
     schema = config["schema"]
-    staticschema = config["schema_static"]
 
-    ${upgrades if upgrades else '# Instructions'}
+    # Instructions
+    op.drop_column("layergroup", "is_expanded", schema=schema)
 
 
 def downgrade() -> None:
     """Downgrade."""
     schema = config["schema"]
-    staticschema = config["schema_static"]
 
-    ${downgrades if downgrades else '# Instructions'}
+    # Instructions
+    op.add_column("layergroup", Column("is_expanded", Boolean), schema=schema)
