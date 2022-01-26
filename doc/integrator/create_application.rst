@@ -27,7 +27,7 @@ For this procedure, we need to set some environment variables:
    GEOMAPFISH_PROJECT=<project>
    GEOMAPFISH_PACKAGE=<package>
 
-Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=${MAJOR_VERSION}>`_,
+Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=|major_version|>`_,
 <project> is the project name that should be the GitHub repository name, <package> is the package name.
 
 
@@ -42,7 +42,7 @@ c2cgeoportal application you want to create the new application from:
 .. prompt:: bash
 
     docker run --rm \
-        camptocamp/geomapfish-tools:${DOLLAR}{GEOMAPFISH_VERSION} \
+        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         pcreate -l
 
 You should at least see the c2cgeoportal scaffolds:
@@ -61,9 +61,9 @@ To create the application, first apply the ``c2cgeoportal_create`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${DOLLAR}{GEOMAPFISH_VERSION} \
+        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s create ${DOLLAR}{GEOMAPFISH_PROJECT}
+        pcreate -s create ${GEOMAPFISH_PROJECT}
 
 .. note::
 
@@ -83,10 +83,10 @@ it later.
         docker run --rm -ti --volume=$(pwd):/src \
             --env=SRID=2056 \
             --env=EXTENT="2420000,1030000,2900000,1350000" \
-            camptocamp/geomapfish-tools:${DOLLAR}{GEOMAPFISH_VERSION} \
+            camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
             run $(id -u) $(id -g) /src \
             pcreate -s create \
-            --package-name ${DOLLAR}{GEOMAPFISH_PACKAGE} ${DOLLAR}{GEOMAPFISH_PROJECT}
+            --package-name ${GEOMAPFISH_PACKAGE} ${GEOMAPFISH_PROJECT}
 
 This will create a directory named ``<project>`` that will be next to the
 ``c2cgeoportal`` directory, or to the directory of the application you are
@@ -98,9 +98,9 @@ For an advance application, apply the ``c2cgeoportal_advance_create`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${DOLLAR}{GEOMAPFISH_VERSION} \
+        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s advance_create ${DOLLAR}{GEOMAPFISH_PROJECT}
+        pcreate -s advance_create ${GEOMAPFISH_PROJECT}
 
 
 Now apply the ``c2cgeoportal_update`` scaffold:
@@ -108,9 +108,9 @@ Now apply the ``c2cgeoportal_update`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${DOLLAR}{GEOMAPFISH_VERSION} \
+        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s update ${DOLLAR}{GEOMAPFISH_PROJECT}
+        pcreate -s update ${GEOMAPFISH_PROJECT}
 
 .. note::
 
@@ -127,16 +127,16 @@ For an advance application apply the ``c2cgeoportal_advance_update`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${DOLLAR}{GEOMAPFISH_VERSION} \
+        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s advance_update ${DOLLAR}{GEOMAPFISH_PROJECT}
+        pcreate -s advance_update ${GEOMAPFISH_PROJECT}
 
 
 Go to your new project:
 
 .. prompt:: bash
 
-    cd ${DOLLAR}{GEOMAPFISH_PROJECT}
+    cd ${GEOMAPFISH_PROJECT}
 
 For advance application you also should:
 
@@ -192,7 +192,7 @@ Add the project:
 .. prompt:: bash
 
     git init
-    git remote add origin git@github.com:camptocamp/${DOLLAR}{GEOMAPFISH_PROJECT}.git
+    git remote add origin git@github.com:camptocamp/${GEOMAPFISH_PROJECT}.git
 
 Commit and push on the main repository:
 
@@ -293,4 +293,4 @@ Dynamic configuration
 Several files are generated on runtime, their content depending of the variables you
 have set as environment variables.
 
-The files can have the extension ``.tmpl`` and it use bash syntax (``${DOLLAR}{VARIABLE}``).
+The files can have the extension ``.tmpl`` and it use bash syntax (``${VARIABLE}``).

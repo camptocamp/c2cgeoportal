@@ -96,7 +96,7 @@ while directed attributes are ready-to-use values that come directly from the ma
 
 Client-side documentation related to the ``enumeratedAttributes`` and ``directedFilterAttributes`` metadata
 is available here:
-`gmfThemes.GmfMetaData <https://camptocamp.github.io/ngeo/${MAIN_BRANCH}/apidoc/gmfThemes.GmfMetaData.html>`_.
+`gmfThemes.GmfMetaData <https://camptocamp.github.io/ngeo/|main_branch|/apidoc/gmfThemes.GmfMetaData.html>`_.
 
 Using DB sessions
 ~~~~~~~~~~~~~~~~~
