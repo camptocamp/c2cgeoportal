@@ -17,7 +17,7 @@ Adding the routing interface to the template
 --------------------------------------------
 
 For a working example, check the
-`Demo alternative UI <https://geomapfish-demo-${major_version.replace('.', '-')}.camptocamp.com/desktop_alt>`_.
+`Demo alternative UI <https://geomapfish-demo-|major_version_dash|.camptocamp.com/desktop_alt>`_.
 
 Add the button to the ``gmf-app-bar``:
 

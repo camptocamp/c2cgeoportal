@@ -125,7 +125,7 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
 
    -       # Test Upgrade
    -       ...
-   -       - run: ci/test-upgrade cleanup /root/workspace
+   -       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
        - name: Publish feature branch
    -     run: |

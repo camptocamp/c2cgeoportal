@@ -156,11 +156,11 @@ By adding the following in the `docker-compose.yaml` file:
 .. code:: yaml
 
    custom:
-      image: -custom:
+      image: ${DOCKER_BASE}-custom:${DOCKER_TAG}
       build:
         context: custom
         args:
-          GIT_HASH: 
+          GIT_HASH: ${GIT_HASH}
 
 An new image with the suffix `-custom` will be built with the standard `./build` command and a build
 argument is passed to the build with the hash of the latest Git commit.

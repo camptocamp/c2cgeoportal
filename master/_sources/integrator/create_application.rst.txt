@@ -27,7 +27,7 @@ For this procedure, we need to set some environment variables:
    GEOMAPFISH_PROJECT=<project>
    GEOMAPFISH_PACKAGE=<package>
 
-Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=2.7>`_,
+Where ``<release>`` can be found on `Docker Hub <https://hub.docker.com/repository/docker/camptocamp/geomapfish-tools/tags?name=|major_version|>`_,
 <project> is the project name that should be the GitHub repository name, <package> is the package name.
 
 

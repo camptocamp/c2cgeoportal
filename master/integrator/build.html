@@ -164,11 +164,11 @@ Here is an example:</p>
 <p>In the build script we use <cite>docker-compose build</cite> as it’s easy to add a new service from another <cite>Dockerfile</cite>.</p>
 <p>By adding the following in the <cite>docker-compose.yaml</cite> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="nt">-custom</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span><span class="w"></span>
 <span class="w">   </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
 <span class="w">     </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom</span><span class="w"></span>
 <span class="w">     </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
-<span class="w">       </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>An new image with the suffix <cite>-custom</cite> will be built with the standard <cite>./build</cite> command and a build
