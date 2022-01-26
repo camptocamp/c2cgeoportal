@@ -9,7 +9,7 @@ In a multi-organization geoportal, each organization will have the same program 
 
 In this example we will have the came CSS but we can do some variations by using CSS var,
 see ``cssVars`` in ``gmfOptions`` in the ngeo GMF constants definitions
-`gmf constants <https://camptocamp.github.io/ngeo/${MAIN_BRANCH}/jsdoc/module-contribs_gmf_src_options.html>`_.
+`gmf constants <https://camptocamp.github.io/ngeo/|main_branch|/jsdoc/module-contribs_gmf_src_options.html>`_.
 
 The following lines will provide a basic implementation for multi-organization.
 

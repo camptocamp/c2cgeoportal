@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update
-RUN apt-get install --assume-yes --no-install-recommends python3-pip gettext
+RUN apt-get install --assume-yes --no-install-recommends python3-pip
 
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
@@ -16,7 +16,6 @@ ARG MAIN_BRANCH
 COPY . /doc
 WORKDIR /doc
 
-RUN ./eval-templates
 RUN  mkdir --parent _build/html
 RUN sphinx-build -b html -d _build/doctrees . _build/html
 RUN  ./build.sh

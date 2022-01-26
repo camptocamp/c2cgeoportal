@@ -67,7 +67,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     docker-compose exec tilecloudchain generate_tiles ${'\\'}
+     docker-compose exec tilecloudchain generate_tiles \
         --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
