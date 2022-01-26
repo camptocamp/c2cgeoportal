@@ -34,6 +34,7 @@ extensions = [
     "sphinx-prompt",
     "alabaster",
     "sphinx-jsonschema",
+    "sphinxarg.ext",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

@@ -44,21 +44,8 @@ _bad_chars_re = re.compile("[^a-zA-Z0-9_]")
 SCAFFOLDS_DIR = pkg_resources.resource_filename("c2cgeoportal_geoportal", "scaffolds")
 
 
-def main() -> int:
-    """Entry point to run PCreateCommand."""
-    command = PCreateCommand(sys.argv)
-    try:
-        return command.run()
-    except KeyboardInterrupt:  # pragma: no cover
-        return 1
-
-
-class PCreateCommand:
-    """
-    Wrapper around cookiecutter with appropriated context creator for our scaffolds.
-
-    This is a port of Pyramid 1 PCreateCommand using cookiecutter as a backend.
-    """
+def get_argparser() -> ArgumentParser:
+    """Get the argument parser for this script."""
 
     parser = ArgumentParser(
         prog=sys.argv[0],
@@ -101,9 +88,28 @@ class PCreateCommand:
         default=None,
         help="The directory where the project will be " "created.",
     )
+    return parser
+
+
+def main() -> int:
+    """Entry point to run PCreateCommand."""
+    command = PCreateCommand(sys.argv)
+    try:
+        return command.run()
+    except KeyboardInterrupt:  # pragma: no cover
+        return 1
+
+
+class PCreateCommand:
+    """
+    Wrapper around cookiecutter with appropriated context creator for our scaffolds.
+
+    This is a port of Pyramid 1 PCreateCommand using cookiecutter as a backend.
+    """
 
     def __init__(self, argv: List[str], quiet: bool = False) -> None:
         self.quiet = quiet
+        self.parser = get_argparser()
         self.args = self.parser.parse_args(argv[1:])
         self.scaffolds = self.all_scaffolds()
 

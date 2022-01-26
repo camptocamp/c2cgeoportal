@@ -46,8 +46,8 @@ if TYPE_CHECKING:
     import c2cgeoportal_commons.models.main
 
 
-def main() -> None:
-    """Run the command."""
+def get_argparser() -> ArgumentParser:
+    """Get the argument parser for this script."""
     parser = ArgumentParser(
         prog=sys.argv[0],
         add_help=True,
@@ -89,7 +89,13 @@ def main() -> None:
     )
     parser.add_argument("--package", help="the application package")
     fill_arguments(parser)
-    options = parser.parse_args()
+    return parser
+
+
+def main() -> None:
+    """Run the command."""
+
+    options = get_argparser().parse_args()
     settings = get_appsettings(options)
 
     with transaction.manager:

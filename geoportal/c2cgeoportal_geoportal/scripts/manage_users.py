@@ -28,22 +28,15 @@
 
 import argparse
 import sys
+from typing import cast
 
 import transaction
 
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 
-def main() -> None:
-    """
-    Emergency user create and password reset script example.
-
-    Reset toto password to foobar: docker-compose
-    exec geoportal manage-users --password=foobar toto example, create user foo with password bar and role
-    admin: docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo.
-
-    to get the options list, do: docker-compose exec geoportal manage-users --help
-    """
+def get_argparser() -> argparse.ArgumentParser:
+    """Get the argument parser for this script."""
 
     usage = """Usage: %prog [options] USERNAME
 
@@ -62,6 +55,21 @@ User can be created if it does not exist yet."""
     )
     parser.add_argument("--email", "-e", default=None, help="The user email")
     parser.add_argument("user", help="The user")
+    return parser
+
+
+def main() -> None:
+    """
+    Emergency user create and password reset script example.
+
+    Reset toto password to foobar: docker-compose
+    exec geoportal manage-users --password=foobar toto example, create user foo with password bar and role
+    admin: docker-compose exec geoportal manage-users --create --rolename=role_admin --password=bar foo.
+
+    to get the options list, do: docker-compose exec geoportal manage-users --help
+    """
+
+    parser = get_argparser()
     options = parser.parse_args()
     username = options.user
     settings = get_appsettings(options)
@@ -102,8 +110,8 @@ User can be created if it does not exist yet."""
 
                 user = User(
                     username=username,
-                    password=options.password,
-                    email=options.email,
+                    password=cast(str, options.password),
+                    email=cast(str, options.email),
                     settings_role=role,
                     roles=[role],
                 )
