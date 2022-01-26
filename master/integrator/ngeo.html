@@ -135,7 +135,7 @@ be extended. These values will be updated with the interface configuration
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the route whose URL we want to have.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kw</span></code>: Keyword arguments to supply for dynamic path elements in the route definition.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">elements</span></code>: Additional positional path segments to append to the URL after it is generated.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: Query string parameters to append to the URL.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: Query string parameters to append to the URL (available parameters of our services: <a class="reference internal" href="../developer/webservices.html#developer-webservices"><span class="std std-ref">Webservices documentation</span></a>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dynamic_params</span></code>: Query string parameters from dynamic values to append to the URL.</p></li>
 </ul>
 <p>For more information regarding the <code class="docutils literal notranslate"><span class="pre">elements</span></code> and <code class="docutils literal notranslate"><span class="pre">kw</span></code> properties see the <em>Pyramid</em>
@@ -145,7 +145,15 @@ be extended. These values will be updated with the interface configuration
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lang_urls_suffix</span></code> suffix used in l10n URL, see: <a class="reference internal" href="multi_organization.html#integrator-multi-organization"><span class="std std-ref">Multi organization</span></a>.</p></li>
 </ul>
-<p>The dynamic values names are: <code class="docutils literal notranslate"><span class="pre">interface</span></code>, <code class="docutils literal notranslate"><span class="pre">cache_version</span></code>, <code class="docutils literal notranslate"><span class="pre">lang_urls</span></code>, <code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>.</p>
+<p>The dynamic values names are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: The interface name given in the parameters of the dynamic view.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache_version</span></code>: The version of the cache.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">two_factor</span></code>: Two factor authentication status from <cite>vars.authentication.two_factor</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lang_urls</span></code>: The language URL for AngularJS dynamic locale.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i18next_configuration</span></code>: The i18next configuration from <cite>vars.i18next.backend</cite> with dynamically calculated <cite>loadPath</cite>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>: The search groups from the <cite>layer_name</cite> of the Full-Text Search table.</p></li>
+</ul>
 <p>The possible values are described in the ngeo documentation
 <a class="reference external" href="https://camptocamp.github.io/ngeo/master/jsdoc/module-src_options.html">ngeo constants</a>,
 <a class="reference external" href="https://camptocamp.github.io/ngeo/master/jsdoc/module-contribs_gmf_src_options.html">gmf constants</a>.</p>
