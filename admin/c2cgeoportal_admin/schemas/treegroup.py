@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ ITEM_TYPE_ROUTE_MAP = {
     "group": "layer_groups",
     "layer": None,
     "l_wms": "layers_wms",
-    "l_wmts": "layers_wms",
+    "l_wmts": "layers_wmts",
 }
 
 
