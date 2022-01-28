@@ -1,3 +1,6 @@
+##### 2.6.0.86
+* Ignore CVE [1006911] Cross site scripting in three.js [ngeo#8022](https://github.com/camptocamp/ngeo/pull/8022)
+* Debug open filter panel [ngeo#8024](https://github.com/camptocamp/ngeo/pull/8024)
 ##### 2.6.0.85
 * Fix error on drop file [ngeo#8020](https://github.com/camptocamp/ngeo/pull/8020)
 ##### 2.6.0.84
