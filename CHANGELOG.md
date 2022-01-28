@@ -1,3 +1,5 @@
+##### 2.6.0.84
+* Fix error on disclaimer not found [ngeo#8019](https://github.com/camptocamp/ngeo/pull/8019)
 ##### 2.6.0.83
 * Remove no more needed CVE [ngeo#8003](https://github.com/camptocamp/ngeo/pull/8003)
 ##### 2.6.0.82
