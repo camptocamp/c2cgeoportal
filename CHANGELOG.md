@@ -1,3 +1,5 @@
+##### 2.6.0.85
+* Fix error on drop file [ngeo#8020](https://github.com/camptocamp/ngeo/pull/8020)
 ##### 2.6.0.84
 * Fix error on disclaimer not found [ngeo#8019](https://github.com/camptocamp/ngeo/pull/8019)
 ##### 2.6.0.83
