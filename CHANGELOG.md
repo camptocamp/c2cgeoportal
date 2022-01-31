@@ -1,3 +1,5 @@
+##### 2.6.0.88
+* Fix WMTS layers links in groups [c2cgeoportal#9205](https://github.com/camptocamp/c2cgeoportal/pull/9205)
 ##### 2.6.0.87
 * Ignore CVE [1006914] Exposure of Sensitive Information in simple-get [ngeo#8036](https://github.com/camptocamp/ngeo/pull/8036)
 ##### 2.6.0.86
