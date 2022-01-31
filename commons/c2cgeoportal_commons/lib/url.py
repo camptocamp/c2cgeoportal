@@ -148,6 +148,9 @@ class Url:
     def __str__(self) -> str:
         return self.url()
 
+    def __repr__(self) -> str:
+        return self.url()
+
 
 def get_url2(
     name: str, url: str, request: Request, errors: Set[str], servers: Optional[Dict[str, str]] = None
