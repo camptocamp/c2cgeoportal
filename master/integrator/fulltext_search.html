@@ -98,13 +98,70 @@ and the application’s default language match.</p>
 </section>
 <section id="populate-with-the-themes">
 <h2>Populate with the themes<a class="headerlink" href="#populate-with-the-themes" title="Permalink to this headline">¶</a></h2>
-<p>A script is available to fill the full-text search table, for more information type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal theme2fts --help</span>
-</pre></div></div><p>Note that some tree items’ metadata are used by the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> script:</p>
+<p>A script is available to fill the full-text search table:</p>
+<p><p>Tool to fill the tsearch table (full-text search) from the theme information.</p>
+</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">exec</span> <span class="n">geoportal</span> <span class="n">theme2fts</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">locale</span><span class="o">-</span><span class="n">folder</span> <span class="n">LOCALE_FOLDER</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">interfaces</span> <span class="n">INTERFACES</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">interfaces</span> <span class="n">EXCLUDE_INTERFACES</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">duplicate</span><span class="o">-</span><span class="n">name</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">themes</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">blocks</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">folders</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">layers</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">package</span> <span class="n">PACKAGE</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">config</span> <span class="n">APP_CONFIG</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">name</span> <span class="n">APP_NAME</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>--locale-folder</kbd></dt>
+<dd><p>The folder where the locale files are stored (default is /etc/geomapfish/locale/)</p>
+<p>Default: “/etc/geomapfish/locale/”</p>
+</dd>
+<dt><kbd>--interfaces</kbd></dt>
+<dd><p>the interfaces to export</p>
+</dd>
+<dt><kbd>--exclude-interfaces</kbd></dt>
+<dd><p>the interfaces to exclude (can’t be used with –interfaces)</p>
+<p>Default: [‘api’]</p>
+</dd>
+<dt><kbd>--duplicate-name</kbd></dt>
+<dd><p>allows to add a name more than one time,
+by default if we find more than one element with the same name only one will be imported</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>--no-themes</kbd></dt>
+<dd><p>do not import the themes</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--no-blocks</kbd></dt>
+<dd><p>do not import the blocks (first level layer groups)</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--no-folders</kbd></dt>
+<dd><p>do not import the folders (tree folders)</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--no-layers</kbd></dt>
+<dd><p>do not import the layers (tree leaf)</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--package</kbd></dt>
+<dd><p>the application package</p>
+</dd>
+<dt><kbd>--app-config, -i</kbd></dt>
+<dd><p>The application .ini config file (optional, default is ‘production.ini’)</p>
+<p>Default: “production.ini”</p>
+</dd>
+<dt><kbd>--app-name, -n</kbd></dt>
+<dd><p>The application name (optional, default is ‘app’)</p>
+<p>Default: “app”</p>
+</dd>
+</dl>
+</section>
+<p>Note that some tree items’ metadata are used by the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> script:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">searchAlias</span></code>: Comma separated list of search alias (keywords) to be added to the <code class="docutils literal notranslate"><span class="pre">tsearch.ts</span></code>
 field for the considered tree item (theme, layer group or layer),
@@ -229,7 +286,11 @@ is based only on the similarities of words, without language analysis, and it
 cares only about how near your search is to the result. <cite>12</cite> is nearer to <cite>12</cite>
 than <cite>120</cite>.</p>
 <p>Ensure that the extension is created in you database:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
 </pre></div></div><p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">tsvector</span></code> and <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to rank your search
 results
 (see: <a class="reference external" href="https://www.postgresql.org/docs/9.0/static/textsearch-controls.html">textsearch-controls</a>).
