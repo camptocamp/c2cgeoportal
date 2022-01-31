@@ -22,7 +22,7 @@ def layer_groups_test_data(dbsession, transact):
 
     groups = []
     for i in range(0, 12):
-        group = LayerGroup(name=f"groups_{i:02d}", is_expanded=False)
+        group = LayerGroup(name=f"groups_{i:02d}")
         group.metadatas = [
             Metadata(name=metadatas_protos[id][0], value=metadatas_protos[id][1])
             for id in [i % 3, (i + 2) % 3]
@@ -73,7 +73,6 @@ class TestLayersGroups(TestTreeGroup):
             ("id", "id", "true"),
             ("name", "Name"),
             ("description", "Description"),
-            ("is_expanded", "Expanded"),
             ("parents_relation", "Parents", "false"),
             ("metadatas", "Metadatas", "false"),
         ]
@@ -103,8 +102,6 @@ class TestLayersGroups(TestTreeGroup):
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
         assert group.name == self.get_first_field_named(form, "name").value
         assert str(group.description or "") == self.get_first_field_named(form, "description").value
-        assert group.is_expanded is False
-        assert group.is_expanded == form["is_expanded"].checked
 
         self.check_children(
             form,
@@ -121,7 +118,6 @@ class TestLayersGroups(TestTreeGroup):
         new_values = {
             "name": "new_name",
             "description": "new description",
-            "is_expanded": True,
         }
         for key, value in new_values.items():
             self.set_first_field_named(form, key, value)
@@ -247,8 +243,6 @@ class TestLayersGroups(TestTreeGroup):
         assert "" == self.get_first_field_named(form, "id").value
         assert group.name == self.get_first_field_named(form, "name").value
         assert str(group.description or "") == self.get_first_field_named(form, "description").value
-        assert group.is_expanded is False
-        assert group.is_expanded == form["is_expanded"].checked
 
         self.check_children(
             form,
