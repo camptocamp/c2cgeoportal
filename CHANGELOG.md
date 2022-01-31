@@ -1,3 +1,5 @@
+##### 2.6.0.89
+* Fix extraction of HTML multiline strings [c2cgeoportal#9206](https://github.com/camptocamp/c2cgeoportal/pull/9206)
 ##### 2.6.0.88
 * Fix WMTS layers links in groups [c2cgeoportal#9205](https://github.com/camptocamp/c2cgeoportal/pull/9205)
 ##### 2.6.0.87
