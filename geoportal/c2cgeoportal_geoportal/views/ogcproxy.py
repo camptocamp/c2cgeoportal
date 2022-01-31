@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -57,10 +57,13 @@ class OGCProxy(Proxy):
             del self.params["user_id"]
 
         self.lower_params = self._get_lower_params(self.params)
-        if not has_default_ogc_server and "ogcserver" not in self.params:
+
+        # We need original case for OGCSERVER parameter value
+        self.lower_key_params = {k.lower(): v for k, v in self.params.items()}
+        if not has_default_ogc_server and "ogcserver" not in self.lower_key_params:
             raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
-        if "ogcserver" in self.params:
-            self.ogc_server = self._get_ogcserver_byname(self.params["ogcserver"])
+        if "ogcserver" in self.lower_key_params:
+            self.ogc_server = self._get_ogcserver_byname(self.lower_key_params["ogcserver"])
 
     @CACHE_REGION.cache_on_arguments()
     def _get_ogcserver_byname(self, name):  # pylint: disable=no-self-use
