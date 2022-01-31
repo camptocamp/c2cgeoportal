@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -118,8 +118,26 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
             self.config = None
         self.tpl = None
 
+    @staticmethod
+    def get_message_cleaner(filename):
+        """
+        Return a function for cleaning messages according to input file format.
+        """
+        ext = os.path.splitext(filename)[1]
+
+        if ext in [".html", ".ejs"]:
+            # Remove \n in HTML multi-line strings
+            pattern = re.compile("\n *")
+            return lambda s: re.sub(pattern, " ", s)
+
+        return lambda s: s
+
     def __call__(self, filename, options, fileobj=None, lineno=0):
         del fileobj, lineno
+
+        print(f"Running {self.__class__.__name__} on {filename}")
+
+        cleaner = self.get_message_cleaner(filename)
 
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
@@ -187,8 +205,9 @@ class GeomapfishAngularExtractor(Extractor):  # pragma: no cover
         try:
             messages = []
             for contexts, message in json.loads(message_str):
+                assert message is not None
+                message = cleaner(message)
                 for context in contexts.split(", "):
-                    assert message is not None
                     messages.append(Message(None, message, None, [], "", "", context.split(":")))
             return messages
         except Exception:
@@ -207,6 +226,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
 
     def __call__(self, filename, options, fileobj=None, lineno=0):
         del fileobj, lineno
+
+        print(f"Running {self.__class__.__name__} on {filename}")
+
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
@@ -390,6 +412,9 @@ class GeomapfishThemeExtractor(Extractor):  # pragma: no cover
 
     def __call__(self, filename, options, fileobj=None, lineno=0):
         del fileobj, lineno
+
+        print(f"Running {self.__class__.__name__} on {filename}")
+
         messages: List[Message] = []
 
         try:
