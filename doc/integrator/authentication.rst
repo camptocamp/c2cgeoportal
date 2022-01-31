@@ -122,3 +122,12 @@ See `Python documentation <https://docs.python.org/3.4/library/ipaddress.html#ip
    data, do not rely on Intranet detection; for that, you must use user authentication.
 
    A user can easily manually set the `Forwarded` or `X-Forwarded-For` header to spoof his IP.
+
+Lost admin password
+~~~~~~~~~~~~~~~~~~~
+
+You can generate a new admin password the following command:
+
+.. argparse::
+   :ref: c2cgeoportal_geoportal.scripts.manage_users.get_argparser
+   :prog: docker-compose exec geoportal manage-users

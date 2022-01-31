@@ -76,11 +76,11 @@ Here is another example where rows from a ``SELECT`` are inserted:
 Populate with the themes
 ------------------------
 
-A script is available to fill the full-text search table, for more information type:
+A script is available to fill the full-text search table:
 
-.. prompt:: bash
-
-   docker-compose exec geoportal theme2fts --help
+.. argparse::
+   :ref: c2cgeoportal_geoportal.scripts.theme2fts.get_argparser
+   :prog: docker-compose exec geoportal theme2fts
 
 Note that some tree items' metadata are used by the ``theme2fts`` script:
 

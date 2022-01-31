@@ -54,15 +54,21 @@ def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
     return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")
 
 
-def main() -> None:
-    """Run the command."""
+def get_argparser() -> argparse.ArgumentParser:
+    """Get the argument parser for this script."""
+
     parser = argparse.ArgumentParser(description="Generate an auth token")
     fill_arguments(parser)
     parser.add_argument("user", help="The username")
     parser.add_argument("password", help="The password")
     parser.add_argument("valid", type=int, default=1, nargs="?", help="Is valid for, in days")
+    return parser
 
-    args = parser.parse_args()
+
+def main() -> None:
+    """Run the command."""
+
+    args = get_argparser().parse_args()
     settings = get_appsettings(args)
     urllogin = settings.get("urllogin", {})
     aeskey = urllogin.get("aes_key")

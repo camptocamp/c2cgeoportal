@@ -1,10 +1,4 @@
-FROM ubuntu:20.04
-
-RUN apt-get update
-RUN apt-get install --assume-yes --no-install-recommends python3-pip
-
-COPY requirements.txt /tmp/
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
+FROM camptocamp/geomapfish-tools
 
 COPY Pipfile Pipfile.lock /tmp/
 RUN \
