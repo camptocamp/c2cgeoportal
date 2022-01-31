@@ -1,3 +1,5 @@
+##### 2.5.0.192
+* Ignore CVE [1006914] Exposure of Sensitive Information in simple-get [ngeo#8035](https://github.com/camptocamp/ngeo/pull/8035)
 ##### 2.5.0.191
 * No more needed CVE ignore [ngeo#8013](https://github.com/camptocamp/ngeo/pull/8013)
 ##### 2.5.0.190
