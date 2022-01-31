@@ -1,3 +1,5 @@
+##### 2.6.0.87
+* Ignore CVE [1006914] Exposure of Sensitive Information in simple-get [ngeo#8036](https://github.com/camptocamp/ngeo/pull/8036)
 ##### 2.6.0.86
 * Ignore CVE [1006911] Cross site scripting in three.js [ngeo#8022](https://github.com/camptocamp/ngeo/pull/8022)
 * Debug open filter panel [ngeo#8024](https://github.com/camptocamp/ngeo/pull/8024)
