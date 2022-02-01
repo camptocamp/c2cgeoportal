@@ -33,11 +33,13 @@ import subprocess
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Backup the remote database.")
+    """Backup the database."""
+    parser = argparse.ArgumentParser(description="Backup the database.")
     parser.add_argument(
         "--env",
         default=".env",
-        help="The env file to use to get the connection settings, by default we log in the composition to do the dump.",
+        help="The env file to use to get the connection settings, by default we log in the composition "
+        "to do the dump.",
     )
     parser.add_argument(
         "--arg",
@@ -48,10 +50,10 @@ def main() -> None:
     parser.add_argument("file", help="The file path to backup")
     args = parser.parse_args()
 
-    with open(args.file, "w") as file_out:
+    with open(args.file, "w", encoding="utf-8") as file_out:
         if args.env:
             env = {}
-            with open(args.env) as file_env:
+            with open(args.env, encoding="utf-8") as file_env:
                 for line in file_env:
                     if line and line[0] != "#":
                         try:
@@ -69,6 +71,10 @@ def main() -> None:
                     f"--env=PGPORT={env['PGPORT_SLAVE']}",
                     f"--env=PGUSER={env['PGUSER']}",
                     f"--env=PGPASSWORD={env['PGPASSWORD']}",
+                ]
+                + ([f"--env=PGSSLMODE={env['PGSSLMODE']}"] if "PGSSLMODE" in env else [])
+                + ([f"--env=PGOPTIONS={env['PGOPTIONS']}"] if "PGOPTIONS" in env else [])
+                + [
                     f"camptocamp/postgres:{env['POSTGRES_TAG']}",
                 ]
                 + [
