@@ -32,10 +32,12 @@ import subprocess
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Backup the restore database.")
+    """Restore the database backup."""
+    parser = argparse.ArgumentParser(description="Restore the database backup.")
     parser.add_argument(
         "--env",
-        help="The env file to use to get the connection settings, by default we log in the composition to do the restore.",
+        help="The env file to use to get the connection settings, by default we log in the composition to "
+        "do the restore.",
     )
     parser.add_argument(
         "--arg",
@@ -46,10 +48,10 @@ def main() -> None:
     parser.add_argument("file", help="The file path to restore")
     args = parser.parse_args()
 
-    with open(args.file) as file_in:
+    with open(args.file, encoding="utf-8") as file_in:
         if args.env:
             env = {}
-            with open(args.env) as file_env:
+            with open(args.env, encoding="utf-8") as file_env:
                 for line in file_env:
                     if line and line[0] != "#":
                         try:
@@ -63,10 +65,15 @@ def main() -> None:
                     "docker",
                     "run",
                     "--rm",
-                    f"--env=PGHOST={env['PGHOST_SLAVE']}",
-                    f"--env=PGPORT={env['PGPORT_SLAVE']}",
+                    "--interactive",
+                    f"--env=PGHOST={env['PGHOST']}",
+                    f"--env=PGPORT={env['PGPORT']}",
                     f"--env=PGUSER={env['PGUSER']}",
                     f"--env=PGPASSWORD={env['PGPASSWORD']}",
+                ]
+                + ([f"--env=PGSSLMODE={env['PGSSLMODE']}"] if "PGSSLMODE" in env else [])
+                + ([f"--env=PGOPTIONS={env['PGOPTIONS']}"] if "PGOPTIONS" in env else [])
+                + [
                     f"camptocamp/postgres:{env['POSTGRES_TAG']}",
                 ]
                 + [
@@ -79,7 +86,16 @@ def main() -> None:
             )
         else:
             subprocess.run(
-                ["docker-compose", "exec", "-T", "db", "bash", "-c", 'pg_restore --dbname="$PGDATABASE"']
+                [
+                    "docker-compose",
+                    "exec",
+                    "-T",
+                    "--interactive",
+                    "db",
+                    "bash",
+                    "-c",
+                    'pg_restore --dbname="$PGDATABASE"',
+                ]
                 + args.arg,
                 stdin=file_in,
                 check=True,
