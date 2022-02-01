@@ -1,3 +1,5 @@
+##### 2.6.0.90
+* Support uppercase for OGCSERVER parameter [c2cgeoportal#9225](https://github.com/camptocamp/c2cgeoportal/pull/9225)
 ##### 2.6.0.89
 * Fix extraction of HTML multiline strings [c2cgeoportal#9206](https://github.com/camptocamp/c2cgeoportal/pull/9206)
 ##### 2.6.0.88
