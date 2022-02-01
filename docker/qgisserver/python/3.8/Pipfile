@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"],version = "==1.6.0"}
 flake8 = "==3.9.2"
-types-pyyaml = "==6.0.3"
+types-pyyaml = "==6.0.4"
 
 [packages]
 c2cwsgiutils = {extras = ["broadcast"],version = "==4.1.4"}
