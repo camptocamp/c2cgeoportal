@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c107197859137ed49696db1181854bbbc4f3cec14a9c07f68c133b243e50350e"
+            "sha256": "a37e242386b8eb9843decc1584d32c5257f41d5b16639a715acee4cfb1b350a5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -348,10 +348,10 @@
         },
         "redis": {
             "hashes": [
-                "sha256:07420a3fbedd8e012c31d4fadac943fb81568946da202c5a5bc237774e5280a0",
-                "sha256:bc97d18938ca18d66737d0ef88584a2073069589e4026813cfba9ad6df9a9f40"
+                "sha256:bf86397be532fc0a888d5976a5313a3a70d8f912d52bc0c09bffda4b8425a1d4",
+                "sha256:f13eea4254e302485add677cadedaf1305c1b3a4e07535e23b7b239798ce9301"
             ],
-            "version": "==4.1.1"
+            "version": "==4.1.2"
         },
         "setuptools": {
             "hashes": [
@@ -618,10 +618,10 @@
         },
         "bandit": {
             "hashes": [
-                "sha256:a81b00b5436e6880fa8ad6799bc830e02032047713cbb143a12939ac67eb756c",
-                "sha256:f5acd838e59c038a159b5c621cf0f8270b279e884eadd7b782d7491c02add0d4"
+                "sha256:6d11adea0214a43813887bfe71a377b5a9955e4c826c8ffd341b494e3ab25260",
+                "sha256:e20402cadfd126d85b68ed4c8862959663c8c372dbbb1fca8f8e2c9f55a067ec"
             ],
-            "version": "==1.7.1"
+            "version": "==1.7.2"
         },
         "dodgy": {
             "hashes": [
@@ -942,11 +942,11 @@
         },
         "types-pyyaml": {
             "hashes": [
-                "sha256:6ea4eefa8579e0ce022f785a62de2bcd647fad4a81df5cf946fd67e4b059920b",
-                "sha256:8b50294b55a9db89498cdc5a65b1b4545112b6cd1cf4465bd693d828b0282a17"
+                "sha256:6252f62d785e730e454dfa0c9f0fb99d8dae254c5c3c686903cf878ea27c04b7",
+                "sha256:693b01c713464a6851f36ff41077f8adbc6e355eda929addfb4a97208aea9b4b"
             ],
             "index": "pypi",
-            "version": "==6.0.3"
+            "version": "==6.0.4"
         },
         "typing-extensions": {
             "hashes": [
