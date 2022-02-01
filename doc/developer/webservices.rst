@@ -684,7 +684,7 @@ URL: ``.../locale.pot``
 Method: ``GET``
 
 Parameters
-~~~~~~~~~~
+----------
 
  - ``interfaces``: List of interfaces we want to use.
  - ``theme_regex``: Regular expression used to filter the themes.
