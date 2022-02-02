@@ -109,10 +109,23 @@ and the application’s default language match.</p>
                                                <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">themes</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">blocks</span><span class="p">]</span>
                                                <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">folders</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">layers</span><span class="p">]</span>
                                                <span class="p">[</span><span class="o">--</span><span class="n">package</span> <span class="n">PACKAGE</span><span class="p">]</span>
-                                               <span class="p">[</span><span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">config</span> <span class="n">APP_CONFIG</span><span class="p">]</span>
-                                               <span class="p">[</span><span class="o">--</span><span class="n">app</span><span class="o">-</span><span class="n">name</span> <span class="n">APP_NAME</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="n">config_uri</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="n">config_vars</span> <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]]</span>
 </pre></div>
 </div>
+<section id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>config_uri</kbd></dt>
+<dd><p>The URI to the configuration file.</p>
+<p>Default: “c2c://geoportal/development.ini”</p>
+</dd>
+<dt><kbd>config_vars</kbd></dt>
+<dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
+<p>Default: ()</p>
+</dd>
+</dl>
+</section>
 <section id="Named Arguments">
 <h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
 <dl class="option-list">
@@ -150,14 +163,6 @@ by default if we find more than one element with the same name only one will be 
 </dd>
 <dt><kbd>--package</kbd></dt>
 <dd><p>the application package</p>
-</dd>
-<dt><kbd>--app-config, -i</kbd></dt>
-<dd><p>The application .ini config file (optional, default is ‘production.ini’)</p>
-<p>Default: “production.ini”</p>
-</dd>
-<dt><kbd>--app-name, -n</kbd></dt>
-<dd><p>The application name (optional, default is ‘app’)</p>
-<p>Default: “app”</p>
 </dd>
 </dl>
 </section>
