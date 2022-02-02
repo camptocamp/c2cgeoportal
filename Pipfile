@@ -29,7 +29,7 @@ c2cciutils = "==1.1.dev20220124152826"
 mapbox-vector-tile = "==1.2.1"
 
 [packages]
-alembic = "==1.7.5"  # geoportal
+alembic = "==1.7.6"  # geoportal
 "c2c.template" = "==2.3.0"  # geoportal
 c2cgeoform = "==2.1.26"  # commons
 colander = "==1.8.3"  # commons, admin
