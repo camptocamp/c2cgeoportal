@@ -522,14 +522,14 @@ def includeme(config: pyramid.config.Configurator) -> None:
     # instead of /mapserv_proxy?ogcserver=<ogc server name>, required for QGIS server landing page
     config.add_route(
         "mapserverproxy_get_path",
-        "/mapserv_proxy/{ogcserver}*all",
+        "/mapserv_proxy/{ogcserver}/*path",
         mapserverproxy=True,
         pregenerator=C2CPregenerator(role=True),
         request_method="GET",
     )
     config.add_route(
         "mapserverproxy_post_path",
-        "/mapserv_proxy/{ogcserver}*all",
+        "/mapserv_proxy/{ogcserver}/*path",
         mapserverproxy=True,
         pregenerator=C2CPregenerator(role=True),
         request_method="POST",

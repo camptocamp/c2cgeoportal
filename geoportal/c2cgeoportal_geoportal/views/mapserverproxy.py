@@ -29,7 +29,7 @@
 import logging
 from typing import Any, Dict, Set
 
-from pyramid.httpexceptions import HTTPInternalServerError, HTTPUnauthorized
+from pyramid.httpexceptions import HTTPFound, HTTPInternalServerError, HTTPUnauthorized
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -173,6 +173,8 @@ class MapservProxy(OGCProxy):
         self, cache_control: Cache, url: Url, params: Dict[str, str], **kwargs: Any
     ) -> Response:
         if self.request.matched_route.name.endswith("_path"):
+            if self.request.matchdict["path"] == ("favicon.ico",):
+                return HTTPFound("/favicon.ico")
             url = url.clone()
             url.path = self.request.path
 

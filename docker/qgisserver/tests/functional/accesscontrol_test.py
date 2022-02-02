@@ -25,6 +25,7 @@ area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 def set_request_parameters(server_iface, params, env={}):
     server_iface.configure_mock(
         **{
+            "configFilePath.return_value": params.get("MAP", None),
             "requestHandler.return_value": Mock(
                 **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key]}
             ),

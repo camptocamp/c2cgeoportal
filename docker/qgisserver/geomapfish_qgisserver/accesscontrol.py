@@ -226,20 +226,20 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
     def get_ogcserver_accesscontrol(self) -> "OGCServerAccessControl":
         parameters = self.serverInterface().requestHandler().parameterMap()
+
         if self.single:
             if "MAP" in parameters:
                 raise GMFException("The map parameter should not be provided")
             return self.ogcserver_accesscontrol
-        if "MAP" not in parameters:
-            raise GMFException("The map parameter should be provided")
-        if parameters["MAP"] not in self.ogcserver_accesscontrols:
+
+        config_file = self.serverInterface().configFilePath()
+
+        if config_file not in self.ogcserver_accesscontrols:
             raise GMFException(
-                f"The map '{parameters['MAP']}' is not found possible values: "
+                f"The map '{config_file}' is not found possible values: "
                 f"{', '.join(self.ogcserver_accesscontrols.keys())}"
             )
-        return cast(
-            "OGCServerAccessControl", self.ogcserver_accesscontrols[parameters["MAP"]]["access_control"]
-        )
+        return cast("OGCServerAccessControl", self.ogcserver_accesscontrols[config_file]["access_control"])
 
     def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
         """Return an additional subset string (typically SQL) filter."""
