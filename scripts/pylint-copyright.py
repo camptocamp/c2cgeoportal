@@ -51,7 +51,7 @@ class CopyrightChecker(BaseChecker):  # type: ignore
     }
     options = ()
     copyright_re = re.compile(
-        br"Copyright \(c\) ([0-9][0-9][0-9][0-9])(-[0-9][0-9][0-9][0-9])?, Camptocamp SA"
+        rb"Copyright \(c\) ([0-9][0-9][0-9][0-9])(-[0-9][0-9][0-9][0-9])?, Camptocamp SA"
     )
 
     def process_module(self, node: astroid.scoped_nodes.Module) -> None:
@@ -64,7 +64,7 @@ class CopyrightChecker(BaseChecker):  # type: ignore
             first_year = int(commits_date[-1][0:4])
             last_year = commits_date[0][0:4]
             copyright_re = re.compile(
-                fr"Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?{last_year}, Camptocamp SA".encode()
+                rf"Copyright \(c\) ([0-9][0-9][0-9][0-9]-)?{last_year}, Camptocamp SA".encode()
             )
             with node.stream() as stream:
                 ok = False

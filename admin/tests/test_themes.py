@@ -388,7 +388,7 @@ class TestTheme(TestTreeGroup):
         duplicated = dbsession.query(Theme).filter(Theme.name == "duplicated").one()
 
         assert str(duplicated.id) == re.match(
-            fr"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
         assert duplicated.id != theme.id
         assert duplicated.children_relation[0].id != theme.children_relation[0].id

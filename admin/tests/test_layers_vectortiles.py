@@ -146,7 +146,7 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         resp = form.submit("submit")
         assert str(layer.id) == re.match(
-            fr"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         dbsession.expire(layer)
