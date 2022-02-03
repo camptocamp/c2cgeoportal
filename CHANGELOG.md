@@ -1,3 +1,5 @@
+##### 2.5.0.193
+* Fix CVE [c2cgeoportal#9238](https://github.com/camptocamp/c2cgeoportal/pull/9238)
 ##### 2.5.0.192
 * Ignore CVE [1006914] Exposure of Sensitive Information in simple-get [ngeo#8035](https://github.com/camptocamp/ngeo/pull/8035)
 ##### 2.5.0.191
