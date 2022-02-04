@@ -1,3 +1,5 @@
+##### 2.6.0.93
+* [Backport 2.6] Remove extra CVE in ignore [ngeo#8070](https://github.com/camptocamp/ngeo/pull/8070)
 ##### 2.6.0.92
 * Fix CVE [c2cgeoportal#9256](https://github.com/camptocamp/c2cgeoportal/pull/9256)
 ##### 2.6.0.91
