@@ -71,7 +71,7 @@ c2cwsgiutils = {version = "==5.0.0.dev20220201152101", extras = ["broadcast", "p
 oauthlib = "==3.2.0"
 tilecloud = "==1.7.0" # geoportal
 azure-storage-blob = "==12.9.0"
-setuptools = "==60.2.0"
+setuptools = "==60.7.1"
 
 [requires]
 python_version = "3.8"
