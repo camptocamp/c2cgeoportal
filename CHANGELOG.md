@@ -1,3 +1,5 @@
+##### 2.5.0.195
+* Remove extra CVE in ignore [ngeo#8069](https://github.com/camptocamp/ngeo/pull/8069)
 ##### 2.5.0.194
 * Ignore CVE [c2cgeoportal#9255](https://github.com/camptocamp/c2cgeoportal/pull/9255)
 ##### 2.5.0.193
