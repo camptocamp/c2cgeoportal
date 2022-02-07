@@ -3,13 +3,8 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
-[dev-packages]
-prospector = {extras = ["with_mypy", "with_bandit"],version = "==1.6.0"}
-flake8 = "==3.9.2"
-types-pyyaml = "==6.0.4"
-
 [packages]
-c2cwsgiutils = {extras = ["broadcast"],version = "==4.1.4"}
+c2cwsgiutils = {extras = ["broadcast"], version = "==4.1.4"}
 papyrus = "==2.4"  # commons
 transaction = "==3.0.1"  # commons
 "c2c.template" = "==2.3.0"
@@ -21,6 +16,11 @@ shapely = "==1.8.0"
 cee-syslog-handler = "==0.6.0"
 setuptools = "==60.2.0"
 psycopg2 = "==2.9.3"
+
+[dev-packages]
+prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.6.0"}
+flake8 = "==3.9.2"
+types-pyyaml = "==6.0.4"
 
 [requires]
 python_version = "3.8"
