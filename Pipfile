@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-awscli = "==1.22.48"  # Work with Object storage
+awscli = "==1.22.49"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
 beautifulsoup4 = "==4.10.0"  # admin tests
 coverage = "==6.3.1"  # Build coverage XML for Codacy
@@ -71,7 +71,7 @@ c2cwsgiutils = {version = "==5.0.0.dev20220201152101", extras = ["broadcast", "p
 oauthlib = "==3.2.0"
 tilecloud = "==1.7.0" # geoportal
 azure-storage-blob = "==12.9.0"
-setuptools = "==60.2.0"
+setuptools = "==59.8.0"
 
 [requires]
 python_version = "3.8"
