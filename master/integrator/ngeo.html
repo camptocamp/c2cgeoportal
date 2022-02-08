@@ -154,14 +154,625 @@ be extended. These values will be updated with the interface configuration
 <li><p><code class="docutils literal notranslate"><span class="pre">i18next_configuration</span></code>: The i18next configuration from <cite>vars.i18next.backend</cite> with dynamically calculated <cite>loadPath</cite>,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>: The search groups from the <cite>layer_name</cite> of the Full-Text Search table.</p></li>
 </ul>
-<p>The possible values are described in the ngeo documentation
-<a class="reference external" href="https://camptocamp.github.io/ngeo/|main_branch|/jsdoc/module-src_options.html">ngeo constants</a>,
-<a class="reference external" href="https://camptocamp.github.io/ngeo/|main_branch|/jsdoc/module-contribs_gmf_src_options.html">gmf constants</a>.</p>
+<section id="ngeo-configuration-options">
+<h3>Ngeo configuration options<a class="headerlink" href="#ngeo-configuration-options" title="Permalink to this headline">¶</a></h3>
+<section id="configuration">
+<span id="integrator-guide-ngeo-properties-configuration"></span><h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h4>
+<p>The full configuration</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">authenticationBaseUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-authenticationbaseurl"><span class="std std-ref">authenticationBaseUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfAuthenticationConfig</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfauthenticationconfig"><span class="std std-ref">gmfAuthenticationConfig</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfAuthenticationNoReloadRole</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfauthenticationnoreloadrole"><span class="std std-ref">gmfAuthenticationNoReloadRole</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfBackgroundLayerSelectorOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfbackgroundlayerselectoroptions"><span class="std std-ref">gmfBackgroundLayerSelectorOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfContextualDataOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfcontextualdataoptions"><span class="std std-ref">gmfContextualDataOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfCsvFilename</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfcsvfilename"><span class="std std-ref">gmfCsvFilename</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfCustomCSS</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfcustomcss"><span class="std std-ref">gmfCustomCSS</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfCustomJavascriptUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfcustomjavascripturl"><span class="std std-ref">gmfCustomJavascriptUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfCustomStylesheetUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfcustomstylesheeturl"><span class="std std-ref">gmfCustomStylesheetUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfDisclaimerOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfdisclaimeroptions"><span class="std std-ref">gmfDisclaimerOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfDisplayQueryGridOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfdisplayquerygridoptions"><span class="std std-ref">gmfDisplayQueryGridOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfDisplayQueryWindowOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfdisplayquerywindowoptions"><span class="std std-ref">gmfDisplayQueryWindowOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfEditFeatureOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfeditfeatureoptions"><span class="std std-ref">gmfEditFeatureOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfElevationOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfelevationoptions"><span class="std std-ref">gmfElevationOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfExternalOGCServers</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfexternalogcservers"><span class="std std-ref">gmfExternalOGCServers</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfFloors</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmffloors"><span class="std std-ref">gmfFloors</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfI18nextConfiguration</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_InitOptions</span>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfLayerTreeOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmflayertreeoptions"><span class="std std-ref">gmfLayerTreeOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfLayersUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmflayersurl"><span class="std std-ref">gmfLayersUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfMobileMeasureAreaOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfmobilemeasureareaoptions"><span class="std std-ref">gmfMobileMeasureAreaOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfMobileMeasureLengthOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfmobilemeasurelengthoptions"><span class="std std-ref">gmfMobileMeasureLengthOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfMobileMeasurePointOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfmobilemeasurepointoptions"><span class="std std-ref">gmfMobileMeasurePointOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfMousePositionOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfmousepositionoptions"><span class="std std-ref">gmfMousePositionOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfObjectEditingToolsOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfobjecteditingtoolsoptions"><span class="std std-ref">gmfObjectEditingToolsOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfoptions"><span class="std std-ref">gmfOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfPermalinkOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfpermalinkoptions"><span class="std std-ref">gmfPermalinkOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfPrintOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfprintoptions"><span class="std std-ref">gmfPrintOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfPrintUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfprinturl"><span class="std std-ref">gmfPrintUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfProfileJsonUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfprofilejsonurl"><span class="std std-ref">gmfProfileJsonUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfProfileOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfprofileoptions"><span class="std std-ref">gmfProfileOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfProjectionsOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfprojectionsoptions"><span class="std std-ref">gmfProjectionsOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfQueryGrid</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfquerygrid"><span class="std std-ref">gmfQueryGrid</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfRasterUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfrasterurl"><span class="std std-ref">gmfRasterUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfSearchGroups</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfsearchgroups"><span class="std std-ref">gmfSearchGroups</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfSearchOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfsearchoptions"><span class="std std-ref">gmfSearchOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfShareOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfshareoptions"><span class="std std-ref">gmfShareOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfShortenerCreateUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfshortenercreateurl"><span class="std std-ref">gmfShortenerCreateUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfThemesOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmfthemesoptions"><span class="std std-ref">gmfThemesOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfTreeManagerModeFlush</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmftreemanagermodeflush"><span class="std std-ref">gmfTreeManagerModeFlush</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfTreeUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmftreeurl"><span class="std std-ref">gmfTreeUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gmfTwoFactorAuth</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gmftwofactorauth"><span class="std std-ref">gmfTwoFactorAuth</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoCsvEncoding</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeocsvencoding"><span class="std std-ref">ngeoCsvEncoding</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoCsvExtension</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeocsvextension"><span class="std std-ref">ngeoCsvExtension</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoCsvIncludeHeader</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeocsvincludeheader"><span class="std std-ref">ngeoCsvIncludeHeader</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoCsvQuote</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeocsvquote"><span class="std std-ref">ngeoCsvQuote</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoCsvSeparator</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeocsvseparator"><span class="std std-ref">ngeoCsvSeparator</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoGeolocationOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeogeolocationoptions"><span class="std std-ref">ngeoGeolocationOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoMeasureDecimals</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeomeasuredecimals"><span class="std std-ref">ngeoMeasureDecimals</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoMeasurePrecision</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeomeasureprecision"><span class="std std-ref">ngeoMeasurePrecision</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoMeasureSpherical</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeomeasurespherical"><span class="std std-ref">ngeoMeasureSpherical</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoNominatimSearchDefaultParams</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeonominatimsearchdefaultparams"><span class="std std-ref">ngeoNominatimSearchDefaultParams</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoOfflineTestUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeoofflinetesturl"><span class="std std-ref">ngeoOfflineTestUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoPermalinkOgcserverUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeopermalinkogcserverurl"><span class="std std-ref">ngeoPermalinkOgcserverUrl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoPointfilter</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeopointfilter"><span class="std std-ref">ngeoPointfilter</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoProfileOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeoprofileoptions"><span class="std std-ref">ngeoProfileOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoQueryOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeoqueryoptions"><span class="std std-ref">ngeoQueryOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoRoutingOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeoroutingoptions"><span class="std std-ref">ngeoRoutingOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoScaleSelectorOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeoscaleselectoroptions"><span class="std std-ref">ngeoScaleSelectorOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoSnappingTolerance</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeosnappingtolerance"><span class="std std-ref">ngeoSnappingTolerance</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoStreetviewOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeostreetviewoptions"><span class="std std-ref">ngeoStreetviewOptions</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoStringToHtmlReplacements</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeostringtohtmlreplacements"><span class="std std-ref">ngeoStringToHtmlReplacements</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoTilesPreloadingLimit</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeotilespreloadinglimit"><span class="std std-ref">ngeoTilesPreloadingLimit</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoUsedKeyRegexp</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeousedkeyregexp"><span class="std std-ref">ngeoUsedKeyRegexp</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ngeoWfsPermalinkOptions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-ngeowfspermalinkoptions"><span class="std std-ref">ngeoWfsPermalinkOptions</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
 </section>
+</section>
+<section id="ngeo-api-configuration-options">
+<h3>Ngeo API configuration options<a class="headerlink" href="#ngeo-api-configuration-options" title="Permalink to this headline">¶</a></h3>
+<section id="apiconfig">
+<span id="integrator-guide-ngeo-properties-apiconfig"></span><h4>APIConfig<a class="headerlink" href="#apiconfig" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backgroundLayer</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extent</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">localeUrl</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">projection</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">projections</span></code> ({string: <a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-projection"><span class="std std-ref">Projection</span></a>}, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">queryableLayers</span></code> (string[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resolutions</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">searchUrl</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">themesUrl</span></code> (string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="ngeo-internal-object-configuration-options">
+<h3>Ngeo internal object configuration options<a class="headerlink" href="#ngeo-internal-object-configuration-options" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+</section>
+<section id="define-additional-types-used-in-the-config">
+<h1>Define additional types used in the config<a class="headerlink" href="#define-additional-types-used-in-the-config" title="Permalink to this headline">¶</a></h1>
+<p>See <a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc7946#section-3.3">FeatureCollection</a>.</p>
+<p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_Feature-Feature.html">ol.Feature</a>.</p>
+<p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_geom_Geometry-Geometry.html">ol.geom.Geometry</a>.</p>
+<p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_control_Control-Control.html">ol.control.Control</a>.</p>
+<p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_interaction_Interaction-Interaction.html">ol.control.Control</a>.</p>
+<p>See <a class="reference external" href="https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md#usage">Bloodhound Usage</a>.</p>
+<p>See <a class="reference external" href="https://github.com/corejavascript/typeahead.js/blob/master/doc/jquery_typeahead.md#datasets">Typeahead Dataset</a>.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">displacement</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fill</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-fill"><span class="std std-ref">Fill</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">radius</span></code> (number)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stroke</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stroke"><span class="std std-ref">Stroke</span></a>, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The definition of an external OGC server</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">url</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (number[] | string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Configuration option for <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> import(‘gmf/query/gridComponent’).GmfQueryGridComponent} to merge grid tabs.
+E.g. <cite>‘two_wheels_park’: [‘velo_park’, ‘moto_park’]}</cite> merges the sources
+with label <cite>velo_park</cite> and <cite>moto_park</cite> into a new source <cite>two_wheels_park</cite>.</p>
+<p>Properties:</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">args</span></code> (string[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postfix</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">separator</span></code> (string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Configuration object for one profile’s line.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zExtractor</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_ZExtractorFunction</span>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The map definition.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maxTilesLoading</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">moveTolerance</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pixelRatio</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">projection</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">decimals</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unit</span></code> (string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Projection object for the MousePositionDirective. Define a label and a filter
+to use to display coordinates for a projection.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">code</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> ({string: boolean})</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code> ({string: {string: string}})</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">showGroupsTitle</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">useBbox</span></code> (boolean, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>A projection definitions.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">definition</span></code> (string[])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extent</span></code> (number[])</p></li>
+</ul>
+</dd>
+</dl>
+<p>Specify radius for regular polygons, or radius1 and radius2 for stars.
+See also: <a class="reference external" href="https://openlayers.org/en/latest/examples/regularshape.html">https://openlayers.org/en/latest/examples/regularshape.html</a></p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">angle</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">displacement</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fill</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-fill"><span class="std std-ref">Fill</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">points</span></code> (number)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">radius</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">radius1</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">radius2</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotateWithView</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotation</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stroke</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stroke"><span class="std std-ref">Stroke</span></a>, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">profile</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">action</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Datasource configuration options for the search directive.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bloodhoundOptions</span></code> (<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-bloodhound-bloodhoundoptions"><span class="std std-ref">Bloodhound.BloodhoundOptions</span></a>&lt;<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-geojson-featurecollection"><span class="std std-ref">FeatureCollection</span></a>&gt;, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datasetTitle</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groupActions</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-searchaction"><span class="std std-ref">SearchAction</span></a>[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groupValues</span></code> (string[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labelKey</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">projection</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">typeaheadDatasetOptions</span></code> (<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-twitter-typeahead-dataset"><span class="std std-ref">Twitter.Typeahead.Dataset</span></a>&lt;<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-olfeature"><span class="std std-ref">ol.Feature</span></a>&lt;<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-olgeomgeometry"><span class="std std-ref">ol.geom.Geometry</span></a>&gt;&gt;, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">url</span></code> (string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compiled_expression</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_RegExp</span>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expression</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (number[] | string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lineCap</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_CanvasLineCap</span>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lineDash</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lineDashOffset</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lineJoin</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_CanvasLineJoin</span>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">miterLimit</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">width</span></code> (number, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The style description.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">circle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-circle"><span class="std std-ref">Circle</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fill</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-fill"><span class="std std-ref">Fill</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regularShape</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-regularshape"><span class="std std-ref">RegularShape</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stroke</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stroke"><span class="std std-ref">Stroke</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zIndex</span></code> (number, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The view definition.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">center</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">constrainOnlyCenter</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">constrainResolution</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">constrainRotation</span></code> (boolean | number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enableRotation</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extent</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxResolution</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxZoom</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minResolution</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minZoom</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">multiWorld</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">projection</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resolution</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resolutions</span></code> (number[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotation</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">showFullExtent</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smoothExtentConstraint</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smoothResolutionConstraint</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zoom</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zoomFactor</span></code> (number, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>A WFS type. To be used with <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> WfsPermalinkOptions }.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">defaultFeatureNS</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">defaultFeaturePrefix</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">featureNS</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">featurePrefix</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">featureType</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> (string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>URL to the authentication web service.</p>
+<p>Default language</p>
+<p>URL to the full-text search web service.</p>
+<p>The Authentication configuration.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">allowPasswordChange</span></code> (boolean)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">allowPasswordReset</span></code> (boolean)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Don’t request a new user object from the back-end after
+logging out if the logged-in user’s role has this role.</p>
+<p>The background layer selector options</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">opacityLayer</span></code> (string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">projections</span></code> (string[])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rasterParams</span></code> ({string: string})</p></li>
+</ul>
+</dd>
+</dl>
+<p>The CSV file name.</p>
+<p>Additional CSS for the different elements</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">authentication</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">authenticationPanel</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desktopCanvas</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Use to inject custom javascript from an URL.</p>
+<p>Use to inject custom stylesheet from an URL.</p>
+<p>The disclaimers options</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">external</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layerVisibility</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">popup</span></code> (boolean, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The display querry grid component options.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">featuresStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxRecenterZoom</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mergeTabs</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-gridmergetabs"><span class="std std-ref">GridMergeTabs</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">removeEmptyColumns</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">selectedFeatureStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The display querry grid component options.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">collapsed</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">featuresStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">selectedFeatureStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">closeAfterSave</span></code> (boolean)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">highlightStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tolerance</span></code> (number)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The elevation (raster) options.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code> (string[])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layersConfig</span></code> ({string: <a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-layerconfig"><span class="std std-ref">LayerConfig</span></a>})</p></li>
+</ul>
+</dd>
+</dl>
+<p>Floor dimension values and labels.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">isExpanded</span></code> (boolean)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">openlinksinnewwindow</span></code> (boolean)</p></li>
+</ul>
+</dd>
+</dl>
+<p>URL to the layers web service.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">precision</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sketchStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">precision</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sketchStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">decimals</span></code> (number)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rasterLayers</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-measurerasterlayer"><span class="std std-ref">MeasureRasterLayer</span></a>[])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sketchStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">projections</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-mousepositionprojection"><span class="std std-ref">MousePositionProjection</span></a>[])</p></li>
+</ul>
+</dd>
+</dl>
+<p>Additional configuration options for the object editing tools directive.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">regularPolygonRadius</span></code> (number, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The application wide options.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">controlZoom</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_OlControlZoomOptions</span>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cssVars</span></code> ({string: string})</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">geolocalisation</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interationDefaults</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_OlInteractionDefaultsOptions</span>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-mapconfig"><span class="std std-ref">MapConfig</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapControls</span></code> (<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-olcontrolcontrol"><span class="std std-ref">ol.control.Control</span></a>[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapInteractions</span></code> (<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-olinteractioninteraction"><span class="std std-ref">ol.interaction.interaction</span></a>[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">showInfobar</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">view</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-view"><span class="std std-ref">View</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zoom</span></code> (number)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Configuration options for the permalink service.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">crosshairEnabledByDefault</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crosshairStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pointRecenterZoom</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">projectionCodes</span></code> (string[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">useLocalStorage</span></code> (boolean, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">defaultLayout</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fieldValues</span></code> ({string: string | number | boolean}, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">goodnessOfFit</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hiddenAttributes</span></code> (string[], optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">legend</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-optionslegendtype"><span class="std std-ref">OptionsLegendType</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotateMask</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scaleInput</span></code> (boolean, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>URL to MapFishPrint.</p>
+<p>URL to the profile web service.</p>
+<p>The elevation (raster) options.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hoverPointStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numberOfPoints</span></code> (number, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The available projections definitions.</p>
+<p>Properties:</p>
+<p>Use the query grid instead the query window to display the query result.</p>
+<p>URL to the raster web service.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">clearButton</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">colorChooser</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coordinatesProjections</span></code> (string[])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datasources</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-searchcomponentdatasource"><span class="std std-ref">SearchComponentDatasource</span></a>[])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxZoom</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">placeholder</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">styles</span></code> ({string: <a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>})</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">enableEmail</span></code> (boolean, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>URL to the shortener web service.</p>
+<p>Configuration options for the themes service.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addBlankBackgroundLayer</span></code> (boolean, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Flush mode active?</p>
+<p>URL to the theme web service.</p>
+<p>Does the application use tow factor authentication</p>
+<p>Languages URL</p>
+<p>Properties:</p>
+<p>File encoding of the CSV file.</p>
+<p>File extension of the CSV file.</p>
+<p>Whether to include the header in the exported file or not.</p>
+<p>Quote character.</p>
+<p>Separator character.</p>
+<p>Options for the geolocation directive.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">accuracyFeatureStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">atLoadingTime</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">autoRotate</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">positionFeatureStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zoom</span></code> (number, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Properties:</p>
+<p>URL of the test page to detect online/offline.</p>
+<p>URL to the WFS server.</p>
+<p>Options for the profile.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">light</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lightXAxis</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">linesConfiguration</span></code> ({string: <a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-lineconfiguration"><span class="std std-ref">LineConfiguration</span></a>})</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">poiLabelAngle</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">styleDefs</span></code> (string, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The options for the query service.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bboxAsGETParam</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cursorHover</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">featureNS</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">featurePrefix</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">geometryName</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">queryCountFirst</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sourceIdsProperty</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tolerance</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">toleranceTouch</span></code> (number, optional)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backendUrl</span></code> (string, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">profiles</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-routingprofile"><span class="std std-ref">RoutingProfile</span></a>[], optional)</p></li>
+</ul>
+</dd>
+</dl>
+<p>The scale selector options</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dropup</span></code> (boolean, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">values</span></code> (number[])</p></li>
+</ul>
+</dd>
+</dl>
+<p>Configuration object for streetview.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">key</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">viewer</span></code> (string)</p></li>
+</ul>
+</dd>
+</dl>
+<p>List of replacements for string to html.</p>
+<p>Load tiles up to preload levels.
+By default preload is Infinity,
+which means load all tiles on the top of the visible level. See also preload value
+in documentation for ol.Layer.Tile.</p>
+<p>Regexp used to identify the used keys.</p>
+<p>The options for the WFS query service (permalink).</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">defaultFeatureNS</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">defaultFeaturePrefix</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxFeatures</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pointRecenterZoom</span></code> (number, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wfsTypes</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-wfstype"><span class="std std-ref">WfsType</span></a>[])</p></li>
+</ul>
+</dd>
+</dl>
 <section id="css-style">
 <h2>CSS style<a class="headerlink" href="#css-style" title="Permalink to this headline">¶</a></h2>
-<section id="id1">
-<h3>Simple and advanced modes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<section id="id2">
+<h3>Simple and advanced modes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>In the <code class="docutils literal notranslate"><span class="pre">gmfOptions</span></code> we have a <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> property where we can configure all CSS variable
 (<code class="docutils literal notranslate"><span class="pre">var(--a-variable)</span></code> in the css files.</p>
 <p>The content of <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> is a dictionary where the keys are the CSS variable names, and the values the
@@ -178,8 +789,8 @@ your style with the <code class="docutils literal notranslate"><span class="pre"
 </pre></div>
 </div>
 </section>
-<section id="id2">
-<h3>Advanced mode only<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<section id="id3">
+<h3>Advanced mode only<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>In the advanced mode, you can set the style of a component by selecting the component using
 the <code class="docutils literal notranslate"><span class="pre">querySelector</span></code> native function and by appending a new style to this element.
 Example:</p>

@@ -133,9 +133,22 @@ The dynamic values names are:
 * ``i18next_configuration``: The i18next configuration from `vars.i18next.backend` with dynamically calculated `loadPath`,
 * ``fulltextsearch_groups``: The search groups from the `layer_name` of the Full-Text Search table.
 
-The possible values are described in the ngeo documentation
-`ngeo constants <https://camptocamp.github.io/ngeo/|main_branch|/jsdoc/module-src_options.html>`_,
-`gmf constants <https://camptocamp.github.io/ngeo/|main_branch|/jsdoc/module-contribs_gmf_src_options.html>`_.
+Ngeo configuration options
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: ngeo_configuration.rst
+
+Ngeo API configuration options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: ngeo_api_configuration.rst
+
+Ngeo internal object configuration options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. include:: ngeo_config_ref.rst
+.. include:: ngeo_other_configuration.rst
+
 
 CSS style
 ---------
