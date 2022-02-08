@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "49fd88e05e11562b04805f559b8a1998f3ec62f32bf249f0d7812394a1f8cbf6"
+            "sha256": "00b8888e4ed11fb04b5ac749e46911c234a7bfe3c8d1f7787d7d7d1e847f2b9f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -369,18 +369,18 @@
         },
         "fiona": {
             "hashes": [
-                "sha256:02880556540e36ad6aac97687799d9b3093c354787a47bc0e73026c7fc15f1b3",
-                "sha256:03f910380dbe684730b59b817aa030e6e9a3ee79211b66c6db2d1c8fe6ea12de",
-                "sha256:328340a448bed5c43d119f61f760368a04d13a302c59d2fccb051a3ff021f4b8",
-                "sha256:3f668c471fa2f8c9c0a9ca83639cb2c8dcc93edc3d93d43dba2f9e8da38ad53e",
-                "sha256:54f81039e913d0f88728ef23edf5a69038dec94dea54f4c799f972ba8e2a7d40",
-                "sha256:5e1cef608c6de9039eaa65b395024096e3189ab0559a5a328c68c4690c3302ce",
-                "sha256:a70502d2857b82f749c09cb0dea3726787747933a2a1599b5ab787d74e3c143b",
-                "sha256:bef100ebd82afb9a4d67096216e82611b82ca9341330e4805832d7ff8c9bc1f7",
-                "sha256:e72e4a5b84ec410be531d4fe4c1a5c87c6c0e92d01116c145c0f1b33f81c8080"
+                "sha256:085f18d943097ac3396f3f9664ac1ae04ad0ff272f54829f03442187f01b6116",
+                "sha256:11532ccfda1073d3f5f558e4bb78d45b268e8680fd6e14993a394c564ddbd069",
+                "sha256:3789523c811809a6e2e170cf9c437631f959f4c7a868f024081612d30afab468",
+                "sha256:388acc9fa07ba7858d508dfe826d4b04d813818bced16c4049de19cc7ca322ef",
+                "sha256:39c656421e25b4d0d73d0b6acdcbf9848e71f3d9b74f44c27d2d516d463409ae",
+                "sha256:3a0edca2a7a070db405d71187214a43d2333a57b4097544a3fcc282066a58bfc",
+                "sha256:40b4eaf5b88407421d6c9e707520abd2ff16d7cd43efb59cd398aa41d2de332c",
+                "sha256:43b1d2e45506e56cf3a9f59ba5d6f7981f3f75f4725d1e6cb9a33ba856371ebd",
+                "sha256:b69054ed810eb7339d7effa88589afca48003206d7627d0b0b149715fc3fde41"
             ],
             "index": "pypi",
-            "version": "==1.8.20"
+            "version": "==1.8.21"
         },
         "geoalchemy2": {
             "hashes": [
@@ -2189,7 +2189,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2934,7 +2934,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
