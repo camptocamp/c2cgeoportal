@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "004ad6b50bce23ffeb4ae142bd1968609e85c36fb77454ee2ef123c6beeea932"
+            "sha256": "79af40d2ef6e34bd2bc225372a727cca0a7f16cdc3924d87d5978fe3af92559f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -35,10 +35,10 @@
                 "broadcast"
             ],
             "hashes": [
-                "sha256:094b967029e6f9a6742786b10891203a6386698002656601ec9133eae1e15b78"
+                "sha256:ebaf0f110bb1c5fccc9034daeb13c51bd932eca6eb12e76af7c57ffa4ca9a9cf"
             ],
             "index": "pypi",
-            "version": "==4.1.4"
+            "version": "==5.0.0"
         },
         "cee-syslog-handler": {
             "hashes": [
@@ -753,11 +753,11 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:176e8560eaf61e127817ef93d8a844803abb27a4d4637f0ff3bb783129be2e0a",
-                "sha256:672d8ebee84921862110f23fcec2acea191ef58543d34dfe9ef3d9f13c31cddf"
+                "sha256:27108648368782d07bbf1cb468ad2e2eeef29086affd14087a6d04b7de8af4ec",
+                "sha256:66bc5a34912f408bb3925bf21231cb6f59206267b7f63f3503ef865c1a292e25"
             ],
             "markers": "python_version >= '2.6'",
-            "version": "==5.8.0"
+            "version": "==5.8.1"
         },
         "pep8-naming": {
             "hashes": [

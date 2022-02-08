@@ -7,7 +7,7 @@
 
 import logging.config
 import os
-from typing import IO, Any, Optional
+from typing import IO, Any
 
 import c2cwsgiutils.pyramid_logging
 import qgis.server
@@ -66,7 +66,7 @@ class JsonLogHandler(c2cwsgiutils.pyramid_logging.JsonLogHandler):
     Log to stdout in JSON.
     """
 
-    def __init__(self, stream: Optional[IO[str]] = None) -> None:
+    def __init__(self, stream: IO[str]) -> None:
         super().__init__(stream)
         self.addFilter(_REQUEST_FILTER)
 
