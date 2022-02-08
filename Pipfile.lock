@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f99728e8f9deec291da288b4887019912a36fb923bb747f5819c73001e870a5a"
+            "sha256": "49fd88e05e11562b04805f559b8a1998f3ec62f32bf249f0d7812394a1f8cbf6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1464,10 +1464,10 @@
         },
         "tilecloud": {
             "hashes": [
-                "sha256:31e9da7b951b8003217c879427d8c89f194e3a716a19a40ead7f55bcc24ceec9"
+                "sha256:e4fea928372820d514f5b4158a95fe6a8460ddd7315963098aae0f21b8de816b"
             ],
             "index": "pypi",
-            "version": "==1.7.0"
+            "version": "==1.8.0"
         },
         "toml": {
             "hashes": [
@@ -2189,7 +2189,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2934,7 +2934,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4'",
+            "markers": "python_version >= '3.5' and python_version < '4.0'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
