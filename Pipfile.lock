@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "47fcf22cee07a63d7ca6a10a48a8bb9079c386879b54c3f75a3eb7bf4267d023"
+            "sha256": "f99728e8f9deec291da288b4887019912a36fb923bb747f5819c73001e870a5a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -150,10 +150,10 @@
                 "standard"
             ],
             "hashes": [
-                "sha256:020d42483622912dde62b9da6f13df1f9386f068aa9210fb18da7b196ce0fd08"
+                "sha256:8af0ed23c1dc696df62649b80e1b9d09e50354adae415a3f6b12907bc1f0bb45"
             ],
             "index": "pypi",
-            "version": "==5.0.0.dev20220201152101"
+            "version": "==5.1.0.dev20220207153056"
         },
         "cee-syslog-handler": {
             "hashes": [
