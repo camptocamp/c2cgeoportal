@@ -1,2 +1,2 @@
-pipenv==2021.5.29
+pipenv==2022.1.8
 setuptools==59.8.0
