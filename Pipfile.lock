@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0ca6fc4febf1a3d1f5c096b961e927d82871017440198b75d84d5c45313d5ac8"
+            "sha256": "c316c20bcebf7d3b3f79a72f224a41897e294435040bdfd895ac8c46b06d8d99"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -107,19 +107,19 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:87994c3753ef386189a222556eaf7cb1ef63432d516b4344c7b2899ce544ad2a",
-                "sha256:c62362e3105c918272a95c9f4881587c3a3c68aa5fedcd322313def3688c9f7b"
+                "sha256:6b1e78ac44956adb3909da2194ad8397da0fde615ba3029648663b18f2b776fd",
+                "sha256:f26f7285780bda16c6ffb8db76c949aeeb45730d3f68626e31b90246ec00fe1a"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.20.50"
+            "version": "==1.20.51"
         },
         "botocore": {
             "hashes": [
-                "sha256:109d9a200f70268d5429423fd8052f6fed5e041853d6621081692ea5ad7f70c7",
-                "sha256:aa953d9767ff99a7aa35dde770a1405c8877cef9caf280859b94104483b8368d"
+                "sha256:372428fb18ba813431b2301c9306b97c0bc0a888127725b427f227734e370c7e",
+                "sha256:f715fba22d1d2ecf995d3168ddd9adca63979a6cddd35534ccc8550c690f1c88"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.23.50"
+            "version": "==1.23.51"
         },
         "bottle": {
             "hashes": [
@@ -1744,11 +1744,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:5b6aeb889888e571e58a0348e99a0de73a762544ece3f6d9e474fbe2c31fbf4f",
-                "sha256:9242401e539d62d9828e3168aebfd526bd64b2ad181fae007f7d8af26415b485"
+                "sha256:eadaa662cf34d43123cee252e21ab0cc7a160316ddfb107ad3d3c8cc1d1f722d",
+                "sha256:fb0631f46e163f4d0f88c496554df1ea748adb9cc5d616ccff2e89a1daaddd75"
             ],
             "index": "pypi",
-            "version": "==1.22.50"
+            "version": "==1.22.51"
         },
         "babel": {
             "hashes": [
@@ -1812,11 +1812,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:109d9a200f70268d5429423fd8052f6fed5e041853d6621081692ea5ad7f70c7",
-                "sha256:aa953d9767ff99a7aa35dde770a1405c8877cef9caf280859b94104483b8368d"
+                "sha256:372428fb18ba813431b2301c9306b97c0bc0a888127725b427f227734e370c7e",
+                "sha256:f715fba22d1d2ecf995d3168ddd9adca63979a6cddd35534ccc8550c690f1c88"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.23.50"
+            "version": "==1.23.51"
         },
         "c2cciutils": {
             "hashes": [
@@ -2189,7 +2189,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2450,10 +2450,10 @@
         },
         "node-vm2": {
             "hashes": [
-                "sha256:5cd0ccf3ca7c9503f956dd92d0dde8805c9b809dc23dec69e3fa0ec5ccc6fde8",
-                "sha256:adcb3ab277fb5e4e0c1acfd46ea227cf0bfbdef3882a5e46de0aeb26f3bcdd61"
+                "sha256:203fa24d416419b4d380b20a8e16a1f2fe6ee161f5f5a3d2f681bebac7a55391",
+                "sha256:a2ff821bb73c763d0034f435de6829aa3025eb9d168dfc3fde9a09ebd632ed25"
             ],
-            "version": "==0.4.1"
+            "version": "==0.4.2"
         },
         "oauthlib": {
             "hashes": [
@@ -2934,7 +2934,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4'",
+            "markers": "python_version >= '3.5' and python_version < '4.0'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
@@ -3098,11 +3098,11 @@
         },
         "tomli": {
             "hashes": [
-                "sha256:b5bde28da1fed24b9bd1d4d2b8cba62300bfb4ec9a6187a957e8ddb9434c5224",
-                "sha256:c292c34f58502a1eb2bbb9f5bbc9a5ebc37bee10ffb8c2d6bbdfa8eb13cc14e1"
+                "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
+                "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
             ],
             "markers": "python_full_version >= '3.6.0'",
-            "version": "==2.0.0"
+            "version": "==2.0.1"
         },
         "tqdm": {
             "hashes": [
