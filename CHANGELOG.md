@@ -1,3 +1,5 @@
+##### 2.6.0.94
+* Always clone the headers [c2cgeoportal#9290](https://github.com/camptocamp/c2cgeoportal/pull/9290)
 ##### 2.6.0.93
 * [Backport 2.6] Remove extra CVE in ignore [ngeo#8070](https://github.com/camptocamp/ngeo/pull/8070)
 ##### 2.6.0.92
