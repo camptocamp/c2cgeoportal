@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c316c20bcebf7d3b3f79a72f224a41897e294435040bdfd895ac8c46b06d8d99"
+            "sha256": "43a1986f3ddffc400486a497b4da4b28f5ca50e63b7fc79e2318c2517e2ecb17"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -49,11 +49,11 @@
         },
         "azure-core": {
             "hashes": [
-                "sha256:582699ad709f9b29870db41364bc3e46eac2a02368e336dc779b87772a6a227e",
-                "sha256:a342ebe9866e59a998e4098c65dd0b543cea06a9a5d4cc19c23a239c568bbb60"
+                "sha256:407381c74e2ccc16adb1f29c4a1b381ebd39e8661bbf60422926d8252d5b757d",
+                "sha256:4b6e405268a33b873107796495cec3f2f1b1ffe935624ce0fbddff36d38d3a4d"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.22.0"
+            "version": "==1.22.1"
         },
         "azure-identity": {
             "hashes": [
@@ -107,19 +107,19 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:6b1e78ac44956adb3909da2194ad8397da0fde615ba3029648663b18f2b776fd",
-                "sha256:f26f7285780bda16c6ffb8db76c949aeeb45730d3f68626e31b90246ec00fe1a"
+                "sha256:6dc260f2fde87ffd31f60c0c6148aa2076ff4d8235d2f59a8a9d88f0123fe450",
+                "sha256:b734346326e3e3d40d79f0ac7d21e64f1cc50c7540fcb285bee8634ee27684d3"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.20.51"
+            "version": "==1.20.52"
         },
         "botocore": {
             "hashes": [
-                "sha256:372428fb18ba813431b2301c9306b97c0bc0a888127725b427f227734e370c7e",
-                "sha256:f715fba22d1d2ecf995d3168ddd9adca63979a6cddd35534ccc8550c690f1c88"
+                "sha256:35a1a950c2bd8dd2fcc648c5f4d16814bfd7e3efd7998d3978b2f11665eb1668",
+                "sha256:f35918d01e422d8760f02e2f686cde625b8fdf8be82b083f5a16336a70fa4fd4"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.23.51"
+            "version": "==1.23.52"
         },
         "bottle": {
             "hashes": [
@@ -1108,10 +1108,10 @@
         },
         "pygraphviz": {
             "hashes": [
-                "sha256:eb2e25a2c647044e7b66b5a159be64daaef24b549fcf535c241369d6e6e09c45"
+                "sha256:fa18f7c6cea28341a4e466ed0cf05682b0a68288afe8dd7c9426782f7c1ae01c"
             ],
-            "markers": "python_version >= '3.7'",
-            "version": "==1.8"
+            "markers": "python_version >= '3.8'",
+            "version": "==1.9"
         },
         "pyjwt": {
             "hashes": [
@@ -1744,11 +1744,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:eadaa662cf34d43123cee252e21ab0cc7a160316ddfb107ad3d3c8cc1d1f722d",
-                "sha256:fb0631f46e163f4d0f88c496554df1ea748adb9cc5d616ccff2e89a1daaddd75"
+                "sha256:44b5310afd864bd02dcf5315e9784de65f7ac3ce959a2eaa1471b5bae6b723af",
+                "sha256:f4a068ce3589f1f62b6c78d5633bbe6bc125e325d64bfba1f252f26f09af173f"
             ],
             "index": "pypi",
-            "version": "==1.22.51"
+            "version": "==1.22.52"
         },
         "babel": {
             "hashes": [
@@ -1812,11 +1812,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:372428fb18ba813431b2301c9306b97c0bc0a888127725b427f227734e370c7e",
-                "sha256:f715fba22d1d2ecf995d3168ddd9adca63979a6cddd35534ccc8550c690f1c88"
+                "sha256:35a1a950c2bd8dd2fcc648c5f4d16814bfd7e3efd7998d3978b2f11665eb1668",
+                "sha256:f35918d01e422d8760f02e2f686cde625b8fdf8be82b083f5a16336a70fa4fd4"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.23.51"
+            "version": "==1.23.52"
         },
         "c2cciutils": {
             "hashes": [
@@ -2116,11 +2116,11 @@
         },
         "google-api-python-client": {
             "hashes": [
-                "sha256:533c69e8ddce6630a2ce5b98348f6a58a23df49cb92040a0086315df979404af",
-                "sha256:9e8863dec46224d4375cf3834e27ffd4bce79858f0f00a6109a51e3e62b4f3c2"
+                "sha256:39bb945d00ce5f70207a312b32418c238f3ae16559e30c4ff10dac1e0ed69244",
+                "sha256:8f9176e4f26c11b2561c43458da33d82425673d32298114e26d0e0a83c2011bc"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2.36.0"
+            "version": "==2.37.0"
         },
         "google-auth": {
             "hashes": [
@@ -2189,7 +2189,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2540,11 +2540,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:1d7385c7db91728b83efd0ca99a5afb296cab9d0ed8313a45ed8ba17967ecfca",
-                "sha256:440633ddfebcc36264232365d7840a970e75e1018d15b4327d11f91909045fda"
+                "sha256:30671902352e97b1eafd74ade8e4a694782bd3471685e78c32d0fdfd3aa7e7bb",
+                "sha256:8ec11dfba28ecc0715eb5fb0147a87b1bf325f349f3da9aab2cd6b50b96b692b"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==2.4.1"
+            "version": "==2.5.0"
         },
         "pluggy": {
             "hashes": [
@@ -2934,7 +2934,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
