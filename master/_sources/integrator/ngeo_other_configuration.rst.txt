@@ -888,3 +888,10 @@ Properties:
  * ``pointRecenterZoom`` (number, optional)
  * ``wfsTypes`` (:ref:`integrator_guide_ngeo_properties_WfsType`\[])
 
+.. _integrator_guide_ngeo_properties_pytreeLidarprofileJsonUrl:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~
+pytreeLidarprofileJsonUrl
+~~~~~~~~~~~~~~~~~~~~~~~~~
+URL to LIDAR profile pytree service.
+

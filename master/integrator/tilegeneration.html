@@ -549,9 +549,6 @@ or <code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_AC
 <span class="w">    </span><span class="nt">layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a_layer</span><span class="w"> </span><span class="c1"># Restrict to serve an certain number of layers [default is all]</span><span class="w"></span>
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mbtiles</span><span class="w"> </span><span class="c1"># The used cache [default use generation/default_cache]</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># the URL without location to MapCache, [default is http://localhost/]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mapcache_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost/</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mapcache_headers</span><span class="p">:</span><span class="w"> </span><span class="c1"># headers, can be used to access to an other Apache vhost [default is {}]</span><span class="w"></span>
-<span class="w">        </span><span class="nt">Host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
 <span class="w">    </span><span class="nt">geoms_redirect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># use the geoms to redirect to MapCache [default is false]</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># allowed extension in the static path (default value), not used for s3.</span><span class="w"></span>
 <span class="w">    </span><span class="nt">static_allow_extension</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">jpeg</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">png</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">xml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">js</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">html</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">css</span><span class="p p-Indicator">]</span><span class="w"></span>
@@ -666,8 +663,6 @@ WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
 <p><code class="docutils literal notranslate"><span class="pre">--debug</span></code> or <code class="docutils literal notranslate"><span class="pre">-d</span></code>: used to display debug message, please use this option to report issue. With the debug
 mode we don’t catch exceptions, and we don’t log time messages.</p>
 <p><code class="docutils literal notranslate"><span class="pre">--test</span> <span class="pre">&lt;n&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">&lt;n&gt;</span></code>: used to generate only <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> tiles, useful for test.</p>
-<p>The logging format is configurable in the<code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> - <code class="docutils literal notranslate"><span class="pre">generation/log_format</span></code>,
-<a class="reference external" href="http://docs.python.org/2/library/logging.html#logrecord-attributes">See</a>.</p>
 </section>
 </section>
 <section id="mutualized">
@@ -3041,20 +3036,6 @@ to a test page.</p>
 <tr class="row-even"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
-<li><p>log_format</p></li>
-</ul>
-</td>
-<td colspan="3"><p><em>Log format</em></p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>The logging format (main configuration), default is ‘%(levelname)s:%(name)s:%(funcName)s:%(message)s’</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>%(levelname)s:%(name)s:%(funcName)s:%(message)s</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>authorised_user</p></li>

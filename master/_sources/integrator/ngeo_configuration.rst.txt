@@ -70,3 +70,4 @@ Properties:
  * ``ngeoTilesPreloadingLimit`` (:ref:`integrator_guide_ngeo_properties_ngeoTilesPreloadingLimit`)
  * ``ngeoUsedKeyRegexp`` (:ref:`integrator_guide_ngeo_properties_ngeoUsedKeyRegexp`)
  * ``ngeoWfsPermalinkOptions`` (:ref:`integrator_guide_ngeo_properties_ngeoWfsPermalinkOptions`)
+ * ``pytreeLidarprofileJsonUrl`` (:ref:`integrator_guide_ngeo_properties_pytreeLidarprofileJsonUrl`)
