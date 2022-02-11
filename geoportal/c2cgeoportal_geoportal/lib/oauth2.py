@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2021, Camptocamp SA
+# Copyright (c) 2021-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import base64
 import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Union
@@ -109,12 +110,24 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
-        params = dict(request.decoded_body)
+        client_secret = None
+        if "Authorization" in request.headers and request.headers["Authorization"].startswith("Basic "):
+            decode = base64.b64decode(request.headers["Authorization"][6:]).decode()
+            username, password = decode.split(":")
+            if username == client_id:
+                client_secret = password
+            else:
+                LOG.info(
+                    "Authorization username '%s' differ from client_id '%s', ignoring.", username, client_id
+                )
+        if client_secret is None:
+            params = dict(request.decoded_body)
+            client_secret = params["client_secret"]
 
         request.client = (
             DBSession.query(static.OAuth2Client)
             .filter(static.OAuth2Client.client_id == client_id)
-            .filter(static.OAuth2Client.secret == params["client_secret"])
+            .filter(static.OAuth2Client.secret == client_secret)
             .one_or_none()
         )
 
