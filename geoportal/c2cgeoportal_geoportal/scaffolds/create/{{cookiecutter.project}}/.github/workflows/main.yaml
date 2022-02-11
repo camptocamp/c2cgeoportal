@@ -41,4 +41,4 @@ jobs:
 
       - name: Publish
         run: c2cciutils-publish
-      - run: ci/trigger
+      - run: c2cciutils-trigger-image-update

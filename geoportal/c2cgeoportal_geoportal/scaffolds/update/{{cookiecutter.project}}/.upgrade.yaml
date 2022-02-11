@@ -183,3 +183,6 @@ upgrade_files:
   - action: remove
     paths:
       - qgisserver/geomapfish.yaml.tmpl
+  - action: remove
+    paths:
+      - ci/trigger

@@ -19,7 +19,6 @@ profile:
   tmp:
     exclude:
       - /geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py
-      - /geoportal/c2cgeoportal_geoportal/scaffolds/create/ci/trigger
     tests:
       - B108 # Probable insecure usage of temp file/directory.
 skips:
