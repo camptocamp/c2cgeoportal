@@ -1,3 +1,4 @@
+##### 2.4.2.72
 ##### 2.4.2.71
 * Remove no more needed CVE ignore [c2cgeoportal#9289](https://github.com/camptocamp/c2cgeoportal/pull/9289)
 ##### 2.4.2.70
