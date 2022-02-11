@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -73,8 +73,7 @@ class Proxy:
         if method is None:
             method = self.request.method
 
-        if headers is None:
-            headers = dict(self.request.headers)
+        headers = dict(self.request.headers if headers is None else headers)
 
         # Forward request to target (without Host Header).
         # The original Host will be added back by pyramid.
