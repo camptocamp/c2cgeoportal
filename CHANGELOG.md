@@ -1,3 +1,5 @@
+##### 2.6.0.95
+* Be able to have a deferrable login for better integration with duoweb [ngeo#8104](https://github.com/camptocamp/ngeo/pull/8104)
 ##### 2.6.0.94
 * Always clone the headers [c2cgeoportal#9290](https://github.com/camptocamp/c2cgeoportal/pull/9290)
 ##### 2.6.0.93
