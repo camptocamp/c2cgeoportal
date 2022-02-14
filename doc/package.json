@@ -4,6 +4,6 @@
   "description": "GeoMapFish documentation",
   "author": "",
   "dependencies": {
-    "ngeo": "2.7.0-latest.20220208T102435Z.f1dba6def"
+    "ngeo": "2.7.0-latest.20220210T093524Z.baa976cc2"
   }
 }
