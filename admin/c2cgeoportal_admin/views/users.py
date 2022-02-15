@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -119,6 +119,8 @@ class UserViews(AbstractViews):  # type: ignore
                     email=user.email,
                     user=user.username,
                     password=password,
+                    application_url=self._request.route_url("base"),
+                    current_url=self._request.current_route_url(),
                 )
 
             return response

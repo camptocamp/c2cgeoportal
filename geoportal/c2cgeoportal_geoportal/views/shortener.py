@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2021, Camptocamp SA
+# Copyright (c) 2013-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -144,6 +144,8 @@ class Shortener:
                 full_url=url,
                 short_url=s_url,
                 message=self.request.params.get("message", ""),
+                application_url=self.request.route_url("base"),
+                current_url=self.request.current_route_url(),
             )
 
         set_common_headers(self.request, "shortener", Cache.PRIVATE_NO)

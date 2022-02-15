@@ -56,6 +56,7 @@ def app(app_env, dbsession):
     config.add_request_method(lambda request: dbsession, "dbsession", reify=True)
     config.add_route("user_add", "user_add")
     config.add_route("users_nb", "users_nb")
+    config.add_route("base", "/", static=True)
     config.scan(package="tests")
     app = config.make_wsgi_app()
     yield app
