@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -380,7 +380,13 @@ class Login:
             raise HTTPUnauthorized("See server logs for details")
 
         send_email_config(
-            self.request.registry.settings, "reset_password", user.email, user=username, password=password
+            self.request.registry.settings,
+            "reset_password",
+            user.email,
+            user=username,
+            password=password,
+            application_url=self.request.route_url("base"),
+            current_url=self.request.current_route_url(),
         )
 
         return {"success": True}
