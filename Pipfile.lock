@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "caf60d6248e2be0a3e647cc8e21e69f04d8f4a9e02f23fc9a295d0e45fe49d2f"
+            "sha256": "caca8a25f635677bf6c841d159aab50b7548f49b3828bee4b5afc0d999683b1f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -107,19 +107,19 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:1a272a1dd36414b1626a47bb580425203be0b5a34caa117f38a5e18adf21f918",
-                "sha256:8129ad42cc0120d1c63daa18512d6f0b1439e385b2b6e0fe987f116bdf795546"
+                "sha256:25a76b7b530a124d9e526c62ff2b7da5782315195badb9a6273714898d689820",
+                "sha256:cc40566dec3f48611a82ace07b29489848e9bd35a51e3e992d1902a3c037e9fc"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.20.54"
+            "version": "==1.21.0"
         },
         "botocore": {
             "hashes": [
-                "sha256:06ae8076c4dcf3d72bec4d37e5f2dce4a92a18a8cdaa3bfaa6e3b7b5e30a8d7e",
-                "sha256:4bb9ba16cccee5f5a2602049bc3e2db6865346b2550667f3013bdf33b0a01ceb"
+                "sha256:2bf4463513bd89817aa5d7341ed81c7c76d906e6c70672c8762d64ecf3275771",
+                "sha256:47723cef6112f451630bf2446cfd6be2782cc1d6b1b92acb12ff00797588c5f3"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.23.54"
+            "version": "==1.24.0"
         },
         "bottle": {
             "hashes": [
@@ -502,11 +502,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:6affcdb3aec542dd98df8211e730bba6c5f2bec8288d47bacacde898f548c9ad",
-                "sha256:9e5e553bbba1843cb4a00823014b907616be46ee503d2b9ba001d214a8da218f"
+                "sha256:175f4ee440a0317f6e8d81b7f8d4869f93316170a65ad2b007d2929186c8052c",
+                "sha256:e0bc84ff355328a4adfc5240c4f211e0ab386f80aa640d1b11f0618a1d282094"
             ],
             "markers": "python_version < '3.9'",
-            "version": "==4.11.0"
+            "version": "==4.11.1"
         },
         "importlib-resources": {
             "hashes": [
@@ -1746,11 +1746,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:3f6413e168fca67859222af8ed0760a3be1493c332a642c0b53088804269074b",
-                "sha256:634989d74cd205d8a5b511950b803cda939919a7bc30b58d94be1fbe8ee97ba6"
+                "sha256:dbd843896df6c230841774d3a400a59fef2744390cb9f1156a357c94a2156a17",
+                "sha256:ec4ae488fdcc0ee9e528e95a5a355b5a2800e35fab88d78c052cc13f69f3f719"
             ],
             "index": "pypi",
-            "version": "==1.22.54"
+            "version": "==1.22.55"
         },
         "babel": {
             "hashes": [
@@ -1814,11 +1814,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:06ae8076c4dcf3d72bec4d37e5f2dce4a92a18a8cdaa3bfaa6e3b7b5e30a8d7e",
-                "sha256:4bb9ba16cccee5f5a2602049bc3e2db6865346b2550667f3013bdf33b0a01ceb"
+                "sha256:2bf4463513bd89817aa5d7341ed81c7c76d906e6c70672c8762d64ecf3275771",
+                "sha256:47723cef6112f451630bf2446cfd6be2782cc1d6b1b92acb12ff00797588c5f3"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.23.54"
+            "version": "==1.24.0"
         },
         "c2cciutils": {
             "hashes": [
@@ -2173,11 +2173,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:6affcdb3aec542dd98df8211e730bba6c5f2bec8288d47bacacde898f548c9ad",
-                "sha256:9e5e553bbba1843cb4a00823014b907616be46ee503d2b9ba001d214a8da218f"
+                "sha256:175f4ee440a0317f6e8d81b7f8d4869f93316170a65ad2b007d2929186c8052c",
+                "sha256:e0bc84ff355328a4adfc5240c4f211e0ab386f80aa640d1b11f0618a1d282094"
             ],
             "markers": "python_version < '3.9'",
-            "version": "==4.11.0"
+            "version": "==4.11.1"
         },
         "iniconfig": {
             "hashes": [
@@ -2452,10 +2452,10 @@
         },
         "node-vm2": {
             "hashes": [
-                "sha256:203fa24d416419b4d380b20a8e16a1f2fe6ee161f5f5a3d2f681bebac7a55391",
-                "sha256:a2ff821bb73c763d0034f435de6829aa3025eb9d168dfc3fde9a09ebd632ed25"
+                "sha256:3c150c4a1a368b32712df314e02450d10ecae44ffb036ea0542358961fd361ac",
+                "sha256:b5f98586695fc0c42863e0eb7adcd8c254f02ceda46ad4d46a2436a107b56b2c"
             ],
-            "version": "==0.4.2"
+            "version": "==0.4.3"
         },
         "oauthlib": {
             "hashes": [
