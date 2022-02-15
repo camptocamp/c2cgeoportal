@@ -226,4 +226,4 @@ To have the landing page you should:
 - Create a new OGC server with a name e.g. ``qgis`` and no ``MAP`` in the query string.
 - Define the ``QGIS_SERVER_LANDING_PAGE_PREFIX`` to, in our example, ``/mapserv_proxy/qgis``.
 
-Then open the landing page in your browser with ``https://<host>/mapserv_proxy/qgis``.
+Then open the landing page in your browser with ``https://<host>/mapserv_proxy/qgis/``.
