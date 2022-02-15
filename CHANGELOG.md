@@ -1,3 +1,6 @@
+##### 2.6.0.96
+* Fix oauth [c2cgeoportal#9294](https://github.com/camptocamp/c2cgeoportal/pull/9294)
+* Add application URL to email templates [c2cgeoportal#9295](https://github.com/camptocamp/c2cgeoportal/pull/9295)
 ##### 2.6.0.95
 * Be able to have a deferrable login for better integration with duoweb [ngeo#8104](https://github.com/camptocamp/ngeo/pull/8104)
 ##### 2.6.0.94
