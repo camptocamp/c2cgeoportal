@@ -1,3 +1,5 @@
+##### 2.6.0.97
+* Already fixed CVE [c2cgeoportal#9316](https://github.com/camptocamp/c2cgeoportal/pull/9316)
 ##### 2.6.0.96
 * Fix oauth [c2cgeoportal#9294](https://github.com/camptocamp/c2cgeoportal/pull/9294)
 * Add application URL to email templates [c2cgeoportal#9295](https://github.com/camptocamp/c2cgeoportal/pull/9295)
