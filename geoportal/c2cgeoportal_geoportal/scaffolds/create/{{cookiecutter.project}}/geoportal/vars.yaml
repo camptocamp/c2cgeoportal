@@ -365,6 +365,7 @@ update_paths:
   - resourceproxy
   - servers
   - shortener.allowed_hosts
+  - smtp
   - sqlalchemy
   - sqlalchemy_slave
   - tinyowsproxy

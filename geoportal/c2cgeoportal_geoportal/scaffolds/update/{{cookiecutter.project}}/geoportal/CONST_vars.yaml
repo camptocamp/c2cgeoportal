@@ -848,7 +848,9 @@ vars:
     geometry_validation: True
 
   # Used by reset_password and shortener to send emails
-  smtp: {}
+  smtp:
+    ssl: false
+    starttls: false
 
   # Used to send an email on password reset
   reset_password: {}
