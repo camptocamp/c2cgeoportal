@@ -43,7 +43,7 @@ def main() -> None:
     )
     parser.add_argument("--list-containers", help="List the containers", action="store_true")
     parser.add_argument("--container", help="Container name")
-    parser.add_argument("--list", help="List the files in the container (prefix)", action="store_true")
+    parser.add_argument("--list", help="List the files in the container (prefix)")
     parser.add_argument("--vrt", help="Create a vrt file (prefix, suffix)", nargs=2)
     parser.add_argument("--gdaltindex", help="Create a GDAL VRT file (prefix, suffix)", nargs=2)
     parser.add_argument("--sync", help="Sync the local files to the container (local, azure)", nargs=2)
@@ -62,7 +62,7 @@ def main() -> None:
 
     if args.container:
         container_client = blob_service_client.get_container_client(container=args.container)
-        if args.list:
+        if args.list is not None:
             print("\n".join([c["name"] for c in container_client.walk_blobs(name_starts_with=args.list)]))
 
         if args.vrt:
