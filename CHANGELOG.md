@@ -1,3 +1,5 @@
+##### 2.6.0.98
+* [Backport 2.6] Ignore unconcern CVE 1007030 [ngeo#8144](https://github.com/camptocamp/ngeo/pull/8144)
 ##### 2.6.0.97
 * Already fixed CVE [c2cgeoportal#9316](https://github.com/camptocamp/c2cgeoportal/pull/9316)
 ##### 2.6.0.96
