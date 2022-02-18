@@ -1,3 +1,5 @@
+##### 2.5.0.196
+* Ignore unconcern CVE 1007030 [ngeo#8143](https://github.com/camptocamp/ngeo/pull/8143)
 ##### 2.5.0.195
 * Remove extra CVE in ignore [ngeo#8069](https://github.com/camptocamp/ngeo/pull/8069)
 ##### 2.5.0.194
