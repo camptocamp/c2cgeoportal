@@ -1,0 +1,173 @@
+#!/usr/bin/env python3
+
+# The MIT License (MIT)
+#
+# Copyright (c) Camptocamp SA
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+import argparse
+import stat
+import sys
+import yaml
+
+
+class YamlNode:
+    def __init__(self, content, tree_so_far=[]) -> None:
+        self.tree = tree_so_far.copy()
+        self.items_list = []
+        self.values = []
+        if isinstance(content, str):
+            content = yaml.load(content, Loader=yaml.FullLoader)
+        self.parse(content)
+
+    def parse(self, content):
+        if isinstance(content, dict):
+            for k, v in content.items():
+                if not isinstance(v, dict) and not isinstance(v, list):
+                    self.values.append({k: v})
+                else:
+                    nextTree = self.tree.copy()
+                    nextTree.append(k)
+                    self.items_list.append(YamlNode(v, nextTree))
+        elif isinstance(content, list):
+            for v in content:
+                if isinstance(v, dict):
+                    nextTree = self.tree.copy()
+                    self.values.append(YamlNode(v, nextTree))
+                else:
+                    self.values.append(v)
+        else:
+            self.value = content
+
+    @staticmethod
+    def sanitize(path_str):
+        if not path_str[-1:] == "\n":
+            path_str += "\n"
+        return path_str
+
+    def __repr__(self) -> str:
+        out_str = ""
+        if self.values:
+            for item in self.values:
+                if isinstance(item, dict):
+                    for k, v in item.items():
+                        out_str += str(".".join(self.tree)) + "." + str(k) + "=" + str(v) + "\n"
+                else:
+                    if item:
+                        if not str(".".join(self.tree)) in str(item):
+                            out_str += self.sanitize(str(".".join(self.tree)) + "=" + str(item))
+                        else:
+                            out_str += self.sanitize(str(item))
+        if self.items_list:
+            for item in self.items_list:
+                out_str += str(item)
+        return out_str
+
+
+def main() -> None:
+    """
+    yamlutlis: print a yaml file as lines such as
+
+
+    example:
+    --------
+
+    cat << EOF > /tmp/file.yaml
+    a:
+      aa:
+        - 1
+        - 2
+      ab:
+       - name: first
+         value: firstvalue
+       - name: second
+         value: secondvalue
+    b:
+      baa:
+        merli:
+          x: 1
+          y:
+            toto:
+              bip:
+                - 12
+                - 24
+            kiki: 42
+      ba: 3
+      df:
+        xyz: 10
+      bb: 4
+    EOF
+
+    it can be used with a file argument or in a pipe
+
+    # as file
+    ./yamlutils /tmp/file.yaml
+
+    # in a pipe
+    cat /tmp/file.yaml | ./yamlutils
+
+
+
+    both the above commands output the following:
+
+    a.aa=1
+    a.aa=2
+    a.ab.name=first
+    a.ab.value=firstvalue
+    a.ab.name=second
+    a.ab.value=secondvalue
+    b.ba=3
+    b.bb=4
+    b.baa.merli.x=1
+    b.baa.merli.y.kiki=42
+    b.baa.merli.y.toto.bip=12
+    b.baa.merli.y.toto.bip=24
+    b.df.xyz=10
+
+    """
+    parser = argparse.ArgumentParser()
+    # TODO:
+    # it might be useful to add a second argument to generate the opposite,
+    # but I don't have time.
+    # For the moment we keep this logic here ready so that the sys.input logic
+    # is already working with argparse
+    parser.add_argument(
+        "-i",
+        "--inline",
+        help="take one yaml file an print it out with all the values as inline values",
+        default=True,
+        required=False,
+    )
+
+    args, other = parser.parse_known_args()
+
+    if other:
+        with open(other[0]) as yaml_file:
+            document = "\n".join(yaml_file.readlines())
+    else:
+        document = "\n".join(sys.stdin.readlines())
+
+    if args.inline:
+        yaml_content = YamlNode(yaml.load(document, Loader=yaml.FullLoader))
+        sys.stdout.write(str(yaml_content))
+
+
+if __name__ == "__main__":
+    main()
