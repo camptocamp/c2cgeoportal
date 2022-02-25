@@ -109,7 +109,6 @@ def main() -> None:
                 - 12
                 - 24
             kiki: 42
-      ba: 3
       df:
         xyz: 10
       bb: 4
@@ -133,7 +132,6 @@ def main() -> None:
     a.ab.value=firstvalue
     a.ab.name=second
     a.ab.value=secondvalue
-    b.ba=3
     b.bb=4
     b.baa.merli.x=1
     b.baa.merli.y.kiki=42
