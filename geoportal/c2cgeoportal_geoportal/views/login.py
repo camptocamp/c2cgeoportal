@@ -294,11 +294,19 @@ class Login:
         old_password = self.request.POST.get("oldPassword")
         new_password = self.request.POST.get("newPassword")
         new_password_confirm = self.request.POST.get("confirmNewPassword")
+        otp = self.request.POST.get("otp")
         if new_password is None or new_password_confirm is None or old_password is None:
             raise HTTPBadRequest(
                 "'oldPassword', 'newPassword' and 'confirmNewPassword' should be available in "
                 "request params."
             )
+        if self.two_factor_auth and otp is None:
+            raise HTTPBadRequest("The second factor is missing.")
+
+        if login is not None and self.request.user is None:
+            raise HTTPBadRequest("You should be logged in or 'login' should be available in request params.")
+        if new_password != new_password_confirm:
+            raise HTTPBadRequest("The new password and the new password confirmation do not match")
 
         if login is not None:
             try:
@@ -311,28 +319,16 @@ class Login:
                 raise HTTPUnauthorized("See server logs for details")  # pylint: disable=raise-missing-from
 
             if self.two_factor_auth:
-                otp = self.request.POST.get("otp")
-                if otp is None:
-                    raise HTTPBadRequest("The second factor is missing.")
                 if not self._validate_2fa_totp(user, otp):
                     LOG.info("The second factor is wrong for user '%s'.", login)
                     raise HTTPUnauthorized("See server logs for details")
-
         else:
-            if self.request.user is not None:
-                user = self.request.user
-            else:
-                raise HTTPBadRequest(
-                    "You should be logged in or 'login' should be available in request params."
-                )
+            user = self.request.user
 
         username = self.request.registry.validate_user(self.request, user.username, old_password)
         if username is None:
             LOG.info("The old password is wrong for user '%s'.", username)
             raise HTTPUnauthorized("See server logs for details")
-
-        if new_password != new_password_confirm:
-            raise HTTPBadRequest("The new password and the new password confirmation do not match")
 
         user.password = new_password
         user.is_password_changed = True
