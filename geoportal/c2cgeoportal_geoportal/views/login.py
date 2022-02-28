@@ -302,8 +302,7 @@ class Login:
             )
         if self.two_factor_auth and otp is None:
             raise HTTPBadRequest("The second factor is missing.")
-
-        if login is not None and self.request.user is None:
+        if login is None and self.request.user is None:
             raise HTTPBadRequest("You should be logged in or 'login' should be available in request params.")
         if new_password != new_password_confirm:
             raise HTTPBadRequest("The new password and the new password confirmation do not match")
@@ -361,7 +360,6 @@ class Login:
         username = self.request.POST.get("login")
         if username is None:
             raise HTTPBadRequest("'login' should be available in request params.")
-        username = self.request.POST["login"]
         try:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
         except NoResultFound:
@@ -382,12 +380,15 @@ class Login:
         user, username, password, error = self._loginresetpassword()
         if error is not None:
             LOG.info(error)
-            raise HTTPUnauthorized("See server logs for details")
-        assert user is not None
-        assert password is not None
+            return {"success": True}
+
+        if user is None:
+            LOG.info("The user is not found without any error.")
+            return {"success": True}
+
         if user.deactivated:
             LOG.info("The user '%s' is deactivated", username)
-            raise HTTPUnauthorized("See server logs for details")
+            return {"success": True}
 
         send_email_config(
             self.request.registry.settings,
