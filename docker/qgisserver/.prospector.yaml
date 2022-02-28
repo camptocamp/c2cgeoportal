@@ -1,7 +1,7 @@
 ---
 strictness: veryhigh
 
-pep8:
+pycodestyle:
   disable:
     - E501
 
