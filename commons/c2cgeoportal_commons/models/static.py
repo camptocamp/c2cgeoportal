@@ -312,7 +312,7 @@ class User(Base):  # type: ignore
 
         if (
             self.temp_password is not None
-            and self.temp_password != ""
+            and self.temp_password != ""  # nosec
             and compare_hash(self.temp_password, crypt.crypt(passwd, self.temp_password))
         ):
             self._password = self.temp_password
