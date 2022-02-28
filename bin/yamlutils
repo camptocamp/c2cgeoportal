@@ -158,7 +158,7 @@ def main() -> None:
 
     if other:
         with open(other[0]) as yaml_file:
-            document = "\n".join(yaml_file.readlines())
+            document = yaml_file.read()
     else:
         document = "\n".join(sys.stdin.readlines())
 
