@@ -9,14 +9,14 @@ ignore-paths:
   - CONST_create_template
   - scaffolds
 
-pep8:
+pycodestyle:
   disable:
     - E203 # Whitespace before ':'
     - E722 # Do not use bare 'except'
   options:
     max-line-length: 110
 
-pep257:
+pydocstyle:
   disable:
     - D100 # Missing docstring in public module
     - D102 # Missing docstring in public method
