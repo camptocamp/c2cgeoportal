@@ -85,7 +85,6 @@ def main() -> None:
     """
     yamlutlis: print a yaml file as lines such as
 
-
     example:
     --------
 
@@ -121,8 +120,6 @@ def main() -> None:
 
     # in a pipe
     cat /tmp/file.yaml | ./yamlutils
-
-
 
     both the above commands output the following:
 
@@ -163,7 +160,7 @@ def main() -> None:
         document = "\n".join(sys.stdin.readlines())
 
     if args.inline:
-        yaml_content = YamlNode(yaml.load(document, Loader=yaml.FullLoader))
+        yaml_content = YamlNode(yaml.load(document, Loader=yaml.SafeLoader))
         sys.stdout.write(str(yaml_content))
 
 
