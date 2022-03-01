@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-awscli = "==1.22.62"  # Work with Object storage
+awscli = "==1.22.63"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
 beautifulsoup4 = "==4.10.0"  # admin tests
 coverage = "==6.3.2"  # Build coverage XML for Codacy
@@ -16,7 +16,7 @@ pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==3.0.0"  # tests
 transifex-client = "==0.14.4"  # Makefile
 WebTest = "==3.0.0"  # admin tests
-prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.6.0"}
+prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.4"}
 flake8 = "==3.9.2"
 types-pytz = "==2021.3.5"
 types-pyyaml = "==6.0.4"
