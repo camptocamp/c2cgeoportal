@@ -23,7 +23,6 @@
 
 
 import argparse
-import stat
 import sys
 import yaml
 
