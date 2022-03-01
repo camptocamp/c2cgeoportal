@@ -1,3 +1,5 @@
+##### 2.6.0.99
+* Set timezone in datetime inputs only on saving [ngeo#8183](https://github.com/camptocamp/ngeo/pull/8183)
 ##### 2.6.0.98
 * [Backport 2.6] Ignore unconcern CVE 1007030 [ngeo#8144](https://github.com/camptocamp/ngeo/pull/8144)
 ##### 2.6.0.97
