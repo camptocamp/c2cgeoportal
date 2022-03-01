@@ -1,3 +1,5 @@
+##### 2.5.0.198
+* [Backport 2.5] Edition: Fix undefined boolean to false [ngeo#8191](https://github.com/camptocamp/ngeo/pull/8191)
 ##### 2.5.0.197
 * [Backport 2.5] Set timezone in datetime inputs only on saving [ngeo#8186](https://github.com/camptocamp/ngeo/pull/8186)
 ##### 2.5.0.196
