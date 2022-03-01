@@ -1,6 +1,6 @@
 max-line-length: 110
 
-pep8:
+pycodestyle:
   options:
     max-line-length: 110
   disable:
