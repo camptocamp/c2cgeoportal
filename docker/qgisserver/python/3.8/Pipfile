@@ -18,7 +18,7 @@ setuptools = "==59.8.0"
 psycopg2 = "==2.9.3"
 
 [dev-packages]
-prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.6.0"}
+prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.5"}
 flake8 = "==3.9.2"
 types-pyyaml = "==6.0.4"
 
