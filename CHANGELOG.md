@@ -1,3 +1,6 @@
+##### 2.6.0.101
+* [Backport 2.6] Set the print panel closed when we reduce it [ngeo#8188](https://github.com/camptocamp/ngeo/pull/8188)
+* [Backport 2.6] Fixed height when panels are moved/opened [ngeo#8200](https://github.com/camptocamp/ngeo/pull/8200)
 ##### 2.6.0.100
 * Edition: Fix undefined boolean to false [ngeo#8189](https://github.com/camptocamp/ngeo/pull/8189)
 ##### 2.6.0.99
