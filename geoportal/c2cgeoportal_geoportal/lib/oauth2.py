@@ -1006,13 +1006,21 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         raise NotImplementedError("Not implemented.")
 
 
-@OBJECT_CACHE_REGION.cache_on_arguments()  # type: ignore
 def get_oauth_client(settings: Dict[str, Any]) -> oauthlib.oauth2.WebApplicationServer:
     """Get the oauth2 client, with a cache."""
     authentication_settings = settings.get("authentication", {})
+    return _get_oauth_client_cache(
+        authentication_settings.get("oauth2_authorization_expire_minutes", 10),
+        authentication_settings.get("oauth2_token_expire_minutes", 60),
+    )
+
+
+@OBJECT_CACHE_REGION.cache_on_arguments()  # type: ignore
+def _get_oauth_client_cache(
+    authorization_expire_minutes: int, token_expire_minutes: int
+) -> oauthlib.oauth2.WebApplicationServer:
+    """Get the oauth2 client, with a cache."""
     return oauthlib.oauth2.WebApplicationServer(
-        RequestValidator(
-            authorization_expires_in=authentication_settings.get("oauth2_authorization_expire_minutes", 10)
-        ),
-        token_expires_in=authentication_settings.get("oauth2_token_expire_minutes", 60) * 60,
+        RequestValidator(authorization_expires_in=authorization_expire_minutes),
+        token_expires_in=token_expire_minutes * 60,
     )
