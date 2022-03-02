@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a64bf1e251356fe758c4ce93e10f3245b94a869ed6dbbca0de00399618ba4ee4"
+            "sha256": "c68cca2eef8022a477823496347b398e87a55ccb58d3f6f3ffca439b7edbe27a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -2177,7 +2177,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2216,7 +2216,7 @@
                 "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83",
                 "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"
             ],
-            "markers": "python_version >= '3'",
+            "markers": "python_version >= '3.7'",
             "version": "==4.4.0"
         },
         "jsonschema-gentypes": {
@@ -2299,11 +2299,11 @@
         },
         "mappyfile": {
             "hashes": [
-                "sha256:683af8ceba57a41b39be43342c98f32f49e2f11b1edf9093b9a2a37ce760e0e8",
-                "sha256:753e01e3bc1343906a5009a504a2ddb60745cadb555e3beab4286ce3f841c6f0"
+                "sha256:55e6176ae5b83304a5d9e41e0d28d5fdb6a01db2d5b3af3b27999fb629c2eb8d",
+                "sha256:84f842e8fede45f7995797f5290d4322a40e3b9ac6a448d1798950ddfb20a65b"
             ],
             "index": "pypi",
-            "version": "==0.9.4"
+            "version": "==0.9.5"
         },
         "markdown": {
             "hashes": [
@@ -2890,7 +2890,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
