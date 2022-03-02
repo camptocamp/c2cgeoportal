@@ -475,5 +475,5 @@ class Test2faView(TestCase):
             Login(request).loginresetpassword()
 
         request = self._create_request_obj(POST={"login": "__test_user_unexisting"})
-        with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
-            Login(request).loginresetpassword()
+        # Shouldn't raise an exception to avoid user enumeration
+        Login(request).loginresetpassword()
