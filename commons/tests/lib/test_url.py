@@ -27,6 +27,7 @@
 
 # pylint: disable=missing-docstring
 
+from typing import Set
 from unittest import TestCase
 
 from pyramid.testing import DummyRequest
@@ -125,6 +126,7 @@ class TestUrl(TestCase):
                 "srv": "https://example.com/test",
                 "srv_alt": "https://example.com/test/",
                 "full_url": "https://example.com/test.xml",
+                "srv_no_path": "https://example.com",
             },
         }
         request.scheme = "https"
@@ -173,8 +175,15 @@ class TestUrl(TestCase):
         self.assertEqual(
             errors,
             {
-                "test: The server 'srv2' (config://srv2/icon.png) is not found in the config: [srv, srv_alt, full_url]"
+                "test: The server 'srv2' (config://srv2/icon.png) is not found in the config: [srv, srv_alt, full_url, srv_no_path]",
             },
+        )
+        self.assertEqual(
+            get_url2("test", "config://srv_no_path/icon.png", request, errors=errors).url(),
+            "https://example.com/icon.png",
+        )
+        self.assertEqual(
+            get_url2("test", "config://srv_no_path", request, errors=errors).url(), "https://example.com"
         )
 
     def test_get_url2_dict(self):

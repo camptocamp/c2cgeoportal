@@ -213,7 +213,7 @@ def get_url2(
             url_obj_server = Url(server)
 
         if url_obj.path != "":
-            if url_obj_server.path[-1] != "/":
+            if url_obj_server.path == "" or url_obj_server.path[-1] != "/":
                 url_obj_server.path += "/"
             url_obj_server.path = urllib.parse.urljoin(url_obj_server.path, url_obj.path[1:])
         url_obj_server.add_query(url_obj.query, force=True)
