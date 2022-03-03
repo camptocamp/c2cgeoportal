@@ -1,3 +1,5 @@
+##### 2.6.0.103
+* Catch error on WFS query promise (in snapping) [ngeo#8201](https://github.com/camptocamp/ngeo/pull/8201)
 ##### 2.6.0.102
 * [Backport 2.6] Don't have all the config in the cache key [c2cgeoportal#9367](https://github.com/camptocamp/c2cgeoportal/pull/9367)
 ##### 2.6.0.101
