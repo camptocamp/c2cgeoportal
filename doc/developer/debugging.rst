@@ -144,31 +144,33 @@ Be sure that the volumes for c2cgeoportal are uncommented.
 Remote debugging using Visual Studio Code
 .........................................
 
-* In ``geoportal/requirements.txt`` uncomment ``ptvsd``.
+* In ``geoportal/requirements.txt`` uncomment ``debugpy``.
 * In the code add ``breakpoint()`` where you want to add a breakpoint.
 * In Visual Studio Code use the config:
 
   .. code::
+    {
+        "configurations": [
+            {
+                "name": "Python: Remote Attach",
+                "type": "python",
+                "request": "attach",
+                "connect": {
+                    "host": "localhost",
+                    "port": 5678
+                },
+                "pathMappings": [
+                    {
+                        "localRoot": "${workspaceFolder}",
+                        "remoteRoot": "/app/geoportal"
+                    }
+                ]
+            }
+        ]
+    }
 
-     {
-         "name": "Python: Remote Attach",
-         "type": "python",
-         "request": "attach",
-         "port": 5678,
-         "host": "localhost",
-         "pathMappings": [
-             {
-                 "localRoot": "${workspaceFolder}/project/",
-                 "remoteRoot": "/app/"
-             },
-             {
-                 "localRoot": "${workspaceFolder}/c2cgeoportal/",
-                 "remoteRoot": "/opt/c2cgeoportal/"
-             }
-         ]
-     },
 
-See also: `ptvsd usage <https://github.com/microsoft/ptvsd#ptvsd-import-usage>`_,
+See also: `debugpy usage <https://github.com/microsoft/debugpy#debugpy-import-usage>`_,
 `Python debug configurations in Visual Studio Code <https://code.visualstudio.com/docs/python/debugging>`_
 
 .. _upgrade_debugging:
