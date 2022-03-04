@@ -390,6 +390,10 @@ Redis
 
 - Redis can be used in a scalable architecture (with sentinel), this is disabled by default.
 
+Environment
+-----------
+
+C2C_SECRET: Default value "c2crulez" has been removed for evident security reason.
 
 Changes to apply
 ================
