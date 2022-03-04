@@ -1,3 +1,6 @@
+##### 2.6.0.104
+* Remove default value for C2C_SECRET [c2cgeoportal#9368](https://github.com/camptocamp/c2cgeoportal/pull/9368)
+* Add missing reject in deferrableOnSuccessfulLogin [ngeo#8208](https://github.com/camptocamp/ngeo/pull/8208)
 ##### 2.6.0.103
 * Catch error on WFS query promise (in snapping) [ngeo#8201](https://github.com/camptocamp/ngeo/pull/8201)
 ##### 2.6.0.102
