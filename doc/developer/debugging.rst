@@ -149,6 +149,7 @@ Remote debugging using Visual Studio Code
 * In Visual Studio Code use the config:
 
   .. code::
+
     {
         "configurations": [
             {
