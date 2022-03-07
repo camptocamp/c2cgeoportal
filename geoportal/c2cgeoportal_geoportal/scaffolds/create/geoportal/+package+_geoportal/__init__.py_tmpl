@@ -50,7 +50,7 @@ def main(global_config, **settings):
     try:
         import debugpy  # pylint: disable=import-error,import-outside-toplevel
 
-        debugpy.listen(address=("0.0.0.0", 5678))
+        debugpy.listen(address=("0.0.0.0", 5678))  # nosec
         # debugpy.wait_for_client()
     except ModuleNotFoundError:
         pass
