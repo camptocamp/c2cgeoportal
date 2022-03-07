@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fff37eb86b7709a80aa7b044c6ffe0653addd9be662382b0416f096ce532cf65"
+            "sha256": "88347b61878635b261d4788849455548bb138c1cd96cbfcb89247e08b67b7e12"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -58,11 +58,11 @@
         },
         "geoalchemy2": {
             "hashes": [
-                "sha256:22350c34c4c31faead91b2f0146b68835dcd66c34122ba1f2277a9dfb6543baa",
-                "sha256:3db833746e11bc802b754751ec94eaab81009a9ad8fe647d461fe76d1a47a3fd"
+                "sha256:43ce38a5387c9b380b4c9d20d720c3d8cf1752ca4f5f18aa88041be11f6948a3",
+                "sha256:f92a0faddb5b74384dbbf3c7000433358ce8e07a180fe1d6c2843eaa0437ff08"
             ],
             "index": "pypi",
-            "version": "==0.10.2"
+            "version": "==0.11.1"
         },
         "geojson": {
             "hashes": [
@@ -594,10 +594,10 @@
         },
         "bandit": {
             "hashes": [
-                "sha256:3ce9b4e6a4f7f41aa966c9543e635dd35e52a793a47e746f0c55c7ecfc69d7e8",
-                "sha256:58772ca951bf1129dda8a280d351547de832720bf7b5c29fac3103927980b8a6"
+                "sha256:2d63a8c573417bae338962d4b9b06fbc6080f74ecd955a092849e1e65c717bd2",
+                "sha256:412d3f259dab4077d0e7f0c11f50f650cc7d10db905d98f6520a95a18049658a"
             ],
-            "version": "==1.7.3"
+            "version": "==1.7.4"
         },
         "dodgy": {
             "hashes": [
