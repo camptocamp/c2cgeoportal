@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a0383db046736fc15851c120572c5c7365bb6b4979981e75680d3e574de5c289"
+            "sha256": "71cbea4f0b5b883a680e63a1b228071223f6bd62ae6f74c50b8af5ced0578286"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -387,11 +387,11 @@
         },
         "geoalchemy2": {
             "hashes": [
-                "sha256:22350c34c4c31faead91b2f0146b68835dcd66c34122ba1f2277a9dfb6543baa",
-                "sha256:3db833746e11bc802b754751ec94eaab81009a9ad8fe647d461fe76d1a47a3fd"
+                "sha256:43ce38a5387c9b380b4c9d20d720c3d8cf1752ca4f5f18aa88041be11f6948a3",
+                "sha256:f92a0faddb5b74384dbbf3c7000433358ce8e07a180fe1d6c2843eaa0437ff08"
             ],
             "index": "pypi",
-            "version": "==0.10.2"
+            "version": "==0.11.1"
         },
         "geojson": {
             "hashes": [
@@ -2185,7 +2185,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2224,7 +2224,7 @@
                 "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83",
                 "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_version >= '3'",
             "version": "==4.4.0"
         },
         "jsonschema-gentypes": {
@@ -2898,7 +2898,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4'",
+            "markers": "python_version >= '3.5' and python_version < '4.0'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
