@@ -46,7 +46,8 @@ def main() -> None:
     parser.add_argument("--list", help="List the files in the container (prefix)")
     parser.add_argument("--vrt", help="Create a vrt file (prefix, suffix)", nargs=2)
     parser.add_argument("--gdaltindex", help="Create a GDAL VRT file (prefix, suffix)", nargs=2)
-    parser.add_argument("--sync", help="Sync the local files to the container (local, azure)", nargs=2)
+    parser.add_argument("--sync-upload", help="Upload local files to the container (local, azure)", nargs=2)
+    parser.add_argument("--sync-download", help="Download files from the container (azure, local)", nargs=2)
     args = parser.parse_args()
 
     blob_service_client = BlobServiceClient.from_connection_string(args.connection_string)
@@ -86,15 +87,30 @@ def main() -> None:
             print(f"{os.getcwd()}/index.prj")
             print(f"{os.getcwd()}/index.dbf")
 
-        if args.sync:
-            for filename in glob.glob(f"{args.sync[0]}/**", recursive=True):
+        if args.sync_upload:
+            print()
+            for filename in glob.glob(f"{args.sync_upload[0]}/**", recursive=True):
                 if os.path.isfile(filename):
-                    relative = filename[len(args.sync[0]) + 1 :]
-                    dest = os.path.join(args.sync[1], relative) if args.sync[1] else relative
+                    relative = filename[len(args.sync_upload[0]) + 1 :]
+                    dest = os.path.join(args.sync_upload[1], relative) if args.sync_upload[1] else relative
                     print(f"{filename} -> {dest}")
                     blob_client = container_client.get_blob_client(blob=dest)
                     with open(filename, "rb") as data:
                         blob_client.upload_blob(data, overwrite=True)
+
+        if args.sync_download:
+            src_path = args.sync_download[0]
+            if src_path and src_path[-1] != "/":
+                src_path += "/"
+            for c in container_client.list_blobs():
+                src = c["name"]
+                if src.startswith(src_path):
+                    dest = os.path.join(args.sync_download[1], src[len(src_path) :])
+                    print(f"{src} -> {dest}")
+                    os.makedirs(os.path.dirname(dest), exist_ok=True)
+                    with open(dest, "wb") as data:
+                        content = container_client.get_blob_client(blob=src).download_blob().readall()
+                        data.write(content)
 
 
 if __name__ == "__main__":
