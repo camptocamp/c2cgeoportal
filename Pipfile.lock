@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1c1ccd37f1723a8999728213a2820b946cf1d76c0ed8ef617d952ff934d794f3"
+            "sha256": "617e9d07dce3aa1834dffe0d6cd640aeb12e743484cae5de6500416857d0c595"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -108,19 +108,19 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:20d29e7b845eed3a39b43633443859bfa719ddbe3c8702ddfd999bc737fba9db",
-                "sha256:d674fcd10c9603984599157941db66aa212d217dd073581c0ba2eab5e5da84fa"
+                "sha256:30394729b38d5ce2f845440428a55161c6d45478044e553a12ca1acf56d7278a",
+                "sha256:895489900eb882777124c3b64a13df49785cf77f7bd1504e783464fb3b4c8163"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.21.14"
+            "version": "==1.21.15"
         },
         "botocore": {
             "hashes": [
-                "sha256:2c40f4fc3925b9057869beda1413a7b77edb7a28eb05c6265eaf6ca1ca7d3b63",
-                "sha256:9fe55f6eab0977b00afd90e770ef2c8b989fa7b18e5c14b22ba62216ec3b564a"
+                "sha256:405082f92a9e524e1aee96cbc90134668026d7da3c12f86990c91a12620ca28b",
+                "sha256:fa4816e94e72111a9341204061e760bcbde74ca5d900d3f2206c2c2e8e4b56e4"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.24.14"
+            "version": "==1.24.15"
         },
         "bottle": {
             "hashes": [
@@ -1318,10 +1318,10 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:1ab34e3851a34aeb3d1af1a0f77cec73978c4e9698e5210d050e4932953cb241",
-                "sha256:ac2a50128409d57655279817aedcb7800cace1f76b266f3dd62055d5afd6e098"
+                "sha256:411a8495bd18cf13038e5749e4710beb4efa53da6351f67b4c2f307c2d9b6d49",
+                "sha256:aa52da941c56b5a76fd838f8e9e92a850bf893a9eb1e33ffce6c21431d07ee30"
             ],
-            "version": "==1.5.6"
+            "version": "==1.5.7"
         },
         "setuptools": {
             "hashes": [
@@ -1731,11 +1731,11 @@
         },
         "awscli": {
             "hashes": [
-                "sha256:d229019c2d149a4fb3650a9e8bc25c3ee0f4fbf091cde6d42255d30795c0635c",
-                "sha256:f6a1495dd1fa8c5bd8777cbb94fcb6f7d2815625549b32a75d92487371e9f6f0"
+                "sha256:3e4624d8e049f43477e111473d58e7edcd0bfab9e3ccf460a4ddefb54dc5eeb6",
+                "sha256:626ac92dacfacf3bfb83817dc4d6818ca0143985292f4c13323c175b942f0fa3"
             ],
             "index": "pypi",
-            "version": "==1.22.69"
+            "version": "==1.22.70"
         },
         "babel": {
             "hashes": [
@@ -1799,11 +1799,11 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:2c40f4fc3925b9057869beda1413a7b77edb7a28eb05c6265eaf6ca1ca7d3b63",
-                "sha256:9fe55f6eab0977b00afd90e770ef2c8b989fa7b18e5c14b22ba62216ec3b564a"
+                "sha256:405082f92a9e524e1aee96cbc90134668026d7da3c12f86990c91a12620ca28b",
+                "sha256:fa4816e94e72111a9341204061e760bcbde74ca5d900d3f2206c2c2e8e4b56e4"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.24.14"
+            "version": "==1.24.15"
         },
         "c2cciutils": {
             "hashes": [
@@ -2095,11 +2095,11 @@
         },
         "google-api-core": {
             "hashes": [
-                "sha256:80cf307660624f84c754d68c3c6cd31780368019741d87e0c5df5ed84730ed26",
-                "sha256:eadba785e358e61be576f2a93f361bb15f144162814c7b3303e78c12288aa33f"
+                "sha256:4ef13280a8b00772f9effa92c8f798bd2b7d2637ffe7d5bc8d50356448f1840b",
+                "sha256:53fde60b5589420df2c1b4c98674ecbc217226931b713247586f71f5c0458c38"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2.6.1"
+            "version": "==2.7.0"
         },
         "google-api-python-client": {
             "hashes": [
@@ -2223,7 +2223,7 @@
                 "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83",
                 "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"
             ],
-            "markers": "python_version >= '3'",
+            "markers": "python_version >= '3.7'",
             "version": "==4.4.0"
         },
         "jsonschema-gentypes": {
