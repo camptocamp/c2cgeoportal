@@ -1,3 +1,5 @@
+##### 2.6.0.105
+* [Backport 2.6] Set hidpi to false on server that didn't support HiDPI [ngeo#8224](https://github.com/camptocamp/ngeo/pull/8224)
 ##### 2.6.0.104
 * Remove default value for C2C_SECRET [c2cgeoportal#9368](https://github.com/camptocamp/c2cgeoportal/pull/9368)
 * Add missing reject in deferrableOnSuccessfulLogin [ngeo#8208](https://github.com/camptocamp/ngeo/pull/8208)
