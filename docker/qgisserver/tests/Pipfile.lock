@@ -71,6 +71,14 @@
             "index": "pypi",
             "version": "==7.0.1"
         },
+        "setuptools": {
+            "hashes": [
+                "sha256:09980778aa734c3037a47997f28d6db5ab18bdf2af0e49f719bfc53967fd2e82",
+                "sha256:608a7885b664342ae9fafc43840b29d219c5a578876f6f7e00c4e2612160587f"
+            ],
+            "index": "pypi",
+            "version": "==59.8.0"
+        },
         "tomli": {
             "hashes": [
                 "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
