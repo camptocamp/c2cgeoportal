@@ -23,6 +23,7 @@ services:
       - PGDATABASE=geomapfish_tests
       - PGSCHEMA=main
       - PGSCHEMA_STATIC=main_static
+      - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgs
 
   mapserver:
     image: camptocamp/geomapfish-test-mapserver
