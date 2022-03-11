@@ -1,3 +1,5 @@
+##### 2.5.0.199
+* [Backport 2.5] Remove default value for C2C_SECRET [c2cgeoportal#9380](https://github.com/camptocamp/c2cgeoportal/pull/9380)
 ##### 2.5.0.198
 * [Backport 2.5] Edition: Fix undefined boolean to false [ngeo#8191](https://github.com/camptocamp/ngeo/pull/8191)
 ##### 2.5.0.197
