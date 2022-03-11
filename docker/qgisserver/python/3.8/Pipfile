@@ -16,6 +16,7 @@ shapely = "==1.8.1.post1"
 cee-syslog-handler = "==0.6.0"
 setuptools = "==59.8.0"
 psycopg2 = "==2.9.3"
+pytz = "==2021.3"
 
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
