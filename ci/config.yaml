@@ -32,6 +32,7 @@ audit:
       - npm
       - jscodeshift
       - closure-util
+      - jsdoc
 
 publish:
   docker:
