@@ -13,19 +13,19 @@ grids:
     srs: EPSG:{{cookiecutter.srid}}
 
 caches:
-  local:
-    type: filesystem
-    folder: /var/sig/tiles
-    # for GetCapabilities
-    http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
-  s3:
-    type: s3
-    bucket: ${TILEGENERATION_S3_BUCKET}
-    folder: ''
-    # for GetCapabilities
-    http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
-    cache_control: 'public, max-age=14400'
-    host: ${AWS_S3_ENDPOINT}
+${DISABLE_LOCAL}  local:
+${DISABLE_LOCAL}    type: filesystem
+${DISABLE_LOCAL}    folder: /var/sig/tiles
+${DISABLE_LOCAL}    # for GetCapabilities
+${DISABLE_LOCAL}    http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
+${DISABLE_LOCAL}  s3:
+${DISABLE_LOCAL}    type: s3
+${DISABLE_LOCAL}    bucket: ${TILEGENERATION_S3_BUCKET}
+${DISABLE_LOCAL}    folder: ''
+${DISABLE_LOCAL}    # for GetCapabilities
+${DISABLE_LOCAL}    http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
+${DISABLE_LOCAL}    cache_control: 'public, max-age=14400'
+${DISABLE_LOCAL}    host: ${AWS_S3_ENDPOINT}
   azure:
     type: azure
     container: ${TILEGENERATION_AZURE_CONTAINER}
@@ -109,28 +109,21 @@ layers:
 generation:
   default_cache: s3
 
-redis:
-  socket_timeout: ${REDIS_TIMEOUT}
-  # For standalone version
-  url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
-  # For OpenShift version
-  # sentinels:
-  #   - - ${REDIS_HOST}
-  #     - ${REDIS_PORT}
-  # service_name: ${REDIS_SERVICENAME}
-  # db: ${REDIS_DB}
-
-# Not used if the previous redis section is not commented out
-sqs:
-  # The region where the SQS queue is
-  region: eu-west-1
-  # The SQS queue name, it should already exists
-  queue: '${TILEGENERATION_SQS_QUEUE}'
+${DISABLE_LOCAL}redis:
+${DISABLE_LOCAL}  socket_timeout: ${REDIS_TIMEOUT}
+${DISABLE_LOCAL}  # For standalone version
+${DISABLE_LOCAL}  url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
+${DISABLE_LOCAL}  # For OpenShift version
+${DISABLE_LOCAL}  # sentinels:
+${DISABLE_LOCAL}  #   - - ${REDIS_HOST}
+${DISABLE_LOCAL}  #     - ${REDIS_PORT}
+${DISABLE_LOCAL}  # service_name: ${REDIS_SERVICENAME}
+${DISABLE_LOCAL}  # db: ${REDIS_DB}
 
 server:
-  wmts_path: tiles
-  static_path: tiles/static
-  admin_path: tiles/admin
+${DISABLE_LOCAL}  wmts_path: tiles
+${DISABLE_LOCAL}  static_path: tiles/static
+${DISABLE_LOCAL}  admin_path: tiles/admin
   expires: 8 # 8 hours
   predefined_commands:
     - name: Generation all layers
