@@ -1,3 +1,5 @@
+##### 2.6.0.106
+* [Backport 2.6] Fix CVE on url-parse, ignore CVE on angular-gettext-tools [c2cgeoportal#9421](https://github.com/camptocamp/c2cgeoportal/pull/9421)
 ##### 2.6.0.105
 * [Backport 2.6] Set hidpi to false on server that didn't support HiDPI [ngeo#8224](https://github.com/camptocamp/ngeo/pull/8224)
 ##### 2.6.0.104
