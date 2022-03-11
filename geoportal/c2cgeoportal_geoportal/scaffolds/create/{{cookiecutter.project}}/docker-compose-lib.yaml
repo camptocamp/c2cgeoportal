@@ -55,7 +55,7 @@ services:
       - TILEGENERATION_AZURE_CONTAINER
 
   print:
-    image: camptocamp/mapfish_print:3.27
+    image: camptocamp/mapfish_print:3.28
     user: www-data
     restart: unless-stopped
     environment:
@@ -122,7 +122,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:6
+    image: &redis-image redis:6
     user: www-data
     restart: unless-stopped
     command:
@@ -139,10 +139,10 @@ services:
       - '30'
 
   redis_master:
-    image: redis:6
+    image: *redis-image
 
   redis_slave:
-    image: redis:6
+    image: *redis-image
     command: redis-server --slaveof redis_master 6379
 
   redis_sentinel:
@@ -153,7 +153,7 @@ services:
       - MASTER=redis_master
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:master
+    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.17
     user: www-data
     restart: unless-stopped
     environment:
@@ -185,7 +185,7 @@ services:
       - LOG_TYPE
 
   tilegeneration_slave:
-    image: camptocamp/tilecloud-chain:master
+    image: *tilecloudchain-image
     user: www-data
     restart: unless-stopped
     entrypoint:
@@ -383,7 +383,7 @@ services:
         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
 
   front:
-    image: haproxy:2.2
+    image: haproxy:2.3
     restart: unless-stopped
     volumes:
       - /dev/log:/dev/log:rw
