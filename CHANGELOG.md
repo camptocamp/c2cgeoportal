@@ -1,3 +1,5 @@
+##### 2.5.0.200
+* Fix CVE on url-parse, ignore CVE on angular-gettext-tools [c2cgeoportal#9419](https://github.com/camptocamp/c2cgeoportal/pull/9419)
 ##### 2.5.0.199
 * [Backport 2.5] Remove default value for C2C_SECRET [c2cgeoportal#9380](https://github.com/camptocamp/c2cgeoportal/pull/9380)
 ##### 2.5.0.198
