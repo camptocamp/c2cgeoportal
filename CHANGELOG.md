@@ -1,3 +1,8 @@
+##### 2.4.2.73
+* Ignore CVE on jsdoc [c2cgeoportal#9418](https://github.com/camptocamp/c2cgeoportal/pull/9418)
+* Ignore vulnerabilities on karma [ngeo#8108](https://github.com/camptocamp/ngeo/pull/8108)
+* [Backport 2.4] Set timezone in datetime inputs only on saving [ngeo#8185](https://github.com/camptocamp/ngeo/pull/8185)
+* [Backport 2.4] Edition: Fix undefined boolean to false [ngeo#8190](https://github.com/camptocamp/ngeo/pull/8190)
 ##### 2.4.2.72
 ##### 2.4.2.71
 * Remove no more needed CVE ignore [c2cgeoportal#9289](https://github.com/camptocamp/c2cgeoportal/pull/9289)
