@@ -105,16 +105,20 @@ Azure:
 
 .. prompt:: bash
 
+   docker-compose exec geoportal rm index.shp
+   docker-compose exec geoportal rm index.shx
+   docker-compose exec geoportal rm index.dbf
+   docker-compose exec geoportal rm index.prj
    docker-compose exec geoportal bash -c \
         'gdaltindex mapserver/index.shp $( \
             azure --container=<container> --list <folder>/ | \
-            grep tif$ | \
-            awk '"'"'{print "/vsiaz/<container>/<folder>/"$4}'"'"' \
+            grep tiff$ | \
+            awk '"'"'{print "/vsiaz/<container>/"$1}'"'"' \
         )'
-    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shp mapserver/
-    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shx mapserver/
-    docker cp <docker_compose_project_name>_geoportal_1:/app/index.dbf mapserver/
-    docker cp <docker_compose_project_name>_geoportal_1:/app/index.prj mapserver/
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shp mapserver/<set>.shp
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shx mapserver/<set>.shx
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.dbf mapserver/<set>.dbf
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.prj mapserver/<set>.prj
 
 
 Add the following config in the ``mapserver/mapserver.map.tmpl`` file:
@@ -139,7 +143,8 @@ Azure:
 
 .. code::
 
-   CONFIG "AZURE_STORAGE_CONNECTION_STRING" "${AZURE_STORAGE_CONNECTION_STRING}"
+   ${DISABLE_LOCAL} CONFIG "AZURE_STORAGE_CONNECTION_STRING" "${AZURE_STORAGE_CONNECTION_STRING}"
+   ${DISABLE_MUTUALIZE} CONFIG "AZURE_STORAGE_ACCOUNT" "${AZURE_STORAGE_ACCOUNT}"
 
 Use the shape index in the layer:
 

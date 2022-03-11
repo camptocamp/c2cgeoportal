@@ -103,16 +103,20 @@ span.prompt1:before {
 <span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf mapserver/</span>
 <span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.prj mapserver/</span>
 </pre></div></div><p>Azure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal rm index.shp</span>
+<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal rm index.shx</span>
+<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal rm index.dbf</span>
+<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal rm index.prj</span>
+<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
      <span class="s1">&#39;gdaltindex mapserver/index.shp $( \</span>
 <span class="s1">         azure --container=&lt;container&gt; --list &lt;folder&gt;/ | \</span>
-<span class="s1">         grep tif$ | \</span>
-<span class="s1">         awk &#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;{print &quot;/vsiaz/&lt;container&gt;/&lt;folder&gt;/&quot;$4}&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39; \</span>
+<span class="s1">         grep tiff$ | \</span>
+<span class="s1">         awk &#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;{print &quot;/vsiaz/&lt;container&gt;/&quot;$1}&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39; \</span>
 <span class="s1">     )&#39;</span></span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shp mapserver/</span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shx mapserver/</span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf mapserver/</span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.prj mapserver/</span>
+<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shp mapserver/&lt;set&gt;.shp</span>
+<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shx mapserver/&lt;set&gt;.shx</span>
+<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf mapserver/&lt;set&gt;.dbf</span>
+<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.prj mapserver/&lt;set&gt;.prj</span>
 </pre></div></div><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_CACHE&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
 <span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_CACHE_SIZE&quot;</span> <span class="s2">&quot;128000000&quot;</span>
@@ -128,7 +132,8 @@ span.prompt1:before {
 </pre></div>
 </div>
 <p>Azure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;AZURE_STORAGE_CONNECTION_STRING&quot;</span> <span class="s2">&quot;$</span><span class="si">{AZURE_STORAGE_CONNECTION_STRING}</span><span class="s2">&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${DISABLE_LOCAL} CONFIG &quot;AZURE_STORAGE_CONNECTION_STRING&quot; &quot;${AZURE_STORAGE_CONNECTION_STRING}&quot;
+${DISABLE_MUTUALIZE} CONFIG &quot;AZURE_STORAGE_ACCOUNT&quot; &quot;${AZURE_STORAGE_ACCOUNT}&quot;
 </pre></div>
 </div>
 <p>Use the shape index in the layer:</p>
