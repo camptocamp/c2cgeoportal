@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "26ac123f6c5383370e2ee1210fbb940a18532421fe5498140d23cb5f6758e2d1"
+            "sha256": "12a3b783addaa786bc59ac36e2c4b9e2bc5d5d9c298247d73c2bf7dd490662b1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -268,7 +268,7 @@
                 "sha256:a4bc13d623356b373c2c27c53dbd9c68cae5d526270bfa71f6c6fa69669c6b27",
                 "sha256:c1ca117dbce1fe20a5809dc96f01e1c2840f6dcc939b3ddbb1111bf330ba82df"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3' and python_version < '4'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3' and python_version < '4.0'",
             "version": "==0.7.2"
         },
         "colander": {
@@ -522,7 +522,7 @@
                 "sha256:27f503220e6845d9db954fb212b95b0362d8b7e6c1b2326a87061c3de93594b1",
                 "sha256:d7bc01b1c2a43b259570bb307f057abc578786ea734ba2b87b836c5efc5bd443"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.2'",
+            "markers": "python_version < '4.0' and python_full_version >= '3.6.2'",
             "version": "==1.0.2"
         },
         "isodate": {
@@ -1192,11 +1192,11 @@
         },
         "pyramid-tm": {
             "hashes": [
-                "sha256:4a4e212cd239f06c496d074f5d294e88478b94059541448bc151d505f653be59",
-                "sha256:5fd6d4ac9181a65ec54e5b280229ed6d8b3ed6a8f5a0bcff05c572751f086533"
+                "sha256:5c81dcecd33770f5e3596687d2be35ffc4f8ce5eda00a31acb00ae35a51430d0",
+                "sha256:6638721946e809de8b4bf3f405bd2daaaa76d58442cbdf46be30ebc259f1a354"
             ],
             "index": "pypi",
-            "version": "==2.4"
+            "version": "==2.5"
         },
         "python-dateutil": {
             "hashes": [
@@ -1541,7 +1541,7 @@
                 "sha256:000ca7f471a233c2251c6c7023ee85305721bfdf18621ebff4fd17a8653427ed",
                 "sha256:0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4.0'",
             "version": "==1.26.8"
         },
         "venusian": {
@@ -2237,7 +2237,7 @@
                 "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83",
                 "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_version >= '3'",
             "version": "==4.4.0"
         },
         "jsonschema-gentypes": {
@@ -3188,7 +3188,7 @@
                 "sha256:000ca7f471a233c2251c6c7023ee85305721bfdf18621ebff4fd17a8653427ed",
                 "sha256:0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4.0'",
             "version": "==1.26.8"
         },
         "virtualenv": {
