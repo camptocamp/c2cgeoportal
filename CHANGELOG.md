@@ -1,3 +1,6 @@
+##### 2.4.2.74
+* Ignore CVE [1065347] Arbitrary Code Execution in underscore [c2cgeoportal#9439](https://github.com/camptocamp/c2cgeoportal/pull/9439)
+* Add new package to ignore CVE [ngeo#8229](https://github.com/camptocamp/ngeo/pull/8229)
 ##### 2.4.2.73
 * Ignore CVE on jsdoc [c2cgeoportal#9418](https://github.com/camptocamp/c2cgeoportal/pull/9418)
 * Ignore vulnerabilities on karma [ngeo#8108](https://github.com/camptocamp/ngeo/pull/8108)
