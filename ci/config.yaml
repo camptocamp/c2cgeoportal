@@ -27,6 +27,8 @@ audit:
       - CWE-532 # Insertion of Sensitive Information into Log File
       - CWE-915 # Improperly Controlled Modification of Dynamically-Determined Object Attributes
       - CWE-918 # Server-Side Request Forgery (SSRF)
+    package_ignore:
+      - angular-gettext-tools
 
   pipfile:
     sections:
