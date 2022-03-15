@@ -17,7 +17,12 @@ checks:
 
 audit:
   npm:
-    package_ignore: []
+    package_ignore:
+      - angular-gettext-tools
+
+  pipfile:
+    sections:
+      - default
 
 publish:
   docker:
