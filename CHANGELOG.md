@@ -1,3 +1,5 @@
+##### 2.6.0.108
+* [Backport 2.6] Ignore CVE on angular-gettext-tools [c2cgeoportal#9442](https://github.com/camptocamp/c2cgeoportal/pull/9442)
 ##### 2.6.0.107
 * Add new package to ignore CVE [ngeo#8249](https://github.com/camptocamp/ngeo/pull/8249)
 ##### 2.6.0.106
