@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-alembic = "==1.7.6"  # geoportal
+alembic = "==1.7.7"  # geoportal
 "c2c.template" = "==2.3.0"  # geoportal
 c2cgeoform = "==2.1.26"  # commons
 colander = "==1.8.3"  # commons, admin
