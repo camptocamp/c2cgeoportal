@@ -24,8 +24,8 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
-      MAIN_BRANCH: master
-      MAJOR_VERSION: 2.7
+      MAIN_BRANCH: '2.7'
+      MAJOR_VERSION: '2.7'
 
     steps:
       - run: '! ls BACKPORT_TODO'

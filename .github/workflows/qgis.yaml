@@ -24,8 +24,8 @@ jobs:
           - master
 
     env:
-      MAIN_BRANCH: master
-      MAJOR_VERSION: 2.7
+      MAIN_BRANCH: '2.7'
+      MAJOR_VERSION: '2.7'
 
     steps:
       - uses: actions/checkout@v2
