@@ -22,13 +22,20 @@ the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
 Tasks to do
 -----------
 
+For ``ngeo``,
+`follows the documentation on ngeo <https://github.com/camptocamp/ngeo/blob/master/docs/developer-guide.md#create-a-new-stabilization-branch>`_.
+
+
 On branch creation (start of the integration phase):
 
-* Create and initialise the branches
-* Protect the new branches
+* Create the new branch on demo
+* Create the new branch
+* Use the ``ngeo`` package linked to the new branch
+* Update the master branch
+* Protect the new branch
 * Configure the rebuild
-* Use the ``ngeo`` package linked to the branch
 * Verify that the changelog creation is working
+* Configure the branch on the status dashboard
 
 On release creation:
 
@@ -42,18 +49,14 @@ On release creation:
 
    All changes should be committed.
 
-Create the branches
--------------------
+Create the new branch on demo
+-----------------------------
 
-On the demo you should create the new version branch.
+You should create the new version branch.
 
-On ``ngeo`` you should create the new version branch.
+You should set the default branch to the new branch.
 
-On ``c2cgeoportal`` you should create the new version branch.
-
-On the demo GitHub repository you should set the default branch to the new branch.
-
-On the new branch of the demo you should copy the file ``.github/workflows/upgrade-<new version>.yaml`` to
+On the new branch you should copy the file ``.github/workflows/upgrade-<new version>.yaml`` to
 ``.github/workflows/upgrade-<next version>.yaml`` and update the versions in the new file:
 
 .. code::
@@ -69,24 +72,33 @@ On the new branch of the demo you should copy the file ``.github/workflows/upgra
 
            branch:
              - prod-<version>
-             - prod-<version>-simple
 
-On the new version branch:
+Create the new branch
+---------------------
 
-- in the files ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAIN_BRANCH`` to
+You should create the new version branch.
+
+In the files ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAIN_BRANCH`` to
   ``<new version>``.
 
-On the master branch:
+Use the ``ngeo`` package linked to the new branch
+-------------------------------------------------
 
-- add the new branch for the demo, ngeo and c2cgeoportal in the file ``scripts/status.yaml``.
-- in the file ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
+In ``c2cgeoportal`` new version branch, in the file ``geoportal/package.json``, set the ``ngeo`` version to
+``version-<new version>-latest``.
+
+Update the master branch
+-------------------------
+
+In the file ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
   ``<next version>``.
-- in the files ``.github/workflows/audit.yaml`` and the new branch.
+
+In the files ``.github/workflows/audit.yaml`` and the new branch.
 
 Configure the rebuild
 ---------------------
 
-On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
+Copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
 ``.github/workflows/rebuild-<new version>.yaml`` and do the following changes:
 
 .. code:: diff
@@ -96,6 +108,7 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
 
      on:
    -   push:
+   -   pull_request:
    +   schedule:
    +     - cron: "30 3 * * *"
 
@@ -119,7 +132,7 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
    -      MAIN_BRANCH: master
    +      MAIN_BRANCH: <new version>
 
-           - uses: actions/checkout@v1
+           - uses: actions/checkout@v2
              with:
    +          ref: ${{ env.MAIN_BRANCH }}
 
@@ -135,7 +148,7 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
    -     if: >
    -       github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
    -       && github.repository == 'camptocamp/c2cgeoportal'
-   -   - name: Publish version branch
+   -   - name: Push version and changelog
    -     ...
 
    -       - name: 'Update the changelog'
@@ -155,20 +168,21 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
    -         ...
 
 
-On ``c2cgeoportal`` copy the files ``.github/workflows/qgis.yaml`` from new version branch to master branch
+Copy the files ``.github/workflows/qgis.yaml`` from new version branch to master branch
 as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following changes:
 
 .. code:: diff
 
-   - name: QGIS
+   - name: QGIS build
    + name: QGIS rebuild <new version>
 
      on:
    -   push:
+   -   pull_request:
    +   schedule:
    +     - cron: "30 3 * * *"
 
-   -     name: QGIS
+   -     name: QGIS build
    +     name: QGIS rebuild <new version>
 
    -     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
@@ -186,7 +200,8 @@ as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following ch
    +       MAJOR_VERSION: ${{ matrix.branch }}
 
            - uses: actions/checkout@v1
-   +         with:
+             with:
+              fetch-depth: 0
    +          ref: ${{ env.MAIN_BRANCH }}
 
       - name: Publish feature branch
@@ -199,7 +214,7 @@ as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following ch
    -   - name: Publish version branch
    -     ...
 
-On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
+Copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
 ``.github/workflows/ngeo-<new version>.yaml`` and do the following changes:
 
 .. code:: diff
@@ -224,9 +239,21 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
    +       MAIN_BRANCH: x.y
    +       MAJOR_VERSION: x.y
 
-           - uses: actions/checkout@v1
-   +         with:
-   +          ref: ${{ env.MAIN_BRANCH }}
+        jobs:
+   -      not-failed-backport:
+   -        ...
+
+
+   -       - uses: actions/checkout@v2
+   -         with:
+   -           fetch-depth: 0
+   -           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+   -         if: env.HAS_SECRETS == 'HAS_SECRETS'
+           - uses: actions/checkout@v2
+             with:
+               fetch-depth: 0
+   +           ref: ${{ env.MAIN_BRANCH }}
+             if: env.HAS_SECRETS != 'HAS_SECRETS'
 
    -       - name: Publish to Transifex
    -         ...
@@ -238,18 +265,18 @@ And also remove all the `if` concerning the following tests:
 
 - `github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)`
 - `github.repository == 'camptocamp/c2cgeoportal'`
+- `env.HAS_SECRETS == 'HAS_SECRETS` (optional)
 
 Configure the audit
 -------------------
 
 Add the new version branch in the ``.github/workflows/audit.yaml`` file.
 
+Configure the branch on the status dashboard
+--------------------------------------------
 
-Use the ``ngeo`` package linked to the branch
----------------------------------------------
-
-In ``c2cgeoportal`` new version branch, in the file ``geoportal/package.json``, set the ``ngeo`` version to
-``version-<new version>-latest``.
+Add the new branch for the demo, ngeo and c2cgeoportal in the file
+`scripts/status.yaml <https://github.com/camptocamp/geospatial-dashboards/blob/master/ci/status.yaml>`_.
 
 Reset the changelog
 -------------------
@@ -313,7 +340,7 @@ Send a release email to the ``geomapfish@googlegroups.com`` and
 Create the new demo
 -------------------
 
-Create the new demo on OpenShift
+Create the new demo on Kubernetes
 
 Use the new demo
 ----------------
