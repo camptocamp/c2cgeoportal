@@ -154,10 +154,13 @@ def _add_new_release() -> None:
         )
 
         version = npm_list["dependencies"]["ngeo"]["version"]
-        ngeo_ref = re.match(
+        match = re.match(
             r"[0-9]\.[0-9]\.[0-9]\-version\-[0-9]\.[0-9]\-latest\.[0-9]{8}T[0-9]{6}Z\.([0-9a-f]+)\.HEAD",
             version,
-        ).group(1)
+        )
+        if match is None:
+            raise Exception(f"Unable to parse version {version}")
+        ngeo_ref = match.group(1)
 
         c2cgeoportal_ref = (
             subprocess.check_output(["git", "log", "--pretty=format:%h", "--abbrev-commit", "-n1"])
