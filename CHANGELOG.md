@@ -1,3 +1,5 @@
+##### 2.5.0.203
+* No more ignore CVE  1004967, 1005367, 1006073, 1006883, 1006884, 1007030 [ngeo#8248](https://github.com/camptocamp/ngeo/pull/8248)
 ##### 2.5.0.202
 * Ignore CVE on angular-gettext-tools [c2cgeoportal#9440](https://github.com/camptocamp/c2cgeoportal/pull/9440)
 ##### 2.5.0.201
