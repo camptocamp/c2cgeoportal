@@ -1,3 +1,6 @@
+##### 2.4.2.75
+* Remove ignore of CVE 1005367, 1006883, 1006884 [c2cgeoportal#9445](https://github.com/camptocamp/c2cgeoportal/pull/9445)
+* No more ignore CVE 1004967 [ngeo#8247](https://github.com/camptocamp/ngeo/pull/8247)
 ##### 2.4.2.74
 * Ignore CVE [1065347] Arbitrary Code Execution in underscore [c2cgeoportal#9439](https://github.com/camptocamp/c2cgeoportal/pull/9439)
 * Add new package to ignore CVE [ngeo#8229](https://github.com/camptocamp/ngeo/pull/8229)
