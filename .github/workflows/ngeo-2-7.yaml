@@ -2,8 +2,9 @@
 name: Update ngeo 2.7
 
 on:
-  push:
-  pull_request:
+  repository_dispatch:
+    types:
+      - ngeo_2.7_updated
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
