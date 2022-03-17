@@ -31,6 +31,7 @@ On branch creation (start of the integration phase):
 * Create the new branch on demo
 * Create the new branch
 * Use the ``ngeo`` package linked to the new branch
+* Create the new transifex resources
 * Update the master branch
 * Protect the new branch
 * Configure the rebuild
@@ -86,6 +87,21 @@ Use the ``ngeo`` package linked to the new branch
 
 In ``c2cgeoportal`` new version branch, in the file ``geoportal/package.json``, set the ``ngeo`` version to
 ``version-<new version>-latest``.
+
+Create the new transifex resources
+----------------------------------
+
+Run:
+
+.. prompt:: bash
+
+    docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=x.y .
+    docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root transifex tail -f /dev/null
+    docker exec transifex bash -c \
+        '(cd /opt/c2cgeoportal; sed -i s/x_y/x_y+1/g .tx/config)'
+    docker exec --env=MAJOR_VERSION=x.y+1 transifex bash -c \
+        '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-init)'
+    docker stop transifex
 
 Update the master branch
 -------------------------
