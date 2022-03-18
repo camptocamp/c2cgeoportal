@@ -2,8 +2,8 @@
 name: QGIS rebuild 2.7
 
 on:
-      schedule:
-        - cron: "30 3 * * *"
+  schedule:
+    - cron: '30 3 * * *'
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
@@ -22,11 +22,11 @@ jobs:
           - '3.22'
           - master
         branch:
-              - '2.7'
+          - '2.7'
 
     env:
-          MAIN_BRANCH: ${{ matrix.branch }}
-          MAJOR_VERSION: ${{ matrix.branch }}
+      MAIN_BRANCH: ${{ matrix.branch }}
+      MAJOR_VERSION: ${{ matrix.branch }}
 
     steps:
       - uses: actions/checkout@v2

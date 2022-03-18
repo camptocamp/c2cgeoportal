@@ -12,7 +12,7 @@ jobs:
   main:
     runs-on: ubuntu-20.04
     name: QGIS build
-    timeout-minutes: 20
+    timeout-minutes: 40
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     strategy:
@@ -42,8 +42,7 @@ jobs:
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
-      - run: docker pull camptocamp/geomapfish:${{ env.MAJOR_VERSION }}
-      - run: docker tag camptocamp/geomapfish:${{ env.MAJOR_VERSION }} camptocamp/geomapfish
+      - run: make build-runner
       - run: make build-test-db
 
       - name: Build QGIS server

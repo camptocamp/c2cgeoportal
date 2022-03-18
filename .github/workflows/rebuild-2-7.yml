@@ -2,8 +2,8 @@
 name: Rebuild 2.7
 
 on:
-      schedule:
-        - cron: "30 3 * * *"
+  schedule:
+    - cron: '30 3 * * *'
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
