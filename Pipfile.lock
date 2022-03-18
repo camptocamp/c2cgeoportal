@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fd1f9b68d841d2618452e9fde7ecec1677c7d15c73b35b8a0c0120b662c45404"
+            "sha256": "e4c48e102129601f706ace1c4b9dcbb266bfc5d3b8e5878ace7482824f2dfe90"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -2198,7 +2198,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2237,7 +2237,7 @@
                 "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83",
                 "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_version >= '3'",
             "version": "==4.4.0"
         },
         "jsonschema-gentypes": {
@@ -2914,7 +2914,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
@@ -3146,11 +3146,11 @@
         },
         "types-requests": {
             "hashes": [
-                "sha256:120c949953b618e334bbe78de38e65aa261e1f48df021a05f0be833a848e4ba7",
-                "sha256:fd1382fa2e28eac848faedb0332840204f06f0cb517008e3c7b8282ca53e56d2"
+                "sha256:5d6f77f3c7565659bdb7b7bce1d33d1abb7d0b056138cac714860e13da2f19df",
+                "sha256:cf0646031dd6307113b37814f743c04f0707a3357378c2bb1326f848412f5ba9"
             ],
             "index": "pypi",
-            "version": "==2.27.12"
+            "version": "==2.27.13"
         },
         "types-urllib3": {
             "hashes": [
