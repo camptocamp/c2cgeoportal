@@ -1,3 +1,5 @@
+##### 2.6.0.109
+* Do not overwrite metadata while restoring layertree state [ngeo#8264](https://github.com/camptocamp/ngeo/pull/8264)
 ##### 2.6.0.108
 * [Backport 2.6] Ignore CVE on angular-gettext-tools [c2cgeoportal#9442](https://github.com/camptocamp/c2cgeoportal/pull/9442)
 ##### 2.6.0.107
