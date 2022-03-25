@@ -1,2 +1,3 @@
 *_tmpl
 Pipfile.lock
+ci/changelog.yaml
