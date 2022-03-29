@@ -248,6 +248,22 @@ vars:
               projection: EPSG:{srid}
         gmfPermalinkOptions:
           crosshairStyle:
+            - regularShape:
+                stroke:
+                  color: white
+                  width: 5
+                points: 4
+                radius: 10
+                radius2: 0
+                angle: 0
+            - regularShape:
+                stroke:
+                  color: red
+                  width: 2
+                points: 4
+                radius: 10
+                radius2: 0
+                angle: 0
           crosshairEnabledByDefault: False
           useLocalStorage: False
           pointRecenterZoom:
