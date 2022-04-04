@@ -164,7 +164,7 @@ class User(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("The user changed his password"),
-                "description": _("Indicates in user has customized his password."),
+                "description": _("Indicates if user has changed his password."),
             }
         },
     )
