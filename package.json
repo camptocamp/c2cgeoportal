@@ -6,7 +6,7 @@
   "dependencies": {
     "angular-gettext-tools": "2.5.3",
     "commander": "9.1.0",
-    "puppeteer": "13.5.1",
+    "puppeteer": "13.5.2",
     "url-parse": "1.5.10"
   }
 }
