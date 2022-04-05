@@ -28,7 +28,7 @@ pyproj = "==3.3.0"  # admin, other?
 pyotp = "==2.6.0"  # geoportal
 pyramid = "==2.0"  # geoportal
 pyramid_debugtoolbar = "==4.9"  # geoportal
-pyramid-jinja2 = "==2.9.2"  # admin
+pyramid-jinja2 = "==2.10"  # admin
 pyramid_mako = "==1.1.0"  # geoportal
 pyramid_multiauth = "==1.0.1"  # geoportal
 pyramid_tm = "==2.5"  # geoportal
