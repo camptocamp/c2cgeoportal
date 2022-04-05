@@ -189,7 +189,7 @@ class Layers:
 
         feature = proto.read(self.request, filter=filter_)
         if isinstance(feature, HTTPException):
-            raise feature  # pylint: disable=raising-non-exception
+            raise feature
         return feature
 
     @view_config(route_name="layers_read_many", renderer="geojson")  # type: ignore
@@ -297,7 +297,7 @@ class Layers:
         try:
             features = protocol.create(self.request)
             if isinstance(features, HTTPException):
-                raise features  # pylint: disable=raising-bad-type
+                raise features
             if features is not None:
                 for feature in features.features:  # pylint: disable=no-member
                     self._log_last_update(layer, feature)
@@ -438,7 +438,7 @@ class Layers:
         protocol = self._get_protocol_for_layer(layer, before_delete=security_cb)
         response = protocol.delete(self.request, feature_id)
         if isinstance(response, HTTPException):
-            raise response  # pylint: disable=raising-non-exception
+            raise response
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO, response=response)
         return response
 

@@ -170,8 +170,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                 empty_template = Template("")  # nosec
 
                 class Lookup(TemplateLookup):  # type: ignore
-                    @staticmethod
-                    def get_template(uri: str) -> Template:
+                    def get_template(self, uri: str) -> Template:
                         del uri  # unused
                         return empty_template
 

@@ -357,7 +357,7 @@ class OGCServerSynchronizer:
 
         return layer
 
-    @functools.lru_cache()
+    @functools.lru_cache(maxsize=10)
     def wms_capabilities(self) -> bytes:
         errors: Set[str] = set()
         url = get_url2(
