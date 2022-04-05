@@ -76,7 +76,7 @@ requirements-detector = "==0.7"
 rsa = "==3.4.2"
 s3transfer = "==0.4.2"
 selenium = "==3.141.0"
-setoptconf = "==0.2.0"
+setoptconf = "==0.3.0"
 six = "==1.14.0"
 smmap = "==4.0.0"
 snowballstemmer = "==2.1.0"
@@ -88,7 +88,7 @@ typing = "==3.7.4.3"
 typing-extensions = "==3.10.0.0"
 unidecode = "==1.2.0"
 urllib3 = "==1.25.9"
-waitress = "==1.4.3"
+waitress = "==2.0.0"
 webob = "==1.8.6"
 wrapt = "==1.11.2"
 zipp = "==3.4.1"
@@ -102,7 +102,7 @@ ColanderAlchemy = "==0.3.4"  # commons
 deform = "==2.0.10"  # commons, admin
 defusedxml = "==0.6.0"  # geoportal
 "dogpile.cache" = "==0.9.0"  # geoportal
-Fiona = "==1.8.13.post1"  # geoportal raster
+Fiona = "==1.8.21"  # geoportal raster
 GeoAlchemy2 = "==0.7.0"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.20"  # geoportal
@@ -123,7 +123,7 @@ pyramid_multiauth = "==0.9.0"  # geoportal
 pyramid_tm = "==2.4"  # geoportal
 python-dateutil = "==2.8.1"  # geoportal
 PyYAML = "==5.4.1"  # geoportal
-rasterio = "==1.1.3"  # geoportal raster
+rasterio = "==1.2.10"  # geoportal raster
 requests = "==2.27.1"  # geoportal
 redis = "==3.4.1"  # geoportal cache
 Shapely = "==1.7.0"  # geoportal
@@ -143,9 +143,9 @@ bottle = "==0.12.19"
 "certifi" = "==2020.4.5.1"
 "chameleon" = "==3.8.1"
 "chardet" = "==3.0.4"
-"click" = "==7.1.1"
+"click" = "==8.0.0"
 "click-plugins" = "==1.1.1"
-"cligj" = "==0.5.0"
+"cligj" = "==0.7.2"
 "decorator" = "==4.4.2"
 "hupper" = "==1.10.2"
 "idna" = "==2.9"
@@ -178,4 +178,4 @@ jinja2 = "==2.11.3"
 "zope.sqlalchemy" = "==1.3"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
