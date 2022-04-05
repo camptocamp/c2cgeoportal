@@ -38,20 +38,17 @@ class JSONEncodedDict(TypeDecorator):  # type: ignore
 
     impl = VARCHAR
 
-    @staticmethod
-    def process_bind_param(value: Optional[Dict[str, Any]], _: Dialect) -> Optional[str]:
+    def process_bind_param(self, value: Optional[Dict[str, Any]], _: Dialect) -> Optional[str]:
         return json.dumps(value) if value is not None else None
 
-    @staticmethod
-    def process_result_value(value: Optional[str], _: Dialect) -> Optional[Dict[str, Any]]:
+    def process_result_value(self, value: Optional[str], _: Dialect) -> Optional[Dict[str, Any]]:
         return json.loads(value) if value is not None else None
 
     @property
     def python_type(self) -> Type[Any]:
         return dict
 
-    @staticmethod
-    def process_literal_param(value: str, dialect: Any) -> str:
+    def process_literal_param(self, value: str, dialect: Any) -> str:
         del dialect
         return json.dumps(value)
 
