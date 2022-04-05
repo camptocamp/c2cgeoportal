@@ -54,7 +54,7 @@ where  ``<interface>`` (desktop in the original file) is the name of your new in
 In the file ``geoportal/<package>_geoportal/static-ngeo/static-ngeo/js/apps/<interface>.html.ejs``,
 adapt the name of the controller and the referenced css and js files to the new interface name:
 
-.. code:: html
+.. code::
 
    ...
    <html lang="{{mainCtrl.lang}}" ng-app="App<interface>" ng-controller="<Interface>Controller as mainCtrl">

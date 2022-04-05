@@ -33,7 +33,7 @@ How to build your token in your application
 
 The content of the token is a json-encoded text like this:
 
-.. code:: json
+.. code::
 
     {
         u: <username>,

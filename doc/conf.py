@@ -19,6 +19,7 @@
 # -- General configuration -----------------------------------------------------
 
 import alabaster
+import sphinx.application
 
 html_theme_path = [alabaster.get_path()]
 
@@ -253,5 +254,5 @@ texinfo_documents = [(
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 # texinfo_show_urls = 'footnote'
 
-def setup(app):
-    app.add_stylesheet('css/c2c.css')
+def setup(app: sphinx.application.Sphinx) -> None:
+    app.add_css_file("css/c2c.css")

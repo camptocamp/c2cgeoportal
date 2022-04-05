@@ -34,7 +34,7 @@ Result
 
 Base for all possible results:
 
-.. code:: json
+.. code::
 
     {
         "ogcServers": {
@@ -50,7 +50,7 @@ Base for all possible results:
 OGC Server
 ~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
         "url": "<wms server url>",
@@ -66,7 +66,7 @@ OGC Server
 Theme
 ~~~~~
 
-.. code:: json
+.. code::
 
     {
         "name": "<name>",
@@ -84,7 +84,7 @@ Theme
 Group
 ~~~~~
 
-.. code:: json
+.. code::
 
     {
         "name": "<name>",
@@ -111,7 +111,7 @@ Group
 Layer
 ~~~~~
 
-.. code:: json
+.. code::
 
     {
         "name": "<name>",
@@ -128,7 +128,7 @@ Layer
 WMS Layer
 ~~~~~~~~~
 
-.. code:: json
+.. code::
 
     {
         "id": <id>,
@@ -192,7 +192,7 @@ WMS Layer
 WMTS layer
 ~~~~~~~~~~
 
-.. code:: json
+.. code::
 
     {
         "url": "<wmts_capabilities_url>",
@@ -254,7 +254,7 @@ Result HTTP code:
 Anonymous JSON result
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
        "functionality": {
@@ -268,7 +268,7 @@ Anonymous JSON result
 Connected JSON result
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
        "username": "<username>",
@@ -307,7 +307,7 @@ Result HTTP code:
 JSON result
 ~~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
        "success": "true"
@@ -335,7 +335,7 @@ Result HTTP code:
 Success JSON result
 ~~~~~~~~~~~~~~~~~~~
 
-.. code:: json
+.. code::
 
    {
        "success": "true"
@@ -401,7 +401,7 @@ URL: ``.../layers/<layer_name>/values/<field_name>``
 Result
 ~~~~~~
 
-.. code:: json
+.. code::
 
     {
         "items": [{
@@ -418,7 +418,7 @@ URL: ``.../layers/<layer_name>/<layer_id>/<feature_id>``
 
 Success:
 
-.. code:: json
+.. code::
 
    {
        "type": "FeatureCollection",
@@ -451,7 +451,7 @@ Success:
 
 Error :
 
-.. code:: json
+.. code::
 
     {
         "message": "error description",
@@ -465,7 +465,7 @@ URL: ``.../layers/<layer_name>/<layer_id>``
 
 Success:
 
-.. code:: json
+.. code::
 
    {
        "type": "FeatureCollection",
@@ -499,7 +499,7 @@ Success:
 
 Error :
 
-.. code:: json
+.. code::
 
     {
         "message": "error description",
@@ -522,7 +522,7 @@ Parameters
 Result
 ------
 
-.. code:: json
+.. code::
 
     {
         "<layer>": <value>,
@@ -570,7 +570,7 @@ Parameters
 Result
 ~~~~~~
 
-.. code:: json
+.. code::
 
     {
         "short_url": <the short URL>
@@ -598,7 +598,7 @@ Method: ``POST``
 
 Data:
 
-.. code:: json
+.. code::
 
    {
        "geometries": [<geomA>, <geomB>]

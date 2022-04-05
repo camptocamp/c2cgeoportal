@@ -40,7 +40,7 @@ Importing a single Javascript file from the package
 
 Add in the alias of the file ``geoportal/webpack.apps.js.mako``:
 
- .. code:: javascript
+ .. code::
 
     alias: {
       ...,
@@ -59,7 +59,7 @@ Importing multiple Javascript files from the package
 
 Add in the alias of the file ``geoportal/webpack.apps.js.mako``:
 
- .. code:: javascript
+ .. code::
 
     alias: {
       ...,
