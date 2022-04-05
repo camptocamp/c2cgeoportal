@@ -1,3 +1,5 @@
+##### 2.6.0.110
+* Fix CVE [c2cgeoportal#9520](https://github.com/camptocamp/c2cgeoportal/pull/9520)
 ##### 2.6.0.109
 * Do not overwrite metadata while restoring layertree state [ngeo#8264](https://github.com/camptocamp/ngeo/pull/8264)
 ##### 2.6.0.108
