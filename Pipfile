@@ -93,7 +93,7 @@ ColanderAlchemy = "==0.3.4"  # commons
 deform = "==2.0.15"  # commons, admin
 defusedxml = "==0.6.0"  # geoportal
 "dogpile.cache" = "==1.0.2"  # geoportal
-Fiona = "==1.8.18"  # geoportal raster
+Fiona = "==1.8.21"  # geoportal raster
 GeoAlchemy2 = "==0.8.4"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.29"  # geoportal
@@ -114,7 +114,7 @@ pyramid_multiauth = "==0.9.0"  # geoportal
 pyramid_tm = "==2.4"  # geoportal
 python-dateutil = "==2.8.1"  # geoportal
 PyYAML = "==5.4.1"  # geoportal
-rasterio = "==1.2.0"  # geoportal raster
+rasterio = "==1.2.10"  # geoportal raster
 requests = "==2.27.1"  # geoportal
 redis = "==3.5.3"  # geoportal cache
 Shapely = "==1.7.1"  # geoportal
@@ -138,9 +138,9 @@ cee-syslog-handler = "==0.6.0"
 certifi = "==2020.12.5"
 chameleon = "==3.8.1"
 chardet = "==4.0.0"
-click = "==7.1.2"
+click = "==8.0.4"
 click-plugins = "==1.1.1"
-cligj = "==0.7.1"
+cligj = "==0.7.2"
 cornice = "==5.0.3"
 decorator = "==4.4.2"
 graphviz = "==0.16"
@@ -183,7 +183,7 @@ snuggs = "==1.4.7"
 sqlalchemy-utils = "==0.36.8"
 stevedore = "==3.3.0"
 toml = "==0.10.2"
-ujson = "==5.1.0"
+ujson = "==5.2.0"
 urllib3 = "==1.26.8"
 venusian = "==3.0.0"
 waitress = "==2.1.1"
