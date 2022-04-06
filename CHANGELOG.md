@@ -1,3 +1,5 @@
+##### 2.5.0.205
+* Fix CVE [c2cgeoportal#9532](https://github.com/camptocamp/c2cgeoportal/pull/9532)
 ##### 2.5.0.204
 * Fix CVE [c2cgeoportal#9518](https://github.com/camptocamp/c2cgeoportal/pull/9518)
 ##### 2.5.0.203
