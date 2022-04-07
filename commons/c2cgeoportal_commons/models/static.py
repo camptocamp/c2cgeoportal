@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -162,7 +162,7 @@ class User(Base):
         info={
             "colanderalchemy": {
                 "title": _("The user changed his password"),
-                "description": _("Indicates in user has customized his password."),
+                "description": _("Indicates if user has changed his password."),
             }
         },
     )
