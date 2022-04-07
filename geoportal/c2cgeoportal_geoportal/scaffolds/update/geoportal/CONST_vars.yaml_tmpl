@@ -127,6 +127,8 @@ vars:
         ngeoMeasureDecimals: 0
         ngeoMeasureSpherical: False
         gmfSnappingConfig: {}
+        gmfSnappingOptions:
+          maxFeatures: 50
         ngeoSnappingTolerance: 20
         gmfObjectEditingToolsOptions: {}
         gmfTreeManagerModeFlush: True
