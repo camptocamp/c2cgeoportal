@@ -1,3 +1,6 @@
+##### 2.6.0.112
+* [Backport 2.6] Fix translation [c2cgeoportal#9524](https://github.com/camptocamp/c2cgeoportal/pull/9524)
+* [Backport 2.6] Add gmfSnappingOptions [c2cgeoportal#9535](https://github.com/camptocamp/c2cgeoportal/pull/9535)
 ##### 2.6.0.111
 * Fix CVE [c2cgeoportal#9533](https://github.com/camptocamp/c2cgeoportal/pull/9533)
 ##### 2.6.0.110
