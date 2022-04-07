@@ -493,6 +493,9 @@ def get_layer_class(layer, with_last_update_columns=False):
            (without the hidden column).
     :return: SQLAlchemy class
     """
+
+    LOG.info('####################### original get_layer_class called')
+
     # Exclude the columns used to record the last features update
     exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
     if with_last_update_columns:
@@ -513,6 +516,7 @@ def get_layer_class(layer, with_last_update_columns=False):
     enumerations_config = json.loads(m) if m else None
 
     primary_key = Layers.get_metadata(layer, "geotablePrimaryKey")
+    table_args = {'extend_existing': True}
     cls = get_class(
         str(layer.geo_table.format(**os.environ)),
         exclude_properties=exclude,
@@ -520,6 +524,7 @@ def get_layer_class(layer, with_last_update_columns=False):
         attributes_order=attributes_order,
         enumerations_config=enumerations_config,
         readonly_attributes=readonly_attributes,
+        table_args=table_args,
     )
 
     mapper = class_mapper(cls)

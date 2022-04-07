@@ -39,6 +39,9 @@ from sqlalchemy.orm.util import class_mapper
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 
+import logging
+log = logging.getLogger(__name__)
+
 CACHE_REGION_OBJ = get_region("obj")
 SQL_GEOMETRY_COLUMNS = """
     SELECT srid, type
@@ -129,6 +132,7 @@ def get_class(
     attributes_order=None,
     enumerations_config=None,
     readonly_attributes=None,
+    table_args=None,
 ):
     """
     Get the SQLAlchemy mapped class for "tablename". If no class exists
@@ -137,6 +141,10 @@ def get_class(
     tablename in the database a NoSuchTableError SQLAlchemy exception
     is raised.
     """
+
+    log.info('*************** get_class called')
+    log.info(table_args)
+    log.info('**********************************************************************')
 
     tablename, schema = _get_schema(tablename)
 
@@ -149,6 +157,7 @@ def get_class(
         attributes_order=attributes_order,
         enumerations_config=enumerations_config,
         readonly_attributes=readonly_attributes,
+        table_args=table_args
     )
 
     return cls
@@ -161,6 +170,7 @@ def _create_class(
     enumerations_config=None,
     readonly_attributes=None,
     pk_name=None,
+    table_args=None,
 ):
     from c2cgeoportal_commons.models.main import Base  # pylint: disable=import-outside-toplevel
 
@@ -170,6 +180,7 @@ def _create_class(
         __mapper_args__={"exclude_properties": exclude_properties},
         __attributes_order__=attributes_order,
         __enumerations_config__=enumerations_config,
+        __table_args__=table_args
     )
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)
@@ -190,7 +201,9 @@ def _add_association_proxy(cls, col):
 
     fk = next(iter(col.foreign_keys))
     child_tablename, child_pk = fk.target_fullname.rsplit(".", 1)
-    child_cls = get_class(child_tablename)
+    log.info('************************** passing here: _add_association_proxy')
+    table_args = {'info': 'bar'}
+    child_cls = get_class(child_tablename, table_args=table_args)
 
     try:
         # fmt: off
