@@ -29,6 +29,7 @@
 
 import argparse
 import json
+import re
 import subprocess
 from typing import Any, Dict, List, Tuple
 
@@ -39,6 +40,17 @@ def output(cmd: List[str]) -> bytes:
     except subprocess.CalledProcessError as error:
         assert error.output is not None
         return error.output
+
+
+_VERSION_RE = re.compile("([0-9]+)\.([0-9]+)\.[0-9]+")
+
+
+def simplify_version(version: str) -> str:
+    match = _VERSION_RE.match(version)
+    if match:
+        return ".".join(match.groups())
+    else:
+        return version
 
 
 def get_versions(
@@ -67,115 +79,128 @@ def get_versions(
     major_versions = [
         (
             "Ubuntu",
-            subprocess.check_output(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "--entrypoint=",
-                    f"camptocamp/geomapfish:{version}",
-                    "cat",
-                    "/etc/issue",
-                ]
-            )
-            .decode()
-            .strip()
-            .split(" ")[1],
+            simplify_version(
+                subprocess.check_output(
+                    [
+                        "docker",
+                        "run",
+                        "--rm",
+                        "--entrypoint=",
+                        f"camptocamp/geomapfish:{version}",
+                        "cat",
+                        "/etc/issue",
+                    ]
+                )
+                .decode()
+                .strip()
+                .split(" ")[1]
+            ),
         ),
         (
             "Python",
-            subprocess.check_output(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "--entrypoint=",
-                    f"camptocamp/geomapfish:{version}",
-                    "python3",
-                    "--version",
-                ]
-            )
-            .decode()
-            .strip()
-            .split(" ")[1],
+            simplify_version(
+                subprocess.check_output(
+                    [
+                        "docker",
+                        "run",
+                        "--rm",
+                        "--entrypoint=",
+                        f"camptocamp/geomapfish:{version}",
+                        "python3",
+                        "--version",
+                    ]
+                )
+                .decode()
+                .strip()
+                .split(" ")[1]
+            ),
         ),
         (
             "Node",
-            subprocess.check_output(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "--entrypoint=",
-                    f"camptocamp/geomapfish-tools:{version}",
-                    "node",
-                    "--version",
-                ]
-            )
-            .decode()
-            .strip()
-            .strip("v"),
+            simplify_version(
+                subprocess.check_output(
+                    [
+                        "docker",
+                        "run",
+                        "--rm",
+                        "--entrypoint=",
+                        f"camptocamp/geomapfish-tools:{version}",
+                        "node",
+                        "--version",
+                    ]
+                )
+                .decode()
+                .strip()
+                .strip("v")
+            ),
         ),
         (
             "Npm",
-            subprocess.check_output(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "--entrypoint=",
-                    f"camptocamp/geomapfish-tools:{version}",
-                    "npm",
-                    "--version",
-                ]
-            )
-            .decode()
-            .strip(),
+            simplify_version(
+                subprocess.check_output(
+                    [
+                        "docker",
+                        "run",
+                        "--rm",
+                        "--entrypoint=",
+                        f"camptocamp/geomapfish-tools:{version}",
+                        "npm",
+                        "--version",
+                    ]
+                )
+                .decode()
+                .strip()
+            ),
         ),
-        ("Postgres", deb_versions["postgresql-client"]),
+        ("Postgres", simplify_version(deb_versions["postgresql-client"])),
     ]
 
     if old_version >= 2.6:
         major_versions += (
             (
                 "GDAL",
-                subprocess.check_output(
-                    [
-                        "docker",
-                        "run",
-                        "--rm",
-                        "--entrypoint=",
-                        f"camptocamp/geomapfish:{version}",
-                        "gdalinfo",
-                        "--version",
-                    ]
-                )
-                .decode()
-                .strip()
-                .split(" ")[1],
+                simplify_version(
+                    subprocess.check_output(
+                        [
+                            "docker",
+                            "run",
+                            "--rm",
+                            "--entrypoint=",
+                            f"camptocamp/geomapfish:{version}",
+                            "gdalinfo",
+                            "--version",
+                        ]
+                    )
+                    .decode()
+                    .strip()
+                    .split(" ")[1]
+                ),
             ),
             (
                 "Proj",
-                subprocess.check_output(
-                    [
-                        "docker",
-                        "run",
-                        "--rm",
-                        "--entrypoint=",
-                        f"camptocamp/geomapfish:{version}",
-                        "pkg-config",
-                        "--modversion",
-                        "proj",
-                    ]
-                )
-                .decode()
-                .strip(),
+                simplify_version(
+                    subprocess.check_output(
+                        [
+                            "docker",
+                            "run",
+                            "--rm",
+                            "--entrypoint=",
+                            f"camptocamp/geomapfish:{version}",
+                            "pkg-config",
+                            "--modversion",
+                            "proj",
+                        ]
+                    )
+                    .decode()
+                    .strip()
+                ),
             ),
         )
+
     return (
         major_versions,
         {
-            e.split("==")[0]: e.split("==")[1]
+            e.split("==")[0]: simplify_version(e.split("==")[1])
             for e in subprocess.check_output(
                 [
                     "docker",
@@ -194,7 +219,7 @@ def get_versions(
             if e and len(e.split("==")) == 2 and e[0] not in ("#", "-")
         },
         {
-            e: v["version"]
+            e: simplify_version(v["version"])
             for e, v in json.loads(
                 output(
                     [
@@ -258,20 +283,20 @@ def main() -> None:
     main_new, python_new, npm_new = get_versions(args.new_version, old_major_version)
 
     print("Main versions updates")
-    print("-------------------")
+    print("---------------------")
     for major_old, major_new in zip(main_old, main_new):
-        # if major_old[1] != major_new[1]:
-        print(f"{major_old[0]} is updated from {major_old[1]} to {major_new[1]}")
+        if major_old[1] != major_new[1]:
+            print(f"{major_old[0]} is updated from {major_old[1]} to {major_new[1]}")
 
     print()
     print("Python packages updates")
-    print("---------------------")
+    print("-----------------------")
 
     print_package_update(python_old, python_new)
 
     print()
     print("Npm packages updates")
-    print("------------------")
+    print("--------------------")
 
     print_package_update(npm_old, npm_new)
 

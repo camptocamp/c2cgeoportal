@@ -8,6 +8,189 @@ Version 2.7.0
 Information to know before starting the upgrade
 ===============================================
 
+The Upgrade to the Web Components started, the authentication and the LIDAR profile are migrated.
+In the desktop_alt we introduce a canvas component who manage the application layout and plug the
+components through slots.
+In ngeo, the sources files from contribs/gmf/src are moved in ngeo src folder.
+
+Main versions updates
+---------------------
+Node is updated from 14.19 to 16.14
+Npm is updated from 6.14 to 8.5
+GDAL is updated from 3.2 to 3.4
+Proj is updated from 7.2 to 8.2
+
+
+Python packages updates
+-----------------------
+New packages:
+* arrow at version 1.2
+* azure-core at version 1.23
+* azure-identity at version 1.8
+* azure-storage-blob at version 12.10
+* binaryornot at version 0.4
+* boto3 at version 1.21
+* botocore at version 1.24
+* cffi at version 1.15
+* cookiecutter at version 1.7
+* cryptography at version 36.0
+* Cython at version 0.29
+* Deprecated at version 1.2
+* greenlet at version 1.1
+* importlib-metadata at version 4.11
+* importlib-resources at version 5.4
+* jinja2-time at version 0.2
+* jmespath at version 0.10
+* msal at version 1.17
+* msal-extensions at version 0.3
+* msrest at version 0.6
+* packaging at version 21.3
+* portalocker at version 2.4
+* poyo at version 0.5
+* pycparser at version 2.21
+* PyJWT at version 2.3
+* python-slugify at version 6.1
+* requests-oauthlib at version 1.3
+* s3transfer at version 0.5
+* text-unidecode at version 1.3
+* tilecloud at version 1.8
+* typing-extensions at version 4.1
+* wrapt at version 1.14
+* zipp at version 3.7
+
+Removed packages:
+* python-editor
+* simplejson
+
+Major updates:
+* attrs from 20.3 to 21.4
+* boltons from 20.2 to 21.0
+* c2cwsgiutils from 4.1 to 5.0
+* certifi from 2020.12 to 2021.10
+* click from 7.1 to 8.0
+* cornice from 5.0 to 6.0
+* decorator from 4.4 to 5.1
+* idna from 2.10 to 3.3
+* iso8601 from 0.1 to 1.0
+* Jinja2 from 2.11 to 3.0
+* MarkupSafe from 1.1 to 2.1
+* pyparsing from 2.4 to 3.0
+* pyramid from 1.10 to 2.0
+* pyramid-multiauth from 0.9 to 1.0
+* redis from 3.5 to 4.1
+* ujson from 4.0 to 5.1
+* waitress from 1.4 to 2.1
+
+Minor updates:
+* alembic from 1.5 to 1.7
+* Chameleon from 3.8 to 3.9
+* defusedxml from 0.6 to 0.7
+* dogpile.cache from 1.0 to 1.1
+* GDAL from 3.2 to 3.4
+* GeoAlchemy2 from 0.8 to 0.11
+* graphviz from 0.16 to 0.19
+* gunicorn from 20.0 to 20.1
+* lingua from 4.14 to 4.15
+* lxml from 4.6 to 4.8
+* Mako from 1.1 to 1.2
+* netifaces from 0.10 to 0.11
+* oauthlib from 3.1 to 3.2
+* OWSLib from 0.22 to 0.25
+* passwordgenerator from 1.4 to 1.5
+* pbr from 5.5 to 5.8
+* psycopg2 from 2.8 to 2.9
+* psycopg2-binary from 2.8 to 2.9
+* pycryptodome from 3.11 to 3.14
+* Pygments from 2.7 to 2.11
+* pygraphviz from 1.7 to 1.9
+* pyotp from 2.5 to 2.6
+* pyproj from 3.0 to 3.3
+* pyramid-jinja2 from 2.8 to 2.9
+* pyramid-tm from 2.4 to 2.5
+* pytz from 2021.1 to 2021.3
+* sentry-sdk from 1.0 to 1.5
+* Shapely from 1.7 to 1.8
+* six from 1.15 to 1.16
+* SQLAlchemy from 1.3 to 1.4
+* SQLAlchemy-Utils from 0.36 to 0.38
+* stevedore from 3.3 to 3.5
+* zope.interface from 5.2 to 5.4
+* zope.sqlalchemy from 1.3 to 1.6
+
+Npm packages updates
+--------------------
+New packages:
+* @babel/plugin-proposal-class-properties at version 7.16
+* @babel/plugin-proposal-decorators at version 7.17
+* @babel/plugin-syntax-object-rest-spread at version 7.8
+* @babel/plugin-transform-spread at version 7.16
+* @babel/plugin-transform-typescript at version 7.16
+* @babel/preset-typescript at version 7.16
+* @lit/reactive-element at version 1.3
+* @sentry/integrations at version 6.18
+* @sentry/types at version 6.18
+* angular at version 1.8
+* co at version 4.6
+* console-control-strings at version 1.1
+* core-js at version 3.21
+* doctrine at version 3.0
+* eslint-plugin-jsdoc at version 38.0
+* glob at version 7.2
+* i18next-browser-languagedetector at version 6.1
+* i18next-parser at version 6.0
+* i18next-xhr-backend at version 3.2
+* i18next at version 21.6
+* jquery-mousewheel at version 3.1
+* jquery at version 3.6
+* lit-element at version 3.2
+* lit-html at version 2.2
+* lit at version 2.2
+* loader-utils at version 2.0
+* loc-i18next at version 0.1
+* ol-mapbox-style at version 7.1
+* ol at version 6.12
+* raw-loader at version 4.0
+* regenerator-runtime at version 0.13
+* rxjs at version 7.5
+* sass-loader at version 10.2
+* style-loader at version 2.0
+* terser at version 5.12
+* tsconfig-paths at version 3.14
+
+Removed packages:
+* @geoblocks/proj
+* eslint-config-openlayers
+* eslint-plugin-googshift
+* ng-raven
+
+Major updates:
+* chokidar from 2.1 to 3.5
+* commander from 7.0 to 9.0
+* d3 from 5.16 to 7.3
+* editorconfig-checker from 3.3 to 4.0
+* eslint from 7.19 to 8.11
+* fast-sass-loader from 1.5 to 2.0
+* fs-extra from 9.1 to 10.0
+* node-sass from 4.14 to 6.0
+* npm from 6.14 to 8.5
+* puppeteer from 5.5 to 13.5
+* sinon from 9.2 to 13.0
+* svgo-loader from 2.2 to 3.0
+* svgo from 1.3 to 2.8
+* ts-node from 9.1 to 10.7
+
+Minor updates:
+* @babel/core from 7.12 to 7.17
+* @babel/preset-env from 7.12 to 7.16
+* @sentry/browser from 6.2 to 6.18
+* @sentry/tracing from 6.2 to 6.18
+* css-loader from 5.0 to 5.2
+* jsts from 2.6 to 2.8
+* localforage from 1.9 to 1.10
+* mapillary-js from 4.0 to 4.1
+* proj4 from 2.7 to 2.8
+* webpack-merge from 5.7 to 5.8
+
 Information
 ===========
 
@@ -72,6 +255,7 @@ services:
 ```
 
 For more information about Python warnings configuration see: https://docs.python.org/3/library/warnings.html#describing-warning-filters
+
 
 Changes to apply
 ================
