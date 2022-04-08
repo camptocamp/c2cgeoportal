@@ -228,11 +228,7 @@ def main():
                         if notitle:
                             md_file.write(f"##### {release}\n")
                             notitle = False
-                        md_file.write(
-                            "* {} [{}#{}]({})\n".format(
-                                pull["title"], repo, pull["number"], pull["html_url"]
-                            ).encode("utf-8")
-                        )
+                        md_file.write(f'* {pull["title"]} [{repo}#{pull["number"]}]({pull["html_url"]})\n')
 
 
 if __name__ == "__main__":
