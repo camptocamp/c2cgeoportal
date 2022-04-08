@@ -229,7 +229,7 @@ def _main() -> None:
                 for pull in sorted(pulls[repo].values(), key=lambda pull: pull["number"]):
                     if pull["base_ref"] != "master":
                         if notitle:
-                            md_file.write(f"##### {release}\n".encode("utf-8"))
+                            md_file.write(f"##### {release}\n")
                             notitle = False
                         md_file.write(
                             f'* {pull["title"]} [{repo}#{pull["number"]}]({pull["html_url"]})\n'.encode(
