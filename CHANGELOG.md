@@ -1,3 +1,5 @@
+##### 2.6.0.113
+* Add gmfSnappingOptions to configure maxFeatures for snapping [ngeo#8330](https://github.com/camptocamp/ngeo/pull/8330)
 ##### 2.6.0.112
 * [Backport 2.6] Fix translation [c2cgeoportal#9524](https://github.com/camptocamp/c2cgeoportal/pull/9524)
 * [Backport 2.6] Add gmfSnappingOptions [c2cgeoportal#9535](https://github.com/camptocamp/c2cgeoportal/pull/9535)
