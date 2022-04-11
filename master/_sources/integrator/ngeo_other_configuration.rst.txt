@@ -645,6 +645,16 @@ gmfShortenerCreateUrl
 ~~~~~~~~~~~~~~~~~~~~~
 URL to the shortener web service.
 
+.. _integrator_guide_ngeo_properties_gmfSnappingOptions:
+
+~~~~~~~~~~~~~~~~~~
+gmfSnappingOptions
+~~~~~~~~~~~~~~~~~~
+The snapping options
+
+Properties:
+ * ``maxFeatures`` (number)
+
 .. _integrator_guide_ngeo_properties_gmfThemesOptions:
 
 ~~~~~~~~~~~~~~~~
