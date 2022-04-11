@@ -231,7 +231,7 @@ def _main() -> None:
                         if notitle:
                             md_file.write(f"##### {release}\n")
                             notitle = False
-                        md_file.write(f'* {pull["title"]} [{repo}#{pull["number"]}]({pull["html_url"]})\n')
+                        md_file.write(f'- {pull["title"]} [{repo}#{pull["number"]}]({pull["html_url"]})\n')
 
 
 if __name__ == "__main__":
