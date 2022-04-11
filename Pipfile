@@ -51,7 +51,7 @@ setuptools = "==59.8.0"
 [dev-packages]
 awscli = "==1.22.91"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
-beautifulsoup4 = "==4.11.0"  # admin tests
+beautifulsoup4 = "==4.11.1"  # admin tests
 coverage = "==6.3.2"  # Build coverage XML for Codacy
 Jinja2 = "==3.0.3"  # c2c.template
 lingua = "==4.14"  # i18n
