@@ -1,3 +1,5 @@
+##### 2.5.0.207
+* [Backport 2.5] Fix CVE [ngeo#8355](https://github.com/camptocamp/ngeo/pull/8355)
 ##### 2.5.0.206
 * Fix CVE [c2cgeoportal#9539](https://github.com/camptocamp/c2cgeoportal/pull/9539)
 ##### 2.5.0.205
