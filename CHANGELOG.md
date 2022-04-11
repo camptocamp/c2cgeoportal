@@ -1,3 +1,5 @@
+##### 2.6.0.114
+* [Backport 2.6] Fix CVE [ngeo#8356](https://github.com/camptocamp/ngeo/pull/8356)
 ##### 2.6.0.113
 * Add gmfSnappingOptions to configure maxFeatures for snapping [ngeo#8330](https://github.com/camptocamp/ngeo/pull/8330)
 ##### 2.6.0.112
