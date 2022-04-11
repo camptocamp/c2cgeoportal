@@ -1,5 +1,9 @@
+##### 2.7.rc.3
+- Fix the changelog for Prettier [c2cgeoportal#9556](https://github.com/camptocamp/c2cgeoportal/pull/9556)
+- [Backport 2.7] Add gmfSnappingOptions to configure maxFeatures for snapping [ngeo#8347](https://github.com/camptocamp/ngeo/pull/8347)
+- Fix Google StreetView panel height [ngeo#8348](https://github.com/camptocamp/ngeo/pull/8348)
+- [Backport 2.7] Fix CVE [ngeo#8357](https://github.com/camptocamp/ngeo/pull/8357)
 ##### 2.7.rc.2
-
 - Have a red crosshare by default [c2cgeoportal#9490](https://github.com/camptocamp/c2cgeoportal/pull/9490)
 - Set c2cciutils to latest 1.1 version [c2cgeoportal#9503](https://github.com/camptocamp/c2cgeoportal/pull/9503)
 - Add some information in the changelog, add the updated versions [c2cgeoportal#9512](https://github.com/camptocamp/c2cgeoportal/pull/9512)
