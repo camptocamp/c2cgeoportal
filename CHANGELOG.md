@@ -1,3 +1,7 @@
+##### 2.4.2.77
+* Ignore CVE [c2cgeoportal#9561](https://github.com/camptocamp/c2cgeoportal/pull/9561)
+* Bump Openlayers to 5.3.3, ignore CVE [ngeo#8345](https://github.com/camptocamp/ngeo/pull/8345)
+* Fix CVE [ngeo#8354](https://github.com/camptocamp/ngeo/pull/8354)
 ##### 2.4.2.76
 * Fix CVE [c2cgeoportal#9513](https://github.com/camptocamp/c2cgeoportal/pull/9513)
 ##### 2.4.2.75
