@@ -1,3 +1,9 @@
+
+##### 2.7.rc.4
+
+- Fix changelog [c2cgeoportal#9560](https://github.com/camptocamp/c2cgeoportal/pull/9560)
+- Fix password reset and remove theme reloading at password reset [ngeo#8350](https://github.com/camptocamp/ngeo/pull/8350)
+
 ##### 2.7.rc.3
 
 - Fix the changelog for Prettier [c2cgeoportal#9556](https://github.com/camptocamp/c2cgeoportal/pull/9556)
