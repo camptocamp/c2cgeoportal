@@ -222,15 +222,20 @@ def _main() -> None:
             _add_commit(commits[repo], release_pulls[release["name"]][repo], repo, release[repo])
 
     with open("CHANGELOG.md", "w", encoding="utf-8") as md_file:
+        first = False
         for release in releases[::-1]:
             pulls = release_pulls[release]
-            notitle = True
+            title = True
             for repo in REPOS:
                 for pull in sorted(pulls[repo].values(), key=lambda pull: pull["number"]):
                     if pull["base_ref"] != "master":
-                        if notitle:
-                            md_file.write(f"##### {release}\n")
-                            notitle = False
+                        if title:
+                            if first:
+                                first = False
+                            else:
+                                md_file.write(f"\n")
+                            md_file.write(f"##### {release}\n\n")
+                            title = False
                         md_file.write(f'- {pull["title"]} [{repo}#{pull["number"]}]({pull["html_url"]})\n')
 
 
