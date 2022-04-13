@@ -17,7 +17,7 @@ ENV \
 RUN \
     . /etc/os-release && \
     apt-get update && \
-    apt-get --assume-yes upgrade && \
+    apt-get upgrade --assume-yes && \
     apt-get install --assume-yes --no-install-recommends apt-utils && \
     apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less gnupg libpq5 \
          python3-pip python3-dev python3-wheel python3-pkgconfig libgraphviz-dev libpq-dev binutils gcc g++ cython3 && \
