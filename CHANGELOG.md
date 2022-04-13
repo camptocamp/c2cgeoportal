@@ -1,3 +1,10 @@
+##### 2.7.rc.5
+
+- Fix changelog [c2cgeoportal#9564](https://github.com/camptocamp/c2cgeoportal/pull/9564)
+- Upgrade fix [c2cgeoportal#9566](https://github.com/camptocamp/c2cgeoportal/pull/9566)
+- [Backport 2.7] Ignore audit on fast-sass-loader [ngeo#8384](https://github.com/camptocamp/ngeo/pull/8384)
+- [Backport 2.7] Fix Mapillary bounding box (configurable value and buffer from map resolution) [ngeo#8387](https://github.com/camptocamp/ngeo/pull/8387)
+
 ##### 2.7.rc.4
 
 - Fix changelog [c2cgeoportal#9560](https://github.com/camptocamp/c2cgeoportal/pull/9560)
