@@ -246,6 +246,17 @@
             "index": "pypi",
             "version": "==1.5.0"
         },
+        "sphinx-substitution-extensions": {
+            "extras": [
+                "prompt"
+            ],
+            "hashes": [
+                "sha256:5a8ca34dac3984486344e95c36e3ed4766d402a71bdee7390d600f153db9795b",
+                "sha256:ff7d05bd00e8b2d7eb8a403b9f317d70411d4e9b6812bf91534a50df22190c75"
+            ],
+            "index": "pypi",
+            "version": "==2022.2.16"
+        },
         "sphinxcontrib-applehelp": {
             "hashes": [
                 "sha256:806111e5e962be97c29ec4c1e7fe277bfd19e9652fb1a4392105b43e01af885a",
