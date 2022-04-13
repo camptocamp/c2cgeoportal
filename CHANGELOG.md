@@ -1,3 +1,7 @@
+##### 2.4.2.78
+* Ignore CVE:   Title: [1069976] Prototype Pollution in async [c2cgeoportal#9565](https://github.com/camptocamp/c2cgeoportal/pull/9565)
+* Remove CVE ignore [ngeo#8376](https://github.com/camptocamp/ngeo/pull/8376)
+* Ignore audit on fast-sass-loader [ngeo#8380](https://github.com/camptocamp/ngeo/pull/8380)
 ##### 2.4.2.77
 * Ignore CVE [c2cgeoportal#9561](https://github.com/camptocamp/c2cgeoportal/pull/9561)
 * Bump Openlayers to 5.3.3, ignore CVE [ngeo#8345](https://github.com/camptocamp/ngeo/pull/8345)
