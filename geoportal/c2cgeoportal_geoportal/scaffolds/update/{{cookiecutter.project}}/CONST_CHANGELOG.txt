@@ -204,6 +204,8 @@ Information
    qgisserver, and we search for all the OGC servers that correspond to this URL.
    Then the configuration file  (`qgisserver/accesscontrol_config.yaml`) and the specified configuration
    in the `docker-compose.yaml` file can be removed.
+   It also requires that the OGC servers are configured with an URL like that
+   ``config://qgisserver?map=<project_file>``.
 
 3. Some little changes in the application build:
 
