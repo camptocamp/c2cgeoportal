@@ -264,6 +264,10 @@ Changes to apply
 
 2. If you use the LIDAR profile you didn't need anymore to include your module in the controller.
 
+3. In the tilegeneration configuration ``on``/``off`` is no more considered as boolean, it should be
+   converted to ``true``/``false``, and the properties ``mapcache_internal`` and ``mapcache`` should be
+   removed.
+
 
 =============
 Version 2.6.0
