@@ -159,13 +159,13 @@ and build by `Vite <https://vitejs.dev/>`_.
 We will add a button in the tools bar which opens a new tool panel and that can be used to send a feedback.
 
 The tool button should be an instance of
-`gmfapi.elements.ToolButtonElement<https://camptocamp.github.io/ngeo/|main_branch|/apidoc/classes/srcapi_elements_ToolButtonElement.default.html>`_.
+:ngeo_doc:`gmfapi.elements.ToolButtonElement</apidoc/classes/srcapi_elements_ToolButtonElement.default.html>`.
 
 We will directly use
-`gmf-tool-button<https://camptocamp.github.io/ngeo/|main_branch|/apidoc/classes/srcapi_elements_ToolButtonElement.ToolButtonDefault.html>`_.
+:ngeo_doc:`gmf-tool-button</apidoc/classes/srcapi_elements_ToolButtonElement.ToolButtonDefault.html>`.
 
 And panel should be an instance of:
-`gmfapi.elements.ToolPanelElement<https://camptocamp.github.io/ngeo/|main_branch|/apidoc/classes/srcapi_elements_ToolPanelElement.default.html>`_.
+:ngeo_doc:`gmfapi.elements.ToolPanelElement</apidoc/classes/srcapi_elements_ToolPanelElement.default.html>`.
 
 We will directly get the existing component from the demo.
 

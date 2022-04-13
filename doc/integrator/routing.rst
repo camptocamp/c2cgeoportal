@@ -16,8 +16,7 @@ with version >= 5.8.
 Adding the routing interface to the template
 --------------------------------------------
 
-For a working example, check the
-`Demo alternative UI <https://geomapfish-demo-|major_version_dash|.camptocamp.com/desktop_alt>`_.
+For a working example, check the :demo:`Demo alternative UI </desktop_alt>`.
 
 Add the button to the ``gmf-app-bar``:
 
