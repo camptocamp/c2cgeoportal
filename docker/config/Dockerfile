@@ -6,6 +6,7 @@ ENV VERSION=$VERSION
 
 RUN \
   apt-get update && \
+  apt-get upgrade --assume-yes && \
   apt-get install --assume-yes --no-install-recommends gettext-base python3 && \
   apt-get clean && \
   rm --recursive --force /var/lib/apt/lists/*
