@@ -47,8 +47,7 @@ In this file, you can add some blocks like
 
 to include a web-component in a specific slot (one UI part of the app).
 
-You can find the available component in the
-`ngeo documentation <https://camptocamp.github.io/ngeo/|main_branch|/apidoc/>`_.
+You can find the available component in the :ngeo_doc:`ngeo documentation </apidoc/>`.
 
 The controller (``js`` file) is commonly named ``mainCtrl``. So you can use a value
 from the controller by doing the following (here, the controller is the ``DesktopController``):

@@ -17,7 +17,7 @@ ENV \
 RUN \
     . /etc/os-release && \
     apt-get update && \
-    apt-get --assume-yes upgrade && \
+    apt-get upgrade --assume-yes && \
     apt-get install --assume-yes --no-install-recommends apt-utils && \
     apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less gnupg libpq5 \
          python3-pip python3-dev python3-wheel python3-pkgconfig libgraphviz-dev libpq-dev binutils gcc g++ cython3 && \
@@ -160,7 +160,8 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
 
 # For awscli
 RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer && \
-    mv /usr/bin/bashrc ~/.bashrc
+    mv /usr/bin/bashrc ~/.bashrc && \
+    git config --global --add safe.directory /src
 COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src

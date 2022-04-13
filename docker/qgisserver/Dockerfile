@@ -9,7 +9,9 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 COPY python/ /tmp/python/
 
 
-RUN apt-get update && apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc && \
+RUN apt-get update && \
+    apt-get upgrade --assume-yes && \
+    apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc && \
     apt-get clean && \
     rm --recursive --force /var/lib/apt/lists/* && \
     cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \

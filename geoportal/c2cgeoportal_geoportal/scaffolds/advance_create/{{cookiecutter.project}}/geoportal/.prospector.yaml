@@ -13,6 +13,7 @@ pylint:
     - too-many-locals
     - too-many-statements
     - too-many-branches
+    - c-extension-no-member
 
 pyflakes:
   disable:

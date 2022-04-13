@@ -23,14 +23,12 @@ The c2cgeoportal project is composed of two software components: NGEO (a JS libr
 `OpenLayers <https://openlayers.org>`_ and `AngularJS <https://angularjs.org/>`_), and c2cgeoportal,
 a Python library for the Pyramid web framework.
 
-The `Demo <https://geomapfish-demo-|major_version_dash|.camptocamp.com/>`_ application shows a WebGIS
-built with c2cgeoportal.
-The `Demo alternative UI <https://geomapfish-demo-|major_version_dash|.camptocamp.com/desktop_alt>`_ shows
-the same WebGIS with different user interface functionalities.
+The :demo:`Demo </>` application shows a WebGIS built with c2cgeoportal.
+The :demo:`Demo alternative UI </desktop_alt>` shows the same WebGIS with different user interface
+functionalities.
 To test the editing functionality, you can use the username 'demo' with the password 'demo'.
 
-The
-`ngeo (client) documentation can be found here <https://camptocamp.github.io/ngeo/|main_branch|/apidoc/>`_.
+The :ngeo_doc:`ngeo (client) documentation can be found here </apidoc/>`.
 
 
 Resources managed by the user group community:
