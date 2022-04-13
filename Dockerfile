@@ -160,7 +160,8 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
 
 # For awscli
 RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer && \
-    mv /usr/bin/bashrc ~/.bashrc
+    mv /usr/bin/bashrc ~/.bashrc && \
+    git config --global --add safe.directory /src
 COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src
