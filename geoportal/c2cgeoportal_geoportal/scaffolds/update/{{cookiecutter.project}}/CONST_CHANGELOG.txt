@@ -254,11 +254,13 @@ For more information about Python warnings configuration see: https://docs.pytho
 Changes to apply
 ================
 
-1. for advance application:
+1. For advance application:
 
    In the ``docker-compose.yaml`` file in the service ``geoportal`` you should replace
    ``service: geoportal`` by ``service: geoportal-advance``, and in service ``alembic`` you should replace
    ``service: alembic`` by ``service: alembic-advance``.
+
+2. If you use the LIDAR profile you didn't need anymore to include your module in the controller.
 
 
 =============
