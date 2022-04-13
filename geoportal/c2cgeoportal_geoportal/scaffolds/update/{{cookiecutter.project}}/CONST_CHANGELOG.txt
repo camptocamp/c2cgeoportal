@@ -8,6 +8,9 @@ Version 2.7.0
 Information to know before starting the upgrade
 ===============================================
 
+Now the simple application is the default mode for new project, to continue with the advance application
+mode you also should add an attribute ``advance: true`` in your ``project.yaml`` file before starting the upgrade.
+
 The Upgrade to the Web Components started, the authentication and the LIDAR profile are migrated.
 In the desktop_alt we introduce a canvas component who manage the application layout and plug the
 components through slots.
@@ -202,16 +205,7 @@ Information
    Then the configuration file  (`qgisserver/accesscontrol_config.yaml`) and the specified configuration
    in the `docker-compose.yaml` file can be removed.
 
-3. Now the simple application is the default mode for new project, to continue with the advance application
-   mode you also should:
-
-   Add an attribute ``advance: true`` in your ``project.yaml`` file before starting the upgrade.
-
-   In the ``docker-compose.yaml`` file in the service ``geoportal`` you should replace
-   ``service: geoportal`` by ``service: geoportal-advance``, and in service ``alembic`` you should replace
-   ``service: alembic`` by ``service: alembic-advance``.
-
-4. Some little changes in the application build:
+3. Some little changes in the application build:
 
    - In the ``./build`` script, we no longer call the ``docker build`` command with custom parameters,
      but call the ``docker-compose build`` command with two additional environment variables:
@@ -229,7 +223,7 @@ Information
    - ``./build`` script supports a new argument ``--dry-run`` which only displays the ``docker`` and
      ``docker-compose`` commands without running them.
 
-5. Upgrade c2cusgiutils to version 5, see more information in the
+4. Upgrade c2cusgiutils to version 5, see more information in the
    c2wsgiutils changelog https://github.com/camptocamp/c2cwsgiutils/blob/master/CHANGELOG.md.
 
 SQLAlchemy upgrade to version 1.4
