@@ -1,4 +1,3 @@
-
 ##### 2.7.rc.4
 
 - Fix changelog [c2cgeoportal#9560](https://github.com/camptocamp/c2cgeoportal/pull/9560)
