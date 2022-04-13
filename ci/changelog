@@ -219,7 +219,7 @@ def main():
             add_commit(commits[repo], release_pulls[release["name"]][repo], repo, release[repo])
 
     with open("CHANGELOG.md", "w", encoding="utf-8") as md_file:
-        first = False
+        first = True
         for release in releases[::-1]:
             pulls = release_pulls[release]
             title = True
