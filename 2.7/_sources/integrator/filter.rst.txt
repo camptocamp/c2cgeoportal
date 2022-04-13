@@ -95,8 +95,7 @@ The difference is that enumerated attributes are configurable (like pointing to 
 while directed attributes are ready-to-use values that come directly from the mapfile configuration.
 
 Client-side documentation related to the ``enumeratedAttributes`` and ``directedFilterAttributes`` metadata
-is available here:
-`gmfThemes.GmfMetaData <https://camptocamp.github.io/ngeo/|main_branch|/apidoc/gmfThemes.GmfMetaData.html>`_.
+is available here: :ngeo_doc:`gmfThemes.GmfMetaData </apidoc/gmfThemes.GmfMetaData.html>`.
 
 Using DB sessions
 ~~~~~~~~~~~~~~~~~

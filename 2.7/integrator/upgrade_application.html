@@ -40,7 +40,7 @@
 <section id="prepare-upgrade">
 <h2>Prepare upgrade<a class="headerlink" href="#prepare-upgrade" title="Permalink to this headline">¶</a></h2>
 <p>Read the <code class="docutils literal notranslate"><span class="pre">Information</span> <span class="pre">to</span> <span class="pre">know</span> <span class="pre">before</span> <span class="pre">starting</span> <span class="pre">the</span> <span class="pre">upgrade</span></code> chapters in the
-<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/|main_branch|/geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl">changelog</a>.
+<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/2.7/geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl">changelog</a>.
 If you are currently using an LTS (Long-term support) release, you should read all the chapters,
 if you are using the previous version, only the first chapter is relevant.</p>
 <p>Be sure that your <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list is up to date in your <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file.</p>
@@ -65,7 +65,7 @@ span.prompt1:before {
 </pre></div></div><p>Build the project file if needed:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run make project.yaml</span>
 </pre></div></div><p>Get the upgrade script:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/<span class="p">|</span>main_branch<span class="p">|</span>/scripts/upgrade &gt; upgrade</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.7/scripts/upgrade &gt; upgrade</span>
 <span class="prompt1">chmod +x upgrade</span>
 </pre></div></div><p>Upgrade in Git ignore:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">echo</span> /upgrade &gt;&gt; .gitignore</span>
