@@ -1,3 +1,7 @@
+##### 2.7.rc.7
+
+- Support regex metadata in themes view [c2cgeoportal#9575](https://github.com/camptocamp/c2cgeoportal/pull/9575)
+
 ##### 2.7.rc.6
 
 - Add some other upgrade notes [c2cgeoportal#9572](https://github.com/camptocamp/c2cgeoportal/pull/9572)
