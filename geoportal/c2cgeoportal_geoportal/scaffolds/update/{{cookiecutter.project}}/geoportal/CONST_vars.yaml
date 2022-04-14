@@ -111,7 +111,8 @@ vars:
           tags:
             service: js
         gmfAuthenticationConfig:
-          forcePasswordChange: true
+          allowPasswordChange: true
+          allowPasswordReset: true
         ngeoWfsPermalinkOptions:
           wfsTypes: []
           defaultFeatureNS: http://mapserver.gis.umn.edu/mapserver

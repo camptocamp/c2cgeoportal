@@ -8,13 +8,24 @@ Version 2.7.0
 Information to know before starting the upgrade
 ===============================================
 
-Now the simple application is the default mode for new project, to continue with the advance application
-mode you also should add an attribute ``advance: true`` in your ``project.yaml`` file before starting the upgrade.
+1. Now the simple application is the default mode for new project, to continue with the advance application
+   mode you also should add an attribute ``advance: true`` in your ``project.yaml`` file before starting
+   the upgrade.
 
-The Upgrade to the Web Components started, the authentication and the LIDAR profile are migrated.
-In the desktop_alt we introduce a canvas component who manage the application layout and plug the
-components through slots.
-In ngeo, the sources files from contribs/gmf/src are moved in ngeo src folder.
+2. All the files will be formatted with isort, Black and Prettier to be similar to the initial scaffolds.
+   If you have mako files in ``.html`` files Prettier will break them, to avoid that you should create
+   ``.prettierignore`` file with:
+
+   ```
+   *.min.js
+   ```
+
+   And the files you want to ignore.
+
+3. The Upgrade to the Web Components started, the authentication and the LIDAR profile are migrated.
+   In the desktop_alt we introduce a canvas component who manage the application layout and plug the
+   components through slots.
+   In ngeo, the sources files from contribs/gmf/src are moved in ngeo src folder.
 
 Main versions updates
 ---------------------
@@ -197,9 +208,7 @@ Minor updates:
 Information
 ===========
 
-1. All the files will be formatted with isort, Black and Prettier to be similar to the initial scaffolds.
-
-2. The configuration of the QGIS authentication module is simplified,
+1. The configuration of the QGIS authentication module is simplified,
    now a new environment variable `GEOMAPFISH_ACCESSCONTROL_BASE_URL` is set to the base URL of
    qgisserver, and we search for all the OGC servers that correspond to this URL.
    Then the configuration file  (`qgisserver/accesscontrol_config.yaml`) and the specified configuration
@@ -207,7 +216,7 @@ Information
    It also requires that the OGC servers are configured with an URL like that
    ``config://qgisserver?map=<project_file>``.
 
-3. Some little changes in the application build:
+2. Some little changes in the application build:
 
    - In the ``./build`` script, we no longer call the ``docker build`` command with custom parameters,
      but call the ``docker-compose build`` command with two additional environment variables:
@@ -225,7 +234,7 @@ Information
    - ``./build`` script supports a new argument ``--dry-run`` which only displays the ``docker`` and
      ``docker-compose`` commands without running them.
 
-4. Upgrade c2cusgiutils to version 5, see more information in the
+3. Upgrade c2cusgiutils to version 5, see more information in the
    c2wsgiutils changelog https://github.com/camptocamp/c2cwsgiutils/blob/master/CHANGELOG.md.
 
 SQLAlchemy upgrade to version 1.4
@@ -267,6 +276,68 @@ Changes to apply
 3. In the tilegeneration configuration ``on``/``off`` is no more considered as boolean, it should be
    converted to ``true``/``false``, and the properties ``mapcache_internal`` and ``mapcache`` should be
    removed.
+
+4. For the LIDAR profile you should add/modify in your controller JavaScript file:
+
+    ```javascript
+    + import panels from 'gmfapi/store/panels';
+
+    ...
+
+      constructor($scope, $injector) {
+    ...
+    +   const $timeout = $injector.get('$timeout');
+    +
+    +   // Open the 'web-component' lidar panel
+    +   $scope.$watch(
+    +   () => this.drawLidarprofilePanelActive,
+    +   (newVal) => {
+    +       if (newVal) {
+    +         panels.openToolPanel('lidar');
+    +       } else {
+    +         panels.closeToolPanel();
+    +       }
+    +     }
+    +   );
+    +
+    +   // Make visible the footer
+    +   panels.getActiveFooterPanel().subscribe({
+    +     next: (panel) => {
+    +       this.lidarProfileFooterActive = panel === 'lidar';
+    +       $timeout(() => {}); // this triggered on DOM click, we call $timeout to force Angular digest
+    +     },
+    +   });
+    ...
+    ```
+
+    In you HTML file the components should be added like this:
+
+    ```html
+          <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
+            <div class="col-sm-12">
+              <gmf-lidar-panel></gmf-lidar-panel>
+            </div>
+          </div>
+    ```
+
+    ```html
+      <gmf-lidar-footer id="lidar-footer"></gmf-lidar-footer>
+    ```
+
+5. To access to the config in you components, previously it was injected throw Angular, now you should get
+   it with RXJS, with:
+
+   ```javascript
+   import {Configuration} from 'gmfapi/store/config';
+
+   window.gmfapi.store.config.getConfig().subscribe({
+     next: (configuration: Configuration) => {
+       if (configuration) {
+         ...
+       }
+     },
+   })
+   ```
 
 
 =============
