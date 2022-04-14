@@ -9,7 +9,7 @@ Prepare upgrade
 ~~~~~~~~~~~~~~~
 
 Read the ``Information to know before starting the upgrade`` chapters in the
-`changelog <https://github.com/camptocamp/c2cgeoportal/blob/|main_branch|/geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl>`_.
+:git:`changelog </geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl>`.
 If you are currently using an LTS (Long-term support) release, you should read all the chapters,
 if you are using the previous version, only the first chapter is relevant.
 
@@ -43,7 +43,9 @@ Build the project file if needed:
 
 Get the upgrade script:
 
-.. prompt:: bash
+.. prompt::
+    :language: bash
+    :substitutions:
 
     curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/|main_branch|/scripts/upgrade > upgrade
     chmod +x upgrade

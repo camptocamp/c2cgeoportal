@@ -175,7 +175,9 @@ and the configuration should be as follows:</p>
 <code class="docutils literal notranslate"><span class="pre">gmf&lt;Major</span> <span class="pre">GeoMapFish</span> <span class="pre">version}-qgis${Major</span> <span class="pre">QGIS}</span></code>.</p>
 <p>From version 2.7 the config is just made with the <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_BASE_URL</span></code> environment
 variable which contains the base URL of the OGC servers, by default it’s set to
-<code class="docutils literal notranslate"><span class="pre">QGISSERVER_URL</span></code>. And the plugin will search for the OGC servers that match with this base URL.</p>
+<code class="docutils literal notranslate"><span class="pre">QGISSERVER_URL</span></code>. And the plugin will search for the OGC servers that match with this base URL.
+It also requires that the OGC servers are configured with an URL like that
+<code class="docutils literal notranslate"><span class="pre">config://qgisserver?map=&lt;project_file&gt;</span></code>.</p>
 <p>The configuration that use the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> or <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code> are still
 working but are deprecated.</p>
 </section>
