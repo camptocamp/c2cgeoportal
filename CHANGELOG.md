@@ -1,3 +1,5 @@
+##### 2.4.2.79
+* No more ignore CVE [c2cgeoportal#9571](https://github.com/camptocamp/c2cgeoportal/pull/9571)
 ##### 2.4.2.78
 * Ignore CVE:   Title: [1069976] Prototype Pollution in async [c2cgeoportal#9565](https://github.com/camptocamp/c2cgeoportal/pull/9565)
 * Remove CVE ignore [ngeo#8376](https://github.com/camptocamp/ngeo/pull/8376)
