@@ -30,6 +30,7 @@ import datetime
 import ipaddress
 import json
 import logging
+import re
 from string import Formatter
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union, cast
 
@@ -110,6 +111,15 @@ def get_typed(
                 return cast(Dict[str, Any], json.loads(value))
             except Exception as e:
                 errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {str(e)}")
+        elif type_["type"] == "regex":
+            pattern = type_["regex"]
+            if re.match(pattern, value) is None:
+                errors.add(
+                    f"{prefix}The regex attribute '{name}'='{value}' "
+                    f"does not match expected pattern '{pattern}'."
+                )
+            else:
+                return value
         else:
             errors.add(f"{prefix}Unknown type '{type_['type']}'.")
     except Exception as e:
