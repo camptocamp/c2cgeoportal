@@ -58,9 +58,10 @@ if args.force_increment:
 elif args.auto_increment:
     if tag is not None:
         ci["minor"] = 0
-    elif os.environ.get("MAIN_BRANCH", "master") != "master" and os.environ.get(
-        "GITHUB_REF", ""
-    ) == "refs/heads/" + os.environ.get("MAIN_BRANCH", "master"):
+    elif os.environ.get("MAIN_BRANCH", "master") != "master" and (
+        os.environ.get("GITHUB_REF", "") == "refs/heads/" + os.environ.get("MAIN_BRANCH", "master")
+        or os.environ.get("GITHUB_EVENT_NAME", "") == "repository_dispatch"
+    ):
         ci["minor"] = ci["minor"] + 1
 
     with open("ci/ci.yaml", "w") as ci_file:
