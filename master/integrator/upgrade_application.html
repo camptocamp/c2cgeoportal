@@ -39,12 +39,11 @@
 <span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this headline">¶</a></h1>
 <section id="prepare-upgrade">
 <h2>Prepare upgrade<a class="headerlink" href="#prepare-upgrade" title="Permalink to this headline">¶</a></h2>
-<p>Read the <code class="docutils literal notranslate"><span class="pre">Information</span> <span class="pre">to</span> <span class="pre">know</span> <span class="pre">before</span> <span class="pre">starting</span> <span class="pre">the</span> <span class="pre">upgrade</span></code> chapters in the
-<a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/master/geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl">changelog</a>.
+<p><a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/master/geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_CHANGELOG.txt">Read the ‘Information to know before starting the upgrade’ chapters in the changelog</a>.
 If you are currently using an LTS (Long-term support) release, you should read all the chapters,
 if you are using the previous version, only the first chapter is relevant.</p>
-<p>Be sure that your <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list is up to date in your <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file.</p>
-<p>If you are not sure whether this list is up to date, you can perform an update up to step 7 on your
+<p>Be sure that your <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list is up-to-date in your <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file.</p>
+<p>If you are not sure whether this list is up-to-date, you can perform an update up to step 7 on your
 current version and see if some files get modified by the update process.
 If the update process modified files which you do not want modified, then add these files to the
 <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list.</p>
