@@ -9,13 +9,13 @@ Prepare upgrade
 ~~~~~~~~~~~~~~~
 
 Read the ``Information to know before starting the upgrade`` chapters in the
-:git:`changelog </geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_CHANGELOG.txt_tmpl>`.
+:git:`changelog </geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_CHANGELOG.txt>`.
 If you are currently using an LTS (Long-term support) release, you should read all the chapters,
 if you are using the previous version, only the first chapter is relevant.
 
-Be sure that your ``managed_files`` list is up to date in your ``project.yaml`` file.
+Be sure that your ``managed_files`` list is up-to-date in your ``project.yaml`` file.
 
-If you are not sure whether this list is up to date, you can perform an update up to step 7 on your
+If you are not sure whether this list is up-to-date, you can perform an update up to step 7 on your
 current version and see if some files get modified by the update process.
 If the update process modified files which you do not want modified, then add these files to the
 ``managed_files`` list.
