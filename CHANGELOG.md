@@ -1,3 +1,8 @@
+##### 2.7.rc.6
+
+- Add some other upgrade notes [c2cgeoportal#9572](https://github.com/camptocamp/c2cgeoportal/pull/9572)
+- Fix LIDAR profile [ngeo#8388](https://github.com/camptocamp/ngeo/pull/8388)
+
 ##### 2.7.rc.5
 
 - Fix changelog [c2cgeoportal#9564](https://github.com/camptocamp/c2cgeoportal/pull/9564)
