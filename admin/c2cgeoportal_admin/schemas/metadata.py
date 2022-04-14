@@ -190,13 +190,23 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
         return metadata_type if metadata_type in self.available_types else "string"
 
 
+def _translate_available_metadata(available_metadata: Dict[str, Any]) -> Dict[str, Any]:
+    result = {}
+    result.update(available_metadata)
+    result["description"] = _(available_metadata.get("description", ""))
+    return result
+
+
 def metadata_schema_node(prop: InstrumentedAttribute, model: DeclarativeMeta) -> colander.SequenceSchema:
-    """Get the schema of a collection of metadatas."""
+    """Get the schema of a collection of metadata."""
 
     # Deferred which returns a dictionary with metadata name as key and metadata definition as value.
     # Needed to get the metadata types on UI side.
     metadata_definitions_dict = colander.deferred(
-        lambda node, kw: {m["name"]: m for m in metadata_definitions(kw["request"].registry.settings, model)}
+        lambda node, kw: {
+            m["name"]: _translate_available_metadata(m)
+            for m in metadata_definitions(kw["request"].registry.settings, model)
+        }
     )
 
     return colander.SequenceSchema(

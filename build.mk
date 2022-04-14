@@ -148,9 +148,9 @@ geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
 	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(SRC_FILES)
 
 admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: \
-		lingua.cfg $(ADMIN_SRC_FILES)
+		admin/lingua.cfg $(ADMIN_SRC_FILES)
 	mkdir --parent $(dir $@)
-	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(ADMIN_SRC_FILES)
+	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(ADMIN_SRC_FILES) ./geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/geoportal/CONST_vars.yaml
 
 .PRECIOUS: %.mo
 %.mo: %.po
