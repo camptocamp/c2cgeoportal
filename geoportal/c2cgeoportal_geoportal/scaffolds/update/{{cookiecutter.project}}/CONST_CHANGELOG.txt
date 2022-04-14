@@ -277,6 +277,68 @@ Changes to apply
    converted to ``true``/``false``, and the properties ``mapcache_internal`` and ``mapcache`` should be
    removed.
 
+4. For the LIDAR profile you should add/modify in your controller JavaScript file:
+
+    ```javascript
+    + import panels from 'gmfapi/store/panels';
+
+    ...
+
+      constructor($scope, $injector) {
+    ...
+    +   const $timeout = $injector.get('$timeout');
+    +
+    +   // Open the 'web-component' lidar panel
+    +   $scope.$watch(
+    +   () => this.drawLidarprofilePanelActive,
+    +   (newVal) => {
+    +       if (newVal) {
+    +         panels.openToolPanel('lidar');
+    +       } else {
+    +         panels.closeToolPanel();
+    +       }
+    +     }
+    +   );
+    +
+    +   // Make visible the footer
+    +   panels.getActiveFooterPanel().subscribe({
+    +     next: (panel) => {
+    +       this.lidarProfileFooterActive = panel === 'lidar';
+    +       $timeout(() => {}); // this triggered on DOM click, we call $timeout to force Angular digest
+    +     },
+    +   });
+    ...
+    ```
+
+    In you HTML file the components should be added like this:
+
+    ```html
+          <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
+            <div class="col-sm-12">
+              <gmf-lidar-panel></gmf-lidar-panel>
+            </div>
+          </div>
+    ```
+
+    ```html
+      <gmf-lidar-footer id="lidar-footer"></gmf-lidar-footer>
+    ```
+
+5. To access to the config in you components, previously it was injected throw Angular, now you should get
+   it with RXJS, with:
+
+   ```javascript
+   import {Configuration} from 'gmfapi/store/config';
+
+   window.gmfapi.store.config.getConfig().subscribe({
+     next: (configuration: Configuration) => {
+       if (configuration) {
+         ...
+       }
+     },
+   })
+   ```
+
 
 =============
 Version 2.6.0
