@@ -8,8 +8,8 @@ Upgrading a GeoMapFish application
 Prepare upgrade
 ~~~~~~~~~~~~~~~
 
-Read the ``Information to know before starting the upgrade`` chapters in the
-:git:`changelog </geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_CHANGELOG.txt>`.
+:git:`Read the 'Information to know before starting the upgrade' chapters in the changelog
+</geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_CHANGELOG.txt>`.
 If you are currently using an LTS (Long-term support) release, you should read all the chapters,
 if you are using the previous version, only the first chapter is relevant.
 
