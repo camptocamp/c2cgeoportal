@@ -50,7 +50,7 @@ setuptools = "==59.8.0"
 
 [dev-packages]
 awscli = "==1.22.98"  # Work with Object storage
-Babel = "==2.9.1"  # i18n
+Babel = "==2.10.1"  # i18n
 beautifulsoup4 = "==4.11.1"  # admin tests
 coverage = "==6.3.2"  # Build coverage XML for Codacy
 Jinja2 = "==3.0.3"  # c2c.template
