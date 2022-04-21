@@ -858,6 +858,7 @@ ngeoStreetviewOptions
 Configuration object for streetview.
 
 Properties:
+ * ``bufferSize`` (number, optional)
  * ``key`` (string)
  * ``viewer`` (string)
 
