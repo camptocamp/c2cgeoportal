@@ -1,3 +1,7 @@
+##### 2.7.rc.9
+
+- Set grid-gutter-width variable in the CSS [ngeo#8418](https://github.com/camptocamp/ngeo/pull/8418)
+
 ##### 2.7.rc.7
 
 - Support regex metadata in themes view [c2cgeoportal#9575](https://github.com/camptocamp/c2cgeoportal/pull/9575)
