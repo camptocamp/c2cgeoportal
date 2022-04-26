@@ -1,3 +1,7 @@
+##### 2.7.rc.10
+
+- [Backport 2.7] Add bufferSize parameter to mapillary options in example [ngeo#8428](https://github.com/camptocamp/ngeo/pull/8428)
+
 ##### 2.7.rc.9
 
 - Set grid-gutter-width variable in the CSS [ngeo#8418](https://github.com/camptocamp/ngeo/pull/8418)
