@@ -277,21 +277,23 @@ Changes to apply
    converted to ``true``/``false``, and the properties ``mapcache_internal`` and ``mapcache`` should be
    removed.
 
-4. For the LIDAR profile you should add/modify in your controller JavaScript file:
+4. For the LIDAR profile you should add/modify your controller constructor, in the interface JavaScript file:
 
     ```javascript
+    + import ngeoMiscToolActivate from 'ngeo/misc/ToolActivate';
     + import panels from 'gmfapi/store/panels';
 
     ...
 
       constructor($scope, $injector) {
+        super($scope, $injector);
     ...
     +   const $timeout = $injector.get('$timeout');
     +
     +   // Open the 'web-component' lidar panel
     +   $scope.$watch(
-    +   () => this.drawLidarprofilePanelActive,
-    +   (newVal) => {
+    +     () => this.drawLidarprofilePanelActive,
+    +     (newVal) => {
     +       if (newVal) {
     +         panels.openToolPanel('lidar');
     +       } else {
@@ -307,21 +309,58 @@ Changes to apply
     +       $timeout(() => {}); // this triggered on DOM click, we call $timeout to force Angular digest
     +     },
     +   });
+    +
+    +    /**
+    +     * @type {boolean}
+    +     */
+    +    this.drawLidarprofilePanelActive = false;
+    +
+    +    // Disable the map interaction (queries) when the lidar is active
+    +    const drawLidarprofilePanelActive = new ngeoMiscToolActivate(this, 'drawLidarprofilePanelActive');
+    +    this.ngeoToolActivateMgr.registerTool('mapTools', drawLidarprofilePanelActive, false);
     ...
     ```
 
-    In you HTML file the components should be added like this:
-
+    The interface HTML file needs a few changes.
+    In the body balise, change it to add the 'gmf-lidarprofile-chart-active' class with the following code:
     ```html
-          <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
-            <div class="col-sm-12">
-              <gmf-lidar-panel></gmf-lidar-panel>
-            </div>
-          </div>
+    ...
+    -  <body ng-class="{'gmf-profile-chart-active': !!profileChartActive, 'gmf-query-grid-active': !!mainCtrl.queryGridActive}" ng-keydown="mainCtrl.onKeydown($event)">
+    +  <body ng-class="{'gmf-profile-chart-active': !!profileChartActive, 'gmf-lidarprofile-chart-active': !!mainCtrl.lidarProfileFooterActive, 'gmf-query-grid-active': !!mainCtrl.queryGridActive}" ng-keydown="mainCtrl.onKeydown($event)">
+    ...
+    ```
+    NB: The first line is the original line as a comparison (diff), not to be copied or it's breaks the page layout !
+
+    Add the button to activate the LIDAR panel around where the other tools buttons are (you can also adapt the button icon and translation if needed):
+    ```html
+    ...
+    +   <button ngeo-btn class="btn btn-default" ng-model="mainCtrl.drawLidarprofilePanelActive"
+    +           data-toggle="tooltip" data-placement="left" data-original-title="{{'LIDAR'|translate}}">
+    +     <span class="fa fa-chart-line"></span>
+    +   </button>
+    ...
     ```
 
+    Add the LIDAR panel around where other tools panels are:
     ```html
-      <gmf-lidar-footer id="lidar-footer"></gmf-lidar-footer>
+    ...
+    +  <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
+    +    <div class="col-sm-12">
+    +      <gmf-lidar-panel></gmf-lidar-panel>
+    +    </div>
+    +  </div>
+    ...
+    ```
+
+    Finally add the LIDAR footer in the footer balise:
+    ```html
+     <footer>
+    +  <gmf-lidar-footer id="lidar-footer"></gmf-lidar-footer>
+       <gmf-profile
+         gmf-profile-active="profileChartActive"
+         gmf-profile-line="mainCtrl.profileLine"
+      ...
+     </footer>
     ```
 
 5. To access to the config in you components, previously it was injected throw Angular, now you should get
