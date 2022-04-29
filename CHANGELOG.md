@@ -1,3 +1,7 @@
+##### 2.7.rc.12
+
+- Makes body element focusable for onKeyDown event [ngeo#8439](https://github.com/camptocamp/ngeo/pull/8439)
+
 ##### 2.7.rc.10
 
 - [Backport 2.7] Add bufferSize parameter to mapillary options in example [ngeo#8428](https://github.com/camptocamp/ngeo/pull/8428)
