@@ -346,7 +346,21 @@ Changes to apply
      </footer>
     ```
 
-5. To access to the config in you components, previously it was injected throw Angular, now you should get
+5. Here is a list of the low-level components migrated as a dependency (of other migrated components):
+  - download/Csv
+  - map/FeatureOverlay
+  - map/FeatureOverlayMgr
+  - message/Message
+  - message/Notification
+
+  All of them use the singleton pattern, which means that in general it may only need to be initialized once (when required).
+  The component need to be imported with an 'import', not from the AngularJS dependency injector.
+
+  You should take care of the custom code in that regard if one of these components is used, as it's may needs some changes to be working fully.
+  If it is already initialized, you may need to change the code using this component in the custom component of your project.
+  In any case, it will be different in each project and use case.
+
+6. To access to the config in you components, previously it was injected through Angular, now you should get
    it with RXJS, with:
 
    ```javascript
