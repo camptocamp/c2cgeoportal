@@ -332,6 +332,7 @@ Changes to apply
     NB: The first line is the original line as a comparison (diff), not to be copied or it's breaks the page layout !
 
     Add the button to activate the LIDAR panel around where the other tools buttons are (you can also adapt the button icon and translation if needed):
+    {% raw %}
     ```html
     ...
     +   <button ngeo-btn class="btn btn-default" ng-model="mainCtrl.drawLidarprofilePanelActive"
@@ -340,6 +341,7 @@ Changes to apply
     +   </button>
     ...
     ```
+    {% endraw %}
 
     Add the LIDAR panel around where other tools panels are:
     ```html
