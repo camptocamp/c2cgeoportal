@@ -242,13 +242,13 @@ c2cgeoportal application.</p>
 <span class="prompt1">git check &lt;branch&gt;</span>
 <span class="prompt1"><span class="nb">cd</span> ../..</span>
 </pre></div></div><p>Add the following alias in your <code class="docutils literal notranslate"><span class="pre">webpack.apps.js.tmpl</span></code> file:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span> <span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
-   <span class="nx">alias</span><span class="o">:</span> <span class="p">{</span>
-     <span class="o">&lt;</span><span class="kr">package</span><span class="o">&gt;:</span> <span class="p">...,</span>
-<span class="o">+</span>    <span class="nx">ngeo</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;ngeo/src&#39;</span><span class="p">),</span>
-<span class="o">+</span>    <span class="nx">gmf</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;ngeo/contribs/gmf/src&#39;</span><span class="p">),</span>
-   <span class="p">}</span>
- <span class="p">}</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nx">resolve</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nx">alias</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="o">&lt;</span><span class="kr">package</span><span class="o">&gt;:</span><span class="w"> </span><span class="p">...,</span><span class="w"></span>
+<span class="o">+</span><span class="w">    </span><span class="nx">ngeo</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/src&#39;</span><span class="p">),</span><span class="w"></span>
+<span class="o">+</span><span class="w">    </span><span class="nx">gmf</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/contribs/gmf/src&#39;</span><span class="p">),</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w"> </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
