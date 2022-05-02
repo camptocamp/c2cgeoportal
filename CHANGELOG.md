@@ -1,3 +1,7 @@
+##### 2.7.rc.16
+
+- Makes body element focusable for onKeyDown event (for desktop interface) [ngeo#8453](https://github.com/camptocamp/ngeo/pull/8453)
+
 ##### 2.7.rc.15
 
 - Fix cypress config and ci workflow [ngeo#8454](https://github.com/camptocamp/ngeo/pull/8454)
