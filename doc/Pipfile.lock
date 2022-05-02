@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "07e48664177e5674136924c7eb3e4784f1e80cb4b3cb2570b34b16f8cb8f8834"
+            "sha256": "b52e2908e03b4d77e722b77e61951702b9fa8da6a9b292f0356a48f9e26d02b9"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -71,11 +71,11 @@
         },
         "jinja2": {
             "hashes": [
-                "sha256:539835f51a74a69f41b848a9645dbdc35b4f20a3b601e2d9a7e22947b15ff119",
-                "sha256:640bed4bb501cbd17194b3cace1dc2126f5b619cf068a726b98192a0fde74ae9"
+                "sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852",
+                "sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==3.1.1"
+            "version": "==3.1.2"
         },
         "jsonpointer": {
             "hashes": [
@@ -234,10 +234,10 @@
         },
         "sphinx-jsonschema": {
             "hashes": [
-                "sha256:5885655260cffadca1f4dfe627450ed8283a70e4f9904da0327c4dc0108cba85"
+                "sha256:b2385fe1c7acf2e759152aefed0cb17c920645b2a75c9934000c9c528e7d53c1"
             ],
             "index": "pypi",
-            "version": "==1.19.0"
+            "version": "==1.19.1"
         },
         "sphinx-prompt": {
             "hashes": [
