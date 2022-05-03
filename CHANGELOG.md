@@ -1,3 +1,7 @@
+##### 2.7.rc.18
+
+- Doc for low-level migrated web components [c2cgeoportal#9642](https://github.com/camptocamp/c2cgeoportal/pull/9642)
+
 ##### 2.7.rc.17
 
 - Better documentation for LIDAR profile integration [c2cgeoportal#9620](https://github.com/camptocamp/c2cgeoportal/pull/9620)
