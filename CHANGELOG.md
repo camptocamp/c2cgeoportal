@@ -1,3 +1,7 @@
+##### 2.7.rc.17
+
+- Better documentation for LIDAR profile integration [c2cgeoportal#9620](https://github.com/camptocamp/c2cgeoportal/pull/9620)
+
 ##### 2.7.rc.16
 
 - Makes body element focusable for onKeyDown event (for desktop interface) [ngeo#8453](https://github.com/camptocamp/ngeo/pull/8453)
