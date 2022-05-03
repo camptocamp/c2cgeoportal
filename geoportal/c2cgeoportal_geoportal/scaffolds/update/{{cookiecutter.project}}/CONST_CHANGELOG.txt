@@ -277,7 +277,7 @@ Changes to apply
    converted to ``true``/``false``, and the properties ``mapcache_internal`` and ``mapcache`` should be
    removed.
 
-4. For the LIDAR profile you should add/modify in your controller JavaScript file:
+4. For the LIDAR profile you should update your controller, in the interface JavaScript file:
 
     ```javascript
     + import panels from 'gmfapi/store/panels';
@@ -285,13 +285,14 @@ Changes to apply
     ...
 
       constructor($scope, $injector) {
+        super($scope, $injector);
     ...
     +   const $timeout = $injector.get('$timeout');
     +
     +   // Open the 'web-component' lidar panel
     +   $scope.$watch(
-    +   () => this.drawLidarprofilePanelActive,
-    +   (newVal) => {
+    +     () => this.drawLidarprofilePanelActive,
+    +     (newVal) => {
     +       if (newVal) {
     +         panels.openToolPanel('lidar');
     +       } else {
@@ -310,18 +311,39 @@ Changes to apply
     ...
     ```
 
-    In you HTML file the components should be added like this:
-
+    The interface HTML file needs a few changes.
+    To activate the LIDAR panel, you should makes sure to have correct ng-model attributes:
+    {% raw %}
     ```html
-          <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
-            <div class="col-sm-12">
-              <gmf-lidar-panel></gmf-lidar-panel>
-            </div>
-          </div>
+    ...
+      <button ngeo-btn class="btn btn-default" ng-model="mainCtrl.drawLidarprofilePanelActive"
+              data-toggle="tooltip" data-placement="left" data-original-title="{{'LIDAR'|translate}}">
+        <span class="fa fa-chart-line"></span>
+      </button>
+    ...
+    ```
+    {% endraw %}
+
+    The LIDAR panel should looks like that, where other tools panels are:
+    ```html
+    ...
+    +  <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
+    +    <div class="col-sm-12">
+    +      <gmf-lidar-panel></gmf-lidar-panel>
+    +    </div>
+    +  </div>
+    ...
     ```
 
+    Finally the LIDAR footer in the footer balise should looks like that:
     ```html
-      <gmf-lidar-footer id="lidar-footer"></gmf-lidar-footer>
+     <footer>
+    +  <gmf-lidar-footer id="lidar-footer"></gmf-lidar-footer>
+       <gmf-profile
+         gmf-profile-active="profileChartActive"
+         gmf-profile-line="mainCtrl.profileLine"
+      ...
+     </footer>
     ```
 
 5. To access to the config in you components, previously it was injected throw Angular, now you should get
