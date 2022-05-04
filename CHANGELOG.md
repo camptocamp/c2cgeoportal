@@ -1,3 +1,7 @@
+##### 2.7.rc.20
+
+- Add grid-gutter-width to vars.scss [ngeo#8462](https://github.com/camptocamp/ngeo/pull/8462)
+
 ##### 2.7.rc.18
 
 - Doc for low-level migrated web components [c2cgeoportal#9642](https://github.com/camptocamp/c2cgeoportal/pull/9642)
