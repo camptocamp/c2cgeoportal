@@ -1,3 +1,5 @@
+##### 2.4.2.81
+* CVE 1069976 no more present [c2cgeoportal#9647](https://github.com/camptocamp/c2cgeoportal/pull/9647)
 ##### 2.4.2.80
 * Ignore CVE [c2cgeoportal#9641](https://github.com/camptocamp/c2cgeoportal/pull/9641)
 ##### 2.4.2.79
