@@ -90,6 +90,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geopo
 geoportal/c2cgeoportal_geoportal/static/locales/%.json: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.webcomponent-$(TX_VERSION) --force
+	touch $@
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/en/LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po:
 	@echo "Nothing to be done for $@"
