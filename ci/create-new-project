@@ -77,6 +77,7 @@ git config user.email ci@camptocamp.com
 git config user.name CI
 git remote add origin . # add a fake remote
 git add --all
+git commit --quiet --message='Initial commit'
 
 mv ci/config.yaml{,_}
 c2cciutils-checks --fix --check=isort
@@ -84,6 +85,7 @@ c2cciutils-checks --fix --check=black
 c2cciutils-checks --fix --check=prettier
 mv ci/config.yaml{_,}
 
+git diff
 git add --all
-git commit --quiet --message='Initial commit'
+git commit --quiet --message='Format'
 git clean -fX
