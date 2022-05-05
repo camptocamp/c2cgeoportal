@@ -1,3 +1,9 @@
+##### 2.6.0.115
+* [Backport 2.6] Upgrade fix [c2cgeoportal#9650](https://github.com/camptocamp/c2cgeoportal/pull/9650)
+* [Backport 2.6] Ignore audit on fast-sass-loader [ngeo#8383](https://github.com/camptocamp/ngeo/pull/8383)
+* Fix Mapillary bounding box (configurable value and buffer from map resolution) [ngeo#8385](https://github.com/camptocamp/ngeo/pull/8385)
+* Add bufferSize parameter to mapillary options in example [ngeo#8420](https://github.com/camptocamp/ngeo/pull/8420)
+* [Backport 2.6] Makes body element focusable for onKeyDown event [ngeo#8443](https://github.com/camptocamp/ngeo/pull/8443)
 ##### 2.6.0.114
 * [Backport 2.6] Fix CVE [ngeo#8356](https://github.com/camptocamp/ngeo/pull/8356)
 ##### 2.6.0.113
