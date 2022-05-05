@@ -1,3 +1,5 @@
+##### 2.6.0.116
+* [Backport 2.6] Fix CSV export with undefined packed_color attribute error [ngeo#8476](https://github.com/camptocamp/ngeo/pull/8476)
 ##### 2.6.0.115
 * [Backport 2.6] Upgrade fix [c2cgeoportal#9650](https://github.com/camptocamp/c2cgeoportal/pull/9650)
 * [Backport 2.6] Ignore audit on fast-sass-loader [ngeo#8383](https://github.com/camptocamp/ngeo/pull/8383)
