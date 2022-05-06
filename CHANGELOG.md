@@ -1,3 +1,8 @@
+##### 2.7.rc.24
+
+- Get only the concerned Transifex resource [ngeo#8478](https://github.com/camptocamp/ngeo/pull/8478)
+- Consume event to not redirect the page when clicking on password forgotten link [ngeo#8480](https://github.com/camptocamp/ngeo/pull/8480)
+
 ##### 2.7.rc.22
 
 - Fix the theme loading message spinner in Auth panel [ngeo#8469](https://github.com/camptocamp/ngeo/pull/8469)
