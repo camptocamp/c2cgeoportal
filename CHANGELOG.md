@@ -1,3 +1,10 @@
+##### 2.7.rc.22
+
+- Fix the theme loading message spinner in Auth panel [ngeo#8469](https://github.com/camptocamp/ngeo/pull/8469)
+- Force regenerate the file locales/en/app.json [ngeo#8470](https://github.com/camptocamp/ngeo/pull/8470)
+- Fix CSV export with undefined packed_color attribute error [ngeo#8472](https://github.com/camptocamp/ngeo/pull/8472)
+- Fix error on LIDAR PNG export with depreciated btoa function [ngeo#8473](https://github.com/camptocamp/ngeo/pull/8473)
+
 ##### 2.7.rc.21
 
 - Fix 404 error on en.json [c2cgeoportal#9648](https://github.com/camptocamp/c2cgeoportal/pull/9648)
