@@ -1,6 +1,6 @@
 ##### 2.7.rc.21
 
-- Fix 404 error on en.json  [c2cgeoportal#9648](https://github.com/camptocamp/c2cgeoportal/pull/9648)
+- Fix 404 error on en.json [c2cgeoportal#9648](https://github.com/camptocamp/c2cgeoportal/pull/9648)
 - Fix the WebComponents source send [ngeo#8464](https://github.com/camptocamp/ngeo/pull/8464)
 - Correctly disable the LIDAR button when the panel is collapsed [ngeo#8466](https://github.com/camptocamp/ngeo/pull/8466)
 

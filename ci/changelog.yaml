@@ -704,7 +704,7 @@ pulls:
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/9648
       number: 9648
       state: closed
-      title: 'Fix 404 error on en.json '
+      title: Fix 404 error on en.json
       updated_at: '2022-05-05T09:30:13Z'
     e10d2ea8c:
     - base_ref: '2.7'
