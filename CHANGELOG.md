@@ -1,3 +1,7 @@
+##### 2.7.rc.26
+
+- Do not close the auth panel in first login process [ngeo#8483](https://github.com/camptocamp/ngeo/pull/8483)
+
 ##### 2.7.rc.24
 
 - Get only the concerned Transifex resource [ngeo#8478](https://github.com/camptocamp/ngeo/pull/8478)
