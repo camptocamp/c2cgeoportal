@@ -1,3 +1,7 @@
+##### 2.7.rc.27
+
+- Add missing SQLAlchemy variables in compose [c2cgeoportal#9658](https://github.com/camptocamp/c2cgeoportal/pull/9658)
+
 ##### 2.7.rc.26
 
 - Do not close the auth panel in first login process [ngeo#8483](https://github.com/camptocamp/ngeo/pull/8483)
