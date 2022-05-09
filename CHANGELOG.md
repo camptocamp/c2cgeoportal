@@ -1,3 +1,8 @@
+##### 2.7.rc.28
+
+- Fix config used in tests [c2cgeoportal#9659](https://github.com/camptocamp/c2cgeoportal/pull/9659)
+- Fix typo when LIDAR was not in uppercase [ngeo#8486](https://github.com/camptocamp/ngeo/pull/8486)
+
 ##### 2.7.rc.27
 
 - Add missing SQLAlchemy variables in compose [c2cgeoportal#9658](https://github.com/camptocamp/c2cgeoportal/pull/9658)
