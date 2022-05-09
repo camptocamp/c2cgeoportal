@@ -59,7 +59,7 @@ defaults:
     #    # all the available values in the WMTS capabilities
     #    values: ['2012']
     # the meta tiles definition [default is off]
-    meta: on
+    meta: true
     # the meta tiles size [default is 8]
     meta_size: 5
     # the meta tiles buffer [default is 128]
@@ -100,7 +100,6 @@ server:
   static_path: tiles/static
   admin_path: tiles/admin
   expires: 8 # 8 hours
-  mapcache_internal: True
   predefined_commands:
     - name: Generation all layers
       command: generate_tiles --role=master
