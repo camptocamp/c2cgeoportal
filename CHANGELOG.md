@@ -1,3 +1,5 @@
+##### 2.6.0.117
+* [Backport 2.6] Revert "Fix CSV export with undefined packed_color attribute error" [ngeo#8507](https://github.com/camptocamp/ngeo/pull/8507)
 ##### 2.6.0.116
 * [Backport 2.6] Fix CSV export with undefined packed_color attribute error [ngeo#8476](https://github.com/camptocamp/ngeo/pull/8476)
 ##### 2.6.0.115
