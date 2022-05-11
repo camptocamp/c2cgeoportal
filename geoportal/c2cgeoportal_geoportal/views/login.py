@@ -45,7 +45,7 @@ from pyramid.httpexceptions import (
 )
 from pyramid.response import Response
 from pyramid.security import forget, remember
-from pyramid.view import view_config
+from pyramid.view import forbidden_view_config, view_config
 from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
@@ -89,10 +89,10 @@ class Login:
         if not self.request.is_valid_referer:
             LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
 
-    @view_config(context=HTTPForbidden, renderer="login.html")  # type: ignore
-    def loginform403(self) -> Dict[str, Any]:
-        if self.request.authenticated_userid:
-            raise HTTPUnauthorized()
+    @forbidden_view_config(renderer="login.html")  # type: ignore
+    def loginform403(self) -> Union[Dict[str, Any], pyramid.response.Response]:
+        if self.request.authenticated_userid is not None:
+            return HTTPForbidden()
 
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
