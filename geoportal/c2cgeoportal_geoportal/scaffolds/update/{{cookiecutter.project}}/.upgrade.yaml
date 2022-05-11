@@ -186,3 +186,6 @@ upgrade_files:
   - action: remove
     paths:
       - ci/trigger
+  - action: remove
+    paths:
+      - yamllint.yaml

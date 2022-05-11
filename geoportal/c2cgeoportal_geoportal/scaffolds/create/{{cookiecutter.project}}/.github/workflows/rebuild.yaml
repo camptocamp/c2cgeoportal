@@ -13,9 +13,9 @@ env:
   HELM_RELEASE_NAMES: int-{{cookiecutter.geomapfish_main_version_dash}},prod-{{cookiecutter.geomapfish_main_version_dash}}
 
 jobs:
-  config:
+  rebuild:
     runs-on: ubuntu-20.04
-    name: Config
+    name: Rebuild
     timeout-minutes: 10
 
     strategy:
@@ -36,45 +36,11 @@ jobs:
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
 
-      - name: Build config
-        run: ./build --service=config
-
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
-      - name: Publish
-        run: c2cciutils-publish --group=config --type=rebuild --branch=${{'{{'}} matrix.branch }}
-      - run: ci/trigger --image=config --version=${{'{{'}} matrix.branch }}
-
-  geoportal:
-    runs-on: ubuntu-20.04
-    name: Geoportal
-    timeout-minutes: 10
-
-    strategy:
-      fail-fast: false
-      matrix:
-        branch:
-          - int-{{cookiecutter.geomapfish_main_version_dash}}
-          - prod-{{cookiecutter.geomapfish_main_version_dash}}
-
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          ref: ${{'{{'}} matrix.branch }}
-
-      - name: Build geoportal
-        run: ./build --service=geoportal
-
-      - uses: camptocamp/initialise-gopass-summon-action@v2
-        with:
-          ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
-          github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
-          patterns: docker
-
-      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - name: Build
+        run: ./build
 
       - name: Publish
-        run: c2cciutils-publish --group=geoportal --type=rebuild --branch=${{'{{'}} matrix.branch }}
-      - run: ci/trigger --image=geoportal --version=${{'{{'}} matrix.branch }}
+        run: c2cciutils-publish
