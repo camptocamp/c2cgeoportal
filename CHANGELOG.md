@@ -1,3 +1,12 @@
+##### 2.7.rc.29
+
+- Add missing string to be localized [c2cgeoportal#9573](https://github.com/camptocamp/c2cgeoportal/pull/9573)
+- Send an alert if the LIDAR graph is empty when exporting in CSV/PNG [ngeo#8484](https://github.com/camptocamp/ngeo/pull/8484)
+- Re-allow the panel to open when logged [ngeo#8490](https://github.com/camptocamp/ngeo/pull/8490)
+- Revert "Fix CSV export with undefined packed_color attribute error" [ngeo#8491](https://github.com/camptocamp/ngeo/pull/8491)
+- Translate login message [ngeo#8493](https://github.com/camptocamp/ngeo/pull/8493)
+- Fix z-index of mobile buttons to not be overlapped by swipper element [ngeo#8502](https://github.com/camptocamp/ngeo/pull/8502)
+
 ##### 2.7.rc.28
 
 - Fix config used in tests [c2cgeoportal#9659](https://github.com/camptocamp/c2cgeoportal/pull/9659)
