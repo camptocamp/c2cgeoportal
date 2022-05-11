@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "31905c10bb58003e98411cda4d0cc6428aec6aa627e0f00841b163ce53359b39"
+            "sha256": "00900563e189a8ca0ff1e0828efcf3a502c4596a612cc0b7bd6e9ffce5b64ac9"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1850,10 +1850,10 @@
         },
         "c2cciutils": {
             "hashes": [
-                "sha256:6a4b786b74d3745c96a3a6c3bec196486afdd6717ecb113f0c1fc461386e9c2c"
+                "sha256:bdf750f5b40a6955d6a30c0e009059cd8b1c671dcf0bdb07a3e2e759b3f312a2"
             ],
             "index": "pypi",
-            "version": "==1.2.dev20220506093925"
+            "version": "==1.2.dev20220509122615"
         },
         "cachetools": {
             "hashes": [
@@ -2163,11 +2163,11 @@
         },
         "google-api-python-client": {
             "hashes": [
-                "sha256:1a7a954fdb778c77ad2a7b28c8e5f4b8761728aca89f5a017e05abd92814b6e9",
-                "sha256:ba41ce1da337d39d76da1c5affea6e0b95bb6da74aa2adfe5a40618dd67a01fe"
+                "sha256:44492f8abf87e8316a699a8ce2d6370b69538edbcd028b8defaae74eeeaebadc",
+                "sha256:b5201be41304b730e697824d84b24d3a404bd4b9b0fd3e94dcd30599fd642641"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2.46.0"
+            "version": "==2.47.0"
         },
         "google-auth": {
             "hashes": [
@@ -2244,7 +2244,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -2280,11 +2280,11 @@
         },
         "jsonschema": {
             "hashes": [
-                "sha256:636694eb41b3535ed608fe04129f26542b59ed99808b4f688aa32dcf55317a83",
-                "sha256:77281a1f71684953ee8b3d488371b162419767973789272434bbc3f29d9c8823"
+                "sha256:71b5e39324422543546572954ce71c67728922c104902cb7ce252e522235b33f",
+                "sha256:7c6d882619340c3347a1bf7315e147e6d3dae439033ae6383d6acb908c101dfc"
             ],
             "markers": "python_version >= '3'",
-            "version": "==4.4.0"
+            "version": "==4.5.1"
         },
         "jsonschema-gentypes": {
             "hashes": [
@@ -2551,11 +2551,11 @@
         },
         "pipenv": {
             "hashes": [
-                "sha256:30568d90a566148a630ce3382843d59beaede28d1c4e9045278972036ebd178c",
-                "sha256:e26ded6ab90a7900676a1db9955d5ee714115f443aecc072b09497153ed237c7"
+                "sha256:06e19a3a2ae7db14a317bdedc61030cdcd132a012410de1e5bdb0e19d0620465",
+                "sha256:71d510c20f99ea5cd3c951f8203140197bcc79fc21a0d74924f97c726a0f2bd3"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==2022.4.30"
+            "version": "==2022.5.2"
         },
         "pkginfo": {
             "hashes": [
@@ -2962,7 +2962,7 @@
                 "sha256:d13c6c90c42e24eb7ce660db397e8c398edd58acb7f92a2a88a95572b838aaa4",
                 "sha256:d239001c0fb7de985e21ec9a4bb542b5150350330bbc1849f835b9cbc8923b91"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.3'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.3'",
             "version": "==12.4.1"
         },
         "rsa": {
@@ -2970,7 +2970,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "ruamel.yaml": {
