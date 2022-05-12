@@ -308,14 +308,10 @@ class Login:
             raise HTTPBadRequest("The new password and the new password confirmation do not match")
 
         if login is not None:
-            try:
-                user = self.request.get_user(login)
-                if user is None:
-                    LOG.info("The login '%s' does not exist.", login)
-                    raise HTTPUnauthorized("See server logs for details")
-            except NoResultFound:
+            user = models.DBSession.query(static.User).filter_by(username=login).one_or_none()
+            if user is None:
                 LOG.info("The login '%s' does not exist.", login)
-                raise HTTPUnauthorized("See server logs for details")  # pylint: disable=raise-missing-from
+                raise HTTPUnauthorized("See server logs for details")
 
             if self.two_factor_auth:
                 if not self._validate_2fa_totp(user, otp):
@@ -324,17 +320,16 @@ class Login:
         else:
             user = self.request.user
 
-        username = self.request.registry.validate_user(self.request, user.username, old_password)
-        if username is None:
-            LOG.info("The old password is wrong for user '%s'.", username)
+        if self.request.registry.validate_user(self.request, user.username, old_password) is None:
+            LOG.info("The old password is wrong for user '%s'.", user.username)
             raise HTTPUnauthorized("See server logs for details")
 
         user.password = new_password
         user.is_password_changed = True
         models.DBSession.flush()
-        LOG.info("Password changed for user '%s'", username)
+        LOG.info("Password changed for user '%s'", user.username)
 
-        headers = remember(self.request, username)
+        headers = remember(self.request, user.username)
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(
             self.request,
