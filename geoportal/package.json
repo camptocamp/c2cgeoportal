@@ -4,7 +4,7 @@
   "description": "GeoMapFish geoportal interface",
   "author": "",
   "dependencies": {
-    "ngeo": "2.7.0-version-2.7-latest.20220510T142634Z.d3cd5e4f7.2.7",
+    "ngeo": "2.7.0-version-2.7-latest.20220511T142723Z.c2a0fc298.2.7",
     "@babel/plugin-transform-typescript": "7.16.8"
   }
 }
