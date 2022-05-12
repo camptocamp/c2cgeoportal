@@ -15,6 +15,7 @@
 !admin/requirements.txt
 !admin/setup.cfg
 !admin/setup.py
+!admin/lingua.cfg
 !scripts/clone_schema.sql
 !vars.yaml
 !.tx

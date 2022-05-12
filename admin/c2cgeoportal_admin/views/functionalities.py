@@ -27,20 +27,32 @@
 
 
 from functools import partial
+from typing import Any, Dict
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
+from c2cgeoportal_admin import _
 from c2cgeoportal_commons.models.main import Functionality, _admin_config
 
 _list_field = partial(ListField, Functionality)
 
+
+def _translate_available_functionality(available_functionality: Dict[str, Any]) -> Dict[str, Any]:
+    result = {}
+    result.update(available_functionality)
+    result["description"] = _(available_functionality.get("description", ""))
+    return result
+
+
 base_schema = GeoFormSchemaNode(
     Functionality,
     widget=FormWidget(fields_template="functionality_fields"),
-    functionalities={f["name"]: f for f in _admin_config["available_functionalities"]},
+    functionalities={
+        f["name"]: _translate_available_functionality(f) for f in _admin_config["available_functionalities"]
+    },
 )
 
 

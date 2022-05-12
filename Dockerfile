@@ -146,10 +146,6 @@ RUN make --makefile=build.mk build && \
 COPY commons/ commons/
 COPY geoportal/ geoportal/
 COPY admin/ admin/
-RUN make --makefile=build.mk \
-    geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-    admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-
 ARG VERSION
 ENV VERSION=$VERSION
 
@@ -157,6 +153,10 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps 
     --editable=commons \
     --editable=geoportal \
     --editable=admin
+
+RUN make --makefile=build.mk \
+    geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
+    admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 
 # For awscli
 RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer && \
