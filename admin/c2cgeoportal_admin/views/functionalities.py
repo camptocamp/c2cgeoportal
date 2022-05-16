@@ -43,7 +43,7 @@ _list_field = partial(ListField, Functionality)
 def _translate_available_functionality(available_functionality: Dict[str, Any]) -> Dict[str, Any]:
     result = {}
     result.update(available_functionality)
-    result["description"] = _(available_functionality.get("description", ""))
+    result["description"] = _(available_functionality.get("description", "").strip())
     return result
 
 

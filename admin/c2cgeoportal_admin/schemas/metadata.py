@@ -193,7 +193,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
 def _translate_available_metadata(available_metadata: Dict[str, Any]) -> Dict[str, Any]:
     result = {}
     result.update(available_metadata)
-    result["description"] = _(available_metadata.get("description", ""))
+    result["description"] = _(available_metadata.get("description", "").strip())
     return result
 
 
