@@ -71,7 +71,7 @@ vars:
       - name: legend
         type: boolean
         description: >
-          Display the legend of this layers.
+          Display the legend of this layer.
         relevant_for:
           - layer_wms
           - layer_wmts
