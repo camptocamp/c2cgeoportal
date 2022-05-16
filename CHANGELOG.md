@@ -1,3 +1,8 @@
+##### 2.7.rc.35
+
+- Fix DB restore [c2cgeoportal#9701](https://github.com/camptocamp/c2cgeoportal/pull/9701)
+- Remove gmf.pot, fix ngeo.po in english [ngeo#8503](https://github.com/camptocamp/ngeo/pull/8503)
+
 ##### 2.7.rc.34
 
 - Hide cog icons in mobile layertree on inactive layers [ngeo#8524](https://github.com/camptocamp/ngeo/pull/8524)
