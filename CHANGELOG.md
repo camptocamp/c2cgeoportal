@@ -1,3 +1,12 @@
+##### 2.7.rc.31
+
+- Fix error 500 on wrong authentication [c2cgeoportal#9687](https://github.com/camptocamp/c2cgeoportal/pull/9687)
+- Cleanup and fix rebuild [c2cgeoportal#9688](https://github.com/camptocamp/c2cgeoportal/pull/9688)
+- Remove the endline in the l10n files [c2cgeoportal#9692](https://github.com/camptocamp/c2cgeoportal/pull/9692)
+- Fix some typo [c2cgeoportal#9693](https://github.com/camptocamp/c2cgeoportal/pull/9693)
+- Fix the changePassword form [ngeo#8510](https://github.com/camptocamp/ngeo/pull/8510)
+- Remove projection option from map object as it is set on the view [ngeo#8522](https://github.com/camptocamp/ngeo/pull/8522)
+
 ##### 2.7.rc.29
 
 - Add missing string to be localized [c2cgeoportal#9573](https://github.com/camptocamp/c2cgeoportal/pull/9573)
