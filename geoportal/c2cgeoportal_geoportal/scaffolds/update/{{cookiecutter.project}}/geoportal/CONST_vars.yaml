@@ -519,7 +519,7 @@ vars:
       - name: legend
         type: boolean
         description: >
-          Display the legend of this layers.
+          Display the legend of this layer.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -635,9 +635,9 @@ vars:
       - name: snappingConfig
         type: json
         description: >
-          The snapping configuration for the leaf. If set, the leaf's layer is considered to be
+          The snapping configuration for the layer. If set, the layer is considered to be
           "snappable", even if the config itself is empty. Example value: {"tolerance": 50, "edge":
-          false}. For WMS layers.
+          false}.
         relevant_for:
           - layer_wms
       - name: geometryValidation
@@ -704,25 +704,26 @@ vars:
           - layer_wmts
       - name: wmsLayers
         description: >
-          A corresponding WMS layers (comma separated) for WMTS layer. Used to query the WMTS layer
-          and to print them. See also printLayers and queryLayers metadata for more granularity. An
-          OGCServer metadata must be set with the name of the OGC server to use for these wms
-          layers.
+          Corresponding WMS/WFS layers (comma separated) that will be used instead of the WMTS layer
+          to do the query and for the print.
+          An OGCServer metadata must be set with the name of the OGC server.
+          See also printLayers and queryLayers metadata for more granularity.
         relevant_for:
           - layer_wmts
       - name: queryLayers
         description: >
-          Layers names separate by a comma. The WMS layers used as references to
-          query the WMTS layers. An OGCServer metadata must be set with the name of the OGC server
-          to use for this WMS layer. For WFS GetFeature request: The WFS layers that should be
-          queried.
+          Corresponding WFS layers (comma separated) that will be used instead of the WMTS layer
+          to do the query.
+          An OGCServer metadata must be set with the name of the OGC server.
         relevant_for:
           - layer_wmts
       - name: printLayers
         description: >
-          A WMS layers (comma separated) that will be used instead of the WMTS layer in the print.
-          Used to increase quality of printed WMTS layer. An OGCServer metadata must be set with
-          the name of the OGC server to use for these wms layers.
+          Corresponding WMS layers (comma separated) that will be used instead of the WMTS layer
+          for the print.
+          Used to increase the quality of the printed layer, by using native rotation and
+          generating an image in hi-DPI.
+          An OGCServer metadata must be set with the name of the OGC server.
         relevant_for:
           - layer_wmts
       - name: maxQueryResolution
