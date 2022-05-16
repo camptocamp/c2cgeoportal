@@ -58,7 +58,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             if "description" in elem:
                 location = f"admin_interface/available_metadata/{elem.get('name', '')}"
                 available_metadata.append(
-                    Message(None, elem["description"], None, [], "", "", (filename, location))
+                    Message(None, elem["description"].strip(), None, [], "", "", (filename, location))
                 )
 
         available_functionalities = []
@@ -66,7 +66,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             if "description" in elem:
                 location = f"admin_interface/available_functionalities/{elem.get('name', '')}"
                 available_functionalities.append(
-                    Message(None, elem["description"], None, [], "", "", (filename, location))
+                    Message(None, elem["description"].strip(), None, [], "", "", (filename, location))
                 )
 
         return available_metadata + available_functionalities
