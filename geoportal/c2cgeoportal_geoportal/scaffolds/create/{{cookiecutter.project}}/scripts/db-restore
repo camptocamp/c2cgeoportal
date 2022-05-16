@@ -40,6 +40,12 @@ def main() -> None:
         "do the restore.",
     )
     parser.add_argument(
+        "--docker-compose-file",
+        action="append",
+        default=[],
+        help="The docker-compose file to used.",
+    )
+    parser.add_argument(
         "--arg",
         action="append",
         default=[],
@@ -48,7 +54,7 @@ def main() -> None:
     parser.add_argument("file", help="The file path to restore")
     args = parser.parse_args()
 
-    with open(args.file, encoding="utf-8") as file_in:
+    with open(args.file, "rb") as file_in:
         if args.env:
             env = {}
             with open(args.env, encoding="utf-8") as file_env:
@@ -86,17 +92,16 @@ def main() -> None:
             )
         else:
             subprocess.run(
-                [
-                    "docker-compose",
+                ["docker-compose"]
+                + [f"--file={f}" for f in args.docker_compose_file]
+                + [
                     "exec",
                     "-T",
-                    "--interactive",
                     "db",
                     "bash",
                     "-c",
-                    'pg_restore --dbname="$PGDATABASE"',
-                ]
-                + args.arg,
+                    'pg_restore --dbname="$PGDATABASE" ' + " ".join(args.arg),
+                ],
                 stdin=file_in,
                 check=True,
             )
