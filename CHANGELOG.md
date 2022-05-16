@@ -1,3 +1,7 @@
+##### 2.7.rc.33
+
+- Fix change password [c2cgeoportal#9691](https://github.com/camptocamp/c2cgeoportal/pull/9691)
+
 ##### 2.7.rc.31
 
 - Fix error 500 on wrong authentication [c2cgeoportal#9687](https://github.com/camptocamp/c2cgeoportal/pull/9687)
