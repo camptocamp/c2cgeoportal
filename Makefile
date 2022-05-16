@@ -53,10 +53,18 @@ build-runner:
 
 QGIS_VERSION ?= latest
 .PHONY: build-qgisserver
-build-qgisserver: build-runner
-	docker tag camptocamp/geomapfish:$(DOCKER_TAG) camptocamp/geomapfish
+build-qgisserver:
 	docker build --target=runner --build-arg=VERSION=$(QGIS_VERSION) \
 		--tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION) docker/qgisserver
+
+.PHONY: build-qgisserver-tests
+build-qgisserver-tests:
+	docker build --target=tests --build-arg=VERSION=$(QGIS_VERSION) \
+		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
+
+.PHONY: prospector-qgisserver
+prospector-qgisserver: build-qgisserver-tests
+	docker run --rm camptocamp/geomapfish-qgisserver-tests prospector --die-on-tool-error --output=pylint --direct-tool-stdout
 
 .PHONY: build-test-db
 build-test-db:
@@ -65,12 +73,6 @@ build-test-db:
 .PHONY: build-test-mapserver
 build-test-mapserver:
 	docker build --tag=camptocamp/geomapfish-test-mapserver docker/test-mapserver
-
-.PHONY: build-qgis-server-tests
-build-qgis-server-tests: build-runner
-	docker tag camptocamp/geomapfish:$(DOCKER_TAG) camptocamp/geomapfish
-	docker build --target=tests --build-arg=VERSION=3.22 \
-		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
 
 .PHONY: tests
 tests: ## Run all the unit tests
@@ -98,7 +100,7 @@ tests-qgisserver: ## Run the qgisserver unit tests
 
 .PHONY: preparetest
 preparetest: ## Run the compositon used to run the tests
-preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgis-server-tests
+preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgisserver-tests
 	docker-compose up -d
 	docker-compose exec -T tests wait-db
 	docker-compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
