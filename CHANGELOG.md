@@ -1,3 +1,7 @@
+##### 2.7.rc.34
+
+- Hide cog icons in mobile layertree on inactive layers [ngeo#8524](https://github.com/camptocamp/ngeo/pull/8524)
+
 ##### 2.7.rc.33
 
 - Fix change password [c2cgeoportal#9691](https://github.com/camptocamp/c2cgeoportal/pull/9691)
