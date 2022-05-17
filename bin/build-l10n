@@ -59,7 +59,6 @@ def main():
             if args.dry_run:
                 print(
                     f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
-                    f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po, "
                     f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
                     f"{package_base_path}/static/{lang}{suffix}.json"
                 )
@@ -70,7 +69,6 @@ def main():
                             "node",
                             "/usr/bin/compile-catalog",
                             f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
-                            f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/gmf.po",
                             f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
                         ],
                         stdout=out,
