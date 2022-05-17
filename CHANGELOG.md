@@ -1,3 +1,7 @@
+##### 2.7.rc.39
+
+- Remove no more needed gmf.po [c2cgeoportal#9722](https://github.com/camptocamp/c2cgeoportal/pull/9722)
+
 ##### 2.7.rc.38
 
 - Also parse the srcapi [ngeo#8540](https://github.com/camptocamp/ngeo/pull/8540)
