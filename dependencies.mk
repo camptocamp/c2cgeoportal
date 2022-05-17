@@ -7,12 +7,11 @@ ALL_LANGUAGES = en $(LANGUAGES)
 
 GEOPORTAL_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_geoportal.po, $(LANGUAGES)))
 NGEO_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/ngeo.po, $(LANGUAGES)))
-GMF_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/locale/,$(addsuffix /LC_MESSAGES/gmf.po, $(LANGUAGES)))
 ADMIN_PO_FILES = $(addprefix admin/c2cgeoportal_admin/locale/,$(addsuffix /LC_MESSAGES/c2cgeoportal_admin.po, $(LANGUAGES)))
 APPLICATION_PO_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/,$(addsuffix /LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po, $(ALL_LANGUAGES)))
 WEBCOMPONENTS_L10N_FILES = $(addprefix geoportal/c2cgeoportal_geoportal/static/locales/,$(addsuffix .json, $(ALL_LANGUAGES)))
 PYTHON_PO_FILES = $(GEOPORTAL_PO_FILES) $(ADMIN_PO_FILES)
-JAVASCRIPT_PO_FILES = $(NGEO_PO_FILES) $(GMF_PO_FILES) $(APPLICATION_PO_FILES)
+JAVASCRIPT_PO_FILES = $(NGEO_PO_FILES) $(APPLICATION_PO_FILES)
 TRANSIFEX_PO_FILES = $(PYTHON_PO_FILES) $(JAVASCRIPT_PO_FILES) ${WEBCOMPONENTS_L10N_FILES}
 
 .PHONY: dependencies
@@ -62,13 +61,6 @@ geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po:
 geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
 	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	test -s $@
-
-.PRECIOUS: geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po
-geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
