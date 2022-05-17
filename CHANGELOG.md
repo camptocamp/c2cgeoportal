@@ -1,3 +1,7 @@
+##### 2.7.rc.36
+
+- Add to changelog missing close button for LIDAR [c2cgeoportal#9717](https://github.com/camptocamp/c2cgeoportal/pull/9717)
+
 ##### 2.7.rc.35
 
 - Fix DB restore [c2cgeoportal#9701](https://github.com/camptocamp/c2cgeoportal/pull/9701)
