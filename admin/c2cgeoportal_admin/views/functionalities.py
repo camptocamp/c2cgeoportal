@@ -37,7 +37,7 @@ from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin import _
-from c2cgeoportal_commons.models.main import Functionality, _admin_config
+from c2cgeoportal_commons.models.main import Functionality
 
 _list_field = partial(ListField, Functionality)
 
@@ -59,7 +59,7 @@ base_schema = GeoFormSchemaNode(
     functionalities=colander.deferred(
         lambda node, kw: {
             f["name"]: _translate_available_functionality(f, kw["request"])
-            for f in _admin_config["available_functionalities"]
+            for f in kw["request"].registry.settings["admin_interface"]["available_functionalities"]
         },
     ),
 )
