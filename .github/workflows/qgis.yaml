@@ -15,10 +15,12 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          # Old LTR
+          # LTR
           - '3.10'
-          # Last LTR
+          # LTR
           - '3.16'
+          # LTR
+          - '3.22'
 
     env:
       MAIN_BRANCH: 2.6
