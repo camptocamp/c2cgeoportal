@@ -329,6 +329,7 @@ Changes to apply
     ...
     +  <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
     +    <div class="col-sm-12">
+    +      <a class="btn close gmf-close" ng-click="mainCtrl.drawLidarprofilePanelActive = false">&times;</a>
     +      <gmf-lidar-panel></gmf-lidar-panel>
     +    </div>
     +  </div>
