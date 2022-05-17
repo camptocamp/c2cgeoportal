@@ -29,6 +29,7 @@ import json
 from typing import Any, Dict, List, Optional, Set, Union, cast
 
 import colander
+import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from sqlalchemy import inspect
@@ -190,10 +191,12 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
         return metadata_type if metadata_type in self.available_types else "string"
 
 
-def _translate_available_metadata(available_metadata: Dict[str, Any]) -> Dict[str, Any]:
+def _translate_available_metadata(
+    available_metadata: Dict[str, Any], request: pyramid.request.Request
+) -> Dict[str, Any]:
     result = {}
     result.update(available_metadata)
-    result["description"] = _(available_metadata.get("description", "").strip())
+    result["description"] = request.localizer.translate(_(available_metadata.get("description", "").strip()))
     return result
 
 
@@ -204,7 +207,7 @@ def metadata_schema_node(prop: InstrumentedAttribute, model: DeclarativeMeta) ->
     # Needed to get the metadata types on UI side.
     metadata_definitions_dict = colander.deferred(
         lambda node, kw: {
-            m["name"]: _translate_available_metadata(m)
+            m["name"]: _translate_available_metadata(m, kw["request"])
             for m in metadata_definitions(kw["request"].registry.settings, model)
         }
     )
