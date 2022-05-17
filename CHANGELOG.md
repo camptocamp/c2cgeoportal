@@ -1,3 +1,7 @@
+##### 2.7.rc.38
+
+- Also parse the srcapi [ngeo#8540](https://github.com/camptocamp/ngeo/pull/8540)
+
 ##### 2.7.rc.36
 
 - Add to changelog missing close button for LIDAR [c2cgeoportal#9717](https://github.com/camptocamp/c2cgeoportal/pull/9717)
