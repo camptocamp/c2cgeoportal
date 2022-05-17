@@ -31,13 +31,6 @@ type = PO
 trans.${lang} = geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/ngeo.po
 % endfor
 
-[ngeo.gmf-${tx_version.strip()}]
-source_lang = en
-type = PO
-% for lang in tx_languages.split():
-trans.${lang} = geoportal/c2cgeoportal_geoportal/locale/${lang}/LC_MESSAGES/gmf.po
-% endfor
-
 [ngeo.webcomponent-${tx_version.strip()}]
 source_lang = en
 type = KEYVALUEJSON
