@@ -1,3 +1,8 @@
+##### 2.7.rc.40
+
+- Fix translate the metadata and functionaliy in admin interface [c2cgeoportal#9724](https://github.com/camptocamp/c2cgeoportal/pull/9724)
+- Fix the i18n by removing the new lines [ngeo#8539](https://github.com/camptocamp/ngeo/pull/8539)
+
 ##### 2.7.rc.39
 
 - Remove no more needed gmf.po [c2cgeoportal#9722](https://github.com/camptocamp/c2cgeoportal/pull/9722)
