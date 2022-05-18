@@ -63,7 +63,7 @@ class ResourceProxy(Proxy):
             content_type = response.headers["Content-Type"]
 
             response = self._build_response(
-                response, response.text, cache_control, "externalresource", content_type=content_type
+                response, response.content, cache_control, "externalresource", content_type=content_type
             )
             for header in response.headers.keys():
                 if header not in self.settings["allowed_headers"]:
