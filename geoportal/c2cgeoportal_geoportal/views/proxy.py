@@ -63,7 +63,7 @@ class Proxy:
         cache: bool = False,
         body: Optional[bytes] = None,
         headers: Optional[Dict[str, str]] = None,
-    ) -> pyramid.response.Response:
+    ) -> requests.models.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
         url = url.clone().add_query(params, True)
@@ -208,7 +208,7 @@ class Proxy:
     def _build_response(
         self,
         response: pyramid.response.Response,
-        content: str,
+        content: bytes,
         cache_control: Cache,
         service_name: str,
         headers: Optional[Dict[str, str]] = None,
