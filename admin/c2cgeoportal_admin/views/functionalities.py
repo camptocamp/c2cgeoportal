@@ -29,30 +29,39 @@
 from functools import partial
 from typing import Any, Dict
 
+import colander
+import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin import _
-from c2cgeoportal_commons.models.main import Functionality, _admin_config
+from c2cgeoportal_commons.models.main import Functionality
 
 _list_field = partial(ListField, Functionality)
 
 
-def _translate_available_functionality(available_functionality: Dict[str, Any]) -> Dict[str, Any]:
+def _translate_available_functionality(
+    available_functionality: Dict[str, Any], request: pyramid.request.Request
+) -> Dict[str, Any]:
     result = {}
     result.update(available_functionality)
-    result["description"] = _(available_functionality.get("description", "").strip())
+    result["description"] = request.localizer.translate(
+        _(available_functionality.get("description", "").strip())
+    )
     return result
 
 
 base_schema = GeoFormSchemaNode(
     Functionality,
     widget=FormWidget(fields_template="functionality_fields"),
-    functionalities={
-        f["name"]: _translate_available_functionality(f) for f in _admin_config["available_functionalities"]
-    },
+    functionalities=colander.deferred(
+        lambda node, kw: {
+            f["name"]: _translate_available_functionality(f, kw["request"])
+            for f in kw["request"].registry.settings["admin_interface"]["available_functionalities"]
+        },
+    ),
 )
 
 
