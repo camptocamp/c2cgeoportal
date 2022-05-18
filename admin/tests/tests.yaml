@@ -331,6 +331,10 @@ vars:
       - name: mapserver_substitution
         relevant_for:
           - role
+        description: >
+          MapServer substitution of a variable in the mapfile.
+          See the documentation here:
+          https://camptocamp.github.io/c2cgeoportal/{{cookiecutter.geomapfish_main_version}}/administrator/mapfile.html?highlight=mapserver_substitution#variable-substitution
       - name: filterable_layers
         description: >
           Grant access for filtering considered layer.

@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 from typing import Any, Dict, List, Optional
 
 import yaml
@@ -49,7 +50,11 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         print(f"Running {self.__class__.__name__} on {filename}")
 
         with open(filename, encoding="utf8") as config_file:
-            settings = yaml.load(config_file, Loader=yaml.SafeLoader)
+            data = config_file.read()
+            settings = yaml.load(
+                data.replace("{{cookiecutter.geomapfish_main_version}}", os.environ["MAJOR_VERSION"]),
+                Loader=yaml.SafeLoader,
+            )
 
         admin_interface = settings.get("vars", {}).get("admin_interface", {})
 
