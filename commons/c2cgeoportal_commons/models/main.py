@@ -1617,16 +1617,15 @@ class Metadata(Base):  # type: ignore
                 <code>GmfMetaData</code> definition in <code>themes.js</code>
                 <a
                     target="_blank"
-                    href="https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js"
+                    href="https://github.com/camptocamp/ngeo/blob/{MAJOR_VERSION}/contribs/gmf/src/themes.js"
                 >
-                    https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js
+                    https://github.com/camptocamp/ngeo/blob/{MAJOR_VERSION}/contribs/gmf/src/themes.js
                 </a>.</p>
             <hr>
         </div>
                             """.format(
-                                MAIN_BRANCH="master",
+                                MAJOR_VERSION=os.environ.get("MAJOR_VERSION", "master"),
                             )
-                            # TODO: give the right branch name
                         )
                     ),
                     "exclude": True,
