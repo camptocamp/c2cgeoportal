@@ -1,7 +1,7 @@
 ##### 2.7.rc.43
 
 - Add documentation to mapserver_substitution functionality [c2cgeoportal#9730](https://github.com/camptocamp/c2cgeoportal/pull/9730)
-- Use TranslationString mapping  [c2cgeoportal#9739](https://github.com/camptocamp/c2cgeoportal/pull/9739)
+- Use TranslationString mapping [c2cgeoportal#9739](https://github.com/camptocamp/c2cgeoportal/pull/9739)
 - Correctly remove the buffer (redline) when closing the LIDAR footer [ngeo#8551](https://github.com/camptocamp/ngeo/pull/8551)
 
 ##### 2.7.rc.42

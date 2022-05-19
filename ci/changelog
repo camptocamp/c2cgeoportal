@@ -236,7 +236,9 @@ def _main() -> None:
                                 md_file.write(f"\n")
                             md_file.write(f"##### {release}\n\n")
                             title = False
-                        md_file.write(f'- {pull["title"]} [{repo}#{pull["number"]}]({pull["html_url"]})\n')
+                        md_file.write(
+                            f'- {pull["title"].strip()} [{repo}#{pull["number"]}]({pull["html_url"]})\n'
+                        )
 
 
 if __name__ == "__main__":

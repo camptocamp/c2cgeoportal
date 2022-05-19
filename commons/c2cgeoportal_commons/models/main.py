@@ -1615,7 +1615,7 @@ class Metadata(Base):  # type: ignore
                 Regarding effect on the referenced tree item on the client side,
                 you will find an official description for each sort of metadata in the
                 <code>GmfMetaData</code> definition in <code>themes.js</code>
-                <a target="_blank" href="s{url}">see ngeo documentation</a>.</p>
+                <a target="_blank" href="${url}">see ngeo documentation</a>.</p>
             <hr>
         </div>
                             """,
