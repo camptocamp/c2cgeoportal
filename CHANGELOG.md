@@ -1,3 +1,7 @@
+##### 2.7.rc.42
+
+- Use the version name [c2cgeoportal#9731](https://github.com/camptocamp/c2cgeoportal/pull/9731)
+
 ##### 2.7.rc.40
 
 - Fix translate the metadata and functionaliy in admin interface [c2cgeoportal#9724](https://github.com/camptocamp/c2cgeoportal/pull/9724)
