@@ -1,3 +1,7 @@
+##### 2.7.rc.46
+
+- Revert "Add missing volume for update-po" [c2cgeoportal#9751](https://github.com/camptocamp/c2cgeoportal/pull/9751)
+
 ##### 2.7.rc.45
 
 - Add missing volume for update-po [c2cgeoportal#9749](https://github.com/camptocamp/c2cgeoportal/pull/9749)
