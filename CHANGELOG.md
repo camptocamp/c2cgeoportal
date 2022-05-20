@@ -1,3 +1,8 @@
+##### 2.7.rc.45
+
+- Add missing volume for update-po [c2cgeoportal#9749](https://github.com/camptocamp/c2cgeoportal/pull/9749)
+- Generic LIDAR panel title translation key [ngeo#8548](https://github.com/camptocamp/ngeo/pull/8548)
+
 ##### 2.7.rc.44
 
 - Fix tinyowsproxy [c2cgeoportal#9732](https://github.com/camptocamp/c2cgeoportal/pull/9732)
