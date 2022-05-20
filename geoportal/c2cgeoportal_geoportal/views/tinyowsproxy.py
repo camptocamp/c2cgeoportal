@@ -163,7 +163,7 @@ class TinyOWSProxy(OGCProxy):
             content, self.settings.get("online_resource"), self.settings.get("proxy_online_resource")
         )
 
-        return self._build_response(response, content, cache_control, "tinyows")
+        return self._build_response(response, content.encode(), cache_control, "tinyows")
 
     @staticmethod
     def _filter_urls(content: str, online_resource: str, proxy_online_resource: str) -> str:

@@ -144,9 +144,10 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
     """Filter the WTS capabilities."""
 
     writable_layers: Set[str] = set()
-    ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
+    ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url.url())
+
     for gmf_layer in list(get_writable_layers(request, ogc_server_ids).values()):
-        writable_layers += gmf_layer.layer.split(",")
+        writable_layers |= set(gmf_layer.layer.split(","))
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
