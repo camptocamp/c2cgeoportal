@@ -2951,6 +2951,14 @@
             ],
             "version": "==0.7"
         },
+        "responses": {
+            "hashes": [
+                "sha256:18831bc2d72443b67664d98038374a6fa1f27eaaff4dd9a7d7613723416fea3c",
+                "sha256:644905bc4fb8a18fa37e3882b2ac05e610fe8c2f967d327eed669e314d94a541"
+            ],
+            "index": "pypi",
+            "version": "==0.20.0"
+        },
         "rfc3986": {
             "hashes": [
                 "sha256:50b1502b60e289cb37883f3dfd34532b8873c7de9f49bb546641ce9cbd256ebd",
