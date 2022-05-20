@@ -109,6 +109,8 @@ services:
 
   # Rich image for project development with e.-g. vim, tree, awscli, psql, ...
   tools:
+    volumes:
+      - .:/src
     extends:
       file: docker-compose-lib.yaml
       service: tools
