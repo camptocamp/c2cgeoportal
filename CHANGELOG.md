@@ -1,3 +1,8 @@
+##### 2.7.rc.44
+
+- Fix tinyowsproxy [c2cgeoportal#9732](https://github.com/camptocamp/c2cgeoportal/pull/9732)
+- Fix the URL [c2cgeoportal#9742](https://github.com/camptocamp/c2cgeoportal/pull/9742)
+
 ##### 2.7.rc.43
 
 - Add documentation to mapserver_substitution functionality [c2cgeoportal#9730](https://github.com/camptocamp/c2cgeoportal/pull/9730)
