@@ -1615,17 +1615,16 @@ class Metadata(Base):  # type: ignore
                 Regarding effect on the referenced tree item on the client side,
                 you will find an official description for each sort of metadata in the
                 <code>GmfMetaData</code> definition in <code>themes.js</code>
-                <a
-                    target="_blank"
-                    href="https://github.com/camptocamp/ngeo/blob/${MAJOR_VERSION}/contribs/gmf/src/themes.js"
-                >
-                    https://github.com/camptocamp/ngeo/blob/${MAJOR_VERSION}/contribs/gmf/src/themes.js
-                </a>.</p>
+                <a target="_blank" href="${url}">see ngeo documentation</a>.</p>
             <hr>
         </div>
                             """,
                             mapping={
-                                "MAJOR_VERSION": os.environ.get("MAJOR_VERSION", "master"),
+                                "url": (
+                                    "https://camptocamp.github.io/ngeo/"
+                                    f"{os.environ.get('MAJOR_VERSION', 'master')}"
+                                    "/apidoc/interfaces/contribs_gmf_src_themes.GmfMetaData.html"
+                                )
                             },
                         )
                     ),
