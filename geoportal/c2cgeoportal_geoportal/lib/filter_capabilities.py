@@ -246,7 +246,7 @@ class _CapabilitiesFilter(XMLFilterBase):
     def endPrefixMapping(self, prefix: str) -> None:  # noqa: ignore=N802
         self._downstream.endPrefixMapping(prefix)  # type: ignore
 
-    def startElement(self, name: str, attrs: Dict[str, str]) -> None:  # noqa: ignore=N802
+    def startElement(self, name: str, attrs: xml.sax.xmlreader.AttributesImpl) -> None:  # noqa: ignore=N802
         if name == self.tag_name:
             self.level += 1
             if self.layers_path:

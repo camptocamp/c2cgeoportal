@@ -114,7 +114,7 @@ class TinyOWSProxy(OGCProxy):
         cache_control = Cache.PRIVATE if use_cache else Cache.PRIVATE_NO
 
         errors: Set[str] = set()
-        url = super()._get_wfs_url(errors)
+        url = Url(self.settings.get("tinyows_url"))
         if url is None:
             LOG.error("Error getting the URL:\n%s", "\n".join(errors))
             raise HTTPInternalServerError()
