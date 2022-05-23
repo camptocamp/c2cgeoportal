@@ -1,3 +1,7 @@
+##### 2.7.rc.47
+
+- Rename scaffolds in documentation [c2cgeoportal#9759](https://github.com/camptocamp/c2cgeoportal/pull/9759)
+
 ##### 2.7.rc.46
 
 - Revert "Add missing volume for update-po" [c2cgeoportal#9751](https://github.com/camptocamp/c2cgeoportal/pull/9751)
