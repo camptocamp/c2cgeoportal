@@ -79,7 +79,6 @@ Properties:
  * ``maxTilesLoading`` (number, optional)
  * ``moveTolerance`` (number, optional)
  * ``pixelRatio`` (number, optional)
- * ``projection`` (string)
 
 .. _integrator_guide_ngeo_properties_MeasureRasterLayer:
 
