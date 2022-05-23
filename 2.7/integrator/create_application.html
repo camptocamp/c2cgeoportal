@@ -44,8 +44,8 @@ the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</s
 <section id="project-structure">
 <h2>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
 <p>In the simple case, the root directory of the application is the directory
-created by the c2cgeoportal scaffolds (the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> and
-<code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffolds).</p>
+created by the c2cgeoportal scaffolds (the <code class="docutils literal notranslate"><span class="pre">create</span></code> and
+<code class="docutils literal notranslate"><span class="pre">update</span></code> scaffolds).</p>
 </section>
 <section id="set-environment-variables">
 <h2>Set environment variables<a class="headerlink" href="#set-environment-variables" title="Permalink to this headline">¶</a></h2>
@@ -71,15 +71,15 @@ c2cgeoportal application you want to create the new application from:</p>
     pcreate -l</span>
 </pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
-<li><p>c2cgeoportal_create</p></li>
-<li><p>c2cgeoportal_update</p></li>
-<li><p>c2cgeoportal_advance_create</p></li>
-<li><p>c2cgeoportal_advance_update</p></li>
+<li><p>advance_create</p></li>
+<li><p>advance_update</p></li>
+<li><p>create</p></li>
+<li><p>update</p></li>
 </ul>
 </section>
 <section id="create-the-new-application">
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
-<p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
+<p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
@@ -108,12 +108,12 @@ parameters:</p>
 <p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> that will be next to the
 <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
 creating this application from.</p>
-<p>For an advance application, apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_advance_create</span></code> scaffold:</p>
+<p>For an advance application, apply the <code class="docutils literal notranslate"><span class="pre">advance_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
     pcreate -s advance_create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
-</pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
+</pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
@@ -122,11 +122,11 @@ creating this application from.</p>
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold is also used to update the
+<p>The <code class="docutils literal notranslate"><span class="pre">update</span></code> scaffold is also used to update the
 application. The files generated by this scaffold are prefixed with
 <code class="docutils literal notranslate"><span class="pre">CONST_</span></code>, which means they are <em>constant</em> files that should not be changed.
 Following this rule is important for easier updates.</p>
-<p>For an advance application apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_advance_update</span></code> scaffold:</p>
+<p>For an advance application apply the <code class="docutils literal notranslate"><span class="pre">advance_update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
