@@ -1,3 +1,8 @@
+##### 2.7.rc.48
+
+- Use the URL on Tinyows, not on MapServer [c2cgeoportal#9757](https://github.com/camptocamp/c2cgeoportal/pull/9757)
+- Fix inversion in dry run mode [c2cgeoportal#9758](https://github.com/camptocamp/c2cgeoportal/pull/9758)
+
 ##### 2.7.rc.47
 
 - Rename scaffolds in documentation [c2cgeoportal#9759](https://github.com/camptocamp/c2cgeoportal/pull/9759)
