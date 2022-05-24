@@ -23,8 +23,8 @@ def main():
         for suffix in all_suffix:
             if args.dry_run:
                 print(
-                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo => "
-                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
+                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo"
                 )
             else:
                 subprocess.run(
@@ -41,8 +41,8 @@ def main():
             if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"):
                 if args.dry_run:
                     print(
-                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo => "
-                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po"
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po => "
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"
                     )
                 else:
                     subprocess.run(
