@@ -1,3 +1,7 @@
+##### 2.7.rc.49
+
+- The loginMessageRequired shouldn't be translated in booth i18n tool [ngeo#8564](https://github.com/camptocamp/ngeo/pull/8564)
+
 ##### 2.7.rc.48
 
 - Use the URL on Tinyows, not on MapServer [c2cgeoportal#9757](https://github.com/camptocamp/c2cgeoportal/pull/9757)
