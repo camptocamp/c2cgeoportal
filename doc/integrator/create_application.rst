@@ -62,7 +62,8 @@ To create the application, first apply the ``create`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s create ${GEOMAPFISH_PROJECT}
+        pcreate --scaffold=create \
+        ${GEOMAPFISH_PROJECT}
 
 .. note::
 
@@ -84,12 +85,11 @@ it later.
             --env=EXTENT="2420000,1030000,2900000,1350000" \
             camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
             run $(id -u) $(id -g) /src \
-            pcreate -s create \
-            --package-name ${GEOMAPFISH_PACKAGE} ${GEOMAPFISH_PROJECT}
+            pcreate --scaffold=create \
+            --package-name=${GEOMAPFISH_PACKAGE} \
+            ${GEOMAPFISH_PROJECT}
 
-This will create a directory named ``<project>`` that will be next to the
-``c2cgeoportal`` directory, or to the directory of the application you are
-creating this application from.
+This will create a directory named ``<project>`` in you current directory.
 
 
 For an advance application, apply the ``advance_create`` scaffold:
@@ -99,7 +99,8 @@ For an advance application, apply the ``advance_create`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s advance_create ${GEOMAPFISH_PROJECT}
+        pcreate --scaffold=advance_create \
+        ${GEOMAPFISH_PROJECT} --overwrite
 
 
 Now apply the ``update`` scaffold:
@@ -109,7 +110,8 @@ Now apply the ``update`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s update ${GEOMAPFISH_PROJECT}
+        pcreate --scaffold=update \
+        ${GEOMAPFISH_PROJECT} --overwrite
 
 .. note::
 
@@ -177,6 +179,8 @@ To convert an application to a simple application you should do:
 
 You should also set an API name, in the ``vars.yaml`` file, in `vars/api/name`` and also modify the
 ``geoportal/<package>_geoportal/static/apihelp/index.html`` file.
+
+Remove the attribute ``advance: true`` in your ``project.yaml`` file.
 
 Put the application under revision control
 ------------------------------------------
