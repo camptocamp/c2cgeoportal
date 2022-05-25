@@ -1,3 +1,7 @@
+##### 2.7.rc.50
+
+- Update the create application page [c2cgeoportal#9764](https://github.com/camptocamp/c2cgeoportal/pull/9764)
+
 ##### 2.7.rc.49
 
 - The loginMessageRequired shouldn't be translated in booth i18n tool [ngeo#8564](https://github.com/camptocamp/ngeo/pull/8564)
