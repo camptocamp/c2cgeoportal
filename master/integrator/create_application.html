@@ -83,7 +83,8 @@ c2cgeoportal application you want to create the new application from:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate --scaffold<span class="o">=</span>create <span class="se">\</span>
+    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -101,23 +102,24 @@ parameters:</p>
     --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span> <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s create <span class="se">\</span>
-    --package-name <span class="si">${</span><span class="nv">GEOMAPFISH_PACKAGE</span><span class="si">}</span> <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate --scaffold<span class="o">=</span>create <span class="se">\</span>
+    --package-name<span class="o">=</span><span class="si">${</span><span class="nv">GEOMAPFISH_PACKAGE</span><span class="si">}</span> <span class="se">\</span>
+    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div></div></blockquote>
 </div>
-<p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> that will be next to the
-<code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> directory, or to the directory of the application you are
-creating this application from.</p>
+<p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> in you current directory.</p>
 <p>For an advance application, apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_advance_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s advance_create <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate --scaffold<span class="o">=</span>advance_create <span class="se">\</span>
+    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span> --overwrite</span>
 </pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
     camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
     run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s update <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+    pcreate --scaffold<span class="o">=</span>update <span class="se">\</span>
+    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span> --overwrite</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -164,6 +166,7 @@ section applies to the simple application mode or not.</p>
 <span class="prompt1">git checkout CONST_create_template/geoportal/&lt;project&gt;_geoportal/static/</span>
 </pre></div></div><p>You should also set an API name, in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file, in <cite>vars/api/name`</cite> and also modify the
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/apihelp/index.html</span></code> file.</p>
+<p>Remove the attribute <code class="docutils literal notranslate"><span class="pre">advance:</span> <span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file.</p>
 </section>
 <section id="put-the-application-under-revision-control">
 <h2>Put the application under revision control<a class="headerlink" href="#put-the-application-under-revision-control" title="Permalink to this headline">¶</a></h2>
