@@ -5,6 +5,6 @@
   "author": "",
   "dependencies": {
     "ngeo": "2.7.0-version-2.7-latest.20220524T070933Z.0c7639891.2.7",
-    "@babel/plugin-transform-typescript": "7.18.1"
+    "@babel/plugin-transform-typescript": "7.18.4"
   }
 }
