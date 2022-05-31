@@ -180,7 +180,7 @@ class C2CPregenerator:
         self.role = role
 
     def __call__(self, request: pyramid.request.Request, elements: Any, kw: Any) -> Tuple[Any, Any]:
-        query = kw.get("_query", {})
+        query = {**kw.get("_query", {})}
 
         if self.version:
             query["cache_version"] = get_cache_version()
