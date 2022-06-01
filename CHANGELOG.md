@@ -1,3 +1,7 @@
+##### 2.7.rc.51
+
+- Add simple auth support for OAuth2 [c2cgeoportal#9781](https://github.com/camptocamp/c2cgeoportal/pull/9781)
+
 ##### 2.7.rc.50
 
 - Update the create application page [c2cgeoportal#9764](https://github.com/camptocamp/c2cgeoportal/pull/9764)
