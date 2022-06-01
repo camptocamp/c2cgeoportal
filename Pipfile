@@ -38,7 +38,7 @@ rasterio = "==1.2.10"  # geoportal raster
 requests = "==2.27.1"  # geoportal
 redis = "==4.3.1"  # geoportal cache
 Shapely = "==1.8.2"  # geoportal
-SQLAlchemy = "==1.4.36"
+SQLAlchemy = "==1.4.37"
 transaction = "==3.0.1"  # commons, geoportal
 translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
