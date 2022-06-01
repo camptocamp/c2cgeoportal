@@ -1,3 +1,6 @@
+##### 2.5.0.208
+* Fix CVE [c2cgeoportal#9786](https://github.com/camptocamp/c2cgeoportal/pull/9786)
+* [Backport 2.5] Ignore audit on fast-sass-loader [ngeo#8382](https://github.com/camptocamp/ngeo/pull/8382)
 ##### 2.5.0.207
 * [Backport 2.5] Fix CVE [ngeo#8355](https://github.com/camptocamp/ngeo/pull/8355)
 ##### 2.5.0.206
