@@ -1,3 +1,5 @@
+##### 2.4.2.82
+* Fix bootstrap-table CVE, ignore pylint CVE [c2cgeoportal#9785](https://github.com/camptocamp/c2cgeoportal/pull/9785)
 ##### 2.4.2.81
 * CVE 1069976 no more present [c2cgeoportal#9647](https://github.com/camptocamp/c2cgeoportal/pull/9647)
 ##### 2.4.2.80
