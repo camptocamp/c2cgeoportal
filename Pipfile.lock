@@ -87,6 +87,13 @@
             "markers": "python_version >= '3.6'",
             "version": "==2.10.1"
         },
+        "basicauth": {
+            "hashes": [
+                "sha256:d79ebe09ec4a46955539ed2e66a6543375511e0f00b3c37be735d15f8e63ac02"
+            ],
+            "index": "pypi",
+            "version": "==0.4.1"
+        },
         "beaker": {
             "hashes": [
                 "sha256:ad5d1c05027ee3be3a482ea39f8cb70339b41e5d6ace0cb861382754076d187e"
