@@ -1,3 +1,7 @@
+##### 2.7.rc.53
+
+- Fix oauth altering request [c2cgeoportal#9782](https://github.com/camptocamp/c2cgeoportal/pull/9782)
+
 ##### 2.7.rc.52
 
 - Fix CVE [c2cgeoportal#9787](https://github.com/camptocamp/c2cgeoportal/pull/9787)
