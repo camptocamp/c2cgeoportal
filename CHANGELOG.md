@@ -1,3 +1,5 @@
+##### 2.6.0.118
+* [Backport 2.6] Fix CVE [c2cgeoportal#9789](https://github.com/camptocamp/c2cgeoportal/pull/9789)
 ##### 2.6.0.117
 * [Backport 2.6] Revert "Fix CSV export with undefined packed_color attribute error" [ngeo#8507](https://github.com/camptocamp/ngeo/pull/8507)
 ##### 2.6.0.116
