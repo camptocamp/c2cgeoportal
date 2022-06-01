@@ -1,3 +1,7 @@
+##### 2.7.rc.54
+
+- Add missing CORS headers on static-geomapfish [c2cgeoportal#9791](https://github.com/camptocamp/c2cgeoportal/pull/9791)
+
 ##### 2.7.rc.53
 
 - Fix oauth altering request [c2cgeoportal#9782](https://github.com/camptocamp/c2cgeoportal/pull/9782)
