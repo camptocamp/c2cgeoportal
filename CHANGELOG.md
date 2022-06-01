@@ -1,3 +1,7 @@
+##### 2.7.rc.52
+
+- Fix CVE [c2cgeoportal#9787](https://github.com/camptocamp/c2cgeoportal/pull/9787)
+
 ##### 2.7.rc.51
 
 - Add simple auth support for OAuth2 [c2cgeoportal#9781](https://github.com/camptocamp/c2cgeoportal/pull/9781)
