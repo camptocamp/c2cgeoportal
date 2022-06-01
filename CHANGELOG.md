@@ -1,3 +1,5 @@
+##### 2.6.0.119
+* Add missing C2CWSGIUTILS_LOG_LEVEL [c2cgeoportal#9790](https://github.com/camptocamp/c2cgeoportal/pull/9790)
 ##### 2.6.0.118
 * [Backport 2.6] Fix CVE [c2cgeoportal#9789](https://github.com/camptocamp/c2cgeoportal/pull/9789)
 ##### 2.6.0.117
