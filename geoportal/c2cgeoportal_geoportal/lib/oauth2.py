@@ -29,6 +29,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Union
 
+import basicauth
 import oauthlib.common
 import oauthlib.oauth2
 import pyramid.threadlocal
@@ -112,10 +113,20 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         params = dict(request.decoded_body)
 
+        if "client_secret" in params:
+            client_secret = params["client_secret"]
+        elif "Authorization" in request.headers:
+            username, password = basicauth.decode(request.headers["Authorization"])
+            assert client_id == username
+            client_secret = password
+        else:
+            # Unable to get the client secret
+            return False
+
         request.client = (
             DBSession.query(static.OAuth2Client)
             .filter(static.OAuth2Client.client_id == client_id)
-            .filter(static.OAuth2Client.secret == params["client_secret"])
+            .filter(static.OAuth2Client.secret == client_secret)
             .one_or_none()
         )
 
