@@ -1,3 +1,7 @@
+##### 2.7.rc.55
+
+- [Backport 2.7] Add missing C2CWSGIUTILS_LOG_LEVEL [c2cgeoportal#9795](https://github.com/camptocamp/c2cgeoportal/pull/9795)
+
 ##### 2.7.rc.54
 
 - Add missing CORS headers on static-geomapfish [c2cgeoportal#9791](https://github.com/camptocamp/c2cgeoportal/pull/9791)
