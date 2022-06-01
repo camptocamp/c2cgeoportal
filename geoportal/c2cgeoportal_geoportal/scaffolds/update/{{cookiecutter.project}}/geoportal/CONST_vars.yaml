@@ -1023,6 +1023,10 @@ vars:
       headers:
         Access-Control-Allow-Origin: '*'
         Access-Control-Allow-Headers: X-Requested-With, Content-Type
+    - pattern: '^/static-geomapfish/.*'
+      headers:
+        Access-Control-Allow-Origin: '*'
+        Access-Control-Allow-Headers: X-Requested-With, Content-Type
     - pattern: '^/c2c$'
       headers:
         Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
