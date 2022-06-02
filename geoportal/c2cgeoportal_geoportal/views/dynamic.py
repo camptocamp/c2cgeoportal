@@ -55,7 +55,7 @@ class DynamicView:
         return cast(Dict[str, Any], self.interfaces_config.get(interface, {}).get(value, {}))
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
-    def _fulltextsearch_groups(self) -> List[str]:  # pylint: disable=no-self-use
+    def _fulltextsearch_groups(self) -> List[str]:
         return [
             group[0]
             for group in models.DBSession.query(func.distinct(main.FullTextSearch.layer_name))

@@ -90,11 +90,11 @@ class ChildWidget(MappingWidget):  # type: ignore
     model = TreeItem
     label_field = "name"
 
-    def icon_class(self, child: Any) -> Optional[str]:  # pylint: disable=no-self-use,useless-return
+    def icon_class(self, child: Any) -> Optional[str]:  # pylint: disable=useless-return
         del child
         return None
 
-    def edit_url(  # pylint: disable=no-self-use,useless-return
+    def edit_url(  # pylint: disable=useless-return
         self, request: pyramid.request.Request, child: Any
     ) -> Optional[str]:
         del request

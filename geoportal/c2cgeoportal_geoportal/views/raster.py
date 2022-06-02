@@ -167,7 +167,7 @@ class Raster:
             result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
             LOG.debug(
-                "Out of index for layer: %s (%s), " "lon/lat: %dx%d, index: %dx%d, shape: %dx%d.",
+                "Out of index for layer: %s (%s), lon/lat: %dx%d, index: %dx%d, shape: %dx%d.",
                 name,
                 layer["file"],
                 lon,

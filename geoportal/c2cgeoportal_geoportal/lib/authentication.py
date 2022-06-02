@@ -92,14 +92,12 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
 
         return None
 
-    def remember(  # pylint: disable=no-self-use
-        self, request: pyramid.request.Request, userid: str, **kw: Any
-    ) -> List[Dict[str, str]]:
+    def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> List[Dict[str, str]]:
         """Do no-op."""
         del request, userid, kw
         return []
 
-    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
+    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:
         """Do no-op."""
         del request
         return []
@@ -137,14 +135,12 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
             return cast(str, request.user_.username)
         return None
 
-    def remember(  # pylint: disable=no-self-use
-        self, request: pyramid.request.Request, userid: str, **kw: Any
-    ) -> List[Dict[str, str]]:
+    def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> List[Dict[str, str]]:
         """Do no-op."""
         del request, userid, kw
         return []
 
-    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:  # pylint: disable=no-self-use
+    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:
         """Do no-op."""
         del request
         return []

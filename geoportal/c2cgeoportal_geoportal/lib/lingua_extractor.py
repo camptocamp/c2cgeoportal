@@ -858,7 +858,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             except ExpatError as e:
                 print(
                     colorize(
-                        "ERROR! an error occurred while trying to " "parse the DescribeFeatureType document.",
+                        "ERROR! an error occurred while trying to parse the DescribeFeatureType document.",
                         Color.RED,
                     )
                 )

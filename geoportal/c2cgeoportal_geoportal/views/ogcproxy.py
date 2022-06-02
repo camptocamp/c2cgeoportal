@@ -73,7 +73,7 @@ class OGCProxy(Proxy):
             raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
-    def _get_ogcserver_byname(self, name: str) -> main.OGCServer:  # pylint: disable=no-self-use
+    def _get_ogcserver_byname(self, name: str) -> main.OGCServer:
         try:
             result = DBSession.query(main.OGCServer).filter(main.OGCServer.name == name).one()
             DBSession.expunge(result)
