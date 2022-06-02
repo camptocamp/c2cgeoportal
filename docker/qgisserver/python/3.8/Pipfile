@@ -21,7 +21,7 @@ pytz = "==2022.1"
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
-types-pyyaml = "==6.0.7"
+types-pyyaml = "==6.0.8"
 
 [requires]
 python_version = "3.8"
