@@ -102,9 +102,7 @@ class TinyOWSProxy(OGCProxy):
             # for DescribeFeatureType we require that exactly one type-name
             # is given, otherwise we would have to filter the result
             if len(typenames) != 1:
-                raise HTTPBadRequest(
-                    "Exactly one type-name must be given for " "DescribeFeatureType requests"
-                )
+                raise HTTPBadRequest("Exactly one type-name must be given for DescribeFeatureType requests")
 
         if not self._is_allowed(typenames):
             raise HTTPForbidden("No access rights for at least one of the given type-names")

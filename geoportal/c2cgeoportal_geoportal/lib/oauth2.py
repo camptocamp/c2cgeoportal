@@ -48,7 +48,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         # in minutes
         self.authorization_expires_in = authorization_expires_in
 
-    def authenticate_client(  # pylint: disable=no-self-use,useless-suppression
+    def authenticate_client(
         self,
         request: oauthlib.common.Request,
         *args: Any,
@@ -85,7 +85,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         raise NotImplementedError("Not implemented, the method `authenticate_client_id` should be used.")
 
-    def authenticate_client_id(  # pylint: disable=no-self-use,useless-suppression
+    def authenticate_client_id(
         self,
         client_id: str,
         request: oauthlib.common.Request,
@@ -133,7 +133,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("authenticate_client_id => %s", request.client is not None)
         return request.client is not None
 
-    def client_authentication_required(  # pylint: disable=no-self-use,useless-suppression
+    def client_authentication_required(
         self,
         request: oauthlib.common.Request,
         *args: Any,
@@ -174,7 +174,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return False
 
-    def confirm_redirect_uri(  # pylint: disable=no-self-use,useless-suppression
+    def confirm_redirect_uri(
         self,
         client_id: str,
         code: str,
@@ -226,9 +226,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("confirm_redirect_uri => %s", authorization_code is not None)
         return authorization_code is not None
 
-    def get_code_challenge_method(  # pylint: disable=no-self-use,useless-suppression
-        self, code: str, request: oauthlib.common.Request
-    ) -> None:
+    def get_code_challenge_method(self, code: str, request: oauthlib.common.Request) -> None:
         """
         Is called during the "token" request processing.
 
@@ -252,7 +250,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         raise NotImplementedError("Not implemented.")
 
-    def get_default_redirect_uri(  # pylint: disable=no-self-use,useless-suppression
+    def get_default_redirect_uri(
         self,
         client_id: str,
         request: oauthlib.common.Request,
@@ -279,7 +277,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         raise NotImplementedError("Not implemented.")
 
-    def get_default_scopes(  # pylint: disable=no-self-use,useless-suppression
+    def get_default_scopes(
         self,
         client_id: str,
         request: oauthlib.common.Request,
@@ -308,7 +306,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return ["geomapfish"]
 
-    def get_original_scopes(  # pylint: disable=no-self-use,useless-suppression
+    def get_original_scopes(
         self,
         refresh_token: str,
         request: oauthlib.common.Request,
@@ -334,7 +332,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return []
 
-    def introspect_token(  # pylint: disable=no-self-use,useless-suppression
+    def introspect_token(
         self,
         token: str,
         token_type_hint: str,
@@ -384,7 +382,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         raise NotImplementedError("Not implemented.")
 
-    def invalidate_authorization_code(  # pylint: disable=no-self-use,useless-suppression
+    def invalidate_authorization_code(
         self,
         client_id: str,
         code: str,
@@ -419,7 +417,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .one()
         )
 
-    def is_within_original_scope(  # pylint: disable=no-self-use,useless-suppression
+    def is_within_original_scope(
         self,
         request_scopes: List[str],
         refresh_token: str,
@@ -453,7 +451,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return False
 
-    def revoke_token(  # pylint: disable=no-self-use,useless-suppression
+    def revoke_token(
         self,
         token: str,
         token_type_hint: str,
@@ -479,9 +477,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         raise NotImplementedError("Not implemented.")
 
-    def rotate_refresh_token(  # pylint: disable=no-self-use,useless-suppression
-        self, request: oauthlib.common.Request
-    ) -> bool:
+    def rotate_refresh_token(self, request: oauthlib.common.Request) -> bool:
         """
         Determine whether to rotate the refresh token. Default, yes.
 
@@ -502,7 +498,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return True
 
-    def save_authorization_code(  # pylint: disable=no-self-use,useless-suppression
+    def save_authorization_code(
         self,
         client_id: str,
         code: Dict[str, str],
@@ -568,7 +564,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         DBSession.add(authorization_code)
 
-    def save_bearer_token(  # pylint: disable=no-self-use,useless-suppression
+    def save_bearer_token(
         self,
         token: Dict[str, Union[str, int]],
         request: oauthlib.common.Request,
@@ -641,7 +637,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
             DBSession.add(bearer_token)
 
-    def validate_bearer_token(  # pylint: disable=no-self-use,useless-suppression
+    def validate_bearer_token(
         self,
         token: str,
         scopes: List[str],
@@ -715,7 +711,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("validate_bearer_token => %s", bearer_token is not None)
         return bearer_token is not None
 
-    def validate_client_id(  # pylint: disable=no-self-use,useless-suppression
+    def validate_client_id(
         self,
         client_id: str,
         request: oauthlib.common.Request,
@@ -753,7 +749,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             request.client = client
         return client is not None
 
-    def validate_code(  # pylint: disable=no-self-use,useless-suppression
+    def validate_code(
         self,
         client_id: str,
         code: str,
@@ -804,7 +800,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("validate_code => %s", authorization_code is not None)
         return authorization_code is not None
 
-    def validate_grant_type(  # pylint: disable=no-self-use,useless-suppression
+    def validate_grant_type(
         self,
         client_id: str,
         grant_type: str,
@@ -840,7 +836,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return grant_type in ("authorization_code", "refresh_token")
 
-    def validate_redirect_uri(  # pylint: disable=no-self-use,useless-suppression
+    def validate_redirect_uri(
         self,
         client_id: str,
         redirect_uri: str,
@@ -879,7 +875,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("validate_redirect_uri %s", client is not None)
         return client is not None
 
-    def validate_refresh_token(  # pylint: disable=no-self-use,useless-suppression
+    def validate_refresh_token(
         self,
         refresh_token: str,
         client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
@@ -923,7 +919,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return bearer_token is not None
 
-    def validate_response_type(  # pylint: disable=no-self-use,useless-suppression
+    def validate_response_type(
         self,
         client_id: str,
         response_type: str,
@@ -952,7 +948,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return response_type == "code"
 
-    def validate_scopes(  # pylint: disable=no-self-use,useless-suppression
+    def validate_scopes(
         self,
         client_id: str,
         scopes: List[str],
@@ -983,7 +979,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return True
 
-    def validate_user(  # pylint: disable=no-self-use,useless-suppression
+    def validate_user(
         self,
         username: str,
         password: str,
