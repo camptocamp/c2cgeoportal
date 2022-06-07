@@ -50,7 +50,7 @@ basicauth = "==0.4.1"
 setuptools = "==59.8.0"
 
 [dev-packages]
-awscli = "==1.24.10"  # Work with Object storage
+awscli = "==1.25.3"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
 beautifulsoup4 = "==4.11.1"  # admin tests
 coverage = "==6.4.1"  # Build coverage XML for Codacy
