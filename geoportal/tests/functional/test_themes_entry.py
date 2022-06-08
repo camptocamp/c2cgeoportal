@@ -241,7 +241,7 @@ class TestThemeEntryView(TestCase):
 
         return request
 
-    def test_theme(self):
+    async def test_theme(self):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -250,7 +250,7 @@ class TestThemeEntryView(TestCase):
         theme_view = Theme(request)
 
         # unautenticated
-        themes, errors = theme_view._themes()
+        themes, errors = await theme_view._themes()
         assert {e[:90] for e in errors} == set()
         assert len(themes) == 1
         groups = {g["name"] for g in themes[0]["children"]}
@@ -261,7 +261,7 @@ class TestThemeEntryView(TestCase):
         # authenticated
         request.params = {}
         request.user = DBSession.query(User).filter_by(username="__test_user1").one()
-        themes, errors = theme_view._themes()
+        themes, errors = await theme_view._themes()
         assert {e[:90] for e in errors} == set()
         assert len(themes) == 1
         groups = {g["name"] for g in themes[0]["children"]}
@@ -269,7 +269,7 @@ class TestThemeEntryView(TestCase):
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         assert layers == {"__test_private_layer_edit", "__test_public_layer", "__test_private_layer"}
 
-    def test_no_layers(self):
+    async def test_no_layers(self):
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
 
@@ -278,46 +278,46 @@ class TestThemeEntryView(TestCase):
         request.params = {}
 
         invalidate_region()
-        themes, errors = theme_view._themes("interface_no_layers")
+        themes, errors = await theme_view._themes("interface_no_layers")
         assert themes == []
         assert {e[:90] for e in errors} == {
             "The layer '__test_public_layer_no_layers' do not have any layers"
         }
 
-    def test_not_in_mapfile(self):
+    async def test_not_in_mapfile(self):
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
 
         theme_view = Theme(self._create_request_obj())
 
         invalidate_region()
-        themes, errors = theme_view._themes("interface_not_in_mapfile")
+        themes, errors = await theme_view._themes("interface_not_in_mapfile")
         assert len(themes) == 0
         assert {e[:90] for e in errors} == {
             "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_in_mapfile) is not"
         }
 
-    def test_notmapfile(self):
+    async def test_notmapfile(self):
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
 
         theme_view = Theme(self._create_request_obj())
 
         invalidate_region()
-        themes, errors = theme_view._themes("interface_notmapfile")
+        themes, errors = await theme_view._themes("interface_notmapfile")
         assert len(themes) == 0
         assert {e[:90] for e in errors} == {
             "GetCapabilities from URL 'http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1",
         }
 
-    def test_theme_geoserver(self):
+    async def test_theme_geoserver(self):
         from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj()
         theme_view = Theme(request)
 
         # unautenticated v1
-        themes, errors = theme_view._themes("interface_geoserver")
+        themes, errors = await theme_view._themes("interface_geoserver")
         assert {e[:90] for e in errors} == set()
         assert len(themes) == 1
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
