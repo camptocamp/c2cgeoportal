@@ -1,3 +1,8 @@
+##### 2.7.rc.56
+
+- Better performances to create the theme when we are logged in [c2cgeoportal#9821](https://github.com/camptocamp/c2cgeoportal/pull/9821)
+- Update all patch versions (2.7) [ngeo#8642](https://github.com/camptocamp/ngeo/pull/8642)
+
 ##### 2.7.rc.55
 
 - [Backport 2.7] Add missing C2CWSGIUTILS_LOG_LEVEL [c2cgeoportal#9795](https://github.com/camptocamp/c2cgeoportal/pull/9795)
