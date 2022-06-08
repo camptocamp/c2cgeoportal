@@ -47,7 +47,7 @@ oauthlib = "==3.2.0"
 tilecloud = "==1.8.0" # geoportal
 azure-storage-blob = "==12.12.0"
 basicauth = "==0.4.1"
-setuptools = "==59.8.0"
+setuptools = "==62.3.3"
 
 [dev-packages]
 awscli = "==1.25.4"  # Work with Object storage
