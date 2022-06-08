@@ -6,116 +6,116 @@ updates:
   - package-ecosystem: pip
     directory: /
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: pip
     directory: /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/ci
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: pip
     directory: /docker/qgisserver/python/3.8
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: pip
     directory: /ci
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: pip
     directory: /doc
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: pip
     directory: /docker/qgisserver/tests
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
 
   - package-ecosystem: docker
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /doc
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /admin
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /docker/config
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /docker/qgisserver
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /docker/test-db
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /docker/test-mapserver
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: docker
     directory: /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
 
   - package-ecosystem: npm
     directory: /geoportal
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: npm
     directory: /admin
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: bootstrap
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none
   - package-ecosystem: npm
     directory: /doc
     schedule:
-      interval: weekly
+      interval: monthly
     ignore:
       - dependency-name: none

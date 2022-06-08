@@ -10,10 +10,6 @@ checks:
     main.yaml: False
     rebuild-master.yaml:
       steps: []
-  dependabot_config:
-    update_ignore:
-      - directory: /admin
-        package-ecosystem: npm
 
 audit:
   npm:
