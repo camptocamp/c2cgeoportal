@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6475f519525a73b1405ef4333595db9b913c373a3464fb0c1c14ec161f5f6e0f"
+            "sha256": "211dfacccd1a87aa0b3c24f8954c7c1b8afd392f691826781db8a927cdef04f5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -346,11 +346,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:09980778aa734c3037a47997f28d6db5ab18bdf2af0e49f719bfc53967fd2e82",
-                "sha256:608a7885b664342ae9fafc43840b29d219c5a578876f6f7e00c4e2612160587f"
+                "sha256:d1746e7fd520e83bbe210d02fff1aa1a425ad671c7a9da7d246ec2401a087198",
+                "sha256:e7d11f3db616cda0751372244c2ba798e8e56a28e096ec4529010b803485f3fe"
             ],
             "index": "pypi",
-            "version": "==59.8.0"
+            "version": "==62.3.3"
         },
         "shapely": {
             "hashes": [
@@ -926,11 +926,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:09980778aa734c3037a47997f28d6db5ab18bdf2af0e49f719bfc53967fd2e82",
-                "sha256:608a7885b664342ae9fafc43840b29d219c5a578876f6f7e00c4e2612160587f"
+                "sha256:d1746e7fd520e83bbe210d02fff1aa1a425ad671c7a9da7d246ec2401a087198",
+                "sha256:e7d11f3db616cda0751372244c2ba798e8e56a28e096ec4529010b803485f3fe"
             ],
             "index": "pypi",
-            "version": "==59.8.0"
+            "version": "==62.3.3"
         },
         "smmap": {
             "hashes": [
