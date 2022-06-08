@@ -37,6 +37,7 @@ from collections import Counter
 from math import sqrt
 from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
+import dogpile.cache.api
 import pyramid.request
 import requests
 import sqlalchemy
@@ -179,19 +180,6 @@ class Theme:
     async def _wms_getcap(
         self, ogc_server: main.OGCServer, preload: bool = False
     ) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
-
-        try:
-            url, content, errors = await self._wms_getcap_cached(ogc_server)
-        except requests.exceptions.RequestException as exception:
-            error = (
-                f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', "
-                f"return the error: {exception.response.status_code} {exception.response.reason}"
-            )
-            LOG.exception(error)
-            return None, {error}
-        if errors or preload:
-            return None, errors
-
         @CACHE_REGION.cache_on_arguments()  # type: ignore
         def build_web_map_service(ogc_server_id: int) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
             del ogc_server_id  # Just for cache
@@ -234,6 +222,22 @@ class Theme:
             LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
 
             return {"layers": layers}, set()
+
+        result = build_web_map_service.get(ogc_server.id)
+        if result != dogpile.cache.api.NO_VALUE:
+            return result  # type: ignore
+
+        try:
+            url, content, errors = await self._wms_getcap_cached(ogc_server)
+        except requests.exceptions.RequestException as exception:
+            error = (
+                f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', "
+                f"return the error: {exception.response.status_code} {exception.response.reason}"
+            )
+            LOG.exception(error)
+            return None, {error}
+        if errors or preload:
+            return None, errors
 
         return build_web_map_service(ogc_server.id)  # type: ignore
 
@@ -370,7 +374,7 @@ class Theme:
             999999999 if resolution_hint_max is None else resolution_hint_max,
         )
 
-    def _layer(
+    async def _layer(
         self,
         layer: main.Layer,
         time_: Optional[TimeInformation] = None,
@@ -394,7 +398,7 @@ class Theme:
         errors |= dim.merge(layer, layer_info, mixed)
 
         if isinstance(layer, main.LayerWMS):
-            wms, wms_errors = self._wms_layers(layer.ogc_server)
+            wms, wms_errors = await self._wms_layers(layer.ogc_server)
             errors |= wms_errors
             if wms is None:
                 return None if errors else layer_info, errors
@@ -403,7 +407,7 @@ class Theme:
                 return None, errors
             layer_info["type"] = "WMS"
             layer_info["layers"] = layer.layer
-            self._fill_wms(layer_info, layer, errors, mixed=mixed)
+            await self._fill_wms(layer_info, layer, errors, mixed=mixed)
             errors |= self._merge_time(time_, layer_info, layer, wms)
 
         elif isinstance(layer, main.LayerWMTS):
@@ -488,10 +492,10 @@ class Theme:
             for child_layer in wms_layer_obj["children"]:
                 self._fill_child_layer(layer_theme, child_layer, wms)
 
-    def _fill_wms(
+    async def _fill_wms(
         self, layer_theme: Dict[str, Any], layer: main.Layer, errors: Set[str], mixed: bool
     ) -> None:
-        wms, wms_errors = self._wms_layers(layer.ogc_server)
+        wms, wms_errors = await self._wms_layers(layer.ogc_server)
         errors |= wms_errors
         if wms is None:
             return
@@ -586,7 +590,7 @@ class Theme:
     def is_mixed(ogc_servers: List[Union[str, bool]]) -> bool:
         return len(ogc_servers) != 1 or ogc_servers[0] is False
 
-    def _group(
+    async def _group(
         self,
         path: str,
         group: main.LayerGroup,
@@ -627,7 +631,7 @@ class Theme:
 
         for tree_item in group.children:
             if isinstance(tree_item, main.LayerGroup):
-                group_theme, gp_errors = self._group(
+                group_theme, gp_errors = await self._group(
                     f"{path}/{tree_item.name}",
                     tree_item,
                     layers,
@@ -649,7 +653,7 @@ class Theme:
                     if isinstance(tree_item, main.LayerWMS):
                         wms_layers.extend(tree_item.layer.split(","))
 
-                    layer_theme, l_errors = self._layer(tree_item, mixed=mixed, time_=time_, dim=dim)
+                    layer_theme, l_errors = await self._layer(tree_item, mixed=mixed, time_=time_, dim=dim)
                     errors |= l_errors
                     if layer_theme is not None:
                         if depth < min_levels:
@@ -695,9 +699,11 @@ class Theme:
         query = self._create_layer_query(interface=interface)
         return [name for (name,) in query.all()]
 
-    def _wms_layers(self, ogc_server: main.OGCServer) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
+    async def _wms_layers(
+        self, ogc_server: main.OGCServer
+    ) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
         # retrieve layers metadata via GetCapabilities
-        wms, wms_errors = asyncio.run(self._wms_getcap(ogc_server))
+        wms, wms_errors = await self._wms_getcap(ogc_server)
         if wms_errors:
             return None, wms_errors
 
@@ -732,7 +738,7 @@ class Theme:
             .all()
         )
 
-    def _themes(
+    async def _themes(
         self, interface: str = "desktop", filter_themes: bool = True, min_levels: int = 1
     ) -> Tuple[List[Dict[str, Any]], Set[str]]:
         """Return theme information for the role identified by ``role_id``."""
@@ -761,7 +767,7 @@ class Theme:
                 errors.add(f"The theme has an unsupported name '{theme.name}'.")
                 continue
 
-            children, children_errors = self._get_children(theme, layers, min_levels)
+            children, children_errors = await self._get_children(theme, layers, min_levels)
             errors |= children_errors
 
             # Test if the theme is visible for the current user
@@ -805,14 +811,14 @@ class Theme:
         models.cache_invalidate_cb()
         return {"success": True}
 
-    def _get_children(
+    async def _get_children(
         self, theme: main.Theme, layers: List[str], min_levels: int
     ) -> Tuple[List[Dict[str, Any]], Set[str]]:
         children = []
         errors: Set[str] = set()
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
-                group_theme, gp_errors = self._group(
+                group_theme, gp_errors = await self._group(
                     f"{theme.name}/{item.name}", item, layers, min_levels=min_levels
                 )
                 errors |= gp_errors
@@ -825,7 +831,7 @@ class Theme:
                         f"(0/{min_levels:d})."
                     )
                 elif item.name in layers:
-                    layer_theme, l_errors = self._layer(item, dim=DimensionInformation())
+                    layer_theme, l_errors = await self._layer(item, dim=DimensionInformation())
                     errors |= l_errors
                     if layer_theme is not None:
                         children.append(layer_theme)
@@ -962,77 +968,87 @@ class Theme:
 
         await asyncio.gather(*tasks)
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
-    def _get_features_attributes(
+    async def _get_features_attributes(
         self, url_internal_wfs: Url, ogc_server_name: str
     ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
+        @CACHE_REGION.cache_on_arguments()  # type: ignore
+        def _get_features_attributes_cache(
+            url_internal_wfs: Url, ogc_server_name: str
+        ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
+            del url_internal_wfs, ogc_server_name  # Just for cache
+            all_errors: Set[str] = set()
+            LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
+            if errors:
+                all_errors |= errors
+                return None, None, all_errors
+            assert feature_type
+            namespace: str = feature_type.attrib.get("targetNamespace")
+            types: Dict[Any, Dict[str, Any]] = {}
+            elements = {}
+            for child in feature_type.getchildren():
+                if child.tag == "{http://www.w3.org/2001/XMLSchema}element":
+                    name = child.attrib["name"]
+                    type_namespace, type_ = child.attrib["type"].split(":")
+                    if type_namespace not in child.nsmap:
+                        LOG.info(
+                            "The namespace '%s' of the type '%s' is not found in the "
+                            "available namespaces: %s",
+                            type_namespace,
+                            name,
+                            ", ".join(child.nsmap.keys()),
+                        )
+                    if child.nsmap[type_namespace] != namespace:
+                        LOG.info(
+                            "The namespace '%s' of the type '%s' should be '%s'.",
+                            child.nsmap[type_namespace],
+                            name,
+                            namespace,
+                        )
+                    elements[name] = type_
 
-        all_errors: Set[str] = set()
-        feature_type, errors = asyncio.run(self._wfs_get_features_type(url_internal_wfs, ogc_server_name))
-        LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
-        if errors:
-            all_errors |= errors
-            return None, None, all_errors
-        assert feature_type
-        namespace: str = feature_type.attrib.get("targetNamespace")
-        types: Dict[Any, Dict[str, Any]] = {}
-        elements = {}
-        for child in feature_type.getchildren():
-            if child.tag == "{http://www.w3.org/2001/XMLSchema}element":
-                name = child.attrib["name"]
-                type_namespace, type_ = child.attrib["type"].split(":")
-                if type_namespace not in child.nsmap:
-                    LOG.info(
-                        "The namespace '%s' of the type '%s' is not found in the available namespaces: %s",
-                        type_namespace,
+                if child.tag == "{http://www.w3.org/2001/XMLSchema}complexType":
+                    sequence = child.find(".//{http://www.w3.org/2001/XMLSchema}sequence")
+                    attrib = {}
+                    for children in sequence.getchildren():
+                        type_namespace = None
+                        type_ = children.attrib["type"]
+                        if len(type_.split(":")) == 2:
+                            type_namespace, type_ = type_.split(":")
+                        type_namespace = children.nsmap[type_namespace]
+                        name = children.attrib["name"]
+                        attrib[name] = {"namespace": type_namespace, "type": type_}
+                        for key, value in children.attrib.items():
+                            if key not in ("name", "type", "namespace"):
+                                attrib[name][key] = value
+                    types[child.attrib["name"]] = attrib
+            attributes: Dict[str, Dict[Any, Dict[str, Any]]] = {}
+            for name, type_ in elements.items():
+                if type_ in types:
+                    attributes[name] = types[type_]
+                elif (type_ == "Character") and (name + "Type") in types:
+                    LOG.debug(
+                        "Due MapServer strange result the type 'ms:Character' is fallbacked to type '%sType'"
+                        " for feature '%s', This is a strange comportement of MapServer when we use the "
+                        'METADATA "gml_types" "auto"',
                         name,
-                        ", ".join(child.nsmap.keys()),
-                    )
-                if child.nsmap[type_namespace] != namespace:
-                    LOG.info(
-                        "The namespace '%s' of the thye '%s' should be '%s'.",
-                        child.nsmap[type_namespace],
                         name,
-                        namespace,
                     )
-                elements[name] = type_
+                    attributes[name] = types[name + "Type"]
+                else:
+                    LOG.warning(
+                        "The provided type '%s' does not exist, available types are %s.",
+                        type_,
+                        ", ".join(types.keys()),
+                    )
 
-            if child.tag == "{http://www.w3.org/2001/XMLSchema}complexType":
-                sequence = child.find(".//{http://www.w3.org/2001/XMLSchema}sequence")
-                attrib = {}
-                for children in sequence.getchildren():
-                    type_namespace = None
-                    type_ = children.attrib["type"]
-                    if len(type_.split(":")) == 2:
-                        type_namespace, type_ = type_.split(":")
-                    type_namespace = children.nsmap[type_namespace]
-                    name = children.attrib["name"]
-                    attrib[name] = {"namespace": type_namespace, "type": type_}
-                    for key, value in children.attrib.items():
-                        if key not in ("name", "type", "namespace"):
-                            attrib[name][key] = value
-                types[child.attrib["name"]] = attrib
-        attributes: Dict[str, Dict[Any, Dict[str, Any]]] = {}
-        for name, type_ in elements.items():
-            if type_ in types:
-                attributes[name] = types[type_]
-            elif (type_ == "Character") and (name + "Type") in types:
-                LOG.debug(
-                    "Due mapserver strange result the type 'ms:Character' is fallbacked to type '%sType'"
-                    " for feature '%s', This is a strange comportement of mapserver when we use the "
-                    'METADATA "gml_types" "auto"',
-                    name,
-                    name,
-                )
-                attributes[name] = types[name + "Type"]
-            else:
-                LOG.warning(
-                    "The provided type '%s' does not exist, available types are %s.",
-                    type_,
-                    ", ".join(types.keys()),
-                )
+            return attributes, namespace, all_errors
 
-        return attributes, namespace, all_errors
+        result = _get_features_attributes_cache.get(url_internal_wfs, ogc_server_name)
+        if result != dogpile.cache.api.NO_VALUE:
+            return result  # type: ignore
+
+        feature_type, errors = await self._wfs_get_features_type(url_internal_wfs, ogc_server_name)
+        return _get_features_attributes_cache(url_internal_wfs, ogc_server_name)  # type: ignore
 
     @view_config(route_name="themes", renderer="json")  # type: ignore
     def themes(self) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
@@ -1044,7 +1060,7 @@ class Theme:
 
         set_common_headers(self.request, "themes", Cache.PRIVATE)
 
-        def get_theme() -> Dict[str, Union[Dict[str, Any], List[str]]]:
+        async def get_theme() -> Dict[str, Union[Dict[str, Any], List[str]]]:
             export_themes = sets in ("all", "themes")
             export_group = group is not None and sets in ("all", "group")
             export_background = background_layers_group is not None and sets in ("all", "background")
@@ -1053,7 +1069,7 @@ class Theme:
             all_errors: Set[str] = set()
             LOG.debug("Start preload")
             start_time = time.time()
-            asyncio.run(self.preload(all_errors))
+            await self.preload(all_errors)
             LOG.debug("End preload")
             # Don't log if it looks to be already preloaded.
             if (time.time() - start_time) > 1:
@@ -1074,7 +1090,8 @@ class Theme:
                 attributes = None
                 namespace = None
                 if ogc_server.wfs_support:
-                    attributes, namespace, errors = self._get_features_attributes(
+                    assert url_internal_wfs
+                    attributes, namespace, errors = await self._get_features_attributes(
                         url_internal_wfs, ogc_server.name
                     )
                     # Create a local copy (don't modify the cache)
@@ -1109,19 +1126,19 @@ class Theme:
                     "attributes": attributes,
                 }
             if export_themes:
-                themes, errors = self._themes(interface, True, min_levels)
+                themes, errors = await self._themes(interface, True, min_levels)
 
                 result["themes"] = themes
                 all_errors |= errors
 
             if export_group:
-                exported_group, errors = self._get_group(group, interface)
+                exported_group, errors = await self._get_group(group, interface)
                 if exported_group is not None:
                     result["group"] = exported_group
                 all_errors |= errors
 
             if export_background:
-                exported_group, errors = self._get_group(background_layers_group, interface)
+                exported_group, errors = await self._get_group(background_layers_group, interface)
                 result["background_layers"] = exported_group["children"] if exported_group is not None else []
                 all_errors |= errors
 
@@ -1142,7 +1159,7 @@ class Theme:
         ) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
             # Only for cache key
             del intranet, interface, sets, min_levels, group, background_layers_group, host
-            return get_theme()
+            return asyncio.run(get_theme())
 
         if self.request.user is None:
             return cast(
@@ -1157,15 +1174,15 @@ class Theme:
                     self.request.headers.get("Host"),
                 ),
             )
-        return get_theme()
+        return asyncio.run(get_theme())
 
-    def _get_group(
+    async def _get_group(
         self, group: main.LayerGroup, interface: main.Interface
     ) -> Tuple[Optional[Dict[str, Any]], Set[str]]:
         layers = self._layers(interface)
         try:
             group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
-            return self._group(group_db.name, group_db, layers, depth=2, dim=DimensionInformation())
+            return await self._group(group_db.name, group_db, layers, depth=2, dim=DimensionInformation())
         except NoResultFound:
             return (
                 None,
