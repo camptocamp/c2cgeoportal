@@ -21,22 +21,6 @@ RUN apt-get update && \
 
 #############################################################################################################
 
-FROM ubuntu:20.04 AS lint
-
-RUN apt update
-RUN apt install --assume-yes --no-install-recommends python3-pip python3-dev libpython3-dev libpq-dev gcc
-COPY requirements.txt /tmp/
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
-
-COPY python/ /tmp/python/
-RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
-
-COPY . /src/
-RUN cd /src && prospector
-
-#############################################################################################################
-
 FROM base AS runner
 
 COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
@@ -62,6 +46,9 @@ ENV LOG_LEVEL=INFO \
 
 FROM runner as tests
 
+RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
+    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
+
 COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
     /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing
 # Workaround to make the build working on GitHub Action
@@ -72,11 +59,15 @@ COPY tests/Pipfile tests/Pipfile.lock /tmp/
 RUN cd /tmp && pipenv sync --system --clear
 RUN python3 -m pip install pytest-timeout
 
-COPY tests/geomapfish.yaml /etc/qgisserver/geomapfish.yaml
-COPY tests/multiple_ogc_server.yaml /etc/qgisserver/multiple_ogc_server.yaml
-COPY tests/functional /src/tests/functional
 
 ENV PYTHONPATH /var/www/plugins:/usr/local/share/qgis/python/:/opt
 
-RUN mkdir -p /pytest && chmod 777 /pytest
-WORKDIR /pytest
+WORKDIR /src
+RUN chmod 777 /src
+COPY . ./
+RUN mv tests/geomapfish.yaml /etc/qgisserver/geomapfish.yaml && \
+    mv tests/multiple_ogc_server.yaml /etc/qgisserver/multiple_ogc_server.yaml
+
+#############################################################################################################
+
+FROM runner as final

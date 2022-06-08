@@ -487,7 +487,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     @staticmethod
     def get_restriction_areas(
-        gmf_layers: "main.Layer",
+        gmf_layers: List["main.Layer"],
         read_write: bool = False,
         roles: Optional[Union[str, List["main.Role"]]] = None,
     ) -> Tuple[Access, BaseGeometry]:
@@ -762,6 +762,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         finally:
             session.close()
         if roles == "ROOT":
+            return f"{self.serverInterface().getEnv('HTTP_HOST')}-ROOT"
+        if isinstance(roles, str):
+            LOG.error("Unknown values for roles: %s", roles)
             return f"{self.serverInterface().getEnv('HTTP_HOST')}-ROOT"
         return (
             f'{self.serverInterface().getEnv("HTTP_HOST")}-'
