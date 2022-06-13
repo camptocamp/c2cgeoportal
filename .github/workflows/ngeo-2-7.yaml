@@ -106,13 +106,13 @@ jobs:
         if: always()
       - run: docker-compose down
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: Geoportal coverage
           path: artifacts/geoportal-coverage/
           if-no-files-found: ignore
           retention-days: 5
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: QGISserver plugin coverage
           path: artifacts/qgisserver-plugin-coverage/
@@ -131,7 +131,7 @@ jobs:
         run: ci/extract-documentation artifacts/documentations/ || true
         if: always()
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: Documentation
