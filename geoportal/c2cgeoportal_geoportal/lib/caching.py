@@ -34,7 +34,8 @@ from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
 import pyramid.request
 import pyramid.response
 import sqlalchemy.ext.declarative
-from dogpile.cache.api import NO_VALUE
+from dogpile.cache.api import NO_VALUE, CacheBackend
+from dogpile.cache.backends.memory import MemoryBackend
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
 from dogpile.cache.region import CacheRegion, make_region
 from dogpile.cache.util import sha1_mangle_key
@@ -123,21 +124,23 @@ def invalidate_region(region: Optional[str] = None) -> None:
         get_region(region).invalidate()
 
 
-class HybridRedisBackend(RedisBackend):  # type: ignore
-    """A memory and redis backend."""
+class HybridRedisBackend(CacheBackend):  # type: ignore
+    """A Dogpile cache backend with a memory cache backend in front of a Redis backend for performance."""
 
-    def __init__(self, arguments: Dict[str, Any]):
-        self._cache: Dict[str, SerializedReturnType] = arguments.pop("cache_dict", {})
+    def __init__(self, arguments: Dict[str, Any]):  # pylint: disable=super-init-not-called
         self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
-
-        super().__init__(arguments)
+        self._memory = MemoryBackend({"cache_dict": arguments.pop("cache_dict", {})})
+        self._redis = RedisBackend(arguments)
 
     def get(self, key: str) -> SerializedReturnType:
-        value = self._cache.get(key, NO_VALUE)
+        value = self._memory.get(key)
         if value == NO_VALUE:
-            value = super().get(sha1_mangle_key(key.encode()))
-        if value != NO_VALUE and self._use_memory_cache:
-            self._cache[key] = value
+            val = self._redis.get_serialized(sha1_mangle_key(key.encode()))
+            if val in (None, NO_VALUE):
+                return NO_VALUE
+            value = self._redis.deserializer(val)
+            if value != NO_VALUE and self._use_memory_cache:
+                self._memory.set(key, value)
         return value
 
     def get_multi(self, keys: List[str]) -> List[SerializedReturnType]:
@@ -145,50 +148,28 @@ class HybridRedisBackend(RedisBackend):  # type: ignore
 
     def set(self, key: str, value: SerializedReturnType) -> None:
         if self._use_memory_cache:
-            self._cache[key] = value
-        super().set(sha1_mangle_key(key.encode()), value)
+            self._memory.set(key, value)
+        self._redis.set_serialized(sha1_mangle_key(key.encode()), self._redis.serializer(value))
 
     def set_multi(self, mapping: Dict[str, SerializedReturnType]) -> None:
         for key, value in mapping.items():
             self.set(key, value)
 
     def delete(self, key: str) -> None:
-        self._cache.pop(key, None)
-        super().delete(key)
+        self._memory.delete(key)
+        self._redis.delete(key)
+
+    def delete_multi(self, keys: List[str]) -> None:
+        self._memory.delete_multi(keys)
+        self._redis.delete_multi(keys)
 
 
-class HybridRedisSentinelBackend(RedisSentinelBackend):  # type: ignore
-    """A memory and redis sentinel backend."""
+class HybridRedisSentinelBackend(HybridRedisBackend):
+    """Same as HybridRedisBackend but using the Redis Sentinel."""
 
     def __init__(self, arguments: Dict[str, Any]):
-        self._cache: Dict[str, SerializedReturnType] = arguments.pop("cache_dict", {})
-        self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
-
         super().__init__(arguments)
-
-    def get(self, key: str) -> SerializedReturnType:
-        value = self._cache.get(key, NO_VALUE)
-        if value == NO_VALUE:
-            value = super().get(sha1_mangle_key(key.encode()))
-        if value != NO_VALUE and self._use_memory_cache:
-            self._cache[key] = value
-        return value
-
-    def get_multi(self, keys: List[str]) -> List[SerializedReturnType]:
-        return [self.get(key) for key in keys]
-
-    def set(self, key: str, value: SerializedReturnType) -> None:
-        if self._use_memory_cache:
-            self._cache[key] = value
-        super().set(sha1_mangle_key(key.encode()), value)
-
-    def set_multi(self, mapping: Dict[str, SerializedReturnType]) -> None:
-        for key, value in mapping.items():
-            self.set(key, value)
-
-    def delete(self, key: str) -> None:
-        self._cache.pop(key, None)
-        super().delete(key)
+        self._redis = RedisSentinelBackend(arguments)
 
 
 class Cache(Enum):
