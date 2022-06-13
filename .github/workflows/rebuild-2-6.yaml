@@ -26,7 +26,7 @@ jobs:
       - run: df -h
       - run: docker system prune --all --force
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ matrix.branch }}
           fetch-depth: 0
