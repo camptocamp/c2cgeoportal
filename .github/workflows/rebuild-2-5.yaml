@@ -116,11 +116,11 @@ jobs:
         if: always()
       - run: docker-compose down
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
           name: Geoportal coverage
           path: artifacts/geoportal-coverage/
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
           name: QGISserver plugin coverage
           path: artifacts/qgisserver-plugin-coverage/
@@ -136,7 +136,7 @@ jobs:
         run: ci/extract-documentation artifacts/documentations/
         if: always()
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
           name: Documentation
           path: artifacts/documentations/
