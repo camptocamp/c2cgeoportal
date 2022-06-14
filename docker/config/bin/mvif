@@ -1,0 +1,15 @@
+#!/bin/bash -eux
+
+echo $#
+test_dir=$1
+
+if [ $# == 3 ]; then
+    from_dir=$2
+    to_dir=$3
+else
+    from_dir=$1
+    to_dir=$2
+fi
+if [ -e "$test_dir" ]; then
+    mv "$from_dir" "$to_dir"
+fi

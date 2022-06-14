@@ -21,7 +21,6 @@
 
 . /etc/bash_completion
 
-if [ "${AWS_S3_ENDPOINT}" != "" ] && [ "${AWS_DEFAULT_REGION}" != "" ]
-then
+if [ "${AWS_S3_ENDPOINT}" != "" ] && [ "${AWS_DEFAULT_REGION}" != "" ]; then
     alias aws="aws --endpoint-url=\"https://${AWS_S3_ENDPOINT}/\" --region=${AWS_DEFAULT_REGION}"
 fi
