@@ -141,6 +141,8 @@ jobs:
           --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
           --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
           doc
+        env:
+          DOCKER_BUILDKIT: '1'
 
       - name: Extract documentation
         run: ci/extract-documentation artifacts/documentations/ || true
@@ -244,6 +246,8 @@ jobs:
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
           docker stop transifex
+        env:
+          DOCKER_BUILDKIT: '1'
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'

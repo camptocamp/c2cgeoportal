@@ -1,0 +1,18 @@
+
+[tool.poetry]
+name = 'c2cgeoportal'
+version = '0.0.0'
+description = 'Not used'
+authors = []
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+alabaster = "0.7.12"  # theme
+Pygments = "2.12.0"
+Sphinx = "4.5.0"
+sphinx-prompt = "1.5.0"
+sphinx-jsonschema = "1.19.1"
+sphinx-argparse = "0.3.1"
+Sphinx-Substitution-Extensions = {extras = ["prompt"], version = "2022.2.16"}
+#tilecloud-chain = "1.18.0"
+

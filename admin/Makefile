@@ -14,7 +14,7 @@ help: ## Display this help message
 
 .PHONY: preparedev
 preparedev: ## Run this once before serve
-	make -C .. build-runner build-test-db
+	make --directory=.. build-runner build-test-db
 	make docker-build-admin
 	docker-compose up -d db
 	docker-compose run --rm admin wait-db

@@ -1,6 +1,8 @@
 MAJOR_VERSION ?= $(shell scripts/get-version --major)
 VERSION ?= $(shell scripts/get-version --full)
 DOCKER_TAG ?= latest
+export MAJOR_VERSION
+export DOCKER_BUILDKIT=1
 
 .PHONY: help
 help: ## Display this help message
@@ -16,20 +18,37 @@ build: build-tools build-runner build-config
 
 .PHONY: checks
 checks: ## Run the application checks
-checks: otherchecks
+checks: prospector additionallint
 
-pipenv.timestamp: Pipfile.lock
-	pipenv sync
+VALIDATE_PY_FOLDERS = commons admin \
+	geoportal/setup.py \
+	geoportal/c2cgeoportal_geoportal/*.py \
+	geoportal/c2cgeoportal_geoportal/lib \
+	geoportal/c2cgeoportal_geoportal/scripts \
+	geoportal/c2cgeoportal_geoportal/views
+VALIDATE_TEMPLATE_PY_FOLDERS = geoportal/c2cgeoportal_geoportal/scaffolds
+VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
-prospector: ## prospector lint (Quick, use otherchecks to get an exact result)
-prospector: pipenv.timestamp
-	pipenv run prospector --output-format=pylint -X
+.PHONY: prospector
+prospector: build-checks ## Run the prospector checker
+	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) prospector --version
+	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) mypy --version
+	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pylint --version --rcfile=/dev/null
+	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pyflakes --version
+	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) prospector --output-format=pylint --die-on-tool-error
 
-.PHONY: otherchecks
-otherchecks:
-	docker build --target=checks \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
-	if [ "$(git grep demo_ doc|grep -v '^doc/integrator/extend_application.rst:')" != "" ]; \
+.PHONY: additionallint
+additionallint: ## Check that we should replace some strings in the code
+	# Verify that we don't directly use the CI project name in the scaffolds
+	@if [ "$(shell git grep testgeomapfish geoportal/c2cgeoportal_geoportal/scaffolds)" != "" ]; \
+	then \
+		echo "ERROR: You still have a testgeomapfish in one of your scaffolds"; \
+		grep --recursive testgeomapfish geoportal/c2cgeoportal_geoportal/scaffolds; \
+		false; \
+	fi
+
+	# Verify that we don't directly use the demo project name in the documentation
+	@if [ "$(shell git grep demo_ doc|grep -v '^doc/integrator/extend_application.rst:')" != "" ]; \
 	then \
 		echo "ERROR: You still have a demo_ in your documentation"; \
 		git grep demo_ doc; \
@@ -39,6 +58,11 @@ otherchecks:
 .PHONY: build-tools
 build-tools:
 	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
+
+.PHONY: build-checks
+build-checks:
+	docker build --target=checks --tag=camptocamp/geomapfish-checks:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-config
@@ -64,7 +88,7 @@ build-qgisserver-tests:
 
 .PHONY: prospector-qgisserver
 prospector-qgisserver: build-qgisserver-tests
-	docker run --rm camptocamp/geomapfish-qgisserver-tests prospector --die-on-tool-error --output=pylint --direct-tool-stdout
+	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests prospector --output-format=pylint --die-on-tool-error
 
 .PHONY: build-test-db
 build-test-db:
@@ -122,3 +146,20 @@ doc: build-tools ## Generate the documentation
 	--build-arg=MAIN_BRANCH=$(MAIN_BRANCH) \
 	doc
 	MAJOR_VERSION=$(MAJOR_VERSION) MAIN_BRANCH=$(MAIN_BRANCH) ci/extract-documentation artifacts/documentations/
+
+
+.PHONY: transifex
+transifex:
+	python3 -m pip install --user transifex-client
+
+admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.mo: transifex
+	rm /tmp/c2ctemplate-cache.json
+	make --makefile=build.mk $@
+
+ADMIN_PO_FILES = admin/c2cgeoportal_admin/locale/fr/LC_MESSAGES/c2cgeoportal_admin.mo
+.PHONY: dev
+dev: $(ADMIN_PO_FILES) ## Generate a development environment that can be mount in a project container
+	echo {} > geoportal/c2cgeoportal_geoportal/locale/en.json
+	echo {} > geoportal/c2cgeoportal_geoportal/locale/fr.json
+	echo {} > geoportal/c2cgeoportal_geoportal/locale/de.json
+	echo {} > geoportal/c2cgeoportal_geoportal/locale/it.json

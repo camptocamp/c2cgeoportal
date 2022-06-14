@@ -1,9 +1,8 @@
 *
 !geomapfish_qgisserver
 !requirements.txt
-!python
 !setup.cfg
-!.prospector.yaml
-!.pylintrc
-!tests
 !logging.ini
+!pyproject.toml
+!poetry.lock
+!tests

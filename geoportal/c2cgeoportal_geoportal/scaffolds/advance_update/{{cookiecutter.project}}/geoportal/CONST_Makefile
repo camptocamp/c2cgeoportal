@@ -43,31 +43,11 @@ VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
 	$(PACKAGE)_geoportal/scripts $(PACKAGE)_geoportal/views
 VALIDATE_PY_TEST_FOLDERS = $(PACKAGE)_geoportal/tests
 
-PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print 2> /dev/null)
-
-# Templates
-
-
 # Disabling Make built-in rules to speed up execution time
 .SUFFIXES:
 
 .PHONY: build
 build: $(BUILD_RULES)
-
-.PHONY: checks
-checks: prospector eslint
-
-.PHONY: prospector
-prospector:
-	prospector
-
-.PHONY: eslint
-eslint: $(APP_JS_FILES)
-	eslint $?
-
-.PHONY: eslint-fix
-eslint-fix: $(APP_JS_FILES)
-	eslint --fix $?
 
 # Server localisation
 

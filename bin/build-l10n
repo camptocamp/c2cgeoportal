@@ -7,7 +7,7 @@ import shutil
 import subprocess
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Generate the l10n for a project.")
     parser.add_argument("package", help="the package name")
     parser.add_argument("--suffix", action="append", help="a suffix added to the po and mo files")
@@ -63,11 +63,10 @@ def main():
                     f"{package_base_path}/static/{lang}{suffix}.json"
                 )
             else:
-                with open(f"{package_base_path}/static/{lang}{suffix}.json", "w") as out:
+                with open(f"{package_base_path}/static/{lang}{suffix}.json", "w", encoding="utf-8") as out:
                     subprocess.run(
                         [
-                            "node",
-                            "/usr/bin/compile-catalog",
+                            "compile-catalog",
                             f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
                             f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
                         ],

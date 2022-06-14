@@ -19,6 +19,14 @@ c2cciutils-checks
 cp "${PROJECT_DIR}/ci/project-config.yaml" ci/config.yaml
 c2cciutils-checks
 CI=true ./build
+
+docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+    prospector --output-format=pylint --die-on-tool-error
+docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+    eslint $(find testgeomapfishapp -type f -name '*.js' -print 2> /dev/null)
+docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+    eslint $(find testgeomapfishapp -type f -name '*.ts' -print 2> /dev/null)
+
 docker-compose down --volumes
 docker-compose up -d
 docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'

@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 mkdir --parent ${1}
-docker build --tag=camptocamp/geomapfish-doc \
+DOCKER_BUILDKIT=1 docker build --tag=camptocamp/geomapfish-doc \
     --build-arg=MAJOR_VERSION=${MAJOR_VERSION} \
     --build-arg=MAIN_BRANCH=${MAIN_BRANCH} \
     doc

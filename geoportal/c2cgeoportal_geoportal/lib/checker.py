@@ -248,7 +248,7 @@ def _phantomjs(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check
                 path = request.route_path(self.route["name"], _query=self.route.get("params", {}))
                 url: str = cast(str, build_url("Check", path, request)["url"])
 
-                cmd: List[str] = ["node", "/usr/bin/check-example.js", url]
+                cmd: List[str] = ["check-example", url]
                 env = dict(os.environ)
                 for name, value in self.route.get("environment", {}).items():
                     if isinstance(value, (list, dict)):
