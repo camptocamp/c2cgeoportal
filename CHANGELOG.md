@@ -1,3 +1,7 @@
+##### 2.7.rc.57
+
+- Don't call pickle on memory cache [c2cgeoportal#9831](https://github.com/camptocamp/c2cgeoportal/pull/9831)
+
 ##### 2.7.rc.56
 
 - Better performances to create the theme when we are logged in [c2cgeoportal#9821](https://github.com/camptocamp/c2cgeoportal/pull/9821)
