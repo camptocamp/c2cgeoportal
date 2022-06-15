@@ -1,3 +1,7 @@
+##### 2.7.rc.58
+
+- Add custom CSS for LIDAR footer web component [ngeo#8672](https://github.com/camptocamp/ngeo/pull/8672)
+
 ##### 2.7.rc.57
 
 - Don't call pickle on memory cache [c2cgeoportal#9831](https://github.com/camptocamp/c2cgeoportal/pull/9831)
