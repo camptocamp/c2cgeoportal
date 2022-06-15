@@ -27,14 +27,14 @@ ARG PGSCHEMA
 ENV PGSCHEMA=$PGSCHEMA
 
 RUN \
-    cd /tmp/config/geoportal/ && \
-    c2c-template --vars ${VARS_FILE} \
+    cd /tmp/config/geoportal/ \
+    && c2c-template --vars ${VARS_FILE} \
         --get-config {{cookiecutter.package}}_geoportal/config.yaml \
-        ${CONFIG_VARS} && \
-    pykwalify --data-file {{cookiecutter.package}}_geoportal/config.yaml \
-        --schema-file CONST_config-schema.yaml && \
-    rm CONST_* vars.yaml && \
-    qgisserver-plugin-config {{cookiecutter.package}}_geoportal/config.yaml ../qgisserver/geomapfish.yaml.tmpl
+        ${CONFIG_VARS} \
+    && pykwalify --data-file {{cookiecutter.package}}_geoportal/config.yaml \
+        --schema-file CONST_config-schema.yaml \
+    && rm CONST_* vars.yaml \
+    && qgisserver-plugin-config {{cookiecutter.package}}_geoportal/config.yaml ../qgisserver/geomapfish.yaml.tmpl
 
 ###############################################################################
 
@@ -46,26 +46,26 @@ ENV PGSCHEMA=$PGSCHEMA
 COPY --from=builder /tmp/config/ /tmp/config/
 
 RUN \
-    if [ -e /tmp/config/mapserver ]; then mv /tmp/config/mapserver /etc/; fi && \
-    if [ -e /tmp/config/tilegeneration ]; then mv /tmp/config/tilegeneration /etc/; fi && \
-    if [ -e /tmp/config/qgisserver ]; then mv /tmp/config/qgisserver /etc/qgisserver; fi && \
-    if [ -e /tmp/config/haproxy ]; then mv /tmp/config/haproxy/* /etc/haproxy/; fi && \
-    mkdir --parent /usr/local/tomcat/webapps/ROOT/ && \
-    if [ -e /tmp/config/print ]; then mv /tmp/config/print/print-apps /usr/local/tomcat/webapps/ROOT/; fi && \
-    mv /tmp/config/geoportal/{{cookiecutter.package}}_geoportal/ /etc/geomapfish/ && \
-    mv /tmp/config/geoportal/* /etc/geomapfish/ | true && \
-    chmod g+w -R \
+    mvif /tmp/config/mapserver /etc/ \
+    && mvif /tmp/config/tilegeneration /etc/ \
+    && mvif /tmp/config/qgisserver /etc/qgisserver \
+    && mvif /tmp/config/haproxy/* /etc/haproxy/ \
+    && mkdir --parent /usr/local/tomcat/webapps/ROOT/ \
+    && mvif /tmp/config/print /tmp/config/print/print-apps /usr/local/tomcat/webapps/ROOT/ \
+    && mv /tmp/config/geoportal/{{cookiecutter.package}}_geoportal/ /etc/geomapfish/ \
+    && mv /tmp/config/geoportal/* /etc/geomapfish/ | true \
+    && chmod g+w -R \
         /etc/geomapfish \
         /etc/mapserver \
         /etc/qgisserver \
         /etc/tilegeneration \
         /usr/local/tomcat/webapps/ROOT/print-apps \
         /etc/haproxy_dev \
-        /etc/haproxy && \
-    adduser www-data root && \
-    sed 's#bind :80#bind *:443 ssl crt /etc/haproxy_dev/localhost.pem#g' /etc/haproxy/haproxy.cfg.tmpl \
-        > /etc/haproxy_dev/haproxy.cfg.tmpl && \
-    echo '    http-request set-header X-Forwarded-Proto https' >> /etc/haproxy_dev/haproxy.cfg.tmpl
+        /etc/haproxy \
+    && adduser www-data root \
+    && sed 's#bind :80#bind *:443 ssl crt /etc/haproxy_dev/localhost.pem#g' /etc/haproxy/haproxy.cfg.tmpl \
+        > /etc/haproxy_dev/haproxy.cfg.tmpl \
+    && echo '    http-request set-header X-Forwarded-Proto https' >> /etc/haproxy_dev/haproxy.cfg.tmpl
 
 VOLUME /etc/geomapfish \
     /etc/mapserver \

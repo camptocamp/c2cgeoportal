@@ -8,16 +8,15 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY python/ /tmp/python/
 
-
-RUN apt-get update && \
-    apt-get upgrade --assume-yes && \
-    apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc && \
-    apt-get clean && \
-    rm --recursive --force /var/lib/apt/lists/* && \
-    cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    PIP_NO_BINARY=shapely pipenv sync --system --clear && \
-    rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs && \
-    apt-get remove --assume-yes libpython3-dev libpq-dev gcc
+RUN apt-get update \
+    && apt-get upgrade --assume-yes \
+    && apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc \
+    && apt-get clean \
+    && rm --recursive --force /var/lib/apt/lists/* \
+    && cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
+    && PIP_NO_BINARY=shapely pipenv sync --system --clear \
+    && rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs \
+    && apt-get remove --assume-yes libpython3-dev libpq-dev gcc
 
 #############################################################################################################
 
@@ -46,8 +45,8 @@ ENV LOG_LEVEL=INFO \
 
 FROM runner as tests
 
-RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
+RUN cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
+    && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
 
 COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
     /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing
@@ -59,14 +58,13 @@ COPY tests/Pipfile tests/Pipfile.lock /tmp/
 RUN cd /tmp && pipenv sync --system --clear
 RUN python3 -m pip install pytest-timeout
 
-
 ENV PYTHONPATH /var/www/plugins:/usr/local/share/qgis/python/:/opt
 
 WORKDIR /src
 RUN chmod 777 /src
 COPY . ./
-RUN mv tests/geomapfish.yaml /etc/qgisserver/geomapfish.yaml && \
-    mv tests/multiple_ogc_server.yaml /etc/qgisserver/multiple_ogc_server.yaml
+RUN mv tests/geomapfish.yaml /etc/qgisserver/geomapfish.yaml \
+    && mv tests/multiple_ogc_server.yaml /etc/qgisserver/multiple_ogc_server.yaml
 
 #############################################################################################################
 
