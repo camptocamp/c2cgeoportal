@@ -14,7 +14,7 @@ SQLAlchemy = "==1.4.37"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.8.2"
 cee-syslog-handler = "==0.6.0"
-setuptools = "==59.8.0"
+setuptools = "==62.4.0"
 psycopg2 = "==2.9.3"
 pytz = "==2022.1"
 
