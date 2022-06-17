@@ -353,6 +353,7 @@ Properties:
  * ``authentication`` (string)
  * ``authenticationPanel`` (string)
  * ``desktopCanvas`` (string)
+ * ``lidarFooter`` (string)
  * ``lidarPanel`` (string)
 
 .. _integrator_guide_ngeo_properties_gmfCustomJavascriptUrl:
