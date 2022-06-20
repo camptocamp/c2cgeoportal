@@ -5,7 +5,7 @@ awscli==1.19.84  # Work with Object storage
 Babel==2.9.1  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
 boto3==1.9.130  # Tile generation
-bottle==0.12.19  # geoportal
+bottle==0.12.20  # geoportal
 chameleon==3.7.4  # c2cgeoform
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.3.0  # geoportal
