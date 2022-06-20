@@ -1,3 +1,5 @@
+##### 2.6.0.120
+* Sync map during refreshFirstLevelGroups_ [ngeo#8675](https://github.com/camptocamp/ngeo/pull/8675)
 ##### 2.6.0.119
 * Add missing C2CWSGIUTILS_LOG_LEVEL [c2cgeoportal#9790](https://github.com/camptocamp/c2cgeoportal/pull/9790)
 ##### 2.6.0.118
