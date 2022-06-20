@@ -1,3 +1,8 @@
+##### 2.7.rc.59
+
+- Correctly apply styling for <a> elements in web component default style [ngeo#8671](https://github.com/camptocamp/ngeo/pull/8671)
+- [Backport 2.7] Sync map during refreshFirstLevelGroups_ [ngeo#8679](https://github.com/camptocamp/ngeo/pull/8679)
+
 ##### 2.7.rc.58
 
 - Add custom CSS for LIDAR footer web component [ngeo#8672](https://github.com/camptocamp/ngeo/pull/8672)
