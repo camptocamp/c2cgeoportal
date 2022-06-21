@@ -1,3 +1,5 @@
+##### 2.6.0.121
+* Fix CVE [c2cgeoportal#9850](https://github.com/camptocamp/c2cgeoportal/pull/9850)
 ##### 2.6.0.120
 * Sync map during refreshFirstLevelGroups_ [ngeo#8675](https://github.com/camptocamp/ngeo/pull/8675)
 ##### 2.6.0.119
