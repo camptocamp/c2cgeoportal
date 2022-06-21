@@ -1,3 +1,7 @@
+##### 2.7.rc.60
+
+- Fix CVE [c2cgeoportal#9846](https://github.com/camptocamp/c2cgeoportal/pull/9846)
+
 ##### 2.7.rc.59
 
 - Correctly apply styling for <a> elements in web component default style [ngeo#8671](https://github.com/camptocamp/ngeo/pull/8671)
