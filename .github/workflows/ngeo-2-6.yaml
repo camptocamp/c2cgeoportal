@@ -39,9 +39,6 @@ jobs:
       - name: Checks
         run: c2cciutils-checks
 
-      - run: scripts/get-version --force-increment --github
-        id: version
-
       - run: python3 -m pip install --user --requirement=requirements.txt
 
       # Global simple lint
@@ -144,6 +141,10 @@ jobs:
         if: failure()
         continue-on-error: True
 
+      - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
+      - run: scripts/get-version --force-increment --github
+        id: version
+
       # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-runner
@@ -165,20 +166,11 @@ jobs:
       - run: ci/create-new-project ${HOME}/workspace geomapfishapp
       - run: (cd ${HOME}/workspace/geomapfishapp/; ./build)
 
-      - name: 'Update the changelog'
+      - name: Update the changelog
         run: ci/changelog ${{ steps.version.outputs.full }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
-
-      - name: Publish feature branch
-        run: |
-          c2cciutils-publish
-          c2cciutils-publish --group=full
-      - name: Publish version branch
-        run: |
-          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
-          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
 
       - name: Push version and changelog
         run: |
@@ -188,6 +180,11 @@ jobs:
             git commit -m "[skip ci] Update the minor version"; \
             git push origin HEAD:${{ env.MAIN_BRANCH }} \
           )
+
+      - name: Publish version branch
+        run: |
+          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
+          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
 
       - name: Notify demo
         run: >
