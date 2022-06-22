@@ -1,3 +1,7 @@
+##### 2.7.rc.63
+
+- Restore auto fill form [ngeo#8681](https://github.com/camptocamp/ngeo/pull/8681)
+
 ##### 2.7.rc.62
 
 - We must not define a ng-app if we want to use the custom dynamic inje… [c2cgeoportal#9852](https://github.com/camptocamp/c2cgeoportal/pull/9852)
