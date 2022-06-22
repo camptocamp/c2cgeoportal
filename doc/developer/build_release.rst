@@ -138,7 +138,7 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
    -   - name: Publish version branch
    -     ...
 
-   -       - name: 'Update the changelog'
+   -       - name: Update the changelog
    -         ...
    -       - run: git diff CHANGELOG.md
 
@@ -228,6 +228,9 @@ On ``c2cgeoportal`` copy the file ``.github/workflows/main.yaml`` from new versi
    +         with:
    +          ref: ${{ env.MAIN_BRANCH }}
 
+   -       - name: Publish feature branch
+   -         ...
+   -
    -       - name: Publish to Transifex
    -         ...
    -
