@@ -61,9 +61,9 @@ adapt the name of the controller and the referenced css and js files to the new 
 .. code::
 
    ...
-   <html lang="{{mainCtrl.lang}}" ng-app="App<interface>" ng-controller="<Interface>Controller as mainCtrl">
+   <html lang="{{mainCtrl.lang}}" ng-controller="<Interface>Controller as mainCtrl">
    ...
-   'interface=<interface>&' +
+   <meta name="interface" content="<interface>">
    ...
 
 Add the new interface files to Git:
