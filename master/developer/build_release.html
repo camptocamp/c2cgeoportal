@@ -185,7 +185,7 @@ span.prompt1:before {
 <span class="gd">-   - name: Push version and changelog</span><span class="w"></span>
 <span class="gd">-     ...</span><span class="w"></span>
 
-<span class="gd">-       - name: &#39;Update the changelog&#39;</span><span class="w"></span>
+<span class="gd">-       - name: Update the changelog</span><span class="w"></span>
 <span class="gd">-         ...</span><span class="w"></span>
 <span class="gd">-       - run: git diff CHANGELOG.md</span><span class="w"></span>
 
@@ -284,6 +284,9 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="gi">+           ref: ${{ env.MAIN_BRANCH }}</span><span class="w"></span>
 <span class="w"> </span>         if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;<span class="w"></span>
 
+<span class="gd">-       - name: Publish feature branch</span><span class="w"></span>
+<span class="gd">-         ...</span><span class="w"></span>
+<span class="gd">-</span><span class="w"></span>
 <span class="gd">-       - name: Publish to Transifex</span><span class="w"></span>
 <span class="gd">-         ...</span><span class="w"></span>
 <span class="gd">-</span><span class="w"></span>
