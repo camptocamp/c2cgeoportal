@@ -132,6 +132,10 @@ jobs:
       # Test App
       - run: ci/test-app
 
+      - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
+      - run: scripts/get-version --auto-increment --github
+        id: version
+
       # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-runner
@@ -174,6 +178,11 @@ jobs:
             git push https://${{ secrets.GOPASS_CI_GITHUB_TOKEN }}@github.com/camptocamp/c2cgeoportal.git \
               HEAD:${{ env.MAIN_BRANCH }}
           )
+
+      - name: Publish version branch
+        run: |
+          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
+          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
 
       - name: Notify demo
         run: >
