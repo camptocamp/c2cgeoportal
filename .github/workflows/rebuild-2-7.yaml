@@ -169,7 +169,7 @@ jobs:
       - run: ci/create-new-project ${HOME}/workspace geomapfishapp
       - run: (cd ${HOME}/workspace/geomapfishapp/; ./build)
 
-      - name: 'Update the changelog'
+      - name: Update the changelog
         run: ci/changelog ${{ steps.version.outputs.full }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -167,7 +167,7 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
    -   - name: Push version and changelog
    -     ...
 
-   -       - name: 'Update the changelog'
+   -       - name: Update the changelog
    -         ...
    -       - run: git diff CHANGELOG.md
 
@@ -271,6 +271,9 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
    +           ref: ${{ env.MAIN_BRANCH }}
              if: env.HAS_SECRETS != 'HAS_SECRETS'
 
+   -       - name: Publish feature branch
+   -         ...
+   -
    -       - name: Publish to Transifex
    -         ...
    -
