@@ -157,7 +157,7 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 <span class="gd">-   - name: Publish version branch</span><span class="w"></span>
 <span class="gd">-     ...</span><span class="w"></span>
 
-<span class="gd">-       - name: &#39;Update the changelog&#39;</span><span class="w"></span>
+<span class="gd">-       - name: Update the changelog</span><span class="w"></span>
 <span class="gd">-         ...</span><span class="w"></span>
 <span class="gd">-       - run: git diff CHANGELOG.md</span><span class="w"></span>
 
@@ -242,6 +242,9 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="gi">+         with:</span><span class="w"></span>
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span><span class="w"></span>
 
+<span class="gd">-       - name: Publish feature branch</span><span class="w"></span>
+<span class="gd">-         ...</span><span class="w"></span>
+<span class="gd">-</span><span class="w"></span>
 <span class="gd">-       - name: Publish to Transifex</span><span class="w"></span>
 <span class="gd">-         ...</span><span class="w"></span>
 <span class="gd">-</span><span class="w"></span>
