@@ -1,3 +1,9 @@
+##### 2.7.rc.64
+
+- Fix CVE [c2cgeoportal#9855](https://github.com/camptocamp/c2cgeoportal/pull/9855)
+- [Backport 2.7] Fix the publish from ngeo [c2cgeoportal#9856](https://github.com/camptocamp/c2cgeoportal/pull/9856)
+- Send the login form on press enter [ngeo#8683](https://github.com/camptocamp/ngeo/pull/8683)
+
 ##### 2.7.rc.63
 
 - Restore auto fill form [ngeo#8681](https://github.com/camptocamp/ngeo/pull/8681)
