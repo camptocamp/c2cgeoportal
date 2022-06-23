@@ -1,3 +1,7 @@
+##### 2.7.0.65
+
+- Clear the form on successful send [ngeo#8686](https://github.com/camptocamp/ngeo/pull/8686)
+
 ##### 2.7.rc.64
 
 - Fix CVE [c2cgeoportal#9855](https://github.com/camptocamp/c2cgeoportal/pull/9855)
