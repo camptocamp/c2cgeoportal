@@ -44,6 +44,7 @@ extra:
   - geoportal/{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/sass/vars_oeedit\.scss
   - geoportal/interfaces/desktop_alt\.html\.mako
   - geoportal/{{cookiecutter.package}}_geoportal/static/images/background-layer-button\.png
+  - tests/test_testapp.py
 
 # Automated file system operations:
 # Remove some files or directories:

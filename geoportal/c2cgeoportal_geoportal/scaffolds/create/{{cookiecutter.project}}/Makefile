@@ -1,4 +1,5 @@
 PROJECT_PUBLIC_URL=https://example.camptocamp.com/
+DUMP_FILE=dump.backup
 PACKAGE={{cookiecutter.package}}
 LANGUAGES=en fr de it
 
@@ -34,3 +35,34 @@ eslint: ## Runs the eslint checks
 		eslint $(find {{cookiecutter.package}} -type f -name '*.js' -print 2> /dev/null)
 	docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
 		eslint $(find {{cookiecutter.package}} -type f -name '*.ts' -print 2> /dev/null)
+
+.PHONY: qgis
+qgis: ## Run QGIS desktop
+	docker-compose -f docker-compose.yaml -f docker-compose-qgis.yaml run --rm qgis
+
+secrets.tar.bz2.gpg: env.secrets ## Encrypt the secrets for committing changes
+	tar -jcf secrets.tar.bz2 $^
+	rm -f $@
+	gpg --symmetric --cipher-algo AES256 --batch \
+		--passphrase=$(shell gopass show gs/ci/large-secret-passphrase) secrets.tar.bz2
+	rm secrets.tar.bz2
+
+.PHONY: secrets
+secrets: ## Decrypt the secrets.tar.bz2.gpg file
+	gpg --quiet --batch --yes --decrypt --passphrase=$(shell gopass show gs/ci/large-secret-passphrase) \
+		--output secrets.tar.bz2 secrets.tar.bz2.gpg
+	tar --touch -jxf secrets.tar.bz2
+	rm secrets.tar.bz2
+
+.PHONY: acceptance-init
+acceptance-init: ## Initialize the acceptance tests
+	docker-compose --file=docker-compose.yaml --file=docker-compose-db.yaml up -d
+	docker-compose exec -T geoportal wait-db
+	docker-compose exec -T tools psql --command="DROP EXTENSION IF EXISTS postgis CASCADE"
+	scripts/db-restore --docker-compose-file=docker-compose.yaml --docker-compose-file=docker-compose-db.yaml \
+		--arg=--clean --arg=--if-exists --arg=--verbose $(DUMP_FILE)
+
+.PHONY: acceptance
+acceptance: ## Run the acceptance tests
+	docker-compose exec -T tools pytest -vv tests/
+	ci/docker-compose-check

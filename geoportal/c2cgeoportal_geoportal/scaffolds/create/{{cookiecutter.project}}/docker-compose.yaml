@@ -1,5 +1,4 @@
----
-# The project Docker compose file for development.
+# The project Docker compose file.
 
 version: '2.3'
 

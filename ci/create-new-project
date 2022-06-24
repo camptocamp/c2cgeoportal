@@ -1,5 +1,7 @@
 #!/bin/bash -eux
 
+echo ::group::Create the project
+
 TAG=$(scripts/get-version --major)
 DOCKER_TAG=${TAG} make build-tools
 DOCKER_TAG=${TAG} make build-runner
@@ -37,8 +39,6 @@ if [ $BASE_APP != true ]; then
     mv ${WORKSPACE}/${PACKAGE}/geoportal/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/vars_origin.yaml
     cp ci/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/
     mkdir -p ${WORKSPACE}/${PACKAGE}/geoportal/ci
-    cp ci/waitwsgi ${WORKSPACE}/${PACKAGE}/geoportal/ci
-    cp ci/test-new-project ${WORKSPACE}/${PACKAGE}/geoportal/ci
     mkdir -p ${WORKSPACE}/${PACKAGE}/ci
     echo "PGSSLMODE=prefer" >> ${WORKSPACE}/${PACKAGE}/env.project
 fi
@@ -75,12 +75,15 @@ git add --all
 git commit --quiet --message='Initial commit'
 
 mv ci/config.yaml{,_}
+echo ::endgroup::
 c2cciutils-checks --fix --check=isort
 c2cciutils-checks --fix --check=black
 c2cciutils-checks --fix --check=prettier
 mv ci/config.yaml{_,}
 
+echo ::group::Diff
 git --no-pager diff
+echo ::endgroup::
 git add --all
 git commit --quiet --message='Format'
 git clean -fX
