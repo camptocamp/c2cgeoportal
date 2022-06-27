@@ -28,7 +28,6 @@
 
 import glob
 import logging
-import os
 from typing import Any, Dict, List, Optional
 
 import pyramid.request
@@ -102,14 +101,7 @@ class Entry:
 
 def _get_ngeo_resources(pattern: str) -> List[str]:
     """Return the list of ngeo dist files matching the pattern."""
-    results = glob.glob(f"/opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/{pattern}")
-    if not results:
-        LOG.error(
-            "No file found for pattern %s, in: [%s]",
-            pattern,
-            ", ".join(os.listdir("/opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/")),
-        )
-    return results
+    return glob.glob(f"/opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/{pattern}")
 
 
 def canvas_view(request: pyramid.request.Request, interface_config: Dict[str, Any]) -> Dict[str, Any]:

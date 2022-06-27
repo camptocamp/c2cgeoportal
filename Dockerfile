@@ -1,7 +1,5 @@
-#############################################################################################################
-# The base image with apt and python packages.
-
-FROM osgeo/gdal:ubuntu-small-3.5.0 AS base
+# Base of all section, install the apt packages
+FROM osgeo/gdal:ubuntu-small-3.5.0 as base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 # Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
@@ -9,18 +7,43 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-ENV \
-    DEBIAN_FRONTEND=noninteractive \
-    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    apt-get update \
+    && apt-get upgrade --assume-yes \
+    && apt-get install --assume-yes --no-install-recommends python3-pip
 
-# hadolint ignore=SC1091,DL3008
-RUN \
+# Used to convert the locked packages by poetry to pip requirements format
+# We don't directly use `poetry install` because it force to use a virtual environment.
+FROM base-all as poetry
+
+# Install Poetry
+WORKDIR /tmp
+COPY requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache \
+    python3 -m pip install --disable-pip-version-check --requirement=requirements.txt
+
+# Do the conversion
+COPY poetry.lock pyproject.toml ./
+RUN poetry export --output=requirements.txt \
+    && poetry export --dev --output=requirements-dev.txt
+
+# Base, the biggest thing is to install the Python packages
+FROM base-all as base
+
+SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
+
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
     . /etc/os-release \
     && apt-get update \
     && apt-get upgrade --assume-yes \
     && apt-get install --assume-yes --no-install-recommends apt-utils \
     && apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less gnupg libpq5 \
-        python3-pip python3-dev python3-wheel python3-pkgconfig libgraphviz-dev libpq-dev binutils gcc g++ cython3 \
+        python3-pip python3-dev libgraphviz-dev libpq-dev binutils gcc g++ cython3 \
     && echo "For Chrome installed by Pupetter" \
     && apt-get install --assume-yes --no-install-recommends libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
         libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
@@ -29,96 +52,78 @@ RUN \
     && curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
     && apt-get update \
     && apt-get install --assume-yes --no-install-recommends 'nodejs=16.*' \
-    && apt-get clean \
-    && rm --recursive --force /var/lib/apt/lists/* \
     && ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so
 
-COPY requirements.txt /tmp/
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt \
-    && rm --recursive --force /tmp/*
-
-COPY Pipfile Pipfile.lock /tmp/
-# hadolint disable=DL3003
-RUN cd /tmp && PIP_NO_BINARY=fiona,rasterio,shapely PROJ_DIR=/usr/local/ pipenv sync --system --clear \
-    && rm --recursive --force /usr/local/lib/python3.*/dist-packages/tests/ /tmp/* /root/.cache/* \
+RUN --mount=type=cache,target=/root/.cache \
+    --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
+    PIP_NO_BINARY=fiona,rasterio,shapely PROJ_DIR=/usr/local/ python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++
 
-ENV NODE_PATH=/usr/lib/node_modules
+COPY scripts/extract-messages.js /opt/c2cgeoportal/geoportal/
+
 ENV TEST=false
+ENV PATH=/opt/c2cgeoportal/geoportal/node_modules/.bin:$PATH
 
 #############################################################################################################
 # Finally used for all misk task, will not be used on prod runtime
 
 FROM base AS tools
 
-# Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
-# Treat unset variables as an error when substituting.
-# Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
+ENV NODE_PATH=/usr/lib/node_modules
 CMD ["tail", "-f", "/dev/null"]
 
-# hadolint ignore=SC1091,DL3008
-RUN \
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
     . /etc/os-release \
     && echo deb http://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
     && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && apt-get update \
-    && apt-get install --assume-yes --no-install-recommends git make python3.8-dev python3.8-venv gcc \
+    && apt-get install --assume-yes --no-install-recommends git make python3-dev gcc \
         postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
         libxml2-utils bash-completion pwgen redis-tools libmagic1 \
-    && apt-get clean \
-    && rm --recursive --force /var/lib/apt/lists/* \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
     && vim-addon-manager --system-wide install editorconfig \
     && echo 'set hlsearch  " Highlight search' > /etc/vim/vimrc.local \
     && echo 'set wildmode=list:longest  " Completion menu' >> /etc/vim/vimrc.local \
     && echo 'set term=xterm-256color " Make home and end working' >> /etc/vim/vimrc.local
 
-COPY Pipfile Pipfile.lock /tmp/
-# hadolint ignore=DL3003
-RUN \
-    cd /tmp \
-    && pipenv sync --system --clear --dev \
-    && rm --recursive --force /tmp/* /root/.cache/*
+RUN --mount=type=cache,target=/root/.cache \
+    --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
+    python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
 
 COPY bin/npm-packages /usr/bin/
-COPY geoportal/package.json /opt/c2cgeoportal/geoportal/
 WORKDIR /opt/c2cgeoportal/geoportal
+COPY geoportal/package.json geoportal/package-lock.json ./
 
-# hadolint ignore=SC2046,DL3016
-RUN \
-    npm-packages --src=package.json --dst=/tmp/npm-packages \
-    && npm --no-optional --global --unsafe-perm --no-package-lock install $(cat /tmp/npm-packages) \
-    && npm cache clear --force \
-    && rm -rf /tmp/* \
+# hadolint ignore=DL3016,SC2046
+RUN --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
+    --mount=type=cache,target=/tmp \
+    npm install --no-optional \
     && npm-packages \
         @types @typescript-eslint @storybook ol-cesium jasmine-core karma karma-chrome-launcher \
         karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
         react react-dom cypress chromatic jscodeshift sass start-server-and-test \
         typedoc typescript \
-        --src=/usr/lib/node_modules/ngeo/package.json --src=package.json --dst=npm-packages
+        angular-gettext-tools commander puppeteer url-parse eslint \
+        --src=package.json --src=node_modules/ngeo/package.json --dst=npm-packages \
+    && npm install --no-optional --global --unsafe-perm $(cat /opt/c2cgeoportal/geoportal/npm-packages)
 
-# Workaround to fix the chokidar error
-RUN ln -s /usr/lib/node_modules/webpack-dev-server/node_modules/chokidar /usr/lib/node_modules/
-
-COPY admin/package.json /opt/c2cgeoportal/admin/
+COPY admin/package.json admin/package-lock.json /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
-RUN \
-    npm --no-optional --no-package-lock install \
-    && npm cache clear --force \
-    && rm -rf /tmp/*
 
-# hadolint ignore=SC2046,DL3016
-RUN \
-    npm install --no-optional --global --unsafe-perm --no-package-lock $(cat /opt/c2cgeoportal/geoportal/npm-packages) \
-    && npm cache clear --force \
-    && rm -rf /tmp/* \
-    && git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git \
-        /tmp/angular \
-    && mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ \
+# hadolint ignore=DL3016,SC2046
+RUN --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
+    --mount=type=cache,target=/tmp \
+    npm install --no-optional \
     && rm -rf /tmp/angular \
+    && git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git /tmp/angular \
+    && mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ \
     && curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
 WORKDIR /opt/c2cgeoportal
@@ -147,7 +152,9 @@ COPY admin/ admin/
 ARG VERSION
 ENV VERSION=$VERSION
 
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
+RUN --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
+    python3 -m pip install --disable-pip-version-check --no-deps \
     --editable=commons \
     --editable=geoportal \
     --editable=admin
@@ -187,38 +194,28 @@ ENV MAJOR_VERSION=$MAJOR_VERSION
 ARG VERSION
 ENV VERSION=$VERSION
 
-COPY bin/npm-packages /usr/bin/
-
 WORKDIR /opt/c2cgeoportal/geoportal
-COPY geoportal/package.json ./
+COPY geoportal/package.json geoportal/package-lock.json ./
 
-# hadolint ignore=SC2046,DL3016
-RUN npm --no-optional --unsafe-perm --no-package-lock install \
-    && npm cache clear --force \
-    && rm -rf /tmp/*
-
-COPY package.json /tmp/
-
-# hadolint ignore=SC2046,DL3016
-RUN cd /tmp \
-    && npm-packages --src=package.json --dst=npm-packages \
-    && npm --no-optional --global --unsafe-perm --no-package-lock install $(cat npm-packages) \
-    && npm cache clear --force \
-    && rm -rf /tmp/*
+# hadolint ignore=DL3016,SC2046
+RUN --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
+    npm install --no-optional --omit dev
 
 COPY bin/eval-templates bin/wait-db bin/list4vrt bin/azure /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
-COPY --from=tools-cleaned /usr/lib/node_modules/ngeo/buildtools/check-example.js /usr/bin/
+COPY scripts/extract-messages.js /opt/c2cgeoportal/
 
 WORKDIR /opt/c2cgeoportal
-RUN \
+RUN --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
     ln -s /opt/c2cgeoportal/commons/c2cgeoportal_commons/alembic /opt \
-    && python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
+    && python3 -m pip install --disable-pip-version-check --no-deps \
         --editable=commons \
         --editable=geoportal \
         --editable=admin \
     && python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.* \
-        -x '(/usr/local/lib/python3.*/dist-packages/(pipenv|networkx)/|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
+        -x '(/usr/local/lib/python3.*/dist-packages/(networkx)/|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
@@ -250,12 +247,5 @@ FROM tools AS checks
 WORKDIR /opt/c2cgeoportal
 
 # For mypy
-RUN \
-    touch /usr/local/lib/python3.8/dist-packages/zope/__init__.py \
-    && touch /usr/local/lib/python3.8/dist-packages/c2c/__init__.py
-
-COPY setup.cfg .prospector.yaml .pylintrc .bandit.yaml checks.mk ./
-COPY .git ./.git/
-COPY scripts/pylint-copyright.py ./scripts/
-
-RUN make --makefile=checks.mk checks
+RUN touch "$(echo /usr/local/lib/python3.*/dist-packages/)/zope/__init__.py" \
+    && touch "$(echo /usr/local/lib/python3.*/dist-packages/)/c2c/__init__.py"

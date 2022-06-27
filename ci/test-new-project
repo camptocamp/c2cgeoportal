@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import sys
+import time
 
 import requests
 
@@ -36,10 +37,14 @@ initial_access_length = 0
 
 url = sys.argv[1]
 
-# See also:
-# ci/vars.yaml geoportal/GUNICORN_PARAMS
-# Jenkinsfile timeout line 130
-result = requests.get(url, timeout=240, verify=False)  # nosec
+for _ in range(10):
+    print(f"Query {url}")
+    # See also:
+    # ci/vars.yaml geoportal/GUNICORN_PARAMS
+    result = requests.get(url, timeout=240, verify=False)  # nosec
+    if result.ok:
+        break
+    time.sleep(1)
 
 if len(sys.argv) == 3 and sys.argv[2] == "enum":
     if result.ok and result.json() == {"items": [{"value": "car"}, {"value": "train"}]}:

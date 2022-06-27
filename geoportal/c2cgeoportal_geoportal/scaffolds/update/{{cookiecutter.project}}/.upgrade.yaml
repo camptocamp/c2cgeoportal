@@ -189,3 +189,6 @@ upgrade_files:
   - action: remove
     paths:
       - yamllint.yaml
+  - action: remove
+    paths:
+      - geoportal/tools/extract-messages.js

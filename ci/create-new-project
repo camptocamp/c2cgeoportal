@@ -9,7 +9,7 @@ docker tag camptocamp/geomapfish:${TAG} camptocamp/geomapfish
 docker tag camptocamp/geomapfish-tools:${TAG} camptocamp/geomapfish-tools:$(scripts/get-version --full)
 docker tag camptocamp/geomapfish-config:${TAG} camptocamp/geomapfish-config:$(scripts/get-version --full)
 
-docker build --target=runner --build-arg=VERSION=3.22 \
+DOCKER_BUILDKIT=1 docker build --target=runner --build-arg=VERSION=3.22 \
     --tag=camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.22 \
     docker/qgisserver
 
@@ -80,7 +80,7 @@ c2cciutils-checks --fix --check=black
 c2cciutils-checks --fix --check=prettier
 mv ci/config.yaml{_,}
 
-git diff
+git --no-pager diff
 git add --all
 git commit --quiet --message='Format'
 git clean -fX

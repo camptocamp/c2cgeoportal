@@ -18,10 +18,12 @@
 
 # -- General configuration -----------------------------------------------------
 
+import datetime
 from os import environ
+from typing import Dict
 
-import alabaster
-import sphinx.application
+import alabaster  # pylint: disable=import-error
+import sphinx.application  # pylint: disable=import-error
 
 html_theme_path = [alabaster.get_path()]
 
@@ -53,7 +55,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "c2cgeoportal"
-copyright = "2011-2021, Camptocamp"
+copyright = f"2011-{datetime.date.today().year}, Camptocamp"  # pylint: disable=redefined-builtin
 
 # The version info for the project you are documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -197,7 +199,7 @@ htmlhelp_basename = "c2cgeoportaldoc"
 
 # -- Options for LaTeX output --------------------------------------------------
 
-latex_elements = {
+latex_elements: Dict[str, str] = {
     # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').
@@ -269,4 +271,5 @@ texinfo_documents = [
 
 
 def setup(app: sphinx.application.Sphinx) -> None:
+    """Setups the Sphinx the documentation builder."""
     app.add_css_file("css/c2c.css")

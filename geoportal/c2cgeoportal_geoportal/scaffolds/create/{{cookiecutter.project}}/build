@@ -132,7 +132,9 @@ def main() -> None:
         print_args = [a.replace('"', '\\"') for a in print_args]
         print_args = [a.replace("'", "\\'") for a in print_args]
         try:
-            run(args, docker_compose_build_cmd, check=True)  # nosec
+            env = {"DOCKER_BUILDKIT": "1"}
+            env.update(os.environ)
+            run(args, docker_compose_build_cmd, check=True, env=env)  # nosec
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)

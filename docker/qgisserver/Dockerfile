@@ -1,21 +1,33 @@
 ARG VERSION
 
-FROM camptocamp/qgis-server:${VERSION} AS base
+FROM camptocamp/qgis-server:${VERSION} AS base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
-COPY requirements.txt /tmp/
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
+# Used to convert the locked packages by poetry to pip requirements format
+# We don't directly use `poetry install` because it force to use a virtual environment.
+FROM base-all as poetry
 
-COPY python/ /tmp/python/
+# Install Poetry
+WORKDIR /tmp
+COPY requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache \
+    python3 -m pip install --disable-pip-version-check --requirement=requirements.txt
 
-RUN apt-get update \
+# Do the conversion
+COPY poetry.lock pyproject.toml ./
+RUN poetry export --output=requirements.txt \
+    && poetry export --dev --output=requirements-dev.txt
+
+# Base, the biggest thing is to install the Python packages
+FROM base-all as base
+
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
+    apt-get update \
     && apt-get upgrade --assume-yes \
     && apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc \
-    && apt-get clean \
-    && rm --recursive --force /var/lib/apt/lists/* \
-    && cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
-    && PIP_NO_BINARY=shapely pipenv sync --system --clear \
-    && rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs \
+    && PIP_NO_BINARY=shapely pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && apt-get remove --assume-yes libpython3-dev libpq-dev gcc
 
 #############################################################################################################
@@ -24,9 +36,10 @@ FROM base AS runner
 
 COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
 COPY logging.ini /var/www/
+# hadolint ignore=DL3022
 COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
+RUN python3 -m pip install --disable-pip-version-check --no-deps \
     --editable=/opt/c2cgeoportal/commons
 
 ENV LOG_LEVEL=INFO \
@@ -45,19 +58,19 @@ ENV LOG_LEVEL=INFO \
 
 FROM runner as tests
 
-RUN cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
-    && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
+SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
+    apt-get update \
+    && apt-get upgrade --assume-yes \
+    && apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc \
+    && pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
+
+# hadolint ignore=DL3022
 COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
     /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing
-# Workaround to make the build working on GitHub Action
-# See also: https://github.com/moby/moby/issues/37965
-RUN true
-COPY tests/Pipfile tests/Pipfile.lock /tmp/
-
-RUN cd /tmp && pipenv sync --system --clear
-RUN python3 -m pip install pytest-timeout
-
 ENV PYTHONPATH /var/www/plugins:/usr/local/share/qgis/python/:/opt
 
 WORKDIR /src

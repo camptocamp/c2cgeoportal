@@ -28,6 +28,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import os
+from typing import List
 
 from setuptools import find_packages, setup
 
@@ -41,12 +42,12 @@ Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 VERSION = os.environ.get("VERSION", "dev")
 
 
-with open(os.path.join(HERE, "requirements.txt")) as f:
+with open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as f:
     INSTALL_REQUIRES = f.read().splitlines()
 
-SETUP_REQUIRES = []
+SETUP_REQUIRES: List[str] = []
 
-TESTS_REQUIRE = []
+TESTS_REQUIRE: List[str] = []
 
 setup(
     name="c2cgeoportal_geoportal",

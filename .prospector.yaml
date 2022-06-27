@@ -8,13 +8,12 @@ ignore-paths:
   - setup.py
   - CONST_create_template
   - scaffolds
+  - docker/qgisserver
 
 pycodestyle:
   disable:
     - E203 # Whitespace before ':'
     - E722 # Do not use bare 'except'
-  options:
-    max-line-length: 110
 
 pydocstyle:
   disable:
@@ -23,6 +22,7 @@ pydocstyle:
     - D104 # Missing docstring in public package
     - D105 # Missing docstring in magic method
     - D107 # Missing docstring in __init__
+    - D200 # One-line docstring should fit on one line with quotes
     - D202 # No blank lines allowed after function docstring (found 1)
     - D203 # 1 blank line required before class docstring (found 0)
     - D212 # Multi-line docstring summary should start at the first line

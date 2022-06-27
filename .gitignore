@@ -16,5 +16,8 @@
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/tilegeneration/config.yaml
 /geoportal/tests/testegg/production.ini
 /geoportal/tests/tests.ini
-/geoportal/node_modules/
-/geoportal/package-lock.json
+node_modules/
+# Files needed to mount c2cgeoportal in the project, created with `make dev`
+/.tx/config
+/geoportal/c2cgeoportal_geoportal/locale/
+/admin/c2cgeoportal_admin/locale/

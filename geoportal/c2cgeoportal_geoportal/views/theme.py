@@ -981,7 +981,7 @@ class Theme:
             if errors:
                 all_errors |= errors
                 return None, None, all_errors
-            assert feature_type
+            assert feature_type is not None
             namespace: str = feature_type.attrib.get("targetNamespace")
             types: Dict[Any, Dict[str, Any]] = {}
             elements = {}

@@ -17,14 +17,18 @@ SERVER_IFACE: qgis.server.QgsServerInterface = None
 
 
 def init(server_iface: qgis.server.QgsServerInterface) -> None:
+    """Initialize the plugin."""
     global SERVER_IFACE  # pylint: disable=global-statement
     SERVER_IFACE = server_iface
     logging.config.fileConfig(
-        os.environ.get("LOGGING_CONFIG_FILE", "/var/www/logging.ini"), defaults=dict(os.environ)
+        os.environ.get("LOGGING_CONFIG_FILE", "/var/www/logging.ini"),
+        defaults=dict(os.environ),
     )
 
 
 class LogHandler(logging.Handler):
+    """Python logging handle for QGIS."""
+
     def emit(self, record: logging.LogRecord) -> None:
         # To be visible in the CI
         print(self.format(record))
