@@ -58,7 +58,7 @@ services:
       - TILEGENERATION_AZURE_CONTAINER
 
   print:
-    image: camptocamp/mapfish_print:3.28
+    image: camptocamp/mapfish_print:3.29
     user: www-data
     restart: unless-stopped
     environment:
