@@ -86,7 +86,8 @@ jobs:
       - run: c2cciutils-docker-logs
       # Similar to: make tests-geoportal
       - run: >
-          docker-compose exec -T tests coverage run --append
+          docker-compose exec --env=PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+          -T tests coverage run --append
           --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
           --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
           /opt/c2cgeoportal/geoportal/tests
