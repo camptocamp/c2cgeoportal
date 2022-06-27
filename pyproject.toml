@@ -60,7 +60,7 @@ flake8 = "4.0.1"
 
 [tool.poetry.dev-dependencies]
 awscli = "1.25.4"  # Work with Object storage
-Babel = "2.9.1"  # i18n
+Babel = "2.10.3"  # i18n
 beautifulsoup4 = "4.11.1"  # admin tests
 coverage = "6.4.1"  # Build coverage XML for Codacy
 Jinja2 = "3.0.3"  # c2c.template
