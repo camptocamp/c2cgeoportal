@@ -1,3 +1,7 @@
+##### 2.7.0.67
+
+- [Backport 2.7] Increase the Redis timeout [c2cgeoportal#9891](https://github.com/camptocamp/c2cgeoportal/pull/9891)
+
 ##### 2.7.0.66
 
 - Fix CVE [c2cgeoportal#9857](https://github.com/camptocamp/c2cgeoportal/pull/9857)
