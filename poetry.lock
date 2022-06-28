@@ -1988,7 +1988,7 @@ tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
 
 [[package]]
 name = "pykwalify"
-version = "1.7.0"
+version = "1.8.0"
 description = "Python lib/cli for JSON/YAML schema validation"
 category = "dev"
 optional = false
@@ -1996,11 +1996,8 @@ python-versions = "*"
 
 [package.dependencies]
 docopt = ">=0.6.2"
-python-dateutil = ">=2.4.2"
-PyYAML = ">=3.11"
-
-[package.extras]
-ruamel = ["ruamel.yaml (>=0.11.0,<0.16.0)"]
+python-dateutil = ">=2.8.0"
+"ruamel.yaml" = ">=0.16.0"
 
 [[package]]
 name = "pylint"
@@ -3145,7 +3142,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "0e8613efedb8726f2d4b5cee18d43e0d76eab693788dd1b49f70b5825405fd59"
+content-hash = "03c386cc8391a5710821981af79a6a11803e47bebe3b6f2c9020a3b5b4f2f5ec"
 
 [metadata.files]
 affine = [
@@ -4351,8 +4348,8 @@ pyjwt = [
     {file = "PyJWT-2.4.0.tar.gz", hash = "sha256:d42908208c699b3b973cbeb01a969ba6a96c821eefb1c5bfe4c390c01d67abba"},
 ]
 pykwalify = [
-    {file = "pykwalify-1.7.0-py2.py3-none-any.whl", hash = "sha256:428733907fe5c458fbea5de63a755f938edccd622c7a1d0b597806141976f00e"},
-    {file = "pykwalify-1.7.0.tar.gz", hash = "sha256:7e8b39c5a3a10bc176682b3bd9a7422c39ca247482df198b402e8015defcceb2"},
+    {file = "pykwalify-1.8.0-py2.py3-none-any.whl", hash = "sha256:731dfa87338cca9f559d1fca2bdea37299116e3139b73f78ca90a543722d6651"},
+    {file = "pykwalify-1.8.0.tar.gz", hash = "sha256:796b2ad3ed4cb99b88308b533fb2f559c30fa6efb4fa9fda11347f483d245884"},
 ]
 pylint = [
     {file = "pylint-2.14.1-py3-none-any.whl", hash = "sha256:bb71e6d169506de585edea997e48d9ff20c0dc0e2fbc1d166bad6b640120326b"},

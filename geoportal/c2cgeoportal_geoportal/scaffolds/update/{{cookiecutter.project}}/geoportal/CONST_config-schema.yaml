@@ -123,7 +123,7 @@ mapping:
         required: True
         type: map
         mapping:
-          regex;.+:
+          regex;(.+):
             type: map
             mapping:
               extends:
@@ -131,17 +131,17 @@ mapping:
               constants:
                 type: map
                 mapping:
-                  regex;.+:
+                  regex;(.+):
                     type: any
               dynamic_constants:
                 type: map
                 mapping:
-                  regex;.+:
+                  regex;(.+):
                     type: str
               routes:
                 type: map
                 mapping:
-                  regex;.+:
+                  regex;(.+):
                     type: map
                     mapping:
                       name:
@@ -155,22 +155,22 @@ mapping:
                       kw:
                         type: map
                         mapping:
-                          regex;.+:
+                          regex;(.+):
                             type: str
                       params:
                         type: map
                         mapping:
-                          regex;.+:
+                          regex;(.+):
                             type: text
                       dynamic_params:
                         type: map
                         mapping:
-                          regex;.+:
+                          regex;(.+):
                             type: str
               static:
                 type: map
                 mapping:
-                  regex;.+:
+                  regex;(.+):
                     type: map
                     mapping:
                       name:
@@ -227,7 +227,7 @@ mapping:
                 type: map
                 required: True
                 mapping:
-                  regex;.+:
+                  regex;(.+):
                     type: str
       headers:
         type: map
@@ -253,7 +253,7 @@ mapping:
               headers:
                 type: map
                 mapping:
-                  regex;.+:
+                  regex;(.+):
                     type: str
           index: *header
           dynamic: *header
@@ -283,7 +283,7 @@ mapping:
         type: map
         required: True
         mapping:
-          regex;.+:
+          regex;(.+):
             type: map
             mapping:
               backend:
@@ -292,7 +292,7 @@ mapping:
               arguments:
                 type: map
                 mapping:
-                  regex;.+:
+                  regex;(.+):
                     type: any
       admin_interface:
         type: map
@@ -308,7 +308,7 @@ mapping:
                 sequence:
                   - type: map
                     mapping:
-                      regex;.+:
+                      regex;(.+):
                         type: any
               fitSource:
                 type: bool
@@ -344,7 +344,7 @@ mapping:
                     type: str
                   zoom:
                     type: int
-                  regex;.+:
+                  regex;(.+):
                     type: any
           available_metadata:
             type: seq
@@ -417,7 +417,7 @@ mapping:
             required: True
           map:
             <<: *map_config
-          regex;.+:
+          regex;(.+):
             type: any
 
       layers:
