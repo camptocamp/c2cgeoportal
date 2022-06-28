@@ -17,7 +17,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~
 ExternalOGCServer
 ~~~~~~~~~~~~~~~~~
-The definition of an external OGC server
 
 Properties:
  * ``name`` (string)
@@ -38,10 +37,6 @@ Properties:
 ~~~~~~~~~~~~~
 GridMergeTabs
 ~~~~~~~~~~~~~
-Configuration option for {@link import('gmf/query/gridComponent').GmfQueryGridComponent} to merge grid tabs.
-E.g. `'two_wheels_park': ['velo_park', 'moto_park']}` merges the sources
-with label `velo_park` and `moto_park` into a new source `two_wheels_park`.
-
 
 Properties:
 
@@ -62,7 +57,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~
 LineConfiguration
 ~~~~~~~~~~~~~~~~~
-Configuration object for one profile's line.
 
 Properties:
  * ``color`` (string, optional)
@@ -73,7 +67,6 @@ Properties:
 ~~~~~~~~~
 MapConfig
 ~~~~~~~~~
-The map definition.
 
 Properties:
  * ``maxTilesLoading`` (number, optional)
@@ -96,8 +89,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~
 MousePositionProjection
 ~~~~~~~~~~~~~~~~~~~~~~~
-Projection object for the MousePositionDirective. Define a label and a filter
-to use to display coordinates for a projection.
 
 Properties:
  * ``code`` (string)
@@ -121,7 +112,6 @@ Properties:
 ~~~~~~~~~~
 Projection
 ~~~~~~~~~~
-A projection definitions.
 
 Properties:
  * ``definition`` (string\[])
@@ -132,8 +122,6 @@ Properties:
 ~~~~~~~~~~~~
 RegularShape
 ~~~~~~~~~~~~
-Specify radius for regular polygons, or radius1 and radius2 for stars.
-See also: https://openlayers.org/en/latest/examples/regularshape.html
 
 Properties:
  * ``angle`` (number, optional)
@@ -172,7 +160,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 SearchComponentDatasource
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-Datasource configuration options for the search directive.
 
 Properties:
  * ``bloodhoundOptions`` (:ref:`integrator_guide_ngeo_properties_Bloodhound.BloodhoundOptions`\<:ref:`integrator_guide_ngeo_properties_GeoJSON.FeatureCollection`>, optional)
@@ -216,7 +203,6 @@ Properties:
 ~~~~~
 Style
 ~~~~~
-The style description.
 
 Properties:
  * ``circle`` (:ref:`integrator_guide_ngeo_properties_Circle`, optional)
@@ -236,7 +222,6 @@ StyleLike
 ~~~~
 View
 ~~~~
-The view definition.
 
 Properties:
  * ``center`` (number\[], optional)
@@ -265,7 +250,6 @@ Properties:
 ~~~~~~~
 WfsType
 ~~~~~~~
-A WFS type. To be used with {@link WfsPermalinkOptions }.
 
 Properties:
  * ``defaultFeatureNS`` (string, optional)
@@ -280,28 +264,24 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~
 authenticationBaseUrl
 ~~~~~~~~~~~~~~~~~~~~~
-URL to the authentication web service.
 
 .. _integrator_guide_ngeo_properties_defaultLang:
 
 ~~~~~~~~~~~
 defaultLang
 ~~~~~~~~~~~
-Default language
 
 .. _integrator_guide_ngeo_properties_fulltextsearchUrl:
 
 ~~~~~~~~~~~~~~~~~
 fulltextsearchUrl
 ~~~~~~~~~~~~~~~~~
-URL to the full-text search web service.
 
 .. _integrator_guide_ngeo_properties_gmfAuthenticationConfig:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 gmfAuthenticationConfig
 ~~~~~~~~~~~~~~~~~~~~~~~
-The Authentication configuration.
 
 Properties:
  * ``allowPasswordChange`` (boolean)
@@ -312,15 +292,12 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 gmfAuthenticationNoReloadRole
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Don't request a new user object from the back-end after
-logging out if the logged-in user's role has this role.
 
 .. _integrator_guide_ngeo_properties_gmfBackgroundLayerSelectorOptions:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 gmfBackgroundLayerSelectorOptions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The background layer selector options
 
 Properties:
  * ``opacityLayer`` (string, optional)
@@ -340,14 +317,12 @@ Properties:
 ~~~~~~~~~~~~~~
 gmfCsvFilename
 ~~~~~~~~~~~~~~
-The CSV file name.
 
 .. _integrator_guide_ngeo_properties_gmfCustomCSS:
 
 ~~~~~~~~~~~~
 gmfCustomCSS
 ~~~~~~~~~~~~
-Additional CSS for the different elements
 
 Properties:
  * ``authentication`` (string)
@@ -361,21 +336,18 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~
 gmfCustomJavascriptUrl
 ~~~~~~~~~~~~~~~~~~~~~~
-Use to inject custom javascript from an URL.
 
 .. _integrator_guide_ngeo_properties_gmfCustomStylesheetUrl:
 
 ~~~~~~~~~~~~~~~~~~~~~~
 gmfCustomStylesheetUrl
 ~~~~~~~~~~~~~~~~~~~~~~
-Use to inject custom stylesheet from an URL.
 
 .. _integrator_guide_ngeo_properties_gmfDisclaimerOptions:
 
 ~~~~~~~~~~~~~~~~~~~~
 gmfDisclaimerOptions
 ~~~~~~~~~~~~~~~~~~~~
-The disclaimers options
 
 Properties:
  * ``external`` (boolean, optional)
@@ -387,7 +359,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 gmfDisplayQueryGridOptions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The display querry grid component options.
 
 Properties:
  * ``featuresStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`)
@@ -401,7 +372,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 gmfDisplayQueryWindowOptions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The display querry grid component options.
 
 Properties:
  * ``collapsed`` (boolean, optional)
@@ -424,7 +394,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~
 gmfElevationOptions
 ~~~~~~~~~~~~~~~~~~~
-The elevation (raster) options.
 
 Properties:
  * ``layers`` (string\[])
@@ -441,7 +410,6 @@ gmfExternalOGCServers
 ~~~~~~~~~
 gmfFloors
 ~~~~~~~~~
-Floor dimension values and labels.
 
 .. _integrator_guide_ngeo_properties_gmfLayerTreeOptions:
 
@@ -458,7 +426,6 @@ Properties:
 ~~~~~~~~~~~~
 gmfLayersUrl
 ~~~~~~~~~~~~
-URL to the layers web service.
 
 .. _integrator_guide_ngeo_properties_gmfMobileMeasureAreaOptions:
 
@@ -506,7 +473,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 gmfObjectEditingToolsOptions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Additional configuration options for the object editing tools directive.
 
 Properties:
  * ``regularPolygonRadius`` (number, optional)
@@ -516,7 +482,6 @@ Properties:
 ~~~~~~~~~~
 gmfOptions
 ~~~~~~~~~~
-The application wide options.
 
 Properties:
  * ``controlZoom`` (:ref:`integrator_guide_ngeo_properties_OlControlZoomOptions`)
@@ -535,7 +500,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~
 gmfPermalinkOptions
 ~~~~~~~~~~~~~~~~~~~
-Configuration options for the permalink service.
 
 Properties:
  * ``crosshairEnabledByDefault`` (boolean, optional)
@@ -564,21 +528,18 @@ Properties:
 ~~~~~~~~~~~
 gmfPrintUrl
 ~~~~~~~~~~~
-URL to MapFishPrint.
 
 .. _integrator_guide_ngeo_properties_gmfProfileJsonUrl:
 
 ~~~~~~~~~~~~~~~~~
 gmfProfileJsonUrl
 ~~~~~~~~~~~~~~~~~
-URL to the profile web service.
 
 .. _integrator_guide_ngeo_properties_gmfProfileOptions:
 
 ~~~~~~~~~~~~~~~~~
 gmfProfileOptions
 ~~~~~~~~~~~~~~~~~
-The elevation (raster) options.
 
 Properties:
  * ``hoverPointStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`)
@@ -589,7 +550,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~
 gmfProjectionsOptions
 ~~~~~~~~~~~~~~~~~~~~~
-The available projections definitions.
 
 Properties:
 
@@ -598,14 +558,12 @@ Properties:
 ~~~~~~~~~~~~
 gmfQueryGrid
 ~~~~~~~~~~~~
-Use the query grid instead the query window to display the query result.
 
 .. _integrator_guide_ngeo_properties_gmfRasterUrl:
 
 ~~~~~~~~~~~~
 gmfRasterUrl
 ~~~~~~~~~~~~
-URL to the raster web service.
 
 .. _integrator_guide_ngeo_properties_gmfSearchGroups:
 
@@ -643,14 +601,12 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~
 gmfShortenerCreateUrl
 ~~~~~~~~~~~~~~~~~~~~~
-URL to the shortener web service.
 
 .. _integrator_guide_ngeo_properties_gmfSnappingOptions:
 
 ~~~~~~~~~~~~~~~~~~
 gmfSnappingOptions
 ~~~~~~~~~~~~~~~~~~
-The snapping options
 
 Properties:
  * ``maxFeatures`` (number)
@@ -660,7 +616,6 @@ Properties:
 ~~~~~~~~~~~~~~~~
 gmfThemesOptions
 ~~~~~~~~~~~~~~~~
-Configuration options for the themes service.
 
 Properties:
  * ``addBlankBackgroundLayer`` (boolean, optional)
@@ -670,28 +625,24 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~
 gmfTreeManagerModeFlush
 ~~~~~~~~~~~~~~~~~~~~~~~
-Flush mode active?
 
 .. _integrator_guide_ngeo_properties_gmfTreeUrl:
 
 ~~~~~~~~~~
 gmfTreeUrl
 ~~~~~~~~~~
-URL to the theme web service.
 
 .. _integrator_guide_ngeo_properties_gmfTwoFactorAuth:
 
 ~~~~~~~~~~~~~~~~
 gmfTwoFactorAuth
 ~~~~~~~~~~~~~~~~
-Does the application use tow factor authentication
 
 .. _integrator_guide_ngeo_properties_langUrls:
 
 ~~~~~~~~
 langUrls
 ~~~~~~~~
-Languages URL
 
 Properties:
 
@@ -700,42 +651,36 @@ Properties:
 ~~~~~~~~~~~~~~~
 ngeoCsvEncoding
 ~~~~~~~~~~~~~~~
-File encoding of the CSV file.
 
 .. _integrator_guide_ngeo_properties_ngeoCsvExtension:
 
 ~~~~~~~~~~~~~~~~
 ngeoCsvExtension
 ~~~~~~~~~~~~~~~~
-File extension of the CSV file.
 
 .. _integrator_guide_ngeo_properties_ngeoCsvIncludeHeader:
 
 ~~~~~~~~~~~~~~~~~~~~
 ngeoCsvIncludeHeader
 ~~~~~~~~~~~~~~~~~~~~
-Whether to include the header in the exported file or not.
 
 .. _integrator_guide_ngeo_properties_ngeoCsvQuote:
 
 ~~~~~~~~~~~~
 ngeoCsvQuote
 ~~~~~~~~~~~~
-Quote character.
 
 .. _integrator_guide_ngeo_properties_ngeoCsvSeparator:
 
 ~~~~~~~~~~~~~~~~
 ngeoCsvSeparator
 ~~~~~~~~~~~~~~~~
-Separator character.
 
 .. _integrator_guide_ngeo_properties_ngeoGeolocationOptions:
 
 ~~~~~~~~~~~~~~~~~~~~~~
 ngeoGeolocationOptions
 ~~~~~~~~~~~~~~~~~~~~~~
-Options for the geolocation directive.
 
 Properties:
  * ``accuracyFeatureStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`, optional)
@@ -775,14 +720,12 @@ Properties:
 ~~~~~~~~~~~~~~~~~~
 ngeoOfflineTestUrl
 ~~~~~~~~~~~~~~~~~~
-URL of the test page to detect online/offline.
 
 .. _integrator_guide_ngeo_properties_ngeoPermalinkOgcserverUrl:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 ngeoPermalinkOgcserverUrl
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-URL to the WFS server.
 
 .. _integrator_guide_ngeo_properties_ngeoPointfilter:
 
@@ -795,7 +738,6 @@ ngeoPointfilter
 ~~~~~~~~~~~~~~~~~~
 ngeoProfileOptions
 ~~~~~~~~~~~~~~~~~~
-Options for the profile.
 
 Properties:
  * ``light`` (boolean, optional)
@@ -809,7 +751,6 @@ Properties:
 ~~~~~~~~~~~~~~~~
 ngeoQueryOptions
 ~~~~~~~~~~~~~~~~
-The options for the query service.
 
 Properties:
  * ``bboxAsGETParam`` (boolean, optional)
@@ -838,7 +779,6 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ngeoScaleSelectorOptions
 ~~~~~~~~~~~~~~~~~~~~~~~~
-The scale selector options
 
 Properties:
  * ``dropup`` (boolean, optional)
@@ -855,7 +795,6 @@ ngeoSnappingTolerance
 ~~~~~~~~~~~~~~~~~~~~~
 ngeoStreetviewOptions
 ~~~~~~~~~~~~~~~~~~~~~
-Configuration object for streetview.
 
 Properties:
  * ``bufferSize`` (number, optional)
@@ -867,31 +806,24 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ngeoStringToHtmlReplacements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-List of replacements for string to html.
 
 .. _integrator_guide_ngeo_properties_ngeoTilesPreloadingLimit:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ngeoTilesPreloadingLimit
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Load tiles up to preload levels.
-By default preload is Infinity,
-which means load all tiles on the top of the visible level. See also preload value
-in documentation for ol.Layer.Tile.
 
 .. _integrator_guide_ngeo_properties_ngeoUsedKeyRegexp:
 
 ~~~~~~~~~~~~~~~~~
 ngeoUsedKeyRegexp
 ~~~~~~~~~~~~~~~~~
-Regexp used to identify the used keys.
 
 .. _integrator_guide_ngeo_properties_ngeoWfsPermalinkOptions:
 
 ~~~~~~~~~~~~~~~~~~~~~~~
 ngeoWfsPermalinkOptions
 ~~~~~~~~~~~~~~~~~~~~~~~
-The options for the WFS query service (permalink).
 
 Properties:
  * ``defaultFeatureNS`` (string)
@@ -905,5 +837,4 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 pytreeLidarprofileJsonUrl
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-URL to LIDAR profile pytree service.
 

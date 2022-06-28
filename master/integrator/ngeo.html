@@ -157,7 +157,6 @@ be extended. These values will be updated with the interface configuration
 <h3>Ngeo configuration options<a class="headerlink" href="#ngeo-configuration-options" title="Permalink to this headline">¶</a></h3>
 <section id="configuration">
 <span id="integrator-guide-ngeo-properties-configuration"></span><h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h4>
-<p>The full configuration</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">authenticationBaseUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-authenticationbaseurl"><span class="std std-ref">authenticationBaseUrl</span></a>)</p></li>
@@ -274,7 +273,6 @@ be extended. These values will be updated with the interface configuration
 </ul>
 </dd>
 </dl>
-<p>The definition of an external OGC server</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (string)</p></li>
@@ -289,9 +287,6 @@ be extended. These values will be updated with the interface configuration
 </ul>
 </dd>
 </dl>
-<p>Configuration option for <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> import(‘gmf/query/gridComponent’).GmfQueryGridComponent} to merge grid tabs.
-E.g. <cite>‘two_wheels_park’: [‘velo_park’, ‘moto_park’]}</cite> merges the sources
-with label <cite>velo_park</cite> and <cite>moto_park</cite> into a new source <cite>two_wheels_park</cite>.</p>
 <p>Properties:</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
@@ -302,7 +297,6 @@ with label <cite>velo_park</cite> and <cite>moto_park</cite> into a new source <
 </ul>
 </dd>
 </dl>
-<p>Configuration object for one profile’s line.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (string, optional)</p></li>
@@ -310,7 +304,6 @@ with label <cite>velo_park</cite> and <cite>moto_park</cite> into a new source <
 </ul>
 </dd>
 </dl>
-<p>The map definition.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">maxTilesLoading</span></code> (number, optional)</p></li>
@@ -327,8 +320,6 @@ with label <cite>velo_park</cite> and <cite>moto_park</cite> into a new source <
 </ul>
 </dd>
 </dl>
-<p>Projection object for the MousePositionDirective. Define a label and a filter
-to use to display coordinates for a projection.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">code</span></code> (string)</p></li>
@@ -346,7 +337,6 @@ to use to display coordinates for a projection.</p>
 </ul>
 </dd>
 </dl>
-<p>A projection definitions.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">definition</span></code> (string[])</p></li>
@@ -354,8 +344,6 @@ to use to display coordinates for a projection.</p>
 </ul>
 </dd>
 </dl>
-<p>Specify radius for regular polygons, or radius1 and radius2 for stars.
-See also: <a class="reference external" href="https://openlayers.org/en/latest/examples/regularshape.html">https://openlayers.org/en/latest/examples/regularshape.html</a></p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">angle</span></code> (number, optional)</p></li>
@@ -385,7 +373,6 @@ See also: <a class="reference external" href="https://openlayers.org/en/latest/e
 </ul>
 </dd>
 </dl>
-<p>Datasource configuration options for the search directive.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bloodhoundOptions</span></code> (<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-bloodhound-bloodhoundoptions"><span class="std std-ref">Bloodhound.BloodhoundOptions</span></a>&lt;<a class="reference internal" href="ngeo_config_ref.html#integrator-guide-ngeo-properties-geojson-featurecollection"><span class="std std-ref">FeatureCollection</span></a>&gt;, optional)</p></li>
@@ -420,7 +407,6 @@ See also: <a class="reference external" href="https://openlayers.org/en/latest/e
 </ul>
 </dd>
 </dl>
-<p>The style description.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">circle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-circle"><span class="std std-ref">Circle</span></a>, optional)</p></li>
@@ -431,7 +417,6 @@ See also: <a class="reference external" href="https://openlayers.org/en/latest/e
 </ul>
 </dd>
 </dl>
-<p>The view definition.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">center</span></code> (number[], optional)</p></li>
@@ -457,7 +442,6 @@ See also: <a class="reference external" href="https://openlayers.org/en/latest/e
 </ul>
 </dd>
 </dl>
-<p>A WFS type. To be used with <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> WfsPermalinkOptions }.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">defaultFeatureNS</span></code> (string, optional)</p></li>
@@ -469,10 +453,6 @@ See also: <a class="reference external" href="https://openlayers.org/en/latest/e
 </ul>
 </dd>
 </dl>
-<p>URL to the authentication web service.</p>
-<p>Default language</p>
-<p>URL to the full-text search web service.</p>
-<p>The Authentication configuration.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">allowPasswordChange</span></code> (boolean)</p></li>
@@ -480,9 +460,6 @@ See also: <a class="reference external" href="https://openlayers.org/en/latest/e
 </ul>
 </dd>
 </dl>
-<p>Don’t request a new user object from the back-end after
-logging out if the logged-in user’s role has this role.</p>
-<p>The background layer selector options</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">opacityLayer</span></code> (string, optional)</p></li>
@@ -496,8 +473,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>The CSV file name.</p>
-<p>Additional CSS for the different elements</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">authentication</span></code> (string)</p></li>
@@ -508,9 +483,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>Use to inject custom javascript from an URL.</p>
-<p>Use to inject custom stylesheet from an URL.</p>
-<p>The disclaimers options</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">external</span></code> (boolean, optional)</p></li>
@@ -519,7 +491,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>The display querry grid component options.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">featuresStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
@@ -530,7 +501,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>The display querry grid component options.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">collapsed</span></code> (boolean, optional)</p></li>
@@ -547,7 +517,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>The elevation (raster) options.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code> (string[])</p></li>
@@ -555,7 +524,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>Floor dimension values and labels.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">isExpanded</span></code> (boolean)</p></li>
@@ -563,7 +531,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>URL to the layers web service.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">precision</span></code> (number, optional)</p></li>
@@ -593,14 +560,12 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>Additional configuration options for the object editing tools directive.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">regularPolygonRadius</span></code> (number, optional)</p></li>
 </ul>
 </dd>
 </dl>
-<p>The application wide options.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">controlZoom</span></code> (<span class="xref std std-ref">integrator_guide_ngeo_properties_OlControlZoomOptions</span>)</p></li>
@@ -616,7 +581,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>Configuration options for the permalink service.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">crosshairEnabledByDefault</span></code> (boolean, optional)</p></li>
@@ -639,9 +603,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>URL to MapFishPrint.</p>
-<p>URL to the profile web service.</p>
-<p>The elevation (raster) options.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">hoverPointStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
@@ -649,10 +610,7 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>The available projections definitions.</p>
 <p>Properties:</p>
-<p>Use the query grid instead the query window to display the query result.</p>
-<p>URL to the raster web service.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">clearButton</span></code> (boolean, optional)</p></li>
@@ -672,32 +630,19 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>URL to the shortener web service.</p>
-<p>The snapping options</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">maxFeatures</span></code> (number)</p></li>
 </ul>
 </dd>
 </dl>
-<p>Configuration options for the themes service.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">addBlankBackgroundLayer</span></code> (boolean, optional)</p></li>
 </ul>
 </dd>
 </dl>
-<p>Flush mode active?</p>
-<p>URL to the theme web service.</p>
-<p>Does the application use tow factor authentication</p>
-<p>Languages URL</p>
 <p>Properties:</p>
-<p>File encoding of the CSV file.</p>
-<p>File extension of the CSV file.</p>
-<p>Whether to include the header in the exported file or not.</p>
-<p>Quote character.</p>
-<p>Separator character.</p>
-<p>Options for the geolocation directive.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">accuracyFeatureStyle</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>, optional)</p></li>
@@ -709,9 +654,6 @@ logging out if the logged-in user’s role has this role.</p>
 </dd>
 </dl>
 <p>Properties:</p>
-<p>URL of the test page to detect online/offline.</p>
-<p>URL to the WFS server.</p>
-<p>Options for the profile.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">light</span></code> (boolean, optional)</p></li>
@@ -722,7 +664,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>The options for the query service.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bboxAsGETParam</span></code> (boolean, optional)</p></li>
@@ -745,7 +686,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>The scale selector options</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">dropup</span></code> (boolean, optional)</p></li>
@@ -753,7 +693,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>Configuration object for streetview.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bufferSize</span></code> (number, optional)</p></li>
@@ -762,13 +701,6 @@ logging out if the logged-in user’s role has this role.</p>
 </ul>
 </dd>
 </dl>
-<p>List of replacements for string to html.</p>
-<p>Load tiles up to preload levels.
-By default preload is Infinity,
-which means load all tiles on the top of the visible level. See also preload value
-in documentation for ol.Layer.Tile.</p>
-<p>Regexp used to identify the used keys.</p>
-<p>The options for the WFS query service (permalink).</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">defaultFeatureNS</span></code> (string)</p></li>
@@ -779,7 +711,6 @@ in documentation for ol.Layer.Tile.</p>
 </ul>
 </dd>
 </dl>
-<p>URL to LIDAR profile pytree service.</p>
 <section id="css-style">
 <h2>CSS style<a class="headerlink" href="#css-style" title="Permalink to this headline">¶</a></h2>
 <section id="id2">

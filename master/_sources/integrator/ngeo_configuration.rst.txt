@@ -3,7 +3,6 @@
 ~~~~~~~~~~~~~
 Configuration
 ~~~~~~~~~~~~~
-The full configuration
 
 Properties:
  * ``authenticationBaseUrl`` (:ref:`integrator_guide_ngeo_properties_authenticationBaseUrl`)
