@@ -1,3 +1,5 @@
+##### 2.6.0.124
+* Increase the Redis timeout [c2cgeoportal#9878](https://github.com/camptocamp/c2cgeoportal/pull/9878)
 ##### 2.6.0.123
 * Fix CVE [c2cgeoportal#9845](https://github.com/camptocamp/c2cgeoportal/pull/9845)
 ##### 2.6.0.122
