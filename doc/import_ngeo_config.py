@@ -67,9 +67,10 @@ def _browse(elem: Dict[str, Any], types: Dict[str, str]) -> None:
         result.append(elem["name"])
         result.append("".join(["~" for _ in elem["name"]]))
         if "comment" in elem:
-            result.append(f"{elem['comment']['shortText']}")
+            if "shortText" in elem["comment"]:
+                result.append(elem["comment"]["shortText"])
             if "text" in elem["comment"]:
-                result.append(f"{elem['comment']['text']}")
+                result.append(elem["comment"]["text"])
         if "defaultValue" in elem:
             result.append(f"Default value: {elem['defaultValue']}")
 
