@@ -80,4 +80,4 @@ mappyfile = "0.9.7"
 chardet = "4.0.0" # for Transifex
 c2cciutils = "1.2.0"
 mapbox-vector-tile = "1.2.1"
-responses = "0.20.0"
+responses = "0.21.0"
