@@ -862,15 +862,15 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "geoalchemy2"
-version = "0.11.1"
+version = "0.12.1"
 description = "Using SQLAlchemy with Spatial Databases"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 packaging = "*"
-SQLAlchemy = ">=1.1"
+SQLAlchemy = ">=1.4"
 
 [[package]]
 name = "geojson"
@@ -3142,7 +3142,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "7fda893f8bbc6a5ec28fe1710f971bef789e9cecc2b9643ca956b6667f36f91e"
+content-hash = "05e6856a4ff6735eb6136070776474d119de033ed2612525e6ae5f3c2e13c384"
 
 [metadata.files]
 affine = [
@@ -3535,8 +3535,8 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 geoalchemy2 = [
-    {file = "GeoAlchemy2-0.11.1-py2.py3-none-any.whl", hash = "sha256:43ce38a5387c9b380b4c9d20d720c3d8cf1752ca4f5f18aa88041be11f6948a3"},
-    {file = "GeoAlchemy2-0.11.1.tar.gz", hash = "sha256:f92a0faddb5b74384dbbf3c7000433358ce8e07a180fe1d6c2843eaa0437ff08"},
+    {file = "GeoAlchemy2-0.12.1-py2.py3-none-any.whl", hash = "sha256:52298fefa58310b0a0e413da4927a34c5ebf981c4e4cfaa7b82b79d0b0ddec71"},
+    {file = "GeoAlchemy2-0.12.1.tar.gz", hash = "sha256:ef9eba79b67ff4bc720b0e1991410866fc7db013837b055a1b2cb6518b994d80"},
 ]
 geojson = [
     {file = "geojson-2.5.0-py2.py3-none-any.whl", hash = "sha256:ccbd13368dd728f4e4f13ffe6aaf725b6e802c692ba0dde628be475040c534ba"},
