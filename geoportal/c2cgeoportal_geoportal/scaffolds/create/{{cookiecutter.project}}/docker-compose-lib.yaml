@@ -125,7 +125,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: &redis-image redis:6
+    image: &redis-image redis:7
     user: www-data
     restart: unless-stopped
     command:
