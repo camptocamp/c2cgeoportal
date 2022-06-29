@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2021, Camptocamp SA
+# Copyright (c) 2012-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -523,8 +523,6 @@ def get_layer_class(
         last_update_user = Layers.get_metadata(layer, "lastUpdateUserColumn")
         if last_update_user is not None:
             exclude.append(last_update_user)
-    else:
-        exclude = []
 
     m = Layers.get_metadata(layer, "editingAttributesOrder")
     attributes_order = m.split(",") if m else None
