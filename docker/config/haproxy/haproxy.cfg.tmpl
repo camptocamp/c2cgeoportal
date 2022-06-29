@@ -1,13 +1,8 @@
 global
     log /dev/log local2
-    chroot      /tmp
-    pidfile     /run/haproxy.pid
     maxconn     4000
     max-spread-checks 500  #ms between heathchecks of different services
     tune.ssl.default-dh-param 2048  # remove warning
-
-    user        nobody
-    group       nogroup
 
 
 # allows the service IP changes to be detected (when a container is restarted, for example)
@@ -52,13 +47,15 @@ defaults
 
 
 backend geoportal
-    option httpchk GET ${VISIBLE_ENTRY_POINT} HTTP/1.0\r\nUser-Agent:\ healthcheck
+    option httpchk
+    http-check send meth GET uri ${VISIBLE_ENTRY_POINT}
     http-check expect status 200
     server linked geoportal:8080 resolvers dns #check
 
 
 backend tilecloudchain
-    option httpchk GET ${VISIBLE_ENTRY_POINT}tiles/c2c/health_check HTTP/1.0\r\nUser-Agent:\ healthcheck
+    option httpchk
+    http-check send meth GET uri ${VISIBLE_ENTRY_POINT}tiles/c2c/health_check
     http-check expect status 200
     server linked tilecloudchain:8080 resolvers dns #check
 
