@@ -10,7 +10,7 @@
     "commander": "9.3.0",
     "eslint": "8.17.0",
     "ngeo": "2.8.0-latest.20220627T063739Z.46e7b36d0",
-    "puppeteer": "14.4.1",
+    "puppeteer": "15.2.0",
     "url-parse": "1.5.10"
   },
   "devDependencies": {
