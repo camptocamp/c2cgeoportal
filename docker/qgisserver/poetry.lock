@@ -944,14 +944,14 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [[package]]
 name = "zope.sqlalchemy"
-version = "1.2"
+version = "1.6"
 description = "Minimal Zope/SQLAlchemy transaction integration"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-SQLAlchemy = ">=0.7"
+SQLAlchemy = ">=0.9,<1.4.0 || >1.4.0,<1.4.1 || >1.4.1,<1.4.2 || >1.4.2,<1.4.3 || >1.4.3,<1.4.4 || >1.4.4,<1.4.5 || >1.4.5,<1.4.6 || >1.4.6"
 transaction = ">=1.6.0"
 "zope.interface" = ">=3.6.0"
 
@@ -961,7 +961,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "0c993007e0f9dea6264c9d5561c8c739ca20b08065c99ca9ac5381a20a861774"
+content-hash = "f72ed758761f671ec6d8f643e7cf6da51a1a22c2cceaa4db109dcd680bcb05bc"
 
 [metadata.files]
 astroid = [
@@ -1636,6 +1636,6 @@ wrapt = [
     {file = "zope.interface-5.4.0.tar.gz", hash = "sha256:5dba5f530fec3f0988d83b78cc591b58c0b6eb8431a85edd1569a0539a8a5a0e"},
 ]
 "zope.sqlalchemy" = [
-    {file = "zope.sqlalchemy-1.2-py2.py3-none-any.whl", hash = "sha256:882cb812f39a703252f3748e02fcd27a338330763589c8d8bbc4d18d09fb185d"},
-    {file = "zope.sqlalchemy-1.2.tar.gz", hash = "sha256:069eaad5a15f187603f368a10e0e6b0d485663498c2fe2f8ac7e93f810326eeb"},
+    {file = "zope.sqlalchemy-1.6-py2.py3-none-any.whl", hash = "sha256:63c4560fdd2d55c6e5658a22f6835a3c12eac1a3af8140a01400f7367aac91ed"},
+    {file = "zope.sqlalchemy-1.6.tar.gz", hash = "sha256:9c53be9a57275566595ada79bdffcd624a12fcf6435f6e6807416541b912f5ab"},
 ]
