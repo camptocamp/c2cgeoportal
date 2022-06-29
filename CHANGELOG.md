@@ -1,3 +1,7 @@
+##### 2.7.0.68
+
+- [Backport 2.7] Fix the editing [c2cgeoportal#9893](https://github.com/camptocamp/c2cgeoportal/pull/9893)
+
 ##### 2.7.0.67
 
 - [Backport 2.7] Increase the Redis timeout [c2cgeoportal#9891](https://github.com/camptocamp/c2cgeoportal/pull/9891)
