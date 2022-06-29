@@ -1300,19 +1300,19 @@ WebOb = "*"
 
 [[package]]
 name = "lingua"
-version = "4.14"
+version = "4.15.0"
 description = "Translation toolset"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-click = "*"
-polib = "*"
+click = ">=8.0.3"
+polib = ">=1.1.1"
 
 [package.extras]
 chameleonextractor = ["chameleon"]
-tests = ["pytest"]
+dev = ["pytest (>=7.0.1)", "black (>=22.1.0)", "flake8 (>=4.0.1)"]
 
 [[package]]
 name = "lxml"
@@ -3142,7 +3142,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "96be835a108652620dc2ddca4488202ad9d407f49743bcc2a356ed0e3c073faa"
+content-hash = "7fda893f8bbc6a5ec28fe1710f971bef789e9cecc2b9643ca956b6667f36f91e"
 
 [metadata.files]
 affine = [
@@ -3758,8 +3758,8 @@ linesman = [
     {file = "linesman-0.3.2.zip", hash = "sha256:34ff78d17a90a7d5b20e12537b77dcb4b2b092ac24b97206d8e379ee15fb7ebe"},
 ]
 lingua = [
-    {file = "lingua-4.14-py2.py3-none-any.whl", hash = "sha256:ca1e6b083e655ea31ed1386efd37d7f7f0127c68d07249f265b3d072e92267b9"},
-    {file = "lingua-4.14.tar.gz", hash = "sha256:1031279894faa0950ef747ddfe44ab58f5c153a027e4f4c55afee6642c4e5b1c"},
+    {file = "lingua-4.15.0-py2.py3-none-any.whl", hash = "sha256:8645a8029425bc97b74850f3c7817a7fae58d5f60709f13b3f3f41e5041f8a68"},
+    {file = "lingua-4.15.0.tar.gz", hash = "sha256:0e1a946741db288a40361ad04ff38fe04bf0819834b8abb84c4b535fed9ba4ef"},
 ]
 lxml = [
     {file = "lxml-4.9.0-cp27-cp27m-macosx_10_15_x86_64.whl", hash = "sha256:b5031d151d6147eac53366d6ec87da84cd4d8c5e80b1d9948a667a7164116e39"},
