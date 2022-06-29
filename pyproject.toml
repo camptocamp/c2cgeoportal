@@ -47,7 +47,7 @@ Shapely = "1.8.2"  # geoportal
 SQLAlchemy = "1.4.39"
 transaction = "3.0.1"  # commons, geoportal
 translationstring = "1.4"  # admin
-"zope.event" = "4.4"  # commons, geoportal
+"zope.event" = "4.5.0"  # commons, geoportal
 c2cwsgiutils = {version = "5.0.0", extras = ["broadcast", "profiler", "standard"]}
 oauthlib = "3.2.0"
 tilecloud = "1.8.0" # geoportal
