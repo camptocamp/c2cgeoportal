@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,16 +37,16 @@
           <div class="body" role="main">
             
   <section id="configure-the-admin-interface">
-<span id="integrator-admin-interface"></span><h1>Configure the admin interface<a class="headerlink" href="#configure-the-admin-interface" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-admin-interface"></span><h1>Configure the admin interface<a class="headerlink" href="#configure-the-admin-interface" title="Permalink to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Configuration of the admin interface is not possible in the simple application mode.</p>
 </div>
 <p>You can activate or deactivate (tabs, modules, models or tables) in administration interface using configuration key <code class="docutils literal notranslate"><span class="pre">exclude_pages</span></code> and <code class="docutils literal notranslate"><span class="pre">include_pages</span></code>.</p>
 <section id="include-and-excludes-tabs">
-<h2>Include and excludes tabs<a class="headerlink" href="#include-and-excludes-tabs" title="Permalink to this headline">¶</a></h2>
+<h2>Include and excludes tabs<a class="headerlink" href="#include-and-excludes-tabs" title="Permalink to this heading">¶</a></h2>
 <section id="default-tabs-modules">
-<h3>Default tabs/modules<a class="headerlink" href="#default-tabs-modules" title="Permalink to this headline">¶</a></h3>
+<h3>Default tabs/modules<a class="headerlink" href="#default-tabs-modules" title="Permalink to this heading">¶</a></h3>
 <p>The active default tabs (route urls) are:
 - layertree
 - themes
@@ -60,11 +61,11 @@
 - interfaces</p>
 </section>
 <section id="optional-tabs-modules">
-<h3>Optional tabs/modules<a class="headerlink" href="#optional-tabs-modules" title="Permalink to this headline">¶</a></h3>
+<h3>Optional tabs/modules<a class="headerlink" href="#optional-tabs-modules" title="Permalink to this heading">¶</a></h3>
 <p>It’s possible to have optional tabs, not available if not explicitly included.</p>
 </section>
 <section id="include-a-new-page">
-<h3>Include a new page<a class="headerlink" href="#include-a-new-page" title="Permalink to this headline">¶</a></h3>
+<h3>Include a new page<a class="headerlink" href="#include-a-new-page" title="Permalink to this heading">¶</a></h3>
 <p>We need a url path and a class to include a new page.</p>
 <p>Here is an example using the existing vector tiles page:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
@@ -80,7 +81,7 @@
 </div>
 </section>
 <section id="exclude-a-page">
-<h3>Exclude a page<a class="headerlink" href="#exclude-a-page" title="Permalink to this headline">¶</a></h3>
+<h3>Exclude a page<a class="headerlink" href="#exclude-a-page" title="Permalink to this heading">¶</a></h3>
 <p>We can exclude any of the default tabs.
 The syntax use a list under <code class="docutils literal notranslate"><span class="pre">vars/admin_interface/exclude_pages</span></code>.</p>
 </section>
@@ -142,7 +143,7 @@ The syntax use a list under <code class="docutils literal notranslate"><span cla
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -159,7 +160,7 @@ The syntax use a list under <code class="docutils literal notranslate"><span cla
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

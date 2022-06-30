@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,12 +37,12 @@
           <div class="body" role="main">
             
   <section id="editing">
-<span id="administrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h1>
+<span id="administrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this heading">¶</a></h1>
 <p>This section explains how to configure the edit function in c2cgeoportal.</p>
 <p>Just like most administrative tasks, setting up editing in a c2cgeoportal application involves intervening
 in the database, through the c2cgeoportal administration interface.</p>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h2>
 <p>To be editable, a layer should satisfy the following requirements:</p>
 <ol class="arabic">
 <li><p>It should be accessible with WMS, and correctly configured in the
@@ -86,7 +87,7 @@ by the <code class="docutils literal notranslate"><span class="pre">editingEnume
 </div>
 </section>
 <section id="adding-or-making-layers-editable">
-<span id="administrator-editing-editable"></span><h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this headline">¶</a></h2>
+<span id="administrator-editing-editable"></span><h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this heading">¶</a></h2>
 <p>The application’s layers are defined in the <code class="docutils literal notranslate"><span class="pre">layer</span></code> table, which is managed
 by selecting the <em>Layers</em> item in the admin interface’s menu.</p>
 <p>For a <em>layer</em> to be editable its <code class="docutils literal notranslate"><span class="pre">geoTable</span></code> field should be set. This field
@@ -104,7 +105,7 @@ corresponding to this field is <em>Related Postgres table</em> in the admin inte
 </div>
 </section>
 <section id="configuring-security">
-<h2>Configuring security<a class="headerlink" href="#configuring-security" title="Permalink to this headline">¶</a></h2>
+<h2>Configuring security<a class="headerlink" href="#configuring-security" title="Permalink to this heading">¶</a></h2>
 <p>Editing the features of a layer implies to write changes in the database. To make
 sure that only authorized users may edit a feature, editable layers (including
 public layers) must be linked to a restriction area, used itself to specify the
@@ -115,14 +116,14 @@ administration interface.</p>
 Likewise for binding from the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</p>
 </section>
 <section id="edit-views">
-<h2>Edit views<a class="headerlink" href="#edit-views" title="Permalink to this headline">¶</a></h2>
+<h2>Edit views<a class="headerlink" href="#edit-views" title="Permalink to this heading">¶</a></h2>
 <p>To be able to edit PostgreSQL views a primary key must be manually configured.
 Add a layer metadata <code class="docutils literal notranslate"><span class="pre">geotablePrimaryKey</span></code> with value the name of the column to use as primary key.
 That column must be of type <code class="docutils literal notranslate"><span class="pre">Integer</span></code>.</p>
 <p>Example: <code class="docutils literal notranslate"><span class="pre">geotablePrimaryKey</span></code>: <code class="docutils literal notranslate"><span class="pre">id</span></code></p>
 </section>
 <section id="enable-snapping">
-<h2>Enable snapping<a class="headerlink" href="#enable-snapping" title="Permalink to this headline">¶</a></h2>
+<h2>Enable snapping<a class="headerlink" href="#enable-snapping" title="Permalink to this heading">¶</a></h2>
 <p>To be able to snap while editing, the <code class="docutils literal notranslate"><span class="pre">snappingConfig</span></code> must be set on the layer metadata.
 The value is a <code class="docutils literal notranslate"><span class="pre">json</span></code> object containing the following optional properties:</p>
 <ul class="simple">
@@ -132,7 +133,7 @@ The value is a <code class="docutils literal notranslate"><span class="pre">json
 </ul>
 </section>
 <section id="managing-attributes">
-<h2>Managing attributes<a class="headerlink" href="#managing-attributes" title="Permalink to this headline">¶</a></h2>
+<h2>Managing attributes<a class="headerlink" href="#managing-attributes" title="Permalink to this heading">¶</a></h2>
 <p>To exclude some attributes from the editing form, list them as a comma-separated string
 (with no blank spaces) in the <code class="docutils literal notranslate"><span class="pre">Exclude</span> <span class="pre">properties</span></code> field of the WMS/WMTS layer forms
 in the admin interface.</p>
@@ -194,7 +195,7 @@ also as a comma-separated list of attributes.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -211,7 +212,7 @@ also as a comma-separated list of attributes.</p>
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

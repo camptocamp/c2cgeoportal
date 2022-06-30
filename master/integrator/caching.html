@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,9 +37,9 @@
           <div class="body" role="main">
             
   <section id="caching">
-<span id="integrator-caching"></span><h1>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-caching"></span><h1>Caching<a class="headerlink" href="#caching" title="Permalink to this heading">¶</a></h1>
 <section id="headers">
-<h2>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
+<h2>Headers<a class="headerlink" href="#headers" title="Permalink to this heading">¶</a></h2>
 <p>By default, the static elements will be cached for 10 days by the browser.</p>
 <p>To change this value for the whole application, change in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file the
 <code class="docutils literal notranslate"><span class="pre">vars/default_max_age</span></code> value. <code class="docutils literal notranslate"><span class="pre">0</span></code> will mean <code class="docutils literal notranslate"><span class="pre">no-cache</span></code>.
@@ -55,7 +56,7 @@ To change this value, add the following structure in the <code class="docutils l
 <code class="docutils literal notranslate"><span class="pre">print</span></code> or <code class="docutils literal notranslate"><span class="pre">layers</span></code> (editing).</p>
 </section>
 <section id="internal">
-<h2>Internal<a class="headerlink" href="#internal" title="Permalink to this headline">¶</a></h2>
+<h2>Internal<a class="headerlink" href="#internal" title="Permalink to this heading">¶</a></h2>
 <p>The application also has an internal cache. The internal cache will be invalidated on
 application start and after each modification in the <code class="docutils literal notranslate"><span class="pre">Theme</span></code> or the <code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code>.</p>
 <p>The internal cache can also be invalidated by calling the URL
@@ -118,7 +119,7 @@ application start and after each modification in the <code class="docutils liter
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -135,7 +136,7 @@ application start and after each modification in the <code class="docutils liter
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

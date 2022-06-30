@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,7 +37,7 @@
           <div class="body" role="main">
             
   <section id="extend-the-application">
-<span id="extend-application"></span><h1>Extend the application<a class="headerlink" href="#extend-the-application" title="Permalink to this headline">¶</a></h1>
+<span id="extend-application"></span><h1>Extend the application<a class="headerlink" href="#extend-the-application" title="Permalink to this heading">¶</a></h1>
 <p>To add an additional component in the project in simple mode we should:</p>
 <ul class="simple">
 <li><p>use an interface in canvas mode</p></li>
@@ -54,7 +55,7 @@
 <li><p>Debugging Custom JavaScript and service</p></li>
 </ul>
 <section id="create-a-new-docker-image-for-the-new-service">
-<h2>Create a new Docker image for the new service<a class="headerlink" href="#create-a-new-docker-image-for-the-new-service" title="Permalink to this headline">¶</a></h2>
+<h2>Create a new Docker image for the new service<a class="headerlink" href="#create-a-new-docker-image-for-the-new-service" title="Permalink to this heading">¶</a></h2>
 <p>In this chapter we will create a new Pyramid application that uses Cornice in a Docker image.</p>
 <p>We will use the Pyramid Cookiecutter starter, we can use it directly
 (by running <code class="docutils literal notranslate"><span class="pre">cookiecutter</span> <span class="pre">gh:Pylons/pyramid-cookiecutter-starter</span></code>) if you want to do your
@@ -87,7 +88,7 @@ span.prompt1:before {
 </div>
 </section>
 <section id="integrate-it-to-the-project">
-<h2>Integrate it to the project<a class="headerlink" href="#integrate-it-to-the-project" title="Permalink to this headline">¶</a></h2>
+<h2>Integrate it to the project<a class="headerlink" href="#integrate-it-to-the-project" title="Permalink to this heading">¶</a></h2>
 <p>Add the following service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, with that we will be able to build and run the image:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span><span class="w"></span>
@@ -122,7 +123,7 @@ in debugging mode with auto reloading:</p>
 </div>
 </section>
 <section id="create-the-new-interface-based-on-canvas">
-<h2>Create the new interface based on canvas<a class="headerlink" href="#create-the-new-interface-based-on-canvas" title="Permalink to this headline">¶</a></h2>
+<h2>Create the new interface based on canvas<a class="headerlink" href="#create-the-new-interface-based-on-canvas" title="Permalink to this heading">¶</a></h2>
 <p>Get the files from the <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mkdir -p geoportal/interfaces/</span>
 <span class="prompt1">cp CONST_create_template/geoportal/interfaces/desktop_alt.html.mako <span class="se">\</span>
@@ -165,7 +166,7 @@ The slot says where the component should be added:</p>
 </div>
 </section>
 <section id="create-a-new-webcomponent">
-<h2>Create a new WebComponent<a class="headerlink" href="#create-a-new-webcomponent" title="Permalink to this headline">¶</a></h2>
+<h2>Create a new WebComponent<a class="headerlink" href="#create-a-new-webcomponent" title="Permalink to this heading">¶</a></h2>
 <p>In this tutorial we will create a new WebComponent based on <a class="reference external" href="https://lit.dev/">Lit</a>,
 and build by <a class="reference external" href="https://vitejs.dev/">Vite</a>.</p>
 <p>We will add a button in the tools bar which opens a new tool panel and that can be used to send a feedback.</p>
@@ -194,7 +195,7 @@ and build by <a class="reference external" href="https://vitejs.dev/">Vite</a>.<
 </div>
 </section>
 <section id="build-it-in-the-config-image">
-<h2>Build it in the config image<a class="headerlink" href="#build-it-in-the-config-image" title="Permalink to this headline">¶</a></h2>
+<h2>Build it in the config image<a class="headerlink" href="#build-it-in-the-config-image" title="Permalink to this heading">¶</a></h2>
 <p>In the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> we will add two stages, one to build the WebComponent and an other just to add the
 build artifacts to the config image.</p>
 <p>Add the following lines at the end of <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>:</p>
@@ -232,7 +233,7 @@ build artifacts to the config image.</p>
 </div>
 </section>
 <section id="add-it-to-the-interface-template">
-<h2>Add it to the interface template<a class="headerlink" href="#add-it-to-the-interface-template" title="Permalink to this headline">¶</a></h2>
+<h2>Add it to the interface template<a class="headerlink" href="#add-it-to-the-interface-template" title="Permalink to this heading">¶</a></h2>
 <p>Then we will include the following HTML in the canvas element, in <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code>:</p>
 <p><code class="docutils literal notranslate"><span class="pre">`html</span>
 <span class="pre">&lt;gmf-tool-button</span> <span class="pre">slot=&quot;tool-button&quot;</span> <span class="pre">iconClasses=&quot;fas</span> <span class="pre">fa-file-signature&quot;</span> <span class="pre">panelName=&quot;feedback&quot;&gt;&lt;/gmf-tool-button&gt;</span>
@@ -276,7 +277,7 @@ build artifacts to the config image.</p>
 </div>
 </section>
 <section id="debugging-custom-javascript-and-service">
-<h2>Debugging Custom JavaScript and service<a class="headerlink" href="#debugging-custom-javascript-and-service" title="Permalink to this headline">¶</a></h2>
+<h2>Debugging Custom JavaScript and service<a class="headerlink" href="#debugging-custom-javascript-and-service" title="Permalink to this heading">¶</a></h2>
 <p>The usual build and run will also work for the custom JavaScript and service.
 Build and run as usual:</p>
 <p>To have a development environment with auto-reload mode, we will start the Vite dev server
@@ -311,7 +312,7 @@ in the <code class="docutils literal notranslate"><span class="pre">geoportal/va
 <span class="prompt1">npm run dev</span>
 </pre></div></div></section>
 <section id="extend-the-geoportal-image">
-<h2>Extend the geoportal image<a class="headerlink" href="#extend-the-geoportal-image" title="Permalink to this headline">¶</a></h2>
+<h2>Extend the geoportal image<a class="headerlink" href="#extend-the-geoportal-image" title="Permalink to this heading">¶</a></h2>
 <p>If you need to configure your own authentication you will need to extend the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> Docker image.</p>
 <p>For that you will need to create a new folder named <code class="docutils literal notranslate"><span class="pre">geoportal_custom</span></code>.</p>
 <p>An this folder, add a file named <code class="docutils literal notranslate"><span class="pre">authentication.py</span></code> with the content you need, the original content is:</p>
@@ -415,7 +416,7 @@ to be adapted when migrating to future versions of GeoMapFish.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -432,7 +433,7 @@ to be adapted when migrating to future versions of GeoMapFish.</p>
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

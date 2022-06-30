@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,11 +37,11 @@
           <div class="body" role="main">
             
   <section id="specific-configuration-for-qgis-server">
-<span id="integrator-backend-qgis"></span><h1>Specific configuration for QGIS server<a class="headerlink" href="#specific-configuration-for-qgis-server" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-backend-qgis"></span><h1>Specific configuration for QGIS server<a class="headerlink" href="#specific-configuration-for-qgis-server" title="Permalink to this heading">¶</a></h1>
 <section id="qgis-desktop-configuration">
-<h2>QGIS Desktop configuration<a class="headerlink" href="#qgis-desktop-configuration" title="Permalink to this headline">¶</a></h2>
+<h2>QGIS Desktop configuration<a class="headerlink" href="#qgis-desktop-configuration" title="Permalink to this heading">¶</a></h2>
 <section id="create-a-tunnel-on-the-database-server">
-<h3>Create a tunnel on the database server<a class="headerlink" href="#create-a-tunnel-on-the-database-server" title="Permalink to this headline">¶</a></h3>
+<h3>Create a tunnel on the database server<a class="headerlink" href="#create-a-tunnel-on-the-database-server" title="Permalink to this heading">¶</a></h3>
 <p>If you cannot connect directly to the database, you can create a tunnel to be able to connect:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
@@ -52,13 +53,13 @@ span.prompt1:before {
 <span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>
 </pre></div></div></section>
 <section id="run-the-client-with-docker">
-<h3>Run the client with Docker<a class="headerlink" href="#run-the-client-with-docker" title="Permalink to this headline">¶</a></h3>
+<h3>Run the client with Docker<a class="headerlink" href="#run-the-client-with-docker" title="Permalink to this heading">¶</a></h3>
 <p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
 run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make edit-qgis-project</span>
 </pre></div></div></section>
 <section id="ows-configuration">
-<h3>OWS configuration<a class="headerlink" href="#ows-configuration" title="Permalink to this headline">¶</a></h3>
+<h3>OWS configuration<a class="headerlink" href="#ows-configuration" title="Permalink to this heading">¶</a></h3>
 <p>You should setup your OWS service in the QGIS project properties in the OWS tab.</p>
 <p>You should <strong>check</strong> <em>Service Capabilities</em> and <strong>fill</strong> <em>Online resource</em> to correctly generate
 the URLs in the capabilities.</p>
@@ -74,7 +75,7 @@ API.</p>
 <code class="docutils literal notranslate"><span class="pre">https://&lt;application_base_url&gt;/mapserv_proxy?ogcserver=&lt;name&gt;</span></code>.</p>
 </section>
 <section id="connect-to-postgres-database">
-<h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this headline">¶</a></h3>
+<h3>Connect to Postgres database<a class="headerlink" href="#connect-to-postgres-database" title="Permalink to this heading">¶</a></h3>
 <p>If you want to add PostGIS layers on the main DB, create/edit your <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code> file
 and add a section for the DB you want to access:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="p">]</span>
@@ -124,7 +125,7 @@ dbname=${PGDATABASE}
 <p>Do not forget to gracefully restart Apache.</p>
 </section>
 <section id="extra-postgis-connection">
-<h3>Extra PostGIS connection<a class="headerlink" href="#extra-postgis-connection" title="Permalink to this headline">¶</a></h3>
+<h3>Extra PostGIS connection<a class="headerlink" href="#extra-postgis-connection" title="Permalink to this heading">¶</a></h3>
 <p>If you need to add another database connection, add a new section in the <code class="docutils literal notranslate"><span class="pre">$HOME/.pg_service.conf</span></code>.
 In the <code class="docutils literal notranslate"><span class="pre">qgisserver/pg_service.conf.tmpl</span></code> files, add a new section:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[&lt;extra_service&gt;]
@@ -151,7 +152,7 @@ so that you can change the database connection without rebuilding your applicati
 </section>
 </section>
 <section id="ogc-server">
-<h2>OGC server<a class="headerlink" href="#ogc-server" title="Permalink to this headline">¶</a></h2>
+<h2>OGC server<a class="headerlink" href="#ogc-server" title="Permalink to this heading">¶</a></h2>
 <p>For QGIS version &lt; 3.20, in the project file, you should set the online resource URL
 (Project/Properties…/QGIS Server/General information/Online resource) to
 <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/&lt;entrypoint&gt;/mapservproxy?ogcserver=&lt;name&gt;</span></code>, e.-g.
@@ -169,7 +170,7 @@ and the configuration should be as follows:</p>
 <li><p>Is single tile:  recommended to be <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code></p></li>
 </ul>
 <section id="access-restriction">
-<h3>Access Restriction<a class="headerlink" href="#access-restriction" title="Permalink to this headline">¶</a></h3>
+<h3>Access Restriction<a class="headerlink" href="#access-restriction" title="Permalink to this heading">¶</a></h3>
 <p>The access restriction is available only for Docker projects.</p>
 <p>We provide a Docker image named <code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> with tag pattern:
 <code class="docutils literal notranslate"><span class="pre">gmf&lt;Major</span> <span class="pre">GeoMapFish</span> <span class="pre">version}-qgis${Major</span> <span class="pre">QGIS}</span></code>.</p>
@@ -182,7 +183,7 @@ It also requires that the OGC servers are configured with an URL like that
 working but are deprecated.</p>
 </section>
 <section id="project-in-database">
-<h3>Project in Database<a class="headerlink" href="#project-in-database" title="Permalink to this headline">¶</a></h3>
+<h3>Project in Database<a class="headerlink" href="#project-in-database" title="Permalink to this heading">¶</a></h3>
 <p>If you store the project in the database, you should set the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable
 to something like that:
 <code class="docutils literal notranslate"><span class="pre">postgresql://&lt;dbuser&gt;:&lt;dbpass&gt;&#64;&lt;dbhost&gt;:&lt;dbport&gt;?sslmode=require&amp;dbname=&lt;dbname&gt;&amp;schema=&lt;dbschema&gt;&amp;project=&lt;projectname&gt;</span></code>.</p>
@@ -206,7 +207,7 @@ in the vars file add:</p>
 </section>
 </section>
 <section id="landing-page">
-<h2>Landing page<a class="headerlink" href="#landing-page" title="Permalink to this headline">¶</a></h2>
+<h2>Landing page<a class="headerlink" href="#landing-page" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference external" href="https://docs.qgis.org/3.22/en/docs/server_manual/services.html#qgis-server-catalog">The QGIS documentation</a>.</p>
 <p>To have the landing page you should:</p>
 <ul class="simple">
@@ -278,7 +279,7 @@ in the <code class="docutils literal notranslate"><span class="pre">MAP</span></
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -295,7 +296,7 @@ in the <code class="docutils literal notranslate"><span class="pre">MAP</span></
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

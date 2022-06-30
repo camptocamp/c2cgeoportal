@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,9 +37,9 @@
           <div class="body" role="main">
             
   <section id="specific-configuration-for-arcgis">
-<span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-backend-arcgis"></span><h1>Specific configuration for Arcgis<a class="headerlink" href="#specific-configuration-for-arcgis" title="Permalink to this heading">¶</a></h1>
 <section id="differentiating-wms-and-wfs-services">
-<h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this headline">¶</a></h2>
+<h2>Differentiating WMS and WFS services<a class="headerlink" href="#differentiating-wms-and-wfs-services" title="Permalink to this heading">¶</a></h2>
 <p>It may be necessary to differentiate the WMS and WFS services url.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">OgcServer</span></code> file, define:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">mapserv_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://your.arcgis.server/arcgis/services/SOME/FOLDER/MapServer/WMSServer</span><span class="w"></span>
@@ -49,7 +50,7 @@
 <em>WFS GetCapabilities</em>.</p>
 </section>
 <section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline">¶</a></h2>
+<h2>Note<a class="headerlink" href="#note" title="Permalink to this heading">¶</a></h2>
 <p>ArcGis (even 10.2) does not understand “application/vnd.ogc.gml” for <em>INFO_FORMAT</em> in
 a <em>GetFeatureInfo</em> request and returns only a simple XML formatted response
 instead of GML.</p>
@@ -113,7 +114,7 @@ instead of GML.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -130,7 +131,7 @@ instead of GML.</p>
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

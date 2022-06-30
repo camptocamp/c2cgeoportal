@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,11 +37,11 @@
           <div class="body" role="main">
             
   <section id="ngeo">
-<span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this heading">¶</a></h1>
 <section id="organization">
-<h2>Organization<a class="headerlink" href="#organization" title="Permalink to this headline">¶</a></h2>
+<h2>Organization<a class="headerlink" href="#organization" title="Permalink to this heading">¶</a></h2>
 <section id="simple-and-advanced-modes">
-<h3>Simple and advanced modes<a class="headerlink" href="#simple-and-advanced-modes" title="Permalink to this headline">¶</a></h3>
+<h3>Simple and advanced modes<a class="headerlink" href="#simple-and-advanced-modes" title="Permalink to this heading">¶</a></h3>
 <p>The HTML and the JS of an interface are in the files:
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code> and
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>
@@ -51,14 +52,14 @@ where <code class="docutils literal notranslate"><span class="pre">&lt;interface
 <p>The images used from the admin interface should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/images/</span></code>.</p>
 </section>
 <section id="advanced-mode-only">
-<h3>Advanced mode only<a class="headerlink" href="#advanced-mode-only" title="Permalink to this headline">¶</a></h3>
+<h3>Advanced mode only<a class="headerlink" href="#advanced-mode-only" title="Permalink to this heading">¶</a></h3>
 <p>The style sheet vars file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/sass/vars_&lt;interface&gt;.scss</span></code>.</p>
 <p>The style sheet file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/sass/&lt;interface&gt;.scss</span></code>.</p>
 <p>The images used by the application code should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/images/</span></code>.</p>
 </section>
 </section>
 <section id="html-file">
-<h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this headline">¶</a></h2>
+<h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -89,7 +90,7 @@ from the controller by doing the following (here, the controller is the <code cl
 </div>
 </section>
 <section id="controller-js-file">
-<h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this headline">¶</a></h2>
+<h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -104,7 +105,7 @@ from the controller by doing the following (here, the controller is the <code cl
 of the vars file. See the section below.</p>
 </section>
 <section id="dynamic-json-view">
-<h2>Dynamic.json view<a class="headerlink" href="#dynamic-json-view" title="Permalink to this headline">¶</a></h2>
+<h2>Dynamic.json view<a class="headerlink" href="#dynamic-json-view" title="Permalink to this heading">¶</a></h2>
 <p>To configure the ngeo constants with dynamic or configurable values,
 you can use the dynamic view.</p>
 <p>This view is configurable in the vars files in the section <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>.
@@ -154,9 +155,9 @@ be extended. These values will be updated with the interface configuration
 <li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>: The search groups from the <cite>layer_name</cite> of the Full-Text Search table.</p></li>
 </ul>
 <section id="ngeo-configuration-options">
-<h3>Ngeo configuration options<a class="headerlink" href="#ngeo-configuration-options" title="Permalink to this headline">¶</a></h3>
+<h3>Ngeo configuration options<a class="headerlink" href="#ngeo-configuration-options" title="Permalink to this heading">¶</a></h3>
 <section id="configuration">
-<span id="integrator-guide-ngeo-properties-configuration"></span><h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-configuration"></span><h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">authenticationBaseUrl</span></code> (<a class="reference internal" href="ngeo_other_configuration.html#integrator-guide-ngeo-properties-authenticationbaseurl"><span class="std std-ref">authenticationBaseUrl</span></a>)</p></li>
@@ -231,9 +232,9 @@ be extended. These values will be updated with the interface configuration
 </section>
 </section>
 <section id="ngeo-api-configuration-options">
-<h3>Ngeo API configuration options<a class="headerlink" href="#ngeo-api-configuration-options" title="Permalink to this headline">¶</a></h3>
+<h3>Ngeo API configuration options<a class="headerlink" href="#ngeo-api-configuration-options" title="Permalink to this heading">¶</a></h3>
 <section id="apiconfig">
-<span id="integrator-guide-ngeo-properties-apiconfig"></span><h4>APIConfig<a class="headerlink" href="#apiconfig" title="Permalink to this headline">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-apiconfig"></span><h4>APIConfig<a class="headerlink" href="#apiconfig" title="Permalink to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">backgroundLayer</span></code> (string, optional)</p></li>
@@ -251,12 +252,12 @@ be extended. These values will be updated with the interface configuration
 </section>
 </section>
 <section id="ngeo-internal-object-configuration-options">
-<h3>Ngeo internal object configuration options<a class="headerlink" href="#ngeo-internal-object-configuration-options" title="Permalink to this headline">¶</a></h3>
+<h3>Ngeo internal object configuration options<a class="headerlink" href="#ngeo-internal-object-configuration-options" title="Permalink to this heading">¶</a></h3>
 </section>
 </section>
 </section>
 <section id="define-additional-types-used-in-the-config">
-<h1>Define additional types used in the config<a class="headerlink" href="#define-additional-types-used-in-the-config" title="Permalink to this headline">¶</a></h1>
+<h1>Define additional types used in the config<a class="headerlink" href="#define-additional-types-used-in-the-config" title="Permalink to this heading">¶</a></h1>
 <p>See <a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc7946#section-3.3">FeatureCollection</a>.</p>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_Feature-Feature.html">ol.Feature</a>.</p>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_geom_Geometry-Geometry.html">ol.geom.Geometry</a>.</p>
@@ -712,9 +713,9 @@ be extended. These values will be updated with the interface configuration
 </dd>
 </dl>
 <section id="css-style">
-<h2>CSS style<a class="headerlink" href="#css-style" title="Permalink to this headline">¶</a></h2>
+<h2>CSS style<a class="headerlink" href="#css-style" title="Permalink to this heading">¶</a></h2>
 <section id="id2">
-<h3>Simple and advanced modes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3>Simple and advanced modes<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
 <p>In the <code class="docutils literal notranslate"><span class="pre">gmfOptions</span></code> we have a <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> property where we can configure all CSS variable
 (<code class="docutils literal notranslate"><span class="pre">var(--a-variable)</span></code> in the css files.</p>
 <p>The content of <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> is a dictionary where the keys are the CSS variable names, and the values the
@@ -732,7 +733,7 @@ your style with the <code class="docutils literal notranslate"><span class="pre"
 </div>
 </section>
 <section id="id3">
-<h3>Advanced mode only<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3>Advanced mode only<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <p>In the advanced mode, you can set the style of a component by selecting the component using
 the <code class="docutils literal notranslate"><span class="pre">querySelector</span></code> native function and by appending a new style to this element.
 Example:</p>
@@ -747,7 +748,7 @@ recommended if you don’t have to override the component for another purpose.</
 </section>
 </section>
 <section id="creating-your-own-component">
-<h2>Creating your own component<a class="headerlink" href="#creating-your-own-component" title="Permalink to this headline">¶</a></h2>
+<h2>Creating your own component<a class="headerlink" href="#creating-your-own-component" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -812,7 +813,7 @@ the code. Example in ngeo: <cite>src/auth/service.ts</cite>.</p>
 static functions, helper and utils files instead. It will facilitate the maintenance.</p>
 </section>
 <section id="extending-or-overriding-an-existing-component">
-<h2>Extending or overriding an existing component<a class="headerlink" href="#extending-or-overriding-an-existing-component" title="Permalink to this headline">¶</a></h2>
+<h2>Extending or overriding an existing component<a class="headerlink" href="#extending-or-overriding-an-existing-component" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -910,7 +911,7 @@ In some cases, you may use inheritance (with the <code class="docutils literal n
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -927,7 +928,7 @@ In some cases, you may use inheritance (with the <code class="docutils literal n
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

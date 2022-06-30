@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,13 +37,13 @@
           <div class="body" role="main">
             
   <section id="using-multiple-databases">
-<span id="integrator-multiple-databases"></span><h1>Using multiple databases<a class="headerlink" href="#using-multiple-databases" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-multiple-databases"></span><h1>Using multiple databases<a class="headerlink" href="#using-multiple-databases" title="Permalink to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
 </div>
 <section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
 <p>In your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, configure any database sessions
 that you want to access in your GMF instance in addition to
 the default database session. For example, to add sessions
@@ -57,7 +58,7 @@ from a database <code class="docutils literal notranslate"><span class="pre">oth
 <p>These additional DB sessions will be automatically initialized by GMF.</p>
 </section>
 <section id="using-the-additional-sessions">
-<h2>Using the additional sessions<a class="headerlink" href="#using-the-additional-sessions" title="Permalink to this headline">¶</a></h2>
+<h2>Using the additional sessions<a class="headerlink" href="#using-the-additional-sessions" title="Permalink to this heading">¶</a></h2>
 <p>In the layers enumeration of your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, you can now
 reference the sessions defined above. For example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers</span><span class="p">:</span><span class="w"></span>
@@ -83,7 +84,7 @@ The session name for the default database is <code class="docutils literal notra
 </div>
 </section>
 <section id="restrictions-in-multiple-database-usage">
-<h2>Restrictions in multiple database usage<a class="headerlink" href="#restrictions-in-multiple-database-usage" title="Permalink to this headline">¶</a></h2>
+<h2>Restrictions in multiple database usage<a class="headerlink" href="#restrictions-in-multiple-database-usage" title="Permalink to this heading">¶</a></h2>
 <p>In a GMF instance, an editable layer can only be included when that layer’s data
 resides in the default database of the GMF instance.
 Regarding editable layers, see <a class="reference internal" href="../administrator/editing.html#administrator-editing-editable"><span class="std std-ref">here</span></a>.
@@ -149,7 +150,7 @@ only the default database session can be used for such layers.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -166,7 +167,7 @@ only the default database session can be used for such layers.</p>
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

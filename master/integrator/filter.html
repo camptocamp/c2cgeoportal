@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,9 +37,9 @@
           <div class="body" role="main">
             
   <section id="filter-querier">
-<span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-querier"></span><h1>Filter (Querier)<a class="headerlink" href="#filter-querier" title="Permalink to this heading">¶</a></h1>
 <section id="filterable-layers">
-<h2>Filterable layers<a class="headerlink" href="#filterable-layers" title="Permalink to this headline">¶</a></h2>
+<h2>Filterable layers<a class="headerlink" href="#filterable-layers" title="Permalink to this heading">¶</a></h2>
 <p>Per default, layers are not filterable.
 If you wish to provide filter functionality for some layers, proceed as follows:</p>
 <ul class="simple">
@@ -52,16 +53,16 @@ and the layer name as value.</p></li>
 </div>
 </section>
 <section id="available-attributes-and-operators-in-filters">
-<h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this headline">¶</a></h2>
+<h2>Available attributes and operators in filters<a class="headerlink" href="#available-attributes-and-operators-in-filters" title="Permalink to this heading">¶</a></h2>
 <p>All attributes defined as “exported” in the layer of your map server will be automatically available as
 filterable attribute. If the type, and so the operator on the attribute, is not adequate for
 filtering, you should adapt the type in your layer definition.
 See <a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-wfs-getfeature"><span class="std std-ref">WFS GetFeature</span></a> for more information (MapServer only).</p>
 </section>
 <section id="enumerate-available-attributes-for-a-layer">
-<h2>Enumerate available attributes for a layer<a class="headerlink" href="#enumerate-available-attributes-for-a-layer" title="Permalink to this headline">¶</a></h2>
+<h2>Enumerate available attributes for a layer<a class="headerlink" href="#enumerate-available-attributes-for-a-layer" title="Permalink to this heading">¶</a></h2>
 <section id="project-configuration-file">
-<h3>Project Configuration file<a class="headerlink" href="#project-configuration-file" title="Permalink to this headline">¶</a></h3>
+<h3>Project Configuration file<a class="headerlink" href="#project-configuration-file" title="Permalink to this heading">¶</a></h3>
 <p>In the filter panel, instead of the standard text field, it is possible to display combos providing the
 available values of the attributes. The values are automatically retrieved using a web service that does a
 <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
@@ -98,7 +99,7 @@ attribute level. <code class="docutils literal notranslate"><span class="pre">ta
 </div>
 </section>
 <section id="administration-interface">
-<h3>Administration interface<a class="headerlink" href="#administration-interface" title="Permalink to this headline">¶</a></h3>
+<h3>Administration interface<a class="headerlink" href="#administration-interface" title="Permalink to this heading">¶</a></h3>
 <p>You can add some additional configuration in the administration interface as follows.</p>
 <p>It is possible to define enumerated or directed attributes, to WMS layers only, via metadata.
 The metadata to define is <code class="docutils literal notranslate"><span class="pre">enumeratedAttributes</span></code> or <code class="docutils literal notranslate"><span class="pre">directedFilterAttributes</span></code>.</p>
@@ -112,7 +113,7 @@ while directed attributes are ready-to-use values that come directly from the ma
 is available here: <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/gmfThemes.GmfMetaData.html">gmfThemes.GmfMetaData</a>.</p>
 </section>
 <section id="using-db-sessions">
-<h3>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this headline">¶</a></h3>
+<h3>Using DB sessions<a class="headerlink" href="#using-db-sessions" title="Permalink to this heading">¶</a></h3>
 <p>It is possible to get attribute lists also
 for a layer whose data is hosted in an external database, using the
 <code class="docutils literal notranslate"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> parameter.</p>
@@ -176,7 +177,7 @@ for a layer whose data is hosted in an external database, using the
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -193,7 +194,7 @@ for a layer whose data is hosted in an external database, using the
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

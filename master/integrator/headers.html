@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,9 +37,9 @@
           <div class="body" role="main">
             
   <section id="headers">
-<span id="integrator-headers"></span><h1>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h1>
+<span id="integrator-headers"></span><h1>Headers<a class="headerlink" href="#headers" title="Permalink to this heading">¶</a></h1>
 <section id="id1">
-<h2>Headers<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>Headers<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> adds some HTTP headers on its responses with certain default values.
 You may wish to override the values being written. All this is done in the configuration with the
 <code class="docutils literal notranslate"><span class="pre">headers</span></code> section in the vars file with the following syntax:</p>
@@ -56,7 +57,7 @@ You may wish to override the values being written. All this is done in the confi
 <code class="docutils literal notranslate"><span class="pre">shortener</span></code>, <code class="docutils literal notranslate"><span class="pre">login</span></code>.</p>
 </section>
 <section id="content-security-policy">
-<h2>Content-Security-Policy<a class="headerlink" href="#content-security-policy" title="Permalink to this headline">¶</a></h2>
+<h2>Content-Security-Policy<a class="headerlink" href="#content-security-policy" title="Permalink to this heading">¶</a></h2>
 <p>For the <code class="docutils literal notranslate"><span class="pre">Content-Security-Policy</span></code> header, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> includes specific variables in its standard
 template, to facilitate the customization of these values.
 The naming of these variables follows this pattern: <code class="docutils literal notranslate"><span class="pre">content_security_policy_&lt;path&gt;_&lt;directive&gt;[_extra]</span></code>.</p>
@@ -66,7 +67,7 @@ The naming of these variables follows this pattern: <code class="docutils litera
 <code class="docutils literal notranslate"><span class="pre">[_extra]</span></code> is a suffix to be able to extend a directive instance of completely overriding it.</p>
 </section>
 <section id="access-control-allow-origin">
-<h2>Access-Control-Allow-Origin<a class="headerlink" href="#access-control-allow-origin" title="Permalink to this headline">¶</a></h2>
+<h2>Access-Control-Allow-Origin<a class="headerlink" href="#access-control-allow-origin" title="Permalink to this heading">¶</a></h2>
 <p>To add domain that can access to the authenticated routes you should have something like that
 in the vars file:</p>
 <div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span> headers:<span class="w"></span>
@@ -104,7 +105,7 @@ in the vars file:</p>
 </div>
 </section>
 <section id="global-headers">
-<h2>Global headers<a class="headerlink" href="#global-headers" title="Permalink to this headline">¶</a></h2>
+<h2>Global headers<a class="headerlink" href="#global-headers" title="Permalink to this heading">¶</a></h2>
 <p>For path the not manage with the <code class="docutils literal notranslate"><span class="pre">headers</span></code> section we can use the <code class="docutils literal notranslate"><span class="pre">global_headers</span></code> section
 in the vars file with the following syntax:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
@@ -118,7 +119,7 @@ in the vars file with the following syntax:</p>
 If the same header is matched more than once, the last value is kept.</p>
 </section>
 <section id="forward-host">
-<h2>Forward host<a class="headerlink" href="#forward-host" title="Permalink to this headline">¶</a></h2>
+<h2>Forward host<a class="headerlink" href="#forward-host" title="Permalink to this heading">¶</a></h2>
 <p>Requests passing through the c2cgeoportal proxy will have their host set with the host
 of the server. It’s possible to keep the original host by adding the host value to preserve
 in the <cite>host_forward_host</cite> array of strings.</p>
@@ -130,7 +131,7 @@ in the <cite>host_forward_host</cite> array of strings.</p>
 </div>
 </section>
 <section id="headers-whitelist-and-blacklist">
-<h2>Headers whitelist and blacklist<a class="headerlink" href="#headers-whitelist-and-blacklist" title="Permalink to this headline">¶</a></h2>
+<h2>Headers whitelist and blacklist<a class="headerlink" href="#headers-whitelist-and-blacklist" title="Permalink to this heading">¶</a></h2>
 <p>It’s possible to filter the headers of requests with a whitelist or a blacklist.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">headers_whitelist</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
@@ -200,7 +201,7 @@ Pyramid will still add back its default headers.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -217,7 +218,7 @@ Pyramid will still add back its default headers.</p>
       &copy;2011-2022, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
