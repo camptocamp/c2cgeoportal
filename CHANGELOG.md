@@ -1,3 +1,8 @@
+##### 2.4.2.83
+* Ignore CVE [c2cgeoportal#9804](https://github.com/camptocamp/c2cgeoportal/pull/9804)
+* Remove no more present CVE [c2cgeoportal#9808](https://github.com/camptocamp/c2cgeoportal/pull/9808)
+* Fix CVE [c2cgeoportal#9843](https://github.com/camptocamp/c2cgeoportal/pull/9843)
+* Bump the print to from 3.20 to 3.27 to be supported [c2cgeoportal#9894](https://github.com/camptocamp/c2cgeoportal/pull/9894)
 ##### 2.4.2.82
 * Fix bootstrap-table CVE, ignore pylint CVE [c2cgeoportal#9785](https://github.com/camptocamp/c2cgeoportal/pull/9785)
 ##### 2.4.2.81
