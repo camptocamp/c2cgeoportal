@@ -36,7 +36,9 @@ def get_any(repo, ref, section, url):
 
     json_stuff = requests.get(url.format(repo, ref), headers={
         'Accept': 'application/vnd.github.groot-preview+json',
-        'Authorization': 'token {}'.format(os.environ['GITHUB_TOKEN'])
+        'Authorization': 'token {}'.format(subprocess.run(
+            ["gopass", "show", "gs/ci/github/token/gopass"], stdout=subprocess.PIPE, check=True
+        ).stdout.decode().strip('\n '))
     }).json()
 
     changelog[section][repo][ref] = json_stuff
