@@ -23,5 +23,10 @@
       groupName: 'all minor versions',
       automerge: true,
     },
+    /** Ungroup OWSLib */
+    {
+      matchPackageNames: ['OWSLib'],
+      groupName: 'OWSLib',
+    },
   ],
 }
