@@ -1,3 +1,5 @@
+##### 2.5.0.210
+* [Backport 2.5] Bump the print to from 3.22 to 3.27 to be supported [c2cgeoportal#9895](https://github.com/camptocamp/c2cgeoportal/pull/9895)
 ##### 2.5.0.209
 * Fix CVE [c2cgeoportal#9844](https://github.com/camptocamp/c2cgeoportal/pull/9844)
 ##### 2.5.0.208
