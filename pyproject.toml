@@ -59,7 +59,7 @@ mypy = "0.961"
 flake8 = "4.0.1"
 
 [tool.poetry.dev-dependencies]
-awscli = "1.25.18"  # Work with Object storage
+awscli = "1.25.21"  # Work with Object storage
 Babel = "2.10.3"  # i18n
 beautifulsoup4 = "4.11.1"  # admin tests
 coverage = "6.4.1"  # Build coverage XML for Codacy
