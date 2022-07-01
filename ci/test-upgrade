@@ -6,44 +6,29 @@ PCREATE_ARGS="--overwrite --package-name testgeomapfish"
 # $1: folder
 # $2: scaffold
 # $3: version
-function pcreate240 {
-    wget https://raw.githubusercontent.com/camptocamp/c2cgeoportal/2.4/docker-run
-    chmod +x docker-run
-    ./docker-run --env=SRID=21781 --env=APACHE_VHOST=test \
-        --env=EXTENT=489246.36,78873.44,837119.76,296543.14 --image=camptocamp/geomapfish-build \
-        --version=$3 --share=$1 pcreate --scaffold=$2 $1/testgeomapfish ${PCREATE_ARGS}
-}
-
-# $1: folder
-# $2: scaffold
-# $3: version
 function pcreate {
-    if [ $3 == '2.4.0' ]; then
-        pcreate240 $1 $2 $3
-    else
-        if [ $2 == c2cgeoportal_create ]; then
-            DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
-        fi
-        docker run --rm ${DOCKER_ENV} \
-            --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-tools:$3 \
-            run "$(id -u)" "$(id -g)" /src pcreate --scaffold=$2 testgeomapfish ${PCREATE_ARGS}
+    if [ $2 == c2cgeoportal_create ]; then
+        DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
     fi
+    docker run --rm ${DOCKER_ENV} \
+        --volume="$1/testgeomapfish:/src/testgeomapfish" "camptocamp/geomapfish-tools:$3" \
+        run "$(id -u)" "$(id -g)" /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
 }
 
 # $1: folder
 # $2: version
 function create {
-    rm --recursive --force $1
-    mkdir --parent $1
-    pcreate $1 c2cgeoportal_create $2
-    pcreate $1 c2cgeoportal_update $2
-    cd $1/testgeomapfish
+    rm --recursive --force "$1"
+    mkdir --parent "$1"
+    pcreate "$1" c2cgeoportal_create "$2"
+    pcreate "$1" c2cgeoportal_update "$2"
+    cd "$1/testgeomapfish"
     git init
     git config user.email ci@camptocamp.com
     git config user.name CI
     git remote add origin . # add a fake remote
     cd -
-    cd $1/testgeomapfish
+    cd "$1/testgeomapfish"
     git add --all
     # Workaround for issue in 2.4.0
     git add -f tilegeneration/config.yaml.tmpl || true
@@ -55,13 +40,13 @@ function create {
 # $1: folder
 # $2: version
 function create-advance {
-    rm --recursive --force $1
-    mkdir --parent $1
-    pcreate $1 c2cgeoportal_create $2
-    pcreate $1 c2cgeoportal_advance_create $2
-    pcreate $1 c2cgeoportal_update $2
-    pcreate $1 c2cgeoportal_advance_update $2
-    cd $1/testgeomapfish
+    rm --recursive --force "$1"
+    mkdir --parent "$1"
+    pcreate "$1" c2cgeoportal_create "$2"
+    pcreate "$1" c2cgeoportal_advance_create "$2"
+    pcreate "$1" c2cgeoportal_update "$2"
+    pcreate "$1" c2cgeoportal_advance_update "$2"
+    cd "$1/testgeomapfish"
     git init
     git config user.email ci@camptocamp.com
     git config user.name CI
@@ -76,7 +61,7 @@ function create-advance {
 
 function printdiff {
     ls -l .UPGRADE*
-    for f in $(ls -1 *.diff); do
+    for f in *.diff; do
         echo "--- $f ---"
         cat "$f"
     done
@@ -84,10 +69,10 @@ function printdiff {
 
 # $1: version
 function upgrade {
-    cp scripts/upgrade ${WORKSPACE}/v$1/testgeomapfish/
-    mkdir --parent ${WORKSPACE}/v$1/testgeomapfish/ci/
-    cp ci/to-advance ${WORKSPACE}/v$1/testgeomapfish/ci/
-    cd ${WORKSPACE}/v$1/testgeomapfish
+    cp scripts/upgrade "${WORKSPACE}/v$1/testgeomapfish/"
+    mkdir --parent "${WORKSPACE}/v$1/testgeomapfish/ci/"
+    cp ci/to-advance "${WORKSPACE}/v$1/testgeomapfish/ci/"
+    cd "${WORKSPACE}/v$1/testgeomapfish"
     cp project.yaml.mako project.yaml || true
     ci/to-advance
     rm ci/to-advance
@@ -95,22 +80,22 @@ function upgrade {
     echo /upgrade >> .gitignore
     git add --force .gitignore project.yaml
     git commit -m "Add /upgrade in .gitignore"
-    ./upgrade ${MAJOR_VERSION}
+    ./upgrade "${MAJOR_VERSION}"
     if [ -e .UPGRADE8 ]; then
-        ./upgrade ${MAJOR_VERSION} 9
+        ./upgrade "${MAJOR_VERSION}" 9
     fi
     if [ -e .UPGRADE9 ]; then
         # Workaround
         git status > /dev/null
         git apply --3way ngeo.diff
-        ./upgrade ${MAJOR_VERSION} 10
+        ./upgrade "${MAJOR_VERSION}" 10
     fi
     cp CONST_create_template/project.yaml .
     if [ -e .UPGRADE10 ]; then
         # Workaround
         git status > /dev/null
         git apply --3way create.diff
-        ./upgrade ${MAJOR_VERSION} 11
+        ./upgrade "${MAJOR_VERSION}" 11
     fi
     if [ ! -e .UPGRADE_SUCCESS ]; then
         printdiff
@@ -118,22 +103,18 @@ function upgrade {
         exit 1
     fi
     git clean -Xf
-    find -type d -empty -delete
+    find . -type d -empty -delete
     cd -
-    diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/ref ${WORKSPACE}/v$1
+    diff --recursive --exclude=.git --exclude=locale "${WORKSPACE}/ref" "${WORKSPACE}/v$1"
 }
 
 if [ "$1" = "init" ]; then
-    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
-    create-advance ${WORKSPACE}/ref ${MAJOR_VERSION}
-    create ${WORKSPACE}/v27 ${MAJOR_VERSION}
-    create ${WORKSPACE}/v260 2.6.0
-    create ${WORKSPACE}/v240 2.4.0
-    docker rmi camptocamp/geomapfish-tools:2.6.0
-    docker rmi camptocamp/geomapfish-build:2.4.0
+    create-advance "${WORKSPACE}/ref" "${MAJOR_VERSION}"
+    create "${WORKSPACE}/v28" "${MAJOR_VERSION}"
+    create "${WORKSPACE}/v270" 2.7.0.65
 
-    cd ${WORKSPACE}/ref/testgeomapfish
+    cd "${WORKSPACE}/ref/testgeomapfish"
     mv ci/config.yaml{,_}
     c2cciutils-checks --fix --check=black
     c2cciutils-checks --fix --check=isort
@@ -142,18 +123,14 @@ if [ "$1" = "init" ]; then
     cd -
 fi
 
-if [ "$1" = "240" ]; then
-    upgrade $1
+if [ "$1" = "270" ]; then
+    upgrade "$1"
 fi
 
-if [ "$1" = "260" ]; then
-    upgrade $1
-fi
-
-if [ "$1" = "27" ]; then
-    upgrade $1
+if [ "$1" = "28" ]; then
+    upgrade "$1"
 fi
 
 if [ "$1" = "cleanup" ]; then
-    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v260 ${WORKSPACE}/v27
+    rm --recursive --force "${WORKSPACE}/ref" "${WORKSPACE}/v270" "${WORKSPACE}/v28"
 fi
