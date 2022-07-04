@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+import argparse
+import subprocess
+import sys
+
+
+def _main() -> None:
+    argparser = argparse.ArgumentParser("Tests that's all the services are running")
+    argparser.parse_args()
+
+    services = [
+        s.strip()
+        for s in subprocess.run(["docker-compose", "ps"], check=True, stdout=subprocess.PIPE)
+        .stdout.decode("utf-8")
+        .splitlines()
+    ]
+    errors_statuses = [s for s in services if " Exit " in s and not s.endswith(" Exit 0")]
+    if errors_statuses:
+        print("\n".join(errors_statuses))
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    _main()

@@ -294,7 +294,56 @@ Then follow the sections in the install application guide:
 Dynamic configuration
 ---------------------
 
-Several files are generated on runtime, their content depending of the variables you
+Several files are generated on runtime, their content depending on the variables you
 have set as environment variables.
 
 The files can have the extension ``.tmpl`` and it use bash syntax (``${VARIABLE}``).
+
+GitHub workflows
+----------------
+
+With the application we have some predefined workflows.
+
+`.github/workflows/main.yaml`
+.............................
+
+The workflow that will run on all your commits, he will:
+- Run some code style checks on your code.
+- Build you application.
+- Run the acceptance tests (if configured).
+- Publish the application on DockerHub.
+- Trigger another workflow (on ArgoCD repository) to deploy you new application.
+
+`.github/workflows/rebuild.yaml`
+................................
+
+This workflow run on each night to rebuild the application with the new version of the base images.
+
+Be careful, GitHub will read only the file present on the main branch.
+
+`.github/workflows/update_l10n.yaml`
+....................................
+
+This workflow will query the `locale.pot` view, using `PROJECT_PUBLIC_URL` found in `Makefile`,
+and open a pull request to update the localization files (`.po`) with current list of translatable strings.
+
+Be careful, GitHub will read only the file present on the main branch.
+
+Acceptance tests
+................
+
+To have some acceptance tests you need to have a minimal dump of your database in the repository,
+it can be obtained with:
+
+.. prompt:: bash
+
+    scripts/db-backup --arg=--schema=<schema> ../dump.backup
+
+In the `Makefile` you should configure the dump file as `DUMP_FILE`, the `db-restore` call in `acceptance-init`
+should probably also be updated.
+
+In the file `.github/workflows/main.yaml` you should uncomment all the lines related to the
+acceptance tests.
+
+The acceptance tests will test that we didn't have any service in error, test the response of some URL,
+see in the file `tests/test_app.py`.

@@ -6,10 +6,6 @@ on:
 
 env:
   PROJECT: {{cookiecutter.package}}
-  # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
-  # OPENSHIFT_PROJECT: gs-gmf-{{cookiecutter.package}}
-  # The release branches
-  HELM_RELEASE_NAMES: int-{{cookiecutter.geomapfish_main_version_dash}},prod-{{cookiecutter.geomapfish_main_version_dash}}
 
 jobs:
   main:
@@ -30,8 +26,22 @@ jobs:
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
+      # Can be used to have some secrets (with mask)
+      # - run: make secrets
+      # - run: cat env.secrets |grep '^[# A-Z0-9_]\+='|sed -e 's/^[# A-Z0-9_]\+=\(.*\)/::add-mask::\1/g'
+
       - name: Checks
         run: c2cciutils-checks
+
+      # - name: Initialize the acceptance tests
+      #   run: make acceptance-init
+      # - run: c2cciutils-docker-logs
+      #   if: always()
+
+      # - name: Run the acceptance tests
+      #   run: make acceptance
+      # - run: c2cciutils-docker-logs
+      #   if: always()
 
       - name: Build
         run: ./build

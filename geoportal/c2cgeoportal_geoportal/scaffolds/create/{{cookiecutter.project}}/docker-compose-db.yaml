@@ -1,0 +1,26 @@
+# This file is used by the acceptance tests to have a local database.
+
+version: '2.3'
+
+volumes:
+  postgresql_data:
+
+services:
+  config: &db-config
+    environment:
+      - PGHOST=db
+      - PGHOST_SLAVE=db
+      - PGSSLMODE=prefer
+  geoportal: *db-config
+  # geoportal-advance: *db-config
+  tools: *db-config
+  alembic: *db-config
+  # alembic-advance: *db-config
+  # webpack_dev_server: *db-config
+
+  db:
+    extends:
+      file: docker-compose-lib.yaml
+      service: db
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data

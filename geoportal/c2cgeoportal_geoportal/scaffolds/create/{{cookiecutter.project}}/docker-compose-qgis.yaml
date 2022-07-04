@@ -1,0 +1,23 @@
+# This file is used to run QGIS client from the Docker image
+
+version: '2'
+
+services:
+  qgis:
+    extends:
+      file: docker-compose-lib.yaml
+      service: qgisserver
+    image: camptocamp/qgis-server:${QGIS_VERSION}-desktop
+    user: root
+    volumes_from:
+      - config
+    volumes:
+      - ${HOME}:${HOME}
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - PGSERVICEFILE=/etc/qgisserver/pg_service.conf
+      - DISPLAY=unix${DISPLAY}
+      - QGIS_DEBUG=0
+      - QGIS_LOG_FILE=/dev/null
+      - PGOPTIONS=-c statement_timeout=30000
+      - AZURE_STORAGE_CONNECTION_STRING
