@@ -253,9 +253,45 @@ Then follow the sections in the install application guide:</p>
 </section>
 <section id="dynamic-configuration">
 <h2>Dynamic configuration<a class="headerlink" href="#dynamic-configuration" title="Permalink to this heading">¶</a></h2>
-<p>Several files are generated on runtime, their content depending of the variables you
+<p>Several files are generated on runtime, their content depending on the variables you
 have set as environment variables.</p>
 <p>The files can have the extension <code class="docutils literal notranslate"><span class="pre">.tmpl</span></code> and it use bash syntax (<code class="docutils literal notranslate"><span class="pre">${VARIABLE}</span></code>).</p>
+</section>
+<section id="github-workflows">
+<h2>GitHub workflows<a class="headerlink" href="#github-workflows" title="Permalink to this heading">¶</a></h2>
+<p>With the application we have some predefined workflows.</p>
+<section id="github-workflows-main-yaml">
+<h3><cite>.github/workflows/main.yaml</cite><a class="headerlink" href="#github-workflows-main-yaml" title="Permalink to this heading">¶</a></h3>
+<p>The workflow that will run on all your commits, he will:
+- Run some code style checks on your code.
+- Build you application.
+- Run the acceptance tests (if configured).
+- Publish the application on DockerHub.
+- Trigger another workflow (on ArgoCD repository) to deploy you new application.</p>
+</section>
+<section id="github-workflows-rebuild-yaml">
+<h3><cite>.github/workflows/rebuild.yaml</cite><a class="headerlink" href="#github-workflows-rebuild-yaml" title="Permalink to this heading">¶</a></h3>
+<p>This workflow run on each night to rebuild the application with the new version of the base images.</p>
+<p>Be careful, GitHub will read only the file present on the main branch.</p>
+</section>
+<section id="github-workflows-update-l10n-yaml">
+<h3><cite>.github/workflows/update_l10n.yaml</cite><a class="headerlink" href="#github-workflows-update-l10n-yaml" title="Permalink to this heading">¶</a></h3>
+<p>This workflow will query the <cite>locale.pot</cite> view, using <cite>PROJECT_PUBLIC_URL</cite> found in <cite>Makefile</cite>,
+and open a pull request to update the localization files (<cite>.po</cite>) with current list of translatable strings.</p>
+<p>Be careful, GitHub will read only the file present on the main branch.</p>
+</section>
+<section id="acceptance-tests">
+<h3>Acceptance tests<a class="headerlink" href="#acceptance-tests" title="Permalink to this heading">¶</a></h3>
+<p>To have some acceptance tests you need to have a minimal dump of your database in the repository,
+it can be obtained with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">scripts/db-backup --arg<span class="o">=</span>--schema<span class="o">=</span>&lt;schema&gt; ../dump.backup</span>
+</pre></div></div><p>In the <cite>Makefile</cite> you should configure the dump file as <cite>DUMP_FILE</cite>, the <cite>db-restore</cite> call in <cite>acceptance-init</cite>
+should probably also be updated.</p>
+<p>In the file <cite>.github/workflows/main.yaml</cite> you should uncomment all the lines related to the
+acceptance tests.</p>
+<p>The acceptance tests will test that we didn’t have any service in error, test the response of some URL,
+see in the file <cite>tests/test_app.py</cite>.</p>
+</section>
 </section>
 </section>
 
