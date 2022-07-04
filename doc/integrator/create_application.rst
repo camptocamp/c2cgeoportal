@@ -293,7 +293,159 @@ Then follow the sections in the install application guide:
 Dynamic configuration
 ---------------------
 
-Several files are generated on runtime, their content depending of the variables you
+Several files are generated on runtime, their content depending on the variables you
 have set as environment variables.
 
 The files can have the extension ``.tmpl`` and it use bash syntax (``${VARIABLE}``).
+
+GitHub workflows
+----------------
+
+With the application we have some predefined workflows.
+
+`.github/workflows/main.yaml`
+.............................
+
+The workflow that will run on all your commits, it will:
+- Run some code style checks on your code.
+- Build you application.
+- Run the acceptance tests (if configured).
+- Publish the application on DockerHub.
+- Trigger another workflow (on ArgoCD repository) to deploy you new application.
+
+`.github/workflows/rebuild.yaml`
+................................
+
+This workflow run on each night to rebuild the application with the new version of the base images.
+
+Be careful, GitHub will read only the file present on the main branch.
+
+`.github/workflows/update_l10n.yaml`
+....................................
+
+This workflow will query the `locale.pot` view, using `PROJECT_PUBLIC_URL` found in `Makefile`,
+and open a pull request to update the localization files (`.po`) with current list of translatable strings.
+
+Be careful, GitHub will read only the file present on the main branch.
+
+Acceptance tests
+................
+
+To have some acceptance tests you need to have a minimal dump of your database in the repository,
+it can be obtained with:
+
+.. prompt:: bash
+
+    scripts/db-backup --arg=--schema=<schema> ../dump.backup
+
+In the `Makefile` you should add something like:
+
+```
+DUMP_FILE=dump.backup
+
+.PHONY: acceptance-init
+acceptance-init: ## Initialize the acceptance tests
+    docker-compose --file=docker-compose.yaml --file=docker-compose-db.yaml up -d
+    docker-compose exec -T geoportal wait-db
+    docker-compose exec -T tools psql --command="DROP EXTENSION IF EXISTS postgis CASCADE"
+    scripts/db-restore --docker-compose-file=docker-compose.yaml --docker-compose-file=docker-compose-db.yaml \
+        --arg=--clean --arg=--if-exists --arg=--verbose $(DUMP_FILE)
+
+.PHONY: acceptance
+acceptance: ## Run the acceptance tests
+    docker-compose exec -T tools pytest -vv tests/
+```
+
+In the file `.github/workflows/main.yaml` you should add something like:
+
+```yaml
+      - name: Initialize the acceptance tests
+        run: make acceptance-init
+      - run: c2cciutils-docker-logs
+        if: always()
+
+      - name: Run the acceptance tests
+        run: make acceptance
+      - run: c2cciutils-docker-logs
+        if: always()
+
+```
+
+You should add a `docker-compose-db.yaml` file, with:
+
+```
+# This file is used by the acceptance tests to have a local database.
+
+version: '2.3'
+
+volumes:
+  postgresql_data:
+
+services:
+  config: &db-config
+    environment:
+      - PGHOST=db
+      - PGHOST_SLAVE=db
+      - PGSSLMODE=prefer
+  geoportal: *db-config
+  # geoportal-advance: *db-config
+  tools: *db-config
+  alembic: *db-config
+  # alembic-advance: *db-config
+  # webpack_dev_server: *db-config
+
+  db:
+    extends:
+      file: docker-compose-lib.yaml
+      service: db
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+```
+
+And finally the file with the tests `tests/test_app.py` with:
+
+```
+import time
+from typing import Dict
+
+import pytest
+import requests
+
+
+@pytest.mark.parametrize(
+    "url,params",
+    [
+        ("https://front", {}),
+        ("https://front/themes", {}),
+        ("https://front/static-geomapfish/0/locales/fr.json", {}),
+        ("https://front/dynamic.json", {"interface": "desktop"}),
+        ("https://front/dynamic.json", {"interface": "desktop", "query": "", "path": "/"}),
+        ("https://front/c2c/health_check", {}),
+        ("https://front/c2c/health_check", {"max_level": "1"}),
+        ("https://front/c2c/health_check", {"checker": "check_collector"}),
+        ("https://front/admin/layertree", {}),
+        ("https://front/admin/layertree/children", {}),
+        ("http://mapserver:8080/mapserv_proxy", {"SERVICE": "WMS", "REQUEST": "GetCapabilities"}),
+        (
+            "https://front/mapserv_proxy",
+            {"ogcserver": "source for image/png", "SERVICE": "WMS", "REQUEST": "GetCapabilities"},
+        ),
+    ],
+)
+def test_url(url: str, params: Dict[str, str]) -> None:
+    """Tests that some URL didn't return an error."""
+    for _ in range(60):
+        response = requests.get(url, params=params, verify=False, timeout=240)  # nosec
+        if response.status_code == 503:
+            time.sleep(1)
+            continue
+        break
+    assert response.status_code == 200, response.text
+
+
+def test_admin() -> None:
+    """Tests that the admin page will provide the login page."""
+    response = requests.get("https://front/admin/", verify=False, timeout=240)  # nosec
+    assert response.status_code == 200, response.text
+    assert "Login" in response.text
+```
