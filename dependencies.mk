@@ -1,4 +1,3 @@
-export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
 TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
 
 LANGUAGES = fr de it
@@ -29,26 +28,17 @@ dependencies: $(TRANSIFEX_PO_FILES)
 $(HOME)/.transifexrc:
 	mkdir --parent $(dir $@)
 	echo "[https://www.transifex.com]" > $@
+	echo "api_hostname  = https://api.transifex.com" >> $@
+	echo "rest_hostname = https://rest.api.transifex.com" >> $@
 	echo "hostname = https://www.transifex.com" >> $@
-	echo "username = c2c" >> $@
-	echo "password = c2cc2c" >> $@
-	echo "token =" >> $@
+	echo "token = 1/dc02578696187cc29e4e6486f8611fdbfe60b235" >> $@
 
 .PHONY: transifex-send
 transifex-send: $(TX_DEPENDENCIES) \
 		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
 		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-
-.PHONY: transifex-init
-transifex-init: $(TX_DEPENDENCIES) \
-		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force --no-interactive
-	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force --no-interactive
-	tx push --translations --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force --no-interactive
-	tx push --translations --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force --no-interactive
+	tx push --branch=$(MAJOR_VERSION) --source --resources=geomapfish.c2cgeoportal_geoportal
+	tx push --branch=$(MAJOR_VERSION) --source --resources=geomapfish.c2cgeoportal_admin
 
 geoportal/c2cgeoportal_geoportal/locale/en/LC_MESSAGES/c2cgeoportal_geoportal.po: geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
 	mkdir --parent $(dir $@)
@@ -62,20 +52,20 @@ admin/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po: admin/c2cg
 
 geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
-	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
+	tx pull --branch=$(MAJOR_VERSION) --languages=$* --resources=geomapfish.c2cgeoportal_geoportal --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po
 geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
+	tx pull --branch=$(MAJOR_VERSION) --languages=$* --resources=ngeo.ngeo --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
 admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
-	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
+	tx pull --branch=$(MAJOR_VERSION) --languages=$* --resources=geomapfish.c2cgeoportal_admin --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
@@ -83,14 +73,14 @@ admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPEND
 geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/%/LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po: \
 		$(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
+	tx pull --branch=$(MAJOR_VERSION) --languages=$* --resources=ngeo.gmf-apps --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/static/locales/%.json
 geoportal/c2cgeoportal_geoportal/static/locales/%.json: $(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.webcomponent-$(TX_VERSION) --force
+	tx pull --branch=$(MAJOR_VERSION) --languages=$* --resources=ngeo.webcomponent --force
 	touch $@
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/en/LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po:

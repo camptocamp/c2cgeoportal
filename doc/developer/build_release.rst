@@ -6,8 +6,8 @@ Create a new release
 Vocabulary
 ----------
 
-On this page, we use the word ``version`` for a major version of MapFish
-Geoportal (2.0), and the word ``release`` for each step in this version
+On this page, we use the word ``version`` for a major version of GeoMapFish
+(2.0), and the word ``release`` for each step in this version
 (2.0.0rc1, 2.0.0, 2.0.1, ...).
 
 ``MapFish Geoportal`` is the pack that includes ngeo and c2cgeoportal;
@@ -31,16 +31,16 @@ On branch creation (start of the integration phase):
 * Create the new branch on demo
 * Create the new branch
 * Use the ``ngeo`` package linked to the new branch
-* Create the new transifex resources
+* Create the new Transifex resources
 * Update the master branch
 * Protect the new branch
 * Configure the rebuild
-* Verify that the changelog creation is working
+* Verify that the change log creation is working
 * Configure the branch on the status dashboard
 
 On release creation:
 
-* Reset the changelog
+* Reset the change log
 * Do the tags
 * Publish it
 * Create the new demo
@@ -79,7 +79,7 @@ Create the new branch
 
 You should create the new version branch.
 
-In the files ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAIN_BRANCH`` to
+In the files ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAIN_BRANCH`` to
   ``<new version>``.
 
 Use the ``ngeo`` package linked to the new branch
@@ -88,25 +88,27 @@ Use the ``ngeo`` package linked to the new branch
 In ``c2cgeoportal`` new version branch, in the file ``geoportal/package.json``, set the ``ngeo`` version to
 ``version-<new version>-latest``.
 
-Create the new transifex resources
+Create the new Transifex resources
 ----------------------------------
 
 Run:
 
 .. prompt:: bash
 
-    docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=x.y .
-    docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root transifex tail -f /dev/null
-    docker exec transifex bash -c \
-        '(cd /opt/c2cgeoportal; sed -i s/x_y/x_y+1/g .tx/config)'
-    docker exec --env=MAJOR_VERSION=x.y+1 transifex bash -c \
-        '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-init)'
-    docker stop transifex
+    tx pull --branch=<version> --source --force \
+        --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
+    tx pull --branch=<version> --translation --force \
+        --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
+
+    tx push --branch=<next version> --source --force \
+        --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
+    tx push --branch=<next version> --translation --force \
+        --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
 
 Update the master branch
 -------------------------
 
-In the file ``.github/workflows/main.yaml`` and  ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
+In the file ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
   ``<next version>``.
 
 In the files ``.github/workflows/audit.yaml`` and the new branch.
@@ -297,8 +299,8 @@ Configure the branch on the status dashboard
 Add the new branch for the demo, ngeo and c2cgeoportal in the file
 `scripts/status.yaml <https://github.com/camptocamp/geospatial-dashboards/blob/master/ci/status.yaml>`_.
 
-Reset the changelog
--------------------
+Reset the change log
+--------------------
 
 On the ``c2cgeoportal`` new version branch:
 
@@ -337,7 +339,7 @@ On the <new_version> branch disable version check by adding in the ``ci/config.y
 Backport label
 --------------
 
-Create the new backport label named ``backport_<new_version>``.
+Create the new back port label named ``backport_<new_version>``.
 
 Protect branch
 --------------
@@ -366,4 +368,4 @@ Use the new demo
 
 On ``ngeo`` master branch change all the URL
 from ``https://geomapfish-demo-<new version>.camptocamp.com``
-to  ``https://geomapfish-demo-<next version>.camptocamp.com``.
+to ``https://geomapfish-demo-<next version>.camptocamp.com``.

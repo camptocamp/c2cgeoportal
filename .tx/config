@@ -1,0 +1,25 @@
+[main]
+host = https://www.transifex.com
+
+[o:camptocamp:p:geomapfish:r:c2cgeoportal_geoportal]
+type = PO
+source_file = geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot
+file_filter = geoportal/c2cgeoportal_geoportal/locale/<lang>/LC_MESSAGES/c2cgeoportal_geoportal.po
+
+[o:camptocamp:p:geomapfish:r:c2cgeoportal_admin]
+type = PO
+source_file = admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
+file_filter = admin/c2cgeoportal_admin/locale/<lang>/LC_MESSAGES/c2cgeoportal_admin.po
+
+[o:camptocamp:p:ngeo:r:gmf-apps]
+type = PO
+file_filter = geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/<lang>/LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po
+
+[o:camptocamp:p:ngeo:r:ngeo]
+type = PO
+file_filter = geoportal/c2cgeoportal_geoportal/locale/<lang>/LC_MESSAGES/ngeo.po
+
+[o:camptocamp:p:ngeo:r:webcomponent]
+source_lang = en
+type = KEYVALUEJSON
+file_filter = geoportal/c2cgeoportal_geoportal/static/locales/<lang>.json
