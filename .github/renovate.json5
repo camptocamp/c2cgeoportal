@@ -28,5 +28,10 @@
       matchPackageNames: ['OWSLib'],
       groupName: 'OWSLib',
     },
+    /** Ignore geoportal/requirements.txt */
+    {
+      matchPaths: ['geoportal/requirements.txt'],
+      enabled: false,
+    },
   ],
 }
