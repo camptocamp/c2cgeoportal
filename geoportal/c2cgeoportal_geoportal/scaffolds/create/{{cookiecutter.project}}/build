@@ -140,15 +140,17 @@ def main() -> None:
             sys.exit(e.returncode)
 
     if args.fast_reload:
-        for service in (
-            subprocess.run(
+        services = [
+            service
+            for service in subprocess.run(
                 ["docker-compose", "ps", "--services", "--all"], stdout=subprocess.PIPE, check=True
             )
             .stdout.decode()
             .splitlines()
-        ):
-            if not service.startswith("redis"):
-                run(args, ["docker-compose", "rm", "--stop", "--force", service], check=True)
+            if not service.startswith("redis")
+        ]
+
+        run(args, ["docker-compose", "rm", "--stop", "--force"] + services, check=True)
         run(args, ["docker-compose", "up", "-d"], check=True)
 
 

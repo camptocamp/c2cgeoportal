@@ -73,7 +73,7 @@ FROM base AS tools
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
 ENV NODE_PATH=/usr/lib/node_modules
-CMD ["tail", "-f", "/dev/null"]
+CMD ["tail", "--follow", "--zero-terminated", "/dev/null"]
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
