@@ -31,15 +31,16 @@ import logging
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
 
+import pyramid.interfaces
 import pyramid.request
 import pyramid.response
 import sqlalchemy.ext.declarative
+import zope.interface
 from dogpile.cache.api import NO_VALUE, CacheBackend
 from dogpile.cache.backends.memory import MemoryBackend
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
 from dogpile.cache.region import CacheRegion, make_region
 from dogpile.cache.util import sha1_mangle_key
-from pyramid.request import Request
 from sqlalchemy.orm.util import identity_key
 
 from c2cgeoportal_commons.models import Base
@@ -85,7 +86,9 @@ def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..
         parts.extend(namespace)
         if ignore_first_argument:
             args = args[1:]
-        new_args: List[str] = [arg for arg in args if not isinstance(arg, Request)]
+        new_args: List[str] = [
+            arg for arg in args if pyramid.interfaces.IRequest not in zope.interface.implementedBy(type(arg))
+        ]
         parts.extend(map(str, map(map_dbobject, new_args)))
         return "|".join(parts)
 
@@ -103,8 +106,7 @@ def _configure_region(conf: Dict[str, Any], cache_region: CacheRegion) -> None:
     kwargs: Dict[str, Any] = {"replace_existing_backend": True}
     backend = conf["backend"]
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
-    kwargs.setdefault("arguments", {})
-    kwargs["arguments"]["cache_dict"] = MEMORY_CACHE_DICT
+    kwargs.setdefault("arguments", {}).setdefault("cache_dict", MEMORY_CACHE_DICT)
     cache_region.configure(backend, **kwargs)
 
 

@@ -116,6 +116,7 @@ def setup_db() -> None:
 
     caching.init_region({"backend": "dogpile.cache.null"}, "std")
     caching.init_region({"backend": "dogpile.cache.null"}, "obj")
+    caching.init_region({"backend": "dogpile.cache.null"}, "ogc-server")
     caching.invalidate_region()
 
 
