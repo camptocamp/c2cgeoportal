@@ -1,4 +1,3 @@
-
 [tool.poetry]
 name = 'c2cgeoportal'
 version = '0.0.0'
@@ -7,21 +6,21 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
-c2cwsgiutils = {extras = ["broadcast"], version = "5.0.0"}
-papyrus = "2.4"  # commons
-transaction = "3.0.1"  # commons
+c2cwsgiutils = { extras = ["broadcast"], version = "5.0.0" }
+papyrus = "2.4" # commons
+transaction = "3.0.1" # commons
 "c2c.template" = "2.3.0"
 GeoAlchemy2 = "0.12.1"
-SQLAlchemy = "1.4.39"  # commons
-"zope.event" = "4.5.0"  # commons
-"zope.sqlalchemy" = "1.6"  # commons
+SQLAlchemy = "1.4.39" # commons
+"zope.event" = "4.5.0" # commons
+"zope.sqlalchemy" = "1.6" # commons
 shapely = "1.8.2"
 cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.3"
 pytz = "2022.1"
 
 [tool.poetry.dev-dependencies]
-prospector = {extras = ["with_mypy", "with_bandit"], version = "1.7.7"}
+prospector = { extras = ["with_mypy", "with_bandit"], version = "1.7.7" }
 pylint = "2.14.3"
 mypy = "0.961"
 flake8 = "4.0.1"

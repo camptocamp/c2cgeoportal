@@ -3,6 +3,8 @@
 !requirements.txt
 !pyproject.toml
 !poetry.lock
+!ci/applications.yaml
+!ci/applications-versions.yaml
 !dependencies.mk
 !build.mk
 !commons

@@ -337,7 +337,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.2.0"
+version = "1.3.dev20220704113927"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
@@ -347,6 +347,7 @@ python-versions = ">=3.8,<4.0"
 black = "22.3.0"
 click = ">=8.0.0,<9.0.0"
 codespell = ">=2.0.0,<3.0.0"
+debian-inspector = ">=30.0.0,<31.0.0"
 defusedxml = ">=0.0.0,<1.0.0"
 EditorConfig = ">=0.0.0,<1.0.0"
 google-api-python-client = ">=2.0.0,<3.0.0"
@@ -652,6 +653,22 @@ pep8test = ["black", "flake8", "flake8-import-order", "pep8-naming"]
 sdist = ["setuptools_rust (>=0.11.4)"]
 ssh = ["bcrypt (>=3.1.5)"]
 test = ["pytest (>=6.2.0)", "pytest-benchmark", "pytest-cov", "pytest-subtests", "pytest-xdist", "pretend", "iso8601", "pytz", "hypothesis (>=1.11.4,!=3.79.2)"]
+
+[[package]]
+name = "debian-inspector"
+version = "30.0.0"
+description = "Utilities to parse Debian package, copyright and control files."
+category = "dev"
+optional = false
+python-versions = "<4,>=3.6.*"
+
+[package.dependencies]
+attrs = ">=19.2,<20.1.0 || >20.1.0"
+chardet = ">=3.0.0"
+
+[package.extras]
+docs = ["Sphinx (>=3.3.1)", "sphinx-rtd-theme (>=0.5.0)", "doc8 (>=0.8.1)"]
+testing = ["commoncode", "pytest (>=6)", "pytest-xdist (>=2)"]
 
 [[package]]
 name = "decorator"
@@ -2839,21 +2856,6 @@ test = ["mock"]
 testing = ["nose", "coverage", "mock"]
 
 [[package]]
-name = "transifex-client"
-version = "0.14.4"
-description = "A command line interface for Transifex"
-category = "dev"
-optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,<3.10"
-
-[package.dependencies]
-gitpython = "<4.0.0"
-python-slugify = "<5.0.0"
-requests = ">=2.19.1,<3.0.0"
-six = "<2.0.0"
-urllib3 = ">=1.24.2,<2.0.0"
-
-[[package]]
 name = "translationstring"
 version = "1.4"
 description = "Utility library for i18n relied on by various Repoze and Pyramid packages"
@@ -3142,7 +3144,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "fdad296a4f4ae179b9ef5a694aa58ebc08808f9844c7d09ec3201cc3b5c9ae28"
+content-hash = "481e0f17b46d74925d2096ed53fd77c91ab1414baca31f401d61867f9ee7a3bb"
 
 [metadata.files]
 affine = [
@@ -3264,7 +3266,7 @@ bottle = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cciutils = [
-    {file = "c2cciutils-1.2.0-py3-none-any.whl", hash = "sha256:2fa71625d49d77d2b60069ebc2c3780f4d277d877f1b3f434819c886fcfdb832"},
+    {file = "c2cciutils-1.3.dev20220704113927-py3-none-any.whl", hash = "sha256:bb3416cb74ab37b0cddbfe6e03cf6a6a4629d16acde24ecb674793f8b6ee7315"},
 ]
 c2cgeoform = [
     {file = "c2cgeoform-2.1.26-py2.py3-none-any.whl", hash = "sha256:e5cda8041d33228125d6561ccbfc455cf8c020dbc24e606dcfe9c285846c8b2d"},
@@ -3468,6 +3470,10 @@ cryptography = [
     {file = "cryptography-37.0.3-pp39-pypy39_pp73-manylinux_2_24_x86_64.whl", hash = "sha256:c3c8b1ad2c266fdf7adc041cc4156d6a3d14db93de2f81b26a5af97ef3f209e5"},
     {file = "cryptography-37.0.3-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:2383d6c3088e863304c37c65cd2ea404b7fbb4886823eab1d74137cc27f3d2ee"},
     {file = "cryptography-37.0.3.tar.gz", hash = "sha256:ae430d51c67ac638dfbb42edf56c669ca9c74744f4d225ad11c6f3d355858187"},
+]
+debian-inspector = [
+    {file = "debian_inspector-30.0.0-py3-none-any.whl", hash = "sha256:f6b706be9c8087521fdd0226c92433f2405182cb16949fe3455805754e19b6ef"},
+    {file = "debian_inspector-30.0.0.tar.gz", hash = "sha256:d0f4f9b13e9a75aaa0610b568e4b35db2b34cf50b79f5d7a69e25a10a47f5b18"},
 ]
 decorator = [
     {file = "decorator-5.1.1-py3-none-any.whl", hash = "sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186"},
@@ -4804,9 +4810,6 @@ tomlkit = [
 transaction = [
     {file = "transaction-3.0.1-py2.py3-none-any.whl", hash = "sha256:2329a6e6b82d1d8d4de9267ea6ee790532c375e5911d3c7633a234e94a4a0a9e"},
     {file = "transaction-3.0.1.tar.gz", hash = "sha256:0c15ef0b7ff3518357ceea75722a30d974c3f85e11aa5cec5d5a2b6a40cfcf68"},
-]
-transifex-client = [
-    {file = "transifex-client-0.14.4.tar.gz", hash = "sha256:11dc95cefe90ebf0cef3749c8c7d85b9d389c05bd0e3389bf117685df562bd5c"},
 ]
 translationstring = [
     {file = "translationstring-1.4-py2.py3-none-any.whl", hash = "sha256:5f4dc4d939573db851c8d840551e1a0fb27b946afe3b95aafc22577eed2d6262"},

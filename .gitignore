@@ -18,6 +18,5 @@
 /geoportal/tests/tests.ini
 node_modules/
 # Files needed to mount c2cgeoportal in the project, created with `make dev`
-/.tx/config
 /geoportal/c2cgeoportal_geoportal/locale/
 /admin/c2cgeoportal_admin/locale/

@@ -94,6 +94,11 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
+ENV PATH=/root/.local/bin/:${PATH}
+
+WORKDIR /opt/c2cgeoportal
+COPY ci/applications*.yaml .
+RUN c2cciutils-download-applications --applications-file=applications.yaml --versions-file=applications-versions.yaml
 
 COPY bin/npm-packages /usr/bin/
 WORKDIR /opt/c2cgeoportal/geoportal
