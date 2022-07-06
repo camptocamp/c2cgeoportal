@@ -471,7 +471,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
             @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
             def handle(event: InvalidateCacheEvent) -> None:
                 del event
-                caching.invalidate_region()
+                caching.invalidate_region("std")
+                caching.invalidate_region("obj")
                 if caching.MEMORY_CACHE_DICT:
                     caching.get_region("std").delete_multi(list(caching.MEMORY_CACHE_DICT.keys()))
                 caching.MEMORY_CACHE_DICT.clear()

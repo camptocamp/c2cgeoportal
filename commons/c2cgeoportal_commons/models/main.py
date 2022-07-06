@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
 import logging
 import os
 import re
 from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
 import pyramid.request
+import pyramid.threadlocal
+import sqlalchemy.engine
 import sqlalchemy.orm.base
 from c2c.template.config import config
 from geoalchemy2 import Geometry
@@ -858,11 +859,6 @@ class OGCServer(Base):  # type: ignore
         errors: Set[str] = set()
         url = get_url2(self.name, self.url_wfs, request, errors)
         return url.url() if url else "\n".join(errors)
-
-
-event.listen(OGCServer, "after_insert", cache_invalidate_cb, propagate=True)
-event.listen(OGCServer, "after_update", cache_invalidate_cb, propagate=True)
-event.listen(OGCServer, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 class LayerWMS(DimensionLayer):

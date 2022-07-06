@@ -11,3 +11,5 @@ vars:
       backend: dogpile.cache.memory
     obj:
       backend: dogpile.cache.memory
+    ogc-server:
+      backend: dogpile.cache.memory

@@ -38,6 +38,7 @@ from math import sqrt
 from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
 import dogpile.cache.api
+import pyramid.httpexceptions
 import pyramid.request
 import requests
 import sqlalchemy
@@ -52,7 +53,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url, get_url2
-from c2cgeoportal_commons.models import main
+from c2cgeoportal_commons.models import cache_invalidate_cb, main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
 from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
@@ -62,27 +63,31 @@ from c2cgeoportal_geoportal.lib.layers import (
     get_protected_layers_query,
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
-from c2cgeoportal_geoportal.views import restrict_headers
 from c2cgeoportal_geoportal.views.layers import get_layer_metadata
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")
+CACHE_OGC_SERVER_REGION = get_region("ogc-server")
 TIMEOUT = int(os.environ.get("C2CGEOPORTAL_THEME_TIMEOUT", "300"))
 
 Metadata = Union[str, int, float, bool, List[Any], Dict[str, Any]]
 
 
-def get_http_cached(http_options: Dict[str, Any], url: str, headers: Dict[str, str]) -> Tuple[bytes, str]:
+def get_http_cached(
+    http_options: Dict[str, Any], url: str, headers: Dict[str, str], cache: bool = True
+) -> Tuple[bytes, str]:
     """Get the content of the URL with a cash (dogpile)."""
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
     def do_get_http_cached(url: str) -> Tuple[bytes, str]:
         response = requests.get(url, headers=headers, timeout=TIMEOUT, **http_options)
         response.raise_for_status()
         LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
         return response.content, response.headers.get("Content-Type", "")
 
-    return do_get_http_cached(url)  # type: ignore
+    if cache:
+        return do_get_http_cached(url)  # type: ignore
+    return do_get_http_cached.refresh(url)  # type: ignore
 
 
 class DimensionInformation:
@@ -142,8 +147,6 @@ class Theme:
         self.request = request
         self.settings = request.registry.settings
         self.http_options = self.settings.get("http_options", {})
-        self.headers_whitelist = self.settings.get("headers_whitelist", [])
-        self.headers_blacklist = self.settings.get("headers_blacklist", [])
         self.metadata_type = get_types_map(
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
@@ -178,14 +181,14 @@ class Theme:
         return metadatas
 
     async def _wms_getcap(
-        self, ogc_server: main.OGCServer, preload: bool = False
+        self, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
     ) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
-        @CACHE_REGION.cache_on_arguments()  # type: ignore
+        @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
         def build_web_map_service(ogc_server_id: int) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
             del ogc_server_id  # Just for cache
 
             if url is None:
-                raise RuntimeError("Url is None")
+                raise RuntimeError("URL is None")
 
             version = url.query.get("VERSION", "1.1.1")
             layers = {}
@@ -223,12 +226,13 @@ class Theme:
 
             return {"layers": layers}, set()
 
-        result = build_web_map_service.get(ogc_server.id)
-        if result != dogpile.cache.api.NO_VALUE:
-            return result  # type: ignore
+        if cache:
+            result = build_web_map_service.get(ogc_server.id)
+            if result != dogpile.cache.api.NO_VALUE:
+                return result  # type: ignore
 
         try:
-            url, content, errors = await self._wms_getcap_cached(ogc_server)
+            url, content, errors = await self._wms_getcap_cached(ogc_server, cache=cache)
         except requests.exceptions.RequestException as exception:
             error = (
                 f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', "
@@ -239,10 +243,10 @@ class Theme:
         if errors or preload:
             return None, errors
 
-        return build_web_map_service(ogc_server.id)  # type: ignore
+        return build_web_map_service.refresh(ogc_server.id)  # type: ignore
 
     async def _wms_getcap_cached(
-        self, ogc_server: main.OGCServer
+        self, ogc_server: main.OGCServer, cache: bool = True
     ) -> Tuple[Optional[Url], Optional[bytes], Set[str]]:
         errors: Set[str] = set()
         url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors)
@@ -268,23 +272,15 @@ class Theme:
 
         LOG.debug("Get WMS GetCapabilities for URL: %s", url)
 
-        # Forward request to target (without Host Header)
-        headers = dict(self.request.headers)
+        headers = {}
 
         # Add headers for Geoserver
         if ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER:
             headers["sec-username"] = "root"
             headers["sec-roles"] = "root"
 
-        if url.hostname != "localhost" and "Host" in headers:
-            headers.pop("Host")
-
-        headers = restrict_headers(headers, self.headers_whitelist, self.headers_blacklist)
-
         try:
-            content, content_type = await asyncio.get_event_loop().run_in_executor(
-                None, get_http_cached, self.http_options, url, headers
-            )
+            content, content_type = get_http_cached(self.http_options, url.url(), headers, cache=cache)
         except Exception:
             error = f"Unable to GetCapabilities from URL {url}"
             errors.add(error)
@@ -857,7 +853,7 @@ class Theme:
         return None if self.request.user is None else {role.id for role in self.request.user.roles}
 
     async def _wfs_get_features_type(
-        self, wfs_url: Url, ogc_server_name: str, preload: bool = False
+        self, wfs_url: Url, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
     ) -> Tuple[Optional[etree.Element], Set[str]]:
         errors = set()
 
@@ -871,23 +867,21 @@ class Theme:
             }
         )
 
-        LOG.debug("WFS DescribeFeatureType for the URL: %s", wfs_url)
+        LOG.debug("WFS DescribeFeatureType for the URL: %s", wfs_url.url())
 
-        # forward request to target (without Host Header)
-        headers = dict(self.request.headers)
-        if wfs_url.hostname != "localhost" and "Host" in headers:
-            headers.pop("Host")
+        headers = {}
 
-        headers = restrict_headers(headers, self.headers_whitelist, self.headers_blacklist)
+        # Add headers for Geoserver
+        if ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER:
+            headers["sec-username"] = "root"
+            headers["sec-roles"] = "root"
 
         try:
-            content, _ = await asyncio.get_event_loop().run_in_executor(
-                None, get_http_cached, self.http_options, wfs_url, headers
-            )
+            content, _ = get_http_cached(self.http_options, wfs_url.url(), headers, cache)
         except requests.exceptions.RequestException as exception:
             error = (
                 f"Unable to get WFS DescribeFeatureType from the URL '{wfs_url.url()}' for "
-                f"OGC server {ogc_server_name}, "
+                f"OGC server {ogc_server.name}, "
                 + (
                     f"return the error: {exception.response.status_code} {exception.response.reason}"
                     if exception.response is not None
@@ -900,7 +894,7 @@ class Theme:
         except Exception:
             error = (
                 f"Unable to get WFS DescribeFeatureType from the URL {wfs_url} for "
-                f"OGC server {ogc_server_name}"
+                f"OGC server {ogc_server.name}"
             )
             errors.add(error)
             LOG.exception(error)
@@ -947,10 +941,10 @@ class Theme:
             url_internal_wfs = url_wfs
         return url_internal_wfs, url, url_wfs
 
-    async def preload(self, errors: Set[str]) -> None:
+    async def _preload(self, errors: Set[str]) -> None:
         tasks = set()
         for ogc_server in models.DBSession.query(main.OGCServer).all():
-            # Don't load unused OGC servers, required for Landigpage, because the related OGC server
+            # Don't load unused OGC servers, required for landing page, because the related OGC server
             # will be on error in those functions.
             nb_layers = (
                 models.DBSession.query(sqlalchemy.func.count(main.LayerWMS.id))
@@ -962,16 +956,21 @@ class Theme:
                 LOG.debug("Preload OGC server '%s'", ogc_server.name)
                 url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
                 if url_internal_wfs is not None:
-                    if ogc_server.wfs_support:
-                        tasks.add(self._wfs_get_features_type(url_internal_wfs, ogc_server.name, True))
-                    tasks.add(self._wms_getcap(ogc_server, True))
+                    tasks.add(self.preload_ogc_server(ogc_server, url_internal_wfs))
 
         await asyncio.gather(*tasks)
 
+    async def preload_ogc_server(
+        self, ogc_server: main.OGCServer, url_internal_wfs: Url, cache: bool = True
+    ) -> None:
+        if ogc_server.wfs_support:
+            await self._get_features_attributes(url_internal_wfs, ogc_server, cache=cache)
+        await self._wms_getcap(ogc_server, True, cache=cache)
+
     async def _get_features_attributes(
-        self, url_internal_wfs: Url, ogc_server_name: str
+        self, url_internal_wfs: Url, ogc_server: main.OGCServer, cache: bool = True
     ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
-        @CACHE_REGION.cache_on_arguments()  # type: ignore
+        @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
         def _get_features_attributes_cache(
             url_internal_wfs: Url, ogc_server_name: str
         ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
@@ -1027,8 +1026,8 @@ class Theme:
                     attributes[name] = types[type_]
                 elif (type_ == "Character") and (name + "Type") in types:
                     LOG.debug(
-                        "Due MapServer strange result the type 'ms:Character' is fallbacked to type '%sType'"
-                        " for feature '%s', This is a strange comportement of MapServer when we use the "
+                        "Due MapServer strange result the type 'ms:Character' is fall backed to type '%sType'"
+                        " for feature '%s', This is a wired behavior of MapServer when we use the "
                         'METADATA "gml_types" "auto"',
                         name,
                         name,
@@ -1043,12 +1042,13 @@ class Theme:
 
             return attributes, namespace, all_errors
 
-        result = _get_features_attributes_cache.get(url_internal_wfs, ogc_server_name)
-        if result != dogpile.cache.api.NO_VALUE:
-            return result  # type: ignore
+        if cache:
+            result = _get_features_attributes_cache.get(url_internal_wfs, ogc_server.name)
+            if result != dogpile.cache.api.NO_VALUE:
+                return result  # type: ignore
 
-        feature_type, errors = await self._wfs_get_features_type(url_internal_wfs, ogc_server_name)
-        return _get_features_attributes_cache(url_internal_wfs, ogc_server_name)  # type: ignore
+        feature_type, errors = await self._wfs_get_features_type(url_internal_wfs, ogc_server)
+        return _get_features_attributes_cache.refresh(url_internal_wfs, ogc_server.name)  # type: ignore
 
     @view_config(route_name="themes", renderer="json")  # type: ignore
     def themes(self) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
@@ -1069,7 +1069,7 @@ class Theme:
             all_errors: Set[str] = set()
             LOG.debug("Start preload")
             start_time = time.time()
-            await self.preload(all_errors)
+            await self._preload(all_errors)
             LOG.debug("End preload")
             # Don't log if it looks to be already preloaded.
             if (time.time() - start_time) > 1:
@@ -1092,7 +1092,7 @@ class Theme:
                 if ogc_server.wfs_support:
                     assert url_internal_wfs
                     attributes, namespace, errors = await self._get_features_attributes(
-                        url_internal_wfs, ogc_server.name
+                        url_internal_wfs, ogc_server
                     )
                     # Create a local copy (don't modify the cache)
                     if attributes is not None:
@@ -1191,3 +1191,25 @@ class Theme:
                     f"{', '.join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])}"
                 },
             )
+
+    def ogcserver_clear_cache(self, ogc_server: main.OGCServer) -> None:
+        errors: Set[str] = set()
+        url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
+        if errors:
+            LOG.error(
+                "Error while getting the URL of the OGC Server %s:\n%s", ogc_server.id, "\n".join(errors)
+            )
+            return
+        if url_internal_wfs is None:
+            return
+
+        asyncio.run(self._async_cache_invalidate_ogc_server_cb(ogc_server, url_internal_wfs))
+
+    async def _async_cache_invalidate_ogc_server_cb(
+        self, ogc_server: main.OGCServer, url_internal_wfs: Url
+    ) -> None:
+
+        # Fill the cache
+        await self.preload_ogc_server(ogc_server, url_internal_wfs, False)
+
+        cache_invalidate_cb()

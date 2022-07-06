@@ -465,7 +465,7 @@ vars:
   cache:
     std:
       backend: c2cgeoportal.hybridsentinel
-      arguments:
+      arguments: &redis-cache-arguments
         lock_timeout: '{REDIS_LOCK_TIMEOUT}' # seconds
         redis_expiration_time: '{REDIS_EXPIRATION_TIME}' # seconds
         distributed_lock: True
@@ -474,6 +474,9 @@ vars:
         db: 0
     obj:
       backend: dogpile.cache.memory
+    ogc-server:
+      backend: dogpile.cache.redis_sentinel
+      arguments: *redis-cache-arguments
 
   admin_interface:
     layer_tree_max_nodes: 1000
@@ -1287,6 +1290,10 @@ runtime_postprocess:
       - cache.std.arguments.redis_expiration_time
       - cache.std.arguments.socket_timeout
       - cache.std.arguments.db
+      - cache.ogc-server.arguments.lock_timeout
+      - cache.ogc-server.arguments.redis_expiration_time
+      - cache.ogc-server.arguments.socket_timeout
+      - cache.ogc-server.arguments.db
       - sqlalchemy\.pool_recycle
       - sqlalchemy\.pool_size
       - sqlalchemy\.max_overflow

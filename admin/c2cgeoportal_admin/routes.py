@@ -53,6 +53,9 @@ def includeme(config):
     register_route(
         config, "ogcserver_synchronize", "/{application:admin}/{table:ogc_servers}/{id}/synchronize"
     )
+    register_route(
+        config, "ogcserver_clear_cache", "/{application:admin}/{table:ogc_servers}/{id}/clear-cache"
+    )
 
     from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
         Functionality,
