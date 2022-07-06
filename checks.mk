@@ -15,7 +15,7 @@ prospector:
 	prospector --version
 	mypy --version
 	pylint --version --rcfile=/dev/null
-	prospector
+	prospector --output=pylint
 
 .PHONY: bandit
 bandit:

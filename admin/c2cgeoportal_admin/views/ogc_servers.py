@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,18 +29,27 @@
 
 
 from functools import partial
+import logging
+import threading
+from typing import Any, Dict, List, cast
 
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
+import requests
+from sqlalchemy import inspect
 
+from c2cgeoportal_admin import _
+from c2cgeoportal_commons.models import cache_invalidate_cb
 from c2cgeoportal_commons.models.main import OGCServer
 
 _list_field = partial(ListField, OGCServer)
 
 base_schema = GeoFormSchemaNode(OGCServer, widget=FormWidget(fields_template="ogcserver_fields"))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
+
+LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
@@ -69,20 +78,68 @@ class OGCServerViews(AbstractViews):
     def grid(self):
         return super().grid()
 
+    def _item_actions(self, item: OGCServer, readonly: bool = False) -> List[Any]:
+        actions = cast(List[Any], super()._item_actions(item, readonly))
+        if inspect(item).persistent:
+            actions.insert(
+                next((i for i, v in enumerate(actions) if v.name() == "delete")),
+                ItemAction(
+                    name="clear-cache",
+                    label=_("Clear the cache"),
+                    icon="glyphicon glyphicon-hdd",
+                    url=self._request.route_url(
+                        "ogc_server_clear_cache",
+                        id=getattr(item, self._id_field),
+                        _query={
+                            "came_from": self._request.current_route_url(),
+                        },
+                    ),
+                    confirmation=_("The current changes will be lost."),
+                ),
+            )
+        return actions
+
     @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
     def view(self):
         return super().edit()
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
     def save(self):
-        return super().save()
+        result: Dict[str, Any] = super().save()
+        self._update_cache(self._get_object())
+        return result
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
     def delete(self):
-        return super().delete()
+        result: Dict[str, Any] = super().delete()
+        cache_invalidate_cb()
+        return result
 
     @view_config(
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
     def duplicate(self):
-        return super().duplicate()
+        result: Dict[str, Any] = super().duplicate()
+        self._update_cache(self._get_object())
+        return result
+
+    def _update_cache(self, ogc_server: OGCServer) -> None:
+        try:
+            ogc_server_id = ogc_server.id
+
+            def update_cache() -> None:
+                response = requests.get(
+                    self._request.route_url(
+                        "ogc_server_clear_cache",
+                        id=ogc_server_id,
+                        _query={
+                            "came_from": self._request.current_route_url(),
+                        },
+                    )
+                )
+                if not response.ok:
+                    LOG.error("Error while cleaning the OGC server cache:\n%s", response.text)
+
+            threading.Thread(target=update_cache).start()
+        except Exception:
+            LOG.error("Error on cleaning the OGC server cache", exc_info=True)

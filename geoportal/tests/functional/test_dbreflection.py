@@ -112,6 +112,7 @@ class TestReflection(TestCase):
 
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
+        init_region({"backend": "dogpile.cache.memory"}, "ogc-server")
 
         self._create_table("table_a")
         modelclass = get_class("table_a")

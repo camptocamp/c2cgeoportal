@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2020, Camptocamp SA
+# Copyright (c) 2012-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,9 +35,12 @@ from typing import Any, Dict, List
 from dogpile.cache.api import NO_VALUE
 from dogpile.cache.backends.redis import RedisBackend
 from dogpile.cache.region import make_region
-from dogpile.cache.util import compat, sha1_mangle_key
-from pyramid.request import Request
+from dogpile.cache.util import sha1_mangle_key
+import pyramid.interfaces
+import pyramid.request
+import pyramid.response
 from sqlalchemy.orm.util import identity_key
+import zope.interface
 
 from c2cgeoportal_commons.models import Base
 
@@ -76,8 +79,10 @@ def keygen_function(namespace, function):
         parts.extend(namespace)
         if ignore_first_argument:
             args = args[1:]
-        new_args: List[str] = [arg for arg in args if not isinstance(arg, Request)]
-        parts.extend(map(compat.text_type, map(map_dbobject, new_args)))
+        new_args: List[str] = [
+            arg for arg in args if pyramid.interfaces.IRequest not in zope.interface.implementedBy(type(arg))
+        ]
+        parts.extend(map(str, map(map_dbobject, new_args)))
         return "|".join(parts)
 
     return generate_key
@@ -94,11 +99,10 @@ def init_region(conf, region):
 
 def _configure_region(conf, cache_region):
     global MEMORY_CACHE_DICT
-    kwargs = {"replace_existing_backend": True}
+    kwargs: Dict[str, Any] = {"replace_existing_backend": True}
     backend = conf["backend"]
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
-    kwargs.setdefault("arguments", {})  # type: ignore
-    kwargs["arguments"]["cache_dict"] = MEMORY_CACHE_DICT  # type: ignore
+    kwargs.setdefault("arguments", {}).setdefault("cache_dict", MEMORY_CACHE_DICT)
     cache_region.configure(backend, **kwargs)
 
 

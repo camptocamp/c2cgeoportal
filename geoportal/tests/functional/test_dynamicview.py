@@ -77,6 +77,7 @@ class TestDynamicView(TestCase):
 
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
+        init_region({"backend": "dogpile.cache.memory"}, "ogc-server")
 
     def teardown_method(self, _):
         testing.tearDown()

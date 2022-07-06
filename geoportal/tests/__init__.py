@@ -50,6 +50,7 @@ class DummyRequest(PyramidDummyRequest):
 def setup_common():
     caching.init_region({"backend": "dogpile.cache.null"}, "std")
     caching.init_region({"backend": "dogpile.cache.null"}, "obj")
+    caching.init_region({"backend": "dogpile.cache.null"}, "ogc-server")
 
 
 def create_dummy_request(additional_settings=None, *args, **kargs):

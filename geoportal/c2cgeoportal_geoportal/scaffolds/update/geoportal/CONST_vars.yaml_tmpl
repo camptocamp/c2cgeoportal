@@ -233,7 +233,7 @@ vars:
   cache:
     std:
       backend: c2cgeoportal.hybrid
-      arguments:
+      arguments: &redis-cache-arguments
         host: '{REDIS_HOST}'
         port: '{REDIS_PORT}'
         db: '{REDIS_DB}'
@@ -242,6 +242,9 @@ vars:
         distributed_lock: True
     obj:
       backend: dogpile.cache.memory
+    ogc-server:
+      backend: dogpile.cache.redis
+      arguments: *redis-cache-arguments
 
   admin_interface:
 

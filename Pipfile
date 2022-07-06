@@ -87,11 +87,12 @@ typed-ast = "==1.4.3"
 typing = "==3.7.4.3"
 typing-extensions = "==3.10.0.0"
 unidecode = "==1.2.0"
-urllib3 = "==1.25.9"
+urllib3 = "==1.25.11"
 waitress = "==2.1.1"
 webob = "==1.8.6"
 wrapt = "==1.11.2"
 zipp = "==3.4.1"
+responses = "==0.21.0"
 
 [packages]
 alembic = "==1.4.2"  # geoportal
