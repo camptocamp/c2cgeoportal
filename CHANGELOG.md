@@ -1,3 +1,5 @@
+##### 2.6.0.126
+* [Backport 2.6] Fix CVE [ngeo#8727](https://github.com/camptocamp/ngeo/pull/8727)
 ##### 2.6.0.125
 * Fix the editing [c2cgeoportal#9889](https://github.com/camptocamp/c2cgeoportal/pull/9889)
 ##### 2.6.0.124
