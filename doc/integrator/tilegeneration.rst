@@ -136,8 +136,8 @@ Web Interface
 ~~~~~~~~~~~~~
 
 It is possible to run tile generation commands through a web interface located at URL
-``<application main URL>/tiles/admin/``. This interface is protected by a password that
-must be specified in the ``C2C_SECRET`` environment variable in the ``env.project`` file.
+``<application main URL>/tiles/admin/``. This interface require an authentication
+see :ref:`integrator_c2cwsgiutils_auth` for more information.
 
 Predefined commands may be set in parameter ``server > predefined_commands`` in the
 ``tilegeneration/config.yaml.tmpl`` file.
