@@ -1,3 +1,5 @@
+##### 2.5.0.211
+* [Backport 2.5] Fix CVE [ngeo#8726](https://github.com/camptocamp/ngeo/pull/8726)
 ##### 2.5.0.210
 * [Backport 2.5] Bump the print to from 3.22 to 3.27 to be supported [c2cgeoportal#9895](https://github.com/camptocamp/c2cgeoportal/pull/9895)
 ##### 2.5.0.209
