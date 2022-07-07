@@ -1,3 +1,7 @@
+##### 2.7.0.71
+
+- Document the workflow, with acceptance tests [c2cgeoportal#9907](https://github.com/camptocamp/c2cgeoportal/pull/9907)
+
 ##### 2.7.0.69
 
 - Add missing DISABLE_MUTUALIZE and DISABLE_LOCAL env forward [c2cgeoportal#9909](https://github.com/camptocamp/c2cgeoportal/pull/9909)
