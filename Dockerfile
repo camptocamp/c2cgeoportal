@@ -58,7 +58,7 @@ FROM base AS tools
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["tail", "--follow", "--zero-terminated", "/dev/null"]
 
 # hadolint ignore=SC1091,DL3008
 RUN \
