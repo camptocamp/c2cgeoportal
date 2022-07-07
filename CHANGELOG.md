@@ -1,3 +1,9 @@
+##### 2.7.0.69
+
+- Add missing DISABLE_MUTUALIZE and DISABLE_LOCAL env forward [c2cgeoportal#9909](https://github.com/camptocamp/c2cgeoportal/pull/9909)
+- Faster fast reload [c2cgeoportal#9912](https://github.com/camptocamp/c2cgeoportal/pull/9912)
+- [Backport 2.7] Fix CVE [ngeo#8728](https://github.com/camptocamp/ngeo/pull/8728)
+
 ##### 2.7.0.68
 
 - [Backport 2.7] Fix the editing [c2cgeoportal#9893](https://github.com/camptocamp/c2cgeoportal/pull/9893)
