@@ -40,8 +40,8 @@
 <span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this heading">¶</a></h1>
 <section id="vocabulary">
 <h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this heading">¶</a></h2>
-<p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
-Geoportal (2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
+<p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of GeoMapFish
+(2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
 (2.0.0rc1, 2.0.0, 2.0.1, …).</p>
 <p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes ngeo and c2cgeoportal;
 since 2014, both projects are synchronizing their major versions.</p>
@@ -58,16 +58,16 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 <li><p>Create the new branch on demo</p></li>
 <li><p>Create the new branch</p></li>
 <li><p>Use the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> package linked to the new branch</p></li>
-<li><p>Create the new transifex resources</p></li>
+<li><p>Create the new Transifex resources</p></li>
 <li><p>Update the master branch</p></li>
 <li><p>Protect the new branch</p></li>
 <li><p>Configure the rebuild</p></li>
-<li><p>Verify that the changelog creation is working</p></li>
+<li><p>Verify that the change log creation is working</p></li>
 <li><p>Configure the branch on the status dashboard</p></li>
 </ul>
 <p>On release creation:</p>
 <ul class="simple">
-<li><p>Reset the changelog</p></li>
+<li><p>Reset the change log</p></li>
 <li><p>Do the tags</p></li>
 <li><p>Publish it</p></li>
 <li><p>Create the new demo</p></li>
@@ -102,7 +102,7 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 <h2>Create the new branch<a class="headerlink" href="#create-the-new-branch" title="Permalink to this heading">¶</a></h2>
 <p>You should create the new version branch.</p>
 <dl class="simple">
-<dt>In the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> and  <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code> to</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>.</p>
+<dt>In the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code> to</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>.</p>
 </dd>
 </dl>
 </section>
@@ -112,24 +112,26 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 <code class="docutils literal notranslate"><span class="pre">version-&lt;new</span> <span class="pre">version&gt;-latest</span></code>.</p>
 </section>
 <section id="create-the-new-transifex-resources">
-<h2>Create the new transifex resources<a class="headerlink" href="#create-the-new-transifex-resources" title="Permalink to this heading">¶</a></h2>
+<h2>Create the new Transifex resources<a class="headerlink" href="#create-the-new-transifex-resources" title="Permalink to this heading">¶</a></h2>
 <p>Run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker build --target<span class="o">=</span>tools --tag<span class="o">=</span>transifex --build-arg<span class="o">=</span><span class="nv">MAJOR_VERSION</span><span class="o">=</span>x.y .</span>
-<span class="prompt1">docker run --name<span class="o">=</span>transifex -ti --rm --detach --volume<span class="o">=</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>:/root transifex tail -f /dev/null</span>
-<span class="prompt1">docker <span class="nb">exec</span> transifex bash -c <span class="se">\</span>
-    <span class="s1">&#39;(cd /opt/c2cgeoportal; sed -i s/x_y/x_y+1/g .tx/config)&#39;</span></span>
-<span class="prompt1">docker <span class="nb">exec</span> --env<span class="o">=</span><span class="nv">MAJOR_VERSION</span><span class="o">=</span>x.y+1 transifex bash -c <span class="se">\</span>
-    <span class="s1">&#39;(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-init)&#39;</span></span>
-<span class="prompt1">docker stop transifex</span>
+</style><span class="prompt1">tx pull --branch<span class="o">=</span>&lt;version&gt; --source --force <span class="se">\</span>
+    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
+<span class="prompt1">tx pull --branch<span class="o">=</span>&lt;version&gt; --translation --force <span class="se">\</span>
+    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
+<span class="prompt1"></span>
+<span class="prompt1">tx push --branch<span class="o">=</span>&lt;next version&gt; --source --force <span class="se">\</span>
+    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
+<span class="prompt1">tx push --branch<span class="o">=</span>&lt;next version&gt; --translation --force <span class="se">\</span>
+    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
 </pre></div></div></section>
 <section id="update-the-master-branch">
 <h2>Update the master branch<a class="headerlink" href="#update-the-master-branch" title="Permalink to this heading">¶</a></h2>
 <dl class="simple">
-<dt>In the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> and  <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code> to</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
+<dt>In the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code> to</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
 </dd>
 </dl>
 <p>In the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/audit.yaml</span></code> and the new branch.</p>
@@ -311,8 +313,8 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <p>Add the new branch for the demo, ngeo and c2cgeoportal in the file
 <a class="reference external" href="https://github.com/camptocamp/geospatial-dashboards/blob/master/ci/status.yaml">scripts/status.yaml</a>.</p>
 </section>
-<section id="reset-the-changelog">
-<h2>Reset the changelog<a class="headerlink" href="#reset-the-changelog" title="Permalink to this heading">¶</a></h2>
+<section id="reset-the-change-log">
+<h2>Reset the change log<a class="headerlink" href="#reset-the-change-log" title="Permalink to this heading">¶</a></h2>
 <p>On the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> new version branch:</p>
 <ul>
 <li><p>Empty the file <code class="docutils literal notranslate"><span class="pre">CHANGELOG</span></code></p></li>
@@ -346,7 +348,7 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 </section>
 <section id="backport-label">
 <h2>Backport label<a class="headerlink" href="#backport-label" title="Permalink to this heading">¶</a></h2>
-<p>Create the new backport label named <code class="docutils literal notranslate"><span class="pre">backport_&lt;new_version&gt;</span></code>.</p>
+<p>Create the new back port label named <code class="docutils literal notranslate"><span class="pre">backport_&lt;new_version&gt;</span></code>.</p>
 </section>
 <section id="protect-branch">
 <h2>Protect branch<a class="headerlink" href="#protect-branch" title="Permalink to this heading">¶</a></h2>
@@ -369,7 +371,7 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <h2>Use the new demo<a class="headerlink" href="#use-the-new-demo" title="Permalink to this heading">¶</a></h2>
 <p>On <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> master branch change all the URL
 from <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;new</span> <span class="pre">version&gt;.camptocamp.com</span></code>
-to  <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;next</span> <span class="pre">version&gt;.camptocamp.com</span></code>.</p>
+to <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;next</span> <span class="pre">version&gt;.camptocamp.com</span></code>.</p>
 </section>
 </section>
 
