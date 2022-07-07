@@ -252,9 +252,168 @@ Then follow the sections in the install application guide:</p>
 </section>
 <section id="dynamic-configuration">
 <h2>Dynamic configuration<a class="headerlink" href="#dynamic-configuration" title="Permalink to this headline">¶</a></h2>
-<p>Several files are generated on runtime, their content depending of the variables you
+<p>Several files are generated on runtime, their content depending on the variables you
 have set as environment variables.</p>
 <p>The files can have the extension <code class="docutils literal notranslate"><span class="pre">.tmpl</span></code> and it use bash syntax (<code class="docutils literal notranslate"><span class="pre">${VARIABLE}</span></code>).</p>
+</section>
+<section id="github-workflows">
+<h2>GitHub workflows<a class="headerlink" href="#github-workflows" title="Permalink to this headline">¶</a></h2>
+<p>With the application we have some predefined workflows.</p>
+<section id="github-workflows-main-yaml">
+<h3><cite>.github/workflows/main.yaml</cite><a class="headerlink" href="#github-workflows-main-yaml" title="Permalink to this headline">¶</a></h3>
+<p>The workflow that will run on all your commits, it will:
+- Run some code style checks on your code.
+- Build you application.
+- Run the acceptance tests (if configured).
+- Publish the application on DockerHub.
+- Trigger another workflow (on ArgoCD repository) to deploy you new application.</p>
+</section>
+<section id="github-workflows-rebuild-yaml">
+<h3><cite>.github/workflows/rebuild.yaml</cite><a class="headerlink" href="#github-workflows-rebuild-yaml" title="Permalink to this headline">¶</a></h3>
+<p>This workflow run on each night to rebuild the application with the new version of the base images.</p>
+<p>Be careful, GitHub will read only the file present on the main branch.</p>
+</section>
+<section id="github-workflows-update-l10n-yaml">
+<h3><cite>.github/workflows/update_l10n.yaml</cite><a class="headerlink" href="#github-workflows-update-l10n-yaml" title="Permalink to this headline">¶</a></h3>
+<p>This workflow will query the <cite>locale.pot</cite> view, using <cite>PROJECT_PUBLIC_URL</cite> found in <cite>Makefile</cite>,
+and open a pull request to update the localization files (<cite>.po</cite>) with current list of translatable strings.</p>
+<p>Be careful, GitHub will read only the file present on the main branch.</p>
+</section>
+<section id="acceptance-tests">
+<h3>Acceptance tests<a class="headerlink" href="#acceptance-tests" title="Permalink to this headline">¶</a></h3>
+<p>To have some acceptance tests you need to have a minimal dump of your database in the repository,
+it can be obtained with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">scripts/db-backup --arg<span class="o">=</span>--schema<span class="o">=</span>&lt;schema&gt; ../dump.backup</span>
+</pre></div></div><p>In the <cite>Makefile</cite> you should add something like:</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+DUMP_FILE=dump.backup</p>
+<p>.PHONY: acceptance-init
+acceptance-init: ## Initialize the acceptance tests</p>
+<blockquote>
+<div><p>docker-compose –file=docker-compose.yaml –file=docker-compose-db.yaml up -d
+docker-compose exec -T geoportal wait-db
+docker-compose exec -T tools psql –command=”DROP EXTENSION IF EXISTS postgis CASCADE”
+scripts/db-restore –docker-compose-file=docker-compose.yaml –docker-compose-file=docker-compose-db.yaml </p>
+<blockquote>
+<div><p>–arg=–clean –arg=–if-exists –arg=–verbose $(DUMP_FILE)</p>
+</div></blockquote>
+</div></blockquote>
+<p>.PHONY: acceptance
+acceptance: ## Run the acceptance tests</p>
+<blockquote>
+<div><p>docker-compose exec -T tools pytest -vv tests/</p>
+</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<p>In the file <cite>.github/workflows/main.yaml</cite> you should add something like:</p>
+<dl class="simple">
+<dt><a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a>yaml</dt><dd><ul class="simple">
+<li><p>name: Initialize the acceptance tests
+run: make acceptance-init</p></li>
+<li><p>run: c2cciutils-docker-logs
+if: always()</p></li>
+<li><p>name: Run the acceptance tests
+run: make acceptance</p></li>
+<li><p>run: c2cciutils-docker-logs
+if: always()</p></li>
+</ul>
+</dd>
+</dl>
+<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a></p>
+<p>You should add a <cite>docker-compose-db.yaml</cite> file, with:</p>
+<p><a href="#id15"><span class="problematic" id="id16">``</span></a>`
+# This file is used by the acceptance tests to have a local database.</p>
+<p>version: ‘2.3’</p>
+<dl>
+<dt>volumes:</dt><dd><p>postgresql_data:</p>
+</dd>
+<dt>services:</dt><dd><dl class="simple">
+<dt>config: &amp;db-config</dt><dd><dl class="simple">
+<dt>environment:</dt><dd><ul class="simple">
+<li><p>PGHOST=db</p></li>
+<li><p>PGHOST_SLAVE=db</p></li>
+<li><p>PGSSLMODE=prefer</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>geoportal: <a href="#id17"><span class="problematic" id="id18">*</span></a>db-config
+# geoportal-advance: <a href="#id19"><span class="problematic" id="id20">*</span></a>db-config
+tools: <a href="#id21"><span class="problematic" id="id22">*</span></a>db-config
+alembic: <a href="#id23"><span class="problematic" id="id24">*</span></a>db-config
+# alembic-advance: <a href="#id25"><span class="problematic" id="id26">*</span></a>db-config
+# webpack_dev_server: <a href="#id27"><span class="problematic" id="id28">*</span></a>db-config</p>
+<dl class="simple">
+<dt>db:</dt><dd><dl class="simple">
+<dt>extends:</dt><dd><p>file: docker-compose-lib.yaml
+service: db</p>
+</dd>
+<dt>volumes:</dt><dd><ul class="simple">
+<li><p>postgresql_data:/var/lib/postgresql/data</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p><a href="#id29"><span class="problematic" id="id30">``</span></a><a href="#id31"><span class="problematic" id="id32">`</span></a></p>
+<p>And finally the file with the tests <cite>tests/test_app.py</cite> with:</p>
+<p><a href="#id33"><span class="problematic" id="id34">``</span></a>`
+import time
+from typing import Dict</p>
+<p>import pytest
+import requests</p>
+<dl>
+<dt>&#64;pytest.mark.parametrize(</dt><dd><p>“url,params”,
+[</p>
+<blockquote>
+<div><p>(”<a class="reference external" href="https://front">https://front</a>”, {}),
+(”<a class="reference external" href="https://front/themes">https://front/themes</a>”, {}),
+(”<a class="reference external" href="https://front/static-geomapfish/0/locales/fr.json">https://front/static-geomapfish/0/locales/fr.json</a>”, {}),
+(”<a class="reference external" href="https://front/dynamic.json">https://front/dynamic.json</a>”, {“interface”: “desktop”}),
+(”<a class="reference external" href="https://front/dynamic.json">https://front/dynamic.json</a>”, {“interface”: “desktop”, “query”: “”, “path”: “/”}),
+(”<a class="reference external" href="https://front/c2c/health_check">https://front/c2c/health_check</a>”, {}),
+(”<a class="reference external" href="https://front/c2c/health_check">https://front/c2c/health_check</a>”, {“max_level”: “1”}),
+(”<a class="reference external" href="https://front/c2c/health_check">https://front/c2c/health_check</a>”, {“checker”: “check_collector”}),
+(”<a class="reference external" href="https://front/admin/layertree">https://front/admin/layertree</a>”, {}),
+(”<a class="reference external" href="https://front/admin/layertree/children">https://front/admin/layertree/children</a>”, {}),
+(”<a class="reference external" href="http://mapserver:8080/mapserv_proxy">http://mapserver:8080/mapserv_proxy</a>”, {“SERVICE”: “WMS”, “REQUEST”: “GetCapabilities”}),
+(</p>
+<blockquote>
+<div><p>“<a class="reference external" href="https://front/mapserv_proxy">https://front/mapserv_proxy</a>”,
+{“ogcserver”: “source for image/png”, “SERVICE”: “WMS”, “REQUEST”: “GetCapabilities”},</p>
+</div></blockquote>
+<p>),</p>
+</div></blockquote>
+<p>],</p>
+</dd>
+</dl>
+<p>)
+def test_url(url: str, params: Dict[str, str]) -&gt; None:</p>
+<blockquote>
+<div><p>“””Tests that some URL didn’t return an error.”””
+for _ in range(60):</p>
+<blockquote>
+<div><p>response = requests.get(url, params=params, verify=False, timeout=240)  # nosec
+if response.status_code == 503:</p>
+<blockquote>
+<div><p>time.sleep(1)
+continue</p>
+</div></blockquote>
+<p>break</p>
+</div></blockquote>
+<p>assert response.status_code == 200, response.text</p>
+</div></blockquote>
+<dl class="simple">
+<dt>def test_admin() -&gt; None:</dt><dd><p>“””Tests that the admin page will provide the login page.”””
+response = requests.get(”<a class="reference external" href="https://front/admin/">https://front/admin/</a>”, verify=False, timeout=240)  # nosec
+assert response.status_code == 200, response.text
+assert “Login” in response.text</p>
+</dd>
+</dl>
+<p><a href="#id35"><span class="problematic" id="id36">``</span></a><a href="#id37"><span class="problematic" id="id38">`</span></a></p>
+</section>
 </section>
 </section>
 
