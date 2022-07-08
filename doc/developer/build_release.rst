@@ -6,8 +6,8 @@ Create a new release
 Vocabulary
 ----------
 
-On this page, we use the word ``version`` for a major version of MapFish
-Geoportal (2.0), and the word ``release`` for each step in this version
+On this page, we use the word ``version`` for a major version of GeoMapFish
+(2.0), and the word ``release`` for each step in this version
 (2.0.0rc1, 2.0.0, 2.0.1, ...).
 
 ``MapFish Geoportal`` is the pack that includes ngeo and c2cgeoportal;
@@ -32,7 +32,7 @@ On branch creation (start of the integration phase):
 
 On release creation:
 
-* Reset the changelog
+* Reset the change log
 * Do the tags
 * Publish it
 * Create the new demo
@@ -254,8 +254,8 @@ Use the ``ngeo`` package linked to the branch
 In ``c2cgeoportal`` new version branch, in the file ``geoportal/package.json``, set the ``ngeo`` version to
 ``version-<new version>-latest``.
 
-Reset the changelog
--------------------
+Reset the change log
+--------------------
 
 On the ``c2cgeoportal`` new version branch:
 
@@ -294,7 +294,7 @@ On the <new_version> branch disable version check by adding in the ``ci/config.y
 Backport label
 --------------
 
-Create the new backport label named ``backport_<new_version>``.
+Create the new back port label named ``backport_<new_version>``.
 
 Protect branch
 --------------
@@ -323,4 +323,4 @@ Use the new demo
 
 On ``ngeo`` master branch change all the URL
 from ``https://geomapfish-demo-<new version>.camptocamp.com``
-to  ``https://geomapfish-demo-<next version>.camptocamp.com``.
+to ``https://geomapfish-demo-<next version>.camptocamp.com``.

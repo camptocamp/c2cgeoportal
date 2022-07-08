@@ -51,6 +51,11 @@ jobs:
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - run: |
+          python3 -m venv /tmp/venv
+          /tmp/venv/bin/pip install c2cciutils==1.3.dev20220704113927
+          /tmp/venv/bin/c2cciutils-download-applications --applications-file=ci/applications.yaml \
+            --versions-file=ci/applications-versions.yaml
 
       - name: Checks
         run: c2cciutils-checks

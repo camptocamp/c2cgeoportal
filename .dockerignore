@@ -4,6 +4,8 @@
 !Pipfile
 !Pipfile.lock
 !checks.mk
+!ci/applications.yaml
+!ci/applications-versions.yaml
 !dependencies.mk
 !build.mk
 !commons
