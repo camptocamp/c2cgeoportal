@@ -1,3 +1,7 @@
+##### 2.7.0.73
+
+- [Backport 2.7] Use the new Transifex client [ngeo#8724](https://github.com/camptocamp/ngeo/pull/8724)
+
 ##### 2.7.0.72
 
 - [Backport 2.7] Use the new Transifex client [c2cgeoportal#9913](https://github.com/camptocamp/c2cgeoportal/pull/9913)
