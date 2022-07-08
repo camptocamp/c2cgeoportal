@@ -39,8 +39,8 @@
 <span id="developer-build-release"></span><h1>Create a new release<a class="headerlink" href="#create-a-new-release" title="Permalink to this headline">¶</a></h1>
 <section id="vocabulary">
 <h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
-<p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of MapFish
-Geoportal (2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
+<p>On this page, we use the word <code class="docutils literal notranslate"><span class="pre">version</span></code> for a major version of GeoMapFish
+(2.0), and the word <code class="docutils literal notranslate"><span class="pre">release</span></code> for each step in this version
 (2.0.0rc1, 2.0.0, 2.0.1, …).</p>
 <p><code class="docutils literal notranslate"><span class="pre">MapFish</span> <span class="pre">Geoportal</span></code> is the pack that includes ngeo and c2cgeoportal;
 since 2014, both projects are synchronizing their major versions.</p>
@@ -60,7 +60,7 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 </ul>
 <p>On release creation:</p>
 <ul class="simple">
-<li><p>Reset the changelog</p></li>
+<li><p>Reset the change log</p></li>
 <li><p>Do the tags</p></li>
 <li><p>Publish it</p></li>
 <li><p>Create the new demo</p></li>
@@ -267,8 +267,8 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <p>In <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> new version branch, in the file <code class="docutils literal notranslate"><span class="pre">geoportal/package.json</span></code>, set the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> version to
 <code class="docutils literal notranslate"><span class="pre">version-&lt;new</span> <span class="pre">version&gt;-latest</span></code>.</p>
 </section>
-<section id="reset-the-changelog">
-<h2>Reset the changelog<a class="headerlink" href="#reset-the-changelog" title="Permalink to this headline">¶</a></h2>
+<section id="reset-the-change-log">
+<h2>Reset the change log<a class="headerlink" href="#reset-the-change-log" title="Permalink to this headline">¶</a></h2>
 <p>On the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> new version branch:</p>
 <ul>
 <li><p>Empty the file <code class="docutils literal notranslate"><span class="pre">CHANGELOG</span></code></p></li>
@@ -302,7 +302,7 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 </section>
 <section id="backport-label">
 <h2>Backport label<a class="headerlink" href="#backport-label" title="Permalink to this headline">¶</a></h2>
-<p>Create the new backport label named <code class="docutils literal notranslate"><span class="pre">backport_&lt;new_version&gt;</span></code>.</p>
+<p>Create the new back port label named <code class="docutils literal notranslate"><span class="pre">backport_&lt;new_version&gt;</span></code>.</p>
 </section>
 <section id="protect-branch">
 <h2>Protect branch<a class="headerlink" href="#protect-branch" title="Permalink to this headline">¶</a></h2>
@@ -325,7 +325,7 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <h2>Use the new demo<a class="headerlink" href="#use-the-new-demo" title="Permalink to this headline">¶</a></h2>
 <p>On <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> master branch change all the URL
 from <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;new</span> <span class="pre">version&gt;.camptocamp.com</span></code>
-to  <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;next</span> <span class="pre">version&gt;.camptocamp.com</span></code>.</p>
+to <code class="docutils literal notranslate"><span class="pre">https://geomapfish-demo-&lt;next</span> <span class="pre">version&gt;.camptocamp.com</span></code>.</p>
 </section>
 </section>
 
