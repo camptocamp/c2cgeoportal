@@ -1,3 +1,7 @@
+##### 2.7.0.72
+
+- [Backport 2.7] Use the new Transifex client [c2cgeoportal#9913](https://github.com/camptocamp/c2cgeoportal/pull/9913)
+
 ##### 2.7.0.71
 
 - Document the workflow, with acceptance tests [c2cgeoportal#9907](https://github.com/camptocamp/c2cgeoportal/pull/9907)
