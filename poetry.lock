@@ -321,7 +321,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.3.dev20220711014240"
+version = "1.3.dev20220711122356"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
@@ -3123,7 +3123,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "ab9853ae694e91f126b7dd30ce47cc93290fa43302e0586325181e47aa48d721"
+content-hash = "37b9e67fb5ba288aec7ceea6157f7f0aa26cf064e0ab7df848627f6d48fd9a0a"
 
 [metadata.files]
 affine = [
@@ -3240,7 +3240,7 @@ bottle = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cciutils = [
-    {file = "c2cciutils-1.3.dev20220711014240-py3-none-any.whl", hash = "sha256:0fb1a0838b3cbfee23e93c7595916686317358d89e84db32c39ce20712f9b4da"},
+    {file = "c2cciutils-1.3.dev20220711122356-py3-none-any.whl", hash = "sha256:8349e8fc0b5475bad91cf93935e434e0d845efeefdfc242cbd0bc2df358abb95"},
 ]
 c2cgeoform = [
     {file = "c2cgeoform-2.1.26-py2.py3-none-any.whl", hash = "sha256:e5cda8041d33228125d6561ccbfc455cf8c020dbc24e606dcfe9c285846c8b2d"},
