@@ -1,3 +1,7 @@
+##### 2.7.0.75
+
+- Update all patch versions (2.7) (patch) [ngeo#8739](https://github.com/camptocamp/ngeo/pull/8739)
+
 ##### 2.7.0.74
 
 - Update all patch versions (2.7) [ngeo#8736](https://github.com/camptocamp/ngeo/pull/8736)
