@@ -85,7 +85,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "5.0.0"
+version = "5.1.0"
 description = "Common utilities for Camptocamp WSGI applications"
 category = "main"
 optional = false
@@ -96,8 +96,7 @@ redis = {version = "*", optional = true, markers = "extra == \"broadcast\""}
 
 [package.extras]
 broadcast = ["redis"]
-profiler = ["linesman"]
-standard = ["alembic", "boltons", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "pipfile", "psycopg2", "pyramid", "pyramid-tm", "sentry-sdk", "requests", "ujson", "cee-syslog-handler", "sqlalchemy", "sqlalchemy-utils", "zope.interface", "zope.sqlalchemy", "pyyaml", "pyjwt", "requests-oauthlib", "setuptools", "waitress"]
+standard = ["alembic", "boltons", "cee-syslog-handler", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "pipfile", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "pyyaml", "requests", "requests-oauthlib", "sentry-sdk", "sqlalchemy", "sqlalchemy-utils", "ujson", "waitress", "zope.interface", "zope.sqlalchemy"]
 
 [[package]]
 name = "cee-syslog-handler"
@@ -961,7 +960,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "1da65c5625fc993e3989c3f2d5cad2e1af0d11ae205b6b5413476af8ef50fa2e"
+content-hash = "230ab0b73579f733357c8e856c39fbed23442c6c47c6dfdaccc30f2214612e2c"
 
 [metadata.files]
 astroid = [
@@ -991,7 +990,7 @@ bottle = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cwsgiutils = [
-    {file = "c2cwsgiutils-5.0.0-py3-none-any.whl", hash = "sha256:ebaf0f110bb1c5fccc9034daeb13c51bd932eca6eb12e76af7c57ffa4ca9a9cf"},
+    {file = "c2cwsgiutils-5.1.0-py3-none-any.whl", hash = "sha256:e203358c25f1fa1affc3ab2d33318f4666d62e21aae6e4df3bc542369b98a216"},
 ]
 cee-syslog-handler = [
     {file = "cee_syslog_handler-0.6.0-py3-none-any.whl", hash = "sha256:13b60f5b4f9f04e2868316d88bf63d51b4b4b273ba7df12af6f21ee10e223ca3"},
