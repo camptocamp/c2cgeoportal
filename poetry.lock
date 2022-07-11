@@ -321,7 +321,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.3.dev20220704113927"
+version = "1.3.dev20220711014240"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
@@ -559,7 +559,7 @@ SQLAlchemy = ">=0.8dev"
 
 [[package]]
 name = "colorama"
-version = "0.4.4"
+version = "0.4.5"
 description = "Cross-platform colored terminal text."
 category = "main"
 optional = false
@@ -752,7 +752,7 @@ python-versions = "*"
 
 [[package]]
 name = "dogpile.cache"
-version = "1.1.6"
+version = "1.1.8"
 description = "A caching front-end based on the Dogpile lock."
 category = "main"
 optional = false
@@ -1334,7 +1334,7 @@ source = ["Cython (>=0.29.7)"]
 
 [[package]]
 name = "mako"
-version = "1.2.0"
+version = "1.2.1"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
 category = "main"
 optional = false
@@ -2005,7 +2005,7 @@ python-dateutil = ">=2.8.0"
 
 [[package]]
 name = "pylint"
-version = "2.14.2"
+version = "2.14.4"
 description = "python code static checker"
 category = "main"
 optional = false
@@ -2013,7 +2013,7 @@ python-versions = ">=3.7.2"
 
 [package.dependencies]
 astroid = ">=2.11.6,<=2.12.0-dev0"
-colorama = {version = "*", markers = "sys_platform == \"win32\""}
+colorama = {version = ">=0.4.5", markers = "sys_platform == \"win32\""}
 dill = ">=0.2"
 isort = ">=4.2.5,<6"
 mccabe = ">=0.6,<0.8"
@@ -2437,7 +2437,7 @@ testing = ["coverage", "nose"]
 
 [[package]]
 name = "requests"
-version = "2.28.0"
+version = "2.28.1"
 description = "Python HTTP for Humans."
 category = "main"
 optional = false
@@ -2445,13 +2445,13 @@ python-versions = ">=3.7, <4"
 
 [package.dependencies]
 certifi = ">=2017.4.17"
-charset-normalizer = ">=2.0.0,<2.1.0"
+charset-normalizer = ">=2,<3"
 idna = ">=2.5,<4"
 urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
+use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "requests-oauthlib"
@@ -2786,7 +2786,7 @@ python-versions = "*"
 
 [[package]]
 name = "tilecloud"
-version = "1.8.0"
+version = "1.8.2"
 description = "Tools for managing tiles"
 category = "main"
 optional = false
@@ -3123,7 +3123,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "8a89999f7abb981eecfbffd59ce324bafb1bfabf5b4073c5dc34c12df3135caf"
+content-hash = "c9e2dc11655a45cc2fdf834e99df5c6b86b56956f23b834864423b5af2d090be"
 
 [metadata.files]
 affine = [
@@ -3240,7 +3240,7 @@ bottle = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cciutils = [
-    {file = "c2cciutils-1.3.dev20220704113927-py3-none-any.whl", hash = "sha256:bb3416cb74ab37b0cddbfe6e03cf6a6a4629d16acde24ecb674793f8b6ee7315"},
+    {file = "c2cciutils-1.3.dev20220711014240-py3-none-any.whl", hash = "sha256:0fb1a0838b3cbfee23e93c7595916686317358d89e84db32c39ce20712f9b4da"},
 ]
 c2cgeoform = [
     {file = "c2cgeoform-2.1.26-py2.py3-none-any.whl", hash = "sha256:e5cda8041d33228125d6561ccbfc455cf8c020dbc24e606dcfe9c285846c8b2d"},
@@ -3363,8 +3363,8 @@ colanderalchemy = [
     {file = "ColanderAlchemy-0.3.4.tar.gz", hash = "sha256:740d435e6a97c483e3ce0196a36e02e35be99b0174e09554dd7c6a019963dc00"},
 ]
 colorama = [
-    {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
-    {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
+    {file = "colorama-0.4.5-py2.py3-none-any.whl", hash = "sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da"},
+    {file = "colorama-0.4.5.tar.gz", hash = "sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"},
 ]
 commonmark = [
     {file = "commonmark-0.9.1-py2.py3-none-any.whl", hash = "sha256:da2f38c92590f83de410ba1a3cbceafbc74fee9def35f9251ba9a971d6d66fd9"},
@@ -3485,8 +3485,8 @@ dodgy = [
     {file = "dodgy-0.2.1.tar.gz", hash = "sha256:28323cbfc9352139fdd3d316fa17f325cc0e9ac74438cbba51d70f9b48f86c3a"},
 ]
 "dogpile.cache" = [
-    {file = "dogpile.cache-1.1.6-py3-none-any.whl", hash = "sha256:27725b7c9017ff706f2d5e3a6f36ac18986a90c9208efed411d23211d8d78a44"},
-    {file = "dogpile.cache-1.1.6.tar.gz", hash = "sha256:eedc1e327e66c93f0c15a8740569ab74ef3d8929042f108f98fded9e35faff55"},
+    {file = "dogpile.cache-1.1.8-py3-none-any.whl", hash = "sha256:3f0ca10b46b165e0b0e65e0e74b1a4b36187787b69db7c0f7073077adff2f05d"},
+    {file = "dogpile.cache-1.1.8.tar.gz", hash = "sha256:d844e8bb638cc4f544a4c89a834dfd36fe935400b71a16cbd744ebdfb720fd4e"},
 ]
 dparse = [
     {file = "dparse-0.5.1-py3-none-any.whl", hash = "sha256:e953a25e44ebb60a5c6efc2add4420c177f1d8404509da88da9729202f306994"},
@@ -3828,8 +3828,8 @@ lxml = [
     {file = "lxml-4.9.1.tar.gz", hash = "sha256:fe749b052bb7233fe5d072fcb549221a8cb1a16725c47c37e42b0b9cb3ff2c3f"},
 ]
 mako = [
-    {file = "Mako-1.2.0-py3-none-any.whl", hash = "sha256:23aab11fdbbb0f1051b93793a58323ff937e98e34aece1c4219675122e57e4ba"},
-    {file = "Mako-1.2.0.tar.gz", hash = "sha256:9a7c7e922b87db3686210cf49d5d767033a41d4010b284e747682c92bddd8b39"},
+    {file = "Mako-1.2.1-py3-none-any.whl", hash = "sha256:df3921c3081b013c8a2d5ff03c18375651684921ae83fd12e64800b7da923257"},
+    {file = "Mako-1.2.1.tar.gz", hash = "sha256:f054a5ff4743492f1aa9ecc47172cb33b42b9d993cffcc146c9de17e717b0307"},
 ]
 mapbox-vector-tile = [
     {file = "mapbox-vector-tile-1.2.1.tar.gz", hash = "sha256:ef973c47f45e53109239aeae4cad93d140f5a06e439dc5f2495f32ae484b5358"},
@@ -4373,8 +4373,8 @@ pykwalify = [
     {file = "pykwalify-1.8.0.tar.gz", hash = "sha256:796b2ad3ed4cb99b88308b533fb2f559c30fa6efb4fa9fda11347f483d245884"},
 ]
 pylint = [
-    {file = "pylint-2.14.2-py3-none-any.whl", hash = "sha256:592d0a4d2ffa8e33020209d255827c5a310499cdc023d156187bc677d86bd495"},
-    {file = "pylint-2.14.2.tar.gz", hash = "sha256:482f1329d4b6b9e52599754a2e502c0ed91ebdfd0992a2299b7fa136a6c12349"},
+    {file = "pylint-2.14.4-py3-none-any.whl", hash = "sha256:89b61867db16eefb7b3c5b84afc94081edaf11544189e2b238154677529ad69f"},
+    {file = "pylint-2.14.4.tar.gz", hash = "sha256:47705453aa9dce520e123a7d51843d5f0032cbfa06870f89f00927aa1f735a4a"},
 ]
 pylint-celery = [
     {file = "pylint-celery-0.3.tar.gz", hash = "sha256:41e32094e7408d15c044178ea828dd524beedbdbe6f83f712c5e35bde1de4beb"},
@@ -4579,8 +4579,8 @@ redis = [
     {file = "repoze.lru-0.7.tar.gz", hash = "sha256:0429a75e19380e4ed50c0694e26ac8819b4ea7851ee1fc7583c8572db80aff77"},
 ]
 requests = [
-    {file = "requests-2.28.0-py3-none-any.whl", hash = "sha256:bc7861137fbce630f17b03d3ad02ad0bf978c844f3536d0edda6499dafce2b6f"},
-    {file = "requests-2.28.0.tar.gz", hash = "sha256:d568723a7ebd25875d8d1eaf5dfa068cd2fc8194b2e483d7b1f7c81918dbec6b"},
+    {file = "requests-2.28.1-py3-none-any.whl", hash = "sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"},
+    {file = "requests-2.28.1.tar.gz", hash = "sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"},
 ]
 requests-oauthlib = [
     {file = "requests-oauthlib-1.3.1.tar.gz", hash = "sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"},
@@ -4767,7 +4767,7 @@ text-unidecode = [
     {file = "text_unidecode-1.3-py2.py3-none-any.whl", hash = "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8"},
 ]
 tilecloud = [
-    {file = "tilecloud-1.8.0-py3-none-any.whl", hash = "sha256:e4fea928372820d514f5b4158a95fe6a8460ddd7315963098aae0f21b8de816b"},
+    {file = "tilecloud-1.8.2-py3-none-any.whl", hash = "sha256:f1542902c157ff8ab1551040299941838203bb871606aa31bc931d33b8d8146e"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
