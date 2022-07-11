@@ -1,3 +1,7 @@
+##### 2.7.0.74
+
+- Update all patch versions (2.7) [ngeo#8736](https://github.com/camptocamp/ngeo/pull/8736)
+
 ##### 2.7.0.73
 
 - [Backport 2.7] Use the new Transifex client [ngeo#8724](https://github.com/camptocamp/ngeo/pull/8724)
