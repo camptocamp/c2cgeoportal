@@ -168,10 +168,7 @@ RUN make --makefile=build.mk \
     geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
     admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
 
-# For awscli
-RUN echo 'complete -C aws_completer aws' >> /etc/bash_completion.d/aws_completer \
-    && mv /usr/bin/bashrc ~/.bashrc \
-    && git config --global --add safe.directory /src
+RUN git config --global --add safe.directory /src
 COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src

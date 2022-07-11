@@ -106,7 +106,7 @@ services:
     volumes_from:
       - config:ro
 
-  # Rich image for project development with e.-g. vim, tree, awscli, psql, ...
+  # Rich image for project development with e.-g. vim, psql, ...
   tools:
     extends:
       file: docker-compose-lib.yaml

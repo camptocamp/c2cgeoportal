@@ -81,22 +81,6 @@ tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)"
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
-name = "awscli"
-version = "1.25.18"
-description = "Universal Command Line Environment for AWS."
-category = "dev"
-optional = false
-python-versions = ">= 3.7"
-
-[package.dependencies]
-botocore = "1.27.18"
-colorama = ">=0.2.5,<0.4.5"
-docutils = ">=0.10,<0.17"
-PyYAML = ">=3.10,<5.5"
-rsa = ">=3.1.2,<4.8"
-s3transfer = ">=0.6.0,<0.7.0"
-
-[[package]]
 name = "azure-core"
 version = "1.24.2"
 description = "Microsoft Azure Core Library for Python"
@@ -3139,7 +3123,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "481e0f17b46d74925d2096ed53fd77c91ab1414baca31f401d61867f9ee7a3bb"
+content-hash = "8a89999f7abb981eecfbffd59ce324bafb1bfabf5b4073c5dc34c12df3135caf"
 
 [metadata.files]
 affine = [
@@ -3168,10 +3152,6 @@ atomicwrites = [
 attrs = [
     {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
-]
-awscli = [
-    {file = "awscli-1.25.18-py3-none-any.whl", hash = "sha256:ae0e3b22dbd12c72693c27e7a0db8b71d362c5c4962f8d2c528851f305d115db"},
-    {file = "awscli-1.25.18.tar.gz", hash = "sha256:82b945c4555ff42cc9001d9c2f85f8381df93a62481b232652da7f6e85b8a9a8"},
 ]
 azure-core = [
     {file = "azure-core-1.24.2.zip", hash = "sha256:0f3a20d245659bf81fb3670070a5410c8d4a43298d5a981e62dce393000a9084"},
