@@ -8,7 +8,7 @@
     "@typescript-eslint/parser": "5.30.5",
     "angular-gettext-tools": "2.5.3",
     "commander": "9.3.0",
-    "eslint": "8.18.0",
+    "eslint": "8.19.0",
     "ngeo": "2.8.0-latest.20220711T085437Z.105709d4e",
     "puppeteer": "15.3.2",
     "url-parse": "1.5.10"

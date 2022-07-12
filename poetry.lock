@@ -110,7 +110,7 @@ six = ">=1.12.0"
 
 [[package]]
 name = "azure-storage-blob"
-version = "12.12.0"
+version = "12.13.0"
 description = "Microsoft Azure Blob Storage Client Library for Python"
 category = "main"
 optional = false
@@ -378,7 +378,7 @@ SQLAlchemy = ">=1.1.13"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "5.0.0"
+version = "5.1.0"
 description = "Common utilities for Camptocamp WSGI applications"
 category = "main"
 optional = false
@@ -390,7 +390,6 @@ boltons = {version = "*", optional = true, markers = "extra == \"standard\""}
 cee-syslog-handler = {version = "*", optional = true, markers = "extra == \"standard\""}
 cornice = {version = "*", optional = true, markers = "extra == \"standard\""}
 gunicorn = {version = "*", optional = true, markers = "extra == \"standard\""}
-linesman = {version = "*", optional = true, markers = "extra == \"profiler\""}
 lxml = {version = "*", optional = true, markers = "extra == \"standard\""}
 netifaces = {version = "*", optional = true, markers = "extra == \"standard\""}
 objgraph = {version = "*", optional = true, markers = "extra == \"standard\""}
@@ -404,8 +403,8 @@ redis = {version = "*", optional = true, markers = "extra == \"broadcast\""}
 requests = {version = "*", optional = true, markers = "extra == \"standard\""}
 requests-oauthlib = {version = "*", optional = true, markers = "extra == \"standard\""}
 sentry-sdk = {version = "*", optional = true, markers = "extra == \"standard\""}
-SQLAlchemy = {version = "*", optional = true, markers = "extra == \"standard\""}
-SQLAlchemy-Utils = {version = "*", optional = true, markers = "extra == \"standard\""}
+sqlalchemy = {version = "*", optional = true, markers = "extra == \"standard\""}
+sqlalchemy-utils = {version = "*", optional = true, markers = "extra == \"standard\""}
 ujson = {version = "*", optional = true, markers = "extra == \"standard\""}
 waitress = {version = "*", optional = true, markers = "extra == \"standard\""}
 "zope.interface" = {version = "*", optional = true, markers = "extra == \"standard\""}
@@ -413,8 +412,7 @@ waitress = {version = "*", optional = true, markers = "extra == \"standard\""}
 
 [package.extras]
 broadcast = ["redis"]
-profiler = ["linesman"]
-standard = ["alembic", "boltons", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "pipfile", "psycopg2", "pyramid", "pyramid-tm", "sentry-sdk", "requests", "ujson", "cee-syslog-handler", "sqlalchemy", "sqlalchemy-utils", "zope.interface", "zope.sqlalchemy", "pyyaml", "pyjwt", "requests-oauthlib", "setuptools", "waitress"]
+standard = ["alembic", "boltons", "cee-syslog-handler", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "pipfile", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "pyyaml", "requests", "requests-oauthlib", "sentry-sdk", "sqlalchemy", "sqlalchemy-utils", "ujson", "waitress", "zope.interface", "zope.sqlalchemy"]
 
 [[package]]
 name = "cachetools"
@@ -1287,22 +1285,6 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
-name = "linesman"
-version = "0.3.2"
-description = "WSGI Profiling middleware"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-mako = "*"
-networkx = "1.7"
-Paste = "*"
-pillow = "*"
-pygraphviz = "*"
-WebOb = "*"
-
-[[package]]
 name = "lingua"
 version = "4.15.0"
 description = "Translation toolset"
@@ -1510,14 +1492,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "networkx"
-version = "1.7"
-description = "Python package for creating and manipulating graphs and networks"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "node-vm2"
 version = "0.4.4"
 description = "A binding to Node.js + vm2, helps you execute JavaScript safely."
@@ -1610,7 +1584,7 @@ python-versions = ">=2.7,>=3.2"
 name = "paste"
 version = "3.5.1"
 description = "Tools for using a Web Server Gateway Interface stack"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -1964,14 +1938,6 @@ description = "Pygments is a syntax highlighting package written in Python."
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
-[[package]]
-name = "pygraphviz"
-version = "1.9"
-description = "Python interface to Graphviz"
-category = "main"
-optional = false
-python-versions = ">=3.8"
 
 [[package]]
 name = "pyjwt"
@@ -2366,11 +2332,11 @@ toml = ["toml"]
 
 [[package]]
 name = "rasterio"
-version = "1.2.10"
+version = "1.3.0"
 description = "Fast and direct raster I/O for use with Numpy and SciPy"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 
 [package.dependencies]
 affine = "*"
@@ -2383,7 +2349,7 @@ numpy = "*"
 snuggs = ">=1.4.1"
 
 [package.extras]
-all = ["numpydoc", "hypothesis", "matplotlib", "pytest-cov (>=2.2.0)", "sphinx", "ipython (>=2.0)", "boto3 (>=1.2.4)", "shapely", "pytest (>=2.8.2)", "packaging", "sphinx-rtd-theme", "ghp-import"]
+all = ["hypothesis", "numpydoc", "ipython (>=2.0)", "ghp-import", "matplotlib", "sphinx-rtd-theme", "sphinx", "packaging", "shapely", "boto3 (>=1.2.4)", "pytest (>=2.8.2)", "pytest-cov (>=2.2.0)"]
 docs = ["ghp-import", "numpydoc", "sphinx", "sphinx-rtd-theme"]
 ipython = ["ipython (>=2.0)"]
 plot = ["matplotlib"]
@@ -3123,7 +3089,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "37b9e67fb5ba288aec7ceea6157f7f0aa26cf064e0ab7df848627f6d48fd9a0a"
+content-hash = "aa80ac772a349b4b03b9014ec16f6b57df02810cd8e2a0118ce93458dd6a261d"
 
 [metadata.files]
 affine = [
@@ -3162,8 +3128,8 @@ azure-identity = [
     {file = "azure_identity-1.10.0-py3-none-any.whl", hash = "sha256:b386f1ccbea6a48b9ab7e7f162adc456793c345193a7c1a713959562b08dcbbd"},
 ]
 azure-storage-blob = [
-    {file = "azure-storage-blob-12.12.0.zip", hash = "sha256:f6daf07d1ca86d189ae15c9b1859dff5b7127bf24a07a4bbe41e0b81e01d62f7"},
-    {file = "azure_storage_blob-12.12.0-py3-none-any.whl", hash = "sha256:1eac4c364309ccc193c80ee26c78d25dfbf10926b1309095a448a7a0388526eb"},
+    {file = "azure-storage-blob-12.13.0.zip", hash = "sha256:53f0d4cd32970ac9ff9b9753f83dd2fb3f9ac30e1d01e71638c436c509bfd884"},
+    {file = "azure_storage_blob-12.13.0-py3-none-any.whl", hash = "sha256:280a6ab032845bab9627582bee78a50497ca2f14772929b5c5ee8b4605af0cb3"},
 ]
 babel = [
     {file = "Babel-2.10.3-py3-none-any.whl", hash = "sha256:ff56f4892c1c4bf0d814575ea23471c230d544203c7748e8c68f0089478d48eb"},
@@ -3247,7 +3213,7 @@ c2cgeoform = [
     {file = "c2cgeoform-2.1.26.tar.gz", hash = "sha256:e5bfded2ce2fc896b87e989a5c2c0ef9ebadf5f7f28e0b530ea9821fa8cc5785"},
 ]
 c2cwsgiutils = [
-    {file = "c2cwsgiutils-5.0.0-py3-none-any.whl", hash = "sha256:ebaf0f110bb1c5fccc9034daeb13c51bd932eca6eb12e76af7c57ffa4ca9a9cf"},
+    {file = "c2cwsgiutils-5.1.0-py3-none-any.whl", hash = "sha256:e203358c25f1fa1affc3ab2d33318f4666d62e21aae6e4df3bc542369b98a216"},
 ]
 cachetools = [
     {file = "cachetools-5.2.0-py3-none-any.whl", hash = "sha256:f9f17d2aec496a9aa6b76f53e3b614c965223c061982d434d160f930c698a9db"},
@@ -3747,10 +3713,6 @@ lazy-object-proxy = [
     {file = "lazy_object_proxy-1.7.1-cp39-cp39-win_amd64.whl", hash = "sha256:677ea950bef409b47e51e733283544ac3d660b709cfce7b187f5ace137960d61"},
     {file = "lazy_object_proxy-1.7.1-pp37.pp38-none-any.whl", hash = "sha256:d66906d5785da8e0be7360912e99c9188b70f52c422f9fc18223347235691a84"},
 ]
-linesman = [
-    {file = "linesman-0.3.2.tar.gz", hash = "sha256:319b6085ee89981409edaa436457446f6ac96c1dff1af5de90eeccd76a1ec0b0"},
-    {file = "linesman-0.3.2.zip", hash = "sha256:34ff78d17a90a7d5b20e12537b77dcb4b2b092ac24b97206d8e379ee15fb7ebe"},
-]
 lingua = [
     {file = "lingua-4.15.0-py2.py3-none-any.whl", hash = "sha256:8645a8029425bc97b74850f3c7817a7fae58d5f60709f13b3f3f41e5041f8a68"},
     {file = "lingua-4.15.0.tar.gz", hash = "sha256:0e1a946741db288a40361ad04ff38fe04bf0819834b8abb84c4b535fed9ba4ef"},
@@ -3967,13 +3929,6 @@ netifaces = [
     {file = "netifaces-0.11.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:841aa21110a20dc1621e3dd9f922c64ca64dd1eb213c47267a2c324d823f6c8f"},
     {file = "netifaces-0.11.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:e76c7f351e0444721e85f975ae92718e21c1f361bda946d60a214061de1f00a1"},
     {file = "netifaces-0.11.0.tar.gz", hash = "sha256:043a79146eb2907edf439899f262b3dfe41717d34124298ed281139a8b93ca32"},
-]
-networkx = [
-    {file = "networkx-1.7-py2.6.egg", hash = "sha256:5b028f1c497803a1318f64bcf16b7ab379da170a7400736538bf51c7cccb87dd"},
-    {file = "networkx-1.7-py2.7.egg", hash = "sha256:04502c25cecb54686e48eb069aa9d0243e0c912502172efe1b4ed0370b6574cc"},
-    {file = "networkx-1.7-py3.2.egg", hash = "sha256:f28a86cbd528177513e2ff85e7d19d6c85d18dc74c16a64af509d704f18ad382"},
-    {file = "networkx-1.7.tar.gz", hash = "sha256:eb62de98a0fa74aec9c31fffbac8089a703c6413601678f3fb1a0016bad2bdc1"},
-    {file = "networkx-1.7.zip", hash = "sha256:928165050619553bc952ea02d43de2531c0ca44ee4f4d0c5561e7e88174fdf85"},
 ]
 node-vm2 = [
     {file = "node_vm2-0.4.4-py3-none-any.whl", hash = "sha256:c62da6fc6792d6b7a81c8bbf5f13500b359f35d984d837cae3be5cbf676a0169"},
@@ -4361,9 +4316,6 @@ pygments = [
     {file = "Pygments-2.12.0-py3-none-any.whl", hash = "sha256:dc9c10fb40944260f6ed4c688ece0cd2048414940f1cea51b8b226318411c519"},
     {file = "Pygments-2.12.0.tar.gz", hash = "sha256:5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"},
 ]
-pygraphviz = [
-    {file = "pygraphviz-1.9.zip", hash = "sha256:fa18f7c6cea28341a4e466ed0cf05682b0a68288afe8dd7c9426782f7c1ae01c"},
-]
 pyjwt = [
     {file = "PyJWT-2.4.0-py3-none-any.whl", hash = "sha256:72d1d253f32dbd4f5c88eaf1fdc62f3a19f676ccbadb9dbc5d07e951b2b26daf"},
     {file = "PyJWT-2.4.0.tar.gz", hash = "sha256:d42908208c699b3b973cbeb01a969ba6a96c821eefb1c5bfe4c390c01d67abba"},
@@ -4560,15 +4512,16 @@ pyyaml-include = [
     {file = "pyyaml_include-1.3-py3-none-any.whl", hash = "sha256:5142a0b0f93d9b1e5872d5a814f3681ffbc70638128ced1acfd9fb57da7825ca"},
 ]
 rasterio = [
-    {file = "rasterio-1.2.10-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:f86efb0e4989201f244d6818575d442b716ce81af6cd969c3caead76b9690837"},
-    {file = "rasterio-1.2.10-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:831b6dbefb409c3ece23fa219d8446a7534e30c69a075fd366e72742b1f94c58"},
-    {file = "rasterio-1.2.10-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:42a1a6364313c384fcd631d850792621301e930449b47f72ced048c415c9c84e"},
-    {file = "rasterio-1.2.10-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:1572003273225162933d4c88729076ac39050e7becd9de7d31988d1dd40942c1"},
-    {file = "rasterio-1.2.10-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:8f9867a3b6663396260fc5bdfbea372cac9202074b709478db741767f40dfffc"},
-    {file = "rasterio-1.2.10-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:ba95aa3221814e364ef49cf8dd8ca4a73e2ea702bd9228a3a845e197091792ae"},
-    {file = "rasterio-1.2.10-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:2394ce0ae1e7b49b456ddc6bbf00ce6840656e926046c1a5a54cd0f66ea67dc4"},
-    {file = "rasterio-1.2.10-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:c73248b4ba0564798bf64df869834821a7b823a4c9ceda3de9b772d69c3f5405"},
-    {file = "rasterio-1.2.10.tar.gz", hash = "sha256:6062456047ba6494fe18bd0da98a383b6fad5306b16cd52a22e76c59172a2b5f"},
+    {file = "rasterio-1.3.0-cp310-cp310-macosx_10_10_x86_64.whl", hash = "sha256:94ffd1bab9e1516fdd26f53b3b8d9fd6ed1055b2edf1e92d9e86e20a211b0a3d"},
+    {file = "rasterio-1.3.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:021e24e2342aa8fed014934f2cde4b88360991a2f9cf4c0dab08f5f86fd46d5f"},
+    {file = "rasterio-1.3.0-cp310-cp310-win_amd64.whl", hash = "sha256:ddba9bc0f588a6b8360d7479b3af76a0c4915664a45c9f82483b68d4e0ecda87"},
+    {file = "rasterio-1.3.0-cp38-cp38-macosx_10_10_x86_64.whl", hash = "sha256:1703db0a2fa5e204150f1f8c158eac33fbd25e05ff65100922c3101c056baf9b"},
+    {file = "rasterio-1.3.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:823447cfb2eb5d418e70371f2ae06a4b07b3f23cef44d75344b6ba2b1f8ed0a8"},
+    {file = "rasterio-1.3.0-cp38-cp38-win_amd64.whl", hash = "sha256:87db17990e6917d2154c72a3539af390a5382f3917890b73847df415c7b9022b"},
+    {file = "rasterio-1.3.0-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:f9d6ff8499b9c1297758dc7c88d36f1f76ffc99113e3c346ab5da6d6f4f57613"},
+    {file = "rasterio-1.3.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:82cf55e76a69296e41c06acaf5853ea5625b852c6ed0e9fe05867b3fbc29dd73"},
+    {file = "rasterio-1.3.0-cp39-cp39-win_amd64.whl", hash = "sha256:cc2185352c677b419ca6de613985166aad0a68a91402045928f36d00e9aa6874"},
+    {file = "rasterio-1.3.0.tar.gz", hash = "sha256:90171035e5b201cdb85a9abd60181426366040d4ca44706958db982a030f8dc4"},
 ]
 readme-renderer = [
     {file = "readme_renderer-35.0-py3-none-any.whl", hash = "sha256:73b84905d091c31f36e50b4ae05ae2acead661f6a09a9abb4df7d2ddcdb6a698"},
