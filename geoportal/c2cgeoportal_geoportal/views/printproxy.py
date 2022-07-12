@@ -37,10 +37,11 @@ import requests
 from pyramid.httpexceptions import HTTPBadGateway, HTTPFound
 from pyramid.view import view_config
 
+from c2cgeoportal_commons.lib import is_intranet
+from c2cgeoportal_commons.lib.caching import get_region
+from c2cgeoportal_commons.lib.functionality import get_functionality
 from c2cgeoportal_commons.lib.url import Url
-from c2cgeoportal_geoportal.lib import is_intranet
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region
-from c2cgeoportal_geoportal.lib.functionality import get_functionality
+from c2cgeoportal_geoportal.lib.caching import Cache
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
 LOG = logging.getLogger(__name__)

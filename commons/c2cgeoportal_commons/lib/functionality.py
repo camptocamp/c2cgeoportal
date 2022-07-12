@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,16 +32,16 @@ from typing import Any, Dict, List, Set, Union, cast
 import pyramid.request
 from sqlalchemy.orm import joinedload
 
+from c2cgeoportal_commons.lib import get_typed, get_types_map, is_intranet
+from c2cgeoportal_commons.lib.caching import get_region
 from c2cgeoportal_commons.models import main, static
-from c2cgeoportal_geoportal.lib import get_typed, get_types_map, is_intranet
-from c2cgeoportal_geoportal.lib.caching import get_region
 
-LOG = logging.getLogger(__name__)
-CACHE_REGION_OBJ = get_region("obj")
-CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION_OBJ = get_region("obj")
+_CACHE_REGION = get_region("std")
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
+@_CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def _get_role(name: str) -> Dict[str, Any]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
@@ -94,7 +94,7 @@ def _get_db_functionality(
     return [r for r in values if r is not None]
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
+@_CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
 def _get_functionalities_type(request: pyramid.request.Request) -> Dict[str, Dict[str, Any]]:
     return get_types_map(
         request.registry.settings.get("admin_interface", {}).get("available_functionalities", [])
@@ -140,12 +140,12 @@ def get_functionality(
         )
 
     if errors != set():
-        LOG.error("\n".join(errors))
+        _LOG.error("\n".join(errors))
     return result
 
 
 def get_mapserver_substitution_params(request: pyramid.request.Request) -> Dict[str, str]:
-    """Get the parameters used by the mapserver substitution."""
+    """Get the parameters used by the MapServer substitution."""
     params: Dict[str, str] = {}
     mss = get_functionality("mapserver_substitution", request, is_intranet(request))
     if mss:
@@ -160,5 +160,5 @@ def get_mapserver_substitution_params(request: pyramid.request.Request) -> Dict[
                 else:
                     params[attribute] = value
             else:
-                LOG.warning("Mapserver Substitution '%s' does not respect pattern: <attribute>=<value>", s)
+                _LOG.warning("MapServer Substitution '%s' does not respect pattern: <attribute>=<value>", s)
     return params

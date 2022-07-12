@@ -56,6 +56,7 @@ from sqlalchemy.orm import Session, joinedload
 
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal.views
+from c2cgeoportal_commons.lib.caching import get_region
 from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
@@ -474,7 +475,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
                 caching.invalidate_region("std")
                 caching.invalidate_region("obj")
                 if caching.MEMORY_CACHE_DICT:
-                    caching.get_region("std").delete_multi(list(caching.MEMORY_CACHE_DICT.keys()))
+                    get_region("std").delete_multi(list(caching.MEMORY_CACHE_DICT.keys()))
                 caching.MEMORY_CACHE_DICT.clear()
 
     # Register a tween to get back the cache buster path.

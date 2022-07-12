@@ -31,7 +31,8 @@ import logging
 import xml.sax.handler  # nosec
 from io import StringIO
 from typing import Any, Callable, Dict, List, Optional, Set, Union
-from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
+from xml.sax.saxutils import XMLFilterBase, XMLGenerator
+from c2cgeoportal_commons.lib.caching import get_region  # nosec
 
 import defusedxml.expatreader
 import pyramid.request
@@ -45,7 +46,7 @@ from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib import caching, get_ogc_server_wfs_url_ids, get_ogc_server_wms_url_ids
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers, get_writable_layers
 
-CACHE_REGION = caching.get_region("std")
+CACHE_REGION = get_region("std")
 LOG = logging.getLogger(__name__)
 ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
 

@@ -26,23 +26,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import inspect
 import logging
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, cast
 
 import pyramid.request
 import pyramid.response
-import sqlalchemy.ext.declarative
 from dogpile.cache.api import NO_VALUE, CacheBackend
 from dogpile.cache.backends.memory import MemoryBackend
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
-from dogpile.cache.region import CacheRegion, make_region
+from dogpile.cache.region import CacheRegion
 from dogpile.cache.util import sha1_mangle_key
-from pyramid.request import Request
-from sqlalchemy.orm.util import identity_key
 
-from c2cgeoportal_commons.models import Base
+from c2cgeoportal_commons.lib.caching import REGION, get_region
 
 if TYPE_CHECKING:
     from dogpile.cache.api import SerializedReturnType
@@ -50,46 +46,7 @@ else:
     SerializedReturnType = Any
 
 LOG = logging.getLogger(__name__)
-_REGION: Dict[str, Any] = {}
 MEMORY_CACHE_DICT: Dict[str, Any] = {}
-
-
-def map_dbobject(
-    item: sqlalchemy.ext.declarative.ConcreteBase,
-) -> sqlalchemy.ext.declarative.ConcreteBase:
-    """Get an cache identity key for the cache."""
-    return identity_key(item) if isinstance(item, Base) else item
-
-
-def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..., str]:
-    """
-    Return a function that generates a string key.
-
-    Based on a given function as well as arguments to the returned function itself.
-
-    This is used by :meth:`.CacheRegion.cache_on_arguments` to generate a cache key from a decorated function.
-    """
-
-    if namespace is None:
-        namespace = (function.__module__, function.__name__)
-    else:
-        namespace = (function.__module__, function.__name__, namespace)
-
-    args = inspect.getfullargspec(function)
-    ignore_first_argument = args[0] and args[0][0] in ("self", "cls")
-
-    def generate_key(*args: Any, **kw: Any) -> str:
-        if kw:
-            raise ValueError("key creation function does not accept keyword arguments.")
-        parts: List[str] = []
-        parts.extend(namespace)
-        if ignore_first_argument:
-            args = args[1:]
-        new_args: List[str] = [arg for arg in args if not isinstance(arg, Request)]
-        parts.extend(map(str, map(map_dbobject, new_args)))
-        return "|".join(parts)
-
-    return generate_key
 
 
 def init_region(conf: Dict[str, Any], region: str) -> CacheRegion:
@@ -108,17 +65,10 @@ def _configure_region(conf: Dict[str, Any], cache_region: CacheRegion) -> None:
     cache_region.configure(backend, **kwargs)
 
 
-def get_region(region: str) -> CacheRegion:
-    """Return a cache region."""
-    if region not in _REGION:
-        _REGION[region] = make_region(function_key_generator=keygen_function)
-    return _REGION[region]
-
-
 def invalidate_region(region: Optional[str] = None) -> None:
     """Invalidate a cache region."""
     if region is None:
-        for cache_region in _REGION.values():
+        for cache_region in REGION.values():
             cache_region.invalidate()
     else:
         get_region(region).invalidate()

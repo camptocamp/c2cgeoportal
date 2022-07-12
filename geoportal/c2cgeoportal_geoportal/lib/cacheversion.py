@@ -34,7 +34,7 @@ import pyramid.registry
 import pyramid.request
 import pyramid.response
 
-from c2cgeoportal_geoportal.lib.caching import get_region
+from c2cgeoportal_commons.lib.caching import get_region
 
 CACHE_REGION = get_region("std")
 

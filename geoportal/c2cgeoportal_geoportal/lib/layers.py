@@ -32,9 +32,10 @@ from pyramid.request import Request
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm.query import Query
 
-from c2cgeoportal_geoportal.lib import caching, get_roles_id
+from c2cgeoportal_commons.lib.caching import get_region
+from c2cgeoportal_geoportal.lib import get_roles_id
 
-CACHE_REGION = caching.get_region("std")
+CACHE_REGION = get_region("std")
 
 
 def _get_layers_query(request: Request, what: DeclarativeMeta) -> Query:

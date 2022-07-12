@@ -49,12 +49,14 @@ from pyramid.view import forbidden_view_config, view_config
 from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib import is_intranet
+from c2cgeoportal_commons.lib.caching import get_region
 from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.lib.functionality import get_functionality
 from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal import is_valid_referrer
-from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
-from c2cgeoportal_geoportal.lib.functionality import get_functionality
+from c2cgeoportal_geoportal.lib import get_setting, oauth2
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 LOG = logging.getLogger(__name__)
 CACHE_REGION = get_region("std")

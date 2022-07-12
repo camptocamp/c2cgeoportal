@@ -37,8 +37,9 @@ import pyramid.response
 import requests
 from pyramid.httpexceptions import HTTPBadGateway, exception_response
 
+from c2cgeoportal_commons.lib.caching import get_region
 from c2cgeoportal_commons.lib.url import Url
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 from c2cgeoportal_geoportal.views import restrict_headers
 
 LOG = logging.getLogger(__name__)

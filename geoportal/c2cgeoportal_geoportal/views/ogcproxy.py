@@ -34,7 +34,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import DBSession, main
-from c2cgeoportal_geoportal.lib.caching import get_region
+from c2cgeoportal_commons.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
 CACHE_REGION = get_region("std")
@@ -43,7 +43,7 @@ LOG = logging.getLogger(__name__)
 
 class OGCProxy(Proxy):
     """
-    Proxy implementation that manly manage the ogcserver parameter.
+    Proxy implementation that manly manage the OGC server parameter.
 
     Then load the corresponding OGCServer.
     """

@@ -29,12 +29,13 @@
 import glob
 import logging
 from typing import Any, Dict, List, Optional
+from c2cgeoportal_commons.lib.caching import get_region
 
 import pyramid.request
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)

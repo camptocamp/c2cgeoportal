@@ -35,7 +35,7 @@ import oauthlib.oauth2
 import pyramid.threadlocal
 
 import c2cgeoportal_commons  # pylint: disable=unused-import
-from c2cgeoportal_geoportal.lib.caching import get_region
+from c2cgeoportal_commons.lib.caching import get_region
 
 LOG = logging.getLogger(__name__)
 OBJECT_CACHE_REGION = get_region("obj")

@@ -36,10 +36,11 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
 from sqlalchemy import and_, desc, func, or_
 
+from c2cgeoportal_commons.lib.caching import get_region
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from c2cgeoportal_geoportal import locale_negotiator
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
 
 CACHE_REGION = get_region("std")

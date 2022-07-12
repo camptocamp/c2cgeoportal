@@ -36,9 +36,10 @@ from pyramid.view import view_config
 from sqlalchemy import func
 
 from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.caching import get_region
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
 
 CACHE_REGION = get_region("std")
 
