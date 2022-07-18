@@ -1,3 +1,7 @@
+##### 2.7.0.76
+
+- Update dependency jquery-ui to v1.13.2 [SECURITY] (2.7) [ngeo#8741](https://github.com/camptocamp/ngeo/pull/8741)
+
 ##### 2.7.0.75
 
 - Update all patch versions (2.7) (patch) [ngeo#8739](https://github.com/camptocamp/ngeo/pull/8739)
