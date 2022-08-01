@@ -499,7 +499,7 @@ python-versions = "*"
 click = ">=4.0"
 
 [package.extras]
-dev = ["pytest (>=3.6)", "pytest-cov", "wheel", "coveralls"]
+dev = ["coveralls", "wheel", "pytest-cov", "pytest (>=3.6)"]
 
 [[package]]
 name = "cligj"
@@ -524,8 +524,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-dev = ["check-manifest", "flake8", "pytest", "pytest-cov", "pytest-dependency"]
 hard-encoding-detection = ["chardet"]
+dev = ["pytest-dependency", "pytest-cov", "pytest", "flake8", "check-manifest"]
 
 [[package]]
 name = "colander"
@@ -572,7 +572,7 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
+test = ["hypothesis (==3.55.3)", "flake8 (==3.7.8)"]
 
 [[package]]
 name = "cookiecutter"
@@ -1166,8 +1166,8 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-test = ["pytest", "pytest-trio", "pytest-asyncio (>=0.17)", "testpath", "trio", "async-timeout"]
-trio = ["trio", "async-generator"]
+trio = ["async-generator", "trio"]
+test = ["async-timeout", "trio", "testpath", "pytest-asyncio (>=0.17)", "pytest-trio", "pytest"]
 
 [[package]]
 name = "jinja2"
@@ -1241,9 +1241,9 @@ jsonschema = "*"
 "ruamel.yaml" = "*"
 
 [package.extras]
-generate = ["pyyaml", "requests"]
-tools = ["black", "isort", "pyupgrade"]
-extra = ["pinyin", "romanize", "romkan"]
+extra = ["romkan", "romanize", "pinyin"]
+generate = ["requests", "pyyaml"]
+tools = ["pyupgrade", "isort", "black"]
 
 [[package]]
 name = "keyring"
@@ -1420,8 +1420,8 @@ python-versions = "*"
 [package.dependencies]
 msal = ">=0.4.1,<2.0.0"
 portalocker = [
-    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
     {version = ">=1.6,<3", markers = "python_version >= \"3.5\" and platform_system == \"Windows\""},
+    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
 ]
 
 [[package]]
@@ -1440,7 +1440,7 @@ requests = ">=2.16,<3.0"
 requests-oauthlib = ">=0.5.0"
 
 [package.extras]
-async = ["aiodns", "aiohttp (>=3.0)"]
+async = ["aiohttp (>=3.0)", "aiodns"]
 
 [[package]]
 name = "munch"
@@ -1604,8 +1604,8 @@ optional = false
 python-versions = "*"
 
 [package.extras]
+docs = ["pylons-sphinx-themes", "Sphinx (>=1.7.5)"]
 paste = ["paste"]
-docs = ["Sphinx (>=1.7.5)", "pylons-sphinx-themes"]
 
 [[package]]
 name = "pastescript"
@@ -1741,7 +1741,7 @@ PasteDeploy = ">=2.0"
 plaster = ">=0.5"
 
 [package.extras]
-testing = ["pytest", "pytest-cov"]
+testing = ["pytest-cov", "pytest"]
 
 [[package]]
 name = "platformdirs"
@@ -1764,8 +1764,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-dev = ["pre-commit", "tox"]
-testing = ["pytest", "pytest-benchmark"]
+testing = ["pytest-benchmark", "pytest"]
+dev = ["tox", "pre-commit"]
 
 [[package]]
 name = "polib"
@@ -1951,10 +1951,10 @@ python-versions = ">=3.6"
 cryptography = {version = ">=3.3.1", optional = true, markers = "extra == \"crypto\""}
 
 [package.extras]
+tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
+docs = ["zope.interface", "sphinx-rtd-theme", "sphinx"]
+dev = ["pre-commit", "mypy", "coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)", "cryptography (>=3.3.1)", "zope.interface", "sphinx-rtd-theme", "sphinx"]
 crypto = ["cryptography (>=3.3.1)"]
-dev = ["sphinx", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.3.1)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "mypy", "pre-commit"]
-docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
-tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
 
 [[package]]
 name = "pykwalify"
@@ -2092,8 +2092,8 @@ webob = ">=1.8.3"
 "zope.interface" = ">=3.8.0"
 
 [package.extras]
-docs = ["Sphinx (>=3.0.0)", "docutils", "pylons-sphinx-themes (>=1.0.8)", "pylons-sphinx-latesturl", "repoze.sphinx.autointerface", "sphinx-copybutton", "sphinxcontrib-autoprogram"]
-testing = ["webtest (>=1.3.1)", "zope.component (>=4.0)", "coverage", "pytest (>=5.4.2)", "pytest-cov"]
+testing = ["pytest-cov", "pytest (>=5.4.2)", "coverage", "zope.component (>=4.0)", "webtest (>=1.3.1)"]
+docs = ["sphinxcontrib-autoprogram", "sphinx-copybutton", "repoze.sphinx.autointerface", "pylons-sphinx-latesturl", "pylons-sphinx-themes (>=1.0.8)", "docutils", "Sphinx (>=3.0.0)"]
 
 [[package]]
 name = "pyramid-beaker"
@@ -2176,8 +2176,8 @@ Mako = ">=1.1.0"
 pyramid = "*"
 
 [package.extras]
-docs = ["Sphinx (>=1.8.1)", "docutils", "repoze.sphinx.autointerface", "pylons-sphinx-themes (>=1.0.8)"]
-testing = ["WebTest (>=1.3.1)", "nose", "coverage"]
+testing = ["coverage", "nose", "WebTest (>=1.3.1)"]
+docs = ["pylons-sphinx-themes (>=1.0.8)", "repoze.sphinx.autointerface", "docutils", "Sphinx (>=1.8.1)"]
 
 [[package]]
 name = "pyramid-multiauth"
@@ -2248,7 +2248,7 @@ coverage = {version = ">=5.2.1", extras = ["toml"]}
 pytest = ">=4.6"
 
 [package.extras]
-testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
+testing = ["virtualenv", "pytest-xdist", "six", "process-tests", "hunter", "fields"]
 
 [[package]]
 name = "python-dateutil"
@@ -2327,8 +2327,8 @@ python-versions = ">=3.5"
 PyYAML = ">=5.1,<7.0"
 
 [package.extras]
-all = ["toml"]
 toml = ["toml"]
+all = ["toml"]
 
 [[package]]
 name = "rasterio"
@@ -2349,12 +2349,12 @@ numpy = "*"
 snuggs = ">=1.4.1"
 
 [package.extras]
-all = ["hypothesis", "numpydoc", "ipython (>=2.0)", "ghp-import", "matplotlib", "sphinx-rtd-theme", "sphinx", "packaging", "shapely", "boto3 (>=1.2.4)", "pytest (>=2.8.2)", "pytest-cov (>=2.2.0)"]
-docs = ["ghp-import", "numpydoc", "sphinx", "sphinx-rtd-theme"]
-ipython = ["ipython (>=2.0)"]
-plot = ["matplotlib"]
+test = ["shapely", "pytest (>=2.8.2)", "pytest-cov (>=2.2.0)", "packaging", "hypothesis", "boto3 (>=1.2.4)"]
 s3 = ["boto3 (>=1.2.4)"]
-test = ["boto3 (>=1.2.4)", "hypothesis", "packaging", "pytest-cov (>=2.2.0)", "pytest (>=2.8.2)", "shapely"]
+plot = ["matplotlib"]
+ipython = ["ipython (>=2.0)"]
+docs = ["sphinx-rtd-theme", "sphinx", "numpydoc", "ghp-import"]
+all = ["pytest-cov (>=2.2.0)", "pytest (>=2.8.2)", "boto3 (>=1.2.4)", "shapely", "packaging", "sphinx", "sphinx-rtd-theme", "matplotlib", "ghp-import", "ipython (>=2.0)", "numpydoc", "hypothesis"]
 
 [[package]]
 name = "readme-renderer"
@@ -2816,7 +2816,7 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-docs = ["Sphinx (>=1.3.1)", "docutils", "pylons-sphinx-themes"]
+docs = ["pylons-sphinx-themes", "docutils", "Sphinx (>=1.3.1)"]
 
 [[package]]
 name = "twine"
@@ -2863,7 +2863,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-pyyaml"
-version = "6.0.9"
+version = "6.0.11"
 description = "Typing stubs for PyYAML"
 category = "dev"
 optional = false
@@ -2934,8 +2934,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-docs = ["sphinx", "repoze.sphinx.autointerface"]
-testing = ["pytest", "pytest-cov", "coverage"]
+testing = ["coverage", "pytest-cov", "pytest"]
+docs = ["repoze.sphinx.autointerface", "sphinx"]
 
 [[package]]
 name = "virtualenv"
@@ -3009,8 +3009,8 @@ waitress = ">=0.8.5"
 WebOb = ">=1.2"
 
 [package.extras]
-docs = ["docutils", "pylons-sphinx-themes (>=1.0.8)", "Sphinx (>=1.8.1)"]
-tests = ["coverage", "pastedeploy", "pyquery", "pytest", "pytest-cov", "wsgiproxy2"]
+tests = ["wsgiproxy2", "pytest-cov", "pytest", "pyquery", "pastedeploy", "coverage"]
+docs = ["Sphinx (>=1.8.1)", "pylons-sphinx-themes (>=1.0.8)", "docutils"]
 
 [[package]]
 name = "wrapt"
@@ -3088,7 +3088,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "aa80ac772a349b4b03b9014ec16f6b57df02810cd8e2a0118ce93458dd6a261d"
+content-hash = "10ab2ddc65e7210fc99e752527a36c3a0843cbed2eacb953e8a8d237f3947df2"
 
 [metadata.files]
 affine = [
@@ -4762,8 +4762,8 @@ types-pytz = [
     {file = "types_pytz-2022.1.1-py3-none-any.whl", hash = "sha256:581467742f32f15fff1098698b11fd511057a2a8a7568d33b604083f2b03c24f"},
 ]
 types-pyyaml = [
-    {file = "types-PyYAML-6.0.9.tar.gz", hash = "sha256:33ae75c84b8f61fddf0c63e9c7e557db9db1694ad3c2ee8628ec5efebb5a5e9b"},
-    {file = "types_PyYAML-6.0.9-py3-none-any.whl", hash = "sha256:b738e9ef120da0af8c235ba49d3b72510f56ef9bcc308fc8e7357100ff122284"},
+    {file = "types-PyYAML-6.0.11.tar.gz", hash = "sha256:7f7da2fd11e9bc1e5e9eb3ea1be84f4849747017a59fc2eee0ea34ed1147c2e0"},
+    {file = "types_PyYAML-6.0.11-py3-none-any.whl", hash = "sha256:8f890028123607379c63550179ddaec4517dc751f4c527a52bb61934bf495989"},
 ]
 types-requests = [
     {file = "types-requests-2.28.0.tar.gz", hash = "sha256:9863d16dfbb3fa55dcda64fa3b989e76e8859033b26c1e1623e30465cfe294d3"},
