@@ -321,7 +321,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.3.dev20220808104519"
+version = "1.3.dev20220808152940"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
@@ -1420,8 +1420,8 @@ python-versions = "*"
 [package.dependencies]
 msal = ">=0.4.1,<2.0.0"
 portalocker = [
-    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
     {version = ">=1.6,<3", markers = "python_version >= \"3.5\" and platform_system == \"Windows\""},
+    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
 ]
 
 [[package]]
@@ -1604,8 +1604,8 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-docs = ["pylons-sphinx-themes", "Sphinx (>=1.7.5)"]
 paste = ["paste"]
+docs = ["Sphinx (>=1.7.5)", "pylons-sphinx-themes"]
 
 [[package]]
 name = "pastescript"
@@ -3089,7 +3089,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "4cd6c69ecde051904e95d48319694f046b55d24f865108957567609fd1b02f71"
+content-hash = "b422525428d6c6f9c00f9acf37fb916af1bf4c7f3d97befc2b8de81d65802231"
 
 [metadata.files]
 affine = [
@@ -3206,7 +3206,7 @@ bottle = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cciutils = [
-    {file = "c2cciutils-1.3.dev20220808104519-py3-none-any.whl", hash = "sha256:d08e646ffb7b4a7dd1cbf6ef4306bdbe0728bde6eb0c14d6e64450b783925724"},
+    {file = "c2cciutils-1.3.dev20220808152940-py3-none-any.whl", hash = "sha256:01778e71b5a7119843ba79f49fd7ddd70b912fb59d201f20ee81b3924390f11d"},
 ]
 c2cgeoform = [
     {file = "c2cgeoform-2.1.26-py2.py3-none-any.whl", hash = "sha256:e5cda8041d33228125d6561ccbfc455cf8c020dbc24e606dcfe9c285846c8b2d"},
