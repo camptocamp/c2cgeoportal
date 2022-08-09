@@ -1,3 +1,7 @@
+##### 2.7.0.77
+
+- Add missing authentication in update_paths [c2cgeoportal#9950](https://github.com/camptocamp/c2cgeoportal/pull/9950)
+
 ##### 2.7.0.76
 
 - Update dependency jquery-ui to v1.13.2 [SECURITY] (2.7) [ngeo#8741](https://github.com/camptocamp/ngeo/pull/8741)
