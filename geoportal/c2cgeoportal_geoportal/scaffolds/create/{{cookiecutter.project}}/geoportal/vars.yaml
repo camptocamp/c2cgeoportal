@@ -369,6 +369,7 @@ update_paths:
   - sqlalchemy
   - sqlalchemy_slave
   - tinyowsproxy
+  - authentication
 
 no_interpreted:
   - reset_password.email_body
