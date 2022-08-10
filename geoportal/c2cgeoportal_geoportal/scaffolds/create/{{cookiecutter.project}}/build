@@ -61,7 +61,9 @@ def main() -> None:
         full_version = args.upgrade if args.upgrade != "master" else "latest"
         with open("upgrade", "w", encoding="utf-8") as f:
             with urllib.request.urlopen(  # nosec
-                f"https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{major_version}/scripts/upgrade"
+                "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{major_version}/scripts/upgrade".format(
+                    major_version=major_version
+                )
             ) as result:
                 if result.code != 200:
                     print("ERROR:")
@@ -88,10 +90,10 @@ def main() -> None:
         print(project_env["help"])
         sys.exit(1)
     env_files = [e.format(*args.env_files) for e in project_env["files"]]
-    print(f"Use env files: {', '.join(env_files)}")
+    print("Use env files: {}".format(", ".join(env_files)))
     for env_file in env_files:
         if not os.path.exists(env_file):
-            print(f"Error: the env file '{env_file}' does not exist.")
+            print("Error: the env file '{env_file}' does not exist.".format(env_file=env_file))
             sys.exit(1)
 
     with open(".env", "w", encoding="utf-8") as dest:
@@ -111,10 +113,10 @@ def main() -> None:
                 .decode()
             )
 
-            dest.write(f"SIMPLE={str(simple).upper()}\n")
-            dest.write(f"GIT_HASH={git_hash}\n")
+            dest.write("SIMPLE={}\n".format(str(simple).upper()))
+            dest.write("GIT_HASH={git_hash}\n".format(git_hash=git_hash))
 
-        dest.write(f"# Used env files: {' '.join(env_files)}\n")
+        dest.write("# Used env files: {}\n".format(", ".join(env_files)))
 
     if not args.env:
         docker_compose_build_cmd = ["docker-compose", "build"]
@@ -132,7 +134,7 @@ def main() -> None:
         print_args = [a.replace('"', '\\"') for a in print_args]
         print_args = [a.replace("'", "\\'") for a in print_args]
         try:
-            env = {"DOCKER_BUILDKIT": "1"}
+            env = {"DOCKER_BUILDKIT": "1", "COMPOSE_DOCKER_CLI_BUILD": "1"}
             env.update(os.environ)
             run(args, docker_compose_build_cmd, check=True, env=env)  # nosec
         except subprocess.CalledProcessError as e:
