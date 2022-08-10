@@ -276,17 +276,22 @@ vars:
     std:
       # Standalone version
       backend: c2cgeoportal.hybrid
-      arguments:
+      arguments: &redis-cache-arguments
         host: '{REDIS_HOST}'
         port: '{REDIS_PORT}'
         db: '{REDIS_DB}'
       # Openshift version
-      # arguments:
+      # arguments: &redis-cache-arguments
       #   sentinels:
       #     - - '{REDIS_HOST}'
       #       - '{REDIS_PORT}'
       #   connection_kwargs:
       #     db: '{REDIS_DB}'
+    ogc-server:
+      # Standalone version
+      backend: dogpile.cache.redis
+      # All versions
+      arguments: *redis-cache-arguments
 
   # Control the HTTP headers
   headers:
@@ -316,6 +321,7 @@ update_paths:
   - api
   - authorized_referers
   - cache.std.arguments
+  - cache.ogc-server.arguments
   - cache.obj
   - check_collector.disabled
   - check_collector.hosts

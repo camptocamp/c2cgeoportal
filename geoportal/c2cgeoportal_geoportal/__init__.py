@@ -468,13 +468,14 @@ def includeme(config: pyramid.config.Configurator) -> None:
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
 
-            @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
-            def handle(event: InvalidateCacheEvent) -> None:
-                del event
-                caching.invalidate_region()
-                if caching.MEMORY_CACHE_DICT:
-                    caching.get_region("std").delete_multi(list(caching.MEMORY_CACHE_DICT.keys()))
-                caching.MEMORY_CACHE_DICT.clear()
+        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
+        def handle(event: InvalidateCacheEvent) -> None:
+            del event
+            caching.invalidate_region("std")
+            caching.invalidate_region("obj")
+            if caching.MEMORY_CACHE_DICT:
+                caching.get_region("std").delete_multi(list(caching.MEMORY_CACHE_DICT.keys()))
+            caching.MEMORY_CACHE_DICT.clear()
 
     # Register a tween to get back the cache buster path.
     if "cache_path" not in config.get_settings():
@@ -665,6 +666,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     # Used memory in caches
     config.add_route("memory", "/memory", request_method="GET")
+
+    config.add_route("ogc_server_clear_cache", "clear-ogc-server-cache/{id}", request_method="GET")
 
     # Scan view decorator for adding routes
     config.scan(
