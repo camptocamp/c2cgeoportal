@@ -72,19 +72,19 @@ def main() -> None:
                     "run",
                     "--rm",
                     "--interactive",
-                    f"--env=PGHOST={env['PGHOST']}",
-                    f"--env=PGPORT={env['PGPORT']}",
-                    f"--env=PGUSER={env['PGUSER']}",
-                    f"--env=PGPASSWORD={env['PGPASSWORD']}",
+                    "--env=PGHOST={}".format(env["PGHOST"]),
+                    "--env=PGPORT={}".format(env["PGPORT"]),
+                    "--env=PGUSER={}".format(env["PGUSER"]),
+                    "--env=PGPASSWORD={}".format(env["PGPASSWORD"]),
                 ]
-                + ([f"--env=PGSSLMODE={env['PGSSLMODE']}"] if "PGSSLMODE" in env else [])
-                + ([f"--env=PGOPTIONS={env['PGOPTIONS']}"] if "PGOPTIONS" in env else [])
+                + (["--env=PGSSLMODE={}".format(env["PGSSLMODE"])] if "PGSSLMODE" in env else [])
+                + (["--env=PGOPTIONS={}".format(env["PGOPTIONS"])] if "PGOPTIONS" in env else [])
                 + [
-                    f"camptocamp/postgres:{env['POSTGRES_TAG']}",
+                    "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
                 ]
                 + [
                     "pg_restore",
-                    f"--dbname={env['PGDATABASE']}",
+                    "--dbname={}".format(env["PGDATABASE"]),
                 ]
                 + args.arg,
                 stdin=file_in,
@@ -93,7 +93,7 @@ def main() -> None:
         else:
             subprocess.run(
                 ["docker-compose"]
-                + [f"--file={f}" for f in args.docker_compose_file]
+                + ["--file={}".format(f) for f in args.docker_compose_file]
                 + [
                     "exec",
                     "-T",
