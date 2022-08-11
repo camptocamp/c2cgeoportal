@@ -91,7 +91,7 @@ WORKDIR /opt/c2cgeoportal
 COPY ci/applications*.yaml ./
 RUN \
   python3 -m venv venv && \
-  venv/bin/pip install c2cciutils==1.3.dev20220704113927 && \
+  venv/bin/pip install c2cciutils==1.3.dev20220810070904 && \
   venv/bin/c2cciutils-download-applications --applications-file=applications.yaml --versions-file=applications-versions.yaml && \
   rm -rf venv
 
