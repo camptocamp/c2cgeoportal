@@ -1,3 +1,7 @@
+##### 2.7.0.78
+
+- Fix the build [c2cgeoportal#9954](https://github.com/camptocamp/c2cgeoportal/pull/9954)
+
 ##### 2.7.0.77
 
 - Add missing authentication in update_paths [c2cgeoportal#9950](https://github.com/camptocamp/c2cgeoportal/pull/9950)
