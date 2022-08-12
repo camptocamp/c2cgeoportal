@@ -1,3 +1,7 @@
+##### 2.7.0.79
+
+- Should work on Python 3.5 [c2cgeoportal#9953](https://github.com/camptocamp/c2cgeoportal/pull/9953)
+
 ##### 2.7.0.78
 
 - Fix the build [c2cgeoportal#9954](https://github.com/camptocamp/c2cgeoportal/pull/9954)
