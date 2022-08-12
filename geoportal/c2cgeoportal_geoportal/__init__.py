@@ -59,7 +59,7 @@ import c2cgeoportal_geoportal.views
 from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
-from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 from c2cgeoportal_geoportal.lib.metrics import (
     MemoryCacheSizeProvider,
@@ -396,7 +396,7 @@ def error_handler(
 ) -> pyramid.response.Response:
     """View callable for handling all the exceptions that are not already handled."""
     LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
-    return caching.set_common_headers(request, "error", caching.Cache.PRIVATE_NO, http_exception)
+    return set_common_headers(request, "error", Cache.PRIVATE_NO, http_exception)
 
 
 def call_hook(settings: pyramid.config.Configurator, name: str, *args: Any, **kwargs: Any) -> None:

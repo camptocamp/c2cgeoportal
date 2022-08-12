@@ -376,6 +376,12 @@ Changes to apply
    })
    ```
 
+7. To solve recursive import we required to move `Cache` and `set_common_headers` to an other file,
+   then you should  do the following change in your custom Python views:
+
+   -from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+   +from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
 
 =============
 Version 2.6.0
