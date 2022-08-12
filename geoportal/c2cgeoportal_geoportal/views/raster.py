@@ -41,7 +41,7 @@ from pyramid.view import view_config
 from rasterio.io import DatasetReader
 
 from c2cgeoportal_commons.models import InvalidateCacheEvent
-from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 if TYPE_CHECKING:
     import fiona.collection

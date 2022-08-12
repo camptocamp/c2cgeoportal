@@ -36,7 +36,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.views.raster import Raster
 
 _ = TranslationStringFactory("c2cgeoportal")

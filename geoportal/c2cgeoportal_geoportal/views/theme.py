@@ -55,7 +55,8 @@ from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import cache_invalidate_cb, main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import get_region
+from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import (
     get_private_layers,

@@ -34,7 +34,8 @@ import pyramid.request
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region, set_common_headers
+from c2cgeoportal_geoportal.lib.caching import get_region
+from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 _ = TranslationStringFactory("c2cgeoportal")
 LOG = logging.getLogger(__name__)
