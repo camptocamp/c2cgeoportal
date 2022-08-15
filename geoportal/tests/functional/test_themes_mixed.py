@@ -34,11 +34,10 @@ import re
 from unittest import TestCase
 
 from pyramid import testing
-import transaction
-
 from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
+import transaction
 
 
 class TestThemesView(TestCase):
@@ -49,31 +48,34 @@ class TestThemesView(TestCase):
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
-            Theme,
-            LayerGroup,
             Interface,
-            OGCServer,
+            LayerGroup,
             LayerWMS,
             LayerWMTS,
+            OGCServer,
+            Theme,
         )
 
         main = Interface(name="main")
 
         ogc_server_internal = create_default_ogcserver()
         ogc_server_external = OGCServer(
-            name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg"
+            name="__test_ogc_server_external",
+            url="http://wms.geo.admin.ch/",
+            image_type="image/jpeg",
+            wfs_support=False,
         )
         ogc_server_valid_wms_version = OGCServer(
             name="__test_ogc_server_valid_wms_version",
             url=mapserv_url + "?VERSION=1.3.0",
             image_type="image/jpeg",
-            wfs_support = False,
+            wfs_support=False,
         )
         ogc_server_invalid_wms_version = OGCServer(
             name="__test_ogc_server_invalid_wms_version",
             url=mapserv_url + "?VERSION=1.0.0",
             image_type="image/jpeg",
-            wfs_support = False,
+            wfs_support=False,
         )
 
         layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
@@ -152,7 +154,7 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import TreeItem, Interface, Metadata, Dimension, OGCServer
+        from c2cgeoportal_commons.models.main import Dimension, Interface, Metadata, OGCServer, TreeItem
 
         DBSession.query(Metadata).delete()
         DBSession.query(Dimension).delete()
@@ -215,9 +217,10 @@ class TestThemesView(TestCase):
         themes = theme_view.themes()
         self.assertEqual(
             self._get_filtered_errors(themes),
-            {"WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
-            'DescribeFeatureType from URL http://wms.geo.admin.ch/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeat'}
-            )
+            {
+                "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
+            },
+        )
         self.assertEqual(
             [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],
             [
