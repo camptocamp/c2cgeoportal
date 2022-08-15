@@ -58,7 +58,10 @@ class TestThemesView(TestCase):
 
         ogc_server_internal = create_default_ogcserver()
         ogc_server_external = OGCServer(
-            name="__test_ogc_server_external", url="http://wms.geo.admin.ch/", image_type="image/jpeg"
+            name="__test_ogc_server_external",
+            url="https://wms.geo.admin.ch/",
+            image_type="image/jpeg",
+            wfs_support=False,
         )
         ogc_server_valid_wms_version = OGCServer(
             name="__test_ogc_server_valid_wms_version",
@@ -213,7 +216,6 @@ class TestThemesView(TestCase):
             self._get_filtered_errors(themes),
             {
                 "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
-                "Unable to get WFS DescribeFeatureType from the URL 'http://wms.geo.admin.ch/?SERVICE=WFS&VERSION=1.0",
             },
         )
         self.assertEqual(
