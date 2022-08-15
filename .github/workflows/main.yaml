@@ -91,20 +91,16 @@ jobs:
           /opt/c2cgeoportal/admin/tests
       # Similar to: make tests-qgisserver
       - run: >
-          ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
-          --source=/var/www/plugins/geomapfish_qgisserver
-          --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+          ci/run-dc-logs docker-compose exec -T qgisserver-tests
+          pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
           /src/tests/functional
       - name: Extract tests artifacts
         run: |
           docker-compose exec -T tests coverage report
           docker-compose exec -T tests coverage html --directory=/tmp/coverage
-          docker-compose exec -T qgisserver-tests coverage report
-          docker-compose exec -T qgisserver-tests coverage html --directory=/tmp/coverage
           mkdir --parent artifacts/geoportal-coverage
           mkdir --parent artifacts/qgisserver-plugin-coverage
           docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
-          docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
         if: always()
         continue-on-error: True
       - run: docker-compose down
