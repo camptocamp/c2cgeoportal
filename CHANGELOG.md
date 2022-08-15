@@ -1,3 +1,5 @@
+##### 2.5.0.212
+* Remove WFS support of wms.geo.admin.ch [c2cgeoportal#9960](https://github.com/camptocamp/c2cgeoportal/pull/9960)
 ##### 2.5.0.211
 * [Backport 2.5] Fix CVE [ngeo#8726](https://github.com/camptocamp/ngeo/pull/8726)
 ##### 2.5.0.210
