@@ -37,7 +37,8 @@ from pyramid.view import view_config
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
-from c2cgeoportal_geoportal.lib.caching import Cache, get_region
+from c2cgeoportal_geoportal.lib.caching import get_region
+from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
@@ -128,22 +129,18 @@ class MapservProxy(OGCProxy):
             LOG.error("Error getting the URL:\n%s", "\n".join(errors))
             raise HTTPInternalServerError()
 
-        cache_control = Cache.PRIVATE_NO
-        if method == "GET" and self.lower_params.get("request") in (
-            "getcapabilities",
-            "getlegendgraphic",
-            "describefeaturetype",
-            "describelayer",
-        ):
-            if self.user is None:
-                cache_control = Cache.PUBLIC
-            else:
-                cache_control = Cache.PRIVATE
-        else:
-            if self.user is None:
-                cache_control = Cache.PUBLIC_NO
-            else:
-                cache_control = Cache.PRIVATE_NO
+        cache_control = (
+            Cache.PRIVATE
+            if method == "GET"
+            and self.lower_params.get("request")
+            in (
+                "getcapabilities",
+                "getlegendgraphic",
+                "describefeaturetype",
+                "describelayer",
+            )
+            else Cache.PRIVATE_NO
+        )
 
         headers = self.get_headers()
         # Add headers for Geoserver
