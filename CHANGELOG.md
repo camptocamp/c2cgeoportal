@@ -1,3 +1,8 @@
+##### 2.7.0.80
+
+- Add missing Vary on Cookie for private query [c2cgeoportal#9951](https://github.com/camptocamp/c2cgeoportal/pull/9951)
+- [Backport 2.7] Remove WFS support of wms.geo.admin.ch [c2cgeoportal#9964](https://github.com/camptocamp/c2cgeoportal/pull/9964)
+
 ##### 2.7.0.79
 
 - Should work on Python 3.5 [c2cgeoportal#9953](https://github.com/camptocamp/c2cgeoportal/pull/9953)
