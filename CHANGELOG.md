@@ -1,3 +1,7 @@
+##### 2.7.0.81
+
+- Install wheel required for publishing [c2cgeoportal#9965](https://github.com/camptocamp/c2cgeoportal/pull/9965)
+
 ##### 2.7.0.80
 
 - Add missing Vary on Cookie for private query [c2cgeoportal#9951](https://github.com/camptocamp/c2cgeoportal/pull/9951)
