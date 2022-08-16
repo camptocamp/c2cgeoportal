@@ -88,14 +88,30 @@ else:
         if match is not None:
             major_version = match.group(1)
         if not args.debug:
-            subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish:{major_version}"])
-            subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
-            subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-config:{major_version}"])
+            subprocess.check_call(
+                [
+                    "docker",
+                    "pull",
+                    "camptocamp/geomapfish:{major_version}".format(major_version=major_version),
+                ]
+            )
+            subprocess.check_call(
+                ["docker", "pull", "camptocamp/geomapfish-tools:{version}".format(version=args.version)]
+            )
+            subprocess.check_call(
+                [
+                    "docker",
+                    "pull",
+                    "camptocamp/geomapfish-config:{major_version}".format(major_version=major_version),
+                ]
+            )
 
     debug_volumes = (
         [
-            f"--volume={args.debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:"
-            "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py"
+            "--volume={debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:".format(
+                debug=args.debug
+            ),
+            "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py",
         ]
         if args.debug
         else []
@@ -109,11 +125,11 @@ else:
                 "run",
                 "--rm",
                 "--env=CI",
-                f"--volume={os.getcwd()}:/src",
+                "--volume={}:/src".format(os.getcwd()),
             ]
             + debug_volumes
             + [
-                f"camptocamp/geomapfish-tools:{args.version}",
+                "camptocamp/geomapfish-tools:{version}".format(version=args.version),
                 "run-git",
                 subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
                 subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),

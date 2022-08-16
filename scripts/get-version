@@ -91,12 +91,12 @@ if args.full:
     sys.exit(0)
 
 
-print(f"full: {full}")
-print(f"major: {major}")
-print(f"minor: {minor}")
-print(f"upgrade_version: {upgrade_version}")
+print("full: {full}".format(full=full))
+print("major: {major}".format(major=major))
+print("minor: {minor}".format(minor=minor))
+print("upgrade_version: {upgrade_version}".format(upgrade_version=upgrade_version))
 if args.github:
-    print(f"##[set-output name=full;]{full}")
-    print(f"##[set-output name=major;]{major}")
-    print(f"##[set-output name=minor;]{minor}")
-    print(f"##[set-output name=upgrade_version;]{upgrade_version}")
+    print("##[set-output name=full;]{full}".format(full=full))
+    print("##[set-output name=major;]{major}".format(major=major))
+    print("##[set-output name=minor;]{minor}".format(minor=minor))
+    print("##[set-output name=upgrade_version;]{upgrade_version}".format(upgrade_version=upgrade_version))

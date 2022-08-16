@@ -67,20 +67,20 @@ def main() -> None:
                     "docker",
                     "run",
                     "--rm",
-                    f"--env=PGHOST={env['PGHOST_SLAVE']}",
-                    f"--env=PGPORT={env['PGPORT_SLAVE']}",
-                    f"--env=PGUSER={env['PGUSER']}",
-                    f"--env=PGPASSWORD={env['PGPASSWORD']}",
+                    "--env=PGHOST={}".format(env["PGHOST_SLAVE"]),
+                    "--env=PGPORT={}".format(env["PGPORT_SLAVE"]),
+                    "--env=PGUSER={}".format(env["PGUSER"]),
+                    "--env=PGPASSWORD={}".format(env["PGPASSWORD"]),
                 ]
-                + ([f"--env=PGSSLMODE={env['PGSSLMODE']}"] if "PGSSLMODE" in env else [])
-                + ([f"--env=PGOPTIONS={env['PGOPTIONS']}"] if "PGOPTIONS" in env else [])
+                + (["--env=PGSSLMODE={}".format(env["PGSSLMODE"])] if "PGSSLMODE" in env else [])
+                + (["--env=PGOPTIONS={}".format(env["PGOPTIONS"])] if "PGOPTIONS" in env else [])
                 + [
-                    f"camptocamp/postgres:{env['POSTGRES_TAG']}",
+                    "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
                 ]
                 + [
                     "pg_dump",
                     "--format=c",
-                    f"--dbname={env['PGDATABASE']}",
+                    "--dbname={}".format(env["PGDATABASE"]),
                 ]
                 + args.arg,
                 stdout=file_out,
