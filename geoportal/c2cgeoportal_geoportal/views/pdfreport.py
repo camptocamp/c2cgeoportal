@@ -37,7 +37,7 @@ from pyramid.view import view_config
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
-from c2cgeoportal_geoportal.lib.caching import Cache
+from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 

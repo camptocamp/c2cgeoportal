@@ -340,6 +340,7 @@ class TestLoginView(TestCase):
             value = "value"
 
         request.user = U("__test_role2", [F()])
+        del request.response.headers["Vary"]
         login = Login(request)
         expected = {
             "username": "__test_user",
@@ -350,6 +351,7 @@ class TestLoginView(TestCase):
             "functionalities": {"func": ["value"]},
         }
         self.assertEqual(login.loginuser(), expected)
+        assert request.response.headers["Vary"] == "Origin, Cookie"
 
     def test_intranet(self):
         from tests import DummyRequest

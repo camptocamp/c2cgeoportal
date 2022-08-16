@@ -33,13 +33,8 @@ from unittest import TestCase
 from tests import DummyRequest
 
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import (
-    CORS_METHODS,
-    Cache,
-    init_region,
-    invalidate_region,
-    set_common_headers,
-)
+from c2cgeoportal_geoportal.lib.caching import init_region, invalidate_region
+from c2cgeoportal_geoportal.lib.common_headers import CORS_METHODS, Cache, set_common_headers
 
 
 class TestSetCorsHeaders(TestCase):
@@ -69,7 +64,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Cookie",
         }
 
         # 2. If the value of the Origin header is not a case-sensitive match for
@@ -79,7 +74,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Cookie",
         }
 
         # 3. If the resource supports credentials add a single
@@ -90,7 +85,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Cookie",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -210,7 +205,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Cookie",
         }
 
     def test_match_all(self):
@@ -225,7 +220,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Cookie",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -238,7 +233,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Cookie",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": CORS_METHODS,

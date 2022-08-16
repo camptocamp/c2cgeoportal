@@ -46,7 +46,7 @@ from pyramid.httpexceptions import HTTPFound, HTTPInternalServerError
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
-from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 LOG = logging.getLogger(__name__)
 _INITIALIZED = False

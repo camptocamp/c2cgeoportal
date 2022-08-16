@@ -34,7 +34,7 @@ import pyramid.response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 
-from c2cgeoportal_geoportal.lib.caching import Cache
+from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
 LOG = logging.getLogger(__name__)
