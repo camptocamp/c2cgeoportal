@@ -204,8 +204,8 @@ python-versions = ">=3.6.0"
 soupsieve = ">1.2"
 
 [package.extras]
-lxml = ["lxml"]
 html5lib = ["html5lib"]
+lxml = ["lxml"]
 
 [[package]]
 name = "binaryornot"
@@ -253,8 +253,8 @@ six = ">=1.9.0"
 webencodings = "*"
 
 [package.extras]
-dev = ["mypy (==0.961)", "black (==22.3.0)", "wheel (==0.37.1)", "twine (==4.0.1)", "tox (==3.25.0)", "Sphinx (==4.3.2)", "pytest (==7.1.2)", "pip-tools (==6.6.2)", "hashin (==0.17.0)", "flake8 (==4.0.1)", "build (==0.8.0)"]
 css = ["tinycss2 (>=1.1.0,<1.2)"]
+dev = ["build (==0.8.0)", "flake8 (==4.0.1)", "hashin (==0.17.0)", "pip-tools (==6.6.2)", "pytest (==7.1.2)", "Sphinx (==4.3.2)", "tox (==3.25.0)", "twine (==4.0.1)", "wheel (==0.37.1)", "black (==22.3.0)", "mypy (==0.961)"]
 
 [[package]]
 name = "boltons"
@@ -321,7 +321,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.3.dev20220808104519"
+version = "1.3.dev20220810070904"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
@@ -345,6 +345,7 @@ markdown-table = ">=2020.0.0,<2021.0.0"
 node-vm2 = ">=0.0.0,<1.0.0"
 pipenv = ">=2022.0.0,<2023.0.0"
 python-magic = ">=0.0.0,<1.0.0"
+PyYAML = ">=6.0.0,<7.0"
 requests = ">=2.0.0,<3.0.0"
 "ruamel.yaml" = ">=0.0.0,<1.0.0"
 safety = ">=2.0.0,<3.0.0"
@@ -540,8 +541,8 @@ iso8601 = "*"
 translationstring = "*"
 
 [package.extras]
-testing = ["coverage (>=5.0)", "pytest-cov", "pytest"]
-docs = ["pylons-sphinx-themes (>=1.0.9)", "docutils", "Sphinx (>=1.8.1)"]
+docs = ["Sphinx (>=1.8.1)", "docutils", "pylons-sphinx-themes (>=1.0.9)"]
+testing = ["pytest", "pytest-cov", "coverage (>=5.0)"]
 
 [[package]]
 name = "colanderalchemy"
@@ -649,8 +650,8 @@ attrs = ">=19.2,<20.1.0 || >20.1.0"
 chardet = ">=3.0.0"
 
 [package.extras]
-testing = ["pytest-xdist (>=2)", "pytest (>=6)", "commoncode"]
-docs = ["doc8 (>=0.8.1)", "sphinx-rtd-theme (>=0.5.0)", "Sphinx (>=3.3.1)"]
+docs = ["Sphinx (>=3.3.1)", "sphinx-rtd-theme (>=0.5.0)", "doc8 (>=0.8.1)"]
+testing = ["commoncode", "pytest (>=6)", "pytest-xdist (>=2)"]
 
 [[package]]
 name = "decorator"
@@ -677,11 +678,11 @@ translationstring = ">=1.0"
 "zope.deprecation" = "*"
 
 [package.extras]
-testing = ["pytest-cov", "pytest", "pyramid", "flaky", "coverage", "beautifulsoup4"]
-lint = ["readme-renderer", "isort", "flake8-builtins", "flake8-bugbear", "flake8", "check-manifest", "black"]
-functional = ["selenium (>=4.0a)", "lingua", "waitress", "pygments"]
-docs = ["pylons-sphinx-themes", "pylons-sphinx-latesturl", "repoze.sphinx.autointerface", "Sphinx (>=1.7.4)"]
-dev = ["selenium (>=4.0a)", "lingua", "waitress", "pygments", "pylons-sphinx-themes", "pylons-sphinx-latesturl", "repoze.sphinx.autointerface", "Sphinx (>=1.7.4)", "pytest-cov", "pytest", "pyramid", "flaky", "coverage", "beautifulsoup4", "readme-renderer", "isort", "flake8-builtins", "flake8-bugbear", "flake8", "check-manifest", "black"]
+dev = ["black", "check-manifest", "flake8", "flake8-bugbear", "flake8-builtins", "isort", "readme-renderer", "beautifulsoup4", "coverage", "flaky", "pyramid", "pytest", "pytest-cov", "Sphinx (>=1.7.4)", "repoze.sphinx.autointerface", "pylons-sphinx-latesturl", "pylons-sphinx-themes", "pygments", "waitress", "lingua", "selenium (>=4.0a)"]
+docs = ["Sphinx (>=1.7.4)", "repoze.sphinx.autointerface", "pylons-sphinx-latesturl", "pylons-sphinx-themes"]
+functional = ["pygments", "waitress", "lingua", "selenium (>=4.0a)"]
+lint = ["black", "check-manifest", "flake8", "flake8-bugbear", "flake8-builtins", "isort", "readme-renderer"]
+testing = ["beautifulsoup4", "coverage", "flaky", "pyramid", "pytest", "pytest-cov"]
 
 [[package]]
 name = "defusedxml"
@@ -793,8 +794,8 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-testing = ["pytest-timeout (>=1.4.2)", "pytest-cov", "pytest (>=4)", "coverage (>=4)", "covdefaults (>=1.2.0)"]
-docs = ["sphinx-autodoc-typehints (>=1.12)", "sphinx (>=4.1)", "furo (>=2021.8.17b43)"]
+docs = ["furo (>=2021.8.17b43)", "sphinx (>=4.1)", "sphinx-autodoc-typehints (>=1.12)"]
+testing = ["covdefaults (>=1.2.0)", "coverage (>=4)", "pytest (>=4)", "pytest-cov", "pytest-timeout (>=1.4.2)"]
 
 [[package]]
 name = "fiona"
@@ -1074,8 +1075,8 @@ optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 
 [package.extras]
-testing = ["mock", "pytest-cov", "pytest", "watchdog"]
-docs = ["pylons-sphinx-themes", "sphinx", "watchdog"]
+docs = ["watchdog", "sphinx", "pylons-sphinx-themes"]
+testing = ["watchdog", "pytest", "pytest-cov", "mock"]
 
 [[package]]
 name = "idna"
@@ -1113,8 +1114,8 @@ python-versions = ">=3.7"
 zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
-testing = ["pytest-mypy (>=0.9.1)", "pytest-black (>=0.3.7)", "pytest-enabler (>=1.3)", "pytest-cov", "pytest-flake8", "pytest-checkdocs (>=2.4)", "pytest (>=6)"]
-docs = ["jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "jaraco.packaging (>=9)", "sphinx"]
+docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
 name = "iniconfig"
@@ -1226,8 +1227,8 @@ pkgutil-resolve-name = {version = ">=1.3.10", markers = "python_version < \"3.9\
 pyrsistent = ">=0.14.0,<0.17.0 || >0.17.0,<0.17.1 || >0.17.1,<0.17.2 || >0.17.2"
 
 [package.extras]
-format-nongpl = ["webcolors (>=1.11)", "uri-template", "rfc3986-validator (>0.1.0)", "rfc3339-validator", "jsonpointer (>1.13)", "isoduration", "idna", "fqdn"]
-format = ["webcolors (>=1.11)", "uri-template", "rfc3987", "rfc3339-validator", "jsonpointer (>1.13)", "isoduration", "idna", "fqdn"]
+format = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3987", "uri-template", "webcolors (>=1.11)"]
+format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3986-validator (>0.1.0)", "uri-template", "webcolors (>=1.11)"]
 
 [[package]]
 name = "jsonschema-gentypes"
@@ -1298,8 +1299,8 @@ click = ">=8.0.3"
 polib = ">=1.1.1"
 
 [package.extras]
-dev = ["flake8 (>=4.0.1)", "black (>=22.1.0)", "pytest (>=7.0.1)"]
 chameleonextractor = ["chameleon"]
+dev = ["pytest (>=7.0.1)", "black (>=22.1.0)", "flake8 (>=4.0.1)"]
 
 [[package]]
 name = "lxml"
@@ -1310,10 +1311,10 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*"
 
 [package.extras]
-source = ["Cython (>=0.29.7)"]
-htmlsoup = ["beautifulsoup4"]
-html5 = ["html5lib"]
 cssselect = ["cssselect (>=0.7)"]
+html5 = ["html5lib"]
+htmlsoup = ["beautifulsoup4"]
+source = ["Cython (>=0.29.7)"]
 
 [[package]]
 name = "mako"
@@ -1371,7 +1372,7 @@ python-versions = ">=3.7"
 importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
 
 [package.extras]
-testing = ["pyyaml", "coverage"]
+testing = ["coverage", "pyyaml"]
 
 [[package]]
 name = "markdown-table"
@@ -1421,8 +1422,8 @@ python-versions = "*"
 [package.dependencies]
 msal = ">=0.4.1,<2.0.0"
 portalocker = [
-    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
     {version = ">=1.6,<3", markers = "python_version >= \"3.5\" and platform_system == \"Windows\""},
+    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
 ]
 
 [[package]]
@@ -1593,8 +1594,8 @@ python-versions = "*"
 six = ">=1.4.0"
 
 [package.extras]
-openid = ["python-openid"]
 flup = ["flup"]
+openid = ["python-openid"]
 
 [[package]]
 name = "pastedeploy"
@@ -1605,8 +1606,8 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-docs = ["pylons-sphinx-themes", "Sphinx (>=1.7.5)"]
 paste = ["paste"]
+docs = ["Sphinx (>=1.7.5)", "pylons-sphinx-themes"]
 
 [[package]]
 name = "pastescript"
@@ -1675,8 +1676,8 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-tests = ["pytest-timeout", "pytest-cov", "pytest", "pyroma", "packaging", "olefile", "markdown2", "defusedxml", "coverage", "check-manifest"]
-docs = ["sphinxext-opengraph", "sphinx-removed-in", "sphinx-issues (>=3.0.1)", "sphinx-copybutton", "sphinx (>=2.4)", "olefile", "furo"]
+docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-issues (>=3.0.1)", "sphinx-removed-in", "sphinxext-opengraph"]
+tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
 
 [[package]]
 name = "pipenv"
@@ -1692,8 +1693,8 @@ virtualenv = "*"
 virtualenv-clone = ">=0.2.5"
 
 [package.extras]
-tests = ["mock", "flaky", "pytest-xdist", "pytest-timeout", "pytest (>=5.0)"]
-dev = ["black", "invoke", "parver", "flake8 (>=3.3.0,<4.0)", "sphinx", "bs4", "towncrier"]
+dev = ["towncrier", "bs4", "sphinx", "flake8 (>=3.3.0,<4.0)", "parver", "invoke", "black"]
+tests = ["pytest (>=5.0)", "pytest-timeout", "pytest-xdist", "flaky", "mock"]
 
 [[package]]
 name = "pipfile"
@@ -2212,8 +2213,8 @@ pyramid = ">=1.5"
 transaction = ">=2.0"
 
 [package.extras]
-testing = ["coverage (>=5.0)", "pytest-cov", "pytest", "webtest"]
-docs = ["pylons-sphinx-themes (>=1.0.9)", "Sphinx (>=1.8.1)"]
+docs = ["Sphinx (>=1.8.1)", "pylons-sphinx-themes (>=1.0.9)"]
+testing = ["webtest", "pytest", "pytest-cov", "coverage (>=5.0)"]
 
 [[package]]
 name = "pyrsistent"
@@ -2678,7 +2679,7 @@ numpy = "*"
 pyparsing = ">=2.1.6"
 
 [package.extras]
-test = ["hypothesis", "pytest"]
+test = ["pytest", "hypothesis"]
 
 [[package]]
 name = "soupsieve"
@@ -2818,9 +2819,9 @@ python-versions = "*"
 "zope.interface" = "*"
 
 [package.extras]
-testing = ["mock", "coverage", "nose"]
+docs = ["sphinx", "repoze.sphinx.autointerface"]
 test = ["mock"]
-docs = ["repoze.sphinx.autointerface", "sphinx"]
+testing = ["nose", "coverage", "mock"]
 
 [[package]]
 name = "translationstring"
@@ -2966,8 +2967,8 @@ filelock = ">=3.4.1,<4"
 platformdirs = ">=2.4,<3"
 
 [package.extras]
-testing = ["pytest-timeout (>=2.1)", "pytest-randomly (>=3.10.3)", "pytest-mock (>=3.6.1)", "pytest-freezegun (>=0.4.2)", "pytest-env (>=0.6.2)", "pytest (>=7.0.1)", "packaging (>=21.3)", "flaky (>=3.7)", "coverage-enable-subprocess (>=1)", "coverage (>=6.2)"]
-docs = ["towncrier (>=21.9)", "sphinx-rtd-theme (>=1)", "sphinx-argparse (>=0.3.1)", "sphinx (>=5.1.1)", "proselint (>=0.13)"]
+docs = ["proselint (>=0.13)", "sphinx (>=5.1.1)", "sphinx-argparse (>=0.3.1)", "sphinx-rtd-theme (>=1)", "towncrier (>=21.9)"]
+testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=21.3)", "pytest (>=7.0.1)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.2)", "pytest-mock (>=3.6.1)", "pytest-randomly (>=3.10.3)", "pytest-timeout (>=2.1)"]
 
 [[package]]
 name = "virtualenv-clone"
@@ -3102,7 +3103,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "cfb2a16f9fabb445fd583979dfb80963e6afa052decfe21631de97ba6f593ba1"
+content-hash = "b88ada341b963ce0e466834e2da62b1d69a956de167d0367fe54860beef38eda"
 
 [metadata.files]
 affine = [
@@ -3219,7 +3220,7 @@ bottle = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cciutils = [
-    {file = "c2cciutils-1.3.dev20220808104519-py3-none-any.whl", hash = "sha256:d08e646ffb7b4a7dd1cbf6ef4306bdbe0728bde6eb0c14d6e64450b783925724"},
+    {file = "c2cciutils-1.3.dev20220810070904-py3-none-any.whl", hash = "sha256:586602374069ad59b972561a1dc87417ed430491e8e0be84448a1f8eb984d874"},
 ]
 c2cgeoform = [
     {file = "c2cgeoform-2.1.26-py2.py3-none-any.whl", hash = "sha256:e5cda8041d33228125d6561ccbfc455cf8c020dbc24e606dcfe9c285846c8b2d"},
