@@ -38,12 +38,12 @@ from c2cgeoportal_commons.lib.url import Url, get_url2
 class TestUrl(TestCase):
     def test_url(self):
         url = Url("http://test/")
-        url.add_query({"Name": "Bob", "Age": "18", "Nationality": "Việt Nam"})
+        url.add_query({"Name": "Bob", "Age": "18", "Nationality": "Việt Name"})
         self.assertEqual(url.scheme, "http")
         self.assertEqual(url.netloc, "test")
         self.assertEqual(url.path, "/")
         self.assertEqual(url.fragment, "")
-        self.assertEqual(url.query, {"Name": "Bob", "Age": "18", "Nationality": "Việt Nam"})
+        self.assertEqual(url.query, {"Name": "Bob", "Age": "18", "Nationality": "Việt Name"})
 
     def test_url_encode1(self):
         url = Url("http://example.com/toto")

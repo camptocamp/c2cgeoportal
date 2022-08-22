@@ -11,6 +11,11 @@ checks:
     main.yaml: False
     rebuild-master.yaml:
       steps: []
+  codespell:
+    ignore_re:
+      - .*/package-lock.json$
+      - .*/poetry.lock$
+      - ^poetry.lock$
 
 audit:
   npm:
