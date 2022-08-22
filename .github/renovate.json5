@@ -5,7 +5,9 @@
   labels: ['dependencies'],
   separateMajorMinor: true,
   separateMinorPatch: true,
-  lockFileMaintenance: {enabled: true, automerge: true},
+  prHourlyLimit: 0,
+  prConcurrentLimit: 0,
+  lockFileMaintenance: { enabled: true, automerge: true },
   regexManagers: [
     {
       fileMatch: ['^ci/applications-versions.yaml$'],
