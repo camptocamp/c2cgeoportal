@@ -4,8 +4,8 @@
   "description": "GeoMapFish geoportal interface",
   "author": "",
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.33.1",
-    "@typescript-eslint/parser": "5.33.1",
+    "@typescript-eslint/eslint-plugin": "5.34.0",
+    "@typescript-eslint/parser": "5.34.0",
     "angular-gettext-tools": "2.5.3",
     "commander": "9.4.0",
     "eslint": "8.22.0",
