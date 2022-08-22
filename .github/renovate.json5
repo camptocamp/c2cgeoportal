@@ -21,8 +21,13 @@
       versioning: 'loose',
     },
     {
+      matchFiles: ['docker/config/Dockerfile'],
       matchDatasources: ['docker'],
-      matchPackageNames: ['camptocamp/tilecloud-chain', "redis"],
+      versioning: 'ubuntu',
+    },
+    {
+      matchDatasources: ['docker'],
+      matchPackageNames: ['camptocamp/tilecloud-chain', 'redis', 'haproxy'],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
     },
     /** Automerge the patch, the minor and the dev dependency */
