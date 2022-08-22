@@ -159,7 +159,7 @@ services:
       - MASTER=redis_master
 
   tilecloudchain:
-    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.17
+    image: &tilecloudchain-image camptocamp/tilecloud-chain:16
     user: www-data
     restart: unless-stopped
     environment:
