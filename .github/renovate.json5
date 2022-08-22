@@ -15,10 +15,15 @@
     },
   ],
   packageRules: [
-    /** Less strict version for Docker images */
+    /** Docker images versioning */
     {
       matchDatasources: ['docker'],
       versioning: 'loose',
+    },
+    {
+      matchDatasources: ['docker'],
+      matchPackageNames: ['camptocamp/tilecloud-chain'],
+      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
     },
     /** Automerge the patch, the minor and the dev dependency */
     {
