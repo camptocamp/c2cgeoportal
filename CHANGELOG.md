@@ -1,3 +1,7 @@
+##### 2.7.0.82
+
+- Update all patch versions (2.7) (patch) [ngeo#8772](https://github.com/camptocamp/ngeo/pull/8772)
+
 ##### 2.7.0.81
 
 - Install wheel required for publishing [c2cgeoportal#9965](https://github.com/camptocamp/c2cgeoportal/pull/9965)
