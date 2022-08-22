@@ -22,7 +22,7 @@
     },
     {
       matchDatasources: ['docker'],
-      matchPackageNames: ['camptocamp/tilecloud-chain'],
+      matchPackageNames: ['camptocamp/tilecloud-chain', "redis"],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
     },
     /** Automerge the patch, the minor and the dev dependency */
