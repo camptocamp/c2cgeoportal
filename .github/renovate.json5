@@ -15,6 +15,11 @@
     },
   ],
   packageRules: [
+    /** Less strict version for Docker images */
+    {
+      matchDatasources: ['docker'],
+      versioning: 'loose',
+    },
     /** Automerge the patch, the minor and the dev dependency */
     {
       matchDepTypes: ['devDependencies'],
