@@ -321,7 +321,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.3.dev20220819134536"
+version = "1.3.dev20220822155642"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
@@ -330,7 +330,7 @@ python-versions = ">=3.8,<4.0"
 [package.dependencies]
 black = "22.6.0"
 click = ">=8.0.0,<9.0.0"
-codespell = "2.2.0"
+codespell = "2.2.1"
 debian-inspector = ">=30.0.0,<31.0.0"
 defusedxml = ">=0.0.0,<1.0.0"
 EditorConfig = ">=0.0.0,<1.0.0"
@@ -518,7 +518,7 @@ test = ["pytest-cov"]
 
 [[package]]
 name = "codespell"
-version = "2.2.0"
+version = "2.2.1"
 description = "Codespell"
 category = "dev"
 optional = false
@@ -1422,8 +1422,8 @@ python-versions = "*"
 [package.dependencies]
 msal = ">=0.4.1,<2.0.0"
 portalocker = [
-    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
     {version = ">=1.6,<3", markers = "python_version >= \"3.5\" and platform_system == \"Windows\""},
+    {version = ">=1.0,<3", markers = "python_version >= \"3.5\" and platform_system != \"Windows\""},
 ]
 
 [[package]]
@@ -3114,7 +3114,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "95bf9fc9e75887133e0ce6ef8d1dd9a47cb497e91f992d6208ccf6a2d6d73fa7"
+content-hash = "4c44416f62ee60fdce00d07bda2ae3286887b429de84cf3db87cfac77a4032ce"
 
 [metadata.files]
 affine = [
@@ -3231,7 +3231,7 @@ bottle = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cciutils = [
-    {file = "c2cciutils-1.3.dev20220819134536-py3-none-any.whl", hash = "sha256:cef315acd2c858353fe92840ff999ae136a28f5f351e4200e261788cc3e9141d"},
+    {file = "c2cciutils-1.3.dev20220822155642-py3-none-any.whl", hash = "sha256:048ba0b6f98194609daf48f42f98c726c8e8bf3c6aa38a5104a126452d1906f8"},
 ]
 c2cgeoform = [
     {file = "c2cgeoform-2.1.26-py2.py3-none-any.whl", hash = "sha256:e5cda8041d33228125d6561ccbfc455cf8c020dbc24e606dcfe9c285846c8b2d"},
@@ -3342,8 +3342,8 @@ cligj = [
     {file = "cligj-0.7.2.tar.gz", hash = "sha256:a4bc13d623356b373c2c27c53dbd9c68cae5d526270bfa71f6c6fa69669c6b27"},
 ]
 codespell = [
-    {file = "codespell-2.2.0-py3-none-any.whl", hash = "sha256:3cc3fcb484a8302683add19e7d11504c79c79b10d4ea0675409417a044b27374"},
-    {file = "codespell-2.2.0.tar.gz", hash = "sha256:3dce0cd1348d277f8d934d1d4dcbbf510f9ddfd1b9005e9b25fb983189962561"},
+    {file = "codespell-2.2.1-py3-none-any.whl", hash = "sha256:0c53a70f466952706407383d87142a78f319a0e18602802c4aadd3d93158bfc6"},
+    {file = "codespell-2.2.1.tar.gz", hash = "sha256:569b67e5e5c3ade02a1e23f6bbc56c64b608a3ab48ddd943ece0a03e6c346ed1"},
 ]
 colander = [
     {file = "colander-1.8.3-py2.py3-none-any.whl", hash = "sha256:27a94e96899d2e21d7d1685eca8e44f57e772f48cdf39d3dbca8686c24867335"},
