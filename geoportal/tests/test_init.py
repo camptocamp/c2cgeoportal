@@ -125,7 +125,7 @@ class TestReferer(TestCase):
         def match(reference, value, expected):
             r = DummyRequest()
             r.referer = value
-            assert is_valid_referrer(r == {"authorized_referers": [reference]}, expected)
+            assert is_valid_referrer(r, {"authorized_referers": [reference]}) == expected
 
         match("http://example.com/app/", "http://example.com/app?k=v", True)
         match("http://example.com/app/", "http://example.com/app?k=v#link", True)

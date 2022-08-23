@@ -194,7 +194,7 @@ class TestThemeEditing(TestCase):
 
         layers = themes["themes"][0]["children"][0]["children"]
         assert [l["name"] for l in layers] == ["__test_private_layer"]
-        assert "editable" in layers[0] == False
+        assert "editable" not in layers[0]
 
     def test_themev2_auth_edit_permission(self):
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -210,5 +210,5 @@ class TestThemeEditing(TestCase):
 
         layers = themes["themes"][0]["children"][0]["children"]
         assert [l["name"] for l in layers] == ["__test_private_layer"]
-        assert "editable" in layers[0] == True
-        assert layers[0]["editable"] == True
+        assert "editable" in layers[0]
+        assert layers[0]["editable"] is True
