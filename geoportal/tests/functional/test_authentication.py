@@ -90,7 +90,7 @@ class TestUrlAuthenticationPolicy(TestCase):
     def test_ok(self):
         user = self.get_user("foobar1234567891", "__test_user1", "__test_user1", 1)
         self.assertIsNotNone(user)
-        self.assertEqual(user, "__test_user1")
+        assert user == "__test_user1"
 
     def test_token_expired(self):
         self.assertIsNone(self.get_user("foobar1234567891", "__test_user1", "__test_user1", -1))
@@ -134,4 +134,4 @@ class TestUrlAuthenticationPolicy(TestCase):
 
     def test_user_currently_not_expired(self):
         user = self.get_user("foobar1234567891", "__test_user4", "__test_user4", 1)
-        self.assertEqual(user, "__test_user4")
+        assert user == "__test_user4"

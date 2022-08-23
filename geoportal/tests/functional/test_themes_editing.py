@@ -178,8 +178,8 @@ class TestThemeEditing(TestCase):
         request.params = {"interface": "main"}
         theme_view = Theme(request)
         themes = theme_view.themes()
-        self.assertEqual(set(themes["errors"]), set())
-        self.assertEqual([t["name"] for t in themes["themes"]], [])
+        assert set(themes["errors"]) == set()
+        assert [t["name"] for t in themes["themes"]] == []
 
     def test_themev2_auth_no_edit_permission(self):
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -188,13 +188,13 @@ class TestThemeEditing(TestCase):
         request.params = {"interface": "main"}
         theme_view = Theme(request)
         themes = theme_view.themes()
-        self.assertEqual(set(themes["errors"]), set())
-        self.assertEqual([t["name"] for t in themes["themes"]], ["__test_theme"])
-        self.assertEqual([c["name"] for c in themes["themes"][0]["children"]], ["__test_layer_group"])
+        assert set(themes["errors"]) == set()
+        assert [t["name"] for t in themes["themes"]] == ["__test_theme"]
+        assert [c["name"] for c in themes["themes"][0]["children"]] == ["__test_layer_group"]
 
         layers = themes["themes"][0]["children"][0]["children"]
-        self.assertEqual([l["name"] for l in layers], ["__test_private_layer"])
-        self.assertEqual("editable" in layers[0], False)
+        assert [l["name"] for l in layers] == ["__test_private_layer"]
+        assert "editable" not in layers[0]
 
     def test_themev2_auth_edit_permission(self):
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -204,11 +204,11 @@ class TestThemeEditing(TestCase):
 
         theme_view = Theme(request)
         themes = theme_view.themes()
-        self.assertEqual(set(themes["errors"]), set())
-        self.assertEqual([t["name"] for t in themes["themes"]], ["__test_theme"])
-        self.assertEqual([c["name"] for c in themes["themes"][0]["children"]], ["__test_layer_group"])
+        assert set(themes["errors"]) == set()
+        assert [t["name"] for t in themes["themes"]] == ["__test_theme"]
+        assert [c["name"] for c in themes["themes"][0]["children"]] == ["__test_layer_group"]
 
         layers = themes["themes"][0]["children"][0]["children"]
-        self.assertEqual([l["name"] for l in layers], ["__test_private_layer"])
-        self.assertEqual("editable" in layers[0], True)
-        self.assertEqual(layers[0]["editable"], True)
+        assert [l["name"] for l in layers] == ["__test_private_layer"]
+        assert "editable" in layers[0]
+        assert layers[0]["editable"] is True

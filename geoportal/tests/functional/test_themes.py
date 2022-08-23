@@ -187,7 +187,7 @@ class TestThemesView(TestCase):
     def test_group(self):
         theme_view = self._create_theme_obj(params={"group": "__test_layer_group_3"})
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             self._only_name(themes["group"]),
             {
@@ -203,7 +203,7 @@ class TestThemesView(TestCase):
 
         theme_view = self._create_theme_obj(params={"group": "__test_layer_group_4"})
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             self._only_name(themes["group"]),
             {
@@ -232,7 +232,7 @@ class TestThemesView(TestCase):
 
         theme_view = self._create_theme_obj(params={"group": "__test_layer_group_3"})
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             self._only_name(themes["group"]),
             {
@@ -269,7 +269,7 @@ class TestThemesView(TestCase):
     def test_theme_layer(self):
         theme_view = self._create_theme_obj(params={"interface": "min_levels", "min_levels": "0"})
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [{"name": "__test_theme_layer", "children": [{"name": "__test_layer_internal_wms"}]}],
@@ -278,7 +278,7 @@ class TestThemesView(TestCase):
     def test_interface(self):
         theme_view = self._create_theme_obj(params={"interface": "mobile"})
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [
@@ -295,7 +295,7 @@ class TestThemesView(TestCase):
     def test_metadata(self):
         theme_view = self._create_theme_obj()
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             [self._only_name(t, "metadata") for t in themes["themes"]],
             [
@@ -331,7 +331,7 @@ class TestThemesView(TestCase):
         themes = theme_view.themes()
         themes["ogcServers"]["__test_ogc_server"]["attributes"] = {}
         themes["ogcServers"]["__test_ogc_server_chtopo"]["attributes"] = {}
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             themes["ogcServers"],
             {
@@ -388,7 +388,7 @@ class TestThemesView(TestCase):
     def test_dimensions(self):
         theme_view = self._create_theme_obj(params={"group": "__test_layer_group_3"})
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             self._only_name(themes["group"], "dimensions"),
             {
@@ -402,7 +402,7 @@ class TestThemesView(TestCase):
             params={"background": "__test_layer_group_3", "set": "background"}
         )
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             [self._only_name(e) for e in themes["background_layers"]],
             # order is important

@@ -97,13 +97,13 @@ class TestshortenerView(TestCase):
         request.params = {"url": "https://example.com/hi"}
         result = shortener.create()
         index = result["short_url"].rfind("/")
-        self.assertEqual(result["short_url"][:index], "https://example.com/s")
+        assert result["short_url"][:index] == "https://example.com/s"
 
         request.params = {}
         request.matchdict = {"ref": result["short_url"][index + 1 :]}
         result = shortener.get()
-        self.assertEqual(type(result), HTTPFound)
-        self.assertEqual(result.location, "https://example.com/hi")
+        assert type(result) == HTTPFound
+        assert result.location == "https://example.com/hi"
 
     def test_shortener_create_2(self):
         from pyramid.httpexceptions import HTTPFound
@@ -125,15 +125,15 @@ class TestshortenerView(TestCase):
         request.params = {"url": "https://example.com/hi"}
         result = shortener.create()
         index = result["short_url"].rfind("/")
-        self.assertEqual(result["short_url"][:index], "https://example.com/short")
+        assert result["short_url"][:index] == "https://example.com/short"
 
         request.params = {}
         # fmt: off
         request.matchdict = {"ref": result["short_url"][index + 1:]}
         # fmt: on
         result = shortener.get()
-        self.assertEqual(type(result), HTTPFound)
-        self.assertEqual(result.location, "https://example.com/hi")
+        assert type(result) == HTTPFound
+        assert result.location == "https://example.com/hi"
 
     def test_shortener_noreplace_1(self):
         from tests import DummyRequest
@@ -153,7 +153,7 @@ class TestshortenerView(TestCase):
 
         request.params = {"url": "https://example.com/short/truite"}
         result = shortener.create()
-        self.assertEqual(result["short_url"], "https://example.com/s/truite")
+        assert result["short_url"] == "https://example.com/s/truite"
 
     def test_shortener_noreplace_2(self):
         from tests import DummyRequest
@@ -173,7 +173,7 @@ class TestshortenerView(TestCase):
 
         request.params = {"url": "https://example.com/s/truite"}
         result = shortener.create()
-        self.assertEqual(result["short_url"], "https://example.com/s/truite")
+        assert result["short_url"] == "https://example.com/s/truite"
 
     def test_shortener_baseurl(self):
         from tests import DummyRequest
@@ -194,7 +194,7 @@ class TestshortenerView(TestCase):
         request.params = {"url": "https://example.com/hi"}
         result = shortener.create()
         index = result["short_url"].rfind("/")
-        self.assertEqual(result["short_url"][:index], "http://my_host/my_short")
+        assert result["short_url"][:index] == "http://my_host/my_short"
 
     def test_shortener_dev(self):
         from tests import DummyRequest
@@ -220,4 +220,4 @@ class TestshortenerView(TestCase):
         request.params = {"url": "https://localhost:8484/theme/Demo"}
         result = shortener.create()
         index = result["short_url"].rfind("/")
-        self.assertEqual(result["short_url"][:index], "https://localhost:8484/s")
+        assert result["short_url"][:index] == "https://localhost:8484/s"

@@ -85,7 +85,7 @@ class TestIncludeme(TestCase):
 
     def test_default_user_validator(self):
         self.config.include(c2cgeoportal_geoportal.includeme)
-        self.assertEqual(self.config.registry.validate_user, default_user_validator)
+        assert self.config.registry.validate_user == default_user_validator
 
     def test_user_validator_overwrite(self):
         self.config.include(c2cgeoportal_geoportal.includeme)
@@ -96,7 +96,7 @@ class TestIncludeme(TestCase):
             return False
 
         self.config.set_user_validator(custom_validator)
-        self.assertEqual(self.config.registry.validate_user, custom_validator)
+        assert self.config.registry.validate_user == custom_validator
 
 
 class TestReferer(TestCase):
@@ -125,7 +125,7 @@ class TestReferer(TestCase):
         def match(reference, value, expected):
             r = DummyRequest()
             r.referer = value
-            self.assertEqual(is_valid_referrer(r, {"authorized_referers": [reference]}), expected)
+            assert is_valid_referrer(r, {"authorized_referers": [reference]}) == expected
 
         match("http://example.com/app/", "http://example.com/app?k=v", True)
         match("http://example.com/app/", "http://example.com/app?k=v#link", True)
@@ -140,16 +140,16 @@ class TestReferer(TestCase):
         match("http://example.com", "http://example.com.bad.org/app/x/y", False)
 
     def test_positive(self):
-        self.assertEqual(self._get_user(to=self.BASE1 + "/1", ref=self.BASE1), self.USER)
-        self.assertEqual(self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3"), self.USER)
-        self.assertEqual(self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5"), self.USER)
+        assert self._get_user(to=self.BASE1 + "/1", ref=self.BASE1) == self.USER
+        assert self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3") == self.USER
+        assert self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5") == self.USER
 
     def test_no_ref(self):
-        self.assertEqual(self._get_user(to=self.BASE1, ref=None), self.USER)
-        self.assertIsNone(self._get_user(to=self.BASE1, ref=""))
+        assert self._get_user(to=self.BASE1, ref=None) == self.USER
+        assert self._get_user(to=self.BASE1, ref="") is None
 
-        self.assertEqual(self._get_user(to=self.BASE1, ref=None, method="POST"), self.USER)
-        self.assertIsNone(self._get_user(to=self.BASE1, ref="", method="POST"))
+        assert self._get_user(to=self.BASE1, ref=None, method="POST") == self.USER
+        assert self._get_user(to=self.BASE1, ref="", method="POST") is None
 
     def test_bad_ref(self):
         self.assertIsNone(self._get_user(to=self.BASE1, ref="http://bad.com/hacker"))

@@ -263,7 +263,7 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         response = MapservProxy(request).proxy()
-        self.assertEqual(response.status_code, 200)
+        assert response.status_code == 200
 
     def test_get_legend_graphic(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
@@ -282,7 +282,7 @@ class TestMapserverproxyView(TestCase):
         )
         response = MapservProxy(request).proxy()
         self.assertTrue(response.cache_control.public)
-        self.assertEqual(response.cache_control.max_age, 3600)
+        assert response.cache_control.max_age == 3600
 
     def test_getlegendgraphic_custom_nocache(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
@@ -361,9 +361,9 @@ class TestMapserverproxyView(TestCase):
         response_body = "".join(
             re.sub(pattern, "", l) for l in response.body.decode("utf-8").splitlines()
         ).encode("utf-8")
-        self.assertEqual(response_body.decode("utf-8"), expected_response)
+        assert response_body.decode("utf-8") == expected_response
         self.assertTrue(response.cache_control.public)
-        self.assertEqual(response.cache_control.max_age, 10)
+        assert response.cache_control.max_age == 10
         self.assertEqual(
             str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, public"
         )
@@ -656,19 +656,19 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
         pl = get_writable_layers(self._create_dummy_request("__test_user1"), [self.ogc_server_id])
-        self.assertEqual({pl[l].name for l in pl}, set())
+        assert {pl[l].name for l in pl} == set()
 
     def test_writable_layers2(self):
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
         pl = get_writable_layers(self._create_dummy_request("__test_user2"), [self.ogc_server_id])
-        self.assertEqual({pl[l].name for l in pl}, set())
+        assert {pl[l].name for l in pl} == set()
 
     def test_writable_layers3(self):
         from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 
         pl = get_writable_layers(self._create_dummy_request("__test_user3"), [self.ogc_server_id])
-        self.assertEqual({pl[l].name for l in pl}, {"testpoint_protected_query_with_collect"})
+        assert {pl[l].name for l in pl} == {"testpoint_protected_query_with_collect"}
 
     def test_wms_get_capabilities(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
@@ -877,7 +877,7 @@ class TestMapserverproxyView(TestCase):
         assert "Paris" in response.body.decode("utf-8")
         assert "Londre" not in response.body.decode("utf-8")
         assert "Chambéry" not in response.body.decode("utf-8")
-        self.assertEqual(response.content_type, "text/xml")
+        assert response.content_type == "text/xml"
 
     def test_get_feature_wfs_url(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy

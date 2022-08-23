@@ -67,4 +67,4 @@ class TestGroupsFinder(TestCase):
 
         request = create_dummy_request(authentication=False, user="__test_user")
         roles = defaultgroupsfinder("__test_user", request)
-        self.assertEqual(roles, ["__test_role"])
+        assert roles == ["__test_role"]

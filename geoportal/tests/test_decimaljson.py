@@ -42,4 +42,4 @@ class TestDecimalJSON(TestCase):
         self.assertEqual(json.loads(result), {"int": 1, "dec": 1.2, "str": "an str"})
 
     def test_decimal_json(self):
-        self.assertEqual(fast_dumps({"a": decimal.Decimal("3.3")}), '{\n  "a": 3.3\n}')
+        assert fast_dumps({"a": decimal.Decimal("3.3")}) == '{\n  "a": 3.3\n}'

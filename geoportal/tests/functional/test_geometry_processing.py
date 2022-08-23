@@ -49,6 +49,4 @@ class TestGeometryProcessing(TestCase):
         )
         geom_ops = GeometryProcessing(request)
         geom = geom_ops.difference()
-        self.assertEqual(
-            geom, Polygon([(0, 0), (0, 4), (4, 4), (4, 3), (2, 3), (2, 1), (4, 1), (4, 0), (0, 0)])
-        )
+        assert geom.wkt == "POLYGON ((0 4, 4 4, 4 3, 2 3, 2 1, 4 1, 4 0, 0 0, 0 4))"

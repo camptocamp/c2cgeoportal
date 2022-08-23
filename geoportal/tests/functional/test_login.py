@@ -303,7 +303,7 @@ class TestLoginView(TestCase):
         fill_tech_user_functionality("anonymous", (("func", "anon"), ("toto", "anon_value2")))
         fill_tech_user_functionality("registered", (("func", "reg"),))
         login = Login(request)
-        self.assertEqual(login.loginuser()["functionalities"], {"func": ["anon"]})
+        assert login.loginuser()["functionalities"] == {"func": ["anon"]}
 
         class R:
             id = 123
@@ -333,7 +333,7 @@ class TestLoginView(TestCase):
             "roles": [{"name": "__test_role", "id": 123}],
             "functionalities": {"func": ["reg"]},
         }
-        self.assertEqual(login.loginuser(), expected)
+        assert login.loginuser() == expected
 
         class F:
             name = "func"
@@ -350,7 +350,7 @@ class TestLoginView(TestCase):
             "roles": [{"name": "__test_role2", "id": 123}],
             "functionalities": {"func": ["value"]},
         }
-        self.assertEqual(login.loginuser(), expected)
+        assert login.loginuser() == expected
         assert request.response.headers["Vary"] == "Origin, Cookie"
 
     def test_intranet(self):

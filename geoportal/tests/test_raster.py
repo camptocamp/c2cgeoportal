@@ -53,9 +53,9 @@ class TestRasterViews(TestCase):
         request.params["lon"] = "565000"
         request.params["lat"] = "218000"
         result = raster.raster()
-        self.assertEqual(result["dem1"], None)
-        self.assertEqual(result["dem2"], None)
-        self.assertEqual(result["dem3"], None)
+        assert result["dem1"] == None
+        assert result["dem2"] == None
+        assert result["dem3"] == None
 
         request.params["lon"] = "548000"
         request.params["lat"] = "216000"
@@ -97,27 +97,27 @@ class TestRasterViews(TestCase):
         request.params["lon"] = "547990.0"
         request.params["lat"] = "216009.1"
         result = raster.raster()
-        self.assertEqual(result["dem5"], Decimal("1164.2"))
+        assert result["dem5"] == Decimal("1164.2")
         request.params["lon"] = "547990.9"
         request.params["lat"] = "216010.0"
         result = raster.raster()
-        self.assertEqual(result["dem5"], Decimal("1164.2"))
+        assert result["dem5"] == Decimal("1164.2")
 
         # Lower right
         request.params["lon"] = "547996.0"
         request.params["lat"] = "216003.1"
         result = raster.raster()
-        self.assertEqual(result["dem5"], Decimal("1180.77"))
+        assert result["dem5"] == Decimal("1180.77")
         request.params["lon"] = "547996.9"
         request.params["lat"] = "216004.0"
         result = raster.raster()
-        self.assertEqual(result["dem5"], Decimal("1180.77"))
+        assert result["dem5"] == Decimal("1180.77")
 
         # Out
         request.params["lon"] = "547997.4"
         request.params["lat"] = "216003.5"
         result = raster.raster()
-        self.assertEqual(result["dem5"], None)
+        assert result["dem5"] == None
 
     def test_raster_vrt(self):
         from decimal import Decimal
@@ -142,7 +142,7 @@ class TestRasterViews(TestCase):
         request.params["lon"] = "547990.4"
         request.params["lat"] = "216009.5"
         result = raster.raster()
-        self.assertEqual(result["dem6"], Decimal("1164.2"))
+        assert result["dem6"] == Decimal("1164.2")
 
     def test_absolute_path(self):
         import fiona
@@ -177,7 +177,7 @@ class TestRasterViews(TestCase):
             '{"type":"LineString",' '"coordinates":[[548009.5,215990],[547990,216009.5]]}'
         )
         result = profile.json()
-        self.assertEqual(len(result["profile"]), 4)
+        assert len(result["profile"]) == 4
         self.assertAlmostEqual(result["profile"][0]["y"], 215990)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem2"], None)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem"], None)
@@ -201,7 +201,7 @@ class TestRasterViews(TestCase):
 
         request.params["layers"] = "dem"
         result = profile.json()
-        self.assertEqual(len(result["profile"]), 4)
+        assert len(result["profile"]) == 4
         self.assertAlmostEqual(result["profile"][0]["y"], 215990)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem"], None)
         self.assertAlmostEqual(result["profile"][0]["dist"], Decimal("0.0"))
@@ -222,7 +222,7 @@ class TestRasterViews(TestCase):
         # test length = 0
         request.params["geom"] = '{"type":"LineString",' '"coordinates":[[548000,216000]]}'
         result = profile.json()
-        self.assertEqual(len(result["profile"]), 1)
+        assert len(result["profile"]) == 1
         self.assertAlmostEqual(result["profile"][0]["y"], 216000)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem"], 1172)
         self.assertAlmostEqual(result["profile"][0]["dist"], Decimal("0.0"))
@@ -233,7 +233,7 @@ class TestRasterViews(TestCase):
             '{"type":"LineString",' '"coordinates":[[548000,216000],[548001,216001],[548009,216009]]}'
         )
         result = profile.json()
-        self.assertEqual(len(result["profile"]), 5)
+        assert len(result["profile"]) == 5
         self.assertAlmostEqual(result["profile"][0]["y"], 216000)
         self.assertAlmostEqual(result["profile"][0]["values"]["dem"], 1172)
         self.assertAlmostEqual(result["profile"][0]["dist"], Decimal("0.0"))
@@ -241,7 +241,7 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result["profile"][1]["y"], 216001.0)
         self.assertAlmostEqual(result["profile"][1]["values"]["dem"], 1167)
         self.assertAlmostEqual(result["profile"][1]["dist"], Decimal("1.4"))
-        self.assertEqual(result["profile"][1]["x"], 548001.0)
+        assert result["profile"][1]["x"] == 548001.0
         self.assertAlmostEqual(result["profile"][2]["y"], 216003.66666666666)
         self.assertAlmostEqual(result["profile"][2]["values"]["dem"], 1155)
         self.assertAlmostEqual(result["profile"][2]["dist"], Decimal("5.2"))

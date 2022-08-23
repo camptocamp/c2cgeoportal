@@ -239,9 +239,9 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties["label"], "label1")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
 
     def test_toobig_limit(self):
         from geojson.feature import FeatureCollection
@@ -252,11 +252,11 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 2)
-        self.assertEqual(response.features[0].properties["label"], "label1")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
-        self.assertEqual(response.features[1].properties["label"], "label4")
-        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
+        assert len(response.features) == 2
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
+        assert response.features[1].properties["label"] == "label4"
+        assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_toobig_partitionlimit(self):
         from geojson.feature import FeatureCollection
@@ -267,11 +267,11 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 2)
-        self.assertEqual(response.features[0].properties["label"], "label1")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
-        self.assertEqual(response.features[1].properties["label"], "label4")
-        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
+        assert len(response.features) == 2
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
+        assert response.features[1].properties["label"] == "label4"
+        assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_match(self):
         from geojson.feature import FeatureCollection
@@ -282,11 +282,11 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 2)
-        self.assertEqual(response.features[0].properties["label"], "label1")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
-        self.assertEqual(response.features[1].properties["label"], "label4")
-        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
+        assert len(response.features) == 2
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
+        assert response.features[1].properties["label"] == "label4"
+        assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_nomatch(self):
         from geojson.feature import FeatureCollection
@@ -297,7 +297,7 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 0)
+        assert len(response.features) == 0
 
     def test_private_nomatch(self):
         from geojson.feature import FeatureCollection
@@ -308,7 +308,7 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 0)
+        assert len(response.features) == 0
 
     def test_private_match(self):
         from geojson.feature import FeatureCollection
@@ -319,9 +319,9 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties["label"], "label2")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer2")
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label2"
+        assert response.features[0].properties["layer_name"] == "layer2"
 
     def test_private_with_role_nomatch(self):
         from geojson.feature import FeatureCollection
@@ -332,7 +332,7 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 0)
+        assert len(response.features) == 0
 
     def test_private_with_role_match(self):
         from geojson.feature import FeatureCollection
@@ -343,9 +343,9 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties["label"], "label3")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer3")
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label3"
+        assert response.features[0].properties["layer_name"] == "layer3"
 
     def test_match_partitionlimit(self):
         from geojson.feature import FeatureCollection
@@ -356,9 +356,9 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties["label"], "label1")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
 
     def test_params_actions(self):
         from geojson.feature import FeatureCollection
@@ -369,9 +369,9 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 1)
-        self.assertEqual(response.features[0].properties["label"], "label5")
-        self.assertEqual(response.features[0].properties["params"], {"floor": 5})
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label5"
+        assert response.features[0].properties["params"] == {"floor": 5}
         self.assertEqual(
             response.features[0].properties["actions"], [{"action": "add_layer", "data": "layer1"}]
         )
@@ -396,10 +396,10 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 3)
-        self.assertEqual(response.features[0].properties["label"], "A 7 simi")
-        self.assertEqual(response.features[1].properties["label"], "A 70 simi")
-        self.assertEqual(response.features[2].properties["label"], "A 71 simi")
+        assert len(response.features) == 3
+        assert response.features[0].properties["label"] == "A 7 simi"
+        assert response.features[1].properties["label"] == "A 70 simi"
+        assert response.features[2].properties["label"] == "A 71 simi"
 
     def test_rank_order_with_ts_rank_cd(self):
         from geojson.feature import FeatureCollection
@@ -410,10 +410,10 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 3)
-        self.assertEqual(response.features[0].properties["label"], "A 70 simi")
-        self.assertEqual(response.features[1].properties["label"], "A 71 simi")
-        self.assertEqual(response.features[2].properties["label"], "A 7 simi")
+        assert len(response.features) == 3
+        assert response.features[0].properties["label"] == "A 70 simi"
+        assert response.features[1].properties["label"] == "A 71 simi"
+        assert response.features[2].properties["label"] == "A 7 simi"
 
     def test_extra_quote(self):
         from geojson.feature import FeatureCollection
@@ -424,8 +424,8 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
-        self.assertEqual(len(response.features), 2)
-        self.assertEqual(response.features[0].properties["label"], "label1")
-        self.assertEqual(response.features[0].properties["layer_name"], "layer1")
-        self.assertEqual(response.features[1].properties["label"], "label4")
-        self.assertEqual(response.features[1].properties["layer_name"], "layer1")
+        assert len(response.features) == 2
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
+        assert response.features[1].properties["label"] == "label4"
+        assert response.features[1].properties["layer_name"] == "layer1"

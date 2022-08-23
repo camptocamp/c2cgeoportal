@@ -39,53 +39,53 @@ class TestUrl(TestCase):
     def test_url(self):
         url = Url("http://test/")
         url.add_query({"Name": "Bob", "Age": "18", "Nationality": "Việt Name"})
-        self.assertEqual(url.scheme, "http")
-        self.assertEqual(url.netloc, "test")
-        self.assertEqual(url.path, "/")
-        self.assertEqual(url.fragment, "")
+        assert url.scheme == "http"
+        assert url.netloc == "test"
+        assert url.path == "/"
+        assert url.fragment == ""
         self.assertEqual(url.query, {"Name": "Bob", "Age": "18", "Nationality": "Việt Name"})
 
     def test_url_encode1(self):
         url = Url("http://example.com/toto")
         url.add_query({"à": "é"})
-        self.assertEqual(url.scheme, "http")
-        self.assertEqual(url.netloc, "example.com")
-        self.assertEqual(url.path, "/toto")
-        self.assertEqual(url.fragment, "")
-        self.assertEqual(url.query, {"à": "é"})
+        assert url.scheme == "http"
+        assert url.netloc == "example.com"
+        assert url.path == "/toto"
+        assert url.fragment == ""
+        assert url.query == {"à": "é"}
 
     def test_url_encode2(self):
         url = Url("http://example.com/toto?à=é")
         url.add_query({"1": "2"})
-        self.assertEqual(url.scheme, "http")
-        self.assertEqual(url.netloc, "example.com")
-        self.assertEqual(url.path, "/toto")
-        self.assertEqual(url.fragment, "")
+        assert url.scheme == "http"
+        assert url.netloc == "example.com"
+        assert url.path == "/toto"
+        assert url.fragment == ""
         self.assertEqual(url.query, {"à": "é", "1": "2"})
 
     def test_url_encode3(self):
         url = Url("http://example.com/toto?%C3%A0=%C3%A9")
         url.add_query({"1": "2"})
-        self.assertEqual(url.scheme, "http")
-        self.assertEqual(url.netloc, "example.com")
-        self.assertEqual(url.path, "/toto")
-        self.assertEqual(url.fragment, "")
+        assert url.scheme == "http"
+        assert url.netloc == "example.com"
+        assert url.path == "/toto"
+        assert url.fragment == ""
         self.assertEqual(url.query, {"à": "é", "1": "2"})
 
     def test_url_port(self):
         url = Url("http://example.com:8480/toto")
         url.add_query({"1": "2"})
-        self.assertEqual(url.scheme, "http")
-        self.assertEqual(url.hostname, "example.com")
-        self.assertEqual(url.netloc, "example.com:8480")
-        self.assertEqual(url.path, "/toto")
-        self.assertEqual(url.fragment, "")
-        self.assertEqual(url.query, {"1": "2"})
+        assert url.scheme == "http"
+        assert url.hostname == "example.com"
+        assert url.netloc == "example.com:8480"
+        assert url.path == "/toto"
+        assert url.fragment == ""
+        assert url.query == {"1": "2"}
 
     def test_url_noparam(self):
         url = Url("http://example.com/")
         url.add_query({})
-        self.assertEqual(url.url(), "http://example.com/")
+        assert url.url() == "http://example.com/"
 
     def test_url_update(self):
         url = Url("http://test:123/toto?map=123#456")
