@@ -27,7 +27,13 @@
     },
     {
       matchDatasources: ['docker'],
-      matchPackageNames: ['camptocamp/tilecloud-chain', 'redis', 'haproxy', 'camptocamp/mapfish_print', 'camptocamp/mapserver'],
+      matchPackageNames: [
+        'camptocamp/tilecloud-chain',
+        'redis',
+        'haproxy',
+        'camptocamp/mapfish_print',
+        'camptocamp/mapserver',
+      ],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
     },
     /** Automerge the patch, the minor and the dev dependency */
