@@ -155,7 +155,7 @@ class TestThemesScale(TestCase):
     def test_scale(self):
         theme_view = self._create_theme_obj()
         themes = theme_view.themes()
-        self.assertEqual(set(themes["errors"]), set())
+        assert set(themes["errors"]) == set()
         self.assertEqual(
             [
                 self._only_name(t, ["name", "childLayers", "minResolutionHint", "maxResolutionHint"])

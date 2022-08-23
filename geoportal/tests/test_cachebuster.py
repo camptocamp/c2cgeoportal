@@ -58,7 +58,7 @@ class TestCacheBuster(TestCase):
         ctf = CachebusterTween(handler, registry)
         request = MyRequest("/test/123456/build.css")
         ctf(request)
-        self.assertEqual(request.path_info, "/test/build.css")
+        assert request.path_info == "/test/build.css"
 
     def test_noreplace(self):
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween
@@ -68,4 +68,4 @@ class TestCacheBuster(TestCase):
         ctf = CachebusterTween(handler, registry)
         request = MyRequest("/test2/123456/build.css")
         ctf(request)
-        self.assertEqual(request.path_info, "/test2/123456/build.css")
+        assert request.path_info == "/test2/123456/build.css"

@@ -151,7 +151,7 @@ class TestTinyOWSProxyView(TestCase):
             load_file(self.capabilities_response_filtered_file1).strip(),
             response.body.decode().replace("  \n", "").strip(),
         )
-        self.assertEqual("200 OK", response.status)
+        assert "200 OK" == response.status
 
     @responses.activate
     def test_proxy_get_capabilities_user2(self):
@@ -170,7 +170,7 @@ class TestTinyOWSProxyView(TestCase):
             load_file(self.capabilities_response_filtered_file2).strip(),
             response.body.decode().replace("  \n", "").strip(),
         )
-        self.assertEqual("200 OK", response.status)
+        assert "200 OK" == response.status
 
     @responses.activate
     def test_proxy_get_capabilities_get(self):
@@ -190,7 +190,7 @@ class TestTinyOWSProxyView(TestCase):
             load_file(self.capabilities_response_filtered_file1).strip(),
             response.body.decode().replace("  \n", "").strip(),
         )
-        self.assertEqual("200 OK", response.status)
+        assert "200 OK" == response.status
 
     @responses.activate
     def test_proxy_get_capabilities_post(self):
@@ -212,7 +212,7 @@ class TestTinyOWSProxyView(TestCase):
             response.body.decode().replace("  \n", "").strip(),
         )
 
-        self.assertEqual("200 OK", response.status)
+        assert "200 OK" == response.status
 
     def test_proxy_get_capabilities_post_invalid_body(self):
         from pyramid.httpexceptions import HTTPBadRequest
@@ -249,7 +249,7 @@ class TestTinyOWSProxyView(TestCase):
 
         response = TinyOWSProxy(request).proxy()
 
-        self.assertEqual("200 OK", response.status)
+        assert "200 OK" == response.status
 
     def test_proxy_describe_feature_type_invalid_layer(self):
         from pyramid.httpexceptions import HTTPForbidden
@@ -279,7 +279,7 @@ class TestTinyOWSProxyView(TestCase):
 
         response = TinyOWSProxy(request).proxy()
 
-        self.assertEqual("200 OK", response.status)
+        assert "200 OK" == response.status
 
     def test_proxy_describe_feature_type_post_multiple_types(self):
         from pyramid.httpexceptions import HTTPBadRequest
@@ -323,8 +323,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
-        self.assertEqual("getcapabilities", operation)
-        self.assertEqual(set(), typename)
+        assert "getcapabilities" == operation
+        assert set() == typename
 
     def test_parse_body_describefeaturetype(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
@@ -334,8 +334,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
-        self.assertEqual("describefeaturetype", operation)
-        self.assertEqual(set(["layer_1"]), typename)
+        assert "describefeaturetype" == operation
+        assert set(["layer_1"]) == typename
 
     def test_parse_body_getfeature(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
@@ -345,8 +345,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
-        self.assertEqual("getfeature", operation)
-        self.assertEqual({"parks"}, typename)
+        assert "getfeature" == operation
+        assert {"parks"} == typename
 
     def test_parse_body_lockfeature(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
@@ -356,8 +356,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
-        self.assertEqual("lockfeature", operation)
-        self.assertEqual({"parks"}, typename)
+        assert "lockfeature" == operation
+        assert {"parks"} == typename
 
     def test_parse_body_transaction_update(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
@@ -367,8 +367,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
-        self.assertEqual("transaction", operation)
-        self.assertEqual({"parks"}, typename)
+        assert "transaction" == operation
+        assert {"parks"} == typename
 
     def test_parse_body_transaction_delete(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
@@ -378,8 +378,8 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
-        self.assertEqual("transaction", operation)
-        self.assertEqual({"parks"}, typename)
+        assert "transaction" == operation
+        assert {"parks"} == typename
 
     def test_parse_body_transaction_insert(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
@@ -389,5 +389,5 @@ class TestTinyOWSProxyViewNoDb(TestCase):
 
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
-        self.assertEqual("transaction", operation)
-        self.assertEqual({"parks"}, typename)
+        assert "transaction" == operation
+        assert {"parks"} == typename

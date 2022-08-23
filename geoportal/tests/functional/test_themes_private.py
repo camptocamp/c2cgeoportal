@@ -191,7 +191,7 @@ class TestThemesPrivateView(TestCase):
     def test_public(self):
         theme_view = self._create_theme_obj()
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [
@@ -215,7 +215,7 @@ class TestThemesPrivateView(TestCase):
             user=DBSession.query(User).filter_by(username="__test_user").one()
         )
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [
@@ -244,7 +244,7 @@ class TestThemesPrivateView(TestCase):
             user=DBSession.query(User).filter_by(username="__test_user2").one()
         )
         themes = theme_view.themes()
-        self.assertEqual(self._get_filtered_errors(themes), set())
+        assert self._get_filtered_errors(themes) == set()
         self.assertEqual(
             [self._only_name(t) for t in themes["themes"]],
             [

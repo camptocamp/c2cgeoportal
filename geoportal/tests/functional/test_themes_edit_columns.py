@@ -286,7 +286,7 @@ class TestThemesEditColumns(TestCase):
         theme_view = Theme(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
         themes = theme_view.themes()
-        self.assertEqual([], themes["errors"])
+        assert [] == themes["errors"]
         layers = themes["themes"][0]["children"][0]["children"]
 
         self.assertEqual(

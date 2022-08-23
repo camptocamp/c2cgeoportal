@@ -65,12 +65,12 @@ class TestRequestProperty(TestCase):
 
     def test_request_no_auth(self):
         request = create_dummy_request()
-        self.assertEqual(request.user, None)
+        assert request.user == None
 
     def test_request_auth(self):
         request = create_dummy_request(authentication=False, user="__test_user")
-        self.assertEqual(request.user.username, "__test_user")
-        self.assertEqual([role.name for role in request.user.roles], ["__test_role"])
+        assert request.user.username == "__test_user"
+        assert [role.name for role in request.user.roles] == ["__test_role"]
 
     def test_request_right_auth(self):
         request = create_dummy_request(
@@ -81,7 +81,7 @@ class TestRequestProperty(TestCase):
             },
         )
 
-        self.assertEqual(request.user.username, "__test_user")
+        assert request.user.username == "__test_user"
 
     def test_request_wrong_auth(self):
         request = create_dummy_request(
@@ -91,7 +91,7 @@ class TestRequestProperty(TestCase):
             }
         )
 
-        self.assertEqual(request.user, None)
+        assert request.user == None
 
     def test_request_auth_overwritten_property(self):
         def setter(request):
@@ -113,5 +113,5 @@ class TestRequestProperty(TestCase):
 
         request = create_dummy_request(authentication=False, user="__test_user")
         request.set_property(setter, name="user", reify=True)
-        self.assertEqual(request.user.username, "__foo")
-        self.assertEqual([role.name for role in request.user.roles], ["__bar"])
+        assert request.user.username == "__foo"
+        assert [role.name for role in request.user.roles] == ["__bar"]

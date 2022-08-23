@@ -28,4 +28,4 @@ class TestI18n(TestCase):
 
     def test_available_locale_names_no_dir(self):
         locales = available_locale_names()
-        self.assertEqual(locales, [])
+        assert locales == []

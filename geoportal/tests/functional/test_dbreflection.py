@@ -122,8 +122,8 @@ class TestReflection(TestCase):
 
         # test the class
         assert modelclass.__name__.startswith("Table_a_")
-        self.assertEqual(modelclass.__table__.name, "table_a")
-        self.assertEqual(modelclass.__table__.schema, "public")
+        assert modelclass.__table__.name == "table_a"
+        assert modelclass.__table__.schema == "public"
 
         self.assertTrue(isinstance(modelclass.point.type, Geometry))
         self.assertTrue(isinstance(modelclass.linestring.type, Geometry))
@@ -134,14 +134,14 @@ class TestReflection(TestCase):
 
         self.assertTrue(isinstance(modelclass.child1, _AssociationProxy))
         self.assertTrue(modelclass.child1.nullable)
-        self.assertEqual(modelclass.child1_id.info.get("association_proxy"), "child1")
+        assert modelclass.child1_id.info.get("association_proxy") == "child1"
         self.assertTrue(isinstance(modelclass.child2, _AssociationProxy))
         self.assertFalse(modelclass.child2.nullable)
-        self.assertEqual(modelclass.child2_id.info.get("association_proxy"), "child2")
+        assert modelclass.child2_id.info.get("association_proxy") == "child2"
 
         child1_asso_proxy = getattr(modelclass, modelclass.child1_id.info["association_proxy"])
-        self.assertEqual("name", child1_asso_proxy.value_attr)
-        self.assertEqual("name", child1_asso_proxy.order_by)
+        assert "name" == child1_asso_proxy.value_attr
+        assert "name" == child1_asso_proxy.order_by
 
         # test the Table object
         table = modelclass.__table__
@@ -155,27 +155,27 @@ class TestReflection(TestCase):
         self.assertTrue("multilinestring" in table.c)
         self.assertTrue("multipolygon" in table.c)
         col_child1_id = table.c["child1_id"]
-        self.assertEqual(col_child1_id.name, "child1_id")
+        assert col_child1_id.name == "child1_id"
         col_child2_id = table.c["child2_id"]
-        self.assertEqual(col_child2_id.name, "child2_id")
+        assert col_child2_id.name == "child2_id"
         col_point = table.c["point"]
-        self.assertEqual(col_point.name, "point")
-        self.assertEqual(col_point.type.geometry_type, "POINT")
+        assert col_point.name == "point"
+        assert col_point.type.geometry_type == "POINT"
         col_linestring = table.c["linestring"]
-        self.assertEqual(col_linestring.name, "linestring")
-        self.assertEqual(col_linestring.type.geometry_type, "LINESTRING")
+        assert col_linestring.name == "linestring"
+        assert col_linestring.type.geometry_type == "LINESTRING"
         col_polygon = table.c["polygon"]
-        self.assertEqual(col_polygon.name, "polygon")
-        self.assertEqual(col_polygon.type.geometry_type, "POLYGON")
+        assert col_polygon.name == "polygon"
+        assert col_polygon.type.geometry_type == "POLYGON"
         col_multipoint = table.c["multipoint"]
-        self.assertEqual(col_multipoint.name, "multipoint")
-        self.assertEqual(col_multipoint.type.geometry_type, "MULTIPOINT")
+        assert col_multipoint.name == "multipoint"
+        assert col_multipoint.type.geometry_type == "MULTIPOINT"
         col_multilinestring = table.c["multilinestring"]
-        self.assertEqual(col_multilinestring.name, "multilinestring")
-        self.assertEqual(col_multilinestring.type.geometry_type, "MULTILINESTRING")
+        assert col_multilinestring.name == "multilinestring"
+        assert col_multilinestring.type.geometry_type == "MULTILINESTRING"
         col_multipolygon = table.c["multipolygon"]
-        self.assertEqual(col_multipolygon.name, "multipolygon")
-        self.assertEqual(col_multipolygon.type.geometry_type, "MULTIPOLYGON")
+        assert col_multipolygon.name == "multipolygon"
+        assert col_multipolygon.type.geometry_type == "MULTIPOLYGON"
 
         assert get_class("table_a") is modelclass
 
@@ -186,8 +186,8 @@ class TestReflection(TestCase):
         modelclass = get_class("public.table_b")
 
         assert modelclass.__name__.startswith("Table_b_")
-        self.assertEqual(modelclass.__table__.name, "table_b")
-        self.assertEqual(modelclass.__table__.schema, "public")
+        assert modelclass.__table__.name == "table_b"
+        assert modelclass.__table__.schema == "public"
 
     def test_mixing_get_class_and_queries(self):
         """
@@ -225,7 +225,7 @@ class TestReflection(TestCase):
         self._create_table("table_d")
         cls = get_class("table_d", attributes_order=attributes_order)
 
-        self.assertEqual(attributes_order, cls.__attributes_order__)
+        assert attributes_order == cls.__attributes_order__
 
     def test_get_class_enumerations_config(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
@@ -235,18 +235,18 @@ class TestReflection(TestCase):
         self._create_table("table_d")
         cls = get_class("table_d", enumerations_config=enumerations_config)
 
-        self.assertEqual(enumerations_config, cls.__enumerations_config__)
+        assert enumerations_config == cls.__enumerations_config__
         association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
-        self.assertEqual("id", association_proxy.value_attr)
-        self.assertEqual("name", association_proxy.order_by)
+        assert "id" == association_proxy.value_attr
+        assert "name" == association_proxy.order_by
 
         # Without order_by.
         enumerations_config = {"child1_id": {"value": "id"}}
         cls = get_class("table_d", enumerations_config=enumerations_config)
 
         association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
-        self.assertEqual("id", association_proxy.value_attr)
-        self.assertEqual("id", association_proxy.order_by)
+        assert "id" == association_proxy.value_attr
+        assert "id" == association_proxy.order_by
 
     def test_get_class_readonly_attributes(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
@@ -256,5 +256,5 @@ class TestReflection(TestCase):
         self._create_table("table_d")
         cls = get_class("table_d", readonly_attributes=readonly_attributes)
 
-        self.assertEqual(True, cls.child1_id.info.get("readonly"))
-        self.assertEqual(True, cls.point.info.get("readonly"))
+        assert True == cls.child1_id.info.get("readonly")
+        assert True == cls.point.info.get("readonly")
