@@ -1,3 +1,7 @@
+##### 2.7.0.83
+
+- Update dependency c2cciutils to v1.3.dev20220822155642 (2.7) [ngeo#8793](https://github.com/camptocamp/ngeo/pull/8793)
+
 ##### 2.7.0.82
 
 - Update all patch versions (2.7) (patch) [ngeo#8772](https://github.com/camptocamp/ngeo/pull/8772)
