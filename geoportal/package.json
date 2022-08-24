@@ -9,7 +9,7 @@
     "angular-gettext-tools": "2.5.3",
     "commander": "9.4.0",
     "eslint": "8.22.0",
-    "ngeo": "2.8.0-latest.20220822T134037Z.f975bf07c",
+    "ngeo": "2.8.0-latest.20220823T090546Z.44a22b19f",
     "puppeteer": "16.2.0",
     "url-parse": "1.5.10"
   },
