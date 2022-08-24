@@ -28,17 +28,11 @@
     {
       matchDatasources: ['docker'],
       matchPackageNames: [
+        'camptocamp/mapfish_print',
         'camptocamp/tilecloud-chain',
+        'camptocamp/mapserver',
         'redis',
         'haproxy',
-        'camptocamp/mapserver',
-      ],
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-(?<compatibility>.*))?$',
-    },
-    {
-      matchDatasources: ['docker'],
-      matchPackageNames: [
-        'camptocamp/mapfish_print',
       ],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
     },
