@@ -1,3 +1,5 @@
+##### 2.6.0.128
+* Clarify update_path example in the CHANGELOG [c2cgeoportal#9981](https://github.com/camptocamp/c2cgeoportal/pull/9981)
 ##### 2.6.0.127
 * [Backport 2.6] Remove WFS support of wms.geo.admin.ch [c2cgeoportal#9963](https://github.com/camptocamp/c2cgeoportal/pull/9963)
 * [Backport 2.6] Fix CVE [ngeo#8766](https://github.com/camptocamp/ngeo/pull/8766)
