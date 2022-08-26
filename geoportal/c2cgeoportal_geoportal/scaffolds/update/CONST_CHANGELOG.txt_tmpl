@@ -254,8 +254,14 @@ update_paths:
   - interfaces_config.api.routes.searchUrl  # This one should already be present
 ```
 
-In this case you could have to add also this `update_paths`. It's because the default value in the
-`geoportal/CONST_vars.yaml` define the searchUrl like this:
+In this case, you need to change this line of the `update_paths` as follows:
+```
+update_paths:
+  - interfaces_config.api.routes.searchUrl.params
+```
+
+This is because the default value in the
+`geoportal/CONST_vars.yaml` defines the searchUrl like this:
 
 ```
 searchUrl:
