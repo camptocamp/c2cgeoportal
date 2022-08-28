@@ -4,11 +4,11 @@
   "description": "GeoMapFish geoportal interface",
   "author": "",
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.34.0",
-    "@typescript-eslint/parser": "5.34.0",
+    "@typescript-eslint/eslint-plugin": "5.35.1",
+    "@typescript-eslint/parser": "5.35.1",
     "angular-gettext-tools": "2.5.3",
     "commander": "9.4.0",
-    "eslint": "8.22.0",
+    "eslint": "8.23.0",
     "ngeo": "2.8.0-latest.20220823T090546Z.44a22b19f",
     "puppeteer": "16.2.0",
     "url-parse": "1.5.10"
