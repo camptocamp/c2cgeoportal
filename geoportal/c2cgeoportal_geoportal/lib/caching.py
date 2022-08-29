@@ -126,7 +126,7 @@ def invalidate_region(region: Optional[str] = None) -> None:
 class HybridRedisBackend(CacheBackend):  # type: ignore
     """A Dogpile cache backend with a memory cache backend in front of a Redis backend for performance."""
 
-    def __init__(self, arguments: Dict[str, Any]):  # pylint: disable=super-init-not-called
+    def __init__(self, arguments: Dict[str, Any]):
         self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
         self._memory = MemoryBackend({"cache_dict": arguments.pop("cache_dict", {})})
         self._redis = RedisBackend(arguments)
