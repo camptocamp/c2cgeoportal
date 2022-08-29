@@ -69,7 +69,7 @@ The checker uses the following configuration structure in ``vars.yaml``:
 .. note::
 
     The checker assumes that it can access the c2cgeoportal services via ``http://localhost``.
-    If this is not allowed on your server, you can override this behaviour as follows.
+    If this is not allowed on your server, you can override this behavior as follows.
     In your ``vars`` file, add the following:
 
     .. code:: yaml

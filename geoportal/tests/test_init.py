@@ -101,7 +101,7 @@ class TestIncludeme(TestCase):
 
 class TestReferer(TestCase):
     """
-    Check that accessing something with a bad HTTP referer is equivalent to a not authenticated query.
+    Check that accessing something with a bad HTTP referrer is equivalent to a not authenticated query.
     """
 
     BASE1 = "http://example.com/app"
@@ -113,7 +113,7 @@ class TestReferer(TestCase):
         class MockRequest:
             def __init__(self, to, ref, method):
                 self.path_qs = to
-                self.referer = ref
+                self.referrer = ref
                 self.user_ = TestReferer.USER
                 self.method = method
 
@@ -124,7 +124,7 @@ class TestReferer(TestCase):
     def test_match_url(self):
         def match(reference, value, expected):
             r = DummyRequest()
-            r.referer = value
+            r.referrer = value
             assert is_valid_referrer(r, {"authorized_referers": [reference]}) == expected
 
         match("http://example.com/app/", "http://example.com/app?k=v", True)

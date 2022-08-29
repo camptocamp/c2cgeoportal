@@ -252,7 +252,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
         "fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3"
     )
     request.registry.settings.update(additional_settings)
-    request.referer = "http://example.com/app"
+    request.referrer = "http://example.com/app"
     request.path_info_peek = lambda: "main"
     request.interface_name = "main"
     request.get_user = _get_user
@@ -274,7 +274,7 @@ def create_dummy_request(additional_settings=None, authentication=True, user=Non
     elif user is not None:
         config.testing_securitypolicy(user)
     request.set_property(
-        create_get_user_from_request({"authorized_referers": [request.referer]}), name="user", reify=True
+        create_get_user_from_request({"authorized_referers": [request.referrer]}), name="user", reify=True
     )
 
     return request

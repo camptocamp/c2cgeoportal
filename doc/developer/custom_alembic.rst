@@ -58,7 +58,7 @@ In this file, you may also directly set a new variable ``version_table_schema`` 
 name of the schema inside which alembic must create its revision table. See:
 `The Environment Context <https://alembic.sqlalchemy.org/en/latest/api/runtime.html#the-environment-context>`_.
 
-You must now set permissions on this tmpl file to authorise evaluation of this ``tmpl`` file.
+You must now set permissions on this tmpl file to authorize evaluation of this ``tmpl`` file.
 Add the following lines in the ``geoportal/Dockerfile`` just before the command
 ``ENTRYPOINT [ "/usr/bin/eval-templates" ]``, in the ``FROM camptocamp/geomapfish`` section.
 

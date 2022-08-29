@@ -94,7 +94,7 @@ in debugging mode with auto reloading:
 
       requests.get(
           "http://geoportal:8080/loginuser",
-          headers={"Cookie": request.headers.get("Cookie"), "Referer": request.referrer},
+          headers={"Cookie": request.headers.get("Cookie"), "Referrer": request.referrer},
       ).json()
 
 
