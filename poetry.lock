@@ -1535,14 +1535,13 @@ graphviz = "*"
 
 [[package]]
 name = "owslib"
-version = "0.25.0"
+version = "0.27.2"
 description = "OGC Web Service utility library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyproj = ">=2"
 python-dateutil = ">=1.5"
 pytz = "*"
 pyyaml = "*"
@@ -3114,7 +3113,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "4c44416f62ee60fdce00d07bda2ae3286887b429de84cf3db87cfac77a4032ce"
+content-hash = "0db69913c0e43523f10d4bea813606e897075a33134bee59b9f306cbeef456d1"
 
 [metadata.files]
 affine = [
@@ -4006,8 +4005,8 @@ objgraph = [
     {file = "objgraph-3.5.0.tar.gz", hash = "sha256:4752ca5bcc0e0512e41b8cc4d2780ac2fd3b3eabd03b7e950a5594c06203dfc4"},
 ]
 owslib = [
-    {file = "OWSLib-0.25.0-py2.py3-none-any.whl", hash = "sha256:78cfd1d369d7f225705180de3776f1a69770505b8af2b79728edced85204186f"},
-    {file = "OWSLib-0.25.0.tar.gz", hash = "sha256:20d79bce0be10277caa36f3134826bd0065325df0301a55b2c8b1c338d8d8f0a"},
+    {file = "OWSLib-0.27.2-py2.py3-none-any.whl", hash = "sha256:6ab36f01aa3f16d978807343886783080ca5d8ec2e72fe30f55bf2aefafee71c"},
+    {file = "OWSLib-0.27.2.tar.gz", hash = "sha256:e102aa2444dfe0c8439ab1e1776cc0fa47cea28c09b8a28212c893c6017c179b"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
