@@ -37,6 +37,7 @@ pylint:
   disable:
     - missing-module-docstring
     - missing-function-docstring
+    - missing-timeout # Default timeout set by c2cwsgiutils
 
 pyflakes:
   disable:
