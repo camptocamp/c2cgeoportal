@@ -113,14 +113,6 @@ if [ "$1" = "init" ]; then
     create-advance "${WORKSPACE}/ref" "${MAJOR_VERSION}"
     create "${WORKSPACE}/v28" "${MAJOR_VERSION}"
     create "${WORKSPACE}/v270" 2.7.0.65
-
-    cd "${WORKSPACE}/ref/testgeomapfish"
-    mv ci/config.yaml{,_}
-    c2cciutils-checks --fix --check=black
-    c2cciutils-checks --fix --check=isort
-    c2cciutils-checks --fix --check=prettier
-    mv ci/config.yaml{_,}
-    cd -
 fi
 
 if [ "$1" = "270" ]; then

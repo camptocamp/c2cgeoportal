@@ -68,8 +68,8 @@ class PrintProxy(Proxy):
         )
 
         response = self._build_response(resp, content, Cache.PRIVATE, "print")
-        # Mapfish print will check the referer header to return the capabilities.
-        response.vary += ("Referer",)
+        # Mapfish print will check the referrer header to return the capabilities.
+        response.vary += ("Referrer", "Referer")
         return response
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore

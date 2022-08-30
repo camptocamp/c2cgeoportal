@@ -257,8 +257,8 @@ def _match_url_start(reference: str, value: List[str]) -> bool:
 
 def is_valid_referrer(request: pyramid.request.Request, settings: Optional[Dict[str, Any]] = None) -> bool:
     """Check if the referrer is valid."""
-    if request.referer is not None:
-        referrer = urlsplit(request.referer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
+    if request.referrer is not None:
+        referrer = urlsplit(request.referrer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
         if settings is None:
             settings = request.registry.settings
         list_ = settings.get("authorized_referers", [])
@@ -280,7 +280,7 @@ def create_get_user_from_request(
         Return ``None`` if:
         * user is anonymous
         * it does not exist in the database
-        * the referer is invalid
+        * the referrer is invalid
         """
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
@@ -288,7 +288,7 @@ def create_get_user_from_request(
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referrer(request, settings)
         if not request.is_valid_referer:
-            LOG.debug("Invalid referer for %s: %s", request.path_qs, repr(request.referer))
+            LOG.debug("Invalid referrer for %s: %s", request.path_qs, repr(request.referrer))
             return None
 
         if not hasattr(request, "user_"):
@@ -453,7 +453,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
     if metrics_config["total_python_object_memory"]:
         add_provider(TotalPythonObjectMemoryProvider())
 
-    # Initialise DBSessions
+    # Initialize DBSessions
     init_db_sessions(settings, config, health_check)
 
     checker.init(config, health_check)

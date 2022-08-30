@@ -16,6 +16,7 @@ checks:
       - .*/package-lock.json$
       - .*/poetry.lock$
       - ^poetry.lock$
+      - ^geoportal/tests/data/dem4\..*
 
 audit:
   npm:

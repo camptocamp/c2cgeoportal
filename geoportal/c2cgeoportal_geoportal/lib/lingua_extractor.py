@@ -242,8 +242,8 @@ def init_db(settings: Dict[str, Any]) -> None:
     """
     Initialize the SQLAlchemy Session.
 
-    First test the connection, on wen environment it should be OK, with the command line we should get
-    an exception ind initialise the connection.
+    First test the connection, on when environment it should be OK, with the command line we should get
+    an exception ind initialize the connection.
     """
 
     try:

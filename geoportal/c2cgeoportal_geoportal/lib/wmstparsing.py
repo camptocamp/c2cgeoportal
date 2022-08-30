@@ -131,7 +131,7 @@ class TimeExtentValue:
         max_def_value: Optional[datetime.datetime],
     ):
         """
-        Initialise.
+        Initialize.
 
         Arguments:
 

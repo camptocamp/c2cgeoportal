@@ -48,7 +48,7 @@ class DummyRequest(PyramidDummyRequest):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.client_addr = "1.1.1.1"
-        self.referer = None
+        self.referrer = None
         if self.registry.settings is None:
             self.registry.settings = {}
 

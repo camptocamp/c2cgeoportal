@@ -41,7 +41,7 @@ except ModuleNotFoundError:
     pass
 
 
-# Should be filed on application initialisation
+# Should be filed on application initialization
 DBSession: sqlalchemy.orm.Session = None
 Base: sqlalchemy.ext.declarative.ConcreteBase = sqlalchemy.ext.declarative.declarative_base()
 DBSessions: Dict[str, sqlalchemy.orm.Session] = {}

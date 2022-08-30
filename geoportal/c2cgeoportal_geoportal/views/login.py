@@ -88,7 +88,7 @@ class Login:
         if not hasattr(self.request, "is_valid_referer"):
             self.request.is_valid_referer = is_valid_referrer(self.request)
         if not self.request.is_valid_referer:
-            LOG.info("Invalid referer for %s: %s", self.request.path_qs, repr(self.request.referer))
+            LOG.info("Invalid referrer for %s: %s", self.request.path_qs, repr(self.request.referrer))
 
     @forbidden_view_config(renderer="login.html")  # type: ignore
     def loginform403(self) -> Union[Dict[str, Any], pyramid.response.Response]:
