@@ -75,7 +75,7 @@ To do so, use a <code class="docutils literal notranslate"><span class="pre">tmp
 <p>In this file, you may also directly set a new variable <code class="docutils literal notranslate"><span class="pre">version_table_schema</span></code> to set the
 name of the schema inside which alembic must create its revision table. See:
 <a class="reference external" href="https://alembic.sqlalchemy.org/en/latest/api/runtime.html#the-environment-context">The Environment Context</a>.</p>
-<p>You must now set permissions on this tmpl file to authorise evaluation of this <code class="docutils literal notranslate"><span class="pre">tmpl</span></code> file.
+<p>You must now set permissions on this tmpl file to authorize evaluation of this <code class="docutils literal notranslate"><span class="pre">tmpl</span></code> file.
 Add the following lines in the <code class="docutils literal notranslate"><span class="pre">geoportal/Dockerfile</span></code> just before the command
 <code class="docutils literal notranslate"><span class="pre">ENTRYPOINT</span> <span class="pre">[</span> <span class="pre">&quot;/usr/bin/eval-templates&quot;</span> <span class="pre">]</span></code>, in the <code class="docutils literal notranslate"><span class="pre">FROM</span> <span class="pre">camptocamp/geomapfish</span></code> section.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom - To be able to run tmpl on alembic.ini.tmpl file</span>

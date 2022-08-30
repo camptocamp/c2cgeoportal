@@ -20,7 +20,7 @@ Content:
    structure
    database
    configuration
-   customise
+   customize
    security
    features
    docker

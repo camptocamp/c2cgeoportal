@@ -116,7 +116,7 @@ in debugging mode with auto reloading:</p>
 <p>If you need the user credentials, you can do:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;http://geoportal:8080/loginuser&quot;</span><span class="p">,</span>
-    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Cookie&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Cookie&quot;</span><span class="p">),</span> <span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">},</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Cookie&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Cookie&quot;</span><span class="p">),</span> <span class="s2">&quot;Referrer&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">},</span>
 <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 </div>
