@@ -105,10 +105,6 @@ function upgrade {
     git clean -Xf
     find . -type d -empty -delete
 
-    c2cciutils-checks --fix --check=black
-    c2cciutils-checks --fix --check=isort
-    c2cciutils-checks --fix --check=prettier
-
     cd -
     diff --recursive --exclude=.git --exclude=locale "${WORKSPACE}/ref" "${WORKSPACE}/v$1"
 }
@@ -116,14 +112,16 @@ function upgrade {
 if [ "$1" = "init" ]; then
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create-advance "${WORKSPACE}/ref" "${MAJOR_VERSION}"
+    cd "${WORKSPACE}/ref/testgeomapfish"
+    mv ci/config.yaml{,_}
+    c2cciutils-checks --fix --check=isort
+    c2cciutils-checks --fix --check=black
+    c2cciutils-checks --fix --check=prettier
+    mv ci/config.yaml{_,}
+    cd -
+
     create "${WORKSPACE}/v28" "${MAJOR_VERSION}"
     create "${WORKSPACE}/v270" 2.7.0.65
-
-    cd "${WORKSPACE}/ref/testgeomapfish"
-    c2cciutils-checks --fix --check=black
-    c2cciutils-checks --fix --check=isort
-    c2cciutils-checks --fix --check=prettier
-    cd -
 fi
 
 if [ "$1" = "270" ]; then
