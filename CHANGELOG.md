@@ -1,3 +1,7 @@
+##### 2.7.0.88
+
+- [Backport 2.7] Be able to have second-level group active when added with FTS [ngeo#8829](https://github.com/camptocamp/ngeo/pull/8829)
+
 ##### 2.7.0.86
 
 - Update all patch versions (2.7) (patch) [ngeo#8821](https://github.com/camptocamp/ngeo/pull/8821)
