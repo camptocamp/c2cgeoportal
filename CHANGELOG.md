@@ -1,3 +1,8 @@
+##### 2.7.0.90
+
+- Add labels to number field for directedFilterAttributes [ngeo#8828](https://github.com/camptocamp/ngeo/pull/8828)
+- Fix the documentation [ngeo#8831](https://github.com/camptocamp/ngeo/pull/8831)
+
 ##### 2.7.0.88
 
 - [Backport 2.7] Be able to have second-level group active when added with FTS [ngeo#8829](https://github.com/camptocamp/ngeo/pull/8829)
