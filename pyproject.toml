@@ -9,7 +9,7 @@ description = 'Not used'
 authors = []
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.10"
+python = ">=3.8,<3.11"
 alembic = "1.8.1" # geoportal
 "c2c.template" = "2.3.0" # geoportal
 c2cgeoform = "2.1.26" # commons
@@ -54,6 +54,7 @@ tilecloud = "1.8.2" # geoportal
 azure-storage-blob = "12.13.1"
 basicauth = "0.4.1"
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.7.7" }
+setuptools = "44.1.1"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.10.3" # i18n
