@@ -1,3 +1,7 @@
+##### 2.7.0.91
+
+- Allow the filter button to open the panel from the layertree [ngeo#8830](https://github.com/camptocamp/ngeo/pull/8830)
+
 ##### 2.7.0.90
 
 - Add labels to number field for directedFilterAttributes [ngeo#8828](https://github.com/camptocamp/ngeo/pull/8828)
