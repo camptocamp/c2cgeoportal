@@ -43,7 +43,7 @@ RUN chmod go+w /etc/static-ngeo/
 
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --editable=/app/ && \
     python3 -m compileall -q /usr/local/lib/python3.* \
-        -x '/(ptvsd|pipenv|.*pydev.*|networkx)/' && \
+        -x '/(debugpy|pipenv|.*pydev.*|networkx)/' && \
     python3 -m compileall -q /app/{{cookiecutter.package}}_geoportal -x /app/{{cookiecutter.package}}_geoportal/static.*
 
 ARG GIT_HASH
