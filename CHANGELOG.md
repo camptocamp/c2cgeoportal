@@ -1,3 +1,5 @@
+##### 2.6.0.129
+* Upgrade to `debugpy` [c2cgeoportal#9378](https://github.com/camptocamp/c2cgeoportal/pull/9378)
 ##### 2.6.0.128
 * Clarify update_path example in the CHANGELOG [c2cgeoportal#9981](https://github.com/camptocamp/c2cgeoportal/pull/9981)
 ##### 2.6.0.127
