@@ -111,9 +111,9 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     def unauthenticated_userid(request: pyramid.request.Request) -> Optional[str]:
         route_url = ""
         try:
-            route_url = request.current_route_url(_query=request.GET)
+            route_url = request.current_route_url(_query={**request.GET})
         except ValueError:
-            route_url = request.route_url("base", _query=request.GET)
+            route_url = request.route_url("base", _query={**request.GET})
 
         LOG.debug(
             "Call OAuth verify_request with:\nurl: %s\nmethod: %s\nbody:\n%s",
