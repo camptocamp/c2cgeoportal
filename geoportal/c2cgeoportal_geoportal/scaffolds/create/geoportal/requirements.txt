@@ -1,2 +1,2 @@
-#ptvsd  # Remote debugging
+#debugpy  # Remote debugging
 #wsgi-lineprof  # Profiling

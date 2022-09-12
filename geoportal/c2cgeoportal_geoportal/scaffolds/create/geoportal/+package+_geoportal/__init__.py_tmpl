@@ -48,10 +48,10 @@ def main(global_config, **settings):
         )
 
     try:
-        import ptvsd  # pylint: disable=import-error,import-outside-toplevel
+        import debugpy  # pylint: disable=import-error,import-outside-toplevel
 
-        ptvsd.enable_attach(address=("172.17.0.1", 5678))
-        # ptvsd.wait_for_attach()
+        debugpy.listen(address=("0.0.0.0", 5678))  # nosec
+        # debugpy.wait_for_client()
     except ModuleNotFoundError:
         pass
 
