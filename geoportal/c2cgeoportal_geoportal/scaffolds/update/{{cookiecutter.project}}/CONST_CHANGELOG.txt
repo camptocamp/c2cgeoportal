@@ -605,6 +605,28 @@ update_paths:
   - interfaces_config.api.routes.searchUrl  # This one should already be present
 ```
 
+In this case, you need to change this line of the `update_paths` as follows:
+```
+update_paths:
+  - interfaces_config.api.routes.searchUrl.params
+```
+
+This is because the default value in the
+`geoportal/CONST_vars.yaml` defines the searchUrl like this:
+
+```
+searchUrl:
+  name: fulltextsearch
+  params:
+    limit: 15
+    partitionlimit: 5
+  dynamic_params:
+    interface: interface
+```
+
+You won't redefine the whole `searchUrl` configuration you only want to set the params. The `update_paths`
+Allows you to update the one part of the configuration. Without this entry in the `update_paths`, the
+whole `searchUrl` configuration would have been replaced.
 
 Example in controller constructor
 .................................
