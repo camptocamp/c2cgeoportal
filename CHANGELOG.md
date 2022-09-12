@@ -1,3 +1,8 @@
+##### 2.7.0.93
+
+- [Backport 2.7] Clarify update_path example in the CHANGELOG [c2cgeoportal#9983](https://github.com/camptocamp/c2cgeoportal/pull/9983)
+- Update all patch versions (2.7) (patch) [ngeo#8837](https://github.com/camptocamp/ngeo/pull/8837)
+
 ##### 2.7.0.91
 
 - Allow the filter button to open the panel from the layertree [ngeo#8830](https://github.com/camptocamp/ngeo/pull/8830)
