@@ -410,10 +410,10 @@ class TestFulltextsearchView(TestCase):
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
+        self.assertTrue(isinstance(response.features, list))
         assert len(response.features) == 3
-        assert response.features[0].properties["label"] == "A 70 simi"
-        assert response.features[1].properties["label"] == "A 71 simi"
-        assert response.features[2].properties["label"] == "A 7 simi"
+        # Order change with new version of PostgreSQL...
+        assert [f.properties["label"] for f in response.features] == ["A 7 simi", "A 70 simi", "A 71 simi"]
 
     def test_extra_quote(self):
         from geojson.feature import FeatureCollection

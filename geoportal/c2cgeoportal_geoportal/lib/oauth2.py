@@ -34,7 +34,7 @@ import oauthlib.common
 import oauthlib.oauth2
 import pyramid.threadlocal
 
-import c2cgeoportal_commons  # pylint: disable=unused-import
+import c2cgeoportal_commons
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 LOG = logging.getLogger(__name__)
