@@ -1,3 +1,7 @@
+##### 2.7.0.95
+
+- [Backport 2.7] Upgrade to `debugpy` [c2cgeoportal#10014](https://github.com/camptocamp/c2cgeoportal/pull/10014)
+
 ##### 2.7.0.93
 
 - [Backport 2.7] Clarify update_path example in the CHANGELOG [c2cgeoportal#9983](https://github.com/camptocamp/c2cgeoportal/pull/9983)
