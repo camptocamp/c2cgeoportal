@@ -469,6 +469,7 @@ vars:
         lock_timeout: '{REDIS_LOCK_TIMEOUT}' # seconds
         redis_expiration_time: '{REDIS_EXPIRATION_TIME}' # seconds
         distributed_lock: True
+        thread_local_lock: False
         service_name: '{REDIS_SERVICENAME}'
         socket_timeout: '{REDIS_TIMEOUT}' # seconds
         db: 0
