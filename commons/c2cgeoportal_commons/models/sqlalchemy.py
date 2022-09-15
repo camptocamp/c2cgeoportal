@@ -56,6 +56,8 @@ class JSONEncodedDict(TypeDecorator):  # type: ignore
 class TsVector(UserDefinedType):  # type: ignore
     """A custom type for PostgreSQL's tsvector type."""
 
+    cache_ok = True
+
     def get_col_spec(self) -> str:
         return "TSVECTOR"
 
