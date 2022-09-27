@@ -1,3 +1,7 @@
+##### 2.4.2.84
+* Fix epsg.io integration [c2cgeoportal#10036](https://github.com/camptocamp/c2cgeoportal/pull/10036)
+* Fix CVE [ngeo#8725](https://github.com/camptocamp/ngeo/pull/8725)
+* Fix CVE [ngeo#8764](https://github.com/camptocamp/ngeo/pull/8764)
 ##### 2.4.2.83
 * Ignore CVE [c2cgeoportal#9804](https://github.com/camptocamp/c2cgeoportal/pull/9804)
 * Remove no more present CVE [c2cgeoportal#9808](https://github.com/camptocamp/c2cgeoportal/pull/9808)
