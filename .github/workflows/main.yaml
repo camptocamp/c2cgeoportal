@@ -79,16 +79,6 @@ jobs:
         env:
           REPO_URL: github.com/camptocamp/c2cgeoportal
 
-      - name: Clean Docker hub tags
-        run: |
-          summon --yaml '
-            DOCKER_USERNAME: !var gs/ci/dockerhub/username
-            DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-          ' python3 travis/clean-dockerhub-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-        if: github.repository == 'camptocamp/c2cgeoportal'
-
       - name: Publish to Docker hub and Pypi
         run: travis/publish
         env:
