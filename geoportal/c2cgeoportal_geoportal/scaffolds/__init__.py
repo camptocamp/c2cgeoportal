@@ -134,12 +134,12 @@ class BaseTemplate(Template):  # pragma: no cover
                 "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}"
                         .format(srid=srid, bbox=bbox)
             )
-            r1 = r.json()[0]
+            r1 = r.json()
             r = requests.get(
                 "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}"
                         .format(srid=srid, bbox=bbox)
             )
-            r2 = r.json()[0]
+            r2 = r.json()
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
         except requests.RequestException:
             print("Failed to establish a connexion to epsg.io.")
