@@ -6,7 +6,7 @@ on:
 
 jobs:
   not-failed-backport:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Test that's not a failed backport
     timeout-minutes: 5
     steps:
@@ -14,7 +14,7 @@ jobs:
         if: "github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'"
 
   main:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     name: Continuous integration
     timeout-minutes: 60
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
@@ -28,6 +28,7 @@ jobs:
       - run: '! ls BACKPORT_TODO'
       - run: df -h
       - run: docker system prune --all --force
+      - run: python --version
 
       - uses: actions/checkout@v2
         with:
@@ -78,16 +79,6 @@ jobs:
           git config user.name "Continuous integration"
         env:
           REPO_URL: github.com/camptocamp/c2cgeoportal
-
-      - name: Clean Docker hub tags
-        run: |
-          summon --yaml '
-            DOCKER_USERNAME: !var gs/ci/dockerhub/username
-            DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-          ' python3 travis/clean-dockerhub-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-        if: github.repository == 'camptocamp/c2cgeoportal'
 
       - name: Publish to Docker hub and Pypi
         run: travis/publish
