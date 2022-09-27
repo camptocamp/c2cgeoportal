@@ -136,9 +136,7 @@ then
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create-advance ${WORKSPACE}/ref ${MAJOR_VERSION}
     create ${WORKSPACE}/v27 ${MAJOR_VERSION}
-    create ${WORKSPACE}/v260 2.6.0
     create ${WORKSPACE}/v240 2.4.0
-    docker rmi camptocamp/geomapfish-tools:2.6.0
     docker rmi camptocamp/geomapfish-build:2.4.0
 
     cd ${WORKSPACE}/ref/testgeomapfish
