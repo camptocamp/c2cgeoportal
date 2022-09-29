@@ -1,3 +1,7 @@
+##### 2.7.0.97
+
+- Fix the c2cwsgiutils base path when VISIBLE_ENTRY_POINT is not / [c2cgeoportal#10029](https://github.com/camptocamp/c2cgeoportal/pull/10029)
+
 ##### 2.7.0.96
 
 - Remove the upgrade test from 2.6 to fix the CI [c2cgeoportal#10034](https://github.com/camptocamp/c2cgeoportal/pull/10034)
