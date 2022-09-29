@@ -1,3 +1,10 @@
+##### 2.7.0.96
+
+- Remove the upgrade test from 2.6 to fix the CI [c2cgeoportal#10034](https://github.com/camptocamp/c2cgeoportal/pull/10034)
+- Update dependency c2cciutils to v1.3.2 (2.7) [ngeo#8840](https://github.com/camptocamp/ngeo/pull/8840)
+- Update all patch versions (2.7) (patch) [ngeo#8844](https://github.com/camptocamp/ngeo/pull/8844)
+- Fix external datasource url [ngeo#8845](https://github.com/camptocamp/ngeo/pull/8845)
+
 ##### 2.7.0.95
 
 - [Backport 2.7] Upgrade to `debugpy` [c2cgeoportal#10014](https://github.com/camptocamp/c2cgeoportal/pull/10014)
