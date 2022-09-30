@@ -22,5 +22,5 @@ setuptools = "44.1.1"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.7.7" }
-types-pyyaml = "6.0.11"
+types-pyyaml = "6.0.12"
 pytest = "7.1.3"
