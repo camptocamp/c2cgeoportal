@@ -62,55 +62,21 @@ jobs:
         if: failure()
       # Similar to: make tests-commons
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests coverage run
-          --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
-          --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
+          ci/run-dc-logs docker-compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/commons.xml
           /opt/c2cgeoportal/commons/tests
       # Similar to: make tests-geoportal
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests coverage run --append
-          --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
-          --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
+          ci/run-dc-logs docker-compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
           /opt/c2cgeoportal/geoportal/tests
       # Similar to: make tests-admin
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests coverage run --append
-          --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
-          --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
+          ci/run-dc-logs docker-compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/admin.xml
           /opt/c2cgeoportal/admin/tests
       # Similar to: make tests-qgisserver
       - run: >
-          ci/run-dc-logs docker-compose exec -T qgisserver-tests coverage run
-          --source=/var/www/plugins/geomapfish_qgisserver
-          --module pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+          ci/run-dc-logs docker-compose exec -T qgisserver-tests pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
           /src/tests/functional
-      - name: Extract tests artifacts
-        run: |
-          docker-compose exec -T tests coverage report
-          docker-compose exec -T tests coverage html --directory=/tmp/coverage
-          docker-compose exec -T qgisserver-tests coverage report
-          docker-compose exec -T qgisserver-tests coverage html --directory=/tmp/coverage
-          mkdir --parent artifacts/geoportal-coverage
-          mkdir --parent artifacts/qgisserver-plugin-coverage
-          docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
-          docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
-        if: always()
-        continue-on-error: True
       - run: docker-compose down
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Geoportal coverage
-          path: artifacts/geoportal-coverage/
-          if-no-files-found: ignore
-          retention-days: 5
-      - uses: actions/upload-artifact@v3
-        with:
-          name: QGISserver plugin coverage
-          path: artifacts/qgisserver-plugin-coverage/
-          if-no-files-found: ignore
-          retention-days: 5
-
       # Documentation
       - run: >
           docker build --tag=camptocamp/geomapfish-doc
