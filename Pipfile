@@ -98,7 +98,7 @@ GeoAlchemy2 = "==0.8.4"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.29"  # geoportal
 isodate = "==0.6.0"  # geoportal
-Mako = "==1.1.4"  # geoportal
+Mako = "==1.2.2"  # geoportal
 OWSLib = "==0.22.0"  # geoportal
 papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # # geoportal
@@ -151,7 +151,7 @@ iso8601 = "==0.1.13"
 jinja2 = "==2.11.3"
 linesman = "==0.3.2"
 lingua = "==4.14"
-lxml = "==4.6.5"
+lxml = "==4.9.1"
 markupsafe = "==1.1.1"
 munch = "==2.5.0"
 netifaces = "==0.10.9"
@@ -183,8 +183,8 @@ snuggs = "==1.4.7"
 sqlalchemy-utils = "==0.36.8"
 stevedore = "==3.3.0"
 toml = "==0.10.2"
-ujson = "==5.2.0"
-urllib3 = "==1.26.8"
+ujson = "==5.4.0"
+urllib3 = "==1.26.3"
 venusian = "==3.0.0"
 waitress = "==2.1.2"
 webob = "==1.8.6"
