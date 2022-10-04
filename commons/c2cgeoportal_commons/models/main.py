@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -533,11 +533,6 @@ class OGCServer(Base):
 
     def __str__(self) -> str:
         return self.name or ""  # pragma: no cover
-
-
-event.listen(OGCServer, "after_insert", cache_invalidate_cb, propagate=True)
-event.listen(OGCServer, "after_update", cache_invalidate_cb, propagate=True)
-event.listen(OGCServer, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 class LayerWMS(DimensionLayer):

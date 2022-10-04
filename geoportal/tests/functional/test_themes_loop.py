@@ -84,7 +84,7 @@ class TestLoopTheme(TestCase):
 
         transaction.commit()
 
-    def test_theme(self):
+    async def test_theme(self):
         from c2cgeoportal_geoportal.views.theme import Theme
 
         request = DummyRequest()
@@ -92,7 +92,7 @@ class TestLoopTheme(TestCase):
         request.route_url = lambda url, _query={}: mapserv_url
         request.user = None
         theme_view = Theme(request)
-        _, errors = theme_view._themes("desktop2", True, 2)
+        _, errors = await theme_view._themes("desktop2", True, 2)
         self.assertEqual(
             len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1
         )
