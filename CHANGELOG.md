@@ -1,3 +1,6 @@
+##### 2.6.0.130
+* Remove the test upgrade from 2.5 to fix the CI [c2cgeoportal#10038](https://github.com/camptocamp/c2cgeoportal/pull/10038)
+* Fix CVE [ngeo#8857](https://github.com/camptocamp/ngeo/pull/8857)
 ##### 2.6.0.129
 * Upgrade to `debugpy` [c2cgeoportal#9378](https://github.com/camptocamp/c2cgeoportal/pull/9378)
 ##### 2.6.0.128
