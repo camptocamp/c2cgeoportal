@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -130,13 +130,13 @@ class BaseTemplate(Template):  # pragma: no cover
                     srid=srid, bbox=bbox
                 )
             )
-            r1 = r.json()[0]
+            r1 = r.json()
             r = requests.get(
                 "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}".format(
                     srid=srid, bbox=bbox
                 )
             )
-            r2 = r.json()[0]
+            r2 = r.json()
             return [r1["x"], r2["y"], r2["x"], r1["y"]]
         except requests.RequestException:
             print("Failed to establish a connexion to epsg.io.")
