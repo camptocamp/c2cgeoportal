@@ -1,3 +1,6 @@
+##### 2.4.2.86
+* Fix Snyk integration [c2cgeoportal#10050](https://github.com/camptocamp/c2cgeoportal/pull/10050)
+* Fix CVE [ngeo#8855](https://github.com/camptocamp/ngeo/pull/8855)
 ##### 2.4.2.85
 * Fix CVE [c2cgeoportal#10041](https://github.com/camptocamp/c2cgeoportal/pull/10041)
 ##### 2.4.2.84
