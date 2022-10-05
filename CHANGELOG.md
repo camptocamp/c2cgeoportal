@@ -1,3 +1,8 @@
+##### 2.7.0.98
+
+- Revert "Remove the upgrade test from 2.6 to fix the CI" [c2cgeoportal#10039](https://github.com/camptocamp/c2cgeoportal/pull/10039)
+- Update dependency c2cciutils to v1.3.7 (2.7) [ngeo#8854](https://github.com/camptocamp/ngeo/pull/8854)
+
 ##### 2.7.0.97
 
 - Fix the c2cwsgiutils base path when VISIBLE_ENTRY_POINT is not / [c2cgeoportal#10029](https://github.com/camptocamp/c2cgeoportal/pull/10029)
