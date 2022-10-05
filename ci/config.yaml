@@ -37,6 +37,9 @@ audit:
     sections:
       - default
 
+  snyk:
+    test_arguments: --all-projects --fail-on=upgradable --severity-threshold=medium
+
 publish:
   docker:
     images:
