@@ -107,7 +107,7 @@ function upgrade {
         git add CONST_create_template/geoportal/vars.yaml geoportal/vars.yaml
         git add CONST_create_template/.github/workflows/main.yaml .github/workflows/main.yaml
         git add CONST_create_template/docker-compose.yaml docker-compose.yaml
-        git rm .prospector.yaml geoportal/gunicorn_config.py
+        git rm .prospector.yaml geoportal/gunicorn_config.py || true
         git status
         ./upgrade ${MAJOR_VERSION} 9
     fi
@@ -144,7 +144,9 @@ then
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create-advance ${WORKSPACE}/ref ${MAJOR_VERSION}
     create ${WORKSPACE}/v27 ${MAJOR_VERSION}
+    create ${WORKSPACE}/v260 2.6.0.130
     create ${WORKSPACE}/v240 2.4.2.84
+    docker rmi camptocamp/geomapfish-tools:2.6.0.130
     docker rmi camptocamp/geomapfish-build:2.4.2.84
 
     cd ${WORKSPACE}/ref/testgeomapfish
