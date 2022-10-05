@@ -13,6 +13,7 @@
 !admin/tests
 !admin/package.json
 !admin/package-lock.json
+!admin/.snyk
 !admin/README.md
 !admin/requirements.txt
 !admin/setup.cfg
@@ -23,6 +24,4 @@
 !vars.yaml
 !.tx
 !lingua.cfg
-!package.json
-!package-lock.json
 **/__pycache__/

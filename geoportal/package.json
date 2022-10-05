@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "GeoMapFish geoportal interface",
   "author": "",
+  "scripts": {
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
   "dependencies": {
+    "@snyk/protect": "1.1022.0",
     "@typescript-eslint/eslint-plugin": "5.38.1",
     "@typescript-eslint/parser": "5.38.1",
     "angular-gettext-tools": "2.5.3",

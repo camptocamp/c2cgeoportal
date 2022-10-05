@@ -102,7 +102,7 @@ RUN c2cciutils-download-applications --applications-file=applications.yaml --ver
 
 COPY bin/npm-packages /usr/bin/
 WORKDIR /opt/c2cgeoportal/geoportal
-COPY geoportal/package.json geoportal/package-lock.json ./
+COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
@@ -118,7 +118,7 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
         --src=package.json --src=node_modules/ngeo/package.json --dst=npm-packages \
     && npm install --no-optional --global --unsafe-perm $(cat /opt/c2cgeoportal/geoportal/npm-packages)
 
-COPY admin/package.json admin/package-lock.json /opt/c2cgeoportal/admin/
+COPY admin/package.json admin/package-lock.json admin/.snyk /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
 
 # hadolint ignore=DL3016,SC2046
@@ -197,7 +197,7 @@ ARG VERSION
 ENV VERSION=$VERSION
 
 WORKDIR /opt/c2cgeoportal/geoportal
-COPY geoportal/package.json geoportal/package-lock.json ./
+COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \

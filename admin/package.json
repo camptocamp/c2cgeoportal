@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "GeoMapFish administration interface",
   "author": "",
+  "scripts": {
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
   "dependencies": {
+    "@snyk/protect": "1.1022.0",
     "bootstrap": "3.4.1",
     "bootstrap-table": "1.21.1",
     "jquery": "3.6.1",
