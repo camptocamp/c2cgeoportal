@@ -1,3 +1,5 @@
+##### 2.6.0.132
+* Fix Snyk integration [c2cgeoportal#10052](https://github.com/camptocamp/c2cgeoportal/pull/10052)
 ##### 2.6.0.131
 * Fix CVE [c2cgeoportal#10043](https://github.com/camptocamp/c2cgeoportal/pull/10043)
 ##### 2.6.0.130
