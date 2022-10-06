@@ -1,3 +1,5 @@
+##### 2.5.0.215
+* Fix Snyk test_arguments [c2cgeoportal#10054](https://github.com/camptocamp/c2cgeoportal/pull/10054)
 ##### 2.5.0.214
 * Fix Snyk integration [c2cgeoportal#10051](https://github.com/camptocamp/c2cgeoportal/pull/10051)
 ##### 2.5.0.213
