@@ -1,3 +1,5 @@
+##### 2.4.2.88
+* Ignore CVE [c2cgeoportal#10057](https://github.com/camptocamp/c2cgeoportal/pull/10057)
 ##### 2.4.2.87
 * Fix test_arguments [c2cgeoportal#10053](https://github.com/camptocamp/c2cgeoportal/pull/10053)
 ##### 2.4.2.86
