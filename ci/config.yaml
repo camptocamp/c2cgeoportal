@@ -34,7 +34,10 @@ audit:
       - closure-util
       - jsdoc
   snyk:
-    test_arguments: --all-projects --fail-on=upgradable --severity-threshold=medium
+    test_arguments:
+      - --all-projects
+      - --fail-on=upgradable
+      - --severity-threshold=medium
 
 publish:
   docker:
