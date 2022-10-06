@@ -1,3 +1,7 @@
+##### 2.7.0.99
+
+- Fix CVE [c2cgeoportal#10056](https://github.com/camptocamp/c2cgeoportal/pull/10056)
+
 ##### 2.7.0.98
 
 - Revert "Remove the upgrade test from 2.6 to fix the CI" [c2cgeoportal#10039](https://github.com/camptocamp/c2cgeoportal/pull/10039)
