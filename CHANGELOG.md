@@ -1,3 +1,7 @@
+##### 2.7.0.100
+
+- Fix Snyk test_arguments [c2cgeoportal#10061](https://github.com/camptocamp/c2cgeoportal/pull/10061)
+
 ##### 2.7.0.99
 
 - Fix CVE [c2cgeoportal#10056](https://github.com/camptocamp/c2cgeoportal/pull/10056)
