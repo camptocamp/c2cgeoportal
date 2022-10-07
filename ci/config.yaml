@@ -27,6 +27,11 @@ audit:
     sections:
       - default
 
+  snyk:
+    files_no_install:
+      - ci/requirements.txt
+      - geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/ci/requirements.txt
+
 publish:
   docker:
     images:
