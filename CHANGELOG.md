@@ -1,3 +1,5 @@
+##### 2.5.0.216
+* Ignore CVE [c2cgeoportal#10059](https://github.com/camptocamp/c2cgeoportal/pull/10059)
 ##### 2.5.0.215
 * Fix Snyk test_arguments [c2cgeoportal#10054](https://github.com/camptocamp/c2cgeoportal/pull/10054)
 ##### 2.5.0.214
