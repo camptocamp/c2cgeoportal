@@ -223,11 +223,11 @@ test = ["cython", "html5lib", "pytest (>=4.6)", "typed_ast"]
 
 [[package]]
 name = "sphinx-argparse"
-version = "0.3.1"
+version = "0.3.2"
 description = "A sphinx extension that automatically documents argparse commands and options"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.6"
 
 [package.dependencies]
 sphinx = ">=1.2.0"
@@ -377,7 +377,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "c7c591eabd2946aac3498f8ca496d3a1f3a33f0d0bacc7df3c591d69054eac5c"
+content-hash = "4b66c68b7953126464a0c76547fffcd0bcf3cbdb32467f032bc50407c8c216a6"
 
 [metadata.files]
 alabaster = [
@@ -537,8 +537,8 @@ Sphinx = [
     {file = "sphinx-5.2.3-py3-none-any.whl", hash = "sha256:7abf6fabd7b58d0727b7317d5e2650ef68765bbe0ccb63c8795fa8683477eaa2"},
 ]
 sphinx-argparse = [
-    {file = "sphinx-argparse-0.3.1.tar.gz", hash = "sha256:82151cbd43ccec94a1530155f4ad34f251aaca6a0ffd5516d7fadf952d32dc1e"},
-    {file = "sphinx_argparse-0.3.1-py2.py3-none-any.whl", hash = "sha256:295ccae425874630b6a3b47254854027345d786bab2c3ffd5e9a0407bc6856b2"},
+    {file = "sphinx-argparse-0.3.2.tar.gz", hash = "sha256:e54ad6c8f895ac6bb9d0dd9fa07e47e137a2a42ae18a714515262e86b4cc4bab"},
+    {file = "sphinx_argparse-0.3.2-py3-none-any.whl", hash = "sha256:499afb62d19966651e1e5d601ac912ca2bdfb43f5dad491305d84bef4414f4f4"},
 ]
 sphinx-jsonschema = [
     {file = "sphinx-jsonschema-1.19.1.tar.gz", hash = "sha256:b2385fe1c7acf2e759152aefed0cb17c920645b2a75c9934000c9c528e7d53c1"},
