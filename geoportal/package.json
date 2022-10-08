@@ -8,14 +8,14 @@
     "snyk-protect": "snyk-protect"
   },
   "dependencies": {
-    "@snyk/protect": "1.1022.0",
-    "@typescript-eslint/eslint-plugin": "5.38.1",
-    "@typescript-eslint/parser": "5.38.1",
+    "@snyk/protect": "1.1025.0",
+    "@typescript-eslint/eslint-plugin": "5.39.0",
+    "@typescript-eslint/parser": "5.39.0",
     "angular-gettext-tools": "2.5.3",
     "commander": "9.4.1",
-    "eslint": "8.24.0",
+    "eslint": "8.25.0",
     "ngeo": "2.8.0-latest.20220914T064443Z.19e566617",
-    "puppeteer": "18.0.5",
+    "puppeteer": "18.2.1",
     "url-parse": "1.5.10"
   },
   "devDependencies": {
