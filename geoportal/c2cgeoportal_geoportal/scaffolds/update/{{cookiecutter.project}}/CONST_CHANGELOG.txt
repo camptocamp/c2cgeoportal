@@ -27,6 +27,10 @@ Information to know before starting the upgrade
    components through slots.
    In ngeo, the sources files from contribs/gmf/src are moved in ngeo src folder.
 
+4. When importing external WMS layers through dedicated right panel in desktop interface, now we use the URL
+   from Capabilities/Request/GetMap/.../OnlineResource tag instead of Service/OnlineResource tag which,
+   regarding WMS specification, should contain the website URL.
+
 Main versions updates
 ---------------------
 Node is updated from 14.19 to 16.14
