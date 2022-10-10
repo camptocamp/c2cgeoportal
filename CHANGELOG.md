@@ -1,3 +1,8 @@
+##### 2.7.0.103
+
+- Add message about function moved in the changelog [c2cgeoportal#10049](https://github.com/camptocamp/c2cgeoportal/pull/10049)
+- Fix CVE [ngeo#8864](https://github.com/camptocamp/ngeo/pull/8864)
+
 ##### 2.7.0.102
 
 - Update dependency i18next-browser-languagedetector to v6.1.8 (2.7) [ngeo#8862](https://github.com/camptocamp/ngeo/pull/8862)
