@@ -1,3 +1,7 @@
+##### 2.7.0.104
+
+- Fix multiline messages [ngeo#8859](https://github.com/camptocamp/ngeo/pull/8859)
+
 ##### 2.7.0.103
 
 - Add message about function moved in the changelog [c2cgeoportal#10049](https://github.com/camptocamp/c2cgeoportal/pull/10049)
