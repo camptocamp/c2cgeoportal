@@ -1,3 +1,7 @@
+##### 2.7.0.102
+
+- Update dependency i18next-browser-languagedetector to v6.1.8 (2.7) [ngeo#8862](https://github.com/camptocamp/ngeo/pull/8862)
+
 ##### 2.7.0.100
 
 - Fix Snyk test_arguments [c2cgeoportal#10061](https://github.com/camptocamp/c2cgeoportal/pull/10061)
