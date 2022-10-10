@@ -382,6 +382,14 @@ Changes to apply
    -from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
    +from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
+8. To solve looping dependency we moved the `Cache` and `set_common_headers` function, then you should do
+   in your custom Python views a modification like:
+
+   ```diff
+   - from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
+   + from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+   ```
+
 
 =============
 Version 2.6.0
