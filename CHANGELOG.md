@@ -1,3 +1,7 @@
+##### 2.7.0.105
+
+- Add information about URL of external layers in changelog. [c2cgeoportal#10030](https://github.com/camptocamp/c2cgeoportal/pull/10030)
+
 ##### 2.7.0.104
 
 - Fix multiline messages [ngeo#8859](https://github.com/camptocamp/ngeo/pull/8859)
