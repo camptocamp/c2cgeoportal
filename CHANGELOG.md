@@ -1,3 +1,5 @@
+##### 2.6.0.136
+* Snyk auto fix [c2cgeoportal#10076](https://github.com/camptocamp/c2cgeoportal/pull/10076)
 ##### 2.6.0.135
 * Add files that should not be installed [c2cgeoportal#10074](https://github.com/camptocamp/c2cgeoportal/pull/10074)
 ##### 2.6.0.134
