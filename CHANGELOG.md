@@ -1,3 +1,5 @@
+##### 2.6.0.135
+* Add files that should not be installed [c2cgeoportal#10074](https://github.com/camptocamp/c2cgeoportal/pull/10074)
 ##### 2.6.0.134
 * Fix CVE [c2cgeoportal#10060](https://github.com/camptocamp/c2cgeoportal/pull/10060)
 ##### 2.6.0.133
