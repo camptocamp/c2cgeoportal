@@ -32,6 +32,9 @@ jobs:
           ref: ${{ matrix.branch }}
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
 
+      # For version below 2.7 (included)
+      - run: sudo apt-get install --yes libgdal-dev
+
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
