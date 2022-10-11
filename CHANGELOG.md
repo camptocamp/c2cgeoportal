@@ -1,3 +1,7 @@
+##### 2.7.0.107
+
+- [Backport 2.7] Add files that should not be installed [c2cgeoportal#10075](https://github.com/camptocamp/c2cgeoportal/pull/10075)
+
 ##### 2.7.0.105
 
 - Add information about URL of external layers in changelog. [c2cgeoportal#10030](https://github.com/camptocamp/c2cgeoportal/pull/10030)
