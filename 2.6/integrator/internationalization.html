@@ -96,7 +96,7 @@ for translation.</p>
 <p>If the standard system can not collect some strings, you can add them manually in
 one of your JavaScript application controllers:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="cm">/** @type {angular.gettext.gettextCatalog} */</span>
-<span class="kr">const</span> <span class="nx">gettextCatalog</span> <span class="o">=</span> <span class="nx">$injector</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;gettextCatalog&#39;</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">gettextCatalog</span> <span class="o">=</span> <span class="nx">$injector</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;gettextCatalog&#39;</span><span class="p">);</span>
 <span class="nx">gettextCatalog</span><span class="p">.</span><span class="nx">getString</span><span class="p">(</span><span class="s1">&#39;My previously not collected string&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -118,8 +118,8 @@ and after you should rename them with the right name.</p>
 <p>in the <cite>geoportal/&lt;package&gt;_geoportal/__init__.py</cite> file you should add:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">lang</span> <span class="ow">in</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">languages</span><span class="o">&gt;</span><span class="p">):</span>
     <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
-        <span class="n">f</span><span class="s1">&#39;/app/&lt;package&gt;_geoportal/locale/{lang}/LC_MESSAGES/&lt;package&gt;_geoportal-client{&lt;suffix&gt;}.mo&#39;</span><span class="p">,</span>
-        <span class="n">f</span><span class="s1">&#39;/app/&lt;package&gt;_geoportal/locale/{lang}/LC_MESSAGES/&lt;package&gt;_geoportal-client.mo&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;/app/&lt;package&gt;_geoportal/locale/</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s1">/LC_MESSAGES/&lt;package&gt;_geoportal-client</span><span class="si">{</span><span class="o">&lt;</span><span class="n">suffix</span><span class="o">&gt;</span><span class="si">}</span><span class="s1">.mo&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;/app/&lt;package&gt;_geoportal/locale/</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s1">/LC_MESSAGES/&lt;package&gt;_geoportal-client.mo&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
