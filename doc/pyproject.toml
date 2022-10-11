@@ -13,4 +13,5 @@ sphinx-prompt = "1.5.0"
 sphinx-jsonschema = "1.19.1"
 sphinx-argparse = "0.3.2"
 Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2022.2.16" }
+sphinxcontrib-mermaid = "0.7.1"
 #tilecloud-chain = "1.18.0"
