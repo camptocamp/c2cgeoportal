@@ -8,3 +8,9 @@ verify_ssl = true
 [packages]
 yamllint = "==1.22.0"
 pyyaml = "==5.4.1"
+
+# Lock
+pathspec = "==0.8.1"
+
+[requires]
+python_version = "3.8"
