@@ -1,3 +1,7 @@
+##### 2.6.0.137
+* Snyk auto fix [c2cgeoportal#10081](https://github.com/camptocamp/c2cgeoportal/pull/10081)
+* Add Python versions [c2cgeoportal#10084](https://github.com/camptocamp/c2cgeoportal/pull/10084)
+* Snyk auto fix [c2cgeoportal#10087](https://github.com/camptocamp/c2cgeoportal/pull/10087)
 ##### 2.6.0.136
 * Snyk auto fix [c2cgeoportal#10076](https://github.com/camptocamp/c2cgeoportal/pull/10076)
 ##### 2.6.0.135
