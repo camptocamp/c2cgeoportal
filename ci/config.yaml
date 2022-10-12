@@ -82,3 +82,8 @@ publish:
 #      - path: commons
 #      - path: geoportal
 #      - path: admin
+
+  snyk:
+    files_no_install:
+      - ci/requirements.txt
+      - docker/qgisserver/requirements.txt

@@ -35,7 +35,7 @@ isodate==0.6.0  # geoportal
 Jinja2==2.11.3  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
-Mako==1.2.2  # geoportal
+Mako==1.0.9  # geoportal
 mccabe==0.6.1  # lint
 more-itertools==7.2.0  # fix travis
 mypy==0.700  # lint
@@ -81,7 +81,7 @@ translationstring==1.3  # admin
 urllib3==1.26.8  # required by transifex, rq.filter: <1.24
 venusian==2.1.0  # pyramid
 virtualenv==16.4.3  # Makefile
-waitress==2.1.1  # pcreate
+waitress==1.4.3  # pcreate
 WebOb==1.8.5  # geoportal test
 WebTest==2.0.33  # admin tests
 wsgi-lineprof==0.7.0  # profiling
