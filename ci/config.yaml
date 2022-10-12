@@ -7,10 +7,6 @@ checks:
       - .*\.rst$
       - .*\.rst.tmpl$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$
-  required_workflows:
-    main.yaml: False
-    rebuild-master.yaml:
-      steps: []
   codespell:
     ignore_re:
       - .*/package-lock.json$
