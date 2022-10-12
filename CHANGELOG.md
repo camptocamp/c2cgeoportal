@@ -1,3 +1,7 @@
+##### 2.7.0.108
+
+- Add Python versions [c2cgeoportal#10085](https://github.com/camptocamp/c2cgeoportal/pull/10085)
+
 ##### 2.7.0.107
 
 - [Backport 2.7] Add files that should not be installed [c2cgeoportal#10075](https://github.com/camptocamp/c2cgeoportal/pull/10075)
