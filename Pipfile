@@ -43,12 +43,11 @@ transaction = "==3.0.1"  # commons, geoportal
 translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
 c2cwsgiutils = {version = "==5.0.0", extras = ["broadcast", "profiler", "standard"]}
-oauthlib = "==3.2.0"
+oauthlib = "==3.2.1"
 tilecloud = "==1.8.0" # geoportal
-azure-storage-blob = "==12.10.0"
+azure-storage-blob = "==12.13.0"
 basicauth = "==0.4.1"
 setuptools = "==59.8.0"
-
 # Lock dependencies
 affine = "==2.3.0"
 arrow = "==1.2.2"
@@ -96,7 +95,7 @@ msal-extensions = "==0.3.1"
 msrest = "==0.6.21"
 munch = "==2.5.0"
 netifaces = "==0.11.0"
-networkx = "==1.7"
+networkx = "==2.6"
 numpy = "==1.22.3"
 objgraph = "==3.5.0"
 packaging = "==21.3"
@@ -172,7 +171,6 @@ mappyfile = "==0.9.5"
 chardet = "==4.0.0" # for Transifex
 c2cciutils = "==1.1.12"
 mapbox-vector-tile = "==1.2.1"
-
 # Lock dependencies
 astroid = "==2.9.3"
 attrs = "==21.4.0"
