@@ -12,3 +12,6 @@ sphinx-jsonschema = "==1.17.2"
 sphinx-argparse = "==0.3.1"
 Sphinx-Substitution-Extensions = {extras = ["prompt"], version = "==2022.2.16"}
 #tilecloud-chain = "==1.17.0.dev20220131092647"
+
+[requires]
+python_version = "3.8"
