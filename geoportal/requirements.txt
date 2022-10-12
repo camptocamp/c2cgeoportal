@@ -12,7 +12,6 @@ geojson
 ipcalc
 isodate  # WMST support
 lingua
-Mako
 OWSLib>=0.6.0
 papyrus
 PasteScript
