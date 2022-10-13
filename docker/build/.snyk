@@ -2,12 +2,24 @@
 version: v1.25.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-PYTHON-MAKO-3017600:
+  SNYK-PYTHON-NUMPY-2321964:
     - '*':
-        reason: New version is not compatible with used Python version
-        created: 2022-10-12T13:36:43.590Z
+      reason: No fixed package compatible with current version of Python
+      created: 2022-10-13T12:55:38.864Z
+  SNYK-PYTHON-NUMPY-2321966:
+    - '*':
+      reason: No fixed package compatible with current version of Python
+      created: 2022-10-13T12:55:38.864Z
+  SNYK-PYTHON-NUMPY-2321969:
+    - '*':
+      reason: No fixed package compatible with current version of Python
+      created: 2022-10-13T12:55:38.864Z
+  SNYK-PYTHON-NUMPY-2321970:
+    - '*':
+      reason: No fixed package compatible with current version of Python
+      created: 2022-10-13T12:55:38.864Z
   SNYK-PYTHON-WAITRESS-2428349:
     - '*':
-        reason: New version is not compatible with used Python version
-        created: 2022-10-12T13:36:43.590Z
+      reason: No fixed package compatible with current version of Python
+      created: 2022-10-13T14:08:50.433Z
 patch: {}
