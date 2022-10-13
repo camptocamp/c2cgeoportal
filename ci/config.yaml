@@ -39,6 +39,7 @@ audit:
       - --all-projects
       - --fail-on=upgradable
       - --severity-threshold=medium
+    files_no_install: []
 
 publish:
   docker:

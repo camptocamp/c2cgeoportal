@@ -1,0 +1,21 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-PYTHON-NUMPY-2321964:
+    - '*':
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
+  SNYK-PYTHON-NUMPY-2321966:
+    - '*':
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
+  SNYK-PYTHON-NUMPY-2321969:
+    - '*':
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
+  SNYK-PYTHON-NUMPY-2321970:
+    - '*':
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
+patch: {}
