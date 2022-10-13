@@ -13,6 +13,9 @@ quote_type = single
 [*.js]
 indent_size = 2
 
+[.snyk]
+indent_size = 2
+
 [*.yaml]
 indent_size = 2
 

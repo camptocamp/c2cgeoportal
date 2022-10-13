@@ -38,6 +38,9 @@ audit:
       - --all-projects
       - --fail-on=upgradable
       - --severity-threshold=medium
+    pip_install_arguments:
+      - --use-deprecated=legacy-resolver
+    files_no_install: []
 
 publish:
   docker:
