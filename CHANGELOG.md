@@ -1,3 +1,7 @@
+##### 2.7.0.112
+
+- Snyk auto fix [c2cgeoportal#10093](https://github.com/camptocamp/c2cgeoportal/pull/10093)
+
 ##### 2.7.0.111
 
 - Fix CVE [c2cgeoportal#10090](https://github.com/camptocamp/c2cgeoportal/pull/10090)
