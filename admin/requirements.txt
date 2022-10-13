@@ -12,3 +12,5 @@ pyramid_tm
 sqlalchemy
 zope.event
 translationstring
+jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
+pygments>=2.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
