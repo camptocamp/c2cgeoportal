@@ -1,3 +1,5 @@
+##### 2.4.2.93
+* Create audit workdlow, fix [c2cgeoportal#10094](https://github.com/camptocamp/c2cgeoportal/pull/10094)
 ##### 2.4.2.92
 * Snyk auto fix [c2cgeoportal#10088](https://github.com/camptocamp/c2cgeoportal/pull/10088)
 ##### 2.4.2.91
