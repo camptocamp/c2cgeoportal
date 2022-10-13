@@ -6,3 +6,4 @@ sqlalchemy
 transaction
 zope.event
 jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
+mako>=1.2.2 # not directly required, pinned by Snyk to avoid a vulnerability
