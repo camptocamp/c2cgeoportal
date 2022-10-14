@@ -1,3 +1,5 @@
+##### 2.5.0.220
+* [Backport 2.5] Create audit workflow, fix [c2cgeoportal#10097](https://github.com/camptocamp/c2cgeoportal/pull/10097)
 ##### 2.5.0.219
 * Snyk auto fix [c2cgeoportal#10091](https://github.com/camptocamp/c2cgeoportal/pull/10091)
 ##### 2.5.0.218
