@@ -42,9 +42,7 @@ audit:
       - --all-projects
       - --fail-on=upgradable
       - --severity-threshold=medium
-    files_no_install:
-      - ci/requirements.txt
-      - geoportal/c2cgeoportal_geoportal/scaffolds/create/ci/requirements.txt
+    files_no_install: []
 
 publish:
   docker:
