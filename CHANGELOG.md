@@ -1,3 +1,5 @@
+##### 2.6.0.141
+* [Backport 2.6] Create audit workdlow, fix [c2cgeoportal#10098](https://github.com/camptocamp/c2cgeoportal/pull/10098)
 ##### 2.6.0.140
 * Snyk auto fix [c2cgeoportal#10096](https://github.com/camptocamp/c2cgeoportal/pull/10096)
 ##### 2.6.0.139
