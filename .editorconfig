@@ -13,6 +13,9 @@ quote_type = single
 [*.{js,yaml,yml,css,html}]
 indent_size = 2
 
+[.snyk]
+indent_size = 2
+
 [Makefile]
 indent_style = tab
 
