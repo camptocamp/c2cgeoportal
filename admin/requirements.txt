@@ -13,6 +13,6 @@ sqlalchemy
 zope.event
 translationstring
 mako==1.2.3 # not directly required, pinned by Snyk to avoid a vulnerability
-jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
-pygments>=2.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
-babel>=2.9.1 # not directly required, pinned by Snyk to avoid a vulnerability
+jinja2==3.1.2 # not directly required, pinned by Snyk to avoid a vulnerability
+pygments==2.13.0 # not directly required, pinned by Snyk to avoid a vulnerability
+babel==2.10.3 # not directly required, pinned by Snyk to avoid a vulnerability
