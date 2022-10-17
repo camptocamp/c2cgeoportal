@@ -51,7 +51,7 @@ translationstring = "1.4" # admin
 c2cwsgiutils = { version = "5.1.5", extras = ["broadcast", "standard"] }
 oauthlib = "3.2.1"
 tilecloud = "1.8.2" # geoportal
-azure-storage-blob = "12.13.1"
+azure-storage-blob = "12.14.0"
 basicauth = "0.4.1"
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.7.7" }
 setuptools = "44.1.1"
@@ -75,4 +75,4 @@ types-pkg-resources = "0.1.3"
 mappyfile = "0.9.7"
 c2cciutils = { version = "1.3.9", extras = ["checks"] }
 mapbox-vector-tile = "1.2.1"
-responses = "0.21.0"
+responses = "0.22.0"

@@ -95,9 +95,9 @@ Run:
 
 .. prompt:: bash
 
-    tx pull --branch=<version> --source --force \
+    tx pull --translations --branch=<version> --source --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
-    tx pull --branch=<version> --translation --force \
+    tx pull --translations --branch=<version> --translation --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
 
     tx push --branch=<next version> --source --force \
