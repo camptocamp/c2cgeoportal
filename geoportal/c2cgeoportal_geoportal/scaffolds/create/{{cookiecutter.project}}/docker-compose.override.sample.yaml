@@ -34,6 +34,8 @@ services:
   #     service: print
   #   volumes_from:
   #     - config:ro
+  #   environment:
+  #     - LOG_LEVEL=DEBUG
 
   qgisserver:
     # volumes:
