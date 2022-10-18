@@ -59,6 +59,10 @@ templates:
         directory: '.'
       - !configureHttpRequests &configureHttpRequests
         httpProcessors:
+          - !forwardHeaders
+            matchers: *allowedHosts
+            headers:
+              - Cookie
           ## For internal print
           ${DISABLE_LOCAL_PRINT}- !mapUri
           ${DISABLE_LOCAL_PRINT}  mapping:
@@ -72,10 +76,6 @@ templates:
           ${DISABLE_LOCAL_PRINT}      host: ${GEOPORTAL_INTERNAL_HOST}
           ${DISABLE_LOCAL_PRINT}      port: ${GEOPORTAL_INTERNAL_PORT}
           ## End for internal print
-          - !forwardHeaders
-            matchers: *allowedHosts
-            headers:
-              - Cookie
           - !forwardHeaders
             headers:
               - Referer
