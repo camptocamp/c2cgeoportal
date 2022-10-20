@@ -97,6 +97,14 @@ in debugging mode with auto reloading:
           headers={"Cookie": request.headers.get("Cookie"), "Referer": request.referrer},
       ).json()
 
+.. note::
+
+    The new Dockerfile we get from the demo use the BuildKit features than you should activate with
+    the ``DOCKER_BUILDKIT=1`` environment variable.
+
+    For that add ``export DOCKER_BUILDKIT=1`` in your ``~/.bashrc`` file, or run the build through
+    ``DOCKER_BUILDKIT=1 ./build ...``.
+
 
 Create the new interface based on canvas
 ----------------------------------------
