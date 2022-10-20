@@ -120,6 +120,13 @@ in debugging mode with auto reloading:</p>
 </pre></div>
 </div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The new Dockerfile we get from the demo use the BuildKit features than you should activate with
+the <code class="docutils literal notranslate"><span class="pre">DOCKER_BUILDKIT=1</span></code> environment variable.</p>
+<p>For that add <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">DOCKER_BUILDKIT=1</span></code> in your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file, or run the build through
+<code class="docutils literal notranslate"><span class="pre">DOCKER_BUILDKIT=1</span> <span class="pre">./build</span> <span class="pre">...</span></code>.</p>
+</div>
 </section>
 <section id="create-the-new-interface-based-on-canvas">
 <h2>Create the new interface based on canvas<a class="headerlink" href="#create-the-new-interface-based-on-canvas" title="Permalink to this headline">¶</a></h2>
