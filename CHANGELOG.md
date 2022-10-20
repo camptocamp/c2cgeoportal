@@ -1,3 +1,7 @@
+##### 2.7.0.116
+
+- Add missing environment variables [c2cgeoportal#10108](https://github.com/camptocamp/c2cgeoportal/pull/10108)
+
 ##### 2.7.0.115
 
 - Add note about BuildKit [c2cgeoportal#10107](https://github.com/camptocamp/c2cgeoportal/pull/10107)
