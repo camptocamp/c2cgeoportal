@@ -1,3 +1,7 @@
+##### 2.7.0.115
+
+- Add note about BuildKit [c2cgeoportal#10107](https://github.com/camptocamp/c2cgeoportal/pull/10107)
+
 ##### 2.7.0.114
 
 - Update all patch versions (2.7) (patch) [ngeo#8874](https://github.com/camptocamp/ngeo/pull/8874)
