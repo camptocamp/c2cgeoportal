@@ -97,6 +97,16 @@ span.prompt1:before {
 <span class="w">      </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span><span class="w"></span>
 <span class="w">  </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VISIBLE_WEB_HOST</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GEOPORTAL_INTERNAL_URL</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PGSCHEMA</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_POOL_RECYCLE</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_POOL_SIZE</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_MAX_OVERFLOW</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_POOL_RECYCLE</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_POOL_SIZE</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_MAX_OVERFLOW</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=${PGSSLMODE}</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST_SLAVE}:${PGPORT_SLAVE}/${PGDATABASE}?sslmode=${PGSSLMODE}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Add the following service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code>, To be able to run the service
