@@ -72,6 +72,16 @@ Add the following service in the ``docker-compose.yaml``, with that we will be a
         GIT_HASH: ${GIT_HASH}
     environment:
       - VISIBLE_WEB_HOST
+      - GEOPORTAL_INTERNAL_URL
+      - PGSCHEMA
+      - SQLALCHEMY_POOL_RECYCLE
+      - SQLALCHEMY_POOL_SIZE
+      - SQLALCHEMY_MAX_OVERFLOW
+      - SQLALCHEMY_SLAVE_POOL_RECYCLE
+      - SQLALCHEMY_SLAVE_POOL_SIZE
+      - SQLALCHEMY_SLAVE_MAX_OVERFLOW
+      - SQLALCHEMY_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=${PGSSLMODE}
+      - SQLALCHEMY_SLAVE_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST_SLAVE}:${PGPORT_SLAVE}/${PGDATABASE}?sslmode=${PGSSLMODE}
 
 Add the following service in the ``docker-compose.override.sample.yaml``, To be able to run the service
 in debugging mode with auto reloading:
