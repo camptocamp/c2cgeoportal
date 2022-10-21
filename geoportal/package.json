@@ -15,7 +15,7 @@
     "commander": "9.4.1",
     "eslint": "8.25.0",
     "ngeo": "2.8.0-latest.20221015T050630Z.e1f8d5237",
-    "puppeteer": "18.2.1",
+    "puppeteer": "19.1.0",
     "url-parse": "1.5.10"
   },
   "devDependencies": {
