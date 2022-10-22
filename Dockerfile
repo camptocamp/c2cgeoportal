@@ -108,7 +108,7 @@ COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
-    npm install --no-optional \
+    npm install --omit=optional \
     && npm-packages \
         @types @typescript-eslint @storybook ol-cesium jasmine-core karma karma-chrome-launcher \
         karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
@@ -116,7 +116,7 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
         typedoc typescript \
         angular-gettext-tools commander puppeteer url-parse eslint \
         --src=package.json --src=node_modules/ngeo/package.json --dst=npm-packages \
-    && npm install --no-optional --global --unsafe-perm $(cat /opt/c2cgeoportal/geoportal/npm-packages)
+    && npm install --omit=optional --global --unsafe-perm $(cat /opt/c2cgeoportal/geoportal/npm-packages)
 
 COPY admin/package.json admin/package-lock.json admin/.snyk /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
@@ -125,7 +125,7 @@ WORKDIR /opt/c2cgeoportal/admin
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
-    npm install --no-optional \
+    npm install --omit=optional \
     && rm -rf /tmp/angular \
     && git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git /tmp/angular \
     && mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ \
@@ -199,10 +199,11 @@ ENV VERSION=$VERSION
 WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
+ENV PUPPETEER_CACHE_DIR=/opt
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
-    npm install --no-optional --omit dev
+    npm install --omit=dev --omit=optional
 
 COPY bin/eval-templates bin/wait-db bin/list4vrt bin/azure /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
