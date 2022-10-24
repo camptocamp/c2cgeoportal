@@ -1,3 +1,7 @@
+##### 2.7.0.118
+
+- Update dependency loader-utils to v2.0.3 (2.7) [ngeo#8883](https://github.com/camptocamp/ngeo/pull/8883)
+
 ##### 2.7.0.116
 
 - Add missing environment variables [c2cgeoportal#10108](https://github.com/camptocamp/c2cgeoportal/pull/10108)
