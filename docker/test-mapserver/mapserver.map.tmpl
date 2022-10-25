@@ -52,6 +52,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -84,6 +85,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected') as foo USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -118,6 +120,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected_2') as foo USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -151,6 +154,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -184,6 +188,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
@@ -218,6 +223,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
@@ -253,6 +259,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -570,6 +577,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -603,6 +611,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -637,6 +646,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -671,6 +681,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
