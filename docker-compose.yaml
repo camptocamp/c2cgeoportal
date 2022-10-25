@@ -29,6 +29,7 @@ services:
     image: camptocamp/geomapfish-test-mapserver
     user: www-data
     environment:
+      - MS_MAPFILE=/etc/mapserver/mapserver.map
       - PGHOST=db
       - PGPORT=5432
       - PGUSER=www-data
