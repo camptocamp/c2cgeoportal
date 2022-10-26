@@ -75,6 +75,7 @@ services:
     entrypoint: []
     environment:
       - PGOPTIONS
+      - MAPSERVER_CONFIG_FILE=/etc/mapserver/mapserver.conf
 
   qgisserver:
     image: camptocamp/geomapfish-qgisserver:gmf${GEOMAPFISH_MAIN_VERSION}-qgis${QGIS_VERSION}
