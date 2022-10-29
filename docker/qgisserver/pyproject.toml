@@ -16,11 +16,11 @@ SQLAlchemy = "1.4.42" # commons
 "zope.sqlalchemy" = "1.6" # commons
 shapely = "1.8.5.post1"
 cee-syslog-handler = "0.6.0"
-psycopg2 = "2.9.4"
+psycopg2 = "2.9.5"
 pytz = "2022.5"
 setuptools = "44.1.1"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.7.7" }
-types-pyyaml = "6.0.12"
+types-pyyaml = "6.0.12.1"
 pytest = "7.1.3"
