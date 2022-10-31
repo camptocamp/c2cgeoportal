@@ -1,3 +1,7 @@
+##### 2.6.0.142
+* Fix CVE [ngeo#8863](https://github.com/camptocamp/ngeo/pull/8863)
+* Snyk auto fix [ngeo#8875](https://github.com/camptocamp/ngeo/pull/8875)
+* [Backport 2.6] Fix layer changing order when printing with legend [ngeo#8897](https://github.com/camptocamp/ngeo/pull/8897)
 ##### 2.6.0.141
 * [Backport 2.6] Create audit workdlow, fix [c2cgeoportal#10098](https://github.com/camptocamp/c2cgeoportal/pull/10098)
 ##### 2.6.0.140
