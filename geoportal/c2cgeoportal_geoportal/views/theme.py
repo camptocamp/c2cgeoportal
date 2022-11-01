@@ -977,7 +977,7 @@ class Theme:
         def _get_features_attributes_cache(
             url_internal_wfs: Url, ogc_server_name: str
         ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
-            del url_internal_wfs, ogc_server_name  # Just for cache
+            del url_internal_wfs  # Just for cache
             all_errors: Set[str] = set()
             LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
             if errors:
@@ -994,17 +994,19 @@ class Theme:
                     if type_namespace not in child.nsmap:
                         LOG.info(
                             "The namespace '%s' of the type '%s' is not found in the "
-                            "available namespaces: %s",
+                            "available namespaces: %s (OGC server: %s)",
                             type_namespace,
                             name,
-                            ", ".join(child.nsmap.keys()),
+                            ", ".join([str(k) for k in child.nsmap.keys()]),
+                            ogc_server_name,
                         )
-                    if child.nsmap[type_namespace] != namespace:
+                    elif child.nsmap[type_namespace] != namespace:
                         LOG.info(
-                            "The namespace '%s' of the type '%s' should be '%s'.",
+                            "The namespace '%s' of the type '%s' should be '%s' (OGC server: %s).",
                             child.nsmap[type_namespace],
                             name,
                             namespace,
+                            ogc_server_name,
                         )
                     elements[name] = type_
 
@@ -1016,9 +1018,20 @@ class Theme:
                         type_ = children.attrib["type"]
                         if len(type_.split(":")) == 2:
                             type_namespace, type_ = type_.split(":")
-                        type_namespace = children.nsmap[type_namespace]
                         name = children.attrib["name"]
-                        attrib[name] = {"namespace": type_namespace, "type": type_}
+                        attrib[name] = {"type": type_}
+                        if type_namespace in children.nsmap:
+                            type_namespace = children.nsmap[type_namespace]
+                            attrib[name]["namespace"] = type_namespace
+                        else:
+                            LOG.info(
+                                "The namespace '%s' of the type '%s' is not found in the "
+                                "available namespaces: %s (OGC server: %s)",
+                                type_namespace,
+                                name,
+                                ", ".join([str(k) for k in child.nsmap.keys()]),
+                                ogc_server_name,
+                            )
                         for key, value in children.attrib.items():
                             if key not in ("name", "type", "namespace"):
                                 attrib[name][key] = value
