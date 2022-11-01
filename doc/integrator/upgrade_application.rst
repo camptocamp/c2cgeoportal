@@ -20,6 +20,19 @@ current version and see if some files get modified by the update process.
 If the update process modified files which you do not want modified, then add these files to the
 ``managed_files`` list.
 
+Prepare the database
+~~~~~~~~~~~~~~~~~~~~
+
+Clone the schema with e.g.:
+
+.. code:: sql
+
+    SET statement_timeout TO '600s';
+    SELECT clone_schema('main_<old_version>', 'main_<new_version>', TRUE);
+    SELECT clone_schema('static_<old_version>', 'static_<new_version>', TRUE);
+
+Update the ``PGSCHEMA`` and the ``PGSCHEMA_STATIC`` in your ``env.project`` file.
+
 From a version prior to 2.4.x
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
