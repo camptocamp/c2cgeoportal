@@ -1,3 +1,5 @@
+##### 2.6.0.143
+* Ignore CVE [c2cgeoportal#10128](https://github.com/camptocamp/c2cgeoportal/pull/10128)
 ##### 2.6.0.142
 * Fix CVE [ngeo#8863](https://github.com/camptocamp/ngeo/pull/8863)
 * Snyk auto fix [ngeo#8875](https://github.com/camptocamp/ngeo/pull/8875)
