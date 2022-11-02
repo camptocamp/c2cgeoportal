@@ -6,6 +6,7 @@ on:
 
 env:
   PROJECT: {{cookiecutter.package}}
+  HAS_SECRETS: ${{'{{'}} secrets.HAS_SECRETS }}
   # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
   # OPENSHIFT_PROJECT: gs-gmf-{{cookiecutter.package}}
   # The release branches
