@@ -1,0 +1,9 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  'SNYK-PYTHON-WHEEL-3092128':
+    - '*':
+        reason: Patched version not available tor used Python version
+        created: 2022-11-02T08:46:52.047Z
+patch: {}
