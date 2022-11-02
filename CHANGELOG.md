@@ -1,3 +1,8 @@
+##### 2.7.0.121
+
+- Snyk auto fix [c2cgeoportal#10126](https://github.com/camptocamp/c2cgeoportal/pull/10126)
+- [Backport 2.7] Fix layer changing order when printing with legend [ngeo#8898](https://github.com/camptocamp/ngeo/pull/8898)
+
 ##### 2.7.0.120
 
 - Update all patch versions (2.7) (patch) [ngeo#8894](https://github.com/camptocamp/ngeo/pull/8894)
