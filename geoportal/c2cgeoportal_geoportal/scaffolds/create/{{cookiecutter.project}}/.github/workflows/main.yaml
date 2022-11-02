@@ -6,6 +6,7 @@ on:
 
 env:
   PROJECT: {{cookiecutter.package}}
+  HAS_SECRETS: ${{'{{'}} secrets.HAS_SECRETS }}
 
 jobs:
   main:
