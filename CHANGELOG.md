@@ -1,3 +1,9 @@
+##### 2.7.0.123
+
+- Update the diagrams [c2cgeoportal#10077](https://github.com/camptocamp/c2cgeoportal/pull/10077)
+- Fix print private layers in local mode [c2cgeoportal#10106](https://github.com/camptocamp/c2cgeoportal/pull/10106)
+- Add more information in the prepare upgrade documentation [c2cgeoportal#10123](https://github.com/camptocamp/c2cgeoportal/pull/10123)
+
 ##### 2.7.0.122
 
 - Add dnsutils to resolve DNS, remove dangerus gcc [c2cgeoportal#10113](https://github.com/camptocamp/c2cgeoportal/pull/10113)
