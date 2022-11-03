@@ -14,6 +14,8 @@
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -40,10 +42,110 @@
 <section id="architecture-schema">
 <h2>Architecture schema<a class="headerlink" href="#architecture-schema" title="Permalink to this headline">¶</a></h2>
 <p>For OpenShift projects:</p>
-<img alt="../_images/docker-openshift.png" src="../_images/docker-openshift.png" />
-<p>For stand alone projects:</p>
-<img alt="../_images/docker-apache.png" src="../_images/docker-apache.png" />
-</section>
+<div class="mermaid">
+            graph LR
+
+    client(Web client);
+
+    k8s[Kubernetes routing];
+    geoportal[GeoMapFish server&lt;br&gt;camptocamp/geomapfishapp-geoportal];
+    tcc[TileCloud-chain&lt;br&gt;camptocamp/tilecloud-chain];
+    tccs[TileCloud-chain slave&lt;br&gt;camptocamp/tilecloud-chain];
+    mapserver[MapServer&lt;br&gt;camptocamp/mapserver&lt;br&gt;or/and&lt;br&gt;camptocamp/qgis-server];
+    tinyows[tinyows];
+    print[Mapfist Print&lt;br&gt;camptocamp/mapfish-print];
+    alembic[GeoMapFish alembic&lt;br&gt;camptocamp/geomapfishapp-geoportal&lt;br&gt;minor database upgrades];
+    config[Project config&lt;br&gt;camtocamp/%project%-config&lt;br&gt;provides the config for all other containers];
+    tools[GeoMapFish tools&lt;br&gt;camptocamp/geomapfishapp-tools];
+
+    redis[(Redis)];
+    redis:::data;
+
+
+    postgres[(Postgres)];
+    postgres:::data;
+    storage[(Object staorage)];
+    storage:::data;
+
+    client ==&gt; k8s;
+    k8s ==&gt; geoportal;
+    k8s ==&gt; tcc;
+    geoportal --&gt; tinyows;
+    geoportal ==&gt; mapserver;
+    geoportal -. cache, broadcast .-&gt; redis;
+    geoportal -.-&gt; postgres;
+    geoportal -. raster data .-&gt; storage;
+    tcc -- on the fly --&gt; mapserver;
+    tccs -- pregenertation --&gt; mapserver;
+    tcc -. queue .-&gt; redis;
+    tccs -. queue .-&gt; redis;
+    tcc -. tiles .-&gt; storage;
+    tccs -. tiles .-&gt; storage;
+    geoportal --&gt; print;
+    print --&gt; geoportal;
+    alembic -.-&gt; postgres;
+    mapserver -.-&gt; postgres;
+    mapserver -.-&gt; storage;
+    tinyows -.-&gt; postgres;
+
+    classDef data fill:#5ba6ff,color:black;
+        </div><p>For standalone projects:</p>
+<div class="mermaid">
+            graph LR
+
+    client(Web client);
+
+    apache[Apache];
+    subgraph Project composition
+    haproxy[haproxy];
+    geoportal[GeoMapFish server&lt;br&gt;camptocamp/geomapfishapp-geoportal];
+    tcc[TileCloud-chain&lt;br&gt;camptocamp/tilecloud-chain];
+    tccs[TileCloud-chain slave&lt;br&gt;camptocamp/tilecloud-chain];
+    mapserver[MapServer&lt;br&gt;camptocamp/mapserver&lt;br&gt;or/and&lt;br&gt;camptocamp/qgis-server];
+    tinyows[tinyows];
+    print[Mapfist Print&lt;br&gt;camptocamp/mapfish-print];
+    alembic[GeoMapFish alembic&lt;br&gt;camptocamp/geomapfishapp-geoportal&lt;br&gt;minor database upgrades];
+    config[Project config&lt;br&gt;camtocamp/%project%-config&lt;br&gt;provides the config for all other containers];
+    tools[GeoMapFish tools&lt;br&gt;camptocamp/geomapfishapp-tools];
+
+    redis[(Redis)];
+    redis:::data;
+    end
+
+    subgraph Second project composition
+    haproxy2[haproxy];
+    end
+
+    postgres[(Postgres)];
+    postgres:::data;
+    storage[(File system)];
+    storage:::data;
+
+    client ==&gt; apache;
+    apache ==&gt; haproxy;
+    apache ==&gt; haproxy2;
+    haproxy ==&gt; geoportal;
+    haproxy ==&gt; tcc;
+    geoportal --&gt; tinyows;
+    geoportal ==&gt; mapserver;
+    geoportal -. cache, broadcast .-&gt; redis;
+    geoportal -.-&gt; postgres;
+    geoportal -. raster data .-&gt; storage;
+    tcc -- on the fly --&gt; mapserver;
+    tccs -- pregenertation --&gt; mapserver;
+    tcc -. queue .-&gt; redis;
+    tccs -. queue .-&gt; redis;
+    tcc -. tiles .-&gt; storage;
+    tccs -. tiles .-&gt; storage;
+    geoportal --&gt; print;
+    print --&gt; geoportal;
+    alembic -.-&gt; postgres;
+    mapserver -.-&gt; postgres;
+    mapserver -.-&gt; storage;
+    tinyows -.-&gt; postgres;
+
+    classDef data fill:#5ba6ff,color:black;
+        </div></section>
 <section id="docker-images">
 <h2>Docker Images<a class="headerlink" href="#docker-images" title="Permalink to this headline">¶</a></h2>
 <p>When you build your application, the following images will be generated:</p>
