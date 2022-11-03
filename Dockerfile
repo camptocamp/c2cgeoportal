@@ -82,9 +82,9 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && echo deb http://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
     && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && apt-get update \
-    && apt-get install --assume-yes --no-install-recommends git make python3-dev gcc \
+    && apt-get install --assume-yes --no-install-recommends git make python3-dev \
         postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
-        libxml2-utils bash-completion pwgen redis-tools libmagic1 \
+        libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
     && vim-addon-manager --system-wide install editorconfig \
     && echo 'set hlsearch  " Highlight search' > /etc/vim/vimrc.local \
