@@ -12,6 +12,11 @@ Information to know before starting the upgrade
 Information
 ===========
 
+1. We upgraded MapServer to version 8, then the Mapfiles should probably be updated, and we have a new
+   configurations file named `mapserver/mapserver.conf`.
+   Migration guide: https://mapserver.org/MIGRATION_GUIDE.html#mapserver-7-6-to-8-0-migration.
+   Deprecated element from `CLASS` removed (moved to `STYLE`) https://mapserver.org/development/rfc/ms-rfc-133.html#rfc133.
+
 
 Changes to apply
 ================

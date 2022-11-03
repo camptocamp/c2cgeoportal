@@ -69,12 +69,13 @@ services:
       - PGOPTIONS
 
   mapserver:
-    image: camptocamp/mapserver:7.6-20-04
+    image: camptocamp/mapserver:8.0
     user: www-data
     restart: unless-stopped
     entrypoint: []
     environment:
       - PGOPTIONS
+      - MAPSERVER_CONFIG_FILE=/etc/mapserver/mapserver.conf
 
   qgisserver:
     image: camptocamp/geomapfish-qgisserver:gmf${GEOMAPFISH_MAIN_VERSION}-qgis${QGIS_VERSION}

@@ -28,7 +28,7 @@ MAP
     WEB
         METADATA
             "ows_enable_request" "*"
-            "ows_encoding" "UTF-8"
+            "wms_allow_getmap_without_styles" "true"
         END
     END
     SYMBOL
@@ -52,6 +52,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -62,8 +63,6 @@ MAP
             "gml_types" "auto"
             "gml_featureid" "id"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         PROJECTION
             "init=epsg:21781"
         END
@@ -86,6 +85,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected') as foo USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -98,8 +98,6 @@ MAP
             "default_role_ids" "-1"
             "role_ids" "^-?[0-9,]*$"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         PROJECTION
             "init=epsg:21781"
         END
@@ -122,6 +120,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected_2') as foo USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -134,8 +133,6 @@ MAP
             "default_role_ids" "-1"
             "role_ids" "^-?[0-9,]*$"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         PROJECTION
             "init=epsg:21781"
         END
@@ -157,6 +154,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp WHERE ST_Contains((${MAPSERVER_DATA_SUBSELECT} 'testpoint_protected_query_with_collect'), ST_SetSRID(tp.geom, 21781))) as foo USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -169,8 +167,6 @@ MAP
             "default_role_ids" "-1"
             "role_ids" "^-?[0-9,]*$"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         PROJECTION
             "init=epsg:21781"
         END
@@ -192,6 +188,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom FROM (SELECT * FROM geodata.testpoint WHERE name='%s_name%') AS test USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
@@ -205,8 +202,6 @@ MAP
             "s_name" "^[a-z]*$"
             "default_s_name" "foo"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         PROJECTION
             "init=epsg:21781"
         END
@@ -228,6 +223,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom FROM (SELECT geom, id, %s_cols% FROM geodata.testpoint) AS test USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeature
@@ -241,8 +237,6 @@ MAP
             "s_cols" "^[a-z,]*$"
             "default_s_cols" "name"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         PROJECTION
             "init=epsg:21781"
         END
@@ -265,6 +259,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -277,8 +272,6 @@ MAP
             "wms_metadataurl_format" "text/plain"
             "wms_metadataurl_type" "TC211"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         MINSCALEDENOM 5000
         MAXSCALEDENOM 25000
         PROJECTION
@@ -584,6 +577,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -596,8 +590,6 @@ MAP
             "wms_metadataurl_format" "text/plain"
             "wms_metadataurl_type" "TC211"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         PROJECTION
             "init=epsg:21781"
         END
@@ -619,6 +611,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -631,8 +624,6 @@ MAP
             "wms_metadataurl_format" "text/plain"
             "wms_metadataurl_type" "TC211"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         MINSCALEDENOM 5000
         PROJECTION
             "init=epsg:21781"
@@ -655,6 +646,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -667,8 +659,6 @@ MAP
             "wms_metadataurl_format" "text/plain"
             "wms_metadataurl_type" "TC211"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         MAXSCALEDENOM 25000
         PROJECTION
             "init=epsg:21781"
@@ -691,6 +681,7 @@ MAP
         CONNECTIONTYPE POSTGIS
         CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
         DATA "geom from geodata.testpoint USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
         METADATA
             "wms_title" "countries"
             # gml_ settings for GetFeatureInfo
@@ -703,8 +694,6 @@ MAP
             "wms_metadataurl_format" "text/plain"
             "wms_metadataurl_type" "TC211"
         END
-        DUMP TRUE # for GetFeatureInfo
-        TEMPLATE "template"
         MINSCALEDENOM 5000
         MAXSCALEDENOM 25000
         PROJECTION
