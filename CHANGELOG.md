@@ -1,3 +1,7 @@
+##### 2.7.0.122
+
+- Add dnsutils to resolve DNS, remove dangerus gcc [c2cgeoportal#10113](https://github.com/camptocamp/c2cgeoportal/pull/10113)
+
 ##### 2.7.0.121
 
 - Snyk auto fix [c2cgeoportal#10126](https://github.com/camptocamp/c2cgeoportal/pull/10126)
