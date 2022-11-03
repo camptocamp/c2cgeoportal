@@ -50,36 +50,19 @@ current version and see if some files get modified by the update process.
 If the update process modified files which you do not want modified, then add these files to the
 <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list.</p>
 </section>
-<section id="from-a-version-prior-to-2-4-x">
-<h2>From a version prior to 2.4.x<a class="headerlink" href="#from-a-version-prior-to-2-4-x" title="Permalink to this heading">¶</a></h2>
-<p>Upgrade your project first to 2.4, as this is the current long-term release. Migration scripts and
+<section id="from-a-version-prior-to-2-7-x">
+<h2>From a version prior to 2.7.x<a class="headerlink" href="#from-a-version-prior-to-2-7-x" title="Permalink to this heading">¶</a></h2>
+<p>Upgrade your project first to 2.7, as this is the current long-term release. Migration scripts and
 instructions assume that your minimal version is the current long-term release.</p>
 </section>
-<section id="from-a-version-2-4-x">
-<h2>From a version 2.4.x<a class="headerlink" href="#from-a-version-2-4-x" title="Permalink to this heading">¶</a></h2>
-<p>Clean your project (include ignored files):</p>
+<section id="upgrade-the-project">
+<h2>Upgrade the project<a class="headerlink" href="#upgrade-the-project" title="Permalink to this heading">¶</a></h2>
+<p>Start the upgrade:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">git clean -dx --force</span>
-</pre></div></div><p>Build the project file if needed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./docker-run make project.yaml</span>
-</pre></div></div><p>Get the upgrade script:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/master/scripts/upgrade &gt; upgrade</span>
-<span class="prompt1">chmod +x upgrade</span>
-</pre></div></div><p>Upgrade in Git ignore:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">echo</span> /upgrade &gt;&gt; .gitignore</span>
-<span class="prompt1">git add .gitignore</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;Add /upgrade in .gitignore&quot;</span></span>
-</pre></div></div><p>Run the upgrade:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./upgrade &lt;version&gt;</span>
-</pre></div></div><p>Then follow the instructions.</p>
-</section>
-<section id="from-a-version-2-5-and-next">
-<h2>From a version 2.5 and next<a class="headerlink" href="#from-a-version-2-5-and-next" title="Permalink to this heading">¶</a></h2>
-<p>Start the upgrade:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./build --upgrade &lt;version&gt;</span>
+</style><span class="prompt1">./build --upgrade &lt;version&gt;</span>
 </pre></div></div><p>Then follow the instructions.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">x.y.z.p</span></code> to target a stable version, or <code class="docutils literal notranslate"><span class="pre">master</span></code> to target the master branch.</p>
 <p>If for some reason you need to debug what happens during the upgrade see: <a class="reference internal" href="../developer/debugging.html#upgrade-debugging"><span class="std std-ref">here</span></a>.</p>
