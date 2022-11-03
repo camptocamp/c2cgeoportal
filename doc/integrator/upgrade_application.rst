@@ -20,55 +20,14 @@ current version and see if some files get modified by the update process.
 If the update process modified files which you do not want modified, then add these files to the
 ``managed_files`` list.
 
-From a version prior to 2.4.x
+From a version prior to 2.7.x
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Upgrade your project first to 2.4, as this is the current long-term release. Migration scripts and
+Upgrade your project first to 2.7, as this is the current long-term release. Migration scripts and
 instructions assume that your minimal version is the current long-term release.
 
-From a version 2.4.x
-~~~~~~~~~~~~~~~~~~~~
-
-Clean your project (include ignored files):
-
-.. prompt:: bash
-
-   git clean -dx --force
-
-Build the project file if needed:
-
-.. prompt:: bash
-
-   ./docker-run make project.yaml
-
-Get the upgrade script:
-
-.. prompt::
-    :language: bash
-    :substitutions:
-
-    curl https://raw.githubusercontent.com/camptocamp/c2cgeoportal/|main_branch|/scripts/upgrade > upgrade
-    chmod +x upgrade
-
-Upgrade in Git ignore:
-
-.. prompt:: bash
-
-    echo /upgrade >> .gitignore
-    git add .gitignore
-    git commit -m "Add /upgrade in .gitignore"
-
-Run the upgrade:
-
-.. prompt:: bash
-
-   ./upgrade <version>
-
-Then follow the instructions.
-
-
-From a version 2.5 and next
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Upgrade the project
+~~~~~~~~~~~~~~~~~~~
 
 Start the upgrade:
 
