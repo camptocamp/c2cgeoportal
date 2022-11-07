@@ -34,14 +34,16 @@ services:
   #     service: print
   #   volumes_from:
   #     - config:ro
+  #   environment:
+  #     - LOG_LEVEL=DEBUG
 
-  qgisserver:
-    # volumes:
-    #   - './../c2cgeoportal/docker/qgisserver/geomapfish_qgisserver/:/var/www/plugins/geomapfish_qgisserver/'
-    #   - './../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons/'
-    environment:
-      - QGIS_SERVER_LOG_LEVEL=0
-      - QGIS_CATCH_SEGV=1 # The result stack traces will be available in /var/log/qgis.log
+  # qgisserver:
+  #   # volumes:
+  #   #   - './../c2cgeoportal/docker/qgisserver/geomapfish_qgisserver/:/var/www/plugins/geomapfish_qgisserver/'
+  #   #   - './../c2cgeoportal/commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons/'
+  #   environment:
+  #     - QGIS_SERVER_LOG_LEVEL=0
+  #     - QGIS_CATCH_SEGV=1 # The result stack traces will be available in /var/log/qgis.log
 
   tools:
     volumes_from:
