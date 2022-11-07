@@ -39,6 +39,7 @@ extensions = [
     "sphinxarg.ext",
     "sphinx.ext.extlinks",
     "sphinx_substitution_extensions",
+    "sphinxcontrib.mermaid",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
