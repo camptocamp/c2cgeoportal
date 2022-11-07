@@ -16,6 +16,8 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -49,6 +51,16 @@ if you are using the previous version, only the first chapter is relevant.</p>
 current version and see if some files get modified by the update process.
 If the update process modified files which you do not want modified, then add these files to the
 <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list.</p>
+</section>
+<section id="prepare-the-database">
+<h2>Prepare the database<a class="headerlink" href="#prepare-the-database" title="Permalink to this heading">¶</a></h2>
+<p>Clone the schema with e.g.:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">statement_timeout</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;600s&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_&lt;old_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main_&lt;new_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;static_&lt;old_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;static_&lt;new_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Update the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> in your <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
 </section>
 <section id="from-a-version-prior-to-2-7-x">
 <h2>From a version prior to 2.7.x<a class="headerlink" href="#from-a-version-prior-to-2-7-x" title="Permalink to this heading">¶</a></h2>

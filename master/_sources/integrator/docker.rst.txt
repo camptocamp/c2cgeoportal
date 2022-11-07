@@ -8,14 +8,112 @@ Architecture schema
 
 For OpenShift projects:
 
-.. image:: docker-openshift.png
-.. source file is docker-openshift.dia.
+.. mermaid::
 
-For stand alone projects:
+    graph LR
 
-.. image:: docker-apache.png
-.. source file is docker-apache.dia.
+        client(Web client);
 
+        k8s[Kubernetes routing];
+        geoportal[GeoMapFish server<br>camptocamp/geomapfishapp-geoportal];
+        tcc[TileCloud-chain<br>camptocamp/tilecloud-chain];
+        tccs[TileCloud-chain slave<br>camptocamp/tilecloud-chain];
+        mapserver[MapServer<br>camptocamp/mapserver<br>or/and<br>camptocamp/qgis-server];
+        tinyows[tinyows];
+        print[Mapfist Print<br>camptocamp/mapfish-print];
+        alembic[GeoMapFish alembic<br>camptocamp/geomapfishapp-geoportal<br>minor database upgrades];
+        config[Project config<br>camtocamp/%project%-config<br>provides the config for all other containers];
+        tools[GeoMapFish tools<br>camptocamp/geomapfishapp-tools];
+
+        redis[(Redis)];
+        redis:::data;
+
+
+        postgres[(Postgres)];
+        postgres:::data;
+        storage[(Object staorage)];
+        storage:::data;
+
+        client ==> k8s;
+        k8s ==> geoportal;
+        k8s ==> tcc;
+        geoportal --> tinyows;
+        geoportal ==> mapserver;
+        geoportal -. cache, broadcast .-> redis;
+        geoportal -.-> postgres;
+        geoportal -. raster data .-> storage;
+        tcc -- on the fly --> mapserver;
+        tccs -- pregenertation --> mapserver;
+        tcc -. queue .-> redis;
+        tccs -. queue .-> redis;
+        tcc -. tiles .-> storage;
+        tccs -. tiles .-> storage;
+        geoportal --> print;
+        print --> geoportal;
+        alembic -.-> postgres;
+        mapserver -.-> postgres;
+        mapserver -.-> storage;
+        tinyows -.-> postgres;
+
+        classDef data fill:#5ba6ff,color:black;
+For standalone projects:
+
+.. mermaid::
+
+    graph LR
+
+        client(Web client);
+
+        apache[Apache];
+        subgraph Project composition
+        haproxy[haproxy];
+        geoportal[GeoMapFish server<br>camptocamp/geomapfishapp-geoportal];
+        tcc[TileCloud-chain<br>camptocamp/tilecloud-chain];
+        tccs[TileCloud-chain slave<br>camptocamp/tilecloud-chain];
+        mapserver[MapServer<br>camptocamp/mapserver<br>or/and<br>camptocamp/qgis-server];
+        tinyows[tinyows];
+        print[Mapfist Print<br>camptocamp/mapfish-print];
+        alembic[GeoMapFish alembic<br>camptocamp/geomapfishapp-geoportal<br>minor database upgrades];
+        config[Project config<br>camtocamp/%project%-config<br>provides the config for all other containers];
+        tools[GeoMapFish tools<br>camptocamp/geomapfishapp-tools];
+
+        redis[(Redis)];
+        redis:::data;
+        end
+
+        subgraph Second project composition
+        haproxy2[haproxy];
+        end
+
+        postgres[(Postgres)];
+        postgres:::data;
+        storage[(File system)];
+        storage:::data;
+
+        client ==> apache;
+        apache ==> haproxy;
+        apache ==> haproxy2;
+        haproxy ==> geoportal;
+        haproxy ==> tcc;
+        geoportal --> tinyows;
+        geoportal ==> mapserver;
+        geoportal -. cache, broadcast .-> redis;
+        geoportal -.-> postgres;
+        geoportal -. raster data .-> storage;
+        tcc -- on the fly --> mapserver;
+        tccs -- pregenertation --> mapserver;
+        tcc -. queue .-> redis;
+        tccs -. queue .-> redis;
+        tcc -. tiles .-> storage;
+        tccs -. tiles .-> storage;
+        geoportal --> print;
+        print --> geoportal;
+        alembic -.-> postgres;
+        mapserver -.-> postgres;
+        mapserver -.-> storage;
+        tinyows -.-> postgres;
+
+        classDef data fill:#5ba6ff,color:black;
 
 Docker Images
 -------------
