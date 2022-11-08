@@ -1,3 +1,7 @@
+##### 2.7.0.125
+
+- Add overflow handling on functionalities checkboxes [c2cgeoportal#10137](https://github.com/camptocamp/c2cgeoportal/pull/10137)
+
 ##### 2.7.0.123
 
 - Update the diagrams [c2cgeoportal#10077](https://github.com/camptocamp/c2cgeoportal/pull/10077)
