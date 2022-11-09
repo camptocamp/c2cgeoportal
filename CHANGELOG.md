@@ -1,3 +1,5 @@
+##### 2.6.0.144
+* [Backport 2.6] Ignore CVE on loader-utils [ngeo#8904](https://github.com/camptocamp/ngeo/pull/8904)
 ##### 2.6.0.143
 * Ignore CVE [c2cgeoportal#10128](https://github.com/camptocamp/c2cgeoportal/pull/10128)
 ##### 2.6.0.142
