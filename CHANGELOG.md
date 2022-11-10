@@ -1,3 +1,6 @@
+##### 2.4.2.95
+* Fix auto-review on stabilization of the branch for Renovate pull requests [c2cgeoportal#10154](https://github.com/camptocamp/c2cgeoportal/pull/10154)
+* Fix auto-review on stabilization of the branch for Renovate pull requests [ngeo#8915](https://github.com/camptocamp/ngeo/pull/8915)
 ##### 2.4.2.94
 * Add or update pull request check on stabilization branch [c2cgeoportal#10148](https://github.com/camptocamp/c2cgeoportal/pull/10148)
 * Snyk auto fix [ngeo#8876](https://github.com/camptocamp/ngeo/pull/8876)
