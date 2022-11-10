@@ -1,3 +1,5 @@
+##### 2.6.0.146
+* Add or update pull request check on stabilization branch [c2cgeoportal#10145](https://github.com/camptocamp/c2cgeoportal/pull/10145)
 ##### 2.6.0.145
 * Add or update pull request check on stabilization branch [ngeo#8910](https://github.com/camptocamp/ngeo/pull/8910)
 ##### 2.6.0.144
