@@ -1,3 +1,5 @@
+##### 2.6.0.145
+* Add or update pull request check on stabilization branch [ngeo#8910](https://github.com/camptocamp/ngeo/pull/8910)
 ##### 2.6.0.144
 * [Backport 2.6] Ignore CVE on loader-utils [ngeo#8904](https://github.com/camptocamp/ngeo/pull/8904)
 ##### 2.6.0.143
