@@ -1,3 +1,6 @@
+##### 2.5.0.221
+* Add or update pull request check on stabilization branch [c2cgeoportal#10146](https://github.com/camptocamp/c2cgeoportal/pull/10146)
+* Fix auto-review on stabilization of the branch for Renovate pull requests [c2cgeoportal#10152](https://github.com/camptocamp/c2cgeoportal/pull/10152)
 ##### 2.5.0.220
 * [Backport 2.5] Create audit workflow, fix [c2cgeoportal#10097](https://github.com/camptocamp/c2cgeoportal/pull/10097)
 ##### 2.5.0.219
