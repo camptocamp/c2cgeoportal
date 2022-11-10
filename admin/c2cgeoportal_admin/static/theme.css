@@ -76,3 +76,8 @@
 #layertree .alert-info {
   margin-top: 30px;
 }
+
+.item-functionalities .checkbox label {
+  overflow: hidden;
+  overflow-wrap: break-word;
+}
