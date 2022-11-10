@@ -1,3 +1,7 @@
+##### 2.7.0.129
+
+- Fix auto-review on stabilization of the branch for Renovate pull requests [c2cgeoportal#10153](https://github.com/camptocamp/c2cgeoportal/pull/10153)
+
 ##### 2.7.0.127
 
 - Add or update pull request check on stabilization branch [c2cgeoportal#10147](https://github.com/camptocamp/c2cgeoportal/pull/10147)
