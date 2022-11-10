@@ -1,21 +1,22 @@
 ---
-name: Auto merge Dependabot updates
+name: Auto reviews updates
 
 on:
   pull_request:
     types:
       - opened
-      - ready_for_review
       - reopened
-      - unlocked
+      - synchronize
+
 jobs:
   auto-merge:
-    name: Auto merge Dependabot updates
+    name: Auto reviews updates
     runs-on: ubuntu-20.04
     timeout-minutes: 5
 
     steps:
-      - uses: ridedott/merge-me-action@master
+      - name: Auto reviews updates
+        uses: golfzaptw/action-auto-reviews-from-branches@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_METHOD: dependabot-preview
+          AUTHOR: renovate[bot]
