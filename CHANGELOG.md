@@ -1,3 +1,9 @@
+##### 2.4.2.94
+* Add or update pull request check on stabilization branch [c2cgeoportal#10148](https://github.com/camptocamp/c2cgeoportal/pull/10148)
+* Snyk auto fix [ngeo#8876](https://github.com/camptocamp/ngeo/pull/8876)
+* Ignore CVE [ngeo#8878](https://github.com/camptocamp/ngeo/pull/8878)
+* Ignore CVE on loader-utils [ngeo#8903](https://github.com/camptocamp/ngeo/pull/8903)
+* Add or update pull request check on stabilization branch [ngeo#8912](https://github.com/camptocamp/ngeo/pull/8912)
 ##### 2.4.2.93
 * Create audit workdlow, fix [c2cgeoportal#10094](https://github.com/camptocamp/c2cgeoportal/pull/10094)
 ##### 2.4.2.92
