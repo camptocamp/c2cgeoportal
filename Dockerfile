@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends python3-pip
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends python3-pip
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
@@ -41,22 +41,25 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     . /etc/os-release \
     && apt-get update \
     && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends apt-utils \
-    && apt-get install --assume-yes --no-install-recommends apt-transport-https gettext less gnupg libpq5 \
-        python3-pip python3-dev libgraphviz-dev libpq-dev binutils gcc g++ cython3 \
-    && echo "For Chrome installed by Pupetter" \
-    && apt-get install --assume-yes --no-install-recommends libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
-        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
-        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends apt-utils gnupg \
     && echo "deb https://deb.nodesource.com/node_16.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list \
     && curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
     && apt-get update \
-    && apt-get install --assume-yes --no-install-recommends 'nodejs=16.*' \
-    && ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
+        apt-transport-https gettext less gnupg libpq5 \
+        python3-pip python3-dev libgraphviz-dev libpq-dev binutils gcc g++ cython3 nodejs libgeos-dev \
+    && echo "For Chrome installed by Pupetter" \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
+        libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
+        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
+        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
+    && ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so \
+    && ln -s /usr/bin/cython3 /usr/bin/cython
 
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
-    PIP_NO_BINARY=fiona,rasterio,shapely PROJ_DIR=/usr/local/ python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
+    PIP_NO_BINARY=fiona,rasterio,shapely PROJ_DIR=/usr/local/ python3 -m pip install \
+    --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++
 
@@ -82,7 +85,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && echo deb http://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
     && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && apt-get update \
-    && apt-get install --assume-yes --no-install-recommends git make python3-dev \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make python3-dev \
         postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
         libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
@@ -166,9 +169,9 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
 
 RUN make --makefile=build.mk \
     geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-    admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
+    admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot \
+    && git config --global --add safe.directory /src
 
-RUN git config --global --add safe.directory /src
 COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src
