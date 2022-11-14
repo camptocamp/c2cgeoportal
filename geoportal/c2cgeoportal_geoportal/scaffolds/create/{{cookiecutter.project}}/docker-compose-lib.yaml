@@ -218,6 +218,7 @@ services:
       - PGPASSWORD
       - PGDATABASE
       - PGSSLMODE
+      - PGSCHEMA
       - PGSCHEMA_STATIC
       - PGOPTIONS
       - SQLALCHEMY_POOL_RECYCLE
@@ -378,6 +379,7 @@ services:
       - PGPASSWORD
       - PGDATABASE
       - PGSSLMODE
+      - PGSCHEMA
       - PGSCHEMA_STATIC
       - LOG_TYPE
 
