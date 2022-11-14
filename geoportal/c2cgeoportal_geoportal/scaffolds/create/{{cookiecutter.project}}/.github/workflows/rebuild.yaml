@@ -43,4 +43,4 @@ jobs:
         run: ./build
 
       - name: Publish
-        run: c2cciutils-publish
+        run: c2cciutils-publish --branch=${{'{{'}} matrix.branch }} --type=rebuild
