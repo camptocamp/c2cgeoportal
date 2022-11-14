@@ -1,3 +1,10 @@
+##### 2.7.0.133
+
+- Some fix for server that returns wrong XSD [c2cgeoportal#10124](https://github.com/camptocamp/c2cgeoportal/pull/10124)
+- Add missing schema used during upgrade [c2cgeoportal#10125](https://github.com/camptocamp/c2cgeoportal/pull/10125)
+- Add missing publishing branch and type on project rebuild [c2cgeoportal#10130](https://github.com/camptocamp/c2cgeoportal/pull/10130)
+- Update dependency loader-utils to v2.0.4 (2.7) [ngeo#8920](https://github.com/camptocamp/ngeo/pull/8920)
+
 ##### 2.7.0.131
 
 - Add or update pull request check on stabilization branch [ngeo#8911](https://github.com/camptocamp/ngeo/pull/8911)
