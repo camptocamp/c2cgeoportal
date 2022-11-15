@@ -123,7 +123,7 @@ translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
 c2cwsgiutils = {version = "==4.1.4", extras = ["broadcast", "profiler", "standard"]}
 oauthlib = "==3.1.0"
-setuptools = "==45.2.0"
+setuptools = "==65.5.1"
 # Lock
 affine = "==2.3.0"
 argparse = "==1.4.0"
@@ -161,7 +161,7 @@ paste = "==3.5.0"
 pastedeploy = "==2.1.1"
 pbr = "==5.5.1"
 peppercorn = "==0.6"
-pillow = "==9.0.1"
+pillow = "==9.2.0"
 pipfile = "==0.0.2"
 plaster = "==1.0"
 plaster-pastedeploy = "==0.7"
