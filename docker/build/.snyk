@@ -4,22 +4,26 @@ version: v1.25.0
 ignore:
   SNYK-PYTHON-NUMPY-2321964:
     - '*':
-      reason: No fixed package compatible with current version of Python
-      created: 2022-10-13T12:55:38.864Z
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
   SNYK-PYTHON-NUMPY-2321966:
     - '*':
-      reason: No fixed package compatible with current version of Python
-      created: 2022-10-13T12:55:38.864Z
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
   SNYK-PYTHON-NUMPY-2321969:
     - '*':
-      reason: No fixed package compatible with current version of Python
-      created: 2022-10-13T12:55:38.864Z
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
   SNYK-PYTHON-NUMPY-2321970:
     - '*':
-      reason: No fixed package compatible with current version of Python
-      created: 2022-10-13T12:55:38.864Z
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T12:55:38.864Z
   SNYK-PYTHON-WAITRESS-2428349:
     - '*':
-      reason: No fixed package compatible with current version of Python
-      created: 2022-10-13T14:08:50.433Z
+        reason: No fixed package compatible with current version of Python
+        created: 2022-10-13T14:08:50.433Z
+  SNYK-PYTHON-SETUPTOOLS-3113904:
+    - '*':
+        reason: Not working with used Python version
+        created: 2022-11-15T12:31:56.979Z
 patch: {}
