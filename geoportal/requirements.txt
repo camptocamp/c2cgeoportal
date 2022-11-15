@@ -10,7 +10,6 @@ GeoAlchemy2
 geojson
 isodate  # WMST support
 lingua
-Mako
 OWSLib>=0.6.0
 papyrus
 psycopg2-binary
