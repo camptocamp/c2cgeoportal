@@ -1,3 +1,5 @@
+##### 2.6.0.149
+* Ignore CVE on setuptools [c2cgeoportal#10169](https://github.com/camptocamp/c2cgeoportal/pull/10169)
 ##### 2.6.0.148
 * Snyk auto fix [ngeo#8923](https://github.com/camptocamp/ngeo/pull/8923)
 ##### 2.6.0.147
