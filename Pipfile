@@ -128,7 +128,7 @@ SQLAlchemy = "==1.3.16"
 transaction = "==3.0.0"  # commons, geoportal
 translationstring = "==1.3"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
-setuptools = "==45.2.0"
+setuptools = "==65.5.1"
 # Lock
 "affine" = "==2.3.0"
 "argparse" = "==1.4.0"

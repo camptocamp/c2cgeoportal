@@ -6,7 +6,8 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 
 ENV \
     DEBIAN_FRONTEND=noninteractive \
-    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+    SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+    SETUPTOOLS_USE_DISTUTILS=stdlib
 
 RUN \
     . /etc/os-release && \
