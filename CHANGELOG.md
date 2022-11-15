@@ -1,3 +1,8 @@
+##### 2.7.0.136
+
+- Snyk auto fix [c2cgeoportal#10165](https://github.com/camptocamp/c2cgeoportal/pull/10165)
+- Snyk auto fix [ngeo#8924](https://github.com/camptocamp/ngeo/pull/8924)
+
 ##### 2.7.0.133
 
 - Some fix for server that returns wrong XSD [c2cgeoportal#10124](https://github.com/camptocamp/c2cgeoportal/pull/10124)
