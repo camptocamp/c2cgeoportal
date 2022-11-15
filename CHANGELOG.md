@@ -1,3 +1,5 @@
+##### 2.5.0.222
+* Snyk auto fix [c2cgeoportal#10167](https://github.com/camptocamp/c2cgeoportal/pull/10167)
 ##### 2.5.0.221
 * Add or update pull request check on stabilization branch [c2cgeoportal#10146](https://github.com/camptocamp/c2cgeoportal/pull/10146)
 * Fix auto-review on stabilization of the branch for Renovate pull requests [c2cgeoportal#10152](https://github.com/camptocamp/c2cgeoportal/pull/10152)
