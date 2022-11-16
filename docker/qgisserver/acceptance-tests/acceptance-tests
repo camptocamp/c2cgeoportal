@@ -53,5 +53,5 @@ response = requests.get(
     },
 )
 
-assert response.ok, response.status_code
+assert response.ok, f"{response.status_code}\n{response.text}"
 assert response.headers["Content-Type"] == "image/png", response.headers["Content-Type"]

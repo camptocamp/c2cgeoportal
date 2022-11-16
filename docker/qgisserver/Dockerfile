@@ -3,6 +3,11 @@ ARG VERSION
 FROM camptocamp/qgis-server:${VERSION} AS base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
+# Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
+# Treat unset variables as an error when substituting.
+# Print commands and their arguments as they are executed.
+SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
+
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
 FROM base-all as poetry
@@ -26,9 +31,11 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc \
+    && apt-get install --assume-yes --no-install-recommends cython3 python3-dev libpq-dev gcc \
+    && ln -s /usr/bin/cython3 /usr/bin/cython \
     && PIP_NO_BINARY=shapely pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && apt-get remove --assume-yes libpython3-dev libpq-dev gcc
+    && rm /usr/bin/cython \
+    && apt-get remove --assume-yes cython3 python3-dev libpq-dev gcc
 
 #############################################################################################################
 
