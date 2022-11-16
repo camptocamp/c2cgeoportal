@@ -1,3 +1,8 @@
+##### 2.7.0.140
+
+- Remove the QGIS master version [c2cgeoportal#10180](https://github.com/camptocamp/c2cgeoportal/pull/10180)
+- Fix min size on query window [ngeo#8928](https://github.com/camptocamp/ngeo/pull/8928)
+
 ##### 2.7.0.137
 
 - Snyk auto fix [c2cgeoportal#10168](https://github.com/camptocamp/c2cgeoportal/pull/10168)
