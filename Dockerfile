@@ -232,10 +232,6 @@ RUN adduser www-data root
 
 # From c2cwsgiutils
 
-ENV TERM=linux \
-    LANG=C.UTF-8 \
-    PKG_CONFIG_ALLOW_SYSTEM_LIBS=OHYESPLEASE
-
 ENV C2C_BASE_PATH=/c2c \
     C2C_REDIS_TIMEOUT=3 \
     C2C_REDIS_SERVICENAME=mymaster \
