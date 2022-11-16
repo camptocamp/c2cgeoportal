@@ -1,3 +1,9 @@
+##### 2.4.2.96
+* Snyk auto fix [c2cgeoportal#10164](https://github.com/camptocamp/c2cgeoportal/pull/10164)
+* Ignore CVE on setuptools [c2cgeoportal#10170](https://github.com/camptocamp/c2cgeoportal/pull/10170)
+* Snyk auto fix [c2cgeoportal#10171](https://github.com/camptocamp/c2cgeoportal/pull/10171)
+* Ignore CVE on setuptools [c2cgeoportal#10174](https://github.com/camptocamp/c2cgeoportal/pull/10174)
+* Snyk auto fix [ngeo#8922](https://github.com/camptocamp/ngeo/pull/8922)
 ##### 2.4.2.95
 * Fix auto-review on stabilization of the branch for Renovate pull requests [c2cgeoportal#10154](https://github.com/camptocamp/c2cgeoportal/pull/10154)
 * Fix auto-review on stabilization of the branch for Renovate pull requests [ngeo#8915](https://github.com/camptocamp/ngeo/pull/8915)
