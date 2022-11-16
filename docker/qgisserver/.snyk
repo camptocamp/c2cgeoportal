@@ -6,4 +6,8 @@ ignore:
     - '*':
         reason: New version is not compatible with used Python version
         created: 2022-10-12T13:36:43.590Z
+  SNYK-PYTHON-SETUPTOOLS-3113904:
+    - '*':
+        reason: Not working with used Python version
+        created: 2022-11-16T12:24:39.145Z
 patch: {}
