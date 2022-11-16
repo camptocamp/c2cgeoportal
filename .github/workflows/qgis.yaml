@@ -21,7 +21,6 @@ jobs:
         version:
           # Last LTR
           - '3.22'
-          - master
 
     env:
       MAIN_BRANCH: '2.7'
