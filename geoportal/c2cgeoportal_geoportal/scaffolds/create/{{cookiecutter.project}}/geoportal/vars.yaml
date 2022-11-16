@@ -349,6 +349,7 @@ update_paths:
   - headers.shortener.headers
   - headers.login.headers
   - interfaces_config.default.constants.ngeoWfsPermalinkOptions
+  - interfaces_config.default.constants.gmfOptions.view
   - interfaces_config.default.constants.gmfSearchOptions
   - interfaces_config.default.constants.gmfPermalinkOptions
   - interfaces_config.default.constants.gmfVectorTilesOptions
