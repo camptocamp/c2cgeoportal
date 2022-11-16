@@ -110,7 +110,7 @@ help:
 .PHONY: docker-pull
 docker-pull:
 	for image in `find -name Dockerfile -o -name Dockerfile.mako | xargs grep --no-filename FROM | awk '{print $$2}' | sort -u`; do docker pull $$image; done
-	docker pull camptocamp/qgis-server:3.4  # LTR
+	docker pull camptocamp/qgis-server:3.16  # LTR
 
 .PHONY: docker-build
 docker-build: docker-pull
@@ -222,10 +222,8 @@ docker/qgisserver/commons: commons
 .PHONY: docker-build-qgisserver
 docker-build-qgisserver: $(shell docker-required --path docker/qgisserver) docker/qgisserver/commons
 	# LTR
-	docker build --build-arg=VERSION=3.4 \
-		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.4 docker/qgisserver
-	docker build --build-arg=VERSION=3.10 \
-		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.10 docker/qgisserver
+	docker build --build-arg=VERSION=3.16 \
+		--tag=$(DOCKER_BASE)-qgisserver:gmf$(MAJOR_VERSION)-qgis3.16 docker/qgisserver
 
 .PHONY: prepare-tests
 prepare-tests: \
