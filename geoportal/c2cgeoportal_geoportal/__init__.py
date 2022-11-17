@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,13 +30,26 @@
 import importlib
 import logging
 import os
+from typing import Any
 from urllib.parse import urlsplit
 
 import c2cgeoform
 import c2cwsgiutils
 import c2cwsgiutils.db
+import c2cwsgiutils.db_maintenance_view
+import c2cwsgiutils.errors
 import c2cwsgiutils.index
+import c2cwsgiutils.logging_view
+import c2cwsgiutils.redis_stats
+import c2cwsgiutils.request_tracking
+import c2cwsgiutils.sentry
+import c2cwsgiutils.sql_profiler
+import c2cwsgiutils.stats_pyramid
+import cornice
+import pyramid.config
 import pyramid.security
+import pyramid_tm
+import ujson
 import zope.event.classhandler
 from c2cgeoform import Form, translator
 from c2cwsgiutils.health_check import HealthCheck
@@ -46,6 +59,7 @@ from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
+from pyramid.renderers import JSON
 from pyramid_mako import add_mako_renderer
 from sqlalchemy.orm import Session, joinedload
 
@@ -339,7 +353,29 @@ def includeme(config: pyramid.config.Configurator):
     # Configure 'locale' dir as the translation dir for c2cgeoportal app
     config.add_translation_dirs("c2cgeoportal_geoportal:locale/")
 
-    config.include("c2cwsgiutils.pyramid.includeme")
+    c2cwsgiutils.sentry.init(config)
+    config.add_settings(handle_exceptions=False)
+    config.include(pyramid_tm.includeme)
+    config.include(cornice.includeme)
+
+    def fast_dumps(v: Any, **_kargv: Any) -> str:
+        return ujson.dumps(v, ensure_ascii=False, escape_forward_slashes=False)
+
+    config.add_renderer("json", JSON())
+    config.add_renderer("fast_json", JSON(serializer=fast_dumps))
+    c2cwsgiutils.broadcast.init(config)
+    c2cwsgiutils.stats_pyramid.init(config)
+    c2cwsgiutils.request_tracking.init(config)
+    c2cwsgiutils.redis_stats.init(config)
+    c2cwsgiutils.db_maintenance_view.install_subscriber(config)
+    c2cwsgiutils.logging_view.install_subscriber(config)
+    c2cwsgiutils.sql_profiler.init(config)
+    c2cwsgiutils.version.init(config)
+    c2cwsgiutils.debug.init(config)
+    c2cwsgiutils.metrics.init(config)
+    c2cwsgiutils.errors.init(config)
+    c2cwsgiutils.index.init(config)
+
     health_check = HealthCheck(config)
     config.registry["health_check"] = health_check
 
