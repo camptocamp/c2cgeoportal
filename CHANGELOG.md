@@ -1,3 +1,7 @@
+##### 2.7.0.141
+
+- Disable print snapping near 0° rotation [c2cgeoportal#10175](https://github.com/camptocamp/c2cgeoportal/pull/10175)
+
 ##### 2.7.0.140
 
 - Remove the QGIS master version [c2cgeoportal#10180](https://github.com/camptocamp/c2cgeoportal/pull/10180)
