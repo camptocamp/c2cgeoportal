@@ -35,7 +35,7 @@ jobs:
           git config --global user.name CI
 
       - id: status
-        run: echo ::set-output name=status::$(git status --porcelain)
+        run: echo "status=$(git status --porcelain)" >> $GITHUB_OUTPUT
 
       - name: Push l10n branch and create pull request
         run: |
