@@ -26,7 +26,8 @@ jobs:
       matrix:
         version:
           # Last LTR
-          - '3.22'
+          - '3.28'
+          - latest
           - master
 
     env:

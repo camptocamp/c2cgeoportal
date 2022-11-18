@@ -288,7 +288,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 return []
             return self.get_ogcserver_accesscontrol().authorizedLayerAttributes(layer, attributes)
         except Exception:
-            LOG.error("Unhandle error", exc_info=True)
+            LOG.error("Unhandled error", exc_info=True)
             raise
 
     def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: ignore=N802
@@ -309,7 +309,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                 return str(random.randrange(1000000))  # nosec
             return self.get_ogcserver_accesscontrol().cacheKey()
         except Exception:
-            LOG.error("Unhandle error", exc_info=True)
+            LOG.error("Unhandled error", exc_info=True)
             raise
 
 

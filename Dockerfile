@@ -7,7 +7,7 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-# Fix for newer version of setuptools
+# Workaround for newer version of setuptools
 ENV SETUPTOOLS_USE_DISTUTILS=stdlib
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
