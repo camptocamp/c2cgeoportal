@@ -95,7 +95,8 @@ print("major: {}".format(major))
 print("minor: {}".format(minor))
 print("upgrade_version: {}".format(upgrade_version))
 if args.github:
-    print("##[set-output name=full;]{}".format(full))
-    print("##[set-output name=major;]{}".format(major))
-    print("##[set-output name=minor;]{}".format(minor))
-    print("##[set-output name=upgrade_version;]{}".format(upgrade_version))
+    with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
+        output_file.write("full={}\n".format(full))
+        output_file.write("major={}\n".format(major))
+        output_file.write("minor={}\n".format(minor))
+        output_file.write("upgrade_version={}\n".format(upgrade_version))
