@@ -54,7 +54,7 @@ tilecloud = "1.8.2" # geoportal
 azure-storage-blob = "12.14.1"
 basicauth = "0.4.1"
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.7.7" }
-setuptools = "65.5.1"
+setuptools = "65.6.0"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.11.0" # i18n
