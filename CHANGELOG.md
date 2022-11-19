@@ -1,3 +1,7 @@
+##### 2.7.0.142
+
+- Update all patch versions (2.7) (patch) [ngeo#8938](https://github.com/camptocamp/ngeo/pull/8938)
+
 ##### 2.7.0.141
 
 - Disable print snapping near 0° rotation [c2cgeoportal#10175](https://github.com/camptocamp/c2cgeoportal/pull/10175)
