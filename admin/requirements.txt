@@ -12,7 +12,7 @@ pyramid_tm
 sqlalchemy
 zope.event
 translationstring
-mako==1.2.3 # not directly required, pinned by Snyk to avoid a vulnerability
+mako==1.2.4 # not directly required, pinned by Snyk to avoid a vulnerability
 jinja2==3.1.2 # not directly required, pinned by Snyk to avoid a vulnerability
 pygments==2.13.0 # not directly required, pinned by Snyk to avoid a vulnerability
 babel==2.11.0 # not directly required, pinned by Snyk to avoid a vulnerability
