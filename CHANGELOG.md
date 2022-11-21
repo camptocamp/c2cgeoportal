@@ -1,3 +1,5 @@
+##### 2.5.0.223
+* [Backport 2.5] Upgrade deprecated set-output commands [c2cgeoportal#10193](https://github.com/camptocamp/c2cgeoportal/pull/10193)
 ##### 2.5.0.222
 * Snyk auto fix [c2cgeoportal#10167](https://github.com/camptocamp/c2cgeoportal/pull/10167)
 ##### 2.5.0.221
