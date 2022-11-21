@@ -8,29 +8,29 @@ c2cwsgiutils = { extras = ["broadcast"], version = "==4.0.1" }
 papyrus = "==2.4" # commons
 transaction = "==3.0.1" # commons
 "c2c.template" = "==2.1.0"
-GeoAlchemy2 = "==0.8.4"
-SQLAlchemy = "==1.3.20" # commons
+GeoAlchemy2 = "==0.8.5"
+SQLAlchemy = "==1.3.24" # commons
 "zope.event" = "==4.4" # commons
 "zope.sqlalchemy" = "==1.2" # commons
 shapely = "==1.7.1"
 cee-syslog-handler = "==0.6.0"
 # Lock
-bottle = "==0.12.20"
+bottle = "==0.12.23"
 geojson = "==2.5.0"
-hupper = "==1.10.2"
+hupper = "==1.10.3"
 jinja2 = "==2.11.3"
-mako = "==1.2.2"
+mako = "==1.2.4"
 markupsafe = "==1.1.1"
 pastedeploy = "==2.1.1"
 plaster = "==1.0"
 plaster-pastedeploy = "==0.7"
-pyramid = "==1.10.5"
+pyramid = "==1.10.8"
 pyyaml = "==5.4.1"
 redis = "==3.5.3"
 six = "==1.15.0"
 translationstring = "==1.4"
 venusian = "==3.0.0"
-webob = "==1.8.6"
+webob = "==1.8.7"
 "zope.deprecation" = "==4.4.0"
 "zope.interface" = "==5.2.0"
 setuptools = "==45.2.0"
@@ -40,12 +40,12 @@ mypy = "==0.790" # lint
 prospector = { extras = ["with_mypy", "with_bandit"], version = "==1.3.1" }
 flake8 = "==3.8.4"
 # Lock dependencies
-astroid = "==2.4.1"
-bandit = "==1.7.0"
+astroid = "==2.4.2"
+bandit = "==1.7.4"
 dodgy = "==0.2.1"
 flake8-polyfill = "==1.0.2"
-gitdb = "==4.0.7"
-gitpython = "==3.1.14"
+gitdb = "==4.0.9"
+gitpython = "==3.1.29"
 isort = "==4.3.21"
 lazy-object-proxy = "==1.4.3"
 mccabe = "==0.6.1"
@@ -66,10 +66,10 @@ setoptconf = "==0.3.0"
 six = "==1.15.0"
 smmap = "==4.0.0"
 snowballstemmer = "==2.1.0"
-stevedore = "==3.3.0"
+stevedore = "==3.3.3"
 toml = "==0.10.2"
 typed-ast = "==1.4.3"
-typing-extensions = "==3.10.0.0"
+typing-extensions = "==3.10.0.2"
 wrapt = "==1.12.1"
 
 [requires]
