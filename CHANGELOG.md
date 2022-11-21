@@ -1,3 +1,5 @@
+##### 2.6.0.153
+* [Backport 2.6] Upgrade deprecated set-output commands [c2cgeoportal#10194](https://github.com/camptocamp/c2cgeoportal/pull/10194)
 ##### 2.6.0.152
 * Remove JSON sort_keys [c2cgeoportal#10182](https://github.com/camptocamp/c2cgeoportal/pull/10182)
 ##### 2.6.0.151
