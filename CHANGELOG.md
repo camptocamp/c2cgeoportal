@@ -1,3 +1,5 @@
+##### 2.6.0.152
+* Remove JSON sort_keys [c2cgeoportal#10182](https://github.com/camptocamp/c2cgeoportal/pull/10182)
 ##### 2.6.0.151
 * Snyk auto fix [c2cgeoportal#10173](https://github.com/camptocamp/c2cgeoportal/pull/10173)
 ##### 2.6.0.150
