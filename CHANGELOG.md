@@ -1,3 +1,7 @@
+##### 2.7.0.143
+
+- [Backport 2.7] Upgrade deprecated set-output commands [c2cgeoportal#10195](https://github.com/camptocamp/c2cgeoportal/pull/10195)
+
 ##### 2.7.0.142
 
 - Update all patch versions (2.7) (patch) [ngeo#8938](https://github.com/camptocamp/ngeo/pull/8938)
