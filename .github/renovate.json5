@@ -77,11 +77,16 @@
       matchPaths: ['geoportal/requirements.txt'],
       enabled: false,
     },
-    /** Accept only the patch on the stabilization branches */
+    /** Accept only the patch on stabilization branches */
     {
       matchBaseBranches: ['/2\\..*/'],
       matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'lockFileMaintenance', 'rollback', 'bump'],
       enabled: false,
+    },
+    /** Mounsly update on stabilization branches */
+    {
+      matchBaseBranches: ['/2\\..*/'],
+      schedule: ['on the 1st day of the month'],
     },
   ],
 }
