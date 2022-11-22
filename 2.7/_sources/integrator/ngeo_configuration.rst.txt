@@ -43,6 +43,7 @@ Properties:
  * ``gmfSearchOptions`` (:ref:`integrator_guide_ngeo_properties_gmfSearchOptions`)
  * ``gmfShareOptions`` (:ref:`integrator_guide_ngeo_properties_gmfShareOptions`)
  * ``gmfShortenerCreateUrl`` (:ref:`integrator_guide_ngeo_properties_gmfShortenerCreateUrl`)
+ * ``gmfSnappingOptions`` (:ref:`integrator_guide_ngeo_properties_gmfSnappingOptions`)
  * ``gmfThemesOptions`` (:ref:`integrator_guide_ngeo_properties_gmfThemesOptions`)
  * ``gmfTreeManagerModeFlush`` (:ref:`integrator_guide_ngeo_properties_gmfTreeManagerModeFlush`)
  * ``gmfTreeUrl`` (:ref:`integrator_guide_ngeo_properties_gmfTreeUrl`)

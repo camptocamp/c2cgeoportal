@@ -79,7 +79,6 @@ Properties:
  * ``maxTilesLoading`` (number, optional)
  * ``moveTolerance`` (number, optional)
  * ``pixelRatio`` (number, optional)
- * ``projection`` (string)
 
 .. _integrator_guide_ngeo_properties_MeasureRasterLayer:
 
@@ -354,6 +353,7 @@ Properties:
  * ``authentication`` (string)
  * ``authenticationPanel`` (string)
  * ``desktopCanvas`` (string)
+ * ``lidarFooter`` (string)
  * ``lidarPanel`` (string)
 
 .. _integrator_guide_ngeo_properties_gmfCustomJavascriptUrl:
@@ -645,6 +645,16 @@ gmfShortenerCreateUrl
 ~~~~~~~~~~~~~~~~~~~~~
 URL to the shortener web service.
 
+.. _integrator_guide_ngeo_properties_gmfSnappingOptions:
+
+~~~~~~~~~~~~~~~~~~
+gmfSnappingOptions
+~~~~~~~~~~~~~~~~~~
+The snapping options
+
+Properties:
+ * ``maxFeatures`` (number)
+
 .. _integrator_guide_ngeo_properties_gmfThemesOptions:
 
 ~~~~~~~~~~~~~~~~
@@ -848,6 +858,7 @@ ngeoStreetviewOptions
 Configuration object for streetview.
 
 Properties:
+ * ``bufferSize`` (number, optional)
  * ``key`` (string)
  * ``viewer`` (string)
 

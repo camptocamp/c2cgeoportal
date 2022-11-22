@@ -108,7 +108,6 @@ with label <cite>velo_park</cite> and <cite>moto_park</cite> into a new source <
 <li><p><code class="docutils literal notranslate"><span class="pre">maxTilesLoading</span></code> (number, optional)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">moveTolerance</span></code> (number, optional)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pixelRatio</span></code> (number, optional)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">projection</span></code> (string)</p></li>
 </ul>
 </dd>
 </dl>
@@ -365,6 +364,7 @@ logging out if the logged-in user’s role has this role.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">authentication</span></code> (string)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">authenticationPanel</span></code> (string)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">desktopCanvas</span></code> (string)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lidarFooter</span></code> (string)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lidarPanel</span></code> (string)</p></li>
 </ul>
 </dd>
@@ -622,6 +622,16 @@ logging out if the logged-in user’s role has this role.</p>
 <span id="integrator-guide-ngeo-properties-gmfshortenercreateurl"></span><h2>gmfShortenerCreateUrl<a class="headerlink" href="#gmfshortenercreateurl" title="Permalink to this headline">¶</a></h2>
 <p>URL to the shortener web service.</p>
 </section>
+<section id="gmfsnappingoptions">
+<span id="integrator-guide-ngeo-properties-gmfsnappingoptions"></span><h2>gmfSnappingOptions<a class="headerlink" href="#gmfsnappingoptions" title="Permalink to this headline">¶</a></h2>
+<p>The snapping options</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maxFeatures</span></code> (number)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
 <section id="gmfthemesoptions">
 <span id="integrator-guide-ngeo-properties-gmfthemesoptions"></span><h2>gmfThemesOptions<a class="headerlink" href="#gmfthemesoptions" title="Permalink to this headline">¶</a></h2>
 <p>Configuration options for the themes service.</p>
@@ -769,6 +779,7 @@ logging out if the logged-in user’s role has this role.</p>
 <p>Configuration object for streetview.</p>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bufferSize</span></code> (number, optional)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">key</span></code> (string)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">viewer</span></code> (string)</p></li>
 </ul>
