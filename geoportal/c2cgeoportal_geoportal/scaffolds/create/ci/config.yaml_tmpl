@@ -6,6 +6,9 @@ checks:
   eof: False
   required_workflows: False
   dependabot_config: False
+  versions: False
+  setup: False
+  prettier: False
 
 version:
   branch_to_version_re:

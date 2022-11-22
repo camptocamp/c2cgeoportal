@@ -6,13 +6,17 @@ checks:
       - ^commons/c2cgeoportal_commons/alembic/script\.py\.mako$
       - .*\.rst$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/.*/.*
+      - ^doc/integrator/multi_organization\.rst\.tmpl$
   required_workflows:
     main.yaml: False
     dependabot-auto-merge.yaml: False
     rebuild-master.yaml:
       steps: []
   dependabot_config: False
-  prospector_config: false
+  prospector_config: False
+  codespell: False
+  setup: False
+  prettier: False
 
 audit:
   npm:

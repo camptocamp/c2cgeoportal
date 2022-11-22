@@ -10,7 +10,7 @@ trim_trailing_whitespace = true
 max_line_length = 110
 quote_type = single
 
-[*.{js,css,html,scss,html.ejs}]
+[*.{js,json,css,html,scss,html.ejs}]
 indent_size = 2
 
 [*.{yaml,yml,yaml.tmpl}]
