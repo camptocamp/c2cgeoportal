@@ -12,6 +12,7 @@ checks:
     rebuild-master.yaml:
       steps: []
   dependabot_config: False
+  prospector_config: false
 
 audit:
   npm:
