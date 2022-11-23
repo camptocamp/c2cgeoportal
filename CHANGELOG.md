@@ -1,3 +1,5 @@
+##### 2.6.0.154
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10190](https://github.com/camptocamp/c2cgeoportal/pull/10190)
 ##### 2.6.0.153
 * [Backport 2.6] Upgrade deprecated set-output commands [c2cgeoportal#10194](https://github.com/camptocamp/c2cgeoportal/pull/10194)
 ##### 2.6.0.152
