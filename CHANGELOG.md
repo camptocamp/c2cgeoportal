@@ -1,3 +1,5 @@
+##### 2.6.0.156
+* Use default Snyk audit config, remove unwanted audit issue, fix CVE [c2cgeoportal#10198](https://github.com/camptocamp/c2cgeoportal/pull/10198)
 ##### 2.6.0.155
 * Snyk auto fix [c2cgeoportal#10197](https://github.com/camptocamp/c2cgeoportal/pull/10197)
 ##### 2.6.0.154
