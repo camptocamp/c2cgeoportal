@@ -4,36 +4,34 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-awscli = "==1.19.84"  # Work with Object storage
+awscli = "==1.19.112"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
-bandit = "==1.7.0"  # lint
+bandit = "==1.7.4"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
 coverage = "==5.4"  # Build coverage XML for Codacy
 Jinja2 = "==2.11.3"  # c2c.template
 lingua = "==4.14"  # i18n
-PasteScript = "==3.2.0"  # geoportal pcreate
-polib = "==1.1.0"  # i18n
+PasteScript = "==3.2.1"  # geoportal pcreate
+polib = "==1.1.1"  # i18n
 pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==2.11.1"  # tests
-transifex-client = "==0.14.2"  # Makefile
+transifex-client = "==0.14.4"  # Makefile
 WebTest = "==2.0.35"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit", "with_pyroma"],version = "==1.3.1"}
 mypy = "==0.800"
 flake8 = "==3.8.4"
 # Lock dependencies
-astroid = "==2.4.1"
 attrs = "==20.3.0"
-botocore = "==1.20.84"
+botocore = "==1.20.112"
 certifi = "==2020.12.5"
 chardet = "==4.0.0"
 click = "==8.0.4"
-colorama = "==0.4.3"
 docopt = "==0.6.2"
 docutils = "==0.15.2"
 dodgy = "==0.2.1"
 flake8-polyfill = "==1.0.2"
-gitdb = "==4.0.5"
-gitpython = "==3.1.12"
+gitdb = "==4.0.9"
+gitpython = "==3.1.29"
 idna = "==2.10"
 iniconfig = "==1.1.1"
 isort = "==4.3.21"
@@ -43,7 +41,7 @@ markupsafe = "==1.1.1"
 mccabe = "==0.6.1"
 mypy-extensions = "==0.4.3"
 packaging = "==20.9"
-paste = "==3.5.0"
+paste = "==3.5.2"
 pastedeploy = "==2.1.1"
 pbr = "==5.5.1"
 pep8-naming = "==0.10.0"
@@ -60,9 +58,9 @@ pylint-django = "==2.1.0"
 pylint-flask = "==0.6"
 pylint-plugin-utils = "==0.6"
 pyparsing = "==2.4.7"
-pyroma = "==2.6"
-pytest = "==6.2.2"
-python-dateutil = "==2.8.1"
+pyroma = "==3.0.1"
+pytest = "==6.2.5"
+python-dateutil = "==2.8.2"
 python-slugify = "==4.0.1"
 pytz = "==2021.1"
 pyyaml = "==5.4.1"
@@ -74,65 +72,65 @@ six = "==1.15.0"
 smmap = "==3.0.5"
 snowballstemmer = "==2.1.0"
 soupsieve = "==2.1"
-stevedore = "==3.3.0"
+stevedore = "==3.3.3"
 text-unidecode = "==1.3"
 toml = "==0.10.2"
-typed-ast = "==1.4.2"
+typed-ast = "==1.4.3"
 typing-extensions = "==3.7.4.3"
 waitress = "==2.1.2"
-webob = "==1.8.6"
+webob = "==1.8.7"
 wrapt = "==1.12.1"
 
 [packages]
-alembic = "==1.5.3"  # geoportal
+alembic = "==1.5.8"  # geoportal
 "c2c.template" = "==2.3.0"  # geoportal
-c2cgeoform = "==2.1.26"  # commons
+c2cgeoform = "==2.1.27"  # commons
 colander = "==1.8.3"  # commons, admin
 ColanderAlchemy = "==0.3.4"  # commons
 deform = "==2.0.15"  # commons, admin
 defusedxml = "==0.6.0"  # geoportal
 "dogpile.cache" = "==1.0.2"  # geoportal
-Fiona = "==1.8.21"  # geoportal raster
-GeoAlchemy2 = "==0.8.4"  # commons, geoportal
+Fiona = "==1.8.22"  # geoportal raster
+GeoAlchemy2 = "==0.8.5"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.29"  # geoportal
-isodate = "==0.6.0"  # geoportal
-Mako = "==1.2.2"  # geoportal
+isodate = "==0.6.1"  # geoportal
+Mako = "==1.2.4"  # geoportal
 OWSLib = "==0.22.0"  # geoportal
 papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # # geoportal
 psycopg2-binary = "==2.8.6"  # geoportal
 pycryptodome = "==3.11.0"  # geoportal
-pyproj = "==3.0.0.post1"  # admin, other?
+pyproj = "==3.0.1"  # admin, other?
 pyotp = "==2.5.1"  # geoportal
-pyramid = "==1.10.5"  # geoportal
+pyramid = "==1.10.8"  # geoportal
 pyramid_debugtoolbar = "==4.9"  # geoportal
 pyramid-jinja2 = "==2.8"  # admin
 pyramid_mako = "==1.1.0"  # geoportal
 pyramid_multiauth = "==0.9.0"  # geoportal
 pyramid_tm = "==2.4"  # geoportal
-python-dateutil = "==2.8.1"  # geoportal
+python-dateutil = "==2.8.2"  # geoportal
 PyYAML = "==5.4.1"  # geoportal
 rasterio = "==1.2.10"  # geoportal raster
 requests = "==2.27.1"  # geoportal
 redis = "==3.5.3"  # geoportal cache
 Shapely = "==1.7.1"  # geoportal
-SQLAlchemy = "==1.3.23"
+SQLAlchemy = "==1.3.24"
 transaction = "==3.0.1"  # commons, geoportal
 translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
 c2cwsgiutils = {version = "==4.1.4", extras = ["broadcast", "profiler", "standard"]}
-oauthlib = "==3.1.0"
+oauthlib = "==3.1.1"
 setuptools = "==65.5.1"
 # Lock
-affine = "==2.3.0"
+affine = "==2.3.1"
 argparse = "==1.4.0"
 attrs = "==20.3.0"
 babel = "==2.9.1"
 beaker = "==1.11.0"
 beaker-redis = "==1.1.0"
 boltons = "==20.2.1"
-bottle = "==0.12.20"
+bottle = "==0.12.23"
 cee-syslog-handler = "==0.6.0"
 certifi = "==2020.12.5"
 chameleon = "==3.8.1"
@@ -144,20 +142,19 @@ cornice = "==5.0.3"
 decorator = "==4.4.2"
 graphviz = "==0.16"
 gunicorn = "==20.0.4"
-hupper = "==1.10.2"
+hupper = "==1.10.3"
 idna = "==2.10"
-iso8601 = "==0.1.13"
+iso8601 = "==0.1.16"
 jinja2 = "==2.11.3"
-linesman = "==0.3.1"
+linesman = "==0.3.2"
 lingua = "==4.14"
 lxml = "==4.9.1"
 markupsafe = "==1.1.1"
 munch = "==2.5.0"
 netifaces = "==0.10.9"
-networkx = "==2.6"
-numpy = "==1.22.2"
+numpy = "==1.22.4"
 objgraph = "==3.5.0"
-paste = "==3.5.0"
+paste = "==3.5.2"
 pastedeploy = "==2.1.1"
 pbr = "==5.5.1"
 peppercorn = "==0.6"
@@ -165,7 +162,7 @@ pillow = "==9.3.0"
 pipfile = "==0.0.2"
 plaster = "==1.0"
 plaster-pastedeploy = "==0.7"
-polib = "==1.1.0"
+polib = "==1.1.1"
 psycopg2 = "==2.8.6"
 pygments = "==2.7.4"
 pygraphviz = "==1.7"
@@ -180,20 +177,20 @@ sentry-sdk = "==1.0.0"
 six = "==1.15.0"
 snuggs = "==1.4.7"
 sqlalchemy-utils = "==0.36.8"
-stevedore = "==3.3.0"
+stevedore = "==3.3.3"
 toml = "==0.10.2"
 ujson = "==5.4.0"
-urllib3 = "==1.26.5"
+urllib3 = "==1.26.12"
 venusian = "==3.0.0"
 waitress = "==2.1.2"
-webob = "==1.8.6"
+webob = "==1.8.7"
 "zope.deprecation" = "==4.4.0"
 # Lock dependencies
 pyramid-debugtoolbar = "==4.9"
 pyramid-mako = "==1.1.0"
 pyramid-multiauth = "==0.9.0"
 pyramid-tm = "==2.4"
-simplejson = "==3.17.2"
+simplejson = "==3.17.6"
 "zope.interface" = "==5.2.0"
 "zope.sqlalchemy" = "==1.3"
 

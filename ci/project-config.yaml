@@ -3,8 +3,6 @@ checks:
   required_workflows: False
   versions: False
   dependabot_config: False
-  codespell:
-    ignore_re:
-      - CONST_create_template/.*
-      - geoportal/testgeomapfishapp_geoportal/locale/.*
-      - geoportal/testgeomapfishapp_geoportal/static-ngeo/js/apps/Controller.*\.js
+  setup: False
+  prettier: False
+  codespell: False
