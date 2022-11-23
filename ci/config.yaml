@@ -27,15 +27,6 @@ audit:
 
   pipfile_lock: false
 
-  snyk:
-    test_arguments:
-      - --all-projects
-      - --fail-on=upgradable
-      - --severity-threshold=medium
-    files_no_install:
-      - ci/requirements.txt
-      - geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/ci/requirements.txt
-
 publish:
   docker:
     images:
