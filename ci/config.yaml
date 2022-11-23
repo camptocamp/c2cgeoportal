@@ -33,6 +33,8 @@ audit:
   pipfile:
     sections:
       - default
+  pip: false
+  pipfile_lock: false
 
   snyk:
     test_arguments:
