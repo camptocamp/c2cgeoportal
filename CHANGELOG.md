@@ -1,3 +1,7 @@
+##### 2.7.0.147
+
+- Fix typo fist => first [ngeo#8942](https://github.com/camptocamp/ngeo/pull/8942)
+
 ##### 2.7.0.145
 
 - Snyk auto fix [c2cgeoportal#10196](https://github.com/camptocamp/c2cgeoportal/pull/10196)
