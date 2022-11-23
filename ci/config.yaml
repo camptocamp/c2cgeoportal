@@ -41,13 +41,7 @@ audit:
   pipfile:
     sections:
       - default
-
-  snyk:
-    test_arguments:
-      - --all-projects
-      - --fail-on=upgradable
-      - --severity-threshold=medium
-    files_no_install: []
+  pipfile_lock: false
 
 publish:
   docker:
