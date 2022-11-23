@@ -25,6 +25,8 @@ audit:
     sections:
       - default
 
+  pipfile_lock: false
+
   snyk:
     test_arguments:
       - --all-projects
