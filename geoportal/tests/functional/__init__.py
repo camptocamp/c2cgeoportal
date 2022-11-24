@@ -35,6 +35,7 @@ from configparser import ConfigParser
 from typing import Any, Dict
 
 import pyramid.registry
+import pyramid.request
 import sqlalchemy.exc
 import tests
 import transaction
@@ -217,7 +218,9 @@ def testing_legacySecurityPolicy(
     return policy
 
 
-def create_dummy_request(additional_settings=None, authentication=True, user=None, *args, **kargs):
+def create_dummy_request(
+    additional_settings=None, authentication=True, user=None, *args: Any, **kargs: Any
+) -> pyramid.request.Request:
     from pyramid.interfaces import IAuthenticationPolicy
 
     from c2cgeoportal_geoportal import create_get_user_from_request
