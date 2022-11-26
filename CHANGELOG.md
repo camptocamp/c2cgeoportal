@@ -1,3 +1,7 @@
+##### 2.7.0.149
+
+- Update all patch versions (2.7) (patch) [ngeo#8948](https://github.com/camptocamp/ngeo/pull/8948)
+
 ##### 2.7.0.147
 
 - Fix typo fist => first [ngeo#8942](https://github.com/camptocamp/ngeo/pull/8942)
