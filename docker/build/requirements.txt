@@ -1,11 +1,11 @@
 alabaster==0.7.12  # Doc theme
-alembic==1.0.9  # geoportal
+alembic==1.0.11  # geoportal
 astroid==2.2.5  # pylint
-awscli==1.19.84  # Work with Object storage
+awscli==1.19.112  # Work with Object storage
 Babel==2.9.1  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
-boto3==1.9.130  # Tile generation
-bottle==0.12.20  # geoportal
+boto3==1.9.253  # Tile generation
+bottle==0.12.23  # geoportal
 chameleon==3.7.4  # c2cgeoform
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.3.0  # geoportal
@@ -13,58 +13,58 @@ c2cgeoform==2.0.1  # commons
 codacy-coverage==1.3.11  # Codacy send report
 codespell==1.14.0  # Lint
 colander==1.7.0  # commons, admin
-ColanderAlchemy==0.3.3  # commons
-coverage==4.5.3  # Build coverage XML for Codacy
-dateutils==0.6.6  # geoportal pcreate
-deform==2.0.7  # commons, admin
+ColanderAlchemy==0.3.4  # commons
+coverage==4.5.4  # Build coverage XML for Codacy
+dateutils==0.6.12  # geoportal pcreate
+deform==2.0.15  # commons, admin
 defusedxml==0.5.0  # geoportal
 docutils==0.15.2  # doc
 dogpile.cache==0.7.1  # geoportal
-flake8==3.7.7  # lint, TODO remove filter on pyflakes
-flake8-copyright==0.2.2  # lint
+flake8==3.7.9  # lint, TODO remove filter on pyflakes
+flake8-copyright==0.2.3  # lint
 flake8-mypy==17.8.0  # lint
-Fiona==1.8.6  # geoportal raster
-GeoAlchemy2==0.6.1  # commons, geoportal
+Fiona==1.8.22  # geoportal raster
+GeoAlchemy2==0.6.3  # commons, geoportal
 geojson==2.4.1  # geoportal
 glob2==0.6  # ngeo
 htmlmin==0.1.12  # ngeo
 importlib-metadata==1.1.3  # fix travis
 ipcalc==1.99.0  # geoportal
-iso8601==0.1.11  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
-isodate==0.6.0  # geoportal
+iso8601==0.1.16  # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
+isodate==0.6.1  # geoportal
 Jinja2==2.11.3  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
-Mako==1.0.9  # geoportal
+Mako==1.0.14  # geoportal
 mccabe==0.6.1  # lint
 more-itertools==7.2.0  # fix travis
 mypy==0.700  # lint
 OWSLib==0.17.1  # geoportal
 papyrus==2.4  # commons, geoportal
 passwordgenerator # geoportal
-PasteScript==3.1.0  # geoportal pcreate
+PasteScript==3.1.1  # geoportal pcreate
 pep8==1.7.1  # lint
 pep8-naming==0.8.2  # Lint
-polib==1.1.0  # i18n
-psycopg2-binary==2.8.2  # geoportal
+polib==1.1.1  # i18n
+psycopg2-binary==2.8.6  # geoportal
 pycryptodome==3.11.0  # geoportal
 pyflakes==2.1.1  # lint, flake8
 Pygments==2.8.1  # doc
-pylint==2.7.2  # lint
+pylint==2.7.4  # lint
 Pympler==0.7  # geoportal, memory view
 pyproj==1.9.6  # admin, other?, rq.filter: < 2.0.0
 pyramid==1.9.4  # rq.filter: <=1.9.99
-pyramid_debugtoolbar==4.5  # geoportal
+pyramid_debugtoolbar==4.5.2  # geoportal
 pyramid-jinja2==2.8  # admin
 pyramid_mako==1.0.2  # geoportal
 pyramid_multiauth==0.9.0  # geoportal
 pyramid_tm==2.2.1  # geoportal
 pytest-cov==2.6.1  # tests
-pytest-html==1.22.0  # For Travis
+pytest-html==1.22.1  # For Travis
 pytest-selenium==1.16.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==5.4.1  # geoportal
-rasterio==1.0.2  # geoportal raster, rq.filter: <=1.0.2
+rasterio==1.0.28  # geoportal raster, rq.filter: <=1.0.2
 requests==2.27.1  # geoportal
 redis==3.2.1  # geoportal cache
 Shapely==1.6.4.post2  # geoportal
@@ -72,18 +72,18 @@ simplejson==3.16.0  # geoportal, rq.filter: !=3.16.1
 six==1.11.0  # required by transifex, rq.filter: ==1.11.0
 Sphinx==3.0.4  # doc, rq.filter: < 2.0.0
 sphinx-prompt==1.1.0  # doc
-SQLAlchemy==1.3.3
-tilecloud==1.3.1  # Tile generation
+SQLAlchemy==1.3.24
+tilecloud==1.3.4  # Tile generation
 tilecloud-chain==1.10.1  # Tile generation
 transaction==2.4.0  # commons, geoportal
 transifex-client==0.14.4  # Makefile
 translationstring==1.3  # admin
-urllib3==1.26.8  # required by transifex, rq.filter: <1.24
+urllib3==1.26.13  # required by transifex, rq.filter: <1.24
 venusian==2.1.0  # pyramid
 virtualenv==16.4.3  # Makefile
-waitress==1.4.3  # pcreate
-WebOb==1.8.5  # geoportal test
-WebTest==2.0.33  # admin tests
+waitress==1.4.4  # pcreate
+WebOb==1.8.7  # geoportal test
+WebTest==2.0.35  # admin tests
 wsgi-lineprof==0.7.0  # profiling
 yamllint==1.15.0  # lint
 zgitignore==0.8.2  # Makefile

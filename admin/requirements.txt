@@ -3,7 +3,7 @@ c2cgeoform
 c2cwsgiutils
 colander
 deform
-iso8601==0.1.11 # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
+iso8601==0.1.16 # deform, by default the version 0.1.12 is installed and is incompatible with deform, rq.filter: <=0.1.11
 passwordgenerator
 pyproj
 pyramid
