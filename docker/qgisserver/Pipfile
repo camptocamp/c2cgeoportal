@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 flake8 = "==3.7.9"  # lint
-flake8-copyright = "==0.2.2"  # lint
+flake8-copyright = "==0.2.3"  # lint
 flake8-mypy = "==17.8.0"  # lint
 mccabe = "==0.6.1"  # lint
 mypy = "==0.770"  # lint
@@ -19,31 +19,31 @@ isort = "==4.3.21"
 [packages]
 papyrus = "==2.4"  # commons
 redis = "==3.4.1"
-transaction = "==3.0.0"  # commons
+transaction = "==3.0.1"  # commons
 "c2c.template" = "==2.1.0"
 GeoAlchemy2 = "==0.7.0"
-SQLAlchemy = "==1.3.16"  # commons
+SQLAlchemy = "==1.3.24"  # commons
 "zope.event" = "==4.4"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.6.4.post2"
 # Lock
-bottle = "==0.12.20"
+bottle = "==0.12.23"
 "geojson" = "==2.5.0"
-"hupper" = "==1.10.2"
+"hupper" = "==1.10.3"
 jinja2 = "==2.11.3"
-"mako" = "==1.1.2"
+"mako" = "==1.1.6"
 "markupsafe" = "==1.1.1"
-"pastedeploy" = "==2.1.0"
+"pastedeploy" = "==2.1.1"
 "plaster" = "==1.0"
 "plaster-pastedeploy" = "==0.7"
-"pyramid" = "==1.10.4"
+"pyramid" = "==1.10.8"
 "pyyaml" = "==5.3.1"
 "six" = "==1.14.0"
 "translationstring" = "==1.3"
 "venusian" = "==3.0.0"
-"webob" = "==1.8.6"
+"webob" = "==1.8.7"
 "zope.deprecation" = "==4.4.0"
-"zope.interface" = "==5.1.0"
+"zope.interface" = "==5.1.2"
 
 [requires]
 python_version = "3.5"
