@@ -1,0 +1,9 @@
+*.md
+*.yml
+*.yaml
+Pipfile.lock
+*.css
+*.html
+*.js
+package.json
+package-lock.json
