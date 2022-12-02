@@ -1,3 +1,5 @@
+##### 2.6.0.157
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10207](https://github.com/camptocamp/c2cgeoportal/pull/10207)
 ##### 2.6.0.156
 * Use default Snyk audit config, remove unwanted audit issue, fix CVE [c2cgeoportal#10198](https://github.com/camptocamp/c2cgeoportal/pull/10198)
 ##### 2.6.0.155
