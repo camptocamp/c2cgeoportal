@@ -225,29 +225,29 @@ jobs:
       - run: df -h
         if: always()
 
-  audit:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 20
-    name: Audit
-    steps:
-      - run: sudo npm install -g npm@6
-      - run: sudo apt-get install --yes libgdal-dev libgraphviz-dev
-      - run: sudo python3 -m pip install --upgrade httplib2 numpy
-      - uses: actions/checkout@v3
-
-      - uses: camptocamp/initialise-gopass-summon-action@v2
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-
-      - run: python3 -m venv ~/.venv
-      - run: echo "${HOME}/.venv/bin" >> ${GITHUB_PATH}
-      - run: ~/.venv/bin/pip install --pre c2cciutils[audit]
-
-      - uses: asdf-vm/actions/install@v1
-      - run: python --version
-
-      - name: Audit
-        run: c2cciutils-audit --branch=2.5
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+#  audit:
+#    runs-on: ubuntu-20.04
+#    timeout-minutes: 20
+#    name: Audit
+#    steps:
+#      - run: sudo npm install -g npm@6
+#      - run: sudo apt-get install --yes libgdal-dev libgraphviz-dev
+#      - run: sudo python3 -m pip install --upgrade httplib2 numpy
+#      - uses: actions/checkout@v3
+#
+#      - uses: camptocamp/initialise-gopass-summon-action@v2
+#        with:
+#          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+#          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+#
+#      - run: python3 -m venv ~/.venv
+#      - run: echo "${HOME}/.venv/bin" >> ${GITHUB_PATH}
+#      - run: ~/.venv/bin/pip install --pre c2cciutils[audit]
+#
+#      - uses: asdf-vm/actions/install@v1
+#      - run: python --version
+#
+#      - name: Audit
+#        run: c2cciutils-audit --branch=2.5
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}
