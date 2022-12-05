@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "@snyk/protect": "1.1066.0",
-    "@typescript-eslint/eslint-plugin": "5.45.0",
-    "@typescript-eslint/parser": "5.45.0",
+    "@typescript-eslint/eslint-plugin": "5.45.1",
+    "@typescript-eslint/parser": "5.45.1",
     "angular-gettext-tools": "2.5.3",
     "commander": "9.4.1",
     "eslint": "8.29.0",
-    "ngeo": "2.8.0-latest.20221203T090609Z.8d9715b18",
+    "ngeo": "2.8.0-latest.20221205T173710Z.586506cd1",
     "puppeteer": "19.3.0",
     "url-parse": "1.5.10"
   },
