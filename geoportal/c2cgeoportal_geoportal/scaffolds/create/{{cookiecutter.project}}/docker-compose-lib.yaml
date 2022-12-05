@@ -403,7 +403,7 @@ services:
     build: *geoportal-build
 
   front:
-    image: haproxy:2.6
+    image: haproxy:2.7
     restart: unless-stopped
     volumes:
       - /dev/log:/dev/log:rw
