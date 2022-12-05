@@ -1,13 +1,13 @@
 {
   extends: ['config:base'],
   timezone: 'Europe/Zurich',
-  schedule: 'after 1am on Saturday',
+  schedule: 'on the first day of the month',
   labels: ['dependencies'],
   separateMajorMinor: true,
   separateMinorPatch: true,
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
-  lockFileMaintenance: {enabled: true, automerge: true},
+  lockFileMaintenance: {enabled: true, automerge: true, schedule: 'on the first day of the month'},
   baseBranches: ['master', '2.4', '2.5', '2.6', '2.7'],
   regexManagers: [
     {
@@ -66,6 +66,11 @@
       automerge: true,
       separateMajorMinor: false,
       separateMinorPatch: false,
+    },
+    /** daily ngeo */
+    {
+      matchPackageNames: ['ngeo'],
+      schedule: 'every weekday',
     },
     /** Ungroup OWSLib */
     {
