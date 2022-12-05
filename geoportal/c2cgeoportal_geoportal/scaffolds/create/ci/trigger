@@ -55,11 +55,15 @@ def main():
             "login",
             subprocess.check_output(
                 ["gopass", "show", "gs/ci/openshift/{}/url".format(os.environ["OPENSHIFT_PROJECT"])]
-            ).decode(),
+            )
+            .decode()
+            .strip(),
             "--token="
             + subprocess.check_output(
                 ["gopass", "show", "gs/ci/openshift/{}/token".format(os.environ["OPENSHIFT_PROJECT"])]
-            ).decode(),
+            )
+            .decode()
+            .strip(),
         ]
     )
     for image in args.images:
