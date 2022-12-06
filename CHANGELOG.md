@@ -1,3 +1,5 @@
+##### 2.6.0.160
+* Strip gopass result [c2cgeoportal#10221](https://github.com/camptocamp/c2cgeoportal/pull/10221)
 ##### 2.6.0.159
 * Update all patch versions (2.6) (patch) [ngeo#8949](https://github.com/camptocamp/ngeo/pull/8949)
 ##### 2.6.0.158
