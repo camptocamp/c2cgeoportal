@@ -569,6 +569,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layergroup
       - name: disclaimer
         translate: True
         description: >
