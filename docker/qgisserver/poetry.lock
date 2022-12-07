@@ -76,7 +76,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "5.1.5"
+version = "5.1.6"
 description = "Common utilities for Camptocamp WSGI applications"
 category = "main"
 optional = false
@@ -973,7 +973,7 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "68a511747bb2f6160ca9c05d028e7066a9cd95c9ff0d1f0c2addb278ee8ff72b"
+content-hash = "b9037f160d433dbf236badbdd63bc819cc3f03913e068a31e97ffba52c258b49"
 
 [metadata.files]
 astroid = [
@@ -1000,7 +1000,7 @@ c2c-template = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 c2cwsgiutils = [
-    {file = "c2cwsgiutils-5.1.5-py3-none-any.whl", hash = "sha256:bfe7950cc303626b0dc0c29bbd684632aa985cc457727928741eb543b396b33b"},
+    {file = "c2cwsgiutils-5.1.6-py3-none-any.whl", hash = "sha256:c4491eb70d536b2f24c346be64f6f2a077e062489086fb752b567d79307c2068"},
 ]
 cee-syslog-handler = [
     {file = "cee_syslog_handler-0.6.0-py3-none-any.whl", hash = "sha256:13b60f5b4f9f04e2868316d88bf63d51b4b4b273ba7df12af6f21ee10e223ca3"},
