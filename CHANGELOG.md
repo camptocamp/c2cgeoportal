@@ -1,3 +1,7 @@
+##### 2.7.0.151
+
+- The metadataUrl metadata is also relevant for layers group [c2cgeoportal#10222](https://github.com/camptocamp/c2cgeoportal/pull/10222)
+
 ##### 2.7.0.150
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10208](https://github.com/camptocamp/c2cgeoportal/pull/10208)
