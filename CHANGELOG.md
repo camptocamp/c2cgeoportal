@@ -1,3 +1,7 @@
+##### 2.7.0.152
+
+- Snyk auto fix [ngeo#8961](https://github.com/camptocamp/ngeo/pull/8961)
+
 ##### 2.7.0.151
 
 - The metadataUrl metadata is also relevant for layers group [c2cgeoportal#10222](https://github.com/camptocamp/c2cgeoportal/pull/10222)
