@@ -1,3 +1,5 @@
+##### 2.6.0.161
+* Snyk auto fix [ngeo#8962](https://github.com/camptocamp/ngeo/pull/8962)
 ##### 2.6.0.160
 * Strip gopass result [c2cgeoportal#10221](https://github.com/camptocamp/c2cgeoportal/pull/10221)
 ##### 2.6.0.159
