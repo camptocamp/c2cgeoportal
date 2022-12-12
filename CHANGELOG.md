@@ -1,3 +1,5 @@
+##### 2.6.0.162
+* Downgrade Python wheel to a usable version [c2cgeoportal#10230](https://github.com/camptocamp/c2cgeoportal/pull/10230)
 ##### 2.6.0.161
 * Snyk auto fix [ngeo#8962](https://github.com/camptocamp/ngeo/pull/8962)
 ##### 2.6.0.160
