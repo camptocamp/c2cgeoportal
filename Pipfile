@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-awscli = "*"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
 bandit = "==1.6.2"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
@@ -27,7 +26,6 @@ mypy = "==0.761"
 astroid = "==2.3.3"
 attrs = "==19.3.0"
 botocore = "==1.20.112"
-certifi = "==2020.4.5.2"
 chardet = "==3.0.4"
 click = "==7.1.2"
 colorama = "==0.4.6"
@@ -137,7 +135,7 @@ babel = "==2.9.1"
 "beaker" = "==1.11.0"
 "beaker-redis" = "==1.1.0"
 bottle = "==0.12.23"
-"certifi" = "==2020.4.5.2"
+certifi = "==2022.12.7"
 "chameleon" = "==3.8.1"
 "chardet" = "==3.0.4"
 "click" = "==8.0.4"

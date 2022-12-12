@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b403fb4ffb1e9b907c3b942d75ac8661dc2a6006b8ef50a5d87db2aff5f5fb46"
+            "sha256": "a9740779d76dbbb038f0230344d9066657c01e5f706708b192cc4ed5bb4643f4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -96,11 +96,11 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:5ad7e9a056d25ffa5082862e36f119f7f7cec6457fa07ee2f8c339814b80c9b1",
-                "sha256:9cd41137dc19af6a5e03b630eefe7d1f458d964d406342dd3edf625839b944cc"
+                "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3",
+                "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"
             ],
             "index": "pypi",
-            "version": "==2020.4.5.2"
+            "version": "==2022.12.7"
         },
         "chameleon": {
             "hashes": [
@@ -999,14 +999,6 @@
         }
     },
     "develop": {
-        "argparse": {
-            "hashes": [
-                "sha256:62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4",
-                "sha256:c31647edb69fd3d465a847ea3157d37bed1f95f19760b11a47aa91c04b666314"
-            ],
-            "index": "pypi",
-            "version": "==1.4.0"
-        },
         "astroid": {
             "hashes": [
                 "sha256:71ea07f44df9568a75d0f354c49143a4575d90645e9fead6dfb52c26a85ed13a",
@@ -1022,13 +1014,6 @@
             ],
             "index": "pypi",
             "version": "==19.3.0"
-        },
-        "awscli": {
-            "hashes": [
-                "sha256:58f1d62f001942583aa3544d828daf4bf4efa7335be7705aa070c11b3e824d93"
-            ],
-            "index": "pypi",
-            "version": "==0.7.0"
         },
         "babel": {
             "hashes": [
@@ -1065,11 +1050,11 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:5ad7e9a056d25ffa5082862e36f119f7f7cec6457fa07ee2f8c339814b80c9b1",
-                "sha256:9cd41137dc19af6a5e03b630eefe7d1f458d964d406342dd3edf625839b944cc"
+                "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3",
+                "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"
             ],
             "index": "pypi",
-            "version": "==2020.4.5.2"
+            "version": "==2022.12.7"
         },
         "chardet": {
             "hashes": [
