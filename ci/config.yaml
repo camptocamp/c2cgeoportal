@@ -6,9 +6,6 @@ checks:
   required_workflows: False
 
 audit:
-  pipenv:
-    python_versions:
-      - 3.6.12
   npm:
     cwe_ignore:
       - CWE-20 # Improper Input Validation
