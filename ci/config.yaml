@@ -38,11 +38,6 @@ audit:
     package_ignore:
       - angular-gettext-tools
 
-  pipfile:
-    sections:
-      - default
-  pipfile_lock: false
-
 publish:
   docker:
     images:
