@@ -4,12 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-c2cwsgiutils = {extras = ["broadcast"], version = "==5.0.0"}
+c2cwsgiutils = {extras = ["broadcast"], version = "==5.0.1"}
 papyrus = "==2.4"  # commons
 transaction = "==3.0.1"  # commons
 "c2c.template" = "==2.3.0"
 GeoAlchemy2 = "==0.11.1"
-SQLAlchemy = "==1.4.44"  # commons
+SQLAlchemy = "==1.4.45"  # commons
 "zope.event" = "==4.4"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.8.5.post1"
