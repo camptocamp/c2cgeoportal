@@ -19,10 +19,6 @@ audit:
     package_ignore:
       - angular-gettext-tools
 
-  pipfile:
-    sections:
-      - default
-
   snyk:
     files_no_install:
       - ci/requirements.txt
