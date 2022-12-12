@@ -34,16 +34,14 @@ import decimal
 import json
 from unittest import TestCase
 
-from c2cwsgiutils.pretty_json import _FastDumps as FastDumps
+from c2cwsgiutils.pretty_json import fast_dumps
 
 
 class TestDecimalJSON(TestCase):
     def test_decimal(self):
         value = {"str": "an str", "int": 1, "dec": decimal.Decimal("1.2")}
-        fast_dumps = FastDumps()
         result = fast_dumps(value)
         self.assertEqual(json.loads(result), {"int": 1, "dec": 1.2, "str": "an str"})
 
     def test_decimal_json(self):
-        fast_dumps = FastDumps()
-        self.assertEqual(fast_dumps({"a": decimal.Decimal("3.3")}), '{"a": 3.3}')
+        self.assertEqual(fast_dumps({"a": decimal.Decimal("3.3")}), '{\n  "a": 3.3\n}')
