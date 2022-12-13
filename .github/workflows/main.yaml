@@ -168,6 +168,7 @@ jobs:
 
       # Test App
       - run: ci/test-app
+        timeout-minutes: 30
       - name: Docker logs
         run: |
           cd ${HOME}/workspace/testgeomapfishapp/
