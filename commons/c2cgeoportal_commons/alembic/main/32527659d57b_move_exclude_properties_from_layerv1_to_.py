@@ -51,9 +51,9 @@ def upgrade() -> None:
 
     op.add_column("layer", Column("exclude_properties", Unicode), schema=schema)
     op.execute(
-        "UPDATE %(schema)s.layer as l1 SET exclude_properties = l2.exclude_properties "
-        "FROM %(schema)s.layerv1 as l2 "
-        "WHERE l1.id = l2.id" % {"schema": schema}
+        f"UPDATE {schema}.layer as l1 SET exclude_properties = l2.exclude_properties "
+        f"FROM {schema}.layerv1 as l2 "
+        "WHERE l1.id = l2.id"
     )
     op.drop_column("layerv1", "exclude_properties", schema=schema)
 
@@ -64,8 +64,8 @@ def downgrade() -> None:
 
     op.add_column("layerv1", Column("exclude_properties", Unicode), schema=schema)
     op.execute(
-        "UPDATE %(schema)s.layerv1 as l1 SET exclude_properties = l2.exclude_properties "
-        "FROM %(schema)s.layer as l2 "
-        "WHERE l1.id = l2.id" % {"schema": schema}
+        f"UPDATE {schema}.layerv1 as l1 SET exclude_properties = l2.exclude_properties "
+        f"FROM {schema}.layer as l2 "
+        "WHERE l1.id = l2.id"
     )
     op.drop_column("layer", "exclude_properties", schema=schema)

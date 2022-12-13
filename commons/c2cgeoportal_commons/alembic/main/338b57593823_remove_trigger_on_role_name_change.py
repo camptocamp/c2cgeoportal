@@ -59,22 +59,20 @@ def downgrade() -> None:
     staticschema = config["schema_static"]
 
     op.execute(
-        """
-CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
-RETURNS trigger AS
-$$
-BEGIN
-IF NEW.name <> OLD.name THEN
-UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
-END IF;
-RETURN NEW;
-END;
-$$
-LANGUAGE plpgsql""".format(
-            schema=schema, staticschema=staticschema
-        )
+        f"""
+        CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+        RETURNS trigger AS
+        $$
+        BEGIN
+        IF NEW.name <> OLD.name THEN
+        UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+        END IF;
+        RETURN NEW;
+        END;
+        $$
+        LANGUAGE plpgsql"""
     )
     op.execute(
-        "CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
-        "EXECUTE PROCEDURE {schema}.on_role_name_change()".format(schema=schema)
+        f"CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
+        f"EXECUTE PROCEDURE {schema}.on_role_name_change()"
     )

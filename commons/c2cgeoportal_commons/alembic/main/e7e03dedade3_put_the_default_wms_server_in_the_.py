@@ -50,13 +50,11 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.execute(
-        """
+        f"""
         UPDATE "{schema}".ogc_server
         SET url = 'config://local/mapserv'
         WHERE url IS NULL
-    """.format(
-            schema=schema
-        )
+        """
     )
 
     op.alter_column("ogc_server", "url", nullable=False, schema=schema)
@@ -75,11 +73,9 @@ def downgrade() -> None:
     op.drop_constraint("type_name_unique_treeitem", "treeitem", schema=schema)
 
     op.execute(
-        """
+        f"""
         UPDATE "{schema}".ogc_server
         SET url = NULL
         WHERE url = 'config://local/mapserv'
-    """.format(
-            schema=schema
-        )
+        """
     )

@@ -50,13 +50,11 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.execute(
-        """
+        f"""
         UPDATE "{schema}".ogc_server
         SET url = 'config://internal/mapserv'
         WHERE url = 'config://local/mapserv'
-    """.format(
-            schema=schema
-        )
+        """
     )
 
 
@@ -65,11 +63,9 @@ def downgrade() -> None:
     schema = config["schema"]
 
     op.execute(
-        """
+        f"""
         UPDATE "{schema}".ogc_server
         SET url = 'config://local/mapserv'
         WHERE url = 'config://internal/mapserv'
-    """.format(
-            schema=schema
-        )
+        """
     )

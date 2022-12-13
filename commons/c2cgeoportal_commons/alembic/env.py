@@ -31,7 +31,6 @@
 import logging.config
 from typing import Any, Dict, Union, cast
 
-import c2cwsgiutils.pyramid_logging
 import sqlalchemy
 from alembic import context
 from c2c.template.config import config
@@ -52,7 +51,8 @@ def get_config() -> Dict[str, Union[str, bool]]:
     settings: Dict[str, Union[str, bool]] = {}
     settings.update(config.get_config())
     alembic_name = context.config.get_main_option("type")
-    schema_config_name = "schema{}".format(f"_{alembic_name}" if alembic_name != "main" else "")
+    schema_postfix = f"_{alembic_name}" if alembic_name != "main" else ""
+    schema_config_name = f"schema{schema_postfix}"
     script_location = context.config.get_main_option("script_location")
     version_table = context.config.get_main_option("version_table")
     version_locations = context.config.get_main_option("version_locations")
@@ -99,9 +99,9 @@ def run_migrations_online() -> None:
 
     # Autogenerate config
     alembic_name = context.config.get_main_option("type")
-    from c2cgeoportal_commons.models import Base, main, static
+    from c2cgeoportal_commons.models import Base, main, static  # pylint: disable=import-outside-toplevel
 
-    _schema = main._schema if alembic_name == "main" else static._schema
+    _schema = main._schema if alembic_name == "main" else static._schema  # pylint: disable=protected-access
 
     def include_object(
         obj: sqlalchemy.ext.declarative.ConcreteBase,
@@ -114,8 +114,7 @@ def run_migrations_online() -> None:
 
         if type_ == "table":
             return cast(bool, obj.schema == _schema)
-        else:
-            return cast(bool, obj.table.schema == _schema)
+        return cast(bool, obj.table.schema == _schema)
 
     if _schema:
         conf.update(

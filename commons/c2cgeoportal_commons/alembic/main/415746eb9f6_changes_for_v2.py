@@ -157,29 +157,29 @@ def upgrade() -> None:
     op.bulk_insert(interface, [{"name": "main"}, {"name": "mobile"}, {"name": "edit"}, {"name": "routing"}])
 
     op.execute(
-        "INSERT INTO %(schema)s.interface_layer (layer_id, interface_id) "
+        f"INSERT INTO {schema}.interface_layer (layer_id, interface_id) "
         "(SELECT l.id AS layer_id, i.id AS interface_id "
-        "FROM %(schema)s.layer AS l, %(schema)s.interface AS i "
-        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")" % {"schema": schema}
+        f"FROM {schema}.layer AS l, {schema}.interface AS i "
+        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")"
     )
     op.execute(
-        "INSERT INTO %(schema)s.interface_layer (layer_id, interface_id) "
+        f"INSERT INTO {schema}.interface_layer (layer_id, interface_id) "
         "(SELECT l.id AS layer_id, i.id AS interface_id "
-        "FROM %(schema)s.layer AS l, %(schema)s.interface AS i "
-        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")" % {"schema": schema}
+        f"FROM {schema}.layer AS l, {schema}.interface AS i "
+        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")"
     )
 
     op.execute(
-        "INSERT INTO %(schema)s.interface_theme (theme_id, interface_id) "
+        f"INSERT INTO {schema}.interface_theme (theme_id, interface_id) "
         "(SELECT l.id AS theme_id, i.id AS interface_id "
-        "FROM %(schema)s.theme AS l, %(schema)s.interface AS i "
-        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")" % {"schema": schema}
+        f"FROM {schema}.theme AS l, {schema}.interface AS i "
+        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")"
     )
     op.execute(
-        "INSERT INTO %(schema)s.interface_theme (theme_id, interface_id) "
+        f"INSERT INTO {schema}.interface_theme (theme_id, interface_id) "
         "(SELECT l.id AS theme_id, i.id AS interface_id "
-        "FROM %(schema)s.theme AS l, %(schema)s.interface AS i "
-        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")" % {"schema": schema}
+        f"FROM {schema}.theme AS l, {schema}.interface AS i "
+        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")"
     )
 
     op.drop_column("layer", "inMobileViewer", schema=schema)
@@ -271,32 +271,32 @@ def downgrade() -> None:
     op.alter_column("layergroup", "is_internal_wms", new_column_name="isInternalWMS", schema=schema)
     op.alter_column("layergroup", "is_base_layer", new_column_name="isBaseLayer", schema=schema)
 
-    op.execute("UPDATE ONLY %(schema)s.theme AS t " 'SET "inDesktopViewer" = FALSE' % {"schema": schema})
-    op.execute("UPDATE ONLY %(schema)s.layer AS t " 'SET "inDesktopViewer" = FALSE' % {"schema": schema})
+    op.execute(f"UPDATE ONLY {schema}.theme AS t " 'SET "inDesktopViewer" = FALSE')
+    op.execute(f"UPDATE ONLY {schema}.layer AS t " 'SET "inDesktopViewer" = FALSE')
 
     op.execute(
-        "UPDATE ONLY %(schema)s.theme AS t "
+        f"UPDATE ONLY {schema}.theme AS t "
         'SET "inMobileViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_theme AS it "
-        "WHERE i.name = 'mobile' AND i.id = it.interface_id AND it.theme_id = t.id" % {"schema": schema}
+        f"FROM {schema}.interface AS i, {schema}.interface_theme AS it "
+        "WHERE i.name = 'mobile' AND i.id = it.interface_id AND it.theme_id = t.id"
     )
     op.execute(
-        "UPDATE ONLY %(schema)s.theme AS t "
+        f"UPDATE ONLY {schema}.theme AS t "
         'SET "inDesktopViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_theme AS it "
-        "WHERE i.name = 'main' AND i.id = it.interface_id AND it.theme_id = t.id" % {"schema": schema}
+        f"FROM {schema}.interface AS i, {schema}.interface_theme AS it "
+        "WHERE i.name = 'main' AND i.id = it.interface_id AND it.theme_id = t.id"
     )
     op.execute(
-        "UPDATE ONLY %(schema)s.layer AS l "
+        f"UPDATE ONLY {schema}.layer AS l "
         'SET "inMobileViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_layer AS il "
-        "WHERE i.name = 'mobile' AND i.id = il.interface_id AND il.layer_id = l.id" % {"schema": schema}
+        f"FROM {schema}.interface AS i, {schema}.interface_layer AS il "
+        "WHERE i.name = 'mobile' AND i.id = il.interface_id AND il.layer_id = l.id"
     )
     op.execute(
-        "UPDATE ONLY %(schema)s.layer AS l "
+        f"UPDATE ONLY {schema}.layer AS l "
         'SET "inDesktopViewer" = TRUE '
-        "FROM %(schema)s.interface AS i, %(schema)s.interface_layer AS il "
-        "WHERE i.name = 'main' AND i.id = il.interface_id AND il.layer_id = l.id" % {"schema": schema}
+        f"FROM {schema}.interface AS i, {schema}.interface_layer AS il "
+        "WHERE i.name = 'main' AND i.id = il.interface_id AND il.layer_id = l.id"
     )
 
     op.add_column("layer", Column("timeMode", Unicode(8)), schema=schema)
@@ -324,7 +324,7 @@ def downgrade() -> None:
     op.add_column("layer", Column("isChecked", Boolean, default=True), schema=schema)
 
     op.execute(
-        "UPDATE %(schema)s.layer AS l SET ("
+        f"UPDATE {schema}.layer AS l SET ("
         'id, "isChecked", icon, "layerType", url, "imageType", style, dimensions, "matrixSet", '
         '"wmsUrl", "wmsLayers", "queryLayers", kml, "isSingleTile", legend, "legendImage", '
         '"legendRule", "isLegendExpanded", "minResolution", "maxResolution", disclaimer, '
@@ -335,7 +335,7 @@ def downgrade() -> None:
         "o.legend, o.legend_image, o.legend_rule, o.is_legend_expanded, o.min_resolution, "
         "o.max_resolution, o.disclaimer, o.identifier_attribute_field, o.exclude_properties, "
         "o.time_mode "
-        ") FROM %(schema)s.layerv1 AS o WHERE o.id = l.id" % {"schema": schema}
+        f") FROM {schema}.layerv1 AS o WHERE o.id = l.id"
     )
 
     op.drop_table("layerv1", schema=schema)

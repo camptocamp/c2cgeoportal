@@ -53,13 +53,13 @@ def upgrade() -> None:
     op.add_column("layergroup_treeitem", Column("id", Integer, primary_key=True), schema=schema)
     op.add_column("layergroup_treeitem", Column("ordering", Integer), schema=schema)
     op.execute(
-        'UPDATE ONLY %(schema)s.layergroup_treeitem AS lt SET ordering = ti."order" '
-        "FROM %(schema)s.treeitem AS ti WHERE ti.id = lt.treeitem_id " % {"schema": schema}
+        f'UPDATE ONLY {schema}.layergroup_treeitem AS lt SET ordering = ti."order" '
+        f"FROM {schema}.treeitem AS ti WHERE ti.id = lt.treeitem_id "
     )
     op.add_column("theme", Column("ordering", Integer), schema=schema)
     op.execute(
-        'UPDATE ONLY %(schema)s.theme AS t SET ordering = ti."order" '
-        "FROM %(schema)s.treeitem AS ti WHERE ti.id = t.id " % {"schema": schema}
+        f'UPDATE ONLY {schema}.theme AS t SET ordering = ti."order" '
+        f"FROM {schema}.treeitem AS ti WHERE ti.id = t.id "
     )
     op.drop_column("treeitem", "order", schema=schema)
 
@@ -69,12 +69,12 @@ def downgrade() -> None:
     schema = config["schema"]
     op.add_column("treeitem", Column("order", Integer), schema=schema)
     op.execute(
-        'UPDATE ONLY %(schema)s.treeitem AS ti SET "order" = lt.ordering '
-        "FROM %(schema)s.layergroup_treeitem AS lt WHERE ti.id = lt.treeitem_id " % {"schema": schema}
+        f'UPDATE ONLY {schema}.treeitem AS ti SET "order" = lt.ordering '
+        f"FROM {schema}.layergroup_treeitem AS lt WHERE ti.id = lt.treeitem_id "
     )
     op.execute(
-        'UPDATE ONLY %(schema)s.treeitem AS ti SET "order" = t.ordering '
-        "FROM %(schema)s.theme AS t WHERE ti.id = t.id " % {"schema": schema}
+        f'UPDATE ONLY {schema}.treeitem AS ti SET "order" = t.ordering '
+        f"FROM {schema}.theme AS t WHERE ti.id = t.id "
     )
     op.drop_column("theme", "ordering", schema=schema)
     op.drop_column("layergroup_treeitem", "ordering", schema=schema)

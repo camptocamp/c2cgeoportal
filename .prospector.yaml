@@ -1,13 +1,12 @@
----
 strictness: veryhigh
 max-line-length: 110
-doc-warnings: True
+doc-warnings: true
 
 ignore-paths:
-  - node_modules
-  - setup.py
-  - CONST_create_template
-  - scaffolds
+  - commons/setup.py
+  - geoportal/setup.py
+  - admin/setup.py
+  - geoportal/c2cgeoportal_geoportal/scaffolds
   - docker/qgisserver
 
 pycodestyle:

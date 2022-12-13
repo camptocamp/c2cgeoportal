@@ -49,17 +49,11 @@ def upgrade() -> None:
     """Upgrade."""
     schema = config["schema"]
 
-    op.execute(
-        "UPDATE ONLY {schema}.interface AS i "
-        "SET name = 'desktop' where name = 'main'".format(schema=schema)
-    )
+    op.execute(f"UPDATE ONLY {schema}.interface AS i SET name = 'desktop' where name = 'main'")
 
 
 def downgrade() -> None:
     """Downgrade."""
     schema = config["schema"]
 
-    op.execute(
-        "UPDATE ONLY {schema}.interface AS i "
-        "SET name = 'main' where name = 'desktop'".format(schema=schema)
-    )
+    op.execute(f"UPDATE ONLY {schema}.interface AS i SET name = 'main' where name = 'desktop'")

@@ -1,9 +1,15 @@
----
 strictness: veryhigh
+max-line-length: 110
+
+pylint:
+  disable:
+    - too-many-arguments
 
 pycodestyle:
   disable:
-    - E501
+    - N802 # function name should be lowercase, done by Pylint
+    - N803 # argument name should be lowercase, done by Pylint
+    - N806 # variable in function should be lowercase, done by Pylint
 
 mccabe:
   run: false

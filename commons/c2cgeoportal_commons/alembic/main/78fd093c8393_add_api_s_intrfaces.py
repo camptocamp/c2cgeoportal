@@ -56,38 +56,26 @@ def upgrade() -> None:
     connection = op.get_bind()
     for interface_name in ("api", "iframe_api"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
         )
         if result.fetchone()[0] == 0:
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("edit", "routing"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
         )
         if result.fetchone()[0] != 0:
             op.execute(
-                "DELETE FROM {schema}.interface_theme it "
-                "USING {schema}.interface i "
-                "WHERE it.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                f"DELETE FROM {schema}.interface_theme it "
+                f"USING {schema}.interface i "
+                f"WHERE it.interface_id = i.id AND i.name = '{interface_name}'"
             )
             op.execute(
-                "DELETE FROM {schema}.interface_layer il "
-                "USING {schema}.interface i "
-                "WHERE il.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                f"DELETE FROM {schema}.interface_layer il "
+                f"USING {schema}.interface i "
+                f"WHERE il.interface_id = i.id AND i.name = '{interface_name}'"
             )
-            op.execute(
-                "DELETE FROM {schema}.interface WHERE name='{name}'".format(
-                    name=interface_name, schema=schema
-                )
-            )
+            op.execute(f"DELETE FROM {schema}.interface WHERE name='{interface_name}'")
 
 
 def downgrade() -> None:
@@ -99,35 +87,23 @@ def downgrade() -> None:
     connection = op.get_bind()
     for interface_name in ("edit", "routing"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
         )
         if result.fetchone()[0] == 0:
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("api", "iframe_api"):
         result = connection.execute(
-            "SELECT count(name) FROM {schema}.interface WHERE name='{name}'".format(
-                name=interface_name, schema=schema
-            )
+            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
         )
         if result.fetchone()[0] != 0:
             op.execute(
-                "DELETE FROM {schema}.interface_theme it "
-                "USING {schema}.interface i "
-                "WHERE it.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                f"DELETE FROM {schema}.interface_theme it "
+                f"USING {schema}.interface i "
+                f"WHERE it.interface_id = i.id AND i.name = '{interface_name}'"
             )
             op.execute(
-                "DELETE FROM {schema}.interface_layer il "
-                "USING {schema}.interface i "
-                "WHERE il.interface_id = i.id AND i.name = '{name}'".format(
-                    name=interface_name, schema=schema
-                )
+                f"DELETE FROM {schema}.interface_layer il "
+                f"USING {schema}.interface i "
+                f"WHERE il.interface_id = i.id AND i.name = '{interface_name}'"
             )
-            op.execute(
-                "DELETE FROM {schema}.interface WHERE name='{name}'".format(
-                    name=interface_name, schema=schema
-                )
-            )
+            op.execute(f"DELETE FROM {schema}.interface WHERE name='{interface_name}'")

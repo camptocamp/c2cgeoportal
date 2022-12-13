@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2016-2019, Camptocamp SA
 # All rights reserved.
 
@@ -26,8 +24,6 @@
 # The views and conclusions contained in the software and documentation are those
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
-
-# pylint: disable=no-member
 
 """
 Merge 2.0 and master branches.
