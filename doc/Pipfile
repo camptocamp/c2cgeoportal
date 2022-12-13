@@ -17,7 +17,7 @@ sphinxcontrib-mermaid = "==0.7.1"
 #tilecloud-chain = "==1.17.0.dev20220131092647"
 # Lock dependencies
 babel = "==2.9.1"
-certifi = "==2021.10.8"
+certifi = "==2022.12.7"
 charset-normalizer = "==2.0.12"
 docutils = "==0.17.1"
 idna = "==3.3"
