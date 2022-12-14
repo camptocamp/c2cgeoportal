@@ -59,6 +59,7 @@ jobs:
                   'Authorization': 'Bearer ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN {{'}}'}}',
                   'Content-Type': 'application/json',
               },
+              timeout=120,
           )
           # 422 is the return code when the pull request already exists
           assert response.status_code < 300 or response.status_code == 422, f'{response.status_code} - {response.text}'"
