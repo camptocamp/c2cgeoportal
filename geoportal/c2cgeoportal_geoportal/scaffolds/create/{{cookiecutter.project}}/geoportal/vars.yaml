@@ -280,7 +280,7 @@ vars:
         host: '{REDIS_HOST}'
         port: '{REDIS_PORT}'
         db: '{REDIS_DB}'
-      # Openshift version
+      # Kubernetes version
       # arguments:
       #   sentinels:
       #     - - '{REDIS_HOST}'
@@ -376,9 +376,9 @@ no_interpreted:
   - reset_password.email_body
   - shortener.email_body
   - welcome_email.email_body
-#
-# Standalone version
-# runtime_postprocess:
-#   - expression: "int({})"
-#     vars:
-#       - cache.std.arguments.port
+
+# Only for Standalone version (should be commented for Kubernetes version)
+runtime_postprocess:
+  - expression: int({})
+    vars:
+      - cache.std.arguments.port
