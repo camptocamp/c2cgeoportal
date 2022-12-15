@@ -52,7 +52,7 @@ services:
       file: docker-compose-lib.yaml
       service: redis
 
-  # To test OpenShift version
+  # To test Kubernetes version
   # redis_master:
   #   extends:
   #     file: docker-compose-lib.yaml
