@@ -179,6 +179,8 @@ COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src
 
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+
 #############################################################################################################
 # Cleaned image used to copy files to the runner
 

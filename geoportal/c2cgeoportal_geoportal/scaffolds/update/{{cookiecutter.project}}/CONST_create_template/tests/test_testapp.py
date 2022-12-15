@@ -12,7 +12,7 @@ def test_po(test_number: int) -> None:
     """Tests that the generated pot files are identical between the command line and the view."""
     del test_number
 
-    response = requests.get("https://front/locale.pot", verify=False, timeout=240)  # nosec
+    response = requests.get("https://front/locale.pot", verify=False, timeout=30)  # nosec
     assert response.status_code == 200, response.text
     response_keys = {e.msgid for e in polib.pofile(response.text)}
 
@@ -31,7 +31,7 @@ def test_po(test_number: int) -> None:
 @pytest.mark.parametrize("url", ["https://front/desktop_alt"])
 def test_desktop_alt(url: str) -> None:
     """Tests the desktop alt page."""
-    response = requests.get(url, verify=False, timeout=240)  # nosec
+    response = requests.get(url, verify=False, timeout=30)  # nosec
     assert response.status_code == 200, response.text
 
     assert re.search(
@@ -43,7 +43,7 @@ def test_desktop_alt(url: str) -> None:
 
 def test_enum() -> None:
     """Test the enumerations view"""
-    response = requests.get("https://front/layers/test/values/type", verify=False, timeout=240)  # nosec
+    response = requests.get("https://front/layers/test/values/type", verify=False, timeout=30)  # nosec
     assert response.status_code == 200, response.text
 
     assert response.json() == {"items": [{"value": "car"}, {"value": "train"}]}, response.text

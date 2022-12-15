@@ -27,8 +27,8 @@ import requests
 )
 def test_url(url: str, params: Dict[str, str]) -> None:
     """Tests that some URL didn't return an error."""
-    for _ in range(60):
-        response = requests.get(url, params=params, verify=False, timeout=240)  # nosec
+    for _ in range(6):
+        response = requests.get(url, params=params, verify=False, timeout=10)  # nosec
         if response.status_code == 503:
             time.sleep(1)
             continue
@@ -38,6 +38,6 @@ def test_url(url: str, params: Dict[str, str]) -> None:
 
 def test_admin() -> None:
     """Tests that the admin page will provide the login page."""
-    response = requests.get("https://front/admin/", verify=False, timeout=240)  # nosec
+    response = requests.get("https://front/admin/", verify=False, timeout=30)  # nosec
     assert response.status_code == 200, response.text
     assert "Login" in response.text
