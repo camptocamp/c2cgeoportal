@@ -70,4 +70,4 @@ def downgrade() -> None:
     schema = config["schema"]
 
     for name in ("anonymous", "registered", "intranet"):
-        op.execute('DELETE FROM {schema}."role" ' "WHERE name = '{name}'".format(name=name, schema=schema))
+        op.execute(f"DELETE FROM {schema}.\"role\" WHERE name = '{name}'")

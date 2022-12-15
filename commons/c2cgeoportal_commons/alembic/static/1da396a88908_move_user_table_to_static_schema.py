@@ -78,9 +78,7 @@ def upgrade() -> None:
         op.add_column("user", Column("parent_role_name", String), schema=staticschema)
         parent_column = ", parent_role_name"
         parent_select = ", pr.name"
-        parent_join = "LEFT OUTER JOIN {parentschema!s}.role AS pr ON (pr.id = u.parent_role_id)".format(
-            parentschema=parentschema
-        )
+        parent_join = f"LEFT OUTER JOIN {parentschema!s}.role AS pr ON (pr.id = u.parent_role_id)"
 
     try:
         op.execute(
@@ -134,9 +132,7 @@ def downgrade() -> None:
         )
         parent_column = ", parent_role_id"
         parent_select = ", pr.id"
-        parent_join = "LEFT OUTER JOIN {parentschema}.role AS pr ON (pr.name = u.parent_role_name)".format(
-            parentschema=parentschema
-        )
+        parent_join = f"LEFT OUTER JOIN {parentschema}.role AS pr ON (pr.name = u.parent_role_name)"
 
     op.execute(
         "INSERT INTO %(schema)s.user "

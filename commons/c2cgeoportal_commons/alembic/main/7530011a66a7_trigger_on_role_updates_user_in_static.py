@@ -51,20 +51,18 @@ def upgrade() -> None:
     staticschema = config["schema_static"]
 
     op.execute(
-        """
-CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
-RETURNS trigger AS
-$$
-BEGIN
-IF NEW.name <> OLD.name THEN
-UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
-END IF;
-RETURN NEW;
-END;
-$$
-LANGUAGE plpgsql""".format(
-            schema=schema, staticschema=staticschema
-        )
+        f"""
+        CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
+        RETURNS trigger AS
+        $$
+        BEGIN
+        IF NEW.name <> OLD.name THEN
+        UPDATE {staticschema}."user" SET role_name = NEW.name WHERE role_name = OLD.name;
+        END IF;
+        RETURN NEW;
+        END;
+        $$
+        LANGUAGE plpgsql"""
     )
 
 

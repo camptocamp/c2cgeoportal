@@ -79,7 +79,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
             c2cwsgiutils.broadcast.init()
 
-            DBSession = create_session_factory(  # noqa: ignore=N806
+            DBSession = create_session_factory(  # pylint: disable=invalid-name
                 config.get("sqlalchemy_slave.url"), config.get_config().get("sqlalchemy", {})
             )
 
@@ -153,7 +153,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                                     )
                                 else:
                                     LOG.error(
-                                        "OGC server '%s', 'map' is not in the parameters and we already have a single OCG server '%s'",
+                                        "OGC server '%s', 'map' is not in the parameters and we already "
+                                        "have a single OCG server '%s'",
                                         ogcserver.name,
                                         single_ogc_server.name,
                                     )
@@ -182,12 +183,14 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     if self.ogcserver_accesscontrols and single_ogc_server is not None:
                         if os.environ.get("QGIS_PROJECT_FILE"):
                             LOG.error(
-                                "We have OGC servers with and without parameter MAP and a value in QGIS_PROJECT_FILE, fallback to single OGC server mode."
+                                "We have OGC servers with and without parameter MAP and a value in "
+                                "QGIS_PROJECT_FILE, fallback to single OGC server mode."
                             )
                             self.ogcserver_accesscontrols = {}
                         else:
                             LOG.error(
-                                "We have OGC servers with and without parameter MAP but no value in QGIS_PROJECT_FILE, fallback to multiple OGC server mode."
+                                "We have OGC servers with and without parameter MAP but no value in "
+                                "QGIS_PROJECT_FILE, fallback to multiple OGC server mode."
                             )
                             single_ogc_server = None
                     if single_ogc_server is not None:
@@ -241,7 +244,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             )
         return cast("OGCServerAccessControl", self.ogcserver_accesscontrols[config_file]["access_control"])
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
         """Return an additional subset string (typically SQL) filter."""
         try:
             if not self.initialized:
@@ -252,7 +255,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             LOG.error("Unhandled error", exc_info=True)
             raise
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
         """Return an additional expression filter."""
         try:
             if not self.initialized:
@@ -263,7 +266,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             LOG.error("Unhandled error", exc_info=True)
             raise
 
-    def layerPermissions(  # noqa: ignore=N803
+    def layerPermissions(  # pylint: disable=invalid-name
         self, layer: QgsVectorLayer
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
         """Return the layer rights."""
@@ -278,7 +281,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             LOG.error("Unhandled error", exc_info=True)
             raise
 
-    def authorizedLayerAttributes(  # noqa: ignore=N802
+    def authorizedLayerAttributes(  # pylint: disable=invalid-name
         self, layer: QgsVectorLayer, attributes: List[str]
     ) -> List[str]:
         """Return the authorized layer attributes."""
@@ -291,7 +294,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             LOG.error("Unhandled error", exc_info=True)
             raise
 
-    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: ignore=N802
+    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # pylint: disable=invalid-name
         """Are we authorize to modify the following geometry."""
         try:
             if not self.initialized:
@@ -302,7 +305,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             LOG.error("Unhandled error", exc_info=True)
             raise
 
-    def cacheKey(self) -> str:  # noqa: ignore=N802
+    def cacheKey(self) -> str:  # pylint: disable=invalid-name
         try:
             if not self.initialized:
                 LOG.error("Call on uninitialized plugin")
@@ -318,13 +321,13 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     SUBSETSTRING_TYPE = ["PostgreSQL database with PostGIS extension"]
 
-    def __init__(  # noqa: ignore=N803
+    def __init__(
         self,
         server_iface: qgis.server.QgsServerInterface,
         ogcserver_name: str,
         map_file: str,
         srid: int,
-        DBSession: Session,  # noqa: ignore=N803
+        DBSession: Session,  # pylint: disable=invalid-name
         ogcserver: Optional["main.OGCServer"] = None,
     ):
         super().__init__(server_iface)
@@ -574,7 +577,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.area_cache[key] = (Access.AREA, area)
         return (Access.AREA, area)
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
         """
         Returns an additional subset string (typically SQL) filter.
         """
@@ -609,14 +612,17 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             area = f"ST_GeomFromText('{area.wkt}', {self.srid})"
             if self.srid != layer.crs().postgisSrid():
                 area = f"ST_transform({area}, {layer.crs().postgisSrid()})"
-            result = f"ST_intersects({QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn()}, {area})"
+            result = (
+                "ST_intersects("
+                f"{QgsDataSourceUri(layer.dataProvider().dataSourceUri()).geometryColumn()}, {area})"
+            )
             LOG.debug("layerFilterSubsetString filter: %s", result)
             return result
         except Exception:
             LOG.error("Cannot run layerFilterSubsetString", exc_info=True)
             raise
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # noqa: ignore=N802
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
         """
         Returns an additional expression filter.
         """
@@ -659,7 +665,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             LOG.error("Cannot run layerFilterExpression", exc_info=True)
             raise
 
-    def layerPermissions(  # noqa: ignore=N802
+    def layerPermissions(  # pylint: disable=invalid-name
         self, layer: QgsVectorLayer
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
         """
@@ -706,7 +712,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             LOG.error("Cannot run layerPermissions", exc_info=True)
             raise
 
-    def authorizedLayerAttributes(  # noqa: ignore=N802
+    def authorizedLayerAttributes(  # pylint: disable=invalid-name
         self, layer: QgsVectorLayer, attributes: List[str]
     ) -> List[str]:
         """
@@ -724,7 +730,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         return attributes
 
-    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: ignore=N802
+    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # pylint: disable=invalid-name
         """Are we authorize to modify the following geometry."""
         LOG.debug("allowToEdit")
 
@@ -754,7 +760,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             LOG.error("Cannot run allowToEdit", exc_info=True)
             raise
 
-    def cacheKey(self) -> str:  # noqa: ignore=N802
+    def cacheKey(self) -> str:  # pylint: disable=invalid-name
         # Root...
         session = self.DBSession()
         try:

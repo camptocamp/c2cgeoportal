@@ -18,8 +18,8 @@ from . import gmf_logging
 LOG = logging.getLogger(__name__)
 
 
-def serverClassFactory(  # noqa: ignore=N806
-    serverIface: qgis.server.QgsServerInterface,  # noqa: ignore=N803
+def serverClassFactory(  # pylint: disable=invalid-name
+    serverIface: qgis.server.QgsServerInterface,  # pylint: disable=invalid-name
 ) -> Optional[qgis.server.QgsAccessControlFilter]:
     QgsMessageLog.logMessage("Configure logging...", "GeoMapFish-init", level=Qgis.Info)
 
@@ -43,3 +43,4 @@ def serverClassFactory(  # noqa: ignore=N806
         return GeoMapFishAccessControl(serverIface)
     except GMFException:
         LOG.error("Cannot setup GeoMapFishAccessControl", exc_info=True)
+        return None

@@ -47,7 +47,7 @@ revision = "166ff2dcc48d"
 down_revision = None
 
 
-class TsVector(UserDefinedType):  # type: ignore
+class TsVector(UserDefinedType):  # type: ignore # pylint: disable=abstract-method
     """A custom type for PostgreSQL's tsvector type."""
 
     def get_col_spec(self) -> str:

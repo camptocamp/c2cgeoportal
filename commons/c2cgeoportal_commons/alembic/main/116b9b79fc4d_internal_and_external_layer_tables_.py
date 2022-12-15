@@ -86,7 +86,7 @@ def upgrade() -> None:
 
     # default 'image/jpeg', 'image/png'
     op.execute(
-        "INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, "
+        f"INSERT INTO {schema}.server_ogc (name, description, type, image_type, "
         "  auth, wfs_support) "
         "SELECT 'source for ' || image_type AS name, "
         "  'default source for internal ' || image_type AS description, "
@@ -96,11 +96,11 @@ def upgrade() -> None:
         "  'true' AS wfs_support "
         "FROM ("
         "  SELECT UNNEST(ARRAY['image/jpeg', 'image/png']) AS image_type"
-        ") AS foo" % {"schema": schema}
+        ") AS foo"
     )
     # other custom image types
     op.execute(
-        "INSERT INTO %(schema)s.server_ogc (name, description, type, image_type, "
+        f"INSERT INTO {schema}.server_ogc (name, description, type, image_type, "
         "  auth, wfs_support) "
         "SELECT 'source for ' || image_type AS name, "
         "  'default source for internal ' || image_type AS description, "
@@ -109,57 +109,53 @@ def upgrade() -> None:
         "  'Standard auth' AS auth, "
         "  'true' AS wfs_support "
         "FROM ("
-        "  SELECT DISTINCT(image_type) FROM %(schema)s.layer_internal_wms "
+        f"  SELECT DISTINCT(image_type) FROM {schema}.layer_internal_wms "
         "  WHERE image_type NOT IN ('image/jpeg', 'image/png')"
-        ") as foo" % {"schema": schema}
+        ") as foo"
     )
 
     # layers for internal
 
     # internal with not null image_type
     op.execute(
-        "INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, "
+        f"INSERT INTO {schema}.layer_wms (id, server_ogc_id, layer, style, "
         "  time_mode, time_widget) "
         "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
-        "FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so "
-        "WHERE lew.image_type=so.image_type AND so.type IS NOT NULL" % {"schema": schema}
+        f"FROM {schema}.layer_internal_wms AS lew, {schema}.server_ogc AS so "
+        "WHERE lew.image_type=so.image_type AND so.type IS NOT NULL"
     )
     # internal with null image_type
     op.execute(
-        "INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, "
+        f"INSERT INTO {schema}.layer_wms (id, server_ogc_id, layer, style, "
         "  time_mode, time_widget) "
         "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
-        "FROM %(schema)s.layer_internal_wms AS lew, %(schema)s.server_ogc AS so "
-        "WHERE lew.image_type IS NULL AND so.image_type='image/png'" % {"schema": schema}
+        f"FROM {schema}.layer_internal_wms AS lew, {schema}.server_ogc AS so "
+        "WHERE lew.image_type IS NULL AND so.image_type='image/png'"
     )
 
     # ocg for externals
     op.execute(
-        "INSERT INTO %(schema)s.server_ogc (name, url, type, image_type, auth, is_single_tile) "
+        f"INSERT INTO {schema}.server_ogc (name, url, type, image_type, auth, is_single_tile) "
         "SELECT 'source for ' || url, url, 'mapserver' AS type, image_type, 'none', CASE "
         "WHEN is_single_tile IS TRUE THEN TRUE ELSE FALSE END as is_single_tile "
-        "FROM %(schema)s.layer_external_wms GROUP BY url, image_type, is_single_tile" % {"schema": schema}
+        f"FROM {schema}.layer_external_wms GROUP BY url, image_type, is_single_tile"
     )
 
     # layers for external
     op.execute(
-        "INSERT INTO %(schema)s.layer_wms (id, server_ogc_id, layer, style, "
+        f"INSERT INTO {schema}.layer_wms (id, server_ogc_id, layer, style, "
         "  time_mode, time_widget) "
         "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
-        "FROM %(schema)s.layer_external_wms as lew, %(schema)s.server_ogc as so "
+        f"FROM {schema}.layer_external_wms as lew, {schema}.server_ogc as so "
         "WHERE lew.url=so.url AND lew.is_single_tile=so.is_single_tile "
-        "AND lew.image_type=so.image_type" % {"schema": schema}
+        "AND lew.image_type=so.image_type"
     )
 
     op.drop_table("layer_external_wms", schema=schema)
     op.drop_table("layer_internal_wms", schema=schema)
 
     # update layer type in treeitems
-    op.execute(
-        "UPDATE %(schema)s.treeitem "
-        "SET type='l_wms' "
-        "WHERE type='l_int_wms' OR type='l_ext_wms'" % {"schema": schema}
-    )
+    op.execute(f"UPDATE {schema}.treeitem " "SET type='l_wms' " "WHERE type='l_int_wms' OR type='l_ext_wms'")
 
 
 def downgrade() -> None:
@@ -196,20 +192,20 @@ def downgrade() -> None:
 
     # internal (type is not null)
     op.execute(
-        "INSERT INTO %(schema)s.layer_internal_wms (id, layer, image_type, style, "
+        f"INSERT INTO {schema}.layer_internal_wms (id, layer, image_type, style, "
         "  time_mode, time_widget) "
         "SELECT w.id, layer, image_type, style, time_mode, time_widget "
-        "FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o "
-        "WHERE w.server_ogc_id=o.id AND o.type IS NOT NULL" % {"schema": schema}
+        f"FROM {schema}.layer_wms AS w, {schema}.server_ogc AS o "
+        "WHERE w.server_ogc_id=o.id AND o.type IS NOT NULL"
     )
 
     # external (type is null)
     op.execute(
-        "INSERT INTO %(schema)s.layer_external_wms (id, url, layer, image_type, style, "
+        f"INSERT INTO {schema}.layer_external_wms (id, url, layer, image_type, style, "
         "  is_single_tile, time_mode, time_widget) "
         "SELECT w.id, url, layer, image_type, style, is_single_tile, time_mode, time_widget "
-        "FROM %(schema)s.layer_wms AS w, %(schema)s.server_ogc AS o "
-        "WHERE w.server_ogc_id=o.id AND o.type IS NULL" % {"schema": schema}
+        f"FROM {schema}.layer_wms AS w, {schema}.server_ogc AS o "
+        "WHERE w.server_ogc_id=o.id AND o.type IS NULL"
     )
 
     # drop table AFTER moving data back
@@ -219,15 +215,15 @@ def downgrade() -> None:
     # update layer type in treeitems
     # internal
     op.execute(
-        "UPDATE %(schema)s.treeitem "
+        f"UPDATE {schema}.treeitem "
         "SET type='l_int_wms' "
-        "FROM %(schema)s.layer_internal_wms as w "
-        "WHERE %(schema)s.treeitem.id=w.id" % {"schema": schema}
+        f"FROM {schema}.layer_internal_wms as w "
+        f"WHERE {schema}.treeitem.id=w.id"
     )
     # external
     op.execute(
-        "UPDATE %(schema)s.treeitem "
+        f"UPDATE {schema}.treeitem "
         "SET type='l_ext_wms' "
-        "FROM %(schema)s.layer_external_wms as w "
-        "WHERE %(schema)s.treeitem.id=w.id" % {"schema": schema}
+        f"FROM {schema}.layer_external_wms as w "
+        f"WHERE {schema}.treeitem.id=w.id"
     )

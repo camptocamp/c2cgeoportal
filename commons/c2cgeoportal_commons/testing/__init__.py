@@ -77,7 +77,7 @@ def generate_mappers() -> None:
 
     # import or define all models here to ensure they are attached to the
     # Base.metadata prior to any initialization routines
-    import c2cgeoportal_commons.models.main  # noqa: ignore=F401
+    import c2cgeoportal_commons.models.main  # pylint: disable=unused-import,import-outside-toplevel
 
     # run configure_mappers after defining all of the models to ensure
     # all relationships can be setup

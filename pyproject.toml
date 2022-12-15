@@ -26,12 +26,12 @@ getitfixed = "1.0.29" # geoportal
 isodate = "0.6.1" # geoportal
 Mako = "1.2.4" # geoportal
 OWSLib = "0.27.2" # geoportal
-papyrus = "2.4" # commons, geoportal
+papyrus = "2.5" # commons, geoportal
 passwordgenerator = "1.5.1" # geoportal
 psycopg2 = "2.9.5" # geoportal
 pycryptodome = "3.16.0" # geoportal
 pyproj = "3.4.0" # admin, other?
-pyotp = "2.7.0" # geoportal
+pyotp = "2.8.0" # geoportal
 pyramid = "2.0" # geoportal
 pyramid_debugtoolbar = "4.9" # geoportal
 pyramid-jinja2 = "2.10" # admin
@@ -47,13 +47,13 @@ Shapely = "1.8.5.post1" # geoportal
 SQLAlchemy = "1.4.44"
 transaction = "3.0.1" # commons, geoportal
 translationstring = "1.4" # admin
-"zope.event" = "4.5.0" # commons, geoportal
+"zope.event" = "4.6" # commons, geoportal
 c2cwsgiutils = { version = "5.1.6", extras = ["broadcast", "standard"] }
 oauthlib = "3.2.2"
 tilecloud = "1.8.2" # geoportal
 azure-storage-blob = "12.14.1"
 basicauth = "0.4.1"
-prospector = { extras = ["with_mypy", "with_bandit"], version = "1.7.7" }
+prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.3" }
 setuptools = "65.6.3"
 
 [tool.poetry.dev-dependencies]
