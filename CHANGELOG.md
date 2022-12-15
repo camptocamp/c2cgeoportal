@@ -1,3 +1,7 @@
+##### 2.7.0.156
+
+- Be more standalone by default [c2cgeoportal#10238](https://github.com/camptocamp/c2cgeoportal/pull/10238)
+
 ##### 2.7.0.155
 
 - Snyk auto fix [c2cgeoportal#10235](https://github.com/camptocamp/c2cgeoportal/pull/10235)
