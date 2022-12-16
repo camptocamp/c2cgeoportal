@@ -4,9 +4,10 @@ name: Continuous integration
 on:
   push:
 
-env:
-  PROJECT: {{cookiecutter.package}}
-  HAS_SECRETS: ${{'{{'}} secrets.HAS_SECRETS }}
+# To publish the images to be used on Kubernetes
+# env:
+#   PROJECT: {{cookiecutter.package}}
+#   HAS_SECRETS: ${{'{{'}} secrets.HAS_SECRETS }}
 
 jobs:
   main:
@@ -17,12 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: camptocamp/initialise-gopass-summon-action@v2
-        with:
-          ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
-          github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
-          patterns: docker
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
+      # To publish the images to be used on Kubernetes
+      # - uses: camptocamp/initialise-gopass-summon-action@v2
+      #   with:
+      #     ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
+      #     github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
+      #     patterns: docker
+      #   if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -50,5 +52,6 @@ jobs:
       - name: Application checks
         run: make checks
 
-      - name: Publish
-        run: c2cciutils-publish
+      # To publish the images to be used on Kubernetes
+      # - name: Publish
+      #   run: c2cciutils-publish
