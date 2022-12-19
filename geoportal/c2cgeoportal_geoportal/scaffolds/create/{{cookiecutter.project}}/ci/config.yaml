@@ -1,11 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/master/c2cciutils/schema.json
 
 checks:
-  black: False
-  isort: False
-  prettier: False
   codespell: False
-  eof: False
   required_workflows: False
   dependabot_config: False
   prospector_config: False
