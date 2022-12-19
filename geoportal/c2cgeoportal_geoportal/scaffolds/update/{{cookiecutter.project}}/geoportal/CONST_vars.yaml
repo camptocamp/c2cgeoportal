@@ -1006,6 +1006,8 @@ vars:
     https://stackpath.bootstrapcdn.com/
     {content_security_policy_c2c_style_src_extra}"
 
+  content_security_policy_iframe_api_frame_ancestors: "'self'"
+
   global_headers:
     - pattern: '^/admin/.*'
       headers: &c2cgeoform_headers
@@ -1043,6 +1045,14 @@ vars:
         Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
           script-src {content_security_policy_c2c_script_src};
           style-src {content_security_policy_c2c_style_src};'
+    - pattern: '^/iframe_api(/theme/.*)?$'
+      headers:
+        Content-Security-Policy: 'default-src {content_security_policy_main_default_src};
+          script-src {content_security_policy_main_script_src};
+          style-src {content_security_policy_main_style_src};
+          img-src {content_security_policy_main_img_src};
+          connect-src {content_security_policy_main_connect_src};
+          frame-ancestors {content_security_policy_iframe_api_frame_ancestors};'
 
   # Control the HTTP headers
   headers:
