@@ -1,3 +1,5 @@
+##### 2.6.0.164
+* Add variable content_security_policy_iframe_api_frame_ancestors [c2cgeoportal#10242](https://github.com/camptocamp/c2cgeoportal/pull/10242)
 ##### 2.6.0.163
 * Snyk auto fix [c2cgeoportal#10234](https://github.com/camptocamp/c2cgeoportal/pull/10234)
 ##### 2.6.0.162
