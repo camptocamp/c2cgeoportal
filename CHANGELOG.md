@@ -1,3 +1,7 @@
+##### 2.7.0.157
+
+- [Backport 2.7] Add variable content_security_policy_iframe_api_frame_ancestors [c2cgeoportal#10245](https://github.com/camptocamp/c2cgeoportal/pull/10245)
+
 ##### 2.7.0.156
 
 - Be more standalone by default [c2cgeoportal#10238](https://github.com/camptocamp/c2cgeoportal/pull/10238)
