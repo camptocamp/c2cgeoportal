@@ -1,5 +1,5 @@
 # Base of all section, install the apt packages
-FROM osgeo/gdal:ubuntu-small-3.6.0 as base-all
+FROM osgeo/gdal:ubuntu-small-3.6.1 as base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 # Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
