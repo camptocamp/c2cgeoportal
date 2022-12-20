@@ -13,8 +13,6 @@ checks:
       - .*/poetry.lock$
       - ^poetry.lock$
       - ^geoportal/tests/data/dem4\..*
-  versions:
-    audit: False
 
 audit:
   npm:
