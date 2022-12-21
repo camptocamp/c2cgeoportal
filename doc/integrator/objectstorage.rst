@@ -164,7 +164,7 @@ Exoscale:
 .. code::
 
    CONNECTIONTYPE OGR
-   CONNECTION "/vsis3/<bucket>/<path>/<name>.shp"
+   CONNECTION "${RASTER_BASE_PATH}<path>/<name>.shp"
    DATA "<name>"
 
 Azure:
@@ -172,14 +172,27 @@ Azure:
 .. code::
 
    CONNECTIONTYPE OGR
-   CONNECTION "/vsiaz/<container>/<path>/<name>.shp"
+   CONNECTION "${RASTER_BASE_PATH}<path>/<name>.shp"
    DATA "<name>"
 
 `Some more information <https://github.com/mapserver/mapserver/wiki/Render-images-straight-out-of-S3-with-the-vsicurl-driver>`_
 
+.. note::
 
-QGIS client
------------
+   If you want to use different buckets or containers in different environments
+   (such as integration / production), you should add an empty file named ``<tileindexbasename>.raster``
+   (not ``<tileindexbasename>.shp.raster``) and a ``RASTER_BASE_PATH`` environment variable in your
+   `env.project` file, then the base path will be replaced (same number of folders).
+   The empty raster files are here just to find the files that should be managed.
+
+   Example: `RASTER_BASE_PATH=/vsiaz/<container>/`
+
+
+QGIS
+----
+
+Client
+~~~~~~
 
 The following environment variables should be defined (in the OS or in QGIS
 (``Settings`` / ``Options...`` / ``System`` / ``Environment``)):
@@ -209,3 +222,30 @@ Then you can add a raster layer with:
 * ``Object key``: <folder>/index.vrt.
 
 You can add a vector layer in an analogous manner.
+
+Server
+~~~~~~
+
+Fill the required environment variables.
+
+Exoscale:
+
+* ``AWS_ACCESS_KEY_ID``: The project access key.
+* ``AWS_SECRET_ACCESS_KEY``: The project secret key.
+* ``AWS_DEFAULT_REGION=ch-dk-2``: Should already be in your env.project.
+* ``AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io``: Should already be in your env.project.
+
+Azure docker-compose:
+
+* ``AZURE_STORAGE_CONNECTION_STRING``: The connection string.
+
+For Azure AKS the access should be given by the AzureAssignedIdentity in Kubernetes,
+
+.. note::
+
+   If you want to use different buckets or containers in different environments
+   (such as integration / production), you should add an empty file names
+   ``<name>.qgs.raster`` or ``<name>.qgz.raster``
+   and a ``RASTER_BASE_PATH`` environment variable in your
+   config container, then the base path will be replaced (same number of folder).
+   The empty raster files are here just to find the files that should be managed.

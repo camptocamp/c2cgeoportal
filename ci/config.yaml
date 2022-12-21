@@ -9,12 +9,16 @@ checks:
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$
   required_workflows:
     main.yaml: False
+    dependabot-auto-merge.yaml: False
     rebuild-master.yaml:
       steps: []
   dependabot_config:
     update_ignore:
       - directory: /admin
         package-ecosystem: npm
+  codespell:
+    ignore_re:
+      - docker/config/poetry.lock
 
 audit:
   npm:

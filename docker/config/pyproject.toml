@@ -1,0 +1,12 @@
+[tool.poetry]
+name = 'qgis'
+version = '0.0.0'
+description = 'Not used'
+authors = []
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.9"
+c2c-template = "2.3.0"
+fiona = "1.8.22"
+defusedxml = "0.7.1"
+lxml = "4.9.2"

@@ -1,74 +1,202 @@
 #!/usr/bin/env python3
 
+import argparse
 import glob
 import os
 import random
 import re
 import subprocess
 import urllib.parse
+import zipfile
+from typing import Dict, List, Union, cast
 
-os.environ["DOLLAR"] = "$"
-os.environ["CACHE_VERSION"] = str(random.randint(0, 999999))
-os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ.get("VISIBLE_WEB_HOST"))
-os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ.get("VISIBLE_ENTRY_POINT"))
-os.environ["MAPSERVER_DATA_SUBSELECT"] = (
-    "SELECT {ST_JOIN}(ra.area) "
-    "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
-    "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
-    "WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id "
-    "AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
-).format(PGSCHEMA=os.environ["PGSCHEMA"], ST_JOIN=os.environ.get("ST_JOIN", "ST_Collect"))
-os.environ["MAPSERVER_DATA_NOAREA_SUBSELECT"] = (
-    "SELECT rra.role_id "
-    "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
-    "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
-    "WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id "
-    "AND lra.layer_id = la.id AND la.name = "
-).format(PGSCHEMA=os.environ["PGSCHEMA"])
-os.environ["MAPSERVER_JOIN_TABLES"] = (
-    "{PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
-    "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la"
-).format(PGSCHEMA=os.environ["PGSCHEMA"])
-os.environ["MAPSERVER_JOIN_WHERE"] = (
-    "rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND "
-    "lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
-)
+import fiona
+from defusedxml import ElementTree
+from lxml import etree
 
-SCHEME_PORT = {
+SCHEME_PORT: Dict[str, Union[str, int]] = {
     "http": 80,
     "https": 443,
 }
-for name in ("GEOPORTAL", "TILECLOUDCHAIN"):
-    if name + "_INTERNAL_URL" in os.environ:
-        url = urllib.parse.urlparse(os.environ[name + "_INTERNAL_URL"])
-        os.environ[name + "_INTERNAL_HOST"] = url.hostname
-        os.environ[name + "_INTERNAL_PORT"] = str(url.port or SCHEME_PORT.get(url.scheme, "NULL"))
-
-if (
-    "VISIBLE_WEB_HOST" in os.environ
-    and "VISIBLE_WEB_HOSTAME" not in os.environ
-    and "VISIBLE_WEB_PORT" not in os.environ
-):
-    splited_host = os.environ["VISIBLE_WEB_HOST"].split(":")
-    if len(splited_host) == 2:
-        os.environ["VISIBLE_WEB_HOSTAME"] = splited_host[0]
-        os.environ["VISIBLE_WEB_PORT"] = splited_host[1]
-    elif len(splited_host) == 1 and "VISIBLE_WEB_PROTOCOL" in os.environ:
-        os.environ["VISIBLE_WEB_HOSTAME"] = splited_host[0]
-        os.environ["VISIBLE_WEB_PORT"] = "443" if os.environ["VISIBLE_WEB_PROTOCOL"] == "https" else "80"
-    else:
-        print("Error: Your VISIBLE_WEB_HOST is incorrect or you VISIBLE_WEB_PROTOCOL is missing.")
 
 
-def evaluate(filename):
+class RasterBase:
+    """Used to preprocess the RASTER_BASE_PATH environment variable."""
+
+    def __init__(self) -> None:
+        raster_base = os.environ["RASTER_BASE_PATH"]
+        if not raster_base.endswith("/"):
+            raster_base += "/"
+        self.value: str = raster_base
+        self.split: List[str] = raster_base.split("/")
+        self.length: int = len(raster_base.split("/")) - 2  # -2 to ignore the first and last empty strings
+
+
+def _evaluate(filename: str) -> None:
     print("Evaluate: " + filename)
-    with open(filename) as in_:
-        with open(filename[:-5], "w") as out:
+    with open(filename, encoding="utf-8") as in_:
+        with open(filename[:-5], "w", encoding="utf-8") as out:
             subprocess.check_call(["envsubst"], stdin=in_, stdout=out)
 
 
-for filename in glob.glob("/etc/**/*.tmpl", recursive=True):
-    evaluate(filename)
+def _convert_location(location: str, raster_base: RasterBase, verify_first: bool = False) -> str:
+    if verify_first:
+        location_split = location.split("/")
+        if location_split[1] != raster_base.split[1]:
+            return location  # ignored
 
-for filename in glob.glob("/usr/local/tomcat/webapps/**/*.tmpl", recursive=True):
-    evaluate(filename)
+    location_split = location.split("/")
+    return f"{raster_base}{'/'.join(location_split[raster_base.length + 1:])}"
+
+
+def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
+    if len(raster_base.split) < 2:
+        raise Exception(
+            f"Invalid raster base '{raster_base.value}' should have at lease 2 parts like '/vsiaz/container/'"
+        )
+
+    xml = ElementTree.parse(project)
+    for layer in xml.iter("layer-tree-layer"):
+        if (
+            "providerKey" in layer.attrib
+            and "source" in layer.attrib
+            and layer.attrib["providerKey"] == "gdal"
+        ):
+            layer.attrib["source"] = _convert_location(layer.attrib["source"], raster_base, True)
+
+    for layer in xml.iter("maplayer"):
+        provider_element = layer.find("provider")
+        datasource_element = layer.find("datasource")
+        if (
+            provider_element is not None
+            and datasource_element is not None
+            and provider_element.text == "gdal"
+        ):
+            datasource_element.text = _convert_location(datasource_element.text, raster_base, True)
+
+    return cast(bytes, etree.tostring(xml))
+
+
+def _main() -> None:
+
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="\n".join(
+            [
+                "This command is used to evaluate the templates files `<filename>.tmpl` to `<filename>` "
+                "using the `envsubst` command witch will replace the variable in bash syntax `$NAME` "
+                "with the corresponding environment variable.",
+                "The following environment variables are created:",
+                " - `CACHE_VERSION`: with a random value,",
+                " - `DOLLAR`: with the value `$`,",
+                " - `VISIBLE_WEB_HOST_RE_ESCAPED`: with the value of `VISIBLE_WEB_HOST` escaped for use in a regular "
+                "expression,",
+                " - `VISIBLE_ENTRY_POINT_RE_ESCAPED`: with the value of `VISIBLE_ENTRY_POINT` escaped for use in a "
+                "regular expression,",
+                " - `MAPSERVER_DATA_SUBSELECT`, `MAPSERVER_DATA_NOAREA_SUBSELECT`, `MAPSERVER_JOIN_TABLES` and "
+                "`MAPSERVER_JOIN_WHERE`: will be built for the current `PGSCHEMA` and `ST_JOIN` environment "
+                "variables,",
+                " - `GEOPORTAL_INTERNAL_HOST`, `GEOPORTAL_INTERNAL_PORT`, `TILECLOUDCHAIN_INTERNAL_HOST` and "
+                "`TILECLOUDCHAIN_INTERNAL_PORT`: will be built from `GEOPORTAL_INTERNAL_URL` and "
+                "`TILECLOUDCHAIN_INTERNAL_URL`,",
+                " - `VISIBLE_WEB_HOSTNAME` and `VISIBLE_WEB_PORT`: will be built from `VISIBLE_WEB_HOST` and "
+                "`VISIBLE_WEB_PROTOCOL`.",
+                "",
+                "If the `RASTER_BASE_PATH` environment variable is set, the raster layers in the QGIS project and "
+                "Mapserver tile index will be converted to use the raster base path, if an empty file "
+                "`*.qgs.raster`, `*.qgz.raster` (for QGIS server) or `*.raster` (for MapServer tile index) is found.",
+            ]
+        ),
+    )
+    parser.parse_args()
+
+    os.environ["DOLLAR"] = "$"
+    os.environ["CACHE_VERSION"] = str(random.randint(0, 999999))  # nosec
+    if os.environ.get("VISIBLE_WEB_HOST"):
+        os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ["VISIBLE_WEB_HOST"])
+    if os.environ.get("VISIBLE_ENTRY_POINT"):
+        os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ["VISIBLE_ENTRY_POINT"])
+    os.environ["MAPSERVER_DATA_SUBSELECT"] = (
+        "SELECT {ST_JOIN}(ra.area) "
+        "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
+        "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
+        "WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id "
+        "AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
+    ).format(PGSCHEMA=os.environ["PGSCHEMA"], ST_JOIN=os.environ.get("ST_JOIN", "ST_Collect"))
+    os.environ["MAPSERVER_DATA_NOAREA_SUBSELECT"] = (
+        "SELECT rra.role_id "
+        "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
+        "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
+        "WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id "
+        "AND lra.layer_id = la.id AND la.name = "
+    ).format(PGSCHEMA=os.environ["PGSCHEMA"])
+    os.environ["MAPSERVER_JOIN_TABLES"] = (
+        "{PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
+        "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la"
+    ).format(PGSCHEMA=os.environ["PGSCHEMA"])
+    os.environ["MAPSERVER_JOIN_WHERE"] = (
+        "rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND "
+        "lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
+    )
+
+    for name in ("GEOPORTAL", "TILECLOUDCHAIN"):
+        if name + "_INTERNAL_URL" in os.environ:
+            url = urllib.parse.urlparse(os.environ[name + "_INTERNAL_URL"])
+            os.environ[name + "_INTERNAL_HOST"] = url.hostname
+            os.environ[name + "_INTERNAL_PORT"] = str(url.port or SCHEME_PORT.get(url.scheme, "NULL"))
+
+    if (
+        "VISIBLE_WEB_HOST" in os.environ
+        and "VISIBLE_WEB_HOSTAME" not in os.environ
+        and "VISIBLE_WEB_PORT" not in os.environ
+    ):
+        splited_host = os.environ["VISIBLE_WEB_HOST"].split(":")
+        if len(splited_host) == 2:
+            os.environ["VISIBLE_WEB_HOSTAME"] = splited_host[0]
+            os.environ["VISIBLE_WEB_PORT"] = splited_host[1]
+        elif len(splited_host) == 1 and "VISIBLE_WEB_PROTOCOL" in os.environ:
+            os.environ["VISIBLE_WEB_HOSTAME"] = splited_host[0]
+            os.environ["VISIBLE_WEB_PORT"] = "443" if os.environ["VISIBLE_WEB_PROTOCOL"] == "https" else "80"
+        else:
+            print("Error: Your VISIBLE_WEB_HOST is incorrect or you VISIBLE_WEB_PROTOCOL is missing.")
+
+    for filename in glob.glob("/etc/**/*.tmpl", recursive=True):
+        _evaluate(filename)
+
+    for filename in glob.glob("/usr/local/tomcat/webapps/**/*.tmpl", recursive=True):
+        _evaluate(filename)
+
+    if os.environ.get("RASTER_BASE_PATH"):
+        raster_base = RasterBase()
+        for filename in glob.glob("/etc/mapserver/**/*.raster", recursive=True):
+            base = filename[:-7]
+            print(f"{base}.shp")
+            with fiona.open(f"{base}.shp") as src:
+                with fiona.open(f"{base}.shp", "w", **src.meta) as dst:
+                    for row in src:
+                        properties = row["properties"]
+                        properties["location"] = _convert_location(properties["location"], raster_base)
+                        dst.write(row)
+
+        for tag_file in glob.glob("/etc/qgisserver/**/*.qgs.raster", recursive=True):
+            filename = tag_file[:-7]
+            with open(filename, "rb") as f:
+                content = f.read()
+            content = _convert_qgis_project(content, raster_base)
+            with open(filename, "wb") as f:
+                f.write(content)
+
+        for tag_file in glob.glob("/etc/qgisserver/**/*.qgz.raster", recursive=True):
+            filename = tag_file[:-7]
+            with zipfile.ZipFile(filename) as zip_file:
+                for name in zip_file.namelist():
+                    if name.endswith(".qgs"):
+                        with zip_file.open(name) as f:
+                            content = f.read()
+                        content = _convert_qgis_project(content, raster_base)
+                        with open(name, "wb") as f:
+                            f.write(content)
+
+
+if __name__ == "__main__":
+    _main()
