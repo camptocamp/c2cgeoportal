@@ -403,14 +403,14 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.4.3"
+version = "1.4.4"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "c2cciutils-1.4.3-py3-none-any.whl", hash = "sha256:f7e5db3ae8e0444286bca727b350fcbfcbc40c9c4bc40b67c2929886d7f4643a"},
-    {file = "c2cciutils-1.4.3.tar.gz", hash = "sha256:1d1850b4242f70b8d6fb9d939bbc6654b5cf8912190060db110fa7d6ed385a2d"},
+    {file = "c2cciutils-1.4.4-py3-none-any.whl", hash = "sha256:9a0a69c41f4ed417dd144a59a4f1b6a248b1486a70fc83ccaed8b5d01f981ed7"},
+    {file = "c2cciutils-1.4.4.tar.gz", hash = "sha256:8cf14fcf024db2a0113a608fd1e60508549ec132e4a09b87b35f1f0f47ee329c"},
 ]
 
 [package.dependencies]
@@ -4101,14 +4101,14 @@ files = [
 
 [[package]]
 name = "types-requests"
-version = "2.28.11.5"
+version = "2.28.11.7"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-requests-2.28.11.5.tar.gz", hash = "sha256:a7df37cc6fb6187a84097da951f8e21d335448aa2501a6b0a39cbd1d7ca9ee2a"},
-    {file = "types_requests-2.28.11.5-py3-none-any.whl", hash = "sha256:091d4a5a33c1b4f20d8b1b952aa8fa27a6e767c44c3cf65e56580df0b05fd8a9"},
+    {file = "types-requests-2.28.11.7.tar.gz", hash = "sha256:0ae38633734990d019b80f5463dfa164ebd3581998ac8435f526da6fe4d598c3"},
+    {file = "types_requests-2.28.11.7-py3-none-any.whl", hash = "sha256:b6a2fca8109f4fdba33052f11ed86102bddb2338519e1827387137fefc66a98b"},
 ]
 
 [package.dependencies]
@@ -4517,4 +4517,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "9dbbd4aef71b0df6b46c95e21d35df3b25124ff70a0492cab3e06217c7b23c65"
+content-hash = "d12e88d2b4d1cc94799692723b90972df257da4e1203f7fcd8adc02828b8b6aa"
