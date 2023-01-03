@@ -10,7 +10,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
-alembic = "1.8.1" # geoportal
+alembic = "1.9.1" # geoportal
 "c2c.template" = "2.3.0" # geoportal
 c2cgeoform = "2.1.27" # commons
 colander = "1.8.3" # commons, admin
@@ -33,7 +33,7 @@ pycryptodome = "3.16.0" # geoportal
 pyproj = "3.4.1" # admin, other?
 pyotp = "2.8.0" # geoportal
 pyramid = "2.0" # geoportal
-pyramid_debugtoolbar = "4.9" # geoportal
+pyramid_debugtoolbar = "4.10" # geoportal
 pyramid-jinja2 = "2.10" # admin
 pyramid_mako = "1.1.0" # geoportal
 pyramid_multiauth = "1.0.1" # geoportal
@@ -66,7 +66,7 @@ polib = "1.1.1" # i18n
 pykwalify = "1.8.0" # Validate config
 pytest = "7.2.0" # tests
 WebTest = "3.0.0" # admin tests
-types-pytz = "2022.6.0.1"
+types-pytz = "2022.7.0.0"
 types-pyyaml = "6.0.12.2"
 types-python-dateutil = "2.8.19.5"
 types-requests = "2.28.11.7"
