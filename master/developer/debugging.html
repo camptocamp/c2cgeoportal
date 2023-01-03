@@ -82,10 +82,10 @@ available in <code class="docutils literal notranslate"><span class="pre">https<
 <h2>Auto login<a class="headerlink" href="#auto-login" title="Permalink to this heading">¶</a></h2>
 <p>To be automatically logged in with a user present in the database you should set in the
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">geoportal</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEV_LOGINNAME=&lt;username&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">geoportal</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEV_LOGINNAME=&lt;username&gt;</span>
 </pre></div>
 </div>
 <p>Then you will directly be logged in to the user.</p>
@@ -97,8 +97,8 @@ available in <code class="docutils literal notranslate"><span class="pre">https<
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> mapserver shp2img -m /etc/mapserver/mapserver.map -o /tmp/test.png <span class="se">\</span>
-    -e <span class="m">500000</span> <span class="m">100000</span> <span class="m">700000</span> <span class="m">300000</span> -s <span class="m">1000</span> <span class="m">1000</span> <span class="o">[</span>-l &lt;layers&gt;<span class="o">]</span></span>
+</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>mapserver<span class="w"> </span>shp2img<span class="w"> </span>-m<span class="w"> </span>/etc/mapserver/mapserver.map<span class="w"> </span>-o<span class="w"> </span>/tmp/test.png<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="m">500000</span><span class="w"> </span><span class="m">100000</span><span class="w"> </span><span class="m">700000</span><span class="w"> </span><span class="m">300000</span><span class="w"> </span>-s<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="o">[</span>-l<span class="w"> </span>&lt;layers&gt;<span class="o">]</span></span>
 </pre></div></div><p>You may also activate MapServer’s debug mode and set the environment variable <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code>
 of the MapServer container <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
 <p><a class="reference external" href="https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More information</a></p>
@@ -108,14 +108,14 @@ of the MapServer container <code class="docutils literal notranslate"><span clas
 <section id="logs">
 <h3>Logs<a class="headerlink" href="#logs" title="Permalink to this heading">¶</a></h3>
 <p>With the following command, you can access the logs:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose logs -f --tail<span class="o">=</span><span class="m">20</span> <span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--tail<span class="o">=</span><span class="m">20</span><span class="w"> </span><span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
 </pre></div></div><p>To have the access log on gunicorn you should add the option <code class="docutils literal notranslate"><span class="pre">--access-logfile=-</span></code> in the gunicorn
 configuration (<code class="docutils literal notranslate"><span class="pre">gunicorn.conf.py</span></code> file).</p>
 </section>
 <section id="go-inside-a-container">
 <h3>Go inside a container<a class="headerlink" href="#go-inside-a-container" title="Permalink to this heading">¶</a></h3>
 <p>With the following command, you can get a terminal in a container:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> <span class="o">[</span>--user<span class="o">=</span>root<span class="o">]</span> &lt;service_name&gt; bash</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="o">[</span>--user<span class="o">=</span>root<span class="o">]</span><span class="w"> </span>&lt;service_name&gt;<span class="w"> </span>bash</span>
 </pre></div></div></section>
 <section id="multiple-dev-on-one-server">
 <h3>Multiple dev on one server<a class="headerlink" href="#multiple-dev-on-one-server" title="Permalink to this heading">¶</a></h3>
@@ -139,7 +139,7 @@ different entry points. (<code class="docutils literal notranslate"><span class=
 <p>With the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> configuration, Gunicorn will automatically restart
 on code modification.</p>
 <p>You can also do a graceful reload of the running Gunicorn webserver:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">kill</span> -s HUP <span class="sb">`</span>ps aux<span class="p">|</span>grep gunicorn<span class="p">|</span>head --lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">kill</span><span class="w"> </span>-s<span class="w"> </span>HUP<span class="w"> </span><span class="sb">`</span>ps<span class="w"> </span>aux<span class="p">|</span>grep<span class="w"> </span>gunicorn<span class="p">|</span>head<span class="w"> </span>--lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span></span>
 </pre></div></div></section>
 <section id="working-on-c2cgeoportal-itself">
 <h3>Working on c2cgeoportal itself<a class="headerlink" href="#working-on-c2cgeoportal-itself" title="Permalink to this heading">¶</a></h3>
@@ -192,11 +192,11 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
 the root of your local c2cgeoportal folder, example:</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initiate the upgrade by getting the ./upgrade script from you local c2cgeoportal clone.</span>
-./build --debug<span class="o">=</span>../c2cgeoportal --upgrade master
+./build<span class="w"> </span>--debug<span class="o">=</span>../c2cgeoportal<span class="w"> </span>--upgrade<span class="w"> </span>master
 
 <span class="c1"># Run the upgrade step 1 without pulling images from Docker hub,</span>
 <span class="c1"># and with c2cupgrade file mounted from you local c2cgeoportal folder.</span>
-./upgrade --debug<span class="o">=</span>../c2cgeoportal latest <span class="m">1</span>
+./upgrade<span class="w"> </span>--debug<span class="o">=</span>../c2cgeoportal<span class="w"> </span>latest<span class="w"> </span><span class="m">1</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -226,13 +226,13 @@ c2cgeoportal application.</p>
 <section id="access-to-a-hidden-service">
 <h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Permalink to this heading">¶</a></h2>
 <p>Within the Docker composition, you can access a port of a container; you can achieve this via <code class="docutils literal notranslate"><span class="pre">curl</span></code>, e.-g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tools curl <span class="s2">&quot;http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>curl<span class="w"> </span><span class="s2">&quot;http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities&quot;</span></span>
 </pre></div></div><p>You can also expose a service out of the Docker composition. For that, add a port in your
 <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, e.g.:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&lt;service&gt;</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8086:8080</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">&lt;service&gt;</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8086:8080</span>
 </pre></div>
 </div>
 <p>Be careful, each port can be open only one time on a server.</p>
@@ -240,19 +240,19 @@ c2cgeoportal application.</p>
 <section id="use-a-specific-version-of-ngeo">
 <h2>Use a specific version of ngeo<a class="headerlink" href="#use-a-specific-version-of-ngeo" title="Permalink to this heading">¶</a></h2>
 <p>Clone ngeo and build:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> geoportal</span>
-<span class="prompt1">git clone https://github.com/camptocamp/ngeo.git</span>
-<span class="prompt1"><span class="nb">cd</span> ngeo</span>
-<span class="prompt1">git check &lt;branch&gt;</span>
-<span class="prompt1"><span class="nb">cd</span> ../..</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span><span class="w"> </span>geoportal</span>
+<span class="prompt1">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/camptocamp/ngeo.git</span>
+<span class="prompt1"><span class="nb">cd</span><span class="w"> </span>ngeo</span>
+<span class="prompt1">git<span class="w"> </span>check<span class="w"> </span>&lt;branch&gt;</span>
+<span class="prompt1"><span class="nb">cd</span><span class="w"> </span>../..</span>
 </pre></div></div><p>Add the following alias in your <code class="docutils literal notranslate"><span class="pre">webpack.apps.js.tmpl</span></code> file:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nx">resolve</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">   </span><span class="nx">alias</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">     </span><span class="o">&lt;</span><span class="kr">package</span><span class="o">&gt;:</span><span class="w"> </span><span class="p">...,</span><span class="w"></span>
-<span class="o">+</span><span class="w">    </span><span class="nx">ngeo</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/src&#39;</span><span class="p">),</span><span class="w"></span>
-<span class="o">+</span><span class="w">    </span><span class="nx">gmf</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/contribs/gmf/src&#39;</span><span class="p">),</span><span class="w"></span>
-<span class="w">   </span><span class="p">}</span><span class="w"></span>
-<span class="w"> </span><span class="p">}</span><span class="w"></span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nx">resolve</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">alias</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="o">&lt;</span><span class="kr">package</span><span class="o">&gt;:</span><span class="w"> </span><span class="p">...,</span>
+<span class="o">+</span><span class="w">    </span><span class="nx">ngeo</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/src&#39;</span><span class="p">),</span>
+<span class="o">+</span><span class="w">    </span><span class="nx">gmf</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/contribs/gmf/src&#39;</span><span class="p">),</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
 </section>

@@ -80,11 +80,11 @@ monitoring system like Nagios to check that the application is alive.</p>
 <section id="checker">
 <h2>Checker<a class="headerlink" href="#checker" title="Permalink to this heading">¶</a></h2>
 <p>The checker uses the following configuration structure in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># Global configuration</span><span class="w"></span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">checker</span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">        </span><span class="c1"># Checker configurations</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Global configuration</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">checker</span><span class="p p-Indicator">:</span>
+<span class="w">        </span><span class="c1"># Checker configurations</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -92,8 +92,8 @@ monitoring system like Nagios to check that the application is alive.</p>
 <p>If some of the checked services require an authenticated user, the
 <code class="docutils literal notranslate"><span class="pre">forward_headers</span></code> configuration allows to forward <code class="docutils literal notranslate"><span class="pre">Cookie</span></code> or <code class="docutils literal notranslate"><span class="pre">Authorisation</span></code> headers
 from the underlying requests.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">checker</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">forward_headers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;Cookie&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;Authorisation&#39;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">checker</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">forward_headers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;Cookie&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;Authorisation&#39;</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 </div>
@@ -102,17 +102,17 @@ from the underlying requests.</p>
 <p>The checker assumes that it can access the c2cgeoportal services via <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code>.
 If this is not allowed on your server, you can override this behavior as follows.
 In your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, add the following:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">checker</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">rewrite_as_http_localhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">checker</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">rewrite_as_http_localhost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </pre></div>
 </div>
 <p>Now, in your configuration file <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code>, instead of defining the <code class="docutils literal notranslate"><span class="pre">checker_path</span></code>,
 define a <code class="docutils literal notranslate"><span class="pre">checker_url</span></code> with the full URL to be used, for example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
-<span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${host}</span><span class="w"></span>
-<span class="nt">checker_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://${host}${entrypoint}check_collector?</span><span class="w"></span>
-<span class="nn">...</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span>
+<span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${host}</span>
+<span class="nt">checker_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://${host}${entrypoint}check_collector?</span>
+<span class="nn">...</span>
 </pre></div>
 </div>
 </div>
@@ -130,13 +130,13 @@ define a <code class="docutils literal notranslate"><span class="pre">checker_ur
 <h3><code class="docutils literal notranslate"><span class="pre">themes</span></code><a class="headerlink" href="#themes" title="Permalink to this heading">¶</a></h3>
 <p>Check that the theme has no error for all interfaces present in the database.</p>
 <p>Uses the <code class="docutils literal notranslate"><span class="pre">themes</span></code> configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">themes</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">params</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="c1"># Dictionary that represents the query string</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&lt;interface&gt;</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">params</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="c1"># Dictionary that represents the query string</span><span class="w"></span>
-<span class="w">    </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">themes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">        </span><span class="c1"># Dictionary that represents the query string</span>
+<span class="w">    </span><span class="nt">&lt;interface&gt;</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">            </span><span class="c1"># Dictionary that represents the query string</span>
+<span class="w">    </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
 </pre></div>
 </div>
 </section>
@@ -171,10 +171,10 @@ using the <code class="docutils literal notranslate"><span class="pre">routes</s
 <section id="infrastructure">
 <h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this heading">¶</a></h2>
 <p>If you experience connection issues with your checker, the following configuration options may be useful for you:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">checker</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">[</span><span class="nv">base_internal_url</span><span class="p p-Indicator">]:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">URL like http://localhost:8080</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">[</span><span class="nv">forward_host</span><span class="p p-Indicator">]:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;True|False&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">checker</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">[</span><span class="nv">base_internal_url</span><span class="p p-Indicator">]:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">URL like http://localhost:8080</span>
+<span class="w">    </span><span class="p p-Indicator">[</span><span class="nv">forward_host</span><span class="p p-Indicator">]:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;True|False&gt;</span>
 </pre></div>
 </div>
 </section>
@@ -183,27 +183,27 @@ using the <code class="docutils literal notranslate"><span class="pre">routes</s
 <p>Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.</p>
 <p>The check collector uses the following configuration structure:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># Global configuration</span><span class="w"></span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">check_collector</span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">max_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-<span class="w">        </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
-<span class="w">        </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Global configuration</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">check_collector</span><span class="p p-Indicator">:</span>
+<span class="w">        </span><span class="nt">max_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">        </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">max_level</span></code> is the default max_level parameter used for every host. The <code class="docutils literal notranslate"><span class="pre">max_level</span></code> option can be set
 for a host to override it.</p>
 <p>To add a host:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">check_collector</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">display</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Child</span><span class="w"></span>
-<span class="w">            </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://{host}/child</span><span class="w"></span>
-<span class="w">            </span><span class="nt">max_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">check_collector</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">display</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Child</span>
+<span class="w">            </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://{host}/child</span>
+<span class="w">            </span><span class="nt">max_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 
-<span class="nt">update_paths</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check_collector.hosts</span><span class="w"></span>
+<span class="nt">update_paths</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check_collector.hosts</span>
 </pre></div>
 </div>
 </section>

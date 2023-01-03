@@ -55,9 +55,9 @@ If the update process modified files which you do not want modified, then add th
 <section id="prepare-the-database">
 <h2>Prepare the database<a class="headerlink" href="#prepare-the-database" title="Permalink to this heading">¶</a></h2>
 <p>Clone the schema with e.g.:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">statement_timeout</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;600s&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_&lt;old_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main_&lt;new_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;static_&lt;old_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;static_&lt;new_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">statement_timeout</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;600s&#39;</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_&lt;old_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main_&lt;new_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;static_&lt;old_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;static_&lt;new_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Update the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> in your <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
@@ -74,7 +74,7 @@ instructions assume that your minimal version is the current long-term release.<
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">./build --upgrade &lt;version&gt;</span>
+</style><span class="prompt1">./build<span class="w"> </span>--upgrade<span class="w"> </span>&lt;version&gt;</span>
 </pre></div></div><p>Then follow the instructions.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">x.y.z.p</span></code> to target a stable version, or <code class="docutils literal notranslate"><span class="pre">master</span></code> to target the master branch.</p>
 <p>If for some reason you need to debug what happens during the upgrade see: <a class="reference internal" href="../developer/debugging.html#upgrade-debugging"><span class="std std-ref">here</span></a>.</p>
@@ -84,11 +84,11 @@ span.prompt1:before {
 <p>The database will be automatically upgraded during the upgrade process.</p>
 <p>To upgrade only the database you can use alembic directly.</p>
 <p>The help:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --help</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--help</span>
 </pre></div></div><p>Upgrade the main schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --name<span class="o">=</span>main upgrade head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--name<span class="o">=</span>main<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div><p>Upgrade the static schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --name<span class="o">=</span>static upgrade head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--name<span class="o">=</span>static<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div></section>
 </section>
 

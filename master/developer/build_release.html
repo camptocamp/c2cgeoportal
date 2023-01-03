@@ -121,15 +121,15 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">tx pull --translations --branch<span class="o">=</span>&lt;version&gt; --source --force <span class="se">\</span>
-    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
-<span class="prompt1">tx pull --translations --branch<span class="o">=</span>&lt;version&gt; --translation --force <span class="se">\</span>
-    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
+</style><span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--translations<span class="w"> </span>--branch<span class="o">=</span>&lt;version&gt;<span class="w"> </span>--source<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
+<span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--translations<span class="w"> </span>--branch<span class="o">=</span>&lt;version&gt;<span class="w"> </span>--translation<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
 <span class="prompt1"></span>
-<span class="prompt1">tx push --branch<span class="o">=</span>&lt;next version&gt; --source --force <span class="se">\</span>
-    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
-<span class="prompt1">tx push --branch<span class="o">=</span>&lt;next version&gt; --translation --force <span class="se">\</span>
-    --resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
+<span class="prompt1">tx<span class="w"> </span>push<span class="w"> </span>--branch<span class="o">=</span>&lt;next<span class="w"> </span>version&gt;<span class="w"> </span>--source<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
+<span class="prompt1">tx<span class="w"> </span>push<span class="w"> </span>--branch<span class="o">=</span>&lt;next<span class="w"> </span>version&gt;<span class="w"> </span>--translation<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
 </pre></div></div></section>
 <section id="update-the-master-branch">
 <h2>Update the master branch<a class="headerlink" href="#update-the-master-branch" title="Permalink to this heading">¶</a></h2>
@@ -143,161 +143,161 @@ span.prompt1:before {
 <h2>Configure the rebuild<a class="headerlink" href="#configure-the-rebuild" title="Permalink to this heading">¶</a></h2>
 <p>Copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> from new version branch to master branch as
 <code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span><span class="w"></span>
-<span class="gi">+ name: Rebuild &lt;new version&gt;</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span>
+<span class="gi">+ name: Rebuild &lt;new version&gt;</span>
 
-<span class="w"> </span> on:<span class="w"></span>
-<span class="gd">-   push:</span><span class="w"></span>
-<span class="gd">-   pull_request:</span><span class="w"></span>
-<span class="gi">+   schedule:</span><span class="w"></span>
-<span class="gi">+     - cron: &quot;30 3 * * *&quot;</span><span class="w"></span>
+<span class="w"> </span> on:
+<span class="gd">-   push:</span>
+<span class="gd">-   pull_request:</span>
+<span class="gi">+   schedule:</span>
+<span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
 
-<span class="w"> </span> jobs:<span class="w"></span>
-<span class="gd">-   not-failed-backport:</span><span class="w"></span>
-<span class="gd">-     ...</span><span class="w"></span>
+<span class="w"> </span> jobs:
+<span class="gd">-   not-failed-backport:</span>
+<span class="gd">-     ...</span>
 
-<span class="gd">-     name: Continuous integration</span><span class="w"></span>
-<span class="gi">+     name: Rebuild &lt;new version&gt;</span><span class="w"></span>
+<span class="gd">-     name: Continuous integration</span>
+<span class="gi">+     name: Rebuild &lt;new version&gt;</span>
 
-<span class="gd">-     if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span><span class="w"></span>
+<span class="gd">-     if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-<span class="gi">+     strategy:</span><span class="w"></span>
-<span class="gi">+       fail-fast: false</span><span class="w"></span>
-<span class="gi">+       matrix:</span><span class="w"></span>
-<span class="gi">+         branch:</span><span class="w"></span>
-<span class="gi">+           - &#39;x.y&#39;</span><span class="w"></span>
+<span class="gi">+     strategy:</span>
+<span class="gi">+       fail-fast: false</span>
+<span class="gi">+       matrix:</span>
+<span class="gi">+         branch:</span>
+<span class="gi">+           - &#39;x.y&#39;</span>
 
 
-<span class="w"> </span>    env:<span class="w"></span>
-<span class="gd">-      MAIN_BRANCH: master</span><span class="w"></span>
-<span class="gi">+      MAIN_BRANCH: &lt;new version&gt;</span><span class="w"></span>
+<span class="w"> </span>    env:
+<span class="gd">-      MAIN_BRANCH: master</span>
+<span class="gi">+      MAIN_BRANCH: &lt;new version&gt;</span>
 
-<span class="w"> </span>       - uses: actions/checkout@v2<span class="w"></span>
-<span class="w"> </span>         with:<span class="w"></span>
-<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span><span class="w"></span>
+<span class="w"> </span>       - uses: actions/checkout@v2
+<span class="w"> </span>         with:
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
-<span class="gd">-       # Test Upgrade</span><span class="w"></span>
-<span class="gd">-       ...</span><span class="w"></span>
-<span class="gd">-       - run: ci/test-upgrade cleanup ${HOME}/workspace</span><span class="w"></span>
+<span class="gd">-       # Test Upgrade</span>
+<span class="gd">-       ...</span>
+<span class="gd">-       - run: ci/test-upgrade cleanup ${HOME}/workspace</span>
 
-<span class="w"> </span>   - name: Publish feature branch<span class="w"></span>
-<span class="gd">-     run: |</span><span class="w"></span>
-<span class="gd">-       c2cciutils-publish</span><span class="w"></span>
-<span class="gd">-       c2cciutils-publish --group=full</span><span class="w"></span>
-<span class="gi">+       c2cciutils-publish --type=rebuild</span><span class="w"></span>
-<span class="gd">-     if: &gt;</span><span class="w"></span>
-<span class="gd">-       github.ref != format(&#39;refs/heads/{0}&#39;, env.MAIN_BRANCH)</span><span class="w"></span>
-<span class="gd">-       &amp;&amp; github.repository == &#39;camptocamp/c2cgeoportal&#39;</span><span class="w"></span>
-<span class="gd">-   - name: Push version and changelog</span><span class="w"></span>
-<span class="gd">-     ...</span><span class="w"></span>
+<span class="w"> </span>   - name: Publish feature branch
+<span class="gd">-     run: |</span>
+<span class="gd">-       c2cciutils-publish</span>
+<span class="gd">-       c2cciutils-publish --group=full</span>
+<span class="gi">+       c2cciutils-publish --type=rebuild</span>
+<span class="gd">-     if: &gt;</span>
+<span class="gd">-       github.ref != format(&#39;refs/heads/{0}&#39;, env.MAIN_BRANCH)</span>
+<span class="gd">-       &amp;&amp; github.repository == &#39;camptocamp/c2cgeoportal&#39;</span>
+<span class="gd">-   - name: Push version and changelog</span>
+<span class="gd">-     ...</span>
 
-<span class="gd">-       - name: Update the changelog</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
-<span class="gd">-       - run: git diff CHANGELOG.md</span><span class="w"></span>
+<span class="gd">-       - name: Update the changelog</span>
+<span class="gd">-         ...</span>
+<span class="gd">-       - run: git diff CHANGELOG.md</span>
 
-<span class="gd">-       - name: Push version and changelog</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
+<span class="gd">-       - name: Push version and changelog</span>
+<span class="gd">-         ...</span>
 
-<span class="gd">-       - name: Publish to Transifex</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
-<span class="gd">-</span><span class="w"></span>
-<span class="gd">-       - name: Publish documentation to GitHub.io</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
-<span class="gd">-</span><span class="w"></span>
-<span class="gd">-       - name: Notify demo</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
+<span class="gd">-       - name: Publish to Transifex</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Publish documentation to GitHub.io</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Notify demo</span>
+<span class="gd">-         ...</span>
 </pre></div>
 </div>
 <p>Copy the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> from new version branch to master branch
 as <code class="docutils literal notranslate"><span class="pre">.github/workflows/rebuild-qgis-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: QGIS build</span><span class="w"></span>
-<span class="gi">+ name: QGIS rebuild &lt;new version&gt;</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: QGIS build</span>
+<span class="gi">+ name: QGIS rebuild &lt;new version&gt;</span>
 
-<span class="w"> </span> on:<span class="w"></span>
-<span class="gd">-   push:</span><span class="w"></span>
-<span class="gd">-   pull_request:</span><span class="w"></span>
-<span class="gi">+   schedule:</span><span class="w"></span>
-<span class="gi">+     - cron: &quot;30 3 * * *&quot;</span><span class="w"></span>
+<span class="w"> </span> on:
+<span class="gd">-   push:</span>
+<span class="gd">-   pull_request:</span>
+<span class="gi">+   schedule:</span>
+<span class="gi">+     - cron: &quot;30 3 * * *&quot;</span>
 
-<span class="gd">-     name: QGIS build</span><span class="w"></span>
-<span class="gi">+     name: QGIS rebuild &lt;new version&gt;</span><span class="w"></span>
+<span class="gd">-     name: QGIS build</span>
+<span class="gi">+     name: QGIS rebuild &lt;new version&gt;</span>
 
-<span class="gd">-     if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span><span class="w"></span>
+<span class="gd">-     if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-<span class="w"> </span>     strategy:<span class="w"></span>
-<span class="w"> </span>       fail-fast: false<span class="w"></span>
-<span class="w"> </span>       matrix:<span class="w"></span>
-<span class="gi">+         branch:</span><span class="w"></span>
-<span class="gi">+           - &#39;x.y&#39;</span><span class="w"></span>
+<span class="w"> </span>     strategy:
+<span class="w"> </span>       fail-fast: false
+<span class="w"> </span>       matrix:
+<span class="gi">+         branch:</span>
+<span class="gi">+           - &#39;x.y&#39;</span>
 
-<span class="w"> </span>     env:<span class="w"></span>
-<span class="gd">-       MAIN_BRANCH: master</span><span class="w"></span>
-<span class="gd">-       MAJOR_VERSION: x.y</span><span class="w"></span>
-<span class="gi">+       MAIN_BRANCH: ${{ matrix.branch }}</span><span class="w"></span>
-<span class="gi">+       MAJOR_VERSION: ${{ matrix.branch }}</span><span class="w"></span>
+<span class="w"> </span>     env:
+<span class="gd">-       MAIN_BRANCH: master</span>
+<span class="gd">-       MAJOR_VERSION: x.y</span>
+<span class="gi">+       MAIN_BRANCH: ${{ matrix.branch }}</span>
+<span class="gi">+       MAJOR_VERSION: ${{ matrix.branch }}</span>
 
-<span class="w"> </span>       - uses: actions/checkout@v1<span class="w"></span>
-<span class="w"> </span>         with:<span class="w"></span>
-<span class="w"> </span>          fetch-depth: 0<span class="w"></span>
-<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span><span class="w"></span>
+<span class="w"> </span>       - uses: actions/checkout@v1
+<span class="w"> </span>         with:
+<span class="w"> </span>          fetch-depth: 0
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
-<span class="w"> </span>  - name: Publish feature branch<span class="w"></span>
-<span class="w"> </span>    run: |<span class="w"></span>
-<span class="gd">-       c2cciutils-publish --group=qgis-${{ matrix.version }}</span><span class="w"></span>
-<span class="gi">+       c2cciutils-publish --type=rebuild --group=qgis-${{ matrix.version }}</span><span class="w"></span>
-<span class="gd">-     if: &gt;</span><span class="w"></span>
-<span class="gd">-       github.ref != format(&#39;refs/heads/{0}&#39;, env.MAIN_BRANCH)</span><span class="w"></span>
-<span class="gd">-       &amp;&amp; github.repository == &#39;camptocamp/c2cgeoportal&#39;</span><span class="w"></span>
-<span class="gd">-   - name: Publish version branch</span><span class="w"></span>
-<span class="gd">-     ...</span><span class="w"></span>
+<span class="w"> </span>  - name: Publish feature branch
+<span class="w"> </span>    run: |
+<span class="gd">-       c2cciutils-publish --group=qgis-${{ matrix.version }}</span>
+<span class="gi">+       c2cciutils-publish --type=rebuild --group=qgis-${{ matrix.version }}</span>
+<span class="gd">-     if: &gt;</span>
+<span class="gd">-       github.ref != format(&#39;refs/heads/{0}&#39;, env.MAIN_BRANCH)</span>
+<span class="gd">-       &amp;&amp; github.repository == &#39;camptocamp/c2cgeoportal&#39;</span>
+<span class="gd">-   - name: Publish version branch</span>
+<span class="gd">-     ...</span>
 </pre></div>
 </div>
 <p>Copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> from new version branch to master branch as
 <code class="docutils literal notranslate"><span class="pre">.github/workflows/ngeo-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span><span class="w"></span>
-<span class="gi">+ name: Update ngeo &lt;new version&gt;</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span>
+<span class="gi">+ name: Update ngeo &lt;new version&gt;</span>
 
-<span class="w"> </span> on:<span class="w"></span>
-<span class="gd">-   push:</span><span class="w"></span>
-<span class="gi">+   repository_dispatch:</span><span class="w"></span>
-<span class="gi">+     types:</span><span class="w"></span>
-<span class="gi">+     - ngeo_&lt;new version&gt;_updated</span><span class="w"></span>
+<span class="w"> </span> on:
+<span class="gd">-   push:</span>
+<span class="gi">+   repository_dispatch:</span>
+<span class="gi">+     types:</span>
+<span class="gi">+     - ngeo_&lt;new version&gt;_updated</span>
 
-<span class="gd">-     name: Continuous integration</span><span class="w"></span>
-<span class="gi">+     name: Update ngeo &lt;new version&gt;</span><span class="w"></span>
+<span class="gd">-     name: Continuous integration</span>
+<span class="gi">+     name: Update ngeo &lt;new version&gt;</span>
 
-<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span><span class="w"></span>
+<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-<span class="w"> </span>     env:<span class="w"></span>
-<span class="gd">-       MAIN_BRANCH: master</span><span class="w"></span>
-<span class="gd">-       MAJOR_VERSION: x.y</span><span class="w"></span>
-<span class="gi">+       MAIN_BRANCH: x.y</span><span class="w"></span>
-<span class="gi">+       MAJOR_VERSION: x.y</span><span class="w"></span>
+<span class="w"> </span>     env:
+<span class="gd">-       MAIN_BRANCH: master</span>
+<span class="gd">-       MAJOR_VERSION: x.y</span>
+<span class="gi">+       MAIN_BRANCH: x.y</span>
+<span class="gi">+       MAJOR_VERSION: x.y</span>
 
-<span class="w"> </span>    jobs:<span class="w"></span>
-<span class="gd">-      not-failed-backport:</span><span class="w"></span>
-<span class="gd">-        ...</span><span class="w"></span>
+<span class="w"> </span>    jobs:
+<span class="gd">-      not-failed-backport:</span>
+<span class="gd">-        ...</span>
 
 
-<span class="gd">-       - uses: actions/checkout@v2</span><span class="w"></span>
-<span class="gd">-         with:</span><span class="w"></span>
-<span class="gd">-           fetch-depth: 0</span><span class="w"></span>
-<span class="gd">-           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}</span><span class="w"></span>
-<span class="gd">-         if: env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span><span class="w"></span>
-<span class="w"> </span>       - uses: actions/checkout@v2<span class="w"></span>
-<span class="w"> </span>         with:<span class="w"></span>
-<span class="w"> </span>           fetch-depth: 0<span class="w"></span>
-<span class="gi">+           ref: ${{ env.MAIN_BRANCH }}</span><span class="w"></span>
-<span class="w"> </span>         if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;<span class="w"></span>
+<span class="gd">-       - uses: actions/checkout@v2</span>
+<span class="gd">-         with:</span>
+<span class="gd">-           fetch-depth: 0</span>
+<span class="gd">-           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}</span>
+<span class="gd">-         if: env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span>
+<span class="w"> </span>       - uses: actions/checkout@v2
+<span class="w"> </span>         with:
+<span class="w"> </span>           fetch-depth: 0
+<span class="gi">+           ref: ${{ env.MAIN_BRANCH }}</span>
+<span class="w"> </span>         if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;
 
-<span class="gd">-       - name: Publish feature branch</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
-<span class="gd">-</span><span class="w"></span>
-<span class="gd">-       - name: Publish to Transifex</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
-<span class="gd">-</span><span class="w"></span>
-<span class="gd">-       - name: Publish documentation to GitHub.io</span><span class="w"></span>
-<span class="gd">-         ...</span><span class="w"></span>
+<span class="gd">-       - name: Publish feature branch</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Publish to Transifex</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Publish documentation to GitHub.io</span>
+<span class="gd">-         ...</span>
 </pre></div>
 </div>
 <p>And also remove all the <cite>if</cite> concerning the following tests:</p>
@@ -322,13 +322,13 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <ul>
 <li><p>Empty the file <code class="docutils literal notranslate"><span class="pre">CHANGELOG</span></code></p></li>
 <li><p>Set the content of the file <code class="docutils literal notranslate"><span class="pre">ci/changelog.yaml</span></code> to:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">commits</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">c2cgeoportal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
-<span class="w">  </span><span class="nt">ngeo</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
-<span class="nt">pulls</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">c2cgeoportal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
-<span class="w">  </span><span class="nt">ngeo</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
-<span class="nt">releases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">commits</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">c2cgeoportal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">ngeo</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="nt">pulls</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">c2cgeoportal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">ngeo</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="nt">releases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </pre></div>
 </div>
 </li>
@@ -344,8 +344,8 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <section id="version-check">
 <h2>Version check<a class="headerlink" href="#version-check" title="Permalink to this heading">¶</a></h2>
 <p>On the &lt;new_version&gt; branch disable version check by adding in the <code class="docutils literal notranslate"><span class="pre">ci/config.yaml</span></code>:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>checks:<span class="w"></span>
-<span class="gi">+  versions: False</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>checks:
+<span class="gi">+  versions: False</span>
 </pre></div>
 </div>
 </section>

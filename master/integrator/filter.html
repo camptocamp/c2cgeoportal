@@ -70,15 +70,15 @@ See <a class="reference internal" href="../administrator/mapfile.html#administra
 available values of the attributes. The values are automatically retrieved using a web service that does a
 <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">distinct(&lt;column&gt;)</span> <span class="pre">FROM</span> <span class="pre">&lt;table&gt;</span></code>.</p>
 <p>The web service configuration is done in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&lt;layer_name&gt;</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">dbsession</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;session name&gt;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">attributes</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="nt">&lt;attribute name&gt;</span><span class="p">:</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;[schema.]table name&gt;</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">column_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;column name&gt;</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enum</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;layer_name&gt;</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">dbsession</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;session name&gt;</span>
+<span class="w">            </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">&lt;attribute name&gt;</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;[schema.]table name&gt;</span>
+<span class="w">                    </span><span class="nt">column_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;column name&gt;</span>
+<span class="w">                    </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;,&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">dbsession:</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code> at the <code class="docutils literal notranslate"><span class="pre">enum.defaults</span></code> level can be used
@@ -91,13 +91,13 @@ attribute level. <code class="docutils literal notranslate"><span class="pre">ta
 <p>If <code class="docutils literal notranslate"><span class="pre">column_name</span></code> is not defined, the attribute name is used.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">separator</span></code> is defined, the column is treated as a list of values.</p>
 <p>Example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">layers</span><span class="w"></span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">enum</span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">mapserver_layer</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">attributes</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;layers-enum-mapserver-layer-defaults</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">geodata.table</span><span class="w"></span>
-<span class="w">                </span><span class="nt">country</span><span class="p">:</span><span class="w"> </span><span class="nv">*layers-enum-mapserver-layer-defaults</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">layers</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">enum</span><span class="p p-Indicator">:</span>
+<span class="w">        </span><span class="nt">mapserver_layer</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;layers-enum-mapserver-layer-defaults</span>
+<span class="w">                    </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">geodata.table</span>
+<span class="w">                </span><span class="nt">country</span><span class="p">:</span><span class="w"> </span><span class="nv">*layers-enum-mapserver-layer-defaults</span>
 </pre></div>
 </div>
 </section>

@@ -68,17 +68,17 @@ For that run the following command:</p>
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1"><span class="nb">cd</span> /tmp</span>
-<span class="prompt1">git clone git@github.com:camptocamp/demo_geomapfish.git</span>
-<span class="prompt1"><span class="nb">cd</span> -</span>
-<span class="prompt1">cp --recursive /tmp/demo_geomapfish/custom /tmp/demo_geomapfish/haproxy .</span>
+</style><span class="prompt1"><span class="nb">cd</span><span class="w"> </span>/tmp</span>
+<span class="prompt1">git<span class="w"> </span>clone<span class="w"> </span>git@github.com:camptocamp/demo_geomapfish.git</span>
+<span class="prompt1"><span class="nb">cd</span><span class="w"> </span>-</span>
+<span class="prompt1">cp<span class="w"> </span>--recursive<span class="w"> </span>/tmp/demo_geomapfish/custom<span class="w"> </span>/tmp/demo_geomapfish/haproxy<span class="w"> </span>.</span>
 </pre></div></div><p>Add in <code class="docutils literal notranslate"><span class="pre">.prettierignore</span></code> the following line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">custom</span><span class="o">/</span><span class="n">Pipfile</span><span class="o">.</span><span class="n">lock</span>
 </pre></div>
 </div>
 <p>Apply the following diff in the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- known_first_party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin,geomapfish_geoportal</span><span class="w"></span>
-<span class="gi">+ known_first_party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin,geomapfish_geoportal,custom</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- known_first_party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin,geomapfish_geoportal</span>
+<span class="gi">+ known_first_party=c2cgeoportal_commons,c2cgeoportal_geoportal,c2cgeoportal_admin,geomapfish_geoportal,custom</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -93,35 +93,35 @@ span.prompt1:before {
 <section id="integrate-it-to-the-project">
 <h2>Integrate it to the project<a class="headerlink" href="#integrate-it-to-the-project" title="Permalink to this heading">¶</a></h2>
 <p>Add the following service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, with that we will be able to build and run the image:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span><span class="w"></span>
-<span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom</span><span class="w"></span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span><span class="w"></span>
-<span class="w">  </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VISIBLE_WEB_HOST</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GEOPORTAL_INTERNAL_URL</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PGSCHEMA</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_POOL_RECYCLE</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_POOL_SIZE</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_MAX_OVERFLOW</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_POOL_RECYCLE</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_POOL_SIZE</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_MAX_OVERFLOW</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=${PGSSLMODE}</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST_SLAVE}:${PGPORT_SLAVE}/${PGDATABASE}?sslmode=${PGSSLMODE}</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span>
+<span class="w">  </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VISIBLE_WEB_HOST</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GEOPORTAL_INTERNAL_URL</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PGSCHEMA</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_POOL_RECYCLE</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_POOL_SIZE</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_MAX_OVERFLOW</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_POOL_RECYCLE</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_POOL_SIZE</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_MAX_OVERFLOW</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=${PGSSLMODE}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SQLALCHEMY_SLAVE_URL=postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST_SLAVE}:${PGPORT_SLAVE}/${PGDATABASE}?sslmode=${PGSSLMODE}</span>
 </pre></div>
 </div>
 <p>Add the following service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code>, To be able to run the service
 in debugging mode with auto reloading:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/local/bin/pserve</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--reload</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c2c://development.ini</span><span class="w"></span>
-<span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./custom/custom:/app/custom</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">command</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/local/bin/pserve</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--reload</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c2c://development.ini</span>
+<span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./custom/custom:/app/custom</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -138,18 +138,18 @@ in debugging mode with auto reloading:</p>
 <section id="create-the-new-interface-based-on-canvas">
 <h2>Create the new interface based on canvas<a class="headerlink" href="#create-the-new-interface-based-on-canvas" title="Permalink to this heading">¶</a></h2>
 <p>Get the files from the <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mkdir -p geoportal/interfaces/</span>
-<span class="prompt1">cp CONST_create_template/geoportal/interfaces/desktop_alt.html.mako <span class="se">\</span>
-    geoportal/interfaces/desktop.html.mako</span>
-<span class="prompt1">mkdir -p geoportal/&lt;package&gt;_geoportal/static/images/</span>
-<span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static/images/background-layer-button.png <span class="se">\</span>
-    geoportal/&lt;package&gt;_geoportal/static/images/</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mkdir<span class="w"> </span>-p<span class="w"> </span>geoportal/interfaces/</span>
+<span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/interfaces/desktop_alt.html.mako<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>geoportal/interfaces/desktop.html.mako</span>
+<span class="prompt1">mkdir<span class="w"> </span>-p<span class="w"> </span>geoportal/&lt;package&gt;_geoportal/static/images/</span>
+<span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static/images/background-layer-button.png<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>geoportal/&lt;package&gt;_geoportal/static/images/</span>
 </pre></div></div><p>In the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file your interface should be declared like that:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">interfaces</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span><span class="w"></span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">canvas</span><span class="w"></span>
-<span class="w">    </span><span class="nt">layout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span><span class="w"></span>
-<span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">interfaces</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">canvas</span>
+<span class="w">    </span><span class="nt">layout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
+<span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> is the interface name as usual.
@@ -174,7 +174,7 @@ The slot says where the component should be added:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">footer-&lt;panel-name&gt;</span></code> -&gt; in the footer part of the page, when the panel is activated.</p></li>
 </ul>
 <p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> as <code class="docutils literal notranslate"><span class="pre">managed_files</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">geoportal/interfaces/desktop_alt\.html\.mako</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">geoportal/interfaces/desktop_alt\.html\.mako</span>
 </pre></div>
 </div>
 </section>
@@ -190,14 +190,14 @@ and build by <a class="reference external" href="https://vitejs.dev/">Vite</a>.<
 <p>And panel should be an instance of:
 <a class="reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/classes/srcapi_elements_ToolPanelElement.default.html">gmfapi.elements.ToolPanelElement</a>.</p>
 <p>We will directly get the existing component from the demo.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> /tmp</span>
-<span class="prompt1">git clone git@github.com:camptocamp/demo_geomapfish.git</span>
-<span class="prompt1"><span class="nb">cd</span> -</span>
-<span class="prompt1">cp --recursive /tmp/demo_geomapfish/webcomponents <span class="se">\</span>
-   /tmp/demo_geomapfish/package.json <span class="se">\</span>
-   /tmp/demo_geomapfish/package-lock.json <span class="se">\</span>
-   /tmp/demo_geomapfish/tsconfig.json <span class="se">\</span>
-   /tmp/demo_geomapfish/vite.config.ts .</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span><span class="w"> </span>/tmp</span>
+<span class="prompt1">git<span class="w"> </span>clone<span class="w"> </span>git@github.com:camptocamp/demo_geomapfish.git</span>
+<span class="prompt1"><span class="nb">cd</span><span class="w"> </span>-</span>
+<span class="prompt1">cp<span class="w"> </span>--recursive<span class="w"> </span>/tmp/demo_geomapfish/webcomponents<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>/tmp/demo_geomapfish/package.json<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>/tmp/demo_geomapfish/package-lock.json<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>/tmp/demo_geomapfish/tsconfig.json<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>/tmp/demo_geomapfish/vite.config.ts<span class="w"> </span>.</span>
 </pre></div></div><p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">node_modules</span>
 </pre></div>
@@ -240,8 +240,8 @@ build artifacts to the config image.</p>
 </pre></div>
 </div>
 <p>Add the following lines in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> as <code class="docutils literal notranslate"><span class="pre">managed_files</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">\.dockerignore</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">\.dockerignore</span>
 </pre></div>
 </div>
 </section>
@@ -260,32 +260,32 @@ build artifacts to the config image.</p>
 - Be sure that we have the CSS file as <code class="docutils literal notranslate"><span class="pre">gmfCustomStylesheetUrl</span></code>.
 - Add in comment all the needed configuration to be able to debug.</p>
 <p>Apply the following diff in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code>:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span> vars:<span class="w"></span>
-<span class="w"> </span>   interfaces_config:<span class="w"></span>
-<span class="w"> </span>     desktop:<span class="w"></span>
-<span class="w"> </span>       constants:<span class="w"></span>
-<span class="gi">+</span><span class="w"></span>
-<span class="gi">+         # For dev, the corresponding values in static should also be commented.</span><span class="w"></span>
-<span class="gi">+         # gmfCustomJavascriptUrl:</span><span class="w"></span>
-<span class="gi">+         #   - https://localhost:3001/@vite/client</span><span class="w"></span>
-<span class="gi">+         #   - https://localhost:3001/webcomponents/index.ts</span><span class="w"></span>
-<span class="gi">+</span><span class="w"></span>
-<span class="gi">+         # Used in the web component to get the service URL based on `gmfBase`.</span><span class="w"></span>
-<span class="gi">+         sitnFeedbackPath: custom/feedback</span><span class="w"></span>
-<span class="gi">+</span><span class="w"></span>
-<span class="gi">+       static:</span><span class="w"></span>
-<span class="gi">+         # Those two lines should be commented in dev mode.</span><span class="w"></span>
-<span class="gi">+         gmfCustomJavascriptUrl:</span><span class="w"></span>
-<span class="gi">+           name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span><span class="w"></span>
-<span class="gi">+         gmfCustomStylesheetUrl:</span><span class="w"></span>
-<span class="gi">+           name: /etc/geomapfish/static/css/desktop_alt.css</span><span class="w"></span>
-<span class="gi">+</span><span class="w"></span>
-<span class="gi">+       routes:</span><span class="w"></span>
-<span class="gi">+         gmfBase:</span><span class="w"></span>
-<span class="gi">+           name: base</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span> vars:
+<span class="w"> </span>   interfaces_config:
+<span class="w"> </span>     desktop:
+<span class="w"> </span>       constants:
+<span class="gi">+</span>
+<span class="gi">+         # For dev, the corresponding values in static should also be commented.</span>
+<span class="gi">+         # gmfCustomJavascriptUrl:</span>
+<span class="gi">+         #   - https://localhost:3001/@vite/client</span>
+<span class="gi">+         #   - https://localhost:3001/webcomponents/index.ts</span>
+<span class="gi">+</span>
+<span class="gi">+         # Used in the web component to get the service URL based on `gmfBase`.</span>
+<span class="gi">+         sitnFeedbackPath: custom/feedback</span>
+<span class="gi">+</span>
+<span class="gi">+       static:</span>
+<span class="gi">+         # Those two lines should be commented in dev mode.</span>
+<span class="gi">+         gmfCustomJavascriptUrl:</span>
+<span class="gi">+           name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+<span class="gi">+         gmfCustomStylesheetUrl:</span>
+<span class="gi">+           name: /etc/geomapfish/static/css/desktop_alt.css</span>
+<span class="gi">+</span>
+<span class="gi">+       routes:</span>
+<span class="gi">+         gmfBase:</span>
+<span class="gi">+           name: base</span>
 
-<span class="gi">+   # For dev this line is needed to allow the page to load the files from Vite dev server.</span><span class="w"></span>
-<span class="gi">+   # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span><span class="w"></span>
+<span class="gi">+   # For dev this line is needed to allow the page to load the files from Vite dev server.</span>
+<span class="gi">+   # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -297,32 +297,32 @@ Build and run as usual:</p>
 locally on port <code class="docutils literal notranslate"><span class="pre">3001</span></code>.</p>
 <p>We also need to get the file from the Vite dev server, for that we need to do the following modifications
 in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> (don’t commit them):</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>          # For dev, the corresponding values in static should also be removed.<span class="w"></span>
-<span class="gd">-          # gmfCustomJavascriptUrl:</span><span class="w"></span>
-<span class="gd">-          #   - https://localhost:3001/@vite/client</span><span class="w"></span>
-<span class="gd">-          #   - https://localhost:3001/webcomponents/index.ts</span><span class="w"></span>
-<span class="gi">+          gmfCustomJavascriptUrl:</span><span class="w"></span>
-<span class="gi">+            - https://localhost:3001/@vite/client</span><span class="w"></span>
-<span class="gi">+            - https://localhost:3001/webcomponents/index.ts</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>          # For dev, the corresponding values in static should also be removed.
+<span class="gd">-          # gmfCustomJavascriptUrl:</span>
+<span class="gd">-          #   - https://localhost:3001/@vite/client</span>
+<span class="gd">-          #   - https://localhost:3001/webcomponents/index.ts</span>
+<span class="gi">+          gmfCustomJavascriptUrl:</span>
+<span class="gi">+            - https://localhost:3001/@vite/client</span>
+<span class="gi">+            - https://localhost:3001/webcomponents/index.ts</span>
 
 
-<span class="w"> </span>          # Those two lines should be commented in dev mode.<span class="w"></span>
-<span class="gd">-          gmfCustomJavascriptUrl:</span><span class="w"></span>
-<span class="gd">-            name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span><span class="w"></span>
-<span class="gi">+          # gmfCustomJavascriptUrl:</span><span class="w"></span>
-<span class="gi">+          #   name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span><span class="w"></span>
+<span class="w"> </span>          # Those two lines should be commented in dev mode.
+<span class="gd">-          gmfCustomJavascriptUrl:</span>
+<span class="gd">-            name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+<span class="gi">+          # gmfCustomJavascriptUrl:</span>
+<span class="gi">+          #   name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
 
 
-<span class="w"> </span>    # For dev this line is needed to allow the page to load the files from Vite dev server.<span class="w"></span>
-<span class="gd">-    # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span><span class="w"></span>
-<span class="gi">+    content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span><span class="w"></span>
+<span class="w"> </span>    # For dev this line is needed to allow the page to load the files from Vite dev server.
+<span class="gd">-    # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
+<span class="gi">+    content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
 </pre></div>
 </div>
 <p>Rename the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> file to <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
 <p>Build and run as usual.</p>
 <p>Download and start the Vite dev server:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">npm install</span>
-<span class="prompt1">npm run dev</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">npm<span class="w"> </span>install</span>
+<span class="prompt1">npm<span class="w"> </span>run<span class="w"> </span>dev</span>
 </pre></div></div></section>
 <section id="extend-the-geoportal-image">
 <h2>Extend the geoportal image<a class="headerlink" href="#extend-the-geoportal-image" title="Permalink to this heading">¶</a></h2>
@@ -352,18 +352,18 @@ COPY authentication.py /app/geomapfishapp_geoportal/
 </pre></div>
 </div>
 <p>In the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file do the following changes:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>   geoportal:<span class="w"></span>
-<span class="w"> </span>     extends:<span class="w"></span>
-<span class="w"> </span>       file: docker-compose-lib.yaml<span class="w"></span>
-<span class="w"> </span>       service: geoportal<span class="w"></span>
-<span class="gi">+     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}</span><span class="w"></span>
-<span class="gi">+     build:</span><span class="w"></span>
-<span class="gi">+       context: geoportal_custom</span><span class="w"></span>
-<span class="gi">+       args:</span><span class="w"></span>
-<span class="gi">+         GIT_HASH: ${GIT_HASH}</span><span class="w"></span>
-<span class="gi">+         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}</span><span class="w"></span>
-<span class="gi">+         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}</span><span class="w"></span>
-<span class="w"> </span>     volumes_from:<span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>   geoportal:
+<span class="w"> </span>     extends:
+<span class="w"> </span>       file: docker-compose-lib.yaml
+<span class="w"> </span>       service: geoportal
+<span class="gi">+     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}</span>
+<span class="gi">+     build:</span>
+<span class="gi">+       context: geoportal_custom</span>
+<span class="gi">+       args:</span>
+<span class="gi">+         GIT_HASH: ${GIT_HASH}</span>
+<span class="gi">+         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}</span>
+<span class="gi">+         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}</span>
+<span class="w"> </span>     volumes_from:
 </pre></div>
 </div>
 <div class="admonition warning">

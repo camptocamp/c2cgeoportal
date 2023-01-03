@@ -43,13 +43,13 @@
 <span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this heading">¶</a></h1>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default),
 in the simple application mode, the list of languages is constant: en fr de it.</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">LANGUAGES</span> <span class="o">?=</span> en fr de
+<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">LANGUAGES</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>en<span class="w"> </span>fr<span class="w"> </span>de
 </pre></div>
 </div>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, define the default locale:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
-<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">default_locale_name</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">default_locale_name</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span>
 </pre></div>
 </div>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">language_mapping</span></code>, define any desired locale variants, for example:</p>
@@ -67,7 +67,7 @@ in the simple application mode, the list of languages is constant: en fr de it.<
 (if the line is not removed, the localization will not be used).</p>
 </div>
 <p>To update your <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you should proceed as follows.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make update-po
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>update-po
 </pre></div>
 </div>
 <div class="admonition note">
@@ -100,9 +100,9 @@ for translation.</p>
 </div>
 <p>If the standard system can not collect some strings, you can add them manually in
 one of your JavaScript application controllers:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="cm">/** @type {angular.gettext.gettextCatalog} */</span><span class="w"></span>
-<span class="kd">const</span><span class="w"> </span><span class="nx">gettextCatalog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$injector</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;gettextCatalog&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nx">gettextCatalog</span><span class="p">.</span><span class="nx">getString</span><span class="p">(</span><span class="s1">&#39;My previously not collected string&#39;</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="cm">/** @type {angular.gettext.gettextCatalog} */</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">gettextCatalog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">$injector</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;gettextCatalog&#39;</span><span class="p">);</span>
+<span class="nx">gettextCatalog</span><span class="p">.</span><span class="nx">getString</span><span class="p">(</span><span class="s1">&#39;My previously not collected string&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -119,11 +119,11 @@ have a suffix on your po files.</p>
 <p>Before calling the <cite>update-po</cite> command you should rename the po files you want to update without the suffix,
 and after you should rename them with the right name.</p>
 <p>In the config <cite>Dockerfile</cite> you should replace:</p>
-<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>build-l10n <span class="s2">&quot;&lt;package&gt;&quot;</span>
+<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>build-l10n<span class="w"> </span><span class="s2">&quot;&lt;package&gt;&quot;</span>
 </pre></div>
 </div>
 <p>by:</p>
-<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>build-l10n --suffix<span class="o">=</span>suffix_1 --suffix<span class="o">=</span>suffix_2 <span class="s2">&quot;&lt;package&gt;&quot;</span>
+<div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">RUN</span><span class="w"> </span>build-l10n<span class="w"> </span>--suffix<span class="o">=</span>suffix_1<span class="w"> </span>--suffix<span class="o">=</span>suffix_2<span class="w"> </span><span class="s2">&quot;&lt;package&gt;&quot;</span>
 </pre></div>
 </div>
 <p>in the <cite>geoportal/&lt;package&gt;_geoportal/__init__.py</cite> file you should add:</p>

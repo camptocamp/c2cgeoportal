@@ -106,15 +106,15 @@ If you have not yet created this function in your database, use to following com
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> tools psql --file<span class="o">=</span>/opt/clone_schema.sql</span>
+</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>psql<span class="w"> </span>--file<span class="o">=</span>/opt/clone_schema.sql</span>
 </pre></div></div><p>To use the function, connect to your database and perform the following statement:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s1">&#39;&lt;new_schema_name&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span>
+<span class="w">    </span><span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;&lt;new_schema_name&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>In our example, it will be:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_2019&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main_2020&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_2019&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main_2020&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> to <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
@@ -125,7 +125,7 @@ span.prompt1:before {
 <p>If you want to restructure a geodata table, you should create a new table, use the new table name in your
 mapfiles and your QGIS projects. The new table will be automatically used when you publish the new version.</p>
 <p>To do a test on an editing table during integration, you should copy the table with e.-g.:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">edit</span><span class="p">.</span><span class="n">poi</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">edit</span><span class="p">.</span><span class="n">oi_integration</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">edit</span><span class="p">.</span><span class="n">poi</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">edit</span><span class="p">.</span><span class="n">oi_integration</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Use the new table in the ‘Geo table’ field of your layer in the administration interface.</p>

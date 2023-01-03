@@ -50,16 +50,16 @@
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">ssh -L <span class="m">5432</span>:localhost:5432 &lt;server&gt;</span>
+</style><span class="prompt1">ssh<span class="w"> </span>-L<span class="w"> </span><span class="m">5432</span>:localhost:5432<span class="w"> </span>&lt;server&gt;</span>
 </pre></div></div><p>If you run QGIS in Docker, you should bind to a specific IP:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>ip addr show dev <span class="k">$(</span>route <span class="p">|</span> grep default <span class="p">|</span> awk <span class="s1">&#39;{print $(NF)}&#39;</span> <span class="p">|</span> head -1<span class="k">)</span> <span class="p">|</span> awk <span class="s1">&#39;$1 ~ /^inet/ { sub(&quot;/.*&quot;, &quot;&quot;, $2); print $2 }&#39;</span> <span class="p">|</span> head -1<span class="k">)</span></span>
-<span class="prompt1">ssh -L <span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432 &lt;remote server&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span>dev<span class="w"> </span><span class="k">$(</span>route<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>default<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $(NF)}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="k">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;$1 ~ /^inet/ { sub(&quot;/.*&quot;, &quot;&quot;, $2); print $2 }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="k">)</span></span>
+<span class="prompt1">ssh<span class="w"> </span>-L<span class="w"> </span><span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432<span class="w"> </span>&lt;remote<span class="w"> </span>server&gt;</span>
 </pre></div></div></section>
 <section id="run-the-client-with-docker">
 <h3>Run the client with Docker<a class="headerlink" href="#run-the-client-with-docker" title="Permalink to this heading">¶</a></h3>
 <p>In a Docker mode, QGIS is configured in the <code class="docutils literal notranslate"><span class="pre">qgisserver/</span></code> directory. To edit the configuration,
 run this target and open the <code class="docutils literal notranslate"><span class="pre">/etc/project/project.qgs</span></code> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make edit-qgis-project</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make<span class="w"> </span>edit-qgis-project</span>
 </pre></div></div></section>
 <section id="ows-configuration">
 <h3>OWS configuration<a class="headerlink" href="#ows-configuration" title="Permalink to this heading">¶</a></h3>
@@ -140,14 +140,14 @@ port=${EXTRA_PGPORT}
 </pre></div>
 </div>
 <p>And in your <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">qgisserver</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGHOST=&lt;host&gt;</span><span class="w"></span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGDATABASE=&lt;database&gt;</span><span class="w"></span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGUSER=&lt;user&gt;</span><span class="w"></span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPASSWORD=&lt;pass&gt;</span><span class="w"></span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPORT=&lt;port&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">qgisserver</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGHOST=&lt;host&gt;</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGDATABASE=&lt;database&gt;</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGUSER=&lt;user&gt;</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPASSWORD=&lt;pass&gt;</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">EXTRA_PGPORT=&lt;port&gt;</span>
 </pre></div>
 </div>
 <p>With this configuration, the connection will be passed through the environment variables,
@@ -194,16 +194,16 @@ to something like that:
 <a class="reference external" href="https://www.url-encode-decode.com/">service</a> to encode it.</p>
 <p>In multi project mode the best is to use in the OGC server URL like this <cite>config://qgis1</cite>, <cite>config://qgis2</cite>,
 in the vars file add:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">servers</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">qgis1</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{QGISSERVER_URL}&#39;</span><span class="w"></span>
-<span class="w">      </span><span class="nt">params</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">MAP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis1</span><span class="w"></span>
-<span class="w">    </span><span class="nt">qgis2</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{QGISSERVER_URL}&#39;</span><span class="w"></span>
-<span class="w">      </span><span class="nt">params</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">MAP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis2</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">servers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">qgis1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{QGISSERVER_URL}&#39;</span>
+<span class="w">      </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">MAP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis1</span>
+<span class="w">    </span><span class="nt">qgis2</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{QGISSERVER_URL}&#39;</span>
+<span class="w">      </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">MAP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&amp;dbname={PGDATABASE}&amp;schema=qgis&amp;project=qgis2</span>
 </pre></div>
 </div>
 <p>With that you will not have URL encoding issues.</p>

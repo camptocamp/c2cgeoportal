@@ -54,17 +54,17 @@ zoom to the geometry. Other actions can be set, see below for the available acti
 <section id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this heading">¶</a></h2>
 <p>Here is an example of an insertion in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span><span class="w"></span>
-<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">   </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2056</span><span class="p">),</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;Section name&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;text to display&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;text to search&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+<span class="w">   </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2056</span><span class="p">),</span>
+<span class="w">   </span><span class="s1">&#39;Section name&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;text to display&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;t&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;fr&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;text to search&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <p>Where the point geometry contains the coordinates to zoom to,
@@ -77,17 +77,17 @@ result to appear in the search results.
 After inserting new section headers, you should invalidate the server cache for the new
 headers to be taken into account.</p>
 <p>Here is another example where rows from a <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> are inserted:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"></span>
-<span class="w">  </span><span class="n">geom</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s1">&#39;layer_name&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s1">&#39;de&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">  </span><span class="n">geom</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;layer_name&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;t&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -191,29 +191,29 @@ available to users with the corresponding role.</p>
 insert that data multiple times. For example, if you want to make the data
 of a table <em>text-searchable</em>, and restrict that data to the roles whose ids
 are <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code>, you will use two SQL <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> statements:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"></span>
-<span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"></span>
-<span class="w">   </span><span class="n">geom</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;layer_name&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">   </span><span class="n">geom</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;layer_name&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
 
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"></span>
-<span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"></span>
-<span class="w">   </span><span class="n">geom</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;layer group name&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span><span class="w"></span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">   </span><span class="n">geom</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -222,9 +222,9 @@ are <code class="docutils literal notranslate"><span class="pre">1</span></code>
 <span id="integrator-fulltext-search-params"></span><h2>Params<a class="headerlink" href="#params" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">params</span></code> column can contain a JSON with a dictionary of parameters.
 For instance to specify a <code class="docutils literal notranslate"><span class="pre">floor</span></code>:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;floor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;floor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Query string <code class="docutils literal notranslate"><span class="pre">floor=1</span></code> is then automatically appended to all WMS requests.</p>
@@ -232,27 +232,27 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 <section id="actions">
 <h2>Actions<a class="headerlink" href="#actions" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">actions</span></code> column contains a JSON with an array of actions like:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_layer&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_layer_name&gt;&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_layer&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_layer_name&gt;&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_group&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_group_name&gt;&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_group&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_group_name&gt;&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_theme&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_theme_name&gt;&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_theme&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_theme_name&gt;&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Example of <code class="docutils literal notranslate"><span class="pre">SQL</span></code> <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> of <code class="docutils literal notranslate"><span class="pre">actions</span></code> data to add the layer “cadastre” on the map:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="n">actions</span><span class="p">)</span><span class="w"></span>
-<span class="k">VALUES</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="s1">&#39;[{&quot;action&quot;: &quot;add_layer&quot;, &quot;data&quot;: &quot;cadastre&quot;}]&#39;</span><span class="p">)</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="n">actions</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="s1">&#39;[{&quot;action&quot;: &quot;add_layer&quot;, &quot;data&quot;: &quot;cadastre&quot;}]&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If <code class="docutils literal notranslate"><span class="pre">actions</span></code> is not specified and the element found in the query contains a geometry, then
@@ -298,7 +298,7 @@ than <cite>120</cite>.</p>
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span> &lt;db_name&gt;</span>
+</style><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
 </pre></div></div><p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">tsvector</span></code> and <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to rank your search
 results
 (see: <a class="reference external" href="https://www.postgresql.org/docs/9.0/static/textsearch-controls.html">textsearch-controls</a>).
@@ -316,35 +316,35 @@ To make it accent-insensitive Postgres’s
 <a class="reference external" href="https://www.postgresql.org/docs/9.0/static/unaccent.html">unaccent extension</a>
 can be used.</p>
 <p>To activate the unaccent extension, first connect to the database:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo -u postgres psql -d &lt;database&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-d<span class="w"> </span>&lt;database&gt;</span>
 </pre></div></div><p>Create the Postgres unaccent extension and dictionary:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="n">unaccent</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="n">unaccent</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Insert the unaccent dictionary into a text search configuration
 (<a class="reference external" href="https://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html">Documentation</a>):</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="p">(</span><span class="k">COPY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">french</span><span class="p">);</span><span class="w"></span>
-<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"></span>
-<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">hword</span><span class="p">,</span><span class="w"> </span><span class="n">hword_part</span><span class="p">,</span><span class="w"> </span><span class="n">word</span><span class="w"></span>
-<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">unaccent</span><span class="p">,</span><span class="w"> </span><span class="n">french_stem</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="p">(</span><span class="k">COPY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">french</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">hword</span><span class="p">,</span><span class="w"> </span><span class="n">hword_part</span><span class="p">,</span><span class="w"> </span><span class="n">word</span>
+<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">unaccent</span><span class="p">,</span><span class="w"> </span><span class="n">french_stem</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>When populating the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table use the text configuration ‘fr’
 instead of ‘french’. For example:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span><span class="w"></span>
-<span class="k">VALUES</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2056</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;Layer group&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s1">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Accent text to search (éàè)&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">  </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2056</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Accent text to search (éàè)&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">);</span>
 </pre></div>
 </div>
 <p>And define the configuration in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">languages</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">fr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">languages</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">fr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and the text search configuration, by default it is
@@ -354,19 +354,19 @@ instead of ‘french’. For example:</p>
 <h2>Synonym and Thesaurus Dictionary<a class="headerlink" href="#synonym-and-thesaurus-dictionary" title="Permalink to this heading">¶</a></h2>
 <p>You may wish to avoid using the Synonym and Thesaurus dictionaries, because when these are used,
 a word like ‘alignement’ is simplified as ‘align’:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;alignement&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="s1">&#39;align&#39;</span><span class="p">:</span><span class="mi">1</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;alignement&#39;</span><span class="p">);</span>
+<span class="s1">&#39;align&#39;</span><span class="p">:</span><span class="mi">1</span>
 </pre></div>
 </div>
 <p>Thus, ‘alignem’ does not match in the search, which might be considered unexpected behavior by users:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">to_tsquery</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;alignem:*&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="s1">&#39;alignem&#39;</span><span class="p">:</span><span class="o">*</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">to_tsquery</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;alignem:*&#39;</span><span class="p">);</span>
+<span class="s1">&#39;alignem&#39;</span><span class="p">:</span><span class="o">*</span>
 </pre></div>
 </div>
 <p>To change this behavior, you can create and use a new dictionary named <cite>french_alt</cite>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="k">TEMPLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="k">simple</span><span class="p">);</span><span class="w"></span>
-<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="n">STOPWORDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">french</span><span class="p">);</span><span class="w"></span>
-<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">asciiword</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">french_alt</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="k">TEMPLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="k">simple</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="n">STOPWORDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">french</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">asciiword</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">french_alt</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -387,9 +387,9 @@ a word like ‘alignement’ is simplified as ‘align’:</p>
 </pre></div>
 </div>
 <p>Use the new search configuration named de:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">languages</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">de</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">languages</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">de</span>
 </pre></div>
 </div>
 </section>

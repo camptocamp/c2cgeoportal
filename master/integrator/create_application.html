@@ -70,9 +70,9 @@ span.prompt1:before {
 from the root directory of c2cgeoportal (if you have followed the instructions
 from the previous section), or from the root directory of the existing
 c2cgeoportal application you want to create the new application from:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm <span class="se">\</span>
-    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
-    pcreate -l</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pcreate<span class="w"> </span>-l</span>
 </pre></div></div><p>You should at least see the c2cgeoportal scaffolds:</p>
 <ul class="simple">
 <li><p>c2cgeoportal_create</p></li>
@@ -84,11 +84,11 @@ c2cgeoportal application you want to create the new application from:</p>
 <section id="create-the-new-application">
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this heading">¶</a></h2>
 <p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
-    run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate --scaffold<span class="o">=</span>create <span class="se">\</span>
-    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -101,29 +101,29 @@ it later.</p>
 <p>You can define this information directly in the command line using
 parameters:</p>
 <blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    --env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">2056</span> <span class="se">\</span>
-    --env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span> <span class="se">\</span>
-    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
-    run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate --scaffold<span class="o">=</span>create <span class="se">\</span>
-    --package-name<span class="o">=</span><span class="si">${</span><span class="nv">GEOMAPFISH_PACKAGE</span><span class="si">}</span> <span class="se">\</span>
-    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">2056</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>create<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--package-name<span class="o">=</span><span class="si">${</span><span class="nv">GEOMAPFISH_PACKAGE</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div></div></blockquote>
 </div>
 <p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> in you current directory.</p>
 <p>For an advance application, apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_advance_create</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
-    run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate --scaffold<span class="o">=</span>advance_create <span class="se">\</span>
-    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span> --overwrite</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>advance_create<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span><span class="w"> </span>--overwrite</span>
 </pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
-    run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate --scaffold<span class="o">=</span>update <span class="se">\</span>
-    <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span> --overwrite</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>update<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span><span class="w"> </span>--overwrite</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Do not add any ‘/’ after the project name.</p>
@@ -133,12 +133,12 @@ application. The files generated by this scaffold are prefixed with
 <code class="docutils literal notranslate"><span class="pre">CONST_</span></code>, which means they are <em>constant</em> files that should not be changed.
 Following this rule is important for easier updates.</p>
 <p>For an advance application apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_advance_update</span></code> scaffold:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm -ti --volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src <span class="se">\</span>
-    camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span> <span class="se">\</span>
-    run <span class="k">$(</span>id -u<span class="k">)</span> <span class="k">$(</span>id -g<span class="k">)</span> /src <span class="se">\</span>
-    pcreate -s advance_update <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pcreate<span class="w"> </span>-s<span class="w"> </span>advance_update<span class="w"> </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>Go to your new project:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span> <span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>For advance application you also should:</p>
 <p>Add an attribute <code class="docutils literal notranslate"><span class="pre">advance:</span> <span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file.</p>
 <dl class="simple">
@@ -156,18 +156,18 @@ made available, a simple application is an application for which no custom code 
 <p>The documentation sections, in administrator and integrator guides, indicate whether the current
 section applies to the simple application mode or not.</p>
 <p>To convert an application to a simple application you should do:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git rm geoportal</span>
-<span class="prompt1">git checkout geoportal/vars.yaml</span>
-<span class="prompt1">git checkout geoportal/CONST_vars.yaml</span>
-<span class="prompt1">git checkout geoportal/CONST_config-schema.yaml</span>
-<span class="prompt1">git checkout geoportal/&lt;project&gt;_geoportal/locale/</span>
-<span class="prompt1">git checkout geoportal/&lt;project&gt;_geoportal/static/</span>
-<span class="prompt1">git rm CONST_create_template/geoportal</span>
-<span class="prompt1">git checkout CONST_create_template/geoportal/vars.yaml</span>
-<span class="prompt1">git checkout CONST_create_template/geoportal/CONST_vars.yaml</span>
-<span class="prompt1">git checkout CONST_create_template/geoportal/CONST_config-schema.yaml</span>
-<span class="prompt1">git checkout CONST_create_template/geoportal/&lt;project&gt;_geoportal/locale/</span>
-<span class="prompt1">git checkout CONST_create_template/geoportal/&lt;project&gt;_geoportal/static/</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git<span class="w"> </span>rm<span class="w"> </span>geoportal</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>geoportal/vars.yaml</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>geoportal/CONST_vars.yaml</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>geoportal/CONST_config-schema.yaml</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>geoportal/&lt;project&gt;_geoportal/locale/</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>geoportal/&lt;project&gt;_geoportal/static/</span>
+<span class="prompt1">git<span class="w"> </span>rm<span class="w"> </span>CONST_create_template/geoportal</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>CONST_create_template/geoportal/vars.yaml</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>CONST_create_template/geoportal/CONST_vars.yaml</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>CONST_create_template/geoportal/CONST_config-schema.yaml</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>CONST_create_template/geoportal/&lt;project&gt;_geoportal/locale/</span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>CONST_create_template/geoportal/&lt;project&gt;_geoportal/static/</span>
 </pre></div></div><p>You should also set an API name, in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file, in <cite>vars/api/name`</cite> and also modify the
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/apihelp/index.html</span></code> file.</p>
 <p>Remove the attribute <code class="docutils literal notranslate"><span class="pre">advance:</span> <span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file.</p>
@@ -178,12 +178,12 @@ section applies to the simple application mode or not.</p>
 <section id="to-add-a-project-in-a-new-repository">
 <h3>To add a project in a new repository<a class="headerlink" href="#to-add-a-project-in-a-new-repository" title="Permalink to this heading">¶</a></h3>
 <p>Add the project:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git init</span>
-<span class="prompt1">git remote add origin git@github.com:camptocamp/<span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span>.git</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git<span class="w"> </span>init</span>
+<span class="prompt1">git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:camptocamp/<span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span>.git</span>
 </pre></div></div><p>Commit and push on the main repository:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add .</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;Initial commit&quot;</span></span>
-<span class="prompt1">git push origin master</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>.</span>
+<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial commit&quot;</span></span>
+<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master</span>
 </pre></div></div></section>
 </section>
 <section id="configuration-of-different-environments-in-your-project">
@@ -210,13 +210,13 @@ can be made dynamic by means of environment variable. For this, in the main file
 <p>In this same file, you can change the value of a parameter by putting it in
 uppercase (example: <code class="docutils literal notranslate"><span class="pre">host:</span> <span class="pre">'{HOST}'</span></code>). This parameter must be listed in the
 interpreted parameters section:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONST_vars.yaml</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONST_vars.yaml</span>
 
-<span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{HOST}&#39;</span><span class="w"></span>
-<span class="nn">...</span><span class="w"></span>
-<span class="nt">runtime_environment</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HOST</span><span class="w"></span>
+<span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{HOST}&#39;</span>
+<span class="nn">...</span>
+<span class="nt">runtime_environment</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HOST</span>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file, add parameters you want to change as exported variables:</p>
@@ -233,9 +233,9 @@ interpreted parameters section:</p>
 <h2>Configure the application<a class="headerlink" href="#configure-the-application" title="Permalink to this heading">¶</a></h2>
 <p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">env.project</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add vars.yaml env.project</span>
-<span class="prompt1">git commit -m <span class="s2">&quot;Configure the project&quot;</span></span>
-<span class="prompt1">git push origin master</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>vars.yaml<span class="w"> </span>env.project</span>
+<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Configure the project&quot;</span></span>
+<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you are using a multi-organization project, you should add all new children to
@@ -251,7 +251,7 @@ Then follow the sections in the install application guide:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you want a default theme, you can run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal create-demo-theme</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>create-demo-theme</span>
 </pre></div></div></div>
 </section>
 <section id="dynamic-configuration">
@@ -287,7 +287,7 @@ and open a pull request to update the localization files (<cite>.po</cite>) with
 <h3>Acceptance tests<a class="headerlink" href="#acceptance-tests" title="Permalink to this heading">¶</a></h3>
 <p>To have some acceptance tests you need to have a minimal dump of your database in the repository,
 it can be obtained with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">scripts/db-backup --arg<span class="o">=</span>--schema<span class="o">=</span>&lt;schema&gt; ../dump.backup</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">scripts/db-backup<span class="w"> </span>--arg<span class="o">=</span>--schema<span class="o">=</span>&lt;schema&gt;<span class="w"> </span>../dump.backup</span>
 </pre></div></div><p>In the <cite>Makefile</cite> you should configure the dump file as <cite>DUMP_FILE</cite>, the <cite>db-restore</cite> call in <cite>acceptance-init</cite>
 should probably also be updated.</p>
 <p>In the file <cite>.github/workflows/main.yaml</cite> you should uncomment all the lines related to the
