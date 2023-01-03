@@ -1,3 +1,5 @@
+##### 2.5.0.228
+* Update dependency gitpython to v3.1.30 (2.5) [c2cgeoportal#10257](https://github.com/camptocamp/c2cgeoportal/pull/10257)
 ##### 2.5.0.226
 * Update all patch versions (2.5) (patch) [c2cgeoportal#10229](https://github.com/camptocamp/c2cgeoportal/pull/10229)
 * Fix fast JSON check [c2cgeoportal#10231](https://github.com/camptocamp/c2cgeoportal/pull/10231)
