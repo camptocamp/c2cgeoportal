@@ -1,3 +1,5 @@
+##### 2.4.2.98
+* Update all patch versions (2.4) (patch) [c2cgeoportal#10256](https://github.com/camptocamp/c2cgeoportal/pull/10256)
 ##### 2.4.2.97
 * Update all patch versions (2.4) (patch) [c2cgeoportal#10205](https://github.com/camptocamp/c2cgeoportal/pull/10205)
 * Snyk auto fix [ngeo#8944](https://github.com/camptocamp/ngeo/pull/8944)
