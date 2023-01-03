@@ -63,7 +63,7 @@ def upgrade() -> None:
 
     engine = op.get_bind().engine
     with engine.connect() as connection:
-        if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(  # type: ignore
+        if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
             connection, "functionality", schema=schema
         ):
             return
