@@ -1,3 +1,5 @@
+##### 2.6.0.165
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10258](https://github.com/camptocamp/c2cgeoportal/pull/10258)
 ##### 2.6.0.164
 * Add variable content_security_policy_iframe_api_frame_ancestors [c2cgeoportal#10242](https://github.com/camptocamp/c2cgeoportal/pull/10242)
 ##### 2.6.0.163
