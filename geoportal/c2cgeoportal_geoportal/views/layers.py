@@ -506,7 +506,7 @@ def get_layer_class(
     """
     Get the SQLAlchemy class to edit a GeoMapFish layer.
 
-    Arguments:
+    Keyword Arguments:
 
         layer: The GeoMapFish layer
         with_last_update_columns: False to just have a class to access to the table and be able to
