@@ -65,7 +65,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         both body and query can be obtained by direct attribute access, i.e.
         request.client_id for client_id in the URL query.
 
-        Arguments:
+        Keyword Arguments:
 
             request: oauthlib.common.Request
 
@@ -153,7 +153,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
               client credentials or whenever Client provided client authentication, see
               `Section 6`_
 
-        Arguments:
+        Keyword Arguments:
 
             request: oauthlib.common.Request
 
@@ -195,7 +195,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         the client's allowed redirect URIs, but against the URI used when the
         code was saved.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             code: Unicode authorization_code.
@@ -234,7 +234,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         been provided. See ``.get_code_challenge``. Must return ``plain`` or ``S256``. You can return a custom
         value if you have implemented your own ``AuthorizationCodeGrant`` class.
 
-        Arguments:
+        Keyword Arguments:
 
             code: Authorization code.
             request: OAuthlib request.
@@ -260,7 +260,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the default redirect URI for the client.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             request: The HTTP Request
@@ -287,7 +287,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the default scopes for the client.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             request: The HTTP Request
@@ -316,7 +316,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the list of scopes associated with the refresh token.
 
-        Arguments:
+        Keyword Arguments:
 
             refresh_token: Unicode refresh token
             request: The HTTP Request
@@ -364,7 +364,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         efficiency, but must fallback to other types to be compliant with RFC.
         The dict of claims is added to request.token after this method.
 
-        Arguments:
+        Keyword Arguments:
 
             token: The token string.
             token_type_hint: access_token or refresh_token.
@@ -393,7 +393,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Invalidate an authorization code after use.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             code: The authorization code grant (request.code).
@@ -436,7 +436,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         used in situations where returning all valid scopes from the
         get_original_scopes is not practical.
 
-        Arguments:
+        Keyword Arguments:
 
             request_scopes: A list of scopes that were requested by client
             refresh_token: Unicode refresh_token
@@ -462,7 +462,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Revoke an access or refresh token.
 
-        Arguments:
+        Keyword Arguments:
 
             token: The token string.
             token_type_hint: access_token or refresh_token.
@@ -485,7 +485,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         or replaced with a new one (rotated). Return True to rotate and
         and False for keeping original.
 
-        Arguments:
+        Keyword Arguments:
 
             request: oauthlib.common.Request
 
@@ -525,7 +525,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         chose to send one.  That value should be saved and used in
         'validate_code'.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             code: A dict of the authorization code grant and, optionally, state.
@@ -595,7 +595,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         Note that while "scope" is a string-separated list of authorized scopes,
         the original list is still available in request.scopes
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             token: A Bearer token dict
@@ -646,7 +646,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure the Bearer token is valid and authorized access to scopes.
 
-        Arguments:
+        Keyword Arguments:
 
             token: A string of random characters.
             scopes: A list of scopes associated with the protected resource.
@@ -682,7 +682,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         one provided for django these attributes will be made available
         in all protected views as keyword arguments.
 
-        Arguments:
+        Keyword Arguments:
 
             token: Unicode Bearer token
             scopes: List of scopes (defined by you)
@@ -725,7 +725,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         to set request.client to the client object associated with the
         given client_id.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             request: oauthlib.common.Request
@@ -771,7 +771,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         associated with this authorization code. Similarly request.scopes
         must also be set.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             code: Unicode authorization code
@@ -812,7 +812,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure client is authorized to use the grant_type requested.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             grant_type: Unicode grant type, i.e. authorization_code, password.
@@ -850,7 +850,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         All clients should register the absolute URIs of all URIs they intend
         to redirect to. The registration is outside of the scope of oauthlib.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             redirect_uri: Unicode absolute URI
@@ -889,7 +889,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         OBS! The request.user attribute should be set to the resource owner
         associated with this refresh token.
 
-        Arguments:
+        Keyword Arguments:
 
             refresh_token: Unicode refresh token
             client: Client object set by you, see authenticate_client.
@@ -931,7 +931,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure client is authorized to use the response_type requested.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             response_type: Unicode response type, i.e. code, token.
@@ -960,7 +960,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure the client is authorized access to requested scopes.
 
-        Arguments:
+        Keyword Arguments:
 
             client_id: Unicode client identifier
             scopes: List of scopes (defined by you)
@@ -996,7 +996,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         not set you will be unable to associate a token with a user in the
         persistence method used (commonly, save_bearer_token).
 
-        Arguments:
+        Keyword Arguments:
 
             username: Unicode username
             password: Unicode password
