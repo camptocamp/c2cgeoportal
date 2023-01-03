@@ -195,17 +195,15 @@ yaml = ["PyYAML"]
 
 [[package]]
 name = "basicauth"
-version = "0.4.1"
+version = "1.0.0"
 description = "An incredibly simple HTTP basic auth implementation."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "basicauth-0.4.1-py2.py3-none-any.whl", hash = "sha256:d79ebe09ec4a46955539ed2e66a6543375511e0f00b3c37be735d15f8e63ac02"},
+    {file = "basicauth-1.0.0-py3-none-any.whl", hash = "sha256:5e6eb3deb883b1fce552e25b6a97083e1b5ab28771b3d7c2b76c5b6ae1cc4da7"},
+    {file = "basicauth-1.0.0.tar.gz", hash = "sha256:e4739db0a8bd146702c3501afda172e66b51ebafc15ee65adbecb86b9ee0d51b"},
 ]
-
-[package.dependencies]
-six = "*"
 
 [[package]]
 name = "beaker"
@@ -4506,4 +4504,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "c5ab907512a16828d41daf99ee1c7b9c402b811c7a777b96583ef7a2daf6cf14"
+content-hash = "874dc65ea69474b538bfb7ba91800a3d3165afaf8bef3b09eecf6f533fda4baa"
