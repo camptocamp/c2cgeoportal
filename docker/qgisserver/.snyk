@@ -8,6 +8,10 @@ ignore:
         created: 2022-11-02T08:46:52.047Z
   SNYK-PYTHON-SETUPTOOLS-3113904:
     - '*':
-        reason: Not working with used Python version
+        reason: Patched version not available tor used Python version
         created: 2022-11-15T12:23:56.617Z
+  SNYK-PYTHON-WHEEL-3180413:
+    - '*':
+        reason: Patched version not available tor used Python version
+        created: 2023-01-04T08:48:04.564Z
 patch: {}
