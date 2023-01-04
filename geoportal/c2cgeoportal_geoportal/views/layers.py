@@ -34,6 +34,7 @@ from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Set, Tup
 import geojson.geometry
 import pyramid.request
 import pyramid.response
+import shapely.geometry
 import sqlalchemy.ext.declarative
 from geoalchemy2 import Geometry
 from geoalchemy2 import func as ga_func
@@ -49,8 +50,7 @@ from pyramid.httpexceptions import (
     HTTPNotFound,
 )
 from pyramid.view import view_config
-from shapely.geometry import asShape
-from shapely.geos import TopologicalError
+from shapely.errors import TopologicalError
 from shapely.ops import cascaded_union
 from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, exc, func
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
@@ -228,7 +228,7 @@ class Layers:
         geom = feature.geometry
         if not geom or isinstance(geom, geojson.geometry.Default):
             return feature
-        shape = asShape(geom)
+        shape = shapely.geometry.shape(geom)
         srid = self._get_geom_col_info(layer)[1]
         spatial_elt = from_shape(shape, srid=srid)
         allowed = models.DBSession.query(func.count(RestrictionArea.id))
@@ -275,7 +275,7 @@ class Layers:
             del obj  # unused
             geom = feature.geometry
             if geom and not isinstance(geom, geojson.geometry.Default):
-                shape = asShape(geom)
+                shape = shapely.geometry.shape(geom)
                 srid = self._get_geom_col_info(layer)[1]
                 spatial_elt = from_shape(shape, srid=srid)
                 allowed = models.DBSession.query(func.count(RestrictionArea.id))
@@ -346,7 +346,7 @@ class Layers:
             )
             spatial_elt = None
             if geom and not isinstance(geom, geojson.geometry.Default):
-                shape = asShape(geom)
+                shape = shapely.geometry.shape(geom)
                 spatial_elt = from_shape(shape, srid=srid)
                 allowed = allowed.filter(
                     or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt))
