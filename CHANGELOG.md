@@ -1,3 +1,5 @@
+##### 2.6.0.167
+* Fix pull requests check workflow, use our CI token [ngeo#8977](https://github.com/camptocamp/ngeo/pull/8977)
 ##### 2.6.0.166
 * Update all patch versions (2.6) (patch) [ngeo#8971](https://github.com/camptocamp/ngeo/pull/8971)
 ##### 2.6.0.165
