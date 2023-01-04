@@ -77,11 +77,11 @@ if tag:
 elif last_tag.startswith(major_version):
     full = last_tag + "." + minor
 elif main_branch == "master":
-    full = "latest"
+    full = major_version
 else:
     full = major_version + ".rc." + minor
-upgrade_version = "master" if os.environ.get("MAIN_BRANCH") == "master" else full
-major = os.environ.get("MAJOR_VERSION", "2.7")
+upgrade_version = full
+major = major_version
 
 if args.major:
     print(major)
