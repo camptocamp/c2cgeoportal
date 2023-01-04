@@ -15,8 +15,7 @@ docker build --target=runner --build-arg=VERSION=3.10 \
 
 WORKSPACE=$1
 BASE_APP=false
-if [ $# -ge 2 ]
-then
+if [ $# -ge 2 ]; then
     PACKAGE=$2
     BASE_APP=true
 else
@@ -32,8 +31,7 @@ docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaff
 docker run --rm ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=c2cgeoportal_update
 sed -i 's/code: 110/code: 999/g' ${WORKSPACE}/${PACKAGE}/geoportal/.eslintrc
 
-if [ $BASE_APP != true ]
-then
+if [ $BASE_APP != true ]; then
     # Copy files for CI build and tests
     mv ${WORKSPACE}/${PACKAGE}/geoportal/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/vars_origin.yaml
     cp ci/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/
@@ -53,17 +51,14 @@ echo 'PGPORT_SLAVE=5432' >> env.project
 echo 'PGUSER=www-data' >> env.project
 echo 'PGPASSWORD=www-data' >> env.project
 
-if [ $BASE_APP == true ]
-then
+if [ $BASE_APP == true ]; then
     find -name *desktop_alt*
-    for interface in desktop_alt mobile_alt oeedit
-    do
+    for interface in desktop_alt mobile_alt oeedit; do
         for file in \
             geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/${interface}.html.ejs \
             geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/Controller${interface}.js \
             geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/sass/vars_${interface}.scss \
-            geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/sass/${interface}.scss
-        do
+            geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/sass/${interface}.scss; do
             cp CONST_create_template/${file} ${file}
         done
         sed -i '1iNGEO_INTERFACES ?= desktop mobile iframe_api desktop_alt mobile_alt oeedit' geoportal/Makefile

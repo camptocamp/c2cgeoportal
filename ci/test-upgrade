@@ -18,12 +18,10 @@ function pcreate240 {
 # $2: scaffold
 # $3: version
 function pcreate {
-    if [ $3 == '2.4.2.84' ]
-    then
+    if [ $3 == '2.4.2.84' ]; then
         pcreate240 $1 $2 $3
     else
-        if [ $2 == c2cgeoportal_create ]
-        then
+        if [ $2 == c2cgeoportal_create ]; then
             DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
         fi
         docker run --rm ${DOCKER_ENV} \
@@ -56,8 +54,7 @@ function create {
 
 function printdiff {
     ls -l .UPGRADE*
-    for f in $(ls -1 *.diff)
-    do
+    for f in $(ls -1 *.diff); do
         echo "--- $f ---"
         cat "$f"
     done
@@ -72,31 +69,27 @@ function upgrade {
     git add --force .gitignore project.yaml
     git commit -m "Add /upgrade in .gitignore"
     ./upgrade ${MAJOR_VERSION}
-    if [ -e .UPGRADE7 ]
-    then
+    if [ -e .UPGRADE7 ]; then
         cp CONST_create_template/geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop.js geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop.js
         git add CONST_create_template/geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop.js geoportal/testgeomapfish_geoportal/static-ngeo/js/apps/Controllerdesktop.js
         git rm geoportal/gunicorn_config.py || true
         git status
         ./upgrade ${MAJOR_VERSION} 8
     fi
-    if [ -e .UPGRADE8 ]
-    then
+    if [ -e .UPGRADE8 ]; then
         # Workaround
         git status > /dev/null
         git apply --3way ngeo.diff
         ./upgrade ${MAJOR_VERSION} 9
     fi
-    if [ -e .UPGRADE9 ]
-    then
+    if [ -e .UPGRADE9 ]; then
         # Workaround
         git status > /dev/null
         git apply --3way create.diff
         cp CONST_create_template/project.yaml .
         ./upgrade ${MAJOR_VERSION} 10
     fi
-    if [ ! -e .UPGRADE_SUCCESS ]
-    then
+    if [ ! -e .UPGRADE_SUCCESS ]; then
         printdiff
         echo "Fail to upgrade"
         exit 1
@@ -107,9 +100,8 @@ function upgrade {
     diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/ref ${WORKSPACE}/v$1
 }
 
-if [ "$1" = "init" ]
-then
-    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240  ${WORKSPACE}/v25
+if [ "$1" = "init" ]; then
+    rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create ${WORKSPACE}/ref ${MAJOR_VERSION}
     create ${WORKSPACE}/v25 ${MAJOR_VERSION}
@@ -119,22 +111,18 @@ then
     docker rmi camptocamp/geomapfish-build:2.4.2.84
 fi
 
-if [ "$1" = "240" ]
-then
+if [ "$1" = "240" ]; then
     upgrade $1
 fi
 
-if [ "$1" = "250" ]
-then
+if [ "$1" = "250" ]; then
     upgrade $1
 fi
 
-if [ "$1" = "25" ]
-then
+if [ "$1" = "25" ]; then
     upgrade $1
 fi
 
-if [ "$1" = "cleanup" ]
-then
+if [ "$1" = "cleanup" ]; then
     rm --recursive --force ${WORKSPACE}/ref ${WORKSPACE}/v240 ${WORKSPACE}/v25
 fi

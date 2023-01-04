@@ -7,8 +7,7 @@ git reset --hard
 git checkout gh-pages
 git reset --hard origin/gh-pages
 
-if [ -e ${MAIN_BRANCH} ]
-then
+if [ -e ${MAIN_BRANCH} ]; then
     git rm -r --force -- ${MAIN_BRANCH}
 fi
 

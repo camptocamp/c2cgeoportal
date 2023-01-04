@@ -5,10 +5,10 @@ ARG VERSION
 ENV VERSION=$VERSION
 
 RUN \
-  apt-get update && \
-  apt-get install --assume-yes --no-install-recommends gettext-base python3 && \
-  apt-get clean && \
-  rm --recursive --force /var/lib/apt/lists/*
+    apt-get update \
+    && apt-get install --assume-yes --no-install-recommends gettext-base python3 \
+    && apt-get clean \
+    && rm --recursive --force /var/lib/apt/lists/*
 
 COPY gunicorn_config.py /etc/gunicorn/config.py
 COPY bin/ /usr/bin/

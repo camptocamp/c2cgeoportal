@@ -31,8 +31,8 @@ RUN cd /tmp && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv install --system --deploy --cl
 COPY . /src/
 RUN flake8 /src
 RUN pylint --errors-only --disable=import-error /src/geomapfish_qgisserver
-RUN cd /src && \
-    isort --check-only --diff --settings-path=`pwd` --recursive .
+RUN cd /src \
+    && isort --check-only --diff --settings-path=$(pwd) --recursive .
 RUN bandit --recursive -ll /src
 
 #############################################################################################################
