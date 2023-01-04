@@ -1,3 +1,5 @@
+##### 2.5.0.231
+* Fix pull requests check workflow, use our CI token [c2cgeoportal#10265](https://github.com/camptocamp/c2cgeoportal/pull/10265)
 ##### 2.5.0.228
 * Update dependency gitpython to v3.1.30 (2.5) [c2cgeoportal#10257](https://github.com/camptocamp/c2cgeoportal/pull/10257)
 ##### 2.5.0.226
