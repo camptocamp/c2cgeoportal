@@ -1,3 +1,5 @@
+##### 2.6.0.168
+* Fix pull requests check workflow, use our CI token [c2cgeoportal#10264](https://github.com/camptocamp/c2cgeoportal/pull/10264)
 ##### 2.6.0.167
 * Fix pull requests check workflow, use our CI token [ngeo#8977](https://github.com/camptocamp/ngeo/pull/8977)
 ##### 2.6.0.166
