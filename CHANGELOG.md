@@ -1,3 +1,6 @@
+##### 2.4.2.99
+* Fix pull requests check workflow, use our CI token [c2cgeoportal#10267](https://github.com/camptocamp/c2cgeoportal/pull/10267)
+* Update all patch versions (2.4) (patch) [ngeo#8972](https://github.com/camptocamp/ngeo/pull/8972)
 ##### 2.4.2.98
 * Update all patch versions (2.4) (patch) [c2cgeoportal#10256](https://github.com/camptocamp/c2cgeoportal/pull/10256)
 ##### 2.4.2.97
