@@ -494,6 +494,12 @@ vars:
           tree item will match when searching for the search aliases.
         relevant_for:
           - treeitem
+      - name: searchLabelPattern
+        description: >
+          Template string for the label of tree items in the search results
+          (TODO GSGMF-1935: complete description after implementation)
+        relevant_for:
+          - treeitem
       # Layers group
       - name: exclusiveGroup
         type: boolean
