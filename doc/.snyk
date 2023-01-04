@@ -6,4 +6,8 @@ ignore:
     - '*':
         reason: Patched version not available for used Python version
         created: 2022-12-16T08:22:04.294Z
+  SNYK-PYTHON-SETUPTOOLS-3180412:
+    - '*':
+        reason: Patched version not available for used Python version
+        created: 2023-01-04T07:20:21.639Z
 patch: {}
