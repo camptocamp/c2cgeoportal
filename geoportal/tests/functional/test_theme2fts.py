@@ -364,6 +364,7 @@ class TestImport:
 
         label_group = main.LayerGroup(name="label_group")
         add_parent(dbsession, label_group, label_theme)
+        #add_parent(dbsession, label_group,test_data["groups"]["first_level_group"])
 
         dbsession.add(label_group)
 
@@ -386,7 +387,7 @@ class TestImport:
                     continue
                 expected = [
                     {
-                        "label": "label_layer (label_theme, label_group)",
+                        "label": f"label_layer_{lang} (label_theme_{lang}, label_group_{lang})",
                         "role": None,
                         "interface": interface,
                         "lang": lang,

@@ -296,18 +296,30 @@ class Import:
         lang: str,
     ) -> Optional[str]:
         try:
-            pattern = item.get_metadata("searchLabelPattern")[0]
+            pattern = item.get_metadata("searchLabelPattern")[0].value
         except IndexError:
             return None
         parents = self._get_parents(item)
         themes = self._get_unique_item_type(parents, "theme")
         groups = self._get_unique_item_type(parents, "group")
-        return str(pattern.value).format(name=item.name, theme=themes[0], group=groups[0])
+        if '{theme}' in pattern and len(themes) > 1:
+            raise RuntimeError(
+                "Found multiple values for 'theme' variable in search label pattern (item {item.name})"
+                )
+        if '{group}' in pattern and len(groups) > 1:
+            raise RuntimeError(
+                "Found multiple values for 'group' variable in search label pattern (item {item.name})"
+                )
+        return str(pattern).format(
+            name=self._[lang].gettext(item.name),
+            theme=self._[lang].gettext(themes.pop()),
+            group=self._[lang].gettext(groups.pop()),
+        )
 
     def _get_parents(
         self,
         item: "c2cgeoportal_commons.models.main.TreeItem",
-    ):
+    ) -> List["c2cgeoportal_commons.models.main.TreeItem"]:
         parents = []
         for parent in item.parents:
             if parent not in parents:
@@ -318,7 +330,6 @@ class Import:
     @staticmethod
     def _get_unique_item_type(
         items: List["c2cgeoportal_commons.models.main.TreeItem"],
-        type: str,
-    ):
-        return list(set([item.name for item in items if item.item_type == type]))
-
+        item_type: str,
+    ) -> Set[str]:
+        return {item.name for item in items if item.item_type == item_type}
