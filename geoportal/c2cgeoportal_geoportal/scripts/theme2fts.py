@@ -190,7 +190,7 @@ class Import:
             self.imported.add(key)
             for lang in self.languages:
                 fts = FullTextSearch()
-                fts.label = self._[lang].gettext(item.name)
+                fts.label = self._render_label(item, lang) or self._[lang].gettext(item.name)
                 fts.role = role
                 fts.interface = interface
                 fts.lang = lang
@@ -289,3 +289,36 @@ class Import:
             self._add_fts(layer, interface, "add_layer", role)
 
         return fill
+
+    def _render_label(
+        self,
+        item: "c2cgeoportal_commons.models.main.TreeItem",
+        lang: str,
+    ) -> Optional[str]:
+        try:
+            pattern = item.get_metadata("searchLabelPattern")[0]
+        except IndexError:
+            return None
+        parents = self._get_parents(item)
+        themes = self._get_unique_item_type(parents, "theme")
+        groups = self._get_unique_item_type(parents, "group")
+        return str(pattern.value).format(name=item.name, theme=themes[0], group=groups[0])
+
+    def _get_parents(
+        self,
+        item: "c2cgeoportal_commons.models.main.TreeItem",
+    ):
+        parents = []
+        for parent in item.parents:
+            if parent not in parents:
+                parents.append(parent)
+                parents.extend(self._get_parents(parent))
+        return parents
+
+    @staticmethod
+    def _get_unique_item_type(
+        items: List["c2cgeoportal_commons.models.main.TreeItem"],
+        type: str,
+    ):
+        return list(set([item.name for item in items if item.item_type == type]))
+

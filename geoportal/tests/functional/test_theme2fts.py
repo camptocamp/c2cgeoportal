@@ -352,3 +352,53 @@ class TestImport:
                 ]
                 for e in expected:
                     self.assert_fts(dbsession, e)
+
+    def test_search_label_pattern(self, dbsession, settings, test_data):
+        from c2cgeoportal_commons.models import main
+        from c2cgeoportal_geoportal.scripts.theme2fts import Import
+
+        label_theme = main.Theme(name="label_theme")
+        label_theme.interfaces = list(test_data["interfaces"].values())
+
+        dbsession.add(label_theme)
+
+        label_group = main.LayerGroup(name="label_group")
+        add_parent(dbsession, label_group, label_theme)
+
+        dbsession.add(label_group)
+
+        label_layer = main.LayerWMS(name="label_layer")
+        label_layer.ogc_server = test_data["ogc_server"]
+        label_layer.interfaces = list(test_data["interfaces"].values())
+        add_parent(dbsession, label_layer, label_group)
+        label_layer.metadatas = [
+            main.Metadata(name="searchLabelPattern", value="{name} ({theme}, {group})"),
+        ]
+
+        dbsession.add(label_layer)
+        dbsession.flush()
+
+        Import(dbsession, settings, options())
+
+        for lang in settings["available_locale_names"]:
+            for interface in test_data["interfaces"].values():
+                if interface.name == "api":
+                    continue
+                expected = [
+                    {
+                        "label": "label_layer (label_theme, label_group)",
+                        "role": None,
+                        "interface": interface,
+                        "lang": lang,
+                        "public": True,
+                        "ts": {
+                            "fr": "'fr':3 'label':1 'lai':2",
+                            "en": "'en':3 'label':1 'layer':2",
+                            "de": "'de':3 'label':1 'lay':2",
+                            "it": "'it':3 'label':1 'layer':2",
+                        },
+                        "actions": [{"action": "add_layer", "data": "label_layer"}],
+                    },
+                ]
+                for e in expected:
+                    self.assert_fts(dbsession, e)

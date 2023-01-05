@@ -87,6 +87,7 @@ Note that some tree items' metadata are used by the ``theme2fts`` script:
 * ``searchAlias``: Comma separated list of search alias (keywords) to be added to the ``tsearch.ts``
   field for the considered tree item (theme, layer group or layer),
   that is to say that considered tree item will match when searching for the search aliases.
+* ``searchLabelPattern``: TODO
 
 
 Security
