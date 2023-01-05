@@ -30,7 +30,7 @@ import gettext
 import os
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
+from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Optional, Set
 
 import pyramid.config
 import transaction
@@ -190,7 +190,7 @@ class Import:
             self.imported.add(key)
             for lang in self.languages:
                 fts = FullTextSearch()
-                fts.label = self._[lang].gettext(item.name)
+                fts.label = self._render_label(item, lang)
                 fts.role = role
                 fts.interface = interface
                 fts.lang = lang
@@ -289,3 +289,58 @@ class Import:
             self._add_fts(layer, interface, "add_layer", role)
 
         return fill
+
+    def _render_label(
+        self,
+        item: "c2cgeoportal_commons.models.main.TreeItem",
+        lang: str,
+    ) -> str:
+        patterns = item.get_metadata("searchLabelPattern")
+        if not patterns:
+            return self._[lang].gettext(item.name)
+        pattern = patterns[0]
+        assert isinstance(pattern.value, str)
+        tree_paths = list(self._get_paths(item))
+        # Remove paths where the last element isn't a theme
+        tree_paths = [p for p in tree_paths if p[-1].item_type == "theme"]
+        result = None
+        current_result = None
+        if tree_paths:
+            for path in tree_paths:
+                if len(path) == 2:
+                    current_result = pattern.value.format(
+                        name=self._[lang].gettext(item.name),
+                        theme=self._[lang].gettext(path[-1].name),
+                        parent=self._[lang].gettext(path[1].name),
+                    )
+                elif len(path) > 2:
+                    current_result = pattern.value.format(
+                        name=self._[lang].gettext(item.name),
+                        theme=self._[lang].gettext(path[-1].name),
+                        parent=self._[lang].gettext(path[1].name),
+                        block=self._[lang].gettext(path[-2].name),
+                    )
+                if result and current_result != result:
+                    sys.stderr.write(
+                        f"WARNING: the item {item.name} (id: {item.id}) has a label pattern and inconsistent "
+                        f"multiple parents\n"
+                    )
+                    return self._[lang].gettext(item.name)
+                result = current_result
+        return result or pattern.value.format(
+            name=self._[lang].gettext(item.name),
+            theme=self._[lang].gettext(item.name),
+        )
+
+    def _get_paths(
+        self,
+        item: "c2cgeoportal_commons.models.main.TreeItem",
+    ) -> Iterator[List["c2cgeoportal_commons.models.main.TreeItem"]]:
+        if item is None:
+            return
+        if any(item.parents):
+            for parent in item.parents:
+                for path in self._get_paths(parent):
+                    yield [item, *path]
+        else:
+            yield [item]
