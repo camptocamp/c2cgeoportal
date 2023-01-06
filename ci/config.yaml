@@ -15,10 +15,6 @@ checks:
       - ^geoportal/tests/data/dem4\..*
 
 audit:
-  npm:
-    package_ignore:
-      - angular-gettext-tools
-
   snyk:
     files_no_install:
       - ci/requirements.txt
