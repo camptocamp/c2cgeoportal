@@ -16,11 +16,6 @@ checks:
       - directory: /admin
         package-ecosystem: npm
 
-audit:
-  npm:
-    package_ignore:
-      - angular-gettext-tools
-
 publish:
   docker:
     images:
