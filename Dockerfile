@@ -50,18 +50,17 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         apt-transport-https gettext less gnupg libpq5 \
-        python3-pip python3-dev libgraphviz-dev libpq-dev binutils gcc g++ cython3 nodejs libgeos-dev \
+        python3-dev libgraphviz-dev libpq-dev binutils gcc g++ nodejs \
     && echo "For Chrome installed by Pupetter" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
         libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
         libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
-    && ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so \
-    && ln -s /usr/bin/cython3 /usr/bin/cython
+    && ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so
 
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
-    PIP_NO_BINARY=fiona,rasterio,shapely PROJ_DIR=/usr/local/ python3 -m pip install \
+    PIP_NO_BINARY=fiona,rasterio PROJ_DIR=/usr/local/ python3 -m pip install \
     --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++

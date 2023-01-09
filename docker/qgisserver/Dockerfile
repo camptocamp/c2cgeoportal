@@ -31,11 +31,9 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends cython3 python3-dev libpq-dev gcc \
-    && ln -s /usr/bin/cython3 /usr/bin/cython \
-    && PIP_NO_BINARY=shapely pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && rm /usr/bin/cython \
-    && apt-get remove --assume-yes cython3 python3-dev libpq-dev gcc
+    && apt-get install --assume-yes --no-install-recommends python3-dev libpq-dev gcc \
+    && pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
+    && apt-get remove --assume-yes python3-dev libpq-dev gcc
 
 #############################################################################################################
 
@@ -67,13 +65,8 @@ FROM runner as tests
 
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-RUN --mount=type=cache,target=/var/lib/apt/lists \
-    --mount=type=cache,target=/var/cache,sharing=locked \
-    --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
-    apt-get update \
-    && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc \
-    && pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
+RUN --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
+    pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
 
 # hadolint ignore=DL3022
 COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
