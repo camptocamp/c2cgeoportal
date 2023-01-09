@@ -1,14 +1,16 @@
 <Transaction
-    xmlns="http://www.opengis.net/wfs"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    version="1.0.0"
-    service="WFS"
-    xsi:schemaLocation="http://www.tinyows.org/ http://geomapfish-demo.gis.internal/tinyows?SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=tows:parks&amp;SRSNAME=EPSG:4326"
-    xmlns:gml="http://www.opengis.net/gml"
-    xmlns:tows="http://www.tinyows.org/"
->
-    <Update xmlns="http://www.opengis.net/wfs" typeName="tows:parks">
-        <Property xmlns="http://www.opengis.net/wfs">
+  xmlns="http://www.opengis.net/wfs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  version="1.0.0"
+  service="WFS"
+  xsi:schemaLocation="http://www.tinyows.org/ http://geomapfish-demo.gis.internal/tinyows?SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=tows:parks&amp;SRSNAME=EPSG:4326"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:tows="http://www.tinyows.org/">
+    <Update
+      xmlns="http://www.opengis.net/wfs"
+      typeName="tows:parks">
+        <Property
+          xmlns="http://www.opengis.net/wfs">
             <Name xmlns="http://www.opengis.net/wfs">park_geom</Name>
             <Value xmlns="http://www.opengis.net/wfs">
               <gml:Point srsName="EPSG:4326">
@@ -17,7 +19,7 @@
             </Value>
         </Property>
         <Filter xmlns="http://www.opengis.net/ogc">
-          <FeatureId xmlns="http://www.opengis.net/ogc" fid="parks.4" />
+          <FeatureId xmlns="http://www.opengis.net/ogc" fid="parks.4"/>
         </Filter>
     </Update>
 </Transaction>

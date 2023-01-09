@@ -1,16 +1,15 @@
 <LockFeature
-    service="WFS"
-    version="1.0.0"
-    lockAction="ALL"
-    xmlns="http://www.opengis.net/wfs"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:tows="http://www.tinyows.org/"
-    xmlns:ogc="http://www.opengis.net/ogc"
-    xsi:schemaLocation="http://www.opengis.net/wfs ../wfs/1.0.0/WFS-transaction.xsd"
->
+  service="WFS"
+  version="1.0.0"
+  lockAction="ALL"
+  xmlns="http://www.opengis.net/wfs"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tows="http://www.tinyows.org/"
+  xmlns:ogc="http://www.opengis.net/ogc"
+  xsi:schemaLocation="http://www.opengis.net/wfs ../wfs/1.0.0/WFS-transaction.xsd">
     <Lock typeName="tows:parks">
       <ogc:Filter>
-        <ogc:FeatureId fid="parks.1" />
+        <ogc:FeatureId fid="parks.1"/>
       </ogc:Filter>
     </Lock>
 </LockFeature>

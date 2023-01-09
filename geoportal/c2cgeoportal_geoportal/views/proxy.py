@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (c) 2011-2022, Camptocamp SA
 # All rights reserved.
 
@@ -249,7 +251,7 @@ class Proxy:
 
     @staticmethod
     def _get_lower_params(params: Dict[str, str]) -> Dict[str, str]:
-        return {k.lower(): str(v).lower() for k, v in params.items()}
+        return dict((k.lower(), str(v).lower()) for k, v in params.items())
 
     def get_headers(self) -> Dict[str, str]:
         headers: Dict[str, str] = self.request.headers

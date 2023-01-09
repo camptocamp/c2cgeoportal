@@ -92,15 +92,17 @@ else:
                 [
                     "docker",
                     "pull",
-                    f"camptocamp/geomapfish:{major_version}",
+                    "camptocamp/geomapfish:{major_version}".format(major_version=major_version),
                 ]
             )
-            subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
+            subprocess.check_call(
+                ["docker", "pull", "camptocamp/geomapfish-tools:{version}".format(version=args.version)]
+            )
             subprocess.check_call(
                 [
                     "docker",
                     "pull",
-                    f"camptocamp/geomapfish-config:{major_version}",
+                    "camptocamp/geomapfish-config:{major_version}".format(major_version=major_version),
                 ]
             )
 
@@ -123,11 +125,11 @@ else:
                 "run",
                 "--rm",
                 "--env=CI",
-                f"--volume={os.getcwd()}:/src",
+                "--volume={}:/src".format(os.getcwd()),
             ]
             + debug_volumes
             + [
-                f"camptocamp/geomapfish-tools:{args.version}",
+                "camptocamp/geomapfish-tools:{version}".format(version=args.version),
                 "run-git",
                 subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
                 subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),

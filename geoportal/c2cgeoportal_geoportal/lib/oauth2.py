@@ -585,10 +585,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
             {
                 'token_type': 'Bearer',
-                'access_token': '<secret>',
+                'access_token': 'askfjh234as9sd8',
                 'expires_in': 3600,
                 'scope': 'string of space separated authorized scopes',
-                'refresh_token': '<secret>',  # if issued
+                'refresh_token': '23sdf876234',  # if issued
                 'state': 'given_by_client',  # if supplied by client
             }
 

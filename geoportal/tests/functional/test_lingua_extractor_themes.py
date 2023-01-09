@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (c) 2020, Camptocamp SA
 # All rights reserved.
 

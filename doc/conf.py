@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # c2cgeoportal documentation build configuration file, created by
 # sphinx-quickstart on Mon Nov 28 10:01:14 2011.

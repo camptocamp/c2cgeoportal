@@ -105,7 +105,7 @@ def main():
     data = " ".join([f"{p}@{v}" for p, v in packages.items()])
     data = data + "\n"
 
-    with open(args.dst, "w") as dst:
+    with open(args.dst, "wt") as dst:
         dst.write(data)
 
 

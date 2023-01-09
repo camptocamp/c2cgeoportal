@@ -335,7 +335,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
         assert "describefeaturetype" == operation
-        assert {"layer_1"} == typename
+        assert set(["layer_1"]) == typename
 
     def test_parse_body_getfeature(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy

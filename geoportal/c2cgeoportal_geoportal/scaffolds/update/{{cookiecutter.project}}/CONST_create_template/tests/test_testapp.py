@@ -18,6 +18,7 @@ def test_po(test_number: int) -> None:
 
     with open(
         "geoportal/{{cookiecutter.package}}_geoportal/locale/{{cookiecutter.package}}_geoportal-client.pot",
+        "r",
         encoding="utf-8",
     ) as current_file:
         current_content = current_file.read()
