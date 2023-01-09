@@ -1,5 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<WFS_Capabilities xmlns="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" updateSequence="0" xsi:schemaLocation="http://www.opengis.net/wfs  http://schemas.opengis.net/wfs/1.0.0/WFS-capabilities.xsd">
+<?xml version="1.0" encoding="utf-8" ?>
+<WFS_Capabilities
+    xmlns="http://www.opengis.net/wfs"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    version="1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    updateSequence="0"
+    xsi:schemaLocation="http://www.opengis.net/wfs  http://schemas.opengis.net/wfs/1.0.0/WFS-capabilities.xsd"
+>
  <Service>
   <Name>TinyOWS Server</Name>
   <Title>TinyOWS Server - Test</Title>
@@ -10,54 +17,54 @@
    <GetCapabilities>
     <DCPType>
      <HTTP>
-      <Get onlineResource="http://server.com/tinyows?"></Get>
+      <Get onlineResource="http://server.com/tinyows?" />
      </HTTP>
     </DCPType>
     <DCPType>
      <HTTP>
-      <Post onlineResource="http://server.com/tinyows"></Post>
+      <Post onlineResource="http://server.com/tinyows" />
      </HTTP>
     </DCPType>
    </GetCapabilities>
    <DescribeFeatureType>
      <SchemaDescriptionLanguage>
-        <XMLSCHEMA></XMLSCHEMA>
+        <XMLSCHEMA />
      </SchemaDescriptionLanguage>
     <DCPType>
      <HTTP>
-      <Get onlineResource="http://server.com/tinyows?"></Get>
+      <Get onlineResource="http://server.com/tinyows?" />
      </HTTP>
     </DCPType>
     <DCPType>
      <HTTP>
-      <Post onlineResource="http://server.com/tinyows"></Post>
+      <Post onlineResource="http://server.com/tinyows" />
      </HTTP>
     </DCPType>
    </DescribeFeatureType>
    <GetFeature>
 <ResultFormat>
-<GML2></GML2>
+<GML2 />
 </ResultFormat>
     <DCPType>
      <HTTP>
-      <Get onlineResource="http://server.com/tinyows?"></Get>
+      <Get onlineResource="http://server.com/tinyows?" />
      </HTTP>
     </DCPType>
     <DCPType>
      <HTTP>
-      <Post onlineResource="http://server.com/tinyows"></Post>
+      <Post onlineResource="http://server.com/tinyows" />
      </HTTP>
     </DCPType>
    </GetFeature>
    <Transaction>
     <DCPType>
      <HTTP>
-      <Get onlineResource="http://server.com/tinyows?"></Get>
+      <Get onlineResource="http://server.com/tinyows?" />
      </HTTP>
     </DCPType>
     <DCPType>
      <HTTP>
-      <Post onlineResource="http://server.com/tinyows"></Post>
+      <Post onlineResource="http://server.com/tinyows" />
      </HTTP>
     </DCPType>
    </Transaction>
@@ -65,44 +72,44 @@
  </Capability>
  <FeatureTypeList>
   <Operations>
-   <Query></Query>
-   <Insert></Insert>
-   <Update></Update>
-   <Delete></Delete>
+   <Query />
+   <Insert />
+   <Update />
+   <Delete />
   </Operations>
 <FeatureType xmlns:tows="http://www.tinyows.org/">
   <Name>tows:parks</Name>
   <Title>Parks</Title>
  <SRS>EPSG:4326</SRS>
-  <LatLongBoundingBox minx="-32.665395" miny="18.315848" maxx="6.591136" maxy="46.527381"></LatLongBoundingBox>
+  <LatLongBoundingBox minx="-32.665395" miny="18.315848" maxx="6.591136" maxy="46.527381" />
 </FeatureType>
  </FeatureTypeList>
 <ogc:Filter_Capabilities>
  <ogc:Spatial_Capabilities>
   <ogc:Spatial_Operators>
-   <ogc:Disjoint></ogc:Disjoint>
-   <ogc:Equals></ogc:Equals>
-   <ogc:DWithin></ogc:DWithin>
-   <ogc:Beyond></ogc:Beyond>
-   <ogc:Intersect></ogc:Intersect>
-   <ogc:Touches></ogc:Touches>
-   <ogc:Crosses></ogc:Crosses>
-   <ogc:Within></ogc:Within>
-   <ogc:Contains></ogc:Contains>
-   <ogc:Overlaps></ogc:Overlaps>
-   <ogc:BBOX></ogc:BBOX>
+   <ogc:Disjoint />
+   <ogc:Equals />
+   <ogc:DWithin />
+   <ogc:Beyond />
+   <ogc:Intersect />
+   <ogc:Touches />
+   <ogc:Crosses />
+   <ogc:Within />
+   <ogc:Contains />
+   <ogc:Overlaps />
+   <ogc:BBOX />
   </ogc:Spatial_Operators>
  </ogc:Spatial_Capabilities>
  <ogc:Scalar_Capabilities>
-  <ogc:Logical_Operators></ogc:Logical_Operators>
+  <ogc:Logical_Operators />
   <ogc:Comparison_Operators>
-   <ogc:Simple_Comparisons></ogc:Simple_Comparisons>
-   <ogc:Between></ogc:Between>
-   <ogc:Like></ogc:Like>
-   <ogc:NullCheck></ogc:NullCheck>
+   <ogc:Simple_Comparisons />
+   <ogc:Between />
+   <ogc:Like />
+   <ogc:NullCheck />
   </ogc:Comparison_Operators>
   <ogc:Arithmetic_Operators>
-   <ogc:Simple_Arithmetic></ogc:Simple_Arithmetic>
+   <ogc:Simple_Arithmetic />
    <ogc:Functions>
     <ogc:Function_Names>
      <ogc:Function_Name nArgs="1">abs</ogc:Function_Name>

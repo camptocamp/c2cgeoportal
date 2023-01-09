@@ -1,5 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<WFS_Capabilities xmlns="http://www.opengis.net/wfs" xmlns:ows="http://www.opengis.net/ows" xmlns:ogc="http://www.opengis.net/ogc" version="1.1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" updateSequence="0" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/wfs   http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+<?xml version="1.0" encoding="utf-8" ?>
+<WFS_Capabilities
+    xmlns="http://www.opengis.net/wfs"
+    xmlns:ows="http://www.opengis.net/ows"
+    xmlns:ogc="http://www.opengis.net/ogc"
+    version="1.1.0"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    updateSequence="0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/wfs   http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+>
  <ows:ServiceIdentification>
   <ows:Title>TinyOWS Server - Test</ows:Title>
   <ows:ServiceType>WFS</ows:ServiceType>
@@ -7,7 +17,7 @@
  </ows:ServiceIdentification>
  <ows:ServiceProvider>
   <ows:ProviderName>TinyOWS Server</ows:ProviderName>
-  <ows:ProviderSite xlink:href="http://www.tinyows.org/"></ows:ProviderSite>
+  <ows:ProviderSite xlink:href="http://www.tinyows.org/" />
   <ows:ServiceContact>
    <ows:ContactInfo>
     <ows:Address>
@@ -20,12 +30,12 @@
   <ows:Operation name="GetCapabilities">
     <ows:DCP>
      <ows:HTTP>
-      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?" />
      </ows:HTTP>
     </ows:DCP>
     <ows:DCP>
      <ows:HTTP>
-      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy" />
      </ows:HTTP>
     </ows:DCP>
   <ows:Parameter name="AcceptVersions">
@@ -47,12 +57,12 @@
    <ows:Operation name="DescribeFeatureType">
     <ows:DCP>
      <ows:HTTP>
-      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?" />
      </ows:HTTP>
     </ows:DCP>
     <ows:DCP>
      <ows:HTTP>
-      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy" />
      </ows:HTTP>
     </ows:DCP>
   <ows:Parameter name="outputFormat">
@@ -63,12 +73,12 @@
    <ows:Operation name="GetFeature">
     <ows:DCP>
      <ows:HTTP>
-      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?" />
      </ows:HTTP>
     </ows:DCP>
     <ows:DCP>
      <ows:HTTP>
-      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy" />
      </ows:HTTP>
     </ows:DCP>
   <ows:Parameter name="resultType">
@@ -84,12 +94,12 @@
    <ows:Operation name="Transaction">
     <ows:DCP>
      <ows:HTTP>
-      <ows:Get xlink:href="http://server.com/tinyows_proxy?"></ows:Get>
+      <ows:Get xlink:href="http://server.com/tinyows_proxy?" />
      </ows:HTTP>
     </ows:DCP>
     <ows:DCP>
      <ows:HTTP>
-      <ows:Post xlink:href="http://server.com/tinyows_proxy"></ows:Post>
+      <ows:Post xlink:href="http://server.com/tinyows_proxy" />
      </ows:HTTP>
     </ows:DCP>
     <ows:Parameter name="inputFormat">
@@ -118,13 +128,15 @@
     <Name>tows:layer_1</Name>
     <Title>Layer 1</Title>
    <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
-    <ows:WGS84BoundingBox> <ows:LowerCorner>-48.888249 17.815912</ows:LowerCorner> <ows:UpperCorner>6.591136 46.527381</ows:UpperCorner> </ows:WGS84BoundingBox>
+    <ows:WGS84BoundingBox> <ows:LowerCorner>-48.888249 17.815912</ows:LowerCorner> <ows:UpperCorner
+                >6.591136 46.527381</ows:UpperCorner> </ows:WGS84BoundingBox>
   </FeatureType>
   <FeatureType xmlns:tows="http://www.tinyows.org/">
     <Name>tows:layer_2</Name>
     <Title>Layer 2</Title>
    <DefaultSRS>urn:ogc:def:crs:EPSG::4326</DefaultSRS>
-    <ows:WGS84BoundingBox> <ows:LowerCorner>-48.888249 17.815912</ows:LowerCorner> <ows:UpperCorner>6.591136 46.527381</ows:UpperCorner> </ows:WGS84BoundingBox>
+    <ows:WGS84BoundingBox> <ows:LowerCorner>-48.888249 17.815912</ows:LowerCorner> <ows:UpperCorner
+                >6.591136 46.527381</ows:UpperCorner> </ows:WGS84BoundingBox>
   </FeatureType>
  </FeatureTypeList>
  <SupportsGMLObjectTypeList>
@@ -190,21 +202,21 @@
    <ogc:GeometryOperand>gml:Tin</ogc:GeometryOperand>
   </ogc:GeometryOperands>
   <ogc:SpatialOperators>
-  <ogc:SpatialOperator name="Disjoint"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Equals"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="DWithin"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Beyond"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Intersects"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Touches"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Crosses"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Within"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Contains"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="Overlaps"></ogc:SpatialOperator>
-  <ogc:SpatialOperator name="BBOX"></ogc:SpatialOperator>
+  <ogc:SpatialOperator name="Disjoint" />
+  <ogc:SpatialOperator name="Equals" />
+  <ogc:SpatialOperator name="DWithin" />
+  <ogc:SpatialOperator name="Beyond" />
+  <ogc:SpatialOperator name="Intersects" />
+  <ogc:SpatialOperator name="Touches" />
+  <ogc:SpatialOperator name="Crosses" />
+  <ogc:SpatialOperator name="Within" />
+  <ogc:SpatialOperator name="Contains" />
+  <ogc:SpatialOperator name="Overlaps" />
+  <ogc:SpatialOperator name="BBOX" />
  </ogc:SpatialOperators>
  </ogc:Spatial_Capabilities>
  <ogc:Scalar_Capabilities>
-  <ogc:LogicalOperators></ogc:LogicalOperators>
+  <ogc:LogicalOperators />
   <ogc:ComparisonOperators>
    <ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
    <ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
@@ -217,7 +229,7 @@
    <ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
   </ogc:ComparisonOperators>
   <ogc:ArithmeticOperators>
-   <ogc:SimpleArithmetic></ogc:SimpleArithmetic>
+   <ogc:SimpleArithmetic />
    <ogc:Functions>
     <ogc:FunctionNames>
      <ogc:FunctionName nArgs="1">abs</ogc:FunctionName>
@@ -250,8 +262,8 @@
   </ogc:ArithmeticOperators>
  </ogc:Scalar_Capabilities>
  <ogc:Id_Capabilities>
-  <ogc:EID></ogc:EID>
-  <ogc:FID></ogc:FID>
+  <ogc:EID />
+  <ogc:FID />
  </ogc:Id_Capabilities>
 </ogc:Filter_Capabilities>
 </WFS_Capabilities>

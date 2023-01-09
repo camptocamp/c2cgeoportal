@@ -91,13 +91,13 @@ if args.full:
     sys.exit(0)
 
 
-print("full: {full}".format(full=full))
-print("major: {major}".format(major=major))
-print("minor: {minor}".format(minor=minor))
-print("upgrade_version: {upgrade_version}".format(upgrade_version=upgrade_version))
+print(f"full: {full}")
+print(f"major: {major}")
+print(f"minor: {minor}")
+print(f"upgrade_version: {upgrade_version}")
 if args.github:
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
-        output_file.write("full={full}\n".format(full=full))
-        output_file.write("major={major}\n".format(major=major))
-        output_file.write("minor={minor}\n".format(minor=minor))
-        output_file.write("upgrade_version={upgrade_version}\n".format(upgrade_version=upgrade_version))
+        output_file.write(f"full={full}\n")
+        output_file.write(f"major={major}\n")
+        output_file.write(f"minor={minor}\n")
+        output_file.write(f"upgrade_version={upgrade_version}\n")

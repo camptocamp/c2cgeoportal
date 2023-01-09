@@ -1,4 +1,12 @@
-<Transaction xmlns="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml" xmlns:tows="http://www.tinyows.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.0" service="WFS" xsi:schemaLocation="http://www.tinyows.org/ http://geomapfish-demo.gis.internal/tinyows?SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=tows:parks&amp;SRSNAME=EPSG:4326">
+<Transaction
+    xmlns="http://www.opengis.net/wfs"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:tows="http://www.tinyows.org/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    version="1.0.0"
+    service="WFS"
+    xsi:schemaLocation="http://www.tinyows.org/ http://geomapfish-demo.gis.internal/tinyows?SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=tows:parks&amp;SRSNAME=EPSG:4326"
+>
    <Delete typeName="tows:parks">
       <Filter xmlns="http://www.opengis.net/ogc">
          <FeatureId fid="parks.5" />

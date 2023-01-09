@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) 2022, Camptocamp SA
 # All rights reserved.
 

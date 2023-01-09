@@ -192,7 +192,7 @@ def main() -> None:
         elif not args.canvas:
             data = re.sub("app", "{{cookiecutter.package}}", data)
 
-        with open(args.dst, "wt", encoding="utf-8") as dst:
+        with open(args.dst, "w", encoding="utf-8") as dst:
             dst.write(data)
 
 
