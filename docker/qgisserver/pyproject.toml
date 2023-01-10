@@ -21,5 +21,6 @@ pytz = "2022.7"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.3" }
+# pylint = "2.15.5"
 types-pyyaml = "6.0.12.2"
 pytest = "7.2.0"
