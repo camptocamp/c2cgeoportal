@@ -143,7 +143,7 @@ zipp = "==3.7.0"
 "zope.sqlalchemy" = "==1.6"
 
 [dev-packages]
-awscli = "*"  # Work with Object storage
+awscli = "==0.7.0"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
 beautifulsoup4 = "==4.10.0"  # admin tests
 coverage = "==6.3.3"  # Build coverage XML for Codacy
