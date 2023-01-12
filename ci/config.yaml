@@ -22,6 +22,7 @@ audit:
 
 publish:
   docker:
+    dispatch: {}
     images:
       - name: camptocamp/geomapfish
       - name: camptocamp/geomapfish-config
