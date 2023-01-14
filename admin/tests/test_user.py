@@ -88,7 +88,9 @@ class TestUser(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected, new="Nouveau")
 
-    def test_view_edit(self, test_app, users_test_data):
+    def test_view_edit(self, test_app, users_test_data, dbsession):
+        from c2cgeoportal_commons.models.static import Log, LogAction
+
         user = users_test_data["users"][9]
         roles = users_test_data["roles"]
 
@@ -121,14 +123,28 @@ class TestUser(AbstractViewsTests):
                 assert str(value or "") == str(getattr(user, key) or "")
         assert {roles[2].id, roles[3].id} == {role.id for role in user.roles}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "user"
+        assert log.element_id == user.id
+        assert log.username == "test_user"
+
     def test_delete(self, test_app, users_test_data, dbsession):
-        from c2cgeoportal_commons.models.static import User, user_role
+        from c2cgeoportal_commons.models.static import Log, LogAction, User, user_role
 
         user = users_test_data["users"][9]
         deleted_id = user.id
         test_app.delete(f"/admin/users/{deleted_id}", status=200)
         assert dbsession.query(User).get(deleted_id) is None
         assert dbsession.query(user_role).filter(user_role.c.user_id == user.id).count() == 0
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "user"
+        assert log.element_id == user.id
+        assert log.username == "test_user"
 
     @patch("c2cgeoportal_commons.lib.email_.smtplib.SMTP")
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")

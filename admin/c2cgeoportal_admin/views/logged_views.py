@@ -37,11 +37,13 @@ from pyramid.httpexceptions import HTTPFound
 class LoggedViews(AbstractViews):  # type: ignore
     """Extention of AbstractViews which log actions in a table."""
 
+    _log_model = Log  # main.Log or static.Log
+
     def save(self) -> Union[HTTPFound, Dict[str, Any]]:
         response = super().save()
 
         if isinstance(response, HTTPFound):
-            log = Log(
+            log = self._log_model(
                 date=datetime.datetime.now(pytz.utc),
                 action=LogAction.INSERT if self._is_new() else LogAction.UPDATE,
                 element_type=self._model.__tablename__,
@@ -55,7 +57,7 @@ class LoggedViews(AbstractViews):  # type: ignore
     def delete(self) -> Dict[str, Any]:
         response = super().delete()
 
-        log = Log(
+        log = self._log_model(
             date=datetime.datetime.now(pytz.utc),
             action=LogAction.DELETE,
             element_type=self._model.__tablename__,

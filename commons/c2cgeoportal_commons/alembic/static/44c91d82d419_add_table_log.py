@@ -29,8 +29,8 @@
 Add table log.
 
 Revision ID: 44c91d82d419
-Revises: 04f05bfbb05e
-Create Date: 2023-01-14 08:38:54.640205
+Revises: 7ef947f30f20
+Create Date: 2023-01-14 10:58:44.404643
 """
 
 from alembic import op
@@ -39,17 +39,16 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '44c91d82d419'
-down_revision = '04f05bfbb05e'
+down_revision = '7ef947f30f20'
 branch_labels = None
 depends_on = None
 
 
 def upgrade() -> None:
     """Upgrade."""
-    schema = config["schema"]
+    staticschema = config["schema_static"]
 
-    op.create_table(
-        'log',
+    op.create_table('log',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('date', sa.DateTime(timezone=True), nullable=False),
         # sa.Column(
@@ -62,12 +61,12 @@ def upgrade() -> None:
         sa.Column('element_id', sa.Integer(), nullable=False),
         sa.Column('username', sa.Unicode(), nullable=False),
         sa.PrimaryKeyConstraint('id'),
-        schema=schema,
+        schema=staticschema,
     )
 
 
 def downgrade() -> None:
     """Downgrade."""
-    schema = config["schema"]
+    staticschema = config["schema_static"]
 
-    op.drop_table('log', schema=schema)
+    op.drop_table('log', schema=staticschema)

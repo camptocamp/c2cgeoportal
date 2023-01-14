@@ -39,6 +39,7 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
+from sqlalchemy.ext.declarative import AbstractConcreteBase
 from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
 from sqlalchemy.types import Boolean, DateTime, Enum, Integer, String, Unicode
@@ -1754,17 +1755,14 @@ class LogAction(enum.Enum):
     DELETE = enum.auto()
 
 
-class Log(Base):  # type: ignore
-    """The log table representation."""
-
-    __tablename__ = "log"
-    __table_args__ = {"schema": _schema}
+class AbstractLog(AbstractConcreteBase, Base):
+    strict_attrs = True
     __colanderalchemy_config__ = {
         "title": _("Log"),
         "plural": _("Logs"),
     }
 
-    id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
+    id = Column(Integer, primary_key=True, info={"colanderalchemy": {}})
     date = Column(
         DateTime(timezone=True),
         nullable=False,
@@ -1775,8 +1773,7 @@ class Log(Base):  # type: ignore
         },
     )
     action = Column(
-        Enum(LogAction),
-        native_enum=False,
+        Enum(LogAction, native_enum=False),
         nullable=False,
         info={
             "colanderalchemy": {
@@ -1811,3 +1808,11 @@ class Log(Base):  # type: ignore
             }
         },
     )
+
+class Log(AbstractLog):  # type: ignore
+    __tablename__ = "log"
+    __table_args__ = {"schema": _schema}
+    __mapper_args__ = {
+        "polymorphic_identity": "main",
+        "concrete": True,
+    }

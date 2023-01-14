@@ -31,9 +31,9 @@ import sqlalchemy
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from pyramid.view import view_config, view_defaults
 
-from c2cgeoportal_commons.models.main import Log
+from c2cgeoportal_commons.models.main import AbstractLog
 
-_list_field = partial(ListField, Log)
+_list_field = partial(ListField, AbstractLog)
 
 
 @view_defaults(match_param="table=logs")
@@ -49,10 +49,10 @@ class LogViews(AbstractViews):  # type: ignore
     ]
 
     _id_field = "id"
-    _model = Log
+    _model = AbstractLog
 
     def _base_query(self) -> sqlalchemy.orm.query.Query:
-        return super()._base_query().order_by(Log.date)
+        return super()._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
     def index(self):
