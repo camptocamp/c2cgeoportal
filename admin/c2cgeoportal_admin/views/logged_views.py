@@ -51,3 +51,17 @@ class LoggedViews(AbstractViews):  # type: ignore
             self._request.dbsession.add(log)
 
         return response
+
+    def delete(self) -> Dict[str, Any]:
+        response = super().delete()
+
+        log = Log(
+            date=datetime.datetime.now(pytz.utc),
+            action=LogAction.DELETE,
+            element_type=self._model.__tablename__,
+            element_id=self._request.matchdict.get('id'),
+            username=self._request.user.username,
+        )
+        self._request.dbsession.add(log)
+
+        return response

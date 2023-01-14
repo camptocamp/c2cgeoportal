@@ -88,13 +88,6 @@ def main(_, **settings):
     config.add_request_method(
         lambda request: User(
             username="test_user",
-            # password=""
-            # email="",
-            # is_password_changed: bool = False,
-            # settings_role: Optional[Role] = None,
-            # roles: Optional[List[Role]] = None,
-            # expire_on: Optional[datetime] = None,
-            # deactivated: bool = False,
         ),
         name="user",
         property=True,
