@@ -34,12 +34,12 @@ from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeGroup, TreeItem
-
 _list_field = partial(ListField, TreeItem)
 
 
-class TreeItemViews(AbstractViews):  # type: ignore
+class TreeItemViews(LoggedViews):  # type: ignore
     """The admin tree item view."""
 
     _list_fields = [
