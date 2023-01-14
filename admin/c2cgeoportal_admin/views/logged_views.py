@@ -27,15 +27,17 @@
 
 import datetime
 import pytz
+from typing import Any, Dict, Union
 
 from c2cgeoform.views.abstract_views import AbstractViews
 from c2cgeoportal_commons.models.main import Log, LogAction
 from pyramid.httpexceptions import HTTPFound
 
 
-class LoggedViews(AbstractViews):
+class LoggedViews(AbstractViews):  # type: ignore
+    """Extention of AbstractViews which log actions in a table."""
 
-    def save(self):
+    def save(self) -> Union[HTTPFound, Dict[str, Any]]:
         response = super().save()
 
         if isinstance(response, HTTPFound):

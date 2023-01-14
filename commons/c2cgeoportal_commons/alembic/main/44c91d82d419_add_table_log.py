@@ -47,24 +47,28 @@ depends_on = None
 def upgrade() -> None:
     """Upgrade."""
     schema = config["schema"]
-    staticschema = config["schema_static"]
 
-    op.create_table('log',
+    op.create_table(
+        'log',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('date', sa.DateTime(timezone=True), nullable=False),
-        # sa.Column('action', sa.Enum('INSERT', 'UPDATE', 'DELETE', name='logaction'), nullable=False, native_enum=False),
+        # sa.Column(
+        #     'action',
+        #     sa.Enum('INSERT', 'UPDATE', 'DELETE', name='logaction'),
+        #     nullable=False,
+        #     native_enum=False,
+        # ),
         sa.Column('action', sa.Unicode, nullable=False),
         sa.Column('element_type', sa.String(length=50), nullable=False),
         sa.Column('element_id', sa.Integer(), nullable=False),
         sa.Column('username', sa.Unicode(), nullable=False),
         sa.PrimaryKeyConstraint('id'),
-        schema='main'
+        schema=schema
     )
 
 
 def downgrade() -> None:
     """Downgrade."""
     schema = config["schema"]
-    staticschema = config["schema_static"]
 
-    op.drop_table('log', schema='main')
+    op.drop_table('log', schema=schema)

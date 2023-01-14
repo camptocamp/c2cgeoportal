@@ -29,7 +29,7 @@
 from functools import partial
 
 import sqlalchemy
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
@@ -39,7 +39,7 @@ from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeG
 _list_field = partial(ListField, TreeItem)
 
 
-class TreeItemViews(LoggedViews):  # type: ignore
+class TreeItemViews(LoggedViews):
     """The admin tree item view."""
 
     _list_fields = [

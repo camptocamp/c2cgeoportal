@@ -30,7 +30,6 @@ from functools import partial
 import sqlalchemy
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from pyramid.view import view_config, view_defaults
-from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_commons.models.main import Log
 
@@ -38,7 +37,7 @@ _list_field = partial(ListField, Log)
 
 
 @view_defaults(match_param="table=logs")
-class LogViews(AbstractViews):
+class LogViews(AbstractViews):  # type: ignore
     """The theme administration view."""
 
     _list_fields = [
@@ -53,7 +52,7 @@ class LogViews(AbstractViews):
     _model = Log
 
     def _base_query(self) -> sqlalchemy.orm.query.Query:
-        return super()._base_query()
+        return super()._base_query().order_by(Log.date)
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
     def index(self):

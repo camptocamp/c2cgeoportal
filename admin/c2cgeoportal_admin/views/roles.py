@@ -30,13 +30,14 @@ from functools import partial
 
 import colander
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.static import User
@@ -99,7 +100,7 @@ base_schema["users"].children[0].description = ""
 
 
 @view_defaults(match_param="table=roles")
-class RoleViews(AbstractViews):  # type: ignore
+class RoleViews(LoggedViews):
     """The roles administration view."""
 
     _list_fields = [

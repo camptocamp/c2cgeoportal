@@ -1747,13 +1747,15 @@ class Dimension(Base):  # type: ignore
 
 
 class LogAction(enum.Enum):
+    """The log action enumeration."""
+
     INSERT = enum.auto()
     UPDATE = enum.auto()
     DELETE = enum.auto()
 
 
 class Log(Base):  # type: ignore
-    """The dimension table representation."""
+    """The log table representation."""
 
     __tablename__ = "log"
     __table_args__ = {"schema": _schema}

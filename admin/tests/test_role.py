@@ -102,7 +102,7 @@ class TestRole(TestTreeGroup):
         self.check_grid_headers(resp, expected, new="Nouveau")
 
     def test_submit_new(self, dbsession, test_app, roles_test_data):
-        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.main import Log, LogAction, Role
 
         roles_test_data["roles"]
         functionalities = roles_test_data["functionalities"]
