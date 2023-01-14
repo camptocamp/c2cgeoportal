@@ -2,6 +2,7 @@
 
 DOCKER_BASE ?= camptocamp/c2cgeoportal
 DOCKER_TAG ?= latest
+export DOCKER_BUILDKIT ?= 1
 
 default: help
 

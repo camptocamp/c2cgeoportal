@@ -83,6 +83,23 @@ def main(_, **settings):
         reify=True,
     )
 
+    # Add fake user as we do not have authentication from geoportal
+    from c2cgeoportal_commons.models.static import User
+    config.add_request_method(
+        lambda request: User(
+            username="test_user",
+            password="",
+            email="",
+            # is_password_changed: bool = False,
+            # settings_role: Optional[Role] = None,
+            # roles: Optional[List[Role]] = None,
+            # expire_on: Optional[datetime] = None,
+            # deactivated: bool = False,
+        ),
+        name="user",
+        property=True,
+    )
+
     config.add_subscriber(add_renderer_globals, BeforeRender)
     config.add_subscriber(add_localizer, NewRequest)
 

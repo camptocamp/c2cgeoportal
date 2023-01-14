@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import enum
 import logging
 import os
 import re
@@ -40,7 +41,7 @@ from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
 from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
-from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode
+from sqlalchemy.types import Boolean, DateTime, Enum, Integer, String, Unicode
 
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.lib.url import get_url2
@@ -1743,3 +1744,68 @@ class Dimension(Base):  # type: ignore
 
     def __str__(self) -> str:
         return f"{self.name}={self.value}[{self.id}]"
+
+
+class LogAction(enum.Enum):
+    INSERT = enum.auto()
+    UPDATE = enum.auto()
+    DELETE = enum.auto()
+
+
+class Log(Base):  # type: ignore
+    """The dimension table representation."""
+
+    __tablename__ = "log"
+    __table_args__ = {"schema": _schema}
+    __colanderalchemy_config__ = {
+        "title": _("Log"),
+        "plural": _("Logs"),
+    }
+
+    id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
+    date = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Date"),
+            }
+        },
+    )
+    action = Column(
+        Enum(LogAction),
+        native_enum=False,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Action"),
+            }
+        },
+    )
+    element_type = Column(
+        String(50),
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Element type"),
+            }
+        },
+    )
+    element_id = Column(
+        Integer,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Element identifier"),
+            }
+        },
+    )
+    username = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Username"),
+            }
+        },
+    )

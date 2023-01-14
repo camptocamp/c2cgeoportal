@@ -33,6 +33,7 @@ import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
+from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
@@ -122,7 +123,23 @@ class ThemeViews(TreeItemViews):
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
     def save(self):
-        return super().save()
+        response = super().save()
+
+        import datetime
+        import pytz
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
+        if isinstance(response, HTTPFound):
+            log = Log(
+                date=datetime.datetime.now(pytz.utc),
+                action=LogAction.INSERT if self._is_new() else LogAction.UPDATE,
+                element_type="theme",
+                element_id=self._obj.id,
+                username=self._request.user.username,
+            )
+            self._request.dbsession.add(log)
+
+        return response
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
     def delete(self):
