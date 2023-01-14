@@ -65,6 +65,7 @@ def includeme(config):
         RestrictionArea,
         Role,
         Theme,
+        Log,
     )
     from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
         OAuth2Client,
@@ -84,6 +85,7 @@ def includeme(config):
         ("functionalities", Functionality),
         ("interfaces", Interface),
         ("oauth2_clients", OAuth2Client),
+        ("logs", Log),
     ]
 
     admin_interface_config = config.registry.settings["admin_interface"]
