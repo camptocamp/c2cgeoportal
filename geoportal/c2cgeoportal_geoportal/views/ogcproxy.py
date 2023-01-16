@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2022, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -60,6 +60,8 @@ class OGCProxy(Proxy):
         if "user_id" in self.params:
             del self.params["user_id"]
 
+        main_ogc_server = self.request.registry.settings.get("main_ogc_server")
+
         self.lower_params = self._get_lower_params(self.params)
 
         # We need original case for OGCSERVER parameter value
@@ -69,6 +71,8 @@ class OGCProxy(Proxy):
             self.ogc_server = self._get_ogcserver_byname(request.matchdict["ogcserver"])
         elif "ogcserver" in self.lower_key_params:
             self.ogc_server = self._get_ogcserver_byname(self.lower_key_params["ogcserver"])
+        elif main_ogc_server is not None:
+            self.ogc_server = self._get_ogcserver_byname(main_ogc_server)
         elif not has_default_ogc_server:
             raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
 
