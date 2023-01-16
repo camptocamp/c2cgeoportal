@@ -1,3 +1,5 @@
+##### 2.6.0.171
+* Add gmfDisplayQueryWindowOptions.displayNullAttributes [ngeo#8981](https://github.com/camptocamp/ngeo/pull/8981)
 ##### 2.6.0.168
 * Fix pull requests check workflow, use our CI token [c2cgeoportal#10264](https://github.com/camptocamp/c2cgeoportal/pull/10264)
 ##### 2.6.0.167
