@@ -352,3 +352,106 @@ class TestImport:
                 ]
                 for e in expected:
                     self.assert_fts(dbsession, e)
+
+    def test_search_label_pattern(self, dbsession, settings, test_data):
+        from c2cgeoportal_commons.models import main
+        from c2cgeoportal_geoportal.scripts.theme2fts import Import
+
+        label_theme = main.Theme(name="label_theme")
+        label_theme.interfaces = list(test_data["interfaces"].values())
+        label_theme.metadatas = [
+            main.Metadata(name="searchLabelPattern", value="{name}, {theme}"),
+        ]
+        dbsession.add(label_theme)
+
+        label_block = main.LayerGroup(name="label_block")
+        add_parent(dbsession, label_block, label_theme)
+        label_block.metadatas = [
+            main.Metadata(name="searchLabelPattern", value="{name} ({theme}, {parent})"),
+        ]
+        dbsession.add(label_block)
+
+        label_group = main.LayerGroup(name="label_group")
+        add_parent(dbsession, label_group, label_block)
+        label_group.metadatas = [
+            main.Metadata(name="searchLabelPattern", value="{name} ({theme}, {block}, {parent})"),
+        ]
+        dbsession.add(label_group)
+
+        label_layer = main.LayerWMS(name="label_layer")
+        label_layer.ogc_server = test_data["ogc_server"]
+        label_layer.interfaces = list(test_data["interfaces"].values())
+        add_parent(dbsession, label_layer, label_group)
+        label_layer.metadatas = [
+            main.Metadata(name="searchLabelPattern", value="{name} ({theme}, {block}, {parent})"),
+        ]
+
+        dbsession.add(label_layer)
+        dbsession.flush()
+
+        Import(dbsession, settings, options())
+
+        for lang in settings["available_locale_names"]:
+            for interface in test_data["interfaces"].values():
+                if interface.name == "api":
+                    continue
+                expected = [
+                    {
+                        "label": f"label_theme_{lang}, label_theme_{lang}",
+                        "role": None,
+                        "interface": interface,
+                        "lang": lang,
+                        "public": True,
+                        "ts": {
+                            "fr": "'fr':3 'label':1 'them':2",
+                            "en": "'en':3 'label':1 'theme':2",
+                            "de": "'de':3 'label':1 'them':2",
+                            "it": "'it':3 'label':1 'them':2",
+                        },
+                        "actions": [{"action": "add_theme", "data": "label_theme"}],
+                    },
+                    {
+                        "label": f"label_block_{lang} (label_theme_{lang}, label_theme_{lang})",
+                        "role": None,
+                        "interface": interface,
+                        "lang": lang,
+                        "public": True,
+                        "ts": {
+                            "fr": "'block':2 'fr':3 'label':1",
+                            "en": "'block':2 'en':3 'label':1",
+                            "de": "'block':2 'de':3 'label':1",
+                            "it": "'block':2 'it':3 'label':1",
+                        },
+                        "actions": [{"action": "add_group", "data": "label_block"}],
+                    },
+                    {
+                        "label": f"label_group_{lang} (label_theme_{lang}, label_block_{lang}, label_block_{lang})",
+                        "role": None,
+                        "interface": interface,
+                        "lang": lang,
+                        "public": True,
+                        "ts": {
+                            "fr": "'fr':3 'group':2 'label':1",
+                            "en": "'en':3 'group':2 'label':1",
+                            "de": "'de':3 'group':2 'label':1",
+                            "it": "'group':2 'it':3 'label':1",
+                        },
+                        "actions": [{"action": "add_group", "data": "label_group"}],
+                    },
+                    {
+                        "label": f"label_layer_{lang} (label_theme_{lang}, label_block_{lang}, label_group_{lang})",
+                        "role": None,
+                        "interface": interface,
+                        "lang": lang,
+                        "public": True,
+                        "ts": {
+                            "fr": "'fr':3 'label':1 'lai':2",
+                            "en": "'en':3 'label':1 'layer':2",
+                            "de": "'de':3 'label':1 'lay':2",
+                            "it": "'it':3 'label':1 'layer':2",
+                        },
+                        "actions": [{"action": "add_layer", "data": "label_layer"}],
+                    },
+                ]
+                for e in expected:
+                    self.assert_fts(dbsession, e)
