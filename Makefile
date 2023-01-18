@@ -1,6 +1,7 @@
 MAJOR_VERSION ?= $(shell scripts/get-version --major)
 VERSION ?= $(shell scripts/get-version --full)
 DOCKER_TAG ?= latest
+export DOCKER_BUILDKIT=1
 
 .PHONY: help
 help: ## Display this help message
