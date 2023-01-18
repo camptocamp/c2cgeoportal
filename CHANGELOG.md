@@ -1,3 +1,7 @@
+##### 2.7.0.167
+
+- Be able to dynamically configure raster base path [c2cgeoportal#10248](https://github.com/camptocamp/c2cgeoportal/pull/10248)
+
 ##### 2.7.0.166
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10274](https://github.com/camptocamp/c2cgeoportal/pull/10274)
