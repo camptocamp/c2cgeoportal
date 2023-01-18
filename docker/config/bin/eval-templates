@@ -12,7 +12,6 @@ from typing import Dict, List, Union, cast
 
 import fiona
 from defusedxml import ElementTree
-from lxml import etree
 
 SCHEME_PORT: Dict[str, Union[str, int]] = {
     "http": 80,
@@ -55,7 +54,7 @@ def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
             f"Invalid raster base '{raster_base.value}' should have at lease 2 parts like '/vsiaz/container/'"
         )
 
-    xml = ElementTree.parse(project)
+    xml = ElementTree.fromstring(project)
     for layer in xml.iter("layer-tree-layer"):
         if (
             "providerKey" in layer.attrib
@@ -74,7 +73,7 @@ def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
         ):
             datasource_element.text = _convert_location(datasource_element.text, raster_base, True)
 
-    return cast(bytes, etree.tostring(xml))
+    return cast(bytes, ElementTree.tostring(xml))
 
 
 def _main() -> None:
