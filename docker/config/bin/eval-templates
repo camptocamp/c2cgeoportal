@@ -45,7 +45,7 @@ def _convert_location(location: str, raster_base: RasterBase, verify_first: bool
             return location  # ignored
 
     location_split = location.split("/")
-    return f"{raster_base}{'/'.join(location_split[raster_base.length + 1:])}"
+    return f"{raster_base.value}{'/'.join(location_split[raster_base.length + 1:])}"
 
 
 def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
