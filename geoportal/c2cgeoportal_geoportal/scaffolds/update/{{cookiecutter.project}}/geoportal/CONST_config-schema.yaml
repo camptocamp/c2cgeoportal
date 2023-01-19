@@ -44,6 +44,8 @@ mapping:
       package:
         type: str
         required: True
+      main_ogc_server:
+        type: str
       enable_admin_interface:
         type: scalar
         required: True
