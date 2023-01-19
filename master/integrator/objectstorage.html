@@ -147,22 +147,26 @@ ${DISABLE_MUTUALIZE} CONFIG &quot;AZURE_STORAGE_ACCOUNT&quot; &quot;${AZURE_STOR
 </pre></div>
 </div>
 <p>Add a vector layer for the object storage:</p>
-<p>Exoscale:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONNECTIONTYPE</span> <span class="n">OGR</span>
-<span class="n">CONNECTION</span> <span class="s2">&quot;/vsis3/&lt;bucket&gt;/&lt;path&gt;/&lt;name&gt;.shp&quot;</span>
-<span class="n">DATA</span> <span class="s2">&quot;&lt;name&gt;&quot;</span>
-</pre></div>
-</div>
-<p>Azure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONNECTIONTYPE</span> <span class="n">OGR</span>
-<span class="n">CONNECTION</span> <span class="s2">&quot;/vsiaz/&lt;container&gt;/&lt;path&gt;/&lt;name&gt;.shp&quot;</span>
+<span class="n">CONNECTION</span> <span class="s2">&quot;$</span><span class="si">{RASTER_BASE_PATH}</span><span class="s2">&lt;path&gt;/&lt;name&gt;.shp&quot;</span>
 <span class="n">DATA</span> <span class="s2">&quot;&lt;name&gt;&quot;</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/mapserver/mapserver/wiki/Render-images-straight-out-of-S3-with-the-vsicurl-driver">Some more information</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to use different buckets or containers in different environments
+(such as integration / production), you should add an empty file named <code class="docutils literal notranslate"><span class="pre">&lt;tileindexbasename&gt;.raster</span></code>
+(not <code class="docutils literal notranslate"><span class="pre">&lt;tileindexbasename&gt;.shp.raster</span></code>) and a <code class="docutils literal notranslate"><span class="pre">RASTER_BASE_PATH</span></code> environment variable in your
+<cite>env.project</cite> file, then the base path will be replaced (same number of folders).
+The empty raster files are here just to find the files that should be managed.</p>
+<p>Example: <cite>RASTER_BASE_PATH=/vsiaz/&lt;container&gt;/</cite></p>
+</div>
 </section>
-<section id="qgis-client">
-<h2>QGIS client<a class="headerlink" href="#qgis-client" title="Permalink to this heading">¶</a></h2>
+<section id="qgis">
+<h2>QGIS<a class="headerlink" href="#qgis" title="Permalink to this heading">¶</a></h2>
+<section id="client">
+<h3>Client<a class="headerlink" href="#client" title="Permalink to this heading">¶</a></h3>
 <p>The following environment variables should be defined (in the OS or in QGIS
 (<code class="docutils literal notranslate"><span class="pre">Settings</span></code> / <code class="docutils literal notranslate"><span class="pre">Options...</span></code> / <code class="docutils literal notranslate"><span class="pre">System</span></code> / <code class="docutils literal notranslate"><span class="pre">Environment</span></code>)):</p>
 <p>Exoscale:</p>
@@ -190,6 +194,32 @@ ${DISABLE_MUTUALIZE} CONFIG &quot;AZURE_STORAGE_ACCOUNT&quot; &quot;${AZURE_STOR
 <li><p><code class="docutils literal notranslate"><span class="pre">Object</span> <span class="pre">key</span></code>: &lt;folder&gt;/index.vrt.</p></li>
 </ul>
 <p>You can add a vector layer in an analogous manner.</p>
+</section>
+<section id="server">
+<h3>Server<a class="headerlink" href="#server" title="Permalink to this heading">¶</a></h3>
+<p>Fill the required environment variables.</p>
+<p>Exoscale:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code>: The project access key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code>: The project secret key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_DEFAULT_REGION=ch-dk-2</span></code>: Should already be in your env.project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io</span></code>: Should already be in your env.project.</p></li>
+</ul>
+<p>Azure docker-compose:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_CONNECTION_STRING</span></code>: The connection string.</p></li>
+</ul>
+<p>For Azure AKS the access should be given by the AzureAssignedIdentity in Kubernetes,</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to use different buckets or containers in different environments
+(such as integration / production), you should add an empty file names
+<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.qgs.raster</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.qgz.raster</span></code>
+and a <code class="docutils literal notranslate"><span class="pre">RASTER_BASE_PATH</span></code> environment variable in your
+config container, then the base path will be replaced (same number of folder).
+The empty raster files are here just to find the files that should be managed.</p>
+</div>
+</section>
 </section>
 </section>
 
