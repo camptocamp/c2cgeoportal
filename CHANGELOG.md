@@ -1,3 +1,7 @@
+##### 2.7.0.168
+
+- Fix open xml from content [c2cgeoportal#10278](https://github.com/camptocamp/c2cgeoportal/pull/10278)
+
 ##### 2.7.0.167
 
 - Be able to dynamically configure raster base path [c2cgeoportal#10248](https://github.com/camptocamp/c2cgeoportal/pull/10248)
