@@ -7,15 +7,15 @@ git reset --hard
 git checkout gh-pages
 git reset --hard origin/gh-pages
 
-if [ -e ${MAIN_BRANCH} ]; then
-    git rm -r --force -- ${MAIN_BRANCH}
+if [ -e "${MAIN_BRANCH}" ]; then
+    git rm -r --force -- "${MAIN_BRANCH}"
 fi
 
-mv /tmp/doc/html ${MAIN_BRANCH}
+mv /tmp/doc/html "${MAIN_BRANCH}"
 
-git add --all ${MAIN_BRANCH}
+git add --all "${MAIN_BRANCH}"
 git commit --message="Update documentation for the revision ${GIT_REV}" || true
 git push origin gh-pages
 
 # Back to the original branch
-git checkout ${GIT_REV}
+git checkout "${GIT_REV}"

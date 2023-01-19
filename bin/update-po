@@ -29,13 +29,14 @@ GROUP=$2
 OWNER=$1:$2
 shift 2
 
-pot-create --config=geoportal/lingua-client${SUFFIX}.cfg --width=110 \
-    --output=geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot \
-    $(find geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/ -type f -name '*.html.ejs') \
-    $(find geoportal/${PACKAGE}_geoportal/static-ngeo/js/ -type f -name '*.js') \
-    $(find geoportal/${PACKAGE}_geoportal/static-ngeo/js -type f -name '*.html') \
+# shellcheck disable=SC2046
+pot-create --config="geoportal/lingua-client${SUFFIX}.cfg" --width=110 \
+    --output="geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot" \
+    $(find "geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/" -type f -name '*.html.ejs') \
+    $(find "geoportal/${PACKAGE}_geoportal/static-ngeo/js/" -type f -name '*.js') \
+    $(find "geoportal/${PACKAGE}_geoportal/static-ngeo/js" -type f -name '*.html') \
     $(find /usr/local/tomcat/webapps/ROOT -type f -name config.yaml) \
     /etc/geomapfish/config.yaml geoportal/development.ini
-chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
+chown "${OWNER}" "geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot"
 
-update-po-only ${USER} ${GROUP} "$@"
+update-po-only "${USER}" "${GROUP}" "$@"

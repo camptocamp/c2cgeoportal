@@ -25,8 +25,8 @@ user=$1
 group=$2
 dir=$3
 shift 3
-cd ${dir}
+cd "${dir}"
 "$@"
-if [ $user != '' ]; then
-    chown -R ${user}:${group} ${dir}
+if [ "${user}" != '' ]; then
+    chown -R "${user}:${group}" "${dir}"
 fi

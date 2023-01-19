@@ -34,11 +34,13 @@ echo ::endgroup::
 
 # Lint
 echo ::group::Lint
-docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+docker-compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
     prospector --output-format=pylint --die-on-tool-error
-docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+# shellcheck disable=SC2046
+docker-compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
     eslint $(find testgeomapfishapp -type f -name '*.js' -print 2> /dev/null)
-docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+# shellcheck disable=SC2046
+docker-compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
     eslint $(find testgeomapfishapp -type f -name '*.ts' -print 2> /dev/null)
 
 docker-compose down --volumes
