@@ -1,3 +1,7 @@
+##### 2.7.0.169
+
+- Fix base path [c2cgeoportal#10281](https://github.com/camptocamp/c2cgeoportal/pull/10281)
+
 ##### 2.7.0.168
 
 - Fix open xml from content [c2cgeoportal#10278](https://github.com/camptocamp/c2cgeoportal/pull/10278)
