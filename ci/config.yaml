@@ -13,6 +13,7 @@ checks:
       - .*/poetry.lock$
       - ^poetry.lock$
       - ^geoportal/tests/data/dem4\..*
+      - ^docker/config/poetry\.lock$
 
 audit:
   snyk:
