@@ -1,0 +1,121 @@
+# https://pre-commit.com/hooks.html
+
+ci:
+  skip:
+    - copyright
+    - poetry-lock
+    - poetry-check
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: detect-private-key
+        exclude: ^docker/config/haproxy_dev/localhost\.pem$
+      - id: check-merge-conflict
+      - id: check-ast
+        exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
+      - id: debug-statements
+        exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
+      - id: check-toml
+      - id: check-yaml
+        exclude: "(\
+          ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\\.project}}/\
+          |secrets\\.yml)"
+      - id: check-json
+      - id: end-of-file-fixer
+        exclude: ^ci/tileindex/SRTM2056\.prj$
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+  - repo: https://github.com/sbrunner/pre-commit-hooks
+    rev: 0.2.3
+    hooks:
+      - id: copyright
+      - id: workflows-require-timeout
+      - id: poetry-check
+        exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
+        additional_dependencies:
+          - poetry==1.3.2 # pypi
+      - id: poetry-lock
+        exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
+        additional_dependencies:
+          - poetry==1.3.2 # pypi
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.2
+    hooks:
+      - id: codespell
+        exclude: (.*/package-lock.json$|^geoportal/tests/data/dem4\..*|^(.*/)?poetry\.lock$)
+        args:
+          - --ignore-words=.github/spell-ignore-words.txt
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@2.8.1 # npm
+          - prettier-plugin-sh@0.12.8 # npm
+          - prettier-plugin-toml@0.3.1 # npm
+        exclude: "(\
+          ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\\.project}}/\
+          |.*\\.pt\
+          |geoportal/tests/data/tinyows_.*\\.xml)"
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.2
+    hooks:
+      - id: shellcheck
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: git-check
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.20.0
+    hooks:
+      - id: check-github-workflows
+      - id: check-renovate
+        additional_dependencies:
+          - pyjson5==1.6.2 # pypi
+  - repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.5
+    hooks:
+      - id: ripsecrets
+        exclude: "(\
+          ^docker/config/haproxy_dev/localhost\\.pem$\
+          |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\\.sql)"
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.0.0
+    hooks:
+      - id: autoflake
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+      # The script that will run on the project host
+      #- id: pyupgrade
+      #  args:
+      #    - --py36-plus
+      #  files: "^(\
+      #    geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\\.project}}/(build|scripts/.*)\
+      #    |scripts/get-version)$"
+      # All other
+      - id: pyupgrade
+        args:
+          - --py38-plus
+        exclude: "^(\
+          geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\\.project}}/(build|scripts/.*)\
+          |scripts/(get-version|upgrade))$"
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.4
+    hooks:
+      - id: isort
+  - repo: https://github.com/psf/black
+    rev: 22.12.0
+    hooks:
+      - id: black
+        exclude: (^commons/c2cgeoportal_commons/alembic/script\.py\.mako$|.*\.rst$|.*\.rst.tmpl$|^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$)
+  - repo: https://github.com/PyCQA/prospector
+    rev: v1.8.4
+    hooks:
+      - id: prospector
+        args:
+          - --tool=pydocstyle
+          - --die-on-tool-error
+          - --output-format=pylint

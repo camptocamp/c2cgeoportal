@@ -7,14 +7,7 @@ checks:
       - .*\.rst$
       - .*\.rst.tmpl$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$
-  codespell:
-    ignore_re:
-      - .*/package-lock.json$
-      - .*/poetry.lock$
-      - ^poetry.lock$
-      - ^geoportal/tests/data/dem4\..*
-      - ^docker/config/poetry\.lock$
-
+  codespell: false
 audit:
   snyk:
     files_no_install:
@@ -35,7 +28,7 @@ publish:
       - name: camptocamp/geomapfish-tools
         group: full
       - name: camptocamp/geomapfishapp-geoportal
-      # 2.4
+        # 2.4
       - name: camptocamp/geomapfish-qgisserver
         group: qgis-3.10
         tags:
@@ -64,18 +57,18 @@ publish:
         group: qgis-master
         tags:
           - gmf{version}-qgismaster
-      # The group qgis-old is required for the clean workflow
-      # 2.4, 2.5
+        # The group qgis-old is required for the clean workflow
+        # 2.4, 2.5
       - name: camptocamp/geomapfish-qgisserver
         group: qgis-old
         tags:
           - gmf{version}-qgis3.4
-      # 2.5
+        # 2.5
       - name: camptocamp/geomapfish-qgisserver
         group: qgis-old
         tags:
           - gmf{version}-qgis3.12
-      # 2.5
+        # 2.5
       - name: camptocamp/geomapfish-qgisserver
         group: qgis-old
         tags:

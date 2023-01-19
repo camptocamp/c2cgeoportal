@@ -1,4 +1,3 @@
----
 name: Continuous integration
 
 on:
@@ -20,7 +19,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - run: 'false'
-        if: "github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'"
+        if: github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'
 
   main:
     runs-on: ubuntu-20.04
@@ -58,23 +57,33 @@ jobs:
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
 
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: "pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}\npre-commit-"
+      - run: pre-commit run --all-files
+        env:
+          SKIP: poetry-lock
+      - run: git diff
+        if: failure()
       - name: Checks
         run: c2cciutils-checks
 
       - run: python3 -m pip install --user --requirement=requirements.txt
 
-      # Build images
+        # Build images
       - run: make build-runner
       - run: make build-tools
       - run: make checks
         if: always()
       - run: make build-config
 
-      # Build and lint QGIS images
+        # Build and lint QGIS images
       - run: QGIS_VERSION=3.28 make build-qgisserver
       - run: QGIS_VERSION=3.28 make prospector-qgisserver
 
-      # Tests
+        # Tests
       - run: make preparetest
       - run: docker-compose logs --timestamps
         if: failure()
@@ -92,7 +101,7 @@ jobs:
 
       - run: sudo git clean -fdx
 
-      # Documentation
+        # Documentation
       - run: >
           docker build --tag=camptocamp/geomapfish-doc
           --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
@@ -113,18 +122,18 @@ jobs:
           if-no-files-found: ignore
           retention-days: 5
 
-      # Use minimal version from the documentation
+        # Use minimal version from the documentation
       - uses: actions/setup-python@v4
         with:
           # When we upgrade this we should also upgrade the requirements
           # in the documentation: doc/integrator/requirements.rst
           python-version: '3.5'
-      # When we upgrade this we should also upgrade the requirements
-      # in the documentation: doc/integrator/requirements.rst
-      # netifaces is for 2.4
+        # When we upgrade this we should also upgrade the requirements
+        # in the documentation: doc/integrator/requirements.rst
+        # netifaces is for 2.4
       - run: pip install --user PyYAML==3.12 docker-compose==1.25.0
 
-      # Test App
+        # Test App
       - run: ci/test-app
         timeout-minutes: 30
       - name: Docker logs
@@ -132,7 +141,7 @@ jobs:
           cd ${HOME}/workspace/testgeomapfishapp/
           c2cciutils-docker-logs
         if: failure()
-        continue-on-error: True
+        continue-on-error: true
 
       - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
         if: >
@@ -141,7 +150,7 @@ jobs:
       - run: scripts/get-version --auto-increment --github
         id: version
 
-      # Test Upgrade
+        # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-runner
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-config
@@ -157,8 +166,9 @@ jobs:
       - run: pip install --user PyYAML docker-compose wheel
 
       - name: Init Git
-        run: git remote set-url origin
-          https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        run:
+          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
+          }}
       - run: make build-tools
       - run: make build-runner
       - run: make build-config
