@@ -28,7 +28,6 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 from unittest import TestCase
-from unittest.mock import patch
 
 import pytest
 import responses
@@ -335,7 +334,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         (operation, typename) = TinyOWSProxy(request)._parse_body(request.body)
 
         assert "describefeaturetype" == operation
-        assert set(["layer_1"]) == typename
+        assert {"layer_1"} == typename
 
     def test_parse_body_getfeature(self):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy

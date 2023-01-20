@@ -351,7 +351,7 @@ class TestLoginView(TestCase):
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600
         assert data["token_type"] == "Bearer"
-        access_token = data["access_token"]
+        data["access_token"]
         refresh_token = data["refresh_token"]
 
         # Test refresh token

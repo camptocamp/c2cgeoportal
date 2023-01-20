@@ -30,7 +30,7 @@
 import argparse
 import json
 import subprocess
-from typing import Any, Dict, List, Tuple
+from typing import Dict, List, Tuple
 
 
 def output(cmd: List[str]) -> bytes:
