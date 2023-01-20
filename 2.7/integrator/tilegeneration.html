@@ -2385,7 +2385,7 @@ to a test page.</p>
 <li><p>tile_size</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Tile size</em></p></td>
+<td colspan="2"><p><em>Cost tile size</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The tile mean size in bytes</p></td>
 </tr>
@@ -3401,6 +3401,34 @@ to a test page.</p>
 <tr class="row-odd"><td><p>default</p></td>
 <td colspan="4"><p>28800</p></td>
 </tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>pending_count</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Pending count</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The pending count: the number of pending tiles get in one request (main configuration), default is 10</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>10</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>pending_max_count</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Pending max count</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The pending max count: the maximum number of pending tiles get in one pass (if not generating other tiles, every second) (main configuration), default is 10000</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>10000</p></td>
+</tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="5"><p>False</p></td>
 </tr>
@@ -3660,7 +3688,7 @@ to a test page.</p>
 <li><p>storage</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Storage</em></p></td>
+<td colspan="2"><p><em>S3 Storage</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The storage cost in $ / Gio / month (main configuration)</p></td>
 </tr>
@@ -3674,7 +3702,7 @@ to a test page.</p>
 <li><p>put</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Put</em></p></td>
+<td colspan="2"><p><em>S3 Put</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The cost of put in $ per 10 000 requests (main configuration)</p></td>
 </tr>
@@ -3688,7 +3716,7 @@ to a test page.</p>
 <li><p>get</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Get</em></p></td>
+<td colspan="2"><p><em>S3 Get</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The cost of get in $ per 10 000 requests (main configuration)</p></td>
 </tr>
@@ -3702,7 +3730,7 @@ to a test page.</p>
 <li><p>download</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Download</em></p></td>
+<td colspan="2"><p><em>S3 Download</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The cost of download in $ per Gio (main configuration)</p></td>
 </tr>
@@ -3732,7 +3760,7 @@ to a test page.</p>
 <li><p>get</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Get</em></p></td>
+<td colspan="2"><p><em>CloudFront Get</em></p></td>
 </tr>
 <tr class="row-odd"><td colspan="2"><p>The cost of get in $ per 10 000 requests (main configuration)</p></td>
 </tr>
@@ -3746,7 +3774,7 @@ to a test page.</p>
 <li><p>download</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Download</em></p></td>
+<td colspan="2"><p><em>CloudFront Download</em></p></td>
 </tr>
 <tr class="row-odd"><td colspan="2"><p>The cost of download in $ per Gio (main configuration)</p></td>
 </tr>
