@@ -1,3 +1,7 @@
+##### 2.7.0.170
+
+- Use or instead of pipe [c2cgeoportal#10276](https://github.com/camptocamp/c2cgeoportal/pull/10276)
+
 ##### 2.7.0.169
 
 - Fix base path [c2cgeoportal#10281](https://github.com/camptocamp/c2cgeoportal/pull/10281)
