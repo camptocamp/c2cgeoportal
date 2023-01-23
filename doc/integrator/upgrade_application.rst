@@ -4,6 +4,7 @@
 Upgrading a GeoMapFish application
 ==================================
 
+The upgrade can be done from the previous version or the previous LTS version.
 
 Prepare upgrade
 ~~~~~~~~~~~~~~~
