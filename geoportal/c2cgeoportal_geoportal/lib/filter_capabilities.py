@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2021, Camptocamp SA
+# Copyright (c) 2014-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -126,6 +126,12 @@ def filter_capabilities(
             if ogc_layer in wms_structure_:
                 private_layers.update(wms_structure_[ogc_layer])
 
+    LOG.debug(
+        "Filter capabilities of OGC server %s\nprivate_layers: %s",
+        ", ".join([str(e) for e in ogc_server_ids]),
+        ", ".join(private_layers),
+    )
+
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
     parser.setFeature(xml.sax.handler.feature_external_ges, False)
@@ -148,6 +154,12 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
     for gmf_layer in list(get_writable_layers(request, ogc_server_ids).values()):
         writable_layers |= set(gmf_layer.layer.split(","))
+
+    LOG.debug(
+        "Filter WFS-T capabilities of OGC server %s\nlayers: %s",
+        ", ".join([str(e) for e in ogc_server_ids]),
+        ", ".join(writable_layers),
+    )
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
