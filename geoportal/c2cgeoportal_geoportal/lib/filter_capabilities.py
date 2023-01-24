@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014-2020, Camptocamp SA
+# Copyright (c) 2014-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -118,6 +118,12 @@ def filter_capabilities(content, wms, url, headers, request):
             if ogclayer in wms_structure_:
                 private_layers.update(wms_structure_[ogclayer])
 
+    LOG.debug(
+        "Filter capabilities of OGC server %s\nprivate_layers: %s",
+        ", ".join([str(e) for e in ogc_server_ids]),
+        ", ".join(private_layers),
+    )
+
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
     parser.setFeature(xml.sax.handler.feature_external_ges, False)
@@ -137,6 +143,12 @@ def filter_wfst_capabilities(content, wfs_url, request):
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url)
     for gmflayer in list(get_writable_layers(request, ogc_server_ids).values()):
         writable_layers += gmflayer.layer.split(",")
+
+    LOG.debug(
+        "Filter WFS-T capabilities of OGC server %s\nlayers: %s",
+        ", ".join([str(e) for e in ogc_server_ids]),
+        ", ".join(writable_layers),
+    )
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
