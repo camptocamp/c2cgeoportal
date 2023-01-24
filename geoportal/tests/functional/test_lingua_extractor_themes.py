@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +27,7 @@
 
 # pylint: disable=missing-docstring
 
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 import pytest
 

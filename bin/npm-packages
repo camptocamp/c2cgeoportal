@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2011-2019, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -105,7 +105,7 @@ def main():
     data = " ".join([f"{p}@{v}" for p, v in packages.items()])
     data = data + "\n"
 
-    with open(args.dst, "wt") as dst:
+    with open(args.dst, "w") as dst:
         dst.write(data)
 
 

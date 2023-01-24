@@ -3,16 +3,16 @@
 echo ::group::Create the project
 
 TAG=$(scripts/get-version --major)
-DOCKER_TAG=${TAG} make build-tools
-DOCKER_TAG=${TAG} make build-runner
-DOCKER_TAG=${TAG} make build-config
+DOCKER_TAG="${TAG}" make build-tools
+DOCKER_TAG="${TAG}" make build-runner
+DOCKER_TAG="${TAG}" make build-config
 
-docker tag camptocamp/geomapfish:${TAG} camptocamp/geomapfish
-docker tag camptocamp/geomapfish-tools:${TAG} camptocamp/geomapfish-tools:$(scripts/get-version --full)
-docker tag camptocamp/geomapfish-config:${TAG} camptocamp/geomapfish-config:$(scripts/get-version --full)
+docker tag "camptocamp/geomapfish:${TAG}" camptocamp/geomapfish
+docker tag "camptocamp/geomapfish-tools:${TAG}" "camptocamp/geomapfish-tools:$(scripts/get-version --full)"
+docker tag "camptocamp/geomapfish-config:${TAG}" "camptocamp/geomapfish-config:$(scripts/get-version --full)"
 
 DOCKER_BUILDKIT=1 docker build --target=runner --build-arg=VERSION=3.28 \
-    --tag=camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.28 \
+    --tag="camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.28" \
     docker/qgisserver
 
 WORKSPACE=$1
@@ -23,44 +23,50 @@ if [ $# -ge 2 ]; then
 else
     PACKAGE=testgeomapfishapp
 fi
-rm -rf ${WORKSPACE}/${PACKAGE}
-mkdir --parent ${WORKSPACE}/${PACKAGE}
+rm -rf "${WORKSPACE:?}/${PACKAGE}"
+mkdir --parent "${WORKSPACE}/${PACKAGE}"
 
 DOCKER_RUN_ENV_ARGS="--env=SRID=2056 --env=EXTENT=2489246.36,1078873.44,2837119.76,1296543.14"
 DOCKER_RUN_ARGS="--volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} camptocamp/geomapfish-tools:${TAG}"
 PCREATE_CMD="run $(id -u) $(id -g) /src pcreate --overwrite ${PACKAGE}"
+# shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=create
+# shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=advance_create
+# shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=update
+# shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=advance_update
 
 if [ $BASE_APP != true ]; then
     # Copy files for CI build and tests
-    mv ${WORKSPACE}/${PACKAGE}/geoportal/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/vars_origin.yaml
-    cp ci/vars.yaml ${WORKSPACE}/${PACKAGE}/geoportal/
-    mkdir -p ${WORKSPACE}/${PACKAGE}/geoportal/ci
-    mkdir -p ${WORKSPACE}/${PACKAGE}/ci
-    echo "PGSSLMODE=prefer" >> ${WORKSPACE}/${PACKAGE}/env.project
+    mv "${WORKSPACE}/${PACKAGE}/geoportal/vars.yaml" "${WORKSPACE}/${PACKAGE}/geoportal/vars_origin.yaml"
+    cp ci/vars.yaml "${WORKSPACE}/${PACKAGE}/geoportal/"
+    mkdir -p "${WORKSPACE}/${PACKAGE}/geoportal/ci"
+    mkdir -p "${WORKSPACE}/${PACKAGE}/ci"
+    echo "PGSSLMODE=prefer" >> "${WORKSPACE}/${PACKAGE}/env.project"
 fi
 
-cd ${WORKSPACE}/${PACKAGE}
+cd "${WORKSPACE}/${PACKAGE}"
 sed -i 's/service: geoportal/\0-advance/g' docker-compose.yaml
 sed -i 's/service: alembic/\0-advance/g' docker-compose.yaml
-echo 'PGHOST=db' >> env.project
-echo 'PGHOST_SLAVE=db' >> env.project
-echo 'PGPORT=5432' >> env.project
-echo 'PGPORT_SLAVE=5432' >> env.project
-echo 'PGUSER=www-data' >> env.project
-echo 'PGPASSWORD=www-data' >> env.project
+{
+    echo 'PGHOST=db'
+    echo 'PGHOST_SLAVE=db'
+    echo 'PGPORT=5432'
+    echo 'PGPORT_SLAVE=5432'
+    echo 'PGUSER=www-data'
+    echo 'PGPASSWORD=www-data'
+} >> env.project
 
 if [ $BASE_APP == true ]; then
     for interface in mobile_alt oeedit; do
         for file in \
-            geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/${interface}.html.ejs \
-            geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/Controller${interface}.js \
-            geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/sass/vars_${interface}.scss \
-            geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/sass/${interface}.scss; do
-            cp CONST_create_template/${file} ${file}
+            "geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/${interface}.html.ejs" \
+            "geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/Controller${interface}.js" \
+            "geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/sass/vars_${interface}.scss" \
+            "geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/sass/${interface}.scss"; do
+            cp "CONST_create_template/${file}" "${file}"
         done
     done
     sed -i '1iNGEO_INTERFACES ?= desktop mobile iframe_api mobile_alt oeedit' geoportal/Makefile

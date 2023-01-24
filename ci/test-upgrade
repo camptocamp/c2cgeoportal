@@ -7,9 +7,10 @@ PCREATE_ARGS="--overwrite --package-name testgeomapfish"
 # $2: scaffold
 # $3: version
 function pcreate {
-    if [ $2 == c2cgeoportal_create ]; then
+    if [ "$2" == c2cgeoportal_create ]; then
         DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
     fi
+    # shellcheck disable=SC2086
     docker run --rm ${DOCKER_ENV} \
         --volume="$1/testgeomapfish:/src/testgeomapfish" "camptocamp/geomapfish-tools:$3" \
         run "$(id -u)" "$(id -g)" /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
@@ -110,6 +111,7 @@ function upgrade {
 }
 
 if [ "$1" = "init" ]; then
+    # shellcheck disable=SC2046
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create-advance "${WORKSPACE}/ref" "${MAJOR_VERSION}"
     cd "${WORKSPACE}/ref/testgeomapfish"

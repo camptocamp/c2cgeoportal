@@ -1,4 +1,4 @@
-# Copyright (c) 2021, Camptocamp SA
+# Copyright (c) 2021-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -585,10 +585,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
             {
                 'token_type': 'Bearer',
-                'access_token': 'askfjh234as9sd8',
+                'access_token': '<secret>',
                 'expires_in': 3600,
                 'scope': 'string of space separated authorized scopes',
-                'refresh_token': '23sdf876234',  # if issued
+                'refresh_token': '<secret>',  # if issued
                 'state': 'given_by_client',  # if supplied by client
             }
 

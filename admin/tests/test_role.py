@@ -105,7 +105,7 @@ class TestRole(TestTreeGroup):
     def test_submit_new(self, dbsession, test_app, roles_test_data):
         from c2cgeoportal_commons.models.main import Role
 
-        roles = roles_test_data["roles"]
+        roles_test_data["roles"]
         functionalities = roles_test_data["functionalities"]
         restrictionareas = roles_test_data["restrictionareas"]
         users = roles_test_data["users"]
