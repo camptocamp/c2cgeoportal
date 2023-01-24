@@ -1,3 +1,7 @@
+##### 2.7.0.171
+
+- [Backport 2.7] Add more logs to be able to debug the capabilities filter [c2cgeoportal#10289](https://github.com/camptocamp/c2cgeoportal/pull/10289)
+
 ##### 2.7.0.170
 
 - Use or instead of pipe [c2cgeoportal#10276](https://github.com/camptocamp/c2cgeoportal/pull/10276)
