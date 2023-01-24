@@ -1,3 +1,5 @@
+##### 2.6.0.172
+* Add more logs to be able to debug the capabilities filter [c2cgeoportal#10287](https://github.com/camptocamp/c2cgeoportal/pull/10287)
 ##### 2.6.0.171
 * Add gmfDisplayQueryWindowOptions.displayNullAttributes [ngeo#8981](https://github.com/camptocamp/ngeo/pull/8981)
 ##### 2.6.0.168
