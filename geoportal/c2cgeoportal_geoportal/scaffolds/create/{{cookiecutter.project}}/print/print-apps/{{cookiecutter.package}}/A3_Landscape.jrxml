@@ -2,6 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gmf16_A3_landscape" pageWidth="1191" pageHeight="842" orientation="Landscape" columnWidth="1151" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2646b6ef-0cc4-4852-b6e9-8c4dc54c2e84">
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="username" class="java.lang.String"/>
 	<parameter name="comments" class="java.lang.String"/>
 	<parameter name="debug" class="java.lang.Boolean"/>
 	<parameter name="mapSubReport" class="java.lang.String"/>
@@ -196,6 +197,10 @@ $P{mapContext}.getScale().getDenominator()).replace(",","\'")]]></textFieldExpre
 				<reportElement x="1125" y="21" width="22" height="30" uuid="c3450c45-a812-40a4-9a5e-c62dd7cef852"/>
 				<textElement verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="300" height="15" uuid="f2fb034e-297f-4107-a5f5-da84722deb70"/>
+				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

@@ -361,6 +361,7 @@ vars:
                 ITEMFONTSIZE: '8'
           hiddenAttributes:
             - timezone
+            - username
         gmfDisplayQueryGridOptions:
           featuresStyle: *featureStyle
           selectedFeatureStyle: *selectedFeatureStyle
