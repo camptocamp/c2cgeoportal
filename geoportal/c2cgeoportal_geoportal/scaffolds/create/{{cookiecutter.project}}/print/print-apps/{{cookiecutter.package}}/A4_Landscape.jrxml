@@ -4,6 +4,7 @@
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="username" class="java.lang.String"/>
 	<parameter name="comments" class="java.lang.String"/>
 	<parameter name="debug" class="java.lang.Boolean"/>
 	<parameter name="mapSubReport" class="java.lang.String"/>
@@ -189,6 +190,10 @@
 			<textField>
 				<reportElement x="0" y="1" width="300" height="14" uuid="dc102ea9-973f-4717-a872-0d24d4de1e17"/>
 				<textFieldExpression><![CDATA[$R{info}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="300" height="15" uuid="f2fb034e-297f-4107-a5f5-da84722deb70"/>
+				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

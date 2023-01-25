@@ -2,6 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gmf16_A3_portrait" pageWidth="842" pageHeight="1191" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="041e6c80-82d5-4055-a560-dd402f39361f">
 	<parameter name="title" class="java.lang.String"/>
+	<parameter name="username" class="java.lang.String"/>
 	<parameter name="comments" class="java.lang.String"/>
 	<parameter name="debug" class="java.lang.Boolean"/>
 	<parameter name="mapSubReport" class="java.lang.String"/>
@@ -174,6 +175,10 @@
 				<reportElement x="776" y="21" width="22" height="30" uuid="4574386a-cbc9-4529-896b-c402fb4236c1"/>
 				<textElement verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="300" height="15" uuid="f2fb034e-297f-4107-a5f5-da84722deb70"/>
+				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

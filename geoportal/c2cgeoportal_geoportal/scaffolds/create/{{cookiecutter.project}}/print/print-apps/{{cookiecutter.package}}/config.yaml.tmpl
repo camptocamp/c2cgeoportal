@@ -18,6 +18,9 @@ templates:
       title:
         !string &title
         default: ""
+      username:
+        !string &username
+        default: ""
       comments:
         !string &comments
         default: ""
@@ -122,6 +125,7 @@ templates:
     reportTemplate: A4_Landscape.jrxml
     attributes:
       title: *title
+      username: *username
       comments: *comments
       debug: *debug
       legend: *legend
@@ -139,6 +143,7 @@ templates:
     reportTemplate: A3_Portrait.jrxml
     attributes:
       title: *title
+      username: *username
       comments: *comments
       debug: *debug
       legend: *legend
@@ -156,6 +161,7 @@ templates:
     reportTemplate: A3_Landscape.jrxml
     attributes:
       title: *title
+      username: *username
       comments: *comments
       debug: *debug
       legend: *legend
