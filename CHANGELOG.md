@@ -1,3 +1,7 @@
+##### 2.7.0.172
+
+- [Backport 2.7] Be able to use all Azure connection possibilities [c2cgeoportal#10293](https://github.com/camptocamp/c2cgeoportal/pull/10293)
+
 ##### 2.7.0.171
 
 - [Backport 2.7] Add more logs to be able to debug the capabilities filter [c2cgeoportal#10289](https://github.com/camptocamp/c2cgeoportal/pull/10289)
