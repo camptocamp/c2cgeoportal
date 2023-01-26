@@ -9,16 +9,16 @@
   },
   "dependencies": {
     "@snyk/protect": "1.1080.0",
-    "@typescript-eslint/eslint-plugin": "5.48.0",
-    "@typescript-eslint/parser": "5.48.0",
+    "@typescript-eslint/eslint-plugin": "5.48.2",
+    "@typescript-eslint/parser": "5.48.2",
     "angular-gettext-tools": "2.5.3",
     "commander": "9.4.1",
     "eslint": "8.31.0",
-    "ngeo": "2.8.0-latest.20221216T090517Z.b605d30ef",
+    "ngeo": "2.8.0-latest.20230126T131934Z.34dbf16df",
     "puppeteer": "19.4.1",
     "url-parse": "1.5.10"
   },
   "devDependencies": {
-    "@babel/plugin-transform-typescript": "7.20.7"
+    "@babel/plugin-transform-typescript": "7.20.13"
   }
 }

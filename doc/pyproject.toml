@@ -6,9 +6,9 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
-alabaster = "0.7.12" # theme
+alabaster = "0.7.13" # theme
 Pygments = "2.14.0"
-Sphinx = "6.0.0"
+Sphinx = "6.0.1"
 sphinx-prompt = "1.5.0"
 sphinx-jsonschema = "1.19.1"
 sphinx-argparse = "0.4.0"
