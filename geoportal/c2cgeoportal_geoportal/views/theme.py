@@ -1103,8 +1103,12 @@ class Theme:
 
                 attributes = None
                 namespace = None
-                if ogc_server.wfs_support:
-                    assert url_internal_wfs
+                if ogc_server.wfs_support and not url_internal_wfs:
+                    all_errors.add(
+                        f"The OGC server '{ogc_server.name}' is configured to support WFS "
+                        "but no internal WFS URL is found."
+                    )
+                if ogc_server.wfs_support and url_internal_wfs:
                     attributes, namespace, errors = await self._get_features_attributes(
                         url_internal_wfs, ogc_server.name
                     )
