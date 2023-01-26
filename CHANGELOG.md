@@ -1,3 +1,7 @@
+##### 2.7.0.173
+
+- Get a real error instead of an assert [c2cgeoportal#10292](https://github.com/camptocamp/c2cgeoportal/pull/10292)
+
 ##### 2.7.0.172
 
 - [Backport 2.7] Be able to use all Azure connection possibilities [c2cgeoportal#10293](https://github.com/camptocamp/c2cgeoportal/pull/10293)
