@@ -375,6 +375,7 @@ gmfDisplayQueryWindowOptions
 
 Properties:
  * ``collapsed`` (boolean, optional)
+ * ``displayNullAttributes`` (boolean, optional)
  * ``featuresStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`)
  * ``selectedFeatureStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`)
 
