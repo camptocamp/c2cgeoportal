@@ -84,7 +84,7 @@ upgrade_version = full
 major = major_version
 
 if main_branch == "master":
-    upgrade_version = "latest"
+    upgrade_version = "master"
 
 if args.major:
     print(major)

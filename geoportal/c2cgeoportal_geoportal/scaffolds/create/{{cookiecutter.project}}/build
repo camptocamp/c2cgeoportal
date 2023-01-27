@@ -58,7 +58,7 @@ def main() -> None:
         match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9a-z]+\.[0-9]+$", args.upgrade)
         if match is not None:
             major_version = match.group(1)
-        full_version = args.upgrade if args.upgrade != "master" else "latest"
+        full_version = args.upgrade
         with open("upgrade", "w", encoding="utf-8") as f:
             with urllib.request.urlopen(  # nosec
                 "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{major_version}/scripts/upgrade".format(

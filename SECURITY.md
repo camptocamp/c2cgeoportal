@@ -9,3 +9,4 @@
 | 2.5     | Best effort     |
 | 2.6     | 06/01/2023      |
 | 2.7     | 23/06/2025      |
+| master  | Best effort     |
