@@ -100,12 +100,12 @@ if main_branch != "master":
 print("full: {full}".format(full=full))
 print("major: {major}".format(major=major))
 print("minor: {minor}".format(minor=minor))
+print("master_version: {master_version}".format(master_version=master_version))
 print("upgrade_version: {upgrade_version}".format(upgrade_version=upgrade_version))
 if args.github:
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
         output_file.write("full={full}\n".format(full=full))
         output_file.write("major={major}\n".format(major=major))
-        output_file.write("minor={minor}\n".format(minor=minor))
         output_file.write("minor={minor}\n".format(minor=minor))
         output_file.write("master_version={master_version}\n".format(master_version=master_version))
         output_file.write("upgrade_version={upgrade_version}\n".format(upgrade_version=upgrade_version))

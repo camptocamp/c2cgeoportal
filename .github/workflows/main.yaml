@@ -24,7 +24,7 @@ jobs:
   main:
     runs-on: ubuntu-20.04
     name: Continuous integration
-    timeout-minutes: 105
+    timeout-minutes: 135
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
@@ -205,7 +205,7 @@ jobs:
       - name: Publish version branch
         run: |
           c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
-          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.master_version }}
+          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.master_version }}
           c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
