@@ -94,7 +94,7 @@ if args.full:
     sys.exit(0)
 
 master_version = major_version
-if main_branch != "master":
+if main_branch == "master":
     master_version = "master"
 
 print("full: {full}".format(full=full))
