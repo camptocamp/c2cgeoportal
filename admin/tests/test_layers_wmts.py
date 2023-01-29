@@ -265,8 +265,16 @@ class TestLayerWMTS(AbstractViewsTests):
         )
 
     def test_convert_without_wms_defaults(self, test_app, layer_wmts_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import LayerWMS
+        from c2cgeoportal_commons.models.main import LayerWMS, Log, LogAction
 
         dbsession.delete(LayerWMS.get_default(dbsession))
         layer = layer_wmts_test_data["layers"][3]
         test_app.post(f"/admin/layers_wmts/{layer.id}/convert_to_wms", status=200)
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.CONVERT_TO_WMTS
+        assert log.element_type == "layer_wmts"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"

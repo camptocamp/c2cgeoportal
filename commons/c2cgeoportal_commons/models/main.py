@@ -1754,6 +1754,8 @@ class LogAction(enum.Enum):
     UPDATE = enum.auto()
     DELETE = enum.auto()
     SYNCHRONIZE = enum.auto()
+    CONVERT_TO_WMTS = enum.auto()
+    CONVERT_TO_WMS = enum.auto()
 
 
 class AbstractLog(AbstractConcreteBase, Base):  # type: ignore

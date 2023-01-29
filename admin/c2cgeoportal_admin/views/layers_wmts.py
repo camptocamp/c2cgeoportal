@@ -44,7 +44,7 @@ from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
-from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, OGCServer, TreeItem
+from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, LogAction, OGCServer, TreeItem
 
 _list_field = partial(ListField, LayerWMTS)
 
@@ -164,6 +164,8 @@ class LayerWmtsViews(DimensionLayerViews):
 
         dbsession.flush()
         mark_changed(dbsession)
+
+        self._create_log(LogAction.CONVERT_TO_WMTS, src)
 
         return {
             "success": True,
