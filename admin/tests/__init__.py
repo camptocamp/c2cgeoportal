@@ -118,7 +118,8 @@ class AbstractViewsTests:
         )
         actions = resp.html.select_one('th[data-field="actions"]')
         assert "false" == actions.attrs["data-sortable"]
-        assert 1 == len(list(filter(lambda x: next(x.stripped_strings) == new, resp.html.findAll("a"))))
+        if new is not False:
+            assert 1 == len(list(filter(lambda x: next(x.stripped_strings) == new, resp.html.findAll("a"))))
 
     def check_search(self, test_app, search="", offset=0, limit=10, sort="", order="", total=None):
         json = test_app.post(

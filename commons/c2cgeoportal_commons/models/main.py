@@ -1809,6 +1809,7 @@ class AbstractLog(AbstractConcreteBase, Base):
         },
     )
 
+
 class Log(AbstractLog):  # type: ignore
     __tablename__ = "log"
     __table_args__ = {"schema": _schema}

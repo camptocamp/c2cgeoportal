@@ -31,6 +31,7 @@ import sqlalchemy
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from pyramid.view import view_config, view_defaults
 
+from c2cgeoportal_commons.models import _
 from c2cgeoportal_commons.models.main import AbstractLog
 
 _list_field = partial(ListField, AbstractLog)
@@ -40,12 +41,15 @@ _list_field = partial(ListField, AbstractLog)
 class LogViews(AbstractViews):  # type: ignore
     """The theme administration view."""
 
+    # We pass labels explicitly because actually we are not able to get info
+    # from InstrumentedAttribute created from AbstractConcreteBase.
     _list_fields = [
-        _list_field("date"),
-        _list_field("action", renderer=lambda log: log.action.name),
-        _list_field("element_type"),
-        _list_field("element_id"),
-        _list_field("username"),
+        _list_field("id"),
+        _list_field("date", label=_("Date")),
+        _list_field("action", label=_("Action"), renderer=lambda log: log.action.name),
+        _list_field("element_type", label=_("Element type")),
+        _list_field("element_id", label=_("Element identifier")),
+        _list_field("username", label=_("Username")),
     ]
 
     _id_field = "id"
