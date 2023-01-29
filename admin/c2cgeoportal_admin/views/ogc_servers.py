@@ -31,7 +31,6 @@ import threading
 from functools import partial
 from typing import Any, Dict, List, Union, cast
 
-import pytz
 import requests
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField, UserMessage

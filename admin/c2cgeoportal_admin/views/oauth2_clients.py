@@ -79,11 +79,11 @@ class OAuth2ClientViews(LoggedViews):
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
     )
     def save(self) -> Dict[str, Any]:
-        return super().save()  # type: ignore
+        return super().save()
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
     def delete(self) -> Dict[str, Any]:
-        return super().delete()  # type: ignore
+        return super().delete()
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
