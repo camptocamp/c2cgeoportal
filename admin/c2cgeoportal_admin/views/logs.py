@@ -27,7 +27,6 @@
 
 from functools import partial
 
-import sqlalchemy
 from c2cgeoform.views.abstract_views import AbstractViews, ListField
 from pyramid.view import view_config, view_defaults
 

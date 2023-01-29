@@ -1756,7 +1756,7 @@ class LogAction(enum.Enum):
     SYNCHRONIZE = enum.auto()
 
 
-class AbstractLog(AbstractConcreteBase, Base):
+class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
     """The abstract log table representation."""
 
     strict_attrs = True
@@ -1822,7 +1822,7 @@ class AbstractLog(AbstractConcreteBase, Base):
     )
 
 
-class Log(AbstractLog):  # type: ignore
+class Log(AbstractLog):
     """The main log table representation."""
 
     __tablename__ = "log"

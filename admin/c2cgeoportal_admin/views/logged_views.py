@@ -61,9 +61,9 @@ class LoggedViews(AbstractViews):  # type: ignore
 
         self._create_log(LogAction.DELETE, obj)
 
-        return response
+        return response  # type: ignore
 
-    def _create_log(self, action: LogAction, obj: Base):
+    def _create_log(self, action: LogAction, obj: Base) -> None:
         log = self._log_model(
             date=datetime.datetime.now(pytz.utc),
             action=action,

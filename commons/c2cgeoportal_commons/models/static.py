@@ -41,11 +41,11 @@ from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import HSTORE
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import backref, relationship
-from sqlalchemy.types import Boolean, DateTime, Enum, Integer, String, Unicode
+from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
 
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import Base, _
-from c2cgeoportal_commons.models.main import Role, AbstractLog, LogAction
+from c2cgeoportal_commons.models.main import AbstractLog, Role
 
 try:
     from c2cgeoform.ext.deform_ext import RelationSelect2Widget
@@ -429,7 +429,7 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
     expire_at = Column(DateTime(timezone=True))  # in 10 minutes
 
 
-class Log(AbstractLog):  # type: ignore
+class Log(AbstractLog):
     """The static log table representation."""
 
     __tablename__ = "log"

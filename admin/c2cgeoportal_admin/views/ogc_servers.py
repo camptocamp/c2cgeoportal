@@ -26,7 +26,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
 import logging
 import threading
 from functools import partial
@@ -46,7 +45,7 @@ from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import cache_invalidate_cb
-from c2cgeoportal_commons.models.main import  Log, LogAction, OGCServer
+from c2cgeoportal_commons.models.main import LogAction, OGCServer
 
 _list_field = partial(ListField, OGCServer)
 
@@ -57,7 +56,7 @@ LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
-class OGCServerViews(LoggedViews):  # type: ignore
+class OGCServerViews(LoggedViews):
     """The OGC server administration view."""
 
     _list_fields = [

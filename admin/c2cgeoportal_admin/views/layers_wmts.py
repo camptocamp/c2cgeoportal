@@ -122,7 +122,7 @@ class LayerWmtsViews(DimensionLayerViews):
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
     def delete(self) -> Dict[str, Any]:
-        return super().delete()  # type: ignore
+        return super().delete()
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
