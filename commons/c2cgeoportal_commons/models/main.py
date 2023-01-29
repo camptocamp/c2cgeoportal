@@ -1757,6 +1757,8 @@ class LogAction(enum.Enum):
 
 
 class AbstractLog(AbstractConcreteBase, Base):
+    """The abstract log table representation."""
+
     strict_attrs = True
     __colanderalchemy_config__ = {
         "title": _("Log"),
@@ -1812,6 +1814,8 @@ class AbstractLog(AbstractConcreteBase, Base):
 
 
 class Log(AbstractLog):  # type: ignore
+    """The main log table representation."""
+
     __tablename__ = "log"
     __table_args__ = {"schema": _schema}
     __mapper_args__ = {

@@ -430,7 +430,7 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
 
 
 class Log(AbstractLog):  # type: ignore
-    """The log table representation."""
+    """The static log table representation."""
 
     __tablename__ = "log"
     __table_args__ = {"schema": _schema}
