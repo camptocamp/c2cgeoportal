@@ -153,6 +153,8 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert form["public"].checked
 
     def test_edit(self, test_app, layer_wms_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         layer = layer_wms_test_data["layers"][0]
 
         form = self.get_item(test_app, layer.id).form
@@ -211,8 +213,16 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in layer.interfaces}
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "layer_wms"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"
+
     def test_submit_new(self, dbsession, test_app, layer_wms_test_data):
-        from c2cgeoportal_commons.models.main import LayerWMS
+        from c2cgeoportal_commons.models.main import LayerWMS, Log, LogAction
 
         resp = test_app.post(
             "/admin/layers_wms/new",
@@ -235,6 +245,14 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert str(layer.id) == re.match(
             r"http://localhost/admin/layers_wms/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "layer_wms"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"
 
     def test_duplicate(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMS
@@ -370,17 +388,25 @@ class TestLayerWMSViews(AbstractViewsTests):
         # assert str(layer.id) == re.match('http://localhost/admin/layers_wms/(.*)', resp.location).group(1)
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Layer, LayerWMS, TreeItem
+        from c2cgeoportal_commons.models.main import Layer, LayerWMS, Log, LogAction, TreeItem
 
-        layer_id = dbsession.query(LayerWMS.id).first().id
+        layer = dbsession.query(LayerWMS).first()
 
-        test_app.delete(f"/admin/layers_wms/{layer_id}", status=200)
+        test_app.delete(f"/admin/layers_wms/{layer.id}", status=200)
 
-        assert dbsession.query(LayerWMS).get(layer_id) is None
-        assert dbsession.query(Layer).get(layer_id) is None
-        assert dbsession.query(TreeItem).get(layer_id) is None
+        assert dbsession.query(LayerWMS).get(layer.id) is None
+        assert dbsession.query(Layer).get(layer.id) is None
+        assert dbsession.query(TreeItem).get(layer.id) is None
 
-    def test_submit_new_no_layer_name(self, test_app, layer_wms_test_data):
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "layer_wms"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"
+
+    def test_submit_new_no_layer_name(self, test_app, layer_wms_test_data, dbsession):
         resp = test_app.post(
             "/admin/layers_wms/new",
             {

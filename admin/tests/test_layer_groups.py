@@ -93,6 +93,8 @@ class TestLayersGroups(TestTreeGroup):
         self.check_search(test_app, "copyable", total=8)
 
     def test_edit(self, test_app, layer_groups_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         group = layer_groups_test_data["groups"][1]
 
         form = self.get_item(test_app, group.id).form
@@ -133,6 +135,14 @@ class TestLayersGroups(TestTreeGroup):
             else:
                 assert str(value or "") == str(getattr(group, key) or "")
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "layergroup"
+        assert log.element_id == group.id
+        assert log.element_name == group.name
+        assert log.username == "test_user"
+
     def test_post_new_with_children_invalid(self, test_app, layer_groups_test_data):
         """
         Check there is no rendering error when validation fails.
@@ -158,6 +168,8 @@ class TestLayersGroups(TestTreeGroup):
         assert "Required" == resp.html.select_one(".item-name .help-block").getText().strip()
 
     def test_post_new_with_children_success(self, test_app, dbsession, layer_groups_test_data):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
             f"{self._prefix}/new",
@@ -200,6 +212,14 @@ class TestLayersGroups(TestTreeGroup):
         assert [groups[3].id, groups[4].id, groups[5].id] == [
             rel.treeitem_id for rel in group.children_relation
         ]
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "layergroup"
+        assert log.element_id == group.id
+        assert log.element_name == group.name
+        assert log.username == "test_user"
 
     def test_post_with_ancestor(self, layer_groups_test_data, test_app):
         """
@@ -273,34 +293,42 @@ class TestLayersGroups(TestTreeGroup):
         self._check_submission_problem(resp, f"{group.name} is already used.")
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
-        from c2cgeoportal_commons.models.main import LayerGroup, LayergroupTreeitem, TreeGroup, TreeItem
+        from c2cgeoportal_commons.models.main import LayerGroup, LayergroupTreeitem, Log, LogAction, TreeGroup, TreeItem
 
-        group_id = layer_groups_test_data["groups"][9].id
+        group = layer_groups_test_data["groups"][9]
 
         assert (
             3
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group_id).count()
+            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group.id).count()
         )
 
         assert (
             1
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group_id).count()
+            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group.id).count()
         )
 
-        test_app.delete(f"/admin/layer_groups/{group_id}", status=200)
+        test_app.delete(f"/admin/layer_groups/{group.id}", status=200)
 
         dbsession.expire_all()
 
-        assert dbsession.query(LayerGroup).get(group_id) is None
-        assert dbsession.query(TreeGroup).get(group_id) is None
-        assert dbsession.query(TreeItem).get(group_id) is None
+        assert dbsession.query(LayerGroup).get(group.id) is None
+        assert dbsession.query(TreeGroup).get(group.id) is None
+        assert dbsession.query(TreeItem).get(group.id) is None
 
         assert (
             0
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group_id).count()
+            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group.id).count()
         )
 
         assert (
             0
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group_id).count()
+            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group.id).count()
         )
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "layergroup"
+        assert log.element_id == group.id
+        assert log.element_name == group.name
+        assert log.username == "test_user"

@@ -30,10 +30,11 @@ from functools import partial
 from typing import Any, Dict
 
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from pyramid.view import view_config, view_defaults
 
-from c2cgeoportal_commons.models.static import OAuth2Client
+from c2cgeoportal_admin.views.logged_views import LoggedViews
+from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
 _list_field = partial(ListField, OAuth2Client)
 
@@ -42,7 +43,7 @@ base_schema.add_unique_validator(OAuth2Client.client_id, OAuth2Client.id)
 
 
 @view_defaults(match_param="table=oauth2_clients")
-class OAuth2ClientViews(AbstractViews):  # type: ignore
+class OAuth2ClientViews(LoggedViews):
     """The oAuth2 client administration view."""
 
     _list_fields = [
@@ -54,6 +55,8 @@ class OAuth2ClientViews(AbstractViews):  # type: ignore
     _id_field = "id"
     _model = OAuth2Client
     _base_schema = base_schema
+    _log_model = Log
+    _name_field = "client_id"
 
     def _base_query(self):
         return self._request.dbsession.query(OAuth2Client)

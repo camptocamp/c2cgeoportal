@@ -81,7 +81,7 @@ class TestInterface(AbstractViewsTests):
         self.check_search(test_app, "interface_0", total=1)
 
     def test_submit_new(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.main import Interface
+        from c2cgeoportal_commons.models.main import Interface, Log, LogAction
 
         resp = test_app.post(
             "/admin/interfaces/new", {"name": "new_name", "description": "new description"}, status=302
@@ -93,8 +93,16 @@ class TestInterface(AbstractViewsTests):
         ).group(1)
         assert interface.name == "new_name"
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "interface"
+        assert log.element_id == interface.id
+        assert log.element_name == interface.name
+        assert log.username == "test_user"
+
     def test_edit(self, test_app, interface_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import Interface
+        from c2cgeoportal_commons.models.main import Interface, Log, LogAction
 
         interface = interface_test_data["interfaces"][0]
         descriptions = "{}, {}".format(
@@ -109,12 +117,28 @@ class TestInterface(AbstractViewsTests):
         assert form.submit().status_int == 302
         assert len(dbsession.query(Interface).filter(Interface.description == descriptions).all()) == 1
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "interface"
+        assert log.element_id == interface.id
+        assert log.element_name == interface.name
+        assert log.username == "test_user"
+
     def test_delete(self, test_app, interface_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import Interface
+        from c2cgeoportal_commons.models.main import Interface, Log, LogAction
 
         interface = interface_test_data["interfaces"][0]
         test_app.delete(f"/admin/interfaces/{interface.id}", status=200)
         assert len(dbsession.query(Interface).filter(Interface.id == interface.id).all()) == 0
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "interface"
+        assert log.element_id == interface.id
+        assert log.element_name == interface.name
+        assert log.username == "test_user"
 
     def test_duplicate(self, interface_test_data, test_app):
         interface = interface_test_data["interfaces"][3]

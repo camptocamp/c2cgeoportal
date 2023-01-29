@@ -157,6 +157,8 @@ class TestTheme(TestTreeGroup):
         assert form11["public"].checked
 
     def test_edit(self, test_app, theme_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         theme = theme_test_data["themes"][0]
 
         resp = test_app.get(f"/admin/themes/{theme.id}", status=200)
@@ -231,6 +233,14 @@ class TestTheme(TestTreeGroup):
         assert {functionalities[2].id} == {functionality.id for functionality in theme.functionalities}
         assert 0 == len(theme.restricted_roles)
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "theme"
+        assert log.element_id == theme.id
+        assert log.element_name == theme.name
+        assert log.username == "test_user"
+
     def test_post_new_with_children_invalid(self, test_app, theme_test_data):
         """
         Check there is no rendering error when validation fails.
@@ -257,6 +267,8 @@ class TestTheme(TestTreeGroup):
         self._check_submission_problem(resp, "Required")
 
     def test_post_new_with_children_success(self, test_app, dbsession, theme_test_data):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         groups = theme_test_data["groups"]
         resp = test_app.post(
             f"{self._prefix}/new",
@@ -300,6 +312,14 @@ class TestTheme(TestTreeGroup):
         assert [groups[1].id, groups[3].id, groups[4].id] == [
             rel.treeitem_id for rel in theme.children_relation
         ]
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "theme"
+        assert log.element_id == theme.id
+        assert log.element_name == theme.name
+        assert log.username == "test_user"
 
     def test_post_new_with_child_layer(self, theme_test_data, test_app):
         """
@@ -394,11 +414,19 @@ class TestTheme(TestTreeGroup):
         assert duplicated.children_relation[0].treeitem.id == theme.children_relation[0].treeitem.id
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Theme
+        from c2cgeoportal_commons.models.main import Log, LogAction, Theme
 
-        theme_id = dbsession.query(Theme.id).first().id
-        test_app.delete(f"/admin/themes/{theme_id}", status=200)
-        assert dbsession.query(Theme).get(theme_id) is None
+        theme = dbsession.query(Theme).first()
+        test_app.delete(f"/admin/themes/{theme.id}", status=200)
+        assert dbsession.query(Theme).get(theme.id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "theme"
+        assert log.element_id == theme.id
+        assert log.element_name == theme.name
+        assert log.username == "test_user"
 
     def test_unicity_validator(self, theme_test_data, test_app):
         theme = theme_test_data["themes"][1]

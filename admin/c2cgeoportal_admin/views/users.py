@@ -40,7 +40,7 @@ from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models.main import Role
-from c2cgeoportal_commons.models.static import User, Log
+from c2cgeoportal_commons.models.static import Log, User
 
 _list_field = partial(ListField, User)
 

@@ -30,13 +30,14 @@ from functools import partial
 
 import colander
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 
@@ -87,7 +88,7 @@ base_schema.add(
 
 
 @view_defaults(match_param="table=restriction_areas")
-class RestrictionAreaViews(AbstractViews):  # type: ignore
+class RestrictionAreaViews(LoggedViews):
     """The restriction area administration view."""
 
     _list_fields = [

@@ -29,9 +29,10 @@
 from functools import partial
 
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from pyramid.view import view_config, view_defaults
 
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import Interface
 
 _list_field = partial(ListField, Interface)
@@ -40,7 +41,7 @@ base_schema = GeoFormSchemaNode(Interface)
 
 
 @view_defaults(match_param="table=interfaces")
-class InterfacesViews(AbstractViews):  # type: ignore
+class InterfacesViews(LoggedViews):
     """The interface administration view."""
 
     _list_fields = [

@@ -89,7 +89,8 @@ class TestUser(AbstractViewsTests):
         self.check_grid_headers(resp, expected, new="Nouveau")
 
     def test_view_edit(self, test_app, users_test_data, dbsession):
-        from c2cgeoportal_commons.models.static import Log, LogAction
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log
 
         user = users_test_data["users"][9]
         roles = users_test_data["roles"]
@@ -132,7 +133,8 @@ class TestUser(AbstractViewsTests):
         assert log.username == "test_user"
 
     def test_delete(self, test_app, users_test_data, dbsession):
-        from c2cgeoportal_commons.models.static import Log, LogAction, User, user_role
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log, User, user_role
 
         user = users_test_data["users"][9]
         deleted_id = user.id
@@ -250,10 +252,12 @@ class TestUser(AbstractViewsTests):
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
     @pytest.mark.usefixtures("test_app")
     def test_submit_new(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data):
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log, User
+
         sender_mock = MagicMock()
         smtp_mock.return_value = sender_mock
         pw_gen_mock.return_value = "basile"
-        from c2cgeoportal_commons.models.static import Log, LogAction, User
 
         roles = users_test_data["roles"]
 
