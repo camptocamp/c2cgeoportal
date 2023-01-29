@@ -30,6 +30,9 @@ import pytz
 from typing import Any, Dict, Union
 
 from c2cgeoform.views.abstract_views import AbstractViews
+from pyramid.httpexceptions import HTTPFound
+
+from c2cgeoportal_commons.models import Base
 from c2cgeoportal_commons.models.main import Log, LogAction
 from pyramid.httpexceptions import HTTPFound
 
@@ -38,32 +41,35 @@ class LoggedViews(AbstractViews):  # type: ignore
     """Extension of AbstractViews which log actions in a table."""
 
     _log_model = Log  # main.Log or static.Log
+    _name_field = "name"
 
     def save(self) -> Union[HTTPFound, Dict[str, Any]]:
         response = super().save()
 
         if isinstance(response, HTTPFound):
-            log = self._log_model(
-                date=datetime.datetime.now(pytz.utc),
+            self._create_log(
                 action=LogAction.INSERT if self._is_new() else LogAction.UPDATE,
-                element_type=self._model.__tablename__,
-                element_id=self._obj.id,
-                username=self._request.user.username,
+                obj=self._obj,
             )
-            self._request.dbsession.add(log)
 
         return response
 
     def delete(self) -> Dict[str, Any]:
+        obj = self._get_object()
+
         response = super().delete()
 
+        self._create_log(LogAction.DELETE, obj)
+
+        return response
+
+    def _create_log(self, action: LogAction, obj: Base):
         log = self._log_model(
             date=datetime.datetime.now(pytz.utc),
-            action=LogAction.DELETE,
+            action=action,
             element_type=self._model.__tablename__,
-            element_id=self._request.matchdict.get('id'),
+            element_id=getattr(obj, self._id_field),
+            element_name=getattr(obj, self._name_field),
             username=self._request.user.username,
         )
         self._request.dbsession.add(log)
-
-        return response

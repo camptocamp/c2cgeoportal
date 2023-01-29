@@ -49,14 +49,12 @@ class LogViews(AbstractViews):  # type: ignore
         _list_field("action", label=_("Action"), renderer=lambda log: log.action.name),
         _list_field("element_type", label=_("Element type")),
         _list_field("element_id", label=_("Element identifier")),
+        _list_field("element_name", label=_("Element name")),
         _list_field("username", label=_("Username")),
     ]
 
     _id_field = "id"
     _model = AbstractLog
-
-    def _base_query(self) -> sqlalchemy.orm.query.Query:
-        return super()._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
     def index(self):

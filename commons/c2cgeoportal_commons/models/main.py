@@ -1802,6 +1802,15 @@ class AbstractLog(AbstractConcreteBase, Base):
             }
         },
     )
+    element_name = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Element name"),
+            }
+        },
+    )
     username = Column(
         Unicode,
         nullable=False,

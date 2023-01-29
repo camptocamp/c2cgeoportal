@@ -216,14 +216,7 @@ class OGCServerViews(LoggedViews):  # type: ignore
             elif "synchronize" in self._request.params:
                 synchronizer.synchronize()
 
-                log = self._log_model(
-                    date=datetime.datetime.now(pytz.utc),
-                    action=LogAction.SYNCHRONIZE,
-                    element_type=OGCServer.__tablename__,
-                    element_id=obj.id,
-                    username=self._request.user.username,
-                )
-                self._request.dbsession.add(log)
+                self._create_log(LogAction.SYNCHRONIZE, obj)
 
             return {
                 "ogcserver": obj,

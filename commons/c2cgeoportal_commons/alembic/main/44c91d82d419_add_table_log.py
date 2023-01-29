@@ -52,16 +52,12 @@ def upgrade() -> None:
         'log',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('date', sa.DateTime(timezone=True), nullable=False),
-        # sa.Column(
-        #     'action',
-        #     sa.Enum('INSERT', 'UPDATE', 'DELETE', name='logaction', native_enum=False),
-        #     nullable=False,
-        # ),
-        sa.Column('action', sa.Unicode, nullable=False),
-        sa.Column('element_type', sa.String(length=50), nullable=False),
-        sa.Column('element_id', sa.Integer(), nullable=False),
-        sa.Column('username', sa.Unicode(), nullable=False),
-        sa.PrimaryKeyConstraint('id'),
+        sa.Column("action", sa.Unicode, nullable=False),
+        sa.Column("element_type", sa.String(length=50), nullable=False),
+        sa.Column("element_id", sa.Integer(), nullable=False),
+        sa.Column("element_name", sa.Unicode(), nullable=False),
+        sa.Column("username", sa.Unicode(), nullable=False),
+        sa.PrimaryKeyConstraint("id"),
         schema=schema,
     )
 

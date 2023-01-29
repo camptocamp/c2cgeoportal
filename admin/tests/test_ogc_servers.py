@@ -59,7 +59,7 @@ class TestOGCServer(AbstractViewsTests):
         self.check_search(test_app, "server_0", total=1)
 
     def test_submit_new(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.main import OGCServer
+        from c2cgeoportal_commons.models.main import Log, LogAction, OGCServer
 
         with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
             resp = test_app.post(
@@ -80,7 +80,17 @@ class TestOGCServer(AbstractViewsTests):
         ).group(1)
         assert ogc_server.name == "new_name"
 
-    def test_edit(self, test_app, ogc_server_test_data):
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "ogc_server"
+        assert log.element_id == ogc_server.id
+        assert log.element_name == ogc_server.name
+        assert log.username == "test_user"
+
+    def test_edit(self, test_app, ogc_server_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         ogc_server = ogc_server_test_data["ogc_servers"][0]
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}", status=200)
         form = resp.form
@@ -92,13 +102,28 @@ class TestOGCServer(AbstractViewsTests):
             assert form.submit().status_int == 302
         assert ogc_server.description == "new_description"
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "ogc_server"
+        assert log.element_id == ogc_server.id
+        assert log.element_name == ogc_server.name
+        assert log.username == "test_user"
+
     def test_delete(self, test_app, ogc_server_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import OGCServer
+        from c2cgeoportal_commons.models.main import Log, LogAction, OGCServer
 
         ogc_server = ogc_server_test_data["ogc_servers"][0]
-        deleted_id = ogc_server.id
-        test_app.delete(f"/admin/ogc_servers/{deleted_id}", status=200)
-        assert dbsession.query(OGCServer).get(deleted_id) is None
+        test_app.delete(f"/admin/ogc_servers/{ogc_server.id}", status=200)
+        assert dbsession.query(OGCServer).get(ogc_server.id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "ogc_server"
+        assert log.element_id == ogc_server.id
+        assert log.element_name == ogc_server.name
+        assert log.username == "test_user"
 
     def test_duplicate(self, ogc_server_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import OGCServer
@@ -160,6 +185,7 @@ class TestOGCServer(AbstractViewsTests):
         assert log.action == LogAction.SYNCHRONIZE
         assert log.element_type == "ogc_server"
         assert log.element_id == ogc_server.id
+        assert log.element_name == ogc_server.name
         assert log.username == "test_user"
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [

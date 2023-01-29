@@ -158,6 +158,7 @@ class TestRole(TestTreeGroup):
         assert log.action == LogAction.INSERT
         assert log.element_type == "role"
         assert log.element_id == role.id
+        assert log.element_name == role.name
         assert log.username == "test_user"
 
     def test_edit(self, dbsession, test_app, roles_test_data):
@@ -286,6 +287,7 @@ class TestRole(TestTreeGroup):
         assert log.action == LogAction.UPDATE
         assert log.element_type == "role"
         assert log.element_id == role.id
+        assert log.element_name == role.name
         assert log.username == "test_user"
 
     def test_duplicate(self, roles_test_data, test_app, dbsession):
@@ -314,15 +316,16 @@ class TestRole(TestTreeGroup):
     def test_delete(self, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Log, LogAction, Role
 
-        role_id = dbsession.query(Role.id).first().id
-        test_app.delete(f"/admin/roles/{role_id}", status=200)
-        assert dbsession.query(Role).get(role_id) is None
+        role = dbsession.query(Role).first()
+        test_app.delete(f"/admin/roles/{role.id}", status=200)
+        assert dbsession.query(Role).get(role.id) is None
 
         log = dbsession.query(Log).one()
         assert log.date != None
         assert log.action == LogAction.DELETE
         assert log.element_type == "role"
-        assert log.element_id == role_id
+        assert log.element_id == role.id
+        assert log.element_name == role.name
         assert log.username == "test_user"
 
     def test_unicity_validator(self, roles_test_data, test_app):

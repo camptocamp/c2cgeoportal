@@ -128,6 +128,7 @@ class TestUser(AbstractViewsTests):
         assert log.action == LogAction.UPDATE
         assert log.element_type == "user"
         assert log.element_id == user.id
+        assert log.element_name == user.username
         assert log.username == "test_user"
 
     def test_delete(self, test_app, users_test_data, dbsession):
@@ -144,6 +145,7 @@ class TestUser(AbstractViewsTests):
         assert log.action == LogAction.DELETE
         assert log.element_type == "user"
         assert log.element_id == user.id
+        assert log.element_name == user.username
         assert log.username == "test_user"
 
     @patch("c2cgeoportal_commons.lib.email_.smtplib.SMTP")
@@ -251,7 +253,7 @@ class TestUser(AbstractViewsTests):
         sender_mock = MagicMock()
         smtp_mock.return_value = sender_mock
         pw_gen_mock.return_value = "basile"
-        from c2cgeoportal_commons.models.static import User
+        from c2cgeoportal_commons.models.static import Log, LogAction, User
 
         roles = users_test_data["roles"]
 
@@ -289,6 +291,14 @@ class TestUser(AbstractViewsTests):
             decode=True
         ).decode("utf8")
         assert "valid@email.net" == parts[0].items()[3][1]
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "user"
+        assert log.element_id == user.id
+        assert log.element_name == user.username
+        assert log.username == "test_user"
 
     def test_invalid_email(self, test_app):
         resp = test_app.post(

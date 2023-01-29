@@ -78,6 +78,7 @@ class UserViews(LoggedViews):
     _model = User
     _base_schema = base_schema
     _log_model = Log
+    _name_field = "username"
 
     def _base_query(self):
         return (
