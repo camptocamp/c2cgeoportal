@@ -56,6 +56,7 @@ def upgrade() -> None:
         sa.Column("element_type", sa.String(length=50), nullable=False),
         sa.Column("element_id", sa.Integer(), nullable=False),
         sa.Column("element_name", sa.Unicode(), nullable=False),
+        sa.Column("element_url_table", sa.Unicode(), nullable=False),
         sa.Column("username", sa.Unicode(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
         schema=schema,

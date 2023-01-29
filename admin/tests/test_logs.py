@@ -27,6 +27,7 @@ def logs_test_data(dbsession, transact):
             element_type="role",
             element_id=i,
             element_name=f"role_{i}",
+            element_url_table="roles",
             username="testuser",
         )
         dbsession.add(log)
@@ -38,6 +39,7 @@ def logs_test_data(dbsession, transact):
             element_type="user",
             element_id=i,
             element_name=f"user_{i}",
+            element_url_table="users",
             username="testuser",
         )
         dbsession.add(log)
@@ -64,11 +66,11 @@ class TestLog(AbstractViewsTests):
             ("actions", "", "false"),
             ("id", "id", "true"),
             ("date", "Date"),
+            ("username", "Username"),
             ("action", "Action"),
             ("element_type", "Element type"),
             ("element_id", "Element identifier"),
             ("element_name", "Element name"),
-            ("username", "Username"),
         ]
         self.check_grid_headers(resp, expected, new=False)
 

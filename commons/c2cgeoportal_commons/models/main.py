@@ -1813,6 +1813,15 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
             }
         },
     )
+    element_url_table = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Table segment of the element URL"),
+            }
+        },
+    )
     username = Column(
         Unicode,
         nullable=False,

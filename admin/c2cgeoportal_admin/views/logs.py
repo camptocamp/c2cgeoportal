@@ -27,7 +27,7 @@
 
 from functools import partial
 
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_commons.models import _
@@ -45,11 +45,11 @@ class LogViews(AbstractViews):  # type: ignore
     _list_fields = [
         _list_field("id"),
         _list_field("date", label=_("Date")),
+        _list_field("username", label=_("Username")),
         _list_field("action", label=_("Action"), renderer=lambda log: log.action.name),
         _list_field("element_type", label=_("Element type")),
         _list_field("element_id", label=_("Element identifier")),
         _list_field("element_name", label=_("Element name")),
-        _list_field("username", label=_("Username")),
     ]
 
     _id_field = "id"
@@ -67,8 +67,22 @@ class LogViews(AbstractViews):  # type: ignore
         return []
 
     def _grid_item_actions(self, item):
+        element_url = self._request.route_url(
+            "c2cgeoform_item",
+            table=item.element_url_table,
+            id=item.element_id,
+        )
+
         return {
-            "dropdown": [],
+            "dblclick": element_url,
+            "dropdown": [
+                ItemAction(
+                    name="edit_element",
+                    label=_("Edit element"),
+                    icon="glyphicon glyphicon-pencil",
+                    url=element_url,
+                ).to_dict(self._request)
+            ],
         }
 
     def _item_actions(self, item, readonly=False):

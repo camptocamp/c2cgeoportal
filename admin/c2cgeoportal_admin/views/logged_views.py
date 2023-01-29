@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional, Union
 
 import pytz
 from c2cgeoform.views.abstract_views import AbstractViews
@@ -62,13 +62,19 @@ class LoggedViews(AbstractViews):  # type: ignore
 
         return response  # type: ignore
 
-    def _create_log(self, action: LogAction, obj: Base) -> None:
+    def _create_log(
+        self,
+        action: LogAction,
+        obj: Base,
+        element_url_table: Optional[str] = None,
+    ) -> None:
         log = self._log_model(
             date=datetime.datetime.now(pytz.utc),
             action=action,
             element_type=self._model.__tablename__,
             element_id=getattr(obj, self._id_field),
             element_name=getattr(obj, self._name_field),
+            element_url_table=element_url_table or self._request.matchdict.get("table", None),
             username=self._request.user.username,
         )
         self._request.dbsession.add(log)
