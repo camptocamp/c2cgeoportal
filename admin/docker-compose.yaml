@@ -25,3 +25,28 @@ services:
       - ./../commons/c2cgeoportal_commons:/opt/c2cgeoportal/commons/c2cgeoportal_commons
     ports:
       - 8888:8080
+
+  mapserver:
+    image: camptocamp/geomapfish-test-mapserver
+    user: www-data
+    environment:
+      - MS_MAPFILE=/etc/mapserver/mapserver.map
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=www-data
+      - PGPASSWORD=www-data
+      - PGDATABASE=geomapfish_tests
+      - 'MAPSERVER_DATA_SUBSELECT=SELECT ST_Collect(ra.area)
+        FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra,
+        main.layer_restrictionarea AS lra, main.treeitem AS la
+        WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id
+        AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
+      - 'MAPSERVER_DATA_NOAREA_SUBSELECT=SELECT rra.role_id
+        FROM main.restrictionarea AS ra, main.role_restrictionarea AS rra,
+        main.layer_restrictionarea AS lra, main.treeitem AS la
+        WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id
+        AND lra.layer_id = la.id AND la.name = '
+      - 'MAPSERVER_JOIN_TABLES=main.restrictionarea AS ra, main.role_restrictionarea AS rra,
+        main.layer_restrictionarea AS lra, main.treeitem AS la'
+      - 'MAPSERVER_JOIN_WHERE=rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND
+        lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '

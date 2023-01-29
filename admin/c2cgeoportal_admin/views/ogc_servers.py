@@ -26,12 +26,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import datetime
 import logging
 import threading
 from functools import partial
 from typing import Any, Dict, List, cast
 
 import requests
+import pytz
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField, UserMessage
 from deform.widget import FormWidget
@@ -41,9 +43,10 @@ from sqlalchemy import inspect
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import cache_invalidate_cb
-from c2cgeoportal_commons.models.main import OGCServer
+from c2cgeoportal_commons.models.main import  Log, LogAction, OGCServer
 
 _list_field = partial(ListField, OGCServer)
 
@@ -54,7 +57,7 @@ LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
-class OGCServerViews(AbstractViews):  # type: ignore
+class OGCServerViews(LoggedViews):  # type: ignore
     """The OGC server administration view."""
 
     _list_fields = [
@@ -202,12 +205,25 @@ class OGCServerViews(AbstractViews):  # type: ignore
                 force_ordering=force_ordering,
                 clean=clean,
             )
+
             if "check" in self._request.params:
                 synchronizer.check_layers()
+
             elif "dry-run" in self._request.params:
                 synchronizer.synchronize(dry_run=True)
+
             elif "synchronize" in self._request.params:
                 synchronizer.synchronize()
+
+                log = self._log_model(
+                    date=datetime.datetime.now(pytz.utc),
+                    action=LogAction.SYNCHRONIZE,
+                    element_type=OGCServer.__tablename__,
+                    element_id=obj.id,
+                    username=self._request.user.username,
+                )
+                self._request.dbsession.add(log)
+
             return {
                 "ogcserver": obj,
                 "success": True,

@@ -1753,6 +1753,7 @@ class LogAction(enum.Enum):
     INSERT = enum.auto()
     UPDATE = enum.auto()
     DELETE = enum.auto()
+    SYNCHRONIZE = enum.auto()
 
 
 class AbstractLog(AbstractConcreteBase, Base):

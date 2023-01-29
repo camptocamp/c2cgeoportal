@@ -125,7 +125,7 @@ class TestOGCServer(AbstractViewsTests):
         ogc_server.url = "config://mapserver"
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
 
-        resp = resp.forms["form-check"].submit("submit")
+        resp = resp.forms["form-check"].submit("check")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
             "OGC Server has been successfully synchronized."
@@ -136,18 +136,27 @@ class TestOGCServer(AbstractViewsTests):
         ogc_server.url = "config://mapserver"
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
 
-        resp = resp.forms["form-dry-run"].submit("submit")
+        resp = resp.forms["form-dry-run"].submit("dry-run")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
             "OGC Server has been successfully synchronized."
         ]
 
-    def test_synchronize_success(self, ogc_server_test_data, test_app):
+    def test_synchronize_success(self, ogc_server_test_data, test_app, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         ogc_server.url = "config://mapserver"
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
 
-        resp = resp.forms["form-synchronize"].submit("submit")
+        resp = resp.forms["form-synchronize"].submit("synchronize")
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.SYNCHRONIZE
+        assert log.element_type == "ogc_server"
+        assert log.element_id == ogc_server.id
+        assert log.username == "test_user"
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
             "OGC Server has been successfully synchronized."
@@ -158,7 +167,7 @@ class TestOGCServer(AbstractViewsTests):
         form["force-ordering"].checked = True
         form["clean"].checked = True
 
-        resp = form.submit("submit")
+        resp = form.submit("synchronize")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
             "OGC Server has been successfully synchronized."
