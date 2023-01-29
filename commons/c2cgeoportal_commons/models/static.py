@@ -27,7 +27,6 @@
 
 
 import crypt
-import enum
 import logging
 from datetime import datetime
 from hashlib import sha1

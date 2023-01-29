@@ -1,8 +1,6 @@
 # pylint: disable=no-self-use,unsubscriptable-object
 
 import datetime
-import json
-import re
 
 import pytest
 import pytz
@@ -16,7 +14,9 @@ from . import AbstractViewsTests
 def logs_test_data(dbsession, transact):
     del transact
 
-    from c2cgeoportal_commons.models.main import AbstractLog, Log as MainLog, LogAction
+    from c2cgeoportal_commons.models.main import AbstractLog
+    from c2cgeoportal_commons.models.main import Log as MainLog
+    from c2cgeoportal_commons.models.main import LogAction
     from c2cgeoportal_commons.models.static import Log as StaticLog
 
     logs = []
@@ -74,9 +74,7 @@ class TestLog(AbstractViewsTests):
 
     def test_grid_sort_on_element_type(self, test_app, logs_test_data):
         json = self.check_search(test_app, sort="element_type")
-        for i, log in enumerate(
-            sorted(logs_test_data["logs"], key=lambda log: (log.element_type, log.id))
-        ):
+        for i, log in enumerate(sorted(logs_test_data["logs"], key=lambda log: (log.element_type, log.id))):
             if i == 10:
                 break
             assert str(log.id) == json["rows"][i]["_id_"]

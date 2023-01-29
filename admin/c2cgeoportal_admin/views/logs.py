@@ -68,7 +68,7 @@ class LogViews(AbstractViews):  # type: ignore
 
     def _grid_item_actions(self, item):
         return {
-            'dropdown': [],
+            "dropdown": [],
         }
 
     def _item_actions(self, item, readonly=False):

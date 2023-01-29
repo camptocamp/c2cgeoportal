@@ -85,6 +85,7 @@ def main(_, **settings):
 
     # Add fake user as we do not have authentication from geoportal
     from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+
     config.add_request_method(
         lambda request: User(
             username="test_user",

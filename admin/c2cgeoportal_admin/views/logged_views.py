@@ -26,15 +26,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-import pytz
 from typing import Any, Dict, Union
 
+import pytz
 from c2cgeoform.views.abstract_views import AbstractViews
 from pyramid.httpexceptions import HTTPFound
 
 from c2cgeoportal_commons.models import Base
 from c2cgeoportal_commons.models.main import Log, LogAction
-from pyramid.httpexceptions import HTTPFound
 
 
 class LoggedViews(AbstractViews):  # type: ignore

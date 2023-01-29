@@ -61,11 +61,11 @@ def includeme(config):
         LayerVectorTiles,
         LayerWMS,
         LayerWMTS,
+        Log,
         OGCServer,
         RestrictionArea,
         Role,
         Theme,
-        Log,
     )
     from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
         OAuth2Client,

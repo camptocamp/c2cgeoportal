@@ -293,7 +293,14 @@ class TestLayersGroups(TestTreeGroup):
         self._check_submission_problem(resp, f"{group.name} is already used.")
 
     def test_delete(self, test_app, dbsession, layer_groups_test_data):
-        from c2cgeoportal_commons.models.main import LayerGroup, LayergroupTreeitem, Log, LogAction, TreeGroup, TreeItem
+        from c2cgeoportal_commons.models.main import (
+            LayerGroup,
+            LayergroupTreeitem,
+            Log,
+            LogAction,
+            TreeGroup,
+            TreeItem,
+        )
 
         group = layer_groups_test_data["groups"][9]
 

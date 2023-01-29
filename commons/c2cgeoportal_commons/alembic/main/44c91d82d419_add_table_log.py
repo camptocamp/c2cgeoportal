@@ -33,13 +33,13 @@ Revises: 04f05bfbb05e
 Create Date: 2023-01-14 08:38:54.640205
 """
 
+import sqlalchemy as sa
 from alembic import op
 from c2c.template.config import config
-import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision = '44c91d82d419'
-down_revision = '04f05bfbb05e'
+revision = "44c91d82d419"
+down_revision = "04f05bfbb05e"
 branch_labels = None
 depends_on = None
 
@@ -49,9 +49,9 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.create_table(
-        'log',
-        sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('date', sa.DateTime(timezone=True), nullable=False),
+        "log",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("date", sa.DateTime(timezone=True), nullable=False),
         sa.Column("action", sa.Unicode, nullable=False),
         sa.Column("element_type", sa.String(length=50), nullable=False),
         sa.Column("element_id", sa.Integer(), nullable=False),
@@ -66,4 +66,4 @@ def downgrade() -> None:
     """Downgrade."""
     schema = config["schema"]
 
-    op.drop_table('log', schema=schema)
+    op.drop_table("log", schema=schema)
