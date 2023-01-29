@@ -30,14 +30,14 @@ import datetime
 import logging
 import threading
 from functools import partial
-from typing import Any, Dict, List, cast
+from typing import Any, Dict, List, Union, cast
 
 import requests
 import pytz
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField, UserMessage
 from deform.widget import FormWidget
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid.view import view_config, view_defaults
 from sqlalchemy import inspect
 
@@ -152,9 +152,10 @@ class OGCServerViews(LoggedViews):  # type: ignore
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
     )
-    def save(self) -> Dict[str, Any]:
-        result: Dict[str, Any] = super().save()
-        self._update_cache(self._get_object())
+    def save(self) -> Union[HTTPFound, Dict[str, Any]]:
+        result: Union[HTTPFound, Dict[str, Any]] = super().save()
+        if isinstance(result, HTTPFound):
+            self._update_cache(self._obj)
         return result
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore

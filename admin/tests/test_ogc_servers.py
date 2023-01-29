@@ -1,6 +1,7 @@
 # pylint: disable=no-self-use
 
 import re
+from unittest.mock import patch
 
 import pytest
 
@@ -60,18 +61,19 @@ class TestOGCServer(AbstractViewsTests):
     def test_submit_new(self, dbsession, test_app):
         from c2cgeoportal_commons.models.main import OGCServer
 
-        resp = test_app.post(
-            "/admin/ogc_servers/new",
-            {
-                "name": "new_name",
-                "description": "new description",
-                "url": "www.randomurl.com",
-                "type": "mapserver",
-                "auth": "No auth",
-                "image_type": "image/png",
-            },
-            status=302,
-        )
+        with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
+            resp = test_app.post(
+                "/admin/ogc_servers/new",
+                {
+                    "name": "new_name",
+                    "description": "new description",
+                    "url": "www.randomurl.com",
+                    "type": "mapserver",
+                    "auth": "No auth",
+                    "image_type": "image/png",
+                },
+                status=302,
+            )
         ogc_server = dbsession.query(OGCServer).filter(OGCServer.name == "new_name").one()
         assert str(ogc_server.id) == re.match(
             r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok", resp.location
@@ -86,7 +88,8 @@ class TestOGCServer(AbstractViewsTests):
         assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
         assert ogc_server.name == form["name"].value
         form["description"] = "new_description"
-        assert form.submit().status_int == 302
+        with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
+            assert form.submit().status_int == 302
         assert ogc_server.description == "new_description"
 
     def test_delete(self, test_app, ogc_server_test_data, dbsession):
@@ -105,7 +108,8 @@ class TestOGCServer(AbstractViewsTests):
         form = resp.form
         assert "" == self.get_first_field_named(form, "id").value
         self.set_first_field_named(form, "name", "clone")
-        resp = form.submit("submit")
+        with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
+            resp = form.submit("submit")
         assert resp.status_int == 302
         server = dbsession.query(OGCServer).filter(OGCServer.name == "clone").one()
         assert str(server.id) == re.match(
