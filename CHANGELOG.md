@@ -1,3 +1,5 @@
+##### 2.6.0.173
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10300](https://github.com/camptocamp/c2cgeoportal/pull/10300)
 ##### 2.6.0.172
 * Add more logs to be able to debug the capabilities filter [c2cgeoportal#10287](https://github.com/camptocamp/c2cgeoportal/pull/10287)
 ##### 2.6.0.171
