@@ -1,3 +1,5 @@
+##### 2.5.0.233
+* Update all patch versions (2.5) (patch) [c2cgeoportal#10299](https://github.com/camptocamp/c2cgeoportal/pull/10299)
 ##### 2.5.0.231
 * Fix pull requests check workflow, use our CI token [c2cgeoportal#10265](https://github.com/camptocamp/c2cgeoportal/pull/10265)
 ##### 2.5.0.228
