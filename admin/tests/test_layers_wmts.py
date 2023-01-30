@@ -273,7 +273,7 @@ class TestLayerWMTS(AbstractViewsTests):
 
         log = dbsession.query(Log).one()
         assert log.date != None
-        assert log.action == LogAction.CONVERT_TO_WMTS
+        assert log.action == LogAction.CONVERT_TO_WMS
         assert log.element_type == "layer_wmts"
         assert log.element_id == layer.id
         assert log.element_name == layer.name

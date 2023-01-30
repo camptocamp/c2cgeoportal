@@ -165,7 +165,7 @@ class LayerWmtsViews(DimensionLayerViews):
         dbsession.flush()
         mark_changed(dbsession)
 
-        self._create_log(LogAction.CONVERT_TO_WMTS, src, element_url_table="layers_wms")
+        self._create_log(LogAction.CONVERT_TO_WMS, src, element_url_table="layers_wms")
 
         return {
             "success": True,
