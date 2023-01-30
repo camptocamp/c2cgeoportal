@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-alabaster = "==0.7.12" # theme
+alabaster = "==0.7.13" # theme
 Pygments = "==2.7.4"
 Sphinx = "==3.0.4"
 sphinx-prompt = "==1.1.0"
@@ -24,13 +24,13 @@ pytz = "==2019.3"
 requests = "==2.27.1"
 six = "==1.14.0"
 snowballstemmer = "==2.0.0"
-sphinxcontrib-applehelp = "==1.0.2"
+sphinxcontrib-applehelp = "==1.0.4"
 sphinxcontrib-devhelp = "==1.0.2"
 sphinxcontrib-htmlhelp = "==1.0.3"
 sphinxcontrib-jsmath = "==1.0.1"
 sphinxcontrib-qthelp = "==1.0.3"
 sphinxcontrib-serializinghtml = "==1.1.5"
-urllib3 = "==1.26.13"
+urllib3 = "==1.26.14"
 
 [requires]
 python_version = "3.8"
