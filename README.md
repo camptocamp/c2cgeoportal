@@ -4,6 +4,7 @@ c2cgeoportal is the server part of [GeoMapFish](https://geomapfish.org/),
 the client part is [ngeo](https://github.com/camptocamp/ngeo/).
 
 Read the [Documentation](https://camptocamp.github.io/c2cgeoportal/master/).
+test
 
 Docker images:
 [To build the project and more tools](https://hub.docker.com/r/camptocamp/geomapfish-tools),
