@@ -1,3 +1,7 @@
+##### 2.7.0.174
+
+- Pin poetry-plugin-export [c2cgeoportal#10305](https://github.com/camptocamp/c2cgeoportal/pull/10305)
+
 ##### 2.7.0.173
 
 - Get a real error instead of an assert [c2cgeoportal#10292](https://github.com/camptocamp/c2cgeoportal/pull/10292)
