@@ -5,9 +5,6 @@ on:
   schedule:
     - cron: '30 3 * * *'
 
-env:
-  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
-
 jobs:
   main:
     runs-on: ubuntu-20.04
@@ -34,18 +31,12 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
           ref: ${{ env.MAIN_BRANCH }}
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-        if: env.HAS_SECRETS != 'HAS_SECRETS'
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker transifex
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
