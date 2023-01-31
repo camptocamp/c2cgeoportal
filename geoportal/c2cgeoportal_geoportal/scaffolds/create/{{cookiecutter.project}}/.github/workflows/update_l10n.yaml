@@ -35,7 +35,7 @@ jobs:
           git config --global user.name CI
 
       - id: status
-        run: echo "status=$(git status --porcelain)" >> $GITHUB_OUTPUT
+        run: echo "status=$(git diff --exit-code --quiet && echo 'unchanged' || echo 'changed')" >> $GITHUB_OUTPUT
 
       - name: Push l10n branch and create pull request
         run: |
@@ -63,4 +63,4 @@ jobs:
           )
           # 422 is the return code when the pull request already exists
           assert response.status_code < 300 or response.status_code == 422, f'{response.status_code} - {response.text}'"
-        if: steps.status.outputs.status != ''
+        if: steps.status.outputs.status != 'unchanged'
