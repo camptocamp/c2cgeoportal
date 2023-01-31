@@ -1,3 +1,7 @@
+##### 2.7.0.175
+
+- Fix the status check [c2cgeoportal#10304](https://github.com/camptocamp/c2cgeoportal/pull/10304)
+
 ##### 2.7.0.174
 
 - Pin poetry-plugin-export [c2cgeoportal#10305](https://github.com/camptocamp/c2cgeoportal/pull/10305)
