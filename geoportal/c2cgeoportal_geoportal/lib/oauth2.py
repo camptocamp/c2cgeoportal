@@ -27,12 +27,13 @@
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import basicauth
 import oauthlib.common
 import oauthlib.oauth2
 import pyramid.threadlocal
+from pyramid.httpexceptions import HTTPBadRequest
 
 import c2cgeoportal_commons
 from c2cgeoportal_geoportal.lib.caching import get_region
@@ -225,30 +226,6 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         )
         LOG.debug("confirm_redirect_uri => %s", authorization_code is not None)
         return authorization_code is not None
-
-    def get_code_challenge_method(self, code: str, request: oauthlib.common.Request) -> None:
-        """
-        Is called during the "token" request processing.
-
-        When a ``code_verifier`` and a ``code_challenge`` has
-        been provided. See ``.get_code_challenge``. Must return ``plain`` or ``S256``. You can return a custom
-        value if you have implemented your own ``AuthorizationCodeGrant`` class.
-
-        Keyword Arguments:
-
-            code: Authorization code.
-            request: OAuthlib request.
-
-        Returns: code_challenge_method string
-
-        Method is used by:
-            - Authorization Code Grant - when PKCE is active
-        """
-        del code, request
-
-        LOG.debug("get_code_challenge_method")
-
-        raise NotImplementedError("Not implemented.")
 
     def get_default_redirect_uri(
         self,
@@ -519,7 +496,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         The 'code' argument is actually a dictionary, containing at least a
         'code' key with the actual authorization code:
 
-            {'code': 'sdf345jsdf0934f'}
+            {'code': '<secret>'}
 
         It may also have a 'state' key containing a nonce for the client, if it
         chose to send one.  That value should be saved and used in
@@ -533,6 +510,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         Method is used by:
             - Authorization Code Grant
+
+        To support PKCE, you MUST associate the code with:
+
+            Code Challenge (request.code_challenge) and
+            Code Challenge Method (request.code_challenge_method)
         """
         del args, kwargs
 
@@ -551,16 +533,28 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         )
 
         if authorization_code is not None:
-            authorization_code.code = code["code"]
             authorization_code.expire_at = datetime.now() + timedelta(minutes=self.authorization_expires_in)
-            authorization_code.redirect_uri = request.redirect_uri
         else:
             authorization_code = static.OAuth2AuthorizationCode()
             authorization_code.client_id = request.client.id
-            authorization_code.code = code["code"]
             authorization_code.user_id = user.id
             authorization_code.expire_at = datetime.now() + timedelta(minutes=self.authorization_expires_in)
-            authorization_code.redirect_uri = request.redirect_uri
+            authorization_code.state = code.get("state")
+
+        authorization_code.code = code["code"]
+        authorization_code.redirect_uri = request.redirect_uri
+
+        client = (
+            DBSession.query(static.OAuth2Client)
+            .filter(static.OAuth2Client.client_id == client_id)
+            .one_or_none()
+        )
+        if client and client.state_required and not code.get("state"):
+            raise HTTPBadRequest("Client is missing the state parameter.")
+
+        if client and client.pkce_required:
+            authorization_code.challenge = request.code_challenge
+            authorization_code.challenge_method = request.code_challenge_method
 
         DBSession.add(authorization_code)
 
@@ -623,19 +617,16 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .one_or_none()
         )
 
-        if bearer_token is not None:
-            bearer_token.access_token = token["access_token"]
-            bearer_token.refresh_token = token["refresh_token"]
-            bearer_token.expire_at = datetime.now() + timedelta(seconds=float(token["expires_in"]))
-        else:
+        if bearer_token is None:
             bearer_token = static.OAuth2BearerToken()
             bearer_token.client_id = request.client.id
             bearer_token.user_id = request.user.id
-            bearer_token.access_token = token["access_token"]
-            bearer_token.refresh_token = token["refresh_token"]
-            bearer_token.expire_at = datetime.now() + timedelta(seconds=float(token["expires_in"]))
-
             DBSession.add(bearer_token)
+
+        bearer_token.access_token = token["access_token"]
+        bearer_token.refresh_token = token["refresh_token"]
+        bearer_token.expire_at = datetime.now() + timedelta(seconds=float(token["expires_in"]))
+        bearer_token.state = token.get("state")
 
     def validate_bearer_token(
         self,
@@ -791,14 +782,22 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             DBSession.query(static.OAuth2AuthorizationCode)
             .join(static.OAuth2AuthorizationCode.client)
             .filter(static.OAuth2AuthorizationCode.code == code)
+            .filter(static.OAuth2AuthorizationCode.state == request.state)
             .filter(static.OAuth2Client.client_id == client_id)
             .filter(static.OAuth2AuthorizationCode.expire_at > datetime.now())
             .one_or_none()
         )
-        if authorization_code is not None:
-            request.user = authorization_code.user
-        LOG.debug("validate_code => %s", authorization_code is not None)
-        return authorization_code is not None
+        if authorization_code is None:
+            LOG.debug("validate_code => KO, no authorization_code found")
+            return False
+
+        if authorization_code.client.pkce_required:
+            request.code_challenge = authorization_code.challenge
+            request.code_challenge_method = authorization_code.challenge_method
+
+        request.user = authorization_code.user
+        LOG.debug("validate_code => OK")
+        return True
 
     def validate_grant_type(
         self,
@@ -1011,6 +1010,123 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("validate_user %s", username)
 
         raise NotImplementedError("Not implemented.")
+
+    def is_pkce_required(self, client_id: int, request: oauthlib.common.Request) -> bool:
+        """
+        Determine if current request requires PKCE.
+
+        Default, False. This is called for both “authorization” and “token” requests.
+
+        Override this method by return True to enable PKCE for everyone. You might want to enable it only
+        for public clients. Note that PKCE can also be used in addition of a client authentication.
+
+        OAuth 2.0 public clients utilizing the Authorization Code Grant are susceptible to
+        the authorization code interception attack. This specification describes the attack as well as
+        a technique to mitigate against the threat through the use of Proof Key for Code Exchange
+        (PKCE, pronounced “pixy”). See RFC7636.
+
+        Keyword Arguments:
+
+            client_id: Client identifier.
+            request (oauthlib.common.Request): OAuthlib request.
+
+
+        Method is used by:
+
+                Authorization Code Grant
+
+
+        """
+        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        client = (
+            DBSession.query(static.OAuth2Client)
+            .filter(static.OAuth2Client.client_id == client_id)
+            .one_or_none()
+        )
+
+        return client and client.pkce_required  # type: ignore
+
+    def get_code_challenge(self, code: str, request: oauthlib.common.Request) -> Optional[str]:
+        """
+        Is called for every “token” requests.
+
+        When the server issues the authorization code in the authorization response, it MUST associate the
+        code_challenge and code_challenge_method values with the authorization code so it can be
+        verified later.
+
+        Typically, the code_challenge and code_challenge_method values are stored in encrypted form in
+        the code itself but could alternatively be stored on the server associated with the code.
+        The server MUST NOT include the code_challenge value in client requests in a form that other
+        entities can extract.
+
+        Return the code_challenge associated to the code. If None is returned, code is considered to not
+        be associated to any challenges.
+
+        Keyword Arguments:
+
+            code: Authorization code.
+            request: OAuthlib request.
+
+        Return:
+
+            code_challenge string
+
+        Method is used by:
+
+                Authorization Code Grant - when PKCE is active
+        """
+        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        LOG.debug("get_code_challenge")
+
+        authorization_code = (
+            DBSession.query(static.OAuth2AuthorizationCode)
+            .filter(static.OAuth2AuthorizationCode.code == code)
+            .one_or_none()
+        )
+        if authorization_code:
+            return authorization_code.challenge  # type: ignore
+        LOG.debug("get_code_challenge authorization_code not found")
+        return None
+
+    def get_code_challenge_method(self, code: str, request: oauthlib.common.Request) -> Optional[str]:
+        """
+        Is called during the “token” request processing.
+
+        When a code_verifier and a code_challenge has been provided.
+
+        See .get_code_challenge.
+
+        Must return plain or S256. You can return a custom value if you have implemented your own
+        AuthorizationCodeGrant class.
+
+        Keyword Arguments:
+
+            code: Authorization code.
+            request: OAuthlib request.
+
+        Return type:
+
+            code_challenge_method string
+
+        Method is used by:
+
+                Authorization Code Grant - when PKCE is active
+        """
+        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        LOG.debug("get_code_challenge_method")
+
+        authorization_code = (
+            DBSession.query(static.OAuth2AuthorizationCode)
+            .filter(static.OAuth2AuthorizationCode.code == code)
+            .one_or_none()
+        )
+        if authorization_code:
+            return authorization_code.challenge_method  # type: ignore
+        LOG.debug("get_code_challenge_method authorization_code not found")
+        return None
 
 
 def get_oauth_client(settings: Dict[str, Any]) -> oauthlib.oauth2.WebApplicationServer:

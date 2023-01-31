@@ -50,6 +50,7 @@ class TestLoginView(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None  # pylint: disable=invalid-name
         self._tables = []
+        cleanup_db()
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import OAuth2Client, User
@@ -66,9 +67,28 @@ class TestLoginView(TestCase):
         client.secret = "1234"
         client.redirect_uri = "http://127.0.0.1:7070/"
 
+        client_state = OAuth2Client()
+        client_state.client_id = "state"
+        client_state.secret = "1234"
+        client_state.state_required = True
+        client_state.redirect_uri = "http://127.0.0.1:7070/"
+
+        client_pkce = OAuth2Client()
+        client_pkce.secret = "1234"
+        client_pkce.client_id = "pkce"
+        client_pkce.pkce_required = True
+        client_pkce.redirect_uri = "http://127.0.0.1:7070/"
+
+        client_pkce_state = OAuth2Client()
+        client_pkce_state.secret = "1234"
+        client_pkce_state.client_id = "pkce_state"
+        client_pkce_state.state_required = True
+        client_pkce_state.pkce_required = True
+        client_pkce_state.redirect_uri = "http://127.0.0.1:7070/"
+
         session = DBSession()
 
-        session.add_all([user1, user2, client])
+        session.add_all([user1, user2, client, client_state, client_pkce, client_pkce_state])
         session.flush()
         transaction.commit()
 
@@ -102,7 +122,6 @@ class TestLoginView(TestCase):
         request.POST = {"login": "__test_user1", "password": "__test_user1"}
         request.GET = {
             "client_id": "qgis",
-            # "client_secret": "1234",
             "redirect_uri": "http://127.0.0.1:7070/",
             "response_type": "code",
             "type": "oauth2",
@@ -153,25 +172,6 @@ class TestLoginView(TestCase):
         }
         assert response["username"] == "__test_user1"
 
-    #    def test_oauth2_protocol_test_login_wrong_code(self) -> None:
-    #        from c2cgeoportal_geoportal.views.login import Login
-    #
-    #        # Test login
-    #        url = None
-    #        request = create_dummy_request(authentication=True)
-    #        request.POST = {"login": "__test_user1", "password": "__test_user1"}
-    #        request.GET = {
-    #            "client_id": "qgis",
-    #            "client_secret": "1111",
-    #            "redirect_uri": "http://127.0.0.1:7070/",
-    #            "response_type": "code",
-    #            "type": "oauth2",
-    #        }
-    #        request.method = "POST"
-    #        request.body = ""
-    #        with pytest.raises(pyramid.httpexceptions.HTTPUnautorised) as exc_info:
-    #            Login(request).login()
-
     def test_oauth2_protocol_test_login_get_token_wrong_client_secret(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
@@ -181,7 +181,6 @@ class TestLoginView(TestCase):
         request.POST = {"login": "__test_user1", "password": "__test_user1"}
         request.GET = {
             "client_id": "qgis",
-            # "client_secret": "1234",
             "redirect_uri": "http://127.0.0.1:7070/",
             "response_type": "code",
             "type": "oauth2",
@@ -236,7 +235,6 @@ class TestLoginView(TestCase):
         request.POST = {"login": "__test_user1", "password": "__test_user1"}
         request.GET = {
             "client_id": "qgis",
-            # "client_secret": "1234",
             "redirect_uri": "http://127.0.0.1:7070/",
             "response_type": "code",
             "type": "oauth2",
@@ -307,6 +305,126 @@ class TestLoginView(TestCase):
         }
         assert response["username"] == "__test_user1"
 
+    def test_state_oauth2_protocol_test_login_get_token_refresh_token_is_login(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        # Test login
+        url = None
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "client_id": "state",
+            "state": "MdXrGikS5LACsWs2HZFqS7IC9zMC6F9thOiWDa5gxKRqoMf7bCkTetrrwKw5JIAA",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "type": "oauth2",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
+            Login(request).login()
+        url = exc_info.value.headers["Location"]
+        url_split = urllib.parse.urlsplit(url)
+        query = dict(urllib.parse.parse_qsl(url_split.query))
+        assert "code" in query
+        code = query["code"]
+
+        # Test get token
+        request = create_dummy_request(authentication=True)
+        request.POST = {
+            "client_id": "state",
+            "client_secret": "1234",
+            "state": "MdXrGikS5LACsWs2HZFqS7IC9zMC6F9thOiWDa5gxKRqoMf7bCkTetrrwKw5JIAA",
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:7070/",
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        response = Login(request).oauth2token()
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.headers["Pragma"] == "no-cache"
+        assert response.headers["Vary"] == "Origin, Cookie"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        data = json.loads(response.body)
+        assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
+        assert data["expires_in"] == 3600
+        assert data["token_type"] == "Bearer"
+        access_token = data["access_token"]
+        refresh_token = data["refresh_token"]
+
+        # Test refresh token
+        request = create_dummy_request()
+        request.POST = {
+            "client_id": "state",
+            "client_secret": "1234",
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        response = Login(request).oauth2token()
+        data = json.loads(response.body)
+        assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token", "scope"}
+        assert data["expires_in"] == 3600
+        assert data["token_type"] == "Bearer"
+        assert data["access_token"] != access_token
+        assert data["refresh_token"] != refresh_token
+        access_token = data["access_token"]
+
+        # Test is login with new token
+        request = create_dummy_request()
+        request.headers["Authorization"] = "Bearer " + access_token
+        response = Login(request).loginuser()
+        assert set(response.keys()) == {
+            "functionalities",
+            "is_intranet",
+            "two_factor_enable",
+            "username",
+            "email",
+            "roles",
+        }
+        assert response["username"] == "__test_user1"
+
+    def test_state_oauth2_protocol_test_login_get_token_wrong_token_state(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        # Test login
+        url = None
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "client_id": "state",
+            "state": "MdXrGikS5LACsWs2HZFqS7IC9zMC6F9thOiWDa5gxKRqoMf7bCkTetrrwKw5JIBB",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "type": "oauth2",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
+            Login(request).login()
+        url = exc_info.value.headers["Location"]
+        url_split = urllib.parse.urlsplit(url)
+        query = dict(urllib.parse.parse_qsl(url_split.query))
+        assert "code" in query
+        code = query["code"]
+
+        # Test get token
+        request = create_dummy_request(authentication=True)
+        request.POST = {
+            "client_id": "state",
+            "client_secret": "1234",
+            "state": "MdXrGikS5LACsWs2HZFqS7IC9zMC6F9thOiWDa5gxKRqoMf7bCkTetrrwKw5JIAA",
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:7070/",
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
+            Login(request).oauth2token()
+
     def test_oauth2_protocol_test_login_get_token_refresh_token_wrong_code(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
@@ -316,7 +434,6 @@ class TestLoginView(TestCase):
         request.POST = {"login": "__test_user1", "password": "__test_user1"}
         request.GET = {
             "client_id": "qgis",
-            # "client_secret": "1234",
             "redirect_uri": "http://127.0.0.1:7070/",
             "response_type": "code",
             "type": "oauth2",
@@ -351,7 +468,6 @@ class TestLoginView(TestCase):
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600
         assert data["token_type"] == "Bearer"
-        data["access_token"]
         refresh_token = data["refresh_token"]
 
         # Test refresh token
@@ -404,7 +520,6 @@ class TestLoginView(TestCase):
         request.POST = {"login": "__test_user2", "password": "__test_user2"}
         request.GET = {
             "client_id": "qgis",
-            # "client_secret": "1234",
             "redirect_uri": "http://127.0.0.1:7070/",
             "response_type": "code",
             "type": "oauth2",
@@ -419,28 +534,308 @@ class TestLoginView(TestCase):
         url = exc_info.value.headers["Location"]
         assert url == "http://example.com/notlogin/view?"
 
-    #    def test_oauth2_2fa_wrong_code(self) -> None:
-    #        from c2cgeoportal_geoportal.views.login import Login
-    #
-    #        url = None
-    #        request = create_dummy_request()
-    #        request.POST = {"login": "__test_user2", "password": "__test_user2"}
-    #        request.GET = {
-    #            "client_id": "qgis",
-    #            "client_secret": "1111",
-    #            "redirect_uri": "http://127.0.0.1:7070/",
-    #            "response_type": "code",
-    #            "type": "oauth2",
-    #        }
-    #        request.method = "POST"
-    #        request.body = ""
-    #        pyramid.testing.setUp(request=request, registry=init_registry())
-    #        request.registry.settings["authentication"] = {"two_factor": True}
-    #        assert False
-
     def test_notlogin(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
         request = create_dummy_request()
         response = Login(request).notlogin()
         assert response == {"lang": "fr"}
+
+    def test_pkce_oauth2_protocol_test_login_get_token_refresh_token_is_login(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        # Generated with https://pypi.org/project/pkce/
+        # import pkce
+        # code_verifier, code_challenge = pkce.generate_pkce_pair()
+        code_challenge = "cIwCRPz5VLVQj-din1Aj0gmWJQbH2WvXhvR-UPCGpHE"
+        code_verifier = (
+            "77DlycnsKlT319MGl7j_tRuHROz-_lK7Cl3ZnG_qIx8z4R_EbLqz-"
+            "hXAA9juIy9A_JkQofBSsGQuLnKuTLqheqXoF6VD2gDEWtLIHwkHcY1CsAl1mCQAPKZWNU4RASvk"
+        )
+
+        # Test login
+        url = None
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "type": "oauth2",
+            "client_id": "pkce",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "response_mode": "fragment",
+            "code_challenge": code_challenge,
+            "code_challenge_method": "S256",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
+            assert False, Login(request).login().body
+        url = exc_info.value.headers["Location"]
+        url_split = urllib.parse.urlsplit(url)
+        query = dict(urllib.parse.parse_qsl(url_split.fragment))
+        assert "code" in query, url
+        code = query["code"]
+
+        # Test get token
+        request = create_dummy_request(authentication=True)
+        request.POST = {
+            "client_id": "pkce",
+            "client_secret": "1234",
+            "code_verifier": code_verifier,
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:7070/",
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        response = Login(request).oauth2token()
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.headers["Pragma"] == "no-cache"
+        assert response.headers["Vary"] == "Origin, Cookie"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        data = json.loads(response.body)
+        assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
+        assert data["expires_in"] == 3600
+        assert data["token_type"] == "Bearer"
+        access_token = data["access_token"]
+        refresh_token = data["refresh_token"]
+
+        # Test refresh token
+        request = create_dummy_request()
+        request.POST = {
+            "client_id": "pkce",
+            "client_secret": "1234",
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        response = Login(request).oauth2token()
+        data = json.loads(response.body)
+        assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token", "scope"}
+        assert data["expires_in"] == 3600
+        assert data["token_type"] == "Bearer"
+        assert data["access_token"] != access_token
+        assert data["refresh_token"] != refresh_token
+        access_token = data["access_token"]
+
+        # Test is login
+        request = create_dummy_request(authentication=True)
+        request.headers["Authorization"] = "Bearer " + access_token
+        response = Login(request).loginuser()
+        assert set(response.keys()) == {
+            "functionalities",
+            "is_intranet",
+            "two_factor_enable",
+            "username",
+            "email",
+            "roles",
+        }
+        assert response["username"] == "__test_user1"
+
+    def test_pkce_state_oauth2_protocol_test_login_get_token_refresh_token_is_login(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        # Generated with https://pypi.org/project/pkce/
+        # import pkce
+        # code_verifier, code_challenge = pkce.generate_pkce_pair()
+        code_challenge = "cIwCRPz5VLVQj-din1Aj0gmWJQbH2WvXhvR-UPCGpHE"
+        code_verifier = (
+            "77DlycnsKlT319MGl7j_tRuHROz-_lK7Cl3ZnG_qIx8z4R_EbLqz-"
+            "hXAA9juIy9A_JkQofBSsGQuLnKuTLqheqXoF6VD2gDEWtLIHwkHcY1CsAl1mCQAPKZWNU4RASvk"
+        )
+
+        # Test login
+        url = None
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "type": "oauth2",
+            "client_id": "pkce_state",
+            "state": "MdXrGikS5LACsWs2HZFqS7IC9zMC6F9thOiWDa5gxKRqoMf7bCkTetrrwKw5JIAA",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "response_mode": "fragment",
+            "code_challenge": code_challenge,
+            "code_challenge_method": "S256",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
+            assert False, Login(request).login().body
+        url = exc_info.value.headers["Location"]
+        url_split = urllib.parse.urlsplit(url)
+        query = dict(urllib.parse.parse_qsl(url_split.fragment))
+        assert "code" in query, url
+        code = query["code"]
+
+        # Test get token
+        request = create_dummy_request(authentication=True)
+        request.POST = {
+            "client_id": "pkce_state",
+            "client_secret": "1234",
+            "state": "MdXrGikS5LACsWs2HZFqS7IC9zMC6F9thOiWDa5gxKRqoMf7bCkTetrrwKw5JIAA",
+            "code_verifier": code_verifier,
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:7070/",
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        response = Login(request).oauth2token()
+        assert response.headers["Content-Type"] == "application/json"
+        assert response.headers["Pragma"] == "no-cache"
+        assert response.headers["Vary"] == "Origin, Cookie"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        data = json.loads(response.body)
+        assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
+        assert data["expires_in"] == 3600
+        assert data["token_type"] == "Bearer"
+        access_token = data["access_token"]
+        refresh_token = data["refresh_token"]
+
+        # Test refresh token
+        request = create_dummy_request()
+        request.POST = {
+            "client_id": "pkce_state",
+            "client_secret": "1234",
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        response = Login(request).oauth2token()
+        data = json.loads(response.body)
+        assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token", "scope"}
+        assert data["expires_in"] == 3600
+        assert data["token_type"] == "Bearer"
+        assert data["access_token"] != access_token
+        assert data["refresh_token"] != refresh_token
+        access_token = data["access_token"]
+
+        # Test is login
+        request = create_dummy_request(authentication=True)
+        request.headers["Authorization"] = "Bearer " + access_token
+        response = Login(request).loginuser()
+        assert set(response.keys()) == {
+            "functionalities",
+            "is_intranet",
+            "two_factor_enable",
+            "username",
+            "email",
+            "roles",
+        }
+        assert response["username"] == "__test_user1"
+
+    def test_oauth2_protocol_test_login_no_state(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        # Test login
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "client_id": "state",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "type": "oauth2",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:
+            Login(request).login()
+
+    def test_oauth2_protocol_test_login_no_pkce(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        # Test login
+        url = None
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "client_id": "pkce",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "type": "oauth2",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
+            Login(request).login()
+        url = exc_info.value.headers["Location"]
+        url_split = urllib.parse.urlsplit(url)
+        query = dict(urllib.parse.parse_qsl(url_split.query))
+        assert "error" in query
+        assert "error_description" in query
+        assert query["error"] == "invalid_request"
+        assert query["error_description"] == "Code challenge required."
+
+    def test_pkce_oauth2_protocol_test_login_no_state(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        code_challenge = "cIwCRPz5VLVQj-din1Aj0gmWJQbH2WvXhvR-UPCGpHE"
+        # Test login
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "type": "oauth2",
+            "client_id": "pkce_state",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "response_mode": "fragment",
+            "code_challenge": code_challenge,
+            "code_challenge_method": "S256",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:
+            Login(request).login()
+
+    def test_pkce_oauth2_protocol_test_login_wrong_code(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        # Generated with https://pypi.org/project/pkce/
+        # import pkce
+        # code_verifier, code_challenge = pkce.generate_pkce_pair()
+        code_challenge = "cIwCRPz5VLVQj-din1Aj0gmWJQbH2WvXhvR-UPCGpHF"
+        code_verifier = (
+            "77DlycnsKlT319MGl7j_tRuHROz-_lK7Cl3ZnG_qIx8z4R_EbLqz-"
+            "hXAA9juIy9A_JkQofBSsGQuLnKuTLqheqXoF6VD2gDEWtLIHwkHcY1CsAl1mCQAPKZWNU4RASvk"
+        )
+
+        # Test login
+        url = None
+        request = create_dummy_request(authentication=True)
+        request.POST = {"login": "__test_user1", "password": "__test_user1"}
+        request.GET = {
+            "type": "oauth2",
+            "client_id": "pkce",
+            "redirect_uri": "http://127.0.0.1:7070/",
+            "response_type": "code",
+            "response_mode": "fragment",
+            "code_challenge": code_challenge,
+            "code_challenge_method": "S256",
+        }
+        request.method = "POST"
+        request.body = ""
+        with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
+            assert False, Login(request).login().body
+        url = exc_info.value.headers["Location"]
+        url_split = urllib.parse.urlsplit(url)
+        query = dict(urllib.parse.parse_qsl(url_split.fragment))
+        assert "code" in query, url
+        code = query["code"]
+
+        # Test get token
+        request = create_dummy_request(authentication=True)
+        request.POST = {
+            "client_id": "pkce",
+            "client_secret": "1234",
+            "code_verifier": code_verifier,
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:7070/",
+        }
+        request.body = urllib.parse.urlencode(request.POST)
+        request.method = "POST"
+        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:
+            Login(request).oauth2token()

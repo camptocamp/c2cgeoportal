@@ -386,6 +386,33 @@ class OAuth2Client(Base):  # type: ignore
             }
         },
     )
+    state_required = Column(
+        Boolean,
+        default=False,
+        info={
+            "colanderalchemy": {
+                "title": _("State required"),
+                "description": _(
+                    "The state is required for this client (see: "
+                    "https://auth0.com/docs/secure/attack-protection/state-parameters)."
+                ),
+            }
+        },
+    )
+    pkce_required = Column(
+        Boolean,
+        default=False,
+        info={
+            "colanderalchemy": {
+                "title": _("PKCE required"),
+                "description": _(
+                    "PKCE is required for this client (see: "
+                    "https://auth0.com/docs/get-started/authentication-and-authorization-flow/"
+                    "authorization-code-flow-with-proof-key-for-code-exchange-pkce)."
+                ),
+            }
+        },
+    )
 
 
 class OAuth2BearerToken(Base):  # type: ignore
@@ -406,6 +433,7 @@ class OAuth2BearerToken(Base):  # type: ignore
     access_token = Column(Unicode(100), unique=True)
     refresh_token = Column(Unicode(100), unique=True)
     expire_at = Column(DateTime(timezone=True))  # in one hour
+    state = Column(String)
 
 
 class OAuth2AuthorizationCode(Base):  # type: ignore
@@ -425,6 +453,9 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
     user = relationship(User)
     redirect_uri = Column(Unicode)
     code = Column(Unicode(100), unique=True)
+    state = Column(String)
+    challenge = Column(String(128))
+    challenge_method = Column(String(6))
     expire_at = Column(DateTime(timezone=True))  # in 10 minutes
 
 
