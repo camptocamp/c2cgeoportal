@@ -1,3 +1,7 @@
+##### 2.7.0.179
+
+- Update dependency prettier to v2.8.3 (2.7) [ngeo#9004](https://github.com/camptocamp/ngeo/pull/9004)
+
 ##### 2.7.0.178
 
 - [Backport 2.7] Add gmfDisplayQueryWindowOptions.displayNullAttributes [ngeo#8984](https://github.com/camptocamp/ngeo/pull/8984)
