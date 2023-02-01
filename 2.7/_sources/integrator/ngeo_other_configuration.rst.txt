@@ -387,7 +387,7 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 gmfDisplayQueryGridOptions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The display querry grid component options.
+The display query grid component options.
 
 Properties:
  * ``featuresStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`)
@@ -401,10 +401,11 @@ Properties:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 gmfDisplayQueryWindowOptions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The display querry grid component options.
+The display query window component options.
 
 Properties:
  * ``collapsed`` (boolean, optional)
+ * ``displayNullAttributes`` (boolean, optional)
  * ``featuresStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`)
  * ``selectedFeatureStyle`` (:ref:`integrator_guide_ngeo_properties_StyleLike`)
 
