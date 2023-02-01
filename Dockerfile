@@ -61,6 +61,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     PIP_NO_BINARY=fiona,rasterio PROJ_DIR=/usr/local/ python3 -m pip install \
+    --use-deprecated=legacy-resolver \
     --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++
