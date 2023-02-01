@@ -360,6 +360,7 @@ vars:
                 LAYERFONTSIZE: '10'
                 ITEMFONTSIZE: '8'
           hiddenAttributes:
+            - debug
             - timezone
             - username
         gmfDisplayQueryGridOptions:
