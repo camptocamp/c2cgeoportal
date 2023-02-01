@@ -47,6 +47,26 @@
 <li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapFish Print documentation</a></p></li>
 <li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></p></li>
 </ul>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<p>The templates make use of attributes which are either passed directly by the client (client attributes) or
+processed by the print service.
+The client attributes are specified in the print configuration (<code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>)
+for each template. It’s possible to remove the standard ones and to create custom ones. By default, they
+appear as form fields in the UI print panel for the user to fill in. An attribute can be hidden from the UI by
+adding its name in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> under <code class="docutils literal notranslate"><span class="pre">gmfPrintOptions.hiddenAttributes</span></code>.</p>
+<p>The standard client attributes in a new install of GeoMapFish are the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> (string): title of the report (form field is visible by default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comments</span></code> (string): comment to display in the report (form field is visible by default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">debug</span></code> (boolean): if true, the header of each section of the print template will be printed in the report. Defaults to false and is hidden from the UI by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code> (string): filled by the client with the name of the currently logged-in user (not secured). Hidden by default, cannot be renamed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timezone</span></code> (string): filled by the client with the client timezone. Hidden by default, cannot be renamed</p></li>
+</ul>
+<p>Template attributes managed by MapFish Print are <code class="docutils literal notranslate"><span class="pre">mapSubReport</span></code>, <code class="docutils literal notranslate"><span class="pre">legendDataSource</span></code>, <code class="docutils literal notranslate"><span class="pre">legendSubReport</span></code>, <code class="docutils literal notranslate"><span class="pre">numberOfLegendRows</span></code>,
+<code class="docutils literal notranslate"><span class="pre">scalebarSubReport</span></code>, <code class="docutils literal notranslate"><span class="pre">northArrowSubReport</span></code> (related to the map) and <code class="docutils literal notranslate"><span class="pre">jrDataSource</span></code> (results of the feature query on
+the map, if any).</p>
+</section>
 </section>
 <section id="notes-about-the-scales">
 <h2>Notes about the scales<a class="headerlink" href="#notes-about-the-scales" title="Permalink to this heading">¶</a></h2>
