@@ -1,3 +1,7 @@
+##### 2.7.0.180
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20230201T104701Z.6eefab8c5.2.7 (2.7) [c2cgeoportal#10327](https://github.com/camptocamp/c2cgeoportal/pull/10327)
+
 ##### 2.7.0.179
 
 - Update dependency prettier to v2.8.3 (2.7) [ngeo#9004](https://github.com/camptocamp/ngeo/pull/9004)
