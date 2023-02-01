@@ -1076,17 +1076,6 @@ files = [
 flake8 = "*"
 
 [[package]]
-name = "future"
-version = "0.18.2"
-description = "Clean single-source support for Python 3 and 2"
-category = "dev"
-optional = false
-python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
-files = [
-    {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
-]
-
-[[package]]
 name = "geoalchemy2"
 version = "0.12.5"
 description = "Using SQLAlchemy with Spatial Databases"
@@ -1705,21 +1694,23 @@ testing = ["pytest"]
 
 [[package]]
 name = "mapbox-vector-tile"
-version = "1.2.1"
-description = "Mapbox Vector Tile"
+version = "2.0.1"
+description = "Mapbox Vector Tile encoding and decoding."
 category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "mapbox-vector-tile-1.2.1.tar.gz", hash = "sha256:ef973c47f45e53109239aeae4cad93d140f5a06e439dc5f2495f32ae484b5358"},
+    {file = "mapbox_vector_tile-2.0.1-py3-none-any.whl", hash = "sha256:3cd29aa726a645ce326a32c5a2e28159f58f0aac8fb4f477e596724b81043ec8"},
+    {file = "mapbox_vector_tile-2.0.1.tar.gz", hash = "sha256:17df141d545e0e30ef21f6b3881fba9e0c6537a23c797be9505ddf37c76ca027"},
 ]
 
 [package.dependencies]
-future = "*"
-protobuf = "*"
-pyclipper = "*"
-setuptools = "*"
-shapely = "*"
+protobuf = ">=4.21,<5.0"
+pyclipper = ">=1.3.0,<2.0.0"
+shapely = ">=2.0.0,<3.0.0"
+
+[package.extras]
+proj = ["pyproj (>=3.4.1,<4.0.0)"]
 
 [[package]]
 name = "mappyfile"
@@ -4538,4 +4529,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "824b347da4f3e96dc97ab5101baa298200544f0019ee23612a5c061454ea7e48"
+content-hash = "6b83eb8f4e6e8b595ff633e2669b0ac55930543bc81b109be6e5c209c9367662"
