@@ -1105,14 +1105,14 @@ SQLAlchemy = ">=1.4"
 
 [[package]]
 name = "geojson"
-version = "2.5.0"
+version = "3.0.0"
 description = "Python bindings and utilities for GeoJSON"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7, <=3.11"
 files = [
-    {file = "geojson-2.5.0-py2.py3-none-any.whl", hash = "sha256:ccbd13368dd728f4e4f13ffe6aaf725b6e802c692ba0dde628be475040c534ba"},
-    {file = "geojson-2.5.0.tar.gz", hash = "sha256:6e4bb7ace4226a45d9c8c8b1348b3fc43540658359f93c3f7e03efa9f15f658a"},
+    {file = "geojson-3.0.0-py3-none-any.whl", hash = "sha256:fae22bb8c69da4cbff743e654d8f55cc45f6aedf19be3c962e7a15f607b5fa4d"},
+    {file = "geojson-3.0.0.tar.gz", hash = "sha256:ea1df8246bdeb2bbf20d0756720911893414f9cee46b336a1e882d2cd60cfba1"},
 ]
 
 [[package]]
@@ -4539,4 +4539,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "c417e42c2f530a06d0cb3d513f1abb2c6b5a06e551260b9ece3fd3662b655efa"
+content-hash = "78090f3962196680a7492c1ccd8bb3c7972937e1c7c986fabae1fc59183c8745"
