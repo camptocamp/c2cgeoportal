@@ -1,3 +1,8 @@
+##### 2.7.0.178
+
+- [Backport 2.7] Add gmfDisplayQueryWindowOptions.displayNullAttributes [ngeo#8984](https://github.com/camptocamp/ngeo/pull/8984)
+- Update all patch versions (2.7) (patch) [ngeo#8999](https://github.com/camptocamp/ngeo/pull/8999)
+
 ##### 2.7.0.177
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10322](https://github.com/camptocamp/c2cgeoportal/pull/10322)
