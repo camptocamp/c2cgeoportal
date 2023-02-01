@@ -1,3 +1,7 @@
+##### 2.7.0.177
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10322](https://github.com/camptocamp/c2cgeoportal/pull/10322)
+
 ##### 2.7.0.175
 
 - Fix the status check [c2cgeoportal#10304](https://github.com/camptocamp/c2cgeoportal/pull/10304)
