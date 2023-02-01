@@ -68,6 +68,5 @@ try:
     def _cache_invalidate_cb() -> None:
         zope.event.notify(InvalidateCacheEvent())
 
-
 except ModuleNotFoundError:
     LOG.error("c2cwsgiutils broadcast not found")

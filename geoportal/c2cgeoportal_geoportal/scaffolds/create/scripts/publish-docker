@@ -10,7 +10,9 @@ def main():
     parser = argparse.ArgumentParser(description="Publish Docker images")
     parser.add_argument("--image", dest="images", action="append", help="The image to be exported")
     parser.add_argument(
-        "--service", default="dockerhub", help="Used repository",
+        "--service",
+        default="dockerhub",
+        help="Used repository",
     )
     parser.add_argument(
         "--no-trigger",

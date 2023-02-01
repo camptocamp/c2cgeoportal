@@ -126,7 +126,9 @@ def add_interface_ngeo(config, route_name, route, renderer=None, permission=None
 def add_admin_interface(config):
     if config.get_settings().get("enable_admin_interface", False):
         config.add_request_method(
-            lambda request: c2cgeoportal_commons.models.DBSession(), "dbsession", reify=True,
+            lambda request: c2cgeoportal_commons.models.DBSession(),
+            "dbsession",
+            reify=True,
         )
         config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name="admin_add_ending_slash")
         config.add_route("admin_add_ending_slash", "/admin", request_method="GET")
@@ -184,7 +186,7 @@ def is_valid_referer(request, settings=None):
 
 def create_get_user_from_request(settings):
     def get_user_from_request(request, username=None):
-        """ Return the User object for the request.
+        """Return the User object for the request.
 
         Return ``None`` if:
         * user is anonymous
@@ -244,7 +246,7 @@ def create_get_user_from_request(settings):
 
 
 def set_user_validator(config, user_validator):
-    """ Call this function to register a user validator function.
+    """Call this function to register a user validator function.
 
     The validator function is passed three arguments: ``request``,
     ``username``, and ``password``. The function should return the
@@ -287,7 +289,7 @@ def default_user_validator(request, username, password):
 
 
 class MapserverproxyRoutePredicate:
-    """ Serve as a custom route predicate function for mapserverproxy.
+    """Serve as a custom route predicate function for mapserverproxy.
     If the hide_capabilities setting is set and is true then we want to
     return 404s on GetCapabilities requests."""
 

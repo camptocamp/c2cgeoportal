@@ -47,7 +47,7 @@ down_revision = None
 
 
 class TsVector(UserDefinedType):
-    """ A custom type for PostgreSQL's tsvector type. """
+    """A custom type for PostgreSQL's tsvector type."""
 
     def get_col_spec(self):
         return "TSVECTOR"

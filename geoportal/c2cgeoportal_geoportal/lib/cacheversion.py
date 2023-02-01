@@ -50,7 +50,7 @@ def version_cache_buster(request, subpath, kw):  # pragma: no cover
 
 
 class CachebusterTween:
-    """ Get back the cachebuster URL. """
+    """Get back the cachebuster URL."""
 
     def __init__(self, handler, registry: pyramid.registry.Registry):
         self.handler = handler

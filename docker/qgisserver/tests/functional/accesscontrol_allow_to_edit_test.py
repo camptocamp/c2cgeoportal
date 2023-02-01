@@ -113,7 +113,9 @@ def test_data2(clean_dbsession):
 
 
 @pytest.mark.usefixtures(
-    "server_iface", "qgs_access_control_filter", "test_data2",
+    "server_iface",
+    "qgs_access_control_filter",
+    "test_data2",
 )
 class TestAccessControlAllowToEdit:
     def test_allow_to_edit(self, server_iface, DBSession, test_data2):  # noqa: N803

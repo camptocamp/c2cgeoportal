@@ -93,9 +93,9 @@ class TestLayers(TestCase):
         metadatas=None,
         geom_type=False,
     ):
-        """ This function is central for this test class. It creates
+        """This function is central for this test class. It creates
         a layer with two features, and associates a restriction area
-        to it. """
+        to it."""
         import transaction
         from sqlalchemy import Column, Table, types, ForeignKey, CheckConstraint
         from sqlalchemy.ext.declarative import declarative_base
