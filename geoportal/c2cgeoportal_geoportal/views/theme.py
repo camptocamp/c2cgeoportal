@@ -192,7 +192,7 @@ class Theme:
         def build_web_map_service(ogc_server_id):
             del ogc_server_id  # Just for cache
 
-            version = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)['VERSION'][0]
+            version = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)["VERSION"][0]
             layers = {}
             try:
                 wms = WebMapService(None, xml=content, version=version)
@@ -230,7 +230,7 @@ class Theme:
         return build_web_map_service(ogc_server.id)
 
     async def _wms_getcap_cached(self, ogc_server, _):
-        """ _ is just for cache on the role id """
+        """_ is just for cache on the role id"""
 
         errors: Set[str] = set()
         url = get_url2("The OGC server '{}'".format(ogc_server.name), ogc_server.url, self.request, errors)
@@ -419,9 +419,7 @@ class Theme:
         wmslayer = layer.layer
 
         def merge_time(wms_layer_obj):
-            extent = parse_extent(
-                wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"]
-            )
+            extent = parse_extent(wms_layer_obj["timepositions"], wms_layer_obj["defaulttimeposition"])
             time_.merge(layer_theme, extent, layer.time_mode, layer.time_widget)
 
         try:
@@ -567,7 +565,7 @@ class Theme:
         return isinstance(tree_item, main.Layer)
 
     def _get_ogc_servers(self, group, depth):
-        """ Recurse on all children to get unique identifier for each child. """
+        """Recurse on all children to get unique identifier for each child."""
 
         ogc_servers: Set[Union[str, bool]] = set()
 

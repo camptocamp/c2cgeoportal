@@ -147,7 +147,14 @@ def test_data(clean_dbsession):
     private_layer3.ogc_server = ogc_server1
 
     dbsession.add_all(
-        (public_group, public_layer, private_layer1, private_layer2, private_group3, private_layer3,)
+        (
+            public_group,
+            public_layer,
+            private_layer1,
+            private_layer2,
+            private_group3,
+            private_layer3,
+        )
     )
 
     ra1 = RestrictionArea(
@@ -392,7 +399,9 @@ class TestOGCServerAccessControl:
 
 
 @pytest.mark.usefixtures(
-    "server_iface", "qgs_access_control_filter", "test_data",
+    "server_iface",
+    "qgs_access_control_filter",
+    "test_data",
 )
 class TestUnavailableOGCServerAccessControl:
     def test_init(self, server_iface, DBSession):  # noqa: N803
@@ -477,7 +486,9 @@ class TestGeoMapFishAccessControlSingleOGCServer:
 
 
 @pytest.mark.usefixtures(
-    "qgs_access_control_filter", "multiple_ogc_server_env", "test_data",
+    "qgs_access_control_filter",
+    "multiple_ogc_server_env",
+    "test_data",
 )
 class TestGeoMapFishAccessControlMultipleOGCServer:
     @pytest.mark.usefixtures()

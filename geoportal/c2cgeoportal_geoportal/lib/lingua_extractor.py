@@ -263,7 +263,9 @@ class GeomapfishConfigExtractor(Extractor):  # pragma: no cover
                     if isinstance(value, str) and value != "":
                         msgid = value
                         location = "/layers/{}/values/{}/{}".format(
-                            layername, fieldname, value.encode("ascii", errors="replace").decode("ascii"),
+                            layername,
+                            fieldname,
+                            value.encode("ascii", errors="replace").decode("ascii"),
                         )
                         enums.append(Message(None, msgid, None, [], "", "", (filename, location)))
 

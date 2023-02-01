@@ -50,7 +50,7 @@ config = None
 
 
 def cleanup_db():
-    """ Cleanup the database """
+    """Cleanup the database"""
     from c2cgeoportal_commons import models
     from c2cgeoportal_commons.models.main import (
         OGCServer,
@@ -82,7 +82,7 @@ def cleanup_db():
 
 
 def setup_db():
-    """ Cleanup the database """
+    """Cleanup the database"""
     cleanup_db()
 
     from c2cgeoportal_commons.models import DBSession

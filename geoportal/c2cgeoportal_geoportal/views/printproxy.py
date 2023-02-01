@@ -51,7 +51,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
     @view_config(route_name="printproxy_capabilities")
     def capabilities(self):
-        """ Get print capabilities. """
+        """Get print capabilities."""
 
         templates = get_functionality("print_template", self.request, is_intranet(self.request))
 
@@ -98,7 +98,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
     @view_config(route_name="printproxy_report_create")
     def report_create(self):
-        """ Create PDF. """
+        """Create PDF."""
         return self._proxy_response(
             "print",
             "{0!s}/report.{1!s}".format(self.config["print_url"], self.request.matchdict.get("format")),
@@ -106,7 +106,7 @@ class PrintProxy(Proxy):  # pragma: no cover
 
     @view_config(route_name="printproxy_status")
     def status(self):
-        """ PDF status. """
+        """PDF status."""
         return self._proxy_response(
             "print",
             "{0!s}/status/{1!s}.json".format(self.config["print_url"], self.request.matchdict.get("ref")),
@@ -114,14 +114,14 @@ class PrintProxy(Proxy):  # pragma: no cover
 
     @view_config(route_name="printproxy_cancel")
     def cancel(self):
-        """ PDF cancel. """
+        """PDF cancel."""
         return self._proxy_response(
             "print", "{0!s}/cancel/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
         )
 
     @view_config(route_name="printproxy_report_get")
     def report_get(self):
-        """ Get the PDF. """
+        """Get the PDF."""
         url = "{0!s}/report/{1!s}".format(self.config["print_url"], self.request.matchdict.get("ref"))
         if self.config.get("print_get_redirect", False):
             raise HTTPFound(location=url)

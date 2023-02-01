@@ -23,7 +23,9 @@ try:
 except Exception:
     print("".join(traceback.format_exception(*sys.exc_info())))
     QgsMessageLog.logMessage(
-        "".join(traceback.format_exception(*sys.exc_info())), "GeoMapFishAccessControl", level=Qgis.Critical,
+        "".join(traceback.format_exception(*sys.exc_info())),
+        "GeoMapFishAccessControl",
+        level=Qgis.Critical,
     )
 
 
