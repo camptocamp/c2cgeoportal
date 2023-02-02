@@ -12,7 +12,7 @@
     "@typescript-eslint/eslint-plugin": "5.50.0",
     "@typescript-eslint/parser": "5.50.0",
     "angular-gettext-tools": "2.5.3",
-    "commander": "9.5.0",
+    "commander": "10.0.0",
     "eslint": "8.33.0",
     "ngeo": "2.8.0-latest.20230201T215542Z.1c0da42cf",
     "puppeteer": "19.6.3",
