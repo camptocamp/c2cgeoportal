@@ -79,11 +79,13 @@ QGIS_VERSION ?= latest
 .PHONY: build-qgisserver
 build-qgisserver:
 	docker build --target=runner --build-arg=VERSION=$(QGIS_VERSION) \
+		--build-arg=GEOMAPFISH_VERSION=$(MAJOR_VERSION) \
 		--tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION) docker/qgisserver
 
 .PHONY: build-qgisserver-tests
 build-qgisserver-tests:
 	docker build --target=tests --build-arg=VERSION=$(QGIS_VERSION) \
+		--build-arg=GEOMAPFISH_VERSION=$(MAJOR_VERSION) \
 		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
 
 .PHONY: prospector-qgisserver

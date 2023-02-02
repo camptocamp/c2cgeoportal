@@ -44,7 +44,9 @@ COPY logging.ini /var/www/
 # hadolint ignore=DL3022
 COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
-RUN python3 -m pip install --disable-pip-version-check --no-deps \
+ARG GEOMAPFISH_VERSION
+
+RUN VERSION=$GEOMAPFISH_VERSION python3 -m pip install --disable-pip-version-check --no-deps \
     --editable=/opt/c2cgeoportal/commons
 
 ENV LOG_LEVEL=INFO \
