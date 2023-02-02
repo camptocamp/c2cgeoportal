@@ -70,7 +70,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
             return None
         try:
             if self.aeskey is None:  # pragma: nocover
-                raise Exception("urllogin is not configured")
+                raise Exception("urllogin is not configured")  # pylint: disable=broad-exception-raised
             now = int(time.time())
             data = binascii.unhexlify(auth_enc.encode("ascii"))
             nonce = data[0:16]
@@ -173,7 +173,7 @@ def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy
     secret = settings["authtkt_secret"]
     basicauth = settings.get("basicauth", "False").lower() in ("true", "yes", "1")
     if len(secret) < 64:
-        raise Exception(
+        raise Exception(  # pylint: disable=broad-exception-raised
             '"authtkt_secret should be at least 64 characters.'
             "See https://docs.pylonsproject.org/projects/pyramid/en/latest/api/session.html"
         )

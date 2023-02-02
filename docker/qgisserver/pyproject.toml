@@ -1,3 +1,7 @@
+[tool.black]
+line-length = 110
+target-version = ['py38']
+
 [tool.poetry]
 name = 'c2cgeoportal'
 version = '0.0.0'

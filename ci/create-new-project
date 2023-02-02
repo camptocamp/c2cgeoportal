@@ -12,6 +12,7 @@ docker tag "camptocamp/geomapfish-tools:${TAG}" "camptocamp/geomapfish-tools:$(s
 docker tag "camptocamp/geomapfish-config:${TAG}" "camptocamp/geomapfish-config:$(scripts/get-version --full)"
 
 DOCKER_BUILDKIT=1 docker build --target=runner --build-arg=VERSION=3.28 \
+    --build-arg="GEOMAPFISH_VERSION=${TAG}" \
     --tag="camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.28" \
     docker/qgisserver
 

@@ -562,7 +562,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         gmf_layers = self.get_layers(session).get(ogc_name, None)
         if gmf_layers is None:
-            raise Exception(
+            raise Exception(  # pylint: disable=broad-exception-raised
                 f"Access to an unknown layer '{ogc_name}', "
                 f"from [{', '.join(self.get_layers(session).keys())}]"
             )

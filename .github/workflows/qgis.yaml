@@ -55,6 +55,7 @@ jobs:
       - name: Build QGIS server
         run: |
           docker build --target=runner --build-arg=VERSION=${{ matrix.version }} \
+          --build-arg=GEOMAPFISH_VERSION=$(scripts/get-version --major) \
           --tag=camptocamp/geomapfish-qgisserver \
           docker/qgisserver;
           docker tag camptocamp/geomapfish-qgisserver \

@@ -122,7 +122,9 @@ def _pdf3(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.Heal
 
             status = resp.json()
             if "error" in status:
-                raise Exception(f"Failed to do the printing: {status['error']}")
+                raise Exception(  # pylint: disable=broad-exception-raised
+                    f"Failed to do the printing: {status['error']}",
+                )
             done = status["done"]
 
         path = request.route_path("printproxy_report_get", ref=job["ref"])
@@ -204,7 +206,9 @@ def _lang_files(
             if type_ == "ngeo":
                 url = f"/etc/geomapfish/static/{lang}.json"
             else:
-                raise Exception(f"Your language type value '{type_}' is not valid, available values [ngeo]")
+                raise Exception(  # pylint: disable=broad-exception-raised
+                    f"Your language type value '{type_}' is not valid, available values [ngeo]",
+                )
 
             name = f"checker_lang_{type_}_{lang}"
 
@@ -260,12 +264,12 @@ def _phantomjs(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check
                 try:
                     subprocess.check_output(cmd, env=env, timeout=70)
                 except subprocess.CalledProcessError as exception:
-                    raise Exception(
+                    raise Exception(  # pylint: disable=broad-exception-raised
                         f"{' '.join(exception.cmd)} exit with code: {exception.returncode}\n"
                         f"{exception.output.decode('utf-8')[:10000]}"
                     ) from exception
                 except subprocess.TimeoutExpired as exception:
-                    raise Exception(
+                    raise Exception(  # pylint: disable=broad-exception-raised
                         f"""Timeout:
 command: {' '.join(exception.cmd)}
 output:

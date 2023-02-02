@@ -367,7 +367,7 @@ class OGCServerSynchronizer:
             errors,
         )
         if url is None:
-            raise Exception("\n".join(errors))
+            raise Exception("\n".join(errors))  # pylint: disable=broad-exception-raised
 
         # Add functionality params
         # sparams = get_mapserver_substitution_params(self.request)
@@ -401,7 +401,7 @@ class OGCServerSynchronizer:
             "application/vnd.ogc.wms_xml",
             "text/xml",
         ]:
-            raise Exception(
+            raise Exception(  # pylint: disable=broad-exception-raised
                 f"GetCapabilities from URL '{url}' returns a wrong Content-Type: "
                 f"{response.headers.get('Content-Type', '')}\n{response.text}"
             )
