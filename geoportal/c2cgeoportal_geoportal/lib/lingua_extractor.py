@@ -253,7 +253,6 @@ def init_db(settings: Dict[str, Any]) -> None:
         session = DBSession()
         session.query(Theme).count()
     except:  # pylint: disable=bare-except
-
         # Init db sessions
 
         class R:

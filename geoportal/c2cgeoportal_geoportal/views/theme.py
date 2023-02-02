@@ -1214,7 +1214,6 @@ class Theme:
 
     @view_config(route_name="ogc_server_clear_cache", renderer="json")  # type: ignore
     def ogc_server_clear_cache_view(self) -> Dict[str, Any]:
-
         self._ogc_server_clear_cache(
             models.DBSession.query(main.OGCServer).filter_by(id=self.request.matchdict.get("id")).one()
         )
@@ -1239,7 +1238,6 @@ class Theme:
     async def _async_cache_invalidate_ogc_server_cb(
         self, ogc_server: main.OGCServer, url_internal_wfs: Url
     ) -> None:
-
         # Fill the cache
         await self.preload_ogc_server(ogc_server, url_internal_wfs, False)
 

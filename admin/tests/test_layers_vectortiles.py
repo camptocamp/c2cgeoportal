@@ -38,7 +38,6 @@ def layer_vectortiles_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("layer_vectortiles_test_data", "test_app")
 class TestLayerVectortiles(AbstractViewsTests):
-
     _prefix = "/admin/layers_vectortiles"
 
     def test_index_rendering(self, test_app):

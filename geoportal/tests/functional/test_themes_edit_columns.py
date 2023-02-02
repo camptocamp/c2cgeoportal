@@ -38,7 +38,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestThemesEditColumns(TestCase):
-
     _table_index = 0
 
     def setup_method(self, _):

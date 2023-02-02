@@ -46,7 +46,6 @@ from c2cgeoportal_geoportal import (
 
 
 class TestIncludeme(TestCase):
-
     config = None
 
     def setup_method(self, _):

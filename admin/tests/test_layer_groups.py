@@ -60,7 +60,6 @@ def layer_groups_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("layer_groups_test_data", "test_app")
 class TestLayersGroups(TestTreeGroup):
-
     _prefix = "/admin/layer_groups"
 
     def test_index_rendering(self, test_app):

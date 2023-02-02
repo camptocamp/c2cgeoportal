@@ -59,7 +59,6 @@ def metadatas_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("metadatas_test_data", "test_app")
 class TestMetadatasView(AbstractViewsTests):
-
     _prefix = "/admin/"
 
     def __metadata_ui_types(self):

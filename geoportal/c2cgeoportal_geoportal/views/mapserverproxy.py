@@ -108,7 +108,6 @@ class MapservProxy(OGCProxy):
                 self.params = {}
             else:
                 if self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
-
                     use_cache = self.lower_params["request"] in ("getlegendgraphic",)
 
                     # no user_id and role_id or cached queries

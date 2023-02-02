@@ -35,7 +35,6 @@ def oauth2_clients_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("oauth2_clients_test_data", "test_app")
 class TestOAuth2Client(TestTreeGroup):
-
     _prefix = "/admin/oauth2_clients"
 
     def test_index_rendering(self, test_app):

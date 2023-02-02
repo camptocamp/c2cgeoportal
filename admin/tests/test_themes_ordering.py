@@ -28,7 +28,6 @@ def theme_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("theme_test_data", "test_app")
 class TestThemeOrdering(TestTreeGroup):
-
     _prefix = "/admin/layertree/ordering"
 
     def test_edit(self, test_app, theme_test_data, dbsession):

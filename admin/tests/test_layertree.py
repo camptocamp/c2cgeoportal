@@ -103,7 +103,6 @@ def layertree_test_data(dbsession, transact):
 )
 @pytest.mark.usefixtures("layertree_test_data", "test_app")
 class TestLayerTreeView(AbstractViewsTests):
-
     _prefix = "/admin/layertree"
 
     def test_index(self, test_app):

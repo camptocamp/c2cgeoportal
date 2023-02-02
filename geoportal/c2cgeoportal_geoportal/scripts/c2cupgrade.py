@@ -247,7 +247,6 @@ class C2cUpgradeTool:
         except ConnectionRefusedError as exception:
             return False, "\n".join([f"Connection refused: {exception}", run_curl])
         if resp.status_code < 200 or resp.status_code >= 300:
-
             print(colorize("=============", Color.RED))
             print(colorize("Checker error", Color.RED))
             try:

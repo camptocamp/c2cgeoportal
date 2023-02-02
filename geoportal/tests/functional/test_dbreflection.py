@@ -37,7 +37,6 @@ from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestReflection(TestCase):
-
     _tables = None
 
     def setup_method(self, _):

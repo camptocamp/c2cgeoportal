@@ -36,7 +36,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestXSDGenerator(TestCase):
-
     _tables = None
 
     def setup_method(self, _):

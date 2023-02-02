@@ -48,7 +48,6 @@ EXPECTED_WELCOME_MAIL = (
 
 @pytest.mark.usefixtures("users_test_data", "test_app")
 class TestUser(AbstractViewsTests):
-
     _prefix = "/admin/users"
 
     def test_index_rendering(self, test_app):

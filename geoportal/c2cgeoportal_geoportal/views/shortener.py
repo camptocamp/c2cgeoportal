@@ -71,7 +71,6 @@ class Shortener:
 
     @view_config(route_name="shortener_create", renderer="json")  # type: ignore
     def create(self) -> Dict[str, str]:
-
         if "url" not in self.request.params:
             raise HTTPBadRequest("The parameter url is required")
 

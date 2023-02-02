@@ -92,7 +92,6 @@ def edit_url_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("edit_url_test_data", "test_app")
 class TestUrlEdit(AbstractViewsTests):
-
     _prefix = "/admin/"
 
     def _get(self, test_app, tablename, pk):
