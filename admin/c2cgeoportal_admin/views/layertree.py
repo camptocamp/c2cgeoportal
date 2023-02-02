@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ itemtypes_tables = {
 }
 
 
-@view_defaults(match_param=("application=admin"))
+@view_defaults(match_param="application=admin")
 class LayerTreeViews:
     """The layer tree administration view."""
 

@@ -141,7 +141,7 @@ def _set_common_headers(
         else:
             response.cache_control.public = True
     else:
-        raise Exception("Invalid cache type")
+        raise Exception("Invalid cache type")  # pylint: disable=broad-exception-raised
 
     if content_type is not None:
         response.content_type = content_type

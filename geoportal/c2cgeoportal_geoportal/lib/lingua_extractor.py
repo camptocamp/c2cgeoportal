@@ -300,7 +300,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             # For the print config
             if "templates" in gmf_config:
                 return self._collect_print_config(gmf_config, filename)
-            raise Exception("Not a known config file")
+            raise Exception("Not a known config file")  # pylint: disable=broad-exception-raised
 
     def _collect_app_config(self, filename: str) -> List[Message]:
         config.init(filename)
@@ -841,7 +841,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 )
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
-                raise Exception("Aborted")
+                raise Exception("Aborted")  # pylint: disable=broad-exception-raised
 
             try:
                 describe = parseString(response.text)

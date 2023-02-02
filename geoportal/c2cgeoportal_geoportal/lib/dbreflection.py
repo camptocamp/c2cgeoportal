@@ -176,12 +176,12 @@ def _create_class(
     from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
 
     exclude_properties = exclude_properties or ()
-    attributes = dict(
-        __table__=table,
-        __mapper_args__={"exclude_properties": exclude_properties},
-        __attributes_order__=attributes_order,
-        __enumerations_config__=enumerations_config,
-    )
+    attributes = {
+        "__table__": table,
+        "__mapper_args__": {"exclude_properties": exclude_properties},
+        "__attributes_order__": attributes_order,
+        "__enumerations_config__": enumerations_config,
+    }
     if pk_name is not None:
         attributes[pk_name] = Column(Integer, primary_key=True)
     # The randint is to fix the SAWarning: This declarative base already contains a class with the same
