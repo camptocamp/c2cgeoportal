@@ -68,7 +68,6 @@ def roles_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("roles_test_data", "test_app")
 class TestRole(TestTreeGroup):
-
     _prefix = "/admin/roles"
 
     def test_index_rendering(self, test_app):

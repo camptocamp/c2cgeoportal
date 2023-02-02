@@ -37,7 +37,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestLayers(TestCase):
-
     _table_index = 0
     _tables = None
 

@@ -37,7 +37,6 @@ from c2cgeoportal_geoportal import MapserverproxyRoutePredicate
 
 
 class TestMapserverproxyRoutePredicate(TestCase):
-
     predicate = MapserverproxyRoutePredicate(None, None)
 
     def test_hide_capabilities_unset(self):

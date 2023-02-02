@@ -31,7 +31,6 @@ def ogc_server_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("ogc_server_test_data", "test_app")
 class TestOGCServer(AbstractViewsTests):
-
     _prefix = "/admin/ogc_servers"
 
     def test_index_rendering(self, test_app):

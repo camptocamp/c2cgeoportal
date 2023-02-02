@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2021, Camptocamp SA
+# Copyright (c) 2014-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -247,7 +247,6 @@ class C2cUpgradeTool:
         except ConnectionRefusedError as exception:
             return False, "\n".join([f"Connection refused: {exception}", run_curl])
         if resp.status_code < 200 or resp.status_code >= 300:
-
             print(colorize("=============", Color.RED))
             print(colorize("Checker error", Color.RED))
             try:

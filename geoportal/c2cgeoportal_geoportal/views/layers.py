@@ -584,7 +584,6 @@ def get_layer_metadata(layer: "main.Layer") -> List[ColumnProperties]:
 
     for column_property in class_mapper(cls).iterate_properties:
         if isinstance(column_property, ColumnProperty):
-
             if len(column_property.columns) != 1:
                 raise NotImplementedError
 

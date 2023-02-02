@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2022, Camptocamp SA
+# Copyright (c) 2013-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -71,7 +71,6 @@ class Shortener:
 
     @view_config(route_name="shortener_create", renderer="json")  # type: ignore
     def create(self) -> Dict[str, str]:
-
         if "url" not in self.request.params:
             raise HTTPBadRequest("The parameter url is required")
 

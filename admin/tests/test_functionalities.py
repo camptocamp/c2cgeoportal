@@ -31,7 +31,6 @@ def functionality_test_data(dbsession, transact, settings):
 
 @pytest.mark.usefixtures("functionality_test_data", "test_app")
 class TestFunctionality(AbstractViewsTests):
-
     _prefix = "/admin/functionalities"
 
     def test_index_rendering(self, test_app):

@@ -45,7 +45,6 @@ def interface_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("interface_test_data", "test_app")
 class TestInterface(AbstractViewsTests):
-
     _prefix = "/admin/interfaces"
 
     def test_index_rendering(self, test_app):

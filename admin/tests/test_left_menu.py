@@ -24,7 +24,6 @@ def left_menu_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("test_app")
 class TestLeftMenu(AbstractViewsTests):
-
     _prefix = "/admin/roles"
 
     def test_index(self, test_app):

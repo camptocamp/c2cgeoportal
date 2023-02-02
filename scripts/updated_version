@@ -217,7 +217,6 @@ def get_versions(
 
 
 def print_package_update(package_old: Dict[str, str], package_new: Dict[str, str]) -> None:
-
     print("New packages:")
     for name, version in package_new.items():
         if name not in package_old:

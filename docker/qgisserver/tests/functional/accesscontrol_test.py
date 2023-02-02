@@ -35,7 +35,6 @@ def set_request_parameters(server_iface, params, env={}):
 
 
 def add_node_in_qgis_project(project, parent_node, node_def):
-
     if node_def["type"] == "layer":
         vlayer = QgsVectorLayer("Point", node_def["name"], "memory")
         if "shortName" in node_def:

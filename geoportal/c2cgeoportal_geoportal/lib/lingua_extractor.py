@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2022, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -253,7 +253,6 @@ def init_db(settings: Dict[str, Any]) -> None:
         session = DBSession()
         session.query(Theme).count()
     except:  # pylint: disable=bare-except
-
         # Init db sessions
 
         class R:

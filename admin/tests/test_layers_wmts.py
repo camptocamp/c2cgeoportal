@@ -39,7 +39,6 @@ def layer_wmts_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("layer_wmts_test_data", "test_app")
 class TestLayerWMTS(AbstractViewsTests):
-
     _prefix = "/admin/layers_wmts"
 
     def test_index_rendering(self, test_app):

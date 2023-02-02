@@ -5,7 +5,6 @@ from . import AbstractViewsTests
 
 @pytest.mark.usefixtures("test_app")
 class TestHome(AbstractViewsTests):
-
     _prefix = "/admin/"
 
     def test_index_rendering(self, test_app):

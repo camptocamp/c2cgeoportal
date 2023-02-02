@@ -50,7 +50,6 @@ def restriction_area_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("restriction_area_test_data", "test_app")
 class TestRestrictionAreaViews(TestTreeGroup):
-
     _prefix = "/admin/restriction_areas"
 
     def test_index_rendering(self, test_app):

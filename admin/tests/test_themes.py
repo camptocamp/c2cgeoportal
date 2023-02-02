@@ -91,7 +91,6 @@ def theme_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("theme_test_data", "test_app")
 class TestTheme(TestTreeGroup):
-
     _prefix = "/admin/themes"
 
     def test_index_rendering(self, test_app):
