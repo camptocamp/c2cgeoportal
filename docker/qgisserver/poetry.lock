@@ -220,14 +220,14 @@ flake8 = "*"
 
 [[package]]
 name = "geoalchemy2"
-version = "0.12.5"
+version = "0.13.1"
 description = "Using SQLAlchemy with Spatial Databases"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GeoAlchemy2-0.12.5-py2.py3-none-any.whl", hash = "sha256:3a59eb651df95b3dfee8e1d82f4d18c80b75f712860a0a3080defc6b0435070d"},
-    {file = "GeoAlchemy2-0.12.5.tar.gz", hash = "sha256:31c2502dce317b57b335e4eb87562d501fa39e46c728be514d9b86091e08dd67"},
+    {file = "GeoAlchemy2-0.13.1-py3-none-any.whl", hash = "sha256:7ffd577d6b032cce4ea12dbd3e4f85940b958867b166845a9d6b62f18b0ea2ee"},
+    {file = "GeoAlchemy2-0.13.1.tar.gz", hash = "sha256:57246d44aea90b4c52f84c006f6758d0e1951eb9018f10409a87141f02159b13"},
 ]
 
 [package.dependencies]
@@ -1723,4 +1723,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "1f100bff2e7742abe14e6a4f539a7e76508de532e5213b9554ce9522082679c4"
+content-hash = "c8421467573bc2cb76fa49c9c22226e875a568aefa7ad6a7065dce09f9c942b2"

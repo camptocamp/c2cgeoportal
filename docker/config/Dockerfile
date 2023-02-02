@@ -1,4 +1,4 @@
-FROM osgeo/gdal:ubuntu-small-3.4.3 as base-all
+FROM osgeo/gdal:ubuntu-small-3.6.2 as base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
@@ -29,7 +29,9 @@ FROM base-all as builder
 
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
-    PIP_NO_BINARY=fiona python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
+    PIP_NO_BINARY=fiona python3 -m pip install \
+    --use-deprecated=legacy-resolver \
+    --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && (strip /usr/local/lib/python3.*/dist-packages/*/*.so || true)
 
 ARG VERSION

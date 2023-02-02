@@ -77,7 +77,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
             tag = data[16:32]
             ciphertext = data[32:]
             cipher = AES.new(self.aeskey.encode("ascii"), AES.MODE_EAX, nonce)
-            auth = json.loads(cipher.decrypt_and_verify(ciphertext, tag).decode("utf-8"))  # type: ignore
+            auth = json.loads(cipher.decrypt_and_verify(ciphertext, tag).decode("utf-8"))
 
             if "t" in auth and "u" in auth and "p" in auth:
                 timestamp = int(auth["t"])
