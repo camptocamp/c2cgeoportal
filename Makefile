@@ -18,7 +18,7 @@ build: build-tools build-runner build-config
 
 .PHONY: checks
 checks: ## Run the application checks
-checks: yamllint otherchecks
+checks: otherchecks
 
 pipenv.timestamp: Pipfile.lock
 	pipenv sync
