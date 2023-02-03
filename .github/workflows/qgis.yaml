@@ -48,6 +48,9 @@ jobs:
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - run: scripts/get-version --auto-increment --github
+        id: version
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: make build-runner
       - run: make build-test-db
@@ -79,21 +82,9 @@ jobs:
         if: failure()
       - run: docker-compose down
 
-      - run: scripts/get-version --auto-increment --github
-        id: version
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-
       - name: Publish feature branch
         run: |
-          c2cciutils-publish --group=qgis-${{ matrix.version }}
+          c2cciutils-publish --group=qgis-${{ matrix.version }} --docker-versions=${{ steps.version.outputs.versions }} --snyk-version=${{ steps.version.outputs.snyk_version }}
         if: >
-          github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-          && ! contains(github.ref_name, '/')
-      - name: Publish version branch
-        run: |
-          c2cciutils-publish --group=qgis-${{ matrix.version }} --type=version_branch \
-            --version=${{ steps.version.outputs.major }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && steps.version.outputs.versions != ''

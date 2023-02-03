@@ -21,12 +21,6 @@ publish:
       - name: camptocamp/geomapfish
       - name: camptocamp/geomapfish-config
       - name: camptocamp/geomapfish-tools
-      - name: camptocamp/geomapfish
-        group: full
-      - name: camptocamp/geomapfish-config
-        group: full
-      - name: camptocamp/geomapfish-tools
-        group: full
       - name: camptocamp/geomapfishapp-geoportal
         # 2.4
       - name: camptocamp/geomapfish-qgisserver

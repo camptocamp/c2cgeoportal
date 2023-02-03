@@ -56,6 +56,8 @@ jobs:
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
+      - run: scripts/get-version --auto-increment --github
+        id: version
 
       - uses: actions/cache@v3
         with:
@@ -147,8 +149,6 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
-      - run: scripts/get-version --auto-increment --github
-        id: version
 
         # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
@@ -194,22 +194,12 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - name: Publish feature branch
+      - name: Publish
         run: |
-          c2cciutils-publish
-          c2cciutils-publish --group=full
+          c2cciutils-publish --docker-versions=${{ steps.version.outputs.versions }} --snyk-version=${{ steps.version.outputs.snyk_version }}
         if: >
-          github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-          && ! contains(github.ref_name, '/')
-      - name: Publish version branch
-        run: |
-          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
-          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.master_version }}
-          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && steps.version.outputs.versions != ''
 
       - name: Notify demo
         run: >

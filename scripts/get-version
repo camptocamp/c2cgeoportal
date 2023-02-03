@@ -34,6 +34,7 @@ import re
 import subprocess
 import sys
 
+import requests
 import yaml
 
 parser = argparse.ArgumentParser(description="Get and upgrade the minor version.")
@@ -71,20 +72,19 @@ minor = str(ci["minor"])
 
 last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
 main_branch = os.environ.get("MAIN_BRANCH", "master")
-major_version = os.environ.get("MAJOR_VERSION", "dev")
+major_version = os.environ.get("MAJOR_VERSION", "2.8")
+patch = ""
 if tag:
+    patch = tag
     full = tag + ".0"
 elif last_tag.startswith(major_version):
+    patch = last_tag
     full = last_tag + "." + minor
 elif main_branch == "master":
     full = major_version
 else:
     full = major_version + ".rc." + minor
-upgrade_version = full
 major = major_version
-
-if main_branch == "master":
-    upgrade_version = "master"
 
 if args.major:
     print(major)
@@ -93,19 +93,54 @@ if args.full:
     print(full)
     sys.exit(0)
 
-master_version = major_version
-if main_branch == "master":
-    master_version = "master"
+import c2cciutils
+
+latest = False
+security_response = requests.get(
+    "https://raw.githubusercontent.com/c2cgeoportal/master/SECURITY.md",
+    headers=c2cciutils.add_authorization_header({}),
+    timeout=30,
+)
+if (
+    security_response.ok
+    and docker_config.get("latest", c2cciutils.configuration.PUBLISH_DOCKER_LATEST_DEFAULT) is True
+):
+    security = c2cciutils.security.Security(security_response.text)
+    version_index = security.headers.index("Version")
+    latest = security.data[-1][version_index] == version
+
+versions = []
+snyk_version = ""
+upgrade_version = ""
+if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
+    branch = os.environ["GITHUB_REF"][11:]
+    if branch == "master":
+        versions = [major_version, "master"]
+        snyk_version = "master"
+        upgrade_version = "master"
+    elif branch == main_branch:
+        versions = [major_version, patch, full]
+        if latest:
+            versions.append("latest")
+        snyk_version = major_version
+        upgrade_version = full
+    elif "/" not in branch:
+        versions = [branch]
+if os.environ.get("GITHUB_REF", "").startswith("refs/pull/"):
+    pull_request = os.environ["GITHUB_REF"][10:-6]
+    versions = [pull_request]
 
 print("full: {full}".format(full=full))
 print("major: {major}".format(major=major))
 print("minor: {minor}".format(minor=minor))
-print("master_version: {master_version}".format(master_version=master_version))
 print("upgrade_version: {upgrade_version}".format(upgrade_version=upgrade_version))
+print("versions: {versions}".format(versions=",".join(versions)))
+print("snyk_version: {snyk_version}".format(snyk_version=",".join(snyk_version)))
 if args.github:
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
         output_file.write("full={full}\n".format(full=full))
         output_file.write("major={major}\n".format(major=major))
         output_file.write("minor={minor}\n".format(minor=minor))
-        output_file.write("master_version={master_version}\n".format(master_version=master_version))
         output_file.write("upgrade_version={upgrade_version}\n".format(upgrade_version=upgrade_version))
+        output_file.write("versions={versions}\n".format(versions=",".join(versions)))
+        output_file.write("snyk_version={snyk_version}\n".format(snyk_version=",".join(snyk_version)))
