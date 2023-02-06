@@ -87,7 +87,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          $typedFormgroup.find('.form-control').attr('disabled', false);
 
          $helpBlock = $typedFormgroup.find('p.help-block');
-         $helpBlock.text(description);
+         $helpBlock.html(description);
        };
        $name.change(function() {
          updateType();

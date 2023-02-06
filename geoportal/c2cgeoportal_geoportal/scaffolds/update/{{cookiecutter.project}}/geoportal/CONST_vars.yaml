@@ -500,10 +500,12 @@ vars:
         description: >
           Template string for the label of tree items in the search results, for example: "{name} ({theme})"
           Supported parameters:
-          * name: name of the tree item
-          * parent: parent of the item (may be a group, a block or a theme)
-          * block: name of the block to which the item belongs
-          * theme: name of the theme to which the item belongs
+          <ul>
+              <li>name (name of the tree item)</li>
+              <li>parent (parent of the item, may be a group, a block or a theme)</li>
+              <li>block (name of the block to which the item belongs)</li>
+              <li>theme (name of the theme to which the item belongs)</li>
+          </ul>
         relevant_for:
           - treeitem
       # Layers group

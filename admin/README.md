@@ -9,4 +9,4 @@ make preparedev
 make serve
 ```
 
-Now open http://localhost:8888/ in your favorite browser.
+Now open http://localhost:8888/admin/ in your favorite browser.
