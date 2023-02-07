@@ -215,7 +215,7 @@ jobs:
 
       - name: Publish to Transifex
         run: |
-          docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=${{ steps.version.outputs.full }} .
+          docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${{ steps.version.outputs.major }} --build-arg=VERSION=${{ steps.version.outputs.full }} .
           docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root transifex tail -f /dev/null
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
