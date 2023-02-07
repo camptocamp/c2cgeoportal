@@ -3,8 +3,8 @@ ci:
     - copyright
 
 repos:
-  - repo: https://github.com/sbrunner/pre-commit-hooks
-    rev: 0.2.3
+  - repo: https://github.com/sbrunner/hooks
+    rev: 0.3.2
     hooks:
       - id: copyright
   - repo: https://github.com/psf/black
