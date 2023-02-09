@@ -1,3 +1,5 @@
+##### 2.6.0.175
+* Snyk auto fix [ngeo#9010](https://github.com/camptocamp/ngeo/pull/9010)
 ##### 2.6.0.174
 * Update all patch versions (2.6) (patch) [ngeo#9000](https://github.com/camptocamp/ngeo/pull/9000)
 ##### 2.6.0.173
