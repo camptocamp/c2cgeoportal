@@ -24,11 +24,11 @@
 !vars.yaml
 !.tx
 !lingua.cfg
-**~
-**.pyc
-**.pyo
+**/*~
+**/*.pyc
+**/*.pyo
 **/__pycache__/
-**.egg-info/
+*/*.egg-info/
 commons/build/
 commons/dist/
 geoportal/build/
