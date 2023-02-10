@@ -24,4 +24,8 @@
 !vars.yaml
 !.tx
 !lingua.cfg
+**~
+**.pyc
+**.pyo
 **/__pycache__/
+**.egg-info/
