@@ -165,7 +165,6 @@ ENV VERSION=$VERSION
 
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
-    echo ${MAJOR_VERSION} ${VERSION} \
     && python3 -m pip install --no-use-pep517 --disable-pip-version-check --no-deps \
         --editable=commons \
         --editable=geoportal \
