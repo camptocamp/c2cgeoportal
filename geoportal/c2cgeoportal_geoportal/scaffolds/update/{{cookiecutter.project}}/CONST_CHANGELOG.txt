@@ -238,8 +238,8 @@ Information
    - ``./build`` script supports a new argument ``--dry-run`` which only displays the ``docker`` and
      ``docker-compose`` commands without running them.
 
-3. Upgrade c2cusgiutils to version 5, see more information in the
-   c2wsgiutils changelog https://github.com/camptocamp/c2cwsgiutils/blob/master/CHANGELOG.md.
+3. Upgrade c2cwsgiutils to version 5, see more information in the
+   c2cwsgiutils changelog https://github.com/camptocamp/c2cwsgiutils/blob/master/CHANGELOG.md.
 
 SQLAlchemy upgrade to version 1.4
 ---------------------------------
@@ -380,13 +380,7 @@ Changes to apply
    })
    ```
 
-7. To solve recursive import we required to move `Cache` and `set_common_headers` to an other file,
-   then you should  do the following change in your custom Python views:
-
-   -from c2cgeoportal_geoportal.lib.caching import Cache, set_common_headers
-   +from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
-
-8. To solve looping dependency we moved the `Cache` and `set_common_headers` function, then you should do
+7. To solve looping dependency we moved the `Cache` and `set_common_headers` function, then you should do
    in your custom Python views a modification like:
 
    ```diff
