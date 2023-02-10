@@ -5,21 +5,33 @@ import os
 import os.path
 import platform
 import re
+import shlex
 import shutil
 import stat
 import subprocess
 import sys
 import urllib.request
-from typing import Any, List
+from typing import TYPE_CHECKING, Any, List, Optional
 
 import yaml
 
+CompletedProcess = subprocess.CompletedProcess[str] if TYPE_CHECKING else subprocess.CompletedProcess
 
-def run(args: argparse.Namespace, command: List[str], **kwargs: Any) -> None:
+
+def run(
+    args: argparse.Namespace, command: List[str], exit_on_error: bool = True, **kwargs: Any
+) -> Optional[CompletedProcess]:
     if args.verbose or args.dry_run:
-        print(" ".join(command))
-    if not args.dry_run:
-        subprocess.run(command, **kwargs)  # nosec
+        print(shlex.join(command))
+    if not args.dry_run or "stdout" in kwargs:
+        if args.stack_trace and exit_on_error and not "checks" in kwargs:
+            kwargs["check"] = True
+        process = subprocess.run(command, **kwargs)  # nosec
+        if exit_on_error and process.returncode != 0:
+            print("An error occurred during execution of `{}`".format(shlex.join(command)))
+            sys.exit(process.returncode)
+        return process
+    return None
 
 
 def main() -> None:
@@ -47,6 +59,7 @@ def main() -> None:
     parser.add_argument(
         "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
     )
+    parser.add_argument("--stack-trace", action="store_true", help="Display the stak trace on error")
     parser.add_argument("env_files", nargs="*", help="The environment config")
     args = parser.parse_args()
 
@@ -77,9 +90,9 @@ def main() -> None:
         os.chmod("upgrade", os.stat("upgrade").st_mode | stat.S_IXUSR)
         try:
             if platform.system() == "Windows":
-                run(args, ["python", "upgrade", full_version] + debug_args, check=True)
+                run(args, ["python", "upgrade", full_version] + debug_args)
             else:
-                run(args, ["./upgrade", full_version] + debug_args, check=True)
+                run(args, ["./upgrade", full_version] + debug_args)
         except subprocess.CalledProcessError:
             sys.exit(1)
         sys.exit(0)
@@ -107,11 +120,7 @@ def main() -> None:
             if args.not_simple:
                 simple = False
 
-            git_hash = (
-                subprocess.run(["git", "rev-parse", "HEAD"], check=True, stdout=subprocess.PIPE)
-                .stdout.strip()
-                .decode()
-            )
+            git_hash = run(args, ["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode().strip()
 
             dest.write("SIMPLE={}\n".format(str(simple).upper()))
             dest.write("GIT_HASH={git_hash}\n".format(git_hash=git_hash))
@@ -124,7 +133,7 @@ def main() -> None:
         if not args.no_pull:
             # Pull all the images
             if not args.service:
-                run(args, ["docker-compose", "pull", "--ignore-pull-failures"], check=True)  # nosec
+                run(args, ["docker-compose", "pull", "--ignore-pull-failures"])  # nosec
             docker_compose_build_cmd.append("--pull")
 
         if args.service:
@@ -136,7 +145,7 @@ def main() -> None:
         try:
             env = {"DOCKER_BUILDKIT": "1", "COMPOSE_DOCKER_CLI_BUILD": "1"}
             env.update(os.environ)
-            run(args, docker_compose_build_cmd, check=True, env=env)  # nosec
+            run(args, docker_compose_build_cmd, env=env)  # nosec
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
@@ -144,16 +153,19 @@ def main() -> None:
     if args.fast_reload:
         services = [
             service
-            for service in subprocess.run(
-                ["docker-compose", "ps", "--services", "--all"], stdout=subprocess.PIPE, check=True
+            for service in run(
+                args,
+                ["docker-compose", "ps", "--services", "--all"],
+                stdout=subprocess.PIPE,
+                exit_on_error=True,
             )
             .stdout.decode()
             .splitlines()
             if not service.startswith("redis")
         ]
 
-        run(args, ["docker-compose", "rm", "--stop", "--force"] + services, check=True)
-        run(args, ["docker-compose", "up", "-d"], check=True)
+        run(args, ["docker-compose", "rm", "--stop", "--force"] + services)
+        run(args, ["docker-compose", "up", "-d"])
 
 
 if __name__ == "__main__":
