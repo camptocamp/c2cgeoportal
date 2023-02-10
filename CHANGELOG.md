@@ -1,3 +1,7 @@
+##### 2.7.0.185
+
+- No error on pull [c2cgeoportal#10343](https://github.com/camptocamp/c2cgeoportal/pull/10343)
+
 ##### 2.7.0.184
 
 - Fix changelog [c2cgeoportal#10340](https://github.com/camptocamp/c2cgeoportal/pull/10340)
