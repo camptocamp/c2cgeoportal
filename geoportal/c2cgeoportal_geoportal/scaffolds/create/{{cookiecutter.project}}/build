@@ -124,7 +124,7 @@ def main() -> None:
         if not args.no_pull:
             # Pull all the images
             if not args.service:
-                run(args, ["docker-compose", "pull"], check=True)  # nosec
+                run(args, ["docker-compose", "pull", "--ignore-pull-failures "], check=True)  # nosec
             docker_compose_build_cmd.append("--pull")
 
         if args.service:
