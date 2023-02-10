@@ -215,6 +215,9 @@ jobs:
 
       - name: Publish to Transifex
         run: |
+          git diff || true
+          git status || true
+          git status --ignored || true
           make build-tools
           docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root camptocamp/geomapfish-tools tail -f /dev/null
           docker exec transifex bash -c \
