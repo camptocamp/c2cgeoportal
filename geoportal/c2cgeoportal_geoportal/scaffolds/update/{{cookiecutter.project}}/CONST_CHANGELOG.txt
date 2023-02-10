@@ -238,8 +238,8 @@ Information
    - ``./build`` script supports a new argument ``--dry-run`` which only displays the ``docker`` and
      ``docker-compose`` commands without running them.
 
-3. Upgrade c2cusgiutils to version 5, see more information in the
-   c2wsgiutils changelog https://github.com/camptocamp/c2cwsgiutils/blob/master/CHANGELOG.md.
+3. Upgrade c2cwsgiutils to version 5, see more information in the
+   c2cwsgiutils changelog https://github.com/camptocamp/c2cwsgiutils/blob/master/CHANGELOG.md.
 
 SQLAlchemy upgrade to version 1.4
 ---------------------------------
