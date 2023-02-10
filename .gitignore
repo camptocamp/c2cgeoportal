@@ -6,6 +6,13 @@
 /*.timestamp
 /.mypy_cache/
 
+/admin/build/
+/admin/dist/
+/commons/build/
+/commons/dist/
+/geoportal/build/
+/geoportal/dist/
+
 # Files generated when we mount c2cgeoportal in the project
 /admin/tests/tests.ini
 /commons/tests/tests.yaml

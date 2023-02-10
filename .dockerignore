@@ -29,3 +29,7 @@
 **.pyo
 **/__pycache__/
 **.egg-info/
+commons/build/
+commons/dist/
+geoportal/build/
+geoportal/dist/
