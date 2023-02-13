@@ -54,7 +54,6 @@ def logs_test_data(dbsession, transact):
 
 @pytest.mark.usefixtures("logs_test_data", "test_app")
 class TestLog(AbstractViewsTests):
-
     _prefix = "/admin/logs"
 
     def test_index_rendering(self, test_app):
