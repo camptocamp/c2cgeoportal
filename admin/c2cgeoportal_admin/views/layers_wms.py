@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
-from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, OGCServer, TreeItem
+from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, LogAction, OGCServer, TreeItem
 
 _list_field = partial(ListField, LayerWMS)
 
@@ -130,7 +130,7 @@ class LayerWmsViews(DimensionLayerViews):
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
     def delete(self) -> Dict[str, Any]:
-        return super().delete()  # type: ignore
+        return super().delete()
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
@@ -171,6 +171,8 @@ class LayerWmsViews(DimensionLayerViews):
 
         dbsession.flush()
         mark_changed(dbsession)
+
+        self._create_log(LogAction.CONVERT_TO_WMTS, src, element_url_table="layers_wmts")
 
         return {
             "success": True,

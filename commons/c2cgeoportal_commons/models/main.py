@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2022, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import enum
 import logging
 import os
 import re
@@ -38,9 +39,10 @@ from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
+from sqlalchemy.ext.declarative import AbstractConcreteBase
 from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy.schema import Index
-from sqlalchemy.types import Boolean, Enum, Integer, String, Unicode
+from sqlalchemy.types import Boolean, DateTime, Enum, Integer, String, Unicode
 
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.lib.url import get_url2
@@ -1743,3 +1745,100 @@ class Dimension(Base):  # type: ignore
 
     def __str__(self) -> str:
         return f"{self.name}={self.value}[{self.id}]"
+
+
+class LogAction(enum.Enum):
+    """The log action enumeration."""
+
+    INSERT = enum.auto()
+    UPDATE = enum.auto()
+    DELETE = enum.auto()
+    SYNCHRONIZE = enum.auto()
+    CONVERT_TO_WMTS = enum.auto()
+    CONVERT_TO_WMS = enum.auto()
+
+
+class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
+    """The abstract log table representation."""
+
+    strict_attrs = True
+    __colanderalchemy_config__ = {
+        "title": _("Log"),
+        "plural": _("Logs"),
+    }
+
+    id = Column(Integer, primary_key=True, info={"colanderalchemy": {}})
+    date = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Date"),
+            }
+        },
+    )
+    action = Column(
+        Enum(LogAction, native_enum=False),
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Action"),
+            }
+        },
+    )
+    element_type = Column(
+        String(50),
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Element type"),
+            }
+        },
+    )
+    element_id = Column(
+        Integer,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Element identifier"),
+            }
+        },
+    )
+    element_name = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Element name"),
+            }
+        },
+    )
+    element_url_table = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Table segment of the element URL"),
+            }
+        },
+    )
+    username = Column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Username"),
+            }
+        },
+    )
+
+
+class Log(AbstractLog):
+    """The main log table representation."""
+
+    __tablename__ = "log"
+    __table_args__ = {"schema": _schema}
+    __mapper_args__ = {
+        "polymorphic_identity": "main",
+        "concrete": True,
+    }

@@ -44,7 +44,7 @@ from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
 
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import Base, _
-from c2cgeoportal_commons.models.main import Role
+from c2cgeoportal_commons.models.main import AbstractLog, Role
 
 try:
     from c2cgeoform.ext.deform_ext import RelationSelect2Widget
@@ -426,3 +426,14 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
     redirect_uri = Column(Unicode)
     code = Column(Unicode(100), unique=True)
     expire_at = Column(DateTime(timezone=True))  # in 10 minutes
+
+
+class Log(AbstractLog):
+    """The static log table representation."""
+
+    __tablename__ = "log"
+    __table_args__ = {"schema": _schema}
+    __mapper_args__ = {
+        "polymorphic_identity": "static",
+        "concrete": True,
+    }

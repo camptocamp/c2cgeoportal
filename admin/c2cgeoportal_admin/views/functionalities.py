@@ -32,11 +32,12 @@ from typing import Any, Dict
 import colander
 import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin import _
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import Functionality
 
 _list_field = partial(ListField, Functionality)
@@ -66,7 +67,7 @@ base_schema = GeoFormSchemaNode(
 
 
 @view_defaults(match_param="table=functionalities")
-class FunctionalityViews(AbstractViews):  # type: ignore
+class FunctionalityViews(LoggedViews):
     """The functionality administration view."""
 
     _list_fields = [_list_field("id"), _list_field("name"), _list_field("description"), _list_field("value")]

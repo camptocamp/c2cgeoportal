@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,17 +29,18 @@
 from functools import partial
 
 import sqlalchemy
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
 
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeGroup, TreeItem
 
 _list_field = partial(ListField, TreeItem)
 
 
-class TreeItemViews(AbstractViews):  # type: ignore
+class TreeItemViews(LoggedViews):
     """The admin tree item view."""
 
     _list_fields = [

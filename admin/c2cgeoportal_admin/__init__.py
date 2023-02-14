@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -82,6 +82,19 @@ def main(_, **settings):
         "dbsession",
         reify=True,
     )
+
+    # Add fake user as we do not have authentication from geoportal
+    from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+
+    config.add_request_method(
+        lambda request: User(
+            username="test_user",
+        ),
+        name="user",
+        property=True,
+    )
+
+    config.add_route("ogc_server_clear_cache", "/ogc_server_clear_cache/{id}")
 
     config.add_subscriber(add_renderer_globals, BeforeRender)
     config.add_subscriber(add_localizer, NewRequest)

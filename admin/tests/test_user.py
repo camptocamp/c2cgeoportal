@@ -88,7 +88,10 @@ class TestUser(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected, new="Nouveau")
 
-    def test_view_edit(self, test_app, users_test_data):
+    def test_view_edit(self, test_app, users_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log
+
         user = users_test_data["users"][9]
         roles = users_test_data["roles"]
 
@@ -121,14 +124,31 @@ class TestUser(AbstractViewsTests):
                 assert str(value or "") == str(getattr(user, key) or "")
         assert {roles[2].id, roles[3].id} == {role.id for role in user.roles}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "user"
+        assert log.element_id == user.id
+        assert log.element_name == user.username
+        assert log.username == "test_user"
+
     def test_delete(self, test_app, users_test_data, dbsession):
-        from c2cgeoportal_commons.models.static import User, user_role
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log, User, user_role
 
         user = users_test_data["users"][9]
         deleted_id = user.id
         test_app.delete(f"/admin/users/{deleted_id}", status=200)
         assert dbsession.query(User).get(deleted_id) is None
         assert dbsession.query(user_role).filter(user_role.c.user_id == user.id).count() == 0
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "user"
+        assert log.element_id == user.id
+        assert log.element_name == user.username
+        assert log.username == "test_user"
 
     @patch("c2cgeoportal_commons.lib.email_.smtplib.SMTP")
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
@@ -232,10 +252,12 @@ class TestUser(AbstractViewsTests):
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
     @pytest.mark.usefixtures("test_app")
     def test_submit_new(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data):
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log, User
+
         sender_mock = MagicMock()
         smtp_mock.return_value = sender_mock
         pw_gen_mock.return_value = "basile"
-        from c2cgeoportal_commons.models.static import User
 
         roles = users_test_data["roles"]
 
@@ -273,6 +295,14 @@ class TestUser(AbstractViewsTests):
             decode=True
         ).decode("utf8")
         assert "valid@email.net" == parts[0].items()[3][1]
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "user"
+        assert log.element_id == user.id
+        assert log.element_name == user.username
+        assert log.username == "test_user"
 
     def test_invalid_email(self, test_app):
         resp = test_app.post(

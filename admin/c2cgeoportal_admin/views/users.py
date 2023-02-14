@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 from functools import partial
 
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ListField
+from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
 from passwordgenerator import pwgenerator
 from pyramid.httpexceptions import HTTPFound
@@ -37,9 +37,10 @@ from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import aliased, subqueryload
 
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models.main import Role
-from c2cgeoportal_commons.models.static import User
+from c2cgeoportal_commons.models.static import Log, User
 
 _list_field = partial(ListField, User)
 
@@ -51,7 +52,7 @@ settings_role = aliased(Role)
 
 
 @view_defaults(match_param="table=users")
-class UserViews(AbstractViews):  # type: ignore
+class UserViews(LoggedViews):
     """The admin user view."""
 
     _list_fields = [
@@ -76,6 +77,8 @@ class UserViews(AbstractViews):  # type: ignore
     _id_field = "id"
     _model = User
     _base_schema = base_schema
+    _log_model = Log
+    _name_field = "username"
 
     def _base_query(self):
         return (

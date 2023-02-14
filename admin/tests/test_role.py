@@ -102,7 +102,7 @@ class TestRole(TestTreeGroup):
         self.check_grid_headers(resp, expected, new="Nouveau")
 
     def test_submit_new(self, dbsession, test_app, roles_test_data):
-        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.main import Log, LogAction, Role
 
         roles_test_data["roles"]
         functionalities = roles_test_data["functionalities"]
@@ -153,7 +153,17 @@ class TestRole(TestTreeGroup):
         assert set(role.restrictionareas) == {restrictionareas[0], restrictionareas[1]}
         assert set(role.users) == {users[0], users[1]}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "role"
+        assert log.element_id == role.id
+        assert log.element_name == role.name
+        assert log.username == "test_user"
+
     def test_edit(self, dbsession, test_app, roles_test_data):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         role = roles_test_data["roles"][10]
 
         # Ensure role.users is loaded with relationship "order_by"
@@ -272,6 +282,14 @@ class TestRole(TestTreeGroup):
         assert set(functionality_ids) == {f.id for f in role.functionalities}
         assert set(ra_ids) == {f.id for f in role.restrictionareas}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "role"
+        assert log.element_id == role.id
+        assert log.element_name == role.name
+        assert log.username == "test_user"
+
     def test_duplicate(self, roles_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Role
 
@@ -296,11 +314,19 @@ class TestRole(TestTreeGroup):
         assert set(role_proto.users) == set(role.users)
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Role
+        from c2cgeoportal_commons.models.main import Log, LogAction, Role
 
-        role_id = dbsession.query(Role.id).first().id
-        test_app.delete(f"/admin/roles/{role_id}", status=200)
-        assert dbsession.query(Role).get(role_id) is None
+        role = dbsession.query(Role).first()
+        test_app.delete(f"/admin/roles/{role.id}", status=200)
+        assert dbsession.query(Role).get(role.id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "role"
+        assert log.element_id == role.id
+        assert log.element_name == role.name
+        assert log.username == "test_user"
 
     def test_unicity_validator(self, roles_test_data, test_app):
         role_proto = roles_test_data["roles"][7]

@@ -72,7 +72,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         self.check_search(test_app, "restrictionarea_1", total=1)
 
     def test_submit_new(self, dbsession, test_app, restriction_area_test_data):
-        from c2cgeoportal_commons.models.main import RestrictionArea
+        from c2cgeoportal_commons.models.main import Log, LogAction, RestrictionArea
 
         roles = restriction_area_test_data["roles"]
         layers = restriction_area_test_data["layers"]
@@ -115,6 +115,14 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert set(restriction_area.roles) == {roles[0], roles[1]}
         assert set(restriction_area.layers) == {layers[0], layers[1]}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "restrictionarea"
+        assert log.element_id == restriction_area.id
+        assert log.element_name == restriction_area.name
+        assert log.username == "test_user"
+
     def test_unicity_validator(self, restriction_area_test_data, test_app):
         restriction_area = restriction_area_test_data["restriction_areas"][2]
 
@@ -124,6 +132,8 @@ class TestRestrictionAreaViews(TestTreeGroup):
         self._check_submission_problem(resp, f"{restriction_area.name} is already used.")
 
     def test_edit(self, test_app, restriction_area_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         restriction_area = restriction_area_test_data["restriction_areas"][0]
         roles = restriction_area_test_data["roles"]
 
@@ -163,13 +173,29 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert restriction_area.description == "new_description"
         assert set(restriction_area.roles) == {roles[i] for i in range(0, 3)}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "restrictionarea"
+        assert log.element_id == restriction_area.id
+        assert log.element_name == restriction_area.name
+        assert log.username == "test_user"
+
     def test_delete(self, test_app, restriction_area_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import RestrictionArea
+        from c2cgeoportal_commons.models.main import Log, LogAction, RestrictionArea
 
         restriction_area = restriction_area_test_data["restriction_areas"][0]
         deleted_id = restriction_area.id
         test_app.delete(f"/admin/restriction_areas/{deleted_id}", status=200)
         assert dbsession.query(RestrictionArea).get(deleted_id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "restrictionarea"
+        assert log.element_id == restriction_area.id
+        assert log.element_name == restriction_area.name
+        assert log.username == "test_user"
 
     def test_duplicate(self, restriction_area_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import RestrictionArea

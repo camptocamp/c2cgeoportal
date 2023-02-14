@@ -57,7 +57,6 @@ def app(app_env, dbsession):
     config.add_route("user_add", "user_add")
     config.add_route("users_nb", "users_nb")
     config.add_route("base", "/", static=True)
-    config.add_route("ogc_server_clear_cache", "/ogc_server_clear_cache/{id}", static=True)
     config.scan(package="tests")
     app = config.make_wsgi_app()
     yield app

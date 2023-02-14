@@ -105,6 +105,8 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert form["public"].checked
 
     def test_edit(self, test_app, layer_vectortiles_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         layer = layer_vectortiles_test_data["layers"][0]
 
         form = self.get_item(test_app, layer.id).form
@@ -157,8 +159,16 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in layer.interfaces}
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "layer_vectortiles"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"
+
     def test_submit_new(self, dbsession, test_app, layer_vectortiles_test_data):
-        from c2cgeoportal_commons.models.main import LayerVectorTiles
+        from c2cgeoportal_commons.models.main import LayerVectorTiles, Log, LogAction
 
         resp = test_app.post(
             "/admin/layers_vectortiles/new",
@@ -176,6 +186,14 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert str(layer.id) == re.match(
             r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "layer_vectortiles"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"
 
     def test_duplicate(self, layer_vectortiles_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerVectorTiles
@@ -211,12 +229,20 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert layer_vectortiles_test_data["layers"][3].metadatas[1].name == layer.metadatas[1].name
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Layer, LayerVectorTiles, TreeItem
+        from c2cgeoportal_commons.models.main import Layer, LayerVectorTiles, Log, LogAction, TreeItem
 
-        layer_id = dbsession.query(LayerVectorTiles.id).first().id
+        layer = dbsession.query(LayerVectorTiles).first()
 
-        test_app.delete(f"/admin/layers_vectortiles/{layer_id}", status=200)
+        test_app.delete(f"/admin/layers_vectortiles/{layer.id}", status=200)
 
-        assert dbsession.query(LayerVectorTiles).get(layer_id) is None
-        assert dbsession.query(Layer).get(layer_id) is None
-        assert dbsession.query(TreeItem).get(layer_id) is None
+        assert dbsession.query(LayerVectorTiles).get(layer.id) is None
+        assert dbsession.query(Layer).get(layer.id) is None
+        assert dbsession.query(TreeItem).get(layer.id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "layer_vectortiles"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -61,6 +61,7 @@ def includeme(config):
         LayerVectorTiles,
         LayerWMS,
         LayerWMTS,
+        Log,
         OGCServer,
         RestrictionArea,
         Role,
@@ -84,6 +85,7 @@ def includeme(config):
         ("functionalities", Functionality),
         ("interfaces", Interface),
         ("oauth2_clients", OAuth2Client),
+        ("logs", Log),
     ]
 
     admin_interface_config = config.registry.settings["admin_interface"]

@@ -52,7 +52,7 @@ class TestFunctionality(AbstractViewsTests):
         self.check_search(test_app, "default_basemap", total=1)
 
     def test_submit_new(self, dbsession, test_app):
-        from c2cgeoportal_commons.models.main import Functionality
+        from c2cgeoportal_commons.models.main import Functionality, Log, LogAction
 
         resp = test_app.post(
             "/admin/functionalities/new",
@@ -65,7 +65,17 @@ class TestFunctionality(AbstractViewsTests):
         ).group(1)
         assert functionality.name == "new_name"
 
-    def test_edit(self, test_app, functionality_test_data):
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "functionality"
+        assert log.element_id == functionality.id
+        assert log.element_name == functionality.name
+        assert log.username == "test_user"
+
+    def test_edit(self, test_app, functionality_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         functionality = functionality_test_data["functionalities"][0]
         resp = test_app.get(f"/admin/functionalities/{functionality.id}", status=200)
         form = resp.form
@@ -76,13 +86,29 @@ class TestFunctionality(AbstractViewsTests):
         assert form.submit().status_int == 302
         assert functionality.description == "new_description"
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "functionality"
+        assert log.element_id == functionality.id
+        assert log.element_name == functionality.name
+        assert log.username == "test_user"
+
     def test_delete(self, test_app, functionality_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import Functionality
+        from c2cgeoportal_commons.models.main import Functionality, Log, LogAction
 
         functionality = functionality_test_data["functionalities"][0]
         deleted_id = functionality.id
         test_app.delete(f"/admin/functionalities/{deleted_id}", status=200)
         assert dbsession.query(Functionality).get(deleted_id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "functionality"
+        assert log.element_id == functionality.id
+        assert log.element_name == functionality.name
+        assert log.username == "test_user"
 
     def test_duplicate(self, functionality_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import Functionality

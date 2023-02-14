@@ -58,7 +58,8 @@ class TestOAuth2Client(TestTreeGroup):
         self.check_search(test_app, client.client_id, total=1)
 
     def test_submit_new(self, dbsession, test_app, oauth2_clients_test_data):
-        from c2cgeoportal_commons.models.static import OAuth2Client
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
         resp = test_app.post(
             "/admin/oauth2_clients/new",
@@ -83,7 +84,18 @@ class TestOAuth2Client(TestTreeGroup):
         assert oauth2_client.secret == "12345"
         assert oauth2_client.redirect_uri == "http://127.0.0.1:7070/bis"
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.INSERT
+        assert log.element_type == "oauth2_client"
+        assert log.element_id == oauth2_client.id
+        assert log.element_name == oauth2_client.client_id
+        assert log.username == "test_user"
+
     def test_edit_then_save(self, dbsession, test_app, oauth2_clients_test_data):
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log
+
         oauth2_client = oauth2_clients_test_data["oauth2_clients"][10]
 
         dbsession.expire(oauth2_client)
@@ -111,6 +123,14 @@ class TestOAuth2Client(TestTreeGroup):
         assert "New secret" == oauth2_client.secret
         assert "New redirect URI" == oauth2_client.redirect_uri
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "oauth2_client"
+        assert log.element_id == oauth2_client.id
+        assert log.element_name == oauth2_client.client_id
+        assert log.username == "test_user"
+
     def test_duplicate(self, oauth2_clients_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.static import OAuth2Client
 
@@ -133,11 +153,20 @@ class TestOAuth2Client(TestTreeGroup):
         assert oauth2_client_proto.id != oauth2_client.id
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.static import OAuth2Client
+        from c2cgeoportal_commons.models.main import LogAction
+        from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
-        oauth2_client_id = dbsession.query(OAuth2Client.id).first().id
-        test_app.delete(f"/admin/oauth2_clients/{oauth2_client_id}", status=200)
-        assert dbsession.query(OAuth2Client).get(oauth2_client_id) is None
+        oauth2_client = dbsession.query(OAuth2Client).first()
+        test_app.delete(f"/admin/oauth2_clients/{oauth2_client.id}", status=200)
+        assert dbsession.query(OAuth2Client).get(oauth2_client.id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "oauth2_client"
+        assert log.element_id == oauth2_client.id
+        assert log.element_name == oauth2_client.client_id
+        assert log.username == "test_user"
 
     def test_unicity_validator(self, oauth2_clients_test_data, test_app):
         oauth2_client_proto = oauth2_clients_test_data["oauth2_clients"][7]

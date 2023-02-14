@@ -101,6 +101,8 @@ class TestLayerWMTS(AbstractViewsTests):
         assert default_wmts.matrix_set == self.get_first_field_named(form, "matrix_set").value
 
     def test_edit(self, test_app, layer_wmts_test_data, dbsession):
+        from c2cgeoportal_commons.models.main import Log, LogAction
+
         layer = layer_wmts_test_data["layers"][0]
 
         form = self.get_item(test_app, layer.id).form
@@ -159,6 +161,14 @@ class TestLayerWMTS(AbstractViewsTests):
         assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in layer.interfaces}
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.UPDATE
+        assert log.element_type == "layer_wmts"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"
+
     def test_duplicate(self, layer_wmts_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMTS
 
@@ -189,15 +199,23 @@ class TestLayerWMTS(AbstractViewsTests):
         ).group(1)
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Layer, LayerWMTS, TreeItem
+        from c2cgeoportal_commons.models.main import Layer, LayerWMTS, Log, LogAction, TreeItem
 
-        layer_id = dbsession.query(LayerWMTS.id).first().id
+        layer = dbsession.query(LayerWMTS).first()
 
-        test_app.delete(f"/admin/layers_wmts/{layer_id}", status=200)
+        test_app.delete(f"/admin/layers_wmts/{layer.id}", status=200)
 
-        assert dbsession.query(LayerWMTS).get(layer_id) is None
-        assert dbsession.query(Layer).get(layer_id) is None
-        assert dbsession.query(TreeItem).get(layer_id) is None
+        assert dbsession.query(LayerWMTS).get(layer.id) is None
+        assert dbsession.query(Layer).get(layer.id) is None
+        assert dbsession.query(TreeItem).get(layer.id) is None
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.DELETE
+        assert log.element_type == "layer_wmts"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"
 
     def test_unicity_validator(self, layer_wmts_test_data, test_app):
         layer = layer_wmts_test_data["layers"][2]
@@ -247,8 +265,16 @@ class TestLayerWMTS(AbstractViewsTests):
         )
 
     def test_convert_without_wms_defaults(self, test_app, layer_wmts_test_data, dbsession):
-        from c2cgeoportal_commons.models.main import LayerWMS
+        from c2cgeoportal_commons.models.main import LayerWMS, Log, LogAction
 
         dbsession.delete(LayerWMS.get_default(dbsession))
         layer = layer_wmts_test_data["layers"][3]
         test_app.post(f"/admin/layers_wmts/{layer.id}/convert_to_wms", status=200)
+
+        log = dbsession.query(Log).one()
+        assert log.date != None
+        assert log.action == LogAction.CONVERT_TO_WMS
+        assert log.element_type == "layer_wmts"
+        assert log.element_id == layer.id
+        assert log.element_name == layer.name
+        assert log.username == "test_user"

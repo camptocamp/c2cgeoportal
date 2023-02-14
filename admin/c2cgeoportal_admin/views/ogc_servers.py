@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,21 +29,22 @@
 import logging
 import threading
 from functools import partial
-from typing import Any, Dict, List, cast
+from typing import Any, Dict, List, Union, cast
 
 import requests
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField, UserMessage
 from deform.widget import FormWidget
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
 from pyramid.view import view_config, view_defaults
 from sqlalchemy import inspect
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
+from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import cache_invalidate_cb
-from c2cgeoportal_commons.models.main import OGCServer
+from c2cgeoportal_commons.models.main import LogAction, OGCServer
 
 _list_field = partial(ListField, OGCServer)
 
@@ -54,7 +55,7 @@ LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
-class OGCServerViews(AbstractViews):  # type: ignore
+class OGCServerViews(LoggedViews):
     """The OGC server administration view."""
 
     _list_fields = [
@@ -149,9 +150,10 @@ class OGCServerViews(AbstractViews):  # type: ignore
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
     )
-    def save(self) -> Dict[str, Any]:
-        result: Dict[str, Any] = super().save()
-        self._update_cache(self._get_object())
+    def save(self) -> Union[HTTPFound, Dict[str, Any]]:
+        result: Union[HTTPFound, Dict[str, Any]] = super().save()
+        if isinstance(result, HTTPFound):
+            self._update_cache(self._obj)
         return result
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
@@ -202,12 +204,18 @@ class OGCServerViews(AbstractViews):  # type: ignore
                 force_ordering=force_ordering,
                 clean=clean,
             )
+
             if "check" in self._request.params:
                 synchronizer.check_layers()
+
             elif "dry-run" in self._request.params:
                 synchronizer.synchronize(dry_run=True)
+
             elif "synchronize" in self._request.params:
                 synchronizer.synchronize()
+
+                self._create_log(LogAction.SYNCHRONIZE, obj)
+
             return {
                 "ogcserver": obj,
                 "success": True,

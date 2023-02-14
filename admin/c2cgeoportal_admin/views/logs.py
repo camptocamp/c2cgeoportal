@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2023-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,40 +25,35 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
 from functools import partial
 
-from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField
 from pyramid.view import view_config, view_defaults
 
-from c2cgeoportal_admin.views.logged_views import LoggedViews
-from c2cgeoportal_commons.models.main import Interface
+from c2cgeoportal_commons.models import _
+from c2cgeoportal_commons.models.main import AbstractLog
 
-_list_field = partial(ListField, Interface)
-
-base_schema = GeoFormSchemaNode(Interface)
+_list_field = partial(ListField, AbstractLog)
 
 
-@view_defaults(match_param="table=interfaces")
-class InterfacesViews(LoggedViews):
-    """The interface administration view."""
+@view_defaults(match_param="table=logs")
+class LogViews(AbstractViews):  # type: ignore
+    """The theme administration view."""
 
+    # We pass labels explicitly because actually we are not able to get info
+    # from InstrumentedAttribute created from AbstractConcreteBase.
     _list_fields = [
         _list_field("id"),
-        _list_field("name"),
-        _list_field("description"),
-        _list_field(
-            "layers", renderer=lambda interface: ", ".join([layer.name or "" for layer in interface.layers])
-        ),
-        _list_field(
-            "theme",
-            renderer=lambda interface: ", ".join([f"{t.name}-{t.name}" or "" for t in interface.theme]),
-        ),
+        _list_field("date", label=_("Date")),
+        _list_field("username", label=_("Username")),
+        _list_field("action", label=_("Action"), renderer=lambda log: log.action.name),
+        _list_field("element_type", label=_("Element type")),
+        _list_field("element_id", label=_("Element identifier")),
+        _list_field("element_name", label=_("Element name")),
     ]
+
     _id_field = "id"
-    _model = Interface
-    _base_schema = base_schema
+    _model = AbstractLog
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
     def index(self):
@@ -68,20 +63,27 @@ class InterfacesViews(LoggedViews):
     def grid(self):
         return super().grid()
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
-        return super().edit()
+    def _grid_actions(self):
+        return []
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
-        return super().save()
+    def _grid_item_actions(self, item):
+        element_url = self._request.route_url(
+            "c2cgeoform_item",
+            table=item.element_url_table,
+            id=item.element_id,
+        )
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
-    def delete(self):
-        return super().delete()
+        return {
+            "dblclick": element_url,
+            "dropdown": [
+                ItemAction(
+                    name="edit_element",
+                    label=_("Edit element"),
+                    icon="glyphicon glyphicon-pencil",
+                    url=element_url,
+                ).to_dict(self._request)
+            ],
+        }
 
-    @view_config(
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
-    )
-    def duplicate(self):
-        return super().duplicate()
+    def _item_actions(self, item, readonly=False):
+        return []
