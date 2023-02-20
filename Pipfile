@@ -45,7 +45,7 @@ translationstring = "==1.4"  # admin
 c2cwsgiutils = {version = "==5.0.1", extras = ["broadcast", "profiler", "standard"]}
 oauthlib = "==3.2.2"
 tilecloud = "==1.8.2" # geoportal
-azure-storage-blob = "==12.13.1"
+azure-storage-blob = "==12.14.1"
 basicauth = "==0.4.1"
 setuptools = "==65.5.1"
 # Lock dependencies
@@ -88,9 +88,6 @@ jmespath = "==0.10.0"
 lingua = "==4.15.0"
 lxml = "==4.9.2"
 markupsafe = "==2.1.2"
-msal = "==1.17.0"
-msal-extensions = "==0.3.1"
-msrest = "==0.6.21"
 munch = "==2.5.0"
 netifaces = "==0.11.0"
 networkx = "==2.6.3"
@@ -203,6 +200,7 @@ smmap = "==5.0.0"
 snowballstemmer = "==2.2.0"
 soupsieve = "==2.3.2.post1"
 types-urllib3 = "==1.26.25.6"
+cryptography = "==39.0.1"
 
 [requires]
 python_version = "3.8"
