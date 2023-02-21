@@ -1,3 +1,7 @@
+##### 2.7.0.191
+
+- [Backport 2.7] Fix check connection [ngeo#9013](https://github.com/camptocamp/ngeo/pull/9013)
+
 ##### 2.7.0.189
 
 - Fix CVE [c2cgeoportal#10348](https://github.com/camptocamp/c2cgeoportal/pull/10348)
