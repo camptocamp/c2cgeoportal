@@ -57,6 +57,7 @@ services:
     environment:
       - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
       - TILECLOUD_CHAIN_SESSION_SECRET=secret
+      - TILECLOUD_CHAIN_SESSION_SALT=salt
     volumes:
       - ./docker/test-tilecloudchain:/etc/tilegeneration
 
