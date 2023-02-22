@@ -1,0 +1,288 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Language-Team: Breton (https://www.transifex.com/camptocamp/teams/36764/br/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: br\n"
+"Plural-Forms: nplurals=5; plural=((n%10 == 1) && (n%100 != 11) && (n%100 !=71) && (n%100 !=91) ? 0 :(n%10 == 2) && (n%100 != 12) && (n%100 !=72) && (n%100 !=92) ? 1 :(n%10 ==3 || n%10==4 || n%10==9) && (n%100 < 10 || n% 100 > 19) && (n%100 < 70 || n%100 > 79) && (n%100 < 90 || n%100 > 99) ? 2 :(n != 0 && n % 1000000 == 0) ? 3 : 4);\n"
+
+#: contribs/gmf/apps/desktop/Controller.js:126
+#: contribs/gmf/apps/desktop_alt/Controller.js:169
+#: contribs/gmf/apps/oeedit/Controller.js:222
+msgid "Add a layer"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/Controller.js:125
+#: contribs/gmf/apps/desktop_alt/Controller.js:168
+#: contribs/gmf/apps/oeedit/Controller.js:221
+msgid "Add a sub theme"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/Controller.js:124
+#: contribs/gmf/apps/desktop_alt/Controller.js:167
+#: contribs/gmf/apps/oeedit/Controller.js:220
+msgid "Add a theme"
+msgstr ""
+
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:4
+msgid "Alternative Desktop Application"
+msgstr ""
+
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:4
+msgid "Alternative Mobile Application"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:185
+msgid "Area"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:111
+#: contribs/gmf/apps/mobile/index.html.ejs:147
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:108
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:145
+msgid "Back"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:118
+#: contribs/gmf/apps/mobile/index.html.ejs:132
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:115
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:130
+msgid "Background"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:102
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:99
+msgid "Close"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:167
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:165
+msgid "Coordinate"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:112
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:109
+msgid "Data"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:4
+msgid "Desktop Application"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:206
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:224
+msgid ""
+"Draw a line on the map to display the corresponding elevation profile.\n"
+"                    Use double-click to finish the drawing."
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:146
+#: contribs/gmf/apps/desktop/index.html.ejs:73
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:163
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:70
+msgid "Draw and Measure"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:200
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:217
+msgid "Draw profile line"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:173
+#: contribs/gmf/apps/desktop/index.html.ejs:83
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:190
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:81
+msgid "Editing"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/contextualdata.html:43
+#: contribs/gmf/apps/iframe_api/contextualdata.html:43
+#: contribs/gmf/apps/oeedit/contextualdata.html:43
+msgid "Elevation (Aster)"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/contextualdata.html:35
+#: contribs/gmf/apps/iframe_api/contextualdata.html:35
+#: contribs/gmf/apps/oeedit/contextualdata.html:35
+msgid "Elevation (SRTM)"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:159
+#: contribs/gmf/apps/desktop/index.html.ejs:77
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:176
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:74
+msgid "Filter"
+msgstr ""
+
+#: contribs/gmf/apps/iframe_api/index.html.ejs:4
+msgid "Iframe API Application"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:226
+#: contribs/gmf/apps/desktop/index.html.ejs:99
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:101
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:257
+msgid "Import Layer"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:178
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:195
+msgid "In order to use the editing tool, you must log in first."
+msgstr ""
+
+#: contribs/gmf/apps/desktop_alt/Controller.js:166
+msgid "Learning [merged]"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:176
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:174
+msgid "Length"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:127
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:133
+msgid "Loading themes, please wait..."
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:41
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:37
+#: contribs/gmf/apps/oeedit/index.html.ejs:32
+msgid "Loading..."
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:117
+#: contribs/gmf/apps/desktop/index.html.ejs:65
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:123
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:62
+#: contribs/gmf/apps/mobile/index.html.ejs:155
+#: contribs/gmf/apps/mobile/index.html.ejs:190
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:153
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:179
+msgid "Login"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:154
+#: contribs/gmf/apps/mobile/index.html.ejs:159
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:152
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:157
+msgid "Measure tools"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:4
+msgid "Mobile Application"
+msgstr ""
+
+#: contribs/gmf/apps/desktop_alt/Controller.js:165
+msgid "OSM_time (merged)"
+msgstr ""
+
+#: contribs/gmf/apps/desktop_alt/Controller.js:164
+msgid "OSM_time_merged"
+msgstr ""
+
+#: contribs/gmf/apps/oeedit/index.html.ejs:62
+#: contribs/gmf/apps/oeedit/index.html.ejs:80
+msgid "Object Editing"
+msgstr ""
+
+#: contribs/gmf/apps/oeedit/index.html.ejs:4
+msgid "ObjectEditing - Edit Application"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:134
+#: contribs/gmf/apps/desktop/index.html.ejs:69
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:140
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:66
+msgid "Print"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:192
+#: contribs/gmf/apps/desktop/index.html.ejs:88
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:209
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:86
+msgid "Profile"
+msgstr ""
+
+#: contribs/gmf/apps/oeedit/index.html.ejs:58
+#: contribs/gmf/apps/oeedit/index.html.ejs:71
+msgid "Query"
+msgstr ""
+
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:105
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:268
+msgid "Routing"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:217
+#: contribs/gmf/apps/desktop/index.html.ejs:92
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:248
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:94
+msgid "Selection"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:105
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:111
+msgid "Share this map"
+msgstr ""
+
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:235
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:90
+msgid "Street View"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/contextualdata.html:11
+#: contribs/gmf/apps/iframe_api/contextualdata.html:11
+#: contribs/gmf/apps/oeedit/contextualdata.html:11
+msgid "Swiss grid (LV03)"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/contextualdata.html:3
+#: contribs/gmf/apps/iframe_api/contextualdata.html:3
+#: contribs/gmf/apps/oeedit/contextualdata.html:3
+msgid "Swiss grid (LV95)"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:40
+#: contribs/gmf/apps/oeedit/index.html.ejs:31
+msgid "Theme:"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/index.html.ejs:45
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:41
+#: contribs/gmf/apps/mobile/index.html.ejs:121
+#: contribs/gmf/apps/mobile/index.html.ejs:139
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:118
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:137
+#: contribs/gmf/apps/oeedit/index.html.ejs:36
+msgid "Themes"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:148
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:146
+msgid "Tools"
+msgstr ""
+
+#: contribs/gmf/apps/desktop/contextualdata.html:19
+#: contribs/gmf/apps/iframe_api/contextualdata.html:19
+#: contribs/gmf/apps/oeedit/contextualdata.html:19
+msgid "Wgs Coord."
+msgstr ""
+
+#: contribs/gmf/apps/desktop/contextualdata.html:27
+#: contribs/gmf/apps/iframe_api/contextualdata.html:27
+#: contribs/gmf/apps/oeedit/contextualdata.html:27
+msgid "Wgs Coord. DMS"
+msgstr ""
+
+#: contribs/gmf/apps/mobile/index.html.ejs:103
+#: contribs/gmf/apps/mobile_alt/index.html.ejs:100
+msgid ""
+"You're using the mobile application. Check out the <a "
+"href=\"{{url}}\">standard application</a>."
+msgstr ""
+
+#: contribs/gmf/apps/desktop_alt/index.html.ejs:153
+msgid "debug"
+msgstr ""

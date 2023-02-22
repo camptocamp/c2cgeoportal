@@ -101,11 +101,9 @@ RUN \
     curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
 WORKDIR /opt/c2cgeoportal
-COPY dependencies.mk vars.yaml ./
-COPY .tx/ .tx/
+
 ARG MAJOR_VERSION
 ENV MAJOR_VERSION=$MAJOR_VERSION
-RUN make --makefile=dependencies.mk dependencies
 
 COPY bin/ bin/
 COPY scripts/ scripts/
@@ -113,7 +111,6 @@ COPY geoportal/c2cgeoportal_geoportal/scaffolds/ geoportal/c2cgeoportal_geoporta
 COPY build.mk lingua.cfg ./
 
 RUN mv bin/import-ngeo-apps bin/eval-templates bin/wait-db bin/transifex-init bin/run bin/run-git /usr/bin/
-RUN make --makefile=build.mk dependencies-touch
 RUN make --makefile=build.mk build
 
 COPY commons/ commons/

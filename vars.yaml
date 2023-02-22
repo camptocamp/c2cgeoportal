@@ -1,8 +1,0 @@
----
-vars:
-  tx_version: '{TX_VERSION}'
-  tx_languages: '{LANGUAGES}'
-
-environment:
-  - TX_VERSION
-  - LANGUAGES
