@@ -1,3 +1,7 @@
+##### 2.7.0.192
+
+- Be able to customize the FRONT_LOG_DIRECTORY for Windows compatibility [c2cgeoportal#10342](https://github.com/camptocamp/c2cgeoportal/pull/10342)
+
 ##### 2.7.0.191
 
 - [Backport 2.7] Fix check connection [ngeo#9013](https://github.com/camptocamp/ngeo/pull/9013)
