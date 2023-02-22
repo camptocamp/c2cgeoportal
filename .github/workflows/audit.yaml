@@ -9,7 +9,7 @@ on:
     - cron: '30 2 * * *'
 
 jobs:
-  main:
+  audit:
     runs-on: ${{ matrix.os }}
     name: Audit
     timeout-minutes: 20
