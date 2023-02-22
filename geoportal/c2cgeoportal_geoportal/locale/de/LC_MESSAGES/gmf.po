@@ -1,0 +1,980 @@
+#
+# Translators:
+# Camptocamp geospatial <geospatial-bot@camptocamp.com>, 2020
+# Renata Müller <renata.mueller@camptocamp.com>, 2021
+# Wolfgang Kaltz <wolfgang.kaltz@camptocamp.com>, 2022
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Last-Translator: Wolfgang Kaltz <wolfgang.kaltz@camptocamp.com>, 2022\n"
+"Language-Team: German (https://www.transifex.com/camptocamp/teams/36764/de/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: contribs/gmf/src/editing/editFeatureSelectorComponent.html:10
+msgid "-- Choose a layer --"
+msgstr "-- Wählen Sie eine Ebene --"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:11
+msgid "-- Layer to filter --"
+msgstr "-- Ebene zum filtern --"
+
+#: contribs/gmf/src/authentication/component.html:93
+msgid "A new password has just been sent to you by e-mail."
+msgstr "Ein neues Passwort wurde Ihnen per E-Mail gesendet."
+
+#: contribs/gmf/src/print/component.html:197
+msgid "Abort"
+msgstr "Abbrechen"
+
+#: contribs/gmf/src/objectediting/toolsComponent.html:31
+msgid "Add a linestring to the geometry"
+msgstr "Linie der Geometrie hinzufügen"
+
+#: contribs/gmf/src/objectediting/toolsComponent.html:14
+msgid "Add a point to the geometry"
+msgstr "Punkt der Geometrie hinzufügen"
+
+#: contribs/gmf/src/objectediting/toolsComponent.html:48
+msgid "Add a polygon to the geometry"
+msgstr "Polygone der Geometrie hinzufügen"
+
+#: contribs/gmf/src/import/wmsCapabilityLayertreeComponent.html:35
+#: contribs/gmf/src/import/wmtsCapabilityLayertreeComponent.html:32
+msgid "Add layer"
+msgstr "Ebene hinzufügen"
+
+#: contribs/gmf/src/mobile/measure/baseComponent.html:11
+msgid "Add new point"
+msgstr "Punkt hinzufügen"
+
+#: contribs/gmf/src/query/gridComponent.html:96
+msgid "All"
+msgstr "Alle"
+
+#: contribs/gmf/src/query/windowComponent.html:114
+msgid "All layers"
+msgstr "Alle Ebenen"
+
+#: contribs/gmf/src/lidarprofile/Plot.js:451
+msgid "Altitude:"
+msgstr "Höhe"
+
+#: contribs/gmf/src/authentication/component.js:508
+msgid "An error occurred while resetting the password."
+msgstr "Beim Zurücksetzen des Passworts trat ein Fehler auf."
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:179
+msgid "Angle"
+msgstr "Winkel"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:124
+msgid "Arrow direction"
+msgstr "Pfeilrichtung"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:140
+msgid "Arrow position"
+msgstr "Pfeilposition"
+
+#: contribs/gmf/src/authentication/component.html:150
+#: contribs/gmf/src/authentication/component.html:74
+msgid "Authentication code"
+msgstr "Authentifizierungscode"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:132
+msgid "Backwards"
+msgstr "Rückwärts"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:133
+msgid "Both"
+msgstr "Beide"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:20
+msgid "CSV export"
+msgstr "Exportieren als CSV"
+
+#: contribs/gmf/src/authentication/component.html:162
+#: contribs/gmf/src/editing/editFeatureComponent.html:115
+#: contribs/gmf/src/editing/editFeatureComponent.html:76
+#: contribs/gmf/src/filters/filterselectorcomponent.html:94
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:55
+#: contribs/gmf/src/editing/editFeatureComponent.html:75
+msgid "Cancel modifications"
+msgstr "Änderungen verwerfen"
+
+#: contribs/gmf/src/authentication/component.html:156
+#: contribs/gmf/src/authentication/component.html:29
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: contribs/gmf/src/search/component.html:16
+msgid "Change the color of the search result"
+msgstr "Die Farbe des Suchresultats ändern"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:48
+msgid "Choose or enter online resource URL"
+msgstr "Wählen oder geben Sie eine URL an"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:59
+msgid "Classes"
+msgstr "Klassen"
+
+#: contribs/gmf/src/lidarprofile/Plot.js:455
+msgid "Classification:"
+msgstr "Klassifizierung:"
+
+#: contribs/gmf/src/mobile/measure/baseComponent.html:23
+msgid "Clear"
+msgstr "Zurücksetzen"
+
+#: contribs/gmf/src/layertree/component.html:8
+msgid "Clear all"
+msgstr "Alle löschen"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:45
+msgid "Clear measure"
+msgstr "Auswahl löschen"
+
+#: contribs/gmf/src/layertree/component.html:99
+msgid "Click to enter a period."
+msgstr "Klicken, um ein Zeitintervall anzugeben."
+
+#: contribs/gmf/src/layertree/component.html:132
+msgid "Click to toggle snapping."
+msgstr "Klicken, um das Snapping ein- oder auszuschalten"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:96
+#: contribs/gmf/src/filters/filterselectorcomponent.html:111
+#: contribs/gmf/src/filters/filterselectorcomponent.html:132
+#: contribs/gmf/src/filters/filterselectorcomponent.html:75
+#: contribs/gmf/src/mobile/measure/baseComponent.html:29
+#: contribs/gmf/src/mobile/measure/pointComponent.html:5
+#: contribs/gmf/src/permalink/shareComponent.html:49
+#: contribs/gmf/src/print/component.html:239
+msgid "Close"
+msgstr "Schliessen"
+
+#: contribs/gmf/src/authentication/component.html:133
+msgid "Confirm new password"
+msgstr "Neues Passwort bestätigen"
+
+#: contribs/gmf/src/authentication/component.html:80
+#: contribs/gmf/src/import/importdatasourceComponent.html:72
+msgid "Connect"
+msgstr "Einloggen"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:59
+msgid "Connect to online resource"
+msgstr "Verbinden"
+
+#: contribs/gmf/src/print/component.html:227
+msgid "Connecting to the print server, please wait."
+msgstr "Verbindet mit dem Druckerserver. Bitte warten."
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:66
+msgid "Connecting, please wait..."
+msgstr "Verbindung erfolgt, bitte warten..."
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:109
+msgid "Continue without saving"
+msgstr "Weiter ohne zu Speichern"
+
+#: contribs/gmf/src/map/mousepositionComponent.html:6
+msgid "Coordinate systems"
+msgstr "Koordinatensystem "
+
+#: contribs/gmf/src/map/mousepositionComponent.js:204
+msgid "Coordinates"
+msgstr "Koordinaten"
+
+#: contribs/gmf/src/objectediting/toolsComponent.html:101
+msgid "Copy from external WMS feature"
+msgstr "Von externem WMS Feature kopieren"
+
+#: contribs/gmf/src/objectediting/component.html:19
+msgid "Copy from:"
+msgstr "Kopieren von:"
+
+#: contribs/gmf/src/permalink/shareComponent.html:10
+msgid "Copy this link to share it."
+msgstr "Diesen Link kopieren und teilen."
+
+#: contribs/gmf/src/authentication/component.js:474
+msgid "Could not log out."
+msgstr "Logout fehlgeschlagen."
+
+#: contribs/gmf/src/layertree/component.html:121
+msgid "Currently editing this layer"
+msgstr "Diese Ebene wird momentan editiert"
+
+#: contribs/gmf/src/editing/editFeatureSelectorComponent.html:20
+msgid "Currently editing:"
+msgstr "Momentan am editieren:"
+
+#: contribs/gmf/src/objectediting/toolsComponent.html:118
+msgid "Cut from external WMS feature"
+msgstr "Von externem WMS Feature ausschneiden"
+
+#: contribs/gmf/src/objectediting/component.html:22
+msgid "Cut from:"
+msgstr "Ausschneiden von:"
+
+#: contribs/gmf/src/print/component.html:126
+msgid "DPI"
+msgstr "DPI"
+
+#: contribs/gmf/src/raster/widgetComponent.html:24
+msgid "Data source"
+msgstr "Datenquelle"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:168
+#: contribs/gmf/src/drawing/drawFeatureComponent.js:735
+#: contribs/gmf/src/editing/editFeatureComponent.html:84
+#: contribs/gmf/src/filters/filterselectorcomponent.html:122
+#: contribs/gmf/src/objectediting/component.html:52
+msgid "Delete"
+msgstr "Löschen"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:127
+msgid "Delete All"
+msgstr "Alle löschen"
+
+#: contribs/gmf/src/objectediting/component.html:51
+msgid "Delete the feature"
+msgstr "Das Feature löschen"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:82
+msgid "Delete this feature"
+msgstr "Dieses Feature löschen"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.js:735
+#: contribs/gmf/src/editing/editFeatureComponent.js:471
+msgid "Delete vertex"
+msgstr "Eckpunkt löschen"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:37
+msgid "Display azimuth and radius"
+msgstr "Azimut und Radius anzeigen"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:49
+msgid "Display coordinates"
+msgstr "Koordinaten anzeigen"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:21
+msgid "Display label"
+msgstr "Beschriftung anzeigen"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:46
+msgid "Display length"
+msgstr "Länge anzeigen"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:40
+#: contribs/gmf/src/drawing/featureStyleComponent.html:43
+msgid "Display surface"
+msgstr "Oberfläche anzeigen"
+
+#: contribs/gmf/src/profile/component.js:291
+msgid "Distance"
+msgstr "Entfernung"
+
+#: contribs/gmf/src/lidarprofile/Plot.js:447
+msgid "Distance:"
+msgstr "Entfernung:"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.js:545
+msgid "Do you really want to delete all the features?"
+msgstr "Wollen Sie wirklich alle Features löschen?"
+
+#: contribs/gmf/src/objectediting/component.js:519
+msgid "Do you really want to delete the feature?"
+msgstr "Wollen Sie das Feature wirklich löschen?"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.js:556
+msgid "Do you really want to delete the selected feature?"
+msgstr "Wollen Sie das ausgewählte Feature wirklich löschen?"
+
+#: contribs/gmf/src/profile/component.html:55
+msgid "Download CSV"
+msgstr "CSV herunterladen"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:7
+msgid "Draw LIDAR profile line"
+msgstr "LIDAR Profil-Linie zeichnen"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:43
+msgid "Draw a circle on the map"
+msgstr "Kreis zeichnen"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:21
+msgid "Draw a line on the map"
+msgstr "Linie zeichnen"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:13
+msgid ""
+"Draw a line on the map to display the corresponding LIDAR profile. Use "
+"double-click to finish the drawing."
+msgstr ""
+"Zeichnen Sie eine Linie auf die Karte um das dazugehörige LIDAR-Profil anzuzeigen.\n"
+"Ein Doppelklick beendet das Zeichnen."
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:10
+msgid "Draw a point on the map"
+msgstr "Punkt zeichnen"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:32
+msgid "Draw a polygon on the map"
+msgstr "Polygone zeichnen"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:54
+msgid "Draw a rectangle on the map"
+msgstr "Rechteck zeichnen"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:65
+msgid "Draw a text label on the map"
+msgstr "Text zeichnen"
+
+#: contribs/gmf/src/objectediting/toolsComponent.html:84
+msgid "Draw a triangle"
+msgstr "Ein Dreieck zeichnen"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:27
+#: contribs/gmf/src/editing/editFeatureComponent.html:31
+msgid "Draw new linestring"
+msgstr "Eine neue Linie zeichnen"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:19
+#: contribs/gmf/src/editing/editFeatureComponent.html:23
+msgid "Draw new point"
+msgstr "Einen neuen Punkt zeichnen"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:35
+#: contribs/gmf/src/editing/editFeatureComponent.html:39
+msgid "Draw new polygon"
+msgstr "Ein neues Polygon zeichnen "
+
+#: contribs/gmf/src/profile/component.js:292
+msgid "Elevation"
+msgstr "Höhe"
+
+#: contribs/gmf/src/objectediting/toolsComponent.html:65
+msgid "Erase geometry"
+msgstr "Geometrie löschen"
+
+#: contribs/gmf/src/print/component.html:220
+msgid "Error during the print, please try again."
+msgstr "Fehler während dem Drucken. Bitte versuchen Sie es noch ein Mal."
+
+#: contribs/gmf/src/permalink/shareComponent.html:17
+msgid "Error, cannot get the shortened URL."
+msgstr "Fehler; die verkürzte URL konnte nicht ermittelt werden."
+
+#: contribs/gmf/src/permalink/shareComponent.html:45
+msgid "Error, the link has not been sent."
+msgstr "Fehler; der Link wurde nicht versandt."
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:149
+msgid "Every segment"
+msgstr "Jedes Segment"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:121
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:162
+#: contribs/gmf/src/profile/component.html:44
+#: contribs/gmf/src/query/windowComponent.html:160
+msgid "Export"
+msgstr "Exportieren"
+
+#: contribs/gmf/src/query/gridComponent.html:79
+msgid "Export as CSV"
+msgstr "Ein CSV exportieren"
+
+#: contribs/gmf/src/query/gridComponent.html:77
+msgid "Export selection as CSV"
+msgstr "Auswahl als CSV exportieren"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:69
+msgid "Failed to connect"
+msgstr "Verbindung fehlgeschlagen"
+
+#: contribs/gmf/src/layertree/component.html:200
+msgid "Filter"
+msgstr "Filter"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:88
+msgid "Filter name"
+msgstr "Filtername"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:147
+msgid "First segment"
+msgstr "Erstes Segment"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:131
+msgid "Forwards"
+msgstr "Vorwärts"
+
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:2
+msgid "Height:"
+msgstr "Höhe:"
+
+#: contribs/gmf/src/import/wmsCapabilityLayertreeComponent.html:92
+#: contribs/gmf/src/import/wmtsCapabilityLayertreeComponent.html:72
+msgid "Hide description"
+msgstr "Beschreibung ausblenden"
+
+#: contribs/gmf/src/layertree/component.html:271
+#: contribs/gmf/src/layertree/component.html:274
+#: contribs/gmf/src/layertree/datasourceGroupTreeComponent.html:100
+#: contribs/gmf/src/layertree/datasourceGroupTreeComponent.html:103
+msgid "Hide legend"
+msgstr "Legende ausblenden"
+
+#: contribs/gmf/src/print/component.html:204
+msgid "Image"
+msgstr "Bild"
+
+#: contribs/gmf/src/authentication/component.js:453
+msgid "Incorrect credentials or disabled account."
+msgstr "Ungültige Angaben oder gesperrter Benutzer."
+
+#: contribs/gmf/src/authentication/component.js:415
+msgid "Incorrect old password."
+msgstr "Falsches altes Passwort."
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:66
+msgid "Initializing, please wait..."
+msgstr "Initialisierung erfolgt, bitte warten..."
+
+#: contribs/gmf/src/lidarprofile/Plot.js:459
+msgid "Intensity:"
+msgstr "Intensität:"
+
+#: contribs/gmf/src/permalink/shareComponent.html:28
+msgid "Invalid email."
+msgstr "Ungültige Mailadresse."
+
+#: contribs/gmf/src/lidarprofile/Manager.js:523
+msgid "It might be offline"
+msgstr "Möglicherweise keine Verbindung"
+
+#: contribs/gmf/src/lidarprofile/Manager.js:361
+msgid "LOD:"
+msgstr "LOD:"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:148
+msgid "Last segment"
+msgstr "Letztes Segment"
+
+#: contribs/gmf/src/print/component.html:59
+msgid "Layout"
+msgstr "Layout"
+
+#: contribs/gmf/src/print/component.html:50
+msgid "Legend"
+msgstr "Legende"
+
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:21
+msgid "Length:"
+msgstr "Länge:"
+
+#: contribs/gmf/src/lidarprofile/Manager.js:522
+msgid "Lidar profile service error"
+msgstr "Fehler im LIDAR-Profildienst"
+
+#: contribs/gmf/src/permalink/shareComponent.html:41
+msgid "Link successfully sent."
+msgstr "Link erfolgreich versandt."
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.html:150
+msgid "List"
+msgstr "Liste"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:28
+msgid "Load a file from local"
+msgstr "Datei hochladen"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:33
+msgid "Load local file"
+msgstr "Datei hochladen"
+
+#: contribs/gmf/src/lidarprofile/Manager.js:335
+msgid "Loading LOD:"
+msgstr "Laden des LOD:"
+
+#: contribs/gmf/src/import/importdatasourceComponent.js:204
+msgid "Local"
+msgstr "Lokal"
+
+#: contribs/gmf/src/datasource/ExternalDataSourcesManager.js:158
+msgid "Local files"
+msgstr "Dateien"
+
+#: contribs/gmf/src/authentication/component.html:7
+msgid "Logged in as"
+msgstr "Eingeloggt als"
+
+#: contribs/gmf/src/authentication/component.html:22
+msgid "Logout"
+msgstr "Logout"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:106
+msgid "Manage filters"
+msgstr "Filter verwalten"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:39
+msgid "Manage saved filters"
+msgstr "Gespeicherte Filter verwalten"
+
+#: contribs/gmf/src/print/component.html:110
+msgid "Manual entry"
+msgstr "Manuelle Eingabe"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:51
+msgid "Material"
+msgstr "Material"
+
+#: contribs/gmf/src/permalink/shareComponent.html:32
+msgid "Message (optional)"
+msgstr "Nachricht (optional)"
+
+#: contribs/gmf/src/layertree/component.html:216
+#: contribs/gmf/src/layertree/component.html:224
+msgid "More information"
+msgstr "Mehr Informationen"
+
+#: contribs/gmf/src/layertree/component.html:204
+#: contribs/gmf/src/layertree/component.html:238
+msgid "More options at the group level"
+msgstr "Weitere Optionen befinden sich auf Gruppenebene."
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.js:720
+#: contribs/gmf/src/editing/editFeatureComponent.js:453
+msgid "Move"
+msgstr "Verschieben"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:6
+msgid "Name"
+msgstr "Name"
+
+#: contribs/gmf/src/authentication/component.html:125
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: contribs/gmf/src/query/windowComponent.html:174
+msgid "Next"
+msgstr "Folg."
+
+#: contribs/gmf/src/editing/editFeatureSelectorComponent.html:12
+msgid "No editable layer available!"
+msgstr "Kein editierbarer Layer verfügbar!"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:20
+msgid "No file"
+msgstr "Keine Datei"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:4
+msgid "No filtrable layer available!"
+msgstr "Kein filterbarer Layer verfügbar!"
+
+#: contribs/gmf/src/search/component.js:976
+msgid "No result found"
+msgstr "Kein Ergebnis"
+
+#: contribs/gmf/src/raster/component.js:316
+msgid "No value"
+msgstr "Wert nicht vorhanden"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:130
+#: contribs/gmf/src/query/gridComponent.html:101
+msgid "None"
+msgstr "Keine"
+
+#: contribs/gmf/src/layertree/component.html:83
+msgid "Not visible at current scale. Click to zoom."
+msgstr "Nicht sichtbar auf der momentanen Zoom-Stufe. Klicken Sie zum Zoomen."
+
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:41
+msgid ""
+"Note: drawing a rectangle of a specific size requires both height and length"
+" to be defined."
+msgstr ""
+"Hinweis: Um ein Rechteck mit einer bestimmten Grösse zu zeichnen, müssen "
+"Höhe und Länge definiert werden."
+
+#: contribs/gmf/src/authentication/component.html:117
+msgid "Old password"
+msgstr "Altes Passwort"
+
+#: contribs/gmf/src/import/importdatasourceComponent.js:205
+msgid "Online"
+msgstr "Online"
+
+#: contribs/gmf/src/query/gridComponent.html:49
+msgid "Only"
+msgstr "Nur"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:160
+#: contribs/gmf/src/layertree/component.html:168
+#: contribs/gmf/src/layertree/component.html:243
+msgid "Opacity"
+msgstr "Opazität"
+
+#: contribs/gmf/src/import/wmsCapabilityLayertreeComponent.html:47
+#: contribs/gmf/src/import/wmtsCapabilityLayertreeComponent.html:44
+msgid "Open/Close description"
+msgstr "Beschreibung Öffnen/Schliessen"
+
+#: contribs/gmf/src/lidarprofile/Manager.js:524
+msgid "Or did you attempt to draw a profile outside data extent?"
+msgstr "Haben Sie ein Profil ausserhalb des Datenbereichs gezeichnet?"
+
+#: contribs/gmf/src/lidarprofile/Manager.js:527
+msgid ""
+"Or did you attempt to draw such a small profile that no point was returned?"
+msgstr "Haben Sie ein zu kleines Profil gezeichnet?"
+
+#: contribs/gmf/src/print/component.html:210
+msgid "PDF"
+msgstr "PDF"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:23
+msgid "PNG export"
+msgstr "Exportieren als PNG"
+
+#: contribs/gmf/src/authentication/component.html:64
+msgid "Password"
+msgstr "Passwort"
+
+#: contribs/gmf/src/authentication/component.html:89
+msgid "Password forgotten?"
+msgstr "Passwort vergessen?"
+
+#: contribs/gmf/src/permalink/shareComponent.html:8
+msgid "Permalink"
+msgstr "Permalink"
+
+#: contribs/gmf/src/authentication/component.js:495
+msgid "Please, input a login..."
+msgstr "Bitte Username eingeben!"
+
+#: contribs/gmf/src/query/windowComponent.html:80
+msgid "Prev."
+msgstr "Vorh."
+
+#: contribs/gmf/src/lidarprofile/Manager.js:269
+msgid "Profile width:"
+msgstr "Breite des Profils:"
+
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:20
+msgid "Radius:"
+msgstr "Radius"
+
+#: contribs/gmf/src/raster/widgetComponent.html:19
+msgid "Raster"
+msgstr "Raster"
+
+#: contribs/gmf/src/search/component.js:519
+msgid "Recenter to"
+msgstr "Zentrieren auf"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:29
+msgid "Reset profile"
+msgstr "Profil zurücksetzen"
+
+#: contribs/gmf/src/query/windowComponent.html:85
+msgid "Result"
+msgstr "Ergebnis"
+
+#: contribs/gmf/src/query/gridComponent.html:106
+msgid "Reverse selection"
+msgstr "Auswahl umkehren"
+
+#: contribs/gmf/src/drawing/drawFeatureComponent.js:725
+#: contribs/gmf/src/editing/editFeatureComponent.js:458
+msgid "Rotate"
+msgstr "Drehen"
+
+#: contribs/gmf/src/print/component.html:151
+msgid "Rotation"
+msgstr "Drehung"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:122
+#: contribs/gmf/src/editing/editFeatureComponent.html:66
+#: contribs/gmf/src/filters/filterselectorcomponent.html:63
+#: contribs/gmf/src/filters/filterselectorcomponent.html:99
+#: contribs/gmf/src/objectediting/component.html:36
+msgid "Save"
+msgstr "Speichern"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:70
+msgid "Save filter"
+msgstr "Filter speichern"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:70
+#: contribs/gmf/src/objectediting/component.html:40
+msgid "Save modifications"
+msgstr "Änderungen speichern"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:24
+msgid "Saved"
+msgstr "Gespeichert"
+
+#: contribs/gmf/src/print/component.html:88
+msgid "Scale"
+msgstr "Massstab"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:91
+msgid "Search"
+msgstr "Suchen..."
+
+#: contribs/gmf/src/search/component.js:398
+msgid "Search…"
+msgstr "Suchen..."
+
+#: contribs/gmf/src/query/gridComponent.html:90
+msgid "Select"
+msgstr "Auswählen"
+
+#: contribs/gmf/src/permalink/shareComponent.html:50
+msgid "Send"
+msgstr "Verschicken"
+
+#: contribs/gmf/src/print/component.html:186
+msgid "Send file by email"
+msgstr "Datei via Mail senden"
+
+#: contribs/gmf/src/permalink/shareComponent.html:23
+msgid "Send this link to"
+msgstr "Diesen Link verschicken an"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:127
+msgid "Server error."
+msgstr "Serverfehler."
+
+#: contribs/gmf/src/mobile/measure/baseComponent.html:5
+msgid "Set as starting point"
+msgstr "Startpunkt setzen"
+
+#: contribs/gmf/src/permalink/shareComponent.html:2
+msgid "Share this map"
+msgstr "Diese Karte teilen"
+
+#: contribs/gmf/src/layertree/component.html:182
+#: contribs/gmf/src/layertree/component.html:261
+#: contribs/gmf/src/layertree/datasourceGroupTreeComponent.html:88
+msgid "Show/hide legend"
+msgstr "Legende anzeigen/verstecken"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:68
+#: contribs/gmf/src/drawing/featureStyleComponent.html:87
+msgid "Size"
+msgstr "Grösse"
+
+#: contribs/gmf/src/controllers/AbstractAppController.js:262
+msgid ""
+"Some layers in this link are not accessible to unauthenticated users. Please"
+" log in to see whole data."
+msgstr ""
+"Einige Ebenen in diesem Link sind für nicht autorisierte Benutzer "
+"unzugänglich. Bitte melden Sie sich an, um die vollständigen Daten zu sehen."
+
+#: contribs/gmf/src/editing/editFeatureSelectorComponent.html:28
+msgid "Stop editing"
+msgstr "Editieren beenden"
+
+#: contribs/gmf/src/drawing/featureStyleComponent.html:106
+msgid "Stroke"
+msgstr "Strich"
+
+#: contribs/gmf/src/layertree/component.html:192
+msgid "Swipe with this layer"
+msgstr "Diese Ebene vergleichen"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:34
+msgid "Take measure"
+msgstr "Messung vornehmen"
+
+#: contribs/gmf/src/lidarprofile/panelComponent.html:39
+msgid "Take measure on the graph"
+msgstr "Messung auf der Grafik vornehmen"
+
+#: contribs/gmf/src/mobile/measure/baseComponent.html:17
+msgid "Terminate"
+msgstr "Abschliessen"
+
+#: contribs/gmf/src/print/component.html:242
+msgid "The file will be sent to your email when ready."
+msgstr "Die Datei wird nach Fertigstellung als Mail gesendet."
+
+#: contribs/gmf/src/authentication/component.html:67
+msgid "The following field should be kept empty on first login:"
+msgstr "Das folgende Feld sollte beim ersten Anmelden leer gelassen werden."
+
+#: contribs/gmf/src/authentication/component.js:369
+msgid "The new password is required."
+msgstr "Das neue Passwort wird benötigt."
+
+#: contribs/gmf/src/authentication/component.js:380
+msgid "The old and new passwords are the same."
+msgstr "Das alte und neue Passwort ist dasselbe."
+
+#: contribs/gmf/src/authentication/component.js:366
+msgid "The old password is required."
+msgstr "Das alte Passwort wird benötigt."
+
+#: contribs/gmf/src/authentication/component.js:372
+msgid "The password confirmation is required."
+msgstr "Die Bestätigung des Passworts wird benötigt."
+
+#: contribs/gmf/src/authentication/component.js:434
+msgid "The password is required."
+msgstr "Das Passwort wird benötigt."
+
+#: contribs/gmf/src/authentication/component.js:383
+msgid "The passwords don't match."
+msgstr "Die Passwörter stimmen nicht überein."
+
+#: contribs/gmf/src/print/component.html:233
+msgid "The print server is unavailable. Please, try later."
+msgstr ""
+"Der Druckerserver ist nicht verfügbar. Bitte versuchen Sie es später noch "
+"ein mal. "
+
+#: contribs/gmf/src/profile/component.html:64
+msgid "The profile service does not respond, please try later."
+msgstr ""
+"Der Profile-Service antwortet nicht, bitte versuchen Sie es später noch ein "
+"mal."
+
+#: contribs/gmf/src/authentication/component.js:431
+msgid "The username is required."
+msgstr "Der Benutzername wird benötigt."
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:101
+#: contribs/gmf/src/objectediting/component.js:970
+msgid "There are unsaved changes."
+msgstr "Es existieren nicht gespeicherte Änderungen."
+
+#: contribs/gmf/src/dropfile/component.js:143
+msgid "This file can not be imported!"
+msgstr "Diese Datei kann nicht importiert werden!"
+
+#: contribs/gmf/src/authentication/component.html:136
+msgid "Two factor authentication QR code:"
+msgstr "Zwei-Faktor-Authentifizierung QR-Code:"
+
+#: contribs/gmf/src/authentication/component.html:140
+msgid "Two factor authentication key:"
+msgstr "Zwei-Faktor-Authentifizierung Schlüssel:"
+
+#: contribs/gmf/src/import/importdatasourceComponent.html:34
+msgid "Unable to load the file"
+msgstr "Die Datei konnte nicht geladen werden"
+
+#: contribs/gmf/src/objectediting/component.html:46
+msgid "Undo"
+msgstr "Rückgängig machen"
+
+#: contribs/gmf/src/objectediting/component.html:45
+msgid "Undo latest modifications"
+msgstr "Letzte Änderungen rückgangig machen"
+
+#: contribs/gmf/src/editing/editFeatureComponent.html:91
+msgid "Unsaved modifications!"
+msgstr "Nicht gespeicherte Änderungen!"
+
+#: contribs/gmf/src/authentication/component.html:56
+msgid "Username"
+msgstr "Username"
+
+#: contribs/gmf/src/authentication/component.html:39
+msgid "You are not logged in any more. The Interface has been reloaded."
+msgstr "Sie sind nicht mehr angemeldet. Die Ansicht wurde neu geladen."
+
+#: contribs/gmf/src/authentication/component.html:2
+msgid "You are recognized as an intranet user."
+msgstr "Sie werden als Intranet-Benutzer erkannt."
+
+#: contribs/gmf/src/print/component.html:163
+msgid "You can also use Alt+Shift on the map"
+msgstr "Sie können auch Alt + Umschalt. auf der Karte verwenden"
+
+#: contribs/gmf/src/filters/filterselectorcomponent.html:80
+msgid "You can save the filter that you created to re-load it later."
+msgstr ""
+"Sie können den eben erstellten Filter speichern, damit Sie ihn später wieder"
+" laden können."
+
+#: contribs/gmf/src/permalink/shareComponent.html:13
+msgid ""
+"You have a lot of drawn elements in this map. The above link may not be "
+"correctly supported by some browsers."
+msgstr ""
+"Sie haben eine Menge gezeichnete Elemente auf dieser Karte. Es kann sein, "
+"dass der obige Link nicht von allen Browsern unterstützt wird."
+
+#: contribs/gmf/src/authentication/component.html:102
+msgid "You must change your password"
+msgstr "Sie müssen Ihr Passwort ändern."
+
+#: contribs/gmf/src/authentication/component.js:408
+msgid "Your password has successfully been changed."
+msgstr "Passwort wurde erfolgreich geändert."
+
+#: contribs/gmf/src/query/gridComponent.html:68
+msgid "Zoom to"
+msgstr "Fokussieren"
+
+#: contribs/gmf/src/query/gridComponent.html:66
+msgid "Zoom to selection"
+msgstr "Auswahl fokussieren"
+
+#: contribs/gmf/src/theme/Themes.js:308
+msgid "blank"
+msgstr "Leer"
+
+#: contribs/gmf/src/layertree/TreeManager.js:505
+msgid "group is already loaded."
+msgstr "Die Gruppe wurde bereits geladen."
+
+#: contribs/gmf/src/layertree/TreeManager.js:506
+msgid "groups are already loaded."
+msgstr "Die Gruppen wurden bereits geladen."
+
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:14
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:34
+msgid "km (kilometers)"
+msgstr "km (Kilometer)"
+
+#: contribs/gmf/src/lidarprofile/Manager.js:362
+msgid "loaded"
+msgstr "geladen"
+
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:13
+#: contribs/gmf/src/drawing/drawFeatureOptionsComponent.html:33
+msgid "m (meters)"
+msgstr "m (Meter)"
+
+#: contribs/gmf/src/profile/component.js:532
+msgid "no value"
+msgstr "Wert nicht vorhanden"
+
+#: contribs/gmf/src/query/gridComponent.html:49
+msgid "of"
+msgstr "von"
+
+#: contribs/gmf/src/query/gridComponent.html:49
+msgid ""
+"results displayed, as the maximum number is reached. Please refine your "
+"query."
+msgstr ""
+"Resultaten werden angezeigt, da die maximale Anzahl überschritten wurde. "
+"Bitte verfeinern sie die Auswahl."
+
+#: contribs/gmf/src/query/gridComponent.html:57
+msgid "selected element(s)"
+msgstr "Ausgewählte(s) Element(e)"

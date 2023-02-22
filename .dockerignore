@@ -4,7 +4,6 @@
 !Pipfile
 !Pipfile.lock
 !checks.mk
-!dependencies.mk
 !build.mk
 !commons
 !geoportal
