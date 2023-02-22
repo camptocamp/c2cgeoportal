@@ -417,7 +417,7 @@ services:
     image: haproxy:2.3
     restart: unless-stopped
     volumes:
-      - /dev/log:/dev/log:rw
+      - ${FRONT_LOG_DIRECTORY}:/dev/log:rw
     command:
       - haproxy
       - -f
