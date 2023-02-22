@@ -8,6 +8,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 
 COPY eval-templates /usr/bin/
 COPY *.map.tmpl /etc/mapserver/
+RUN chmod go+w /etc/mapserver
 
 ENTRYPOINT ["/usr/bin/eval-templates"]
 CMD ["/usr/local/bin/start-server"]
