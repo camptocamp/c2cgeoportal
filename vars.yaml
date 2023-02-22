@@ -28,12 +28,8 @@ vars:
     WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id \
     AND lra.layer_id = la.id AND la.name ="
   git_branch: '{GIT_BRANCH}'
-  tx_version: '{TX_VERSION}'
-  tx_languages: '{LANGUAGES}'
 
 environment:
   - BUILD_VOLUME_NAME
-  - TX_VERSION
-  - LANGUAGES
   - GIT_BRANCH
   - MAJOR_VERSION

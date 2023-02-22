@@ -40,7 +40,7 @@ the old client and API part is `CGXP <https://github.com/camptocamp/cgxp/>`_.
 Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
-VERSION = os.environ.get('VERSION', 'dev')
+VERSION = os.environ.get('VERSION', '0.0.0')
 
 
 with open(os.path.join(HERE, 'requirements.txt')) as f:

@@ -1,0 +1,28 @@
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# Translators:
+# Stéphane Brunner <stephane.brunner@camptocamp.com>, 2018
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2018-11-01 08:45+0000\n"
+"PO-Revision-Date: 2018-05-23 12:25+0000\n"
+"Last-Translator: Stéphane Brunner <stephane.brunner@camptocamp.com>, 2018\n"
+"Language-Team: Italian (https://www.transifex.com/camptocamp/teams/36764/it/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 4.13\n"
+"Language: it\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#: ./geoportal/c2cgeoportal_geoportal/views/entry.py:191
+msgid "title i18n"
+msgstr "testi"
+
+#: ./geoportal/c2cgeoportal_geoportal/views/profile.py:64
+msgid "distance"
+msgstr "Distanza"

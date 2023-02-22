@@ -15,7 +15,6 @@
 /geoportal/tests/testegg/production.ini
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/docker-run
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/front_dev/
-/geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static-ngeo/images/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static-ngeo/js/apps/
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/static-ngeo/api/api.css
@@ -27,7 +26,6 @@
 /geoportal/c2cgeoportal_geoportal.egg-info/
 /admin/tests.ini
 /admin/npm-packages
-/admin/c2cgeoportal_admin/locale/
 /admin/c2cgeoportal_admin.egg-info/
 /docker/qgisserver/commons/
 /docker/admin-build/Dockerfile
@@ -52,7 +50,6 @@
 /gatling/.project
 /gatling/.cache-main
 /ngeo/
-/.tx/config
 /.coverage
 /.mypy_cache/
 /.venv/
