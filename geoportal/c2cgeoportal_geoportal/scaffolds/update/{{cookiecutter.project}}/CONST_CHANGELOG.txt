@@ -21,9 +21,8 @@ Information
     This means that if the value 'vars/main_ogc_server' is present in the vars.yaml of the project,
     that will be used as default value when no 'ogcserver' parameter is present in the request.
 
-3. We switched the OpenLayers renderer to now use WegGL. If you have background tiles using transparency,
-    you should add the parameter  'ngeoTilesPreloadingLimit: 0' to the vars.yaml in 'constants' to allow
-    the rendering to correctly be set in map zoom/pan over a transparent background.
+3. We switched the OpenLayers renderer to now use WegGL for WMTS. In the case of background tiles with transparency,
+    you should add the parameter 'ngeoTilesPreloadingLimit: 0' to the vars.yaml in 'constants' so that background tiles are rendered correctly.
 
 Changes to apply
 ================
