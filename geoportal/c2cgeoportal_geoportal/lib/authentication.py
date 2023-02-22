@@ -207,7 +207,7 @@ def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy
     if basicauth:
         if settings["authentication"].get("two_factor", False):
             LOG.warning(
-                "Basic auth and tow factor auth should not be enable toogether, "
+                "Basic auth and two factor auth should not be enable together, "
                 "you should use OAuth2 instead of Basic auth"
             )
 

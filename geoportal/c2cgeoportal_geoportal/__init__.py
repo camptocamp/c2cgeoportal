@@ -280,6 +280,7 @@ def create_get_user_from_request(
         Return ``None`` if:
         * user is anonymous
         * it does not exist in the database
+        * it has been deactivated
         * the referrer is invalid
         """
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
@@ -299,7 +300,10 @@ def create_get_user_from_request(
                 # We know we will need the role object of the
                 # user so we use joined loading
                 request.user_ = (
-                    DBSession.query(User).filter_by(username=username).options(joinedload("roles")).first()
+                    DBSession.query(User)
+                    .filter_by(username=username, deactivated=False)
+                    .options(joinedload("roles"))
+                    .first()
                 )
 
         return cast(User, request.user_)

@@ -64,7 +64,11 @@ class TestLoginView(TestCase):
         role2 = Role(name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781))
         user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
-        DBSession.add_all([user1, user2])
+        user3 = User(username="__test_user3", password="__test_user3", settings_role=role1, roles=[role1])
+        user3.is_password_changed = True
+        user3.deactivated = True
+
+        DBSession.add_all([user1, user2, user3])
         DBSession.flush()
 
         self.role1_id = role1.id
@@ -419,3 +423,11 @@ class TestLoginView(TestCase):
                 "username": "__test_user",
             },
         )
+
+    def test_deactivated_user(self):
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = self._create_request_obj(user="__test_user3")
+        login = Login(request)
+        assert request.authenticated_userid == "__test_user3"
+        assert login.loginuser().get("username") is None
