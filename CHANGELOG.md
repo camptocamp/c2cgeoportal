@@ -1,3 +1,7 @@
+##### 2.7.0.193
+
+- Add missing AZURE_STORAGE_ACCOUNT_URL for tilecloud-chain [c2cgeoportal#10356](https://github.com/camptocamp/c2cgeoportal/pull/10356)
+
 ##### 2.7.0.192
 
 - Be able to customize the FRONT_LOG_DIRECTORY for Windows compatibility [c2cgeoportal#10342](https://github.com/camptocamp/c2cgeoportal/pull/10342)
