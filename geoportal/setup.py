@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2013-2017, Camptocamp SA
+# Copyright (c) 2013-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
-VERSION = os.environ.get("VERSION", "dev")
+VERSION = os.environ.get("VERSION", "0.0.0")
 
 
 with open(os.path.join(HERE, "requirements.txt")) as f:

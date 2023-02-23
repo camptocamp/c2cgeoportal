@@ -31,12 +31,6 @@ APPS_FILES_ALT = $(APPS_HTML_FILES_ALT) $(APPS_JS_FILES_ALT) $(APPS_SASS_FILES_A
 
 API_FILES = $(APPS_PACKAGE_PATH)/static-ngeo/api/api.css $(APPS_PACKAGE_PATH)/static/apihelp
 
-include dependencies.mk
-
-.PHONY: dependencies-touch
-dependencies-touch:
-	touch $(TRANSIFEX_PO_FILES)
-
 .PHONY: build
 build: \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/CONST_create_template/ \

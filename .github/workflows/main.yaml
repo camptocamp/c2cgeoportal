@@ -193,17 +193,6 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
 
-      - name: Publish to Transifex
-        run: |
-          docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} .
-          docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root transifex tail -f /dev/null
-          docker exec transifex bash -c \
-              '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
-          docker stop transifex
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && github.repository == 'camptocamp/c2cgeoportal'
-
       - name: Publish documentation to GitHub.io
         run: ci/publish-documentation
         if: >

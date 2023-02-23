@@ -1,0 +1,418 @@
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2023-02-07 12:48+0000\n"
+"PO-Revision-Date: 2019-04-30 12:20+0000\n"
+"Language-Team: Kurdish (https://www.transifex.com/camptocamp/teams/36764/ku/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 4.14\n"
+"Language: ku\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:105
+msgid "Functionality"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:105
+#: ./commons/c2cgeoportal_commons/models/main.py:170
+#: ./commons/c2cgeoportal_commons/models/main.py:386
+msgid "Functionalities"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:110
+#: ./commons/c2cgeoportal_commons/models/main.py:153
+#: ./commons/c2cgeoportal_commons/models/main.py:212
+#: ./commons/c2cgeoportal_commons/models/main.py:445
+#: ./commons/c2cgeoportal_commons/models/main.py:744
+#: ./commons/c2cgeoportal_commons/models/main.py:823
+#: ./commons/c2cgeoportal_commons/models/main.py:855
+#: ./commons/c2cgeoportal_commons/models/main.py:897
+msgid "Name"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:111
+#: ./commons/c2cgeoportal_commons/models/main.py:154
+#: ./commons/c2cgeoportal_commons/models/main.py:213
+#: ./commons/c2cgeoportal_commons/models/main.py:446
+#: ./commons/c2cgeoportal_commons/models/main.py:745
+#: ./commons/c2cgeoportal_commons/models/main.py:824
+#: ./commons/c2cgeoportal_commons/models/main.py:858
+#: ./commons/c2cgeoportal_commons/models/main.py:901
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:126
+msgid "Description"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:112
+#: ./commons/c2cgeoportal_commons/models/main.py:585
+#: ./commons/c2cgeoportal_commons/models/main.py:898
+#: ./admin/c2cgeoportal_admin/schemas/metadata.py:140
+msgid "Value"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:149
+msgid "Role"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:149
+#: ./commons/c2cgeoportal_commons/models/main.py:394
+#: ./commons/c2cgeoportal_commons/models/main.py:752
+#: ./commons/c2cgeoportal_commons/models/static.py:132
+msgid "Roles"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:259
+#: ./admin/c2cgeoportal_admin/schemas/treegroup.py:116
+msgid "Children"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:273
+msgid "Parents"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:333
+msgid "Layers group"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:333
+msgid "Layers groups"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:344
+msgid "Expanded"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:365
+msgid "Theme"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:365
+#: ./commons/c2cgeoportal_commons/models/main.py:838
+msgid "Themes"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:376
+msgid "Order"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:378
+#: ./commons/c2cgeoportal_commons/models/main.py:414
+msgid "Public"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:379
+msgid "Icon"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:415
+msgid "Geo table"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:416
+msgid "Exclude properties"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:442
+msgid "OGC Server"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:442
+msgid "OGC Servers"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:447
+msgid "Basic URL"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:448
+msgid "WFS URL"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:461
+msgid "Server type"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:479
+#: ./commons/c2cgeoportal_commons/models/main.py:652
+msgid "Image type"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:496
+msgid "Authentication type"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:509
+msgid "WFS support"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:510
+msgid "Single tile"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:546
+msgid "WMS Layer"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:546
+msgid "WMS Layers"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:564
+#: ./commons/c2cgeoportal_commons/models/main.py:605
+msgid "OGC server"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:567
+#: ./commons/c2cgeoportal_commons/models/static.py:114
+msgid "- Select -"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:573
+msgid "WMS layer name"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:575
+#: ./commons/c2cgeoportal_commons/models/main.py:645
+#: ./commons/c2cgeoportal_commons/models/main.py:708
+msgid "Style"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:582
+msgid "Time mode"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:585
+msgid "Disabled"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:585
+msgid "Range"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:596
+msgid "Time widget"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:598
+msgid "Slider"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:598
+msgid "Datepicker"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:629
+msgid "WMTS Layer"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:629
+msgid "WMTS Layers"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:640
+msgid "GetCapabilities URL"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:643
+msgid "WMTS layer name"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:646
+msgid "Matrix set"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:690
+msgid "Vector Tiles Layer"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:690
+msgid "Vector Tiles Layers"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:720
+msgid "Raster URL"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:731
+msgid "Restriction area"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:731
+#: ./commons/c2cgeoportal_commons/models/main.py:755
+#: ./commons/c2cgeoportal_commons/models/main.py:764
+#: ./admin/c2cgeoportal_admin/schemas/restriction_areas.py:41
+msgid "Restriction areas"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:746
+msgid "Read/write"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:761
+#: ./commons/c2cgeoportal_commons/models/main.py:831
+msgid "Layers"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:820
+msgid "Interface"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:820
+#: ./commons/c2cgeoportal_commons/models/main.py:832
+#: ./commons/c2cgeoportal_commons/models/main.py:839
+#: ./admin/c2cgeoportal_admin/schemas/interfaces.py:41
+msgid "Interfaces"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:875
+#: ./admin/c2cgeoportal_admin/schemas/metadata.py:173
+msgid "Metadatas"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:899
+msgid "Field"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/main.py:917
+#: ./admin/c2cgeoportal_admin/schemas/dimensions.py:41
+msgid "Dimensions"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:84
+msgid "User"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:84
+msgid "Users"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:93
+msgid "Username"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:101
+msgid "Email"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:104
+msgid "The user changed his password"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:111
+msgid "Settings from role"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:124
+msgid "Settings role"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:139
+msgid "Last login"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:146
+msgid "Expiration date"
+msgstr ""
+
+#: ./commons/c2cgeoportal_commons/models/static.py:148
+msgid "Deactivated"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/themes_ordering.py:61
+#, python-format
+msgid "Value {} does not exist in table {}"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layers_wmts.py:95
+msgid "Convert to WMS"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layers_wmts.py:99
+msgid "Are you sure you want to convert this layer to WMS?"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:94
+msgid "Edit"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:106
+msgid "New layer group"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:118
+msgid "New WMS layer"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:129
+msgid "New WMTS layer"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:140
+msgid "Duplicate"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:152
+msgid "Unlink"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:156
+msgid "Are your sure you want to unlink this record from his parent?"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:163
+msgid "Delete"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:167
+msgid "Are your sure you want to delete this record?"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layers_wms.py:101
+msgid "Convert to WMTS"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/views/layers_wms.py:105
+msgid "Are you sure you want to convert this layer to WMTS?"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/schemas/metadata.py:82
+#, python-format
+msgid "Parser report: \"{}\""
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/schemas/treegroup.py:96
+#, python-format
+msgid "Value {} does not exist in table {} or is not allowed to avoid cycles"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:19
+msgid "Expand all"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:21
+msgid "Collapse all"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:24
+msgid "Edit themes order"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:121
+#, python-format
+msgid "Name ({})"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/templates/navigation_navbar.jinja2:17
+#: ./admin/c2cgeoportal_admin/templates/navigation_vertical.jinja2:3
+msgid "Layer tree"
+msgstr ""
+
+#: ./admin/c2cgeoportal_admin/templates/widgets/dimension.pt:14
+#: ./admin/c2cgeoportal_admin/templates/widgets/metadata.pt:15
+msgid "There was a problem with this section"
+msgstr ""

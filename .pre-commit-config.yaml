@@ -3,6 +3,10 @@ ci:
     - copyright
 
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
   - repo: https://github.com/sbrunner/hooks
     rev: 0.3.2
     hooks:
