@@ -1,3 +1,6 @@
+##### 2.6.0.176
+* [Backport 2.6] [Backport 2.5] Add the l10n files to the repository [c2cgeoportal#10360](https://github.com/camptocamp/c2cgeoportal/pull/10360)
+* Fix YAML lint, fix pre-commit hook [c2cgeoportal#10361](https://github.com/camptocamp/c2cgeoportal/pull/10361)
 ##### 2.6.0.175
 * Snyk auto fix [ngeo#9010](https://github.com/camptocamp/ngeo/pull/9010)
 ##### 2.6.0.174
