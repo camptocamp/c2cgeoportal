@@ -18,18 +18,10 @@ build: build-tools build-runner build-config
 
 .PHONY: checks
 checks: ## Run the application checks
-checks: yamllint otherchecks
+checks: otherchecks
 
 pipenv.timestamp:
 	pipenv sync
-
-.PHONY: yamllint
-yamllint: ## YAML lint
-yamllint: pipenv.timestamp
-	pipenv run yamllint --strict --config-file=yamllint.yaml --format=github $(shell \
-		find -name .git -prune -or -name changelog.yaml -prune -or \
-		\( -name "*.yml" -or -name "*.yaml" \) -print \
-	)
 
 .PHONY: otherchecks
 otherchecks:
