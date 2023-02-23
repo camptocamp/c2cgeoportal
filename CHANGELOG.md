@@ -1,3 +1,7 @@
+##### 2.7.0.195
+
+- Fix the 2.7 build [ngeo#9016](https://github.com/camptocamp/ngeo/pull/9016)
+
 ##### 2.7.0.194
 
 - Update all patch versions (2.7) (patch) [ngeo#9015](https://github.com/camptocamp/ngeo/pull/9015)
