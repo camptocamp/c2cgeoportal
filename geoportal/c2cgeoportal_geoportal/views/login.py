@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2022, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -398,6 +398,36 @@ class Login:
 
         return {"success": True}
 
+    @view_config(route_name="oauth2introspect")  # type: ignore
+    def oauth2introspect(self) -> pyramid.response.Response:
+        LOG.debug(
+            "Call OAuth create_introspect_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
+            self.request.current_route_url(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+        )
+        headers, body, status = oauth2.get_oauth_client(
+            self.request.registry.settings
+        ).create_introspect_response(
+            self.request.current_route_url(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+            self.request.headers,
+        )
+        LOG.debug("OAuth create_introspect_response return status: %s", status)
+
+        # All requests to /token will return a json response, no redirection.
+        if status != 200:
+            if body:
+                raise exception_response(status, detail=body)
+            raise exception_response(status)
+        return set_common_headers(
+            self.request,
+            "login",
+            Cache.PRIVATE_NO,
+            response=Response(body, headers=headers.items()),
+        )
+
     @view_config(route_name="oauth2token")  # type: ignore
     def oauth2token(self) -> pyramid.response.Response:
         LOG.debug(
@@ -415,10 +445,34 @@ class Login:
         )
         LOG.debug("OAuth create_token_response return status: %s", status)
 
-        if hasattr(self.request, "tm"):
-            self.request.tm.commit()
-
         # All requests to /token will return a json response, no redirection.
+        if status != 200:
+            if body:
+                raise exception_response(status, detail=body)
+            raise exception_response(status)
+        return set_common_headers(
+            self.request,
+            "login",
+            Cache.PRIVATE_NO,
+            response=Response(body, headers=headers.items()),
+        )
+
+    @view_config(route_name="oauth2revoke_token")  # type: ignore
+    def oauth2revoke_token(self) -> pyramid.response.Response:
+        LOG.debug(
+            "Call OAuth create_revocation_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
+            self.request.create_revocation_response(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+        )
+        headers, body, status = oauth2.get_oauth_client(
+            self.request.registry.settings
+        ).create_authorize_response(
+            self.request.current_route_url(_query=self.request.GET),
+            self.request.method,
+            self.request.body,
+            self.request.headers,
+        )
         if status != 200:
             if body:
                 raise exception_response(status, detail=body)

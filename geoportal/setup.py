@@ -39,7 +39,7 @@ the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
-VERSION = os.environ.get("VERSION", "dev")
+VERSION = os.environ.get("VERSION", "1.0.0")
 
 
 with open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as f:

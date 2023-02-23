@@ -32,7 +32,7 @@ import os
 from setuptools import find_packages, setup
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-VERSION = os.environ.get("VERSION", "dev")
+VERSION = os.environ.get("VERSION", "1.0.0")
 
 with open(os.path.join(HERE, "README.md")) as f:
     README = f.read()

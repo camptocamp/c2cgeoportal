@@ -501,8 +501,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_directive("set_user_validator", set_user_validator)
     config.set_user_validator(default_user_validator)
 
+    config.add_route("oauth2introspect", "/oauth/introspect", request_method="POST")
     config.add_route("oauth2token", "/oauth/token", request_method="POST")
     config.add_route("oauth2loginform", "/oauth/login", request_method="GET")
+    config.add_route("oauth2revoke_token", "/oauth/revoke_token", request_method="GET")
     config.add_route("notlogin", "/notlogin", request_method="GET")
 
     config.add_route("dynamic", "/dynamic.json", request_method="GET")
