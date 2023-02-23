@@ -183,6 +183,7 @@ services:
       - AZURE_STORAGE_ACCESS_TOKEN
       - AZURE_STORAGE_ACCESS_KEY
       - AZURE_STORAGE_SAS_TOKEN
+      - AZURE_STORAGE_ACCOUNT_URL
       - C2C_BASE_PATH
       - C2C_REDIS_URL
       - C2C_REDIS_SENTINELS
@@ -228,6 +229,7 @@ services:
       - AZURE_STORAGE_ACCESS_TOKEN
       - AZURE_STORAGE_ACCESS_KEY
       - AZURE_STORAGE_SAS_TOKEN
+      - AZURE_STORAGE_ACCOUNT_URL
 
   geoportal:
     image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}
