@@ -1,0 +1,1140 @@
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# Translators:
+# Camptocamp geospatial <geospatial-bot@camptocamp.com>, 2020
+# Wolfgang Kaltz <wolfgang.kaltz@camptocamp.com>, 2022
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2023-02-09 10:37+0000\n"
+"PO-Revision-Date: 2020-04-16 11:47+0000\n"
+"Last-Translator: Wolfgang Kaltz <wolfgang.kaltz@camptocamp.com>, 2022\n"
+"Language-Team: German (https://www.transifex.com/camptocamp/teams/36764/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 4.14\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:112
+msgid "Functionality"
+msgstr "Funktionalität"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:112
+#: ./commons/c2cgeoportal_commons/models/main.py:245
+#: ./commons/c2cgeoportal_commons/models/main.py:545
+msgid "Functionalities"
+msgstr "Funktionalitäten"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:122
+#: ./commons/c2cgeoportal_commons/models/main.py:212
+#: ./commons/c2cgeoportal_commons/models/main.py:296
+#: ./commons/c2cgeoportal_commons/models/main.py:672
+#: ./commons/c2cgeoportal_commons/models/main.py:1204
+#: ./commons/c2cgeoportal_commons/models/main.py:1361
+#: ./commons/c2cgeoportal_commons/models/main.py:1431
+#: ./commons/c2cgeoportal_commons/models/main.py:1535
+msgid "Name"
+msgstr "Name"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:123
+msgid "Name of the functionality."
+msgstr "Name der Funktionalität"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:125
+#: ./commons/c2cgeoportal_commons/models/main.py:873
+#: ./commons/c2cgeoportal_commons/models/static.py:177
+msgid "- Select -"
+msgstr "- Auswahl -"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:141
+#: ./commons/c2cgeoportal_commons/models/main.py:221
+#: ./commons/c2cgeoportal_commons/models/main.py:310
+#: ./commons/c2cgeoportal_commons/models/main.py:681
+#: ./commons/c2cgeoportal_commons/models/main.py:1213
+#: ./commons/c2cgeoportal_commons/models/main.py:1370
+#: ./commons/c2cgeoportal_commons/models/main.py:1450
+#: ./commons/c2cgeoportal_commons/models/main.py:1564
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:166
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:142
+#: ./commons/c2cgeoportal_commons/models/main.py:222
+#: ./commons/c2cgeoportal_commons/models/main.py:311
+#: ./commons/c2cgeoportal_commons/models/main.py:1371
+#: ./commons/c2cgeoportal_commons/models/main.py:1452
+#: ./commons/c2cgeoportal_commons/models/main.py:1565
+msgid "An optional description."
+msgstr "Beschreibung (optional)."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:151
+#: ./commons/c2cgeoportal_commons/models/main.py:938
+#: ./commons/c2cgeoportal_commons/models/main.py:1440
+#: ./commons/c2cgeoportal_commons/models/main.py:1544
+msgid "Value"
+msgstr "Wert"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:152
+msgid "A value for the functionality."
+msgstr "Wert dieser Funktionalität."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:202
+msgid "Role"
+msgstr "Rolle"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:202
+#: ./commons/c2cgeoportal_commons/models/main.py:559
+#: ./commons/c2cgeoportal_commons/models/main.py:1246
+#: ./commons/c2cgeoportal_commons/models/static.py:207
+msgid "Roles"
+msgstr "Rollen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:213
+msgid "A name for this role."
+msgstr "Name dieser Rolle."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:230
+msgid "Extent"
+msgstr "Ausdehnung"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:231
+msgid "Initial extent for this role."
+msgstr "Initiale Ausdehnung für diese Rolle."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:246
+msgid "Functionality values for this role."
+msgstr "Werte der Funktionalitäten für diese Rolle."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:297
+msgid ""
+"\n"
+"                    The name of the node, it is used through the i18n tools to display the name on the layers\n"
+"                    tree.\n"
+"                    "
+msgstr ""
+"\n"
+"                    Name des Knotens; dieser wird im i18n-Mechanismus verwendet,  um den Namen im Themenbaum anzuzeigen.\n"
+"                    "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:363
+#: ./admin/c2cgeoportal_admin/schemas/treegroup.py:162
+msgid "Children"
+msgstr "Kinder"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:380
+msgid "Parents"
+msgstr "Eltern"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:451
+msgid "Layers group"
+msgstr "Gruppe von Ebenen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:452
+msgid "Layers groups"
+msgstr "Gruppen von Ebenen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:454
+msgid ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <h4>Background layers</h4>\n"
+"                <p>The background layers are configured in the database, with the layer group named\n"
+"                <b>background</b> (by default).</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+msgstr ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <h4>Hintergrund Ebenen</h4>\n"
+"                <p>Die Hintergrund Ebenen werden in der Datenbank konfiguriert, in einer Gruppe mit Namen\n"
+"                <b>background</b> (als Standardwert).</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:479
+msgid "Expanded"
+msgstr "Ausgeklappt"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:480
+msgid "Show this group expanded."
+msgstr "Diese Gruppe ausgeklappt anzeigen."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:504
+msgid "Theme"
+msgstr "Thema"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:504
+#: ./commons/c2cgeoportal_commons/models/main.py:1397
+msgid "Themes"
+msgstr "Themen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:515
+msgid "Order"
+msgstr "Reihenfolge"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:523
+#: ./commons/c2cgeoportal_commons/models/main.py:593
+msgid "Public"
+msgstr "Öffentlich"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:524
+msgid "Makes the theme public."
+msgstr "Markiert das Thema als öffentlich."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:532
+msgid "Icon"
+msgstr "Symbol"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:533
+msgid "The icon URL."
+msgstr "URL des Symbols."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:546
+msgid "The linked functionalities."
+msgstr "Die verknüpften Funktionalitäten."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:560
+msgid "Users with checked roles will get access to this theme."
+msgstr ""
+"Die ausgewählten Rollen sind erforderlich für den Zugang zu diesem Thema."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:594
+msgid "Makes the layer public."
+msgstr "Die Ebene ist öffentlich."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:602
+msgid "Geo table"
+msgstr "Geo-Tabelle"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:603
+msgid "The related database table, used by the editing module."
+msgstr "Die Tabelle in der Datenbank, die beim editieren verwendet wird."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:611
+msgid "Exclude properties"
+msgstr "Auszuschliessende Eigenschaften"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:612
+msgid ""
+"\n"
+"                    The list of attributes (database columns) that should not appear in\n"
+"                    the editing form so that they cannot be modified by the end user.\n"
+"                    For enumerable attributes (foreign key), the column name should end with '_id'.\n"
+"                    "
+msgstr ""
+"\n"
+"                    Die Liste der Attribute (Datenbankspalten), die nicht im Editier-Formular erscheinen sollen,\n"
+"                    so dass diese nicht durch den Benutzer verändert werden können.\n"
+"                    Bei Attributen mit Wertelisten (Fremdschlüssel) sollte der Spaltenname mit '_id' enden.\n"
+"                    "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:648
+msgid "OGC Server"
+msgstr "OGC-Server"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:649
+msgid "OGC Servers"
+msgstr "OGC-Server"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:651
+msgid ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>This is the description of an OGC server (WMS/WFS).\n"
+"\n"
+"                For one server we try to create only one request when it is possible.</p>\n"
+"                <p>If you want to query the same server to get PNG and JPEG images,\n"
+"\n"
+"                you should define two <code>OGC servers</code>.</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+msgstr ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>Beschreibung eines OGC-Servers (WMS/WFS).\n"
+"\n"
+"                Pro Server führt das Geoportal, so weit möglich, nur eine Abfrage aus.</p>\n"
+"                <p>Wenn Sie vom gleichen Server PNG und JPEG Bilder erhalten wollen,\n"
+"\n"
+"                müssen Sie separate zwei <code>OGC-Server</code> eintragen.</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:673
+msgid "The name of the OGC Server"
+msgstr "Name des OGC-Servers"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:682
+msgid "A description"
+msgstr "Beschreibung"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:691
+msgid "Basic URL"
+msgstr "Basis-URL"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:692
+msgid "The server URL"
+msgstr "URL des Servers"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:700
+msgid "WFS URL"
+msgstr "WFS URL"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:701
+msgid "The WFS server URL. If empty, the ``Basic URL`` is used."
+msgstr "Die URL des WFS-Servers. Falls leer, wird die Basis-URL verwendet."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:717
+msgid "Server type"
+msgstr "Servertyp"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:718
+msgid ""
+"The server type which is used to know which custom attribute will be used."
+msgstr ""
+"Der Servertyp, mit dem ermittelt wird, welches custom Attribut verwendet "
+"wird."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:738
+#: ./commons/c2cgeoportal_commons/models/main.py:1100
+msgid "Image type"
+msgstr "Bildtyp"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:739
+msgid "The MIME type of the images (e.g.: ``image/png``)."
+msgstr "Der MIME-Typ der Bilder (z.B. ``image/png``)."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:756
+msgid "Authentication type"
+msgstr "Authentifizierungsart"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:774
+msgid "WFS support"
+msgstr "WFS Unterstützung"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:775
+msgid "Whether WFS is supported by the server."
+msgstr "WFS-Unterstützung"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:784
+msgid "Single tile"
+msgstr "Einzelkachel"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:785
+msgid "Whether to use the single tile mode (For future use)."
+msgstr "Verwendung des Einzelkachelmodus (für zukünftige Verwendung)."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:838
+msgid "WMS Layer"
+msgstr "WMS-Ebene"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:839
+#: ./commons/c2cgeoportal_commons/models/main.py:960
+msgid "WMS Layers"
+msgstr "WMS-Ebenen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:841
+msgid ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>Definition of a <code>WMS Layer</code>.</p>\n"
+"                <p>Note: The layers named <code>wms-defaults</code> contains the values\n"
+"                used when we create a new <code>WMS layer</code>.</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+msgstr ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>Definition einer <code>WMS-Ebene</code>.</p>\n"
+"                <p>Hinweis: Die Ebene mit Namen <code>wms-defaults</code> enthält Default-Werte,\n"
+"                die bei der Definition neuer <code>WMS-Ebenen</code> verwendet werden.</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:870
+#: ./commons/c2cgeoportal_commons/models/main.py:963
+msgid "OGC server"
+msgstr "OGC-Server"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:883
+msgid "WMS layer name"
+msgstr "WMS-Ebenenname"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:884
+msgid ""
+"\n"
+"                    The WMS layers. Can be one layer, one group, or a comma separated list of layers.\n"
+"                    In the case of a comma separated list of layers, you will get the legend rule for the\n"
+"                    layer icon on the first layer, and to support the legend you should define a legend\n"
+"                    metadata.\n"
+"                    "
+msgstr ""
+"\n"
+"                    Die WMS-Ebenen. Sie können eine Ebene, eine Gruppe, oder eine kommaseparierte Liste von Ebenen sein.\n"
+"                    Bei der Verwendung einer kommaseparierte Liste von Ebenen wird das Layer-Symbol auf Basis des ersten Layers ermittelt;\n"
+"                    Sie sollten in diesem Fall ein Metadaten Element legend definieren..\n"
+"                    "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:900
+#: ./commons/c2cgeoportal_commons/models/main.py:1076
+#: ./commons/c2cgeoportal_commons/models/main.py:1173
+msgid "Style"
+msgstr "Stil"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:901
+msgid "The style to use for this layer, can be empty."
+msgstr "Zu verwendender Style (optional)."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:910
+msgid "Valid"
+msgstr "Gültig."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:911
+msgid "The status reported by latest synchronization (readonly)."
+msgstr "Status der letzten Synchronisierung (nur zur Anzeige)."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:921
+msgid "Reason why I am not valid"
+msgstr "Grund für die fehlende Gültigkeit"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:922
+msgid "The reason for status reported by latest synchronization (readonly)."
+msgstr "Grund des Status der letzten Synchronisierung (nur zur Anzeige)."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:934
+msgid "Time mode"
+msgstr "Zeitmodus"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:935
+msgid "Used for the WMS time component."
+msgstr "Verwendet bei WMS Time."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:938
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:938
+msgid "Range"
+msgstr "Bereich"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:949
+msgid "Time widget"
+msgstr "Zeitauswahl"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:950
+msgid "The component type used for the WMS time."
+msgstr "Komponententyp für WMS Time."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:952
+msgid "Slider"
+msgstr "Schieber"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:952
+msgid "Datepicker"
+msgstr "Datumauswahl"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:964
+msgid "The OGC server to use for this layer."
+msgstr "Der OGC-Server, der für diese Ebene verwendet werden soll."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:992
+msgid "WMTS Layer"
+msgstr "WMTS-Ebene"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:993
+msgid "WMTS Layers"
+msgstr "WMTS-Ebenen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:995
+msgid ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>Definition of a <code>WMTS Layer</code>.</p>\n"
+"                <p>Note: The layers named <code>wmts-defaults</code> contains the values used when\n"
+"                    we create a new <code>WMTS layer</code>.</p>\n"
+"\n"
+"                <h4>Self generated WMTS tiles</h4>\n"
+"                <p>When using self generated WMTS tiles, you should use URL\n"
+"                    <code>config://local/tiles/1.0.0/WMTSCapabilities.xml</code> where:<p>\n"
+"                <ul>\n"
+"                    <li><code>config://local</code> is a dynamic path based on the project\n"
+"                        configuration.</li>\n"
+"                    <li><code>/tiles</code> is a proxy in the tilecloudchain container.</li>\n"
+"                </ul>\n"
+"\n"
+"                <h4>Queryable WMTS</h4>\n"
+"                <p>To make the WMTS queryable, you should add the following <code>Metadata</code>:\n"
+"                <ul>\n"
+"                    <li><code>ogcServer</code> with the name of the used <code>OGC server</code>,\n"
+"                    <li><code>wmsLayers</code> or <code>queryLayers</code> with the layers to query\n"
+"                        (comma separated list. Groups are not supported).\n"
+"                </ul>\n"
+"                <p>By default the scale limits for the queryable layers are the\n"
+"                    <code>minResolution</code> and/or the <code>maxResolution</code>a metadata\n"
+"                    value(s) of the WMTS layer. These values correspond to the WMTS layer\n"
+"                    resolution(s) which should be the zoom limit.\n"
+"                    You can also set a <code>minQueryResolution</code> and/or a\n"
+"                    <code>maxQueryResolution</code> to set a query zoom limits independent of the\n"
+"                    WMTS layer.</p>\n"
+"\n"
+"                <h4>Print WMTS in high quality</h4>\n"
+"                <p>To print the layers in high quality, you can define that the image shall be\n"
+"                    retrieved with a <code>GetMap</code> on the original WMS server.\n"
+"                <p>To activate this, you should add the following <code>Metadata</code>:</p>\n"
+"                <ul>\n"
+"                    <li><code>ogcServer</code> with the name of the used <code>OGC server</code>,</li>\n"
+"                    <li><code>wmsLayers</code> or <code>printLayers</code> with the layers to print\n"
+"                        (comma separated list).</li>\n"
+"                </ul>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+msgstr ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>Definition einer <code>WMTS-Ebene</code>.</p>\n"
+"                <p>Hinweis: Die Ebene <code>wmts-defaults</code> enthält die Werte, die bei der Erstellung einer neuen\n"
+"                    <code>WMTS-Ebene</code> verwendet werden.</p>\n"
+"\n"
+"                <h4>Selbsterzeugte WMTS-Kacheln</h4>\n"
+"                <p>Zur Verwendung von selbsterzeugten WMTS-Kacheln sollten Sie eine URL der Form\n"
+"                    <code>config://local/tiles/1.0.0/WMTSCapabilities.xml</code> verwenden, wobei:<p>\n"
+"                <ul>\n"
+"                    <li><code>config://local</code> ein dynamischer Pfad ist, der auf der Projekt\n"
+"                        Konfiguration basiert</li>\n"
+"                    <li><code>/tiles</code> einen Proxy im tilecloudchain container darstellt.</li>\n"
+"                </ul>\n"
+"\n"
+"                <h4>Abfragbare WMTS</h4>\n"
+"                <p>Um WMTS abfragbar zu machen, müssen die folgenden <code>Metadaten</code> definiert werden:\n"
+"                <ul>\n"
+"                    <li><code>ogcServer</code> mit dem Namen des <code>OGC-Servers</code>,\n"
+"                    <li><code>wmsLayers</code> oder <code>queryLayers</code> mit den abzufragenden Ebenen\n"
+"                        (kommaseparierte Liste; Gruppen werden nicht unterstützt).\n"
+"                </ul>\n"
+"                <p>Die Massstabsgrenzen für abfragbare Ebenen werden durch die\n"
+"                    <code>minResolution</code> und / oder <code>maxResolution</code>Metadaten Werte der Ebene definiert.\n"
+"                    Diese Werte entsprechen der Auflösung der Ebene,\n"
+"                    und sollten auch der Zoom-Grenze entsprechen.\n"
+"                    Sie können zudem eine <code>minQueryResolution</code> und / oder eine\n"
+"                    <code>maxQueryResolution</code> definieren, um Abfrage Zoom-Grenzen unabhängig von der WMTS-Ebene zu setzen.</p>\n"
+"\n"
+"                <h4>Hochwertiger Ausdruck von WMTS </h4>\n"
+"                <p>Um einen hochwertigen Ausdruck zu ermöglichen, können Sie definieren, dass das Bild\n"
+"                    via <code>GetMap</code> vom ursprünglichen WMS-Server geholt werden soll.\n"
+"                <p>Hierzu müssen die folgenden <code>Metadaten</code>  definiert werden:</p>\n"
+"                <ul>\n"
+"                    <li><code>ogcServer</code> mit dem Namen des verwendeten <code>OGC-Servers</code>,</li>\n"
+"                    <li><code>wmsLayers</code> oder <code>printLayers</code> mit den zu druckenden Ebenen\n"
+"                        (kommaseparierte Liste).</li>\n"
+"                </ul>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1055
+msgid "GetCapabilities URL"
+msgstr "GetCapabilities-URL"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1056
+msgid "The URL to the WMTS capabilities."
+msgstr "URL der WMTS-Capabilities."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1066
+msgid "WMTS layer name"
+msgstr "WMTS-Ebenenname"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1067
+msgid "The name of the WMTS layer to use"
+msgstr "Name der zu verwendenden WMTS-Ebene"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1077
+msgid "The style to use; if not present, the default style is used."
+msgstr "Style; falls nicht angegeben, wird der Default-Style verwendet."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1086
+msgid "Matrix set"
+msgstr "Matrizensatz"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1087
+msgid ""
+"The matrix set to use; if there is only one matrix set in the capabilities, "
+"it can beleft empty."
+msgstr ""
+"Zu verwendender Matrizensatz; falls die Capabilities nur einen Matrizensatz "
+"enthalten, kann dieses Element leer gelassen werden."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1102
+msgid ""
+"\n"
+"                        The MIME type of the images (e.g.: <code>image/png</code>).\n"
+"                        "
+msgstr ""
+"\n"
+"                        MIME-Typ der Bilder (z.B. <code>image/png</code>).\n"
+"                        "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1155
+msgid "Vector Tiles Layer"
+msgstr "Vektor-Kachel-Ebene"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1155
+msgid "Vector Tiles Layers"
+msgstr "Vektor-Kachel-Ebenen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1185
+msgid "Raster URL"
+msgstr "Raster URL"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1196
+msgid "Restriction area"
+msgstr "Geschützter Bereich"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1196
+#: ./commons/c2cgeoportal_commons/models/main.py:1256
+#: ./commons/c2cgeoportal_commons/models/main.py:1290
+msgid "Restriction areas"
+msgstr "Geschützte Bereiche"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1205
+msgid "A name."
+msgstr "Name."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1214
+msgid "An optional description"
+msgstr "Beschreibung (optional)"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1223
+msgid "Read/write"
+msgstr "Lesen/Schreiben"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1224
+msgid "Allows the linked users to change the objects."
+msgstr "Erlaubt verknüpfte Benutzer, die Objekte zu verändern."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1232
+msgid "Area"
+msgstr "Bereich"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1233
+msgid "Active in the following area, if not defined, it is active everywhere."
+msgstr "Aktiv in folgendem Bereich; falls leer gelassen, überall aktiv."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1247
+msgid "Checked roles will grant access to this restriction area."
+msgstr "Ausgewählte Rollen erhalten Zugang zu diesem geschützten Bereich."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1257
+msgid ""
+"Users with this role will be granted with access to those restriction areas."
+msgstr ""
+"Benutzer mit dieser Rolle erhalten Zugang zu diesen geschützten Bereichen."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1271
+#: ./commons/c2cgeoportal_commons/models/main.py:1381
+msgid "Layers"
+msgstr "Ebenen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1274
+msgid ""
+"\n"
+"                        <div class=\"help-block\">\n"
+"                            <p>This restriction area will grant access to the checked layers.</p>\n"
+"                            <hr>\n"
+"                        </div>\n"
+"                        "
+msgstr ""
+"\n"
+"                        <div class=\"help-block\">\n"
+"                            <p>Dieser geschützte Bereich ermöglicht den Zugang zu den ausgewählten Ebenen.</p>\n"
+"                            <hr>\n"
+"                        </div>\n"
+"                        "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1292
+msgid "The areas through which the user can see the layer."
+msgstr "Die Bereiche, durch welche die Benutzer die Ebene sehen können."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1354
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:42
+msgid "Interface"
+msgstr "Benutzerschnittstelle"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1354
+#: ./commons/c2cgeoportal_commons/models/main.py:1386
+#: ./commons/c2cgeoportal_commons/models/main.py:1402
+msgid "Interfaces"
+msgstr "Benutzerschnittstellen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1362
+msgid "The name of the interface, as used in request URL."
+msgstr ""
+"Der Name der Benutzerschnittstelle; wird in der Request-URL verwendet."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1388
+#: ./commons/c2cgeoportal_commons/models/main.py:1403
+msgid "Make it visible in the checked interfaces."
+msgstr "Sichtbar machen in den ausgewählten Benutzerschnittstellen."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1422
+msgid "Metadata"
+msgstr "Metadaten"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1423
+#: ./commons/c2cgeoportal_commons/models/main.py:1473
+msgid "Metadatas"
+msgstr "Metadaten"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1432
+msgid "The type of <code>Metadata</code> we want to set."
+msgstr "Typ der <code>Metadaten</code>, die gesetzt werden sollen."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1442
+msgid "The value of the metadata entry."
+msgstr "Wert des Metadaten-Eintrags."
+
+#. TODO: give the right branch name
+#: ./commons/c2cgeoportal_commons/models/main.py:1475
+#, python-format
+msgid ""
+"\n"
+"        <div class=\"help-block\">\n"
+"            <p>You can associate metadata to all theme elements (tree items).\n"
+"                The purpose of this metadata is to trigger specific features, mainly UI features.\n"
+"                Each metadata entry has the following attributes:</p>\n"
+"            <p>The available names are configured in the <code>vars.yaml</code>\n"
+"                files in <code>admin_interface/available_metadata</code>.</p>\n"
+"            <p>To set a metadata entry, create or edit an entry in the Metadata view of the\n"
+"                administration UI.\n"
+"                Regarding effect on the referenced tree item on the client side,\n"
+"                you will find an official description for each sort of metadata in the\n"
+"                <code>GmfMetaData</code> definition in <code>themes.js</code>\n"
+"                <a\n"
+"                    target=\"_blank\"\n"
+"                    href=\"https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js\"\n"
+"                >\n"
+"                    https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js\n"
+"                </a>.</p>\n"
+"            <hr>\n"
+"        </div>\n"
+"                            "
+msgstr ""
+"\n"
+"        <div class=\"help-block\">\n"
+"            <p>Sie können bei allen Themeneinträgen Metadaten definieren.\n"
+"                Der Zweck dieser Metadaten Einträge ist es, bestimmte Verhalten im Geoportal auszulösen.\n"
+"                Jeder Eintrag hat die folgenden Eigenschaften:</p>\n"
+"            <p>die verfügbaren Namen sind in der <code>vars.yaml</code>Datei konfiguriert,\n"
+"                im Abschnitt <code>admin_interface/available_metadata</code>.</p>\n"
+"            <p>Um einen Eintrag zu erstellen, verwenden Sie den Metadaten Reiter in der\n"
+"                Administrationsoberfläche.\n"
+"                Bezüglich Auswirkungen der Eintrags auf die Benutzerschnittstelle\n"
+"                konsultieren Sie bitte die entsprechende Beschreibung zu \n"
+"                <code>GmfMetaData</code> in der Datei <code>themes.js</code>\n"
+"                <a\n"
+"                    target=\"_blank\"\n"
+"                    href=\"https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js\"\n"
+"                >\n"
+"                    https://github.com/camptocamp/ngeo/blob/{MAIN_BRANCH}/contribs/gmf/src/themes.js\n"
+"                </a>.</p>\n"
+"            <hr>\n"
+"        </div>\n"
+"                            "
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1526
+msgid "Dimension"
+msgstr "Dimension"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1527
+#: ./commons/c2cgeoportal_commons/models/main.py:1586
+msgid "Dimensions"
+msgstr "Dimensionen"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1536
+msgid "The name of the dimension as it will be sent in requests."
+msgstr "Name der Dimension, der bei Abfragen verwendet werden soll."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1545
+msgid "The default value for this dimension."
+msgstr "Default-Wert für diese Dimension."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1553
+msgid "Field"
+msgstr "Feld"
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1554
+msgid ""
+"The name of the field to use for filtering (leave empty when not using OGC "
+"filters)."
+msgstr ""
+"Name des Attributs für das Filtern (leer lassen, falls OGC-Filter nicht "
+"verwendet werden)."
+
+#: ./commons/c2cgeoportal_commons/models/main.py:1589
+msgid ""
+"\n"
+"        <div class=\"help-block\">\n"
+"            <p>The dimensions, if not provided default values are used.</p>\n"
+"            <hr>\n"
+"        </div>\n"
+"                            "
+msgstr ""
+"\n"
+"        <div class=\"help-block\">\n"
+"            <p>Die Dimensionen; falls leer gelassen, werden Default-Werte verwendet.</p>\n"
+"            <hr>\n"
+"        </div>\n"
+"                            "
+
+#: ./commons/c2cgeoportal_commons/models/static.py:87
+msgid "User"
+msgstr "Benutzer"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:88
+#: ./commons/c2cgeoportal_commons/models/static.py:199
+msgid "Users"
+msgstr "Benutzer"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:90
+msgid ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>Each user may have from 1 to n roles, but each user has a default role from\n"
+"                    which are taken some settings. The default role (defined through the\n"
+"                    \"Settings from role\" selection) has an influence on the role extent and on some\n"
+"                    functionalities regarding their configuration.</p>\n"
+"\n"
+"                <p>Role extents for users can only be set in one role, because the application\n"
+"                    is currently not able to check multiple extents for one user, thus it is the\n"
+"                    default role which defines this unique extent.</p>\n"
+"\n"
+"                <p>Any functionality specified as <b>single</b> can be defined only once per user.\n"
+"                    Hence, these functionalities have to be defined in the default role.</p>\n"
+"\n"
+"                <p>By default, functionalities are not specified as <b>single</b>. Currently, the\n"
+"                    following functionalities are of <b>single</b> type:</p>\n"
+"\n"
+"                <ul>\n"
+"                    <li><code>default_basemap</code></li>\n"
+"                    <li><code>default_theme</code></li>\n"
+"                    <li><code>preset_layer_filter</code></li>\n"
+"                    <li><code>open_panel</code></li>\n"
+"                </ul>\n"
+"\n"
+"                <p>Any other functionality (with <b>single</b> not set or set to <code>false</code>) can\n"
+"                    be defined in any role linked to the user.</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+msgstr ""
+"\n"
+"            <div class=\"help-block\">\n"
+"                <p>Jeder Benutzer kann 1 bis N Rollen besitzen, zudem besitzt jeder Benutzer eine Default-Rolle,\n"
+"                    durch die bestimmte Einstellungen übernommen werden. Die Default-Rolle (die via die \n"
+"                    \"Settings from role\" Auswahl bestimmt wird) beeinflusst den sichtbaren Extent, sowie die Konfiguration\n"
+"                    einiger Funktionalitäten.</p>\n"
+"\n"
+"                <p>Extents können nur in einer einzelnen Benutzerrolle definiert werden, da das Geoportal\n"
+"                    nicht mehrfache Extents pro Benutzer prüfen kann. Daher wird der Extent\n"
+"                    in der Default-Rolle definiert.</p>\n"
+"\n"
+"                <p>Jede Funktionalität, die als <b>single</b> spezifiziert ist, kann nur einmal pro Benutzer definiert werden.\n"
+"                    Daher müssen solche Funktionalitäten in der Default-Rolle definiert werden.</p>\n"
+"\n"
+"                <p>Funktionalitäten sind defaultmässig nicht als <b>single</b> spezifiziert. Aktuell sind die folgenden Funktionalitäten vom Typ <b>single</b>:</p>\n"
+"\n"
+"                <ul>\n"
+"                    <li><code>default_basemap</code></li>\n"
+"                    <li><code>default_theme</code></li>\n"
+"                    <li><code>preset_layer_filter</code></li>\n"
+"                    <li><code>open_panel</code></li>\n"
+"                </ul>\n"
+"\n"
+"                <p>Jede weitere Funktionalität (bei der <b>single</b> nicht gesetzt ist, oder auf <code>false</code> gesetzt ist) kann\n"
+"                    in jeder Rolle definiert werden, die mit dem Benutzer verknüpft ist.</p>\n"
+"                <hr>\n"
+"            </div>\n"
+"                "
+
+#: ./commons/c2cgeoportal_commons/models/static.py:136
+msgid "Username"
+msgstr "Benutzername"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:137
+msgid "Name used for authentication (must be unique)."
+msgstr ""
+"Name, der für die Authentifizierung verwendet wird (muss eindeutig sein)."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:151
+msgid "Email"
+msgstr "E-Mail"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:152
+msgid ""
+"Used to send emails to the user, for example in case of password recovery."
+msgstr ""
+"Wird für den e-Mail Versand an den Benutzer verwendet, beispielsweise für "
+"die Passwort Vergessen Funktion."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:164
+msgid "The user changed his password"
+msgstr "Der Benutzer hat sein Passwort geändert"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:165
+msgid "Indicates if user has changed his password."
+msgstr "Der Benutzer hat sein Passwort geändert."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:174
+msgid "Settings from role"
+msgstr "Einstellungen durch Rolle"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:175
+msgid "Used to get some settings for the user (not for permissions)."
+msgstr ""
+"Wird verwendet, um bestimmte Einstellungen zu übernehmen (nicht für "
+"Berechtigungen)."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:187
+msgid "Settings role"
+msgstr "Rolle für Einstellungen"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:200
+msgid "Users granted with this role."
+msgstr "Benutzer, die diese Rolle haben."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:208
+msgid "Roles granted to the user."
+msgstr "Rollen des Benutzers."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:218
+msgid "Last login"
+msgstr "Letzter Login"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:219
+msgid "Date of the user's last login."
+msgstr "Datum der letzten Anmeldung des Benutzers."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:230
+msgid "Expiration date"
+msgstr "Ablaufdatum"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:231
+msgid "After this date the user will not be able to login anymore."
+msgstr "Datum, ab dem der Benutzer sich nicht mehr anmelden kann."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:241
+msgid "Deactivated"
+msgstr "Deaktiviert"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:242
+msgid "Deactivate a user without removing it completely."
+msgstr "Benutzer deaktivieren (ohne löschen)."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:347
+msgid "OAuth2 Client"
+msgstr "OAuth2-Client"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:347
+msgid "OAuth2 Clients"
+msgstr "OAuth2-Clients"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:355
+msgid "Client ID"
+msgstr "Client-ID"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:356
+msgid "The client identifier as e.-g. 'qgis'."
+msgstr "Identifizierung des Clients, zum Beispiel 'qgis'."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:364
+msgid "Secret"
+msgstr "Secret"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:365
+msgid "The secret."
+msgstr "Das Secret."
+
+#: ./commons/c2cgeoportal_commons/models/static.py:373
+msgid "Redirect URI"
+msgstr "URI zur Weiterleitung"
+
+#: ./commons/c2cgeoportal_commons/models/static.py:374
+msgid ""
+"\n"
+"                    URI where user should be redirected after authentication\n"
+"                    as e.-g. 'http://127.0.0.1:7070/' in case of QGIS desktop.\n"
+"                    "
+msgstr ""
+"\n"
+"                    URI, zu dem der Benutzer nach der Authentifizierung weiter geleitet werden soll,\n"
+"                    z.B. 'http://127.0.0.1:7070/' im Fall eines QGIS Desktops.\n"
+"                    "
+
+#: ./admin/c2cgeoportal_admin/views/themes_ordering.py:65
+#, python-format
+msgid "Value {} does not exist in table {}"
+msgstr "Wert {} existiert nicht in Tabelle {}"
+
+#: ./admin/c2cgeoportal_admin/views/ogc_servers.py:72
+msgid "Impossible to delete this server while it contains WMS layers."
+msgstr "Dieser Server kann nicht gelöscht werden, da er Ebenen beinhaltet."
+
+#: ./admin/c2cgeoportal_admin/views/ogc_servers.py:93
+#: ./admin/c2cgeoportal_admin/views/ogc_servers.py:99
+#, python-format
+msgid "{}<br>Current runtime value is: {}"
+msgstr "{}<br>Aktueller Wert zur Laufzeit: {}"
+
+#: ./admin/c2cgeoportal_admin/views/ogc_servers.py:113
+#: ./admin/c2cgeoportal_admin/templates/ogcserver_synchronize.jinja2:74
+msgid "Synchronize"
+msgstr "Synchronisieren"
+
+#: ./admin/c2cgeoportal_admin/views/layers_wmts.py:97
+msgid "Convert to WMS"
+msgstr "Zu WMS umwandeln"
+
+#: ./admin/c2cgeoportal_admin/views/layers_wmts.py:101
+msgid "Are you sure you want to convert this layer to WMS?"
+msgstr "Sind Sie sicher, dass Sie diese Ebene zu WMS umwandeln wollen?"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:104
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:116
+msgid "New layer group"
+msgstr "Neue Gruppe von Ebenen"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:128
+msgid "New WMS layer"
+msgstr "Neue WMS-Ebene"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:139
+msgid "New WMTS layer"
+msgstr "Neue WMTS-Ebene"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:150
+msgid "Duplicate"
+msgstr "Kopie erstellen"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:162
+msgid "Unlink"
+msgstr "Verknüpfung entfernen"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:166
+msgid "Are your sure you want to unlink this record from his parent?"
+msgstr ""
+"Sind Sie sicher, dass Sie die Verknüpfung dieses Eintrags entfernen wollen?"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:173
+msgid "Delete"
+msgstr "Entfernen"
+
+#: ./admin/c2cgeoportal_admin/views/layertree.py:177
+msgid "Are your sure you want to delete this record?"
+msgstr "Sind Sie sicher, dass Sie diesen Eintrag entfernen wollen?"
+
+#: ./admin/c2cgeoportal_admin/views/layers_wms.py:105
+msgid "Convert to WMTS"
+msgstr "Zu WMTS umwandeln"
+
+#: ./admin/c2cgeoportal_admin/views/layers_wms.py:109
+msgid "Are you sure you want to convert this layer to WMTS?"
+msgstr "Sind Sie sicher, dass Sie diese Ebene zu WMTS umwandeln wollen?"
+
+#: ./admin/c2cgeoportal_admin/schemas/metadata.py:82
+#, python-format
+msgid "Parser report: \"{}\""
+msgstr "Ergebnis der Prüfung: \"{}\""
+
+#: ./admin/c2cgeoportal_admin/schemas/treegroup.py:118
+#, python-format
+msgid "Value {} does not exist in table {} or is not allowed to avoid cycles"
+msgstr ""
+"Der Wert {} existiert nicht in der Tabelle {}, oder der Wert ist nicht "
+"gestattet zwecks Vermeidung von Zyklen"
+
+#: ./admin/c2cgeoportal_admin/schemas/treegroup.py:164
+msgid ""
+"\n"
+"                <div class=\"help-block\">\n"
+"                    <p>The ordered children elements.</p>\n"
+"                    <hr>\n"
+"                </div>\n"
+"                "
+msgstr ""
+"\n"
+"                <div class=\"help-block\">\n"
+"                    <p>Die sortierten Unterelemente.</p>\n"
+"                    <hr>\n"
+"                </div>\n"
+"                "
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:44
+msgid "All"
+msgstr "Alle"
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:52
+msgid "Expand all"
+msgstr "Alles aufklappen"
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:54
+msgid "Collapse all"
+msgstr "Alles zuklappen"
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:57
+msgid "Edit themes order"
+msgstr "Themenreihenfolge bearbeiten"
+
+#: ./admin/c2cgeoportal_admin/templates/layertree.jinja2:161
+#, python-format
+msgid "Name ({})"
+msgstr "Name ({})"
+
+#: ./admin/c2cgeoportal_admin/templates/navigation_navbar.jinja2:40
+msgid "Layer tree"
+msgstr "Ebenenbaum"
+
+#: ./admin/c2cgeoportal_admin/templates/navigation_navbar.jinja2:49
+msgid "Show help"
+msgstr "Anzeige der Hilfe"
+
+#: ./admin/c2cgeoportal_admin/templates/ogcserver_synchronize.jinja2:45
+msgid "Check layers validity"
+msgstr "Prüfe Gültigkeit der Ebenen"
+
+#: ./admin/c2cgeoportal_admin/templates/ogcserver_synchronize.jinja2:51
+msgid "Dry run synchronize"
+msgstr "Probelauf der Synchronisierung"
+
+#: ./admin/c2cgeoportal_admin/templates/ogcserver_synchronize.jinja2:64
+msgid "Force parents re-initialization."
+msgstr "Erzwinge Reinitialisierung der Überelemente."
+
+#: ./admin/c2cgeoportal_admin/templates/ogcserver_synchronize.jinja2:68
+msgid ""
+"Force children sorting, current server at top and other servers at bottom."
+msgstr ""
+"Sortierung der Unterelemente erzwingen, aktueller Server zuoberst und "
+"weitere Server zuunterst."
+
+#: ./admin/c2cgeoportal_admin/templates/ogcserver_synchronize.jinja2:72
+msgid "Remove unexisting layers and empty groups."
+msgstr "Entfernung von nicht vorhandenen Ebenen und leeren Gruppen."
+
+#: ./admin/c2cgeoportal_admin/templates/widgets/dimension.pt:37
+#: ./admin/c2cgeoportal_admin/templates/widgets/metadata.pt:38
+msgid "There was a problem with this section"
+msgstr "In diesem Bereich ist ein Fehler aufgetreten"

@@ -1,0 +1,509 @@
+#
+# Translators:
+# Arnaud Morvan <arnaud.morvan@camptocamp.com>, 2022
+# Centro competenza geoinformazione, 2022
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Last-Translator: Centro competenza geoinformazione, 2022\n"
+"Language-Team: Italian (https://www.transifex.com/camptocamp/teams/36764/it/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#: src/filter/component.html:60
+msgid "+ Add a new criteria"
+msgstr "+ Aggiungi un nuovo criterio"
+
+#: src/offline/component.html:12
+msgid "Abort"
+msgstr "Annulla"
+
+#: src/offline/component.html:31
+msgid "Activate offline mode"
+msgstr "Attivare la modalità offline"
+
+#: src/query/panelComponent.html:42
+msgid "Add"
+msgstr "Aggiungi"
+
+#: src/routing/routing.html:47
+msgid "Add via"
+msgstr "Aggiungi tramite"
+
+#: src/filter/component.html:89
+msgid "Apply filter"
+msgstr "Applicare filtri"
+
+#: src/filter/ruleComponent.js:217
+msgid "Begins at"
+msgstr "Comincia da"
+
+#: src/filter/rulecomponent.html:288
+msgid "Between"
+msgstr "Tra"
+
+#: src/filter/rulecomponent.html:214 src/offline/component.html:105
+#: src/offline/component.html:123 src/offline/component.html:74
+msgid "Cancel"
+msgstr "Cancella"
+
+#: src/draw/Controller.js:83
+msgid "Circle"
+msgstr "Cerchio"
+
+#: src/routing/routing.html:41
+msgid "Clear"
+msgstr "Pulito"
+
+#: src/streetview/component.html:2
+msgid "Click on a road on the map to start StreetView."
+msgstr "Fare clic su una strada nella mappa per avviare StreetView."
+
+#: src/interaction/MeasureLength.js:59
+msgid "Click to continue drawing the line."
+msgstr "Fare clic per continuare a disegnare la linea."
+
+#: src/interaction/MeasureArea.js:45
+msgid "Click to continue drawing the polygon."
+msgstr "Fare clic per continuare a disegnare il poligono."
+
+#: src/editing/createfeatureComponent.js:217
+msgid ""
+"Click to continue drawing<br/>Double-click or click last point to finish"
+msgstr ""
+"Fare clic per continuare a disegnare<br/> Fare doppio clic o fare clic "
+"sull'ultimo punto per terminare."
+
+#: src/editing/createfeatureComponent.js:235
+msgid ""
+"Click to continue drawing<br/>Double-click or click starting point to finish"
+msgstr ""
+"Fare clic per continuare a disegnare<br/>Fare doppio clic o fare clic sul "
+"punto di partenza per terminare."
+
+#: src/measure/length.js:71
+msgid ""
+"Click to continue drawing<br>Double-click or click last point to finish"
+msgstr ""
+"Fare clic per continuare a disegnare<br>Fare doppio clic o fare clic "
+"sull'ultimo punto per terminare"
+
+#: src/measure/area.js:61
+msgid ""
+"Click to continue drawing<br>Double-click or click starting point to finish"
+msgstr ""
+"Fare clic per continuare a disegnare<br>Fare doppio clic o fare clic sul "
+"punto di partenza per terminare."
+
+#: src/measure/azimut.js:71
+msgid "Click to finish"
+msgstr "Clicca per finire"
+
+#: src/editing/createfeatureComponent.js:234
+msgid "Click to start drawing area"
+msgstr "Fare clic per iniziare a disegnare un'area "
+
+#: src/measure/azimut.js:70
+msgid "Click to start drawing circle"
+msgstr "Fare clic per iniziare a disegnare un cerchio "
+
+#: src/editing/createfeatureComponent.js:216
+msgid "Click to start drawing length"
+msgstr "Fare clic per iniziare a disegnare una linea"
+
+#: src/measure/length.js:70
+msgid "Click to start drawing line"
+msgstr "Fare clic per iniziare a disegnare una linea "
+
+#: src/measure/area.js:60
+msgid "Click to start drawing polygon"
+msgstr "Fare clic per iniziare a disegnare un poligono"
+
+#: src/message/Disclaimer.js:193 src/offline/component.html:24
+msgid "Close"
+msgstr "Chiudere"
+
+#: src/filter/ruleComponent.js:213 src/filter/ruleComponent.js:214
+msgid "Contains"
+msgstr "Contenuto"
+
+#: src/misc/datepickerComponent.html:6
+msgid "Date:"
+msgstr "Data:"
+
+#: src/offline/component.html:36
+msgid "Deactivate offline mode"
+msgstr "Disattivare la modalità offline"
+
+#: src/offline/component.html:48
+msgid "Delete data"
+msgstr "Cancella data"
+
+#: src/routing/routing.html:87
+msgid "Distance"
+msgstr "Distanza"
+
+#: src/offline/component.html:117 src/offline/component.html:99
+msgid "Do you really want to remove your data ?"
+msgstr "Vuoi davvero rimuovere i tuoi dati ?"
+
+#: src/filter/component.js:210
+msgid "Does not match any criterion"
+msgstr "Non corrisponde ad nessun criterio"
+
+#: src/interaction/MeasureLength.js:61
+msgid "Double-click or click last point to finish."
+msgstr "Fare doppio clic o fare clic sull'ultimo punto per terminare."
+
+#: src/interaction/MeasureArea.js:47
+msgid "Double-click or click starting point to finish."
+msgstr "Fare doppio clic o fare clic sul punto di partenza per terminare."
+
+#: src/filter/rulecomponent.html:112
+msgid "Draw a circle on the map"
+msgstr "Disegnare un cerchio sulla mappa"
+
+#: src/filter/rulecomponent.html:148
+msgid "Draw a circle on the map."
+msgstr "Disegnare un cerchio sulla mappa."
+
+#: src/filter/rulecomponent.html:89
+msgid "Draw a line on the map"
+msgstr "Disegnare una linea sulla mappa"
+
+#: src/filter/rulecomponent.html:142
+msgid "Draw a line string on the map."
+msgstr "Scrivere un testo sulla mappa."
+
+#: src/filter/rulecomponent.html:77
+msgid "Draw a point on the map"
+msgstr "Disegnare un punto sulla mappa"
+
+#: src/filter/rulecomponent.html:139
+msgid "Draw a point on the map."
+msgstr "Disegnare un punto sulla mappa."
+
+#: src/filter/rulecomponent.html:101
+msgid "Draw a polygon on the map"
+msgstr "Disegnare un poligono sulla mappa"
+
+#: src/filter/rulecomponent.html:145
+msgid "Draw a polygon on the map."
+msgstr "Disegnare un poligono sulla mappa."
+
+#: src/filter/rulecomponent.html:124
+msgid "Draw a rectangle on the map"
+msgstr "Disegnare un rettangolo sulla mappa"
+
+#: src/filter/rulecomponent.html:151
+msgid "Draw a rectangle on the map."
+msgstr "Disegnare un rettangolo sulla mappa."
+
+#: src/routing/routing.html:78
+msgid "Duration"
+msgstr "Durata"
+
+#: src/filter/ruleComponent.js:218
+msgid "During"
+msgstr "Durante"
+
+#: src/filter/ruleComponent.js:219
+msgid "Ends at"
+msgstr "Termina a"
+
+#: src/filter/rulecomponent.html:241
+msgid "From"
+msgstr "Da"
+
+#: src/misc/datepickerComponent.html:5
+msgid "From:"
+msgstr "Da:"
+
+#: src/geolocation/component.js:196
+msgid "Geolocation: An unknown error occurred."
+msgstr "Geolocalizzazione: Si è verificato un errore sconosciuto."
+
+#: src/filter/component.html:98
+msgid "Get data"
+msgstr "Ottenere dati"
+
+#: src/offline/component.html:45
+msgid "Hide extent"
+msgstr "Nascondi estensione"
+
+#: src/filter/ruleComponent.js:215
+msgid "Intersects"
+msgstr "Intersecarsi"
+
+#: src/filter/ruleComponent.js:207 src/filter/ruleComponent.js:220
+msgid "Is equal to"
+msgstr "È uguale a"
+
+#: src/filter/ruleComponent.js:208
+msgid "Is greater than"
+msgstr "È maggiore di"
+
+#: src/filter/ruleComponent.js:209
+msgid "Is greater than or equal to"
+msgstr "È maggiore o uguale a"
+
+#: src/filter/ruleComponent.js:216
+msgid "Is inside of"
+msgstr "È all'interno di"
+
+#: src/filter/ruleComponent.js:210
+msgid "Is lesser than"
+msgstr "È inferiore a"
+
+#: src/filter/ruleComponent.js:211
+msgid "Is lesser than or equal to"
+msgstr "È inferiore o uguale a"
+
+#: src/filter/ruleComponent.js:212
+msgid "Is not equal to"
+msgstr "Non è uguale a"
+
+#: src/draw/Controller.js:81
+msgid "LineString"
+msgstr "Linea di testo"
+
+#: src/geolocation/component.js:190
+msgid "Location information is unavailable."
+msgstr "Informazioni sulla posizione non sono disponibili."
+
+#: src/misc/WMSTime.js:79
+msgid "M/d/yyyy"
+msgstr "MM/GG/AAAA"
+
+#: src/misc/WMSTime.js:80
+msgid "M/d/yyyy HH:MM:ss"
+msgstr "MM/GG/AAAA HH:MM:SS"
+
+#: src/misc/WMSTime.js:78
+msgid "M/yyyy"
+msgstr "MM/AAAA"
+
+#: src/filter/component.js:202
+msgid "Match all criteria"
+msgstr "Corrisponde a tutti i criteri"
+
+#: src/filter/component.js:206
+msgid "Match at least one criterion"
+msgstr "Corrispondere ad almeno un criterio"
+
+#: src/filter/ruleComponent.js:945
+msgid "Move"
+msgstr "Spostati"
+
+#: src/offline/component.html:86
+msgid "No maps selected for saving."
+msgstr "Nessuna mappa selezionata per il salvataggio."
+
+#: src/filter/rulecomponent.html:210
+msgid "OK"
+msgstr "OK"
+
+#: src/offline/component.html:27
+msgid "Offline map"
+msgstr "Mappa offline"
+
+#: src/offline/component.html:100 src/offline/component.html:118
+#: src/offline/component.html:69 src/offline/component.html:87
+msgid "Ok"
+msgstr "Ok"
+
+#: src/misc/File.js:99
+msgid "Operation canceled"
+msgstr "Operazione annullata"
+
+#: src/draw/Controller.js:80
+msgid "Point"
+msgstr "Punto"
+
+#: src/draw/Controller.js:82
+msgid "Polygon"
+msgstr "Poligono"
+
+#: src/routing/routing.html:55
+msgid "Profile"
+msgstr "Profilo"
+
+#: src/query/panelComponent.html:78
+msgid ""
+"Query by \"box\" on the map is currently active. Not all queryable layers "
+"will return results. Only those that support WFS will do so."
+msgstr ""
+"L'interrogazione per \"rettangoli\" sulla mappa è attualmente attiva. Non "
+"tutti i livelli interrogabili restituiranno risultati. Solo quelli che "
+"supportano il WFS lo faranno."
+
+#: src/query/panelComponent.html:75
+msgid ""
+"Query by \"click\" on the map is currently active. All queryable layers, "
+"including WMS and WFS, will return results."
+msgstr ""
+"L'interrogazione tramite \"clic\" sulla mappa è attualmente attiva. Tutti i "
+"livelli interrogabili, compresi WMS e WFS, restituiranno i risultati."
+
+#: src/query/panelComponent.html:81
+msgid ""
+"Query by \"polygon\" on the map is currently active. Not all queryable "
+"layers will return results. Only those that support WFS will do so."
+msgstr ""
+"L'interrogazione per \"poligono\" sulla mappa è attualmente attiva. Non "
+"tutti i livelli interrogabili restituiranno risultati. Solo quelli che "
+"supportano il WFS lo faranno."
+
+#: src/misc/File.js:99
+msgid "Read failed"
+msgstr "Lettura fallita"
+
+#: src/draw/Controller.js:84
+msgid "Rectangle"
+msgstr "Rettangolo"
+
+#: src/query/panelComponent.html:54
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: src/query/panelComponent.html:66
+msgid "Replace"
+msgstr "Sostituisci"
+
+#: src/routing/routing.html:44
+msgid "Reverse"
+msgstr "Indietro"
+
+#: src/filter/ruleComponent.js:956
+msgid "Rotate"
+msgstr "Ruotare"
+
+#: src/routing/routing.html:74
+msgid "Route statistics"
+msgstr "Statistica del percorso"
+
+#: src/offline/component.html:11
+msgid "Save map"
+msgstr "Salva mappa"
+
+#: src/offline/component.html:55
+msgid "Save new map"
+msgstr "Salva nuova mappa"
+
+#: src/routing/routingfeature.html:5
+msgid "Search..."
+msgstr "Ricerca..."
+
+#: src/offline/component.html:46
+msgid "Show extent"
+msgstr "Mostra estensione"
+
+#: src/filter/component.html:67
+msgid "Spatial filter"
+msgstr "Filtro spaziale"
+
+#: src/streetview/component.html:8
+msgid "Street View data not found for this location."
+msgstr "Dati Street View non trovati per questa posizione."
+
+#: src/draw/Controller.js:85
+msgid "Text"
+msgstr "Testo"
+
+#: src/geolocation/component.js:193
+msgid "The request to get user location timed out."
+msgstr ""
+"La richiesta per ottenere la posizione dell'utente è fuori tempo massimo."
+
+#: src/editing/attributescomponent.html:127
+msgid "This field is required"
+msgstr "Questo campo è obbligatorio"
+
+#: src/misc/datepickerComponent.html:12
+msgid "To:"
+msgstr "A:"
+
+#: src/misc/File.js:137
+msgid "Upload failed"
+msgstr "Caricamento fallito"
+
+#: src/geolocation/component.js:187
+msgid "User denied the request for Geolocation."
+msgstr "L'utente ha respinto la richiesta di geolocalizzazione."
+
+#: src/offline/component.html:114 src/offline/component.html:65
+#: src/offline/component.html:83 src/offline/component.html:96
+msgid "Warning"
+msgstr "Avviso"
+
+#: src/query/panelComponent.html:24
+msgid ""
+"While active, click on the map multiple times to draw a polygon, which will "
+"issue a query using it"
+msgstr ""
+"Mentre è attivo, fare clic più volte sulla mappa per disegnare un poligono, "
+"che verrà interrogato con una query"
+
+#: src/query/panelComponent.html:6
+msgid "While active, click on the map to issue a query"
+msgstr "Mentre è attivo, fare clic sulla mappa per eseguire una ricerca."
+
+#: src/query/panelComponent.html:15
+msgid "While active, click twice the map to issue a query using a box"
+msgstr ""
+"Mentre è attiva, fare clic due volte sulla mappa per eseguire una query "
+"utilizzando un rettangolo"
+
+#: src/filter/rulecomponent.html:290
+msgid "and"
+msgstr "e"
+
+#: src/misc/filters.js:490
+msgid "day"
+msgid_plural "days"
+msgstr[0] "giorno"
+msgstr[1] "giorni"
+msgstr[2] "giorni"
+
+#: src/misc/filters.js:487
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "ora"
+msgstr[1] "ore"
+msgstr[2] "ore"
+
+#: src/misc/filters.js:484
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minuto"
+msgstr[1] "minuti"
+msgstr[2] "minuti"
+
+#: src/misc/filters.js:481
+msgid "second"
+msgid_plural "seconds"
+msgstr[0] "secondo"
+msgstr[1] "secondi"
+msgstr[2] "secondi"
+
+#: src/filter/rulecomponent.html:243
+msgid "to"
+msgstr "a"
+
+#: src/misc/WMSTime.js:77
+msgid "yyyy"
+msgstr "aaaa"
+
+#: src/offline/component.html:68
+msgid ""
+"~{{$ctrl.estimatedLoadDataSize}}MB of maps will be downloaded (until scale "
+"1:25'000) - Don't lock your device or navigate away from this site during "
+"the download process. Deactivate \"private\" mode of your browser."
+msgstr ""
+"~{{$ctrl.estimatedLoadDataSize}} MB di mappe saranno scaricate (fino alla "
+"scala 1:25'000) - Non bloccare il dispositivo o allontanarsi da questo sito "
+"durante il processo di download. Disattivare la modalità \"privata\" del "
+"browser."
