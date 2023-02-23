@@ -1,3 +1,6 @@
+##### 2.4.2.101
+* Add the l10n files to the repository [c2cgeoportal#10352](https://github.com/camptocamp/c2cgeoportal/pull/10352)
+* Update all patch versions (2.4) (patch) [ngeo#9001](https://github.com/camptocamp/ngeo/pull/9001)
 ##### 2.4.2.100
 * Fix pull requests check workflow, use our CI token [ngeo#8979](https://github.com/camptocamp/ngeo/pull/8979)
 ##### 2.4.2.99
