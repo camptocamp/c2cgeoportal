@@ -1,3 +1,7 @@
+##### 2.7.0.194
+
+- Update all patch versions (2.7) (patch) [ngeo#9015](https://github.com/camptocamp/ngeo/pull/9015)
+
 ##### 2.7.0.193
 
 - Add missing AZURE_STORAGE_ACCOUNT_URL for tilecloud-chain [c2cgeoportal#10356](https://github.com/camptocamp/c2cgeoportal/pull/10356)
