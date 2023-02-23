@@ -1,0 +1,451 @@
+#
+# Translators:
+# Stéphane Brunner <stephane.brunner@camptocamp.com>, 2018
+# Frédéric Junod <frederic.junod@gmail.com>, 2019
+# Wolfgang Kaltz <wolfgang.kaltz@camptocamp.com>, 2019
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Last-Translator: Wolfgang Kaltz <wolfgang.kaltz@camptocamp.com>, 2019\n"
+"Language-Team: German (https://www.transifex.com/camptocamp/teams/36764/de/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/filter/component.html:60
+msgid "+ Add a new criteria"
+msgstr "+ Neues Kriterium hinzufügen"
+
+#: src/offline/component.html:12
+msgid "Abort"
+msgstr "Abbrechen"
+
+#: src/offline/component.html:31
+msgid "Activate offline mode"
+msgstr "Offline-Modus aktivieren"
+
+#: src/routing/routing.html:47
+msgid "Add via"
+msgstr "Via Hinzufügen"
+
+#: src/filter/rulecomponent.html:209
+msgid "Apply"
+msgstr "Anwenden"
+
+#: src/filter/component.html:89
+msgid "Apply filter"
+msgstr "Filter anwenden"
+
+#: src/filter/ruleComponent.js:202
+msgid "Begins at"
+msgstr "Beginnt mit"
+
+#: src/filter/rulecomponent.html:287
+msgid "Between"
+msgstr "Zwischen"
+
+#: src/filter/rulecomponent.html:213 src/offline/component.html:105
+#: src/offline/component.html:123 src/offline/component.html:74
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/draw/Controller.js:62
+msgid "Circle"
+msgstr "Kreis"
+
+#: src/routing/routing.html:41
+msgid "Clear"
+msgstr "Zurücksetzen"
+
+#: src/googlestreetview/component.html:1
+msgid "Click on a road on the map to start StreetView."
+msgstr "Klicken Sie auf eine Strasse auf der Karte um StreetView zu starten."
+
+#: src/interaction/MeasureLength.js:38
+msgid "Click to continue drawing the line."
+msgstr "Klicken Sie, um mit der Zeichnung der Linie fortzufahren."
+
+#: src/interaction/MeasureArea.js:28
+msgid "Click to continue drawing the polygon."
+msgstr "Klicken Sie, um mit der Zeichnung des Polygons fortzufahren."
+
+#: src/editing/createfeatureComponent.js:197
+msgid ""
+"Click to continue drawing<br/>Double-click or click last point to finish"
+msgstr ""
+"Klicken Sie, um weiter zu zeichnen<br/>Doppel-Klicken oder klicken Sie auf "
+"den letzten Punkt, um zu beenden"
+
+#: src/editing/createfeatureComponent.js:219
+msgid ""
+"Click to continue drawing<br/>Double-click or click starting point to finish"
+msgstr ""
+"Klicken Sie, um weiter zu zeichnen<br/>Doppel-Klicken oder klicken Sie auf "
+"den Startpunkt, um zu beenden"
+
+#: src/measure/length.js:43
+msgid ""
+"Click to continue drawing<br>Double-click or click last point to finish"
+msgstr ""
+"Klicken Sie, um weiter zu zeichnen<br/>Doppel-Klicken oder klicken Sie auf "
+"den Startpunkt, um zu beenden"
+
+#: src/measure/area.js:41
+msgid ""
+"Click to continue drawing<br>Double-click or click starting point to finish"
+msgstr ""
+"Klicken Sie, um weiter zu zeichnen<br/>Doppel-Klicken oder klicken Sie auf "
+"den Startpunkt, um zu beenden"
+
+#: src/measure/azimut.js:45
+msgid "Click to finish"
+msgstr "Kicken Sie, um zu beenden"
+
+#: src/editing/createfeatureComponent.js:218
+msgid "Click to start drawing area"
+msgstr "Klicken Sie, um eine Fäche zu zeichnen"
+
+#: src/measure/azimut.js:44
+msgid "Click to start drawing circle"
+msgstr "Klicken Sie, um einen Kreis zu zeichnen"
+
+#: src/editing/createfeatureComponent.js:196
+msgid "Click to start drawing length"
+msgstr "Klicken Sie, um eine Strecke zu zeichnen"
+
+#: src/measure/length.js:42
+msgid "Click to start drawing line"
+msgstr "Klicken Sie, um eine Linie zu zeichnen"
+
+#: src/measure/area.js:40
+msgid "Click to start drawing polygon"
+msgstr "Klicken Sie, um ein Polygon zu zeichnen"
+
+#: src/message/Disclaimer.js:177 src/offline/component.html:24
+msgid "Close"
+msgstr "Schliessen"
+
+#: src/filter/ruleComponent.js:198 src/filter/ruleComponent.js:199
+msgid "Contains"
+msgstr "Enthält"
+
+#: src/misc/datepickerComponent.html:6
+msgid "Date:"
+msgstr "Datum:"
+
+#: src/offline/component.html:36
+msgid "Deactivate offline mode"
+msgstr "Offline-Modus deaktivieren"
+
+#: src/offline/component.html:48
+msgid "Delete data"
+msgstr "Daten löschen"
+
+#: src/routing/routing.html:87
+msgid "Distance"
+msgstr "Entfernung"
+
+#: src/offline/component.html:117 src/offline/component.html:99
+msgid "Do you really want to remove your data ?"
+msgstr "Wollen Sie Ihre Daten wirklich entfernen?"
+
+#: src/filter/component.js:188
+msgid "Does not match any criterion"
+msgstr "Kein Kriterium darf übereinstimmen"
+
+#: src/interaction/MeasureLength.js:40
+msgid "Double-click or click last point to finish."
+msgstr "Um zu beenden, doppelklicken Sie oder klicken Sie den Endpunkt."
+
+#: src/interaction/MeasureArea.js:30
+msgid "Double-click or click starting point to finish."
+msgstr "Um zu beenden, doppelklicken Sie oder klicken Sie den Startpunkt."
+
+#: src/filter/rulecomponent.html:112
+msgid "Draw a circle on the map"
+msgstr "Kreis zeichnen"
+
+#: src/filter/rulecomponent.html:147
+msgid "Draw a circle on the map."
+msgstr "Kreis zeichnen."
+
+#: src/filter/rulecomponent.html:89
+msgid "Draw a line on the map"
+msgstr "Linie zeichnen"
+
+#: src/filter/rulecomponent.html:141
+msgid "Draw a line string on the map."
+msgstr "Linie zeichnen."
+
+#: src/filter/rulecomponent.html:77
+msgid "Draw a point on the map"
+msgstr "Punkt zeichnen"
+
+#: src/filter/rulecomponent.html:138
+msgid "Draw a point on the map."
+msgstr "Punkt zeichnen."
+
+#: src/filter/rulecomponent.html:101
+msgid "Draw a polygon on the map"
+msgstr "Polygon zeichnen"
+
+#: src/filter/rulecomponent.html:144
+msgid "Draw a polygon on the map."
+msgstr "Polygon zeichnen."
+
+#: src/filter/rulecomponent.html:123
+msgid "Draw a rectangle on the map"
+msgstr "Rechteck zeichnen"
+
+#: src/filter/rulecomponent.html:150
+msgid "Draw a rectangle on the map."
+msgstr "Rechteck zeichnen."
+
+#: src/routing/routing.html:78
+msgid "Duration"
+msgstr "Dauer"
+
+#: src/filter/ruleComponent.js:203
+msgid "During"
+msgstr "Während"
+
+#: src/filter/ruleComponent.js:204
+msgid "Ends at"
+msgstr "Endet am"
+
+#: src/filter/rulecomponent.html:240
+msgid "From"
+msgstr "Von"
+
+#: src/misc/datepickerComponent.html:5
+msgid "From:"
+msgstr "Von:"
+
+#: src/geolocation/mobile.js:160
+msgid "Geolocation: An unknown error occurred."
+msgstr "Geolokalisation: Ein unbekannter Fehler ist aufgetreten."
+
+#: src/filter/component.html:98
+msgid "Get data"
+msgstr "Daten laden"
+
+#: src/offline/component.html:45
+msgid "Hide extent"
+msgstr "Ausdehnung ausblenden"
+
+#: src/filter/ruleComponent.js:200
+msgid "Intersects"
+msgstr "Schneidet"
+
+#: src/filter/ruleComponent.js:190 src/filter/ruleComponent.js:205
+msgid "Is equal to"
+msgstr "Ist gleich"
+
+#: src/filter/ruleComponent.js:191
+msgid "Is greater than"
+msgstr "Ist grösser als"
+
+#: src/filter/ruleComponent.js:192
+msgid "Is greater than or equal to"
+msgstr "Ist grösser oder gleich"
+
+#: src/filter/ruleComponent.js:201
+msgid "Is inside of"
+msgstr "Ist innerhalb von"
+
+#: src/filter/ruleComponent.js:194
+msgid "Is lesser than"
+msgstr "Ist kleiner als"
+
+#: src/filter/ruleComponent.js:195
+msgid "Is lesser than or equal to"
+msgstr "Ist kleiner oder gleich"
+
+#: src/filter/ruleComponent.js:197
+msgid "Is not equal to"
+msgstr "Ist ungleich"
+
+#: src/draw/Controller.js:60
+msgid "LineString"
+msgstr "Linie"
+
+#: src/geolocation/mobile.js:154
+msgid "Location information is unavailable."
+msgstr "Standort-Information ist nicht vorhanden."
+
+#: src/misc/WMSTime.js:58
+msgid "M/d/yyyy"
+msgstr "d. M yyyy"
+
+#: src/misc/WMSTime.js:59
+msgid "M/d/yyyy HH:MM:ss"
+msgstr "d. M yyyy, HH:MM:ss"
+
+#: src/misc/WMSTime.js:57
+msgid "M/yyyy"
+msgstr "M yyyy"
+
+#: src/filter/component.js:180
+msgid "Match all criteria"
+msgstr "Alle Kriterien müssen übereinstimmen"
+
+#: src/filter/component.js:184
+msgid "Match at least one criterion"
+msgstr "Mindestens ein Kriterium muss übereinstimmen"
+
+#: src/filter/ruleComponent.js:859
+msgid "Move"
+msgstr "Verschieben"
+
+#: src/offline/component.html:86
+msgid "No maps selected for saving."
+msgstr "Keine Karte zur Speicherung ausgewählt."
+
+#: src/offline/component.html:27
+msgid "Offline map"
+msgstr "Offline-Karte"
+
+#: src/offline/component.html:100 src/offline/component.html:118
+#: src/offline/component.html:69 src/offline/component.html:87
+msgid "Ok"
+msgstr "OK"
+
+#: src/misc/File.js:55
+msgid "Operation canceled"
+msgstr "Vorgang abgebrochen"
+
+#: src/draw/Controller.js:59
+msgid "Point"
+msgstr "Punkt"
+
+#: src/draw/Controller.js:61
+msgid "Polygon"
+msgstr "Polygon"
+
+#: src/routing/routing.html:55
+msgid "Profile"
+msgstr "Profil"
+
+#: src/misc/File.js:55
+msgid "Read failed"
+msgstr "Lesen fehlgeschlagen"
+
+#: src/draw/Controller.js:63
+msgid "Rectangle"
+msgstr "Rechteck"
+
+#: src/routing/routing.html:44
+msgid "Reverse"
+msgstr "Wenden"
+
+#: src/filter/ruleComponent.js:868
+msgid "Rotate"
+msgstr "Drehen"
+
+#: src/routing/routing.html:74
+msgid "Route statistics"
+msgstr "Route Statistiken"
+
+#: src/offline/component.html:11
+msgid "Save map"
+msgstr "Karte speichern"
+
+#: src/offline/component.html:55
+msgid "Save new map"
+msgstr "Neue Karte speichern"
+
+#: src/routing/routingfeature.html:5
+msgid "Search..."
+msgstr "Suchen..."
+
+#: src/offline/component.html:46
+msgid "Show extent"
+msgstr "Ausdehnung anzeigen"
+
+#: src/filter/component.html:67
+msgid "Spatial filter"
+msgstr "räumlicher Filter"
+
+#: src/googlestreetview/component.html:7
+msgid "Street View data not found for this location."
+msgstr "Keine Street View Daten für diesen Standort gefunden."
+
+#: src/draw/Controller.js:64
+msgid "Text"
+msgstr "Text"
+
+#: src/geolocation/mobile.js:157
+msgid "The request to get user location timed out."
+msgstr ""
+"Die Anfrage für den Benutzerstandort konnte nicht in abgeschlossen werden: "
+"Timeout."
+
+#: src/editing/attributescomponent.html:127
+msgid "This field is required"
+msgstr "Dieses Feld wird benötigt "
+
+#: src/misc/datepickerComponent.html:12
+msgid "To:"
+msgstr "An:"
+
+#: src/misc/File.js:88
+msgid "Upload failed"
+msgstr "Datei hochladen fehlgeschlagen"
+
+#: src/geolocation/mobile.js:151
+msgid "User denied the request for Geolocation."
+msgstr "Der Benutzer hat den Zugriff auf den Standort verweigert."
+
+#: src/offline/component.html:114 src/offline/component.html:65
+#: src/offline/component.html:83 src/offline/component.html:96
+msgid "Warning"
+msgstr "Warnung"
+
+#: src/filter/rulecomponent.html:289
+msgid "and"
+msgstr "und"
+
+#: src/misc/filters.js:472
+msgid "day"
+msgid_plural "days"
+msgstr[0] "Tag"
+msgstr[1] "Tage"
+
+#: src/misc/filters.js:469
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "Stunde"
+msgstr[1] "Stunden"
+
+#: src/misc/filters.js:466
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "Minute"
+msgstr[1] "Minuten"
+
+#: src/misc/filters.js:463
+msgid "second"
+msgid_plural "seconds"
+msgstr[0] "Sekunde"
+msgstr[1] "Sekunden"
+
+#: src/filter/rulecomponent.html:242
+msgid "to"
+msgstr "zu"
+
+#: src/misc/WMSTime.js:56
+msgid "yyyy"
+msgstr "yyyy"
+
+#: src/offline/component.html:68
+msgid ""
+"~{{$ctrl.estimatedLoadDataSize}}MB of maps will be downloaded (until scale "
+"1:25'000) - Don't lock your device or navigate away from this site during "
+"the download process. Deactivate \"private\" mode of your browser."
+msgstr ""
+"~{{$ctrl.estimatedLoadDataSize}}MB Karten werden heruntergeladen (bis zum "
+"Masstab 1:25'000) - Bitte sperren Sie Ihr Gerät nicht und verlassen Sie "
+"diese Seite während dem Ladeprozess nicht. Deaktivieren Sie den Privat-Modus"
+" Ihres Browsers."

@@ -1,5 +1,5 @@
 BUILD_DIR ?= /build
-MAKO_FILES = Dockerfile.mako docker-compose.yaml.mako $(shell find .tx doc docker geoportal/tests/functional -type f -name "*.mako" -print)
+MAKO_FILES = Dockerfile.mako docker-compose.yaml.mako $(shell find doc docker geoportal/tests/functional -type f -name "*.mako" -print)
 VARS_FILE ?= vars.yaml
 VARS_FILES += vars.yaml
 
@@ -38,13 +38,6 @@ VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 SPHINX_FILES = $(shell find doc -name "*.rst" -print)
 SPHINX_MAKO_FILES = $(shell find doc -name "*.rst.mako" -print)
 
-export TX_VERSION = $(shell echo $(MAJOR_VERSION) | awk -F . '{{print $$1"_"$$2}}')
-TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
-ifeq (,$(wildcard $(HOME)/.transifexrc))
-TOUCHBACK_TXRC := touch --no-create --date "$(shell date --iso-8601=seconds)" $(HOME)/.transifexrc
-else
-TOUCHBACK_TXRC := touch --no-create --date "$(shell stat -c '%y' $(HOME)/.transifexrc)" $(HOME)/.transifexrc
-endif
 LANGUAGES = fr de it
 export LANGUAGES
 ALL_LANGUAGES = en $(LANGUAGES)
@@ -105,7 +98,6 @@ help:
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- clean 		Remove generated files"
 	@echo  "- clean-all 		Remove all the build artifacts"
-	@echo  "- transifex-send	Send the localisation to Transifex"
 
 .PHONY: docker-pull
 docker-pull:
@@ -351,39 +343,6 @@ additionallint:
 		false; \
 	fi
 
-# i18n
-$(HOME)/.transifexrc:
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	echo "[https://www.transifex.com]" > $@
-	echo "hostname = https://www.transifex.com" >> $@
-	echo "username = c2c" >> $@
-	echo "password = c2cc2c" >> $@
-	echo "token =" >> $@
-
-.PHONY: transifex-get
-transifex-get: $(L10N_PO_FILES)
-
-.PHONY: transifex-send
-transifex-send: $(TX_DEPENDENCIES) \
-		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	$(PRERULE_CMD)
-	tx push --source --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --source --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-	$(TOUCHBACK_TXRC)
-
-.PHONY: transifex-init
-transifex-init: $(TX_DEPENDENCIES) \
-		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
-		admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot
-	$(PRERULE_CMD)
-	tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --source --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_geoportal-$(TX_VERSION)
-	tx push --translations --force --no-interactive --resource=geomapfish.c2cgeoportal_admin-$(TX_VERSION)
-	$(TOUCHBACK_TXRC)
-
 # Import ngeo templates
 
 .PHONY: import-ngeo-apps
@@ -561,47 +520,6 @@ admin/c2cgeoportal_admin/locale/en/LC_MESSAGES/c2cgeoportal_admin.po: admin/c2cg
 	mkdir --parent $(dir $@)
 	touch $@
 	msgmerge --update $@ $<
-
-geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/c2cgeoportal_geoportal.po: $(TX_DEPENDENCIES)
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource geomapfish.c2cgeoportal_geoportal-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
-	test -s $@
-
-geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/ngeo.po: $(TX_DEPENDENCIES)
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.ngeo-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
-	test -s $@
-
-geoportal/c2cgeoportal_geoportal/locale/%/LC_MESSAGES/gmf.po: $(TX_DEPENDENCIES)
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.gmf-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
-	test -s $@
-
-admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPENDENCIES)
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource geomapfish.c2cgeoportal_admin-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
-	test -s $@
-
-geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/%/LC_MESSAGES/+package+_geoportal-client.po: \
-		$(TX_DEPENDENCIES)
-	$(PRERULE_CMD)
-	mkdir --parent $(dir $@)
-	tx pull --language $* --resource ngeo.gmf-apps-$(TX_VERSION) --force
-	sed -i 's/[[:space:]]\+$$//' $@
-	$(TOUCHBACK_TXRC)
-	test -s $@
 
 geoportal/c2cgeoportal_geoportal/scaffolds/create/geoportal/+package+_geoportal/locale/en/LC_MESSAGES/+package+_geoportal-client.po:
 	$(PRERULE_CMD)
