@@ -16,4 +16,9 @@ repos:
     rev: 22.12.0
     hooks:
       - id: black
-        exclude: (^commons/c2cgeoportal_commons/alembic/script\.py\.mako$|.*\.rst$|.*\.rst.tmpl$|^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$)
+        exclude: "(^\
+          commons/c2cgeoportal_commons/alembic/script\\.py\\.mako$\
+          |.*\\.rst$\
+          |.*\\.rst\\.tmpl$\
+          |^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter\\.project}}/\
+          geoportal/{{cookiecutter\\.package}}_geoportal/__init__\\.py$)"
