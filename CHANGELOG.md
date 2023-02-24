@@ -1,3 +1,7 @@
+##### 2.7.0.196
+
+- Fix simple bootstrap [ngeo#9017](https://github.com/camptocamp/ngeo/pull/9017)
+
 ##### 2.7.0.195
 
 - Fix the 2.7 build [ngeo#9016](https://github.com/camptocamp/ngeo/pull/9016)
