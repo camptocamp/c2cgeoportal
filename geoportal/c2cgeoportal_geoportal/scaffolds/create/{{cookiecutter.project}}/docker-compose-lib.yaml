@@ -434,6 +434,7 @@ services:
       target: builder
       args:
         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
+        GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
     volumes:
       - ./geoportal/${PACKAGE}_geoportal/static-ngeo:/app/${PACKAGE}_geoportal/static-ngeo
     environment:
