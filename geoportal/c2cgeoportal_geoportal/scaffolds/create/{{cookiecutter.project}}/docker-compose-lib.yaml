@@ -66,7 +66,7 @@ services:
       - RASTER_BASE_PATH
 
   print:
-    image: camptocamp/mapfish_print:3.29
+    image: camptocamp/mapfish_print:3.30
     user: www-data
     restart: unless-stopped
     environment:
