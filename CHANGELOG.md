@@ -1,3 +1,7 @@
+##### 2.7.0.197
+
+- [Backport 2.7] Simple appname [c2cgeoportal#10364](https://github.com/camptocamp/c2cgeoportal/pull/10364)
+
 ##### 2.7.0.196
 
 - Fix simple bootstrap [ngeo#9017](https://github.com/camptocamp/ngeo/pull/9017)
