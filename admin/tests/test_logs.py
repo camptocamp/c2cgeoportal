@@ -83,10 +83,7 @@ class TestLog(AbstractViewsTests):
                 reverse=True,
             )
         ]
-        result_ids = [
-            int(row["_id_"])
-            for row in json["rows"]
-        ]
+        result_ids = [int(row["_id_"]) for row in json["rows"]]
         assert result_ids == expected_ids
 
     def test_grid_sort_on_element_type(self, test_app, logs_test_data):
@@ -98,10 +95,7 @@ class TestLog(AbstractViewsTests):
                 key=lambda log: (log.element_type, -log.date.timestamp()),
             )
         ]
-        result_ids = [
-            int(row["_id_"])
-            for row in json["rows"]
-        ]
+        result_ids = [int(row["_id_"]) for row in json["rows"]]
         assert result_ids == expected_ids
 
     def test_grid_search(self, test_app):
