@@ -51,6 +51,7 @@ class LogViews(AbstractViews):  # type: ignore
         _list_field("element_id", label=_("Element identifier")),
         _list_field("element_name", label=_("Element name")),
     ]
+    _list_ordered_fields = [AbstractLog.date.desc()]
 
     _id_field = "id"
     _model = AbstractLog
