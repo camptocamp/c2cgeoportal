@@ -1,3 +1,7 @@
+##### 2.7.0.199
+
+- [Backport 2.7] Documentation: fix the hi DPI explanation [ngeo#9021](https://github.com/camptocamp/ngeo/pull/9021)
+
 ##### 2.7.0.198
 
 - Fix webpack_dev_server build with buildkit [c2cgeoportal#10365](https://github.com/camptocamp/c2cgeoportal/pull/10365)
