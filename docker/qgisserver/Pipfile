@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 flake8 = "==3.7.9"  # lint
-flake8-copyright = "==0.2.3"  # lint
+flake8-copyright = "==0.2.4"  # lint
 flake8-mypy = "==17.8.0"  # lint
 mccabe = "==0.6.1"  # lint
 mypy = "==0.770"  # lint
@@ -27,7 +27,7 @@ SQLAlchemy = "==1.3.24"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.6.4.post2"
 # Lock
-bottle = "==0.12.23"
+bottle = "==0.12.24"
 "geojson" = "==2.5.0"
 "hupper" = "==1.10.3"
 jinja2 = "==2.11.3"
