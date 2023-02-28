@@ -73,12 +73,30 @@ class TestLog(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected, new=False)
 
+    def test_grid_default_sort_on_date_desc(self, test_app, logs_test_data):
+        json = self.check_search(test_app)
+        expected_ids = [
+            log.id
+            for log in sorted(
+                logs_test_data["logs"],
+                key=lambda log: log.date,
+                reverse=True,
+            )
+        ]
+        result_ids = [int(row["_id_"]) for row in json["rows"]]
+        assert result_ids == expected_ids
+
     def test_grid_sort_on_element_type(self, test_app, logs_test_data):
         json = self.check_search(test_app, sort="element_type")
-        for i, log in enumerate(sorted(logs_test_data["logs"], key=lambda log: (log.element_type, log.id))):
-            if i == 10:
-                break
-            assert str(log.id) == json["rows"][i]["_id_"]
+        expected_ids = [
+            log.id
+            for log in sorted(
+                logs_test_data["logs"],
+                key=lambda log: (log.element_type, -log.date.timestamp()),
+            )
+        ]
+        result_ids = [int(row["_id_"]) for row in json["rows"]]
+        assert result_ids == expected_ids
 
     def test_grid_search(self, test_app):
         self.check_search(test_app, "role", total=5)
