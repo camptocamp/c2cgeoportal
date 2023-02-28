@@ -119,7 +119,9 @@ if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
         snyk_version = "master"
         upgrade_version = "master"
     elif branch == main_branch:
-        versions = [major_version, patch, full]
+        versions = [major_version, full]
+        if patch:
+            versions.append(patch)
         if latest:
             versions.append("latest")
         snyk_version = major_version
