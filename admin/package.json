@@ -8,7 +8,7 @@
     "bootstrap-table": "1.20.2",
     "jquery": "3.5.1",
     "jquery.scrollintoview": "1.9.4",
-    "jstree": "3.3.14",
+    "jstree": "3.3.15",
     "jstreegrid": "3.10.2",
     "magicsuggest-alpine": "1.0.0",
     "typeahead.js": "0.11.1"
