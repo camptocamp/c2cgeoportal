@@ -26,6 +26,8 @@ jobs:
             os: ubuntu-20.04
           - branch: '2.7'
             os: ubuntu-22.04
+          - branch: '2.8'
+            os: ubuntu-22.04
 
     steps:
       - run: sudo npm install -g npm@6

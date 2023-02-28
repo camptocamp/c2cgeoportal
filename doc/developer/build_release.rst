@@ -95,9 +95,9 @@ Run:
 
 .. prompt:: bash
 
-    tx pull --translations --branch=<version> --source --force \
+    tx pull --source --branch=<version> --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
-    tx pull --translations --branch=<version> --translation --force \
+    tx pull --translations --branch=<version> --force --all \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
 
     tx push --branch=<next version> --source --force \
@@ -107,11 +107,6 @@ Run:
 
 Update the master branch
 -------------------------
-
-In the file ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
-  ``<next version>``.
-
-In the files ``.github/workflows/audit.yaml`` and the new branch.
 
 Configure the rebuild
 ---------------------
@@ -158,31 +153,30 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
    -       ...
    -       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
-       - name: Publish feature branch
-   -     run: |
-   -       c2cciutils-publish
-   -       c2cciutils-publish --group=full
-   +       c2cciutils-publish --type=rebuild
-   -     if: >
-   -       github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-   -       && github.repository == 'camptocamp/c2cgeoportal'
-   -   - name: Push version and changelog
-   -     ...
-
    -       - name: Update the changelog
    -         ...
    -       - run: git diff CHANGELOG.md
 
-   -       - name: Push version and changelog
-   -         ...
+   -   - name: Push version and changelog
+   -     ...
 
+       - name: Publish
+         run: >
+           c2cciutils-publish
+             --docker-versions=${{ steps.version.outputs.versions }}
+             --snyk-version=${{ steps.version.outputs.snyk_version }}
+   +         --type=rebuild
+   -     if: >
+   -       env.HAS_SECRETS == 'HAS_SECRETS'
+   -       && steps.version.outputs.versions != ''
+   -
+   -       - name: Notify demo
+   -         ...
+   -
    -       - name: Publish to Transifex
    -         ...
    -
    -       - name: Publish documentation to GitHub.io
-   -         ...
-   -
-   -       - name: Notify demo
    -         ...
 
 
@@ -208,6 +202,8 @@ as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following ch
          strategy:
            fail-fast: false
            matrix:
+             version:
+               ...
    +         branch:
    +           - 'x.y'
 
@@ -222,10 +218,13 @@ as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following ch
               fetch-depth: 0
    +          ref: ${{ env.MAIN_BRANCH }}
 
-      - name: Publish feature branch
-        run: |
-   -       c2cciutils-publish --group=qgis-${{ matrix.version }}
-   +       c2cciutils-publish --type=rebuild --group=qgis-${{ matrix.version }}
+      - name: Publish
+        run: >
+          c2cciutils-publish
+            --group=qgis-${{ matrix.version }}
+            --docker-versions=${{ steps.version.outputs.versions }}
+            --snyk-version=${{ steps.version.outputs.snyk_version }}
+   +        --type=rebuild
    -     if: >
    -       github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
    -       && github.repository == 'camptocamp/c2cgeoportal'
@@ -273,20 +272,32 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
    +           ref: ${{ env.MAIN_BRANCH }}
              if: env.HAS_SECRETS != 'HAS_SECRETS'
 
-   -       - name: Publish feature branch
-   -         ...
-   -
+
+      - name: Publish
+        run: >
+          c2cciutils-publish
+            --docker-versions=${{ steps.version.outputs.versions }}
+            --snyk-version=${{ steps.version.outputs.snyk_version }}
+   +        --type=rebuild
+
    -       - name: Publish to Transifex
    -         ...
    -
    -       - name: Publish documentation to GitHub.io
    -         ...
 
+
 And also remove all the `if` concerning the following tests:
 
-- `github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)`
-- `github.repository == 'camptocamp/c2cgeoportal'`
-- `env.HAS_SECRETS == 'HAS_SECRETS` (optional)
+- ``github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)``
+- ``github.repository == 'camptocamp/c2cgeoportal'``
+- ``env.HAS_SECRETS == 'HAS_SECRETS`` (optional)
+
+Configure the new branch
+------------------------
+
+In the file ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
+  ``<next version>``.
 
 Configure the audit
 -------------------
@@ -326,16 +337,6 @@ On the master branch, update the file ``SECURITY.md`` with the security informat
 
   | x.y+1 | To be defined |
 
-Version check
--------------
-
-On the <new_version> branch disable version check by adding in the ``ci/config.yaml``:
-
-.. code:: diff
-
-    checks:
-   +  versions: False
-
 Backport label
 --------------
 
@@ -345,11 +346,6 @@ Protect branch
 --------------
 
 In GitHub project settings, protect the new branch with the same settings as the master branch.
-
-Check
------
-
-Run `c2cciutils-checks` on each branch before pushing to be sure that everything is OK.
 
 Publish it
 ----------
