@@ -195,7 +195,7 @@ jobs:
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Publish
-        run: >
+        run: |
           c2cciutils-publish
             --docker-versions=${{ steps.version.outputs.versions }}
             --snyk-version=${{ steps.version.outputs.snyk_version }}
