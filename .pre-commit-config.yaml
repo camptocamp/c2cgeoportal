@@ -58,6 +58,7 @@ repos:
           - prettier-plugin-toml@0.3.1 # npm
         exclude: "(\
           ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\\.project}}/\
+          |ci/changelog\\.yaml\
           |.*\\.pt\
           |geoportal/tests/data/tinyows_.*\\.xml)"
   - repo: https://github.com/shellcheck-py/shellcheck-py
