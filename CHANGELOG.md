@@ -1,3 +1,7 @@
+##### 2.7.0.200
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10370](https://github.com/camptocamp/c2cgeoportal/pull/10370)
+
 ##### 2.7.0.199
 
 - [Backport 2.7] Documentation: fix the hi DPI explanation [ngeo#9021](https://github.com/camptocamp/ngeo/pull/9021)
