@@ -1,3 +1,7 @@
+##### 2.7.0.202
+
+- Update dependency tsconfig-paths to v3.14.2 (2.7) [ngeo#9029](https://github.com/camptocamp/ngeo/pull/9029)
+
 ##### 2.7.0.200
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10370](https://github.com/camptocamp/c2cgeoportal/pull/10370)
