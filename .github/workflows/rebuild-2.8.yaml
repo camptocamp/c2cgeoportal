@@ -1,0 +1,167 @@
+name: Rebuild 2.8
+
+on:
+  schedule:
+    - cron: '30 3 * * *'
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    name: Rebuild 2.8
+    timeout-minutes: 135
+
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - '2.8'
+
+    env:
+      MAIN_BRANCH: '2.8'
+      MAJOR_VERSION: '2.8'
+
+    steps:
+      - run: '! ls BACKPORT_TODO'
+      - run: df -h
+      - run: docker system prune --all --force
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ env.MAIN_BRANCH }}
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: pypi docker transifex
+
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
+      - run: scripts/get-version --auto-increment --github
+        id: version
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: "pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}\npre-commit-"
+      - run: pre-commit run --all-files
+        env:
+          SKIP: poetry-lock
+      - run: git diff
+        if: failure()
+      - name: Checks
+        run: c2cciutils-checks
+
+      - run: python3 -m pip install --user --requirement=requirements.txt
+
+        # Build images
+      - run: make build-runner
+      - run: make build-tools
+      - run: make checks
+        if: always()
+      - run: make build-config
+
+        # Build and lint QGIS images
+      - run: QGIS_VERSION=3.28 make build-qgisserver
+      - run: QGIS_VERSION=3.28 make prospector-qgisserver
+
+        # Tests
+      - run: make preparetest
+      - run: docker-compose logs --timestamps
+        if: failure()
+      - run: make tests-commons
+      - run: c2cciutils-docker-logs
+      - run: make tests-geoportal
+      - run: c2cciutils-docker-logs
+      - run: make tests-admin
+      - run: c2cciutils-docker-logs
+      - run: make tests-qgisserver
+      - run: c2cciutils-docker-logs
+      - run: c2cciutils-docker-logs
+        if: always()
+      - run: docker-compose down
+
+      - run: sudo git clean -fdx
+
+        # Documentation
+      - run: >
+          docker build --tag=camptocamp/geomapfish-doc
+          --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
+          --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
+          doc
+        env:
+          DOCKER_BUILDKIT: '1'
+
+      - name: Extract documentation
+        run: ci/extract-documentation artifacts/documentations/ || true
+        if: always()
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Documentation
+          path: artifacts/documentations/
+          if-no-files-found: ignore
+          retention-days: 5
+
+        # Use minimal version from the documentation
+      - uses: actions/setup-python@v4
+        with:
+          # When we upgrade this we should also upgrade the requirements
+          # in the documentation: doc/integrator/requirements.rst
+          python-version: '3.5'
+        # When we upgrade this we should also upgrade the requirements
+        # in the documentation: doc/integrator/requirements.rst
+        # netifaces is for 2.4
+      - run: pip install --user PyYAML==3.12 docker-compose==1.25.0
+
+        # Test App
+      - run: ci/test-app
+        timeout-minutes: 30
+      - name: Docker logs
+        run: |
+          cd ${HOME}/workspace/testgeomapfishapp/
+          c2cciutils-docker-logs
+        if: failure()
+        continue-on-error: true
+
+      - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install --user PyYAML docker-compose wheel
+
+      - name: Init Git
+        run:
+          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
+          }}
+      - run: make build-tools
+      - run: make build-runner
+      - run: make build-config
+
+      - run: ci/create-new-project ${HOME}/workspace geomapfishapp
+      - run: (cd ${HOME}/workspace/geomapfishapp/; ./build)
+
+      - name: Publish
+        run: >
+          c2cciutils-publish
+            --docker-versions=${{ steps.version.outputs.versions }}
+            --snyk-version=${{ steps.version.outputs.snyk_version }}
+            --type=rebuild
+        if: >
+          steps.version.outputs.versions != ''
+
+      - run: >
+          docker run --rm --volume=/var/run/docker.sock:/var/run/docker.sock nate/dockviz
+          images --tree
+        if: always()
+      - run: docker images
+        if: always()
+      - run: docker system df
+        if: always()
+      - run: df -h
+        if: always()

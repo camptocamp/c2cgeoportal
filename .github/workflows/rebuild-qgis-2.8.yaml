@@ -1,0 +1,85 @@
+---
+name: QGIS rebuild 2.8
+
+on:
+  schedule:
+    - cron: '30 3 * * *'
+
+env:
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    name: QGIS rebuild 2.8
+    timeout-minutes: 40
+
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          # Last LTR
+          - '3.28'
+          - latest
+          - master
+        branch:
+          - '2.8'
+
+    env:
+      MAIN_BRANCH: ${{ matrix.branch }}
+      MAJOR_VERSION: ${{ matrix.branch }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ env.MAIN_BRANCH }}
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: docker
+
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - run: scripts/get-version --auto-increment --github
+        id: version
+
+      - run: make build-runner
+      - run: make build-test-db
+
+      - name: Build QGIS server
+        run: |
+          docker build --target=runner --build-arg=VERSION=${{ matrix.version }} \
+          --build-arg=GEOMAPFISH_VERSION=$(scripts/get-version --major) \
+          --tag=camptocamp/geomapfish-qgisserver \
+          docker/qgisserver;
+          docker tag camptocamp/geomapfish-qgisserver \
+          camptocamp/geomapfish-qgisserver:gmflatest-qgis${{ matrix.version }}
+
+      - name: Test library availability
+        run: "! ( docker run --rm camptocamp/geomapfish-qgisserver ldd /usr/local/bin/qgis_mapserv.fcgi |
+          grep 'not found' )"
+
+      - name: Acceptance tests
+        run: |
+          cd docker/qgisserver
+          docker-compose up -d
+          docker-compose exec -T tests /tests/wait-db
+          docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=main upgrade head
+          docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=static upgrade head
+          docker-compose exec -T tests /tests/fill-db
+          c2cciutils-docker-logs
+          docker-compose exec -T tests /tests/acceptance-tests
+      - run: c2cciutils-docker-logs
+        if: failure()
+      - run: docker-compose down
+
+      - name: Publish
+        run: >
+          c2cciutils-publish
+            --group=qgis-${{ matrix.version }}
+            --docker-versions=${{ steps.version.outputs.versions }}
+            --snyk-version=${{ steps.version.outputs.snyk_version }}
+            --type=rebuild
