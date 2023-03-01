@@ -22,7 +22,7 @@ Information to know before starting the upgrade
 
    And the files you want to ignore.
 
-3. The Upgrade to the Web Components started, the authentication and the LIDAR profile are migrated.
+3. The Upgrade to the Web Components started, the authentication and the LiDAR profile are migrated.
    In the desktop_alt we introduce a canvas component who manage the application layout and plug the
    components through slots.
    In ngeo, the sources files from contribs/gmf/src are moved in ngeo src folder.
@@ -275,13 +275,13 @@ Changes to apply
    ``service: geoportal`` by ``service: geoportal-advance``, and in service ``alembic`` you should replace
    ``service: alembic`` by ``service: alembic-advance``.
 
-2. If you use the LIDAR profile you didn't need anymore to include your module in the controller.
+2. If you use the LiDAR profile you didn't need anymore to include your module in the controller.
 
 3. In the tilegeneration configuration ``on``/``off`` is no more considered as boolean, it should be
    converted to ``true``/``false``, and the properties ``mapcache_internal`` and ``mapcache`` should be
    removed.
 
-4. For the LIDAR profile you should update your controller, in the interface JavaScript file:
+4. For the LiDAR profile you should update your controller, in the interface JavaScript file:
 
     ```javascript
     + import panels from 'gmfapi/store/panels';
@@ -315,20 +315,28 @@ Changes to apply
     ...
     ```
 
+    You should disable map interrogations when LiDAR tool is active, if missing add the following code to the controller:
+    ```javascript
+    +   import ngeoMiscToolActivate from 'ngeo/misc/ToolActivate';
+
+    +   const drawLidarprofilePanelActive = new ngeoMiscToolActivate(this, 'drawLidarprofilePanelActive');
+    +   this.ngeoToolActivateMgr.registerTool('mapTools', drawLidarprofilePanelActive, false);
+    ```
+
     The interface HTML file needs a few changes.
-    To activate the LIDAR panel, you should makes sure to have correct ng-model attributes:
+    To activate the LiDAR panel, you should makes sure to have correct ng-model attributes:
     {% raw %}
     ```html
     ...
       <button ngeo-btn class="btn btn-default" ng-model="mainCtrl.drawLidarprofilePanelActive"
-              data-toggle="tooltip" data-placement="left" data-original-title="{{'LIDAR'|translate}}">
+              data-toggle="tooltip" data-placement="left" data-original-title="{{'LiDAR'|translate}}">
         <span class="fa fa-chart-line"></span>
       </button>
     ...
     ```
     {% endraw %}
 
-    The LIDAR panel should looks like that, where other tools panels are:
+    The LiDAR panel should looks like that, where other tools panels are:
     ```html
     ...
     +  <div ng-show="mainCtrl.drawLidarprofilePanelActive" class="row">
@@ -340,7 +348,7 @@ Changes to apply
     ...
     ```
 
-    Finally the LIDAR footer in the footer balise should looks like that:
+    Finally the LiDAR footer in the footer balise should looks like that:
     ```html
      <footer>
     +  <gmf-lidar-footer id="lidar-footer"></gmf-lidar-footer>
