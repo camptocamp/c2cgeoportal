@@ -41,8 +41,12 @@ To be editable, a layer should satisfy the following requirements:
      ``type_id``). This is not strictly required, but recommended.
    * The relationship's target table should have at least two columns, a
      primary key column and a text column. By default the used text column is the column named ``name``.
-     The default order column is the text column. Another text column and a order column can be specified
-     by the ``editingEnumerations`` layer metadata. Example:
+     The default order column is the text column.
+   * | The column ``name`` of the relationship's target table MUST NOT have empty values.
+     | Hint: set a `NOT NULL` constraint on this column.
+     | This MAY also apply to other columns as well if they are used in the relation.
+   * | Another text column and a order column can be specified by the ``editingEnumerations`` layer metadata.
+     | Example:
 
 .. code:: json
 
@@ -52,9 +56,11 @@ To be editable, a layer should satisfy the following requirements:
            "order_by": "order_column"
        }
    }
-
-
+   
 .. _administrator_editing_editable:
+
+
+
 
 Adding or making layers editable
 --------------------------------
