@@ -56,7 +56,7 @@ To be editable, a layer should satisfy the following requirements:
            "order_by": "order_column"
        }
    }
-   
+
 .. _administrator_editing_editable:
 
 
