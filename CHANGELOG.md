@@ -1,3 +1,5 @@
+##### 2.6.0.177
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10369](https://github.com/camptocamp/c2cgeoportal/pull/10369)
 ##### 2.6.0.176
 * [Backport 2.6] [Backport 2.5] Add the l10n files to the repository [c2cgeoportal#10360](https://github.com/camptocamp/c2cgeoportal/pull/10360)
 * Fix YAML lint, fix pre-commit hook [c2cgeoportal#10361](https://github.com/camptocamp/c2cgeoportal/pull/10361)
