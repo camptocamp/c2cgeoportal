@@ -1,3 +1,7 @@
+##### 2.7.0.203
+
+- Improve LiDAR changelog [c2cgeoportal#10374](https://github.com/camptocamp/c2cgeoportal/pull/10374)
+
 ##### 2.7.0.202
 
 - Update dependency tsconfig-paths to v3.14.2 (2.7) [ngeo#9029](https://github.com/camptocamp/ngeo/pull/9029)
