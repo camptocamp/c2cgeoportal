@@ -85,9 +85,9 @@ jobs:
       - name: Publish
         run: >
           c2cciutils-publish
-            --group=qgis-${{ matrix.version }}
-            --docker-versions=${{ steps.version.outputs.versions }}
-            --snyk-version=${{ steps.version.outputs.snyk_version }}
+          --group=qgis-${{ matrix.version }}
+          --docker-versions=${{ steps.version.outputs.versions }}
+          --snyk-version=${{ steps.version.outputs.snyk_version }}
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''

@@ -163,9 +163,9 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
        - name: Publish
          run: >
            c2cciutils-publish
-             --docker-versions=${{ steps.version.outputs.versions }}
-             --snyk-version=${{ steps.version.outputs.snyk_version }}
-   +         --type=rebuild
+           --docker-versions=${{ steps.version.outputs.versions }}
+           --snyk-version=${{ steps.version.outputs.snyk_version }}
+   +       --type=rebuild
    -     if: >
    -       env.HAS_SECRETS == 'HAS_SECRETS'
    -       && steps.version.outputs.versions != ''
@@ -221,10 +221,10 @@ as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following ch
       - name: Publish
         run: >
           c2cciutils-publish
-            --group=qgis-${{ matrix.version }}
-            --docker-versions=${{ steps.version.outputs.versions }}
-            --snyk-version=${{ steps.version.outputs.snyk_version }}
-   +        --type=rebuild
+          --group=qgis-${{ matrix.version }}
+          --docker-versions=${{ steps.version.outputs.versions }}
+          --snyk-version=${{ steps.version.outputs.snyk_version }}
+   +      --type=rebuild
    -     if: >
    -       github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
    -       && github.repository == 'camptocamp/c2cgeoportal'
@@ -276,9 +276,9 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
       - name: Publish
         run: >
           c2cciutils-publish
-            --docker-versions=${{ steps.version.outputs.versions }}
-            --snyk-version=${{ steps.version.outputs.snyk_version }}
-   +        --type=rebuild
+          --docker-versions=${{ steps.version.outputs.versions }}
+          --snyk-version=${{ steps.version.outputs.snyk_version }}
+   +      --type=rebuild
 
    -       - name: Publish to Transifex
    -         ...
