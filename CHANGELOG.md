@@ -1,3 +1,5 @@
+##### 2.5.0.236
+* Update all patch versions (2.5) (patch) [c2cgeoportal#10368](https://github.com/camptocamp/c2cgeoportal/pull/10368)
 ##### 2.5.0.235
 * [Backport 2.5] Add the l10n files to the repository [c2cgeoportal#10357](https://github.com/camptocamp/c2cgeoportal/pull/10357)
 ##### 2.5.0.233
