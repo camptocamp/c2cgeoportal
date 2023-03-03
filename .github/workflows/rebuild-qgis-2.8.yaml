@@ -43,7 +43,7 @@ jobs:
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
-      - run: scripts/get-version --auto-increment --github
+      - run: scripts/get-version --github
         id: version
 
       - run: make build-runner
