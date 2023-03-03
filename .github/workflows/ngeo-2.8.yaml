@@ -169,9 +169,9 @@ jobs:
       - name: Publish
         run: >
           c2cciutils-publish
-            --docker-versions=${{ steps.version.outputs.versions }}
-            --snyk-version=${{ steps.version.outputs.snyk_version }}
-            --type=rebuild
+          --docker-versions=${{ steps.version.outputs.versions }}
+          --snyk-version=${{ steps.version.outputs.snyk_version }}
+          --type=rebuild
         if: >
           steps.version.outputs.versions != ''
 

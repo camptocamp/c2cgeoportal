@@ -79,7 +79,7 @@ jobs:
       - name: Publish
         run: >
           c2cciutils-publish
-            --group=qgis-${{ matrix.version }}
-            --docker-versions=${{ steps.version.outputs.versions }}
-            --snyk-version=${{ steps.version.outputs.snyk_version }}
-            --type=rebuild
+          --group=qgis-${{ matrix.version }}
+          --docker-versions=${{ steps.version.outputs.versions }}
+          --snyk-version=${{ steps.version.outputs.snyk_version }}
+          --type=rebuild
