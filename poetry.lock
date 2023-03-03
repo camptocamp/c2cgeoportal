@@ -2072,17 +2072,18 @@ graphviz = "*"
 
 [[package]]
 name = "owslib"
-version = "0.27.2"
+version = "0.28.1"
 description = "OGC Web Service utility library"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "OWSLib-0.27.2-py2.py3-none-any.whl", hash = "sha256:6ab36f01aa3f16d978807343886783080ca5d8ec2e72fe30f55bf2aefafee71c"},
-    {file = "OWSLib-0.27.2.tar.gz", hash = "sha256:e102aa2444dfe0c8439ab1e1776cc0fa47cea28c09b8a28212c893c6017c179b"},
+    {file = "OWSLib-0.28.1-py2.py3-none-any.whl", hash = "sha256:5f16d35de5b91ae99989668bff66f123439d139c9202592ef2aba32227fff036"},
+    {file = "OWSLib-0.28.1.tar.gz", hash = "sha256:d482bca2070a0b744a479a66038c7206731af8e3873aa90ab25d1076c13f9368"},
 ]
 
 [package.dependencies]
+lxml = "*"
 python-dateutil = ">=1.5"
 pytz = "*"
 pyyaml = "*"
@@ -4466,4 +4467,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "0c269839f257d6b875a54f651ccd49164141557d5ec5e5919830b94925a6b63f"
+content-hash = "c8417a89175175b240eb11066cd5616f7fbf4fa44fd38023e10e27f16cf8adec"
