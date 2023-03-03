@@ -118,9 +118,9 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--translations<span class="w"> </span>--branch<span class="o">=</span>&lt;version&gt;<span class="w"> </span>--source<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+</style><span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--source<span class="w"> </span>--branch<span class="o">=</span>&lt;version&gt;<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
-<span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--translations<span class="w"> </span>--branch<span class="o">=</span>&lt;version&gt;<span class="w"> </span>--translation<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--translations<span class="w"> </span>--branch<span class="o">=</span>&lt;version&gt;<span class="w"> </span>--force<span class="w"> </span>--all<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
 <span class="prompt1"></span>
 <span class="prompt1">tx<span class="w"> </span>push<span class="w"> </span>--branch<span class="o">=</span>&lt;next<span class="w"> </span>version&gt;<span class="w"> </span>--source<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
@@ -130,11 +130,6 @@ span.prompt1:before {
 </pre></div></div></section>
 <section id="update-the-master-branch">
 <h2>Update the master branch<a class="headerlink" href="#update-the-master-branch" title="Permalink to this heading">¶</a></h2>
-<dl class="simple">
-<dt>In the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code> to</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
-</dd>
-</dl>
-<p>In the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/audit.yaml</span></code> and the new branch.</p>
 </section>
 <section id="configure-the-rebuild">
 <h2>Configure the rebuild<a class="headerlink" href="#configure-the-rebuild" title="Permalink to this heading">¶</a></h2>
@@ -177,31 +172,30 @@ span.prompt1:before {
 <span class="gd">-       ...</span>
 <span class="gd">-       - run: ci/test-upgrade cleanup ${HOME}/workspace</span>
 
-<span class="w"> </span>   - name: Publish feature branch
-<span class="gd">-     run: |</span>
-<span class="gd">-       c2cciutils-publish</span>
-<span class="gd">-       c2cciutils-publish --group=full</span>
-<span class="gi">+       c2cciutils-publish --type=rebuild</span>
-<span class="gd">-     if: &gt;</span>
-<span class="gd">-       github.ref != format(&#39;refs/heads/{0}&#39;, env.MAIN_BRANCH)</span>
-<span class="gd">-       &amp;&amp; github.repository == &#39;camptocamp/c2cgeoportal&#39;</span>
-<span class="gd">-   - name: Push version and changelog</span>
-<span class="gd">-     ...</span>
-
 <span class="gd">-       - name: Update the changelog</span>
 <span class="gd">-         ...</span>
 <span class="gd">-       - run: git diff CHANGELOG.md</span>
 
-<span class="gd">-       - name: Push version and changelog</span>
-<span class="gd">-         ...</span>
+<span class="gd">-   - name: Push version and changelog</span>
+<span class="gd">-     ...</span>
 
+<span class="w"> </span>   - name: Publish
+<span class="w"> </span>     run: &gt;
+<span class="w"> </span>       c2cciutils-publish
+<span class="w"> </span>       --docker-versions=${{ steps.version.outputs.versions }}
+<span class="w"> </span>       --snyk-version=${{ steps.version.outputs.snyk_version }}
+<span class="gi">+       --type=rebuild</span>
+<span class="gd">-     if: &gt;</span>
+<span class="gd">-       env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span>
+<span class="gd">-       &amp;&amp; steps.version.outputs.versions != &#39;&#39;</span>
+<span class="gd">-</span>
+<span class="gd">-       - name: Notify demo</span>
+<span class="gd">-         ...</span>
+<span class="gd">-</span>
 <span class="gd">-       - name: Publish to Transifex</span>
 <span class="gd">-         ...</span>
 <span class="gd">-</span>
 <span class="gd">-       - name: Publish documentation to GitHub.io</span>
-<span class="gd">-         ...</span>
-<span class="gd">-</span>
-<span class="gd">-       - name: Notify demo</span>
 <span class="gd">-         ...</span>
 </pre></div>
 </div>
@@ -224,6 +218,8 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="w"> </span>     strategy:
 <span class="w"> </span>       fail-fast: false
 <span class="w"> </span>       matrix:
+<span class="w"> </span>         version:
+<span class="w"> </span>           ...
 <span class="gi">+         branch:</span>
 <span class="gi">+           - &#39;x.y&#39;</span>
 
@@ -238,10 +234,13 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="w"> </span>          fetch-depth: 0
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
-<span class="w"> </span>  - name: Publish feature branch
-<span class="w"> </span>    run: |
-<span class="gd">-       c2cciutils-publish --group=qgis-${{ matrix.version }}</span>
-<span class="gi">+       c2cciutils-publish --type=rebuild --group=qgis-${{ matrix.version }}</span>
+<span class="w"> </span>  - name: Publish
+<span class="w"> </span>    run: &gt;
+<span class="w"> </span>      c2cciutils-publish
+<span class="w"> </span>      --group=qgis-${{ matrix.version }}
+<span class="w"> </span>      --docker-versions=${{ steps.version.outputs.versions }}
+<span class="w"> </span>      --snyk-version=${{ steps.version.outputs.snyk_version }}
+<span class="gi">+      --type=rebuild</span>
 <span class="gd">-     if: &gt;</span>
 <span class="gd">-       github.ref != format(&#39;refs/heads/{0}&#39;, env.MAIN_BRANCH)</span>
 <span class="gd">-       &amp;&amp; github.repository == &#39;camptocamp/c2cgeoportal&#39;</span>
@@ -287,9 +286,14 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="gi">+           ref: ${{ env.MAIN_BRANCH }}</span>
 <span class="w"> </span>         if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;
 
-<span class="gd">-       - name: Publish feature branch</span>
-<span class="gd">-         ...</span>
-<span class="gd">-</span>
+
+<span class="w"> </span>  - name: Publish
+<span class="w"> </span>    run: &gt;
+<span class="w"> </span>      c2cciutils-publish
+<span class="w"> </span>      --docker-versions=${{ steps.version.outputs.versions }}
+<span class="w"> </span>      --snyk-version=${{ steps.version.outputs.snyk_version }}
+<span class="gi">+      --type=rebuild</span>
+
 <span class="gd">-       - name: Publish to Transifex</span>
 <span class="gd">-         ...</span>
 <span class="gd">-</span>
@@ -299,10 +303,17 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 </div>
 <p>And also remove all the <cite>if</cite> concerning the following tests:</p>
 <ul class="simple">
-<li><p><cite>github.ref != format(‘refs/heads/{0}’, env.MAIN_BRANCH)</cite></p></li>
-<li><p><cite>github.repository == ‘camptocamp/c2cgeoportal’</cite></p></li>
-<li><p><cite>env.HAS_SECRETS == ‘HAS_SECRETS</cite> (optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">github.ref</span> <span class="pre">!=</span> <span class="pre">format('refs/heads/{0}',</span> <span class="pre">env.MAIN_BRANCH)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">github.repository</span> <span class="pre">==</span> <span class="pre">'camptocamp/c2cgeoportal'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env.HAS_SECRETS</span> <span class="pre">==</span> <span class="pre">'HAS_SECRETS</span></code> (optional)</p></li>
 </ul>
+</section>
+<section id="configure-the-new-branch">
+<h2>Configure the new branch<a class="headerlink" href="#configure-the-new-branch" title="Permalink to this heading">¶</a></h2>
+<dl class="simple">
+<dt>In the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code> to</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
+</dd>
+</dl>
 </section>
 <section id="configure-the-audit">
 <h2>Configure the audit<a class="headerlink" href="#configure-the-audit" title="Permalink to this heading">¶</a></h2>
@@ -338,14 +349,6 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 </pre></div>
 </div>
 </section>
-<section id="version-check">
-<h2>Version check<a class="headerlink" href="#version-check" title="Permalink to this heading">¶</a></h2>
-<p>On the &lt;new_version&gt; branch disable version check by adding in the <code class="docutils literal notranslate"><span class="pre">ci/config.yaml</span></code>:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>checks:
-<span class="gi">+  versions: False</span>
-</pre></div>
-</div>
-</section>
 <section id="backport-label">
 <h2>Backport label<a class="headerlink" href="#backport-label" title="Permalink to this heading">¶</a></h2>
 <p>Create the new back port label named <code class="docutils literal notranslate"><span class="pre">backport_&lt;new_version&gt;</span></code>.</p>
@@ -353,10 +356,6 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <section id="protect-branch">
 <h2>Protect branch<a class="headerlink" href="#protect-branch" title="Permalink to this heading">¶</a></h2>
 <p>In GitHub project settings, protect the new branch with the same settings as the master branch.</p>
-</section>
-<section id="check">
-<h2>Check<a class="headerlink" href="#check" title="Permalink to this heading">¶</a></h2>
-<p>Run <cite>c2cciutils-checks</cite> on each branch before pushing to be sure that everything is OK.</p>
 </section>
 <section id="publish-it">
 <h2>Publish it<a class="headerlink" href="#publish-it" title="Permalink to this heading">¶</a></h2>
