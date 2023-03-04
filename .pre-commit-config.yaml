@@ -28,7 +28,7 @@ repos:
         exclude: ^ci/tileindex/SRTM2056\.prj$
       - id: trailing-whitespace
       - id: mixed-line-ending
-  - repo: https://github.com/sbrunner/pre-commit-hooks
+  - repo: https://github.com/sbrunner/hooks
     rev: 0.5.0
     hooks:
       - id: copyright
