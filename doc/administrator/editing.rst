@@ -57,6 +57,7 @@ To be editable, a layer should satisfy the following requirements:
        }
    }
 
+
 .. _administrator_editing_editable:
 
 Adding or making layers editable
