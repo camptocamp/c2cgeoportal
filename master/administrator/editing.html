@@ -67,13 +67,23 @@ The following geometry types are partially supported:
 <code class="docutils literal notranslate"><span class="pre">MULTIPOINT</span></code>, <code class="docutils literal notranslate"><span class="pre">MULTILINESTRING</span></code>, <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code>.</p></li>
 <li><p>If the PostGIS table has a many-to-one relationship to another table,
 (typically a dictionary table) there are additional requirements:</p>
-<ul class="simple">
+<ul>
 <li><p>The name of the foreign key column should end with <code class="docutils literal notranslate"><span class="pre">_id</span></code> (e.g.
 <code class="docutils literal notranslate"><span class="pre">type_id</span></code>). This is not strictly required, but recommended.</p></li>
 <li><p>The relationship’s target table should have at least two columns, a
 primary key column and a text column. By default the used text column is the column named <code class="docutils literal notranslate"><span class="pre">name</span></code>.
-The default order column is the text column. Another text column and a order column can be specified
-by the <code class="docutils literal notranslate"><span class="pre">editingEnumerations</span></code> layer metadata. Example:</p></li>
+The default order column is the text column.</p></li>
+<li><div class="line-block">
+<div class="line">The column <code class="docutils literal notranslate"><span class="pre">name</span></code> of the relationship’s target table MUST NOT have empty values.</div>
+<div class="line">Hint: set a <cite>NOT NULL</cite> constraint on this column.</div>
+<div class="line">This MAY also apply to other columns as well if they are used in the relation.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line">Another text column and a order column can be specified by the <code class="docutils literal notranslate"><span class="pre">editingEnumerations</span></code> layer metadata.</div>
+<div class="line">Example:</div>
+</div>
+</li>
 </ul>
 </li>
 </ol>
