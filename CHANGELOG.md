@@ -1,3 +1,7 @@
+##### 2.7.0.205
+
+- Restore onSuccessulLogin method [ngeo#9033](https://github.com/camptocamp/ngeo/pull/9033)
+
 ##### 2.7.0.203
 
 - Improve LiDAR changelog [c2cgeoportal#10374](https://github.com/camptocamp/c2cgeoportal/pull/10374)
