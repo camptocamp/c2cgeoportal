@@ -767,19 +767,32 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 print(f"Get WMS GetCapabilities for URL {wms_getcap_url},\nwith headers: {rendered_headers}")
                 response = requests.get(wms_getcap_url, headers=headers, **kwargs)
 
-                try:
-                    self.wms_capabilities_cache[url] = WebMapService(None, xml=response.content)
-                except Exception as e:
+                if response.ok:
+                    try:
+                        self.wms_capabilities_cache[url] = WebMapService(None, xml=response.content)
+                    except Exception as e:
+                        print(
+                            colorize(
+                                "ERROR! an error occurred while trying to parse "
+                                "the GetCapabilities document.",
+                                Color.RED,
+                            )
+                        )
+                        print(colorize(str(e), Color.RED))
+                        print(f"URL: {wms_getcap_url}\nxml:\n{response.text}")
+                        if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
+                            raise
+                else:
                     print(
                         colorize(
-                            "ERROR! an error occurred while trying to parse the GetCapabilities document.",
+                            f"ERROR! Unable to GetCapabilities from URL: {wms_getcap_url},\n"
+                            f"with headers: {rendered_headers}",
                             Color.RED,
                         )
                     )
-                    print(colorize(str(e), Color.RED))
-                    print(f"URL: {wms_getcap_url}\nxml:\n{response.text}")
+                    print(f"Response: {response.status_code} {response.reason}\n{response.text}")
                     if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
-                        raise
+                        raise Exception(response.reason)
             except Exception as e:
                 print(colorize(str(e), Color.RED))
                 rendered_headers = " ".join(
