@@ -31,7 +31,6 @@ jobs:
 
     steps:
       - run: sudo npm install -g npm@6
-      - run: pip install --requirement=requirements.txt
 
       # For version below 2.7 (included)
       - run: |
@@ -50,6 +49,8 @@ jobs:
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+
+      - run: pip install --requirement=requirements.txt
 
       - run: python3 -m venv ~/.venv
       - run: ~/.venv/bin/pip install --pre c2cciutils[audit]
