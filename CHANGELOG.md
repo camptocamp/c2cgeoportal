@@ -1,3 +1,5 @@
+##### 2.6.0.179
+* Snyk auto fix [c2cgeoportal#10387](https://github.com/camptocamp/c2cgeoportal/pull/10387)
 ##### 2.6.0.178
 * Update dependency c2cciutils to v1.1.20 (2.6) [ngeo#9030](https://github.com/camptocamp/ngeo/pull/9030)
 ##### 2.6.0.177
