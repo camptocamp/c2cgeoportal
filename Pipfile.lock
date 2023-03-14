@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b35297b700be94488af70ff4e6f61e49a20979f0cc4e8eb31788731b8dc941a3"
+            "sha256": "d3f3388bc3ad66b2cb68a2f117575cf11b7a09bd47daf9fbed47dd2ff9a0ad7d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -53,7 +53,7 @@
                 "sha256:acbd0daa9675ce88623da35c80d819cdafa91731dee6b2695c64d7ca9da82db4",
                 "sha256:f7bad0a7b4d800d6e73733ea7e13a616016221ac111ff9a344fe4cba41e51bbe"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==1.26.3"
         },
         "azure-identity": {
@@ -892,11 +892,11 @@
         },
         "owslib": {
             "hashes": [
-                "sha256:20d79bce0be10277caa36f3134826bd0065325df0301a55b2c8b1c338d8d8f0a",
-                "sha256:78cfd1d369d7f225705180de3776f1a69770505b8af2b79728edced85204186f"
+                "sha256:5f16d35de5b91ae99989668bff66f123439d139c9202592ef2aba32227fff036",
+                "sha256:d482bca2070a0b744a479a66038c7206731af8e3873aa90ab25d1076c13f9368"
             ],
             "index": "pypi",
-            "version": "==0.25.0"
+            "version": "==0.28.1"
         },
         "packaging": {
             "hashes": [
@@ -2386,7 +2386,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "jeepney": {
@@ -3141,7 +3141,7 @@
                 "sha256:5c6bd9dc7a543b7fe4304a631f8a8a3b674e2bbfc49c2ae96200cdbe55df6b17",
                 "sha256:95c5d300c4e879ee69708c428ba566c59478fd653cc3a22243eeb8ed846950bb"
             ],
-            "markers": "python_version >= '3.6' and python_version < '4.0'",
+            "markers": "python_version >= '3.6' and python_version < '4'",
             "version": "==4.8"
         },
         "ruamel.yaml": {
