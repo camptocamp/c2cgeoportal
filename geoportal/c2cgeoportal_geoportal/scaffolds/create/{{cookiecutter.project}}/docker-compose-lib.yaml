@@ -218,7 +218,7 @@ services:
     user: www-data
     restart: unless-stopped
     entrypoint:
-      - generate_tiles
+      - generate-tiles
       - --role=slave
       - --daemon
     environment:
