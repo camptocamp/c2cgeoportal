@@ -29,7 +29,7 @@ repos:
       - id: trailing-whitespace
       - id: mixed-line-ending
   - repo: https://github.com/sbrunner/pre-commit-hooks
-    rev: 0.2.3
+    rev: 0.5.0
     hooks:
       - id: copyright
       - id: workflows-require-timeout
@@ -70,7 +70,7 @@ repos:
     hooks:
       - id: git-check
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.21.0
+    rev: 0.22.0
     hooks:
       - id: check-github-workflows
       - id: check-renovate
@@ -114,7 +114,7 @@ repos:
       - id: black
         exclude: (^commons/c2cgeoportal_commons/alembic/script\.py\.mako$|.*\.rst$|.*\.rst.tmpl$|^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$)
   - repo: https://github.com/PyCQA/prospector
-    rev: v1.8.4
+    rev: v1.9.0
     hooks:
       - id: prospector
         args:
