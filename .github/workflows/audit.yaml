@@ -50,7 +50,7 @@ jobs:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
 
-      - run: pip install --requirement=requirements.txt
+      - run: if [ -e requirements.txt ] ; then pip install --requirement=requirements.txt; fi
 
       - run: python3 -m venv ~/.venv
       - run: ~/.venv/bin/pip install --pre c2cciutils[audit]
