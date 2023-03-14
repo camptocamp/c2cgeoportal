@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0f786c3dddfefc99cc83c4a0ec57cf9f00c525606c38c2d5ca7a046169678da6"
+            "sha256": "0215300e5176c3dbb0dddc879476768b9fe3a368439befa0cf84ca6fc7db51ac"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -81,11 +81,11 @@
         },
         "bottle": {
             "hashes": [
-                "sha256:683de3aa399fb26e87b274dbcf70b1a651385d459131716387abdc3792e04167",
-                "sha256:9f1c363257c590bd34db5fad4693a7f06ff4217e9ad18337451de69c25137127"
+                "sha256:2480121a73e87380989b77e32bd2092d190e7ea7d71e6f1b8f7af7eab9d54ea3",
+                "sha256:fa88c66413ab07b5046545ac6e47a967d582143aef87f2c0fb0ef571d9977b5e"
             ],
             "index": "pypi",
-            "version": "==0.12.23"
+            "version": "==0.12.24"
         },
         "c2c.template": {
             "hashes": [
@@ -593,11 +593,11 @@
         },
         "owslib": {
             "hashes": [
-                "sha256:23e19ca6b8c6dfe8c9a11387818cd0440d0ccf0c71f0fe4afd210ef63f2c386f",
-                "sha256:cccfea9bc05fcfad8b06d2d96137978a89f22590343bf87c8bf7c78ee79f06c2"
+                "sha256:5f16d35de5b91ae99989668bff66f123439d139c9202592ef2aba32227fff036",
+                "sha256:d482bca2070a0b744a479a66038c7206731af8e3873aa90ab25d1076c13f9368"
             ],
             "index": "pypi",
-            "version": "==0.22.0"
+            "version": "==0.28.1"
         },
         "papyrus": {
             "hashes": [
@@ -1657,11 +1657,11 @@
         },
         "gitpython": {
             "hashes": [
-                "sha256:769c2d83e13f5d938b7688479da374c4e3d49f71549aaf462b646db9602ea6f8",
-                "sha256:cd455b0000615c60e286208ba540271af9fe531fa6a87cc590a7298785ab2882"
+                "sha256:8ce3bcf69adfdf7c7d503e78fd3b1c492af782d58893b650adb2ac8912ddd573",
+                "sha256:f04893614f6aa713a60cbbe1e6a97403ef633103cdd0ef5eb6efe0deb98dbe8d"
             ],
             "index": "pypi",
-            "version": "==3.1.30"
+            "version": "==3.1.31"
         },
         "idna": {
             "hashes": [
@@ -1834,11 +1834,10 @@
         },
         "mypy-extensions": {
             "hashes": [
-                "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d",
-                "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"
+                "sha256:c8b707883a96efe9b4bb3aaf0dcc07e7e217d7d8368eec4db4049ee9e142f4fd"
             ],
             "index": "pypi",
-            "version": "==0.4.3"
+            "version": "==0.4.4"
         },
         "packaging": {
             "hashes": [
