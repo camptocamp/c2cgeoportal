@@ -10,7 +10,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
-c2cwsgiutils = { extras = ["broadcast"], version = "5.1.6" }
+c2cwsgiutils = { extras = ["broadcast"], version = "5.2.2" }
 papyrus = "2.5" # commons
 transaction = "3.0.1" # commons
 "c2c.template" = "2.3.0"
@@ -24,7 +24,7 @@ psycopg2 = "2.9.5"
 pytz = "2022.7.1"
 
 [tool.poetry.dev-dependencies]
-prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.4" }
+prospector = { extras = ["with_mypy", "with_bandit"], version = "1.9.0" }
 # pylint = "2.15.5"
 types-pyyaml = "6.0.12.8"
 pytest = "7.2.1"

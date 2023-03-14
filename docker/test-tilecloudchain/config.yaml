@@ -102,11 +102,11 @@ server:
   expires: 8 # 8 hours
   predefined_commands:
     - name: Generation all layers
-      command: generate_tiles --role=master
+      command: generate-tiles --role=master
     - name: Generation layer plan
-      command: generate_tiles --role=master --layer=plan
+      command: generate-tiles --role=master --layer=plan
     - name: Generation layer ortho
-      command: generate_tiles --role=master --layer=ortho
+      command: generate-tiles --role=master --layer=ortho
 
 process:
   optipng_test:

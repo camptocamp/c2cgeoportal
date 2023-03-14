@@ -169,7 +169,7 @@ services:
       - MASTER=redis_master
 
   tilecloudchain:
-    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.17
+    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.18
     user: www-data
     restart: unless-stopped
     environment:
@@ -218,7 +218,7 @@ services:
     user: www-data
     restart: unless-stopped
     entrypoint:
-      - generate_tiles
+      - generate-tiles
       - --role=slave
       - --daemon
     environment:
