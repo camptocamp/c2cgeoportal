@@ -1,3 +1,7 @@
+##### 2.7.0.206
+
+- Snyk auto fix [c2cgeoportal#10385](https://github.com/camptocamp/c2cgeoportal/pull/10385)
+
 ##### 2.7.0.205
 
 - Restore onSuccessulLogin method [ngeo#9033](https://github.com/camptocamp/ngeo/pull/9033)
