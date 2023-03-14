@@ -12,3 +12,4 @@ pyramid_tm
 sqlalchemy
 zope.event
 translationstring
+babel>=2.9.1 # not directly required, pinned by Snyk to avoid a vulnerability
