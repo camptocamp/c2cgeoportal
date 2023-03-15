@@ -1,3 +1,7 @@
+##### 2.7.0.207
+
+- Stronger update po [c2cgeoportal#10388](https://github.com/camptocamp/c2cgeoportal/pull/10388)
+
 ##### 2.7.0.206
 
 - Snyk auto fix [c2cgeoportal#10385](https://github.com/camptocamp/c2cgeoportal/pull/10385)
