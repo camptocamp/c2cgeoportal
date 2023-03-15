@@ -565,7 +565,9 @@ vars:
       - name: hiDPILegendImages
         type: json
         description: >
-          The URLs to the hi DPI images used as a legend in the layer tree.
+          The URLs to the hi DPI images used to print the legend of this layer.
+          It will contain a JSON mapping object with the DPI as key and the URL as value.
+          Note that the URL can't use the config scheme.
         relevant_for:
           - layer_wms
           - layer_wmts
