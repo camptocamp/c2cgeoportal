@@ -1,3 +1,7 @@
+##### 2.8.rc.6
+
+- [Backport 2.8] [Backport master] Stronger update po [c2cgeoportal#10394](https://github.com/camptocamp/c2cgeoportal/pull/10394)
+
 ##### 2.8.rc.5
 
 - [Backport 2.8] Add more documentation for hiDPILegendImages [c2cgeoportal#10393](https://github.com/camptocamp/c2cgeoportal/pull/10393)
