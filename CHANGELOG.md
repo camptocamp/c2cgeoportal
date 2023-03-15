@@ -1,3 +1,8 @@
+##### 2.7.0.208
+
+- Add more documentation for hiDPILegendImages [c2cgeoportal#10389](https://github.com/camptocamp/c2cgeoportal/pull/10389)
+- Apply FTS params on mainCtrl dimensions [ngeo#9036](https://github.com/camptocamp/ngeo/pull/9036)
+
 ##### 2.7.0.207
 
 - Stronger update po [c2cgeoportal#10388](https://github.com/camptocamp/c2cgeoportal/pull/10388)
