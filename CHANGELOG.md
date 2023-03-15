@@ -1,3 +1,7 @@
+##### 2.8.rc.5
+
+- [Backport 2.8] Add more documentation for hiDPILegendImages [c2cgeoportal#10393](https://github.com/camptocamp/c2cgeoportal/pull/10393)
+
 ##### 2.8.rc.4
 
 - Snyk auto fix [c2cgeoportal#10384](https://github.com/camptocamp/c2cgeoportal/pull/10384)
