@@ -26,3 +26,12 @@ Resources managed by the user group community:
 - [Geomapfish user-group website](https://geomapfish.org/)
 - [Issue tracker (e.g. to ask for new feature)](https://github.com/camptocamp/GeoMapFish/issues)
 - [Getting Started (quickly start a GeoMapFish)](https://github.com/geomapfish/getting_started)
+
+## Contributing
+
+Install the pre-commit hooks:
+
+```bash
+pip install pre-commit
+pre-commit install --allow-missing-config
+```

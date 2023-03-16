@@ -6,6 +6,7 @@ ci:
     - copyright
     - poetry-lock
     - poetry-check
+    - ripsecrets
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -20,9 +21,7 @@ repos:
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
       - id: check-toml
       - id: check-yaml
-        exclude: "(\
-          ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\\.project}}/\
-          |secrets\\.yml)"
+        exclude: (^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/|secrets\.yml)
       - id: check-json
       - id: end-of-file-fixer
         exclude: ^ci/tileindex/SRTM2056\.prj$
@@ -56,11 +55,7 @@ repos:
           - prettier@2.8.4 # npm
           - prettier-plugin-sh@0.12.8 # npm
           - prettier-plugin-toml@0.3.1 # npm
-        exclude: "(\
-          ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\\.project}}/\
-          |^ci/changelog\\.yaml$\
-          |.*\\.pt\
-          |^geoportal/tests/data/tinyows_.*\\.xml)"
+        exclude: (^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/|^ci/changelog\.yaml$|.*\.pt|^geoportal/tests/data/tinyows_.*\.xml)
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.9.0.2
     hooks:
@@ -76,13 +71,20 @@ repos:
       - id: check-renovate
         additional_dependencies:
           - pyjson5==1.6.2 # pypi
+      - id: check-github-actions
+      - id: check-jsonschema
+        name: Check GitHub Workflows set timeout-minutes
+        files: ^\.github/workflows/[^/]+$
+        types:
+          - yaml
+        args:
+          - --builtin-schema
+          - github-workflows-require-timeout
   - repo: https://github.com/sirwart/ripsecrets
     rev: v0.1.5
     hooks:
       - id: ripsecrets
-        exclude: "(\
-          ^docker/config/haproxy_dev/localhost\\.pem$\
-          |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\\.sql)"
+        exclude: (^docker/config/haproxy_dev/localhost\.pem$|geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql)
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.0.1
     hooks:
@@ -101,9 +103,7 @@ repos:
       - id: pyupgrade
         args:
           - --py38-plus
-        exclude: "^(\
-          geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\\.project}}/(build|scripts/.*)\
-          |scripts/(get-version|upgrade))$"
+        exclude: ^(geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build|scripts/.*)|scripts/(get-version|upgrade))$
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
