@@ -1,3 +1,7 @@
+##### 2.8.rc.7
+
+- [Backport 2.8] Update precommit hooks [c2cgeoportal#10399](https://github.com/camptocamp/c2cgeoportal/pull/10399)
+
 ##### 2.8.rc.6
 
 - [Backport 2.8] [Backport master] Stronger update po [c2cgeoportal#10394](https://github.com/camptocamp/c2cgeoportal/pull/10394)
