@@ -1,3 +1,5 @@
+##### 2.4.2.104
+* Fix CVE [c2cgeoportal#10397](https://github.com/camptocamp/c2cgeoportal/pull/10397)
 ##### 2.4.2.103
 * Snyk auto fix [c2cgeoportal#10396](https://github.com/camptocamp/c2cgeoportal/pull/10396)
 ##### 2.4.2.102
