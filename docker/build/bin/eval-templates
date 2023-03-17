@@ -2,19 +2,16 @@
 
 export DOLLAR=$
 
-find /app/ -name '*.tmpl' -print | while read file
-do
+find /app/ -name '*.tmpl' -print | while read file; do
     echo "Evaluate: ${file}"
     envsubst < ${file} > ${file%.tmpl}
-    if [ `id -u` == 0 ]
-    then
+    if [ $(id -u) == 0 ]; then
         chmod --reference=${file} ${file%.tmpl}
         chown --reference=${file} ${file%.tmpl}
     fi
 done
 
-find /app/*_geoportal/static-ngeo/build/ \( -name '*.js' -or -name '*.css' -or -name '*.html' \) -print | while read file
-do
+find /app/*_geoportal/static-ngeo/build/ \( -name '*.js' -or -name '*.css' -or -name '*.html' \) -print | while read file; do
     echo "Evaluate: ${file}"
     sed --in-place --expression="s#\.__ENTRY_POINT__#${VISIBLE_ENTRY_POINT}#g" "${file}"
 done

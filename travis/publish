@@ -4,64 +4,55 @@ TAG=$(git tag --list --points-at=HEAD)
 LAST_TAG=$(git describe --abbrev=0 --tags)
 COMMIT=FALSE
 VERSION_QGIS=FALSE
-BRANCH_NAME=$(echo "${GITHUB_REF}"|sed 's|^refs/heads/||g')
+BRANCH_NAME=$(echo "${GITHUB_REF}" | sed 's|^refs/heads/||g')
 
-if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]
-then
+if [[ ${TAG} =~ ^[0-9]\.[0-9]\.[0-9]$ ]]; then
     VERSION_QGIS=${TAG}
     travis/get-minor --reset
     travis/changelog ${TAG}
     COMMIT=TRUE
 else
-    if [[ ${BRANCH_NAME} =~ ^[0-9]\.[0-9]$ ]]
-    then
+    if [[ ${BRANCH_NAME} =~ ^[0-9]\.[0-9]$ ]]; then
         VERSION_QGIS=${BRANCH_NAME}
-        TAG=${LAST_TAG}.`travis/get-minor`
+        TAG=${LAST_TAG}.$(travis/get-minor)
         travis/changelog ${TAG}
         COMMIT=TRUE
     fi
 fi
 
-if [ ${COMMIT} == TRUE ]
-then
+if [ ${COMMIT} == TRUE ]; then
     git add travis/ci.yaml travis/changelog.yaml CHANGELOG.md
     git commit -m "Update the minor version and changelog"
     git push origin HEAD:${BRANCH_NAME}
 fi
 
 # Get the version to be published
-if [ "${TAG}" != "" ]
-then
+if [ "${TAG}" != "" ]; then
     VERSION=${TAG}
-elif [ "${BRANCH_NAME}" != "master" ]
-then
+elif [ "${BRANCH_NAME}" != "master" ]; then
     VERSION=${BRANCH_NAME//\//_}
 else
     VERSION=${MAJOR_VERSION}
 fi
 export VERSION
-if [ ${VERSION_QGIS} == FALSE ]
-then
+if [ ${VERSION_QGIS} == FALSE ]; then
     VERSION_QGIS=${VERSION}
 fi
 
 # Publish the GeoMapFish images
-for IMAGE in geomapfish-build-dev geomapfish-build geomapfish-config-build
-do
+for IMAGE in geomapfish-build-dev geomapfish-build geomapfish-config-build; do
     docker tag camptocamp/${IMAGE}:${MAJOR_VERSION} camptocamp/${IMAGE}:${VERSION}
     docker push camptocamp/${IMAGE}:${VERSION}
 done
 
 # Publish the GeoMapFish QGIS server images
-for QGIS_VERSION in 3.16
-do
+for QGIS_VERSION in 3.16; do
     docker tag camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis${QGIS_VERSION} \
         camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${QGIS_VERSION}
     docker push camptocamp/geomapfish-qgisserver:gmf${VERSION_QGIS}-qgis${QGIS_VERSION}
 done
 
 # Cleanup
-if [ -e ~/.docker ]
-then
+if [ -e ~/.docker ]; then
     rm --recursive --force ~/.docker
 fi

@@ -46,15 +46,13 @@ function createnondocker {
 
 function printdiff {
     ls -l .UPGRADE*
-    for f in $(ls -1 *.diff)
-    do
+    for f in $(ls -1 *.diff); do
         echo "--- $f ---"
         cat "$f"
     done
 }
 
-if [ "$1" = "init" ]
-then
+if [ "$1" = "init" ]; then
     rm --recursive --force ${WORKSPACE}/dockerref \
         ${WORKSPACE}/nondocker ${WORKSPACE}/docker \
         ${WORKSPACE}/testgeomapfish
@@ -65,12 +63,10 @@ then
     create ${WORKSPACE}/v240 --version=2.4.1
 fi
 
-if [ "$1" = "docker" ]
-then
+if [ "$1" = "docker" ]; then
     cd ${WORKSPACE}/docker/testgeomapfish
     ./docker-run --env=NODE_ENV make upgrade
-    if [ ! -e .UPGRADE_SUCCESS ]
-    then
+    if [ ! -e .UPGRADE_SUCCESS ]; then
         printdiff
         echo "Fail to upgrade"
         exit 1
@@ -83,8 +79,7 @@ then
     diff --recursive --exclude=.git ${WORKSPACE}/dockerref ${WORKSPACE}/docker
 fi
 
-if [ "$1" = "todocker" ]
-then
+if [ "$1" = "todocker" ]; then
     cp travis/v24-project.yaml ${WORKSPACE}/nondocker/testgeomapfish/project.yaml.mako
     cd ${WORKSPACE}/nondocker/testgeomapfish
     echo "UPGRADE_ARGS += --force-docker --new-makefile=Makefile" > temp.mk
@@ -102,12 +97,10 @@ then
     cp {CONST_create_template/,}docker-compose.yaml
     cp {CONST_create_template/,}tilegeneration/config.yaml.tmpl
     cp CONST_create_template/mapserver/*.tmpl mapserver
-    if [ -e .UPGRADE10 ]
-    then
+    if [ -e .UPGRADE10 ]; then
         ./docker-run --env=NODE_ENV make upgrade11
     fi
-    if [ ! -e .UPGRADE_SUCCESS ]
-    then
+    if [ ! -e .UPGRADE_SUCCESS ]; then
         printdiff
         echo "Fail to upgrade"
         exit 1
@@ -121,7 +114,6 @@ then
     diff --recursive --exclude=.git ${WORKSPACE}/dockerref ${WORKSPACE}/nondocker
 fi
 
-
 function v240 {
     cp travis/from23-config ${WORKSPACE}/v240/testgeomapfish/.config
     cd ${WORKSPACE}/v240/testgeomapfish
@@ -130,23 +122,19 @@ function v240 {
     git commit --quiet --message="Start upgrade"
     ./docker-run --env=NODE_ENV make upgrade
     ./docker-run make --always-make --makefile=CONST_convert2tmpl.mk to-tmpl
-    if [ -e .UPGRADE8 ]
-    then
+    if [ -e .UPGRADE8 ]; then
         cat changelog.diff
         ./docker-run --env=NODE_ENV make upgrade9
     fi
-    if [ -e .UPGRADE9 ]
-    then
+    if [ -e .UPGRADE9 ]; then
         git apply --3way ngeo.diff
         ./docker-run --env=NODE_ENV make upgrade10
     fi
-    if [ -e .UPGRADE10 ]
-    then
+    if [ -e .UPGRADE10 ]; then
         git apply --3way create.diff
         ./docker-run --env=NODE_ENV make upgrade11
     fi
-    if [ ! -e .UPGRADE_SUCCESS ]
-    then
+    if [ ! -e .UPGRADE_SUCCESS ]; then
         printdiff
         echo "Fail to upgrade"
         exit 1
@@ -159,13 +147,11 @@ function v240 {
     diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/$1dockerref ${WORKSPACE}/v240
 }
 
-if [ "$1" = "v240" ]
-then
+if [ "$1" = "v240" ]; then
     v240
 fi
 
-if [ "$1" = "cleanup" ]
-then
+if [ "$1" = "cleanup" ]; then
     rm --recursive --force ${WORKSPACE}/dockerref \
         ${WORKSPACE}/nondocker ${WORKSPACE}/docker
 fi

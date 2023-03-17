@@ -11,8 +11,7 @@ vars:
     - it
 
   admin_interface:
-
-    map_base_layer: "new ol.layer.Tile({ source: new ol.source.OSM() })"
+    map_base_layer: 'new ol.layer.Tile({ source: new ol.source.OSM() })'
     map_x: 740000
     map_y: 5860000
     map_zoom: 10
@@ -211,8 +210,8 @@ vars:
         type: unknown
       - name: _color
         type: regex
-        regex: "^#([A-Fa-f0-9]{{6}}|[A-Fa-f0-9]{{3}})$"
-        error_message: "Expecting hex format for color, e.g. #007DCD"
+        regex: '^#([A-Fa-f0-9]{{6}}|[A-Fa-f0-9]{{3}})$'
+        error_message: 'Expecting hex format for color, e.g. #007DCD'
 
     # The list of functionalities that can be configured
     # through the admin interface.

@@ -5,8 +5,7 @@
 
 status=$(git status --short)
 
-if [ "$status" != "" ]
-then
+if [ "$status" != "" ]; then
     echo Build generates changes
     git status
     git diff

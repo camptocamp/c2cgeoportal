@@ -2,5 +2,4 @@
  * @requires GeoExt/Lang.js
  */
 
-GeoExt.Lang.add("fr", {
-});
+GeoExt.Lang.add('fr', {});
