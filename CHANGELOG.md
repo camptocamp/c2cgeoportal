@@ -1,3 +1,9 @@
+##### 2.8.rc.8
+
+- [Backport 2.8] Fix new error with attr in pull request check workflow [c2cgeoportal#10402](https://github.com/camptocamp/c2cgeoportal/pull/10402)
+- Log the theme error as warning [ngeo#9041](https://github.com/camptocamp/ngeo/pull/9041)
+- [Backport 2.8] Fix new error with attr in pull request check workflow [ngeo#9046](https://github.com/camptocamp/ngeo/pull/9046)
+
 ##### 2.8.rc.7
 
 - [Backport 2.8] Update precommit hooks [c2cgeoportal#10399](https://github.com/camptocamp/c2cgeoportal/pull/10399)
