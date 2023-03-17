@@ -44,16 +44,15 @@ docker-compose exec -T geoportal curl --insecure https://front/admin/ | grep Log
 docker-compose exec -T geoportal curl --insecure 'https://front/dynamic.json?interface=desktop&query=&path=%2F'
 docker-compose exec -T geoportal curl --insecure https://front/static-geomapfish/0/locales/fr.json
 docker-compose exec -T geoportal curl --insecure https://front/desktop_alt
-docker-compose exec -T geoportal curl --insecure https://front/desktop_alt | \
-    grep '<script src="https://front/static-ngeo-dist/desktop\..*\.js" crossorigin="anonymous"></script>'
-docker-compose exec -T geoportal curl --insecure https://front/desktop_alt | \
-    grep '<html lang="{{mainCtrl.lang}}" '
+docker-compose exec -T geoportal curl --insecure https://front/desktop_alt \
+    | grep '<script src="https://front/static-ngeo-dist/desktop\..*\.js" crossorigin="anonymous"></script>'
+docker-compose exec -T geoportal curl --insecure https://front/desktop_alt \
+    | grep '<html lang="{{mainCtrl.lang}}" '
 
 function test_pot {
     docker-compose exec -T geoportal curl --insecure https://front/locale.pot --output /tmp/locale.pot
     docker-compose exec -T geoportal cat /tmp/locale.pot > /tmp/locale.pot
-    if [ "$(wc -l < /tmp/locale.pot)" -eq "$(wc -l < geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot)" ]
-    then
+    if [ "$(wc -l < /tmp/locale.pot)" -eq "$(wc -l < geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot)" ]; then
         echo 'View locale.pot match in size with update-po'
     else
         echo 'Error: View locale.pot does not match in size with update-po'

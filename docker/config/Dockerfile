@@ -3,11 +3,11 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
-  apt-get update && \
-  apt-get upgrade --assume-yes && \
-  apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python3-dev gcc g++ && \
-  apt-get clean && \
-  rm --recursive --force /var/lib/apt/lists/*
+    apt-get update \
+    && apt-get upgrade --assume-yes \
+    && apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python3-dev gcc g++ \
+    && apt-get clean \
+    && rm --recursive --force /var/lib/apt/lists/*
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.

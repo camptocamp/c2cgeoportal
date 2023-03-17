@@ -6,8 +6,8 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY requirements.txt /tmp/requirements.txt
 RUN \
-  python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
-  rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
+    python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt \
+    && rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
 WORKDIR /app
 COPY webpack.*.js Makefile CONST_Makefile /app/
@@ -29,8 +29,8 @@ FROM camptocamp/geomapfish:{{cookiecutter.geomapfish_major_version_tag_env}} as 
 
 COPY requirements.txt /tmp/requirements.txt
 RUN \
-  python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
-  rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
+    python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt \
+    && rm --recursive --force /tmp/* /var/tmp/* /root/.cache/*
 
 WORKDIR /app
 COPY . /app
@@ -41,10 +41,10 @@ COPY --from=builder /etc/static-ngeo/* /etc/static-ngeo/
 COPY --from=builder /app/alembic.ini /app/alembic.yaml ./
 RUN chmod go+w /etc/static-ngeo/
 
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --editable=/app/ && \
-    python3 -m compileall -q /usr/local/lib/python3.* \
-        -x '/(debugpy|pipenv|.*pydev.*|networkx)/' && \
-    python3 -m compileall -q /app/{{cookiecutter.package}}_geoportal -x /app/{{cookiecutter.package}}_geoportal/static.*
+RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --editable=/app/ \
+    && python3 -m compileall -q /usr/local/lib/python3.* \
+        -x '/(debugpy|pipenv|.*pydev.*|networkx)/' \
+    && python3 -m compileall -q /app/{{cookiecutter.package}}_geoportal -x /app/{{cookiecutter.package}}_geoportal/static.*
 
 ARG GIT_HASH
 RUN c2cwsgiutils-genversion ${GIT_HASH}

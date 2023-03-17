@@ -8,16 +8,15 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY python/ /tmp/python/
 
-
-RUN apt-get update && \
-    apt-get upgrade --assume-yes && \
-    apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc && \
-    apt-get clean && \
-    rm --recursive --force /var/lib/apt/lists/* && \
-    cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    PIP_NO_BINARY=shapely pipenv sync --system --clear && \
-    rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs && \
-    apt-get remove --assume-yes libpython3-dev libpq-dev gcc
+RUN apt-get update \
+    && apt-get upgrade --assume-yes \
+    && apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc \
+    && apt-get clean \
+    && rm --recursive --force /var/lib/apt/lists/* \
+    && cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
+    && PIP_NO_BINARY=shapely pipenv sync --system --clear \
+    && rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs \
+    && apt-get remove --assume-yes libpython3-dev libpq-dev gcc
 
 #############################################################################################################
 
@@ -29,8 +28,8 @@ COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt
 
 COPY python/ /tmp/python/
-RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
+RUN cd /tmp/python/$(python3 --version | awk '{print $2}' | awk -F '.' '{print $1 "." $2}') \
+    && LC_ALL=C.UTF-8 LANG=C.UTF-8 pipenv sync --system --clear --dev
 
 COPY . /src/
 RUN cd /src && prospector
