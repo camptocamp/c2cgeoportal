@@ -12,13 +12,12 @@ pot-create --config geoportal/lingua-client.cfg \
     /etc/geomapfish/config.yaml geoportal/development.ini
 chown ${OWNER} geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot
 
-for LANG in "$@"
-do
+for LANG in "$@"; do
     ls geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po -als || true
 
     mkdir --parent geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/
-    [ -f geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po ] || \
-        msginit --no-translator --input=geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot \
+    [ -f geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po ] \
+        || msginit --no-translator --input=geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client.pot \
             --output-file=geoportal/${PACKAGE}_geoportal/locale/${LANG}/LC_MESSAGES/${PACKAGE}_geoportal-client.po \
             -l ${LANG}
 
