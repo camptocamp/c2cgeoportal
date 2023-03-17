@@ -36,7 +36,7 @@ def run(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build the project")
-    parser.add_argument("--verbose", action="store_true", help="Display the docker build commands")
+    parser.add_argument("--verbose", action="store_true", help="Display the Docker build commands")
     parser.add_argument(
         "--dry-run", action="store_true", help="Display the docker build commands without executing them"
     )
@@ -46,9 +46,11 @@ def main() -> None:
     parser.add_argument("--not-simple", action="store_true", help="Force not simple application mode")
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
     parser.add_argument(
-        "--fast-reload",
-        action="store_true",
-        help="Restart the composition without Redis to don't lost the cache",
+        "--reload",
+        nargs="?",
+        action="store",
+        const="",
+        help="Comma separate list of services that will be reloaded after the build",
     )
     parser.add_argument(
         "--no-pull",
@@ -59,7 +61,7 @@ def main() -> None:
     parser.add_argument(
         "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
     )
-    parser.add_argument("--stack-trace", action="store_true", help="Display the stak trace on error")
+    parser.add_argument("--stack-trace", action="store_true", help="Display the stack trace on error")
     parser.add_argument("env_files", nargs="*", help="The environment config")
     args = parser.parse_args()
 
@@ -150,7 +152,9 @@ def main() -> None:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
 
-    if args.fast_reload:
+    if args.reload:
+        services = args.reload.split(",")
+    elif args.reload == "":
         services = [
             service
             for service in run(
@@ -164,8 +168,10 @@ def main() -> None:
             if not service.startswith("redis")
         ]
 
-        run(args, ["docker-compose", "rm", "--stop", "--force"] + services)
-        run(args, ["docker-compose", "up", "-d"])
+    if args.reload is not None:
+        run(args, ["docker-compose", "rm", "--force", "-v", "config"])
+        for service in services:
+            run(args, ["docker-compose", "up", "--detach", "--force-recreate", service])
 
 
 if __name__ == "__main__":
