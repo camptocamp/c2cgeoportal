@@ -55,9 +55,9 @@ publish:
           - gmf{version}-qgis3.14
   pypi:
     packages: []
-#      - path: commons
-#      - path: geoportal
-#      - path: admin
+  #      - path: commons
+  #      - path: geoportal
+  #      - path: admin
 
   snyk:
     files_no_install:

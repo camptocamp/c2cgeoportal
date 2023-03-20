@@ -45,7 +45,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install python3-wheel python3-setuptools
       - run: sudo python3 -m pip install --upgrade pip
-
       - run: sudo python3 -m pip install --requirement=ci/requirements.txt
 
       - name: Checks

@@ -1,5 +1,4 @@
 ---
-
 # The project Docker compose file for development.
 
 version: '2'

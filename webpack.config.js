@@ -19,16 +19,18 @@ module.exports = {
           options: {
             babelrc: false,
             comments: false,
-            presets: [[
-              require.resolve('@babel/preset-env'),
-              {
-                targets: {
-                  browsers: ['last 2 versions', 'Firefox ESR', 'ie 11'],
+            presets: [
+              [
+                require.resolve('@babel/preset-env'),
+                {
+                  targets: {
+                    browsers: ['last 2 versions', 'Firefox ESR', 'ie 11'],
+                  },
+                  modules: false,
+                  loose: true,
                 },
-                modules: false,
-                loose: true,
-              }
-            ]],
+              ],
+            ],
           },
         },
       },
@@ -48,7 +50,7 @@ module.exports = {
       // See https://github.com/webpack/webpack/issues/582
       'window.jQuery': 'jquery',
       // For Bootstrap
-      'jQuery': 'jquery',
+      jQuery: 'jquery',
       // For own scripts
       $: 'jquery',
     }),
@@ -59,17 +61,17 @@ module.exports = {
   resolve: {
     modules: ['/usr/lib/node_modules', '/usr/lib/node_modules/d3/node_modules'],
     alias: {
-      'jsts': 'jsts/org/locationtech/jts',
-      'olcs': 'ol-cesium/src/olcs',
+      jsts: 'jsts/org/locationtech/jts',
+      olcs: 'ol-cesium/src/olcs',
       'jquery-ui/datepicker': 'jquery-ui/ui/widgets/datepicker', // For angular-ui-date
-      'proj4': 'proj4/lib',
-      'rbush': 'ol/node_modules/rbush',
-      'quickselect': '/usr/lib/node_modules/ol/node_modules/quickselect',
-      'mgrs': '/usr/lib/node_modules/proj4/node_modules/mgrs',
+      proj4: 'proj4/lib',
+      rbush: 'ol/node_modules/rbush',
+      quickselect: '/usr/lib/node_modules/ol/node_modules/quickselect',
+      mgrs: '/usr/lib/node_modules/proj4/node_modules/mgrs',
       'wkt-parser': '/usr/lib/node_modules/proj4/node_modules/wkt-parser',
-      'lie': '/usr/lib/node_modules/localforage/node_modules/lie',
-      'immediate': '/usr/lib/node_modules/localforage/node_modules/immediate',
-    }
+      lie: '/usr/lib/node_modules/localforage/node_modules/lie',
+      immediate: '/usr/lib/node_modules/localforage/node_modules/immediate',
+    },
   },
   optimization: {
     minimizer: [

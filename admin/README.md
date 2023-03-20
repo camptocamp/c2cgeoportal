@@ -8,6 +8,7 @@ cd admin
 ```
 
 ### Set up the database
+
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
 
@@ -17,6 +18,7 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 ```
 
 Optionally update sqlachemy.url in development.ini or production.ini then:
+
 ```
 admin/.build/venv/bin/python3 commons/c2cgeoportal_commons/testing/initializedb.py # to create the database
 # or
@@ -24,6 +26,7 @@ sudo -u postgres psql -d c2cgeoportal -f ./docker/demo-dump.sql # to create and 
 ```
 
 ### Run the development web server
+
 ```
 make serve
 ```
@@ -39,6 +42,7 @@ https://sites.google.com/a/chromium.org/chromedriver/downloads
 ### Requires Chrome Version > 65
 
 ### Create the test database
+
 ```
 sudo -u postgres psql -c "CREATE USER \"www-data\" WITH PASSWORD 'www-data';"
 
@@ -48,11 +52,13 @@ sudo -u postgres psql -d $DATABASE -c "CREATE EXTENSION postgis;"
 ```
 
 ### Run the tests
+
 ```
 make test
 ```
 
 Note that you can run all tests but selenium ones (really fast):
+
 ```
 .build/venv/bin/pytest -m "not selenium"
 ```

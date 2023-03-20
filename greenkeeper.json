@@ -1,17 +1,11 @@
 {
     "groups": {
         "admin": {
-            "packages": [
-                "admin/package.json"
-            ]
+            "packages": ["admin/package.json"]
         },
         "geoportal": {
-            "packages": [
-                "geoportal/package.json"
-            ]
+            "packages": ["geoportal/package.json"]
         }
     },
-    "ignore": [
-        "bootstrap"
-    ]
+    "ignore": ["bootstrap"]
 }
