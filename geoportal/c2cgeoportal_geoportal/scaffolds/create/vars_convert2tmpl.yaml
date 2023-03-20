@@ -1,5 +1,4 @@
 ---
-
 vars:
   host: '{VISIBLE_WEB_HOST}'
   web_protocol: '{VISIBLE_WEB_PROTOCOL}'
@@ -20,7 +19,7 @@ vars:
   aws_default_region: '{AWS_DEFAULT_REGION}'
   aws_s3_endpoint: '{AWS_S3_ENDPOINT}'
 
-  mapserver_layer_metadata: ""
+  mapserver_layer_metadata: ''
   mapserver_layer_validation: |
     "default_role_ids" "-1"
     "role_ids" "^-?[0-9,]*$"

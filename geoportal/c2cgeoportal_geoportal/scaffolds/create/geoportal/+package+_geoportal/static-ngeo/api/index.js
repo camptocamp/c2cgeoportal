@@ -4,7 +4,6 @@ import config from 'api/constants.js';
 import EPSG2056 from '@geoblocks/proj/src/EPSG_2056.js';
 import EPSG21781 from '@geoblocks/proj/src/EPSG_21781.js';
 
-
 // The URL to the themes service.
 config.themesUrl = '{FULL_ENTRY_POINT}themes?version=2&background=background&interface=api';
 
@@ -31,7 +30,7 @@ config.backgroundLayer = 'OSM map';
 // end of configuration
 
 const lib = {
-  Map
+  Map,
 };
 
 export default lib;
