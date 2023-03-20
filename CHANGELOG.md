@@ -1,3 +1,7 @@
+##### 2.7.0.210
+
+- [Backport 2.7] Create an empty style if he doesn't exists [ngeo#9050](https://github.com/camptocamp/ngeo/pull/9050)
+
 ##### 2.7.0.209
 
 - Fix new error with attr in pull request check workflow [ngeo#9053](https://github.com/camptocamp/ngeo/pull/9053)
