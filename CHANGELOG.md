@@ -1,3 +1,5 @@
+##### 2.6.0.180
+* Fix new error with attr in pull request check workflow [ngeo#9058](https://github.com/camptocamp/ngeo/pull/9058)
 ##### 2.6.0.179
 * Snyk auto fix [c2cgeoportal#10387](https://github.com/camptocamp/c2cgeoportal/pull/10387)
 ##### 2.6.0.178
