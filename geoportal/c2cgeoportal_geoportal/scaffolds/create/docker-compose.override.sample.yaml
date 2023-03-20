@@ -21,7 +21,7 @@ services:
       - C2CWSGIUTILS_CONFIG=/app/development.ini
       # - PRINT_URL=http://print:8080/print/
     ports:
-      - 5678:5678  # For remote debugging using Visual Studio Code
+      - 5678:5678 # For remote debugging using Visual Studio Code
 
   # Also uncomment the PRINT_URL in geoportal
   # print:
