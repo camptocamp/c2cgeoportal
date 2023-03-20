@@ -1,3 +1,9 @@
+##### 2.8.rc.9
+
+- Improve the application reload [c2cgeoportal#10408](https://github.com/camptocamp/c2cgeoportal/pull/10408)
+- Create an empty style if he doesn't exists [ngeo#9037](https://github.com/camptocamp/ngeo/pull/9037)
+- [Backport 2.8] Fix pushUnlessIncluded function [ngeo#9045](https://github.com/camptocamp/ngeo/pull/9045)
+
 ##### 2.8.rc.8
 
 - [Backport 2.8] Fix new error with attr in pull request check workflow [c2cgeoportal#10402](https://github.com/camptocamp/c2cgeoportal/pull/10402)

@@ -87,6 +87,12 @@ commits:
         sha: 3afb409d41b360bca632c0958961fc219177b74b
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/3afb409d41b360bca632c0958961fc219177b74b
       sha: ae60bae9247b7811bb007c81df27272f3ea6ef41
+    b4c4ad2fc0826c8ffe4a6c7587a383a2b6a32962:
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/a536c07c6a40d06c8318b9757041f5ae3e2823fd
+        sha: a536c07c6a40d06c8318b9757041f5ae3e2823fd
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/a536c07c6a40d06c8318b9757041f5ae3e2823fd
+      sha: b4c4ad2fc0826c8ffe4a6c7587a383a2b6a32962
     b645a22f6: &id007
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/9893a36841ab866609014880f7f96aa5448e3153
@@ -110,6 +116,16 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/60626181674e59aa38aefacda39cdb0f72c05737
       sha: caaf2b6510888ab543dea6f621f33316ebfb4c3d
     caaf2b6510888ab543dea6f621f33316ebfb4c3d: *id008
+    cb5796f8a: &id009
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/b4c4ad2fc0826c8ffe4a6c7587a383a2b6a32962
+        sha: b4c4ad2fc0826c8ffe4a6c7587a383a2b6a32962
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b4c4ad2fc0826c8ffe4a6c7587a383a2b6a32962
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/ca0070ad5d3518c4e9cf94a23aaa792d25c70e8a
+        sha: ca0070ad5d3518c4e9cf94a23aaa792d25c70e8a
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/ca0070ad5d3518c4e9cf94a23aaa792d25c70e8a
+      sha: cb5796f8a92c3c589b98cbea7b845bd7a2ce6e02
+    cb5796f8a92c3c589b98cbea7b845bd7a2ce6e02: *id009
     cffe6e57b2b26329b13cc8c0e0bfa8c04475b51e:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/6988aa1e4a3442f98c37b8b952e69acf6dd38ecf
@@ -132,7 +148,7 @@ commits:
         sha: 3cdf9a5a6d99a32d0b6ddaf24c82fc13c353fb15
         url: https://api.github.com/repos/camptocamp/ngeo/commits/3cdf9a5a6d99a32d0b6ddaf24c82fc13c353fb15
       sha: 2639b64e0b2b423678e385447bc20d9c55f17f55
-    6fe6d505c: &id009
+    6fe6d505c: &id010
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/67eff42fe5ec93fa6f0992e4a4fb6006ffa7eaa2
         sha: 67eff42fe5ec93fa6f0992e4a4fb6006ffa7eaa2
@@ -141,8 +157,8 @@ commits:
         sha: 38276fc743a6c4de3d217f3a5c89504eb5ee3caf
         url: https://api.github.com/repos/camptocamp/ngeo/commits/38276fc743a6c4de3d217f3a5c89504eb5ee3caf
       sha: 6fe6d505c7604cbe00818dbb9cd70f4cfbbfd13b
-    6fe6d505c7604cbe00818dbb9cd70f4cfbbfd13b: *id009
-    963940b75: &id010
+    6fe6d505c7604cbe00818dbb9cd70f4cfbbfd13b: *id010
+    963940b75: &id011
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/6fe6d505c7604cbe00818dbb9cd70f4cfbbfd13b
         sha: 6fe6d505c7604cbe00818dbb9cd70f4cfbbfd13b
@@ -151,8 +167,18 @@ commits:
         sha: bd155922205d191e5607bd516dea1736d271324c
         url: https://api.github.com/repos/camptocamp/ngeo/commits/bd155922205d191e5607bd516dea1736d271324c
       sha: 963940b7513be3cc9f8a30d67905d9e54fd814d0
-    963940b7513be3cc9f8a30d67905d9e54fd814d0: *id010
-    c41a589a5: &id011
+    963940b7513be3cc9f8a30d67905d9e54fd814d0: *id011
+    b59ded071: &id012
+      parents:
+      - html_url: https://github.com/camptocamp/ngeo/commit/d2266700f16c002486003b89a138266faa491e5f
+        sha: d2266700f16c002486003b89a138266faa491e5f
+        url: https://api.github.com/repos/camptocamp/ngeo/commits/d2266700f16c002486003b89a138266faa491e5f
+      - html_url: https://github.com/camptocamp/ngeo/commit/272f45c49b331f5bd8d53b5d0392ec1ec37a374e
+        sha: 272f45c49b331f5bd8d53b5d0392ec1ec37a374e
+        url: https://api.github.com/repos/camptocamp/ngeo/commits/272f45c49b331f5bd8d53b5d0392ec1ec37a374e
+      sha: b59ded07117bb4074949e8b84ee884e24929b4e8
+    b59ded07117bb4074949e8b84ee884e24929b4e8: *id012
+    c41a589a5: &id013
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/2639b64e0b2b423678e385447bc20d9c55f17f55
         sha: 2639b64e0b2b423678e385447bc20d9c55f17f55
@@ -161,7 +187,16 @@ commits:
         sha: cb1f7e862bb4f87d493c565c42035db82090c71d
         url: https://api.github.com/repos/camptocamp/ngeo/commits/cb1f7e862bb4f87d493c565c42035db82090c71d
       sha: c41a589a5cbc8eb1f2a873eb642b32561bfcb00a
-    c41a589a5cbc8eb1f2a873eb642b32561bfcb00a: *id011
+    c41a589a5cbc8eb1f2a873eb642b32561bfcb00a: *id013
+    d2266700f16c002486003b89a138266faa491e5f:
+      parents:
+      - html_url: https://github.com/camptocamp/ngeo/commit/c41a589a5cbc8eb1f2a873eb642b32561bfcb00a
+        sha: c41a589a5cbc8eb1f2a873eb642b32561bfcb00a
+        url: https://api.github.com/repos/camptocamp/ngeo/commits/c41a589a5cbc8eb1f2a873eb642b32561bfcb00a
+      - html_url: https://github.com/camptocamp/ngeo/commit/c73616ab09654276cb138f46f47ec7bae347f6d9
+        sha: c73616ab09654276cb138f46f47ec7bae347f6d9
+        url: https://api.github.com/repos/camptocamp/ngeo/commits/c73616ab09654276cb138f46f47ec7bae347f6d9
+      sha: d2266700f16c002486003b89a138266faa491e5f
 pulls:
   c2cgeoportal:
     03d4c5fb963d4a7033d96edc502dcda81a6be974: []
@@ -215,6 +250,7 @@ pulls:
       title: '[Backport 2.8] Fix new error with attr in pull request check workflow'
       updated_at: '2023-03-17T10:19:32Z'
     ae60bae9247b7811bb007c81df27272f3ea6ef41: []
+    b4c4ad2fc0826c8ffe4a6c7587a383a2b6a32962: []
     c6d01f49a61c4a323eea2f05943b906da9d48e3d: []
     caaf2b651:
     - base_ref: '2.8'
@@ -225,6 +261,15 @@ pulls:
       state: closed
       title: '[Backport 2.8] [Backport master] Stronger update po'
       updated_at: '2023-03-15T16:16:13Z'
+    cb5796f8a:
+    - base_ref: '2.8'
+      closed_at: '2023-03-20T11:11:07Z'
+      created_at: '2023-03-17T15:13:54Z'
+      html_url: https://github.com/camptocamp/c2cgeoportal/pull/10408
+      number: 10408
+      state: closed
+      title: Improve the application reload
+      updated_at: '2023-03-20T11:13:50Z'
     cffe6e57b2b26329b13cc8c0e0bfa8c04475b51e: []
     fcf9c85f575991910f7ea22b5e907182c5cc1a3c: []
   ngeo:
@@ -246,6 +291,15 @@ pulls:
       state: closed
       title: '[Backport 2.8] Restore onSuccessulLogin method'
       updated_at: '2023-03-10T12:22:12Z'
+    b59ded071:
+    - base_ref: '2.8'
+      closed_at: '2023-03-17T13:43:54Z'
+      created_at: '2023-03-14T16:45:35Z'
+      html_url: https://github.com/camptocamp/ngeo/pull/9037
+      number: 9037
+      state: closed
+      title: Create an empty style if he doesn't exists
+      updated_at: '2023-03-17T13:44:40Z'
     c41a589a5:
     - base_ref: '2.8'
       closed_at: '2023-03-17T08:40:13Z'
@@ -255,6 +309,15 @@ pulls:
       state: closed
       title: '[Backport 2.8] Fix new error with attr in pull request check workflow'
       updated_at: '2023-03-17T08:40:15Z'
+    d2266700f16c002486003b89a138266faa491e5f:
+    - base_ref: '2.8'
+      closed_at: '2023-03-17T13:05:38Z'
+      created_at: '2023-03-17T07:36:25Z'
+      html_url: https://github.com/camptocamp/ngeo/pull/9045
+      number: 9045
+      state: closed
+      title: '[Backport 2.8] Fix pushUnlessIncluded function'
+      updated_at: '2023-03-17T13:05:39Z'
 releases:
 - c2cgeoportal: b645a22f6
   name: 2.8.rc.1
@@ -280,3 +343,6 @@ releases:
 - c2cgeoportal: a536c07c6
   name: 2.8.rc.8
   ngeo: c41a589a5
+- c2cgeoportal: cb5796f8a
+  name: 2.8.rc.9
+  ngeo: b59ded071
