@@ -1,18 +1,24 @@
 ci:
   skip:
-    - copyright
+  - copyright
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-      - id: trailing-whitespace
-  - repo: https://github.com/sbrunner/hooks
-    rev: 0.3.2
-    hooks:
-      - id: copyright
-  - repo: https://github.com/psf/black
-    rev: 22.12.0
-    hooks:
-      - id: black
-        exclude: (^commons/c2cgeoportal_commons/alembic/script\.py\.mako$|.*\.rst$|.*\.rst.tmpl$|^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$)
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: trailing-whitespace
+- repo: https://github.com/sbrunner/hooks
+  rev: 0.3.2
+  hooks:
+  - id: copyright
+- repo: https://github.com/psf/black
+  rev: 22.12.0
+  hooks:
+  - id: black
+    exclude: (^commons/c2cgeoportal_commons/alembic/script\.py\.mako$|.*\.rst$|.*\.rst.tmpl$|^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$)
+- repo: https://github.com/pre-commit/mirrors-prettier
+  rev: v2.7.1
+  hooks:
+  - id: prettier
+    additional_dependencies:
+    - prettier@2.8.4
