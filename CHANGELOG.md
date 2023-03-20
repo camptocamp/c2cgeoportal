@@ -1,3 +1,7 @@
+##### 2.7.0.209
+
+- Fix new error with attr in pull request check workflow [ngeo#9053](https://github.com/camptocamp/ngeo/pull/9053)
+
 ##### 2.7.0.208
 
 - Add more documentation for hiDPILegendImages [c2cgeoportal#10389](https://github.com/camptocamp/c2cgeoportal/pull/10389)
