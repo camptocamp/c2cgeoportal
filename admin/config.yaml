@@ -1,5 +1,4 @@
 ---
-
 # Used for development: please do not remove this file
 
 vars:
@@ -20,7 +19,6 @@ vars:
     - it
 
   admin_interface:
-
     layer_tree_max_nodes: 1000
 
     # Used to add a new page to the administration
@@ -226,8 +224,8 @@ vars:
         type: unknown
       - name: _color
         type: regex
-        regex: "^#([A-Fa-f0-9]{{6}}|[A-Fa-f0-9]{{3}})$"
-        error_message: "Expecting hex format for color, e.g. #007DCD"
+        regex: '^#([A-Fa-f0-9]{{6}}|[A-Fa-f0-9]{{3}})$'
+        error_message: 'Expecting hex format for color, e.g. #007DCD'
 
     # The list of functionalities that can be configured
     # through the admin interface.
