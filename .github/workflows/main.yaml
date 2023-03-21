@@ -196,7 +196,7 @@ jobs:
 
       - name: Publish
         run: |
-          c2cciutils-publish --docker-versions=${{ steps.version.outputs.versions }} --snyk-version=${{ steps.version.outputs.snyk_version }}
+          c2cciutils-publish --docker-versions=${{ steps.version.outputs.versions }} --snyk-version=${{ steps.version.outputs.snyk_version }} || true
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
