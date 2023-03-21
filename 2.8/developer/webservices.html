@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Webservices documentation &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cache management" href="cache.html" />
+    <link rel="prev" title="Transifex" href="transifex.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="webservices-documentation">
+<span id="developer-webservices"></span><h1>Webservices documentation<a class="headerlink" href="#webservices-documentation" title="Permalink to this heading">¶</a></h1>
+<section id="theme-webservice">
+<h2>Theme webservice<a class="headerlink" href="#theme-webservice" title="Permalink to this heading">¶</a></h2>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../themes</span></code></p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: <code class="docutils literal notranslate"><span class="pre">2</span></code>, API version, default is <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: used interface, default is <code class="docutils literal notranslate"><span class="pre">desktop</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sets</span></code>: kind of data we want to get, can be <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">themes</span></code>, <code class="docutils literal notranslate"><span class="pre">group</span></code>
+or <code class="docutils literal notranslate"><span class="pre">background_layers</span></code>, default is <code class="docutils literal notranslate"><span class="pre">all</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">background</span></code>: parent group of background layers to get.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group</span></code>: the group to get.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_levels</span></code>: minimum number of group levels that is required, default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">role</span></code>: role name, not used by the server but it is required for the cache management.</p></li>
+</ul>
+<p>Requests examples:</p>
+<ul class="simple">
+<li><p>themes</p></li>
+<li><p>themes?background=background</p></li>
+<li><p>themes?group=Transport</p></li>
+<li><p>themes?group=Transport&amp;sets=group</p></li>
+</ul>
+</section>
+<section id="result">
+<h3>Result<a class="headerlink" href="#result" title="Permalink to this heading">¶</a></h3>
+<p>Base for all possible results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;ogcServers&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">OGC</span> <span class="n">Server</span> <span class="n">name</span><span class="o">&gt;</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;themes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;background_layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">layers</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">errors</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="ogc-server">
+<h4>OGC Server<a class="headerlink" href="#ogc-server" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver|arcgis|other)&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;credential: (true|false),&quot;</span>
+     <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;&lt;type name&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+             <span class="s2">&quot;&lt;attribute name&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the type name&gt;&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;namespace&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the namespace URL&gt;&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the optional alias&gt;&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;minOccurs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the optional minimum occurs&gt;&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;maxOccurs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the optional maximum occurs&gt;&quot;</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="theme">
+<h4>Theme<a class="headerlink" href="#theme" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;icon_url&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;functionalities&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;values&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="group">
+<h4>Group<a class="headerlink" href="#group" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mixed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="c1"># if not mixed</span>
+    <span class="s2">&quot;ogcServer&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wfsUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="layer">
+<h4>Layer<a class="headerlink" href="#layer" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(WMS|WMTS)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;&lt;name&gt;&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;value&gt;&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;dimensions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;&lt;name&gt;&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;value&gt;&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="wms-layer">
+<h4>WMS Layer<a class="headerlink" href="#wms-layer" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name in tree&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms_layers&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
+    <span class="c1"># if not mixed</span>
+    <span class="s2">&quot;ogcServer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;server name&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="c1"># end derecated</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;identifier_attribute_field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;display_name&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;disclaimer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;disclaimer&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;legend&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;legend_rule&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;legend_rule&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">max_resolution</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;min_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">min_resolution</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;metadataUrls&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TC211/FGDC&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;(value|range)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">year</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">month</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">day</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">second</span><span class="o">&gt;</span><span class="p">],</span>
+        <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;(year|month|day|second)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;minValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;maxValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;childLayers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;queryable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span>
+    <span class="p">}],</span>
+    <span class="s2">&quot;dimensionsFilters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;name&gt;: {</span>
+           <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;field_name&gt;&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;edit_columns&quot;</span><span class="p">:[{</span>
+        <span class="s2">&quot;maxLength&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxLength</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nillable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">&quot;restriction&quot;</span><span class="p">:</span> <span class="s2">&quot;enumeration&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;enumeration&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;&lt;value&gt;&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;srid&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">srid</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;(xsd:string|xsd:decimal|xsd:integer|xsd:boolean|xsd:date|xsd:dateTime|xsd:double|xsd:duration|xsd:base64Binary|xsd:time|gml:CurvePropertyType|gml:GeometryCollectionPropertyType|gml:LineStringPropertyType|gml:MultiLineStringPropertyType|gml:MultiPointPropertyType|gml:MultiPolygonPropertyType|gml:PointPropertyType|gml:PolygonPropertyType)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fractionDigits&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">fractionDigits</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">&quot;totalDigits&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">totalDigits</span><span class="o">&gt;</span>
+    <span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="wmts-layer">
+<h4>WMTS layer<a class="headerlink" href="#wmts-layer" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;wmts_capabilities_url&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;layer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;wmts_layer&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;style&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;matrix_set&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;matrix_set&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h2>
+<section id="login">
+<h3>Login<a class="headerlink" href="#login" title="Permalink to this heading">¶</a></h3>
+<p>Used to login in the application.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../login</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">login</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">came_from</span></code> the URL to which we will redirect after a successful request.</p></li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success with the JSON result as <a class="reference internal" href="#developer-webservices-auth-connected"><span class="std std-ref">Connected JSON result</span></a>.</p></li>
+<li><p>302 Found: Success -&gt; redirect to <code class="docutils literal notranslate"><span class="pre">came_from</span></code>.</p></li>
+<li><p>400 Bad request: When something is wrong.</p></li>
+</ul>
+</section>
+<section id="logout">
+<h3>Logout<a class="headerlink" href="#logout" title="Permalink to this heading">¶</a></h3>
+<p>Used to log out of the application.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../logout</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+<li><p>400 Bad request: When something is wrong.</p></li>
+</ul>
+</section>
+<section id="user-information">
+<h3>User information<a class="headerlink" href="#user-information" title="Permalink to this heading">¶</a></h3>
+<p>Used to get the user information.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginuser</span></code></p>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+</ul>
+<section id="anonymous-json-result">
+<h4>Anonymous JSON result<a class="headerlink" href="#anonymous-json-result" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;functionality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionality_value&quot;</span><span class="p">],</span>
+        <span class="o">...</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
+    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="connected-json-result">
+<span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
+    <span class="s2">&quot;roles&quot;</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
+    <span class="p">},</span> <span class="o">...</span><span class="p">],</span>
+    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;functionality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionality_value&quot;</span><span class="p">],</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="user-login">
+<h3>User login<a class="headerlink" href="#user-login" title="Permalink to this heading">¶</a></h3>
+<p>Login to the application.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../login</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">login</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">otp</span></code>: The second factor code</p></li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+<li><p>302 Found: Success with providing <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter.</p></li>
+<li><p>400 Bad request: When <code class="docutils literal notranslate"><span class="pre">login</span></code> or <code class="docutils literal notranslate"><span class="pre">password</span></code> is missing.</p></li>
+<li><p>401 Unauthorized: On login failed.</p></li>
+</ul>
+<section id="login-successful">
+<h4>Login successful<a class="headerlink" href="#login-successful" title="Permalink to this heading">¶</a></h4>
+</section>
+<section id="init-without-two-factor-authentication-json-result">
+<h4>Init without two-factor authentication JSON result<a class="headerlink" href="#init-without-two-factor-authentication-json-result" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">false</span> <span class="c1"># Always false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="init-two-factor-authentication-json-result">
+<h4>Init two-factor authentication JSON result<a class="headerlink" href="#init-two-factor-authentication-json-result" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;two_factor_totp_secret&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;secret&gt;&quot;</span><span class="p">,</span> <span class="c1"># The two-factor authentication secret on first login</span>
+    <span class="s2">&quot;otp_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;The OTM URI&quot;</span>
+    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
+    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># Always true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="change-password">
+<h3>Change password<a class="headerlink" href="#change-password" title="Permalink to this heading">¶</a></h3>
+<p>Used to change the user password.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginchangepassword</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">login</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">oldPassword</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">newPassword</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">confirmNewPassword</span></code></p></li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+<li><p>400 Bad request: When something is wrong.</p></li>
+</ul>
+<section id="json-result">
+<h4>JSON result<a class="headerlink" href="#json-result" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="generate-a-new-password">
+<h3>Generate a new password<a class="headerlink" href="#generate-a-new-password" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../loginresetpassword</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<p>Used when the user lost his/her password.</p>
+<p>Parameters (post form):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">login</span></code></p></li>
+</ul>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+<li><p>400 Bad request: When something is wrong.</p></li>
+</ul>
+<section id="success-json-result">
+<h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="full-text-search">
+<span id="developer-webservices-fts"></span><h2>Full-text search<a class="headerlink" href="#full-text-search" title="Permalink to this heading">¶</a></h2>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../fulltextsearch</span></code></p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: Text to search.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: The maximum number of results (optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">partitionlimit</span></code>: The maximum number of results per layer (optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lang</span></code>: The language used (optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: The interface used (optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ranksystem</span></code>: Can be set to <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to use the <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> rank system instead of <code class="docutils literal notranslate"><span class="pre">similarity</span></code>.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Result<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<p>A GeoJSON of a feature collection with the properties:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code>: Text to display.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layer_name</span></code>: Layer to display.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span class="std std-ref">Params</span></a> to set.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">actions</span></code>: List of actions.</p></li>
+</ul>
+<p>The <cite>actions</cite> is a dictionary with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">action</span></code>: the type of action (add_theme|add_group|add_layer).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: data needed for the action (the item name).</p></li>
+</ul>
+</section>
+</section>
+<section id="layers">
+<h2>Layers<a class="headerlink" href="#layers" title="Permalink to this heading">¶</a></h2>
+<section id="layer-description">
+<h3>Layer description<a class="headerlink" href="#layer-description" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_id&gt;/md.xsd</span></code></p>
+<section id="id3">
+<h4>Result<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h4>
+<p>A standard xsd document that describes the layer.</p>
+</section>
+</section>
+<section id="mapfish-protocol">
+<h3>MapFish protocol<a class="headerlink" href="#mapfish-protocol" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_id&gt;/....</span></code></p>
+<p><a class="reference external" href="https://github.com/elemoine/papyrus/wiki/Protocol">Parameters and results, see the MapFish protocol</a>.</p>
+</section>
+<section id="enumerate-attributes">
+<h3>Enumerate attributes<a class="headerlink" href="#enumerate-attributes" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/values/&lt;field_name&gt;</span></code></p>
+<section id="id4">
+<h4>Result<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="p">},</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="update-feature">
+<h3>Update feature<a class="headerlink" href="#update-feature" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/&lt;layer_id&gt;/&lt;feature_id&gt;</span></code></p>
+<p>Success:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">       </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPoint&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">[</span>
+<span class="w">                   </span><span class="mf">648902.2912000001</span><span class="p">,</span>
+<span class="w">                   </span><span class="mf">185911.1152</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">             </span><span class="p">]</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tree&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;good&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nom&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;internal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;short_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;court&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;short_name3&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;R&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;short_name2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">       </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Error :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error description&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;error_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type of error&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>Update feature<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/&lt;layer_id&gt;</span></code></p>
+<p>Success:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">       </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPoint&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">[</span>
+<span class="w">                   </span><span class="mf">648902.2912000001</span><span class="p">,</span>
+<span class="w">                   </span><span class="mf">185911.1152</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">             </span><span class="p">]</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tree&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;good&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nom&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;internal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;short_name&quot;</span><span class="p">:</span><span class="s2">&quot; court&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;short_name3&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;R&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">&quot;short_name2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">       </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Error :</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error description&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;error_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type of error&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="raster">
+<h2>Raster<a class="headerlink" href="#raster" title="Permalink to this heading">¶</a></h2>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../raster</span></code></p>
+<section id="id6">
+<h3>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lon</span></code>: The longitude.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lat</span></code>: The latitude.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: The raster layers we want to query.</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Result<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="digital-elevation-model">
+<h2>Digital Elevation Model<a class="headerlink" href="#digital-elevation-model" title="Permalink to this heading">¶</a></h2>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../profile.json</span></code></p>
+<p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">geom</span></code>: Geometry field used to get the profile data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: On which layers; default is all.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nbPoints</span></code>: Maximum number of points.</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>Result<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h3>
+<p>A JSON file, with ‘dist’, ‘value’, ‘x’, ‘y’.</p>
+</section>
+</section>
+<section id="shortener">
+<h2>Shortener<a class="headerlink" href="#shortener" title="Permalink to this heading">¶</a></h2>
+<section id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../short/create</span></code></p>
+<p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">url</span></code>: URL to shorten.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">email</span></code>: Email address to send a message to (optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message</span></code>: The user message to add in the email (optional).</p></li>
+</ul>
+</section>
+<section id="id11">
+<h4>Result<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="get">
+<h3>Get<a class="headerlink" href="#get" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">short/&lt;ref&gt;</span></code></p>
+<p>Result: code: 302, redirect to the original URL.</p>
+</section>
+</section>
+<section id="geometry-processing">
+<h2>Geometry processing<a class="headerlink" href="#geometry-processing" title="Permalink to this heading">¶</a></h2>
+<p>This service provides geometry processing (currently only one)</p>
+<section id="difference">
+<h3>Difference<a class="headerlink" href="#difference" title="Permalink to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../difference</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<p>Data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;geometries&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">geomA</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">geomB</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;geomA&gt;</span></code> is a GeoJSON geometry to extrude,
+and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&gt;</span></code> is the geometry used to do the extrude.</p>
+<p>Result: the new <code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> geometry.</p>
+</section>
+</section>
+<section id="localization-pot">
+<h2>Localization pot<a class="headerlink" href="#localization-pot" title="Permalink to this heading">¶</a></h2>
+<p>This service create and returns the list of strings to translate for the localization in gettext POT format.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../locale.pot</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+<section id="id12">
+<h3>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">interfaces</span></code>: List of interfaces we want to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">theme_regex</span></code>: Regular expression used to filter the themes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group_regex</span></code>: Regular expression used to filter the layer groups.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmslayer_regex</span></code>: Regular expression used to filter the WMS layers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmtslayer_regex</span></code>: Regular expression used to filter the WMTS layers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ignore_i18n_errors</span></code>: <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> to ignore most of the error expected during the extraction.</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrator/index.html">Integrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="transifex.html" title="previous chapter">Transifex</a></li>
+      <li>Next: <a href="cache.html" title="next chapter">Cache management</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/developer/webservices.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

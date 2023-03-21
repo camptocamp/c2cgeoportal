@@ -1,0 +1,16 @@
+.. _integrator_guide_ngeo_properties_APIConfig:
+
+~~~~~~~~~
+APIConfig
+~~~~~~~~~
+
+Properties:
+ * ``backgroundLayer`` (string, optional)
+ * ``extent`` (number\[], optional)
+ * ``localeUrl`` (string, optional)
+ * ``projection`` (string, optional)
+ * ``projections`` ({string: :ref:`integrator_guide_ngeo_properties_Projection`}, optional)
+ * ``queryableLayers`` (string\[], optional)
+ * ``resolutions`` (number\[], optional)
+ * ``searchUrl`` (string, optional)
+ * ``themesUrl`` (string, optional)

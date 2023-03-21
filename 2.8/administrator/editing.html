@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Editing &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Mapfile configuration" href="mapfile.html" />
+    <link rel="prev" title="Administrate a c2cgeoportal application" href="administrate.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="editing">
+<span id="administrator-editing"></span><h1>Editing<a class="headerlink" href="#editing" title="Permalink to this heading">¶</a></h1>
+<p>This section explains how to configure the edit function in c2cgeoportal.</p>
+<p>Just like most administrative tasks, setting up editing in a c2cgeoportal application involves intervening
+in the database, through the c2cgeoportal administration interface.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h2>
+<p>To be editable, a layer should satisfy the following requirements:</p>
+<ol class="arabic">
+<li><p>It should be accessible with WMS, and correctly configured in the
+mapfile. See <a class="reference internal" href="mapfile.html#administrator-mapfile"><span class="std std-ref">Mapfile configuration</span></a>.</p></li>
+<li><p>Its data should be in a PostGIS table, which should be in the
+application database. The PostGIS table can be in a separate
+schema though, which is in fact recommended.</p></li>
+<li><p>The PostGIS table should include a primary key with a sequence
+associated. The name of the primary key attribute must be <code class="docutils literal notranslate"><span class="pre">id</span></code>. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">=</span><span class="c1"># \d table;</span>
+                     <span class="n">Table</span> <span class="s2">&quot;public.table&quot;</span>
+    <span class="n">Column</span>   <span class="o">|</span>      <span class="n">Type</span>   <span class="o">|</span>                              <span class="n">Modifiers</span>
+<span class="o">-------------+-------------+----------------------------------------------------------</span>
+ <span class="nb">id</span>          <span class="o">|</span> <span class="n">integer</span>     <span class="o">|</span> <span class="ow">not</span> <span class="n">null</span> <span class="n">default</span> <span class="n">nextval</span><span class="p">(</span><span class="s1">&#39;public.table_id_seq&#39;</span><span class="p">::</span><span class="n">regclass</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>The PostGIS table should include one geometry column only. You
+will get errors if the table has multiple geometry columns.</p></li>
+<li><p>The following geometry types are fully supported: <code class="docutils literal notranslate"><span class="pre">POINT</span></code>, <code class="docutils literal notranslate"><span class="pre">LINESTRING</span></code>, <code class="docutils literal notranslate"><span class="pre">POLYGON</span></code>.
+The following geometry types are partially supported:
+<code class="docutils literal notranslate"><span class="pre">MULTIPOINT</span></code>, <code class="docutils literal notranslate"><span class="pre">MULTILINESTRING</span></code>, <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code>.</p></li>
+<li><p>If the PostGIS table has a many-to-one relationship to another table,
+(typically a dictionary table) there are additional requirements:</p>
+<ul class="simple">
+<li><p>The name of the foreign key column should end with <code class="docutils literal notranslate"><span class="pre">_id</span></code> (e.g.
+<code class="docutils literal notranslate"><span class="pre">type_id</span></code>). This is not strictly required, but recommended.</p></li>
+<li><p>The relationship’s target table should have at least two columns, a
+primary key column and a text column. By default the used text column is the column named <code class="docutils literal notranslate"><span class="pre">name</span></code>.
+The default order column is the text column. Another text column and a order column can be specified
+by the <code class="docutils literal notranslate"><span class="pre">editingEnumerations</span></code> layer metadata. Example:</p></li>
+</ul>
+</li>
+</ol>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_column&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;order_by&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order_column&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-or-making-layers-editable">
+<span id="administrator-editing-editable"></span><h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this heading">¶</a></h2>
+<p>The application’s layers are defined in the <code class="docutils literal notranslate"><span class="pre">layer</span></code> table, which is managed
+by selecting the <em>Layers</em> item in the admin interface’s menu.</p>
+<p>For a <em>layer</em> to be editable its <code class="docutils literal notranslate"><span class="pre">geoTable</span></code> field should be set. This field
+is the name of the PostGIS table containing the layer’s geographic data.  It is
+a string of the form <code class="docutils literal notranslate"><span class="pre">[&lt;schemaname&gt;.]&lt;tablename&gt;</span></code>.  If <code class="docutils literal notranslate"><span class="pre">schemaname</span></code> is
+omitted, the table is assumed to be in the <code class="docutils literal notranslate"><span class="pre">public</span></code> schema.  The label
+corresponding to this field is <em>Related Postgres table</em> in the admin interface.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Only layers embedded in a layergroup are detected as editable.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is recommended to limit the editing to 30 editable layers per user.</p>
+</div>
+</section>
+<section id="configuring-security">
+<h2>Configuring security<a class="headerlink" href="#configuring-security" title="Permalink to this heading">¶</a></h2>
+<p>Editing the features of a layer implies to write changes in the database. To make
+sure that only authorized users may edit a feature, editable layers (including
+public layers) must be linked to a restriction area, used itself to specify the
+roles of authorized users.</p>
+<p>The restriction area should have its <code class="docutils literal notranslate"><span class="pre">readwrite</span></code> field set to <code class="docutils literal notranslate"><span class="pre">true</span></code> in the
+administration interface.</p>
+<p>Binding restriction areas and layers together can be done from the <code class="docutils literal notranslate"><span class="pre">Layer</span></code> objects in the admin interface.
+Likewise for binding from the <code class="docutils literal notranslate"><span class="pre">Restriction</span> <span class="pre">areas</span></code>.</p>
+</section>
+<section id="edit-views">
+<h2>Edit views<a class="headerlink" href="#edit-views" title="Permalink to this heading">¶</a></h2>
+<p>To be able to edit PostgreSQL views a primary key must be manually configured.
+Add a layer metadata <code class="docutils literal notranslate"><span class="pre">geotablePrimaryKey</span></code> with value the name of the column to use as primary key.
+That column must be of type <code class="docutils literal notranslate"><span class="pre">Integer</span></code>.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">geotablePrimaryKey</span></code>: <code class="docutils literal notranslate"><span class="pre">id</span></code></p>
+</section>
+<section id="enable-snapping">
+<h2>Enable snapping<a class="headerlink" href="#enable-snapping" title="Permalink to this heading">¶</a></h2>
+<p>To be able to snap while editing, the <code class="docutils literal notranslate"><span class="pre">snappingConfig</span></code> must be set on the layer metadata.
+The value is a <code class="docutils literal notranslate"><span class="pre">json</span></code> object containing the following optional properties:</p>
+<ul class="simple">
+<li><p>edge (boolean): whether to allow snapping on edges or not;</p></li>
+<li><p>vertex (boolean): whether to allow snapping on vertices or not;</p></li>
+<li><p>tolerance (number): the pixel tolerance.</p></li>
+</ul>
+</section>
+<section id="managing-attributes">
+<h2>Managing attributes<a class="headerlink" href="#managing-attributes" title="Permalink to this heading">¶</a></h2>
+<p>To exclude some attributes from the editing form, list them as a comma-separated string
+(with no blank spaces) in the <code class="docutils literal notranslate"><span class="pre">Exclude</span> <span class="pre">properties</span></code> field of the WMS/WMTS layer forms
+in the admin interface.</p>
+<p>To make some attributes readonly, add a <code class="docutils literal notranslate"><span class="pre">readonlyAttributes</span></code> metadata in the same form,
+also as a comma-separated list of attributes.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrator/index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Administrator Guide</a><ul>
+      <li>Previous: <a href="administrate.html" title="previous chapter">Administrate a c2cgeoportal application</a></li>
+      <li>Next: <a href="mapfile.html" title="next chapter">Mapfile configuration</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/administrator/editing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

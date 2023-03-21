@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Full-text search &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Internationalization" href="internationalization.html" />
+    <link rel="prev" title="Filter (Querier)" href="filter.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="full-text-search">
+<span id="integrator-fulltext-search"></span><h1>Full-text search<a class="headerlink" href="#full-text-search" title="Permalink to this heading">¶</a></h1>
+<section id="the-full-text-search-table">
+<h2>The full-text search table<a class="headerlink" href="#the-full-text-search-table" title="Permalink to this heading">¶</a></h2>
+<p>The <em>text search</em> feature uses a dedicated PostgreSQL table. The full-text search table is named <code class="docutils literal notranslate"><span class="pre">tsearch</span></code>
+(for <em>text search</em>) and is in the application-specific schema.</p>
+<p>You do not need to create the table yourself, as it was already created during application installation
+(see the section <a class="reference internal" href="install_application.html#integrator-install-application"><span class="std std-ref">Install an existing application</span></a>).</p>
+<p>When the user types a text in the search box, it will be matched against the full-text search table,
+and the results displayed to the user. When the user clicks on one of the results, the default action is to
+zoom to the geometry. Other actions can be set, see below for the available actions.</p>
+</section>
+<section id="populate-the-full-text-search-table">
+<h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this heading">¶</a></h2>
+<p>Here is an example of an insertion in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+<span class="w">   </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2056</span><span class="p">),</span>
+<span class="w">   </span><span class="s1">&#39;Section name&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;text to display&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;t&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;fr&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;text to search&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>Where the point geometry contains the coordinates to zoom to,
+<code class="docutils literal notranslate"><span class="pre">Section</span> <span class="pre">name</span></code> will be used a section header in the search result display,
+<code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">display</span></code> is the text to be displayed in the search results,
+<code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">search</span></code> is the text that we search for,
+<code class="docutils literal notranslate"><span class="pre">french</span></code> is the language used.</p>
+<p>The section header (in the database, <code class="docutils literal notranslate"><span class="pre">layer_name</span></code>) must always be provided for the
+result to appear in the search results.
+After inserting new section headers, you should invalidate the server cache for the new
+headers to be taken into account.</p>
+<p>Here is another example where rows from a <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> are inserted:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">  </span><span class="n">geom</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;layer_name&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;t&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The language string used as the first argument to the <code class="docutils literal notranslate"><span class="pre">to_tsvector</span></code>
+function should match that defined in the <code class="docutils literal notranslate"><span class="pre">default_locale_name</span></code> variable of
+the application configuration (<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>). For example, if you have
+“french” text in the database, the application’s <code class="docutils literal notranslate"><span class="pre">default_locale_name</span></code> should
+be <code class="docutils literal notranslate"><span class="pre">fr</span></code>. In other words, c2cgeoportal assumes that the database language
+and the application’s default language match.</p>
+</div>
+</section>
+<section id="populate-with-the-themes">
+<h2>Populate with the themes<a class="headerlink" href="#populate-with-the-themes" title="Permalink to this heading">¶</a></h2>
+<p>A script is available to fill the full-text search table:</p>
+<p><p>Tool to fill the tsearch table (full-text search) from the theme information.</p>
+</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">exec</span> <span class="n">geoportal</span> <span class="n">theme2fts</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">locale</span><span class="o">-</span><span class="n">folder</span> <span class="n">LOCALE_FOLDER</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">interfaces</span> <span class="n">INTERFACES</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">interfaces</span> <span class="n">EXCLUDE_INTERFACES</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">duplicate</span><span class="o">-</span><span class="n">name</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">themes</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">blocks</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">folders</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">layers</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="o">--</span><span class="n">package</span> <span class="n">PACKAGE</span><span class="p">]</span>
+                                               <span class="p">[</span><span class="n">config_uri</span><span class="p">]</span> <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="positional-arguments">
+<h3>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this heading">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>config_uri</kbd></dt>
+<dd><p>The URI to the configuration file.</p>
+<p>Default: “c2c://geoportal/development.ini”</p>
+</dd>
+<dt><kbd>config_vars</kbd></dt>
+<dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
+<p>Default: ()</p>
+</dd>
+</dl>
+</section>
+<section id="named-arguments">
+<h3>Named Arguments<a class="headerlink" href="#named-arguments" title="Permalink to this heading">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>--locale-folder</kbd></dt>
+<dd><p>The folder where the locale files are stored (default is /etc/geomapfish/locale/)</p>
+<p>Default: “/etc/geomapfish/locale/”</p>
+</dd>
+<dt><kbd>--interfaces</kbd></dt>
+<dd><p>the interfaces to export</p>
+</dd>
+<dt><kbd>--exclude-interfaces</kbd></dt>
+<dd><p>the interfaces to exclude (can’t be used with –interfaces)</p>
+<p>Default: [‘api’]</p>
+</dd>
+<dt><kbd>--duplicate-name</kbd></dt>
+<dd><p>allows to add a name more than one time,
+by default if we find more than one element with the same name only one will be imported</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>--no-themes</kbd></dt>
+<dd><p>do not import the themes</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--no-blocks</kbd></dt>
+<dd><p>do not import the blocks (first level layer groups)</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--no-folders</kbd></dt>
+<dd><p>do not import the folders (tree folders)</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--no-layers</kbd></dt>
+<dd><p>do not import the layers (tree leaf)</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--package</kbd></dt>
+<dd><p>the application package</p>
+</dd>
+</dl>
+</section>
+<p>Note that some tree items’ metadata are used by the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> script:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">searchAlias</span></code>: Comma separated list of search alias (keywords) to be added to the <code class="docutils literal notranslate"><span class="pre">tsearch.ts</span></code>
+field for the considered tree item (theme, layer group or layer),
+that is to say that considered tree item will match when searching for the search aliases.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">searchLabelPattern</span></code>: Template string for the label of tree items in the search results, for example:
+“{name} ({theme})”. The supported parameters are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>name: name of the tree item</p></li>
+<li><p>parent: parent of the item (may be a group, a block or a theme)</p></li>
+<li><p>block: name of the block to which the item belongs</p></li>
+<li><p>theme: name of the theme to which the item belongs</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="security">
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table includes two security-related columns, namely <code class="docutils literal notranslate"><span class="pre">public</span></code>
+and <code class="docutils literal notranslate"><span class="pre">role_id</span></code>. If <code class="docutils literal notranslate"><span class="pre">public</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>, then the row is available to any
+user, including anonymous users. In that case, the <code class="docutils literal notranslate"><span class="pre">role_id</span></code> column is
+ignored by <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>. If <code class="docutils literal notranslate"><span class="pre">public</span></code> is <code class="docutils literal notranslate"><span class="pre">false</span></code>, then the row is not
+available to anonymous users. If <code class="docutils literal notranslate"><span class="pre">role_id</span></code> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, the row is available
+to any authenticated user. If <code class="docutils literal notranslate"><span class="pre">role_id</span></code> is not <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, the row is only
+available to users with the corresponding role.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to restrict some data to several specific roles, then you will need to
+insert that data multiple times. For example, if you want to make the data
+of a table <em>text-searchable</em>, and restrict that data to the roles whose ids
+are <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code>, you will use two SQL <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> statements:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">   </span><span class="n">geom</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;layer_name&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">   </span><span class="n">geom</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;layer group name&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="params">
+<span id="integrator-fulltext-search-params"></span><h2>Params<a class="headerlink" href="#params" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">params</span></code> column can contain a JSON with a dictionary of parameters.
+For instance to specify a <code class="docutils literal notranslate"><span class="pre">floor</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;floor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Query string <code class="docutils literal notranslate"><span class="pre">floor=1</span></code> is then automatically appended to all WMS requests.</p>
+</section>
+<section id="actions">
+<h2>Actions<a class="headerlink" href="#actions" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">actions</span></code> column contains a JSON with an array of actions like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_layer&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_layer_name&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_group&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_group_name&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_theme&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;the_theme_name&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example of <code class="docutils literal notranslate"><span class="pre">SQL</span></code> <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> of <code class="docutils literal notranslate"><span class="pre">actions</span></code> data to add the layer “cadastre” on the map:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="n">actions</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="s1">&#39;[{&quot;action&quot;: &quot;add_layer&quot;, &quot;data&quot;: &quot;cadastre&quot;}]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">actions</span></code> is not specified and the element found in the query contains a geometry, then
+the default behavior is to zoom to this geometry.</p>
+</section>
+<section id="interface">
+<h2>Interface<a class="headerlink" href="#interface" title="Permalink to this heading">¶</a></h2>
+<p>If the <code class="docutils literal notranslate"><span class="pre">interface_id</span></code> column contains a value, it means that the result is only for this interface.</p>
+</section>
+<section id="lang">
+<h2>Lang<a class="headerlink" href="#lang" title="Permalink to this heading">¶</a></h2>
+<p>If the <code class="docutils literal notranslate"><span class="pre">lang</span></code> column contains a value, it means that the result is only for this language.</p>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<p>In the configuration file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> you can add the following variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.defaultlimit</span></code> the default limit on the results, default is 30.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.maxlimit</span></code> the max possible limit, default is 200.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.languages</span></code> the language correspondence e.-g. <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">fr:</span> <span class="pre">french</span> <span class="pre">}</span></code></p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fulltextsearch.split_regex</span></code> the split regex to split the query text and the text in the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code>,</dt><dd><p>e.-g. <code class="docutils literal notranslate"><span class="pre">[.-]</span></code> to transform <code class="docutils literal notranslate"><span class="pre">St.Al-ban</span></code> to <code class="docutils literal notranslate"><span class="pre">St</span> <span class="pre">al</span> <span class="pre">ban</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fulltextsearch.replace</span></code> dictionary of rules to do a replacement where the key is a regular expression,</dt><dd><p>e.-g.: <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">kantonspolizei:</span> <span class="pre">'kantons</span> <span class="pre">polizei'</span> <span class="pre">}``to</span> <span class="pre">transform</span> <span class="pre">``kantonspolizei</span></code> in
+<code class="docutils literal notranslate"><span class="pre">kantons</span> <span class="pre">polizei</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="ranking-system">
+<h2>Ranking system<a class="headerlink" href="#ranking-system" title="Permalink to this heading">¶</a></h2>
+<p>By default, the full-text search uses the <cite>similarity</cite> system of the
+<a class="reference external" href="https://www.postgresql.org/docs/9.0/static/pgtrgm.html">pg_trgm module</a>. This
+is based only on the similarities of words, without language analysis, and it
+cares only about how near your search is to the result. <cite>12</cite> is nearer to <cite>12</cite>
+than <cite>120</cite>.</p>
+<p>Ensure that the extension is created in you database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
+</pre></div></div><p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">tsvector</span></code> and <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to rank your search
+results
+(see: <a class="reference external" href="https://www.postgresql.org/docs/9.0/static/textsearch-controls.html">textsearch-controls</a>).
+These methods are useful to handle language-based strings. That means for instance
+that plural nouns are the same as singular nouns. This system only checks if
+your search word exists in the result. That means that if you search <cite>B 12 Zug</cite>,
+<cite>B 120 Zug</cite> has the same weight because the system only see that the <cite>12</cite> exists
+in each case. To use this system, your request must contain the
+parameter <code class="docutils literal notranslate"><span class="pre">rank_system=ts_rank_cd</span></code>.</p>
+</section>
+<section id="using-the-unaccent-extension">
+<h2>Using the unaccent extension<a class="headerlink" href="#using-the-unaccent-extension" title="Permalink to this heading">¶</a></h2>
+<p>The full-text search is accent-sensitive by default.
+To make it accent-insensitive Postgres’s
+<a class="reference external" href="https://www.postgresql.org/docs/9.0/static/unaccent.html">unaccent extension</a>
+can be used.</p>
+<p>To activate the unaccent extension, first connect to the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-d<span class="w"> </span>&lt;database&gt;</span>
+</pre></div></div><p>Create the Postgres unaccent extension and dictionary:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="n">unaccent</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Insert the unaccent dictionary into a text search configuration
+(<a class="reference external" href="https://www.postgresql.org/docs/9.1/static/sql-altertsconfig.html">Documentation</a>):</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="p">(</span><span class="k">COPY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">french</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span>
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">hword</span><span class="p">,</span><span class="w"> </span><span class="n">hword_part</span><span class="p">,</span><span class="w"> </span><span class="n">word</span>
+<span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">unaccent</span><span class="p">,</span><span class="w"> </span><span class="n">french_stem</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>When populating the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table use the text configuration ‘fr’
+instead of ‘french’. For example:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">  </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2056</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;Layer group&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;Accent text to display (éàè)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Accent text to search (éàè)&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>And define the configuration in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">languages</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">fr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and the text search configuration, by default it is
+<code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">french</span></code> because the default french text search configuration is named ‘french’.</p>
+</section>
+<section id="synonym-and-thesaurus-dictionary">
+<h2>Synonym and Thesaurus Dictionary<a class="headerlink" href="#synonym-and-thesaurus-dictionary" title="Permalink to this heading">¶</a></h2>
+<p>You may wish to avoid using the Synonym and Thesaurus dictionaries, because when these are used,
+a word like ‘alignement’ is simplified as ‘align’:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;alignement&#39;</span><span class="p">);</span>
+<span class="s1">&#39;align&#39;</span><span class="p">:</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>Thus, ‘alignem’ does not match in the search, which might be considered unexpected behavior by users:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">to_tsquery</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;alignem:*&#39;</span><span class="p">);</span>
+<span class="s1">&#39;alignem&#39;</span><span class="p">:</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>To change this behavior, you can create and use a new dictionary named <cite>french_alt</cite>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="k">TEMPLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="k">simple</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="n">STOPWORDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">french</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">asciiword</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">french_alt</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We keep the stop words to remove the French short words.</p>
+</div>
+</section>
+<section id="add-synonyms">
+<h2>Add Synonyms<a class="headerlink" href="#add-synonyms" title="Permalink to this heading">¶</a></h2>
+<p>Create a new search configuration:
+<code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TEXT</span> <span class="pre">SEARCH</span> <span class="pre">CONFIGURATION</span> <span class="pre">de</span> <span class="pre">(COPY</span> <span class="pre">=</span> <span class="pre">german);</span></code></p>
+<p>Create a file with the Synonyms:
+<code class="docutils literal notranslate"><span class="pre">/usr/share/postgresql/10/tsearch_data/de.syn</span></code> with: <code class="docutils literal notranslate"><span class="pre">sankt</span> <span class="pre">st</span></code></p>
+<p>Create the new search directory:
+.. code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">DICTIONARY</span> <span class="n">my_de</span> <span class="p">(</span><span class="n">TEMPLATE</span> <span class="o">=</span> <span class="n">synonym</span><span class="p">,</span> <span class="n">SYNONYMS</span><span class="o">=</span> <span class="n">de</span><span class="p">);</span>
+<span class="n">ALTER</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">de</span> <span class="n">ALTER</span> <span class="n">MAPPING</span> <span class="n">FOR</span> <span class="n">asciiword</span> <span class="n">WITH</span> <span class="n">my_de</span><span class="p">,</span> <span class="n">german_stem</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Use the new search configuration named de:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">languages</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">de</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="filter.html" title="previous chapter">Filter (Querier)</a></li>
+      <li>Next: <a href="internationalization.html" title="next chapter">Internationalization</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/integrator/fulltext_search.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Build configuration &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ngeo" href="ngeo.html" />
+    <link rel="prev" title="Configuration Guide for advanced settings" href="configuration.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="build-configuration">
+<span id="integrator-make"></span><h1>Build configuration<a class="headerlink" href="#build-configuration" title="Permalink to this heading">¶</a></h1>
+<section id="env-files">
+<h2>Env files<a class="headerlink" href="#env-files" title="Permalink to this heading">¶</a></h2>
+<p>Usually we have the following env files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">env.default</span></code> for the c2cgeoportal default configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env.project</span></code> for the project configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env.&lt;organization&gt;</span></code> in a multi-organization project these files will contain organization-specific
+configurations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">env.(dev|int|prod)</span></code> environment specific settings, for example one for development, one for integration
+and one for production, not needed for projects managed in an OpenShift platform.</p></li>
+</ul>
+<p>The usage of env file should be configured in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file, in the <code class="docutils literal notranslate"><span class="pre">env</span></code> section.</p>
+<p>Project env configuration:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">files</span></code>: the env files interpreted with the build env arguments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">required_args</span></code>: the number of required build env arguments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">help</span></code>: the message displayed on wrong build env arguments number.</p></li>
+</ul>
+<p>For an OpenShift project you can use (default):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span>
+<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">No arguments needed.</span>
+</pre></div>
+</div>
+<p>For a non OpenShift project you can use:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{0}</span>
+<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span>
+</pre></div>
+</div>
+<p>For a non OpenShift multi town project you can use:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{0}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{1}</span>
+<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;town&gt; &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span>
+</pre></div>
+</div>
+</section>
+<section id="vars-files">
+<h2>Vars files<a class="headerlink" href="#vars-files" title="Permalink to this heading">¶</a></h2>
+<p>The project variables are set in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> file,
+which extends the default <code class="docutils literal notranslate"><span class="pre">geoportal/CONST_vars.yaml</span></code>.</p>
+<p>To make such variables available to the python code, for instance using</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;some_config_var&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>they must be listed in the makefile as well using <code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
+<p>To be able to use a variable from the makefile in the vars file,
+you should export your variable as follows:</p>
+<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="k">export </span><span class="nv">MY_VAR</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>my_value
+</pre></div>
+</div>
+<p>And in your yaml vars file, add:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">my_var</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MY_VAR</span>
+<span class="nt">interpreted</span><span class="p">:</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_var</span>
+</pre></div>
+</div>
+<p>For more information, see the
+<a class="reference external" href="https://github.com/camptocamp/c2c.template">c2c.template</a> documentation.</p>
+</section>
+<section id="dockefile-config-variables">
+<h2>Dockefile config variables<a class="headerlink" href="#dockefile-config-variables" title="Permalink to this heading">¶</a></h2>
+<p>The following variables may be set in the Dockerfile:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project YAML configuration file.</p></li>
+</ul>
+</section>
+<section id="makefile-config-variables">
+<h2>Makefile config variables<a class="headerlink" href="#makefile-config-variables" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not possible in the simple application mode</p>
+</div>
+<p>The following variables may be set in the makefiles:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DISABLE_BUILD_RULES</span></code>: List of rules we want to disable, default is empty.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code>: List of available languages, default is <code class="docutils literal notranslate"><span class="pre">en</span> <span class="pre">fr</span> <span class="pre">de</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>: List of ngeo interfaces, default is <code class="docutils literal notranslate"><span class="pre">mobile</span> <span class="pre">desktop</span></code>.</p></li>
+</ul>
+</section>
+<section id="custom-rules">
+<h2>Custom rules<a class="headerlink" href="#custom-rules" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not possible in the simple application mode</p>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">geoportal/Makefile</span></code> file, you can create custom rules.
+Here is an example:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">MY_FILE</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>&lt;file&gt;
+
+<span class="nf">build</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">MY_FILE</span><span class="k">)</span>
+
+<span class="nf">$(MY_FILE)</span><span class="o">:</span><span class="w"> </span>&lt;<span class="n">source_file</span>&gt;
+<span class="w">    </span>cp<span class="w"> </span>&lt;source_file&gt;<span class="w"> </span><span class="k">$(</span>MY_FILE<span class="k">)</span>
+<span class="c">    # Short version:</span>
+<span class="c">    # cp $&lt; $@</span>
+
+<span class="nf">clean</span><span class="o">:</span><span class="w"> </span><span class="n">project</span>-<span class="n">clean</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">project</span>-<span class="n">clean</span>
+<span class="nf">project-clean</span><span class="o">:</span>
+<span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>MY_FILE<span class="k">)</span>
+</pre></div>
+</div>
+<p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
+</section>
+<section id="custom-image">
+<h2>Custom image<a class="headerlink" href="#custom-image" title="Permalink to this heading">¶</a></h2>
+<p>In the build script we use <cite>docker-compose build</cite> as it’s easy to add a new service from another <cite>Dockerfile</cite>.</p>
+<p>By adding the following in the <cite>docker-compose.yaml</cite> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span>
+<span class="w">   </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom</span>
+<span class="w">     </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span>
+</pre></div>
+</div>
+<p>An new image with the suffix <cite>-custom</cite> will be built with the standard <cite>./build</cite> command and a build
+argument is passed to the build with the hash of the latest Git commit.</p>
+<p>Everything that present in the <cite>.env</cite> file can be used.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="configuration.html" title="previous chapter">Configuration Guide for advanced settings</a></li>
+      <li>Next: <a href="ngeo.html" title="next chapter">ngeo</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/integrator/build.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

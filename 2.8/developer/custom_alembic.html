@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Alembic on custom tables &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Create a new release" href="build_release.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="alembic-on-custom-tables">
+<span id="custom-alembic"></span><h1>Alembic on custom tables<a class="headerlink" href="#alembic-on-custom-tables" title="Permalink to this heading">¶</a></h1>
+<p>If you want to manage custom tables (GMF tables; not in the <code class="docutils literal notranslate"><span class="pre">main</span></code> nor the <code class="docutils literal notranslate"><span class="pre">static</span></code> schema)
+with alembic you must setup a custom alembic process. Here’s an example. Others solutions
+are possible, but do not try to reuse the existing <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code> (because you will not be able to specify a
+schema through the configuration levels).</p>
+<p>The following example uses <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">cp</span></code>. You can achieve the same with a volume, but you will
+have to set the owner (root) of copied files.</p>
+<section id="init-alembic">
+<h2>Init alembic<a class="headerlink" href="#init-alembic" title="Permalink to this heading">¶</a></h2>
+<p>In your project, add a <code class="docutils literal notranslate"><span class="pre">geoportal/alembic_&lt;project_name&gt;</span></code> folder.</p>
+<p>Build and run your project.</p>
+<p>In the running container initialize alembic in a folder that have <strong>not</strong> already
+an <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code> file, like the /tmp folder. Create also directly the first revision file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>mkdir<span class="w"> </span>/tmp/new_alembic</span>
+<span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /tmp/new_alembic; alembic init alembic&quot;</span></span>
+<span class="prompt1"><span class="c1"># Ignore the warning message about setting the alembic.ini file for now.</span></span>
+<span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /tmp/new_alembic; alembic revision -m &#39;Inital revision&#39;&quot;</span></span>
+</pre></div></div><p>Run <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">ps</span> <span class="pre">geoportal</span></code> to know the name of the running geoportal container.</p>
+<p>Then copy the generated alembic folder in the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> folder of your project:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">PROJECT</span><span class="o">=</span>&lt;your_project&gt;</span>
+<span class="prompt1">docker<span class="w"> </span>cp<span class="w"> </span>&lt;geoportal_container_name&gt;:/tmp/new_alembic<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span></span>
+</pre></div></div><p>You can now customize the <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code> and the <code class="docutils literal notranslate"><span class="pre">env.py</span></code>.</p>
+</section>
+<section id="configure-alembic-ini">
+<h2>Configure <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code><a class="headerlink" href="#configure-alembic-ini" title="Permalink to this heading">¶</a></h2>
+<p>The main change to apply is to use environment variables to run alembic on the right database.
+To do so, use a <code class="docutils literal notranslate"><span class="pre">tmpl</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mv<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic.ini<span class="o">{</span>,.tmpl<span class="o">}</span></span>
+<span class="prompt1">rm<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic.ini</span>
+<span class="prompt1"><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;/geoportal/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">/alembic.ini&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.gitignore</span>
+</pre></div></div><p>And inside the <code class="docutils literal notranslate"><span class="pre">alembic.ini.tmpl</span></code> set the <code class="docutils literal notranslate"><span class="pre">sqlalchemy.url</span></code> to
+<code class="docutils literal notranslate"><span class="pre">postgresql://${PGUSER}:${PGPASSWORD}&#64;${PGHOST}:${PGPORT}/${PGDATABASE}</span></code>.</p>
+<p>In this file, you may also directly set a new variable <code class="docutils literal notranslate"><span class="pre">version_table_schema</span></code> to set the
+name of the schema inside which alembic must create its revision table. See:
+<a class="reference external" href="https://alembic.sqlalchemy.org/en/latest/api/runtime.html#the-environment-context">The Environment Context</a>.</p>
+<p>You must now set permissions on this tmpl file to authorize evaluation of this <code class="docutils literal notranslate"><span class="pre">tmpl</span></code> file.
+Add the following lines in the <code class="docutils literal notranslate"><span class="pre">geoportal/Dockerfile</span></code> just before the command
+<code class="docutils literal notranslate"><span class="pre">ENTRYPOINT</span> <span class="pre">[</span> <span class="pre">&quot;/usr/bin/eval-templates&quot;</span> <span class="pre">]</span></code>, in the <code class="docutils literal notranslate"><span class="pre">FROM</span> <span class="pre">camptocamp/geomapfish</span></code> section.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom - To be able to run tmpl on alembic.ini.tmpl file</span>
+<span class="n">RUN</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">alembic_</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;/</span><span class="n">alembic</span><span class="o">.</span><span class="n">ini</span> <span class="o">&amp;&amp;</span> \
+    <span class="n">chmod</span> <span class="n">g</span><span class="o">+</span><span class="n">w</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">alembic_</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span> <span class="o">&amp;&amp;</span> \
+    <span class="n">chown</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">alembic_</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;/</span><span class="n">alembic</span><span class="o">.</span><span class="n">ini</span><span class="o">.</span><span class="n">tmpl</span>
+</pre></div>
+</div>
+</section>
+<section id="configure-env-py">
+<h2>Configure <code class="docutils literal notranslate"><span class="pre">env.py</span></code><a class="headerlink" href="#configure-env-py" title="Permalink to this heading">¶</a></h2>
+<p>Edit the file <code class="docutils literal notranslate"><span class="pre">geoportal/alembic_${PROJECT}/alembic/env.py</span></code>.</p>
+<p>In there, update the <code class="docutils literal notranslate"><span class="pre">run_migrations_offline</span></code> function by adding
+<code class="docutils literal notranslate"><span class="pre">version_table_schema</span> <span class="pre">=</span> <span class="pre">config.get_main_option(&quot;version_table_schema&quot;)</span></code> to get the schema
+name from the <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code> file. Add this value as parameter of the <code class="docutils literal notranslate"><span class="pre">context.configure()</span></code>
+function.</p>
+<p>Do the same in the <code class="docutils literal notranslate"><span class="pre">run_migrations_online</span></code> function.</p>
+<p>At this point, you should be able to run your (currently empty) first revision file.</p>
+</section>
+<section id="run-an-alembic-upgrade">
+<h2>Run an alembic upgrade<a class="headerlink" href="#run-an-alembic-upgrade" title="Permalink to this heading">¶</a></h2>
+<p>Once your revision file completed, build and run docker-compose up on your project.
+Your alembic files should be in the running container. You can now run manually an upgrade with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic upgrade head&quot;</span></span>
+</pre></div></div></section>
+<section id="create-a-new-revision-file">
+<h2>Create a new revision file<a class="headerlink" href="#create-a-new-revision-file" title="Permalink to this heading">¶</a></h2>
+<p>With a running instance, execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic revision -m &#39;&lt;msg&gt;&#39;&quot;</span></span>
+<span class="prompt1">docker<span class="w"> </span>cp<span class="w"> </span>&lt;geoportal_container_name&gt;:/app/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/&lt;the_new_file&gt;<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/.</span>
+</pre></div></div></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrator/index.html">Integrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="build_release.html" title="previous chapter">Create a new release</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/developer/custom_alembic.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

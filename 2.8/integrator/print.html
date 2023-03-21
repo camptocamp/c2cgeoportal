@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Print &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="JavaScript API" href="api.html" />
+    <link rel="prev" title="Digital Elevation Tools" href="raster.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="print">
+<span id="integrator-print"></span><h1>Print<a class="headerlink" href="#print" title="Permalink to this heading">¶</a></h1>
+<section id="template-configuration">
+<h2>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this heading">¶</a></h2>
+<p>All print-related files are located in the <code class="docutils literal notranslate"><span class="pre">print/</span></code> folder, notably the print templates in the
+<code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;</span></code> folder.</p>
+<p>The main configuration file is <code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapFish Print documentation</a></p></li>
+<li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></p></li>
+</ul>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<p>The templates make use of attributes which are either passed directly by the client (client attributes) or
+processed by the print service.
+The client attributes are specified in the print configuration (<code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>)
+for each template. It’s possible to remove the standard ones and to create custom ones. By default, they
+appear as form fields in the UI print panel for the user to fill in. An attribute can be hidden from the UI by
+adding its name in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> under <code class="docutils literal notranslate"><span class="pre">gmfPrintOptions.hiddenAttributes</span></code>.</p>
+<p>The standard client attributes in a new install of GeoMapFish are the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> (string): title of the report (form field is visible by default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comments</span></code> (string): comment to display in the report (form field is visible by default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">debug</span></code> (boolean): if true, the header of each section of the print template will be printed in the report. Defaults to false and is hidden from the UI by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code> (string): filled by the client with the name of the currently logged-in user (not secured). Hidden by default, cannot be renamed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timezone</span></code> (string): filled by the client with the client timezone. Hidden by default, cannot be renamed</p></li>
+</ul>
+<p>Template attributes managed by MapFish Print are <code class="docutils literal notranslate"><span class="pre">mapSubReport</span></code>, <code class="docutils literal notranslate"><span class="pre">legendDataSource</span></code>, <code class="docutils literal notranslate"><span class="pre">legendSubReport</span></code>, <code class="docutils literal notranslate"><span class="pre">numberOfLegendRows</span></code>,
+<code class="docutils literal notranslate"><span class="pre">scalebarSubReport</span></code>, <code class="docutils literal notranslate"><span class="pre">northArrowSubReport</span></code> (related to the map) and <code class="docutils literal notranslate"><span class="pre">jrDataSource</span></code> (results of the feature query on
+the map, if any).</p>
+</section>
+</section>
+<section id="notes-about-the-scales">
+<h2>Notes about the scales<a class="headerlink" href="#notes-about-the-scales" title="Permalink to this heading">¶</a></h2>
+<p>The web map and the map printing do not use the same scales. Therefore, if you change the configuration
+of min/max scaling, you should also test map printing to be sure that it also works as expected.</p>
+</section>
+<section id="infrastructure">
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this heading">¶</a></h2>
+<p>By default, the configuration is set up to the <cite>mutualized print platform as a service from Camptocamp &lt;https://www.camptocamp.com/en/actualite/saas-printing-service-offer/&gt;</cite>.</p>
+<p>To use this platform, you should ask Camptocamp to create e.-g. two new applications on the platform,
+one for the integration, one for the production.</p>
+<p>Configure the application name in the <code class="docutils literal notranslate"><span class="pre">MUTUALIZED_PRINT_APP</span></code> variable of a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
+</section>
+<section id="development">
+<h2>Development<a class="headerlink" href="#development" title="Permalink to this heading">¶</a></h2>
+<p>To test the print locally, you can copy the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and uncomment the <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> environment variable and the
+<code class="docutils literal notranslate"><span class="pre">print</span></code> service.</p>
+</section>
+<section id="local-print">
+<h2>Local print<a class="headerlink" href="#local-print" title="Permalink to this heading">¶</a></h2>
+<p>To use a local print service, you should:</p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> to <code class="docutils literal notranslate"><span class="pre">http://print:8080/print/</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p></li>
+<li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">print</span></code> service in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file.</p></li>
+<li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">!mapUri</span></code>, <code class="docutils literal notranslate"><span class="pre">!forwardHeaders</span></code> and <code class="docutils literal notranslate"><span class="pre">!hostnameMatch</span></code> in the print configuration.</p></li>
+<li><p>Uncomment the <code class="docutils literal notranslate"><span class="pre">print</span></code>/<code class="docutils literal notranslate"><span class="pre">spec</span></code> configuration section of the <code class="docutils literal notranslate"><span class="pre">checker</span></code> in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="raster.html" title="previous chapter">Digital Elevation Tools</a></li>
+      <li>Next: <a href="api.html" title="next chapter">JavaScript API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/integrator/print.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

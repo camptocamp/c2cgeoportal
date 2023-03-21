@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Mapfile configuration &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Transactional WFS with TinyOWS" href="tinyows.html" />
+    <link rel="prev" title="Editing" href="editing.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="mapfile-configuration">
+<span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Permalink to this heading">¶</a></h1>
+<p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>), the application
+administrator manages the application through the database and via
+the application’s MapServer mapfile.</p>
+<p>The application’s mapfile is where WMS and WFS layers are defined.  WMS is used
+for the map (<code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">GetMap</span></code>), and for the <code class="docutils literal notranslate"><span class="pre">point</span> <span class="pre">query</span></code> feature (<code class="docutils literal notranslate"><span class="pre">WMS</span> <span class="pre">GetFeatureInfo</span></code>).
+WFS is used for the <code class="docutils literal notranslate"><span class="pre">query</span></code> (box and point), the <code class="docutils literal notranslate"><span class="pre">filters</span></code>, and the WFS permalink features.</p>
+<p>The application’s mapfile is located in the <code class="docutils literal notranslate"><span class="pre">mapserver</span></code> directory, it is
+commonly named <code class="docutils literal notranslate"><span class="pre">mapserver.map.tmpl</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The application’s mapfile is a <code class="docutils literal notranslate"><span class="pre">.tmpl</span></code> file because it contains variables.
+These variables are substituted at container start.</p>
+</div>
+<p>This section describes how to make layers <em>printable</em> and/or <em>queryable</em>
+and/or <em>private</em> (a.k.a <em>restricted</em>).</p>
+<section id="print">
+<h2>Print<a class="headerlink" href="#print" title="Permalink to this heading">¶</a></h2>
+<p>MapFish Print performs single tile requests to the WMS server. For that reason, we
+need to use a relatively large value for the <code class="docutils literal notranslate"><span class="pre">MAXSIZE</span></code> parameter (of the
+<code class="docutils literal notranslate"><span class="pre">MAP</span></code> section); 5000 for example.</p>
+<p>MapFish Print also supports map rotations. This implies specific requirements:</p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">MAP</span></code> and all the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> definitions should have a <code class="docutils literal notranslate"><span class="pre">PROJECTION</span></code>. For
+example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PROJECTION</span>
+    <span class="s2">&quot;init=epsg:2056&quot;</span>
+<span class="n">END</span>
+</pre></div>
+</div>
+</li>
+<li><p>When rotating the map (with a non-zero value for <code class="docutils literal notranslate"><span class="pre">ANGLE</span></code>) there are
+important things to be aware of. Make sure to read the notes for the
+<code class="docutils literal notranslate"><span class="pre">ANGLE</span></code> parameter on <a class="reference external" href="https://mapserver.org/mapfile/map.html">https://mapserver.org/mapfile/map.html</a>.</p></li>
+</ul>
+<p>MapFish Print uses a resolution of 254 dpi (instead of 72 dpi as used for the
+web application on the screen). Using <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>/<code class="docutils literal notranslate"><span class="pre">SYMBOLSCALEDENOM</span></code> is
+therefore not recommended. <code class="docutils literal notranslate"><span class="pre">LABEL</span></code>/<code class="docutils literal notranslate"><span class="pre">MINSIZE</span></code> and <code class="docutils literal notranslate"><span class="pre">LABEL</span></code>/<code class="docutils literal notranslate"><span class="pre">MAXSIZE</span></code>
+should be used when necessary only, as these parameters do not take the <code class="docutils literal notranslate"><span class="pre">MAP</span></code>
+resolution into account.</p>
+</section>
+<section id="wfs-getfeature">
+<span id="administrator-mapfile-wfs-getfeature"></span><h2>WFS GetFeature<a class="headerlink" href="#wfs-getfeature" title="Permalink to this heading">¶</a></h2>
+<p>Layers that you want to use in a query (box and point), in filters, or for WFS permalink features must
+support WFS GetFeature.
+To support WFS GetFeature a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="s2">&quot;fooOnlyForWFSGetFeature&quot;</span>
+</pre></div>
+</div>
+<p>This is a fake template, but this is required by the querier and for the filter.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should also define metadata, with a <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> section. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<span class="s2">&quot;gml_types&quot;</span> <span class="s2">&quot;auto&quot;</span>
+<span class="s2">&quot;gml_featureid&quot;</span> <span class="s2">&quot;id&quot;</span>
+<span class="s2">&quot;wfs_enable_request&quot;</span> <span class="s2">&quot;*&quot;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code></p>
+<blockquote>
+<div><p>This is a comma-delimited list of attribute names, it specifies the list of
+attributes that should be returned in GML responses. <code class="docutils literal notranslate"><span class="pre">all</span></code> means that all
+the attributes of the layer should be returned.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">gml_types</span></code></p>
+<blockquote>
+<div><p>Set this to <code class="docutils literal notranslate"><span class="pre">auto</span></code>. This means that the layer’s field type information is obtained from
+the input feature driver (OGC). If the type is not well interpreted (notably if you have a
+wrong operator within your filter), you can define manually your attribute type
+with <code class="docutils literal notranslate"><span class="pre">&quot;gml_&lt;attribute&gt;_type&quot;</span> <span class="pre">&quot;&lt;type&gt;&quot;</span></code> where <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> is one of
+these: <code class="docutils literal notranslate"><span class="pre">Integer</span></code>, <code class="docutils literal notranslate"><span class="pre">Long</span></code>, <code class="docutils literal notranslate"><span class="pre">Real</span></code>, <code class="docutils literal notranslate"><span class="pre">Character</span></code>, <code class="docutils literal notranslate"><span class="pre">Date</span></code> or <code class="docutils literal notranslate"><span class="pre">Boolean</span></code>.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">gml_featureid</span></code></p>
+<blockquote>
+<div><p>References the name of layer’s primary key column. Setting this is mandatory
+for <code class="docutils literal notranslate"><span class="pre">GetFeature</span></code> request including <code class="docutils literal notranslate"><span class="pre">ogc:FeatureId</span></code> filters. Always set
+it. (This is required for the <a class="reference internal" href="../integrator/api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a>.)</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">wfs_enable_request</span></code></p>
+<blockquote>
+<div><p>Space separated list of requests to enable. Use <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p>
+</div></blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The geometry columns of layers involved in <code class="docutils literal notranslate"><span class="pre">query</span></code> should have the same name.
+By default the <code class="docutils literal notranslate"><span class="pre">filters</span></code> assumes the name is <code class="docutils literal notranslate"><span class="pre">geom</span></code>.</p>
+</div>
+<p>In contrast to WMS GetFeatureInfo, WFS GetFeature supports <code class="docutils literal notranslate"><span class="pre">point</span> <span class="pre">query</span></code> as
+well as <code class="docutils literal notranslate"><span class="pre">box</span> <span class="pre">query</span></code>. However, it is to be noted that WFS GetFeature may
+return features that are not visible at the current resolution of the map.
+This is because of a limitation in MapServer, where <code class="docutils literal notranslate"><span class="pre">MINSCALE</span></code>/<code class="docutils literal notranslate"><span class="pre">MAXSCALE</span></code>
+values defined in the layer’s classes (<code class="docutils literal notranslate"><span class="pre">CLASS</span></code>) have no effect.</p>
+</section>
+<section id="wms-getfeatureinfo">
+<h2>WMS GetFeatureInfo<a class="headerlink" href="#wms-getfeatureinfo" title="Permalink to this heading">¶</a></h2>
+<p>To support WMS GetFeatureInfo, a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWMSGetFeatureInfo</span>
+</pre></div>
+</div>
+<p>Similar to WFS GetFeature, this is a fake template, but it is required.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code>, <code class="docutils literal notranslate"><span class="pre">gml_&lt;geometry</span> <span class="pre">name&gt;_type</span></code> and <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>
+<em>METADATA</em> variables should also be defined in the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
+<span class="s2">&quot;gml_geometries&quot;</span> <span class="s2">&quot;geom&quot;</span>
+<span class="s2">&quot;gml_geom_type&quot;</span> <span class="s2">&quot;polygon&quot;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code></p>
+<blockquote>
+<div><p>See above.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code></p>
+<blockquote>
+<div><p>This is a string specifying the name used for geometry elements in
+GetFeatureInfo (GML) responses. This property, and <code class="docutils literal notranslate"><span class="pre">gml_&lt;name&gt;_type</span></code>,
+should be set for the GetFeatureInfo responses to include the features’ geometries instead of bboxes.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">gml_&lt;geometry</span> <span class="pre">name&gt;_type</span></code></p>
+<blockquote>
+<div><p>This specifies the type of a geometry column. Specifying this property is
+necessary if geometries, instead of bboxes, should be returned in
+GetFeatureInfo (GML) responses. <code class="docutils literal notranslate"><span class="pre">&lt;geometry</span> <span class="pre">name&gt;</span></code> should be replaced by the string set
+with the <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>. For example, if <code class="docutils literal notranslate"><span class="pre">geom_geometries</span></code> is set to
+<code class="docutils literal notranslate"><span class="pre">the_geom</span></code>, then <code class="docutils literal notranslate"><span class="pre">gml_the_geom_type</span></code> should be used.
+The possible values are <code class="docutils literal notranslate"><span class="pre">point</span></code>, <code class="docutils literal notranslate"><span class="pre">multipoint</span></code>, <code class="docutils literal notranslate"><span class="pre">line</span></code>, <code class="docutils literal notranslate"><span class="pre">multiline</span></code>,
+<code class="docutils literal notranslate"><span class="pre">polygon</span></code>, <code class="docutils literal notranslate"><span class="pre">multipolygon</span></code>. If you do not set the right type
+for multi geometries, only the first will be visible on the map.
+See also <a class="reference external" href="https://mapserver.org/ogc/wms_server.html#index-71">gml_&lt;geometry name&gt;_type</a>.</p>
+</div></blockquote>
+<p>See the <a class="reference external" href="https://mapserver.org/ogc/wms_server.html">WMS Server MapFile Documentation</a> for more detail.</p>
+</section>
+<section id="restricted-layer">
+<h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Permalink to this heading">¶</a></h2>
+<p>The restricted layers work only with PostgreSQL data.  All layers defined as restricted in the mapfile
+should be defined as well in the administration interface and vice versa.</p>
+<section id="with-a-restrictionarea-area">
+<h3>With a RestrictionArea area<a class="headerlink" href="#with-a-restrictionarea-area" title="Permalink to this heading">¶</a></h3>
+<p>A RestrictionArea is used to restrict the layer displaying to a given area.
+This area is specified in the administration interface while defining the <code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code> element.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using a restriction area on a big layer or defining a very complex area
+may slow down the application.</p>
+</div>
+<p>To define a restricted layer in the Mapfile, the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should look like this:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;&lt;the_geom&gt; FROM (</span>
+<span class="ss">    SELECT *</span>
+<span class="ss">    FROM &lt;schema&gt;.&lt;table&gt;</span>
+<span class="ss">    WHERE ST_Contains(</span>
+<span class="ss">       (${MAPSERVER_DATA_SUBSELECT} &#39;&lt;layername&gt;&#39;),</span>
+<span class="ss">       ST_SetSRID(&lt;the_geom&gt;, &lt;projection&gt;)</span>
+<span class="ss">     )</span>
+<span class="ss">) as foo USING unique gid USING srid=&lt;projection&gt;&quot;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;layername&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;projection&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code>
+need to be replaced as appropriate. <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code> is the name of the PostGIS table
+including the geographic data for this layer. <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code> is the name of the
+table’s geometry column. <code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code> is the name of the schema including the table.
+<code class="docutils literal notranslate"><span class="pre">&lt;layer_name&gt;</span></code> can be either the layer NAME or the layer GROUP, depending on
+what is configured in the administration interface for the layer.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_SUBSELECT}</span></code> is defined as follows:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
+<span class="k">FROM</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">la</span>
+<span class="k">WHERE</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="k">AND</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="k">AND</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In some cases you can have geometries that overlap the restriction
+area. These features will not be displayed as they are not in the area (ie not
+<em>contained</em>). <em>st_intersects</em> or another operator could be used instead of the
+<em>st_contains</em> operator.</p>
+</div>
+<p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VALIDATION</span>
+  <span class="c1"># For secured layers</span>
+  <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;&quot;</span>
+  <span class="c1"># Or</span>
+  <span class="c1"># &quot;default_role_ids&quot; &quot;&lt;id of the anonymous role&gt;&quot;</span>
+  <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9,]*$&quot;</span>
+<span class="n">END</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> define the restrictions when mapserver is called without any <code class="docutils literal notranslate"><span class="pre">roles_ids</span></code>.
+In this situation, if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to an empty value for this layer, then there is
+no access; if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to the anonymous role id, then the access rights of
+anonymous users apply.</p>
+</section>
+<section id="without-restriction-on-the-restrictionarea-area">
+<h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this heading">¶</a></h3>
+<p>If we do not need to restrict on an area, we can use the following
+<code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM (
+    SELECT
+        geo.*
+    FROM
+        &lt;schema&gt;.&lt;table&gt; AS geo
+    WHERE (
+        ARRAY[%role_ids%]::integer[] &amp;&amp; ARRAY(
+            ${MAPSERVER_DATA_NOAREA_SUBSELECT} &#39;&lt;layername&gt;&#39;
+        )
+    )
+) AS foo USING unique id USING srid=2056&quot;
+</pre></div>
+</div>
+<p>Then you do not need to define an area in the admin interface.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_NOAREA_SUBSELECT}</span></code> is defined as follows:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
+<span class="k">FROM</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">la</span>
+<span class="k">WHERE</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="k">AND</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="k">AND</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">id</span>
+<span class="k">AND</span>
+<span class="w">    </span><span class="n">la</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span>
+</pre></div>
+</div>
+<p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VALIDATION</span>
+  <span class="c1"># For secured layers</span>
+  <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;-1&quot;</span>
+  <span class="c1"># Or</span>
+  <span class="c1"># &quot;default_role_ids&quot; &quot;&lt;id of the anonymous role&gt;&quot;</span>
+  <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9,]*$&quot;</span>
+<span class="n">END</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> define the restrictions when mapserver is called without any <code class="docutils literal notranslate"><span class="pre">roles_ids</span></code>.
+In this situation, if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to <code class="docutils literal notranslate"><span class="pre">-1</span></code> for this layer, then there is
+no access; if you have set <code class="docutils literal notranslate"><span class="pre">default_role_ids</span></code> to the anonymous role id, then the access rights of
+anonymous users apply.</p>
+</section>
+<section id="filename">
+<h3>Filename<a class="headerlink" href="#filename" title="Permalink to this heading">¶</a></h3>
+<p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.tmpl</span></code> file, for the variable to be substituted at container start.</p>
+</section>
+</section>
+<section id="variable-substitution">
+<h2>Variable Substitution<a class="headerlink" href="#variable-substitution" title="Permalink to this heading">¶</a></h2>
+<p>It is possible to adapt some values in the mapfile according to the user’s role
+by using variable substitution, for instance to hide some layer objects
+attributes. The list of parameters that support variable substitution is
+available <a class="reference external" href="https://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
+<p>To define variables, edit the matching <code class="docutils literal notranslate"><span class="pre">MAP</span></code>/<code class="docutils literal notranslate"><span class="pre">LAYER</span></code>/<code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code>
+section in the MapFile and add:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;default_value&gt;&quot;</span>
+<span class="s2">&quot;s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;validation_pattern&gt;&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">validation_pattern</span></code> is a regular expression used to validate the
+argument. For example, if you only want lowercase characters and commas,
+use <code class="docutils literal notranslate"><span class="pre">^[a-z,]*$</span></code>.</p>
+<p>Now in <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> place <code class="docutils literal notranslate"><span class="pre">%s_&lt;variable&gt;%</span></code> where you want to
+insert the variable value, but not at the start of a line (to avoid escape issues).</p>
+<p>Then in the administration interface, create a <code class="docutils literal notranslate"><span class="pre">functionality</span></code> named
+<code class="docutils literal notranslate"><span class="pre">mapserver_substitution</span></code> with the value: <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;=&lt;value&gt;</span></code>.</p>
+<p>Please note that we cannot use substitution in the <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> values.
+As a result, if you would like to adapt the list of attributes returned in a
+WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
+listed in the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> section. For instance:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">LAYER</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056&quot;</span>
+<span class="w">    </span><span class="n">METADATA</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">        </span><span class="ss">&quot;gml_exclude_items&quot;</span><span class="w"> </span><span class="ss">&quot;type,gid&quot;</span>
+<span class="w">        </span><span class="ss">&quot;gml_include_items&quot;</span><span class="w"> </span><span class="ss">&quot;all&quot;</span>
+<span class="w">    </span><span class="k">END</span>
+<span class="w">    </span><span class="n">VALIDATION</span>
+<span class="w">        </span><span class="ss">&quot;default_s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;t.name&quot;</span>
+<span class="w">        </span><span class="ss">&quot;s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;^[a-z,._]*$$&quot;</span>
+<span class="w">    </span><span class="k">END</span>
+<span class="w">    </span><span class="k">CLASS</span>
+<span class="w">        </span><span class="n">EXPRESSION</span><span class="w"> </span><span class="p">([</span><span class="k">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">    </span><span class="k">END</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="k">END</span>
+</pre></div>
+</div>
+<p>Then add a <code class="docutils literal notranslate"><span class="pre">mapserver_substitution</span></code> functionality in the administration
+interface with for instance the following value for the given role:
+<code class="docutils literal notranslate"><span class="pre">columns=t.private</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also use variable substitution for the <code class="docutils literal notranslate"><span class="pre">role_id</span></code> and <code class="docutils literal notranslate"><span class="pre">user_id</span></code>,
+but beware that these attributes are not available for cached queries like:
+<code class="docutils literal notranslate"><span class="pre">GetCapabilities</span></code>, <code class="docutils literal notranslate"><span class="pre">GetLegendGraphic</span></code>, <code class="docutils literal notranslate"><span class="pre">DescribeFeatureType</span></code>.</p>
+</div>
+<p><a class="reference external" href="https://mapserver.org/cgi/runsub.html">MapServer documentation</a></p>
+</section>
+<section id="performance-improvement">
+<h2>Performance improvement<a class="headerlink" href="#performance-improvement" title="Permalink to this heading">¶</a></h2>
+<p>Adding an <code class="docutils literal notranslate"><span class="pre">EXTENT</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> section may significantly improve performance
+because it saves MapServer from computing the extent of all layer features.</p>
+<section id="prepare-raster-files">
+<span id="administrator-mapfile-perepare-raster"></span><h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this heading">¶</a></h3>
+<p>To achieve good performance, you should have tiled files with overviews, and ideally
+a tileindex. You can achieve this with these steps:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">mkdir<span class="w"> </span>optimized</span>
+<span class="prompt1"><span class="k">do</span></span>
+<span class="prompt1"><span class="w">    </span>gdal_translate<span class="w"> </span><span class="si">${</span><span class="nv">file</span><span class="si">}</span><span class="w"> </span>-co<span class="w"> </span><span class="nv">TILED</span><span class="o">=</span>YES<span class="w"> </span>-co<span class="w"> </span><span class="nv">COMPRESS</span><span class="o">=</span>DEFLATE</span>
+<span class="prompt1"><span class="w">    </span>gdaladdo<span class="w"> </span>-r<span class="w"> </span>average<span class="w">  </span><span class="si">${</span><span class="nv">file</span><span class="si">}</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="m">32</span></span>
+<span class="prompt1"><span class="w">    </span>gdal_translate<span class="w"> </span><span class="si">${</span><span class="nv">file</span><span class="si">}</span><span class="w"> </span>optimized/<span class="si">${</span><span class="nv">file</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-co<span class="w"> </span><span class="nv">TILED</span><span class="o">=</span>YES<span class="w"> </span>-co<span class="w"> </span><span class="nv">COMPRESS</span><span class="o">=</span>JPEG<span class="w"> </span>-co<span class="w"> </span><span class="nv">PHOTOMETRIC</span><span class="o">=</span>YCBCR<span class="w"> </span>-co<span class="w"> </span><span class="nv">COPY_SRC_OVERVIEWS</span><span class="o">=</span>YES</span>
+<span class="prompt1"><span class="k">done</span></span>
+</pre></div></div><p>You can generate a shapefile indexing all your rasters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex<span class="w"> </span>filename_index.shp<span class="w"> </span>optimized/*.tif</span>
+</pre></div></div></section>
+</section>
+<section id="note-about-ecw">
+<h2>Note about ECW<a class="headerlink" href="#note-about-ecw" title="Permalink to this heading">¶</a></h2>
+<p>In general using ECW is not recommended, as MapServer often generates broken
+images and has memory leaks with ECW. See this
+<a class="reference external" href="https://trac.osgeo.org/mapserver/ticket/3245">MapServer ticket</a>
+for example.</p>
+<p>If you still want to use it, then replace <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">fcgid-script</span></code>
+by <code class="docutils literal notranslate"><span class="pre">SetHandler</span> <span class="pre">cgi-script</span></code> in the <code class="docutils literal notranslate"><span class="pre">apache/mapserver.conf.tmpl</span></code>
+file. But note that this affects performance.</p>
+</section>
+<section id="mappyfile">
+<h2>mappyfile<a class="headerlink" href="#mappyfile" title="Permalink to this heading">¶</a></h2>
+<p>The tool container contains mappyfile, he can be used to ‘Pretty Printing’, ‘Validate’, …
+See the <a class="reference external" href="https://mappyfile.readthedocs.io/">project documentation</a>.</p>
+<p>For example to validate the map files run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>mappyfile<span class="w"> </span>validate<span class="w"> </span>--version<span class="o">=</span><span class="m">7</span>.6<span class="w"> </span>/etc/mapserver/*.map</span>
+</pre></div></div></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrator/index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Administrator Guide</a><ul>
+      <li>Previous: <a href="editing.html" title="previous chapter">Editing</a></li>
+      <li>Next: <a href="tinyows.html" title="next chapter">Transactional WFS with TinyOWS</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/administrator/mapfile.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

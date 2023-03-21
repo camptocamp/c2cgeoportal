@@ -1,0 +1,4087 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>TileGeneration &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Adding a new user interface" href="ngeo_new_interface.html" />
+    <link rel="prev" title="Configure short URL" href="shortener.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="tilegeneration">
+<span id="administrator-tilegeneration"></span><h1>TileGeneration<a class="headerlink" href="#tilegeneration" title="Permalink to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>With this solution, we solve the following issues:</p>
+<ul class="simple">
+<li><p>Managing millions of files on the file system is difficult.</p></li>
+<li><p>We should be able to update all the generated tiles.</p></li>
+<li><p>We should not have thousands of expired files.</p></li>
+</ul>
+<p>To do so, we need need a tool that can generate the tiles,
+update some of them contained in given geometries and delete empty tiles.</p>
+<p>On-the-fly tiles generation introduces some issues such as having a growing
+number of tiles that may become unmanageable. For example, when updating the
+data, it is not possible to figure out what tiles should be updated.</p>
+<p>For high usage websites, we want to put the tiles on S3 with the same tool.</p>
+<p>One issue we have if we want to generate all the tiles is that the generation time can grow to more than one
+month, especially if we have a high resolution (low if in m/px) on the last zoom level.
+Therefore for the last zoom level we should generate the tiles on the fly
+with a low expiry (4 hours for example).
+We should use metatiles to reduce the number of requests to postgres.
+And the tiles should be deleted after the expiry time.</p>
+<p>The chosen solution is a combination of two tools:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/camptocamp/tilecloud-chain">TileCloud-Chain</a> for the tile generation.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2>TileCloud-chain<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>TileCloud-chain is a TileCloud-based tool that offers a build chain for
+generating tiles from WMS of Mapnik on a local storage or S3 using a
+WMTS layout.</p>
+<p>It supports the following AWS services for generating tiles:
+EC2, SQS, SNS.</p>
+<p>See the <a class="reference external" href="https://pypi.python.org/pypi/tilecloud-chain">readme</a>.</p>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h3>
+<p>The configuration is done in the file <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code>.</p>
+<p>The main thing to do is to:</p>
+<ul>
+<li><p>Set the resolutions we want to generate in the <code class="docutils literal notranslate"><span class="pre">grids</span></code>.
+If we want to generate different resolutions per layer, we should create different grids.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">grids</span></code> is the grid name.</p></li>
+<li><p>Configure the <code class="docutils literal notranslate"><span class="pre">caches</span></code> and set the <code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_cache</span></code>.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">caches</span></code> is the cache name.</p></li>
+<li><p>Configure the <code class="docutils literal notranslate"><span class="pre">layer_default</span></code>, the <code class="docutils literal notranslate"><span class="pre">layers</span></code>, and the <code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_layers</span></code>.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">layers</span></code> is the layer name.</p></li>
+<li><p>We can drop the empty tiles with a hash comparison, tilecloud-chain has a tool to help us:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--get-hash<span class="w"> </span>&lt;max-zoom&gt;/0/0<span class="w"> </span>--layer<span class="w"> </span>&lt;layer&gt;</span>
+</pre></div></div><p>We consider that the first tile of the max zoom is empty.
+Then copy-paste the result in the layer config.</p>
+</li>
+</ul>
+<p>If you generate the tiles locally, you do not need all the configuration variables, because many of them
+in the <code class="docutils literal notranslate"><span class="pre">generation</span></code> part are for AWS generation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Points to check with TileCloud chain:</p>
+<ul class="simple">
+<li><p>Disabling metatiles should be avoided.</p></li>
+<li><p>Make sure that <code class="docutils literal notranslate"><span class="pre">empty_metatile_detection</span></code> and <code class="docutils literal notranslate"><span class="pre">empty_tile_detection</span></code> are configured correctly.</p></li>
+<li><p>Make sure to not generate tiles with a resolution higher than the one in the raster sources.</p></li>
+</ul>
+</div>
+</section>
+<section id="tile-generation-and-management">
+<h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this heading">¶</a></h3>
+<p>This package offers two tools, one to generate the tiles locally, see help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles<span class="w"> </span>--help</span>
+</pre></div></div><p>one to generate the tiles using AWS, see help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--help</span>
+</pre></div></div><p>Before starting a tile generation on S3, measure the cost:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--cost</span>
+</pre></div></div><p>If you setup all the default options, you can generate the tiles by using the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles</span>
+</pre></div></div></section>
+<section id="aws-credentials">
+<h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Permalink to this heading">¶</a></h3>
+<p>To be able to connect to the S3 service, you should define the following variables in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code>
+file:</p>
+<p>code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
+<span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If you do not want to commit these credentials you can add them in your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file:</p>
+<p>code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
+<span class="n">export</span> <span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="web-interface">
+<h3>Web Interface<a class="headerlink" href="#web-interface" title="Permalink to this heading">¶</a></h3>
+<p>It is possible to run tile generation commands through a web interface located at URL
+<code class="docutils literal notranslate"><span class="pre">&lt;application</span> <span class="pre">main</span> <span class="pre">URL&gt;/tiles/admin/</span></code>. This interface require an authentication
+see <a class="reference internal" href="c2cwsgiutils.html#integrator-c2cwsgiutils-auth"><span class="std std-ref">Authentication</span></a> for more information.</p>
+<p>Predefined commands may be set in parameter <code class="docutils literal notranslate"><span class="pre">server</span> <span class="pre">&gt;</span> <span class="pre">predefined_commands</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
+</section>
+<section id="see-also">
+<h3>See also<a class="headerlink" href="#see-also" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a></p></li>
+<li><p><a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-perepare-raster"><span class="std std-ref">Prepare raster files</span></a></p></li>
+</ul>
+</section>
+<section id="upstream-documentation">
+<h3>Upstream documentation<a class="headerlink" href="#upstream-documentation" title="Permalink to this heading">¶</a></h3>
+</section>
+</section>
+<section id="configure">
+<h2>Configure<a class="headerlink" href="#configure" title="Permalink to this heading">¶</a></h2>
+<section id="configure-grids">
+<h3>Configure grids<a class="headerlink" href="#configure-grids" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> describes how the tiles are arranged.</p>
+<p>Especially on <code class="docutils literal notranslate"><span class="pre">s3</span></code> or <code class="docutils literal notranslate"><span class="pre">azure</span></code> be careful to choose every of the grid settings before generating the
+tiles. If you change one of them you must regenerate all the tiles.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">resolutions</span></code> in [px/m] describes all the resolutions available for this layer. For a raster layer, have
+a look to the maximum resolution of the source files. It is not needed to generate tiles at smaller
+resolutions than the sources, it is preferable to use the OpenLayers client zoom. Note that you can add a
+resolution in the end without regenerating all the tiles.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">bbox</span></code> should match the resolution of the extent. <strong>CAREFUL: you will have big issue if you use this
+parameter to generate the tile on a restricted area</strong>: use the <code class="docutils literal notranslate"><span class="pre">bbox</span></code> on the layer instead.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">srs</span></code> specifies the code of the projection.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">unit</span></code> is the unit used by the projection.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">tile_size</span></code> is the tile size in [px], defaults to 256.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">matrix_identifier</span></code> is <code class="docutils literal notranslate"><span class="pre">zoom</span></code> by default and can also be set to <code class="docutils literal notranslate"><span class="pre">resolution</span></code>. It specifies how the z
+index is build to store the tiles, for example, for the resolutions <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0.5]</span></code> the used values are
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code> based on the zoom and <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0_5]</span></code> based on the resolution. The second has the advantage of
+allowing to add a new resolution without regenerating all the tiles, but it does not work with MapCache.</p>
+</section>
+<section id="configure-caches">
+<h3>Configure caches<a class="headerlink" href="#configure-caches" title="Permalink to this heading">¶</a></h3>
+<p>The available tile caches are: <code class="docutils literal notranslate"><span class="pre">s3</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, <code class="docutils literal notranslate"><span class="pre">mbtile</span></code> and <code class="docutils literal notranslate"><span class="pre">filesystem</span></code>.</p>
+<p>The best solution to store the tiles, <code class="docutils literal notranslate"><span class="pre">s3</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">mbtiles</span></code> and <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, have the advantage of using only one
+file per layer - style dimensions. To serve the <code class="docutils literal notranslate"><span class="pre">mbtile</span></code> and the <code class="docutils literal notranslate"><span class="pre">bsddb</span></code> see Distribute the tiles.</p>
+<p><code class="docutils literal notranslate"><span class="pre">s3</span></code> needs a <code class="docutils literal notranslate"><span class="pre">bucket</span></code> and a <code class="docutils literal notranslate"><span class="pre">folder</span></code> (defaults to ‘’).</p>
+<p><code class="docutils literal notranslate"><span class="pre">azure</span></code> needs a <code class="docutils literal notranslate"><span class="pre">container</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mbtiles</span></code>, <code class="docutils literal notranslate"><span class="pre">bsddb</span></code> and <code class="docutils literal notranslate"><span class="pre">filesystem</span></code> just need a <code class="docutils literal notranslate"><span class="pre">folder</span></code>.</p>
+<p>On all the caches we can add some information to generate the URL where the tiles are available. This is
+needed to generate the capabilities. We can specify:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">http_url</span></code> direct url to the tiles root.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_urls</span></code> (array) urls to the tiles root.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_url</span></code> and <code class="docutils literal notranslate"><span class="pre">hosts</span></code> (array), where each value of <code class="docutils literal notranslate"><span class="pre">hosts</span></code> is used to replace <code class="docutils literal notranslate"><span class="pre">%(host)s</span></code> in
+<code class="docutils literal notranslate"><span class="pre">http_url</span></code>.</p></li>
+</ul>
+<p>In all case <code class="docutils literal notranslate"><span class="pre">http_url</span></code> or <code class="docutils literal notranslate"><span class="pre">http_urls</span></code> can include all attributes of this cache as <code class="docutils literal notranslate"><span class="pre">%(attribute)s</span></code>.</p>
+<section id="mbtiles-vs-berkeley-db-bsddb">
+<h4>MBTiles vs Berkeley DB (<code class="docutils literal notranslate"><span class="pre">bsddb</span></code>)<a class="headerlink" href="#mbtiles-vs-berkeley-db-bsddb" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Read performance: similar, eventually the MBTiles is 10% faster.</p></li>
+<li><p>Write performance: The Berkeley DB is largely faster, about 10 times.</p></li>
+<li><p>List the tiles: the MBTiles is largely faster, but we usually don’t need it.</p></li>
+</ul>
+</section>
+</section>
+<section id="configure-layers">
+<h3>Configure layers<a class="headerlink" href="#configure-layers" title="Permalink to this heading">¶</a></h3>
+<p>First, all the attributes in <code class="docutils literal notranslate"><span class="pre">layer_default</span></code> are copied in all the layers to define the default values.</p>
+<p>We have two <code class="docutils literal notranslate"><span class="pre">type</span></code> of layer: <code class="docutils literal notranslate"><span class="pre">wms</span></code> or <code class="docutils literal notranslate"><span class="pre">mapnik</span></code>.</p>
+<p>To start the common attributes are:</p>
+<p><code class="docutils literal notranslate"><span class="pre">min_resolution_seed</span></code> the minimum resolution that is seeded, other resolutions are served by MapCache.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bbox</span></code> used to limit the tiles generation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">px_buffer</span></code> a buffer in px around the object area (geoms or extent).</p>
+<section id="wmts-layout">
+<h4>WMTS layout<a class="headerlink" href="#wmts-layout" title="Permalink to this heading">¶</a></h4>
+<p>To generate the file paths and the WMTS capabilities we need additional information:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> of the tiles, it’s also used by the WMS GetMap and to upload the tiles.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wmts_style</span></code> defaults to ‘default’.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">extension</span></code> is used to end the filename.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dimensions</span></code> (defaults to []) is an array of objects that have a <code class="docutils literal notranslate"><span class="pre">name</span></code>, a <code class="docutils literal notranslate"><span class="pre">default</span></code> value specified
+in the capabilities, a <code class="docutils literal notranslate"><span class="pre">value</span></code> to generate the tiles (it can be overwritten by an argument), and an array of
+<code class="docutils literal notranslate"><span class="pre">values</span></code> that contains all the possible values available in the capabilities.</p>
+<p>For example if you generate the tiles and capabilities with the following configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span>
+<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>then with the following configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2013</span>
+<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2013</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>We will have two set of tiles <code class="docutils literal notranslate"><span class="pre">2012</span></code> and <code class="docutils literal notranslate"><span class="pre">2013</span></code>, both accessible by the capabilities, and by default we
+will see the first set of tiles.</p>
+</section>
+<section id="meta-tiles">
+<h4>Meta tiles<a class="headerlink" href="#meta-tiles" title="Permalink to this heading">¶</a></h4>
+<p>The meta tiles are activated by setting <code class="docutils literal notranslate"><span class="pre">meta</span></code> to <code class="docutils literal notranslate"><span class="pre">on</span></code> (by default it’s <code class="docutils literal notranslate"><span class="pre">off</span></code>).</p>
+<p>The meta tiles are used for two things: first to generate multiple tiles with only one WMS query. By setting
+<code class="docutils literal notranslate"><span class="pre">meta_size</span></code> to 8 we will generate a square of 8 by 8 tiles in one shot.</p>
+<p>The second usage of meta tiles is prevent cut label names: this is solved by getting a bigger image and cutting
+the borders. The <code class="docutils literal notranslate"><span class="pre">meta_buffer</span></code> should be set to a bigger value than half the size of the longest label.</p>
+</section>
+<section id="configure-hash">
+<h4>Configure hash<a class="headerlink" href="#configure-hash" title="Permalink to this heading">¶</a></h4>
+<p>We can filter tiles and meta tiles by using an hash.</p>
+<p>The configuration of this hash is in the layer like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">empty_metatile_detection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">740</span>
+<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3237839c217b51b8a9644d596982f342f8041546</span>
+<span class="nt">empty_tile_detection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">921</span>
+<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1e3da153be87a493c4c71198366485f290cad43c</span>
+</pre></div>
+</div>
+<p>To easily generate this configuration we can use the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generate</span><span class="o">-</span><span class="n">tiles</span> <span class="o">--</span><span class="n">get</span><span class="o">-</span><span class="nb">hash</span> <span class="o">&lt;</span><span class="n">z</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span><span class="n">layer_name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;z/x/y&gt;</span></code> should refer to an empty tile/metatile. Generally it’s a good idea to use z as the maximum
+zoom, x and y as 0.</p>
+</section>
+<section id="configure-geom-sql">
+<h4>Configure geom/sql<a class="headerlink" href="#configure-geom-sql" title="Permalink to this heading">¶</a></h4>
+<p>We can generate the tiles only on some geometries stored in PostGis.</p>
+<p>The configuration is in the layer like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=www-data password=www-data dbname=&lt;db&gt; host=localhost</span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;column&gt; AS geom FROM &lt;table&gt;</span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.polygon</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.point</span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+</pre></div>
+</div>
+<p>It’s preferable to use simple geometries, too complex geometries can slow down the generation.</p>
+</section>
+<section id="legends">
+<h4>Legends<a class="headerlink" href="#legends" title="Permalink to this heading">¶</a></h4>
+<p>To be able to generate legends with <code class="docutils literal notranslate"><span class="pre">generate-controller</span> <span class="pre">--generate-legend-images</span></code> you should have
+<code class="docutils literal notranslate"><span class="pre">legend_mime</span></code> and <code class="docutils literal notranslate"><span class="pre">legend_extension</span></code> in the layer configuration.</p>
+<p>for example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legend_mime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span>
+<span class="nt">legend_extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">png</span>
+</pre></div>
+</div>
+<p>Then it will create a legend image per layer and per zoom level named
+<code class="docutils literal notranslate"><span class="pre">.../1.0.0/{{layer}}/{{wmts_style}}/legend{{zoom}}.{{legend_extension}}</span></code> only if she is different from the
+previous zoom level. If we have only one legend image it still stores in the file named
+<code class="docutils literal notranslate"><span class="pre">legend0.{{legend_extension}}</span></code>.</p>
+<p>When we do <code class="docutils literal notranslate"><span class="pre">generate-controller</span> <span class="pre">--generate-wmts-capabilities</span></code> we will at first parse the legend images to
+generate a layer configuration like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legends</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span>
+<span class="w">    </span><span class="nt">href</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://host/tiles/layer/style/legend0.png</span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span><span class="w"> </span><span class="c1"># optional, [m/px]</span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span><span class="w"> </span><span class="c1"># optional, [m/px]</span>
+<span class="w">    </span><span class="nt">min_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the min_resolution [m/m]</span>
+<span class="w">    </span><span class="nt">max_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the max_resolution [m/m]</span>
+</pre></div>
+</div>
+<p>If you define a legends array in the layer configuration it is directly used to generate the capabilities.</p>
+</section>
+<section id="wms-layers">
+<h4>WMS layers<a class="headerlink" href="#wms-layers" title="Permalink to this heading">¶</a></h4>
+<p>The additional value needed by the WMS is the URL of the server and the <code class="docutils literal notranslate"><span class="pre">layers</span></code>.</p>
+<p>The previously defined <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> is also used in the WMS requests.</p>
+<p>To customize the request you also have the attributes <code class="docutils literal notranslate"><span class="pre">params</span></code>, <code class="docutils literal notranslate"><span class="pre">headers</span></code> and <code class="docutils literal notranslate"><span class="pre">generate_salt</span></code>. In
+<code class="docutils literal notranslate"><span class="pre">params</span></code> you can specify additional parameter of the WMS request, in <code class="docutils literal notranslate"><span class="pre">headers</span></code> you can modify the request
+headers. In <code class="docutils literal notranslate"><span class="pre">version</span></code>, you can change the WMS version. See the Proxy/cache issue for additional information.</p>
+</section>
+<section id="mapnik-layers">
+<h4>Mapnik layers<a class="headerlink" href="#mapnik-layers" title="Permalink to this heading">¶</a></h4>
+<p>We need to specify the <code class="docutils literal notranslate"><span class="pre">mapfile</span></code> path.</p>
+<p>With Mapnik we have the possibility to specify a <code class="docutils literal notranslate"><span class="pre">data_buffer</span></code> then we should set the unneeded
+<code class="docutils literal notranslate"><span class="pre">meta_buffer</span></code> to 0.</p>
+<p>And the <code class="docutils literal notranslate"><span class="pre">output_format</span></code> used for the Mapnik renderer, can be <code class="docutils literal notranslate"><span class="pre">png</span></code>, <code class="docutils literal notranslate"><span class="pre">png256</span></code>, <code class="docutils literal notranslate"><span class="pre">jpeg</span></code>, <code class="docutils literal notranslate"><span class="pre">grid</span></code>
+(grid_renderer).</p>
+<section id="mapnik-grid-layers">
+<h5>Mapnik grid layers<a class="headerlink" href="#mapnik-grid-layers" title="Permalink to this heading">¶</a></h5>
+<p>With Mapnik we can generate UTFGrid tiles (JSON format that describes the tiles present on a corresponding
+tile) by using the <code class="docutils literal notranslate"><span class="pre">output_format</span></code> ‘grid’, see also:
+<a class="reference external" href="https://github.com/mapnik/mapnik/wiki/MapnikRenderers#grid_renderer">https://github.com/mapnik/mapnik/wiki/MapnikRenderers#grid_renderer</a>.</p>
+<p>Specific configuration:</p>
+<p>We have a specific way to <code class="docutils literal notranslate"><span class="pre">drop_empty_utfgrid</span></code> by using the <code class="docutils literal notranslate"><span class="pre">on</span></code> value.</p>
+<p>We should specify the pseudo pixel size [px] with the <code class="docutils literal notranslate"><span class="pre">resolution</span></code>.</p>
+<p>And the <code class="docutils literal notranslate"><span class="pre">layers_fields</span></code> that we want to get the attributes. Object with the layer name as key and the values
+in an array as value.</p>
+<p>In fact the Mapnik documentation says that’s working only for one layer.</p>
+<p>And don’t forget to change the <code class="docutils literal notranslate"><span class="pre">extension</span></code> to <code class="docutils literal notranslate"><span class="pre">json</span></code>, and the <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> to <code class="docutils literal notranslate"><span class="pre">application/utfgrid</span></code> and
+the <code class="docutils literal notranslate"><span class="pre">meta</span></code> to <code class="docutils literal notranslate"><span class="pre">off</span></code> (not supported).</p>
+<p>Configuration example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">grid</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mapnik</span>
+<span class="w">    </span><span class="nt">mapfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">style.mapnik</span>
+<span class="w">    </span><span class="nt">output_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grid</span>
+<span class="w">    </span><span class="nt">extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">json</span>
+<span class="w">    </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/utfgrid</span>
+<span class="w">    </span><span class="nt">drop_empty_utfgrid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on</span>
+<span class="w">    </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">meta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">off</span>
+<span class="w">    </span><span class="nt">data_buffer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span>
+<span class="w">    </span><span class="nt">layers_fields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">buildings</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">name</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">street</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="process">
+<h3>Process<a class="headerlink" href="#process" title="Permalink to this heading">¶</a></h3>
+<p>We can configure some tile commands to process the tiles. They can be automatically be called in the tile
+generation it we set the property <code class="docutils literal notranslate"><span class="pre">post_process</span></code> or <code class="docutils literal notranslate"><span class="pre">pre_hash_post_process</span></code> in the layer configuration.</p>
+<p>The process is a set of names processes, and each one has a list of commands declared like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">process</span><span class="p">:</span><span class="w">  </span><span class="c1"># root process config</span>
+<span class="w">    </span><span class="nt">optipng</span><span class="p">:</span><span class="w">  </span><span class="c1"># the process command</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optipng %(args)s -q -zc9 -zm8 -zs3 -f5 -o %(out)s %(in)s</span><span class="w">  </span><span class="c1"># the command line</span>
+<span class="w">        </span><span class="nt">need_out</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># if false the command rewrite the input file, default is false</span>
+<span class="w">        </span><span class="nt">arg</span><span class="p">:</span><span class="w">  </span><span class="c1"># argument used with the different log switches, in all cases default is &#39;&#39;</span>
+<span class="w">            </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used by default</span>
+<span class="w">            </span><span class="nt">quiet</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used in quiet mode</span>
+<span class="w">            </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-v&#39;</span><span class="w"> </span><span class="c1"># the argument used in verbose mode</span>
+<span class="w">            </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-log</span><span class="nv"> </span><span class="s">/tmp/optipng.log&#39;</span><span class="w"> </span><span class="c1"># the argument user in debug mode</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">cmd</span></code> can have the following optional argument:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">args</span></code> the argument configured in the arg section.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span></code> the input and output files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code> the tile coordinates.</p></li>
+</ul>
+</section>
+<section id="logging">
+<h3>Logging<a class="headerlink" href="#logging" title="Permalink to this heading">¶</a></h3>
+<p>Tile logs can be saved to a PostgreSQL database with this configuration:</p>
+<p>..code:: yaml</p>
+<blockquote>
+<div><dl class="simple">
+<dt>logging:</dt><dd><dl class="simple">
+<dt>database:</dt><dd><p>dbname: my_db
+host: db
+port: 5432
+table: tilecloud_logs</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>PostgreSQL authentication can be specified with the <code class="docutils literal notranslate"><span class="pre">PGUSER</span></code> and <code class="docutils literal notranslate"><span class="pre">PGPASSWORD</span></code> environment variables.
+If the database is not reachable, the process will wait until it is.</p>
+</div></blockquote>
+</section>
+<section id="tiles-error-file">
+<h3>Tiles error file<a class="headerlink" href="#tiles-error-file" title="Permalink to this heading">¶</a></h3>
+<p>If we set a file path in configuration file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">generation</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">error_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;path&gt;</span>
+</pre></div>
+</div>
+<p>The tiles that’s in error will be append to the file, ant the tiles can be regenerated with
+<code class="docutils literal notranslate"><span class="pre">generate-tiles</span> <span class="pre">--tiles</span> <span class="pre">&lt;path&gt;</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">/tmp/error_{layer}_{datetime:%Y-%m-%d_%H:%M:%S}</span></code> to have one file per layer and per
+run.</p>
+<p>The tiles file looks like:</p>
+<p><code class="docutils literal notranslate"><span class="pre">{.sourceCode</span> <span class="pre">.}</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">some</span> <span class="pre">comments</span> <span class="pre">z/x/y</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">the</span> <span class="pre">error</span> <span class="pre">z/x/y:+m/+m</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">the</span> <span class="pre">error</span></code></p>
+<p>The first line is just a comment, the second, is for an error on a tile, and the third is for an error on a
+meta tile.</p>
+</section>
+<section id="proxy-cache-issue">
+<h3>Proxy/cache issue<a class="headerlink" href="#proxy-cache-issue" title="Permalink to this heading">¶</a></h3>
+<p>In general we shouldn’t generate tiles throw a proxy, to do that you should configure the layers as this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers_name</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost/wms</span>
+<span class="w">    </span><span class="nt">headers</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">Host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_host_name</span>
+</pre></div>
+</div>
+<p>The idea is to get the WMS server on <code class="docutils literal notranslate"><span class="pre">localhost</span></code> and use the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header to select the right Apache
+VirtualHost.</p>
+<p>To don’t have cache we use the as default the headers:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">headers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Cache-Control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache, no-store</span>
+<span class="w">    </span><span class="nt">Pragma</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache</span>
+</pre></div>
+</div>
+<p>And if you steal have issue you can add a <code class="docutils literal notranslate"><span class="pre">SALT</span></code> random argument by setting the layer parameter
+<code class="docutils literal notranslate"><span class="pre">generate_salt</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+</section>
+<section id="alternate-mime-type">
+<h3>Alternate mime type<a class="headerlink" href="#alternate-mime-type" title="Permalink to this heading">¶</a></h3>
+<p>By default TileCloud support only the <code class="docutils literal notranslate"><span class="pre">image/jpeg</span></code> and <code class="docutils literal notranslate"><span class="pre">image/png</span></code> mime type.</p>
+</section>
+</section>
+<section id="amazon-services">
+<h2>Amazon services<a class="headerlink" href="#amazon-services" title="Permalink to this heading">¶</a></h2>
+<section id="authentication">
+<h3>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h3>
+<p>To be authenticated by Amazon you should set those environments variable before running a command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>...</span>
+<span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>...</span>
+</pre></div></div></section>
+<section id="configure-s3">
+<h3>Configure S3<a class="headerlink" href="#configure-s3" title="Permalink to this heading">¶</a></h3>
+<p>The cache configuration is like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">s3</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s3</span>
+<span class="w">    </span><span class="c1"># the s3 bucket name</span>
+<span class="w">    </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span>
+<span class="w">    </span><span class="c1"># the used folder in the bucket [default is &#39;&#39;]</span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">    </span><span class="c1"># for GetCapabilities</span>
+<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
+<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
+</pre></div>
+</div>
+<p>The bucket should already exists. If you don’t use Amazon’s S3, you must specify the <code class="docutils literal notranslate"><span class="pre">host</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">tiles_url</span></code> configuration parameter.</p>
+</section>
+<section id="configure-sqs">
+<h3>Configure SQS<a class="headerlink" href="#configure-sqs" title="Permalink to this heading">¶</a></h3>
+<p>The configuration in layer is like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sqs</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># The region where the SQS queue is</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span>
+<span class="w">    </span><span class="c1"># The SQS queue name, it should already exists</span>
+<span class="w">    </span><span class="nt">queue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_name</span>
+</pre></div>
+</div>
+<p>The queue should be used only by one layer.</p>
+<p>To use the SQS queue we should first fill the queue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>master<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
+</pre></div></div><p>And then generate the tiles present in the SQS queue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>slave<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
+</pre></div></div><p>For the slave to keep listening when the queue is empty and be able to support more than one layer, you must
+enable the daemon mode and must not specify the layer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>slave<span class="w"> </span>--daemon</span>
+</pre></div></div></section>
+<section id="configure-sns">
+<h3>Configure SNS<a class="headerlink" href="#configure-sns" title="Permalink to this heading">¶</a></h3>
+<p>SNS can be used to send a message when the generation ends.</p>
+<p>The configuration is like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sns</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arn:aws:sns:eu-west-1:your-account-id:tilecloud</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span>
+</pre></div>
+</div>
+<p>The topic should already exists.</p>
+</section>
+<section id="amazon-tool">
+<h3>Amazon tool<a class="headerlink" href="#amazon-tool" title="Permalink to this heading">¶</a></h3>
+<p>Amazon has a command line tool (<a class="reference external" href="http://aws.amazon.com/fr/cli/">homepage</a>).</p>
+<p>To use it, add in the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">awscli</span></code> as an <code class="docutils literal notranslate"><span class="pre">install_requires</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'aws</span> <span class="pre">=</span> <span class="pre">awscli.clidriver:main',</span></code> in the <code class="docutils literal notranslate"><span class="pre">console_scripts</span></code>.</p></li>
+</ul>
+<p>Than install it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>awscli
+</pre></div>
+</div>
+<p>And use it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span><span class="nb">help</span>
+</pre></div>
+</div>
+<p>For example to delete many tiles do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>s3<span class="w"> </span>rm<span class="w"> </span>--recursive<span class="w"> </span>s3://your_bucket_name/folder
+</pre></div>
+</div>
+</section>
+<section id="configure-azure">
+<h3>Configure Azure<a class="headerlink" href="#configure-azure" title="Permalink to this heading">¶</a></h3>
+<p>The cache configuration is like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">azure</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure</span>
+<span class="w">    </span><span class="c1"># the Azure container name</span>
+<span class="w">    </span><span class="nt">container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span>
+<span class="w">    </span><span class="c1"># the used folder in the container [default is &#39;&#39;]</span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">    </span><span class="c1"># for GetCapabilities</span>
+<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
+<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
+</pre></div>
+</div>
+<p>The container should already exists.</p>
+<p>For the authentication you should set those environment variables:
+<code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_CONNECTION_STRING</span></code> on your local environment,
+or <code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_ACCOUNT_URL</span></code> if you run your container on Azure.</p>
+</section>
+</section>
+<section id="other-related-configuration">
+<h2>Other related configuration<a class="headerlink" href="#other-related-configuration" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="configure-the-server">
+<h2>Configure the server<a class="headerlink" href="#configure-the-server" title="Permalink to this heading">¶</a></h2>
+<p>The server can be configure as it:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a_layer</span><span class="w"> </span><span class="c1"># Restrict to serve an certain number of layers [default is all]</span>
+<span class="w">    </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mbtiles</span><span class="w"> </span><span class="c1"># The used cache [default use generation/default_cache]</span>
+<span class="w">    </span><span class="c1"># the URL without location to MapCache, [default is http://localhost/]</span>
+<span class="w">    </span><span class="nt">geoms_redirect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># use the geoms to redirect to MapCache [default is false]</span>
+<span class="w">    </span><span class="c1"># allowed extension in the static path (default value), not used for s3.</span>
+<span class="w">    </span><span class="nt">static_allow_extension</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">jpeg</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">png</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">xml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">js</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">html</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">css</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The minimal configuration is to enable it:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</pre></div>
+</div>
+<p>You should also configure the <code class="docutils literal notranslate"><span class="pre">http_url</span></code> of the used cache, to something like
+<code class="docutils literal notranslate"><span class="pre">https://%(host)s/${instanceid}/tiles</span></code> or like <code class="docutils literal notranslate"><span class="pre">https://%(host)s/${instanceid}/wsgi/tiles</span></code> if you use the
+Pyramid view.</p>
+<section id="pyramid-view">
+<h3>Pyramid view<a class="headerlink" href="#pyramid-view" title="Permalink to this heading">¶</a></h3>
+<p>To use the pyramid view use the following configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;tilegeneration_configfile&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;the configuration file&gt;&#39;</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;tiles&#39;</span><span class="p">,</span> <span class="s1">&#39;/tiles/\*path&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;tilecloud_chain.server:PyramidView&#39;</span><span class="p">,</span> <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;tiles&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="internal-wsgi-server">
+<h3>Internal WSGI server<a class="headerlink" href="#internal-wsgi-server" title="Permalink to this heading">¶</a></h3>
+<p>in <code class="docutils literal notranslate"><span class="pre">production.ini</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">app</span><span class="p">:</span><span class="n">tiles</span><span class="p">]</span>
+<span class="n">use</span> <span class="o">=</span> <span class="n">egg</span><span class="p">:</span><span class="n">tilecloud_chain</span><span class="c1">#server</span>
+<span class="n">configfile</span> <span class="o">=</span> <span class="o">%</span><span class="p">(</span><span class="n">here</span><span class="p">)</span><span class="n">s</span><span class="o">/</span><span class="n">tilegeneration</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>with the Apache configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>WSGIDaemonProcess tiles:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
+WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
+&lt;Location /${instanceid}/tiles&gt;
+    WSGIProcessGroup tiles:${instanceid}
+    WSGIApplicationGroup %{GLOBAL}
+&lt;/Location&gt;
+</pre></div>
+</div>
+</section>
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Permalink to this heading">¶</a></h2>
+<section id="available-commands">
+<h3>Available commands<a class="headerlink" href="#available-commands" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">generate-controller</span></code> generate the annex files like legend.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generate-tiles</span></code> generate the tiles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generate-copy</span></code> copy the tiles from a cache to an other.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generate-process</span></code> process the tiles using a configured process.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generate-cost</span></code> estimate the cost.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">import_expiretiles</span></code> import the osm2pgsql expire-tiles file as geoms in the database.</p></li>
+</ul>
+<p>Each commands have a <code class="docutils literal notranslate"><span class="pre">--help</span></code> option to give a full arguments help.</p>
+</section>
+<section id="generate-tiles">
+<h3>Generate tiles<a class="headerlink" href="#generate-tiles" title="Permalink to this heading">¶</a></h3>
+<p>Generate all the tiles:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles</span>
+</pre></div></div><p>Generate a specific layer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
+</pre></div></div><p>Generate a specific zoom:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">5</span></span>
+</pre></div></div><p>Generate a specific zoom range:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">2</span>-8</span>
+</pre></div></div><p>Generate a specific some zoom levels:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">2</span>,4,7</span>
+</pre></div></div><p>Generate tiles from an (error) tiles file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tiles<span class="w"> </span>&lt;z/x/y&gt;</span>
+</pre></div></div><p>Generate tiles on a bbox:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--bbox<span class="w"> </span>&lt;MINX&gt;<span class="w"> </span>&lt;MINY&gt;<span class="w"> </span>&lt;MAXX&gt;<span class="w"> </span>&lt;MAXY&gt;</span>
+</pre></div></div><p>Generate a tiles near a tile coordinate (useful for test):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--near<span class="w"> </span>&lt;X&gt;<span class="w"> </span>&lt;Y&gt;</span>
+</pre></div></div><p>Generate a tiles in a different cache than the default one:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--cache<span class="w"> </span>&lt;a_cache&gt;</span>
+</pre></div></div></section>
+</section>
+<section id="explain-cost">
+<h2>Explain cost<a class="headerlink" href="#explain-cost" title="Permalink to this heading">¶</a></h2>
+<p>Configuration (default values):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># [nb/month]</span>
+<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span>
+<span class="w">    </span><span class="nt">cloudfront</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span>
+<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.009</span>
+<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span>
+<span class="w">    </span><span class="nt">s3</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span>
+<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span>
+<span class="w">        </span><span class="nt">put</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span>
+<span class="w">        </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.125</span>
+<span class="w">    </span><span class="nt">sqs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">request</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+</pre></div>
+</div>
+<p>Layer configuration (default values):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">metatile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span>
+<span class="w">    </span><span class="nt">tile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span>
+<span class="w">    </span><span class="nt">tile_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0,</span>
+<span class="w">    </span><span class="nt">tileonly_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60.0</span>
+</pre></div>
+</div>
+<p>The following commands can be used to know the time and cost to do generation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller<span class="w"> </span>--cost</span>
+</pre></div></div><section id="useful-options">
+<h3>Useful options<a class="headerlink" href="#useful-options" title="Permalink to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--quiet</span></code> or <code class="docutils literal notranslate"><span class="pre">-q</span></code>: used to display only errors.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code> or <code class="docutils literal notranslate"><span class="pre">-v</span></code>: used to display info messages.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--debug</span></code> or <code class="docutils literal notranslate"><span class="pre">-d</span></code>: used to display debug message, please use this option to report issue. With the debug
+mode we don’t catch exceptions, and we don’t log time messages.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--test</span> <span class="pre">&lt;n&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">&lt;n&gt;</span></code>: used to generate only <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> tiles, useful for test.</p>
+</section>
+</section>
+<section id="mutualized">
+<h2>Mutualized<a class="headerlink" href="#mutualized" title="Permalink to this heading">¶</a></h2>
+<p>The mutualized mode consist by having multiple project files with the projects related configurations
+(layers, cache, …) and one main configuration file with the global configuration (number of process,
+log format, redis, …).</p>
+<p>Configuration keys which should be set in the main configuration file are identified in property’s
+descriptions of the <code class="docutils literal notranslate"><span class="pre">schema.json</span></code> file.</p>
+</section>
+<section id="important-remarks">
+<h2>Important remarks<a class="headerlink" href="#important-remarks" title="Permalink to this heading">¶</a></h2>
+<p>Especially on S3 the grid name, the layer name, the dimensions, can’t be changed (understand if we want to
+change them we should regenerate all the tiles).</p>
+<p>By default we also can’t insert a zoom level, if you think that you need it we can set the grid property
+<code class="docutils literal notranslate"><span class="pre">matrix_identifier:</span> <span class="pre">resolution</span></code>, bit it don’t work with MapCache.</p>
+<p>Please use the <code class="docutils literal notranslate"><span class="pre">--debug</span></code> to report issue.</p>
+</section>
+<section id="environment-variables">
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_CONFIGFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>, the all in one
+configuration file to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAIN_CONFIGFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>, the main
+configuration file to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTSFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>, the hosts to config file
+mapping file to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">2</span></code>, the number of thread used to generate the tiles (If we use meta tiles)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">METATILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">25</span></code>, the number of thread used to generate the meta tiles (If we use
+meta tiles, also to generate the tiles)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SERVER_NB_THREAD</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">10</span></code>, the number of thread used to generate the meta tiles in the server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_QUEUE_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">2</span></code>, the queue size just after the Redis queue</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1</span></code>, the chunk size to process the tiles after the meta tiles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_MAX_OUTPUT_LENGTH</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1000</span></code>, the maximum number of character of the
+output to be display in the admin interface.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">console</span></code>, can also be <code class="docutils literal notranslate"><span class="pre">json</span></code> to log in JSON for <code class="docutils literal notranslate"><span class="pre">Logstash</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
+<code class="docutils literal notranslate"><span class="pre">TILECLOUD_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
+<code class="docutils literal notranslate"><span class="pre">C2CWSGI_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>,
+<code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, the logging level of deferent components, can be <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>,
+<code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> or <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_SERVER_LOGLEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">quiet</span></code> the log level used in the server part.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_MAPCACHE_LOGLEVEL``Default</span> <span class="pre">to</span> <span class="pre">``verbose</span></code> the log level used in the internal mapcache.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">0</span></code> set it to <code class="docutils literal notranslate"><span class="pre">1</span></code> to have the Pyramid development options.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code> Default to <code class="docutils literal notranslate"><span class="pre">/tiles/</span></code> the entrypoint path.</p></li>
+</ul>
+</section>
+<section id="admin-and-test-pages">
+<h2>Admin and test pages<a class="headerlink" href="#admin-and-test-pages" title="Permalink to this heading">¶</a></h2>
+<p>On the URL <cite>&lt;base URL&gt;/admin/</cite> you can see the status of the generation, a tool to generate the tiles, and a link
+to a test page.</p>
+<p>Beware, the test page assumes we have configured only one grid.</p>
+<section id="tilecloud-chain-configuration">
+<span id="tilecloud-chain-configuration"></span><h3>TileCloud-chain configuration<a class="headerlink" href="#tilecloud-chain-configuration" title="Permalink to this heading">¶</a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td colspan="4"><p><a class="reference external" href="https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json">https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json</a></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>defaults</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Defaults</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>Used to put YAML references</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>grids</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Grids</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The WMTS grid definitions by grid name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p><a class="reference internal" href="#grid">Grid</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>caches</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Caches</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The tiles caches definitions by name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p><a class="reference internal" href="#cache">Cache</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>layers</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Layers</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The layers definitions by name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p><a class="reference internal" href="#layer">Layer</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>process</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Process</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>List of available commands by name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#process">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#process</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p><a class="reference internal" href="#process-command">Process command</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>generation</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#generation">Generation</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="9"><ul class="simple">
+<li><p>sqs</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>SQS</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The Simple Queue Service configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>queue</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Queue</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The queue name, default is ‘tilecloud’</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>region</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#aws-region">AWS region</a></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<li><p>sns</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>SNS</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The Simple Notification Service configuration, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sns">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sns</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>topic</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Topic</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The topic</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>region</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#aws-region">AWS region</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>redis</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#redis">Redis</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="26"><ul class="simple">
+<li><p>openlayers</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>OpenLayers</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>Configuration used to generate the OpenLayers example page</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p>srs</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>SRS</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The projection code</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^EPSG:[0-9]+$</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>EPSG:2056</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>proj4js_def</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>The proj4js definition</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The proj4js definition, get it from <a class="reference external" href="https://epsg.io/">https://epsg.io/</a></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>center_x</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Center x</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The center easting</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>2600000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>center_y</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Center y</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The center northing</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>1200000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>zoom</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Map initial zoom</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The initial zoom</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>server</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#server">Server</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>cost</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#cost">Cost</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>metadata</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#metadata">Metadata</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>provider</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#provider">Provider</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>logging</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a href="#id3"><span class="problematic" id="id4">`Logging`_</span></a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="13"><ul class="simple">
+<li><p>authentication</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Authentication</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The authentication configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>github_repository</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>GitHub repository</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The GitHub repository name, on witch one we will check the access rights</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p>github_access_type</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>GitHub access</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The kind of rights the user should have on the repository</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>push, pull, admin</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>pull</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+<section id="headers">
+<span id="headers"></span><h4>Headers<a class="headerlink" href="#headers" title="Permalink to this heading">¶</a></h4>
+<p>The headers that we send to the WMS backend</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>additionalProperties</p></td>
+<td colspan="2"><p>The header value</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="grid">
+<span id="grid"></span><h4>Grid<a class="headerlink" href="#grid" title="Permalink to this heading">¶</a></h4>
+<p>The WMTS grid definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>resolution_scale</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Resolution scale</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The scale used to build a FreeTileGrid typically ‘2’</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>resolutions</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Resolutions</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The resolutions in pixel per meter</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="6"><ul class="simple">
+<li><p><strong>bbox</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Bounding box</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The bounding box in meter</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>maxLength</p></td>
+<td colspan="2"><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>minLength</p></td>
+<td colspan="2"><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>srs</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>SRS</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The projection reference</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>pattern</p></td>
+<td colspan="2"><p>^EPSG:[0-9]+$</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>proj4_literal</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Proj4 literal</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The Proj4 definition</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>unit</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Unit</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The projection unit, default is ‘m’</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>m</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>tile_size</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Tile size</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The tile size in pixel, default is 256</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>256</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p>matrix_identifier</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Matrix identifier</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The identifier to use in the tiles URL, recommend to be resolution (default)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>zoom, resolution</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>zoom</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-wmst-capabilities-file">
+<span id="cache-wmst-capabilities-file"></span><h4>Cache WMST capabilities file<a class="headerlink" href="#cache-wmst-capabilities-file" title="Permalink to this heading">¶</a></h4>
+<p>The generated WMTS capabilities file name (by ‘default 1.0.0/WMTSCapabilities.xml’)</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-http-url">
+<span id="cache-http-url"></span><h4>Cache HTTP URL<a class="headerlink" href="#cache-http-url" title="Permalink to this heading">¶</a></h4>
+<p>The HTTP URL %host will be replaces by one of the hosts</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-host">
+<span id="cache-host"></span><h4>Cache host<a class="headerlink" href="#cache-host" title="Permalink to this heading">¶</a></h4>
+<p>The host used to build the HTTP URLs</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-http-urls">
+<span id="cache-http-urls"></span><h4>Cache HTTP URLs<a class="headerlink" href="#cache-http-urls" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-folder">
+<span id="cache-folder"></span><h4>Cache folder<a class="headerlink" href="#cache-folder" title="Permalink to this heading">¶</a></h4>
+<p>The root folder of the cache, default is ‘’</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-filesystem">
+<span id="cache-filesystem"></span><h4>Cache filesystem<a class="headerlink" href="#cache-filesystem" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>const</p></td>
+<td><p>filesystem</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>wmtscapabilities_file</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_url</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>hosts</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_urls</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>folder</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-s3">
+<span id="cache-s3"></span><h4>Cache S3<a class="headerlink" href="#cache-s3" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>const</p></td>
+<td><p>s3</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>wmtscapabilities_file</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_url</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>hosts</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_urls</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>tiles_url</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Tiles URL</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The template tiles URL on S3, the argument can be region, bucket and folder (default is ‘<a class="reference external" href="http://s3">http://s3</a>-{region}.amazonaws.com/{bucket}/{folder}’)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>host</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Host</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The S3 host, default is ‘s3-eu-west-1.amazonaws.com’</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>bucket</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Bucket</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The S3 bucker name</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>region</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#aws-region">AWS region</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>cache_control</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Cache control</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The Cache-Control used to store tiles on S3</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>folder</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-azure">
+<span id="cache-azure"></span><h4>Cache Azure<a class="headerlink" href="#cache-azure" title="Permalink to this heading">¶</a></h4>
+<p>Azure Blob Storage</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>const</p></td>
+<td><p>azure</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>wmtscapabilities_file</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_url</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>hosts</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_urls</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>folder</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>container</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Container</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The Azure container name</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>cache_control</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Cache control</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The Cache-Control used to store tiles on Azure</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-mbtiles">
+<span id="cache-mbtiles"></span><h4>Cache MBtiles<a class="headerlink" href="#cache-mbtiles" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>const</p></td>
+<td><p>mbtiles</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>wmtscapabilities_file</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_url</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>hosts</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_urls</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>folder</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache-bsddb">
+<span id="cache-bsddb"></span><h4>Cache BSDDB<a class="headerlink" href="#cache-bsddb" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>const</p></td>
+<td><p>bsddb</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>wmtscapabilities_file</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_url</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>hosts</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>http_urls</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>folder</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cache">
+<span id="cache"></span><h4>Cache<a class="headerlink" href="#cache" title="Permalink to this heading">¶</a></h4>
+<p>The tiles cache definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td rowspan="5"><p>anyOf</p></td>
+<td><p><a class="reference internal" href="#cache-filesystem">Cache filesystem</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cache-s3">Cache S3</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cache-azure">Cache Azure</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#cache-mbtiles">Cache MBtiles</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cache-bsddb">Cache BSDDB</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-title">
+<span id="layer-title"></span><h4>Layer title<a class="headerlink" href="#layer-title" title="Permalink to this heading">¶</a></h4>
+<p>The title, use to generate the capabilities</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-grid">
+<span id="layer-grid"></span><h4>Layer grid<a class="headerlink" href="#layer-grid" title="Permalink to this heading">¶</a></h4>
+<p>The used grid name</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-bounding-box">
+<span id="layer-bounding-box"></span><h4>Layer bounding box<a class="headerlink" href="#layer-bounding-box" title="Permalink to this heading">¶</a></h4>
+<p>The bounding box where we will generate the tiles</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>maxLength</p></td>
+<td colspan="2"><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>minLength</p></td>
+<td colspan="2"><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-min-resolution-seed">
+<span id="layer-min-resolution-seed"></span><h4>layer min resolution seed<a class="headerlink" href="#layer-min-resolution-seed" title="Permalink to this heading">¶</a></h4>
+<p>The minimum resolutions to pre-generate</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-pixel-buffer">
+<span id="layer-pixel-buffer"></span><h4>Layer pixel buffer<a class="headerlink" href="#layer-pixel-buffer" title="Permalink to this heading">¶</a></h4>
+<p>The buffer in pixel used to calculate geometry intersection, default is 0</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-meta">
+<span id="layer-meta"></span><h4>Layer meta<a class="headerlink" href="#layer-meta" title="Permalink to this heading">¶</a></h4>
+<p>Use meta-tiles, default is False, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-meta-size">
+<span id="layer-meta-size"></span><h4>Layer meta size<a class="headerlink" href="#layer-meta-size" title="Permalink to this heading">¶</a></h4>
+<p>The meta-tile size in tiles, default is 5</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-meta-buffer">
+<span id="layer-meta-buffer"></span><h4>Layer meta buffer<a class="headerlink" href="#layer-meta-buffer" title="Permalink to this heading">¶</a></h4>
+<p>The meta-tiles buffer in pixels, default is 128</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-layers">
+<span id="layer-layers"></span><h4>Layer layers<a class="headerlink" href="#layer-layers" title="Permalink to this heading">¶</a></h4>
+<p>The WMS layers</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-wmts-style">
+<span id="layer-wmts-style"></span><h4>Layer WMTS style<a class="headerlink" href="#layer-wmts-style" title="Permalink to this heading">¶</a></h4>
+<p>The WMTS style</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-mime-type">
+<span id="layer-mime-type"></span><h4>Layer MIME type<a class="headerlink" href="#layer-mime-type" title="Permalink to this heading">¶</a></h4>
+<p>The MIME type of the tiles</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+$</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-extension">
+<span id="layer-extension"></span><h4>Layer extension<a class="headerlink" href="#layer-extension" title="Permalink to this heading">¶</a></h4>
+<p>The layer extension</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-dimension-name">
+<span id="layer-dimension-name"></span><h4>Layer dimension name<a class="headerlink" href="#layer-dimension-name" title="Permalink to this heading">¶</a></h4>
+<p>The dimension name</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^(?!(?i)(SERVICE|VERSION|REQUEST|LAYERS|STYLES|SRS|CRS|BBOX|WIDTH|HEIGHT|FORMAT|BGCOLOR|TRANSPARENT|SLD|EXCEPTIONS|SALT))[a-z0-9_\-~\.]+$</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-dimensions">
+<span id="layer-dimensions"></span><h4>layer dimensions<a class="headerlink" href="#layer-dimensions" title="Permalink to this heading">¶</a></h4>
+<p>The WMTS dimensions</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="18"><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>name</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-dimension-name">Layer dimension name</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p><strong>generate</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Generate</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The values that should be generate</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
+</tr>
+<tr class="row-even"><td rowspan="5"><ul class="simple">
+<li><p><strong>values</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Values</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The values present in the capabilities</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>default</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Default</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The default value present in the capabilities</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td colspan="2"><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-legends">
+<span id="layer-legends"></span><h4>Layer legends<a class="headerlink" href="#layer-legends" title="Permalink to this heading">¶</a></h4>
+<p>The provided legend</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="28"><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>mime_type</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>MIME type</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The mime type used in the WMS request</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+$</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>href</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Href</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The URL of the legend image</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>width</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Width</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The width of the legend image</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>height</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Height</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The height of the legend image</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>min_scale</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Min scale</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The max scale of the legend image</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>max_scale</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Max scale</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The max scale of the legend image</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>min_resolution</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Min resolution</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The max resolution of the legend image</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>max_resolution</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Max resolution</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The max resolution of the legend image</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-legend-mime">
+<span id="layer-legend-mime"></span><h4>Layer legend MIME<a class="headerlink" href="#layer-legend-mime" title="Permalink to this heading">¶</a></h4>
+<p>The mime type used to store the generated legend</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+$</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-legend-extension">
+<span id="layer-legend-extension"></span><h4>Layer legend extension<a class="headerlink" href="#layer-legend-extension" title="Permalink to this heading">¶</a></h4>
+<p>The extension used to store the generated legend</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9]+$</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-pre-hash-post-process">
+<span id="layer-pre-hash-post-process"></span><h4>Layer pre hash post process<a class="headerlink" href="#layer-pre-hash-post-process" title="Permalink to this heading">¶</a></h4>
+<p>Do an image post process before the empty hash check</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-post-process">
+<span id="layer-post-process"></span><h4>Layer post process<a class="headerlink" href="#layer-post-process" title="Permalink to this heading">¶</a></h4>
+<p>Do an image post process after the empty hash check</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-geometries">
+<span id="layer-geometries"></span><h4>Layer geometries<a class="headerlink" href="#layer-geometries" title="Permalink to this heading">¶</a></h4>
+<p>The geometries used to determine where we should create the tiles, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-geomsql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-geomsql</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="15"><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>connection</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Connection</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The PostgreSQL connection string</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>sql</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>SQL</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The SQL query that get the geometry in geom e.g. ‘the_geom AS geom FROM my_table’</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>min_resolution</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Min resolution</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The min resolution where the query is valid</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>max_resolution</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Max resolution</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The max resolution where the query is valid</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-empty-tile-detection">
+<span id="layer-empty-tile-detection"></span><h4>Layer empty tile detection<a class="headerlink" href="#layer-empty-tile-detection" title="Permalink to this heading">¶</a></h4>
+<p>The rules used to detect the empty tiles, use <cite>generate-tiles –get-hash</cite> to get what we can use, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>size</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Title</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The tile size</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>hash</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Hash</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The tile hash</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-empty-meta-tile-detection">
+<span id="layer-empty-meta-tile-detection"></span><h4>Layer empty meta-tile detection<a class="headerlink" href="#layer-empty-meta-tile-detection" title="Permalink to this heading">¶</a></h4>
+<p>The rules used to detect the empty meta-tiles, use <cite>generate-tiles –get-hash</cite> to get what we can use, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>size</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Size</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The meta-tile size</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>hash</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Hash</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The meta-tile hash</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-cost">
+<span id="layer-cost"></span><h4>Layer cost<a class="headerlink" href="#layer-cost" title="Permalink to this heading">¶</a></h4>
+<p>The rules used to calculate the cost</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>tileonly_generation_time</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>tile only generation time</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The time to generate a tile without meta-tile</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>tile_generation_time</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>tile generation time</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The time to generate a tile from the meta-tile</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>metatile_generation_time</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Meta tile generation time</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The time to generate a meta-tile</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>tile_size</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Cost tile size</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The tile mean size in bytes</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-wms">
+<span id="layer-wms"></span><h4>Layer WMS<a class="headerlink" href="#layer-wms" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>const</p></td>
+<td colspan="2"><p>wms</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>title</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-title">Layer title</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>grid</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-grid">Layer grid</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>bbox</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-bounding-box">Layer bounding box</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>min_resolution_seed</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-min-resolution-seed">layer min resolution seed</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>px_buffer</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-pixel-buffer">Layer pixel buffer</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>meta</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-meta">Layer meta</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>meta_size</p></li>
+</ul>
+</td>
+<td><p>default</p></td>
+<td colspan="2"><p>5</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#layer-meta-size">Layer meta size</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>meta_buffer</p></li>
+</ul>
+</td>
+<td><p>default</p></td>
+<td colspan="2"><p>128</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#layer-meta-buffer">Layer meta buffer</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>layers</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-layers">Layer layers</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>wmts_style</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-wmts-style">Layer WMTS style</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>mime_type</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-mime-type">Layer MIME type</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>extension</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-extension">Layer extension</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>dimensions</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-dimensions">layer dimensions</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>legends</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>legend_mime</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-legend-mime">Layer legend MIME</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>legend_extension</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>pre_hash_post_process</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-pre-hash-post-process">Layer pre hash post process</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>post_process</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-post-process">Layer post process</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>geoms</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>empty_tile_detection</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>empty_metatile_detection</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>cost</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>url</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>URL</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The WMS service URL</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>generate_salt</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Generate salt</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>Should generate a salt to drop the cache, default is False</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>query_layers</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Query layers</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The layers use for query (To be used with the server)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>info_formats</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Info formats</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The query info format</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p>params</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Parameters</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>Additional parameters to the WMS query (like dimension)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>additionalProperties</p></td>
+<td colspan="2"><p>The parameter value</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>headers</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#headers">Headers</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>version</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Version</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The used WMS version (default is ‘1.1.1’)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-mapnik">
+<span id="layer-mapnik"></span><h4>Layer Mapnik<a class="headerlink" href="#layer-mapnik" title="Permalink to this heading">¶</a></h4>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>type</p></li>
+</ul>
+</td>
+<td><p>const</p></td>
+<td colspan="3"><p>mapnik</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>title</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-title">Layer title</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>grid</strong></p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-grid">Layer grid</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>bbox</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-bounding-box">Layer bounding box</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>min_resolution_seed</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-min-resolution-seed">layer min resolution seed</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>px_buffer</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-pixel-buffer">Layer pixel buffer</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>meta</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-meta">Layer meta</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>meta_size</p></li>
+</ul>
+</td>
+<td><p>default</p></td>
+<td colspan="3"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#layer-meta-size">Layer meta size</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>meta_buffer</p></li>
+</ul>
+</td>
+<td><p>default</p></td>
+<td colspan="3"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#layer-meta-buffer">Layer meta buffer</a></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>layers</p></li>
+</ul>
+</td>
+<td><p>default</p></td>
+<td colspan="3"><p>__all__</p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#layer-layers">Layer layers</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>wmts_style</strong></p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-wmts-style">Layer WMTS style</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>mime_type</strong></p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-mime-type">Layer MIME type</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>extension</strong></p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-extension">Layer extension</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>dimensions</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-dimensions">layer dimensions</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>legends</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>legend_mime</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-legend-mime">Layer legend MIME</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>legend_extension</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>pre_hash_post_process</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-pre-hash-post-process">Layer pre hash post process</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>post_process</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-post-process">Layer post process</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>geoms</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>empty_tile_detection</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>empty_metatile_detection</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>cost</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>mapfile</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>MapFile</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>The Mapnik map file</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>data_buffer</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Data buffer</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The data buffer, default is 128</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>output_format</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Output format</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>The Mapnik output format, default is ‘png’</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="3"><p>png, png256, jpeg, grid</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>wms_url</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>WMS URL</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>A WMS fallback URL (deprecated)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>resolution</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Resolution</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The resolution, default is 4</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<li><p>layers_fields</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Layers fields</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>The Mapnik layers fields</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><p>additionalProperties</p></td>
+<td colspan="3"><p>The Mapnik layer fields</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>drop_empty_utfgrid</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Drop empty UTFGrid</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>Drop if the tile is empty, default is False</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="4"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer">
+<span id="layer"></span><h4>Layer<a class="headerlink" href="#layer" title="Permalink to this heading">¶</a></h4>
+<p>The layer definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>anyOf</p></td>
+<td><p><span class="xref std std-ref">layer_wms</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="xref std std-ref">layer_mapnik</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="process-command">
+<span id="process-command"></span><h4>Process command<a class="headerlink" href="#process-command" title="Permalink to this heading">¶</a></h4>
+<p>A command</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="27"><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>cmd</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Command</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The shell command, available parameters: %(in)s, %(out)s, %(args)s, %(x)s, %(y)s, %(z)s.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>need_out</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Need out</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The command will generate an output in a file, default is False</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="17"><ul class="simple">
+<li><p>arg</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Argument</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>Used to build the %(args)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>default</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Properties</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The arguments used by default</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>verbose</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Verbose</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The arguments used on verbose mode</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>debug</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Debug</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The arguments used on debug mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>quiet</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Quiet</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The arguments used on quiet mode</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="generation">
+<span id="generation"></span><h4>Generation<a class="headerlink" href="#generation" title="Permalink to this heading">¶</a></h4>
+<p>The configuration used for the generation</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>default_cache</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Default cache</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The default cache name to be used, default do ‘default’</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>default</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>default_layers</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Default layers</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The default layers to be generated</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>authorised_user</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Authorized user</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The authorized user to generate the tiles (used to avoid permission issue on generated tiles) (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>maxconsecutive_errors</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Max consecutive errors</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The maximum number of consecutive errors (main configuration), default is 10</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>error_file</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Error file</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>File name generated with the tiles in error, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#tiles-error-file">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#tiles-error-file</a> (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>number_process</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Number process</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>Number of process used to generate the tiles (main configuration), default is 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aws-region">
+<span id="aws-region"></span><h4>AWS region<a class="headerlink" href="#aws-region" title="Permalink to this heading">¶</a></h4>
+<p>The region, default is ‘eu-west-1’</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^(eu|us|ap|sa)-(north|south|east|west|central)(east|west)?-[1-3]$</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="redis">
+<span id="redis"></span><h4>Redis<a class="headerlink" href="#redis" title="Permalink to this heading">¶</a></h4>
+<p>The Redis configuration (main configuration)</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="5"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="6"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>url</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>URL</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>The server URL (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td colspan="4"><p>^redis://[^:]+:[^:]+$</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="14"><ul class="simple">
+<li><p>sentinels</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Sentinels</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>The sentinels (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="11"><p>items</p></td>
+<td colspan="4"><p>A sentinel (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>items</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Sentinel host</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The sentinel host name (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Sentinel port</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The sentinel port (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>anyOf</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalItems</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>connection_kwargs</p></li>
+</ul>
+</td>
+<td colspan="5"><p>The Redis connection arguments (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>sentinel_kwargs</p></li>
+</ul>
+</td>
+<td colspan="5"><p>The Redis sentinel arguments (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>service_name</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Service name</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>The service name, default is ‘mymaster’ (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="4"><p>mymaster</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>socket_timeout</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Socket timeout</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>The socket timeout (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>db</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Database</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>queue</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Queue</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The queue name (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>tilecloud</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>timeout</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Timeout</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The timeout (main configuration), default is 5</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>5</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>pending_timeout</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Pending timeout</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The pending timeout (main configuration), default is 300</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>300</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>max_retries</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Max retries</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The max retries (main configuration), default is 5</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>5</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>max_errors_age</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Max errors age</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The max error age (main configuration), default is 86400 (1 day)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>86400</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>max_errors_nb</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Max errors number</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The max error number (main configuration), default is 100</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>100</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>prefix</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Prefix</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The prefix (main configuration), default is ‘tilecloud_cache’</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>tilecloud_cache</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>expiration</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Expiration</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The meta-tile in queue expiration (main configuration), default is 28800 (8 hours)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>28800</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>pending_count</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Pending count</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The pending count: the number of pending tiles get in one request (main configuration), default is 10</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>10</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>pending_max_count</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Pending max count</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The pending max count: the maximum number of pending tiles get in one pass (if not generating other tiles, every second) (main configuration), default is 10000</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>10000</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="5"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="server">
+<span id="server"></span><h4>Server<a class="headerlink" href="#server" title="Permalink to this heading">¶</a></h4>
+<p>Configuration used by the tile server, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#distribute-the-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#distribute-the-tiles</a></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>cache</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Cache</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>The used cache name</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>layers</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>WMS Layers</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>Layers available in the server, default is all layers</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>geoms_redirect</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Geometries redirect</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>Take care on the geometries, default is False</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>static_allow_extension</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Static allow extension</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The allowed extension of static files, defaults to [jpeg, png, xml, js, html, css]</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>wmts_path</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>WMTS path</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The sub-path for the WMTS (main configuration), default is ‘wmts’</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="3"><p>wmts</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>static_path</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Static path</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The sub-path for the static files (main configuration), default is ‘static’</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="3"><p>static</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>admin_path</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Admin path</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The sub-path for the admin (main configuration), default is ‘admin’</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="3"><p>admin</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>expires</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Expires</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The browser cache expiration, default is 8 (hours)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="3"><p>8</p></td>
+</tr>
+<tr class="row-even"><td rowspan="12"><ul class="simple">
+<li><p>predefined_commands</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Predefined commands</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The predefined commands used to generate the tiles</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>command</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Command</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The command to run</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>name</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Name</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The name used in the admin interface</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>allowed_commands</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Allowed commands</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The allowed commands (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>allowed_arguments</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Allowed arguments</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The allowed arguments (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="4"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cost">
+<span id="cost"></span><h4>Cost<a class="headerlink" href="#cost" title="Permalink to this heading">¶</a></h4>
+<p>The configuration use to calculate the cast (unmaintained)</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>request_per_layers</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Request per layers</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>Tile request per hours, default is 10 000 000</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>10000000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="21"><ul class="simple">
+<li><p>s3</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>S3 cost</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The S3 cost (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>storage</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>S3 Storage</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The storage cost in $ / Gio / month (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>0.125</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>put</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>S3 Put</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The cost of put in $ per 10 000 requests (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>get</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>S3 Get</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The cost of get in $ per 10 000 requests (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>download</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>S3 Download</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The cost of download in $ per Gio (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="13"><ul class="simple">
+<li><p>cloudfront</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>CloudFront cost</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The CloudFront cost (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>get</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>CloudFront Get</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The cost of get in $ per 10 000 requests (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>0.009</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>download</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>CloudFront Download</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The cost of download in $ per Gio (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>0.12</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<li><p>sqs</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>SQS cost</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The SQS cost, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sqs">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sqs</a> (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>request</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Request</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The cost of request in $ per 1 000 000 requests (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="metadata">
+<span id="metadata"></span><h4>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading">¶</a></h4>
+<p>The configuration of the WMTS capabilities metadata</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>title</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Title</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The title</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>abstract</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Abstract</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The abstract</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>servicetype</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Service type</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The service type, default is ‘OGC WMTS’</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>OGC WMTS</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>keywords</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Keywords</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The keywords</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>fees</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Fees</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The fees</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>access_constraints</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Access constraints</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The access constraints</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="provider">
+<span id="provider"></span><h4>Provider<a class="headerlink" href="#provider" title="Permalink to this heading">¶</a></h4>
+<p>The provider</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="5"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="6"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>name</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Name</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>url</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>URL</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>The public URL</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="48"><ul class="simple">
+<li><p>contact</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Contact</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The contact</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>name</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Name</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>position</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Position</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="39"><ul class="simple">
+<li><p>info</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Info</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The information</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="11"><ul class="simple">
+<li><p>phone</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Phone</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The phone</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>voice</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Voice</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The voice number</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>fax</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Fax</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The fax number</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="23"><ul class="simple">
+<li><p>address</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Address</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The address</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>delivery</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Delivery</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The delivery</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>city</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>City</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The city</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>area</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Area</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The area</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>postal_code</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Postal code</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The postal code</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>country</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Country</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The country</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>email</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Email</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The email</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="4"><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="5"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="logging">
+<span id="id2"></span><h4>Logging<a class="headerlink" href="#logging" title="Permalink to this heading">¶</a></h4>
+<p>The logging configuration to database, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#logging">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#logging</a> (main configuration)</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="24"><ul class="simple">
+<li><p><strong>database</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Database</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The database (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>host</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Host</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The host (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>port</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Port</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The port (main configuration), default is 5432</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>5432</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>dbname</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Database</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The database name (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>table</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Table</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The table name (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>user</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>User</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The user name (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>password</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Password</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The password (main configuration)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="shortener.html" title="previous chapter">Configure short URL</a></li>
+      <li>Next: <a href="ngeo_new_interface.html" title="next chapter">Adding a new user interface</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2023, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/integrator/tilegeneration.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
