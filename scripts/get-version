@@ -42,6 +42,7 @@ parser.add_argument("--auto-increment", action="store_true")
 parser.add_argument("--force-increment", action="store_true")
 parser.add_argument("--full", action="store_true")
 parser.add_argument("--major", action="store_true")
+parser.add_argument("--major-minor", action="store_true")
 parser.add_argument("--github", action="store_true")
 args = parser.parse_args()
 
@@ -71,6 +72,7 @@ elif args.auto_increment:
 minor = str(ci["minor"])
 
 last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
+major_minor = last_tag
 main_branch = os.environ.get("MAIN_BRANCH", "master")
 major_version = os.environ.get("MAJOR_VERSION", "2.8")
 patch = ""
@@ -89,6 +91,9 @@ major = major_version
 if args.major:
     print(major)
     sys.exit(0)
+if args.major_minor:
+    print(major_minor)
+    sys.exit(0)
 if args.full:
     print(full)
     sys.exit(0)
@@ -101,15 +106,22 @@ security_response = requests.get(
     headers=c2cciutils.add_authorization_header({}),
     timeout=30,
 )
+with open("ci/config.yaml", encoding="utf-8") as open_file:
+    config = yaml.load(open_file, Loader=yaml.SafeLoader)
+docker_config = config.get("publish", {}).get("docker", {})
+
 if (
     security_response.ok
     and docker_config.get("latest", c2cciutils.configuration.PUBLISH_DOCKER_LATEST_DEFAULT) is True
 ):
     security = c2cciutils.security.Security(security_response.text)
     version_index = security.headers.index("Version")
-    latest = security.data[-1][version_index] == version
+    latest = security.data[-1][version_index] == major_version
 
 versions = []
+if last_tag.startswith(major_version):
+    versions.append(major_version)
+
 snyk_version = ""
 upgrade_version = ""
 if os.environ.get("GITHUB_WORKFLOW", "").startswith("Rebuild"):
@@ -139,6 +151,7 @@ else:
 
 print("full: {full}".format(full=full))
 print("major: {major}".format(major=major))
+print("major_minor: {major_minor}".format(major_minor=major_minor))
 print("minor: {minor}".format(minor=minor))
 print("upgrade_version: {upgrade_version}".format(upgrade_version=upgrade_version))
 print("versions: {versions}".format(versions=",".join(versions)))
@@ -147,6 +160,7 @@ if args.github:
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
         output_file.write("full={full}\n".format(full=full))
         output_file.write("major={major}\n".format(major=major))
+        output_file.write("major_minor={major_minor}\n".format(major_minor=major_minor))
         output_file.write("minor={minor}\n".format(minor=minor))
         output_file.write("upgrade_version={upgrade_version}\n".format(upgrade_version=upgrade_version))
         output_file.write("versions={versions}\n".format(versions=",".join(versions)))
