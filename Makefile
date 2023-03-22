@@ -1,4 +1,5 @@
 MAJOR_VERSION ?= $(shell scripts/get-version --major)
+MAJOR_MINOR_VERSION ?= $(shell scripts/get-version --major-minor)
 VERSION ?= $(shell scripts/get-version --full)
 DOCKER_TAG ?= latest
 export MAJOR_VERSION
@@ -58,7 +59,7 @@ additionallint: ## Check that we should replace some strings in the code
 .PHONY: build-tools
 build-tools:
 	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-checks
 build-checks:
@@ -68,12 +69,12 @@ build-checks:
 .PHONY: build-config
 build-config:
 	docker build --tag=camptocamp/geomapfish-config:$(DOCKER_TAG) \
-		--build-arg=VERSION=$(MAJOR_VERSION) docker/config
+		--build-arg=VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) docker/config
 
 .PHONY: build-runner
 build-runner:
 	docker build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
-		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
+		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 QGIS_VERSION ?= latest
 .PHONY: build-qgisserver
