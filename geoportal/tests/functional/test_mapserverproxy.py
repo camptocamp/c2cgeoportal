@@ -75,7 +75,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 from tests.functional.geodata_model import PointTest
 
 # GetMap hash for MapServer 6.0 and 7.0
-FOUR_POINTS = ["61cbb0a6d18b72e4a28c1087019de245", "e2fe30a8085b0db4040c9ad0d331b6b8"]
+FOUR_POINTS = ["61cbb0a6d18b72e4a28c1087019de245",     "e2fe30a8085b0db4040c9ad0d331b6b8"]
 TWO_POINTS = ["0a4fac2209d06c6fa36048c125b1679a", "0469e20ee04f22ab7ccdfebaa125f203"]
 NO_POINT = ["ef33223235b26c782736c88933b35331", "aaa27d9450664d34fd8f53b6e76af1e1"]
 
