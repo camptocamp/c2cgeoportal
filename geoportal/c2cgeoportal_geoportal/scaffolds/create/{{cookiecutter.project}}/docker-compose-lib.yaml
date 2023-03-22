@@ -11,6 +11,7 @@ services:
         PGSCHEMA: ${PGSCHEMA}
         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
+        GEOMAPFISH_MAIN_MINOR_VERSION: ${GEOMAPFISH_MAIN_MINOR_VERSION}
     user: www-data
     environment:
       - VISIBLE_WEB_HOST
@@ -222,7 +223,7 @@ services:
       - AZURE_STORAGE_ACCOUNT_URL
 
   geoportal:
-    image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}
+    image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_MINOR_VERSION}
     user: www-data
     restart: unless-stopped
     environment: &geoportal-env
@@ -309,6 +310,7 @@ services:
         PGSCHEMA: ${PGSCHEMA}
         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
+        GEOMAPFISH_MAIN_MINOR_VERSION: ${GEOMAPFISH_MAIN_MINOR_VERSION}
     user: www-data
     restart: unless-stopped
     environment: *geoportal-env
@@ -435,6 +437,7 @@ services:
       args:
         GEOMAPFISH_VERSION: ${GEOMAPFISH_VERSION}
         GEOMAPFISH_MAIN_VERSION: ${GEOMAPFISH_MAIN_VERSION}
+        GEOMAPFISH_MAIN_MINOR_VERSION: ${GEOMAPFISH_MAIN_MINOR_VERSION}
     volumes:
       - ./geoportal/${PACKAGE}_geoportal/static-ngeo:/app/${PACKAGE}_geoportal/static-ngeo
     environment:
