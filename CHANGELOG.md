@@ -1,3 +1,7 @@
+##### 2.7.0.215
+
+- Update pre-commit-hook version [ngeo#9064](https://github.com/camptocamp/ngeo/pull/9064)
+
 ##### 2.7.0.213
 
 - Don't re-open a manually closed disclaimer [ngeo#9060](https://github.com/camptocamp/ngeo/pull/9060)
