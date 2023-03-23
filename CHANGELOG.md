@@ -1,3 +1,7 @@
+##### 2.7.0.213
+
+- Don't re-open a manually closed disclaimer [ngeo#9060](https://github.com/camptocamp/ngeo/pull/9060)
+
 ##### 2.7.0.212
 
 - Snyk auto fix [c2cgeoportal#10420](https://github.com/camptocamp/c2cgeoportal/pull/10420)
