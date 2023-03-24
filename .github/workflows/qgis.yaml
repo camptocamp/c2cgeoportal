@@ -1,4 +1,3 @@
----
 name: QGIS build
 
 on:
@@ -16,7 +15,7 @@ env:
 
 jobs:
   main:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: QGIS build
     timeout-minutes: 40
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
@@ -65,8 +64,9 @@ jobs:
           camptocamp/geomapfish-qgisserver:gmflatest-qgis${{ matrix.version }}
 
       - name: Test library availability
-        run: "! ( docker run --rm camptocamp/geomapfish-qgisserver ldd /usr/local/bin/qgis_mapserv.fcgi |
-          grep 'not found' )"
+        run:
+          "! ( docker run --rm camptocamp/geomapfish-qgisserver ldd /usr/local/bin/qgis_mapserv.fcgi | grep 'not\
+          \ found' )"
 
       - name: Acceptance tests
         run: |
