@@ -1,4 +1,3 @@
----
 name: Rebuild 2.6
 
 on:
@@ -115,11 +114,12 @@ jobs:
             docker-compose logs ${service}
           done
         if: failure()
-        continue-on-error: True
+        continue-on-error: true
 
       - name: Init Git
-        run: git remote set-url origin
-          https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        run:
+          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
+          }}
       - run: make build-tools
       - run: make build-runner
       - run: make build-config

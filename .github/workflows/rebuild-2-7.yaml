@@ -1,4 +1,3 @@
----
 name: Rebuild 2.7
 
 on:
@@ -103,7 +102,7 @@ jobs:
           docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
           docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
         if: always()
-        continue-on-error: True
+        continue-on-error: true
       - run: c2cciutils-docker-logs
         if: always()
       - run: docker-compose down
@@ -148,11 +147,12 @@ jobs:
           cd ${HOME}/workspace/testgeomapfishapp/
           c2cciutils-docker-logs
         if: failure()
-        continue-on-error: True
+        continue-on-error: true
 
       - name: Init Git
-        run: git remote set-url origin
-          https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        run:
+          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
+          }}
       - run: make build-tools
       - run: make build-runner
       - run: make build-config
