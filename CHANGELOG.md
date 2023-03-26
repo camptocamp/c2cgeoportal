@@ -1,3 +1,7 @@
+##### 2.7.0.218
+
+- Remove double _alt in appName [c2cgeoportal#10422](https://github.com/camptocamp/c2cgeoportal/pull/10422)
+
 ##### 2.7.0.215
 
 - Update pre-commit-hook version [ngeo#9064](https://github.com/camptocamp/ngeo/pull/9064)
