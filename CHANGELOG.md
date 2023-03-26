@@ -1,3 +1,9 @@
+##### 2.8.rc.11
+
+- [Backport 2.8] Remove double _alt in appName [c2cgeoportal#10428](https://github.com/camptocamp/c2cgeoportal/pull/10428)
+- [Backport 2.8] Don't re-open a manually closed disclaimer [ngeo#9063](https://github.com/camptocamp/ngeo/pull/9063)
+- [Backport 2.8] Update pre-commit-hook version [ngeo#9066](https://github.com/camptocamp/ngeo/pull/9066)
+
 ##### 2.8.rc.9
 
 - Improve the application reload [c2cgeoportal#10408](https://github.com/camptocamp/c2cgeoportal/pull/10408)
