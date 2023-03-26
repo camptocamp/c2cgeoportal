@@ -83,7 +83,7 @@ def main() -> None:
                             "        width: 1em;",
                             "      }",
                             "    </style>",
-                            f'    <meta name="appName" content="App{args.interface}_alt">',
+                            f'    <meta name="appName" content="App{args.interface}">',
                             "    ${header |n}",
                             "  </head>",
                         ]
