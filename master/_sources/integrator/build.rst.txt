@@ -1,4 +1,4 @@
-.. _integrator_make:
+.. _integrator_build:
 
 Build configuration
 ===================
@@ -10,10 +10,10 @@ Usually we have the following env files:
 
 * ``env.default`` for the c2cgeoportal default configuration.
 * ``env.project`` for the project configuration.
-* ``env.<organization>`` in a multi-organization project these files will contain organization-specific
+* ``env.<organization>`` in a multi-organization project, these files will contain organization-specific
   configurations.
 * ``env.(dev|int|prod)`` environment specific settings, for example one for development, one for integration
-  and one for production, not needed for projects managed in an OpenShift platform.
+  and one for production. This is not needed for projects managed in a Kubernetes platform.
 
 The usage of env file should be configured in the ``project.yaml`` file, in the ``env`` section.
 
@@ -23,7 +23,7 @@ Project env configuration:
 * ``required_args``: the number of required build env arguments.
 * ``help``: the message displayed on wrong build env arguments number.
 
-For an OpenShift project you can use (default):
+For a Kubernetes project, you can use (default):
 
 .. code:: yaml
 
@@ -34,7 +34,7 @@ For an OpenShift project you can use (default):
     required_args: 0
     help: No arguments needed.
 
-For a non OpenShift project you can use:
+For a non-Kubernetes project, you can use:
 
 .. code:: yaml
 
@@ -44,9 +44,9 @@ For a non OpenShift project you can use:
       - env.project
       - env.{0}
     required_args: 1
-    help: You should use `./build <env>` where <env> can be dev, int or prod.
+    help: You should use `./build <env>`, where <env> can be dev, int or prod.
 
-For a non OpenShift multi town project you can use:
+For a non-Kubernetes multi-organisation project, you can use:
 
 .. code:: yaml
 
@@ -96,8 +96,8 @@ And in your yaml vars file, add:
 For more information, see the
 `c2c.template <https://github.com/camptocamp/c2c.template>`_ documentation.
 
-Dockefile config variables
---------------------------
+Dockerfile config variables
+---------------------------
 
 The following variables may be set in the Dockerfile:
 
@@ -149,7 +149,7 @@ Upstream `make documentation <https://www.gnu.org/software/make/manual/make.html
 Custom image
 ------------
 
-In the build script we use `docker-compose build` as it's easy to add a new service from another `Dockerfile`.
+In the build script, we use `docker-compose build`, as this simplifies adding a new service from another `Dockerfile`.
 
 By adding the following in the `docker-compose.yaml` file:
 
@@ -162,7 +162,7 @@ By adding the following in the `docker-compose.yaml` file:
         args:
           GIT_HASH: ${GIT_HASH}
 
-An new image with the suffix `-custom` will be built with the standard `./build` command and a build
+A new image with the suffix `-custom` will be built with the standard `./build` command and a build
 argument is passed to the build with the hash of the latest Git commit.
 
-Everything that present in the `.env` file can be used.
+Everything that is present in the `.env` file can be used.

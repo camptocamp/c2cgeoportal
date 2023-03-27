@@ -18,7 +18,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ngeo" href="ngeo.html" />
+    <link rel="next" title="Runtime configuration" href="runtime.html" />
     <link rel="prev" title="Configuration Guide for advanced settings" href="configuration.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -37,17 +37,17 @@
           <div class="body" role="main">
             
   <section id="build-configuration">
-<span id="integrator-make"></span><h1>Build configuration<a class="headerlink" href="#build-configuration" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-build"></span><h1>Build configuration<a class="headerlink" href="#build-configuration" title="Permalink to this heading">¶</a></h1>
 <section id="env-files">
 <h2>Env files<a class="headerlink" href="#env-files" title="Permalink to this heading">¶</a></h2>
 <p>Usually we have the following env files:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">env.default</span></code> for the c2cgeoportal default configuration.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">env.project</span></code> for the project configuration.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">env.&lt;organization&gt;</span></code> in a multi-organization project these files will contain organization-specific
+<li><p><code class="docutils literal notranslate"><span class="pre">env.&lt;organization&gt;</span></code> in a multi-organization project, these files will contain organization-specific
 configurations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">env.(dev|int|prod)</span></code> environment specific settings, for example one for development, one for integration
-and one for production, not needed for projects managed in an OpenShift platform.</p></li>
+and one for production. This is not needed for projects managed in a Kubernetes platform.</p></li>
 </ul>
 <p>The usage of env file should be configured in the <code class="docutils literal notranslate"><span class="pre">project.yaml</span></code> file, in the <code class="docutils literal notranslate"><span class="pre">env</span></code> section.</p>
 <p>Project env configuration:</p>
@@ -56,7 +56,7 @@ and one for production, not needed for projects managed in an OpenShift platform
 <li><p><code class="docutils literal notranslate"><span class="pre">required_args</span></code>: the number of required build env arguments.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">help</span></code>: the message displayed on wrong build env arguments number.</p></li>
 </ul>
-<p>For an OpenShift project you can use (default):</p>
+<p>For a Kubernetes project, you can use (default):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">files</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
@@ -65,17 +65,17 @@ and one for production, not needed for projects managed in an OpenShift platform
 <span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">No arguments needed.</span>
 </pre></div>
 </div>
-<p>For a non OpenShift project you can use:</p>
+<p>For a non-Kubernetes project, you can use:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">files</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{0}</span>
 <span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span>
+<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;env&gt;`, where &lt;env&gt; can be dev, int or prod.</span>
 </pre></div>
 </div>
-<p>For a non OpenShift multi town project you can use:</p>
+<p>For a non-Kubernetes multi-organisation project, you can use:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">files</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
@@ -115,8 +115,8 @@ you should export your variable as follows:</p>
 <p>For more information, see the
 <a class="reference external" href="https://github.com/camptocamp/c2c.template">c2c.template</a> documentation.</p>
 </section>
-<section id="dockefile-config-variables">
-<h2>Dockefile config variables<a class="headerlink" href="#dockefile-config-variables" title="Permalink to this heading">¶</a></h2>
+<section id="dockerfile-config-variables">
+<h2>Dockerfile config variables<a class="headerlink" href="#dockerfile-config-variables" title="Permalink to this heading">¶</a></h2>
 <p>The following variables may be set in the Dockerfile:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code>: The list of parameters read from the project YAML configuration file.</p></li>
@@ -162,7 +162,7 @@ Here is an example:</p>
 </section>
 <section id="custom-image">
 <h2>Custom image<a class="headerlink" href="#custom-image" title="Permalink to this heading">¶</a></h2>
-<p>In the build script we use <cite>docker-compose build</cite> as it’s easy to add a new service from another <cite>Dockerfile</cite>.</p>
+<p>In the build script, we use <cite>docker-compose build</cite>, as this simplifies adding a new service from another <cite>Dockerfile</cite>.</p>
 <p>By adding the following in the <cite>docker-compose.yaml</cite> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
 <span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span>
@@ -172,9 +172,9 @@ Here is an example:</p>
 <span class="w">       </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span>
 </pre></div>
 </div>
-<p>An new image with the suffix <cite>-custom</cite> will be built with the standard <cite>./build</cite> command and a build
+<p>A new image with the suffix <cite>-custom</cite> will be built with the standard <cite>./build</cite> command and a build
 argument is passed to the build with the hash of the latest Git commit.</p>
-<p>Everything that present in the <cite>.env</cite> file can be used.</p>
+<p>Everything that is present in the <cite>.env</cite> file can be used.</p>
 </section>
 </section>
 
@@ -218,7 +218,7 @@ argument is passed to the build with the hash of the latest Git commit.</p>
   <li><a href="index.html">Integrator Guide</a><ul>
   <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
       <li>Previous: <a href="configuration.html" title="previous chapter">Configuration Guide for advanced settings</a></li>
-      <li>Next: <a href="ngeo.html" title="next chapter">ngeo</a></li>
+      <li>Next: <a href="runtime.html" title="next chapter">Runtime configuration</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
