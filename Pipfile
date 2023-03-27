@@ -36,7 +36,7 @@ python-dateutil = "==2.8.2"  # geoportal
 PyYAML = "==5.4.1"  # geoportal
 rasterio = "==1.2.10"  # geoportal raster
 requests = "==2.27.1"  # geoportal
-redis = "==4.1.4"  # geoportal cache
+redis = "==4.3.6"  # geoportal cache
 Shapely = "==1.8.5.post1"  # geoportal
 SQLAlchemy = "==1.4.46"
 transaction = "==3.0.1"  # commons, geoportal
