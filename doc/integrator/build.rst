@@ -46,7 +46,7 @@ For a non-Kubernetes project, you can use:
     required_args: 1
     help: You should use `./build <env>`, where <env> can be dev, int or prod.
 
-For a non-K8S multi-organisation project, you can use:
+For a non-Kubernetes multi-organisation project, you can use:
 
 .. code:: yaml
 
