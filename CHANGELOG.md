@@ -1,3 +1,7 @@
+##### 2.7.0.222
+
+- Publish and use the images x.y.z instead of x.y to be able to publish… [c2cgeoportal#10418](https://github.com/camptocamp/c2cgeoportal/pull/10418)
+
 ##### 2.7.0.220
 
 - Allow dimensions to be passed for WMS layers in background group [ngeo#9070](https://github.com/camptocamp/ngeo/pull/9070)
