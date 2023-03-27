@@ -1,3 +1,7 @@
+##### 2.7.0.219
+
+- Snyk auto fix [ngeo#9071](https://github.com/camptocamp/ngeo/pull/9071)
+
 ##### 2.7.0.218
 
 - Remove double _alt in appName [c2cgeoportal#10422](https://github.com/camptocamp/c2cgeoportal/pull/10422)
