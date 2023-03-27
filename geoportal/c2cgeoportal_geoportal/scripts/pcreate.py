@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2021, Camptocamp SA
+# Copyright (c) 2021-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -226,13 +226,16 @@ class PCreateCommand:
         context["geomapfish_version_tag"] = "GEOMAPFISH_VERSION"
         context["geomapfish_version_tag_env"] = "${GEOMAPFISH_VERSION}"
         geomapfish_major_version_tag = (
-            "GEOMAPFISH_VERSION" if context.get("unsafe_long_version", False) else "GEOMAPFISH_MAIN_VERSION"
+            "GEOMAPFISH_VERSION"
+            if context.get("unsafe_long_version", False)
+            else "GEOMAPFISH_MAIN_MINOR_VERSION"
         )
         # Used in the Docker files to shoos the version of the run image
         context["geomapfish_major_version_tag"] = geomapfish_major_version_tag
         context["geomapfish_major_version_tag_env"] = "${" + geomapfish_major_version_tag + "}"
         context["geomapfish_main_version"] = os.environ["MAJOR_VERSION"]
         context["geomapfish_main_version_dash"] = os.environ["MAJOR_VERSION"].replace(".", "-")
+        context["geomapfish_main_minor_version"] = os.environ["MAJOR_MINOR_VERSION"]
 
         return context
 

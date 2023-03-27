@@ -177,6 +177,8 @@ COPY scripts/clone_schema.sql /opt/
 
 WORKDIR /src
 
+ARG MAJOR_MINOR_VERSION
+ENV MAJOR_MINOR_VERSION=$MAJOR_MINOR_VERSION
 
 #############################################################################################################
 # Cleaned image used to copy files to the runner
