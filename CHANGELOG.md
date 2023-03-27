@@ -1,3 +1,5 @@
+##### 2.6.0.182
+* Allow dimensions to be passed for WMS layers in background group [ngeo#9069](https://github.com/camptocamp/ngeo/pull/9069)
 ##### 2.6.0.181
 * Snyk auto fix [c2cgeoportal#10421](https://github.com/camptocamp/c2cgeoportal/pull/10421)
 ##### 2.6.0.180
