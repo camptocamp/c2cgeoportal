@@ -1,3 +1,7 @@
+##### 2.7.0.220
+
+- Allow dimensions to be passed for WMS layers in background group [ngeo#9070](https://github.com/camptocamp/ngeo/pull/9070)
+
 ##### 2.7.0.219
 
 - Snyk auto fix [ngeo#9071](https://github.com/camptocamp/ngeo/pull/9071)
