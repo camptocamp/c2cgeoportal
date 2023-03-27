@@ -1,3 +1,8 @@
+##### 2.8.rc.12
+
+- Retry when getting the pot [c2cgeoportal#10426](https://github.com/camptocamp/c2cgeoportal/pull/10426)
+- [Backport 2.8] Publish and use the images x.y.z instead of x.y to be able to publish… [c2cgeoportal#10431](https://github.com/camptocamp/c2cgeoportal/pull/10431)
+
 ##### 2.8.rc.11
 
 - [Backport 2.8] Remove double _alt in appName [c2cgeoportal#10428](https://github.com/camptocamp/c2cgeoportal/pull/10428)
