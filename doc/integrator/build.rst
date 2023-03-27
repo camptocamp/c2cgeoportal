@@ -23,7 +23,7 @@ Project env configuration:
 * ``required_args``: the number of required build env arguments.
 * ``help``: the message displayed on wrong build env arguments number.
 
-For a K8S project, you can use (default):
+For a Kubernetes project, you can use (default):
 
 .. code:: yaml
 
