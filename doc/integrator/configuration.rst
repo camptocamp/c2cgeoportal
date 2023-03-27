@@ -9,6 +9,7 @@ This chapter describes advanced configuration settings.
    :maxdepth: 1
 
    build
+   runtime
    ngeo
    backend
    caching
