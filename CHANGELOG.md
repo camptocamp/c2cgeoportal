@@ -1,3 +1,8 @@
+##### 2.7.0.224
+
+- [Backport 2.7] Retry when getting the pot [c2cgeoportal#10430](https://github.com/camptocamp/c2cgeoportal/pull/10430)
+- Snyk auto fix [c2cgeoportal#10432](https://github.com/camptocamp/c2cgeoportal/pull/10432)
+
 ##### 2.7.0.222
 
 - Publish and use the images x.y.z instead of x.y to be able to publish… [c2cgeoportal#10418](https://github.com/camptocamp/c2cgeoportal/pull/10418)
