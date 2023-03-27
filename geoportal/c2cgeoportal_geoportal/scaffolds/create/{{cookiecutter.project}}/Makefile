@@ -13,7 +13,8 @@ help: ## Display this help message
 
 .PHONY: update-po-from-url
 update-po-from-url: ## Update the po files from the URL provide by PROJECT_PUBLIC_URL
-	curl --fail $(PROJECT_PUBLIC_URL)locale.pot > geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
+	curl --fail --retry 5 --retry-delay 1 \
+		$(PROJECT_PUBLIC_URL)locale.pot > geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
 	sed -i '/^"POT-Creation-Date: /d' geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
 	docker-compose run --rm -T tools update-po-only `id --user` `id --group` $(LANGUAGES)
 
