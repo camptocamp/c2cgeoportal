@@ -13,7 +13,7 @@ Usually we have the following env files:
 * ``env.<organization>`` in a multi-organization project, these files will contain organization-specific
   configurations.
 * ``env.(dev|int|prod)`` environment specific settings, for example one for development, one for integration
-  and one for production. This is not needed for projects managed in a K8S platform.
+  and one for production. This is not needed for projects managed in a Kubernetes platform.
 
 The usage of env file should be configured in the ``project.yaml`` file, in the ``env`` section.
 
