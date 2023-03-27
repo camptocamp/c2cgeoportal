@@ -34,7 +34,7 @@ For a Kubernetes project, you can use (default):
     required_args: 0
     help: No arguments needed.
 
-For a non-K8S project, you can use:
+For a non-Kubernetes project, you can use:
 
 .. code:: yaml
 
