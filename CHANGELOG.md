@@ -1,3 +1,5 @@
+##### 2.5.0.239
+* Snyk auto fix [c2cgeoportal#10436](https://github.com/camptocamp/c2cgeoportal/pull/10436)
 ##### 2.5.0.238
 * Fix new error with attr in pull request check workflow [c2cgeoportal#10416](https://github.com/camptocamp/c2cgeoportal/pull/10416)
 ##### 2.5.0.237
