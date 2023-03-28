@@ -1,3 +1,7 @@
+##### 2.8.rc.14
+
+- Fix major minor version [c2cgeoportal#10439](https://github.com/camptocamp/c2cgeoportal/pull/10439)
+
 ##### 2.8.rc.13
 
 - Snyk auto fix [c2cgeoportal#10434](https://github.com/camptocamp/c2cgeoportal/pull/10434)
