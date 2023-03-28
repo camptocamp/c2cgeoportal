@@ -35,7 +35,7 @@ isodate==0.6.1  # geoportal
 Jinja2==2.11.3  # c2c.template
 JSTools==1.0  # CGXP build
 lingua==4.13  # i18n
-Mako==1.0.14  # geoportal
+Mako==1.2.2  # geoportal
 mccabe==0.6.1  # lint
 more-itertools==7.2.0  # fix travis
 mypy==0.700  # lint
