@@ -1,3 +1,5 @@
+##### 2.5.0.240
+* Update the used Ubuntu version to from 18.04 to 20.04 in the workflows [c2cgeoportal#10443](https://github.com/camptocamp/c2cgeoportal/pull/10443)
 ##### 2.5.0.239
 * Snyk auto fix [c2cgeoportal#10436](https://github.com/camptocamp/c2cgeoportal/pull/10436)
 ##### 2.5.0.238
