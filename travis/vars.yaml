@@ -1,5 +1,4 @@
 ---
-
 extends: vars.yaml
 
 vars:
@@ -11,8 +10,8 @@ vars:
     available_metadata:
       - name: _color
         type: regex
-        regex: "^#([A-Fa-f0-9]{{{{6}}}}|[A-Fa-f0-9]{{{{3}}}})$"
-        error_message: "Expecting hex format for color, e.g. #007DCD"
+        regex: '^#([A-Fa-f0-9]{{{{6}}}}|[A-Fa-f0-9]{{{{3}}}})$'
+        error_message: 'Expecting hex format for color, e.g. #007DCD'
 
   layers:
     enum:
