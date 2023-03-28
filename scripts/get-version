@@ -72,19 +72,22 @@ elif args.auto_increment:
 minor = str(ci["minor"])
 
 last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
-major_minor = last_tag
 main_branch = os.environ.get("MAIN_BRANCH", "master")
 major_version = os.environ.get("MAJOR_VERSION", "2.8")
 patch = ""
 if tag:
     patch = tag
+    major_minor = tag
     full = tag + ".0"
 elif last_tag.startswith(major_version):
     patch = last_tag
+    major_minor = last_tag
     full = last_tag + "." + minor
 elif main_branch == "master":
+    major_minor = major_version + ".0"
     full = major_version
 else:
+    major_minor = major_version + ".0"
     full = major_version + ".rc." + minor
 major = major_version
 
@@ -119,29 +122,27 @@ if (
     latest = security.data[-1][version_index] == major_version
 
 versions = []
-if last_tag.startswith(major_version):
-    versions.append(major_version)
 
 snyk_version = ""
 upgrade_version = ""
 if os.environ.get("GITHUB_WORKFLOW", "").startswith("Rebuild"):
     branch = main_branch
-    versions = [major_version]
-    snyk_version = major_version
+    versions = [major_minor, major_version]
+    snyk_version = major_minor
 else:
     if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
         branch = os.environ["GITHUB_REF"][11:]
         if branch == "master":
-            versions = [major_version, "master"]
-            snyk_version = major_version
+            versions = [major_minor, major_version, "master"]
+            snyk_version = major_minor
             upgrade_version = "master"
         elif branch == main_branch:
-            versions = [major_version, full]
+            versions = [major_minor, major_version, full]
             if patch:
                 versions.append(patch)
             if latest:
                 versions.append("latest")
-            snyk_version = major_version
+            snyk_version = major_minor
             upgrade_version = full
         elif "/" not in branch:
             versions = [branch]
