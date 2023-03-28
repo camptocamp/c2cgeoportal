@@ -3419,14 +3419,14 @@ test = ["boto3 (>=1.2.4)", "hypothesis", "packaging", "pytest (>=2.8.2)", "pytes
 
 [[package]]
 name = "redis"
-version = "4.4.2"
+version = "4.4.3"
 description = "Python client for Redis database and key-value store"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "redis-4.4.2-py3-none-any.whl", hash = "sha256:e6206448e2f8a432871d07d432c13ed6c2abcf6b74edb436c99752b1371be387"},
-    {file = "redis-4.4.2.tar.gz", hash = "sha256:a010f6cb7378065040a02839c3f75c7e0fb37a87116fb4a95be82a95552776c7"},
+    {file = "redis-4.4.3-py3-none-any.whl", hash = "sha256:ff1345ad81bfafc41374b7089b5a6d37d862a4ce101c139e5675f31cf46b5539"},
+    {file = "redis-4.4.3.tar.gz", hash = "sha256:9ba159120f909198e8a53053b0fb2e1593decfe1404d17589c7039e186489d48"},
 ]
 
 [package.dependencies]
@@ -4467,4 +4467,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "663f2a1b973f164b06c90f44f5778931ee56d4019f7541e0727cad21a0795280"
+content-hash = "875a9d78a285203d8ed186a322da8ec4b8499badedc574d1a842335d6b32b90e"
