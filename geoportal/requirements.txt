@@ -26,7 +26,6 @@ python-dateutil
 PyYAML
 rasterio
 requests
-redis
 Shapely
 simplejson
 SQLAlchemy
