@@ -1,5 +1,21 @@
+exclude: |
+  (?x)^(
+    admin/.*
+    |commons/.*
+    |doc/.*
+    |docker/.*
+    |geoportal/.*
+    |travis/changelog\.yaml
+  )$
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
       - id: trailing-whitespace
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@2.8.4
