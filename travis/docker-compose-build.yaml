@@ -1,5 +1,4 @@
 ---
-
 # A compose file for the build.
 
 version: '2'
