@@ -1,3 +1,7 @@
+##### 2.7.0.226
+
+- Update the used Ubuntu version to from 18.04 to 20.04 in the workflows [ngeo#9078](https://github.com/camptocamp/ngeo/pull/9078)
+
 ##### 2.7.0.224
 
 - [Backport 2.7] Retry when getting the pot [c2cgeoportal#10430](https://github.com/camptocamp/c2cgeoportal/pull/10430)
