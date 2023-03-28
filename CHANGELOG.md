@@ -1,3 +1,7 @@
+##### 2.8.rc.13
+
+- Snyk auto fix [c2cgeoportal#10434](https://github.com/camptocamp/c2cgeoportal/pull/10434)
+
 ##### 2.8.rc.12
 
 - Retry when getting the pot [c2cgeoportal#10426](https://github.com/camptocamp/c2cgeoportal/pull/10426)
