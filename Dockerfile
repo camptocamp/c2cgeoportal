@@ -182,6 +182,9 @@ WORKDIR /src
 
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
+ARG MAJOR_MINOR_VERSION
+ENV MAJOR_MINOR_VERSION=$MAJOR_MINOR_VERSION
+
 #############################################################################################################
 # Cleaned image used to copy files to the runner
 

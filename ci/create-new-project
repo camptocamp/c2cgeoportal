@@ -7,9 +7,9 @@ DOCKER_TAG="${TAG}" make build-tools
 DOCKER_TAG="${TAG}" make build-runner
 DOCKER_TAG="${TAG}" make build-config
 
-docker tag "camptocamp/geomapfish:${TAG}" camptocamp/geomapfish
+docker tag "camptocamp/geomapfish:${TAG}" "camptocamp/geomapfish:$(scripts/get-version --major-minor)"
 docker tag "camptocamp/geomapfish-tools:${TAG}" "camptocamp/geomapfish-tools:$(scripts/get-version --full)"
-docker tag "camptocamp/geomapfish-config:${TAG}" "camptocamp/geomapfish-config:$(scripts/get-version --full)"
+docker tag "camptocamp/geomapfish-config:${TAG}" "camptocamp/geomapfish-config:$(scripts/get-version --major-minor)"
 
 DOCKER_BUILDKIT=1 docker build --target=runner --build-arg=VERSION=3.28 \
     --build-arg="GEOMAPFISH_VERSION=${TAG}" \
