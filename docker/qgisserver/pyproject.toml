@@ -22,7 +22,7 @@ shapely = "2.0.1"
 cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.5"
 pytz = "2022.7.1"
-redis = "4.4.3"
+redis = "4.4.4"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.4" }
