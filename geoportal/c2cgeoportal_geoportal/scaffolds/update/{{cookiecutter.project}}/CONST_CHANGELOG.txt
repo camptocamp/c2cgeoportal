@@ -1,5 +1,25 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+=============
+Version 2.9.0
+=============
+
+Information to know before starting the upgrade
+===============================================
+
+
+Information
+===========
+
+1. Hostname check:
+   We add a hostname check on the `came_from` parameter, in the oauth2 login, allowed by
+   `vars.authentication.allowed_hosts` and in the OGC server clear cache, allowed by `vars.allowed_hosts`.
+   The behavior change a little bit in the `shortener.allowed_hosts` and in the `authorized_referers`.
+   Now everywhere:
+   - If the hostname (with port) of the candidate URL equals to the request's header "Host", then it's OK.
+   - If the hostname (with port) of the candidate URL is in the allowed list, then it's OK.
+   And they should be netloc (hostname with port) without schema or path.
+
 
 =============
 Version 2.8.0

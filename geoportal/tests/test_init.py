@@ -31,6 +31,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 
+import pytest
 from c2c.template.config import config
 from pyramid import testing
 from tests import DummyRequest
@@ -98,6 +99,31 @@ class TestIncludeme(TestCase):
         assert self.config.registry.validate_user == custom_validator
 
 
+@pytest.mark.parametrize(
+    "authorized,value,expected",
+    [
+        ("example.com", "http://example.com/app?k=v", True),
+        ("example.com", "http://example.com/app?k=v#link", True),
+        ("example.com", "http://example.com/app#link", True),
+        ("example.com", "http://example.com/app", True),
+        ("example.com", "http://example.com/app/", True),
+        ("example.com", "http://example.com/app/x/y", True),
+        ("example.com", "http://example.com/app/x/y", True),
+        ("example.com", "http://other.com", False),
+        ("example.com", "http://example.com.bad.org/app/x/y", False),
+        ("example.com:8080", "http://example.com:8080/app", True),
+        ("example.com:8080", "http://example.com/app", False),
+        ("example.com", "http://example.com:8080/app", False),
+        ("other.com", "http://example-test.com", True),
+    ],
+)
+def test_is_valid_referrer(authorized, value, expected):
+    r = DummyRequest()
+    r.referrer = value
+    r.host = "example-test.com"
+    assert is_valid_referrer(r, {"authorized_referers": [authorized]}) == expected
+
+
 class TestReferer(TestCase):
     """
     Check that accessing something with a bad HTTP referrer is equivalent to a not authenticated query.
@@ -105,38 +131,26 @@ class TestReferer(TestCase):
 
     BASE1 = "http://example.com/app"
     BASE2 = "http://friend.com/app2"
-    SETTINGS = {"authorized_referers": [BASE1, BASE2]}
+    SETTINGS = {"authorized_referers": ["friend.com"]}
     USER = "toto"
 
-    def _get_user(self, to, ref, method="GET"):
+    def _get_user(self, to, ref, method="GET", host="example.com"):
         class MockRequest:
             def __init__(self, to, ref, method):
                 self.path_qs = to
                 self.referrer = ref
                 self.user_ = TestReferer.USER
                 self.method = method
+                self.host = host
 
-        config._config = {"schema": "main", "schema_static": "main_static", "srid": 21781}
+        config._config = {
+            "schema": "main",
+            "schema_static": "main_static",
+            "srid": 21781,
+            "authorized_referers": ["example.com"],
+        }
         get_user = create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref, method=method))
-
-    def test_match_url(self):
-        def match(reference, value, expected):
-            r = DummyRequest()
-            r.referrer = value
-            assert is_valid_referrer(r, {"authorized_referers": [reference]}) == expected
-
-        match("http://example.com/app/", "http://example.com/app?k=v", True)
-        match("http://example.com/app/", "http://example.com/app?k=v#link", True)
-        match("http://example.com/app/", "http://example.com/app#link", True)
-        match("http://example.com/app/", "http://example.com/app", True)
-        match("http://example.com/app", "http://example.com/app/", True)
-        match("http://example.com/app", "http://example.com/app/x/y", True)
-        match("http://example.com", "http://example.com/app/x/y", True)
-        match("http://example.com", "http://other.com", False)
-        match("http://example.com", "https://example.com", False)
-        match("http://example.com/app", "http://example.com/", False)
-        match("http://example.com", "http://example.com.bad.org/app/x/y", False)
 
     def test_positive(self):
         assert self._get_user(to=self.BASE1 + "/1", ref=self.BASE1) == self.USER

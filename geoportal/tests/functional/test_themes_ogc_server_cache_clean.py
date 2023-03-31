@@ -1,4 +1,4 @@
-# Copyright (c) 2022, Camptocamp SA
+# Copyright (c) 2022-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@
 import asyncio
 from unittest import TestCase
 
+import pyramid.httpexceptions
 import pytest
 import responses
 import transaction
@@ -314,3 +315,39 @@ class TestThemesView(TestCase):
             "c2cgeoportal_geoportal.views.theme|do_get_http_cached|http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0",
             "c2cgeoportal_geoportal.views.theme|do_get_http_cached|http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
         }
+
+
+@pytest.mark.parametrize(
+    "came_from,host,allowed_hosts,expected",
+    [
+        ("http://example.com", "example.com", [], True),
+        ("http://example.com", "other.com", ["example.com"], True),
+        ("http://example.com", "other.com", [], False),
+    ],
+)
+def test_ogc_server_cache_clean_wrong_host(default_ogcserver, came_from, host, allowed_hosts, expected):
+    from c2cgeoportal_geoportal.views.theme import Theme
+
+    request = create_dummy_request()
+
+    request.params["came_from"] = came_from
+    request.matchdict["id"] = default_ogcserver.id
+    request.host = host
+    request.registry.settings.setdefault("admin_interface", {})["allowed_hosts"] = allowed_hosts
+
+    theme = Theme(request)
+
+    responses.get(
+        "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
+        content_type="application/vnd.ogc.wms_xml",
+        body=CAP.format(name2="__test_layer_internal_wms3"),
+    )
+    responses.get(
+        "http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0",
+        content_type="application/vnd.ogc.wms_xml",
+        body=DFT.format(name2="police2"),
+    )
+    with pytest.raises(
+        pyramid.httpexceptions.HTTPFound if expected else pyramid.httpexceptions.HTTPBadRequest
+    ):
+        theme.ogc_server_clear_cache_view()

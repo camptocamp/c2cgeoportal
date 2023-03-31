@@ -60,7 +60,7 @@ class TestshortenerView(TestCase):
 
         request = DummyRequest()
         request.user = None
-        request.host = "example.com:443"
+        request.host = "example.com"
         request.server_name = "example.com"
         request.route_url = route_url
         request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
@@ -88,7 +88,7 @@ class TestshortenerView(TestCase):
 
         request = DummyRequest()
         request.user = None
-        request.host = "example.com:443"
+        request.host = "example.com"
         request.server_name = "example.com"
         request.route_url = route_url
         request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
@@ -116,7 +116,7 @@ class TestshortenerView(TestCase):
 
         request = DummyRequest()
         request.user = None
-        request.host = "example.com:443"
+        request.host = "example.com"
         request.server_name = "example.com"
         request.route_url = route_url
         request.registry.settings["shortener"] = {}
@@ -145,7 +145,7 @@ class TestshortenerView(TestCase):
 
         request = DummyRequest()
         request.user = None
-        request.host = "example.com:443"
+        request.host = "example.com"
         request.server_name = "example.com"
         request.route_url = route_url
         request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
@@ -165,7 +165,7 @@ class TestshortenerView(TestCase):
 
         request = DummyRequest()
         request.user = None
-        request.host = "example.com:443"
+        request.host = "example.com"
         request.server_name = "example.com"
         request.route_url = route_url
         request.registry.settings["shortener"] = {"base_url": "https://example.com/s/"}
@@ -185,7 +185,7 @@ class TestshortenerView(TestCase):
 
         request = DummyRequest()
         request.user = None
-        request.host = "example.com:443"
+        request.host = "example.com"
         request.server_name = "example.com"
         request.route_url = route_url
         request.registry.settings["shortener"] = {"base_url": "http://my_host/my_short/"}
