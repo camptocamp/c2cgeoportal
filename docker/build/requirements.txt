@@ -5,7 +5,7 @@ awscli==1.19.112  # Work with Object storage
 Babel==2.9.1  # i18n
 beautifulsoup4==4.6.3  # admin tests, rq.filter: <4.7
 boto3==1.9.253  # Tile generation
-bottle==0.12.24  # geoportal
+bottle==0.12.25  # geoportal
 chameleon==3.7.4  # c2cgeoform
 c2c.cssmin==0.7.dev6  # CGXP build
 c2c.template==2.3.0  # geoportal
@@ -16,7 +16,7 @@ colander==1.7.0  # commons, admin
 ColanderAlchemy==0.3.4  # commons
 coverage==4.5.4  # Build coverage XML for Codacy
 dateutils==0.6.12  # geoportal pcreate
-deform==2.0.7  # commons, admin
+deform==2.0.15  # commons, admin
 defusedxml==0.5.0  # geoportal
 docutils==0.15.2  # doc
 dogpile.cache==0.7.1  # geoportal
@@ -77,7 +77,7 @@ tilecloud==1.3.4  # Tile generation
 tilecloud-chain==1.10.1  # Tile generation
 transaction==2.4.0  # commons, geoportal
 translationstring==1.3  # admin
-urllib3==1.26.13  # required by transifex, rq.filter: <1.24
+urllib3==1.26.15  # required by transifex, rq.filter: <1.24
 venusian==2.1.0  # pyramid
 virtualenv==16.4.3  # Makefile
 waitress==1.4.4  # pcreate
