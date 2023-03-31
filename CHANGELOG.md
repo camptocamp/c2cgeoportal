@@ -1,3 +1,9 @@
+##### 2.8.rc.15
+
+- Snyk auto fix [c2cgeoportal#10444](https://github.com/camptocamp/c2cgeoportal/pull/10444)
+- [Backport 2.8] Allow dimensions to be passed for WMS layers in background group [ngeo#9074](https://github.com/camptocamp/ngeo/pull/9074)
+- Update the used Ubuntu version to from 18.04 to 20.04 in the workflows [ngeo#9077](https://github.com/camptocamp/ngeo/pull/9077)
+
 ##### 2.8.rc.14
 
 - Fix major minor version [c2cgeoportal#10439](https://github.com/camptocamp/c2cgeoportal/pull/10439)
