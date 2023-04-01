@@ -12,7 +12,7 @@ authors = []
 python = ">=3.10,<3.11"
 c2cwsgiutils = { extras = ["broadcast"], version = "5.2.2" }
 papyrus = "2.5" # commons
-transaction = "3.0.1" # commons
+transaction = "3.1.0" # commons
 "c2c.template" = "2.3.0"
 GeoAlchemy2 = "0.13.1"
 SQLAlchemy = "1.4.46" # commons
