@@ -109,7 +109,7 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 23.3.0
     hooks:
       - id: black
         exclude: (^commons/c2cgeoportal_commons/alembic/script\.py\.mako$|.*\.rst$|.*\.rst.tmpl$|^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$)
