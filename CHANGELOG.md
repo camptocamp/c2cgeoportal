@@ -1,3 +1,5 @@
+##### 2.6.0.186
+* Update all patch versions (2.6) (patch) [ngeo#9082](https://github.com/camptocamp/ngeo/pull/9082)
 ##### 2.6.0.185
 * Update the used Ubuntu version to from 18.04 to 20.04 in the workflows [ngeo#9076](https://github.com/camptocamp/ngeo/pull/9076)
 ##### 2.6.0.184
