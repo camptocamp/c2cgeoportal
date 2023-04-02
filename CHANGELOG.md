@@ -1,3 +1,7 @@
+##### 2.7.0.228
+
+- Update all patch versions (2.7) (patch) [ngeo#9081](https://github.com/camptocamp/ngeo/pull/9081)
+
 ##### 2.7.0.226
 
 - Update the used Ubuntu version to from 18.04 to 20.04 in the workflows [ngeo#9078](https://github.com/camptocamp/ngeo/pull/9078)
