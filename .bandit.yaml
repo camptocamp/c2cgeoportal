@@ -28,3 +28,4 @@ skips:
   - B608 # Possible SQL injection vector through string-based query construction.
   - B108 # Probable insecure usage of temp file/directory.
   - B404 # Consider possible security implications associated with call module.
+  - B113 # Requests call without timeout. Done by c2cwsgiutils
