@@ -1,3 +1,7 @@
+##### 2.8.rc.16
+
+- Add ip and traceroute commands in tools [c2cgeoportal#10445](https://github.com/camptocamp/c2cgeoportal/pull/10445)
+
 ##### 2.8.rc.15
 
 - Snyk auto fix [c2cgeoportal#10444](https://github.com/camptocamp/c2cgeoportal/pull/10444)
