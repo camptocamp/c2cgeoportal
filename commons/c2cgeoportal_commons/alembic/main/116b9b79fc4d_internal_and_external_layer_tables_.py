@@ -120,17 +120,17 @@ def upgrade() -> None:
     op.execute(
         f"INSERT INTO {schema}.layer_wms (id, server_ogc_id, layer, style, "
         "  time_mode, time_widget) "
-        "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
-        f"FROM {schema}.layer_internal_wms AS lew, {schema}.server_ogc AS so "
-        "WHERE lew.image_type=so.image_type AND so.type IS NOT NULL"
+        "SELECT layer.id, so.id, layer, style, time_mode, time_widget "
+        f"FROM {schema}.layer_internal_wms AS layer, {schema}.server_ogc AS so "
+        "WHERE layer.image_type=so.image_type AND so.type IS NOT NULL"
     )
     # internal with null image_type
     op.execute(
         f"INSERT INTO {schema}.layer_wms (id, server_ogc_id, layer, style, "
         "  time_mode, time_widget) "
-        "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
-        f"FROM {schema}.layer_internal_wms AS lew, {schema}.server_ogc AS so "
-        "WHERE lew.image_type IS NULL AND so.image_type='image/png'"
+        "SELECT layer.id, so.id, layer, style, time_mode, time_widget "
+        f"FROM {schema}.layer_internal_wms AS layer, {schema}.server_ogc AS so "
+        "WHERE layer.image_type IS NULL AND so.image_type='image/png'"
     )
 
     # ocg for externals
@@ -145,10 +145,10 @@ def upgrade() -> None:
     op.execute(
         f"INSERT INTO {schema}.layer_wms (id, server_ogc_id, layer, style, "
         "  time_mode, time_widget) "
-        "SELECT lew.id, so.id, layer, style, time_mode, time_widget "
-        f"FROM {schema}.layer_external_wms as lew, {schema}.server_ogc as so "
-        "WHERE lew.url=so.url AND lew.is_single_tile=so.is_single_tile "
-        "AND lew.image_type=so.image_type"
+        "SELECT layer.id, so.id, layer, style, time_mode, time_widget "
+        f"FROM {schema}.layer_external_wms as layer, {schema}.server_ogc as so "
+        "WHERE layer.url=so.url AND layer.is_single_tile=so.is_single_tile "
+        "AND layer.image_type=so.image_type"
     )
 
     op.drop_table("layer_external_wms", schema=schema)
