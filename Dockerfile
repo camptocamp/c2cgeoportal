@@ -90,7 +90,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make python3-dev \
         postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
-        libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils \
+        libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils iproute2 traceroute \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
     && vim-addon-manager --system-wide install editorconfig \
     && echo 'set hlsearch  " Highlight search' > /etc/vim/vimrc.local \
