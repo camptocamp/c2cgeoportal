@@ -1,3 +1,5 @@
+##### 2.6.0.188
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10451](https://github.com/camptocamp/c2cgeoportal/pull/10451)
 ##### 2.6.0.186
 * Update all patch versions (2.6) (patch) [ngeo#9082](https://github.com/camptocamp/ngeo/pull/9082)
 ##### 2.6.0.185
