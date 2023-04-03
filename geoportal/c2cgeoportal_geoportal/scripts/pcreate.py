@@ -183,8 +183,8 @@ class PCreateCommand:
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":
-            context[  # nosec
-                "authtkt_secret"
+            context[
+                "authtkt_secret"  # nosec
             ] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
