@@ -15,7 +15,7 @@ papyrus = "2.5" # commons
 transaction = "3.1.0" # commons
 "c2c.template" = "2.3.0"
 GeoAlchemy2 = "0.13.1"
-SQLAlchemy = "1.4.46" # commons
+SQLAlchemy = "1.4.47" # commons
 "zope.event" = "4.6" # commons
 "zope.sqlalchemy" = "2.0" # commons
 shapely = "2.0.1"
@@ -26,5 +26,5 @@ pytz = "2023.3"
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.9.0" }
 # pylint = "2.15.5"
-types-pyyaml = "6.0.12.8"
-pytest = "7.2.1"
+types-pyyaml = "6.0.12.9"
+pytest = "7.2.2"
