@@ -2,7 +2,9 @@
 
 import requests
 
-response = requests.get("http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities"})
+response = requests.get(
+    "http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities"}, timeout=10
+)
 
 assert response.ok, f"{response.status_code}\n{response.text}"
 assert response.headers["Content-Type"].split(";")[0] == "text/xml", response.headers["Content-Type"]
@@ -10,7 +12,7 @@ assert "private_layer" not in response.text, response.text
 
 
 response = requests.get(
-    "http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities", "ROLE_IDS": "99"}
+    "http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities", "ROLE_IDS": "99"}, timeout=10
 )
 
 assert response.ok, f"{response.status_code}\n{response.text}"
@@ -32,6 +34,7 @@ response = requests.get(
         "HEIGHT": "1000",
         "BBOX": "400000,80000,600000,90000",
     },
+    timeout=10,
 )
 
 assert response.status_code == 403, f"{response.status_code}\n{response.text}"
@@ -51,6 +54,7 @@ response = requests.get(
         "BBOX": "400000,80000,600000,90000",
         "ROLE_IDS": "99",
     },
+    timeout=10,
 )
 
 assert response.ok, f"{response.status_code}\n{response.text}"
