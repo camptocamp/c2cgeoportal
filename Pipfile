@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 awscli = "==1.19.112"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
-bandit = "==1.7.4"  # lint
+bandit = "==1.7.5"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
 coverage = "==5.4"  # Build coverage XML for Codacy
 Jinja2 = "==2.11.3"  # c2c.template
@@ -130,7 +130,7 @@ babel = "==2.9.1"
 beaker = "==1.11.0"
 beaker-redis = "==1.1.0"
 boltons = "==20.2.1"
-bottle = "==0.12.24"
+bottle = "==0.12.25"
 cee-syslog-handler = "==0.6.0"
 certifi = "==2022.12.7"
 chameleon = "==3.8.1"
@@ -180,7 +180,7 @@ sqlalchemy-utils = "==0.36.8"
 stevedore = "==3.3.3"
 toml = "==0.10.2"
 ujson = "==5.4.0"
-urllib3 = "==1.26.14"
+urllib3 = "==1.26.15"
 venusian = "==3.0.0"
 waitress = "==2.1.2"
 webob = "==1.8.7"
