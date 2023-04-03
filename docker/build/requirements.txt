@@ -16,7 +16,7 @@ colander==1.7.0  # commons, admin
 ColanderAlchemy==0.3.4  # commons
 coverage==4.5.4  # Build coverage XML for Codacy
 dateutils==0.6.12  # geoportal pcreate
-deform==2.0.15  # commons, admin
+deform==2.0.7  # commons, admin
 defusedxml==0.5.0  # geoportal
 docutils==0.15.2  # doc
 dogpile.cache==0.7.1  # geoportal
