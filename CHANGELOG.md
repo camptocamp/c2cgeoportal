@@ -1,3 +1,5 @@
+##### 2.5.0.241
+* Update all patch versions (2.5) (patch) [c2cgeoportal#10450](https://github.com/camptocamp/c2cgeoportal/pull/10450)
 ##### 2.5.0.240
 * Update the used Ubuntu version to from 18.04 to 20.04 in the workflows [c2cgeoportal#10443](https://github.com/camptocamp/c2cgeoportal/pull/10443)
 ##### 2.5.0.239
