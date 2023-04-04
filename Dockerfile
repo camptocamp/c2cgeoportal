@@ -20,6 +20,8 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 # We don't directly use `poetry install` because it force to use a virtual environment.
 FROM base-all as poetry
 
+SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
+
 # Install Poetry
 WORKDIR /tmp
 COPY requirements.txt ./
@@ -103,7 +105,9 @@ RUN --mount=type=cache,target=/root/.cache \
 ENV PATH=/root/.local/bin/:${PATH}
 
 WORKDIR /opt/c2cgeoportal
-COPY ci/applications*.yaml .
+COPY ci/applications*.yaml ci/requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache \
+    pip install --disable-pip-version-check "c2cciutils==$(grep c2cciutils requirements.txt | sed s/.*==//g)"
 RUN c2cciutils-download-applications --applications-file=applications.yaml --versions-file=applications-versions.yaml
 
 COPY bin/npm-packages /usr/bin/

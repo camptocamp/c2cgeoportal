@@ -71,7 +71,6 @@ repos:
       - id: check-renovate
         additional_dependencies:
           - pyjson5==1.6.2 # pypi
-      - id: check-github-actions
       - id: check-jsonschema
         name: Check GitHub Workflows set timeout-minutes
         files: ^\.github/workflows/[^/]+$

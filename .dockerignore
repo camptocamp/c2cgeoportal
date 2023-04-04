@@ -5,6 +5,7 @@
 !poetry.lock
 !ci/applications.yaml
 !ci/applications-versions.yaml
+!ci/requirements.txt
 !dependencies.mk
 !build.mk
 !commons

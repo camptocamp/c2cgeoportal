@@ -2,6 +2,21 @@ This file includes migration steps for each release of c2cgeoportal.
 
 
 =============
+Version 2.9.0
+=============
+
+Information to know before starting the upgrade
+===============================================
+
+
+Information
+===========
+
+1. We replace checks (formatting) done by `c2cciutils` by `pre-commit` hooks.
+   This will me more standard and transparent for the project.
+
+
+=============
 Version 2.8.0
 =============
 
