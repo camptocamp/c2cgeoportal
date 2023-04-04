@@ -1,3 +1,7 @@
+##### 2.7.0.231
+
+- Handle error on failing CSV export in LiDAR panel [ngeo#9084](https://github.com/camptocamp/ngeo/pull/9084)
+
 ##### 2.7.0.229
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10452](https://github.com/camptocamp/c2cgeoportal/pull/10452)
