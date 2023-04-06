@@ -15,16 +15,22 @@ Information
 1. We upgraded MapServer to version 8, then the Mapfiles should probably be updated, and we have a new
    configurations file named `mapserver/mapserver.conf`.
    Migration guide: https://mapserver.org/MIGRATION_GUIDE.html#mapserver-7-6-to-8-0-migration.
-   Deprecated element from `CLASS` removed (moved to `STYLE`) https://mapserver.org/development/rfc/ms-rfc-133.html#rfc133.
+   Deprecated element from `CLASS` removed (moved to `STYLE`)
+   https://mapserver.org/development/rfc/ms-rfc-133.html#rfc133.
 
 2. We added the support of 'main_ogc_server' to WMS mapserver proxy URL.
-    This means that if the value 'vars/main_ogc_server' is present in the vars.yaml of the project,
-    that will be used as default value when no 'ogcserver' parameter is present in the request.
+   This means that if the value 'vars/main_ogc_server' is present in the vars.yaml of the project,
+   that will be used as default value when no 'ogcserver' parameter is present in the request.
 
-3. We switched the OpenLayers renderer to now use WegGL for WMTS. In the case of background tiles with transparency,
-    you should add the parameter 'ngeoTilesPreloadingLimit: 0' to the vars.yaml in 'constants' so that background tiles are rendered correctly.
+3. We switched the OpenLayers renderer to now use WegGL for WMTS. In the case of background tiles with
+   transparency, you should add the parameter 'ngeoTilesPreloadingLimit: 0' to the vars.yaml in 'constants'
+   so that background tiles are rendered correctly.
 
 4. In the `user` table, the column `deactivated` is now interpreted more strictly, `null` is now considered as `true`.
+
+5. We add the `gmfPrintOptions` in the update path then the default print options are maintained in the
+   `CONST_vars.yaml`, especially the `hiddenAttributes`, then if you used the default value it can be
+   removed.
 
 Changes to apply
 ================
