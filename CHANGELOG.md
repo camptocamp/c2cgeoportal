@@ -1,3 +1,8 @@
+##### 2.8.rc.17
+
+- Fix Fiona installation [c2cgeoportal#10463](https://github.com/camptocamp/c2cgeoportal/pull/10463)
+- [Backport 2.8] Handle error on failing CSV export in LiDAR panel [ngeo#9086](https://github.com/camptocamp/ngeo/pull/9086)
+
 ##### 2.8.rc.16
 
 - Add ip and traceroute commands in tools [c2cgeoportal#10445](https://github.com/camptocamp/c2cgeoportal/pull/10445)
