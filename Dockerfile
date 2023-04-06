@@ -10,11 +10,13 @@ SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 # Workaround for newer version of setuptools
 ENV SETUPTOOLS_USE_DISTUTILS=stdlib
 
+# pip install --upgrade pip should be removed when we upgrade from Ubuntu 22.04 to 24.04
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends python3-pip
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends python3-pip \
+    && pip install --upgrade pip
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
@@ -50,7 +52,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         apt-transport-https gettext less gnupg libpq5 \
-        python3-dev libgraphviz-dev libpq-dev binutils gcc g++ nodejs \
+        python3-dev libgraphviz-dev libpq-dev nodejs \
     && echo "For Chrome installed by Pupetter" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
@@ -58,13 +60,19 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
         libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
     && ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so
 
-RUN --mount=type=cache,target=/root/.cache \
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
-    PIP_NO_BINARY=fiona,rasterio PROJ_DIR=/usr/local/ python3 -m pip install \
-    --use-deprecated=legacy-resolver \
-    --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
+    apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
+        binutils gcc g++ \
+    && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
+        --use-deprecated=legacy-resolver \
+        --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
-    && apt-get auto-remove --assume-yes binutils gcc g++
+    && apt-get auto-remove --assume-yes binutils gcc g++ \
+    && python -c 'from fiona.collection import Collection'
 
 COPY scripts/extract-messages.js /opt/c2cgeoportal/geoportal/
 
