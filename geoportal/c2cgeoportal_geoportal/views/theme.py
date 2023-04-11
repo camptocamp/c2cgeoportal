@@ -225,7 +225,6 @@ class Theme:
                 }
 
             del wms
-            LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
 
             return {"layers": layers}, set()
 
@@ -979,7 +978,6 @@ class Theme:
         ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
             del url_internal_wfs  # Just for cache
             all_errors: Set[str] = set()
-            LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
             if errors:
                 all_errors |= errors
                 return None, None, all_errors
@@ -1090,6 +1088,7 @@ class Theme:
             # Don't log if it looks to be already preloaded.
             if (time.time() - start_time) > 1:
                 LOG.info("Do preload in %.3fs.", time.time() - start_time)
+            LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
             result["ogcServers"] = {}
             for ogc_server in models.DBSession.query(main.OGCServer).all():
                 nb_layers = (
@@ -1098,8 +1097,10 @@ class Theme:
                     .one()
                 )
                 if nb_layers[0] == 0:
-                    # QGIS Server langing page requires an OGC server that can't be used here.
+                    # QGIS Server landing page requires an OGC server that can't be used here.
                     continue
+
+                LOG.debug("Process OGC server '%s'", ogc_server.name)
 
                 url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
 
