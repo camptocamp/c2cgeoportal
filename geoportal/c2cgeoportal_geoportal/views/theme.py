@@ -83,7 +83,7 @@ def get_http_cached(
     def do_get_http_cached(url: str) -> Tuple[bytes, str]:
         response = requests.get(url, headers=headers, timeout=TIMEOUT, **http_options)
         response.raise_for_status()
-        LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
+        LOG.info("Get URL '%s' in %.1fs.", url, response.elapsed.total_seconds())
         return response.content, response.headers.get("Content-Type", "")
 
     if cache:
@@ -184,7 +184,7 @@ class Theme:
     async def _wms_getcap(
         self, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
     ) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
-        LOG.debug("Get the WMS Capabilities of %s, preload: %s, cache: %s", ogc_server.name, preload, cache)
+        LOG.debug("Get the WMS Capabilities of '%s', preload: %s, cache: %s", ogc_server.name, preload, cache)
 
         @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
         def build_web_map_service(ogc_server_id: int) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
@@ -870,7 +870,9 @@ class Theme:
             }
         )
 
-        LOG.debug("WFS DescribeFeatureType for the URL: %s", wfs_url.url())
+        LOG.debug(
+            "Get the WFS DescribeFeatureType of '%s', preload: %s, cache: %s", ogc_server.name, preload, cache
+        )
 
         headers = {}
 
