@@ -24,5 +24,14 @@ Information
 3. We switched the OpenLayers renderer to now use WegGL for WMTS. In the case of background tiles with transparency,
     you should add the parameter 'ngeoTilesPreloadingLimit: 0' to the vars.yaml in 'constants' so that background tiles are rendered correctly.
 
+4. The configuration of the WFS permalink change a little bit, now in `vars/interfaces_config/default/routes`
+   in the `vars.yaml` file you should have something like:
+   ```
+        ngeoPermalinkOgcserverUrl:
+          name: mapserverproxy
+          params:
+            ogcserver: '<OGC server name>'
+   ```
+
 Changes to apply
 ================
