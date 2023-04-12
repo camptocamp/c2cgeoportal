@@ -1,3 +1,7 @@
+##### 2.8.rc.20
+
+- Fix cache for all version [c2cgeoportal#10471](https://github.com/camptocamp/c2cgeoportal/pull/10471)
+
 ##### 2.8.rc.19
 
 - Fix theme loading time [c2cgeoportal#10467](https://github.com/camptocamp/c2cgeoportal/pull/10467)
