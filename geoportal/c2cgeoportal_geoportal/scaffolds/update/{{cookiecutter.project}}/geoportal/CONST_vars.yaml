@@ -479,7 +479,7 @@ vars:
     obj:
       backend: dogpile.cache.memory
     ogc-server:
-      backend: dogpile.cache.redis_sentinel
+      backend: c2cgeoportal.hybridsentinel
       arguments: *redis-cache-arguments
 
   admin_interface:
