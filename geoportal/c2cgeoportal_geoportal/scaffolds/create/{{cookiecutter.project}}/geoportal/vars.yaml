@@ -291,7 +291,7 @@ vars:
       #     db: '{REDIS_DB}'
     ogc-server:
       # Standalone version
-      backend: dogpile.cache.redis
+      backend: c2cgeoportal.hybrid
       # All versions
       arguments: *redis-cache-arguments
 
