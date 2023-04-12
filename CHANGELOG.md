@@ -1,3 +1,7 @@
+##### 2.8.rc.19
+
+- Fix theme loading time [c2cgeoportal#10467](https://github.com/camptocamp/c2cgeoportal/pull/10467)
+
 ##### 2.8.rc.17
 
 - Fix Fiona installation [c2cgeoportal#10463](https://github.com/camptocamp/c2cgeoportal/pull/10463)
