@@ -1,3 +1,7 @@
+##### 2.8.rc.21
+
+- Snyk auto fix [c2cgeoportal#10473](https://github.com/camptocamp/c2cgeoportal/pull/10473)
+
 ##### 2.8.rc.20
 
 - Fix cache for all version [c2cgeoportal#10471](https://github.com/camptocamp/c2cgeoportal/pull/10471)
