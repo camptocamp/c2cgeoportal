@@ -1,3 +1,8 @@
+##### 2.8.rc.22
+
+- Add information about deactivated in user in the changelog [c2cgeoportal#10474](https://github.com/camptocamp/c2cgeoportal/pull/10474)
+- Fix example checks [ngeo#9090](https://github.com/camptocamp/ngeo/pull/9090)
+
 ##### 2.8.rc.21
 
 - Snyk auto fix [c2cgeoportal#10473](https://github.com/camptocamp/c2cgeoportal/pull/10473)
