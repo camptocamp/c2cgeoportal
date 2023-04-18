@@ -24,5 +24,7 @@ Information
 3. We switched the OpenLayers renderer to now use WegGL for WMTS. In the case of background tiles with transparency,
     you should add the parameter 'ngeoTilesPreloadingLimit: 0' to the vars.yaml in 'constants' so that background tiles are rendered correctly.
 
+4. In the `user` table, the column `deactivated` is now interpreted more strictly, `null` is now considered as `true`.
+
 Changes to apply
 ================
