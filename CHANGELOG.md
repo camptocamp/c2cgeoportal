@@ -1,3 +1,7 @@
+##### 2.7.0.232
+
+- [Backport 2.7] Fix the phantom disclaimer [ngeo#9096](https://github.com/camptocamp/ngeo/pull/9096)
+
 ##### 2.7.0.231
 
 - Handle error on failing CSV export in LiDAR panel [ngeo#9084](https://github.com/camptocamp/ngeo/pull/9084)
