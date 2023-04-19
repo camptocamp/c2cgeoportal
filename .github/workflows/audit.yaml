@@ -30,11 +30,9 @@ jobs:
             os: ubuntu-22.04
 
     steps:
-      - run: sudo npm install -g npm@6
-
       # For version below 2.7 (included)
       - run: |
-          sudo apt-get update
+          sudo apt-get update || true
           sudo apt-get install --yes libgdal-dev libgraphviz-dev
 
       # Have an httplib2 version without any security issues
