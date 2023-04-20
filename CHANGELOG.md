@@ -1,3 +1,7 @@
+##### 2.7.0.233
+
+- [Backport 2.7] Fix the package name in the apihelp of the simple app [c2cgeoportal#10479](https://github.com/camptocamp/c2cgeoportal/pull/10479)
+
 ##### 2.7.0.232
 
 - [Backport 2.7] Fix the phantom disclaimer [ngeo#9096](https://github.com/camptocamp/ngeo/pull/9096)
