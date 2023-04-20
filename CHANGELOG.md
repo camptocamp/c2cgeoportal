@@ -1,3 +1,10 @@
+##### 2.8.rc.23
+
+- Fix the package name in the apihelp of the simple app [c2cgeoportal#10465](https://github.com/camptocamp/c2cgeoportal/pull/10465)
+- Add the new gmfWMSSourceOptions constant [c2cgeoportal#10476](https://github.com/camptocamp/c2cgeoportal/pull/10476)
+- Clear the WebGL rendering correctly [ngeo#9089](https://github.com/camptocamp/ngeo/pull/9089)
+- Fix the phantom disclaimer [ngeo#9094](https://github.com/camptocamp/ngeo/pull/9094)
+
 ##### 2.8.rc.22
 
 - Add information about deactivated in user in the changelog [c2cgeoportal#10474](https://github.com/camptocamp/c2cgeoportal/pull/10474)
