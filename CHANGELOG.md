@@ -1,3 +1,9 @@
+##### 2.8.rc.24
+
+- [Backport 2.8] Revert "Fix the package name in the apihelp of the simple app" [c2cgeoportal#10483](https://github.com/camptocamp/c2cgeoportal/pull/10483)
+- Fix blurry WMS and WMTS layers [ngeo#9091](https://github.com/camptocamp/ngeo/pull/9091)
+- Add the floor in the mobile for simple app [ngeo#9092](https://github.com/camptocamp/ngeo/pull/9092)
+
 ##### 2.8.rc.23
 
 - Fix the package name in the apihelp of the simple app [c2cgeoportal#10465](https://github.com/camptocamp/c2cgeoportal/pull/10465)
