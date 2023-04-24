@@ -1,3 +1,7 @@
+##### 2.7.0.234
+
+- Revert "Fix the package name in the apihelp of the simple app" [c2cgeoportal#10481](https://github.com/camptocamp/c2cgeoportal/pull/10481)
+
 ##### 2.7.0.233
 
 - [Backport 2.7] Fix the package name in the apihelp of the simple app [c2cgeoportal#10479](https://github.com/camptocamp/c2cgeoportal/pull/10479)
