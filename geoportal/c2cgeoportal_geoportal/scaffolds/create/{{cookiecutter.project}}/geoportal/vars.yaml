@@ -163,6 +163,10 @@ vars:
   layers:
     geometry_validation: True
 
+  api:
+    # The name of the API in JavaScript
+    name: '{{cookiecutter.package}}'
+
   # The "vector tiles web service" configuration. See the "vector tiles"
   # chapter in the integrator documentation.
   vector_tiles:
