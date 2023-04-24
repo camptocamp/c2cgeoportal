@@ -133,7 +133,7 @@ function upgrade {
         exit 1
     fi
     git clean -Xf
-    find -type d -empty -delete || true
+    find -type d -empty -delete
     cd -
     diff --recursive --exclude=.git --exclude=locale ${WORKSPACE}/ref ${WORKSPACE}/v$1
 }
