@@ -298,6 +298,8 @@ vars:
           # The default value is 1.5 but it add a slight blur on the layer,
           # 1 is also possible but the application will do a getMap on all the pan.
           ratio: 2
+        gmfFitOptions:
+          padding: [50 10 50 50]
 
       dynamic_constants:
         interface: interface
