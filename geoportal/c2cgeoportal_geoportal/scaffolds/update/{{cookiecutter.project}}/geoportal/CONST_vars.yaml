@@ -299,7 +299,8 @@ vars:
           # 1 is also possible but the application will do a getMap on all the pan.
           ratio: 2
         gmfFitOptions:
-          padding: [50 10 50 50]
+          # Padding around the feature [top, bottom, left, right]
+          padding: [50, 10, 50, 50]
 
       dynamic_constants:
         interface: interface
