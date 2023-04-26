@@ -1,3 +1,7 @@
+##### 2.8.rc.25
+
+- Add the new fit option [c2cgeoportal#10485](https://github.com/camptocamp/c2cgeoportal/pull/10485)
+
 ##### 2.8.rc.24
 
 - [Backport 2.8] Revert "Fix the package name in the apihelp of the simple app" [c2cgeoportal#10483](https://github.com/camptocamp/c2cgeoportal/pull/10483)
