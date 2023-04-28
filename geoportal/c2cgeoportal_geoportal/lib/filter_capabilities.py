@@ -34,6 +34,7 @@ from typing import Any, Callable, Dict, List, Optional, Set, Union
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
 
 import defusedxml.expatreader
+import pyramid.httpexceptions
 import pyramid.request
 import requests
 from owslib.map.wms111 import ContentMetadata as ContentMetadata111
@@ -151,6 +152,9 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
     writable_layers: Set[str] = set()
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url.url())
+    if ogc_server_ids is None:
+        LOG.error("No OGC server found for WFS URL %s", wfs_url)
+        raise pyramid.httpexceptions.HTTPInternalServerError("No OGC server found for WFS URL")
 
     for gmf_layer in list(get_writable_layers(request, ogc_server_ids).values()):
         writable_layers |= set(gmf_layer.layer.split(","))
