@@ -522,7 +522,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
-        user = pyramid.threadlocal.get_current_request().user_
+        user = pyramid.threadlocal.get_current_request().user
 
         # Don't allows to have two authentications for the same user and the same client
         authorization_code = (
@@ -692,6 +692,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         bearer_token = (
             DBSession.query(static.OAuth2BearerToken)
+            .join(static.User)
             .filter(static.OAuth2BearerToken.access_token == token)
             .filter(static.OAuth2BearerToken.expire_at > datetime.now())
         ).one_or_none()
@@ -778,15 +779,19 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
-        authorization_code = (
+        authorization_code_query = (
             DBSession.query(static.OAuth2AuthorizationCode)
             .join(static.OAuth2AuthorizationCode.client)
             .filter(static.OAuth2AuthorizationCode.code == code)
-            .filter(static.OAuth2AuthorizationCode.state == request.state)
-            .filter(static.OAuth2Client.client_id == client_id)
+            .filter(static.OAuth2AuthorizationCode.client_id == client.id)
             .filter(static.OAuth2AuthorizationCode.expire_at > datetime.now())
-            .one_or_none()
         )
+        if client.state_required:
+            authorization_code_query = authorization_code_query.filter(
+                static.OAuth2AuthorizationCode.state == request.state
+            )
+
+        authorization_code = authorization_code_query.one_or_none()
         if authorization_code is None:
             LOG.debug("validate_code => KO, no authorization_code found")
             return False
