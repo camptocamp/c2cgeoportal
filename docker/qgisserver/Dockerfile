@@ -17,7 +17,7 @@ RUN cd /tmp && PIP_NO_BINARY=:all: pipenv install --system --deploy --clear
 
 #############################################################################################################
 
-FROM debian:stretch AS lint
+FROM debian:buster AS lint
 
 RUN apt-get update
 RUN apt-get install --assume-yes --no-install-recommends apt-utils

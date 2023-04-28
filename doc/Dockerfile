@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 
 RUN apt-get update
 RUN apt-get install --assume-yes --no-install-recommends python3-pip python3-setuptools gettext
