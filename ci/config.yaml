@@ -8,6 +8,7 @@ checks:
     clean.yaml: False
     audit.yaml: False
     dependabot-auto-merge.yaml: False
+    codeql.yaml: False
   dependabot_config: False
   prospector_config: False
   setup: False
