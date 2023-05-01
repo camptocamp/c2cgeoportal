@@ -368,7 +368,7 @@ update_paths:
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
   - interfaces_config.default.routes.fulltextsearchUrl
-  - interfaces_config.desktop.constants
+  - interfaces_config.desktop.constants.gmfPrintOptions
   - interfaces_config.desktop.routes
   - interfaces_config.mobile.constants.gmfMobileMeasurePointOptions
   - interfaces_config.iframe_api.constants
