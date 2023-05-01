@@ -14,13 +14,13 @@ c2cwsgiutils = { extras = ["broadcast"], version = "5.2.2" }
 papyrus = "2.5" # commons
 transaction = "3.1.0" # commons
 "c2c.template" = "2.3.0"
-GeoAlchemy2 = "0.13.1"
-SQLAlchemy = "1.4.47" # commons
+GeoAlchemy2 = "0.13.2"
+SQLAlchemy = "1.4.48" # commons
 "zope.event" = "4.6" # commons
 "zope.sqlalchemy" = "2.0" # commons
 shapely = "2.0.1"
 cee-syslog-handler = "0.6.0"
-psycopg2 = "2.9.5"
+psycopg2 = "2.9.6"
 pytz = "2023.3"
 
 [tool.poetry.dev-dependencies]
