@@ -1,3 +1,7 @@
+##### 2.8.rc.28
+
+- Merge the PrintOptions to be able to keep the default hidden attributes [c2cgeoportal#10466](https://github.com/camptocamp/c2cgeoportal/pull/10466)
+
 ##### 2.8.rc.27
 
 - Fix code return when basic auth is desabled [c2cgeoportal#10477](https://github.com/camptocamp/c2cgeoportal/pull/10477)
