@@ -1,3 +1,7 @@
+##### 2.8.rc.27
+
+- Fix code return when basic auth is desabled [c2cgeoportal#10477](https://github.com/camptocamp/c2cgeoportal/pull/10477)
+
 ##### 2.8.rc.25
 
 - Add the new fit option [c2cgeoportal#10485](https://github.com/camptocamp/c2cgeoportal/pull/10485)
