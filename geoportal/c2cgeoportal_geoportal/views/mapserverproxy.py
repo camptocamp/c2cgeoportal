@@ -29,7 +29,7 @@
 import logging
 from typing import Any, Dict, Set
 
-from pyramid.httpexceptions import HTTPFound, HTTPInternalServerError, HTTPUnauthorized
+from pyramid.httpexceptions import HTTPForbidden, HTTPFound, HTTPInternalServerError, HTTPUnauthorized
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -67,7 +67,7 @@ class MapservProxy(OGCProxy):
                 raise HTTPUnauthorized(
                     headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'}
                 )
-            raise HTTPUnauthorized(headers={"WWW-Authenticate": 'Bearer realm="Access to restricted layers"'})
+            raise HTTPForbidden("Basic auth is not enabled")
 
         # We have a user logged in. We need to set group_id and possible layer_name in the params. We set
         # layer_name when either QUERY_PARAMS or LAYERS is set in the WMS params, i.e. for GetMap and

@@ -1001,7 +1001,7 @@ class TestMapserverproxyView(TestCase):
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
     def test_authentication_required(self):
-        from pyramid.httpexceptions import HTTPUnauthorized
+        from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
@@ -1009,4 +1009,4 @@ class TestMapserverproxyView(TestCase):
         request.params.update(
             dict(service="wms", version="1.1.1", request="getcapabilities", authentication_required="true")
         )
-        self.assertRaises(HTTPUnauthorized, MapservProxy(request).proxy)
+        self.assertRaises(HTTPForbidden, MapservProxy(request).proxy)
