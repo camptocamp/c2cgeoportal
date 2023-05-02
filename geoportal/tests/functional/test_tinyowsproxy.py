@@ -140,7 +140,7 @@ class TestTinyOWSProxyView(TestCase):
         request = _create_dummy_request(username="__test_user1")
 
         responses.get(
-            url="http://mapserver:8080/",
+            url="http://localhost/tinyows",
             body=load_file(self.capabilities_response_file),
         )
 
@@ -159,7 +159,7 @@ class TestTinyOWSProxyView(TestCase):
         request = _create_dummy_request(username="__test_user2")
 
         responses.get(
-            url="http://mapserver:8080/",
+            url="http://localhost/tinyows",
             body=load_file(self.capabilities_response_file),
         )
 
@@ -179,7 +179,7 @@ class TestTinyOWSProxyView(TestCase):
         request.params.update(dict(service="wfs", version="1.1.0", request="GetCapabilities"))
 
         responses.get(
-            url="http://mapserver:8080/",
+            url="http://localhost/tinyows",
             body=load_file(self.capabilities_response_file),
         )
 
@@ -200,7 +200,7 @@ class TestTinyOWSProxyView(TestCase):
         request.body = load_file(TestTinyOWSProxyView.capabilities_request_file)
 
         responses.post(
-            url="http://mapserver:8080/",
+            url="http://localhost/tinyows",
             body=load_file(self.capabilities_response_file),
         )
 
@@ -242,7 +242,7 @@ class TestTinyOWSProxyView(TestCase):
         )
 
         responses.get(
-            url="http://mapserver:8080/",
+            url="http://example.com/",
             body="unfiltered response",
         )
 
@@ -272,7 +272,7 @@ class TestTinyOWSProxyView(TestCase):
         request.body = load_file(TestTinyOWSProxyView.describefeaturetype_request_file)
 
         responses.post(
-            url="http://mapserver:8080/",
+            url="http://localhost/tinyows",
             body="unfiltered response",
         )
 
