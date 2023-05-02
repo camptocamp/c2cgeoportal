@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any, Dict, Optional, Set, Tuple
+from typing import Any, Dict, Set, Tuple
 
 import pyramid.request
 from defusedxml import ElementTree
@@ -67,9 +67,6 @@ class TinyOWSProxy(OGCProxy):
 
         # params hold the parameters we are going to send to TinyOWS
         self.lower_params = self._get_lower_params(dict(self.request.params))
-
-    def _get_wfs_url(self, errors: Set[str]) -> Optional[Url]:
-        return Url(self.settings.get("tinyows_url"))
 
     @view_config(route_name="tinyowsproxy")  # type: ignore
     def proxy(self) -> pyramid.response.Response:
@@ -111,11 +108,7 @@ class TinyOWSProxy(OGCProxy):
         use_cache = method == "GET" and operation in ("getcapabilities", "describefeaturetype")
         cache_control = Cache.PRIVATE if use_cache else Cache.PRIVATE_NO
 
-        errors: Set[str] = set()
-        url = super()._get_wfs_url(errors)
-        if url is None:
-            LOG.error("Error getting the URL:\n%s", "\n".join(errors))
-            raise HTTPInternalServerError()
+        url = Url(self.settings.get("tinyows_url"))
 
         response = self._proxy_callback(
             operation,
