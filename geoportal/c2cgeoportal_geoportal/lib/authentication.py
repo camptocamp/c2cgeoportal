@@ -132,7 +132,7 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         if valid:
             request.user_ = oauth2_request.user
 
-            return cast(str, request.user_.username)
+            return cast(str, request.user.username)
         return None
 
     def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> List[Dict[str, str]]:
