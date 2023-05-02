@@ -86,7 +86,7 @@ repos:
       - id: ripsecrets
         exclude: (^docker/config/haproxy_dev/localhost\.pem$|geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql)
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.0.2
+    rev: v2.1.1
     hooks:
       - id: autoflake
   - repo: https://github.com/asottile/pyupgrade
