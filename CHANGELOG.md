@@ -1,3 +1,9 @@
+##### 2.8.rc.29
+
+- Fix the get URL of tiny OWS [c2cgeoportal#10487](https://github.com/camptocamp/c2cgeoportal/pull/10487)
+- Fix OAuth2 with some clients [c2cgeoportal#10488](https://github.com/camptocamp/c2cgeoportal/pull/10488)
+- Don't separate keys with a dot [c2cgeoportal#10504](https://github.com/camptocamp/c2cgeoportal/pull/10504)
+
 ##### 2.8.rc.28
 
 - Merge the PrintOptions to be able to keep the default hidden attributes [c2cgeoportal#10466](https://github.com/camptocamp/c2cgeoportal/pull/10466)
