@@ -1,3 +1,5 @@
+##### 2.6.0.191
+* Update dependency paste to v3.5.3 (2.6) [c2cgeoportal#10492](https://github.com/camptocamp/c2cgeoportal/pull/10492)
 ##### 2.6.0.190
 * Snyk auto fix [c2cgeoportal#10503](https://github.com/camptocamp/c2cgeoportal/pull/10503)
 ##### 2.6.0.189
