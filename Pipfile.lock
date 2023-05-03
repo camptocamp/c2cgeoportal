@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "20a399dcde85d89bc466f403690c37e8742804cf628acebea002a4176f61dc1d"
+            "sha256": "37db495e548281b3a63c9bf4c1637849afc079a53fe37b72e78076b1d0556798"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -612,7 +612,7 @@
                 "sha256:994793af429502c4ea2ebf6bf664629d07c1a9fe974af92966e4b8d2df7edc61",
                 "sha256:a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_full_version >= '3.7.0'",
             "version": "==23.1"
         },
         "papyrus": {
@@ -633,11 +633,11 @@
         },
         "paste": {
             "hashes": [
-                "sha256:d5a7340c30bcdf3023dd0106c8a5c430dd8fe84aeb8113bc7b93f8dd729f4af6",
-                "sha256:fa0385cd07a50e6c679e735e44afef1e24ab1a0578eea501e45b8c2d38669b77"
+                "sha256:e837f769ac78b03190337f7639e592e3f80a86d3556ef1c4b49cfc151b216a9c",
+                "sha256:fa093f46a4d1ea3898a849c8ce1d2a425c2bed5fc06b36384fe3ffaa652c081b"
             ],
             "index": "pypi",
-            "version": "==3.5.2"
+            "version": "==3.5.3"
         },
         "pastedeploy": {
             "hashes": [
@@ -1883,16 +1883,16 @@
                 "sha256:994793af429502c4ea2ebf6bf664629d07c1a9fe974af92966e4b8d2df7edc61",
                 "sha256:a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_full_version >= '3.7.0'",
             "version": "==23.1"
         },
         "paste": {
             "hashes": [
-                "sha256:d5a7340c30bcdf3023dd0106c8a5c430dd8fe84aeb8113bc7b93f8dd729f4af6",
-                "sha256:fa0385cd07a50e6c679e735e44afef1e24ab1a0578eea501e45b8c2d38669b77"
+                "sha256:e837f769ac78b03190337f7639e592e3f80a86d3556ef1c4b49cfc151b216a9c",
+                "sha256:fa093f46a4d1ea3898a849c8ce1d2a425c2bed5fc06b36384fe3ffaa652c081b"
             ],
             "index": "pypi",
-            "version": "==3.5.2"
+            "version": "==3.5.3"
         },
         "pastedeploy": {
             "hashes": [
