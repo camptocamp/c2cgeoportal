@@ -1,3 +1,10 @@
+##### 2.8.rc.30
+
+- [Backport 2.8] Fix qgisserver-plugin-config for URL/params [c2cgeoportal#10510](https://github.com/camptocamp/c2cgeoportal/pull/10510)
+- Fix the WFS permalink zoom to features [ngeo#9101](https://github.com/camptocamp/ngeo/pull/9101)
+- [Backport 2.8] Fix untrusted input [ngeo#9105](https://github.com/camptocamp/ngeo/pull/9105)
+- Localize the secured layers warning [ngeo#9111](https://github.com/camptocamp/ngeo/pull/9111)
+
 ##### 2.8.rc.29
 
 - Fix the get URL of tiny OWS [c2cgeoportal#10487](https://github.com/camptocamp/c2cgeoportal/pull/10487)
