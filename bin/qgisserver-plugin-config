@@ -48,7 +48,12 @@ def main() -> None:
 
         # With QGIS server plugin we interpret the value in the config container
         for key, value in gmf_config["vars"]["servers"].items():
-            gmf_config["vars"]["servers"][key] = value.replace("{", "${")
+            if isinstance(value, dict):
+                for param_name, param_value in value.get("params", {}).items():
+                    value["params"][param_name] = param_value.replace("{", "${")
+                value["url"] = value["url"].replace("{", "${")
+            else:
+                gmf_config["vars"]["servers"][key] = value.replace("{", "${")
         for key in ("srid", "servers"):
             if key not in config["vars"]:
                 config["vars"][key] = gmf_config["vars"][key]
