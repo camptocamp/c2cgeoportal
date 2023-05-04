@@ -1,3 +1,7 @@
+##### 2.8.rc.31
+
+- Set fit option for mobile [c2cgeoportal#10508](https://github.com/camptocamp/c2cgeoportal/pull/10508)
+
 ##### 2.8.rc.30
 
 - [Backport 2.8] Fix qgisserver-plugin-config for URL/params [c2cgeoportal#10510](https://github.com/camptocamp/c2cgeoportal/pull/10510)
