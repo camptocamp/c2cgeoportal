@@ -1,3 +1,7 @@
+##### 2.7.0.240
+
+- Fix qgisserver-plugin-config for URL/params [c2cgeoportal#10505](https://github.com/camptocamp/c2cgeoportal/pull/10505)
+
 ##### 2.7.0.239
 
 - Update all patch versions (2.7) (patch) [ngeo#9108](https://github.com/camptocamp/ngeo/pull/9108)
