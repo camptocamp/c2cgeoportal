@@ -299,9 +299,6 @@ vars:
           # The default value is 1.5 but it add a slight blur on the layer,
           # 1 is also possible but the application will do a getMap on all the pan.
           ratio: 2
-        gmfFitOptions:
-          # Padding around the feature [top, bottom, left, right]
-          padding: [50, 10, 50, 50]
 
       dynamic_constants:
         interface: interface
@@ -400,11 +397,15 @@ vars:
                 radius: 3
         gmfShareOptions:
           enableEmail: True
+        gmfFitOptions:
+          # Padding (in pixels) to be correctly fitted inside the view. Values in the array are top, right, bottom and left padding.
+          padding: [50, 10, 50, 50]
       routes:
         gmfProfileJsonUrl:
           name: profile.json
         gmfPrintUrl:
           name: printproxy
+
     mobile:
       extends: default
       redirect_interface: desktop
@@ -448,10 +449,15 @@ vars:
               radius: 8
               radius2: 0
               angle: 0
+        gmfFitOptions:
+          # Padding (in pixels) to be correctly fitted inside the view. Values in the array are top, right, bottom and left padding.
+          padding: [60, 60, 42, 10]
+
     iframe_api:
       extends: default
       constants:
         gmfSearchGroups: []
+
     api:
       constants:
         projections: *projections
