@@ -457,6 +457,9 @@ vars:
       extends: default
       constants:
         gmfSearchGroups: []
+        gmfFitOptions:
+          # Padding (in pixels) to be correctly fitted inside the view. Values in the array are top, right, bottom and left padding.
+          padding: [20, 20, 20, 20]
 
     api:
       constants:
