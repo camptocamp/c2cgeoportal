@@ -1,3 +1,7 @@
+##### 2.8.rc.33
+
+- Add missing fit options to iframe API [c2cgeoportal#10513](https://github.com/camptocamp/c2cgeoportal/pull/10513)
+
 ##### 2.8.rc.32
 
 - Fix the build [c2cgeoportal#10512](https://github.com/camptocamp/c2cgeoportal/pull/10512)
