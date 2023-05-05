@@ -1,3 +1,7 @@
+##### 2.8.rc.32
+
+- Fix the build [c2cgeoportal#10512](https://github.com/camptocamp/c2cgeoportal/pull/10512)
+
 ##### 2.8.rc.31
 
 - Set fit option for mobile [c2cgeoportal#10508](https://github.com/camptocamp/c2cgeoportal/pull/10508)
