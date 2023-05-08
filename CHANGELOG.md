@@ -1,3 +1,7 @@
+##### 2.8.rc.34
+
+- Fix the login info message on mobile [ngeo#9113](https://github.com/camptocamp/ngeo/pull/9113)
+
 ##### 2.8.rc.33
 
 - Add missing fit options to iframe API [c2cgeoportal#10513](https://github.com/camptocamp/c2cgeoportal/pull/10513)
