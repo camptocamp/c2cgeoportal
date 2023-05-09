@@ -42,6 +42,7 @@ from transaction import TransactionManager
 from translationstring import TranslationStringFactory
 
 from c2cgeoportal_admin.subscribers import add_localizer, add_renderer_globals
+from c2cgeoportal_admin.views import IsAdminPredicate
 
 search_paths = (resource_filename(__name__, "templates/widgets"),) + c2cgeoform.default_search_paths
 c2cgeoform.default_search_paths = search_paths
@@ -131,6 +132,7 @@ def includeme(config: Configurator) -> None:
     # Use pyramid_tm to hook the transaction lifecycle to the request
     config.include("pyramid_tm")
     config.add_translation_dirs("c2cgeoportal_admin:locale")
+    config.add_view_predicate("is_admin", IsAdminPredicate)
 
     configure_mappers()
 
