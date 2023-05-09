@@ -3,7 +3,7 @@ name: Update ngeo 2.8
 on:
   repository_dispatch:
     types:
-      - ngeo_<new version>_updated
+      - ngeo_2.8_updated
 
 jobs:
   main:
