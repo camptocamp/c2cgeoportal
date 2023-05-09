@@ -203,6 +203,9 @@ vars:
         gmfLayerTreeOptions:
           openLinksInNewWindow: False
           isExpanded: False
+          layerIcon:
+            width: 20
+            height: 20
         gmfDisclaimerOptions: {}
         gmfBackgroundLayerSelectorOptions: {}
         defaultTheme: Demo
