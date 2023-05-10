@@ -250,55 +250,64 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 </div>
 <p>Copy the file <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> from new version branch to master branch as
 <code class="docutils literal notranslate"><span class="pre">.github/workflows/ngeo-&lt;new</span> <span class="pre">version&gt;.yaml</span></code> and do the following changes:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- name: Continuous integration</span>
-<span class="gi">+ name: Update ngeo &lt;new version&gt;</span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">-name: Continuous integration</span>
+<span class="gi">+name: Update ngeo &lt;new version&gt;</span>
 
-<span class="w"> </span> on:
-<span class="gd">-   push:</span>
-<span class="gi">+   repository_dispatch:</span>
-<span class="gi">+     types:</span>
-<span class="gi">+     - ngeo_&lt;new version&gt;_updated</span>
+<span class="w"> </span>on:
+<span class="gd">-  push:</span>
+<span class="gi">+  repository_dispatch:</span>
+<span class="gi">+    types:</span>
+<span class="gi">+    - ngeo_&lt;new version&gt;_updated</span>
 
-<span class="gd">-     name: Continuous integration</span>
-<span class="gi">+     name: Update ngeo &lt;new version&gt;</span>
+<span class="w"> </span>jobs:
+<span class="gd">-  not-failed-backport:</span>
+<span class="gd">-    ...</span>
 
+<span class="w"> </span>  build:
+<span class="w"> </span>    ...
+<span class="gd">-    name: Continuous integration</span>
+<span class="gi">+    name: Update ngeo &lt;new version&gt;</span>
+<span class="w"> </span>    ...
 <span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-<span class="w"> </span>     env:
-<span class="gd">-       MAIN_BRANCH: master</span>
-<span class="gd">-       MAJOR_VERSION: x.y</span>
-<span class="gi">+       MAIN_BRANCH: x.y</span>
-<span class="gi">+       MAJOR_VERSION: x.y</span>
+<span class="w"> </span>    env:
+<span class="gd">-      MAIN_BRANCH: master</span>
+<span class="gd">-      MAJOR_VERSION: x.y</span>
+<span class="gi">+      MAIN_BRANCH: x.y</span>
+<span class="gi">+      MAJOR_VERSION: x.y</span>
 
-<span class="w"> </span>    jobs:
-<span class="gd">-      not-failed-backport:</span>
+<span class="w"> </span>    steps:
+<span class="w"> </span>      ...
+
+<span class="gd">-      - uses: actions/checkout@v2</span>
+<span class="gd">-        with:</span>
+<span class="gd">-          fetch-depth: 0</span>
+<span class="gd">-          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}</span>
+<span class="gd">-        if: env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span>
+<span class="w"> </span>      - uses: actions/checkout@v2
+<span class="w"> </span>        with:
+<span class="w"> </span>          fetch-depth: 0
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+<span class="w"> </span>        if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;
+
+<span class="w"> </span>      ...
+<span class="gi">+      - run: cd geoportal &amp;&amp; npm update</span>
+<span class="w"> </span>      - run: scripts/get-version --auto-increment --github
+<span class="w"> </span>        id: version
+<span class="w"> </span>      ...
+
+<span class="w"> </span>      - name: Publish
+<span class="w"> </span>        run: &gt;
+<span class="w"> </span>          c2cciutils-publish
+<span class="w"> </span>          --docker-versions=${{ steps.version.outputs.versions }}
+<span class="w"> </span>          --snyk-version=${{ steps.version.outputs.snyk_version }}
+<span class="gi">+          --type=rebuild</span>
+
+<span class="gd">-      - name: Publish to Transifex</span>
 <span class="gd">-        ...</span>
-
-
-<span class="gd">-       - uses: actions/checkout@v2</span>
-<span class="gd">-         with:</span>
-<span class="gd">-           fetch-depth: 0</span>
-<span class="gd">-           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}</span>
-<span class="gd">-         if: env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span>
-<span class="w"> </span>       - uses: actions/checkout@v2
-<span class="w"> </span>         with:
-<span class="w"> </span>           fetch-depth: 0
-<span class="gi">+           ref: ${{ env.MAIN_BRANCH }}</span>
-<span class="w"> </span>         if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;
-
-
-<span class="w"> </span>  - name: Publish
-<span class="w"> </span>    run: &gt;
-<span class="w"> </span>      c2cciutils-publish
-<span class="w"> </span>      --docker-versions=${{ steps.version.outputs.versions }}
-<span class="w"> </span>      --snyk-version=${{ steps.version.outputs.snyk_version }}
-<span class="gi">+      --type=rebuild</span>
-
-<span class="gd">-       - name: Publish to Transifex</span>
-<span class="gd">-         ...</span>
 <span class="gd">-</span>
-<span class="gd">-       - name: Publish documentation to GitHub.io</span>
-<span class="gd">-         ...</span>
+<span class="gd">-      - name: Publish documentation to GitHub.io</span>
+<span class="gd">-        ...</span>
 </pre></div>
 </div>
 <p>And also remove all the <cite>if</cite> concerning the following tests:</p>
