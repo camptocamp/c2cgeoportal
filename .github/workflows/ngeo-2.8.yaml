@@ -125,7 +125,9 @@ jobs:
         if: failure()
         continue-on-error: true
 
+      - run: git stash
       - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
+      - run: git stash pop
 
         # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools

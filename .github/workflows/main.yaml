@@ -145,10 +145,12 @@ jobs:
         if: failure()
         continue-on-error: true
 
+      - run: git stash
       - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
+      - run: git stash pop
 
         # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
