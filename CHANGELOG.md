@@ -1,3 +1,7 @@
+##### 2.8.rc.37
+
+- [Backport 2.8] Add the layer icon width and height [c2cgeoportal#10519](https://github.com/camptocamp/c2cgeoportal/pull/10519)
+
 ##### 2.8.rc.34
 
 - Fix the login info message on mobile [ngeo#9113](https://github.com/camptocamp/ngeo/pull/9113)
