@@ -236,55 +236,64 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
 
 .. code:: diff
 
-   - name: Continuous integration
-   + name: Update ngeo <new version>
+   -name: Continuous integration
+   +name: Update ngeo <new version>
 
-     on:
-   -   push:
-   +   repository_dispatch:
-   +     types:
-   +     - ngeo_<new version>_updated
+    on:
+   -  push:
+   +  repository_dispatch:
+   +    types:
+   +    - ngeo_<new version>_updated
 
-   -     name: Continuous integration
-   +     name: Update ngeo <new version>
+    jobs:
+   -  not-failed-backport:
+   -    ...
 
+      build:
+        ...
+   -    name: Continuous integration
+   +    name: Update ngeo <new version>
+        ...
    -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
-         env:
-   -       MAIN_BRANCH: master
-   -       MAJOR_VERSION: x.y
-   +       MAIN_BRANCH: x.y
-   +       MAJOR_VERSION: x.y
+        env:
+   -      MAIN_BRANCH: master
+   -      MAJOR_VERSION: x.y
+   +      MAIN_BRANCH: x.y
+   +      MAJOR_VERSION: x.y
 
-        jobs:
-   -      not-failed-backport:
+        steps:
+          ...
+
+   -      - uses: actions/checkout@v2
+   -        with:
+   -          fetch-depth: 0
+   -          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+   -        if: env.HAS_SECRETS == 'HAS_SECRETS'
+          - uses: actions/checkout@v2
+            with:
+              fetch-depth: 0
+   +          ref: ${{ env.MAIN_BRANCH }}
+            if: env.HAS_SECRETS != 'HAS_SECRETS'
+
+          ...
+   +      - run: cd geoportal && npm update
+          - run: scripts/get-version --auto-increment --github
+            id: version
+          ...
+
+          - name: Publish
+            run: >
+              c2cciutils-publish
+              --docker-versions=${{ steps.version.outputs.versions }}
+              --snyk-version=${{ steps.version.outputs.snyk_version }}
+   +          --type=rebuild
+
+   -      - name: Publish to Transifex
    -        ...
-
-
-   -       - uses: actions/checkout@v2
-   -         with:
-   -           fetch-depth: 0
-   -           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-   -         if: env.HAS_SECRETS == 'HAS_SECRETS'
-           - uses: actions/checkout@v2
-             with:
-               fetch-depth: 0
-   +           ref: ${{ env.MAIN_BRANCH }}
-             if: env.HAS_SECRETS != 'HAS_SECRETS'
-
-
-      - name: Publish
-        run: >
-          c2cciutils-publish
-          --docker-versions=${{ steps.version.outputs.versions }}
-          --snyk-version=${{ steps.version.outputs.snyk_version }}
-   +      --type=rebuild
-
-   -       - name: Publish to Transifex
-   -         ...
    -
-   -       - name: Publish documentation to GitHub.io
-   -         ...
+   -      - name: Publish documentation to GitHub.io
+   -        ...
 
 
 And also remove all the `if` concerning the following tests:
