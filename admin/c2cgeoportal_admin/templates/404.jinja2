@@ -24,8 +24,24 @@
 {% extends "layout.jinja2" %}
 
 {% block content %}
-<div class="content">
-  <h1><span class="font-semi-bold">Pyramid</span> <span class="smaller">Alchemy scaffold</span></h1>
+<div class="container-fluid">
+{% if "table" in request.matchdict %}
+{% for table in request.c2cgeoform_application.tables() %}
+{% if table["key"] == request.matchdict["table"] %}
+<h2>
+{{ table["title"] }}
+</h2>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if context.detail %}
+<p>{{ context.detail }}</p>
+{% else  %}
+{% if "id" in request.matchdict and "table" in request.matchdict %}
+<p>{{ _("Element id '{}' not found, probably deleted.").format(request.matchdict["id"]) }}</p>
+{% else %}
   <p class="lead"><span class="font-semi-bold">404</span> Page Not Found</p>
+{% endif %}
+{% endif %}
 </div>
 {% endblock content %}

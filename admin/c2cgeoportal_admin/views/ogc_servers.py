@@ -35,7 +35,7 @@ import requests
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField, UserMessage
 from deform.widget import FormWidget
-from pyramid.httpexceptions import HTTPFound, HTTPNotFound
+from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config, view_defaults
 from sqlalchemy import inspect
 
@@ -91,10 +91,7 @@ class OGCServerViews(LoggedViews):
         return super().grid()  # type: ignore
 
     def schema(self) -> GeoFormSchemaNode:
-        try:
-            obj = self._get_object()
-        except HTTPNotFound:
-            obj = None
+        obj = self._get_object()
 
         schema = self._base_schema.clone()
         schema["url"].description = Literal(
