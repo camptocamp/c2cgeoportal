@@ -277,12 +277,18 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
             if: env.HAS_SECRETS != 'HAS_SECRETS'
 
           ...
-   +      - run: |
-   +          (cd geoportal && npm update)
-   +          git add geoportal/package-lock.json
-   +          git commit -m "Update used ngeo version"
+
+   +      - run: cd geoportal && npm update
           - run: scripts/get-version --auto-increment --github
             id: version
+
+          ...
+
+          - run: git diff CHANGELOG.md
+   +      - run: |
+   +          git add geoportal/package-lock.json
+   +          git commit -m "Update used ngeo version"
+
           ...
 
           - name: Publish
