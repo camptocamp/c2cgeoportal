@@ -149,7 +149,16 @@ def add_new_release():
 
         npm_list = json.loads(
             output(
-                ["docker", "run", "--rm", "camptocamp/geomapfish-tools", "npm", "list", "--global", "--json"]
+                [
+                    "docker",
+                    "run",
+                    "--rm",
+                    "--workdir=/opt/c2cgeoportal/geoportal",
+                    "camptocamp/geomapfish-tools",
+                    "npm",
+                    "list",
+                    "--json",
+                ]
             ).decode()
         )
 
