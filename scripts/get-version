@@ -61,8 +61,8 @@ elif args.auto_increment:
     if tag is not None:
         ci["minor"] = 0
     elif os.environ.get("MAIN_BRANCH", "master") != "master" and (
-        os.environ.get("GITHUB_REF", "") == "refs/heads/" + os.environ.get("MAIN_BRANCH", "master")
-        or os.environ.get("GITHUB_EVENT_NAME", "") == "repository_dispatch"
+        os.environ.get("GITHUB_REF") == "refs/heads/" + os.environ.get("MAIN_BRANCH", "master")
+        or os.environ.get("GITHUB_EVENT_NAME") == "repository_dispatch"
     ):
         ci["minor"] = ci["minor"] + 1
 
@@ -131,7 +131,11 @@ if os.environ.get("GITHUB_WORKFLOW", "").startswith("Rebuild"):
     snyk_version = major_minor
 else:
     if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
-        branch = os.environ["GITHUB_REF"][11:]
+        branch = (
+            os.environ.get("MAIN_BRANCH", "master")
+            if os.environ.get("GITHUB_EVENT_NAME") == "repository_dispatch"
+            else os.environ["GITHUB_REF"][11:]
+        )
         if branch == "master":
             versions = [major_minor, major_version, "master"]
             snyk_version = major_minor
