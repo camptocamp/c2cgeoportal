@@ -1,3 +1,7 @@
+##### 2.8.rc.40
+
+- [Backport 2.8] Handle all geometry type [ngeo#9120](https://github.com/camptocamp/ngeo/pull/9120)
+
 ##### 2.8.rc.37
 
 - [Backport 2.8] Add the layer icon width and height [c2cgeoportal#10519](https://github.com/camptocamp/c2cgeoportal/pull/10519)
