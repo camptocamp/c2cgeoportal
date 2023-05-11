@@ -35,10 +35,7 @@ jobs:
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
-      - run: |
-          (cd geoportal && npm update)
-          git add geoportal/package-lock.json
-          git commit -m "Update used ngeo version"
+      - run: cd geoportal && npm update
       - run: scripts/get-version --auto-increment --github
         id: version
 
@@ -163,6 +160,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
+      - run: |
+          git add geoportal/package-lock.json
+          git commit -m "Update used ngeo version"
 
       - name: Push version and changelog
         run: |
