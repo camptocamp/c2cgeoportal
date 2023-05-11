@@ -291,7 +291,10 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <span class="w"> </span>        if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;
 
 <span class="w"> </span>      ...
-<span class="gi">+      - run: cd geoportal &amp;&amp; npm update</span>
+<span class="gi">+      - run: |</span>
+<span class="gi">+          (cd geoportal &amp;&amp; npm update)</span>
+<span class="gi">+          git add geoportal/package-lock.json</span>
+<span class="gi">+          git commit -m &quot;Update used ngeo version&quot;</span>
 <span class="w"> </span>      - run: scripts/get-version --auto-increment --github
 <span class="w"> </span>        id: version
 <span class="w"> </span>      ...
