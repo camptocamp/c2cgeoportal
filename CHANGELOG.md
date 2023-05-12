@@ -1,3 +1,8 @@
+##### 2.8.rc.44
+
+- [Backport 2.8] Be able to configure the layer icon width and height [ngeo#9118](https://github.com/camptocamp/ngeo/pull/9118)
+- Fix fit options [ngeo#9121](https://github.com/camptocamp/ngeo/pull/9121)
+
 ##### 2.8.rc.43
 
 - Better page on missing element [c2cgeoportal#10516](https://github.com/camptocamp/c2cgeoportal/pull/10516)
