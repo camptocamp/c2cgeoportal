@@ -1,3 +1,7 @@
+##### 2.7.0.245
+
+- Handle all geometry type [ngeo#9115](https://github.com/camptocamp/ngeo/pull/9115)
+
 ##### 2.7.0.243
 
 - Add the layer icon width and height [c2cgeoportal#10517](https://github.com/camptocamp/c2cgeoportal/pull/10517)
