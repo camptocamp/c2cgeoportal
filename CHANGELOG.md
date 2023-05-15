@@ -1,3 +1,7 @@
+##### 2.7.0.246
+
+- Fix the build [c2cgeoportal#10523](https://github.com/camptocamp/c2cgeoportal/pull/10523)
+
 ##### 2.7.0.245
 
 - Handle all geometry type [ngeo#9115](https://github.com/camptocamp/ngeo/pull/9115)
