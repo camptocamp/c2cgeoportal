@@ -1,3 +1,7 @@
+##### 2.8.rc.46
+
+- Snyk auto fix [c2cgeoportal#10525](https://github.com/camptocamp/c2cgeoportal/pull/10525)
+
 ##### 2.8.rc.44
 
 - [Backport 2.8] Be able to configure the layer icon width and height [ngeo#9118](https://github.com/camptocamp/ngeo/pull/9118)
