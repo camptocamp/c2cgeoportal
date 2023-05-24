@@ -16,3 +16,4 @@ translationstring
 jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
 babel>=2.9.1 # not directly required, pinned by Snyk to avoid a vulnerability
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability

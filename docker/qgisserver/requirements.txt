@@ -13,3 +13,4 @@ SQLAlchemy==1.3.24
 transaction==2.4.0  # commons, geoportal
 jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
 babel>=2.9.1 # not directly required, pinned by Snyk to avoid a vulnerability
+requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability

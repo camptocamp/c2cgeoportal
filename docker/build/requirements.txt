@@ -65,7 +65,7 @@ pytest-selenium==1.16.0  # admin tests
 python-dateutil==2.6.1  # geoportal, rq.filter: <2.7.0
 PyYAML==5.4.1  # geoportal
 rasterio==1.0.28  # geoportal raster, rq.filter: <=1.0.2
-requests==2.27.1  # geoportal
+requests==2.31.0  # geoportal
 redis==4.3.6  # geoportal cache
 Shapely==1.6.4.post2  # geoportal
 simplejson==3.16.0  # geoportal, rq.filter: !=3.16.1
