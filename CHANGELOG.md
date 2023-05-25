@@ -1,3 +1,5 @@
+##### 2.6.0.194
+* chore(deps): update all patch versions (2.6) (patch) [ngeo#9130](https://github.com/camptocamp/ngeo/pull/9130)
 ##### 2.6.0.193
 * Snyk auto fix [ngeo#9128](https://github.com/camptocamp/ngeo/pull/9128)
 ##### 2.6.0.192
