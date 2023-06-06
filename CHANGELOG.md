@@ -1,3 +1,7 @@
+##### 2.7.0.257
+
+- chore(deps): update dependency c2cciutils to v1.3.18 (2.7) [ngeo#9138](https://github.com/camptocamp/ngeo/pull/9138)
+
 ##### 2.7.0.255
 
 - Update all patch versions (2.7) (patch) [ngeo#9135](https://github.com/camptocamp/ngeo/pull/9135)
