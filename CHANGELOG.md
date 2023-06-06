@@ -1,3 +1,7 @@
+##### 2.8.rc.47
+
+- Fix CVE [c2cgeoportal#10544](https://github.com/camptocamp/c2cgeoportal/pull/10544)
+
 ##### 2.8.rc.46
 
 - Snyk auto fix [c2cgeoportal#10525](https://github.com/camptocamp/c2cgeoportal/pull/10525)
