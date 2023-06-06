@@ -1,3 +1,7 @@
+##### 2.7.0.254
+
+- Fix CVE [ngeo#9137](https://github.com/camptocamp/ngeo/pull/9137)
+
 ##### 2.7.0.253
 
 - Fix CVE [c2cgeoportal#10542](https://github.com/camptocamp/c2cgeoportal/pull/10542)
