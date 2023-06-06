@@ -1,3 +1,7 @@
+##### 2.7.0.255
+
+- Update all patch versions (2.7) (patch) [ngeo#9135](https://github.com/camptocamp/ngeo/pull/9135)
+
 ##### 2.7.0.254
 
 - Fix CVE [ngeo#9137](https://github.com/camptocamp/ngeo/pull/9137)
