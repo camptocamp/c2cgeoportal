@@ -1,3 +1,7 @@
+##### 2.7.0.253
+
+- Fix CVE [c2cgeoportal#10542](https://github.com/camptocamp/c2cgeoportal/pull/10542)
+
 ##### 2.7.0.251
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10533](https://github.com/camptocamp/c2cgeoportal/pull/10533)
