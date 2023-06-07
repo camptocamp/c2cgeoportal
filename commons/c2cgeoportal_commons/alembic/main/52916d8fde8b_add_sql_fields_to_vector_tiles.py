@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021, Camptocamp SA
+# Copyright (c) 2020-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,11 +48,11 @@ def upgrade() -> None:
     """Upgrade."""
     schema = config["schema"]
     table = "layer_vectortiles"
-    op.add_column(table, Column("sql", Unicode, nullable=True), schema)
+    op.add_column(table, Column("sql", Unicode, nullable=True), schema=schema)
 
 
 def downgrade() -> None:
     """Downgrade."""
     schema = config["schema"]
     table = "layer_vectortiles"
-    op.drop_column(table, "sql", schema)
+    op.drop_column(table, "sql", schema=schema)
