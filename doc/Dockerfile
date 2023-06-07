@@ -38,13 +38,6 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt
 
-# To be removed when tilecloudchain will use c2cwsgiutils 5.0
-RUN mkdir -p /usr/local/lib/python3.8/dist-packages/tilecloud_chain/ \
-    && curl https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/USAGE.rst -o \
-        /usr/local/lib/python3.8/dist-packages/tilecloud_chain/USAGE.rst \
-    && curl https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json -o \
-        /usr/local/lib/python3.8/dist-packages/tilecloud_chain/schema.json
-
 COPY package.json package-lock.json /doc/
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
