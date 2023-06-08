@@ -2,6 +2,7 @@
   extends: ['config:base'],
   timezone: 'Europe/Zurich',
   schedule: 'after 5pm on the first day of the month',
+  semanticCommits: 'disabled',
   labels: ['dependencies'],
   separateMajorMinor: true,
   separateMinorPatch: true,
