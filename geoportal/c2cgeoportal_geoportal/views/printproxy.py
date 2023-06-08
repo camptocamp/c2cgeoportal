@@ -72,7 +72,7 @@ class PrintProxy(Proxy):
         response.vary += ("Referrer", "Referer")
         return response
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def _capabilities(
         self, templates: List[str], query_string: Dict[str, str], method: str, referrer: str
     ) -> Tuple[requests.Response, str]:

@@ -1143,7 +1143,7 @@ def get_oauth_client(settings: Dict[str, Any]) -> oauthlib.oauth2.WebApplication
     )
 
 
-@OBJECT_CACHE_REGION.cache_on_arguments()  # type: ignore
+@OBJECT_CACHE_REGION.cache_on_arguments()
 def _get_oauth_client_cache(
     authorization_expire_minutes: int, token_expire_minutes: int
 ) -> oauthlib.oauth2.WebApplicationServer:

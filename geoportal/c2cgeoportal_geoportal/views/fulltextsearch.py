@@ -59,11 +59,11 @@ class FullTextSearchView:
         self.fts_normalizer = Normalize(self.settings)
 
     @staticmethod
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def _get_interface_id(interface: str) -> int:
         return cast(int, DBSession.query(Interface).filter_by(name=interface).one().id)
 
-    @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore
+    @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore[misc]
     def fulltextsearch(self) -> FeatureCollection:
         lang = locale_negotiator(self.request)
 

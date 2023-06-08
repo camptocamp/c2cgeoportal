@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ from c2cgeoportal_geoportal.lib.caching import get_region
 CACHE_REGION = get_region("std")
 
 
-@CACHE_REGION.cache_on_arguments()  # type: ignore
+@CACHE_REGION.cache_on_arguments()
 def get_cache_version() -> str:
     """Return a cache version that is regenerate after each cache invalidation."""
     return uuid.uuid4().hex

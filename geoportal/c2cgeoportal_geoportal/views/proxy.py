@@ -172,7 +172,7 @@ class Proxy:
 
         return response
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def _proxy_cache(self, method: str, *args: Any, **kwargs: Any) -> pyramid.response.Response:
         # Method is only for the cache
         del method

@@ -48,7 +48,7 @@ class Entry:
     def __init__(self, request: pyramid.request.Request):
         self.request = request
 
-    @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore
+    @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore[misc]
     def testi18n(self) -> Dict[str, Any]:
         _ = self.request.translate
         return {"title": _("title i18n")}
@@ -58,7 +58,7 @@ class Entry:
         return {}
 
     @staticmethod
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def get_apijs(api_name: Optional[str]) -> str:
         with open("/etc/static-ngeo/api.js", encoding="utf-8") as api_file:
             api = api_file.read().split("\n")

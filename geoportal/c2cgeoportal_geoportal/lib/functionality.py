@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ CACHE_REGION_OBJ = get_region("obj")
 CACHE_REGION = get_region("std")
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
+@CACHE_REGION_OBJ.cache_on_arguments()
 def _get_role(name: str) -> Dict[str, Any]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
@@ -94,7 +94,7 @@ def _get_db_functionality(
     return [r for r in values if r is not None]
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
+@CACHE_REGION_OBJ.cache_on_arguments()
 def _get_functionalities_type(request: pyramid.request.Request) -> Dict[str, Dict[str, Any]]:
     return get_types_map(
         request.registry.settings.get("admin_interface", {}).get("available_functionalities", [])

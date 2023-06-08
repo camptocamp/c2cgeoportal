@@ -28,12 +28,12 @@
 
 import inspect
 import logging
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Mapping, Optional, Sequence, Union
 
 import pyramid.interfaces
 import sqlalchemy.ext.declarative
 import zope.interface
-from dogpile.cache.api import NO_VALUE, CacheBackend
+from dogpile.cache.api import NO_VALUE, CacheBackend, CachedValue, NoValue
 from dogpile.cache.backends.memory import MemoryBackend
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
 from dogpile.cache.region import CacheRegion, make_region
@@ -48,7 +48,7 @@ else:
     SerializedReturnType = Any
 
 LOG = logging.getLogger(__name__)
-_REGION: Dict[str, Any] = {}
+_REGION: Dict[str, CacheRegion] = {}
 MEMORY_CACHE_DICT: Dict[str, Any] = {}
 
 
@@ -118,39 +118,46 @@ def invalidate_region(region: Optional[str] = None) -> None:
     """Invalidate a cache region."""
     if region is None:
         for cache_region in _REGION.values():
-            cache_region.invalidate()
+            cache_region.invalidate()  # type: ignore[no-untyped-call]
     else:
-        get_region(region).invalidate()
+        get_region(region).invalidate()  # type: ignore[no-untyped-call]
 
 
-class HybridRedisBackend(CacheBackend):  # type: ignore
+class HybridRedisBackend(CacheBackend):
     """A Dogpile cache backend with a memory cache backend in front of a Redis backend for performance."""
 
     def __init__(self, arguments: Dict[str, Any]):
         self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
-        self._memory = MemoryBackend({"cache_dict": arguments.pop("cache_dict", {})})
-        self._redis = RedisBackend(arguments)
+        self._memory: CacheBackend = MemoryBackend(  # type: ignore[no-untyped-call]
+            {"cache_dict": arguments.pop("cache_dict", {})},
+        )
+        self._redis: CacheBackend = RedisBackend(arguments)  # type: ignore[no-untyped-call]
 
-    def get(self, key: str) -> SerializedReturnType:
+    def get(self, key: str) -> Union[CachedValue, bytes, NoValue]:
         value = self._memory.get(key)
         if value == NO_VALUE:
-            val = self._redis.get_serialized(sha1_mangle_key(key.encode()))
+            val = self._redis.get_serialized(sha1_mangle_key(key.encode()))  # type: ignore[no-untyped-call]
             if val in (None, NO_VALUE):
                 return NO_VALUE
-            value = self._redis.deserializer(val)
+            assert isinstance(val, bytes)
+            value = self._redis.deserializer(val)  # type: ignore[misc]
             if value != NO_VALUE and self._use_memory_cache:
+                assert isinstance(value, (CachedValue, bytes))
                 self._memory.set(key, value)
         return value
 
-    def get_multi(self, keys: List[str]) -> List[SerializedReturnType]:
+    def get_multi(self, keys: Sequence[str]) -> List[Union[CachedValue, bytes, NoValue]]:
         return [self.get(key) for key in keys]
 
-    def set(self, key: str, value: SerializedReturnType) -> None:
+    def set(self, key: str, value: Union[CachedValue, bytes]) -> None:
         if self._use_memory_cache:
             self._memory.set(key, value)
-        self._redis.set_serialized(sha1_mangle_key(key.encode()), self._redis.serializer(value))
+        self._redis.set_serialized(
+            sha1_mangle_key(key.encode()),  # type: ignore[no-untyped-call]
+            self._redis.serializer(value),  # type: ignore[misc]
+        )
 
-    def set_multi(self, mapping: Dict[str, SerializedReturnType]) -> None:
+    def set_multi(self, mapping: Mapping[str, Union[CachedValue, bytes]]) -> None:
         for key, value in mapping.items():
             self.set(key, value)
 
@@ -158,7 +165,7 @@ class HybridRedisBackend(CacheBackend):  # type: ignore
         self._memory.delete(key)
         self._redis.delete(key)
 
-    def delete_multi(self, keys: List[str]) -> None:
+    def delete_multi(self, keys: Sequence[str]) -> None:
         self._memory.delete_multi(keys)
         self._redis.delete_multi(keys)
 
@@ -168,4 +175,4 @@ class HybridRedisSentinelBackend(HybridRedisBackend):
 
     def __init__(self, arguments: Dict[str, Any]):
         super().__init__(arguments)
-        self._redis = RedisSentinelBackend(arguments)
+        self._redis = RedisSentinelBackend(arguments)  # type: ignore[no-untyped-call]
