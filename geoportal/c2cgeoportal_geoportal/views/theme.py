@@ -79,7 +79,7 @@ def get_http_cached(
 ) -> Tuple[bytes, str]:
     """Get the content of the URL with a cash (dogpile)."""
 
-    @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_OGC_SERVER_REGION.cache_on_arguments()
     def do_get_http_cached(url: str) -> Tuple[bytes, str]:
         response = requests.get(url, headers=headers, timeout=TIMEOUT, **http_options)
         response.raise_for_status()
@@ -87,8 +87,8 @@ def get_http_cached(
         return response.content, response.headers.get("Content-Type", "")
 
     if cache:
-        return do_get_http_cached(url)  # type: ignore
-    return do_get_http_cached.refresh(url)  # type: ignore
+        return do_get_http_cached(url)  # type: ignore[no-any-return]
+    return do_get_http_cached.refresh(url)  # type: ignore[attr-defined,no-any-return]
 
 
 class DimensionInformation:
@@ -186,7 +186,7 @@ class Theme:
     ) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
         LOG.debug("Get the WMS Capabilities of %s, preload: %s, cache: %s", ogc_server.name, preload, cache)
 
-        @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
+        @CACHE_OGC_SERVER_REGION.cache_on_arguments()
         def build_web_map_service(ogc_server_id: int) -> Tuple[Optional[Dict[str, Dict[str, Any]]], Set[str]]:
             del ogc_server_id  # Just for cache
 
@@ -229,9 +229,9 @@ class Theme:
             return {"layers": layers}, set()
 
         if cache:
-            result = build_web_map_service.get(ogc_server.id)
+            result = build_web_map_service.get(ogc_server.id)  # type: ignore[attr-defined]
             if result != dogpile.cache.api.NO_VALUE:
-                return result  # type: ignore
+                return result  # type: ignore[no-any-return]
 
         try:
             url, content, errors = await self._wms_getcap_cached(ogc_server, cache=cache)
@@ -835,7 +835,7 @@ class Theme:
                         children.append(layer_theme)
         return children, errors
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def _get_layers_enum(self) -> Dict[str, Dict[str, str]]:
         layers_enum = {}
         if "enum" in self.settings.get("layers", {}):
@@ -972,7 +972,7 @@ class Theme:
     async def _get_features_attributes(
         self, url_internal_wfs: Url, ogc_server: main.OGCServer, cache: bool = True
     ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
-        @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
+        @CACHE_OGC_SERVER_REGION.cache_on_arguments()
         def _get_features_attributes_cache(
             url_internal_wfs: Url, ogc_server_name: str
         ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
@@ -1056,15 +1056,21 @@ class Theme:
             return attributes, namespace, all_errors
 
         if cache:
-            result = _get_features_attributes_cache.get(url_internal_wfs, ogc_server.name)
+            result = _get_features_attributes_cache.get(  # type: ignore[attr-defined]
+                url_internal_wfs,
+                ogc_server.name,
+            )
             if result != dogpile.cache.api.NO_VALUE:
-                return result  # type: ignore
+                return result  # type: ignore[no-any-return]
 
         feature_type, errors = await self._wfs_get_features_type(url_internal_wfs, ogc_server, False, cache)
 
-        return _get_features_attributes_cache.refresh(url_internal_wfs, ogc_server.name)  # type: ignore
+        return _get_features_attributes_cache.refresh(  # type: ignore[attr-defined,no-any-return]
+            url_internal_wfs,
+            ogc_server.name,
+        )
 
-    @view_config(route_name="themes", renderer="json")  # type: ignore
+    @view_config(route_name="themes", renderer="json")  # type: ignore[misc]
     def themes(self) -> Dict[str, Union[Dict[str, Dict[str, Any]], List[str]]]:
         interface = self.request.params.get("interface", "desktop")
         sets = self.request.params.get("set", "all")
@@ -1168,7 +1174,7 @@ class Theme:
                 LOG.info("Theme errors:\n%s", "\n".join(all_errors))
             return result
 
-        @CACHE_REGION.cache_on_arguments()  # type: ignore
+        @CACHE_REGION.cache_on_arguments()
         def get_theme_anonymous(
             intranet: bool,
             interface: str,

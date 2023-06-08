@@ -132,7 +132,7 @@ def get_table(
     return table
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
+@CACHE_REGION_OBJ.cache_on_arguments()
 def get_class(
     tablename: str,
     exclude_properties: Optional[List[str]] = None,

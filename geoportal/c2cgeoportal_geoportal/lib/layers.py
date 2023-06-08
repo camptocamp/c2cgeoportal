@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -104,7 +104,7 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict
     return {r.id: r for r in results}
 
 
-@CACHE_REGION.cache_on_arguments()  # type: ignore
+@CACHE_REGION.cache_on_arguments()
 def get_private_layers(ogc_server_ids: Iterable[int]) -> Dict[int, Any]:
     """Get the private layers."""
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel

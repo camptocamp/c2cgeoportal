@@ -51,7 +51,7 @@ LOG = logging.getLogger(__name__)
 ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
 
 
-@CACHE_REGION.cache_on_arguments()  # type: ignore
+@CACHE_REGION.cache_on_arguments()
 def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> Dict[str, List[str]]:
     """Get a simple serializable structure of the WMS capabilities."""
     url = wms_url.clone().add_query({"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})

@@ -55,7 +55,7 @@ class DynamicView:
     def get(self, value: Dict[str, Any], interface: str) -> Dict[str, Any]:
         return cast(Dict[str, Any], self.interfaces_config.get(interface, {}).get(value, {}))
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def _fulltextsearch_groups(self) -> List[str]:
         return [
             group[0]

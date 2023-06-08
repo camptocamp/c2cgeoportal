@@ -14,7 +14,7 @@ c2cwsgiutils = { extras = ["broadcast"], version = "5.2.2" }
 papyrus = "2.5" # commons
 transaction = "3.1.0" # commons
 "c2c.template" = "2.3.0"
-GeoAlchemy2 = "0.13.2"
+GeoAlchemy2 = "0.13.3"
 SQLAlchemy = "1.4.48" # commons
 "zope.event" = "4.6" # commons
 "zope.sqlalchemy" = "3.0" # commons
@@ -26,5 +26,5 @@ pytz = "2023.3"
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.2" }
 # pylint = "2.15.5"
-types-pyyaml = "6.0.12.9"
+types-pyyaml = "6.0.12.10"
 pytest = "7.3.1"

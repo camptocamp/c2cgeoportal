@@ -46,7 +46,7 @@ from c2cgeoform import Form, translator
 from c2cwsgiutils.broadcast import decorator
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
-from dogpile.cache import register_backend
+from dogpile.cache import register_backend  # type: ignore[attr-defined]
 from papyrus.renderers import GeoJSON
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
@@ -465,14 +465,18 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     # dogpile.cache configuration
     if "cache" in settings:
-        register_backend("c2cgeoportal.hybrid", "c2cgeoportal_geoportal.lib.caching", "HybridRedisBackend")
+        register_backend(
+            "c2cgeoportal.hybrid",
+            "c2cgeoportal_geoportal.lib.caching",
+            "HybridRedisBackend",
+        )  # type: ignore[no-untyped-call]
         register_backend(
             "c2cgeoportal.hybridsentinel", "c2cgeoportal_geoportal.lib.caching", "HybridRedisSentinelBackend"
-        )
+        )  # type: ignore[no-untyped-call]
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
 
-        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
+        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[misc]
         def handle(event: InvalidateCacheEvent) -> None:
             del event
             caching.invalidate_region("std")

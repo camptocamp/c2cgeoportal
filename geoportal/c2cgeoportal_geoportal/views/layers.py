@@ -465,7 +465,7 @@ class Layers:
 
         return cast(Dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def _enumerate_attribute_values(self, layername: str, fieldname: str) -> Dict[str, Any]:
         if layername not in self.layers_enum_config:
             raise HTTPBadRequest(f"Unknown layer: {layername!s}")

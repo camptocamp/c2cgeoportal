@@ -76,7 +76,7 @@ class OGCProxy(Proxy):
         elif not has_default_ogc_server:
             raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
 
-    @CACHE_REGION.cache_on_arguments()  # type: ignore
+    @CACHE_REGION.cache_on_arguments()
     def _get_ogcserver_byname(self, name: str) -> main.OGCServer:
         try:
             result = DBSession.query(main.OGCServer).filter(main.OGCServer.name == name).one()
