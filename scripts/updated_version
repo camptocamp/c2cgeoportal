@@ -162,7 +162,7 @@ def get_versions(
                         "run",
                         "--rm",
                         "--entrypoint=",
-                        f"camptocamp/geomapfish:{version}",
+                        f"camptocamp/geomapfish-tools:{version}",
                         "pkg-config",
                         "--modversion",
                         "proj",
