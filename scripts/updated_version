@@ -29,6 +29,7 @@
 
 import argparse
 import json
+import re
 import subprocess
 from typing import Dict, List, Tuple
 
@@ -252,7 +253,9 @@ def main() -> None:
     parser.add_argument("new_version", metavar="NEW", help="The new GeoMapFish version")
     args = parser.parse_args()
 
-    old_major_version = float(args.old_version[:3])
+    old_major_version = 3.0
+    if re.match(r".*\.\d\.\d$", args.old_version):
+        old_major_version = float(args.old_version[:3])
     main_old, python_old, npm_old = get_versions(args.old_version, old_major_version)
     main_new, python_new, npm_new = get_versions(args.new_version, old_major_version)
 
