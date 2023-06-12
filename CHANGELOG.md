@@ -1,3 +1,7 @@
+##### 2.8.rc.48
+
+- Add versions in the changelog [c2cgeoportal#10545](https://github.com/camptocamp/c2cgeoportal/pull/10545)
+
 ##### 2.8.rc.47
 
 - Fix CVE [c2cgeoportal#10544](https://github.com/camptocamp/c2cgeoportal/pull/10544)
