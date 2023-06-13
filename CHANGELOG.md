@@ -1,3 +1,7 @@
+##### 2.8.rc.49
+
+- Snyk auto fix [ngeo#9126](https://github.com/camptocamp/ngeo/pull/9126)
+
 ##### 2.8.rc.48
 
 - Add versions in the changelog [c2cgeoportal#10545](https://github.com/camptocamp/c2cgeoportal/pull/10545)
