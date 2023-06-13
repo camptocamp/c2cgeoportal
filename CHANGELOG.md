@@ -1,3 +1,7 @@
+##### 2.8.rc.50
+
+- Use a version of OpenLayers that's pixel perfect [ngeo#9139](https://github.com/camptocamp/ngeo/pull/9139)
+
 ##### 2.8.rc.49
 
 - Snyk auto fix [ngeo#9126](https://github.com/camptocamp/ngeo/pull/9126)
