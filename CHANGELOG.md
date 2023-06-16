@@ -1,3 +1,7 @@
+##### 2.8.rc.52
+
+- Constraint map pixel on grid pixel [ngeo#9140](https://github.com/camptocamp/ngeo/pull/9140)
+
 ##### 2.8.rc.50
 
 - Use a version of OpenLayers that's pixel perfect [ngeo#9139](https://github.com/camptocamp/ngeo/pull/9139)
