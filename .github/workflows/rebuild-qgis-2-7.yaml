@@ -17,8 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          # Last LTR
           - '3.22'
+          # Last LTR
+          - '3.28'
         branch:
           - '2.7'
 
