@@ -1,3 +1,7 @@
+##### 2.7.0.258
+
+- Add qgis-3-28 to gmf-2-7 [c2cgeoportal#10548](https://github.com/camptocamp/c2cgeoportal/pull/10548)
+
 ##### 2.7.0.257
 
 - chore(deps): update dependency c2cciutils to v1.3.18 (2.7) [ngeo#9138](https://github.com/camptocamp/ngeo/pull/9138)
