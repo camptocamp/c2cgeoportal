@@ -1,3 +1,7 @@
+##### 2.8.rc.55
+
+- Set top-left corner coordinate to get pixel perfect render [c2cgeoportal#10552](https://github.com/camptocamp/c2cgeoportal/pull/10552)
+
 ##### 2.8.rc.54
 
 - Constraint map pixel on grid pixel [ngeo#9142](https://github.com/camptocamp/ngeo/pull/9142)
