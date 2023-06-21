@@ -2,6 +2,15 @@
 extends: CONST_vars.yaml
 
 vars:
+  # To use an other SRID you should change:
+  #  - vars.srid
+  #  - vars.alternate_projections
+  #  - vars.resolutions
+  #  - vars.extent
+  #  - vars.tilesOrigin
+  #  - vars.interfaces_config.default.constants.gmfOptions.view.center
+  #  - vars.interfaces_config.default.constants.gmfOptions.wmtsTopLeft
+  #  - vars.interfaces_config.default.constants.gmfVectorTilesOptions.tileGrid.origin
   srid: &srid {{cookiecutter.srid}}
 
   main_ogc_server: source for image/png
@@ -14,6 +23,9 @@ vars:
   resolutions: &resolutions [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
 
   extent: &extent [2420000, 1030000, 2900000, 1350000]
+
+  # Origin of the tiles [left, top]
+  tilesOrigin: &tilesOrigin [2420000, 1350000]
 
   # The application's default language. This is the language used by
   # the application if no specific language is specified in the URLs.
@@ -41,6 +53,8 @@ vars:
             resolutions: *resolutions
             extent: *extent
           geolocalisation: True
+          # Used to get pixel perfect render on WMTS layers [left, top]
+          wmtsTopLeft: *tilesOrigin
         gmfElevationOptions:
           layers: [aster, srtm]
         gmfSearchOptions:
@@ -51,7 +65,7 @@ vars:
           projection: EPSG:{srid}
           tileGrid:
             extent: *extent
-            origin: [2420000, 1350000]
+            origin: *tilesOrigin
             resolutions: *resolutions
       routes:
         fulltextsearchUrl:
