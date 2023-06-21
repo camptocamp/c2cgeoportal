@@ -1,3 +1,7 @@
+##### 2.8.rc.54
+
+- Constraint map pixel on grid pixel [ngeo#9142](https://github.com/camptocamp/ngeo/pull/9142)
+
 ##### 2.8.rc.52
 
 - Constraint map pixel on grid pixel [ngeo#9140](https://github.com/camptocamp/ngeo/pull/9140)
