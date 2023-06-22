@@ -1,3 +1,7 @@
+##### 2.8.rc.58
+
+- Be able to zoom with constraints [ngeo#9144](https://github.com/camptocamp/ngeo/pull/9144)
+
 ##### 2.8.rc.57
 
 - Constrain the resolution [c2cgeoportal#10554](https://github.com/camptocamp/c2cgeoportal/pull/10554)
