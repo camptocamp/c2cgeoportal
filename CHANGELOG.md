@@ -1,3 +1,7 @@
+##### 2.8.rc.57
+
+- Constrain the resolution [c2cgeoportal#10554](https://github.com/camptocamp/c2cgeoportal/pull/10554)
+
 ##### 2.8.rc.55
 
 - Set top-left corner coordinate to get pixel perfect render [c2cgeoportal#10552](https://github.com/camptocamp/c2cgeoportal/pull/10552)
