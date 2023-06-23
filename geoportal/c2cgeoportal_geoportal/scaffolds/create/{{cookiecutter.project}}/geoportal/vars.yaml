@@ -130,6 +130,10 @@ vars:
             - name: srtm
               unit: m
 
+    iframe_api:
+      constants:
+        gmfOptions: *gmfOptions
+
     api:
       constants:
         # The resolutions list.
