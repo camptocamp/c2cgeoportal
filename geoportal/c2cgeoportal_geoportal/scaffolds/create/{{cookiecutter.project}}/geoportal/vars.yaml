@@ -385,10 +385,12 @@ update_paths:
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
   - interfaces_config.default.routes.fulltextsearchUrl
+  - interfaces_config.desktop.constants.gmfOptions.view
   - interfaces_config.desktop.constants.gmfPrintOptions
   - interfaces_config.desktop.routes
+  - interfaces_config.mobile.constants.gmfOptions.view
   - interfaces_config.mobile.constants.gmfMobileMeasurePointOptions
-  - interfaces_config.iframe_api.constants
+  - interfaces_config.iframe_api.constants.gmfOptions.view
   - interfaces_config.api.constants
   - interfaces_config.api.routes.searchUrl
   - interfaces_theme
