@@ -1,3 +1,7 @@
+##### 2.8.rc.61
+
+- Set default gmfOptions in all interfaces [c2cgeoportal#10559](https://github.com/camptocamp/c2cgeoportal/pull/10559)
+
 ##### 2.8.rc.60
 
 - Fix the wmtsTopLeft option [c2cgeoportal#10556](https://github.com/camptocamp/c2cgeoportal/pull/10556)
