@@ -44,7 +44,7 @@ vars:
       constants:
         defaultTheme: Demo
         defaultLang: '{default_locale_name}'
-        gmfOptions:
+        gmfOptions: &gmfOptions
           map: {}
           view: &view
             projection: EPSG:{srid}
@@ -76,12 +76,12 @@ vars:
     desktop:
       constants:
         gmfOptions:
+          <<: *gmfOptions
           map:
             maxTilesLoading: 128
           view:
             <<: *view
             constrainResolution: True
-          geolocalisation: True
         gmfExternalOGCServers:
           - name: swisstopo WMS
             type: WMS
@@ -119,11 +119,10 @@ vars:
     mobile:
       constants:
         gmfOptions:
-          map: {}
+          <<: *gmfOptions
           view:
             <<: *view
             autoRotate: True
-          geolocalisation: True
         gmfMobileMeasurePointOptions:
           rasterLayers:
             - name: aster
