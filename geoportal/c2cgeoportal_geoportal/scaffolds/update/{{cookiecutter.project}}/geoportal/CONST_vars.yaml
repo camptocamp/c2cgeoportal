@@ -210,7 +210,7 @@ vars:
         gmfBackgroundLayerSelectorOptions: {}
         defaultTheme: Demo
         defaultLang: en
-        gmfOptions:
+        gmfOptions: &gmfOptions
           map: {}
           view:
             srid: '{srid}'
@@ -349,6 +349,7 @@ vars:
       redirect_interface: mobile
       do_redirect: True
       constants:
+        gmfOptions: *gmfOptions
         ngeoProfileOptions: {}
         ngeoStreetviewOptions:
           viewer: 'mapillary'
@@ -413,6 +414,7 @@ vars:
       extends: default
       redirect_interface: desktop
       constants:
+        gmfOptions: *gmfOptions
         gmfMobileMeasureAreaOptions:
           precision: 2
           sketchStyle: &mobileMeasureStyle
@@ -459,6 +461,7 @@ vars:
     iframe_api:
       extends: default
       constants:
+        gmfOptions: *gmfOptions
         gmfSearchGroups: []
         gmfFitOptions:
           # Padding (in pixels) to be correctly fitted inside the view. Values in the array are top, right, bottom and left padding.
