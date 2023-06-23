@@ -1,3 +1,7 @@
+##### 2.8.rc.59
+
+- Fix the center after the zoom [ngeo#9146](https://github.com/camptocamp/ngeo/pull/9146)
+
 ##### 2.8.rc.58
 
 - Be able to zoom with constraints [ngeo#9144](https://github.com/camptocamp/ngeo/pull/9144)
