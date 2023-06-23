@@ -1,3 +1,7 @@
+##### 2.8.rc.60
+
+- Fix the wmtsTopLeft option [c2cgeoportal#10556](https://github.com/camptocamp/c2cgeoportal/pull/10556)
+
 ##### 2.8.rc.59
 
 - Fix the center after the zoom [ngeo#9146](https://github.com/camptocamp/ngeo/pull/9146)
