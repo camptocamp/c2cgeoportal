@@ -1,3 +1,7 @@
+##### 2.8.rc.62
+
+- Add missing update_paths on gmfOptions [c2cgeoportal#10561](https://github.com/camptocamp/c2cgeoportal/pull/10561)
+
 ##### 2.8.rc.61
 
 - Set default gmfOptions in all interfaces [c2cgeoportal#10559](https://github.com/camptocamp/c2cgeoportal/pull/10559)
