@@ -1,3 +1,7 @@
+##### 2.8.rc.64
+
+- Fix the center on animation end [ngeo#9148](https://github.com/camptocamp/ngeo/pull/9148)
+
 ##### 2.8.rc.62
 
 - Add missing update_paths on gmfOptions [c2cgeoportal#10561](https://github.com/camptocamp/c2cgeoportal/pull/10561)
