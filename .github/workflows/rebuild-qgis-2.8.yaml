@@ -11,7 +11,7 @@ jobs:
   main:
     runs-on: ubuntu-20.04
     name: QGIS rebuild 2.8
-    timeout-minutes: 40
+    timeout-minutes: 50
 
     strategy:
       fail-fast: false
