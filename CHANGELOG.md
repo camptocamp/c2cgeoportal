@@ -1,3 +1,7 @@
+##### 2.8.rc.66
+
+- The resolutions should corresponds [c2cgeoportal#10563](https://github.com/camptocamp/c2cgeoportal/pull/10563)
+
 ##### 2.8.rc.64
 
 - Fix the center on animation end [ngeo#9148](https://github.com/camptocamp/ngeo/pull/9148)
