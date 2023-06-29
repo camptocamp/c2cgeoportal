@@ -20,7 +20,7 @@ vars:
     - EPSG:{srid}
     - EPSG:21781
 
-  resolutions: &resolutions [250, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05]
+  resolutions: &resolutions [250, 100, 50, 20, 10, 5, 2.5, 1, 0.5, 0.25, 0.1, 0.05]
 
   extent: &extent [2420000, 1030000, 2900000, 1350000]
 
