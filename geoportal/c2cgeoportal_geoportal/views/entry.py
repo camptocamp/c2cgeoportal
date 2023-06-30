@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,6 +56,8 @@ class Entry:
 
     def get_ngeo_index_vars(self) -> Dict[str, Any]:
         set_common_headers(self.request, "index", Cache.PUBLIC_NO, content_type="text/html")
+        # Force urllogin to be converted to cookie when requesting the main HTML page
+        self.request.user  # noqa
         return {}
 
     @staticmethod
