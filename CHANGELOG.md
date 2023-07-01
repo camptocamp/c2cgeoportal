@@ -1,3 +1,5 @@
+##### 2.6.0.197
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10566](https://github.com/camptocamp/c2cgeoportal/pull/10566)
 ##### 2.6.0.196
 * chore(deps): update all patch versions (2.6) (patch) [ngeo#9136](https://github.com/camptocamp/ngeo/pull/9136)
 ##### 2.6.0.195
