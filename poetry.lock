@@ -341,14 +341,14 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.5.6"
+version = "1.5.7"
 description = "Common utilities for Camptocamp CI"
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "c2cciutils-1.5.6-py3-none-any.whl", hash = "sha256:b2c3e11176ba27fef0d7611c7c3dea05e97120a5eefd716f7e5c8ad183754082"},
-    {file = "c2cciutils-1.5.6.tar.gz", hash = "sha256:e56a492dcb8346c32f7f61b0165a20b7bd0ca63d851ec572976d65db0d5cff9b"},
+    {file = "c2cciutils-1.5.7-py3-none-any.whl", hash = "sha256:e916b8fbd8f98cc058241461f92ce155bbc412917606e258b0fde4b6bf124d3b"},
+    {file = "c2cciutils-1.5.7.tar.gz", hash = "sha256:640b905196ab168a05da22eaf7fec0621c2bed91224a09e193fbc0ff36e13537"},
 ]
 
 [package.dependencies]
@@ -3152,14 +3152,14 @@ files = [
 
 [[package]]
 name = "pytest"
-version = "7.3.1"
+version = "7.3.2"
 description = "pytest: simple powerful testing with Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pytest-7.3.1-py3-none-any.whl", hash = "sha256:3799fa815351fea3a5e96ac7e503a96fa51cc9942c3753cda7651b93c1cfa362"},
-    {file = "pytest-7.3.1.tar.gz", hash = "sha256:434afafd78b1d78ed0addf160ad2b77a30d35d4bdf8af234fe621919d9ed15e3"},
+    {file = "pytest-7.3.2-py3-none-any.whl", hash = "sha256:cdcbd012c9312258922f8cd3f1b62a6580fdced17db6014896053d47cddf9295"},
+    {file = "pytest-7.3.2.tar.gz", hash = "sha256:ee990a3cc55ba808b80795a79944756f315c67c12b56abd3ac993a7b8c17030b"},
 ]
 
 [package.dependencies]
@@ -3171,7 +3171,7 @@ pluggy = ">=0.12,<2.0"
 tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
-testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
+testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
 name = "python-dateutil"
@@ -3301,29 +3301,29 @@ toml = ["toml"]
 
 [[package]]
 name = "rasterio"
-version = "1.3.7"
+version = "1.3.8"
 description = "Fast and direct raster I/O for use with Numpy and SciPy"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "rasterio-1.3.7-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:106e6519f5d2a0d35f0e963a8d07dc313ba7f6595a4c89fe9d6dcd8662a86617"},
-    {file = "rasterio-1.3.7-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:baab6f3ba468d3b3ada05b282574af0f3110830f50888948d50c1f16aa6130af"},
-    {file = "rasterio-1.3.7-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:075731165d26ef33e33e3ab903a0ecabb643893794bea1c78dd6c631713d1820"},
-    {file = "rasterio-1.3.7-cp310-cp310-win_amd64.whl", hash = "sha256:a8013826cdf540fb4f1507f92bb4ef440b594a4a8895d9038e25498e5b135f52"},
-    {file = "rasterio-1.3.7-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:d6fa64dfda2ce1fe4c8b4e61d6e476ab3f389ac679e49b5386bb83708939a1b2"},
-    {file = "rasterio-1.3.7-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:41f233b7c85a74d66da4e31e37cfabe3c1aa116260063519d49f266e278bd4b3"},
-    {file = "rasterio-1.3.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:feebf547b6785d57330f9ef69af54534a9548b24510c4e2fe87e5b9355112c28"},
-    {file = "rasterio-1.3.7-cp311-cp311-win_amd64.whl", hash = "sha256:e3c06f1a62b28437c908851f0fc67abc6b31fce4a535e88e92311e73b8709996"},
-    {file = "rasterio-1.3.7-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:5247affa7122f3c10a82d8cfa56b89fb60bfb981e4a22ebad8889d1caa138215"},
-    {file = "rasterio-1.3.7-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:ce334df60b9d6ea66751b03afd1d138a551d27f2588e95ac6d7479856bb575a8"},
-    {file = "rasterio-1.3.7-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c04a4932807ae64642f18d7c3f7cf504cb6703ec35496d07f2e5679ec5b9c4d3"},
-    {file = "rasterio-1.3.7-cp38-cp38-win_amd64.whl", hash = "sha256:58d3d42cf06645f694911ea2707e6204868006784e0df3540e05e4615209b9c3"},
-    {file = "rasterio-1.3.7-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:b4ad780117fefcd0fb81e2459d409a722f5964d1f655252278c7c56eb18f7ae6"},
-    {file = "rasterio-1.3.7-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:c2ddc9cb2ccb0d296ca8c9da8af73b4d1c03c887a7dabbb4b4a6fa1e7450c1e7"},
-    {file = "rasterio-1.3.7-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cd21347b58fb60f2f0a8f7eb95ce58680590e205dee80562a67e868eebaaeea5"},
-    {file = "rasterio-1.3.7-cp39-cp39-win_amd64.whl", hash = "sha256:a97610a2997d9dc246ccd3f1361fdd63ae0b23a676e68af4f018f03e8c8a7592"},
-    {file = "rasterio-1.3.7.tar.gz", hash = "sha256:abfdcb8f10210b8fad939f40d545d6c47e9e3b5cf4a43773ca8dd11c58204304"},
+    {file = "rasterio-1.3.8-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:fea5db183fd1c85e7f41651af5b474af09a68a5e12ce37cad8cc7708843f1ea4"},
+    {file = "rasterio-1.3.8-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:2e2207003854af60a879cdd87da033cbf86a53585dbf2a49045f66decc3bbb01"},
+    {file = "rasterio-1.3.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:15ec3bfc55c793d1dc7437f3d8b55116db5ea1cf4e0c25c96999fd99daf1ae6f"},
+    {file = "rasterio-1.3.8-cp310-cp310-win_amd64.whl", hash = "sha256:ce5c3193b141d23fe081e6b97665f072af48556622da6ae4d45d3a2192e38c3f"},
+    {file = "rasterio-1.3.8-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:d5ccc8e6d30534d510ce5099d4a35616611cadcae79aa1216150c2696e03ddde"},
+    {file = "rasterio-1.3.8-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:b3b8410be847e8fd96cbe744e28e484437b370830052b5dcc7b11efc8c73fffc"},
+    {file = "rasterio-1.3.8-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0b8e1b456f58b9ae023026730320424091af504ef066418ddcd296b9014845ee"},
+    {file = "rasterio-1.3.8-cp311-cp311-win_amd64.whl", hash = "sha256:0323332ed1bfad522e53a3da45e0d3453e603862c3d2c08d8a639a7be76853fb"},
+    {file = "rasterio-1.3.8-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:d177157a9a033a0642b3102d9f9e169bada56f1e25c982d2549359a3f397dcff"},
+    {file = "rasterio-1.3.8-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:969b943d3746bad7cc9e2433deb4d21a6f0b21a5b46daeb95530b79fe010910b"},
+    {file = "rasterio-1.3.8-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:eefa29a8d5dfd6537fee6e7f28be7b78ceedb85026851c58759563ef7541dc0c"},
+    {file = "rasterio-1.3.8-cp38-cp38-win_amd64.whl", hash = "sha256:d184ad8d29c9c8a04d265cdc229d446c59b142d36228926a17767c1758469c8a"},
+    {file = "rasterio-1.3.8-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:4c9451f51e175940223ad2d3b205a303a810f5d396fbaf0f17fbde6ee1b74737"},
+    {file = "rasterio-1.3.8-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:f57d73b5713d8096ec2fc9bb929bf3ce995f3f34d95e32f30192d180921d341a"},
+    {file = "rasterio-1.3.8-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c6c466b2b7a49f8ab3ee0ad0974185b806b7c19427dbf3e1cf4372ce0d52b2ee"},
+    {file = "rasterio-1.3.8-cp39-cp39-win_amd64.whl", hash = "sha256:3b654e9fd64ad1f68699376a25bd1b403f8b023a75af42e3b26effda990428df"},
+    {file = "rasterio-1.3.8.tar.gz", hash = "sha256:ffdd18e78efdf8ad5861065fd812a66dd34264293317ff6540a078ea891cdef8"},
 ]
 
 [package.dependencies]
@@ -4426,4 +4426,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "e075311dcbb79a91b8400b9f4d0700975f05472ac228ed037c9cb46212d0a0f6"
+content-hash = "4115fc8b5cf4f9fb424be24e2e5028fbf22e95dc3d0816bbe943297e1b520cfd"
