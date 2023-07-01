@@ -494,6 +494,7 @@ Properties:
  * ``mapInteractions`` (:ref:`integrator_guide_ngeo_properties_OlInteractionInteraction`\[], optional)
  * ``showInfobar`` (boolean, optional)
  * ``view`` (:ref:`integrator_guide_ngeo_properties_View`)
+ * ``wmtsTopLeft`` (number\[], optional)
  * ``zoom`` (number)
 
 .. _integrator_guide_ngeo_properties_gmfPermalinkOptions:
