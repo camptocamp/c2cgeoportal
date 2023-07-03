@@ -1,3 +1,7 @@
+##### 2.7.0.260
+
+- Snyk auto fix [c2cgeoportal#10575](https://github.com/camptocamp/c2cgeoportal/pull/10575)
+
 ##### 2.7.0.258
 
 - Add qgis-3-28 to gmf-2-7 [c2cgeoportal#10548](https://github.com/camptocamp/c2cgeoportal/pull/10548)
