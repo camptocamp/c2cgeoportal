@@ -55,7 +55,7 @@ azure-storage-blob = "12.16.0"
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.2" }
 # pylint = "2.15.5"
-setuptools = "67.8.0"
+setuptools = "68.0.0"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.12.1" # i18n
