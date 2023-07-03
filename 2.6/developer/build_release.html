@@ -94,17 +94,17 @@ the first bug fix release, and <code class="docutils literal notranslate"><span 
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">make transifex-get</span>
+</style><span class="prompt1">make<span class="w"> </span>transifex-get</span>
 </pre></div></div><p>Checkout the master branch</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> set <code class="docutils literal notranslate"><span class="pre">TX_VERSION</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version&gt;</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">rm .tx/config contribs/gmf/apps/.tx/config</span>
-<span class="prompt1">make transifex-init</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">rm<span class="w"> </span>.tx/config<span class="w"> </span>contribs/gmf/apps/.tx/config</span>
+<span class="prompt1">make<span class="w"> </span>transifex-init</span>
 </pre></div></div><p>On <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code>, new version branch do:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make build-tools</span>
-<span class="prompt1">docker run --user<span class="o">=</span>root camptocamp/geomapfish-tools transifex-init <span class="se">\</span>
-    &lt;version&gt; &lt;version + <span class="m">1</span>&gt; <span class="se">\</span>
-    <span class="s2">&quot;</span><span class="k">$(</span>gopass gs/ci/transifex/rw/username<span class="k">)</span><span class="s2">&quot;</span> <span class="se">\</span>
-    <span class="s2">&quot;</span><span class="k">$(</span>gopass gs/ci/transifex/rw/password<span class="k">)</span><span class="s2">&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make<span class="w"> </span>build-tools</span>
+<span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--user<span class="o">=</span>root<span class="w"> </span>camptocamp/geomapfish-tools<span class="w"> </span>transifex-init<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>&lt;version&gt;<span class="w"> </span>&lt;version<span class="w"> </span>+<span class="w"> </span><span class="m">1</span>&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span>gopass<span class="w"> </span>gs/ci/transifex/rw/username<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span>gopass<span class="w"> </span>gs/ci/transifex/rw/password<span class="k">)</span><span class="s2">&quot;</span></span>
 </pre></div></div></div>
 <div class="section" id="configure-dependabot">
 <h2>Configure Dependabot<a class="headerlink" href="#configure-dependabot" title="Permalink to this headline">¶</a></h2>
@@ -133,7 +133,7 @@ And remove the <code class="docutils literal notranslate"><span class="pre">auto
 
 <span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-        - uses: actions/checkout@v1
+<span class="w"> </span>       - uses: actions/checkout@v1
 <span class="gd">-       - run: scripts/get-version --auto-increment</span>
 <span class="gi">+         with:</span>
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
@@ -147,7 +147,7 @@ And remove the <code class="docutils literal notranslate"><span class="pre">auto
 <span class="gd">-       - run: ci/test-upgrade 2* /root/workspace</span>
 <span class="gd">-       - run: ci/test-upgrade cleanup /root/workspace</span>
 
-        - name: Publish to Docker hub and Pypi
+<span class="w"> </span>       - name: Publish to Docker hub and Pypi
 <span class="gd">-           &#39; ci/publish --geoportal</span>
 <span class="gi">+           &#39; ci/publish-daily --geoportal</span>
 
@@ -178,11 +178,11 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 
 <span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-        - uses: actions/checkout@v1
+<span class="w"> </span>       - uses: actions/checkout@v1
 <span class="gi">+         with:</span>
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
-        - name: Publish to Docker hub and Pypi
+<span class="w"> </span>       - name: Publish to Docker hub and Pypi
 <span class="gd">-           &#39; ci/publish --qgisserver ${{ matrix.version }}</span>
 <span class="gi">+           &#39; ci/publish-daily --qgisserver ${{ matrix.version }}</span>
 </pre></div>
@@ -205,20 +205,20 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 
 <span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
 
-        - uses: actions/checkout@v1
+<span class="w"> </span>       - uses: actions/checkout@v1
 <span class="gi">+         with:</span>
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 
-        - name: Publish to Docker hub and Pypi
-          run: |
-            summon --yaml &#39;
-              DOCKER_USERNAME: !var gs/ci/dockerhub/username
-              DOCKER_PASSWORD: !var gs/ci/dockerhub/password
-              PYPI_USERNAME: !var gs/ci/pypi/username
-              PYPI_PASSWORD: !var gs/ci/pypi/password
-            &#39; ci/publish --geoportal
-          env:
-            GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+<span class="w"> </span>       - name: Publish to Docker hub and Pypi
+<span class="w"> </span>         run: |
+<span class="w"> </span>           summon --yaml &#39;
+<span class="w"> </span>             DOCKER_USERNAME: !var gs/ci/dockerhub/username
+<span class="w"> </span>             DOCKER_PASSWORD: !var gs/ci/dockerhub/password
+<span class="w"> </span>             PYPI_USERNAME: !var gs/ci/pypi/username
+<span class="w"> </span>             PYPI_PASSWORD: !var gs/ci/pypi/password
+<span class="w"> </span>           &#39; ci/publish --geoportal
+<span class="w"> </span>         env:
+<span class="w"> </span>           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
 <span class="gi">+           GITHUB_REF: refs/heads/${{ env.MAIN_BRANCH }}</span>
 
 <span class="gd">-       - name: Publish to Transifex</span>
@@ -245,12 +245,12 @@ as <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <li><p>Empty the file <code class="docutils literal notranslate"><span class="pre">CHANGELOG</span></code></p></li>
 <li><p>Set the content of the file <code class="docutils literal notranslate"><span class="pre">ci/changelog.yaml</span></code> to:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">commits</span><span class="p">:</span>
-  <span class="nt">c2cgeoportal</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-  <span class="nt">ngeo</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">c2cgeoportal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">ngeo</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 <span class="nt">pulls</span><span class="p">:</span>
-  <span class="nt">c2cgeoportal</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-  <span class="nt">ngeo</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-<span class="nt">releases</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
+<span class="w">  </span><span class="nt">c2cgeoportal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">ngeo</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="nt">releases</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </pre></div>
 </div>
 </li>

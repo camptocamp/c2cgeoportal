@@ -85,10 +85,10 @@ the resourceproxy service as described below.</p>
 should use the <code class="docutils literal notranslate"><span class="pre">resourceproxy</span></code> service and add the list of hosts you want to access in your project
 <cite>vars.yaml</cite> configuration file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">resourceproxy</span><span class="p">:</span>
-    <span class="c1"># list of urls from which it is safe to load content</span>
-    <span class="nt">targets</span><span class="p">:</span>
-      <span class="c1">#exampletargetname: https://www.camptocamp.com/?param1=%s&amp;param2=%s</span>
-      <span class="nt">rfinfo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&amp;no_immeuble=%s</span>
+<span class="w">    </span><span class="c1"># list of urls from which it is safe to load content</span>
+<span class="w">    </span><span class="nt">targets</span><span class="p">:</span>
+<span class="w">      </span><span class="c1">#exampletargetname: https://www.camptocamp.com/?param1=%s&amp;param2=%s</span>
+<span class="w">      </span><span class="nt">rfinfo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://www.rfinfo.vd.ch/rfinfo.php?no_commune=%s&amp;no_immeuble=%s</span>
 </pre></div>
 </div>
 <p>Then you can access resources by building urls using the following schema:
@@ -103,8 +103,8 @@ for example the <code class="docutils literal notranslate"><span class="pre">che
 If you are running your server in https and wish to disable certificate checks in these
 connections, you can achieve this by adding the following configuration element to your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
-    <span class="nt">http_options</span><span class="p">:</span>
-        <span class="nt">verify</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">    </span><span class="nt">http_options</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">verify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </pre></div>
 </div>
 <p>See other options in parameters of

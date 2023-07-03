@@ -46,7 +46,7 @@
 <h2>Makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
 <p>In your project’s makefile, add the new interface to <code class="docutils literal notranslate"><span class="pre">NGEO_INTERFACES</span></code>.
 For example, to have two NGEO interfaces called “mobile” and “new”, set:</p>
-<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">NGEO_INTERFACES</span> <span class="o">=</span> mobile new
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">NGEO_INTERFACES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>mobile<span class="w"> </span>new
 </pre></div>
 </div>
 </div>
@@ -57,24 +57,24 @@ For example, to have two NGEO interfaces called “mobile” and “new”, set:
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/mobile.html.ejs <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">  geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
-<span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllermobile.js <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">  geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
+</style><span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/mobile.html.ejs<span class="w"> </span><span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
+<span class="prompt1"><span class="w">  </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
+<span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllermobile.js<span class="w"> </span><span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
+<span class="prompt1"><span class="w">  </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
 </pre></div></div><p>If you want a new desktop interface, get the default files as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/desktop.html.ejs <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">  geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
-<span class="prompt1">cp CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllerdesktop.js <span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
-<span class="prompt1">  geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/desktop.html.ejs<span class="w"> </span><span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
+<span class="prompt1"><span class="w">  </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
+<span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllerdesktop.js<span class="w"> </span><span class="si">${</span><span class="s1">&#39;\\&#39;</span><span class="si">}</span></span>
+<span class="prompt1"><span class="w">  </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
 </pre></div></div></div>
 <div class="section" id="edit-interface-files">
 <h2>Edit interface files<a class="headerlink" href="#edit-interface-files" title="Permalink to this headline">¶</a></h2>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>,
 adapt the following lines:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;App&lt;interface&gt;&#39;</span><span class="p">,</span> <span class="p">[</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;App&lt;interface&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span>
 <span class="p">...</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;&lt;Interface&gt;Controller&#39;</span><span class="p">,</span> <span class="nx">exports</span><span class="p">);</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;&lt;Interface&gt;Controller&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">exports</span><span class="p">);</span>
 <span class="p">...</span>
 </pre></div>
 </div>
@@ -89,8 +89,8 @@ adapt the name of the controller and the referenced css and js files to the new 
 </pre></div>
 </div>
 <p>Add the new interface files to Git:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git add geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
-<span class="prompt1">git add geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
+<span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>
 </pre></div></div></div>
 <div class="section" id="package-file">
 <h2>Package file<a class="headerlink" href="#package-file" title="Permalink to this headline">¶</a></h2>
@@ -141,13 +141,13 @@ Add the name of your interface to the table. This can be done using the admin in
 In the <code class="docutils literal notranslate"><span class="pre">all</span></code> (<code class="docutils literal notranslate"><span class="pre">vars.checker.all</span></code>) section, check all the ngeo interfaces in standard
 and debug mode:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">phantomjs_routes</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;interface&gt;</span>
-  <span class="nt">params</span><span class="p">:</span>
-    <span class="nt">no_redirect</span><span class="p">:</span> <span class="s">&quot;true&quot;</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;interface&gt;</span>
-  <span class="nt">param</span><span class="p">:</span>
-    <span class="nt">no_redirect</span><span class="p">:</span> <span class="s">&quot;true&quot;</span>
-    <span class="nt">debug</span><span class="p">:</span> <span class="s">&quot;true&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;interface&gt;</span>
+<span class="w">  </span><span class="nt">params</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">no_redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;interface&gt;</span>
+<span class="w">  </span><span class="nt">param</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">no_redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
 </pre></div>
 </div>
 <p>By default, the checker is enabled for the desktop and mobile interfaces.</p>

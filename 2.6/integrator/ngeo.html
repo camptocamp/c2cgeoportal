@@ -89,7 +89,7 @@ from the controller by doing the following (here, the controller is the <code cl
 <p>This is not possible in the simple application mode</p>
 </div>
 <p>In the controller you have some lines like:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Component</span> <span class="nx">from</span> <span class="s1">&#39;gmf/&lt;component&gt;/component.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Component</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;gmf/&lt;component&gt;/component.js&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>This is needed to include the javascript of the used directives.</p>
@@ -165,29 +165,29 @@ use AngularJS only to display your component.</p>
 <p>For the structure, you can be inspired by one of the components in ngeo.</p>
 <p>You should register each of your AngularJS element (component, controller, service, etc.) in a module. First
 declare your module:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">angular</span> <span class="nx">from</span> <span class="s1">&#39;angular&#39;</span><span class="p">;</span>
-<span class="kd">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;&lt;projectElementname&gt;&#39;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="c1">// dependencies to load within this module.</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">angular</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;angular&#39;</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;&lt;projectElementname&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="c1">// dependencies to load within this module.</span>
 <span class="p">]);</span>
 </pre></div>
 </div>
 <p>Then register your component to this module:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nx">aController</span> <span class="p">{}</span>
-<span class="nx">module</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;&lt;projectController&gt;&#39;</span><span class="p">,</span> <span class="nx">aController</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">aDirective</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
-<span class="nx">module</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s1">&#39;&lt;projectDirectivename&gt;&#39;</span><span class="p">,</span> <span class="nx">aDirective</span><span class="p">);</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span><span class="w"> </span><span class="nx">aController</span><span class="w"> </span><span class="p">{}</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;&lt;projectController&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">aController</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">aDirective</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{};</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s1">&#39;&lt;projectDirectivename&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">aDirective</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>And export this module:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span> <span class="k">default</span> <span class="nx">module</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">module</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Finally add your module in your main controller app file:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">myCustomComponent</span> <span class="nx">from</span> <span class="s1">&#39;../myComponent/Component.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">myCustomComponent</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../myComponent/Component.js&#39;</span><span class="p">;</span>
 <span class="c1">// Update the already declared module at the end of the controller with:</span>
-<span class="kd">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;&lt;AppInterface&gt;&#39;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="p">...</span>
-  <span class="nx">myCustomComponent</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;&lt;AppInterface&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="w">  </span><span class="nx">myCustomComponent</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
 <span class="p">];</span>
 </pre></div>
 </div>
@@ -214,36 +214,36 @@ component: <code class="docutils literal notranslate"><span class="pre">template
 after each GMF update as the original code may have changed.</p>
 <p>AngularJS is still ECMAScript. You can define some new functions or new variables to a class via the
 prototype. Here’s an example with the ngeo draw controller:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="sb">`import {DrawController} from &#39;ngeo/draw/Controller.js&#39;`</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="sb">`import {DrawController} from &#39;ngeo/draw/Controller.js&#39;`</span>
 <span class="cm">/**</span>
 <span class="cm"> * Doctype is important for compilation.</span>
 <span class="cm"> * @type {string}</span>
 <span class="cm"> */</span>
 <span class="nx">DrawController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">myNewValue</span><span class="p">;</span>
-<span class="nx">DrawController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">newFunction</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+<span class="nx">DrawController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">newFunction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{};</span>
 </pre></div>
 </div>
 <p>To replace an existing function, just create a function with the same name than the one to replace:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">DrawController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">DrawController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{};</span>
 </pre></div>
 </div>
 <p>You will have to copy-paste the content of the original function to keep the component working. Then you
 can extend it.</p>
 <p>To override a partial (HMTL) file, you have to copy-paste the whole original file. Then you can adapt it.
 To make the original component use your own partial file, you must set the template cache of the module:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nx">GmfDrawFeatureComponent</span> <span class="nx">from</span> <span class="s1">&#39;gmf/drawing/drawFeatureComponent.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">GmfDrawFeatureComponent</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;gmf/drawing/drawFeatureComponent.js&#39;</span><span class="p">;</span>
 <span class="cm">/**</span>
 <span class="cm"> * Override gmf/drawing/drawFeatureComponent partial with a custom one.</span>
 <span class="cm"> */</span>
-<span class="nx">GmfDrawFeatureComponent</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="cm">/* @ngInject */</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
-  <span class="c1">// @ts-ignore: webpack</span>
-  <span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s1">&#39;gmf/drawing/drawFeatureComponent&#39;</span><span class="p">,</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./drawFeatureComponent.html&#39;</span><span class="p">));</span>
+<span class="nx">GmfDrawFeatureComponent</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="cm">/* @ngInject */</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// @ts-ignore: webpack</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s1">&#39;gmf/drawing/drawFeatureComponent&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./drawFeatureComponent.html&#39;</span><span class="p">));</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p>Finally be sure that the file where you override or extend existing content is read by the main
 controller file of your app:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="s1">&#39;../myComponent/load_and_override.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="s1">&#39;../myComponent/load_and_override.js&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>

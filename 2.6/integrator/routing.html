@@ -75,20 +75,20 @@ need to be defined in your interface controller, as long as it extends AbstractD
 <p>To configure the routing feature, the constants <code class="docutils literal notranslate"><span class="pre">ngeoRoutingOptions</span></code> and <code class="docutils literal notranslate"><span class="pre">ngeoNominatimSearchDefaultParams</span></code>
 can be defined. Add them to your <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code> section in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">interfaces_config</span><span class="p">:</span>
-    <span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
-    <span class="nt">your_interface</span><span class="p">:</span>
-        <span class="nt">&lt;&lt;</span><span class="p">:</span> <span class="nv">*interface</span>
-            <span class="nt">constants</span><span class="p">:</span>
-                <span class="nt">&lt;&lt;</span><span class="p">:</span> <span class="nv">*constants</span>
-                <span class="nt">ngeoRoutingOptions</span><span class="p">:</span>
-                    <span class="p p-Indicator">-</span> <span class="nt">backendUrl</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://routing.osm.ch/</span>
-                    <span class="p p-Indicator">-</span> <span class="nt">profiles</span><span class="p">:</span>
-                        <span class="p p-Indicator">-</span> <span class="nt">label</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Car</span>
-                          <span class="nt">profile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">routed-car</span>
-                        <span class="p p-Indicator">-</span> <span class="nt">label</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Bike (City)</span>
-                          <span class="nt">profile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">routed-bike</span>
-                <span class="nt">ngeoNominatimSearchDefaultParams</span><span class="p">:</span>
-                    <span class="nt">countrycodes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CH</span>
+<span class="w">    </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">your_interface</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*interface</span>
+<span class="w">            </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*constants</span>
+<span class="w">                </span><span class="nt">ngeoRoutingOptions</span><span class="p">:</span>
+<span class="w">                    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendUrl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://routing.osm.ch/</span>
+<span class="w">                    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">profiles</span><span class="p">:</span>
+<span class="w">                        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Car</span>
+<span class="w">                          </span><span class="nt">profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">routed-car</span>
+<span class="w">                        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Bike (City)</span>
+<span class="w">                          </span><span class="nt">profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">routed-bike</span>
+<span class="w">                </span><span class="nt">ngeoNominatimSearchDefaultParams</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">countrycodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CH</span>
 </pre></div>
 </div>
 <div class="section" id="backendurl">

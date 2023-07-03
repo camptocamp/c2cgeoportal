@@ -179,7 +179,7 @@ This area is specified in the administration interface while defining the <code 
 may slow down the application.</p>
 </div>
 <p>To define a restricted layer in the Mapfile, the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should look like this:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DATA</span> <span class="ss">&quot;&lt;the_geom&gt; FROM (</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;&lt;the_geom&gt; FROM (</span>
 <span class="ss">    SELECT *</span>
 <span class="ss">    FROM &lt;schema&gt;.&lt;table&gt;</span>
 <span class="ss">    WHERE ST_Contains(</span>
@@ -197,18 +197,18 @@ table’s geometry column. <code class="docutils literal notranslate"><span clas
 what is configured in the administration interface for the layer.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_SUBSELECT}</span></code> is defined as follows:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
 <span class="k">FROM</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span> <span class="k">AS</span> <span class="n">ra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span> <span class="k">AS</span> <span class="n">rra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span> <span class="k">AS</span> <span class="n">lra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span> <span class="k">AS</span> <span class="n">la</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">la</span>
 <span class="k">WHERE</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
 <span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
 <span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span> <span class="o">=</span> <span class="n">la</span><span class="p">.</span><span class="n">id</span> <span class="k">AND</span> <span class="n">la</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -253,20 +253,20 @@ anonymous users apply.</p>
 <p>Then you do not need to define an area in the admin interface.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_NOAREA_SUBSELECT}</span></code> is defined as follows:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
 <span class="k">FROM</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span> <span class="k">AS</span> <span class="n">ra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span> <span class="k">AS</span> <span class="n">rra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span> <span class="k">AS</span> <span class="n">lra</span><span class="p">,</span>
-    <span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span> <span class="k">AS</span> <span class="n">la</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lra</span><span class="p">,</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">la</span>
 <span class="k">WHERE</span>
-    <span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
 <span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span> <span class="o">=</span> <span class="n">ra</span><span class="p">.</span><span class="n">id</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
 <span class="k">AND</span>
-    <span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span> <span class="o">=</span> <span class="n">la</span><span class="p">.</span><span class="n">id</span>
+<span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">layer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">la</span><span class="p">.</span><span class="n">id</span>
 <span class="k">AND</span>
-    <span class="n">la</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span>
+<span class="w">    </span><span class="n">la</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span>
 </pre></div>
 </div>
 <p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
@@ -313,22 +313,22 @@ As a result, if you would like to adapt the list of attributes returned in a
 WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> section. For instance:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">LAYER</span>
-    <span class="p">...</span>
-    <span class="k">DATA</span> <span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056&quot;</span>
-    <span class="n">METADATA</span>
-        <span class="p">...</span>
-        <span class="ss">&quot;gml_exclude_items&quot;</span> <span class="ss">&quot;type,gid&quot;</span>
-        <span class="ss">&quot;gml_include_items&quot;</span> <span class="ss">&quot;all&quot;</span>
-    <span class="k">END</span>
-    <span class="n">VALIDATION</span>
-        <span class="ss">&quot;default_s_columns&quot;</span> <span class="ss">&quot;t.name&quot;</span>
-        <span class="ss">&quot;s_columns&quot;</span> <span class="ss">&quot;^[a-z,._]*$$&quot;</span>
-    <span class="k">END</span>
-    <span class="k">CLASS</span>
-        <span class="n">EXPRESSION</span> <span class="p">([</span><span class="k">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="p">...</span>
-    <span class="k">END</span>
-    <span class="p">...</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056&quot;</span>
+<span class="w">    </span><span class="n">METADATA</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">        </span><span class="ss">&quot;gml_exclude_items&quot;</span><span class="w"> </span><span class="ss">&quot;type,gid&quot;</span>
+<span class="w">        </span><span class="ss">&quot;gml_include_items&quot;</span><span class="w"> </span><span class="ss">&quot;all&quot;</span>
+<span class="w">    </span><span class="k">END</span>
+<span class="w">    </span><span class="n">VALIDATION</span>
+<span class="w">        </span><span class="ss">&quot;default_s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;t.name&quot;</span>
+<span class="w">        </span><span class="ss">&quot;s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;^[a-z,._]*$$&quot;</span>
+<span class="w">    </span><span class="k">END</span>
+<span class="w">    </span><span class="k">CLASS</span>
+<span class="w">        </span><span class="n">EXPRESSION</span><span class="w"> </span><span class="p">([</span><span class="k">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">    </span><span class="k">END</span>
+<span class="w">    </span><span class="p">...</span>
 <span class="k">END</span>
 </pre></div>
 </div>
@@ -356,12 +356,12 @@ a tileindex. You can achieve this with these steps:</p>
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">gdal_translate -of GTiff -co <span class="s2">&quot;TILED=YES&quot;</span> -co <span class="s2">&quot;TFW=YES&quot;</span> <span class="se">\</span>
-  &lt;filename_in.tif&gt; &lt;filename_out.tif&gt;</span>
+</style><span class="prompt1">gdal_translate<span class="w"> </span>-of<span class="w"> </span>GTiff<span class="w"> </span>-co<span class="w"> </span><span class="s2">&quot;TILED=YES&quot;</span><span class="w"> </span>-co<span class="w"> </span><span class="s2">&quot;TFW=YES&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&lt;filename_in.tif&gt;<span class="w"> </span>&lt;filename_out.tif&gt;</span>
 </pre></div></div><p>Then build overviews for your rasters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaladdo -r average filename.tif <span class="m">2</span> <span class="m">4</span> <span class="m">8</span> <span class="m">16</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaladdo<span class="w"> </span>-r<span class="w"> </span>average<span class="w"> </span>filename.tif<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">16</span></span>
 </pre></div></div><p>You can generate a shapefile indexing all your rasters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex filename_index.shp *.tif</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdaltindex<span class="w"> </span>filename_index.shp<span class="w"> </span>*.tif</span>
 </pre></div></div></div>
 </div>
 <div class="section" id="note-about-ecw">

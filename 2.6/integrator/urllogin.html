@@ -39,7 +39,7 @@
 <p>You can generate a permalink of your application to give a user direct access to protected data.</p>
 <p>First, you should configure <code class="docutils literal notranslate"><span class="pre">urllogin</span></code> in the vars file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">urllogin</span><span class="p">:</span>
-    <span class="nt">aes_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">foobarfoobar1234</span>
+<span class="w">    </span><span class="nt">aes_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foobarfoobar1234</span>
 </pre></div>
 </div>
 <p>The AES key must be either 16, 24, or 32 bytes long.</p>
@@ -49,10 +49,10 @@ This generates a token like: <code class="docutils literal notranslate"><span cl
 that the session timeout is not too big.</p>
 <p>You can change the session timeout in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file with:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
-    <span class="nt">geoportal</span><span class="p">:</span>
-        <span class="nt">environment</span><span class="p">:</span>
-            <span class="c1"># in second =&gt; One day</span>
-            <span class="nt">AUTHTKT_TIMEOUT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">86400</span>
+<span class="w">    </span><span class="nt">geoportal</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">            </span><span class="c1"># in second =&gt; One day</span>
+<span class="w">            </span><span class="nt">AUTHTKT_TIMEOUT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
 </pre></div>
 </div>
 <div class="section" id="how-to-build-your-token-in-your-application">

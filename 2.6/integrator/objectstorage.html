@@ -65,28 +65,28 @@ on the <code class="docutils literal notranslate"><span class="pre">geoportal</s
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 <span class="se">\</span>
-     s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;</span>
+</style><span class="prompt1">aws<span class="w"> </span>--endpoint-url<span class="w"> </span>https://sos-ch-dk-2.exo.io/<span class="w"> </span>--region<span class="w"> </span>ch-dk-2<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://&lt;bucket&gt;/&lt;folder&gt;</span>
 </pre></div></div><p>Create the vrt file for a raster layer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
-     <span class="s1">&#39;gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt \</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="s1">&#39;gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt \</span>
 <span class="s1">     $(list4vrt &lt;bucket&gt; &lt;folder&gt;/ .tif)&#39;</span></span>
 </pre></div></div></div>
 <div class="section" id="mapserver">
 <h2>MapServer<a class="headerlink" href="#mapserver" title="Permalink to this headline">¶</a></h2>
 <p>Create the shape index file for a raster layer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="se">\</span>
-     <span class="s1">&#39;gdaltindex mapserver/index.shp $) \</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="s1">&#39;gdaltindex mapserver/index.shp $) \</span>
 <span class="s1">         aws --endpoint-url http://${AWS_S3_ENDPOINT} \</span>
 <span class="s1">             --region ${AWS_DEFAULT_REGION} \</span>
 <span class="s1">             s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;/ | \</span>
 <span class="s1">         grep tif$ | \</span>
 <span class="s1">         awk &#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;{print &quot;/vsis3/&lt;bucket&gt;/&lt;folder&gt;/&quot;$4}&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39; \</span>
 <span class="s1">     )&#39;</span></span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shp mapserver/</span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shx mapserver/</span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf mapserver/</span>
-<span class="prompt1"> docker cp &lt;docker_compose_project_name&gt;_geoportal_1:/app/index.prj mapserver/</span>
+<span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shp<span class="w"> </span>mapserver/</span>
+<span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shx<span class="w"> </span>mapserver/</span>
+<span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf<span class="w"> </span>mapserver/</span>
+<span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.prj<span class="w"> </span>mapserver/</span>
 </pre></div></div><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_CACHE&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
 <span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_CACHE_SIZE&quot;</span> <span class="s2">&quot;128000000&quot;</span>

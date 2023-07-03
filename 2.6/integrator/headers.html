@@ -42,10 +42,10 @@
 You may wish to override the values being written. All this is done in the configuration with the
 <code class="docutils literal notranslate"><span class="pre">global</span> <span class="pre">_headers</span></code> section in the vars file with the following syntax:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
-  <span class="nt">global_headers</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">pattern</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;regex&gt;</span>
-      <span class="nt">headers</span><span class="p">:</span>
-        <span class="nt">&lt;header&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;value&gt;</span>
+<span class="w">  </span><span class="nt">global_headers</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;regex&gt;</span>
+<span class="w">      </span><span class="nt">headers</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;header&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;value&gt;</span>
 </pre></div>
 </div>
 <p>If a path matches more than one pattern, all headers listed in each match will be applied.
@@ -64,9 +64,9 @@ The naming of these variables follows this pattern: <code class="docutils litera
 of the server. It’s possible to keep the original host by adding the host value to preserve
 in the <cite>host_forward_host</cite> array of strings.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
-  <span class="nt">host_forward_host</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">&lt;host.one&gt;</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">&lt;host.two&gt;</span>
+<span class="w">  </span><span class="nt">host_forward_host</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host.one&gt;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host.two&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -74,10 +74,10 @@ in the <cite>host_forward_host</cite> array of strings.</p>
 <h2>Headers whitelist and blacklist<a class="headerlink" href="#headers-whitelist-and-blacklist" title="Permalink to this headline">¶</a></h2>
 <p>It’s possible to filter the headers of requests with a whitelist or a blacklist.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
-  <span class="nt">headers_whitelist</span><span class="p">:</span> <span class="p p-Indicator">[]</span>
-  <span class="nt">headers_blacklist</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">&lt;header-one&gt;</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">&lt;header-two&gt;</span>
+<span class="w">  </span><span class="nt">headers_whitelist</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">  </span><span class="nt">headers_blacklist</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;header-one&gt;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;header-two&gt;</span>
 </pre></div>
 </div>
 <p>The whitelist is applied before the blacklist.
