@@ -42,6 +42,7 @@ from typing import Any, Callable, Optional, Union, cast
 import pkg_resources
 import requests
 import yaml
+
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
