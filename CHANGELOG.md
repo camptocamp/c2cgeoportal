@@ -1,3 +1,7 @@
+##### 2.7.0.262
+
+- Update all patch versions (2.7) (patch) [ngeo#9156](https://github.com/camptocamp/ngeo/pull/9156)
+
 ##### 2.7.0.261
 
 - Add call to request.user in Entry.get_ngeo_index_vars [c2cgeoportal#10565](https://github.com/camptocamp/c2cgeoportal/pull/10565)
