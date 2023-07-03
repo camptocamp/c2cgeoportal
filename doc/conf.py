@@ -19,7 +19,6 @@
 
 import datetime
 from os import environ
-from typing import Dict
 
 import alabaster  # pylint: disable=import-error
 import sphinx.application  # pylint: disable=import-error
@@ -199,7 +198,7 @@ htmlhelp_basename = "c2cgeoportaldoc"
 
 # -- Options for LaTeX output --------------------------------------------------
 
-latex_elements: Dict[str, str] = {
+latex_elements: dict[str, str] = {
     # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').

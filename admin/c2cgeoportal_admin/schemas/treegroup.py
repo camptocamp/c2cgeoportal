@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Camptocamp SA
+# Copyright (c) 2018-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 
 import logging
 from functools import partial
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import colander
 import pyramid.request
@@ -65,8 +65,8 @@ class ChildSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abst
 
 
 def treeitems(
-    node: TreeGroup, kw: Dict[str, pyramid.request.Request], only_groups: bool = False
-) -> List[Dict[str, Any]]:
+    node: TreeGroup, kw: dict[str, pyramid.request.Request], only_groups: bool = False
+) -> list[dict[str, Any]]:
     """Get a serializable representation of the tree items."""
     del node
     dbsession = kw["request"].dbsession

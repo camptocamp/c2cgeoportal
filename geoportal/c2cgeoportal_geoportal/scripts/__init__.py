@@ -28,7 +28,7 @@
 
 import os
 from argparse import ArgumentParser, Namespace
-from typing import Any, Dict
+from typing import Any
 
 import c2cwsgiutils.setup_process
 import pyramid.config
@@ -51,7 +51,7 @@ def get_appsettings(options: Namespace) -> pyramid.config.Configurator:
     return c2cwsgiutils.setup_process.bootstrap_application_from_options(options)["registry"].settings
 
 
-def get_session(settings: Dict[str, Any], transaction_manager: transaction.TransactionManager) -> Session:
+def get_session(settings: dict[str, Any], transaction_manager: transaction.TransactionManager) -> Session:
     """Get the database session in script context."""
     configure_mappers()
     engine = engine_from_config(settings)

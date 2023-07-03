@@ -32,7 +32,7 @@ Pyramid application test package.
 
 import logging
 from configparser import ConfigParser
-from typing import Any, Dict
+from typing import Any
 
 import pyramid.registry
 import pyramid.request
@@ -121,7 +121,7 @@ def setup_db() -> None:
     caching.invalidate_region()
 
 
-def get_settings() -> Dict[str, Any]:
+def get_settings() -> dict[str, Any]:
     logging.getLogger("c2cgeoportal_geoportal").setLevel(logging.DEBUG)
 
     configfile = "/opt/c2cgeoportal/geoportal/tests/tests.ini"

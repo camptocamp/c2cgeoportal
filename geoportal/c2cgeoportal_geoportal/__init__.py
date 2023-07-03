@@ -29,7 +29,7 @@ import importlib
 import logging
 import os
 from functools import partial
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, cast
+from typing import TYPE_CHECKING, Any, Callable, Optional, cast
 from urllib.parse import urlsplit
 
 import c2cgeoform
@@ -87,7 +87,7 @@ class AssetRendererFactory:
         del info  # unused
         self.resolver = AssetResolver("c2cgeoportal_geoportal")
 
-    def __call__(self, value: Any, system: Dict[str, str]) -> bytes:
+    def __call__(self, value: Any, system: dict[str, str]) -> bytes:
         del value
         asset = self.resolver.resolve(system["renderer_name"])
         return cast(bytes, asset.stream().read())
@@ -97,7 +97,7 @@ INTERFACE_TYPE_NGEO = "ngeo"
 INTERFACE_TYPE_CANVAS = "canvas"
 
 
-def add_interface_config(config: pyramid.config.Configurator, interface_config: Dict[str, Any]) -> None:
+def add_interface_config(config: pyramid.config.Configurator, interface_config: dict[str, Any]) -> None:
     """Add the interface (desktop, mobile, ...) views and routes with only the config."""
     add_interface(
         config,
@@ -112,7 +112,7 @@ def add_interface(
     config: pyramid.config.Configurator,
     interface_name: str = "desktop",
     interface_type: str = INTERFACE_TYPE_NGEO,
-    interface_config: Optional[Dict[str, Any]] = None,
+    interface_config: Optional[dict[str, Any]] = None,
     default: bool = False,
     **kwargs: Any,
 ) -> None:
@@ -176,7 +176,7 @@ def add_interface_canvas(
     config: pyramid.config.Configurator,
     route_name: str,
     route: str,
-    interface_config: Dict[str, Any],
+    interface_config: dict[str, Any],
     permission: Optional[str] = None,
 ) -> None:
     """Add the ngeo interfaces views and routes."""
@@ -248,14 +248,14 @@ def locale_negotiator(request: pyramid.request.Request) -> str:
     return lang
 
 
-def _match_url_start(reference: str, value: List[str]) -> bool:
+def _match_url_start(reference: str, value: list[str]) -> bool:
     """Check that the val URL starts like the ref URL."""
     reference_parts = reference.rstrip("/").split("/")
     value_parts = value[0 : len(reference_parts)]
     return reference_parts == value_parts
 
 
-def is_valid_referrer(request: pyramid.request.Request, settings: Optional[Dict[str, Any]] = None) -> bool:
+def is_valid_referrer(request: pyramid.request.Request, settings: Optional[dict[str, Any]] = None) -> bool:
     """Check if the referrer is valid."""
     if request.referrer is not None:
         referrer = urlsplit(request.referrer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
@@ -267,7 +267,7 @@ def is_valid_referrer(request: pyramid.request.Request, settings: Optional[Dict[
 
 
 def create_get_user_from_request(
-    settings: Dict[str, Any]
+    settings: dict[str, Any]
 ) -> Callable[[pyramid.request.Request, Optional[str]], Optional["static.User"]]:
     """Get the get_user_from_request function."""
 
@@ -754,7 +754,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
 
 def init_db_sessions(
-    settings: Dict[str, Any], config: Configurator, health_check: Optional[HealthCheck] = None
+    settings: dict[str, Any], config: Configurator, health_check: Optional[HealthCheck] = None
 ) -> None:
     """Initialize the database sessions."""
     db_chooser = settings.get("db_chooser", {})

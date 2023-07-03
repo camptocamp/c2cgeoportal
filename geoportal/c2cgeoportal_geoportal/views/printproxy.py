@@ -29,7 +29,6 @@
 import json
 import logging
 import urllib.parse
-from typing import Dict, List, Tuple
 
 import pyramid.request
 import pyramid.response
@@ -74,8 +73,8 @@ class PrintProxy(Proxy):
 
     @CACHE_REGION.cache_on_arguments()
     def _capabilities(
-        self, templates: List[str], query_string: Dict[str, str], method: str, referrer: str
-    ) -> Tuple[requests.Response, str]:
+        self, templates: list[str], query_string: dict[str, str], method: str, referrer: str
+    ) -> tuple[requests.Response, str]:
         del query_string  # Just for caching
         del method  # Just for caching
         del referrer  # Just for caching

@@ -30,7 +30,7 @@ import copy
 import logging
 import xml.sax.handler  # nosec
 from io import StringIO
-from typing import Any, Callable, Dict, List, Optional, Set, Union
+from typing import Any, Callable, Optional, Union
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
 
 import defusedxml.expatreader
@@ -52,7 +52,7 @@ ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
 
 
 @CACHE_REGION.cache_on_arguments()
-def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> Dict[str, List[str]]:
+def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> dict[str, list[str]]:
     """Get a simple serializable structure of the WMS capabilities."""
     url = wms_url.clone().add_query({"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
 
@@ -78,7 +78,7 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 
     try:
         wms = WebMapService(None, xml=response.content)
-        result: Dict[str, List[str]] = {}
+        result: dict[str, list[str]] = {}
 
         def _fill(name: str, parent: ContentMetadata) -> None:
             if parent is None:
@@ -106,7 +106,7 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 
 
 def filter_capabilities(
-    content: str, wms: bool, url: Url, headers: Dict[str, str], request: pyramid.request.Request
+    content: str, wms: bool, url: Url, headers: dict[str, str], request: pyramid.request.Request
 ) -> str:
     """Filter the WMS/WFS capabilities."""
 
@@ -150,7 +150,7 @@ def filter_capabilities(
 def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.request.Request) -> str:
     """Filter the WTS capabilities."""
 
-    writable_layers: Set[str] = set()
+    writable_layers: set[str] = set()
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url.url())
     if ogc_server_ids is None:
         LOG.error("No OGC server found for WFS URL %s", wfs_url)
@@ -181,7 +181,7 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
 class _Layer:
     def __init__(self, self_hidden: bool = False):
-        self.accumulator: List[Callable[[], None]] = []
+        self.accumulator: list[Callable[[], None]] = []
         self.hidden = True
         self.self_hidden = self_hidden
         self.has_children = False
@@ -202,12 +202,12 @@ class _CapabilitiesFilter(XMLFilterBase):
         upstream: XMLFilterBase,
         downstream: XMLGenerator,
         tag_name: str,
-        layers_blacklist: Optional[Set[str]] = None,
-        layers_whitelist: Optional[Set[str]] = None,
+        layers_blacklist: Optional[set[str]] = None,
+        layers_whitelist: Optional[set[str]] = None,
     ):
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
-        self._accumulator: List[str] = []
+        self._accumulator: list[str] = []
 
         assert (
             layers_blacklist is not None or layers_whitelist is not None
@@ -223,7 +223,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         self.layers_blacklist = layers_blacklist
         self.layers_whitelist = layers_whitelist
 
-        self.layers_path: List[_Layer] = []
+        self.layers_path: list[_Layer] = []
         self.in_name = False
         self.tag_name = tag_name
         self.level = 0
@@ -262,7 +262,7 @@ class _CapabilitiesFilter(XMLFilterBase):
     def endPrefixMapping(self, prefix: str) -> None:  # noqa: ignore=N802
         self._downstream.endPrefixMapping(prefix)  # type: ignore
 
-    def startElement(self, name: str, attrs: Dict[str, str]) -> None:  # noqa: ignore=N802
+    def startElement(self, name: str, attrs: dict[str, str]) -> None:  # noqa: ignore=N802
         if name == self.tag_name:
             self.level += 1
             if self.layers_path:
@@ -294,7 +294,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         elif name == "Name":
             self.in_name = False
 
-    def startElementNS(self, name: str, qname: str, attrs: Dict[str, str]) -> None:  # noqa: ignore=N802
+    def startElementNS(self, name: str, qname: str, attrs: dict[str, str]) -> None:  # noqa: ignore=N802
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))  # type: ignore
 
     def endElementNS(self, name: str, qname: str) -> None:  # noqa: ignore=N802

@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021, Camptocamp SA
+# Copyright (c) 2020-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,13 +26,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import re
-from typing import Any, Dict
+from typing import Any
 
 
 class Normalize:
     """Normalize a text for the Full text search."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         split = config.get("split_regex")
         self.split_re = re.compile(split) if split is not None else None
 

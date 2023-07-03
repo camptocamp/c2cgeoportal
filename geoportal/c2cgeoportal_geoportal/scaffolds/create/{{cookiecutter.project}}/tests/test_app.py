@@ -1,5 +1,3 @@
-from typing import Dict
-
 import pytest
 import requests
 
@@ -25,7 +23,7 @@ import requests
         ),
     ],
 )
-def test_url(url: str, params: Dict[str, str], timeout: int) -> None:
+def test_url(url: str, params: dict[str, str], timeout: int) -> None:
     """Tests that some URL didn't return an error."""
     response = requests.get(url, params=params, verify=False, timeout=timeout)  # nosec
     assert response.status_code == 200, response.text

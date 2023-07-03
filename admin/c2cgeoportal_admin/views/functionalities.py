@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import Any, Dict
+from typing import Any
 
 import colander
 import pyramid.request
@@ -44,8 +44,8 @@ _list_field = partial(ListField, Functionality)
 
 
 def _translate_available_functionality(
-    available_functionality: Dict[str, Any], request: pyramid.request.Request
-) -> Dict[str, Any]:
+    available_functionality: dict[str, Any], request: pyramid.request.Request
+) -> dict[str, Any]:
     result = {}
     result.update(available_functionality)
     result["description"] = request.localizer.translate(

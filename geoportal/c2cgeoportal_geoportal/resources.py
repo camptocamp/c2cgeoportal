@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from typing import List
 
 import pyramid.request
 
@@ -37,7 +36,7 @@ class Root:
         self.request = request
 
 
-def defaultgroupsfinder(username: str, request: pyramid.request.Request) -> List[str]:
+def defaultgroupsfinder(username: str, request: pyramid.request.Request) -> list[str]:
     """
     Get the c2cgeoportal default group finder.
 

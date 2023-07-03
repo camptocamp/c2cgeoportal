@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2021, Camptocamp SA
+# Copyright (c) 2013-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate
 from socket import gaierror
-from typing import Any, Dict, List, cast
+from typing import Any, cast
 
 try:
     from pyramid.httpexceptions import HTTPInternalServerError
@@ -45,10 +45,10 @@ except ModuleNotFoundError:
 LOG = logging.getLogger(__name__)
 
 
-def send_email_config(settings: Dict[str, Any], email_config_name: str, email: str, **kwargs: Any) -> None:
+def send_email_config(settings: dict[str, Any], email_config_name: str, email: str, **kwargs: Any) -> None:
     """Send an email from the config information."""
     smtp_config = settings["smtp"]
-    email_config = cast(Dict[str, str], settings[email_config_name])
+    email_config = cast(dict[str, str], settings[email_config_name])
 
     try:
         send_email(
@@ -64,7 +64,7 @@ def send_email_config(settings: Dict[str, Any], email_config_name: str, email: s
 
 
 def send_email(
-    from_addr: str, to_address: List[str], body: str, subject: str, smtp_config: Dict[str, str]
+    from_addr: str, to_address: list[str], body: str, subject: str, smtp_config: dict[str, str]
 ) -> None:
     """Send an email."""
     msg = MIMEMultipart()

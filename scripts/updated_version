@@ -31,10 +31,9 @@ import argparse
 import json
 import re
 import subprocess
-from typing import Dict, List, Tuple
 
 
-def output(cmd: List[str]) -> bytes:
+def output(cmd: list[str]) -> bytes:
     try:
         return subprocess.check_output(cmd)
     except subprocess.CalledProcessError as error:
@@ -44,7 +43,7 @@ def output(cmd: List[str]) -> bytes:
 
 def get_versions(
     version: str, old_version: float
-) -> Tuple[List[Tuple[str, str]], Dict[str, str], Dict[str, str]]:
+) -> tuple[list[tuple[str, str]], dict[str, str], dict[str, str]]:
     deb_versions = {
         e.split("==")[0]: e.split("==")[1]
         for e in subprocess.check_output(
@@ -217,7 +216,7 @@ def get_versions(
     )
 
 
-def print_package_update(package_old: Dict[str, str], package_new: Dict[str, str]) -> None:
+def print_package_update(package_old: dict[str, str], package_new: dict[str, str]) -> None:
     print("New packages:")
     for name, version in package_new.items():
         if name not in package_old:

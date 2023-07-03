@@ -31,7 +31,7 @@ import json
 import logging
 import os
 import time
-from typing import Any, Callable, Dict, List, Optional, cast
+from typing import Any, Callable, Optional, cast
 
 import pyramid.request
 from Crypto.Cipher import AES  # nosec
@@ -56,7 +56,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     """An authentication policy based on information given in the URL."""
 
     def __init__(
-        self, aes_key: str, callback: Optional[Callable[[str, Any], List[str]]] = None, debug: bool = False
+        self, aes_key: str, callback: Optional[Callable[[str, Any], list[str]]] = None, debug: bool = False
     ):
         self.aeskey = aes_key
         self.callback = callback
@@ -92,12 +92,12 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
 
         return None
 
-    def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> List[Dict[str, str]]:
+    def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> list[dict[str, str]]:
         """Do no-op."""
         del request, userid, kw
         return []
 
-    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:
+    def forget(self, request: pyramid.request.Request) -> list[dict[str, str]]:
         """Do no-op."""
         del request
         return []
@@ -135,12 +135,12 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
             return cast(str, request.user.username)
         return None
 
-    def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> List[Dict[str, str]]:
+    def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> list[dict[str, str]]:
         """Do no-op."""
         del request, userid, kw
         return []
 
-    def forget(self, request: pyramid.request.Request) -> List[Dict[str, str]]:
+    def forget(self, request: pyramid.request.Request) -> list[dict[str, str]]:
         """Do no-op."""
         del request
         return []
@@ -157,7 +157,7 @@ class DevAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         return os.environ["DEV_LOGINNAME"]
 
 
-def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy:
+def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy:
     """Create all the authentication policies."""
     timeout = settings.get("authtkt_timeout")
     timeout = None if timeout is None or timeout.lower() == "none" else int(timeout)
@@ -221,7 +221,7 @@ def create_authentication(settings: Dict[str, Any]) -> MultiAuthenticationPolicy
     return MultiAuthenticationPolicy(policies)
 
 
-def c2cgeoportal_check(username: str, password: str, request: pyramid.request.Request) -> Optional[List[str]]:
+def c2cgeoportal_check(username: str, password: str, request: pyramid.request.Request) -> Optional[list[str]]:
     """Check the user authentication."""
     if request.registry.validate_user(request, username, password):
         return defaultgroupsfinder(username, request)

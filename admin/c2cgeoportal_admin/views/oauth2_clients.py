@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import Any, Dict
+from typing import Any
 
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
@@ -62,31 +62,31 @@ class OAuth2ClientViews(LoggedViews):
         return self._request.dbsession.query(OAuth2Client)
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
-    def index(self) -> Dict[str, Any]:
+    def index(self) -> dict[str, Any]:
         return super().index()  # type: ignore
 
     @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore
-    def grid(self) -> Dict[str, Any]:
+    def grid(self) -> dict[str, Any]:
         return super().grid()  # type: ignore
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def view(self) -> Dict[str, Any]:
+    def view(self) -> dict[str, Any]:
         return super().edit()  # type: ignore
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
     )
-    def save(self) -> Dict[str, Any]:
+    def save(self) -> dict[str, Any]:
         return super().save()
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
-    def delete(self) -> Dict[str, Any]:
+    def delete(self) -> dict[str, Any]:
         return super().delete()
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self) -> Dict[str, Any]:
+    def duplicate(self) -> dict[str, Any]:
         return super().duplicate()  # type: ignore

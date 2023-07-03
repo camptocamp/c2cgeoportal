@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2022, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import yaml
 from lingua.extractors import Extractor, Message
@@ -41,10 +41,10 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     def __call__(
         self,
         filename: str,
-        options: Dict[str, Any],
-        fileobj: Optional[Dict[str, Any]] = None,
+        options: dict[str, Any],
+        fileobj: Optional[dict[str, Any]] = None,
         lineno: int = 0,
-    ) -> List[Message]:
+    ) -> list[Message]:
         del options, fileobj, lineno
 
         print(f"Running {self.__class__.__name__} on {filename}")

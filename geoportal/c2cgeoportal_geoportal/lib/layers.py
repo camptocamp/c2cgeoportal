@@ -26,7 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Any, Dict, Iterable, Optional
+from collections.abc import Iterable
+from typing import Any, Optional
 
 from pyramid.request import Request
 from sqlalchemy.ext.declarative import DeclarativeMeta
@@ -80,7 +81,7 @@ def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -
     )
 
 
-def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict[int, DeclarativeMeta]:
+def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, DeclarativeMeta]:
     """
     Get the protected layers.
 
@@ -94,7 +95,7 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dic
     return {r.id: r for r in results}
 
 
-def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict[int, DeclarativeMeta]:
+def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, DeclarativeMeta]:
     """Get the writable layers."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
@@ -105,7 +106,7 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> Dict
 
 
 @CACHE_REGION.cache_on_arguments()
-def get_private_layers(ogc_server_ids: Iterable[int]) -> Dict[int, Any]:
+def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, Any]:
     """Get the private layers."""
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 

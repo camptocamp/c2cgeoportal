@@ -31,7 +31,7 @@ import logging
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 import pytz
 import sqlalchemy.schema
@@ -253,7 +253,7 @@ class User(Base):  # type: ignore
         email: str = "",
         is_password_changed: bool = False,
         settings_role: Optional[Role] = None,
-        roles: Optional[List[Role]] = None,
+        roles: Optional[list[Role]] = None,
         expire_on: Optional[datetime] = None,
         deactivated: bool = False,
     ) -> None:

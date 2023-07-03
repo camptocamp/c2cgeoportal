@@ -1,6 +1,14 @@
+[tool.mypy]
+python_version = 3.9
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+skip_version_check = true
+ignore_missing_imports = true
+
 [tool.black]
 line-length = 110
-target-version = ['py38']
+target-version = ['py39']
 
 [tool.poetry]
 name = 'c2cgeoportal'
@@ -9,14 +17,14 @@ description = 'Not used'
 authors = []
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.9,<3.11"
 c2cwsgiutils = { extras = ["broadcast"], version = "5.2.2" }
 papyrus = "2.5" # commons
 transaction = "3.1.0" # commons
 "c2c.template" = "2.3.0"
 GeoAlchemy2 = "0.13.3"
 SQLAlchemy = "1.4.48" # commons
-"zope.event" = "4.6" # commons
+"zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.0" # commons
 shapely = "2.0.1"
 cee-syslog-handler = "0.6.0"

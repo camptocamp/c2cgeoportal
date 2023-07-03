@@ -31,7 +31,7 @@ import logging
 import math
 import os
 import traceback
-from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Optional
 
 import numpy
 import pyramid.request
@@ -52,7 +52,7 @@ LOG = logging.getLogger(__name__)
 class Raster:
     """All the view concerned the raster (point, not the profile profile)."""
 
-    data: Dict[str, "fiona.collection.Collection"] = {}
+    data: dict[str, "fiona.collection.Collection"] = {}
 
     def __init__(self, request: pyramid.request.Request):
         self.request = request
@@ -81,7 +81,7 @@ class Raster:
         return result
 
     @view_config(route_name="raster", renderer="fast_json")  # type: ignore
-    def raster(self) -> Dict[str, Any]:
+    def raster(self) -> dict[str, Any]:
         lon = self._get_required_finite_float_param("lon")
         lat = self._get_required_finite_float_param("lat")
 
@@ -103,7 +103,7 @@ class Raster:
         set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
         return result
 
-    def _get_data(self, layer: Dict[str, Any], name: str) -> "fiona.collection.Collection":
+    def _get_data(self, layer: dict[str, Any], name: str) -> "fiona.collection.Collection":
         if name not in self.data:
             path = layer["file"]
             if layer.get("type", "shp_index") == "shp_index":
@@ -120,7 +120,7 @@ class Raster:
         return self.data[name]
 
     def _get_raster_value(
-        self, layer: Dict[str, Any], name: str, lon: float, lat: float
+        self, layer: dict[str, Any], name: str, lon: float, lat: float
     ) -> Optional[decimal.Decimal]:
         data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
@@ -152,7 +152,7 @@ class Raster:
 
     @staticmethod
     def _get_value(
-        layer: Dict[str, Any], name: str, dataset: DatasetReader, lon: float, lat: float
+        layer: dict[str, Any], name: str, dataset: DatasetReader, lon: float, lat: float
     ) -> Optional[numpy.float32]:
         index = dataset.index(lon, lat)
 
@@ -160,7 +160,7 @@ class Raster:
         result: Optional[numpy.float32]
         if 0 <= index[0] < shape[0] and 0 <= index[1] < shape[1]:
 
-            def get_index(index_: int) -> Tuple[int, int]:
+            def get_index(index_: int) -> tuple[int, int]:
                 return index_, index_ + 1
 
             result = dataset.read(1, window=(get_index(index[0]), get_index(index[1])))[0][0]

@@ -28,7 +28,7 @@
 
 import logging
 from enum import Enum
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Optional, cast
 
 import pyramid.request
 import pyramid.response
@@ -59,7 +59,7 @@ def _set_cors_headers(
     request: pyramid.request.Request,
     response: pyramid.response.Response,
     service_name: str,
-    service_headers_settings: Dict[str, Any],
+    service_headers_settings: dict[str, Any],
     credentials: bool,
 ) -> None:
     """Handle CORS requests, as specified in https://www.w3.org/TR/cors/."""
@@ -73,7 +73,7 @@ def _set_cors_headers(
         _LOG.warning("CORS preflight query missing the Access-Control-Request-Method header")
         return
 
-    allowed_origins = cast(List[str], service_headers_settings.get("access_control_allow_origin", []))
+    allowed_origins = cast(list[str], service_headers_settings.get("access_control_allow_origin", []))
     if origin not in allowed_origins:
         if "*" in allowed_origins:
             origin = "*"
@@ -113,7 +113,7 @@ def _set_cors_headers(
 def _set_common_headers(
     request: pyramid.request.Request,
     response: pyramid.response.Response,
-    service_headers_settings: Dict[str, Dict[str, str]],
+    service_headers_settings: dict[str, dict[str, str]],
     cache: Cache,
     content_type: Optional[str],
 ) -> pyramid.response.Response:

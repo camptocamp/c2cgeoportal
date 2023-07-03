@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import json
-from typing import Any, Dict, List, Optional, Set, Union, cast
+from typing import Any, Optional, Union, cast
 
 import colander
 import pyramid.request
@@ -42,7 +42,7 @@ from c2cgeoportal_commons.lib.validators import url
 from c2cgeoportal_commons.models.main import Metadata
 
 
-def get_relevant_for(model: Union[DeclarativeMeta, Mapper]) -> Set[str]:
+def get_relevant_for(model: Union[DeclarativeMeta, Mapper]) -> set[str]:
     """Return list of relevant_for values for passed class."""
     mapper = inspect(model)
     relevant_for = {mapper.local_table.name}  # or mapper.polymorphic_identity
@@ -51,7 +51,7 @@ def get_relevant_for(model: Union[DeclarativeMeta, Mapper]) -> Set[str]:
     return relevant_for
 
 
-def metadata_definitions(settings: Dict[str, Any], model: DeclarativeMeta) -> List[Dict[str, Any]]:
+def metadata_definitions(settings: dict[str, Any], model: DeclarativeMeta) -> list[dict[str, Any]]:
     """Return filtered list metadata definitions."""
     return [
         m
@@ -139,12 +139,12 @@ class BooleanMetadata(colander.Boolean):  # type: ignore
 class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
     """The metadata schema."""
 
-    metadata_definitions: Optional[Dict[str, Any]] = None
+    metadata_definitions: Optional[dict[str, Any]] = None
 
     def __init__(self, *args: Any, **kw: Any):
         super().__init__(*args, **kw)
 
-        self.available_types: List[str] = []
+        self.available_types: list[str] = []
 
         self._add_value_node("string", colander.String())
         self._add_value_node("liste", colander.String())
@@ -184,7 +184,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
 
     def _ui_type(self, metadata_name: str) -> str:
         metadata_type = (
-            cast(Dict[str, Dict[str, str]], self.metadata_definitions)
+            cast(dict[str, dict[str, str]], self.metadata_definitions)
             .get(metadata_name, {})
             .get("type", "string")
         )
@@ -192,8 +192,8 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=a
 
 
 def _translate_available_metadata(
-    available_metadata: Dict[str, Any], request: pyramid.request.Request
-) -> Dict[str, Any]:
+    available_metadata: dict[str, Any], request: pyramid.request.Request
+) -> dict[str, Any]:
     result = {}
     result.update(available_metadata)
     result["description"] = request.localizer.translate(_(available_metadata.get("description", "").strip()))

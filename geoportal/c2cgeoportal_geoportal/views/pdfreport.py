@@ -27,7 +27,7 @@
 
 import logging
 from json import dumps, loads
-from typing import Any, Dict, List, Union
+from typing import Any, Union
 
 import pyramid.request
 import pyramid.response
@@ -53,7 +53,7 @@ class PdfReport(OGCProxy):
         OGCProxy.__init__(self, request)
         self.config = self.request.registry.settings.get("pdfreport", {})
 
-    def _do_print(self, spec: Dict[str, Any]) -> pyramid.response.Response:
+    def _do_print(self, spec: dict[str, Any]) -> pyramid.response.Response:
         """Create and get report PDF."""
         headers = dict(self.request.headers)
         headers["Content-Type"] = "application/json"
@@ -68,8 +68,8 @@ class PdfReport(OGCProxy):
 
     @staticmethod
     def _build_map(
-        mapserv_url: str, vector_request_url: str, srs: str, map_config: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        mapserv_url: str, vector_request_url: str, srs: str, map_config: dict[str, Any]
+    ) -> dict[str, Any]:
         backgroundlayers = map_config["backgroundlayers"]
         imageformat = map_config["imageformat"]
         return {
@@ -225,7 +225,7 @@ class PdfReport(OGCProxy):
 
         return self._do_print(spec)
 
-    def walker(self, spec: Union[Dict[str, Any], List[Dict[str, Any]]], name: str, value: Any) -> None:
+    def walker(self, spec: Union[dict[str, Any], list[dict[str, Any]]], name: str, value: Any) -> None:
         if isinstance(spec, dict):
             for k, v in spec.items():
                 if isinstance(v, str):

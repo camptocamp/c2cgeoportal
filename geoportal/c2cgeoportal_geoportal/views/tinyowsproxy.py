@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any, Dict, Set, Tuple
+from typing import Any
 
 import pyramid.request
 from defusedxml import ElementTree
@@ -121,7 +121,7 @@ class TinyOWSProxy(OGCProxy):
         )
         return response
 
-    def _is_allowed(self, typenames: Set[str]) -> bool:
+    def _is_allowed(self, typenames: set[str]) -> bool:
         """Check if the current user has the rights to access the given type-names."""
         writable_layers = set()
         for gmflayer in list(get_writable_layers(self.request, [self.ogc_server.id]).values()):
@@ -129,7 +129,7 @@ class TinyOWSProxy(OGCProxy):
                 writable_layers.add(ogclayer.lower())
         return typenames.issubset(writable_layers)
 
-    def _get_headers(self) -> Dict[str, str]:
+    def _get_headers(self) -> dict[str, str]:
         headers = OGCProxy.get_headers(self)
         if "tinyows_host" in self.settings:
             headers["Host"] = self.settings.get("tinyows_host")
@@ -141,7 +141,7 @@ class TinyOWSProxy(OGCProxy):
         response = self._proxy(*args, **kwargs)
         content = response.content.decode()
 
-        errors: Set[str] = set()
+        errors: set[str] = set()
         url = super()._get_wfs_url(errors)
         if url is None:
             LOG.error("Error getting the URL:\n%s", "\n".join(errors))
@@ -163,13 +163,13 @@ class TinyOWSProxy(OGCProxy):
         return content
 
     @staticmethod
-    def _parse_body(body: str) -> Tuple[str, Set[str]]:
+    def _parse_body(body: str) -> tuple[str, set[str]]:
         """Read the WFS-T request body and extract the referenced type-names and request method."""
         xml = ElementTree.fromstring(body)
         wfs_request = normalize_tag(xml.tag)
 
         # get the type names
-        typenames: Set[str] = set()
+        typenames: set[str] = set()
         for child in xml:
             tag = normalize_tag(child.tag)
             if tag == "typename":

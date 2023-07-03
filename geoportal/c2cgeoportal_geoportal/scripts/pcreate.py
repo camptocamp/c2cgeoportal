@@ -32,7 +32,7 @@ import re
 import subprocess
 import sys
 from argparse import ArgumentParser
-from typing import Any, Dict, List, Optional, Type, Union, cast
+from typing import Any, Optional, Union, cast
 
 import pkg_resources
 import requests
@@ -107,7 +107,7 @@ class PCreateCommand:
     This is a port of Pyramid 1 PCreateCommand using cookiecutter as a backend.
     """
 
-    def __init__(self, argv: List[str], quiet: bool = False) -> None:
+    def __init__(self, argv: list[str], quiet: bool = False) -> None:
         self.quiet = quiet
         self.parser = get_argparser()
         self.args = self.parser.parse_args(argv[1:])
@@ -161,14 +161,14 @@ class PCreateCommand:
         return 0
 
     @staticmethod
-    def all_scaffolds() -> List[str]:
+    def all_scaffolds() -> list[str]:
         return os.listdir(SCAFFOLDS_DIR)
 
     def out(self, msg: str) -> None:
         if not self.quiet:
             print(msg)
 
-    def get_context(self) -> Dict[str, Union[str, int]]:
+    def get_context(self) -> dict[str, Union[str, int]]:
         output_dir = self.output_path
         project_name = os.path.basename(output_dir)
         if self.args.package_name is None:
@@ -176,7 +176,7 @@ class PCreateCommand:
         else:
             pkg_name = self.args.package_name
 
-        context: Dict[str, Union[str, int]] = {
+        context: dict[str, Union[str, int]] = {
             "project": project_name,
             "package": pkg_name,
             "authtkt_secret": gen_authtkt_secret(),
@@ -239,21 +239,21 @@ class PCreateCommand:
 
         return context
 
-    def read_project_file(self) -> Dict[str, Union[str, int]]:
+    def read_project_file(self) -> dict[str, Union[str, int]]:
         project_file = os.path.join(self.output_path, "project.yaml")
         if os.path.exists(project_file):
             with open(project_file, encoding="utf8") as f:
                 project = yaml.safe_load(f)
-                return cast(Dict[str, Union[str, int]], project.get("template_vars", {}))
+                return cast(dict[str, Union[str, int]], project.get("template_vars", {}))
         else:
             return {}
 
     @staticmethod
     def get_var(
-        context: Dict[str, Any],
+        context: dict[str, Any],
         name: str,
         prompt: str,
-        type_: Optional[Type[Any]] = None,
+        type_: Optional[type[Any]] = None,
     ) -> None:
         if name.upper() in os.environ and os.environ[name.upper()] != "":
             value = os.environ.get(name.upper())
@@ -273,7 +273,7 @@ class PCreateCommand:
         context[name] = value
 
     @staticmethod
-    def epsg2bbox(srid: int) -> Optional[List[str]]:
+    def epsg2bbox(srid: int) -> Optional[list[str]]:
         try:
             r = requests.get(f"https://epsg.io/?format=json&q={srid}")
             bbox = r.json()["results"][0]["bbox"]

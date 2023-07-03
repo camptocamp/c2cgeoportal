@@ -25,7 +25,6 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from typing import Dict, List
 
 import pyramid.config
 import pyramid.request
@@ -47,7 +46,7 @@ def add_redirect(config: pyramid.config.Configurator, name: str, from_: str, to:
     config.add_view(redirect_view, route_name=name)
 
 
-def restrict_headers(headers: Dict[str, str], whitelist: List[str], blacklist: List[str]) -> Dict[str, str]:
+def restrict_headers(headers: dict[str, str], whitelist: list[str], blacklist: list[str]) -> dict[str, str]:
     """
     Filter headers with a whitelist then a blacklist.
 

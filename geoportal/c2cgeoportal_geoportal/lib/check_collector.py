@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import logging
-from typing import Any, Dict, Optional, cast
+from typing import Any, Optional, cast
 
 import c2cwsgiutils.health_check
 import pyramid.config
@@ -54,10 +54,10 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
     for host in settings["hosts"]:
 
         class Check:
-            def __init__(self, host: Dict[str, Any]):
+            def __init__(self, host: dict[str, Any]):
                 self.host = host
 
-            def __call__(self, request: pyramid.request.Request) -> Optional[Dict[str, Any]]:
+            def __call__(self, request: pyramid.request.Request) -> Optional[dict[str, Any]]:
                 params = request.params
                 display = self.host["display"]
                 if "host" not in params or display == params["host"]:
@@ -72,7 +72,7 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
                         **url_headers,  # type: ignore
                     )
                     r.raise_for_status()
-                    return cast(Dict[str, Any], r.json())
+                    return cast(dict[str, Any], r.json())
                 return None
 
         health_check.add_custom_check(

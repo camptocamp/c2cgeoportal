@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
@@ -44,7 +44,7 @@ except ModuleNotFoundError:
 # Should be filed on application initialization
 DBSession: sqlalchemy.orm.Session = None
 Base: sqlalchemy.ext.declarative.ConcreteBase = sqlalchemy.ext.declarative.declarative_base()
-DBSessions: Dict[str, sqlalchemy.orm.Session] = {}
+DBSessions: dict[str, sqlalchemy.orm.Session] = {}
 
 
 LOG = logging.getLogger(__name__)
@@ -54,7 +54,7 @@ class InvalidateCacheEvent:
     """Event to be broadcast."""
 
 
-def cache_invalidate_cb(*args: List[Any]) -> None:
+def cache_invalidate_cb(*args: list[Any]) -> None:
     """Invalidate the cache on a broadcast event."""
     _cache_invalidate_cb()
 

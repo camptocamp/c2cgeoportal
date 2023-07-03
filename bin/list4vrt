@@ -23,7 +23,7 @@
 
 import argparse
 import os
-from typing import Any, Dict
+from typing import Any
 
 import boto3
 
@@ -42,7 +42,7 @@ def main():
         endpoint_url=f"https://{os.environ['AWS_S3_ENDPOINT']}/",
         region_name=os.environ["AWS_DEFAULT_REGION"],
     )
-    kwargs: Dict[str, Any] = {}
+    kwargs: dict[str, Any] = {}
     while True:
         object_list_metadata = s3_client.list_objects_v2(Bucket=args.bucket, Prefix=args.prefix, **kwargs)
 

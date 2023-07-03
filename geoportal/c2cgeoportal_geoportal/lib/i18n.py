@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021, Camptocamp SA
+# Copyright (c) 2020-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,12 +27,11 @@
 
 
 import os
-from typing import List
 
 LOCALE_PATH = "/etc/geomapfish/locale/"
 
 
-def available_locale_names(path: str = LOCALE_PATH) -> List[str]:
+def available_locale_names(path: str = LOCALE_PATH) -> list[str]:
     """Get the available locales."""
     if not os.path.exists(path):
         return []

@@ -28,7 +28,8 @@
 import random
 import threading
 import warnings
-from typing import Dict, Iterable, List, Optional, Tuple, Union
+from collections.abc import Iterable
+from typing import Optional, Union
 
 import sqlalchemy.ext.declarative
 from papyrus.geo_interface import GeoInterface
@@ -88,7 +89,7 @@ class _AssociationProxy:
             setattr(obj, self.target, o)
 
 
-def _get_schema(tablename: str) -> Tuple[str, str]:
+def _get_schema(tablename: str) -> tuple[str, str]:
     if "." in tablename:
         schema, tablename = tablename.split(".", 1)
     else:
@@ -135,11 +136,11 @@ def get_table(
 @CACHE_REGION_OBJ.cache_on_arguments()
 def get_class(
     tablename: str,
-    exclude_properties: Optional[List[str]] = None,
+    exclude_properties: Optional[list[str]] = None,
     primary_key: Optional[str] = None,
-    attributes_order: Optional[List[str]] = None,
-    enumerations_config: Optional[Dict[str, str]] = None,
-    readonly_attributes: Optional[List[str]] = None,
+    attributes_order: Optional[list[str]] = None,
+    enumerations_config: Optional[dict[str, str]] = None,
+    readonly_attributes: Optional[list[str]] = None,
 ) -> sqlalchemy.ext.declarative.DeclarativeMeta:
     """
     Get the SQLAlchemy mapped class for "tablename".
@@ -168,9 +169,9 @@ def get_class(
 def _create_class(
     table: Table,
     exclude_properties: Optional[Iterable[str]] = None,
-    attributes_order: Optional[List[str]] = None,
-    enumerations_config: Optional[Dict[str, str]] = None,
-    readonly_attributes: Optional[List[str]] = None,
+    attributes_order: Optional[list[str]] = None,
+    enumerations_config: Optional[dict[str, str]] = None,
+    readonly_attributes: Optional[list[str]] = None,
     pk_name: Optional[str] = None,
 ) -> sqlalchemy.ext.declarative.DeclarativeMeta:
     from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
