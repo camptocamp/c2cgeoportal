@@ -1,3 +1,8 @@
+##### 2.7.0.261
+
+- Add call to request.user in Entry.get_ngeo_index_vars [c2cgeoportal#10565](https://github.com/camptocamp/c2cgeoportal/pull/10565)
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10567](https://github.com/camptocamp/c2cgeoportal/pull/10567)
+
 ##### 2.7.0.260
 
 - Snyk auto fix [c2cgeoportal#10575](https://github.com/camptocamp/c2cgeoportal/pull/10575)
