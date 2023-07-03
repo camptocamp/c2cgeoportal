@@ -1,3 +1,7 @@
+##### 2.8.rc.69
+
+- Snyk auto fix [c2cgeoportal#10574](https://github.com/camptocamp/c2cgeoportal/pull/10574)
+
 ##### 2.8.rc.67
 
 - Fix for map size with a non integer size [ngeo#9150](https://github.com/camptocamp/ngeo/pull/9150)
