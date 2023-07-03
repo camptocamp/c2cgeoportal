@@ -5,7 +5,7 @@ verify_ssl = true
 
 [packages]
 alabaster = "==0.7.13" # theme
-Pygments = "==2.11.2"
+Pygments = "==2.15.0"
 Sphinx = "==4.4.0"
 sphinx-prompt = "==1.5.0"
 sphinx-jsonschema = "==1.17.2"
