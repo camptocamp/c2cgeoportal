@@ -29,7 +29,7 @@
 # pylint: disable=no-member
 
 import logging.config
-from typing import Any, Dict, Union, cast
+from typing import Any, Union, cast
 
 import sqlalchemy
 from alembic import context
@@ -45,10 +45,10 @@ LOG = logging.getLogger(__name__)
 setup_logging(context.config.config_file_name)
 
 
-def get_config() -> Dict[str, Union[str, bool]]:
+def get_config() -> dict[str, Union[str, bool]]:
     """Get the application configuration."""
     config.init(context.config.get_main_option("app.cfg"))
-    settings: Dict[str, Union[str, bool]] = {}
+    settings: dict[str, Union[str, bool]] = {}
     settings.update(config.get_config())
     alembic_name = context.config.get_main_option("type")
     schema_postfix = f"_{alembic_name}" if alembic_name != "main" else ""
@@ -95,7 +95,7 @@ def run_migrations_online() -> None:
 
     In this scenario we need to create an Engine and associate a connection with the context.
     """
-    conf: Dict[str, Any] = get_config()
+    conf: dict[str, Any] = get_config()
 
     # Autogenerate config
     alembic_name = context.config.get_main_option("type")

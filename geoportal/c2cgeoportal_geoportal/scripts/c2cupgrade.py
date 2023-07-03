@@ -37,12 +37,11 @@ import sys
 from argparse import ArgumentParser, Namespace
 from json.decoder import JSONDecodeError
 from subprocess import call, check_call, check_output
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union, cast
+from typing import Any, Callable, Optional, Union, cast
 
 import pkg_resources
 import requests
 import yaml
-
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
@@ -64,7 +63,7 @@ def fix_style() -> None:
     file_to_clean = []
     for filename, content in (
         (".prettierignore", "*.min.js\n"),
-        ("pyproject.toml", "[tool.black]\nline-length = 110\ntarget-version = ['py38']\n"),
+        ("pyproject.toml", "[tool.black]\nline-length = 110\ntarget-version = ['py39']\n"),
         (".prettierrc.yaml", "bracketSpacing: false\nquoteProps: preserve\n"),
         (
             ".editorconfig",
@@ -188,22 +187,22 @@ class C2cUpgradeTool:
         self.project = self.get_project()
 
     @staticmethod
-    def get_project() -> Dict[str, Any]:
+    def get_project() -> dict[str, Any]:
         if not os.path.isfile("project.yaml"):
             print(colorize("Unable to find the required 'project.yaml' file.", Color.RED))
             sys.exit(1)
 
         with open("project.yaml", encoding="utf8") as project_file:
-            return cast(Dict[str, Any], yaml.safe_load(project_file))
+            return cast(dict[str, Any], yaml.safe_load(project_file))
 
     @staticmethod
-    def get_upgrade(section: str) -> Union[List[Any], Dict[str, Any]]:
+    def get_upgrade(section: str) -> Union[list[Any], dict[str, Any]]:
         if not os.path.isfile(".upgrade.yaml"):
             print(colorize("Unable to find the required '.upgrade.yaml' file.", Color.RED))
             sys.exit(1)
 
         with open(".upgrade.yaml", encoding="utf8") as project_file:
-            return cast(Union[List[Any], Dict[str, Any]], yaml.safe_load(project_file)[section])
+            return cast(Union[list[Any], dict[str, Any]], yaml.safe_load(project_file)[section])
 
     def print_step(
         self,
@@ -230,7 +229,7 @@ class C2cUpgradeTool:
     def run_step(self, step: int) -> None:
         getattr(self, f"step{step}")()
 
-    def test_checkers(self) -> Tuple[bool, Optional[str]]:
+    def test_checkers(self) -> tuple[bool, Optional[str]]:
         headers = " ".join(
             [f"--header {i[0]}={i[1]}" for i in self.project.get("checker_headers", {}).items()]
         )
@@ -273,7 +272,7 @@ class C2cUpgradeTool:
 
     @Step(0, file_marker=False)
     def step0(self, step: int) -> None:
-        project_template_keys = list(cast(Dict[str, Any], self.project.get("template_vars")).keys())
+        project_template_keys = list(cast(dict[str, Any], self.project.get("template_vars")).keys())
         messages = []
         for required in REQUIRED_TEMPLATE_KEYS:
             if required not in project_template_keys:
@@ -350,7 +349,7 @@ class C2cUpgradeTool:
             )
 
         shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
-        for upgrade_file in cast(List[Dict[str, Any]], self.get_upgrade("upgrade_files")):
+        for upgrade_file in cast(list[dict[str, Any]], self.get_upgrade("upgrade_files")):
             action = upgrade_file["action"]
             if action == "remove":
                 self.files_to_remove(upgrade_file, prefix="CONST_create_template", force=True)
@@ -393,7 +392,7 @@ class C2cUpgradeTool:
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
 
-        def changed_files() -> List[str]:
+        def changed_files() -> list[str]:
             try:
                 status = [
                     [s for s in status.strip().split(" ", maxsplit=1) if s]
@@ -447,7 +446,7 @@ class C2cUpgradeTool:
     @Step(6)
     def step6(self, step: int) -> None:
         task_to_do = False
-        for upgrade_file in cast(List[Dict[str, Any]], self.get_upgrade("upgrade_files")):
+        for upgrade_file in cast(list[dict[str, Any]], self.get_upgrade("upgrade_files")):
             action = upgrade_file["action"]
             if action == "remove":
                 task_to_do |= self.files_to_remove(upgrade_file)
@@ -469,7 +468,7 @@ class C2cUpgradeTool:
         else:
             self.run_step(step + 1)
 
-    def files_to_remove(self, element: Dict[str, Any], prefix: str = "", force: bool = False) -> bool:
+    def files_to_remove(self, element: dict[str, Any], prefix: str = "", force: bool = False) -> bool:
         task_to_do = False
         for path in element["paths"]:
             file_ = os.path.join(prefix, path.format(package=self.project["project_package"]))
@@ -518,7 +517,7 @@ class C2cUpgradeTool:
                         os.remove(file_)
         return task_to_do
 
-    def files_to_move(self, element: Dict[str, Any], prefix: str = "", force: bool = False) -> bool:
+    def files_to_move(self, element: dict[str, Any], prefix: str = "", force: bool = False) -> bool:
         task_to_do = False
         src = os.path.join(prefix, element["from"].format(package=self.project["project_package"]))
         dst = os.path.join(prefix, element["to"].format(package=self.project["project_package"]))
@@ -597,7 +596,7 @@ class C2cUpgradeTool:
         # Dictionary with:
         # include: list of include regular expression
         # exclude: list of exclude regular expression
-        default_project_file = cast(Dict[str, List[str]], self.get_upgrade("default_project_file"))
+        default_project_file = cast(dict[str, list[str]], self.get_upgrade("default_project_file"))
 
         # Managed means managed by the application owner, not the c2cupgrade
         managed = False
@@ -706,7 +705,7 @@ class C2cUpgradeTool:
                 "file (listed in the `changelog.diff` file).",
             )
 
-    def get_modified(self, status_path: str) -> List[str]:
+    def get_modified(self, status_path: str) -> list[str]:
         status = check_git_status_output([status_path]).split("\n")
         status = [s for s in status if len(s) > 3]
         status = [s[3:] for s in status if s[:3].strip() == "M"]
@@ -853,7 +852,7 @@ class C2cUpgradeTool:
         print(f"git push {self.options.git_remote} {branch}.")
 
 
-def check_git_status_output(args: Optional[List[str]] = None) -> str:
+def check_git_status_output(args: Optional[list[str]] = None) -> str:
     """Check if there is something that's not committed."""
     return check_output(["git", "status", "--short"] + (args if args is not None else [])).decode("utf-8")
 

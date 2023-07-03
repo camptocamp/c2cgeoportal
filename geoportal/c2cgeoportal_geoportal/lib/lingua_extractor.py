@@ -31,7 +31,7 @@ import os
 import re
 import subprocess
 import traceback
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Tuple, Type, cast
+from typing import TYPE_CHECKING, Any, Callable, Optional, cast
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
@@ -89,16 +89,16 @@ def _get_config_str(key: str, default: str) -> str:
 class _Registry:
     settings = None
 
-    def __init__(self, settings: Optional[Dict[str, Any]]) -> None:
+    def __init__(self, settings: Optional[dict[str, Any]]) -> None:
         self.settings = settings
 
 
 class _Request:
-    params: Dict[str, str] = {}
-    matchdict: Dict[str, str] = {}
-    GET: Dict[str, str] = {}
+    params: dict[str, str] = {}
+    matchdict: dict[str, str] = {}
+    GET: dict[str, str] = {}
 
-    def __init__(self, settings: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, settings: Optional[dict[str, Any]] = None) -> None:
         self.registry: _Registry = _Registry(settings)
 
     @staticmethod
@@ -155,10 +155,10 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
     def __call__(
         self,
         filename: str,
-        options: Dict[str, Any],
-        fileobj: Optional[Dict[str, Any]] = None,
+        options: dict[str, Any],
+        fileobj: Optional[dict[str, Any]] = None,
         lineno: int = 0,
-    ) -> List[Message]:
+    ) -> list[Message]:
         del fileobj, lineno
 
         print(f"Running {self.__class__.__name__} on {filename}")
@@ -242,7 +242,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
             raise
 
 
-def init_db(settings: Dict[str, Any]) -> None:
+def init_db(settings: dict[str, Any]) -> None:
     """
     Initialize the SQLAlchemy Session.
 
@@ -260,12 +260,12 @@ def init_db(settings: Dict[str, Any]) -> None:
         # Init db sessions
 
         class R:
-            settings: Dict[str, Any] = {}
+            settings: dict[str, Any] = {}
 
         class C:
             registry = R()
 
-            def get_settings(self) -> Dict[str, Any]:
+            def get_settings(self) -> dict[str, Any]:
                 return self.registry.settings
 
             def add_tween(self, *args: Any, **kwargs: Any) -> None:
@@ -285,10 +285,10 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     def __call__(
         self,
         filename: str,
-        options: Dict[str, Any],
-        fileobj: Optional[Dict[str, Any]] = None,
+        options: dict[str, Any],
+        fileobj: Optional[dict[str, Any]] = None,
         lineno: int = 0,
-    ) -> List[Message]:
+    ) -> list[Message]:
         del options, fileobj, lineno
 
         print(f"Running {self.__class__.__name__} on {filename}")
@@ -306,7 +306,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                 return self._collect_print_config(gmf_config, filename)
             raise Exception("Not a known config file")  # pylint: disable=broad-exception-raised
 
-    def _collect_app_config(self, filename: str) -> List[Message]:
+    def _collect_app_config(self, filename: str) -> list[Message]:
         config.init(filename)
         settings = config.get_config()
         assert not [
@@ -390,17 +390,17 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
 
     @staticmethod
     def _enumerate_attributes_values(
-        dbsessions: Dict[str, Session], layerinfos: Dict[str, Any], fieldname: str
-    ) -> Set[Tuple[str, ...]]:
+        dbsessions: dict[str, Session], layerinfos: dict[str, Any], fieldname: str
+    ) -> set[tuple[str, ...]]:
         dbname = layerinfos.get("dbsession", "dbsession")
-        translate = cast(Dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
+        translate = cast(dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
         if not translate:
             return set()
         try:
             dbsession = dbsessions.get(dbname)
             return Layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         except Exception as e:
-            table = cast(Dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("table")
+            table = cast(dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("table")
             print(
                 colorize(
                     "ERROR! Unable to collect enumerate attributes for "
@@ -413,9 +413,9 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             raise
 
     @staticmethod
-    def _collect_print_config(print_config: Dict[str, Any], filename: str) -> List[Message]:
+    def _collect_print_config(print_config: dict[str, Any], filename: str) -> list[Message]:
         result = []
-        for template_ in list(cast(Dict[str, Any], print_config.get("templates")).keys()):
+        for template_ in list(cast(dict[str, Any], print_config.get("templates")).keys()):
             assert template_ is not None
             result.append(Message(None, template_, None, [], "", "", (filename, f"template/{template_}")))
             assert not [
@@ -443,8 +443,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
     # Run on the development.ini file
     extensions = [".ini"]
-    featuretype_cache: Dict[str, Optional[Dict[str, Any]]] = {}
-    wms_capabilities_cache: Dict[str, WebMapService] = {}
+    featuretype_cache: dict[str, Optional[dict[str, Any]]] = {}
+    wms_capabilities_cache: dict[str, WebMapService] = {}
 
     def __init__(self) -> None:
         super().__init__()
@@ -456,13 +456,13 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         self.env = None
 
     def __call__(
-        self, filename: str, options: Dict[str, Any], fileobj: Optional[str] = None, lineno: int = 0
-    ) -> List[Message]:
+        self, filename: str, options: dict[str, Any], fileobj: Optional[str] = None, lineno: int = 0
+    ) -> list[Message]:
         del fileobj, lineno
 
         print(f"Running {self.__class__.__name__} on {filename}")
 
-        messages: List[Message] = []
+        messages: list[Message] = []
 
         try:
             init_db(self.config)
@@ -567,9 +567,9 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
     @staticmethod
     def _import(
-        object_type: Type[Any],
-        messages: List[str],
-        callback: Optional[Callable[["main.Layer", List[str]], None]] = None,
+        object_type: type[Any],
+        messages: list[str],
+        callback: Optional[Callable[["main.Layer", list[str]], None]] = None,
         has_interfaces: bool = True,
         name_regex: str = ".*",
     ) -> None:
@@ -602,7 +602,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             if callback is not None:
                 callback(item, messages)
 
-    def _import_layer_wms(self, layer: "main.Layer", messages: List[str]) -> None:
+    def _import_layer_wms(self, layer: "main.Layer", messages: list[str]) -> None:
         server = layer.ogc_server
         url = server.url_wfs or server.url
         if url is None:
@@ -649,7 +649,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
-    def _import_layer_wmts(self, layer: "main.Layer", messages: List[str]) -> None:
+    def _import_layer_wmts(self, layer: "main.Layer", messages: list[str]) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
@@ -682,7 +682,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         raise
 
     def _import_layer_attributes(
-        self, url: str, layer: "main.Layer", item_type: str, name: str, messages: List[str]
+        self, url: str, layer: "main.Layer", item_type: str, name: str, messages: list[str]
     ) -> None:
         attributes, layers = self._layer_attributes(url, layer)
         for sub_layer in layers:
@@ -712,7 +712,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 )
             )
 
-    def _build_url(self, url: Url) -> Tuple[Url, Dict[str, str], Dict[str, Any]]:
+    def _build_url(self, url: Url) -> tuple[Url, dict[str, str], dict[str, Any]]:
         hostname = url.hostname
         host_map = self.config.get("lingua_extractor", {}).get("host_map", {})
         if hostname in host_map:
@@ -725,8 +725,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             return url, map_.get("headers", {}), kwargs
         return url, {}, {}
 
-    def _layer_attributes(self, url: str, layer: str) -> Tuple[List[str], List[str]]:
-        errors: Set[str] = set()
+    def _layer_attributes(self, url: str, layer: str) -> tuple[list[str], list[str]]:
+        errors: set[str] = set()
 
         request = pyramid.threadlocal.get_current_request()
         if request is None:
@@ -862,12 +862,12 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
             try:
                 describe = parseString(response.text)
-                featurestype: Optional[Dict[str, Node]] = {}
+                featurestype: Optional[dict[str, Node]] = {}
                 self.featuretype_cache[url] = featurestype
                 for type_element in describe.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "complexType"
                 ):
-                    cast(Dict[str, Node], featurestype)[type_element.getAttribute("name")] = type_element
+                    cast(dict[str, Node], featurestype)[type_element.getAttribute("name")] = type_element
             except ExpatError as e:
                 print(
                     colorize(
@@ -898,13 +898,13 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         if featurestype is None:
             return [], []
 
-        layers: List[str] = [layer]
+        layers: list[str] = [layer]
         if wms_capabilities is not None and layer in list(wms_capabilities.contents):
             layer_obj = wms_capabilities[layer]
             if layer_obj.layers:
                 layers = [layer.name for layer in layer_obj.layers]
 
-        attributes: List[str] = []
+        attributes: list[str] = []
         for sub_layer in layers:
             # Should probably be adapted for other king of servers
             type_element = featurestype.get(f"{sub_layer}Type")

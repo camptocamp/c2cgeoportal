@@ -28,7 +28,7 @@
 
 import math
 from decimal import Decimal
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import geojson
 import pyramid.request
@@ -49,17 +49,17 @@ class Profile(Raster):
         Raster.__init__(self, request)
 
     @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore
-    def json(self) -> Dict[str, Any]:
+    def json(self) -> dict[str, Any]:
         """Answer to /profile.json."""
         _, points = self._compute_points()
         set_common_headers(self.request, "profile", Cache.PUBLIC_NO)
         return {"profile": points}
 
-    def _compute_points(self) -> Tuple[List[str], List[Dict[str, Any]]]:
+    def _compute_points(self) -> tuple[list[str], list[dict[str, Any]]]:
         """Compute the alt=fct(dist) array."""
         geom = geojson.loads(self.request.params["geom"], object_hook=geojson.GeoJSON.to_instance)
 
-        layers: List[str]
+        layers: list[str]
         if "layers" in self.request.params:
             rasters = {}
             layers = self.request.params["layers"].split(",")
@@ -73,7 +73,7 @@ class Profile(Raster):
             layers = list(rasters.keys())
             layers.sort()
 
-        points: List[Dict[str, Any]] = []
+        points: list[dict[str, Any]] = []
 
         dist = 0
         prev_coord = None
@@ -95,11 +95,11 @@ class Profile(Raster):
         return layers, points
 
     @staticmethod
-    def _dist(coord1: Tuple[float, float], coord2: Tuple[float, float]) -> float:
+    def _dist(coord1: tuple[float, float], coord2: tuple[float, float]) -> float:
         """Compute the distance between 2 points."""
         return math.sqrt(math.pow(coord1[0] - coord2[0], 2.0) + math.pow(coord1[1] - coord2[1], 2.0))
 
-    def _create_points(self, coords: List[Tuple[float, float]], nb_points: int) -> List[Tuple[float, float]]:
+    def _create_points(self, coords: list[tuple[float, float]], nb_points: int) -> list[tuple[float, float]]:
         """Add some points in order to reach roughly the asked number of points."""
         total_length = 0
         prev_coord = None
@@ -111,7 +111,7 @@ class Profile(Raster):
         if total_length == 0.0:
             return coords
 
-        result: List[Tuple[float, float]] = []
+        result: list[tuple[float, float]] = []
         prev_coord = None
         for coord in coords:
             if prev_coord is not None:

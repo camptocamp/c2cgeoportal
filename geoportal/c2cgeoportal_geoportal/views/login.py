@@ -31,7 +31,7 @@ import logging
 import sys
 import urllib.parse
 from random import Random
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import pyotp
 import pyramid.request
@@ -78,7 +78,7 @@ class Login:
         self.two_factor_auth = authentication_settings.get("two_factor", False)
         self.two_factor_issuer_name = authentication_settings.get("two_factor_issuer_name")
 
-    def _functionality(self) -> Dict[str, List[Union[str, int, float, bool, List[Any], Dict[str, Any]]]]:
+    def _functionality(self) -> dict[str, list[Union[str, int, float, bool, list[Any], dict[str, Any]]]]:
         functionality = {}
         for func_ in get_setting(self.settings, ("functionalities", "available_in_templates"), []):
             functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
@@ -91,7 +91,7 @@ class Login:
             LOG.info("Invalid referrer for %s: %s", self.request.path_qs, repr(self.request.referrer))
 
     @forbidden_view_config(renderer="login.html")  # type: ignore
-    def loginform403(self) -> Union[Dict[str, Any], pyramid.response.Response]:
+    def loginform403(self) -> Union[dict[str, Any], pyramid.response.Response]:
         if self.request.authenticated_userid is not None:
             return HTTPForbidden()
 
@@ -106,7 +106,7 @@ class Login:
         }
 
     @view_config(route_name="loginform", renderer="login.html")  # type: ignore
-    def loginform(self) -> Dict[str, Any]:
+    def loginform(self) -> dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
         return {
@@ -264,7 +264,7 @@ class Login:
             self.request, "login", Cache.PRIVATE_NO, response=Response("true", headers=headers)
         )
 
-    def _user(self, user: Optional[static.User] = None) -> Dict[str, Any]:
+    def _user(self, user: Optional[static.User] = None) -> dict[str, Any]:
         result = {
             "functionalities": self._functionality(),
             "is_intranet": is_intranet(self.request),
@@ -282,7 +282,7 @@ class Login:
         return result
 
     @view_config(route_name="loginuser", renderer="json")  # type: ignore
-    def loginuser(self) -> Dict[str, Any]:
+    def loginuser(self) -> dict[str, Any]:
         LOG.info("Client IP address: %s", self.request.client_addr)
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
         return self._user()
@@ -352,7 +352,7 @@ class Login:
 
     def _loginresetpassword(
         self,
-    ) -> Tuple[Optional[static.User], Optional[str], Optional[str], Optional[str]]:
+    ) -> tuple[Optional[static.User], Optional[str], Optional[str], Optional[str]]:
         username = self.request.POST.get("login")
         if username is None:
             raise HTTPBadRequest("'login' should be available in request params.")
@@ -370,7 +370,7 @@ class Login:
         return user, username, password, None
 
     @view_config(route_name="loginresetpassword", renderer="json")  # type: ignore
-    def loginresetpassword(self) -> Dict[str, Any]:
+    def loginresetpassword(self) -> dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
         user, username, password, error = self._loginresetpassword()
@@ -485,7 +485,7 @@ class Login:
         )
 
     @view_config(route_name="oauth2loginform", renderer="login.html")  # type: ignore
-    def oauth2loginform(self) -> Dict[str, Any]:
+    def oauth2loginform(self) -> dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
         if self.request.user:
@@ -500,7 +500,7 @@ class Login:
         }
 
     @view_config(route_name="notlogin", renderer="notlogin.html")  # type: ignore
-    def notlogin(self) -> Dict[str, Any]:
+    def notlogin(self) -> dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
         return {"lang": self.lang}

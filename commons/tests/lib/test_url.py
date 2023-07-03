@@ -27,7 +27,6 @@
 
 # pylint: disable=missing-docstring
 
-from typing import Set
 from unittest import TestCase
 
 from pyramid.testing import DummyRequest
@@ -170,7 +169,7 @@ class TestUrl(TestCase):
             get_url2("test", "https://example.com/icon.png", request, set()).url(),
             "https://example.com/icon.png",
         )
-        errors: Set[str] = set()
+        errors: set[str] = set()
         self.assertEqual(get_url2("test", "config://srv2/icon.png", request, errors=errors), None)
         self.assertEqual(
             errors,

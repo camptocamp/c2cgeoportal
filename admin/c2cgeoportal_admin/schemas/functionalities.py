@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Any, Dict, List
+from typing import Any
 
 import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
@@ -39,7 +39,7 @@ from sqlalchemy.sql.functions import concat
 from c2cgeoportal_commons.models.main import Functionality
 
 
-def available_functionalities_for(settings: Dict[str, Any], model: DeclarativeMeta) -> List[Dict[str, Any]]:
+def available_functionalities_for(settings: dict[str, Any], model: DeclarativeMeta) -> list[dict[str, Any]]:
     """Return filtered list of functionality definitions."""
     mapper = inspect(model)
     relevant_for = {mapper.local_table.name}

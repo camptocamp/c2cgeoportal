@@ -28,7 +28,8 @@
 
 import inspect
 import logging
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Mapping, Optional, Sequence, Union
+from collections.abc import Mapping, Sequence
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 import pyramid.interfaces
 import sqlalchemy.ext.declarative
@@ -48,8 +49,8 @@ else:
     SerializedReturnType = Any
 
 LOG = logging.getLogger(__name__)
-_REGION: Dict[str, CacheRegion] = {}
-MEMORY_CACHE_DICT: Dict[str, Any] = {}
+_REGION: dict[str, CacheRegion] = {}
+MEMORY_CACHE_DICT: dict[str, Any] = {}
 
 
 def map_dbobject(
@@ -79,11 +80,11 @@ def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..
     def generate_key(*args: Any, **kw: Any) -> str:
         if kw:
             raise ValueError("key creation function does not accept keyword arguments.")
-        parts: List[str] = []
+        parts: list[str] = []
         parts.extend(namespace)
         if ignore_first_argument:
             args = args[1:]
-        new_args: List[str] = [
+        new_args: list[str] = [
             arg for arg in args if pyramid.interfaces.IRequest not in zope.interface.implementedBy(type(arg))
         ]
         parts.extend(map(str, map(map_dbobject, new_args)))
@@ -92,15 +93,15 @@ def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..
     return generate_key
 
 
-def init_region(conf: Dict[str, Any], region: str) -> CacheRegion:
+def init_region(conf: dict[str, Any], region: str) -> CacheRegion:
     """Initialize the caching module."""
     cache_region = get_region(region)
     _configure_region(conf, cache_region)
     return cache_region
 
 
-def _configure_region(conf: Dict[str, Any], cache_region: CacheRegion) -> None:
-    kwargs: Dict[str, Any] = {"replace_existing_backend": True}
+def _configure_region(conf: dict[str, Any], cache_region: CacheRegion) -> None:
+    kwargs: dict[str, Any] = {"replace_existing_backend": True}
     backend = conf["backend"]
     kwargs.update({k: conf[k] for k in conf if k != "backend"})
     kwargs.setdefault("arguments", {}).setdefault("cache_dict", MEMORY_CACHE_DICT)
@@ -126,7 +127,7 @@ def invalidate_region(region: Optional[str] = None) -> None:
 class HybridRedisBackend(CacheBackend):
     """A Dogpile cache backend with a memory cache backend in front of a Redis backend for performance."""
 
-    def __init__(self, arguments: Dict[str, Any]):
+    def __init__(self, arguments: dict[str, Any]):
         self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
         self._memory: CacheBackend = MemoryBackend(  # type: ignore[no-untyped-call]
             {"cache_dict": arguments.pop("cache_dict", {})},
@@ -146,7 +147,7 @@ class HybridRedisBackend(CacheBackend):
                 self._memory.set(key, value)
         return value
 
-    def get_multi(self, keys: Sequence[str]) -> List[Union[CachedValue, bytes, NoValue]]:
+    def get_multi(self, keys: Sequence[str]) -> list[Union[CachedValue, bytes, NoValue]]:
         return [self.get(key) for key in keys]
 
     def set(self, key: str, value: Union[CachedValue, bytes]) -> None:
@@ -173,6 +174,6 @@ class HybridRedisBackend(CacheBackend):
 class HybridRedisSentinelBackend(HybridRedisBackend):
     """Same as HybridRedisBackend but using the Redis Sentinel."""
 
-    def __init__(self, arguments: Dict[str, Any]):
+    def __init__(self, arguments: dict[str, Any]):
         super().__init__(arguments)
         self._redis = RedisSentinelBackend(arguments)  # type: ignore[no-untyped-call]

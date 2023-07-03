@@ -30,7 +30,6 @@ import logging
 import random
 import string
 from datetime import datetime
-from typing import Dict
 from urllib.parse import urlparse
 
 import pyramid.request
@@ -70,7 +69,7 @@ class Shortener:
         return HTTPFound(location=short_urls[0].url)
 
     @view_config(route_name="shortener_create", renderer="json")  # type: ignore
-    def create(self) -> Dict[str, str]:
+    def create(self) -> dict[str, str]:
         if "url" not in self.request.params:
             raise HTTPBadRequest("The parameter url is required")
 

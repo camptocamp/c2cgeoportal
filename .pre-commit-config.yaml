@@ -85,10 +85,6 @@ repos:
     hooks:
       - id: ripsecrets
         exclude: (^docker/config/haproxy_dev/localhost\.pem$|geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql)
-  - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.0
-    hooks:
-      - id: autoflake
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.8.0
     hooks:
@@ -102,8 +98,12 @@ repos:
       # All other
       - id: pyupgrade
         args:
-          - --py38-plus
+          - --py39-plus
         exclude: ^(geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build|scripts/.*)|scripts/(get-version|upgrade))$
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.2.0
+    hooks:
+      - id: autoflake
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:

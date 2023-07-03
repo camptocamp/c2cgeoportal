@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any, Dict, Optional, cast
+from typing import Any, Optional, cast
 
 from c2c.template.config import config as configuration
 from c2cwsgiutils.loader import Loader as BaseLoader
@@ -41,9 +41,9 @@ class Loader(BaseLoader):
     """The Pyramid configuration loader."""
 
     def get_wsgi_app_settings(
-        self, name: Optional[str] = None, defaults: Optional[Dict[str, str]] = None
-    ) -> Dict[str, Any]:
-        settings = cast(Dict[str, Any], super().get_wsgi_app_settings(name, defaults))
+        self, name: Optional[str] = None, defaults: Optional[dict[str, str]] = None
+    ) -> dict[str, Any]:
+        settings = cast(dict[str, Any], super().get_wsgi_app_settings(name, defaults))
         configuration.init(settings.get("app.cfg"))
         settings.update(configuration.get_config())
         if "available_locale_names" not in settings:

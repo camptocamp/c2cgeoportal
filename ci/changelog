@@ -33,7 +33,7 @@ import os
 import re
 import subprocess
 import sys
-from typing import Any, Dict
+from typing import Any
 
 import requests
 import yaml
@@ -210,9 +210,9 @@ def main():
     add_new_release()
 
     first = True
-    release_pulls: Dict[str, Any] = {}
+    release_pulls: dict[str, Any] = {}
     releases = []
-    commits: Dict[str, Any] = {}
+    commits: dict[str, Any] = {}
     for repo in REPOS:
         commits[repo] = {}
 

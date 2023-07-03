@@ -2,10 +2,10 @@
 
 import argparse
 import json
-from typing import Any, Dict, List, cast
+from typing import Any, cast
 
 
-def _format_type(type_definition: Dict[str, Any]) -> str:
+def _format_type(type_definition: dict[str, Any]) -> str:
     """Get the type definition as a ReStructuredText (name or ref)."""
     if type_definition["type"] == "intrinsic":
         return cast(str, type_definition["name"])
@@ -33,7 +33,7 @@ def _format_type(type_definition: Dict[str, Any]) -> str:
     assert False, f"Unknown type '{type_definition['type']}':\n{type_definition}"
 
 
-def _get_type(type_definition: Dict[str, Any]) -> List[str]:
+def _get_type(type_definition: dict[str, Any]) -> list[str]:
     """Get the type definition as a ReStructuredText (name or ref) this is for dictionary based types."""
     result = []
     if type_definition["name"] == "__type":
@@ -53,7 +53,7 @@ def _get_type(type_definition: Dict[str, Any]) -> List[str]:
     return result
 
 
-def _browse(elem: Dict[str, Any], types: Dict[str, str]) -> None:
+def _browse(elem: dict[str, Any], types: dict[str, str]) -> None:
     """Browse the tree of type definitions."""
     if (
         len(elem.get("sources", [])) == 1
@@ -96,7 +96,7 @@ def main() -> None:
     with open(args.input, encoding="utf-8") as f:
         data = json.load(f)
 
-    types: Dict[str, str] = {}
+    types: dict[str, str] = {}
     _browse(data, types)
 
     exported_types = []

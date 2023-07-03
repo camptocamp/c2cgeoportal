@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 
 import logging
 import time
-from typing import Any, Dict, cast
+from typing import Any, cast
 
 import pyramid.request
 from c2cwsgiutils import broadcast
@@ -43,10 +43,10 @@ LOG = logging.getLogger(__name__)
 
 
 @view_config(route_name="memory", renderer="fast_json")  # type: ignore
-def memory(request: pyramid.request.Request) -> Dict[str, Any]:
+def memory(request: pyramid.request.Request) -> dict[str, Any]:
     """Offer an authenticated view throw c2cwsgiutils to provide some memory information."""
     auth_view(request)
-    return cast(Dict[str, Any], _memory())
+    return cast(dict[str, Any], _memory())
 
 
 def _nice_type_name(obj: Any, dogpile_cache: bool = False) -> str:
@@ -57,7 +57,7 @@ def _nice_type_name(obj: Any, dogpile_cache: bool = False) -> str:
     return f"{type_.__module__}.{type_.__name__}"
 
 
-def _process_dict(dict_: Dict[str, Any], dogpile_cache: bool = False) -> Dict[str, Any]:
+def _process_dict(dict_: dict[str, Any], dogpile_cache: bool = False) -> dict[str, Any]:
     # Timeout after one minute, must be set to a bit less that the timeout of the broadcast
     timeout = time.monotonic() + 20
 
@@ -82,7 +82,7 @@ def _process_dict(dict_: Dict[str, Any], dogpile_cache: bool = False) -> Dict[st
 
 
 @broadcast.decorator(expect_answers=True, timeout=110)
-def _memory() -> Dict[str, Any]:
+def _memory() -> dict[str, Any]:
     return {
         "raster_data": _process_dict(raster.Raster.data),
         "memory_cache": _process_dict(MEMORY_CACHE_DICT, True),

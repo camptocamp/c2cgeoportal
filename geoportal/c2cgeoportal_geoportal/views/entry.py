@@ -28,7 +28,7 @@
 
 import glob
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import pyramid.request
 from pyramid.i18n import TranslationStringFactory
@@ -49,11 +49,11 @@ class Entry:
         self.request = request
 
     @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore[misc]
-    def testi18n(self) -> Dict[str, Any]:
+    def testi18n(self) -> dict[str, Any]:
         _ = self.request.translate
         return {"title": _("title i18n")}
 
-    def get_ngeo_index_vars(self) -> Dict[str, Any]:
+    def get_ngeo_index_vars(self) -> dict[str, Any]:
         set_common_headers(self.request, "index", Cache.PUBLIC_NO, content_type="text/html")
         return {}
 
@@ -79,33 +79,33 @@ class Entry:
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/javascript")
         return self.request.response
 
-    def favicon(self) -> Dict[str, Any]:
+    def favicon(self) -> dict[str, Any]:
         set_common_headers(self.request, "index", Cache.PUBLIC, content_type="image/vnd.microsoft.icon")
         return {}
 
-    def robot_txt(self) -> Dict[str, Any]:
+    def robot_txt(self) -> dict[str, Any]:
         set_common_headers(self.request, "index", Cache.PUBLIC, content_type="text/plain")
         return {}
 
-    def apijsmap(self) -> Dict[str, Any]:
+    def apijsmap(self) -> dict[str, Any]:
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/octet-stream")
         return {}
 
-    def apicss(self) -> Dict[str, Any]:
+    def apicss(self) -> dict[str, Any]:
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="text/css")
         return {}
 
-    def apihelp(self) -> Dict[str, Any]:
+    def apihelp(self) -> dict[str, Any]:
         set_common_headers(self.request, "apihelp", Cache.PUBLIC)
         return {}
 
 
-def _get_ngeo_resources(pattern: str) -> List[str]:
+def _get_ngeo_resources(pattern: str) -> list[str]:
     """Return the list of ngeo dist files matching the pattern."""
     return glob.glob(f"/opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/{pattern}")
 
 
-def canvas_view(request: pyramid.request.Request, interface_config: Dict[str, Any]) -> Dict[str, Any]:
+def canvas_view(request: pyramid.request.Request, interface_config: dict[str, Any]) -> dict[str, Any]:
     """Get view used as entry point of a canvas interface."""
 
     js_files = _get_ngeo_resources(f"{interface_config.get('layout', interface_config['name'])}*.js")

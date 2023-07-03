@@ -29,7 +29,7 @@
 import functools
 import logging
 from io import StringIO
-from typing import Any, Optional, Set, cast
+from typing import Any, Optional, cast
 from xml.etree.ElementTree import Element  # nosec
 
 import pyramid.request
@@ -359,7 +359,7 @@ class OGCServerSynchronizer:
 
     @functools.lru_cache(maxsize=10)
     def wms_capabilities(self) -> bytes:
-        errors: Set[str] = set()
+        errors: set[str] = set()
         url = get_url2(
             f"The OGC server '{self._ogc_server.name}'",
             self._ogc_server.url,

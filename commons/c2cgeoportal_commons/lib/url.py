@@ -28,7 +28,7 @@
 import logging
 import re
 import urllib.parse
-from typing import Dict, Optional, Set
+from typing import Optional
 
 from pyramid.request import Request
 
@@ -43,7 +43,7 @@ class Url:
     _hostname: Optional[str] = None
     _port: Optional[int] = None
     path = ""
-    query: Dict[str, str] = {}
+    query: dict[str, str] = {}
     fragment = ""
 
     def __init__(self, url: Optional[str] = None):
@@ -123,7 +123,7 @@ class Url:
         self._port = port
         self.netloc = (self._hostname or "") if port is None else f"{self._hostname}:{port}"
 
-    def add_query(self, query: Dict[str, str], force: bool = False) -> "Url":
+    def add_query(self, query: dict[str, str], force: bool = False) -> "Url":
         if query:
             for key, value in query.items():
                 if force or key not in self.query:
@@ -131,7 +131,7 @@ class Url:
         return self
 
     @property
-    def query_lower(self) -> Dict[str, str]:
+    def query_lower(self) -> dict[str, str]:
         return {k.lower(): v for k, v in self.query.items()}
 
     def url(self) -> str:
@@ -153,7 +153,7 @@ class Url:
 
 
 def get_url2(
-    name: str, url: str, request: Request, errors: Set[str], servers: Optional[Dict[str, str]] = None
+    name: str, url: str, request: Request, errors: set[str], servers: Optional[dict[str, str]] = None
 ) -> Optional[Url]:
     """
     Get the real URL from the URI of the administration interface.

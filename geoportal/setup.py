@@ -28,7 +28,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import os
-from typing import List
 
 from setuptools import find_packages, setup
 
@@ -45,9 +44,9 @@ VERSION = os.environ.get("VERSION", "1.0.0")
 with open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as f:
     INSTALL_REQUIRES = f.read().splitlines()
 
-SETUP_REQUIRES: List[str] = []
+SETUP_REQUIRES: list[str] = []
 
-TESTS_REQUIRE: List[str] = []
+TESTS_REQUIRE: list[str] = []
 
 setup(
     name="c2cgeoportal_geoportal",

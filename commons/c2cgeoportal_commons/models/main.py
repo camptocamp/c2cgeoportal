@@ -30,7 +30,7 @@ import enum
 import logging
 import os
 import re
-from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
+from typing import Any, Optional, Union, cast
 
 import pyramid.request
 import sqlalchemy.orm.base
@@ -92,8 +92,8 @@ _schema: str = config["schema"] or "main"
 _srid: int = cast(int, config["srid"]) or 3857
 
 # Set some default values for the admin interface
-_admin_config: Dict[str, Any] = config.get_config().get("admin_interface", {})
-_map_config: Dict[str, Any] = {**default_map_settings, **_admin_config.get("map", {})}
+_admin_config: dict[str, Any] = config.get_config().get("admin_interface", {})
+_map_config: dict[str, Any] = {**default_map_settings, **_admin_config.get("map", {})}
 view_srid_match = re.match(r"EPSG:(\d+)", _map_config["view"]["projection"])
 if "map_srid" not in _admin_config and view_srid_match is not None:
     _admin_config["map_srid"] = view_srid_match.group(1)
@@ -275,7 +275,7 @@ class Role(Base):  # type: ignore
         self,
         name: str = "",
         description: str = "",
-        functionalities: Optional[List[Functionality]] = None,
+        functionalities: Optional[list[Functionality]] = None,
         extent: Geometry = None,
     ) -> None:
         if functionalities is None:
@@ -289,10 +289,10 @@ class Role(Base):  # type: ignore
         return f"{self.name}[{self.id}]>"
 
     @property
-    def bounds(self) -> Optional[Tuple[float, float, float, float]]:  # TODO
+    def bounds(self) -> Optional[tuple[float, float, float, float]]:  # TODO
         if self.extent is None:
             return None
-        return cast(Tuple[float, float, float, float], to_shape(self.extent).bounds)
+        return cast(tuple[float, float, float, float], to_shape(self.extent).bounds)
 
 
 event.listen(Role.functionalities, "set", cache_invalidate_cb)
@@ -304,7 +304,7 @@ class TreeItem(Base):  # type: ignore
     """The treeitem table representation."""
 
     __tablename__ = "treeitem"
-    __table_args__: Union[Tuple[Any, ...], Dict[str, Any]] = (
+    __table_args__: Union[tuple[Any, ...], dict[str, Any]] = (
         UniqueConstraint("type", "name"),
         {"schema": _schema},
     )
@@ -339,7 +339,7 @@ class TreeItem(Base):  # type: ignore
 
     @property
     # Better: def parents(self) -> List[TreeGroup]:
-    def parents(self) -> List["TreeItem"]:
+    def parents(self) -> list["TreeItem"]:
         return [c.treegroup for c in self.parents_relation]
 
     def is_in_interface(self, name: str) -> bool:
@@ -352,7 +352,7 @@ class TreeItem(Base):  # type: ignore
 
         return False
 
-    def get_metadata(self, name: str) -> List["Metadata"]:
+    def get_metadata(self, name: str) -> list["Metadata"]:
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
     def __init__(self, name: str = "") -> None:
@@ -440,10 +440,10 @@ class TreeGroup(TreeItem):
 
     id = Column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
 
-    def _get_children(self) -> List[TreeItem]:
+    def _get_children(self) -> list[TreeItem]:
         return [c.treeitem for c in self.children_relation]
 
-    def _set_children(self, children: List[TreeItem], order: bool = False) -> None:
+    def _set_children(self, children: list[TreeItem], order: bool = False) -> None:
         """
         Set the current TreeGroup children TreeItem instances.
 
@@ -850,14 +850,14 @@ class OGCServer(Base):  # type: ignore
         return self.name or ""
 
     def url_description(self, request: pyramid.request.Request) -> str:
-        errors: Set[str] = set()
+        errors: set[str] = set()
         url = get_url2(self.name, self.url, request, errors)
         return url.url() if url else "\n".join(errors)
 
     def url_wfs_description(self, request: pyramid.request.Request) -> Optional[str]:
         if not self.url_wfs:
             return self.url_description(request)
-        errors: Set[str] = set()
+        errors: set[str] = set()
         url = get_url2(self.name, self.url_wfs, request, errors)
         return url.url() if url else "\n".join(errors)
 
@@ -1306,7 +1306,7 @@ class LayerVectorTiles(DimensionLayer):
         )
 
     def style_description(self, request: pyramid.request.Request) -> str:
-        errors: Set[str] = set()
+        errors: set[str] = set()
         url = get_url2(self.name, self.style, request, errors)
         return url.url() if url else "\n".join(errors)
 
@@ -1422,8 +1422,8 @@ class RestrictionArea(Base):  # type: ignore
         self,
         name: str = "",
         description: str = "",
-        layers: Optional[List[Layer]] = None,
-        roles: Optional[List[Role]] = None,
+        layers: Optional[list[Layer]] = None,
+        roles: Optional[list[Role]] = None,
         area: Geometry = None,
         readwrite: bool = False,
     ) -> None:

@@ -27,7 +27,7 @@
 
 
 import datetime
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Optional, Union
 
 import isodate
 
@@ -67,9 +67,9 @@ class TimeInformation:
         self.extent: Optional[TimeExtent] = None
         self.mode: Optional[str] = None
         self.widget: Optional[str] = None
-        self.layer: Optional[Dict[str, Any]] = None
+        self.layer: Optional[dict[str, Any]] = None
 
-    def merge(self, layer: Dict[str, Any], extent: TimeExtent, mode: str, widget: str) -> None:
+    def merge(self, layer: dict[str, Any], extent: TimeExtent, mode: str, widget: str) -> None:
         layer_apply = self.layer == layer or (not self.has_time() and extent is not None)
 
         self.merge_extent(extent)
@@ -110,7 +110,7 @@ class TimeInformation:
     def has_time(self) -> bool:
         return self.extent is not None
 
-    def to_dict(self) -> Optional[Dict[str, Any]]:
+    def to_dict(self) -> Optional[dict[str, Any]]:
         if self.has_time():
             assert self.extent is not None
             time = self.extent.to_dict()
@@ -125,7 +125,7 @@ class TimeExtentValue:
 
     def __init__(
         self,
-        values: Set[datetime.datetime],
+        values: set[datetime.datetime],
         resolution: str,
         min_def_value: Optional[datetime.datetime],
         max_def_value: Optional[datetime.datetime],
@@ -152,7 +152,7 @@ class TimeExtentValue:
         self.min_def_value = min_none(self.min_def_value, extent.min_def_value)
         self.max_def_value = max_none(self.max_def_value, extent.max_def_value)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         values = sorted(self.values)
         min_def_value = _format_date(self.min_def_value) if self.min_def_value else None
         max_def_value = _format_date(self.max_def_value) if self.max_def_value else None
@@ -174,7 +174,7 @@ class TimeExtentInterval:
         self,
         start: datetime.datetime,
         end: datetime.datetime,
-        interval: Tuple[int, int, int, int],
+        interval: tuple[int, int, int, int],
         resolution: str,
         min_def_value: Optional[datetime.datetime],
         max_def_value: Optional[datetime.datetime],
@@ -224,7 +224,7 @@ class TimeExtentInterval:
             else max_none(self.max_def_value, extent.max_def_value)
         )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         min_def_value = _format_date(self.min_def_value) if self.min_def_value is not None else None
         max_def_value = _format_date(self.max_def_value) if self.max_def_value is not None else None
 
@@ -238,7 +238,7 @@ class TimeExtentInterval:
         }
 
 
-def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
+def parse_extent(extent: list[str], default_values: str) -> TimeExtent:
     """
     Parse a time extend from OWSLib to a `̀ TimeExtentValue`` or a ``TimeExtentInterval``.
 
@@ -270,7 +270,7 @@ def parse_extent(extent: List[str], default_values: str) -> TimeExtent:
     raise ValueError(f"Invalid time extent format '{extent}'")
 
 
-def _parse_default_values(default_values: str) -> Tuple[datetime.datetime, Optional[datetime.datetime]]:
+def _parse_default_values(default_values: str) -> tuple[datetime.datetime, Optional[datetime.datetime]]:
     """
     Parse the 'default' value from OWSLib's defaulttimeposition and return a maximum of two dates.
 
@@ -290,7 +290,7 @@ def _parse_default_values(default_values: str) -> Tuple[datetime.datetime, Optio
     return min_def_value, max_def_value
 
 
-def _parse_date(date: str) -> Tuple[str, datetime.datetime]:
+def _parse_date(date: str) -> tuple[str, datetime.datetime]:
     """
     Parse a date string.
 
@@ -327,7 +327,7 @@ def _format_date(date: datetime.datetime) -> str:
     return str_
 
 
-def _parse_duration(duration: str) -> Tuple[int, int, int, int]:
+def _parse_duration(duration: str) -> tuple[int, int, int, int]:
     """
     Parse an ISO 8601 duration (i.e. "P2DT5S").
 

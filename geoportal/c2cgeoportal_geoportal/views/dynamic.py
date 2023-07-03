@@ -28,7 +28,7 @@
 
 import re
 import urllib.parse
-from typing import Any, Dict, List, Union, cast
+from typing import Any, Union, cast
 
 import pyramid.request
 from pyramid.httpexceptions import HTTPNotFound
@@ -52,11 +52,11 @@ class DynamicView:
         self.settings = request.registry.settings
         self.interfaces_config = self.settings["interfaces_config"]
 
-    def get(self, value: Dict[str, Any], interface: str) -> Dict[str, Any]:
-        return cast(Dict[str, Any], self.interfaces_config.get(interface, {}).get(value, {}))
+    def get(self, value: dict[str, Any], interface: str) -> dict[str, Any]:
+        return cast(dict[str, Any], self.interfaces_config.get(interface, {}).get(value, {}))
 
     @CACHE_REGION.cache_on_arguments()
-    def _fulltextsearch_groups(self) -> List[str]:
+    def _fulltextsearch_groups(self) -> list[str]:
         return [
             group[0]
             for group in models.DBSession.query(func.distinct(main.FullTextSearch.layer_name))
@@ -66,11 +66,11 @@ class DynamicView:
 
     def _interface(
         self,
-        interface_config: Dict[str, Any],
+        interface_config: dict[str, Any],
         interface_name: str,
         original_interface_name: str,
-        dynamic: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        dynamic: dict[str, Any],
+    ) -> dict[str, Any]:
         """
         Get the interface configuration.
 
@@ -109,7 +109,7 @@ class DynamicView:
 
         for constant, config in interface_config.get("routes", {}).items():
             route_name = original_interface_name if config.get("currentInterface", False) else config["name"]
-            params: Dict[str, str] = {}
+            params: dict[str, str] = {}
             params.update(config.get("params", {}))
             for name, dyn in config.get("dynamic_params", {}).items():
                 params[name] = dynamic[dyn]
@@ -120,7 +120,7 @@ class DynamicView:
         return constants
 
     @view_config(route_name="dynamic", renderer="json")  # type: ignore
-    def dynamic(self) -> Dict[str, Any]:
+    def dynamic(self) -> dict[str, Any]:
         original_interface_name = self.request.params.get("interface")
         interface_name = self.request.get_organization_interface(original_interface_name)
 
@@ -133,7 +133,7 @@ class DynamicView:
         i18next_configuration = self.settings.get("i18next", {})
         i18next_configuration.setdefault("backend", {})
         if "loadPath" not in i18next_configuration["backend"]:
-            path: List[str] = [
+            path: list[str] = [
                 self.request.route_url("base").rstrip("/"),
                 "static-{{ns}}",
                 get_cache_version(),
@@ -161,7 +161,7 @@ class DynamicView:
         do_redirect = False
         url = None
         if "redirect_interface" in interface_config:
-            no_redirect_query: Dict[str, Union[str, List[str]]] = {"no_redirect": "t"}
+            no_redirect_query: dict[str, Union[str, list[str]]] = {"no_redirect": "t"}
             if "query" in self.request.params:
                 query = urllib.parse.parse_qs(self.request.params["query"][1:], keep_blank_values=True)
                 no_redirect_query.update(query)

@@ -29,8 +29,9 @@ import json
 import logging
 import os
 import subprocess
+from collections.abc import Mapping
 from time import sleep
-from typing import Any, Dict, List, Mapping, Optional, Union, cast
+from typing import Any, Optional, Union, cast
 from urllib.parse import urljoin
 
 import c2cwsgiutils.health_check
@@ -42,8 +43,8 @@ LOG = logging.getLogger(__name__)
 
 
 def build_url(
-    name: str, path: str, request: pyramid.request.Request, headers: Optional[Dict[str, str]] = None
-) -> Dict[str, Union[str, Dict[str, str]]]:
+    name: str, path: str, request: pyramid.request.Request, headers: Optional[dict[str, str]] = None
+) -> dict[str, Union[str, dict[str, str]]]:
     """Build an URL and headers for the checkers."""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
     url = urljoin(base_internal_url, path)
@@ -58,8 +59,8 @@ def build_url(
 
 
 def _build_headers(
-    request: pyramid.request.Request, headers: Optional[Dict[str, str]] = None
-) -> Dict[str, str]:
+    request: pyramid.request.Request, headers: Optional[dict[str, str]] = None
+) -> dict[str, str]:
     if headers is None:
         headers = {}
     headers["Cache-Control"] = "no-cache"
@@ -71,7 +72,7 @@ def _build_headers(
     return headers
 
 
-def _routes(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
+def _routes(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
     routes_settings = settings["routes"]
     for route in routes_settings["routes"]:
         if route.get("checker_name", route["name"]) not in routes_settings["disable"]:
@@ -84,7 +85,7 @@ def _routes(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.He
                     self.route_name = route_name
                     self.type = type_
 
-                def __call__(self, request: pyramid.request.Request) -> Union[str, Dict[str, str]]:
+                def __call__(self, request: pyramid.request.Request) -> Union[str, dict[str, str]]:
                     return build_url("route", request.route_path(self.route_name), request)[self.type]
 
             health_check.add_url_check(
@@ -97,7 +98,7 @@ def _routes(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.He
             )
 
 
-def _pdf3(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
+def _pdf3(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
     print_settings = settings["print"]
     if "spec" not in print_settings:
         return
@@ -135,12 +136,12 @@ def _pdf3(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.Heal
     health_check.add_custom_check(name="checker_print", check_cb=check, level=print_settings["level"])
 
 
-def _fts(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
+def _fts(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
     fts_settings = settings["fulltextsearch"]
     if fts_settings.get("disable", False):
         return
 
-    def get_both(request: pyramid.request.Request) -> Dict[str, Union[str, Dict[str, str]]]:
+    def get_both(request: pyramid.request.Request) -> dict[str, Union[str, dict[str, str]]]:
         return build_url("Check the fulltextsearch", request.route_path("fulltextsearch"), request)
 
     def check(_request: pyramid.request.Request, response: pyramid.response.Response) -> None:
@@ -156,7 +157,7 @@ def _fts(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
     )
 
 
-def _themes_errors(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
+def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
 
@@ -168,7 +169,7 @@ def _themes_errors(settings: Dict[str, Any], health_check: c2cwsgiutils.health_c
         path = request.route_path("themes")
         session = requests.session()
         for (interface,) in DBSession.query(Interface.name).all():
-            params: Dict[str, str] = {}
+            params: dict[str, str] = {}
             params.update(default_params)
             params.update(interfaces_settings.get(interface, {}).get("params", {}))
             params["interface"] = interface
@@ -188,8 +189,8 @@ def _themes_errors(settings: Dict[str, Any], health_check: c2cwsgiutils.health_c
 
 
 def _lang_files(
-    global_settings: Dict[str, Any],
-    settings: Dict[str, Any],
+    global_settings: dict[str, Any],
+    settings: dict[str, Any],
     health_check: c2cwsgiutils.health_check.HealthCheck,
 ) -> None:
     lang_settings = settings["lang"]
@@ -238,21 +239,21 @@ def _lang_files(
             )
 
 
-def _phantomjs(settings: Dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
+def _phantomjs(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
     phantomjs_settings = settings["phantomjs"]
     for route in phantomjs_settings["routes"]:
         if route.get("checker_name", route["name"]) in phantomjs_settings["disable"]:
             continue
 
         class _Check:
-            def __init__(self, route: Dict[str, Any]) -> None:
+            def __init__(self, route: dict[str, Any]) -> None:
                 self.route = route
 
             def __call__(self, request: pyramid.request.Request) -> None:
                 path = request.route_path(self.route["name"], _query=self.route.get("params", {}))
                 url: str = cast(str, build_url("Check", path, request)["url"])
 
-                cmd: List[str] = ["check-example", url]
+                cmd: list[str] = ["check-example", url]
                 env = dict(os.environ)
                 for name, value in self.route.get("environment", {}).items():
                     if isinstance(value, (list, dict)):

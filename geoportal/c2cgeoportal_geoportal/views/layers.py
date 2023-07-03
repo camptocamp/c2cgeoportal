@@ -28,8 +28,9 @@
 import json
 import logging
 import os
+from collections.abc import Generator
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Set, Tuple, TypedDict, cast
+from typing import TYPE_CHECKING, Any, Optional, TypedDict, cast
 
 import geojson.geometry
 import pyramid.request
@@ -83,7 +84,7 @@ class Layers:
         self.layers_enum_config = self.settings.get("enum")
 
     @staticmethod
-    def _get_geom_col_info(layer: "main.Layer") -> Tuple[str, int]:
+    def _get_geom_col_info(layer: "main.Layer") -> tuple[str, int]:
         """
         Return information about the layer's geometry column.
 
@@ -454,7 +455,7 @@ class Layers:
         return get_layer_class(layer, with_last_update_columns=True)
 
     @view_config(route_name="layers_enumerate_attribute_values", renderer="json")  # type: ignore
-    def enumerate_attribute_values(self) -> Dict[str, Any]:
+    def enumerate_attribute_values(self) -> dict[str, Any]:
         set_common_headers(self.request, "layers", Cache.PUBLIC)
 
         if self.layers_enum_config is None:
@@ -463,10 +464,10 @@ class Layers:
         fieldname = self.request.matchdict["field_name"]
         # TODO check if layer is public or not
 
-        return cast(Dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
+        return cast(dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
 
     @CACHE_REGION.cache_on_arguments()
-    def _enumerate_attribute_values(self, layername: str, fieldname: str) -> Dict[str, Any]:
+    def _enumerate_attribute_values(self, layername: str, fieldname: str) -> dict[str, Any]:
         if layername not in self.layers_enum_config:
             raise HTTPBadRequest(f"Unknown layer: {layername!s}")
 
@@ -485,8 +486,8 @@ class Layers:
 
     @staticmethod
     def query_enumerate_attribute_values(
-        dbsession: sqlalchemy.orm.Session, layerinfos: Dict[str, Any], fieldname: str
-    ) -> Set[Tuple[str, ...]]:
+        dbsession: sqlalchemy.orm.Session, layerinfos: dict[str, Any], fieldname: str
+    ) -> set[tuple[str, ...]]:
         attrinfos = layerinfos["attributes"][fieldname]
         table = attrinfos["table"]
         layertable = get_table(table, session=dbsession)
@@ -497,7 +498,7 @@ class Layers:
         if "separator" in attrinfos:
             separator = attrinfos["separator"]
             attribute = func.unnest(func.string_to_array(func.string_agg(attribute, separator), separator))
-        return set(cast(List[Tuple[str, ...]], dbsession.query(attribute).order_by(attribute).all()))
+        return set(cast(list[tuple[str, ...]], dbsession.query(attribute).order_by(attribute).all()))
 
 
 def get_layer_class(
@@ -570,17 +571,17 @@ class ColumnProperties(TypedDict, total=False):
     type: str
     nillable: bool
     srid: int
-    enumeration: List[str]
+    enumeration: list[str]
     restriction: str
     maxLength: int  # noqa
     fractionDigits: int  # noqa
     totalDigits: int  # noqa
 
 
-def get_layer_metadata(layer: "main.Layer") -> List[ColumnProperties]:
+def get_layer_metadata(layer: "main.Layer") -> list[ColumnProperties]:
     """Get the metadata related to a layer."""
     cls = get_layer_class(layer, with_last_update_columns=True)
-    edit_columns: List[ColumnProperties] = []
+    edit_columns: list[ColumnProperties] = []
 
     for column_property in class_mapper(cls).iterate_properties:
         if isinstance(column_property, ColumnProperty):

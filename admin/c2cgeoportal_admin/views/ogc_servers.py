@@ -29,7 +29,7 @@
 import logging
 import threading
 from functools import partial
-from typing import Any, Dict, List, Union, cast
+from typing import Any, Union, cast
 
 import requests
 from c2cgeoform.schema import GeoFormSchemaNode
@@ -83,11 +83,11 @@ class OGCServerViews(LoggedViews):
     }
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
-    def index(self) -> Dict[str, Any]:
+    def index(self) -> dict[str, Any]:
         return super().index()  # type: ignore
 
     @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore
-    def grid(self) -> Dict[str, Any]:
+    def grid(self) -> dict[str, Any]:
         return super().grid()  # type: ignore
 
     def schema(self) -> GeoFormSchemaNode:
@@ -108,8 +108,8 @@ class OGCServerViews(LoggedViews):
         )
         return schema
 
-    def _item_actions(self, item: OGCServer, readonly: bool = False) -> List[Any]:
-        actions = cast(List[Any], super()._item_actions(item, readonly))
+    def _item_actions(self, item: OGCServer, readonly: bool = False) -> list[Any]:
+        actions = cast(list[Any], super()._item_actions(item, readonly))
         if inspect(item).persistent:
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
@@ -141,20 +141,20 @@ class OGCServerViews(LoggedViews):
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def view(self) -> Dict[str, Any]:
+    def view(self) -> dict[str, Any]:
         return super().edit(self.schema())  # type: ignore
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
     )
-    def save(self) -> Union[HTTPFound, Dict[str, Any]]:
-        result: Union[HTTPFound, Dict[str, Any]] = super().save()
+    def save(self) -> Union[HTTPFound, dict[str, Any]]:
+        result: Union[HTTPFound, dict[str, Any]] = super().save()
         if isinstance(result, HTTPFound):
             self._update_cache(self._obj)
         return result
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
-    def delete(self) -> Dict[str, Any]:
+    def delete(self) -> dict[str, Any]:
         obj = self._get_object()
         if len(obj.layers) > 0:
             return {
@@ -166,20 +166,20 @@ class OGCServerViews(LoggedViews):
                     _query=[("msg_col", "cannot_delete")],
                 ),
             }
-        result: Dict[str, Any] = super().delete()
+        result: dict[str, Any] = super().delete()
         cache_invalidate_cb()
         return result
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self) -> Dict[str, Any]:
+    def duplicate(self) -> dict[str, Any]:
         return super().duplicate()  # type: ignore
 
     @view_config(  # type: ignore
         route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2"
     )
-    def synchronize(self) -> Dict[str, Any]:
+    def synchronize(self) -> dict[str, Any]:
         obj = self._get_object()
 
         if self._request.method == "GET":

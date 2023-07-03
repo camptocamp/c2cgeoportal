@@ -31,8 +31,9 @@ import ipaddress
 import json
 import logging
 import re
+from collections.abc import Iterable
 from string import Formatter
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union, cast
+from typing import Any, Optional, Union, cast
 
 import dateutil
 import pyramid.request
@@ -49,7 +50,7 @@ CACHE_REGION = get_region("std")
 CACHE_REGION_OBJ = get_region("obj")
 
 
-def get_types_map(types_array: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+def get_types_map(types_array: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """Get the type name of a metadata or a functionality."""
     return {type_["name"]: type_ for type_ in types_array}
 
@@ -57,11 +58,11 @@ def get_types_map(types_array: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]
 def get_typed(
     name: str,
     value: str,
-    types: Dict[str, Any],
+    types: dict[str, Any],
     request: pyramid.request.Request,
-    errors: Set[str],
+    errors: set[str],
     layer_name: Optional[str] = None,
-) -> Union[str, int, float, bool, None, List[Any], Dict[str, Any]]:
+) -> Union[str, int, float, bool, None, list[Any], dict[str, Any]]:
     """Get the typed (parsed) value of a metadata or a functionality."""
     prefix = f"Layer '{layer_name}': " if layer_name is not None else ""
     type_ = {"type": "not init"}
@@ -108,7 +109,7 @@ def get_typed(
             return url.url() if url else ""
         elif type_["type"] == "json":
             try:
-                return cast(Dict[str, Any], json.loads(value))
+                return cast(dict[str, Any], json.loads(value))
             except Exception as e:
                 errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {str(e)}")
         elif type_["type"] == "regex":
@@ -142,13 +143,13 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
+def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WMS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
-    errors: Set[str] = set()
-    servers: Dict[str, List[int]] = {}
+    errors: set[str] = set()
+    servers: dict[str, list[int]] = {}
     for ogc_server in DBSession.query(OGCServer).all():
         url = get_url2(ogc_server.name, ogc_server.url, request, errors)
         if url is not None:
@@ -157,13 +158,13 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, Li
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
+def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WFS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
-    errors: Set[str] = set()
-    servers: Dict[str, List[int]] = {}
+    errors: set[str] = set()
+    servers: dict[str, list[int]] = {}
     for ogc_server in DBSession.query(OGCServer).all():
         url = get_url2(ogc_server.name, ogc_server.url_wfs or ogc_server.url, request, errors)
         if url is not None:
@@ -179,7 +180,7 @@ class C2CPregenerator:
         self.version = version
         self.role = role
 
-    def __call__(self, request: pyramid.request.Request, elements: Any, kw: Any) -> Tuple[Any, Any]:
+    def __call__(self, request: pyramid.request.Request, elements: Any, kw: Any) -> tuple[Any, Any]:
         query = {**kw.get("_query", {})}
 
         if self.version:
@@ -201,7 +202,7 @@ _formatter = Formatter()
 @CACHE_REGION_OBJ.cache_on_arguments()
 def _get_intranet_networks(
     request: pyramid.request.Request,
-) -> List[Union[ipaddress.IPv4Network, ipaddress.IPv6Network]]:
+) -> list[Union[ipaddress.IPv4Network, ipaddress.IPv6Network]]:
     return [
         ipaddress.ip_network(network, strict=False)
         for network in request.registry.settings.get("intranet", {}).get("networks", [])
@@ -216,7 +217,7 @@ def get_role_id(name: str) -> int:
     return cast(int, DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
 
 
-def get_roles_id(request: pyramid.request.Request) -> List[int]:
+def get_roles_id(request: pyramid.request.Request) -> list[int]:
     """Get the user roles ID."""
     result = [get_role_id(request.get_organization_role("anonymous"))]
     if is_intranet(request):

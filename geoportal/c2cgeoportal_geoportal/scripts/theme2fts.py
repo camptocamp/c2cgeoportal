@@ -30,7 +30,8 @@ import gettext
 import os
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Optional, Set
+from collections.abc import Iterator
+from typing import TYPE_CHECKING, Any, Optional
 
 import pyramid.config
 import transaction
@@ -113,7 +114,7 @@ class Import:
 
     def __init__(self, session: Session, settings: pyramid.config.Configurator, options: Namespace):
         self.options = options
-        self.imported: Set[Any] = set()
+        self.imported: set[Any] = set()
         package = settings["package"]
 
         self.fts_languages = settings["fulltextsearch"]["languages"]
@@ -140,7 +141,7 @@ class Import:
         self.session = session
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
 
-        self._: Dict[str, gettext.NullTranslations] = {}
+        self._: dict[str, gettext.NullTranslations] = {}
         for lang in self.languages:
             try:
                 self._[lang] = gettext.translation(
@@ -159,8 +160,8 @@ class Import:
             query = query.filter(Interface.name.notin_(options.exclude_interfaces))
         self.interfaces = query.all()
 
-        self.public_theme: Dict[int, List[int]] = {}
-        self.public_group: Dict[int, List[int]] = {}
+        self.public_theme: dict[int, list[int]] = {}
+        self.public_group: dict[int, list[int]] = {}
         for interface in self.interfaces:
             self.public_theme[interface.id] = []
             self.public_group[interface.id] = []
@@ -335,7 +336,7 @@ class Import:
     def _get_paths(
         self,
         item: "c2cgeoportal_commons.models.main.TreeItem",
-    ) -> Iterator[List["c2cgeoportal_commons.models.main.TreeItem"]]:
+    ) -> Iterator[list["c2cgeoportal_commons.models.main.TreeItem"]]:
         if item is None:
             return
         if any(item.parents):

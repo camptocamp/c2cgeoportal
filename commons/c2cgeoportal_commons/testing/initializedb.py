@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 
 import os
 import sys
-from typing import List, cast
+from typing import cast
 
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
@@ -36,7 +36,7 @@ from sqlalchemy.orm import Session
 from c2cgeoportal_commons.models import Base
 
 
-def usage(argv: List[str]) -> None:
+def usage(argv: list[str]) -> None:
     """Get the usage."""
     cmd = os.path.basename(argv[0])
     print(f"usage: {cmd} <config_uri> [var=value]\n" '(example: "{cmd} development.ini")')

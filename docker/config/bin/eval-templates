@@ -8,12 +8,12 @@ import re
 import subprocess
 import urllib.parse
 import zipfile
-from typing import Dict, List, Union, cast
+from typing import Union, cast
 
 import fiona
 from defusedxml import ElementTree
 
-SCHEME_PORT: Dict[str, Union[str, int]] = {
+SCHEME_PORT: dict[str, Union[str, int]] = {
     "http": 80,
     "https": 443,
 }
@@ -27,7 +27,7 @@ class RasterBase:
         if not raster_base.endswith("/"):
             raster_base += "/"
         self.value: str = raster_base
-        self.split: List[str] = raster_base.split("/")
+        self.split: list[str] = raster_base.split("/")
         self.length: int = len(raster_base.split("/")) - 2  # -2 to ignore the first and last empty strings
 
 

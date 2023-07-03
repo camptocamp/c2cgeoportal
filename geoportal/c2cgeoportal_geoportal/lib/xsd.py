@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 
 from io import BytesIO
-from typing import Any, Callable, Dict, Optional, Type, Union, cast
+from typing import Any, Callable, Optional, Union, cast
 
 import sqlalchemy.sql.schema
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
@@ -129,8 +129,8 @@ class XSD:
 
     def __call__(
         self, table: str
-    ) -> Callable[[Union[Type[str], Type[bytes]], Dict[str, Any]], Optional[bytes]]:
-        def _render(cls: Union[Type[str], Type[bytes]], system: Dict[str, Any]) -> Optional[bytes]:
+    ) -> Callable[[Union[type[str], type[bytes]], dict[str, Any]], Optional[bytes]]:
+        def _render(cls: Union[type[str], type[bytes]], system: dict[str, Any]) -> Optional[bytes]:
             request = system.get("request")
             if request is not None:
                 response = request.response

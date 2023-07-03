@@ -28,7 +28,7 @@
 
 import logging
 import sys
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 import pyramid.request
 import pyramid.response
@@ -57,11 +57,11 @@ class Proxy:
     def _proxy(
         self,
         url: Url,
-        params: Optional[Dict[str, str]] = None,
+        params: Optional[dict[str, str]] = None,
         method: Optional[str] = None,
         cache: bool = False,
         body: Optional[bytes] = None,
-        headers: Optional[Dict[str, str]] = None,
+        headers: Optional[dict[str, str]] = None,
     ) -> requests.models.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
@@ -147,7 +147,7 @@ class Proxy:
                 "--- With headers ---",
                 "%s",
             ]
-            args2: List[Union[str, int]] = [
+            args2: list[Union[str, int]] = [
                 response.reason,
                 url.url(),
                 response.status_code,
@@ -183,7 +183,7 @@ class Proxy:
         self,
         service_name: str,
         url: Url,
-        headers_update: Optional[Dict[str, str]] = None,
+        headers_update: Optional[dict[str, str]] = None,
         public: bool = False,
         **kwargs: Any,
     ) -> pyramid.response.Response:
@@ -210,8 +210,8 @@ class Proxy:
         content: bytes,
         cache_control: Cache,
         service_name: str,
-        headers: Optional[Dict[str, str]] = None,
-        headers_update: Optional[Dict[str, str]] = None,
+        headers: Optional[dict[str, str]] = None,
+        headers_update: Optional[dict[str, str]] = None,
         content_type: Optional[str] = None,
     ) -> pyramid.response.Response:
         if headers_update is None:
@@ -248,11 +248,11 @@ class Proxy:
         )
 
     @staticmethod
-    def _get_lower_params(params: Dict[str, str]) -> Dict[str, str]:
+    def _get_lower_params(params: dict[str, str]) -> dict[str, str]:
         return {k.lower(): str(v).lower() for k, v in params.items()}
 
-    def get_headers(self) -> Dict[str, str]:
-        headers: Dict[str, str] = self.request.headers
+    def get_headers(self) -> dict[str, str]:
+        headers: dict[str, str] = self.request.headers
         if "Cookie" in headers:
             headers.pop("Cookie")
         return headers

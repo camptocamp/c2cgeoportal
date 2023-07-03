@@ -27,7 +27,7 @@
 
 
 import uuid
-from typing import Any, Callable, Dict, Tuple
+from typing import Any, Callable
 from urllib.parse import urljoin
 
 import pyramid.registry
@@ -46,8 +46,8 @@ def get_cache_version() -> str:
 
 
 def version_cache_buster(
-    request: pyramid.request.Request, subpath: str, kw: Dict[str, Any]
-) -> Tuple[str, Dict[str, Any]]:
+    request: pyramid.request.Request, subpath: str, kw: dict[str, Any]
+) -> tuple[str, dict[str, Any]]:
     """Join the cash buster version with the sub path."""
     del request  # unused
     return urljoin(get_cache_version() + "/", subpath), kw

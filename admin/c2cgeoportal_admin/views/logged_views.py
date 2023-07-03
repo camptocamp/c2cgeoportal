@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 import pytz
 from c2cgeoform.views.abstract_views import AbstractViews
@@ -42,7 +42,7 @@ class LoggedViews(AbstractViews):  # type: ignore
     _log_model = Log  # main.Log or static.Log
     _name_field = "name"
 
-    def save(self) -> Union[HTTPFound, Dict[str, Any]]:
+    def save(self) -> Union[HTTPFound, dict[str, Any]]:
         response = super().save()
 
         if isinstance(response, HTTPFound):
@@ -53,7 +53,7 @@ class LoggedViews(AbstractViews):  # type: ignore
 
         return response
 
-    def delete(self) -> Dict[str, Any]:
+    def delete(self) -> dict[str, Any]:
         obj = self._get_object()
 
         response = super().delete()

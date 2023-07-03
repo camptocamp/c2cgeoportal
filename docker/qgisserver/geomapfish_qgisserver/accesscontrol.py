@@ -12,7 +12,7 @@ import random
 import re
 from enum import Enum
 from threading import Lock
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Optional, Union, cast
 
 import c2cwsgiutils.broadcast
 import geoalchemy2
@@ -43,7 +43,7 @@ if TYPE_CHECKING:
 LOG = logging.getLogger(__name__)
 
 
-def create_session_factory(url: str, configuration: Dict[str, Any]) -> sessionmaker:
+def create_session_factory(url: str, configuration: dict[str, Any]) -> sessionmaker:
     configure_mappers()
     db_match = re.match(".*(@[^@]+)$", url)
     LOG.info(
@@ -119,7 +119,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                     )
 
                     for ogcserver in session.query(OGCServer).all():
-                        errors: Set[str] = set()
+                        errors: set[str] = set()
                         url = get_url2(
                             f"The OGC server '{ogcserver.name}'",
                             ogcserver.url,
@@ -282,8 +282,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer, attributes: List[str]
-    ) -> List[str]:
+        self, layer: QgsVectorLayer, attributes: list[str]
+    ) -> list[str]:
         """Return the authorized layer attributes."""
         try:
             if not self.initialized:
@@ -337,8 +337,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.srid = srid
         self.DBSession = DBSession  # pylint: disable=invalid-name
 
-        self.area_cache: Dict[Any, Tuple[Access, BaseGeometry]] = {}
-        self.layers: Optional[Dict[str, List["main.LayerWMS"]]] = None
+        self.area_cache: dict[Any, tuple[Access, BaseGeometry]] = {}
+        self.layers: Optional[dict[str, list["main.LayerWMS"]]] = None
         self.lock = Lock()
         self.srid = srid
         self.ogcserver = ogcserver
@@ -389,7 +389,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return layer.id()
         return layer.shortName() or layer.name()
 
-    def get_layers(self, session: Session) -> Dict[str, List["main.Layer"]]:
+    def get_layers(self, session: Session) -> dict[str, list["main.Layer"]]:
         """
         Get the list of GMF WMS layers that can give access to each QGIS layer or group. That is, for each
         QGIS layer tree node, the list of GMF WMS layers that:
@@ -414,7 +414,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             nodes = {}  # dict { node name: list of ancestor node names }
 
-            def browse(path: List[str], node: QgsLayerTreeNode) -> None:
+            def browse(path: list[str], node: QgsLayerTreeNode) -> None:
                 if isinstance(node, QgsLayerTreeLayer):
                     ogc_name = self.ogc_layer_name(node.layer())
                 elif isinstance(node, QgsLayerTreeGroup):
@@ -436,9 +436,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                 LOG.debug("QGIS layer: %s", ogc_layer_name)
 
             # Transform ancestor names in LayerWMS instances
-            layers: Dict[str, List[LayerWMS]] = {}
+            layers: dict[str, list[LayerWMS]] = {}
             for layer in cast(
-                List[LayerWMS],
+                list[LayerWMS],
                 session.query(LayerWMS)
                 .options(subqueryload(LayerWMS.restrictionareas).subqueryload(RestrictionArea.roles))
                 .filter(LayerWMS.ogc_server_id == self.ogcserver.id)
@@ -464,7 +464,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             self.layers = layers
             return layers
 
-    def get_roles(self, session: Session) -> Union[str, List["main.Role"]]:
+    def get_roles(self, session: Session) -> Union[str, list["main.Role"]]:
         """
         Get the current user's available roles based on request parameter USER_ID.
         Returns:
@@ -481,7 +481,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             return []
 
         roles = cast(
-            List["main.Role"],
+            list["main.Role"],
             session.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(","))).all(),
         )
 
@@ -490,10 +490,10 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
     @staticmethod
     def get_restriction_areas(
-        gmf_layers: List["main.Layer"],
+        gmf_layers: list["main.Layer"],
         read_write: bool = False,
-        roles: Optional[Union[str, List["main.Role"]]] = None,
-    ) -> Tuple[Access, BaseGeometry]:
+        roles: Optional[Union[str, list["main.Role"]]] = None,
+    ) -> tuple[Access, BaseGeometry]:
         """
         Get access areas given by GMF layers and user roles for an access mode.
 
@@ -541,7 +541,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             [geoalchemy2.shape.to_shape(restriction_area.area) for restriction_area in restriction_areas],
         )
 
-    def get_area(self, layer: str, session: Session, read_write: bool = False) -> Tuple[Access, BaseGeometry]:
+    def get_area(self, layer: str, session: Session, read_write: bool = False) -> tuple[Access, BaseGeometry]:
         """
         Calculate access area for a QgsMapLayer and an access mode.
         Returns:
@@ -713,8 +713,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer, attributes: List[str]
-    ) -> List[str]:
+        self, layer: QgsVectorLayer, attributes: list[str]
+    ) -> list[str]:
         """
         Returns the authorized layer attributes.
         """

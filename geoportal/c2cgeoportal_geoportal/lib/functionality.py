@@ -27,7 +27,7 @@
 
 
 import logging.config
-from typing import Any, Dict, List, Set, Union, cast
+from typing import Any, Union, cast
 
 import pyramid.request
 from sqlalchemy.orm import joinedload
@@ -42,7 +42,7 @@ CACHE_REGION = get_region("std")
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def _get_role(name: str) -> Dict[str, Any]:
+def _get_role(name: str) -> dict[str, Any]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
     role = (
@@ -55,24 +55,24 @@ def _get_role(name: str) -> Dict[str, Any]:
     return {"settings_functionalities": struct, "roles_functionalities": {name: struct}}
 
 
-def _user_to_struct(user: static.User) -> Dict[str, Any]:
+def _user_to_struct(user: static.User) -> dict[str, Any]:
     return {
         "settings_functionalities": _role_to_struct(user.settings_role),
         "roles_functionalities": {role.name: _role_to_struct(role) for role in user.roles},
     }
 
 
-def _role_to_struct(role: main.Role) -> List[Dict[str, Any]]:
+def _role_to_struct(role: main.Role) -> list[dict[str, Any]]:
     return [{"name": f.name, "value": f.value} for f in role.functionalities] if role else []
 
 
 def _get_db_functionality(
     name: str,
-    user: Dict[str, Any],
-    types: Dict[str, Dict[str, Any]],
+    user: dict[str, Any],
+    types: dict[str, dict[str, Any]],
     request: pyramid.request.Request,
-    errors: Set[str],
-) -> List[Union[str, int, float, bool, List[Any], Dict[str, Any]]]:
+    errors: set[str],
+) -> list[Union[str, int, float, bool, list[Any], dict[str, Any]]]:
     if types.get(name, {}).get("single", False):
         values = [
             get_typed(name, functionality["value"], types, request, errors)
@@ -95,7 +95,7 @@ def _get_db_functionality(
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()
-def _get_functionalities_type(request: pyramid.request.Request) -> Dict[str, Dict[str, Any]]:
+def _get_functionalities_type(request: pyramid.request.Request) -> dict[str, dict[str, Any]]:
     return get_types_map(
         request.registry.settings.get("admin_interface", {}).get("available_functionalities", [])
     )
@@ -103,10 +103,10 @@ def _get_functionalities_type(request: pyramid.request.Request) -> Dict[str, Dic
 
 def get_functionality(
     name: str, request: pyramid.request.Request, is_intranet_: bool
-) -> List[Union[str, int, float, bool, List[Any], Dict[str, Any]]]:
+) -> list[Union[str, int, float, bool, list[Any], dict[str, Any]]]:
     """Get all the functionality for the current user."""
-    result: List[Union[str, int, float, bool, List[Any], Dict[str, Any]]] = []
-    errors: Set[str] = set()
+    result: list[Union[str, int, float, bool, list[Any], dict[str, Any]]] = []
+    errors: set[str] = set()
 
     if request.user is not None:
         result = _get_db_functionality(
@@ -144,9 +144,9 @@ def get_functionality(
     return result
 
 
-def get_mapserver_substitution_params(request: pyramid.request.Request) -> Dict[str, str]:
+def get_mapserver_substitution_params(request: pyramid.request.Request) -> dict[str, str]:
     """Get the parameters used by the mapserver substitution."""
-    params: Dict[str, str] = {}
+    params: dict[str, str] = {}
     mss = get_functionality("mapserver_substitution", request, is_intranet(request))
     if mss:
         for s_ in mss:

@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-from typing import Dict, Optional, Set, cast
+from typing import Optional, cast
 
 import pyramid.request
 from pyramid.httpexceptions import HTTPBadRequest
@@ -88,14 +88,14 @@ class OGCProxy(Proxy):
                 f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])})."
             )
 
-    def _get_wms_url(self, errors: Set[str]) -> Optional[Url]:
+    def _get_wms_url(self, errors: set[str]) -> Optional[Url]:
         ogc_server = self.ogc_server
         url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors)
         if errors:
             LOG.error("\n".join(errors))
         return url
 
-    def _get_wfs_url(self, errors: Set[str]) -> Optional[Url]:
+    def _get_wfs_url(self, errors: set[str]) -> Optional[Url]:
         ogc_server = self.ogc_server
         url = get_url2(
             f"The OGC server (WFS) '{ogc_server.name}'",
@@ -107,8 +107,8 @@ class OGCProxy(Proxy):
             LOG.error("\n".join(errors))
         return url
 
-    def get_headers(self) -> Dict[str, str]:
-        headers: Dict[str, str] = super().get_headers()
+    def get_headers(self) -> dict[str, str]:
+        headers: dict[str, str] = super().get_headers()
         if self.ogc_server.type == main.OGCSERVER_TYPE_QGISSERVER:
             if self.request.matched_route.name.endswith("_path"):
                 headers["X-Qgis-Service-Url"] = self.request.current_route_url(path=[], _query={})

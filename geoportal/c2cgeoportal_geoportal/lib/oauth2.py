@@ -27,7 +27,7 @@
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 import basicauth
 import oauthlib.common
@@ -260,7 +260,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
-    ) -> List[str]:
+    ) -> list[str]:
         """
         Get the default scopes for the client.
 
@@ -289,7 +289,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
-    ) -> List[str]:
+    ) -> list[str]:
         """
         Get the list of scopes associated with the refresh token.
 
@@ -396,7 +396,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
     def is_within_original_scope(
         self,
-        request_scopes: List[str],
+        request_scopes: list[str],
         refresh_token: str,
         request: oauthlib.common.Request,
         *args: Any,
@@ -478,7 +478,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
     def save_authorization_code(
         self,
         client_id: str,
-        code: Dict[str, str],
+        code: dict[str, str],
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -560,7 +560,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
     def save_bearer_token(
         self,
-        token: Dict[str, Union[str, int]],
+        token: dict[str, Union[str, int]],
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -631,7 +631,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
     def validate_bearer_token(
         self,
         token: str,
-        scopes: List[str],
+        scopes: list[str],
         request: oauthlib.common.Request,
     ) -> bool:
         """
@@ -955,7 +955,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
     def validate_scopes(
         self,
         client_id: str,
-        scopes: List[str],
+        scopes: list[str],
         client: "c2cgeoportal_commons.models.static.OAuth2Client",
         request: oauthlib.common.Request,
         *args: Any,
@@ -1134,7 +1134,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         return None
 
 
-def get_oauth_client(settings: Dict[str, Any]) -> oauthlib.oauth2.WebApplicationServer:
+def get_oauth_client(settings: dict[str, Any]) -> oauthlib.oauth2.WebApplicationServer:
     """Get the oauth2 client, with a cache."""
     authentication_settings = settings.get("authentication", {})
     return _get_oauth_client_cache(

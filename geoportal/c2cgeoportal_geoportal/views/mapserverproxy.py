@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any, Dict, Set
+from typing import Any
 
 from pyramid.httpexceptions import HTTPForbidden, HTTPFound, HTTPInternalServerError, HTTPUnauthorized
 from pyramid.request import Request
@@ -50,7 +50,7 @@ LOG = logging.getLogger(__name__)
 class MapservProxy(OGCProxy):
     """Proxy for OGC (WMS/WFS) servers."""
 
-    params: Dict[str, str] = {}
+    params: dict[str, str] = {}
 
     def __init__(self, request: Request) -> None:
         OGCProxy.__init__(self, request)
@@ -100,7 +100,7 @@ class MapservProxy(OGCProxy):
         # DescribeFeatureType requests
         use_cache = False
 
-        errors: Set[str] = set()
+        errors: set[str] = set()
         if method == "GET":
             # For GET requests, params are added only if the self.request
             # parameter is actually provided.
@@ -166,7 +166,7 @@ class MapservProxy(OGCProxy):
         return response
 
     def _proxy_callback(
-        self, cache_control: Cache, url: Url, params: Dict[str, str], **kwargs: Any
+        self, cache_control: Cache, url: Url, params: dict[str, str], **kwargs: Any
     ) -> Response:
         if self.request.matched_route.name.endswith("_path"):
             if self.request.matchdict["path"] == ("favicon.ico",):
