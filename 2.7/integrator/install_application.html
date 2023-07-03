@@ -69,10 +69,10 @@ To create them, do:</p>
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span> &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -c <span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span> &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
-<span class="prompt1">sudo -u postgres psql -c <span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span> &lt;db_name&gt;</span>
+</style><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span><span class="w"> </span>&lt;db_name&gt;</span>
 </pre></div></div></section>
 </section>
 <section id="install-the-application">
@@ -118,14 +118,14 @@ environment variable, for cygwin, git and node binaries.</p>
 </ul>
 </div></blockquote>
 <p>Activate the devlopement environment:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp docker-compose.override.sample.yaml docker-compose.override.yaml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp<span class="w"> </span>docker-compose.override.sample.yaml<span class="w"> </span>docker-compose.override.yaml</span>
 </pre></div></div><p>Run the composition:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose up -d</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span>up<span class="w"> </span>-d</span>
 </pre></div></div><p>Then create the application tables:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --config<span class="o">=</span>alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>main upgrade head</span>
-<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal alembic --config<span class="o">=</span>alembic.ini <span class="se">\</span>
-    --name<span class="o">=</span>static upgrade head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="o">=</span>main<span class="w"> </span>upgrade<span class="w"> </span>head</span>
+<span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="o">=</span>static<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div><p>Your application should now be available at: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/</span></code>.</p>
 <p>If you ahave an Apache in front of your application,
 add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file

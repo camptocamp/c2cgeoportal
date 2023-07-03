@@ -40,22 +40,22 @@
   <section id="vector-tiles">
 <span id="id1"></span><h1>Vector tiles<a class="headerlink" href="#vector-tiles" title="Permalink to this headline">¶</a></h1>
 <p>To serve vector tiles you need to define a grid under key <code class="docutils literal notranslate"><span class="pre">vector_tiles</span></code> in <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code>, example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">vector_tiles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">srid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2056</span><span class="w"></span>
-<span class="w">    </span><span class="nt">extent</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2420000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1030000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2900000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1350000</span><span class="p p-Indicator">]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resolutions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">4000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">500</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">250</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">100</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">50</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">10</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.25</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.05</span><span class="p p-Indicator">]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vector_tiles</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">srid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2056</span>
+<span class="w">    </span><span class="nt">extent</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2420000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1030000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2900000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1350000</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">resolutions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">4000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">500</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">250</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">100</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">50</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">10</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.25</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.05</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 <p>And to build the layer on the ngeo side, you must use the same parameters under key
 <code class="docutils literal notranslate"><span class="pre">interfaces_config.default.constants.gmfVectorTilesOptions</span></code>. The projection and the tileGrid must match
 the map parameters:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">interfaces_config</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">gmfVectorTilesOptions</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">projection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:2056</span><span class="w"></span>
-<span class="w">        </span><span class="nt">tileGrid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Open layers ol/tilegrid/TileGrid options&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">interfaces_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">gmfVectorTilesOptions</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">projection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:2056</span>
+<span class="w">        </span><span class="nt">tileGrid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Open layers ol/tilegrid/TileGrid options&gt;</span>
 </pre></div>
 </div>
 <p>You also need to define at least one “Vector Tiles” layer in admin interface with the following required attributes:</p>
@@ -70,13 +70,13 @@ the map parameters:</p>
 </dd>
 </dl>
 <p>For example, for considered table:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">geodata</span><span class="p">.</span><span class="n">osm_landuse</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">fid</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">osm_id</span><span class="w"> </span><span class="nb">bigint</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="nb">varying</span><span class="p">(</span><span class="mi">48</span><span class="p">),</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="nb">varying</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span><span class="w"></span>
-<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">Polygon</span><span class="p">,</span><span class="mi">2056</span><span class="p">)</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">geodata</span><span class="p">.</span><span class="n">osm_landuse</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">fid</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">osm_id</span><span class="w"> </span><span class="nb">bigint</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="nb">varying</span><span class="p">(</span><span class="mi">48</span><span class="p">),</span>
+<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="nb">varying</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span>
+<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="k">public</span><span class="p">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">Polygon</span><span class="p">,</span><span class="mi">2056</span><span class="p">)</span>
+<span class="p">);</span>
 </pre></div>
 </div>
 <p>Here is an example SQL query template:</p>

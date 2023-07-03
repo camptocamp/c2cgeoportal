@@ -51,7 +51,7 @@ down time is too much traffic.</p>
 <p>To have better DB performance, one can setup multiple Postgres servers in a
 <a class="reference external" href="https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial">master/slave</a>
 configuration. To enable this feature on GeoMapFish, you must add this to your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dbhost_slave</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_db_slave_hostname</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dbhost_slave</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_db_slave_hostname</span>
 </pre></div>
 </div>
 <p>Then, all the GET and OPTIONS requests will use one of the slave Postgres instances and the

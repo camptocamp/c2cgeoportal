@@ -58,33 +58,33 @@ and one for production, not needed for projects managed in an OpenShift platform
 <li><p><code class="docutils literal notranslate"><span class="pre">help</span></code>: the message displayed on wrong build env arguments number.</p></li>
 </ul>
 <p>For an OpenShift project you can use (default):</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">files</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span><span class="w"></span>
-<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"></span>
-<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">No arguments needed.</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span>
+<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">No arguments needed.</span>
 </pre></div>
 </div>
 <p>For a non OpenShift project you can use:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">files</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{0}</span><span class="w"></span>
-<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{0}</span>
+<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span>
 </pre></div>
 </div>
 <p>For a non OpenShift multi town project you can use:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">files</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{0}</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{1}</span><span class="w"></span>
-<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
-<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;town&gt; &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">env</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.default</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.project</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{0}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">env.{1}</span>
+<span class="w">  </span><span class="nt">required_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">You should use `./build &lt;town&gt; &lt;env&gt;` where &lt;env&gt; can be dev, int or prod.</span>
 </pre></div>
 </div>
 </section>
@@ -99,18 +99,18 @@ which extends the default <code class="docutils literal notranslate"><span class
 <p>they must be listed in the makefile as well using <code class="docutils literal notranslate"><span class="pre">CONFIG_VARS</span></code> (see below).</p>
 <p>To be able to use a variable from the makefile in the vars file,
 you should export your variable as follows:</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="k">export </span><span class="nv">MY_VAR</span> <span class="o">?=</span> my_value
+<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="k">export </span><span class="nv">MY_VAR</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>my_value
 </pre></div>
 </div>
 <p>And in your yaml vars file, add:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">my_var</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MY_VAR</span><span class="w"></span>
-<span class="nt">interpreted</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_var</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">my_var</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MY_VAR</span>
+<span class="nt">interpreted</span><span class="p">:</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_var</span>
 </pre></div>
 </div>
 <p>For more information, see the
@@ -144,19 +144,19 @@ you should export your variable as follows:</p>
 </div>
 <p>In the <code class="docutils literal notranslate"><span class="pre">geoportal/Makefile</span></code> file, you can create custom rules.
 Here is an example:</p>
-<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">MY_FILE</span> <span class="o">?=</span> &lt;file&gt;
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">MY_FILE</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>&lt;file&gt;
 
-<span class="nf">build</span><span class="o">:</span> <span class="k">$(</span><span class="nv">MY_FILE</span><span class="k">)</span>
+<span class="nf">build</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">MY_FILE</span><span class="k">)</span>
 
-<span class="nf">$(MY_FILE)</span><span class="o">:</span> &lt;<span class="n">source_file</span>&gt;
-    cp &lt;source_file&gt; <span class="k">$(</span>MY_FILE<span class="k">)</span>
+<span class="nf">$(MY_FILE)</span><span class="o">:</span><span class="w"> </span>&lt;<span class="n">source_file</span>&gt;
+<span class="w">    </span>cp<span class="w"> </span>&lt;source_file&gt;<span class="w"> </span><span class="k">$(</span>MY_FILE<span class="k">)</span>
 <span class="c">    # Short version:</span>
 <span class="c">    # cp $&lt; $@</span>
 
-<span class="nf">clean</span><span class="o">:</span> <span class="n">project</span>-<span class="n">clean</span>
-<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">project</span>-<span class="n">clean</span>
+<span class="nf">clean</span><span class="o">:</span><span class="w"> </span><span class="n">project</span>-<span class="n">clean</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">project</span>-<span class="n">clean</span>
 <span class="nf">project-clean</span><span class="o">:</span>
-    rm -f <span class="k">$(</span>MY_FILE<span class="k">)</span>
+<span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>MY_FILE<span class="k">)</span>
 </pre></div>
 </div>
 <p>Upstream <a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">make documentation</a>.</p>
@@ -165,12 +165,12 @@ Here is an example:</p>
 <h2>Custom image<a class="headerlink" href="#custom-image" title="Permalink to this headline">¶</a></h2>
 <p>In the build script we use <cite>docker-compose build</cite> as it’s easy to add a new service from another <cite>Dockerfile</cite>.</p>
 <p>By adding the following in the <cite>docker-compose.yaml</cite> file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span><span class="w"></span>
-<span class="w">   </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
-<span class="w">     </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom</span><span class="w"></span>
-<span class="w">     </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
-<span class="w">       </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span>
+<span class="w">   </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom</span>
+<span class="w">     </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">GIT_HASH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GIT_HASH}</span>
 </pre></div>
 </div>
 <p>An new image with the suffix <cite>-custom</cite> will be built with the standard <cite>./build</cite> command and a build

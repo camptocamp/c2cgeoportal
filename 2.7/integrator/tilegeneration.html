@@ -89,8 +89,8 @@ Sub-level of <code class="docutils literal notranslate"><span class="pre">layers
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles <span class="se">\</span>
-   --get-hash &lt;max-zoom&gt;/0/0 --layer &lt;layer&gt;</span>
+</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--get-hash<span class="w"> </span>&lt;max-zoom&gt;/0/0<span class="w"> </span>--layer<span class="w"> </span>&lt;layer&gt;</span>
 </pre></div></div><p>We consider that the first tile of the max zoom is empty.
 Then copy-paste the result in the layer config.</p>
 </li>
@@ -110,13 +110,13 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 <section id="tile-generation-and-management">
 <h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
 <p>This package offers two tools, one to generate the tiles locally, see help:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles --help</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles<span class="w"> </span>--help</span>
 </pre></div></div><p>one to generate the tiles using AWS, see help:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_controller --help</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--help</span>
 </pre></div></div><p>Before starting a tile generation on S3, measure the cost:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_controller --cost</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--cost</span>
 </pre></div></div><p>If you setup all the default options, you can generate the tiles by using the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tilecloudchain generate_tiles</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles</span>
 </pre></div></div></section>
 <section id="aws-credentials">
 <h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Permalink to this headline">¶</a></h3>
@@ -218,19 +218,19 @@ needed to generate the capabilities. We can specify:</p>
 in the capabilities, a <code class="docutils literal notranslate"><span class="pre">value</span></code> to generate the tiles (it can be overwritten by an argument), and an array of
 <code class="docutils literal notranslate"><span class="pre">values</span></code> that contains all the possible values available in the capabilities.</p>
 <p>For example if you generate the tiles and capabilities with the following configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span><span class="w"></span>
-<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span><span class="w"></span>
-<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span><span class="w"></span>
-<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span>
+<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 <p>then with the following configuration:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span><span class="w"></span>
-<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span><span class="w"></span>
-<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2013</span><span class="w"></span>
-<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2013</span><span class="p p-Indicator">]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dimensions</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATE</span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2012</span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2013</span>
+<span class="w">        </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2012</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2013</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 <p>We will have two set of tiles <code class="docutils literal notranslate"><span class="pre">2012</span></code> and <code class="docutils literal notranslate"><span class="pre">2013</span></code>, both accessible by the capabilities, and by default we
@@ -248,12 +248,12 @@ the borders. The <code class="docutils literal notranslate"><span class="pre">me
 <h4>Configure hash<a class="headerlink" href="#configure-hash" title="Permalink to this headline">¶</a></h4>
 <p>We can filter tiles and meta tiles by using an hash.</p>
 <p>The configuration of this hash is in the layer like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">empty_metatile_detection</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">740</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3237839c217b51b8a9644d596982f342f8041546</span><span class="w"></span>
-<span class="nt">empty_tile_detection</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">921</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1e3da153be87a493c4c71198366485f290cad43c</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">empty_metatile_detection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">740</span>
+<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3237839c217b51b8a9644d596982f342f8041546</span>
+<span class="nt">empty_tile_detection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">921</span>
+<span class="w">    </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1e3da153be87a493c4c71198366485f290cad43c</span>
 </pre></div>
 </div>
 <p>To easily generate this configuration we can use the following command:</p>
@@ -267,21 +267,21 @@ zoom, x and y as 0.</p>
 <h4>Configure geom/sql<a class="headerlink" href="#configure-geom-sql" title="Permalink to this headline">¶</a></h4>
 <p>We can generate the tiles only on some geometries stored in PostGis.</p>
 <p>The configuration is in the layer like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=www-data password=www-data dbname=&lt;db&gt; host=localhost</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;column&gt; AS geom FROM &lt;table&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=www-data password=www-data dbname=&lt;db&gt; host=localhost</span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;column&gt; AS geom FROM &lt;table&gt;</span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span>
 </pre></div>
 </div>
 <p>Example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.polygon</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.point</span><span class="w"></span>
-<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.polygon</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.point</span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 </pre></div>
 </div>
 <p>It’s preferable to use simple geometries, too complex geometries can slow down the generation.</p>
@@ -291,8 +291,8 @@ zoom, x and y as 0.</p>
 <p>To be able to generate legends with <code class="docutils literal notranslate"><span class="pre">generate-controller</span> <span class="pre">--generate-legend-images</span></code> you should have
 <code class="docutils literal notranslate"><span class="pre">legend_mime</span></code> and <code class="docutils literal notranslate"><span class="pre">legend_extension</span></code> in the layer configuration.</p>
 <p>for example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legend_mime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span><span class="w"></span>
-<span class="nt">legend_extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">png</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legend_mime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span>
+<span class="nt">legend_extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">png</span>
 </pre></div>
 </div>
 <p>Then it will create a legend image per layer and per zoom level named
@@ -301,13 +301,13 @@ previous zoom level. If we have only one legend image it still stores in the fil
 <code class="docutils literal notranslate"><span class="pre">legend0.{{legend_extension}}</span></code>.</p>
 <p>When we do <code class="docutils literal notranslate"><span class="pre">generate-controller</span> <span class="pre">--generate-wmts-capabilities</span></code> we will at first parse the legend images to
 generate a layer configuration like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legends</span><span class="p">:</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span><span class="w"></span>
-<span class="w">    </span><span class="nt">href</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://host/tiles/layer/style/legend0.png</span><span class="w"></span>
-<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span><span class="w"> </span><span class="c1"># optional, [m/px]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span><span class="w"> </span><span class="c1"># optional, [m/px]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">min_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the min_resolution [m/m]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the max_resolution [m/m]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">legends</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image/png</span>
+<span class="w">    </span><span class="nt">href</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://host/tiles/layer/style/legend0.png</span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span><span class="w"> </span><span class="c1"># optional, [m/px]</span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span><span class="w"> </span><span class="c1"># optional, [m/px]</span>
+<span class="w">    </span><span class="nt">min_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the min_resolution [m/m]</span>
+<span class="w">    </span><span class="nt">max_scale</span><span class="p">:</span><span class="w"> </span><span class="c1"># if define overwrite the max_resolution [m/m]</span>
 </pre></div>
 </div>
 <p>If you define a legends array in the layer configuration it is directly used to generate the capabilities.</p>
@@ -341,18 +341,18 @@ in an array as value.</p>
 <p>And don’t forget to change the <code class="docutils literal notranslate"><span class="pre">extension</span></code> to <code class="docutils literal notranslate"><span class="pre">json</span></code>, and the <code class="docutils literal notranslate"><span class="pre">mime_type</span></code> to <code class="docutils literal notranslate"><span class="pre">application/utfgrid</span></code> and
 the <code class="docutils literal notranslate"><span class="pre">meta</span></code> to <code class="docutils literal notranslate"><span class="pre">off</span></code> (not supported).</p>
 <p>Configuration example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">grid</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mapnik</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mapfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">style.mapnik</span><span class="w"></span>
-<span class="w">    </span><span class="nt">output_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grid</span><span class="w"></span>
-<span class="w">    </span><span class="nt">extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">json</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/utfgrid</span><span class="w"></span>
-<span class="w">    </span><span class="nt">drop_empty_utfgrid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
-<span class="w">    </span><span class="nt">meta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">off</span><span class="w"></span>
-<span class="w">    </span><span class="nt">data_buffer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span><span class="w"></span>
-<span class="w">    </span><span class="nt">layers_fields</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">buildings</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">name</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">street</span><span class="p p-Indicator">]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">grid</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mapnik</span>
+<span class="w">    </span><span class="nt">mapfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">style.mapnik</span>
+<span class="w">    </span><span class="nt">output_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grid</span>
+<span class="w">    </span><span class="nt">extension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">json</span>
+<span class="w">    </span><span class="nt">mime_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/utfgrid</span>
+<span class="w">    </span><span class="nt">drop_empty_utfgrid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on</span>
+<span class="w">    </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">meta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">off</span>
+<span class="w">    </span><span class="nt">data_buffer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span>
+<span class="w">    </span><span class="nt">layers_fields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">buildings</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">name</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">street</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 </section>
@@ -363,15 +363,15 @@ the <code class="docutils literal notranslate"><span class="pre">meta</span></co
 <p>We can configure some tile commands to process the tiles. They can be automatically be called in the tile
 generation it we set the property <code class="docutils literal notranslate"><span class="pre">post_process</span></code> or <code class="docutils literal notranslate"><span class="pre">pre_hash_post_process</span></code> in the layer configuration.</p>
 <p>The process is a set of names processes, and each one has a list of commands declared like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">process</span><span class="p">:</span><span class="w">  </span><span class="c1"># root process config</span><span class="w"></span>
-<span class="w">    </span><span class="nt">optipng</span><span class="p">:</span><span class="w">  </span><span class="c1"># the process command</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optipng %(args)s -q -zc9 -zm8 -zs3 -f5 -o %(out)s %(in)s</span><span class="w">  </span><span class="c1"># the command line</span><span class="w"></span>
-<span class="w">        </span><span class="nt">need_out</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># if false the command rewrite the input file, default is false</span><span class="w"></span>
-<span class="w">        </span><span class="nt">arg</span><span class="p">:</span><span class="w">  </span><span class="c1"># argument used with the different log switches, in all cases default is &#39;&#39;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used by default</span><span class="w"></span>
-<span class="w">            </span><span class="nt">quiet</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used in quiet mode</span><span class="w"></span>
-<span class="w">            </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-v&#39;</span><span class="w"> </span><span class="c1"># the argument used in verbose mode</span><span class="w"></span>
-<span class="w">            </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-log</span><span class="nv"> </span><span class="s">/tmp/optipng.log&#39;</span><span class="w"> </span><span class="c1"># the argument user in debug mode</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">process</span><span class="p">:</span><span class="w">  </span><span class="c1"># root process config</span>
+<span class="w">    </span><span class="nt">optipng</span><span class="p">:</span><span class="w">  </span><span class="c1"># the process command</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optipng %(args)s -q -zc9 -zm8 -zs3 -f5 -o %(out)s %(in)s</span><span class="w">  </span><span class="c1"># the command line</span>
+<span class="w">        </span><span class="nt">need_out</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># if false the command rewrite the input file, default is false</span>
+<span class="w">        </span><span class="nt">arg</span><span class="p">:</span><span class="w">  </span><span class="c1"># argument used with the different log switches, in all cases default is &#39;&#39;</span>
+<span class="w">            </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used by default</span>
+<span class="w">            </span><span class="nt">quiet</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used in quiet mode</span>
+<span class="w">            </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-v&#39;</span><span class="w"> </span><span class="c1"># the argument used in verbose mode</span>
+<span class="w">            </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-log</span><span class="nv"> </span><span class="s">/tmp/optipng.log&#39;</span><span class="w"> </span><span class="c1"># the argument user in debug mode</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">cmd</span></code> can have the following optional argument:</p>
@@ -403,8 +403,8 @@ If the database is not reachable, the process will wait until it is.</p>
 <section id="tiles-error-file">
 <h3>Tiles error file<a class="headerlink" href="#tiles-error-file" title="Permalink to this headline">¶</a></h3>
 <p>If we set a file path in configuration file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">generation</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">error_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;path&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">generation</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">error_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;path&gt;</span>
 </pre></div>
 </div>
 <p>The tiles that’s in error will be append to the file, ant the tiles can be regenerated with
@@ -419,18 +419,18 @@ meta tile.</p>
 <section id="proxy-cache-issue">
 <h3>Proxy/cache issue<a class="headerlink" href="#proxy-cache-issue" title="Permalink to this headline">¶</a></h3>
 <p>In general we shouldn’t generate tiles throw a proxy, to do that you should configure the layers as this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers_name</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost/wms</span><span class="w"></span>
-<span class="w">    </span><span class="nt">headers</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">Host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_host_name</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers_name</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://localhost/wms</span>
+<span class="w">    </span><span class="nt">headers</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">Host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_host_name</span>
 </pre></div>
 </div>
 <p>The idea is to get the WMS server on <code class="docutils literal notranslate"><span class="pre">localhost</span></code> and use the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header to select the right Apache
 VirtualHost.</p>
 <p>To don’t have cache we use the as default the headers:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">headers</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">Cache-Control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache, no-store</span><span class="w"></span>
-<span class="w">    </span><span class="nt">Pragma</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">headers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Cache-Control</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache, no-store</span>
+<span class="w">    </span><span class="nt">Pragma</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-cache</span>
 </pre></div>
 </div>
 <p>And if you steal have issue you can add a <code class="docutils literal notranslate"><span class="pre">SALT</span></code> random argument by setting the layer parameter
@@ -446,23 +446,23 @@ VirtualHost.</p>
 <section id="authentication">
 <h3>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h3>
 <p>To be authenticated by Amazon you should set those environments variable before running a command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>...</span>
-<span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>...</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>...</span>
+<span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>...</span>
 </pre></div></div></section>
 <section id="configure-s3">
 <h3>Configure S3<a class="headerlink" href="#configure-s3" title="Permalink to this headline">¶</a></h3>
 <p>The cache configuration is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">s3</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s3</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># the s3 bucket name</span><span class="w"></span>
-<span class="w">    </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># the used folder in the bucket [default is &#39;&#39;]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># for GetCapabilities</span><span class="w"></span>
-<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">s3</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s3</span>
+<span class="w">    </span><span class="c1"># the s3 bucket name</span>
+<span class="w">    </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span>
+<span class="w">    </span><span class="c1"># the used folder in the bucket [default is &#39;&#39;]</span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">    </span><span class="c1"># for GetCapabilities</span>
+<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
+<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
 </pre></div>
 </div>
 <p>The bucket should already exists. If you don’t use Amazon’s S3, you must specify the <code class="docutils literal notranslate"><span class="pre">host</span></code> and the
@@ -471,29 +471,29 @@ VirtualHost.</p>
 <section id="configure-sqs">
 <h3>Configure SQS<a class="headerlink" href="#configure-sqs" title="Permalink to this headline">¶</a></h3>
 <p>The configuration in layer is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sqs</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># The region where the SQS queue is</span><span class="w"></span>
-<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># The SQS queue name, it should already exists</span><span class="w"></span>
-<span class="w">    </span><span class="nt">queue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_name</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sqs</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># The region where the SQS queue is</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span>
+<span class="w">    </span><span class="c1"># The SQS queue name, it should already exists</span>
+<span class="w">    </span><span class="nt">queue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_name</span>
 </pre></div>
 </div>
 <p>The queue should be used only by one layer.</p>
 <p>To use the SQS queue we should first fill the queue:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --role master --layer &lt;a_layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>master<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
 </pre></div></div><p>And then generate the tiles present in the SQS queue:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --role slave --layer &lt;a_layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>slave<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
 </pre></div></div><p>For the slave to keep listening when the queue is empty and be able to support more than one layer, you must
 enable the daemon mode and must not specify the layer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --role slave --daemon</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>slave<span class="w"> </span>--daemon</span>
 </pre></div></div></section>
 <section id="configure-sns">
 <h3>Configure SNS<a class="headerlink" href="#configure-sns" title="Permalink to this headline">¶</a></h3>
 <p>SNS can be used to send a message when the generation ends.</p>
 <p>The configuration is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sns</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arn:aws:sns:eu-west-1:your-account-id:tilecloud</span><span class="w"></span>
-<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sns</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arn:aws:sns:eu-west-1:your-account-id:tilecloud</span>
+<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eu-west-1</span>
 </pre></div>
 </div>
 <p>The topic should already exists.</p>
@@ -507,32 +507,32 @@ enable the daemon mode and must not specify the layer:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">'aws</span> <span class="pre">=</span> <span class="pre">awscli.clidriver:main',</span></code> in the <code class="docutils literal notranslate"><span class="pre">console_scripts</span></code>.</p></li>
 </ul>
 <p>Than install it:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install awscli
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>awscli
 </pre></div>
 </div>
 <p>And use it:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws <span class="nb">help</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span><span class="nb">help</span>
 </pre></div>
 </div>
 <p>For example to delete many tiles do:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws s3 rm --recursive s3://your_bucket_name/folder
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>s3<span class="w"> </span>rm<span class="w"> </span>--recursive<span class="w"> </span>s3://your_bucket_name/folder
 </pre></div>
 </div>
 </section>
 <section id="configure-azure">
 <h3>Configure Azure<a class="headerlink" href="#configure-azure" title="Permalink to this headline">¶</a></h3>
 <p>The cache configuration is like this:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">azure</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># the Azure container name</span><span class="w"></span>
-<span class="w">    </span><span class="nt">container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># the used folder in the container [default is &#39;&#39;]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># for GetCapabilities</span><span class="w"></span>
-<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">azure</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure</span>
+<span class="w">    </span><span class="c1"># the Azure container name</span>
+<span class="w">    </span><span class="nt">container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span>
+<span class="w">    </span><span class="c1"># the used folder in the container [default is &#39;&#39;]</span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">    </span><span class="c1"># for GetCapabilities</span>
+<span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
+<span class="w">    </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
 </pre></div>
 </div>
 <p>The container should already exists.</p>
@@ -547,17 +547,17 @@ or <code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_AC
 <section id="configure-the-server">
 <h2>Configure the server<a class="headerlink" href="#configure-the-server" title="Permalink to this headline">¶</a></h2>
 <p>The server can be configure as it:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a_layer</span><span class="w"> </span><span class="c1"># Restrict to serve an certain number of layers [default is all]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mbtiles</span><span class="w"> </span><span class="c1"># The used cache [default use generation/default_cache]</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># the URL without location to MapCache, [default is http://localhost/]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">geoms_redirect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># use the geoms to redirect to MapCache [default is false]</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># allowed extension in the static path (default value), not used for s3.</span><span class="w"></span>
-<span class="w">    </span><span class="nt">static_allow_extension</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">jpeg</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">png</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">xml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">js</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">html</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">css</span><span class="p p-Indicator">]</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a_layer</span><span class="w"> </span><span class="c1"># Restrict to serve an certain number of layers [default is all]</span>
+<span class="w">    </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mbtiles</span><span class="w"> </span><span class="c1"># The used cache [default use generation/default_cache]</span>
+<span class="w">    </span><span class="c1"># the URL without location to MapCache, [default is http://localhost/]</span>
+<span class="w">    </span><span class="nt">geoms_redirect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># use the geoms to redirect to MapCache [default is false]</span>
+<span class="w">    </span><span class="c1"># allowed extension in the static path (default value), not used for s3.</span>
+<span class="w">    </span><span class="nt">static_allow_extension</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">jpeg</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">png</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">xml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">js</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">html</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">css</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
 <p>The minimal configuration is to enable it:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </pre></div>
 </div>
 <p>You should also configure the <code class="docutils literal notranslate"><span class="pre">http_url</span></code> of the used cache, to something like
@@ -612,52 +612,52 @@ WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
 <p>Generate all the tiles:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles</span>
 </pre></div></div><p>Generate a specific layer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --layer &lt;a_layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
 </pre></div></div><p>Generate a specific zoom:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --zoom <span class="m">5</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">5</span></span>
 </pre></div></div><p>Generate a specific zoom range:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --zoom <span class="m">2</span>-8</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">2</span>-8</span>
 </pre></div></div><p>Generate a specific some zoom levels:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --zoom <span class="m">2</span>,4,7</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">2</span>,4,7</span>
 </pre></div></div><p>Generate tiles from an (error) tiles file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --layer &lt;a_layer&gt; --tiles &lt;z/x/y&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tiles<span class="w"> </span>&lt;z/x/y&gt;</span>
 </pre></div></div><p>Generate tiles on a bbox:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --bbox &lt;MINX&gt; &lt;MINY&gt; &lt;MAXX&gt; &lt;MAXY&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--bbox<span class="w"> </span>&lt;MINX&gt;<span class="w"> </span>&lt;MINY&gt;<span class="w"> </span>&lt;MAXX&gt;<span class="w"> </span>&lt;MAXY&gt;</span>
 </pre></div></div><p>Generate a tiles near a tile coordinate (useful for test):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --near &lt;X&gt; &lt;Y&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--near<span class="w"> </span>&lt;X&gt;<span class="w"> </span>&lt;Y&gt;</span>
 </pre></div></div><p>Generate a tiles in a different cache than the default one:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles --cache &lt;a_cache&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--cache<span class="w"> </span>&lt;a_cache&gt;</span>
 </pre></div></div></section>
 </section>
 <section id="explain-cost">
 <h2>Explain cost<a class="headerlink" href="#explain-cost" title="Permalink to this headline">¶</a></h2>
 <p>Configuration (default values):</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># [nb/month]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cloudfront</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.009</span><span class="w"></span>
-<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span><span class="w"></span>
-<span class="w">    </span><span class="nt">s3</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">put</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.125</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sqs</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">request</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># [nb/month]</span>
+<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span>
+<span class="w">    </span><span class="nt">cloudfront</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span>
+<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.009</span>
+<span class="w">    </span><span class="nt">request_per_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000000</span>
+<span class="w">    </span><span class="nt">s3</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.12,</span>
+<span class="w">        </span><span class="nt">get</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span>
+<span class="w">        </span><span class="nt">put</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01,</span>
+<span class="w">        </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.125</span>
+<span class="w">    </span><span class="nt">sqs</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">request</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
 </pre></div>
 </div>
 <p>Layer configuration (default values):</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">metatile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">tile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">tile_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">tileonly_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60.0</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">cost</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">metatile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span>
+<span class="w">    </span><span class="nt">tile_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0,</span>
+<span class="w">    </span><span class="nt">tile_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0,</span>
+<span class="w">    </span><span class="nt">tileonly_generation_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60.0</span>
 </pre></div>
 </div>
 <p>The following commands can be used to know the time and cost to do generation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller --cost</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller<span class="w"> </span>--cost</span>
 </pre></div></div><section id="useful-options">
 <h3>Useful options<a class="headerlink" href="#useful-options" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--quiet</span></code> or <code class="docutils literal notranslate"><span class="pre">-q</span></code>: used to display only errors.</p>

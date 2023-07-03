@@ -54,23 +54,23 @@ an <code class="docutils literal notranslate"><span class="pre">alembic.ini</spa
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal mkdir /tmp/new_alembic</span>
-<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="s2">&quot;cd /tmp/new_alembic; alembic init alembic&quot;</span></span>
+</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>mkdir<span class="w"> </span>/tmp/new_alembic</span>
+<span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /tmp/new_alembic; alembic init alembic&quot;</span></span>
 <span class="prompt1"><span class="c1"># Ignore the warning message about setting the alembic.ini file for now.</span></span>
-<span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="s2">&quot;cd /tmp/new_alembic; alembic revision -m &#39;Inital revision&#39;&quot;</span></span>
+<span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /tmp/new_alembic; alembic revision -m &#39;Inital revision&#39;&quot;</span></span>
 </pre></div></div><p>Run <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">ps</span> <span class="pre">geoportal</span></code> to know the name of the running geoportal container.</p>
 <p>Then copy the generated alembic folder in the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> folder of your project:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">PROJECT</span><span class="o">=</span>&lt;your_project&gt;</span>
-<span class="prompt1">docker cp &lt;geoportal_container_name&gt;:/tmp/new_alembic geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span></span>
+<span class="prompt1">docker<span class="w"> </span>cp<span class="w"> </span>&lt;geoportal_container_name&gt;:/tmp/new_alembic<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>You can now customize the <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code> and the <code class="docutils literal notranslate"><span class="pre">env.py</span></code>.</p>
 </section>
 <section id="configure-alembic-ini">
 <h2>Configure <code class="docutils literal notranslate"><span class="pre">alembic.ini</span></code><a class="headerlink" href="#configure-alembic-ini" title="Permalink to this headline">¶</a></h2>
 <p>The main change to apply is to use environment variables to run alembic on the right database.
 To do so, use a <code class="docutils literal notranslate"><span class="pre">tmpl</span></code> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mv geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic.ini<span class="o">{</span>,.tmpl<span class="o">}</span></span>
-<span class="prompt1">rm geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic.ini</span>
-<span class="prompt1"><span class="nb">echo</span> <span class="s2">&quot;/geoportal/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">/alembic.ini&quot;</span> &gt;&gt; .gitignore</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mv<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic.ini<span class="o">{</span>,.tmpl<span class="o">}</span></span>
+<span class="prompt1">rm<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic.ini</span>
+<span class="prompt1"><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;/geoportal/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">/alembic.ini&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.gitignore</span>
 </pre></div></div><p>And inside the <code class="docutils literal notranslate"><span class="pre">alembic.ini.tmpl</span></code> set the <code class="docutils literal notranslate"><span class="pre">sqlalchemy.url</span></code> to
 <code class="docutils literal notranslate"><span class="pre">postgresql://${PGUSER}:${PGPASSWORD}&#64;${PGHOST}:${PGPORT}/${PGDATABASE}</span></code>.</p>
 <p>In this file, you may also directly set a new variable <code class="docutils literal notranslate"><span class="pre">version_table_schema</span></code> to set the
@@ -100,13 +100,13 @@ function.</p>
 <h2>Run an alembic upgrade<a class="headerlink" href="#run-an-alembic-upgrade" title="Permalink to this headline">¶</a></h2>
 <p>Once your revision file completed, build and run docker-compose up on your project.
 Your alembic files should be in the running container. You can now run manually an upgrade with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic upgrade head&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic upgrade head&quot;</span></span>
 </pre></div></div></section>
 <section id="create-a-new-revision-file">
 <h2>Create a new revision file<a class="headerlink" href="#create-a-new-revision-file" title="Permalink to this headline">¶</a></h2>
 <p>With a running instance, execute:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal bash -c <span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic revision -m &#39;&lt;msg&gt;&#39;&quot;</span></span>
-<span class="prompt1">docker cp &lt;geoportal_container_name&gt;:/app/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/&lt;the_new_file&gt; geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;cd /app/alembic_</span><span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span><span class="s2">; alembic revision -m &#39;&lt;msg&gt;&#39;&quot;</span></span>
+<span class="prompt1">docker<span class="w"> </span>cp<span class="w"> </span>&lt;geoportal_container_name&gt;:/app/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/&lt;the_new_file&gt;<span class="w"> </span>geoportal/alembic_<span class="si">${</span><span class="nv">PROJECT</span><span class="si">}</span>/alembic/versions/.</span>
 </pre></div></div></section>
 </section>
 

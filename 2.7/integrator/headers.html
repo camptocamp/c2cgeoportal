@@ -71,32 +71,32 @@ The naming of these variables follows this pattern: <code class="docutils litera
 <h2>Access-Control-Allow-Origin<a class="headerlink" href="#access-control-allow-origin" title="Permalink to this headline">¶</a></h2>
 <p>To add domain that can access to the authenticated routes you should have something like that
 in the vars file:</p>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span> headers:<span class="w"></span>
-<span class="w"> </span>   dynamic: &amp;header {}<span class="w"></span>
-<span class="w"> </span>   index: *header<span class="w"></span>
-<span class="w"> </span>   api: *header<span class="w"></span>
-<span class="w"> </span>   apihelp: *header<span class="w"></span>
-<span class="w"> </span>   profile: *header<span class="w"></span>
-<span class="w"> </span>   raster: *header<span class="w"></span>
-<span class="w"> </span>   error: *header<span class="w"></span>
-<span class="gd">-   themes: &amp;auth_header {}</span><span class="w"></span>
-<span class="gi">+   themes: &amp;auth_header</span><span class="w"></span>
-<span class="gi">+     access_control_allow_origin:</span><span class="w"></span>
-<span class="gi">+         - &quot;{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}&quot;</span><span class="w"></span>
-<span class="gi">+         - &quot;https://your.custom.domain&quot;</span><span class="w"></span>
-<span class="gi">+         - &quot;*&quot;</span><span class="w"></span>
-<span class="w"> </span>   config: *auth_header<span class="w"></span>
-<span class="w"> </span>   print: *auth_header<span class="w"></span>
-<span class="w"> </span>   fulltextsearch: *auth_header<span class="w"></span>
-<span class="w"> </span>   mapserver: *auth_header<span class="w"></span>
-<span class="w"> </span>   tinyows: *auth_header<span class="w"></span>
-<span class="w"> </span>   layers: *auth_header<span class="w"></span>
-<span class="w"> </span>   shortener: *auth_header<span class="w"></span>
-<span class="gd">-   login: *auth_header</span><span class="w"></span>
-<span class="gi">+   login:</span><span class="w"></span>
-<span class="gi">+     access_control_allow_origin:</span><span class="w"></span>
-<span class="gi">+         - &quot;{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}&quot;</span><span class="w"></span>
-<span class="gi">+         - &quot;https://your.custom.domain&quot;</span><span class="w"></span>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span> headers:
+<span class="w"> </span>   dynamic: &amp;header {}
+<span class="w"> </span>   index: *header
+<span class="w"> </span>   api: *header
+<span class="w"> </span>   apihelp: *header
+<span class="w"> </span>   profile: *header
+<span class="w"> </span>   raster: *header
+<span class="w"> </span>   error: *header
+<span class="gd">-   themes: &amp;auth_header {}</span>
+<span class="gi">+   themes: &amp;auth_header</span>
+<span class="gi">+     access_control_allow_origin:</span>
+<span class="gi">+         - &quot;{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}&quot;</span>
+<span class="gi">+         - &quot;https://your.custom.domain&quot;</span>
+<span class="gi">+         - &quot;*&quot;</span>
+<span class="w"> </span>   config: *auth_header
+<span class="w"> </span>   print: *auth_header
+<span class="w"> </span>   fulltextsearch: *auth_header
+<span class="w"> </span>   mapserver: *auth_header
+<span class="w"> </span>   tinyows: *auth_header
+<span class="w"> </span>   layers: *auth_header
+<span class="w"> </span>   shortener: *auth_header
+<span class="gd">-   login: *auth_header</span>
+<span class="gi">+   login:</span>
+<span class="gi">+     access_control_allow_origin:</span>
+<span class="gi">+         - &quot;{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}&quot;</span>
+<span class="gi">+         - &quot;https://your.custom.domain&quot;</span>
 </pre></div>
 </div>
 <p>Notes:</p>
@@ -109,11 +109,11 @@ in the vars file:</p>
 <h2>Global headers<a class="headerlink" href="#global-headers" title="Permalink to this headline">¶</a></h2>
 <p>For path the not manage with the <code class="docutils literal notranslate"><span class="pre">headers</span></code> section we can use the <code class="docutils literal notranslate"><span class="pre">global_headers</span></code> section
 in the vars file with the following syntax:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">global_headers</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;regex&gt;</span><span class="w"></span>
-<span class="w">      </span><span class="nt">headers</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&lt;header&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;value&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">global_headers</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;regex&gt;</span>
+<span class="w">      </span><span class="nt">headers</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;header&gt;</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;value&gt;</span>
 </pre></div>
 </div>
 <p>If a path matches more than one pattern, all headers listed in each match will be applied.
@@ -124,21 +124,21 @@ If the same header is matched more than once, the last value is kept.</p>
 <p>Requests passing through the c2cgeoportal proxy will have their host set with the host
 of the server. It’s possible to keep the original host by adding the host value to preserve
 in the <cite>host_forward_host</cite> array of strings.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">host_forward_host</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host.one&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host.two&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">host_forward_host</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host.one&gt;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;host.two&gt;</span>
 </pre></div>
 </div>
 </section>
 <section id="headers-whitelist-and-blacklist">
 <h2>Headers whitelist and blacklist<a class="headerlink" href="#headers-whitelist-and-blacklist" title="Permalink to this headline">¶</a></h2>
 <p>It’s possible to filter the headers of requests with a whitelist or a blacklist.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">headers_whitelist</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
-<span class="w">  </span><span class="nt">headers_blacklist</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;header-one&gt;</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;header-two&gt;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">headers_whitelist</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">  </span><span class="nt">headers_blacklist</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;header-one&gt;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;header-two&gt;</span>
 </pre></div>
 </div>
 <p>The whitelist is applied before the blacklist.

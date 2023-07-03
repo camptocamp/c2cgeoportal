@@ -49,11 +49,11 @@
 that you want to access in your GMF instance in addition to
 the default database session. For example, to add sessions
 from a database <code class="docutils literal notranslate"><span class="pre">otherdb</span></code> and from a database <code class="docutils literal notranslate"><span class="pre">moredb</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dbsessions</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">otherdb_session</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://&lt;dbuser&gt;:&lt;dbpassword&gt;@&lt;dbhost&gt;:&lt;dbport&gt;/otherdb</span><span class="w"></span>
-<span class="w">   </span><span class="nt">moredb_session</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://&lt;dbuser&gt;:&lt;dbpassword&gt;@&lt;dbhost&gt;:&lt;dbport&gt;/moredb</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dbsessions</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">otherdb_session</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://&lt;dbuser&gt;:&lt;dbpassword&gt;@&lt;dbhost&gt;:&lt;dbport&gt;/otherdb</span>
+<span class="w">   </span><span class="nt">moredb_session</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://&lt;dbuser&gt;:&lt;dbpassword&gt;@&lt;dbhost&gt;:&lt;dbport&gt;/moredb</span>
 </pre></div>
 </div>
 <p>These additional DB sessions will be automatically initialized by GMF.</p>
@@ -62,10 +62,10 @@ from a database <code class="docutils literal notranslate"><span class="pre">oth
 <h2>Using the additional sessions<a class="headerlink" href="#using-the-additional-sessions" title="Permalink to this headline">¶</a></h2>
 <p>In the layers enumeration of your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, you can now
 reference the sessions defined above. For example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&lt;somelayer&gt;</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">dbsession</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">otherdb_session</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enum</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;somelayer&gt;</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">dbsession</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">otherdb_session</span>
 </pre></div>
 </div>
 <p>In Python code, additional sessions as configured above can be accessed

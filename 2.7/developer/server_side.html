@@ -48,9 +48,9 @@ of an existing c2cgeoportal application. Here is how:</p>
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">git clone git@github.com:camptocamp/c2cgeoportal.git</span>
-<span class="prompt1"><span class="nb">cd</span> c2cgeoportal</span>
-<span class="prompt1">make build</span>
+</style><span class="prompt1">git<span class="w"> </span>clone<span class="w"> </span>git@github.com:camptocamp/c2cgeoportal.git</span>
+<span class="prompt1"><span class="nb">cd</span><span class="w"> </span>c2cgeoportal</span>
+<span class="prompt1">make<span class="w"> </span>build</span>
 </pre></div></div><p>Now, the new containers are ready to use in the application on the same host.</p>
 </section>
 <section id="docker-images">
@@ -79,12 +79,12 @@ tests require to run with <code class="docutils literal notranslate"><span class
 <section id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h4>
 <p>Before running the tests, install and build all dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make preparetest</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make<span class="w"> </span>preparetest</span>
 </pre></div></div><p>Run the tests:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make tests</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make<span class="w"> </span>tests</span>
 </pre></div></div><p>To run only a specific test, use the <code class="docutils literal notranslate"><span class="pre">-k</span></code> switch. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> tests pytest --verbose --color<span class="o">=</span>yes <span class="se">\</span>
-    -k test_catalogue /opt/c2cgeoportal/geoportal/tests</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tests<span class="w"> </span>pytest<span class="w"> </span>--verbose<span class="w"> </span>--color<span class="o">=</span>yes<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-k<span class="w"> </span>test_catalogue<span class="w"> </span>/opt/c2cgeoportal/geoportal/tests</span>
 </pre></div></div></section>
 </section>
 </section>
@@ -110,10 +110,10 @@ for example, the layer disclaimer.</p>
 so-called <em>migration repository</em>, which is a simple directory <code class="docutils literal notranslate"><span class="pre">/opt/alembic</span></code> in the
 docker image. So developers who modify the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts.</p>
 <p>Add a new script in c2cgeoportal root directory:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">python3 -m pip install --user -e commons</span>
-<span class="prompt1">alembic --config<span class="o">=</span>commons/alembic.ini <span class="se">\</span>
-    --name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span> <span class="se">\</span>
-    revision --message <span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>-e<span class="w"> </span>commons</span>
+<span class="prompt1">alembic<span class="w"> </span>--config<span class="o">=</span>commons/alembic.ini<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>revision<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
 </pre></div></div><p>This will generate the migration script in
 <code class="docutils literal notranslate"><span class="pre">commons/c2cgeoportal_commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
 <p>To get the project schema, use:
@@ -121,7 +121,7 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <p>The scripts should not fail if they are run more than once. See:
 <a class="reference external" href="https://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">https://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
 <p>Then, customize the migration to suit your needs, test it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose <span class="nb">exec</span> geoportal upgrade head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div><dl class="simple">
 <dt>More information at:</dt><dd><ul class="simple">
 <li><p><a class="reference external" href="https://alembic.readthedocs.org/en/latest/index.html">https://alembic.readthedocs.org/en/latest/index.html</a></p></li>

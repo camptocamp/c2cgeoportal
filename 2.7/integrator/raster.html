@@ -44,15 +44,15 @@
 The <code class="docutils literal notranslate"><span class="pre">raster</span></code> web service allows getting information for points.
 The <code class="docutils literal notranslate"><span class="pre">profile</span></code> web service allows getting information for lines.</p>
 <p>To configure these web services, you need to set the <code class="docutils literal notranslate"><span class="pre">raster</span></code> variable in the application config (<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>). For example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">raster</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mns</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mns.vrt</span><span class="w"></span>
-<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdal</span><span class="w"></span>
-<span class="w">        </span><span class="nt">round</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mnt</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mnt.vrt</span><span class="w"></span>
-<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdal</span><span class="w"></span>
-<span class="w">        </span><span class="nt">round</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">raster</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mns</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mns.vrt</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdal</span>
+<span class="w">        </span><span class="nt">round</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">mnt</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mnt.vrt</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdal</span>
+<span class="w">        </span><span class="nt">round</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">raster</span></code> is a list of “DEM layers”. There are only two entries in this example, but there could be more.</p>
@@ -74,18 +74,18 @@ For instance ‘1’: round to the unit, ‘0.01’: round to the hundredth, etc
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_DEFAULT_REGION</span><span class="o">=</span>ch-dk-2</span>
-<span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_S3_ENDPOINT</span><span class="o">=</span>sos-ch-dk-2.exo.io</span>
-<span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>&lt;key&gt;</span>
-<span class="prompt1"><span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>&lt;secret&gt;</span>
+</style><span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_DEFAULT_REGION</span><span class="o">=</span>ch-dk-2</span>
+<span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_S3_ENDPOINT</span><span class="o">=</span>sos-ch-dk-2.exo.io</span>
+<span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>&lt;key&gt;</span>
+<span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>&lt;secret&gt;</span>
 </pre></div></div><p>Get the list of uploaded files:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">aws --endpoint-url https://sos-ch-dk-2.exo.io/ --region ch-dk-2 s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">aws<span class="w"> </span>--endpoint-url<span class="w"> </span>https://sos-ch-dk-2.exo.io/<span class="w"> </span>--region<span class="w"> </span>ch-dk-2<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://&lt;bucket&gt;/&lt;folder&gt;</span>
 </pre></div></div><p>Create a file named e.g.: <code class="docutils literal notranslate"><span class="pre">list.txt</span></code> with the files we want to generate.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">vsis3</span><span class="o">/&lt;</span><span class="n">bucket</span><span class="o">&gt;/&lt;</span><span class="n">folder</span><span class="o">&gt;/&lt;</span><span class="n">file</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>And finally generate the VRT file with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdalbuildvrt -input_file_list list.txt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/&lt;file&gt;.vrt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">gdalbuildvrt<span class="w"> </span>-input_file_list<span class="w"> </span>list.txt<span class="w"> </span>/vsis3/&lt;bucket&gt;/&lt;folder&gt;/&lt;file&gt;.vrt</span>
 </pre></div></div></div>
 </section>
 
