@@ -1,3 +1,5 @@
+##### 2.6.0.200
+* Update dependency c2cciutils to v1.1.24 (2.6) [ngeo#9160](https://github.com/camptocamp/ngeo/pull/9160)
 ##### 2.6.0.199
 * Update all patch versions (2.6) (patch) [c2cgeoportal#10580](https://github.com/camptocamp/c2cgeoportal/pull/10580)
 * Update all patch versions (2.6) (patch) [ngeo#9157](https://github.com/camptocamp/ngeo/pull/9157)
