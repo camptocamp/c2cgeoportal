@@ -1,3 +1,7 @@
+##### 2.7.0.263
+
+- Add content-security-policy for Google Analytics 4 [c2cgeoportal#10581](https://github.com/camptocamp/c2cgeoportal/pull/10581)
+
 ##### 2.7.0.262
 
 - Update all patch versions (2.7) (patch) [ngeo#9156](https://github.com/camptocamp/ngeo/pull/9156)
