@@ -1,3 +1,8 @@
+##### 2.8.rc.70
+
+- [Backport 2.8] Add content-security-policy for Google Analytics 4 [c2cgeoportal#10583](https://github.com/camptocamp/c2cgeoportal/pull/10583)
+- Only load the theme when a private layer is present when log in (flush mode) [ngeo#9152](https://github.com/camptocamp/ngeo/pull/9152)
+
 ##### 2.8.rc.69
 
 - Snyk auto fix [c2cgeoportal#10574](https://github.com/camptocamp/c2cgeoportal/pull/10574)
