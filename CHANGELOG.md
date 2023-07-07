@@ -1,3 +1,7 @@
+##### 2.7.0.265
+
+- [Backport 2.7] Fix CI [ngeo#9165](https://github.com/camptocamp/ngeo/pull/9165)
+
 ##### 2.7.0.263
 
 - Add content-security-policy for Google Analytics 4 [c2cgeoportal#10581](https://github.com/camptocamp/c2cgeoportal/pull/10581)
