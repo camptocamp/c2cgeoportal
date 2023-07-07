@@ -7,7 +7,7 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Update ngeo 2.8
     timeout-minutes: 135
 
