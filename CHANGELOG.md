@@ -1,3 +1,7 @@
+##### 2.7.0.266
+
+- [Backport 2.7] Only load the theme when a private layer is present when log in (flush mode) [ngeo#9162](https://github.com/camptocamp/ngeo/pull/9162)
+
 ##### 2.7.0.265
 
 - [Backport 2.7] Fix CI [ngeo#9165](https://github.com/camptocamp/ngeo/pull/9165)
