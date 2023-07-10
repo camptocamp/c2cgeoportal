@@ -948,10 +948,13 @@ vars:
   lingua_extractor: {}
 
   content_security_policy_main_default_src_extra: ''
+  # Google Maps uses map.google.com and map.googleapis.com
+  # More info: https://developers.google.com/maps/documentation/javascript/content-security-policy?hl=fr#allowlist_csp
+  # Google Analytics 4 uses googletagmanager.com
+  # More info: https://developers.google.com/tag-platform/tag-manager/csp?hl=fr#google_analytics_4_google_analytics
   content_security_policy_main_script_src_extra: '
-    https://maps.google.com/
-    https://maps.googleapis.com/
-    https://www.google-analytics.com/
+    https://*.google.com/
+    https://*.googleapis.com/
     https://*.googletagmanager.com/'
   content_security_policy_main_style_src_extra: '
     https://fonts.googleapis.com/'
