@@ -1,3 +1,7 @@
+##### 2.7.0.267
+
+- Snyk auto fix [c2cgeoportal#10589](https://github.com/camptocamp/c2cgeoportal/pull/10589)
+
 ##### 2.7.0.266
 
 - [Backport 2.7] Only load the theme when a private layer is present when log in (flush mode) [ngeo#9162](https://github.com/camptocamp/ngeo/pull/9162)
