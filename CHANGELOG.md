@@ -1,3 +1,7 @@
+##### 2.7.0.268
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10590](https://github.com/camptocamp/c2cgeoportal/pull/10590)
+
 ##### 2.7.0.267
 
 - Snyk auto fix [c2cgeoportal#10589](https://github.com/camptocamp/c2cgeoportal/pull/10589)
