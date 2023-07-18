@@ -1,4 +1,3 @@
----
 name: Update status
 
 on:
@@ -8,7 +7,7 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Update status
     timeout-minutes: 10
 
