@@ -158,8 +158,8 @@ See the `WMS Server MapFile Documentation <https://mapserver.org/ogc/wms_server.
 
 .. note::
 
-  A layer with no interrogation template will not be queried by GeoMapFish and can be used to avoid
-  performance issue on layers like labels.
+  A layer with no interrogation template will not be queried by GeoMapFish. Unnecessarily querying layer 
+  can cause performance issue, especially on layers like labels. Only enable querying if needed.
 
 Restricted layer
 ----------------
