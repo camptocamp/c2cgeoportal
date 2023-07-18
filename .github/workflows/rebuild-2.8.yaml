@@ -112,10 +112,9 @@ jobs:
         with:
           # When we upgrade this we should also upgrade the requirements
           # in the documentation: doc/integrator/requirements.rst
-          python-version: '3.5'
+          python-version: '3.6'
         # When we upgrade this we should also upgrade the requirements
         # in the documentation: doc/integrator/requirements.rst
-        # netifaces is for 2.4
       - run: pip install --user PyYAML==3.12 docker-compose==1.25.0
 
         # Test App
