@@ -11,13 +11,16 @@ COPY python/ /tmp/python/
 
 RUN apt-get update && \
     apt-get upgrade --assume-yes && \
-    apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc && \
+    apt-get install --assume-yes --no-install-recommends libpython3-dev libpq-dev gcc cython3 && \
     apt-get clean && \
     rm --recursive --force /var/lib/apt/lists/* && \
+    ln -s /usr/bin/cython3 /usr/bin/cython && \
     cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
-    PIP_NO_BINARY=shapely pipenv sync --system --clear && \
+    PIP_NO_BINARY=shapely pipenv sync --system --clear --verbose && \
+    python -c 'import yaml' && \
     rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs && \
-    apt-get remove --assume-yes libpython3-dev libpq-dev gcc
+    rm -rf /usr/bin/cython && \
+    apt-get remove --assume-yes libpython3-dev libpq-dev gcc cython3
 
 #############################################################################################################
 
