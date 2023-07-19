@@ -156,6 +156,11 @@ The ``gml_include_items``, ``gml_<geometry name>_type`` and ``gml_geometries``
 
 See the `WMS Server MapFile Documentation <https://mapserver.org/ogc/wms_server.html>`_ for more detail.
 
+.. note::
+
+  A layer with no interrogation template will not be queried by GeoMapFish. Unnecessarily querying layer
+  can cause performance issue, especially on layers like labels. Only enable querying if needed.
+
 Restricted layer
 ----------------
 
