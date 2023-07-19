@@ -55,6 +55,8 @@ services:
     restart: unless-stopped
     environment:
       - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
+      - TILECLOUD_CHAIN_SESSION_SECRET=1234
+      - TILECLOUD_CHAIN_SESSION_SALT=1234
     volumes:
       - ./docker/test-tilecloudchain:/etc/tilegeneration
 
