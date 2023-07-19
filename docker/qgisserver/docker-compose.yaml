@@ -26,6 +26,8 @@ services:
       - GEOMAPFISH_OGCSERVER=qgisserver
       - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgz
       - LOG_LEVEL=DEBUG
+      - QGIS_SERVER_LOG_LEVEL=0
+      - QGIS_CATCH_SEGV=1
 
   tests:
     image: camptocamp/geomapfish
