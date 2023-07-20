@@ -22,7 +22,7 @@ Plugin configuration file path is given by `GEOMAPFISH_CONFIG` environment varia
 
 Require this environment variable:
 
-- GEOMAPFISH_OGCSERVER:  Name of `c2cgeoportal_commons.models.main.OGCServer` to serve.
+- GEOMAPFISH_OGCSERVER: Name of `c2cgeoportal_commons.models.main.OGCServer` to serve.
 
 Service will load QGIS project file using environment variable QGIS_PROJECT_FILE that default to `/etc/qgisserver/project.qgs`.
 
@@ -48,8 +48,8 @@ This target is a local target calling necessary root Makefile targets to ease de
 
 Build:
 
-* QGIS Docker image with `geomapfish_qgisserver` plugin
-* Plugin configuration file for tests (`tests/geomapfish.yaml`)
+- QGIS Docker image with `geomapfish_qgisserver` plugin
+- Plugin configuration file for tests (`tests/geomapfish.yaml`)
 
 ```bash
 make prepare_tests
