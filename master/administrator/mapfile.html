@@ -163,6 +163,11 @@ for multi geometries, only the first will be visible on the map.
 See also <a class="reference external" href="https://mapserver.org/ogc/wms_server.html#index-71">gml_&lt;geometry name&gt;_type</a>.</p>
 </div></blockquote>
 <p>See the <a class="reference external" href="https://mapserver.org/ogc/wms_server.html">WMS Server MapFile Documentation</a> for more detail.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A layer with no interrogation template will not be queried by GeoMapFish. Unnecessarily querying layer
+can cause performance issue, especially on layers like labels. Only enable querying if needed.</p>
+</div>
 </section>
 <section id="restricted-layer">
 <h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Permalink to this heading">¶</a></h2>
