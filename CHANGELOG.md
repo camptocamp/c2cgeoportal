@@ -1,3 +1,5 @@
+##### 2.6.0.201
+* Update the used Ubuntu version to from 20.04 to 22.04 in the workflows [c2cgeoportal#10593](https://github.com/camptocamp/c2cgeoportal/pull/10593)
 ##### 2.6.0.200
 * Update dependency c2cciutils to v1.1.24 (2.6) [ngeo#9160](https://github.com/camptocamp/ngeo/pull/9160)
 ##### 2.6.0.199
