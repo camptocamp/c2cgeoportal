@@ -99,5 +99,10 @@
       matchBaseBranches: ['/2\\..*/'],
       schedule: ['on the 1st day of the month'],
     },
+    /** Don't update the project minimal requirements */
+    {
+      matchPaths: ['ci/applications-versions.yaml'],
+      enabled: false,
+    },
   ],
 }
