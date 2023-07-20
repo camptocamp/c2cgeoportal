@@ -1,3 +1,7 @@
+##### 2.8.rc.71
+
+- Update the used Ubuntu version to from 20.04 to 22.04 in the workflows [c2cgeoportal#10594](https://github.com/camptocamp/c2cgeoportal/pull/10594)
+
 ##### 2.8.rc.70
 
 - [Backport 2.8] Add content-security-policy for Google Analytics 4 [c2cgeoportal#10583](https://github.com/camptocamp/c2cgeoportal/pull/10583)
