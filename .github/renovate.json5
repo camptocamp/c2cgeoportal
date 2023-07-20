@@ -101,7 +101,7 @@
     },
     /** Don't update the project minimal requirements */
     {
-      matchPaths: ['ci/applications-versions.yaml'],
+      matchPaths: ['ci/requirements-project.txt'],
       enabled: false,
     },
   ],
