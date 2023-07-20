@@ -1,0 +1,5 @@
+# When we upgrade this we should also upgrade the requirements
+# in the documentation: doc/integrator/requirements.rst
+PyYAML==3.13
+docker-compose==1.25.0
+urllib3==1.26.15

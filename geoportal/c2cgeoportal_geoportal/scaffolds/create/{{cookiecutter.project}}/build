@@ -28,7 +28,7 @@ def run(
             kwargs["check"] = True
         process = subprocess.run(command, **kwargs)  # nosec
         if exit_on_error and process.returncode != 0:
-            print("An error occurred during execution of `{}`".format(shlex.join(command)))
+            print(f"An error occurred during execution of `{shlex.join(command)}`")
             sys.exit(process.returncode)
         return process
     return None
@@ -108,7 +108,7 @@ def main() -> None:
     print("Use env files: {}".format(", ".join(env_files)))
     for env_file in env_files:
         if not os.path.exists(env_file):
-            print("Error: the env file '{env_file}' does not exist.".format(env_file=env_file))
+            print(f"Error: the env file '{env_file}' does not exist.")
             sys.exit(1)
 
     with open(".env", "w", encoding="utf-8") as dest:
@@ -124,8 +124,8 @@ def main() -> None:
 
             git_hash = run(args, ["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode().strip()
 
-            dest.write("SIMPLE={}\n".format(str(simple).upper()))
-            dest.write("GIT_HASH={git_hash}\n".format(git_hash=git_hash))
+            dest.write(f"SIMPLE={str(simple).upper()}\n")
+            dest.write(f"GIT_HASH={git_hash}\n")
 
         dest.write("# Used env files: {}\n".format(", ".join(env_files)))
 

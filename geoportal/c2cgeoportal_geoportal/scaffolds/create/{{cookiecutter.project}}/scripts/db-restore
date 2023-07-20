@@ -93,7 +93,7 @@ def main() -> None:
         else:
             subprocess.run(
                 ["docker-compose"]
-                + ["--file={}".format(f) for f in args.docker_compose_file]
+                + [f"--file={f}" for f in args.docker_compose_file]
                 + [
                     "exec",
                     "-T",

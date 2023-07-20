@@ -132,11 +132,9 @@ jobs:
         with:
           # When we upgrade this we should also upgrade the requirements
           # in the documentation: doc/integrator/requirements.rst
-          python-version: '3.7'
-        # When we upgrade this we should also upgrade the requirements
-        # in the documentation: doc/integrator/requirements.rst
-        # netifaces is for 2.4
-      - run: pip install --user PyYAML==3.13 docker-compose==1.25.0 urllib3==1.26.15
+          # and the first pyupgrade pre-commit hook in .pre-commit-config.yaml
+          python-version: '3.8'
+      - run: pip install --user --requirement=ci/requirements-project.txt
 
         # Test App
       - run: ci/test-app
@@ -168,7 +166,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - run: pip install --user PyYAML docker-compose wheel urllib3==1.26.15
+      - run: pip install --user --requirement=ci/requirements-back.txt
 
       - name: Init Git
         run:
