@@ -8,7 +8,7 @@ components installed on your system:
 
 * **Git**
 * **Docker** >= 17.05
-* **Python** >= 3.7, with ``pip``
+* **Python** >= 3.8, with ``pip``
 * **Apache** >= 2.4 (optional, can be used as a front for SSL)
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1
 

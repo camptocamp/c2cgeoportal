@@ -150,19 +150,19 @@ else:
         pull_request = os.environ["GITHUB_REF"][10:-6]
         versions = [pull_request]
 
-print("full: {full}".format(full=full))
-print("major: {major}".format(major=major))
-print("major_minor: {major_minor}".format(major_minor=major_minor))
-print("minor: {minor}".format(minor=minor))
-print("upgrade_version: {upgrade_version}".format(upgrade_version=upgrade_version))
+print(f"full: {full}")
+print(f"major: {major}")
+print(f"major_minor: {major_minor}")
+print(f"minor: {minor}")
+print(f"upgrade_version: {upgrade_version}")
 print("versions: {versions}".format(versions=",".join(versions)))
-print("snyk_version: {snyk_version}".format(snyk_version=snyk_version))
+print(f"snyk_version: {snyk_version}")
 if args.github:
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
-        output_file.write("full={full}\n".format(full=full))
-        output_file.write("major={major}\n".format(major=major))
-        output_file.write("major_minor={major_minor}\n".format(major_minor=major_minor))
-        output_file.write("minor={minor}\n".format(minor=minor))
-        output_file.write("upgrade_version={upgrade_version}\n".format(upgrade_version=upgrade_version))
+        output_file.write(f"full={full}\n")
+        output_file.write(f"major={major}\n")
+        output_file.write(f"major_minor={major_minor}\n")
+        output_file.write(f"minor={minor}\n")
+        output_file.write(f"upgrade_version={upgrade_version}\n")
         output_file.write("versions={versions}\n".format(versions=",".join(versions)))
-        output_file.write("snyk_version={snyk_version}\n".format(snyk_version=snyk_version))
+        output_file.write(f"snyk_version={snyk_version}\n")
