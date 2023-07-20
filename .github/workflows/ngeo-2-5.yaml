@@ -1,4 +1,3 @@
----
 name: Update ngeo 2.5
 
 on:
@@ -8,7 +7,7 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Update ngeo 2.5
     timeout-minutes: 70
 
@@ -154,11 +153,9 @@ jobs:
       - run: git diff CHANGELOG.md
 
       - name: Publish
-        run: c2cciutils-publish --group=full --type=version_branch
-          --version=${{ steps.version.outputs.major }}
+        run: c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.major }}
       - name: Publish
-        run: c2cciutils-publish --group=full --type=version_branch
-          --version=${{ steps.version.outputs.full }}
+        run: c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
 
       - run: ci/create-new-project ${HOME}/workspace geomapfish
       - run: (cd ${HOME}/workspace/geomapfish/; ./build)

@@ -28,6 +28,7 @@ services:
       - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgz
       - QGIS_SERVER_IGNORE_BAD_LAYERS=true
       - LOG_LEVEL=DEBUG
+      - QGIS_SERVER_LOG_LEVEL=0
       - QGIS_CATCH_SEGV=1
 
   tests:

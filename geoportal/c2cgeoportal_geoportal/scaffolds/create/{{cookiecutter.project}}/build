@@ -22,13 +22,17 @@ def run(
     args: argparse.Namespace, command: List[str], exit_on_error: bool = True, **kwargs: Any
 ) -> Optional[CompletedProcess]:
     if args.verbose or args.dry_run:
-        print(shlex.join(command))
+        print(" ".join([shlex.quote(c) for c in command]))
     if not args.dry_run or "stdout" in kwargs:
         if args.stack_trace and exit_on_error and not "checks" in kwargs:
             kwargs["check"] = True
         process = subprocess.run(command, **kwargs)  # nosec
         if exit_on_error and process.returncode != 0:
-            print("An error occurred during execution of `{}`".format(shlex.join(command)))
+            print(
+                "An error occurred during execution of `{}`".format(
+                    " ".join([shlex.quote(c) for c in command])
+                )
+            )
             sys.exit(process.returncode)
         return process
     return None
