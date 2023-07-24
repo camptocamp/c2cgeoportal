@@ -1,3 +1,7 @@
+##### 2.7.0.271
+
+- Restore the queryCountFirst=false functionality [ngeo#9172](https://github.com/camptocamp/ngeo/pull/9172)
+
 ##### 2.7.0.270
 
 - Update the used Ubuntu version to from 20.04 to 22.04 in the workflows [c2cgeoportal#10595](https://github.com/camptocamp/c2cgeoportal/pull/10595)
