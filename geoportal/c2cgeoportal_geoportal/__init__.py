@@ -45,9 +45,10 @@ import zope.event.classhandler
 from c2cgeoform import Form, translator
 from c2cwsgiutils.broadcast import decorator
 from c2cwsgiutils.health_check import HealthCheck
-from c2cwsgiutils.metrics import MemoryMapProvider, add_provider
+from c2cwsgiutils.prometheus import MemoryMapCollector
 from dogpile.cache import register_backend  # type: ignore[attr-defined]
 from papyrus.renderers import GeoJSON
+from prometheus_client.core import REGISTRY
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
@@ -62,9 +63,9 @@ from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 from c2cgeoportal_geoportal.lib.metrics import (
-    MemoryCacheSizeProvider,
-    RasterDataSizeProvider,
-    TotalPythonObjectMemoryProvider,
+    MemoryCacheSizeCollector,
+    RasterDataSizeCollector,
+    TotalPythonObjectMemoryCollector,
 )
 from c2cgeoportal_geoportal.lib.xsd import XSD
 from c2cgeoportal_geoportal.views.entry import Entry, canvas_view
@@ -447,15 +448,15 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     metrics_config = config.registry.settings["metrics"]
     if metrics_config["memory_maps_rss"]:
-        add_provider(MemoryMapProvider("rss"))
+        REGISTRY.register(MemoryMapCollector("rss"))
     if metrics_config["memory_maps_size"]:
-        add_provider(MemoryMapProvider("size"))
+        REGISTRY.register(MemoryMapCollector("size"))
     if metrics_config["memory_cache"]:
-        add_provider(MemoryCacheSizeProvider(metrics_config.get("memory_cache_all", False)))
+        REGISTRY.register(MemoryCacheSizeCollector(metrics_config.get("memory_cache_all", False)))
     if metrics_config["raster_data"]:
-        add_provider(RasterDataSizeProvider())
+        REGISTRY.register(RasterDataSizeCollector())
     if metrics_config["total_python_object_memory"]:
-        add_provider(TotalPythonObjectMemoryProvider())
+        REGISTRY.register(TotalPythonObjectMemoryCollector())
 
     # Initialize DBSessions
     init_db_sessions(settings, config, health_check)

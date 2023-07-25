@@ -62,7 +62,7 @@ SQLAlchemy = "1.4.48"
 transaction = "3.1.0" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "5.0" # commons, geoportal
-c2cwsgiutils = { version = "5.2.2", extras = ["broadcast", "standard", "oauth2"] }
+c2cwsgiutils = { version = "6.0.0.dev129", extras = ["broadcast", "standard", "oauth2"] }
 oauthlib = "3.2.2"
 tilecloud = "1.10.0" # geoportal
 azure-storage-blob = "12.16.0"

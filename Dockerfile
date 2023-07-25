@@ -254,6 +254,10 @@ ENV C2C_BASE_PATH=/c2c \
     C2C_DEBUG_VIEW_ENABLED=0 \
     C2C_ENABLE_EXCEPTION_HANDLING=0
 
+RUN mkdir -p /prometheus-metrics \
+    && chmod a+rwx /prometheus-metrics
+ENV PROMETHEUS_MULTIPROC_DIR=/prometheus-metrics
+
 # End from c2cwsgiutils
 
 ENV C2CGEOPORTAL_THEME_TIMEOUT=300

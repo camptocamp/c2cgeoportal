@@ -32,7 +32,10 @@
 
 import os
 
-from c2cwsgiutils import get_config_defaults
+import gunicorn.arbiter
+import gunicorn.workers.base
+from c2cwsgiutils import get_config_defaults, prometheus
+from prometheus_client import multiprocess
 
 bind = ":8080"
 
@@ -101,3 +104,39 @@ logconfig_dict = {
 }
 
 raw_paste_global_conf = ["=".join(e) for e in get_config_defaults().items()]
+
+
+def on_starting(server: gunicorn.arbiter.Arbiter) -> None:
+    """
+    Will start the prometheus server.
+
+    Called just before the master process is initialized.
+    """
+
+    del server
+
+    prometheus.start()
+
+
+def post_fork(server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Worker) -> None:
+    """
+    Will cleanup the configuration we get from the main process.
+
+    Called just after a worker has been forked.
+    """
+
+    del server, worker
+
+    prometheus.cleanup()
+
+
+def child_exit(server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Worker) -> None:
+    """
+    Remove the metrics for the exited worker.
+
+    Called just after a worker has been exited, in the master process.
+    """
+
+    del server
+
+    multiprocess.mark_process_dead(worker.pid)
