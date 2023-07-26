@@ -1,3 +1,7 @@
+##### 2.7.0.273
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10606](https://github.com/camptocamp/c2cgeoportal/pull/10606)
+
 ##### 2.7.0.271
 
 - Restore the queryCountFirst=false functionality [ngeo#9172](https://github.com/camptocamp/ngeo/pull/9172)
