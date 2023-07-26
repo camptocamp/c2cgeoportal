@@ -16,3 +16,4 @@ Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2022.2.16" }
 sphinxcontrib-mermaid = "0.7.1"
 #tilecloud-chain = "1.18.0"
 requests = "2.31.0"
+certifi = "2023.7.22"
