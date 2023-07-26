@@ -1,3 +1,5 @@
+##### 2.6.0.203
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10607](https://github.com/camptocamp/c2cgeoportal/pull/10607)
 ##### 2.6.0.202
 * Snyk auto fix [c2cgeoportal#10604](https://github.com/camptocamp/c2cgeoportal/pull/10604)
 ##### 2.6.0.201
