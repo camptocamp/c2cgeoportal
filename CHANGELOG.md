@@ -1,3 +1,7 @@
+##### 2.7.0.275
+
+- Snyk auto fix [ngeo#9182](https://github.com/camptocamp/ngeo/pull/9182)
+
 ##### 2.7.0.274
 
 - Snyk auto fix [c2cgeoportal#10605](https://github.com/camptocamp/c2cgeoportal/pull/10605)
