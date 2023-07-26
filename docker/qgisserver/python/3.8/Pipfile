@@ -47,7 +47,7 @@ wrapt = "==1.13.3"
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
-types-pyyaml = "==6.0.12.10"
+types-pyyaml = "==6.0.12.11"
 
 # Lock dependencies
 astroid = "==2.9.3"
