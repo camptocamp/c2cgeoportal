@@ -1,4 +1,4 @@
 wheel==0.37.1
 pipenv==2022.1.8
 pip>=21.1 # not directly required, pinned by Snyk to avoid a vulnerability
-certifi>=2022.12.7 # not directly required, pinned by Snyk to avoid a vulnerability
+certifi>=2023.7.22 # not directly required, pinned by Snyk to avoid a vulnerability
