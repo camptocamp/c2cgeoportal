@@ -1,3 +1,7 @@
+##### 2.8.rc.73
+
+- Snyk auto fix [c2cgeoportal#10603](https://github.com/camptocamp/c2cgeoportal/pull/10603)
+
 ##### 2.8.rc.72
 
 - Snyk auto fix [c2cgeoportal#10588](https://github.com/camptocamp/c2cgeoportal/pull/10588)
