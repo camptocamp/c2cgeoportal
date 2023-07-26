@@ -1,3 +1,5 @@
+##### 2.6.0.202
+* Snyk auto fix [c2cgeoportal#10604](https://github.com/camptocamp/c2cgeoportal/pull/10604)
 ##### 2.6.0.201
 * Update the used Ubuntu version to from 20.04 to 22.04 in the workflows [c2cgeoportal#10593](https://github.com/camptocamp/c2cgeoportal/pull/10593)
 ##### 2.6.0.200
