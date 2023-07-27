@@ -689,6 +689,11 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+      - name: editingSelectionAttribute
+        description: >
+          The field used in the selector tooltip to name the layer when multiple ones are selected on the map.
+        relevant_for:
+          - layer_wms
       # WMS
       - name: directedFilterAttributes
         type: list
