@@ -1,3 +1,7 @@
+##### 2.8.0.74
+
+- [Backport 2.8] Add editingSelectionAttribute metadata for edition popup selection [c2cgeoportal#10610](https://github.com/camptocamp/c2cgeoportal/pull/10610)
+
 ##### 2.8.rc.73
 
 - Snyk auto fix [c2cgeoportal#10603](https://github.com/camptocamp/c2cgeoportal/pull/10603)
