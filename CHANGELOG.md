@@ -1,3 +1,7 @@
+##### 2.7.0.278
+
+- The configuration of the gunicorn.access logger will hide the access … [c2cgeoportal#10600](https://github.com/camptocamp/c2cgeoportal/pull/10600)
+
 ##### 2.7.0.277
 
 - Add editingSelectionAttribute metadata for edition popup selection [c2cgeoportal#10608](https://github.com/camptocamp/c2cgeoportal/pull/10608)
