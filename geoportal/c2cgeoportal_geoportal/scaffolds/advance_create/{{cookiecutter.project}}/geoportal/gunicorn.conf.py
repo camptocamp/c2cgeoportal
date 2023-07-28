@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2019-2020, Camptocamp SA
+# Copyright (c) 2019-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,6 @@ logconfig_dict = {
     },
     "loggers": {
         "gunicorn.error": {"level": os.environ["GUNICORN_LOG_LEVEL"]},
-        "gunicorn.access": {"level": os.environ["GUNICORN_ACCESS_LOG_LEVEL"]},
         # "level = INFO" logs SQL queries.
         # "level = DEBUG" logs SQL queries and results.
         # "level = WARN" logs neither.  (Recommended for production systems.)
