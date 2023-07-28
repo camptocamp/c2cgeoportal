@@ -67,7 +67,6 @@ logconfig_dict = {
     },
     "loggers": {
         "gunicorn.error": {"level": os.environ["GUNICORN_LOG_LEVEL"]},
-        "gunicorn.access": {"level": os.environ["GUNICORN_ACCESS_LOG_LEVEL"]},
         # "level = INFO" logs SQL queries.
         # "level = DEBUG" logs SQL queries and results.
         # "level = WARN" logs neither.  (Recommended for production systems.)
