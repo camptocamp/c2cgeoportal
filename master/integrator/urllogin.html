@@ -43,36 +43,6 @@
 </div>
 <p>The AES key must be either 16, 24, or 32 bytes long.</p>
 <p>To generate a key, you can use the <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">exec</span> <span class="pre">geoportal</span> <span class="pre">urllogin</span></code> command:</p>
-<p><p>Generate an auth token</p>
-</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">exec</span> <span class="n">geoportal</span> <span class="n">urllogin</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
-                                              <span class="p">[</span><span class="n">config_uri</span><span class="p">]</span> <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]</span>
-                                              <span class="n">user</span> <span class="n">password</span> <span class="p">[</span><span class="n">valid</span><span class="p">]</span>
-</pre></div>
-</div>
-<section id="positional-arguments">
-<h2>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this heading">¶</a></h2>
-<dl class="option-list">
-<dt><kbd>config_uri</kbd></dt>
-<dd><p>The URI to the configuration file.</p>
-<p>Default: “c2c://geoportal/development.ini”</p>
-</dd>
-<dt><kbd>config_vars</kbd></dt>
-<dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
-<p>Default: ()</p>
-</dd>
-<dt><kbd>user</kbd></dt>
-<dd><p>The username</p>
-</dd>
-<dt><kbd>password</kbd></dt>
-<dd><p>The password</p>
-</dd>
-<dt><kbd>valid</kbd></dt>
-<dd><p>Is valid for, in days</p>
-<p>Default: 1</p>
-</dd>
-</dl>
-</section>
 <p>This generates a token like: <code class="docutils literal notranslate"><span class="pre">auth=148b60cc...</span></code> that you can add in the query string of the permalink.</p>
 <p>When the user uses this link, s/he will be connected as a normal user, therefore you should be sure
 that the session timeout is not too big.</p>
