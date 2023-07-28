@@ -27,86 +27,91 @@
 
 import gc
 import sys
-from typing import Any
+from collections.abc import Generator
 
+import prometheus_client.core
+import prometheus_client.registry
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.debug import get_size
-from c2cwsgiutils.metrics import Provider
 
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views.raster import Raster
 
 
-class MemoryCacheSizeProvider(Provider):
+class MemoryCacheSizeCollector(prometheus_client.registry.Collector):
     """Get the memory used by the cache."""
 
     def __init__(self, all_: bool = False):
-        super().__init__("pod_process_memory_cache_kb", "Used memory cache")
+        super().__init__()
         self.all = all_
 
-    def get_data(self) -> list[tuple[dict[str, Any], float]]:
+    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily, None, None]:
+        gauge = prometheus_client.core.GaugeMetricFamily(
+            "c2cgeoportal_memory_cache_bytes",
+            "Memory used by cache",
+            labels=["pid", "hostname", "key"],
+            unit="bytes",
+        )
+
         elements = _get_memory_cache(all_=self.all)
         assert elements is not None
-        result = []
         for elem in elements:
             if elem is not None:
-                for value in elem["values"]:
-                    value[0]["pid"] = str(elem["pid"])
-                    value[0]["hostname"] = elem["hostname"]
-                    result.append(value)
-        return result
+                for key, value in elem["values"]:
+                    gauge.add_metric([str(elem["pid"]), str(elem["hostname"]), key], value)
+        yield gauge
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
-def _get_memory_cache(all_: bool) -> dict[str, list[tuple[dict[str, Any], float]]]:
-    values = (
-        [({"key": key}, get_size(value) / 1024) for key, value in list(MEMORY_CACHE_DICT.items())]
-        if all_
-        else []
-    )
-    values.append(({"key": "total"}, get_size(MEMORY_CACHE_DICT) / 1024))
+def _get_memory_cache(all_: bool) -> dict[str, list[tuple[str, int]]]:
+    values = [(key, get_size(value)) for key, value in list(MEMORY_CACHE_DICT.items())] if all_ else []
+    values.append(("total", get_size(MEMORY_CACHE_DICT)))
     return {"values": values}
 
 
-class RasterDataSizeProvider(Provider):
+class RasterDataSizeCollector(prometheus_client.registry.Collector):
     """Get the memory used by Raster data cache."""
 
-    def __init__(self) -> None:
-        super().__init__("pod_process_raster_data_kb", "Memory used by raster")
+    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily, None, None]:
+        gauge = prometheus_client.core.GaugeMetricFamily(
+            "c2cgeoportal_raster_data_bytes",
+            "Memory used by raster",
+            labels=["pid", "hostname", "key"],
+            unit="bytes",
+        )
 
-    def get_data(self) -> list[tuple[dict[str, Any], float]]:
         elements = _get_raster_data()
         assert elements is not None
-        result = []
         for elem in elements:
-            for value in elem["values"]:
-                value[0]["pid"] = str(elem["pid"])
-                value[0]["hostname"] = str(elem["hostname"])
-                result.append(value)
-        return result
+            for key, value in elem["values"]:
+                gauge.add_metric([str(elem["pid"]), str(elem["hostname"]), key], value)
+        yield gauge
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
-def _get_raster_data() -> dict[str, list[tuple[dict[str, str], float]]]:
-    return {"values": [({"key": key}, get_size(value) / 1024) for key, value in list(Raster.data.items())]}
+def _get_raster_data() -> dict[str, list[tuple[str, float]]]:
+    return {"values": [(key, get_size(value)) for key, value in list(Raster.data.items())]}
 
 
-class TotalPythonObjectMemoryProvider(Provider):
+class TotalPythonObjectMemoryCollector(prometheus_client.registry.Collector):
     """Get the memory used by Python objects."""
 
-    def __init__(self) -> None:
-        super().__init__("total_python_object_memory_kb", "Memory used by raster")
+    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily, None, None]:
+        gauge = prometheus_client.core.GaugeMetricFamily(
+            "c2cgeoportal_total_python_object_memory_bytes",
+            "Memory used by Python objects",
+            labels=["pid", "hostname"],
+            unit="bytes",
+        )
 
-    def get_data(self) -> list[tuple[dict[str, str], float]]:
         object_size = _get_python_object_size()
         assert object_size is not None
-        return [
-            ({"pid": str(val["pid"]), "hostname": str(val["hostname"])}, val["value"])
-            for val in object_size
-            if val is not None
-        ]
+        for val in object_size:
+            if val is not None:
+                gauge.add_metric([str(val["pid"]), str(val["hostname"])], val["value"])
+        yield gauge
 
 
 @broadcast.decorator(expect_answers=True, timeout=15)
 def _get_python_object_size() -> dict[str, float]:
-    return {"value": sum(sys.getsizeof(o) / 1024 for o in gc.get_objects())}
+    return {"value": sum(sys.getsizeof(o) for o in gc.get_objects())}

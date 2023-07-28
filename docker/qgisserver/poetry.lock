@@ -80,28 +80,31 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "5.2.2"
+version = "6.0.0.dev129"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "c2cwsgiutils-5.2.2-py3-none-any.whl", hash = "sha256:19c1c10cac135b822f732d3df3de3162cdc4636ba485f1aa8ad05564b973fa9b"},
-    {file = "c2cwsgiutils-5.2.2.tar.gz", hash = "sha256:9ca220f920e96c3405d7908b57e419b9b3033aaf2c254c3c55ebd0dead0c0fc0"},
+    {file = "c2cwsgiutils-6.0.0.dev129-py3-none-any.whl", hash = "sha256:544a1a77fcaca5cce4e89ec15e519299f45354e1d6409dfd71acee64acf55332"},
+    {file = "c2cwsgiutils-6.0.0.dev129.tar.gz", hash = "sha256:d65ee75df4650be9482f7f71b03c3d98950f93fd73adf9c16807bb27ab427d69"},
 ]
 
 [package.dependencies]
 certifi = "*"
+prometheus-client = "*"
+pyramid_mako = "*"
 pyyaml = "*"
 redis = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"broadcast\" or extra == \"all\""}
 requests = "*"
 
 [package.extras]
-all = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "boltons", "cee_syslog_handler", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "redis", "requests-oauthlib", "sentry-sdk", "ujson", "waitress", "zope.interface", "zope.sqlalchemy"]
+all = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "boltons", "cee_syslog_handler", "cornice", "gunicorn", "lxml", "objgraph", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "redis", "requests-oauthlib", "sentry-sdk", "ujson", "waitress", "zope.interface", "zope.sqlalchemy"]
 broadcast = ["redis"]
 dev = ["waitress"]
 oauth2 = ["pyjwt", "requests-oauthlib"]
-standard = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "boltons", "cee_syslog_handler", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "psycopg2", "pyramid", "pyramid-tm", "redis", "sentry-sdk", "ujson", "zope.interface", "zope.sqlalchemy"]
+standard = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "cee_syslog_handler", "cornice", "gunicorn", "objgraph", "psycopg2", "pyramid", "pyramid-tm", "redis", "sentry-sdk", "ujson", "zope.interface", "zope.sqlalchemy"]
 test-images = ["scikit-image"]
+tests = ["boltons", "lxml", "scikit-image"]
 
 [[package]]
 name = "cee-syslog-handler"
@@ -892,6 +895,20 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "prometheus-client"
+version = "0.17.1"
+description = "Python client for the Prometheus monitoring system."
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "prometheus_client-0.17.1-py3-none-any.whl", hash = "sha256:e537f37160f6807b8202a6fc4764cdd19bac5480ddd3e0d463c3002b34462101"},
+    {file = "prometheus_client-0.17.1.tar.gz", hash = "sha256:21e674f39831ae3f8acde238afd9a27a37d0d2fb5a28ea094f0ce25d2cbf2091"},
+]
+
+[package.extras]
+twisted = ["twisted"]
+
+[[package]]
 name = "prospector"
 version = "1.10.2"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
@@ -1119,6 +1136,25 @@ webob = ">=1.8.3"
 [package.extras]
 docs = ["Sphinx (>=3.0.0)", "docutils", "pylons-sphinx-latesturl", "pylons-sphinx-themes (>=1.0.8)", "repoze.sphinx.autointerface", "sphinx-copybutton", "sphinxcontrib-autoprogram"]
 testing = ["coverage", "pytest (>=5.4.2)", "pytest-cov", "webtest (>=1.3.1)", "zope.component (>=4.0)"]
+
+[[package]]
+name = "pyramid-mako"
+version = "1.1.0"
+description = "Mako template bindings for the Pyramid web framework"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyramid_mako-1.1.0-py2.py3-none-any.whl", hash = "sha256:76104592d292b6974cf7080aa52405c51f396a621535f01e274d7fe546e85a43"},
+    {file = "pyramid_mako-1.1.0.tar.gz", hash = "sha256:0066c863441f1c3ddea60cee1ccc50d00a91a317a8052ca44131da1a12a840e2"},
+]
+
+[package.dependencies]
+Mako = ">=1.1.0"
+pyramid = "*"
+
+[package.extras]
+docs = ["Sphinx (>=1.8.1)", "docutils", "pylons-sphinx-themes (>=1.0.8)", "repoze.sphinx.autointerface"]
+testing = ["WebTest (>=1.3.1)", "coverage", "nose"]
 
 [[package]]
 name = "pytest"
@@ -1835,4 +1871,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "1243f1126e39ec10105ffd9bf2b9eeef200a6f9bb6b3fb4232047a6a7ff3386c"
+content-hash = "7378a67d6bb389ab507bb162d417fdc3ddf41425e76f7c9109c141744267abdf"
