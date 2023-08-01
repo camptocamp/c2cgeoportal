@@ -12,7 +12,7 @@ function main(inputs) {
         fs.readFile(input, 'utf-8', (error, content) => {
           resolve(error ? undefined : {input, content});
         });
-      })
+      }),
     );
   });
 
