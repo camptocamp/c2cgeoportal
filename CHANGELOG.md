@@ -1,3 +1,8 @@
+##### 2.7.0.281
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20230801T163142Z.4aa2c2b65.2.7 (2.7) [c2cgeoportal#10624](https://github.com/camptocamp/c2cgeoportal/pull/10624)
+- Update dependency @types/sinon to v10.0.16 (2.7) [ngeo#9187](https://github.com/camptocamp/ngeo/pull/9187)
+
 ##### 2.7.0.279
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20230726T125843Z.0912e35fc.2.7 (2.7) [c2cgeoportal#10614](https://github.com/camptocamp/c2cgeoportal/pull/10614)
