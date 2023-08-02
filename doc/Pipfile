@@ -6,7 +6,7 @@ verify_ssl = true
 [packages]
 alabaster = "==0.7.13" # theme
 Pygments = "==2.15.1"
-Sphinx = "==3.0.4"
+Sphinx = "==3.3.0"
 sphinx-prompt = "==1.1.0"
 setuptools = "==65.5.1"
 # Lock
