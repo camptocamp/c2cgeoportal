@@ -1,3 +1,7 @@
+##### 2.8.0.76
+
+- Fix CVE [c2cgeoportal#10627](https://github.com/camptocamp/c2cgeoportal/pull/10627)
+
 ##### 2.8.0.75
 
 - [Backport 2.8] The configuration of the gunicorn.access logger will hide the access … [c2cgeoportal#10612](https://github.com/camptocamp/c2cgeoportal/pull/10612)
