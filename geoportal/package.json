@@ -14,11 +14,11 @@
     "angular-gettext-tools": "2.5.3",
     "commander": "11.0.0",
     "eslint": "8.46.0",
-    "ngeo": "2.8.0-version-2.8-latest.20230629T125804Z.222a5955c.2.8",
+    "ngeo": "2.8.0",
     "puppeteer": "20.9.0",
     "url-parse": "1.5.10"
   },
   "devDependencies": {
-    "@babel/plugin-transform-typescript": "7.22.5"
+    "@babel/plugin-transform-typescript": "7.22.9"
   }
 }
