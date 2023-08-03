@@ -25,12 +25,12 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
-c2cwsgiutils = { extras = ["broadcast"], version = "6.0.0.dev129" }
+c2cwsgiutils = { extras = ["broadcast"], version = "6.0.0.dev148" }
 papyrus = "2.5" # commons
 transaction = "3.1.0" # commons
 "c2c.template" = "2.3.0"
 GeoAlchemy2 = "0.13.3"
-SQLAlchemy = "1.4.48" # commons
+SQLAlchemy = "1.4.49" # commons
 "zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.0" # commons
 shapely = "2.0.1"
@@ -41,5 +41,5 @@ pytz = "2023.3"
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.2" }
 # pylint = "2.15.5"
-types-pyyaml = "6.0.12.10"
+types-pyyaml = "6.0.12.11"
 pytest = "7.4.0"
