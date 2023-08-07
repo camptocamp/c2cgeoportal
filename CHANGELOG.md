@@ -1,3 +1,7 @@
+##### 2.7.0.283
+
+- Use metadata to select what column use for popup selection in edition [ngeo#9184](https://github.com/camptocamp/ngeo/pull/9184)
+
 ##### 2.7.0.281
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20230801T163142Z.4aa2c2b65.2.7 (2.7) [c2cgeoportal#10624](https://github.com/camptocamp/c2cgeoportal/pull/10624)
