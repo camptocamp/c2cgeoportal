@@ -24,7 +24,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
-alembic = "1.11.1" # geoportal
+alembic = "1.11.2" # geoportal
 "c2c.template" = "2.3.0" # geoportal
 c2cgeoform = "2.1.27" # commons
 colander = "2.0" # commons, admin
@@ -42,7 +42,7 @@ Mako = "1.2.4" # geoportal
 OWSLib = "0.29.2" # geoportal
 papyrus = "2.5" # commons, geoportal
 passwordgenerator = "1.5.1" # geoportal
-psycopg2 = "2.9.6" # geoportal
+psycopg2 = "2.9.7" # geoportal
 pycryptodome = "3.18.0" # geoportal
 pyproj = "3.6.0" # admin, other?
 pyotp = "2.9.0" # geoportal
@@ -81,7 +81,7 @@ polib = "1.2.0" # i18n
 pykwalify = "1.8.0" # Validate config
 pytest = "7.4.0" # tests
 WebTest = "3.0.0" # admin tests
-types-pytz = "2023.3.0.0"
+types-pytz = "2023.3.0.1"
 types-pyyaml = "6.0.12.11"
 types-python-dateutil = "2.8.19.14"
 types-requests = "2.31.0.2"
