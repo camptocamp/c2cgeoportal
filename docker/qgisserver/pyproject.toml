@@ -35,7 +35,7 @@ SQLAlchemy = "1.4.49" # commons
 "zope.sqlalchemy" = "3.0" # commons
 shapely = "2.0.1"
 cee-syslog-handler = "0.6.0"
-psycopg2 = "2.9.6"
+psycopg2 = "2.9.7"
 pytz = "2023.3"
 
 [tool.poetry.dev-dependencies]
