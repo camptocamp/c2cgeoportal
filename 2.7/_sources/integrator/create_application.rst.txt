@@ -55,7 +55,7 @@ You should at least see the c2cgeoportal scaffolds:
 Create the new application
 --------------------------
 
-To create the application, first apply the ``create`` scaffold:
+To create the application (simple or advance), first apply the ``create`` scaffold:
 
 .. prompt:: bash
 
@@ -103,7 +103,7 @@ For an advance application, apply the ``advance_create`` scaffold:
         ${GEOMAPFISH_PROJECT} --overwrite
 
 
-Now apply the ``update`` scaffold:
+Now apply the ``update`` scaffold (for simple and advance applications):
 
 .. prompt:: bash
 
@@ -130,7 +130,7 @@ For an advance application apply the ``advance_update`` scaffold:
     docker run --rm -ti --volume=$(pwd):/src \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
-        pcreate -s advance_update ${GEOMAPFISH_PROJECT}
+        pcreate -s advance_update ${GEOMAPFISH_PROJECT} --overwrite
 
 
 Go to your new project:

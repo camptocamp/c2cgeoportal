@@ -81,7 +81,7 @@ c2cgeoportal application you want to create the new application from:</p>
 </section>
 <section id="create-the-new-application">
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Permalink to this headline">¶</a></h2>
-<p>To create the application, first apply the <code class="docutils literal notranslate"><span class="pre">create</span></code> scaffold:</p>
+<p>To create the application (simple or advance), first apply the <code class="docutils literal notranslate"><span class="pre">create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
@@ -116,7 +116,7 @@ parameters:</p>
 <span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>advance_create<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span><span class="w"> </span>--overwrite</span>
-</pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">update</span></code> scaffold:</p>
+</pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">update</span></code> scaffold (for simple and advance applications):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
@@ -134,7 +134,7 @@ Following this rule is important for easier updates.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>pcreate<span class="w"> </span>-s<span class="w"> </span>advance_update<span class="w"> </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
+<span class="w">    </span>pcreate<span class="w"> </span>-s<span class="w"> </span>advance_update<span class="w"> </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span><span class="w"> </span>--overwrite</span>
 </pre></div></div><p>Go to your new project:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><p>For advance application you also should:</p>
