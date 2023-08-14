@@ -1,3 +1,8 @@
+##### 2.7.0.284
+
+- Use Ubuntu 22-04 in the project CI [c2cgeoportal#10626](https://github.com/camptocamp/c2cgeoportal/pull/10626)
+- Snyk auto fix [c2cgeoportal#10628](https://github.com/camptocamp/c2cgeoportal/pull/10628)
+
 ##### 2.7.0.283
 
 - Use metadata to select what column use for popup selection in edition [ngeo#9184](https://github.com/camptocamp/ngeo/pull/9184)
