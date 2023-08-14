@@ -20,6 +20,13 @@
       fileMatch: ['^ci/applications-versions.yaml$'],
       matchStrings: ['(?<depName>[^\\s]+): (?<currentValue>[^\\s]+) # (?<datasource>[^\\s]+)'],
     },
+    {
+      'fileMatch': ['^ci/config\\\\.yaml$'],
+      'matchStrings': [
+        '.*https://raw\\\\.githubusercontent\\\\.com/(?<depName>[^\\\\s]+)/(?<currentValue>[0-9\\\\.]+)/.*',
+      ],
+      'datasourceTemplate': 'github-tags',
+    },
   ],
   packageRules: [
     /** Docker images versioning */
@@ -103,6 +110,10 @@
     {
       matchPaths: ['ci/requirements-project.txt'],
       enabled: false,
+    },
+    {
+      'matchPackageNames': ['shellcheck-py/shellcheck-py'],
+      'versioning': 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
     },
   ],
 }

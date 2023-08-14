@@ -8,6 +8,7 @@ ci:
     - poetry-check
     - ripsecrets
 
+    - jsonschema-validator
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -114,8 +115,10 @@ repos:
           - --py38-plus
         files: |-
           (?x)^(
-            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build|scripts/.*)
-            |scripts/(get-version|upgrade)
+            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build
+            |scripts/.*)
+            |scripts/(get-version
+            |upgrade)
           )$
       # All other
       - id: pyupgrade
@@ -123,8 +126,10 @@ repos:
           - --py39-plus
         exclude: |-
           (?x)^(
-            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build|scripts/.*)
-            |scripts/(get-version|upgrade)
+            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build
+            |scripts/.*)
+            |scripts/(get-version
+            |upgrade)
           )$
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.2.0
@@ -153,3 +158,8 @@ repos:
           - --tool=pydocstyle
           - --die-on-tool-error
           - --output-format=pylint
+  - repo: https://github.com/sbrunner/jsonschema-validator
+    rev: 0.1.0
+    hooks:
+      - id: jsonschema-validator
+        files: ^ci/config\.yaml$
