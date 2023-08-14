@@ -41,7 +41,7 @@ repos:
         additional_dependencies:
           - poetry==1.3.2 # pypi
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.2
+    rev: v2.2.5
     hooks:
       - id: codespell
         exclude: (.*/package-lock.json$|^geoportal/tests/data/dem4\..*|^(.*/)?poetry\.lock$)
@@ -52,9 +52,9 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@2.8.4 # npm
+          - prettier@2.8.8 # npm
           - prettier-plugin-sh@0.12.8 # npm
-          - prettier-plugin-toml@0.3.1 # npm
+          - prettier-plugin-toml@0.3.5 # npm
         exclude: (^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/|^ci/changelog\.yaml$|.*\.pt|^geoportal/tests/data/tinyows_.*\.xml|^CHANGELOG\.md$)
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.9.0.2
@@ -70,7 +70,7 @@ repos:
       - id: check-github-workflows
       - id: check-renovate
         additional_dependencies:
-          - pyjson5==1.6.2 # pypi
+          - pyjson5==1.6.4 # pypi
       - id: check-github-actions
       - id: check-jsonschema
         name: Check GitHub Workflows set timeout-minutes
@@ -86,11 +86,11 @@ repos:
       - id: ripsecrets
         exclude: (^docker/config/haproxy_dev/localhost\.pem$|geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql)
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.0.1
+    rev: v2.0.2
     hooks:
       - id: autoflake
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
+    rev: v3.3.2
     hooks:
       # The script that will run on the project host
       #- id: pyupgrade
