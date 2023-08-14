@@ -1,3 +1,7 @@
+##### 2.7.0.285
+
+- Improve doc to create app [c2cgeoportal#10629](https://github.com/camptocamp/c2cgeoportal/pull/10629)
+
 ##### 2.7.0.284
 
 - Use Ubuntu 22-04 in the project CI [c2cgeoportal#10626](https://github.com/camptocamp/c2cgeoportal/pull/10626)
