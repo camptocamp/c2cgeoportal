@@ -1,3 +1,7 @@
+##### 2.8.0.77
+
+- [Backport 2.8] Use Ubuntu 22-04 in the project CI [c2cgeoportal#10631](https://github.com/camptocamp/c2cgeoportal/pull/10631)
+
 ##### 2.8.0.76
 
 - Fix CVE [c2cgeoportal#10627](https://github.com/camptocamp/c2cgeoportal/pull/10627)
