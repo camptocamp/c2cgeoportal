@@ -14,7 +14,7 @@ env:
 
 jobs:
   rebuild:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Rebuild
     timeout-minutes: 10
 
