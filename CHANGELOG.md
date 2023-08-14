@@ -1,3 +1,7 @@
+##### 2.8.0.80
+
+- Update pre-commit hook shellcheck-py/shellcheck-py to v0.9.0.5 (2.8) [c2cgeoportal#10638](https://github.com/camptocamp/c2cgeoportal/pull/10638)
+
 ##### 2.8.0.79
 
 - Snyk auto fix [c2cgeoportal#10636](https://github.com/camptocamp/c2cgeoportal/pull/10636)
