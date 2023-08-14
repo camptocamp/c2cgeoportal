@@ -57,7 +57,8 @@ prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.4" }
 # pylint = "2.15.5"
 setuptools = "67.1.0"
 pygments = "2.15.1"
-cryptography = "41.0.2"
+cryptography = "41.0.3"
+gitpython = "3.1.32"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.11.0" # i18n
