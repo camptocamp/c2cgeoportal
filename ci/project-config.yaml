@@ -1,12 +1,8 @@
----
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/1.4/c2cciutils/schema.json
+
 checks:
   required_workflows: False
   versions: False
-  codespell:
-    ignore_re:
-      - ^CONST_create_template/.*
-      - ^geoportal/testgeomapfishapp_geoportal/locale/.*
-      - ^geoportal/testgeomapfishapp_geoportal/static-ngeo/js/apps/Controller.*\.js$
-      - ^print/print-apps/testgeomapfishapp/.*\.jrxml$
+  codespell: False
   dependabot_config: False
   setup: False
