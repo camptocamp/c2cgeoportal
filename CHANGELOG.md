@@ -1,3 +1,7 @@
+##### 2.7.0.288
+
+- Add alias for SRS code [ngeo#9193](https://github.com/camptocamp/ngeo/pull/9193)
+
 ##### 2.7.0.285
 
 - Improve doc to create app [c2cgeoportal#10629](https://github.com/camptocamp/c2cgeoportal/pull/10629)
