@@ -170,6 +170,9 @@ Config:
  * ``TILECLOUDCHAIN_INTERNAL_URL``: Used by the print in non mutualize mode.
  * ``ST_JOIN``: Can be ``ST_Collect`` (default) or ``ST_Union``, ``ST_Collect`` is better for performance but
    does not support restriction area intersection.
+ * ``DISABLE_HAPROXY_LOGGING``: Set to # to disable haproxy logging. By default haproxy redirect logs to the 
+   host /dev/log socket and they are visible with journalctl
+ * ``HAPROXY_LOGGING_OPTIONS``: Allow to overwrite or add new logging options to haproxy.
 
 Geoportal:
 
