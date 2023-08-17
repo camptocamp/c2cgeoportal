@@ -1,3 +1,7 @@
+##### 2.7.0.292
+
+- Do not change style of selected feature [ngeo#9200](https://github.com/camptocamp/ngeo/pull/9200)
+
 ##### 2.7.0.290
 
 - Add OTP field to login request if 2FA is activated [ngeo#9197](https://github.com/camptocamp/ngeo/pull/9197)
