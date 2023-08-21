@@ -193,6 +193,9 @@ You can use the following commands to manually remove Docker files.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUDCHAIN_INTERNAL_URL</span></code>: Used by the print in non mutualize mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ST_JOIN</span></code>: Can be <code class="docutils literal notranslate"><span class="pre">ST_Collect</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code>, <code class="docutils literal notranslate"><span class="pre">ST_Collect</span></code> is better for performance but
 does not support restriction area intersection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DISABLE_HAPROXY_LOGGING</span></code>: Set to # to disable haproxy logging. By default haproxy redirect logs to the
+host /dev/log socket and they are visible with journalctl</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HAPROXY_LOGGING_OPTIONS</span></code>: Allow to overwrite or add new logging options to haproxy.</p></li>
 </ul>
 </div></blockquote>
 <p>Geoportal:</p>
