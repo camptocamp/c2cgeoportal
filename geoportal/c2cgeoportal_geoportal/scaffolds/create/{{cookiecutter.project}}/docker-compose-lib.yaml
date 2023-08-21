@@ -65,6 +65,8 @@ services:
       - AZURE_STORAGE_SAS_TOKEN
       - TILEGENERATION_AZURE_CONTAINER
       - RASTER_BASE_PATH
+      - DISABLE_HAPROXY_LOGGING
+      - HAPROXY_LOGGING_OPTIONS
 
   print:
     image: camptocamp/mapfish_print:3.30
