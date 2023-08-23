@@ -1,3 +1,5 @@
+inherits:
+  - duplicated
 strictness: veryhigh
 max-line-length: 110
 doc-warnings: true
@@ -11,12 +13,10 @@ ignore-paths:
 
 pycodestyle:
   disable:
-    - E203 # Whitespace before ':'
     - E722 # Do not use bare 'except'
 
 pydocstyle:
   disable:
-    - D100 # Missing docstring in public module
     - D102 # Missing docstring in public method
     - D104 # Missing docstring in public package
     - D105 # Missing docstring in magic method
@@ -27,8 +27,6 @@ pydocstyle:
     - D212 # Multi-line docstring summary should start at the first line
     - D407 # Missing dashed underline after section ('Arguments')
     - D412 # No blank lines allowed between a section header and its content ('Arguments')
-    - D413 # Missing blank line after last section ('Arguments')
-
 pylint:
   options:
     extension-pkg-allow-list:
@@ -38,10 +36,7 @@ pylint:
     - missing-function-docstring
     - missing-timeout # Default timeout set by c2cwsgiutils
 
-pyflakes:
-  disable:
-    - F401 # imported but unused
-
+pyflakes: {}
 mypy:
   run: true
 
