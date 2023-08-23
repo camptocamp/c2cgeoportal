@@ -16,6 +16,11 @@ disallow_untyped_defs = false
 line-length = 110
 target-version = ['py39']
 
+[tool.isort]
+profile = "black"
+line_length = 110
+known_local_folder = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeoportal_admin", "geomapfish_qgisserver", "{{cookiecutter.package}}_geoportal"]
+
 [tool.poetry]
 name = 'c2cgeoportal'
 version = '0.0.0'
