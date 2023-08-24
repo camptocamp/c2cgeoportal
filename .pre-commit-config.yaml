@@ -112,7 +112,7 @@ repos:
       # The script that will run on the project host
       - id: pyupgrade
         args:
-          - --py38-plus
+          - --py39-plus
         files: |-
           (?x)^(
             geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build

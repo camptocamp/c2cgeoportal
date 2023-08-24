@@ -11,7 +11,7 @@ import stat
 import subprocess
 import sys
 import urllib.request
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 import yaml
 
@@ -19,7 +19,7 @@ CompletedProcess = subprocess.CompletedProcess[str] if TYPE_CHECKING else subpro
 
 
 def run(
-    args: argparse.Namespace, command: List[str], exit_on_error: bool = True, **kwargs: Any
+    args: argparse.Namespace, command: list[str], exit_on_error: bool = True, **kwargs: Any
 ) -> Optional[CompletedProcess]:
     if args.verbose or args.dry_run:
         print(shlex.join(command))
