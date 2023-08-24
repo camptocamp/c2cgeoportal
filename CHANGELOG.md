@@ -1,3 +1,7 @@
+##### 2.8.0.82
+
+- [Backport 2.8] Improve doc to create app [c2cgeoportal#10633](https://github.com/camptocamp/c2cgeoportal/pull/10633)
+
 ##### 2.8.0.81
 
 - Added environment variables allowing to disable haproxy logging and … [c2cgeoportal#10641](https://github.com/camptocamp/c2cgeoportal/pull/10641)
