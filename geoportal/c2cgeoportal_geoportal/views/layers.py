@@ -51,8 +51,8 @@ from pyramid.httpexceptions import (
     HTTPNotFound,
 )
 from pyramid.view import view_config
+from shapely import unary_union
 from shapely.errors import TopologicalError
-from shapely.ops import cascaded_union
 from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, exc, func
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.orm.properties import ColumnProperty
@@ -185,7 +185,7 @@ class Layers:
             raise HTTPForbidden()
 
         filter1_ = create_filter(self.request, cls, geom_attr)
-        ra = cascaded_union(collect_ra)
+        ra = unary_union(collect_ra)
         filter2_ = ga_func.ST_Contains(from_shape(ra, use_srid), getattr(cls, geom_attr))
         filter_ = filter2_ if filter1_ is None else and_(filter1_, filter2_)
 

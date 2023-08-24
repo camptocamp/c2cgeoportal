@@ -12,9 +12,8 @@ from geoalchemy2.shape import from_shape
 from qgis.core import QgsFeature, QgsGeometry, QgsProject
 from shapely.geometry import LineString, box
 
-from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
-
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
+from geomapfish_qgisserver.accesscontrol import OGCServerAccessControl
 
 area1 = box(400000, 70000, 800000, 100000)
 geom_in = LineString([[500000, 80000], [500000, 90000]])

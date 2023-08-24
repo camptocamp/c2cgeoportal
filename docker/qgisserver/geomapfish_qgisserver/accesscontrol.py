@@ -499,7 +499,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         If roles is "ROOT" => full access
         If roles is None or [] => no access
-        Else shapely.ops.cascaded_union(result) => area of access
+        Else shapely.unary_union(result) => area of access
 
         Returns:
         - Access mode (NO | AREA | FULL)
