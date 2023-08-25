@@ -112,6 +112,8 @@ services:
     extends:
       file: docker-compose-lib.yaml
       service: tools
+    volumes_from:
+      - config:ro
 
   # db:
   #   extends:
