@@ -1,3 +1,7 @@
+##### 2.7.0.293
+
+- Container tools was missing volumes_from config to be able to run the… [c2cgeoportal#10647](https://github.com/camptocamp/c2cgeoportal/pull/10647)
+
 ##### 2.7.0.292
 
 - Do not change style of selected feature [ngeo#9200](https://github.com/camptocamp/ngeo/pull/9200)
