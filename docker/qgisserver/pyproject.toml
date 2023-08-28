@@ -23,6 +23,7 @@ cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.7"
 pytz = "2022.7.1"
 redis = "4.4.4"
+pyramid = "2.0.2"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.4" }
