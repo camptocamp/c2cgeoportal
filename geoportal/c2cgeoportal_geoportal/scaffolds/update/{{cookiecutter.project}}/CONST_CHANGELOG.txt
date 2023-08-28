@@ -7,6 +7,7 @@ Version 2.9.0
 Information to know before starting the upgrade
 ===============================================
 
+1. The build command will use Docker Compose version 2 (with the `docker compose` command).
 
 Information
 ===========

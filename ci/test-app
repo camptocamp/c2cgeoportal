@@ -28,43 +28,44 @@ echo ::endgroup::
 
 # Lint
 echo ::group::Lint
-docker-compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
+docker compose up config
+docker compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
     prospector --output-format=pylint --die-on-tool-error
 # shellcheck disable=SC2046
-docker-compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
+docker compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
     eslint $(find testgeomapfishapp -type f -name '*.js' -print 2> /dev/null)
 # shellcheck disable=SC2046
-docker-compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
+docker compose run --entrypoint= --no-deps --rm --volume="$(pwd)/geoportal:/app" geoportal \
     eslint $(find testgeomapfishapp -type f -name '*.ts' -print 2> /dev/null)
 
-docker-compose down --volumes
+docker compose down --volumes
 echo ::endgroup::
 
 # Start
 echo ::group::Start
-docker-compose up -d
-docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
-docker-compose exec -T geoportal wait-db
+docker compose up -d
+docker compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
+docker compose exec -T geoportal wait-db
 echo ::endgroup::
 c2cciutils-docker-logs
 
 # Run alembic
 echo ::group::Run alembic
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
-docker-compose start alembic
+docker compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
+docker compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
+docker compose start alembic
 echo ::endgroup::
 c2cciutils-docker-logs
 
 # Create the Theme
 echo ::group::Create the Theme
-docker-compose exec -T geoportal create-demo-theme
+docker compose exec -T geoportal create-demo-theme
 echo ::endgroup::
 c2cciutils-docker-logs
 
 # Test `theme2fts`
 echo ::group::Test theme2fts
-docker-compose exec -T geoportal theme2fts
+docker compose exec -T geoportal theme2fts
 echo ::endgroup::
 
 # Test `update-po`
@@ -75,23 +76,23 @@ echo ::endgroup::
 # Test the checker and QGIS
 echo ::group::Test the checker and QGIS
 for url in 'https://front/c2c/health_check?max_level=9' 'http://qgisserver:8080/mapserv_proxy?SERVICE=WMS&REQUEST=GetCapabilities'; do
-    docker-compose exec -T geoportal curl --fail --insecure "${url}" \
-        || (docker-compose exec -T geoportal curl --insecure "${url}" && false)
+    docker compose exec -T geoportal curl --fail --insecure "${url}" \
+        || (docker compose exec -T geoportal curl --insecure "${url}" && false)
 done
 echo ::endgroup::
 
 # Test the `proutes` and `pviews` commands
 echo ::group::Test the proutes command with development.ini
-docker-compose exec -T geoportal proutes c2c://development.ini
+docker compose exec -T geoportal proutes c2c://development.ini
 echo ::endgroup::
 echo ::group::Test the pviews command with development.ini
-docker-compose exec -T geoportal pviews c2c://development.ini /
+docker compose exec -T geoportal pviews c2c://development.ini /
 echo ::endgroup::
 echo ::group::Test the proutes command with production.ini
-docker-compose exec -T geoportal proutes c2c://production.ini
+docker compose exec -T geoportal proutes c2c://production.ini
 echo ::endgroup::
 echo ::group::Test the pviews command with production.ini
-docker-compose exec -T geoportal pviews c2c://production.ini /
+docker compose exec -T geoportal pviews c2c://production.ini /
 echo ::endgroup::
 
 # Test the `db-backup` and `db-restore` commands
@@ -104,39 +105,39 @@ scripts/db-backup --env=env.int --arg=--schema=main main-dump.backup
 echo ::endgroup::
 
 echo ::group::Test the db-restore command
-docker-compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
-docker-compose exec -T tools psql --command="CREATE SCHEMA main"
+docker compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
+docker compose exec -T tools psql --command="CREATE SCHEMA main"
 scripts/db-restore --arg=--schema=main dump.backup
 echo ::endgroup::
 
 # Empty the database
 echo ::group::Empty the database
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
+docker compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
+docker compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
 echo ::endgroup::
 
 # Test the `mappyfile validate` command
 echo ::group::Test the mappyfile validate command
-docker-compose exec -T tools rm /etc/mapserver/demo.map
-docker-compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
+docker compose exec -T tools rm /etc/mapserver/demo.map
+docker compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
 echo ::endgroup::
 c2cciutils-docker-logs
 
 # Run the acceptances tests
 echo ::group::Stop
-docker-compose down
+docker compose down
 mv docker-compose.override.yaml docker-compose.test.yaml
 echo ::endgroup::
 
 echo ::group::Init acceptance tests
 make acceptance-init
-docker-compose \
+docker compose \
     --file=docker-compose.yaml \
     --file=docker-compose-db.yaml \
     --file=docker-compose.test.yaml up -d db externaldb
-docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
-docker-compose exec -T geoportal wait-db
-docker-compose \
+docker compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
+docker compose exec -T geoportal wait-db
+docker compose \
     --file=docker-compose.yaml \
     --file=docker-compose-db.yaml \
     --file=docker-compose.test.yaml up -d
@@ -149,18 +150,19 @@ echo ::endgroup::
 c2cciutils-docker-logs
 
 echo ::group::Run acceptance tests in dev mode
-docker-compose \
+docker compose \
     --file=docker-compose.yaml \
     --file=docker-compose-db.yaml \
     --file=docker-compose.test.yaml \
     --file=docker-compose.override.sample.yaml up -d
+sleep 1
 make acceptance
 echo ::endgroup::
 c2cciutils-docker-logs
 
 # Remove the test project
 echo ::group::Remove the test project
-docker-compose down --remove-orphans || true
+docker compose down --remove-orphans || true
 cd -
 sudo rm -rf "${HOME}/workspace/testgeomapfishapp"
 docker rmi camptocamp/testgeomapfishapp-config:latest

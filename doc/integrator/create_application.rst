@@ -288,7 +288,7 @@ Then follow the sections in the install application guide:
 
    .. prompt:: bash
 
-      docker-compose exec geoportal create-demo-theme
+      docker compose exec geoportal create-demo-theme
 
 
 Dynamic configuration

@@ -425,4 +425,4 @@ For example to validate the map files run:
 
 .. prompt:: bash
 
-   docker-compose exec tools mappyfile validate --version=7.6 /etc/mapserver/*.map
+   docker compose exec tools mappyfile validate --version=7.6 /etc/mapserver/*.map

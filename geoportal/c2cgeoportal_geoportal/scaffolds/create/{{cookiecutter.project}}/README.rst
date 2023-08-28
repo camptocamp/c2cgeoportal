@@ -24,6 +24,6 @@ Run
 
 .. code::
 
-   docker-compose up -d
+   docker compose up -d
 
 .. Feel free to add project-specific things.

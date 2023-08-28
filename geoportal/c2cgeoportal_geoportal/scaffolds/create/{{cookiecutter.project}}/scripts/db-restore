@@ -43,7 +43,7 @@ def main() -> None:
         "--docker-compose-file",
         action="append",
         default=[],
-        help="The docker-compose file to used.",
+        help="The docker compose file to used.",
     )
     parser.add_argument(
         "--arg",
@@ -92,7 +92,7 @@ def main() -> None:
             )
         else:
             subprocess.run(
-                ["docker-compose"]
+                ["docker", "compose"]
                 + [f"--file={f}" for f in args.docker_compose_file]
                 + [
                     "exec",

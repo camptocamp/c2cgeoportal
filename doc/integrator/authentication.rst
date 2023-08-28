@@ -145,7 +145,7 @@ You can generate a new admin password the following command:
 
 .. argparse::
    :ref: c2cgeoportal_geoportal.scripts.manage_users.get_argparser
-   :prog: docker-compose exec geoportal manage-users
+   :prog: docker compose exec geoportal manage-users
 
 ~~~~~~~~~~~~~~~~~~~~
 External application

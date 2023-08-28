@@ -34,8 +34,8 @@ jobs:
 
     steps:
       - run: '! ls BACKPORT_TODO'
-      - run: df -h
-      - run: docker system prune --all --force
+      - name: Clean all docker images
+        run: docker system prune --all --force
 
       - uses: actions/checkout@v4
         with:
@@ -89,7 +89,7 @@ jobs:
 
         # Tests
       - run: make preparetest
-      - run: docker-compose logs --timestamps
+      - run: c2cciutils-docker-logs
         if: failure()
       - run: make tests-commons
       - run: c2cciutils-docker-logs
@@ -101,7 +101,7 @@ jobs:
       - run: c2cciutils-docker-logs
       - run: c2cciutils-docker-logs
         if: always()
-      - run: docker-compose down
+      - run: docker compose down
 
       - name: Test version generation for the changelog
         run: scripts/updated_version latest latest
@@ -129,7 +129,17 @@ jobs:
           if-no-files-found: ignore
           retention-days: 5
 
-        # Use minimal version from the documentation
+      # Test App with Docker compose version 2.x
+      - run: ci/test-app
+        timeout-minutes: 30
+      - name: Docker logs
+        run: |
+          cd ${HOME}/workspace/testgeomapfishapp/
+          c2cciutils-docker-logs
+        if: failure()
+        continue-on-error: true
+
+      # Use minimal version from the documentation
       - uses: actions/setup-python@v4
         with:
           # When we upgrade this we should also upgrade the requirements
@@ -137,8 +147,9 @@ jobs:
           # and the first pyupgrade pre-commit hook in .pre-commit-config.yaml
           python-version: '3.8'
       - run: pip install --user --requirement=ci/requirements-project.txt
+      - run: docker compose version
 
-        # Test App
+      # Test App
       - run: ci/test-app
         timeout-minutes: 30
       - name: Docker logs
@@ -170,6 +181,7 @@ jobs:
         with:
           python-version: '3.10'
       - run: pip install --user --requirement=ci/requirements-back.txt
+      - run: docker compose version
 
       - name: Init Git
         run:

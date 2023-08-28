@@ -56,14 +56,16 @@ if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
     if code != 0:
         sys.exit(code)
 
-    subprocess.call(["docker-compose", "down", "--remove-orphans"])
+    subprocess.call(["docker", "compose", "down", "--remove-orphans"])
     subprocess.call(
-        ["docker-compose", "pull", "--ignore-pull-failures"], env={**os.environ, "DOCKER_TAG": "unexisting"}
+        ["docker", "compose", "pull", "--ignore-pull-failures"],
+        env={**os.environ, "DOCKER_TAG": "unexisting"},
     )
-    subprocess.check_call(["docker-compose", "up", "-d"])
+    subprocess.check_call(["docker", "compose", "up", "-d"])
     subprocess.check_call(
         [
-            "docker-compose",
+            "docker",
+            "compose",
             "exec",
             "geoportal",
             "alembic",

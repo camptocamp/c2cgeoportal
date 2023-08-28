@@ -22,7 +22,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Will update the pot file then the po files.
-# Used when we update the po files in the application running in a docker-compose locally.
+# Used when we update the po files in the application running in a docker compose locally.
 
 USER=$1
 GROUP=$2

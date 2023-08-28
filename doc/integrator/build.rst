@@ -149,7 +149,7 @@ Upstream `make documentation <https://www.gnu.org/software/make/manual/make.html
 Custom image
 ------------
 
-In the build script, we use `docker-compose build`, as this simplifies adding a new service from another `Dockerfile`.
+In the build script, we use `docker compose build`, as this simplifies adding a new service from another `Dockerfile`.
 
 By adding the following in the `docker-compose.yaml` file:
 
