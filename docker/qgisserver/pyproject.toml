@@ -10,7 +10,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
-c2cwsgiutils = { extras = ["broadcast"], version = "5.1.6" }
+c2cwsgiutils = { extras = ["broadcast"], version = "5.1.7" }
 papyrus = "2.5" # commons
 transaction = "3.0.1" # commons
 "c2c.template" = "2.3.0"

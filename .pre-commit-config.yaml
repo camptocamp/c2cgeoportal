@@ -81,7 +81,7 @@ repos:
           - --builtin-schema
           - github-workflows-require-timeout
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.5
+    rev: v0.1.6
     hooks:
       - id: ripsecrets
         exclude: (^docker/config/haproxy_dev/localhost\.pem$|geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql)
