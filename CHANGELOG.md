@@ -1,3 +1,7 @@
+##### 2.8.0.84
+
+- [Backport 2.8] Add call to request.user in Entry.get_ngeo_index_vars [c2cgeoportal#10578](https://github.com/camptocamp/c2cgeoportal/pull/10578)
+
 ##### 2.8.0.83
 
 - Snyk auto fix [c2cgeoportal#10650](https://github.com/camptocamp/c2cgeoportal/pull/10650)
