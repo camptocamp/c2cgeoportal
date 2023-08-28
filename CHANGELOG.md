@@ -1,3 +1,7 @@
+##### 2.7.0.294
+
+- Snyk auto fix [c2cgeoportal#10651](https://github.com/camptocamp/c2cgeoportal/pull/10651)
+
 ##### 2.7.0.293
 
 - Container tools was missing volumes_from config to be able to run the… [c2cgeoportal#10647](https://github.com/camptocamp/c2cgeoportal/pull/10647)
