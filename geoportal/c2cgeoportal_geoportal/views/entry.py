@@ -55,6 +55,8 @@ class Entry:
 
     def get_ngeo_index_vars(self) -> dict[str, Any]:
         set_common_headers(self.request, "index", Cache.PUBLIC_NO, content_type="text/html")
+        # Force urllogin to be converted to cookie when requesting the main HTML page
+        self.request.user  # noqa
         return {}
 
     @staticmethod
