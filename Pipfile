@@ -26,7 +26,7 @@ psycopg2 = "==2.9.6"  # geoportal
 pycryptodome = "==3.14.1"  # geoportal
 pyproj = "==3.3.1"  # admin, other?
 pyotp = "==2.6.0"  # geoportal
-pyramid = "==2.0.1"  # geoportal
+pyramid = "==2.0.2"  # geoportal
 pyramid_debugtoolbar = "==4.9"  # geoportal
 pyramid-jinja2 = "==2.9.2"  # admin
 pyramid_mako = "==1.1.0"  # geoportal
