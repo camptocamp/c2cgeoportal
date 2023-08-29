@@ -92,6 +92,29 @@ The default order column is the text column.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
+<ol class="arabic" start="7">
+<li><p>The supported column types are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">integer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numeric</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">character</span> <span class="pre">varying</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">text</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">without</span> <span class="pre">time</span> <span class="pre">zone</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span> <span class="pre">without</span> <span class="pre">time</span> <span class="pre">zone</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Note that the following types will not working correctly with the timezone:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">with</span> <span class="pre">time</span> <span class="pre">zone</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span> <span class="pre">with</span> <span class="pre">time</span> <span class="pre">zone</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
 </section>
 <section id="adding-or-making-layers-editable">
 <span id="administrator-editing-editable"></span><h2>Adding or making layers editable<a class="headerlink" href="#adding-or-making-layers-editable" title="Permalink to this heading">¶</a></h2>
