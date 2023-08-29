@@ -1,3 +1,23 @@
+##### 2.8.0.87
+
+- [Backport 2.8] Apply FTS params on mainCtrl dimensions [ngeo#9039](https://github.com/camptocamp/ngeo/pull/9039)
+- Fix CI [ngeo#9163](https://github.com/camptocamp/ngeo/pull/9163)
+- Update the used Ubuntu version to from 20.04 to 22.04 in the workflows [ngeo#9168](https://github.com/camptocamp/ngeo/pull/9168)
+- [Backport 2.8] Restore the queryCountFirst=false functionality [ngeo#9174](https://github.com/camptocamp/ngeo/pull/9174)
+- Don't put the default value in the layertree [ngeo#9175](https://github.com/camptocamp/ngeo/pull/9175)
+- Snyk auto fix [ngeo#9177](https://github.com/camptocamp/ngeo/pull/9177)
+- Update all patch versions (2.8) (patch) [ngeo#9179](https://github.com/camptocamp/ngeo/pull/9179)
+- Update all patch versions (2.8) (patch) [ngeo#9180](https://github.com/camptocamp/ngeo/pull/9180)
+- Update all patch versions (2.8) (patch) [ngeo#9183](https://github.com/camptocamp/ngeo/pull/9183)
+- Update all patch versions (2.8) (patch) [ngeo#9188](https://github.com/camptocamp/ngeo/pull/9188)
+- [Backport 2.8] Use metadata to select what column use for popup selection in edition [ngeo#9190](https://github.com/camptocamp/ngeo/pull/9190)
+- Update all patch versions (2.8) (patch) [ngeo#9192](https://github.com/camptocamp/ngeo/pull/9192)
+- [Backport 2.8] Add alias for SRS code [ngeo#9196](https://github.com/camptocamp/ngeo/pull/9196)
+- [Backport 2.8] Add OTP field to login request if 2FA is activated [ngeo#9199](https://github.com/camptocamp/ngeo/pull/9199)
+- [Backport 2.8] Do not change style of selected feature [ngeo#9202](https://github.com/camptocamp/ngeo/pull/9202)
+- Fix API QGIS on hiDPI screen [ngeo#9207](https://github.com/camptocamp/ngeo/pull/9207)
+- Don't send null values in the datasource [ngeo#9209](https://github.com/camptocamp/ngeo/pull/9209)
+
 ##### 2.8.0.86
 
 - [Backport 2.8] Add the list of the supported column types in the editing. [c2cgeoportal#10657](https://github.com/camptocamp/c2cgeoportal/pull/10657)
