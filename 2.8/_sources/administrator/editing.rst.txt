@@ -53,6 +53,22 @@ To be editable, a layer should satisfy the following requirements:
        }
    }
 
+7. The supported column types are:
+
+      * ``integer``
+      * ``numeric``
+      * ``character varying``
+      * ``text``
+      * ``boolean``
+      * ``date``
+      * ``time without time zone``
+      * ``timestamp without time zone``
+
+   Note that the following types will not working correctly with the timezone:
+
+      * ``time with time zone``
+      * ``timestamp with time zone``
+
 
 .. _administrator_editing_editable:
 
