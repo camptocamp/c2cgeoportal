@@ -127,6 +127,7 @@ class TestLoginView(TestCase):
             "type": "oauth2",
         }
         request.method = "POST"
+        request.host = "127.0.0.1:7070"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
             Login(request).login()
@@ -145,6 +146,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         response = Login(request).oauth2token()
@@ -185,6 +187,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -204,6 +207,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
@@ -221,6 +225,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
@@ -239,6 +244,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -258,6 +264,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         response = Login(request).oauth2token()
@@ -319,6 +326,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -339,6 +347,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         response = Login(request).oauth2token()
@@ -400,6 +409,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -420,6 +430,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
@@ -438,6 +449,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -457,6 +469,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         response = Login(request).oauth2token()
@@ -524,6 +537,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         pyramid.testing.setUp(request=request, registry=init_registry())
@@ -566,6 +580,7 @@ class TestLoginView(TestCase):
             "code_challenge": code_challenge,
             "code_challenge_method": "S256",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -586,6 +601,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         response = Login(request).oauth2token()
@@ -659,6 +675,7 @@ class TestLoginView(TestCase):
             "code_challenge": code_challenge,
             "code_challenge_method": "S256",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -680,6 +697,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         response = Login(request).oauth2token()
@@ -739,6 +757,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:
@@ -757,6 +776,7 @@ class TestLoginView(TestCase):
             "response_type": "code",
             "type": "oauth2",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -785,6 +805,7 @@ class TestLoginView(TestCase):
             "code_challenge": code_challenge,
             "code_challenge_method": "S256",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:
@@ -815,6 +836,7 @@ class TestLoginView(TestCase):
             "code_challenge": code_challenge,
             "code_challenge_method": "S256",
         }
+        request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
@@ -835,6 +857,7 @@ class TestLoginView(TestCase):
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:7070/",
         }
+        request.host = "127.0.0.1:7070"
         request.body = urllib.parse.urlencode(request.POST)
         request.method = "POST"
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:

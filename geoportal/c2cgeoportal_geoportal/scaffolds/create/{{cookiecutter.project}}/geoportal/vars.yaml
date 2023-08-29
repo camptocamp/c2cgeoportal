@@ -342,7 +342,6 @@ update_paths:
   - admin_interface.functionalities
   - admin_interface.available_in_templates
   - api
-  - authorized_referers
   - cache.std.arguments
   - cache.ogc-server.arguments
   - cache.obj

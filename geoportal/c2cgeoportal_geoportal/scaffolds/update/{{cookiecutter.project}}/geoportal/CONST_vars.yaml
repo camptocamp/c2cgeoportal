@@ -934,8 +934,6 @@ vars:
   shortener:
     # The base of created URL
     base_url: '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}s/'
-    allowed_hosts:
-      - '{VISIBLE_WEB_HOST}'
     length: 4
 
   # Define whether the MapServer proxy should hide the OGC capabilities.
@@ -1243,8 +1241,7 @@ vars:
     level: 10
 
   # What web page is authorized to use the API
-  authorized_referers:
-    - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}/'
+  authorized_referers: []
 
   metrics:
     memory_maps_rss: False

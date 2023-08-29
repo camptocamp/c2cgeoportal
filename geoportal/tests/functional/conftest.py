@@ -28,9 +28,15 @@
 from unittest.mock import patch
 
 import pytest
+import sqlalchemy.orm
+import transaction
 from c2c.template.config import config as configuration
 from pyramid.testing import DummyRequest
 from tests.functional import setup_common as setup_module
+
+from c2cgeoportal_geoportal.lib import caching
+
+mapserv_url = "http://mapserver:8080/"
 
 
 @pytest.fixture
@@ -73,3 +79,17 @@ def dummy_request(dbsession):
     request.dbsession = dbsession
 
     return request
+
+
+@pytest.fixture
+def default_ogcserver(dbsession, transact):
+    from c2cgeoportal_commons.models.main import OGCServer
+
+    del transact
+
+    ogcserver = OGCServer(name="__test_ogc_server")
+    ogcserver.url = mapserv_url
+    dbsession.add(ogcserver)
+    dbsession.flush()
+
+    yield ogcserver

@@ -54,6 +54,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import cache_invalidate_cb, main
+from c2cgeoportal_geoportal import is_allowed_url
 from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
@@ -1225,6 +1226,16 @@ class Theme:
             models.DBSession.query(main.OGCServer).filter_by(id=self.request.matchdict.get("id")).one()
         )
         came_from = self.request.params.get("came_from")
+        allowed_hosts = self.request.registry.settings.get("admin_interface", {}).get("allowed_hosts", [])
+        came_from_hostname, ok = is_allowed_url(self.request, came_from, allowed_hosts)
+        if not ok:
+            message = (
+                f"Invalid hostname '{came_from_hostname}' in 'came_from' parameter, "
+                f"is not the current host '{self.request.host}' "
+                f"or part of allowed hosts: {', '.join(allowed_hosts)}"
+            )
+            LOG.debug(message)
+            raise pyramid.httpexceptions.HTTPBadRequest(message)
         if came_from:
             raise pyramid.httpexceptions.HTTPFound(location=came_from)
         return {"success": True}

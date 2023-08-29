@@ -1,6 +1,7 @@
 Authentication
 --------------
 
+~~~~~~~~~~~~~~~~~~~
 Supported standards
 ~~~~~~~~~~~~~~~~~~~
 
@@ -9,6 +10,7 @@ Supported standards
   authentication, even if it was initially implemented to be able to connect from QGIS desktop on an
   application that requires two factor authentication.
 
+~~~~~~~~~~~~~~~~~~
 The default policy
 ~~~~~~~~~~~~~~~~~~
 
@@ -39,6 +41,7 @@ In the file ``env.project``, you can configure the policy with the following var
 See also `the official documentation <https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy>`_.
 
 
+~~~~~~~~~~~~~~~~~~~~
 Using another policy
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -47,6 +50,7 @@ set in the request for the user to be identified. In some applications, using
 a custom identification mechanism may be needed instead, for instance to use SSO.
 Our knowledge base has an example of how this can be achieved.
 
+~~~~~~~~~~~~~~~
 User validation
 ~~~~~~~~~~~~~~~
 
@@ -56,6 +60,7 @@ table. If a c2cgeoportal application should work with another user information
 source, like LDAP, a custom *client validation* mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.
 
+~~~~~~~~~~
 Basic auth
 ~~~~~~~~~~
 
@@ -69,6 +74,7 @@ in your query string.
 
    For security reasons, basic authentication and two factor authentication should not be enabled together.
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 Two factors authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -91,6 +97,7 @@ should uncheck the 'The user changed his password' field on the user in the admi
    For security reasons, basic authentication and two factor authentication should not be enabled together,
    you should use :ref:`OAuth2<integrator_authentication_oauth2>` for that.
 
+~~~~~~~~~~~~~~~
 Account lockout
 ~~~~~~~~~~~~~~~
 
@@ -105,6 +112,7 @@ To lock an account after a certain number of authentication failures, set the fo
 To unlock a user, the administrator should uncheck the 'Deactivated' field on the user in the
 admin interface.
 
+~~~~~~~~
 Intranet
 ~~~~~~~~
 
@@ -131,6 +139,7 @@ See `Python documentation <https://docs.python.org/3.4/library/ipaddress.html#ip
 
    A user can easily manually set the `Forwarded` or `X-Forwarded-For` header to spoof his IP.
 
+~~~~~~~~~~~~~~~~~~~
 Lost admin password
 ~~~~~~~~~~~~~~~~~~~
 
@@ -139,3 +148,33 @@ You can generate a new admin password the following command:
 .. argparse::
    :ref: c2cgeoportal_geoportal.scripts.manage_users.get_argparser
    :prog: docker-compose exec geoportal manage-users
+
+~~~~~~~~~~~~~~~~~~~~
+External application
+~~~~~~~~~~~~~~~~~~~~
+
+Some service of GeoMapFish has some host restriction if you mix the domain.
+
+Application authentication
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To be considered as authenticated we should have the correct `Cookie` header,
+we also check the `Referrer` header to be sure that the user is coming from the same domain.
+If he is equals to the `Host` header, we consider that the user is coming from the same domain.
+If your server and client application are not on the same domain, to make the login working,
+you should add the client application domain name (with port) in the vars in `vars/authorized_referers`.
+
+This check is also done on the `came_from` parameter during the login process.
+
+Shortener
+~~~~~~~~~
+
+If you use the shortener service to create link on application on another domain name, you should add
+this domain name in the vars in `vars/shortener/allowed_hosts`.
+
+Admin
+~~~~~
+
+We provide a view for the admin interface, to be able to clear the cache per OGC server.
+If for an unknown reason you have not the same host in the `Host` header and `came_from` parameter, you should
+add the domain of the `came_from` parameter in the vars in `vars/admin_interface/allowed_hosts`.

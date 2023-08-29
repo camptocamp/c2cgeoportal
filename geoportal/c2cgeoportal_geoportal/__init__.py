@@ -28,9 +28,9 @@
 import importlib
 import logging
 import os
+import urllib.parse
 from functools import partial
 from typing import TYPE_CHECKING, Any, Callable, Optional, cast
-from urllib.parse import urlsplit
 
 import c2cgeoform
 import c2cwsgiutils
@@ -50,7 +50,7 @@ from dogpile.cache import register_backend  # type: ignore[attr-defined]
 from papyrus.renderers import GeoJSON
 from prometheus_client.core import REGISTRY
 from pyramid.config import Configurator
-from pyramid.httpexceptions import HTTPException
+from pyramid.httpexceptions import HTTPBadRequest, HTTPException
 from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
 from sqlalchemy.orm import Session, joinedload
@@ -256,14 +256,36 @@ def _match_url_start(reference: str, value: list[str]) -> bool:
     return reference_parts == value_parts
 
 
+def is_allowed_url(
+    request: pyramid.request.Request, url: str, allowed_hosts: list[str]
+) -> tuple[Optional[str], bool]:
+    """
+    Check if the URL is allowed.
+
+    Allowed if URL netloc is request host or is found in allowed hosts.
+    """
+
+    url_netloc = urllib.parse.urlparse(url).netloc
+    return url_netloc, url_netloc == request.host or url_netloc in allowed_hosts
+
+
 def is_valid_referrer(request: pyramid.request.Request, settings: Optional[dict[str, Any]] = None) -> bool:
     """Check if the referrer is valid."""
     if request.referrer is not None:
-        referrer = urlsplit(request.referrer)._replace(query="", fragment="").geturl().rstrip("/").split("/")
         if settings is None:
             settings = request.registry.settings
-        list_ = settings.get("authorized_referers", [])
-        return any(_match_url_start(e, referrer) for e in list_)
+        authorized_referrers = settings.get("authorized_referers", [])
+        referrer_hostname, ok = is_allowed_url(request, request.referrer, authorized_referrers)
+        if not ok:
+            LOG.info(
+                "Invalid referrer hostname '%s', "
+                "is not the current host '%s' "
+                "or part of authorized_referers: %s",
+                referrer_hostname,
+                request.host,
+                ", ".join(authorized_referrers),
+            )
+            return False
     return True
 
 

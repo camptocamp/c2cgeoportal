@@ -243,6 +243,8 @@ def create_dummy_request(
         *args,
         **kargs,
     )
+    request.host = "example.com"
+    request.referrer = "example.com"
 
     global config
     config = pyramid.testing.setUp(

@@ -409,6 +409,11 @@ mapping:
                   model:
                     type: str
                     required: True
+          # Host allowed in the OGC server clear cache
+          allowed_hosts:
+            type: seq
+            sequence:
+              - type: str
 
       getitfixed:
         type: map

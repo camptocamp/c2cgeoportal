@@ -51,7 +51,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import static
-from c2cgeoportal_geoportal import is_valid_referrer
+from c2cgeoportal_geoportal import is_allowed_url, is_valid_referrer
 from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
@@ -191,9 +191,22 @@ class Login:
                 self._oauth2_login(user)
 
             headers = remember(self.request, username)
+
             came_from = self.request.params.get("came_from")
             if came_from:
+                if not came_from.startswith("/"):
+                    allowed_hosts = self.request.registry.settings.get("authorized_referers", [])
+                    came_from_hostname, ok = is_allowed_url(self.request, came_from, allowed_hosts)
+                    if not ok:
+                        message = (
+                            f"Invalid hostname '{came_from_hostname}' in 'came_from' parameter, "
+                            f"is not the current host '{self.request.host}' "
+                            f"or part of allowed hosts: {', '.join(allowed_hosts)}"
+                        )
+                        LOG.debug(message)
+                        return HTTPBadRequest(message)
                 return HTTPFound(location=came_from, headers=headers)
+
             headers.append(("Content-Type", "text/json"))
             return set_common_headers(
                 self.request,
@@ -236,8 +249,21 @@ class Login:
             self.request.tm.commit()
         LOG.debug("OAuth create_authorization_response return\nstatus: %s\nbody:\n%s", status, body)
 
+        location = headers.get("Location")
+        location_hostname = urllib.parse.urlparse(location).hostname
+        allowed_hosts = self.request.registry.settings.get("allowed_hosts", [])
+        location_hostname, ok = is_allowed_url(self.request, location, allowed_hosts)
+        if not ok:
+            message = (
+                f"Invalid location hostname '{location_hostname}', "
+                f"is not the current host '{self.request.host}' "
+                f"or part of allowed_hosts: {', '.join(allowed_hosts)}"
+            )
+            LOG.debug(message)
+            return HTTPBadRequest(message)
+
         if status == 302:
-            raise HTTPFound(location=headers["Location"])
+            raise HTTPFound(location=location)
         if status != 200:
             if body:
                 raise exception_response(status, details=body)
