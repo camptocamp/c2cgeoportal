@@ -153,8 +153,31 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
 <h3>Lost admin password<a class="headerlink" href="#lost-admin-password" title="Permalink to this heading">¶</a></h3>
 <p>You can generate a new admin password the following command:</p>
 </section>
+<section id="external-application">
+<h3>External application<a class="headerlink" href="#external-application" title="Permalink to this heading">¶</a></h3>
+<p>Some service of GeoMapFish has some host restriction if you mix the domain.</p>
+<section id="application-authentication">
+<h4>Application authentication<a class="headerlink" href="#application-authentication" title="Permalink to this heading">¶</a></h4>
+<p>To be considered as authenticated we should have the correct <cite>Cookie</cite> header,
+we also check the <cite>Referrer</cite> header to be sure that the user is coming from the same domain.
+If he is equals to the <cite>Host</cite> header, we consider that the user is coming from the same domain.
+If your server and client application are not on the same domain, to make the login working,
+you should add the client application domain name (with port) in the vars in <cite>vars/authorized_referers</cite>.</p>
+<p>This check is also done on the <cite>came_from</cite> parameter during the login process.</p>
+</section>
+<section id="shortener">
+<h4>Shortener<a class="headerlink" href="#shortener" title="Permalink to this heading">¶</a></h4>
+<p>If you use the shortener service to create link on application on another domain name, you should add
+this domain name in the vars in <cite>vars/shortener/allowed_hosts</cite>.</p>
+</section>
+<section id="admin">
+<h4>Admin<a class="headerlink" href="#admin" title="Permalink to this heading">¶</a></h4>
+<p>We provide a view for the admin interface, to be able to clear the cache per OGC server.
+If for an unknown reason you have not the same host in the <cite>Host</cite> header and <cite>came_from</cite> parameter, you should
+add the domain of the <cite>came_from</cite> parameter in the vars in <cite>vars/admin_interface/allowed_hosts</cite>.</p>
+</section>
 <section id="oauth2-with-qgis">
-<span id="integrator-authentication-oauth2"></span><h3>OAuth2 with QGIS<a class="headerlink" href="#oauth2-with-qgis" title="Permalink to this heading">¶</a></h3>
+<span id="integrator-authentication-oauth2"></span><h4>OAuth2 with QGIS<a class="headerlink" href="#oauth2-with-qgis" title="Permalink to this heading">¶</a></h4>
 <p>In the admin interface create an ‘OAuth2 Client’ with:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Client</span> <span class="pre">ID</span></code> as e.-g. ‘qgis’</p></li>
@@ -179,6 +202,7 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
 </div>
 </section>
 </section>
+</section>
 <section id="https">
 <h2>HTTPS<a class="headerlink" href="#https" title="Permalink to this heading">¶</a></h2>
 <p>If your application is accessed in HTTPS, you have to make sure that all URLs
@@ -190,8 +214,6 @@ prompt “insecure content” warnings.</p>
 <li><p>application behind a proxy</p></li>
 <li><p>application and SSL certificate on the same server</p></li>
 </ul>
-<section id="application-behind-a-proxy">
-<h3>Application behind a proxy<a class="headerlink" href="#application-behind-a-proxy" title="Permalink to this heading">¶</a></h3>
 <p>If the application is placed behind some proxy that removes the SSL encryption
 (plain HTTP is used between the proxy and the server), then some specific
 configuration is required both on the c2cgeoportal application and on the
@@ -212,9 +234,6 @@ value of <code class="docutils literal notranslate"><span class="pre">request.sc
 <span class="p">};</span>
 </pre></div>
 </div>
-</section>
-<section id="application-and-ssl-certificate-on-the-same-server">
-<h3>Application and SSL certificate on the same server<a class="headerlink" href="#application-and-ssl-certificate-on-the-same-server" title="Permalink to this heading">¶</a></h3>
 <p>If the SSL certificate and the application are located on the same server, all
 requests will be redirected to https. So you should change the scheme to https
 for all url except for some cases that should always use http (typically,
@@ -225,9 +244,6 @@ tiles url to use https scheme to avoid mixing secure and insecure contents.</p>
 environment, you may need to request this via your infrastructure support.</p>
 <p>In case you load http external resources into your application, you should use
 the resourceproxy service as described below.</p>
-</section>
-<section id="loading-non-https-external-resources">
-<h3>Loading non https external resources<a class="headerlink" href="#loading-non-https-external-resources" title="Permalink to this heading">¶</a></h3>
 <p>If you want to load non https external resources in your https application, you
 should use the <code class="docutils literal notranslate"><span class="pre">resourceproxy</span></code> service and add the list of hosts you want to access in your project
 <cite>vars.yaml</cite> configuration file:</p>
@@ -242,9 +258,6 @@ should use the <code class="docutils literal notranslate"><span class="pre">reso
 <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;/resourceproxy?target=&lt;targetname&gt;&amp;values=(&lt;valueparam1&gt;,...)</span></code>.</p>
 <p>For example:</p>
 <p><code class="docutils literal notranslate"><span class="pre">https://geoportail.camptocamp.com/main/resourceproxy?target=rfinfo&amp;values=(175,2633)</span></code></p>
-</section>
-<section id="local-certificate-checks">
-<h3>Local certificate checks<a class="headerlink" href="#local-certificate-checks" title="Permalink to this heading">¶</a></h3>
 <p>Certain c2cgeoportal features open a http session to your c2cgeoportal services,
 for example the <code class="docutils literal notranslate"><span class="pre">checker</span></code> or the <code class="docutils literal notranslate"><span class="pre">lingua_extractor</span></code>.
 If you are running your server in https and wish to disable certificate checks in these
@@ -256,7 +269,6 @@ connections, you can achieve this by adding the following configuration element 
 </div>
 <p>See other options in parameters of
 <a class="reference external" href="https://docs.python-requests.org/en/latest/api.html#requests.Request">requests.Request</a></p>
-</section>
 </section>
 <section id="reset-password">
 <h2>Reset password<a class="headerlink" href="#reset-password" title="Permalink to this heading">¶</a></h2>

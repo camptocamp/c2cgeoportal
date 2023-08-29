@@ -149,6 +149,30 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
 <h2>Lost admin password<a class="headerlink" href="#lost-admin-password" title="Permalink to this heading">¶</a></h2>
 <p>You can generate a new admin password the following command:</p>
 </section>
+<section id="external-application">
+<h2>External application<a class="headerlink" href="#external-application" title="Permalink to this heading">¶</a></h2>
+<p>Some service of GeoMapFish has some host restriction if you mix the domain.</p>
+<section id="application-authentication">
+<h3>Application authentication<a class="headerlink" href="#application-authentication" title="Permalink to this heading">¶</a></h3>
+<p>To be considered as authenticated we should have the correct <cite>Cookie</cite> header,
+we also check the <cite>Referrer</cite> header to be sure that the user is coming from the same domain.
+If he is equals to the <cite>Host</cite> header, we consider that the user is coming from the same domain.
+If your server and client application are not on the same domain, to make the login working,
+you should add the client application domain name (with port) in the vars in <cite>vars/authorized_referers</cite>.</p>
+<p>This check is also done on the <cite>came_from</cite> parameter during the login process.</p>
+</section>
+<section id="shortener">
+<h3>Shortener<a class="headerlink" href="#shortener" title="Permalink to this heading">¶</a></h3>
+<p>If you use the shortener service to create link on application on another domain name, you should add
+this domain name in the vars in <cite>vars/shortener/allowed_hosts</cite>.</p>
+</section>
+<section id="admin">
+<h3>Admin<a class="headerlink" href="#admin" title="Permalink to this heading">¶</a></h3>
+<p>We provide a view for the admin interface, to be able to clear the cache per OGC server.
+If for an unknown reason you have not the same host in the <cite>Host</cite> header and <cite>came_from</cite> parameter, you should
+add the domain of the <cite>came_from</cite> parameter in the vars in <cite>vars/admin_interface/allowed_hosts</cite>.</p>
+</section>
+</section>
 </section>
 
 
