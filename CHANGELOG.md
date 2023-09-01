@@ -1,3 +1,7 @@
+##### 2.8.0.89
+
+- Update all patch versions (2.8) (patch) [ngeo#9213](https://github.com/camptocamp/ngeo/pull/9213)
+
 ##### 2.8.0.87
 
 - [Backport 2.8] Apply FTS params on mainCtrl dimensions [ngeo#9039](https://github.com/camptocamp/ngeo/pull/9039)
