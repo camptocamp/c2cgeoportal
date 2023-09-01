@@ -6,7 +6,7 @@ verify_ssl = true
 [packages]
 alabaster = "==0.7.13" # theme
 Pygments = "==2.15.1"
-Sphinx = "==3.3.0"
+Sphinx = "==3.3.1"
 sphinx-prompt = "==1.1.0"
 setuptools = "==65.5.1"
 # Lock
@@ -24,12 +24,12 @@ pytz = "==2019.3"
 requests = "==2.31.0"
 six = "==1.14.0"
 snowballstemmer = "==2.0.0"
-sphinxcontrib-applehelp = "==1.0.4"
-sphinxcontrib-devhelp = "==1.0.2"
+sphinxcontrib-applehelp = "==1.0.7"
+sphinxcontrib-devhelp = "==1.0.5"
 sphinxcontrib-htmlhelp = "==1.0.3"
 sphinxcontrib-jsmath = "==1.0.1"
-sphinxcontrib-qthelp = "==1.0.3"
-sphinxcontrib-serializinghtml = "==1.1.5"
+sphinxcontrib-qthelp = "==1.0.6"
+sphinxcontrib-serializinghtml = "==1.1.9"
 urllib3 = "==1.26.16"
 
 [requires]
