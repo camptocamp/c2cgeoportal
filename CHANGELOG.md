@@ -1,3 +1,7 @@
+##### 2.7.0.298
+
+- Update all patch versions (2.7) (patch) [ngeo#9212](https://github.com/camptocamp/ngeo/pull/9212)
+
 ##### 2.7.0.296
 
 - Add the list of the supported column types in the editing. [c2cgeoportal#10655](https://github.com/camptocamp/c2cgeoportal/pull/10655)
