@@ -32,7 +32,11 @@ module.exports = (env, argv) => {
               presets: babelPresets,
               babelrc: false,
               comments: false,
-              plugins: [require.resolve('babel-plugin-angularjs-annotate')],
+              plugins: [
+                require.resolve('babel-plugin-angularjs-annotate'),
+                require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
+                require.resolve('@babel/plugin-proposal-optional-chaining'),
+              ],
             },
           },
         },
