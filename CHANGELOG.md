@@ -1,3 +1,7 @@
+##### 2.8.0.92
+
+- Snyk auto fix [c2cgeoportal#10663](https://github.com/camptocamp/c2cgeoportal/pull/10663)
+
 ##### 2.8.0.91
 
 - Add plugins required by new OpenLayers version [c2cgeoportal#10660](https://github.com/camptocamp/c2cgeoportal/pull/10660)
