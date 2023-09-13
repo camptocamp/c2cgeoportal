@@ -35,7 +35,7 @@ const babelPresets = [
     require.resolve('@babel/preset-env'),
     {
       targets: {
-        browsers: ['> 0.7% in CH', '> 0.7% in FR', 'Firefox ESR'],
+        browsers: ['defaults', '> 0.7% in CH', '> 0.9% in FR', 'Firefox ESR', 'supports es6-class'],
       },
       modules: false,
       loose: true,
