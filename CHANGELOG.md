@@ -1,3 +1,7 @@
+##### 2.8.0.95
+
+- Classes are required [c2cgeoportal#10666](https://github.com/camptocamp/c2cgeoportal/pull/10666)
+
 ##### 2.8.0.93
 
 - Fix build 2.8 [c2cgeoportal#10664](https://github.com/camptocamp/c2cgeoportal/pull/10664)
