@@ -1,3 +1,7 @@
+##### 2.7.0.300
+
+- Use the long tag names [c2cgeoportal#10669](https://github.com/camptocamp/c2cgeoportal/pull/10669)
+
 ##### 2.7.0.299
 
 - Do the lock [c2cgeoportal#10661](https://github.com/camptocamp/c2cgeoportal/pull/10661)
