@@ -71,7 +71,7 @@ RUN --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
 
 # hadolint ignore=DL3022
-COPY --from=camptocamp/geomapfish-tools /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
+COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing \
     /opt/c2cgeoportal/commons/c2cgeoportal_commons/testing
 ENV PYTHONPATH /var/www/plugins:/usr/local/share/qgis/python/:/opt
 
