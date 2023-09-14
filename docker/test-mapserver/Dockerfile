@@ -1,4 +1,4 @@
-FROM camptocamp/mapserver:7.6
+FROM camptocamp/mapserver:7.6-gdal3.3
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN \
