@@ -92,7 +92,7 @@ def main() -> None:
                     "docker-compose",
                     "exec",
                     "-T",
-                    "db",
+                    "tools",
                     "bash",
                     "-c",
                     'pg_dump --format=c --dbname="$PGDATABASE"',
