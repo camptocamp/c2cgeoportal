@@ -88,7 +88,7 @@ Note that some tree items' metadata are used by the ``theme2fts`` script:
   field for the considered tree item (theme, layer group or layer),
   that is to say that considered tree item will match when searching for the search aliases.
 * ``searchLabelPattern``: Template string for the label of tree items in the search results, for example:
-  "{name} ({theme})". The supported parameters are:
+  ``{name} ({theme})``. The supported parameters are:
     * name: name of the tree item
     * parent: parent of the item (may be a group, a block or a theme)
     * block: name of the block to which the item belongs
@@ -212,13 +212,13 @@ Configuration
 
 In the configuration file ``vars.yaml`` you can add the following variables:
 
-*  ``fulltextsearch.defaultlimit`` the default limit on the results, default is 30.
-*  ``fulltextsearch.maxlimit`` the max possible limit, default is 200.
+*  ``fulltextsearch.defaultlimit`` the default limit on the results, default is ``30``.
+*  ``fulltextsearch.maxlimit`` the max possible limit, default is ``200``.
 *  ``fulltextsearch.languages`` the language correspondence e.-g. ``{ fr: french }``
 *  ``fulltextsearch.split_regex`` the split regex to split the query text and the text in the ``theme2fts``,
         e.-g. ``[.-]`` to transform ``St.Al-ban`` to ``St al ban``.
 *  ``fulltextsearch.replace`` dictionary of rules to do a replacement where the key is a regular expression,
-        e.-g.: ``{ kantonspolizei: 'kantons polizei' }``to transform ``kantonspolizei`` in
+        e.-g.: ``{ kantonspolizei: 'kantons polizei' }`` to transform ``kantonspolizei`` in
         ``kantons polizei``.
 
 
@@ -278,8 +278,8 @@ Insert the unaccent dictionary into a text search configuration
         ALTER MAPPING FOR hword, hword_part, word
         WITH unaccent, french_stem;
 
-When populating the ``tsearch`` table use the text configuration 'fr'
-instead of 'french'. For example:
+When populating the ``tsearch`` table use the text configuration ``fr``
+instead of ``french``. For example:
 
 .. code:: sql
 
@@ -322,13 +322,15 @@ Thus, 'alignem' does not match in the search, which might be considered unexpect
    SELECT to_tsquery('fr', 'alignem:*');
    'alignem':*
 
-To change this behavior, you can create and use a new dictionary named `french_alt`:
+To change this behavior, you can create and use a new dictionary named ``french_alt``:
 
 .. code:: sql
 
-   CREATE TEXT SEARCH DICTIONARY french_alt (TEMPLATE = pg_catalog.simple);
+   CREATE TEXT SEARCH DICTIONARY french_alt
+        (TEMPLATE = pg_catalog.simple);
    ALTER TEXT SEARCH DICTIONARY french_alt (STOPWORDS = french);
-   ALTER TEXT SEARCH CONFIGURATION fr ALTER MAPPING FOR asciiword WITH french_alt;
+   ALTER TEXT SEARCH CONFIGURATION fr ALTER MAPPING FOR asciiword
+        WITH french_alt;
 
 .. note::
 
@@ -338,18 +340,24 @@ Add Synonyms
 ------------
 
 Create a new search configuration:
-``CREATE TEXT SEARCH CONFIGURATION de (COPY = german);``
 
-Create a file with the Synonyms:
-``/usr/share/postgresql/10/tsearch_data/de.syn`` with: ``sankt st``
+.. code:: sql
+
+   CREATE TEXT SEARCH CONFIGURATION de (COPY = german);
+
+Create a file with the synonyms:
+``/usr/share/postgresql/<pg_version>/tsearch_data/de.syn`` with: ``sankt st``
 
 Create the new search directory:
-.. code::
 
-   CREATE TEXT SEARCH DICTIONARY my_de (TEMPLATE = synonym, SYNONYMS= de);
-   ALTER TEXT SEARCH CONFIGURATION de ALTER MAPPING FOR asciiword WITH my_de, german_stem;
+.. code:: sql
 
-Use the new search configuration named de:
+   CREATE TEXT SEARCH DICTIONARY my_de
+        (TEMPLATE = synonym, SYNONYMS = de);
+   ALTER TEXT SEARCH CONFIGURATION de ALTER MAPPING FOR asciiword
+        WITH my_de, german_stem;
+
+Use the new search configuration named ``de``:
 
 .. code:: yaml
 
