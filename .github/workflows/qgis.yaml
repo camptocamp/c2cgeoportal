@@ -12,13 +12,36 @@ on:
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
   DOCKER_BUILDKIT: 1
+  MAIN_BRANCH: '2.8'
+  MAJOR_VERSION: '2.8'
 
 jobs:
+  common:
+    runs-on: ubuntu-22.04
+    name: QGIS build
+    timeout-minutes: 20
+    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - run: make build-runner
+
+      - run: docker save --output=/tmp/tools.docker camptocamp/geomapfish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: tools.docker
+          path: /tmp/tools.docker
+
   main:
     runs-on: ubuntu-22.04
     name: QGIS build
-    timeout-minutes: 40
-    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+    timeout-minutes: 10
+    needs: common
 
     strategy:
       fail-fast: false
@@ -26,12 +49,15 @@ jobs:
         version:
           # Last LTR
           - '3.28'
+          - 3.28-gdal3.6
           - latest
           - master
-
-    env:
-      MAIN_BRANCH: '2.8'
-      MAJOR_VERSION: '2.8'
+        # Will be soon:
+        #  - 3.28-gdal3.7
+        #  - ltr
+        #  - lr
+        #  - latest
+        #  - master
 
     steps:
       - uses: actions/checkout@v3
@@ -51,7 +77,13 @@ jobs:
         id: version
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - run: make build-runner
+      - name: Download artifacts (Docker images) from previous workflows
+        uses: actions/download-artifact@v2
+
+      - name: Load Docker images from previous workflows
+        run: |
+          docker load --input=tools.docker/tools.docker
+
       - run: make build-test-db
 
       - name: Build QGIS server
