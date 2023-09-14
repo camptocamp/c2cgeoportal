@@ -482,9 +482,6 @@ services:
   db:
     image: camptocamp/postgres:${POSTGRES_TAG}
     environment:
-      - PGUSER
-      - PGPASSWORD
-      - PGDATABASE
       - POSTGRES_PASSWORD=${PGPASSWORD}
       - POSTGRES_DB=${PGDATABASE}
       - POSTGRES_USER=${PGUSER}
