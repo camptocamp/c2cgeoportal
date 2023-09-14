@@ -226,7 +226,7 @@ Ranking system
 --------------
 
 By default, the full-text search uses the `similarity` system of the
-`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`_. This
+`pg_trgm module <https://www.postgresql.org/docs/current/pgtrgm.html>`_. This
 is based only on the similarities of words, without language analysis, and it
 cares only about how near your search is to the result. `12` is nearer to `12`
 than `120`.
@@ -239,7 +239,7 @@ Ensure that the extension is created in you database:
 
 Alternatively, you can use the ``tsvector`` and ``ts_rank_cd`` to rank your search
 results
-(see: `textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_).
+(see: `textsearch-controls <https://www.postgresql.org/docs/current/textsearch-controls.html>`_).
 These methods are useful to handle language-based strings. That means for instance
 that plural nouns are the same as singular nouns. This system only checks if
 your search word exists in the result. That means that if you search `B 12 Zug`,
@@ -253,7 +253,7 @@ Using the unaccent extension
 
 The full-text search is accent-sensitive by default.
 To make it accent-insensitive Postgres's
-`unaccent extension <https://www.postgresql.org/docs/9.0/static/unaccent.html>`_
+`unaccent extension <https://www.postgresql.org/docs/current/unaccent.html>`_
 can be used.
 
 To activate the unaccent extension, first connect to the database:
@@ -336,6 +336,8 @@ To change this behavior, you can create and use a new dictionary named ``french_
 
    We keep the stop words to remove the French short words.
 
+See also the `PostgreSQL documentation <https://www.postgresql.org/docs/current/textsearch-configuration.html>`_.
+
 Add Synonyms
 ------------
 
@@ -364,3 +366,5 @@ Use the new search configuration named ``de``:
     fulltextsearch:
         languages:
             de: de
+
+See also the `PostgreSQL documentation <https://www.postgresql.org/docs/current/textsearch-configuration.html>`_.
