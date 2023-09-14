@@ -1,3 +1,8 @@
+##### 2.8.0.96
+
+- Use a working babel/preset-env configuration [c2cgeoportal#10668](https://github.com/camptocamp/c2cgeoportal/pull/10668)
+- Use the long tag names [c2cgeoportal#10670](https://github.com/camptocamp/c2cgeoportal/pull/10670)
+
 ##### 2.8.0.95
 
 - Classes are required [c2cgeoportal#10666](https://github.com/camptocamp/c2cgeoportal/pull/10666)
