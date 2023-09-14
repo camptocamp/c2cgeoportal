@@ -74,7 +74,7 @@ services:
       - PGOPTIONS
 
   mapserver:
-    image: camptocamp/mapserver:7.6-20-04
+    image: camptocamp/mapserver:7.6-gdal3.3
     user: www-data
     restart: unless-stopped
     entrypoint: []
