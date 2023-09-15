@@ -33,7 +33,7 @@ Here is an example of an insertion in the ``tsearch`` table:
        't',
        NULL,
        'fr',
-       to_tsvector('french', 'text to search', ' ', 'g'))
+       to_tsvector('french', 'text to search'))
     );
 
 Where the point geometry contains the coordinates to zoom to,
@@ -60,7 +60,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
       't',
       NULL,
       'de',
-      to_tsvector('german', text, ' ', 'g'))
+      to_tsvector('german', text))
     FROM table;
 
 .. note::
@@ -124,7 +124,7 @@ available to users with the corresponding role.
            'f',
            1,
            'de',
-           to_tsvector('german', text, ' ', 'g'))
+           to_tsvector('german', text))
         FROM table;
 
         INSERT INTO <main_schema>.tsearch
@@ -136,7 +136,7 @@ available to users with the corresponding role.
            'f',
            2,
            'de',
-           to_tsvector('german', text, ' ', 'g'))
+           to_tsvector('german', text))
         FROM table;
 
 
@@ -339,7 +339,7 @@ To change this behavior, you can create and use a new dictionary named ``french_
 
    We keep the stop words to remove the French short words.
 
-The  you should adapt your ``fulltextsearch.languages`` configuration in the ``vars.yaml`` file:
+Then you should adapt your ``fulltextsearch.languages`` configuration in the ``vars.yaml`` file:
 
 Then you should adapt the used configuration on your custom script that fill the ``tsearch`` table,
 and run ``theme2fts`` again iu used.
