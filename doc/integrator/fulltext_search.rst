@@ -24,7 +24,7 @@ Here is an example of an insertion in the ``tsearch`` table:
 
 .. code:: sql
 
-    INSERT INTO app_schema.tsearch
+    INSERT INTO <main_schema>.tsearch
       (the_geom, layer_name, label, public, role_id, lang, ts)
     VALUES (
        ST_GeomFromText('POINT(2660000 1140000)', 2056),
@@ -40,7 +40,7 @@ Where the point geometry contains the coordinates to zoom to,
 ``Section name`` will be used a section header in the search result display,
 ``text to display`` is the text to be displayed in the search results,
 ``text to search`` is the text that we search for,
-``french`` is the language used.
+``french`` is the ``TEXT SEARCH CONFIGURATION`` to use, should be adapted if you use ``unaccent``or ``Synonym``.
 
 The section header (in the database, ``layer_name``) must always be provided for the
 result to appear in the search results.
@@ -51,7 +51,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
 
 .. code:: sql
 
-    INSERT INTO app_schema.tsearch
+    INSERT INTO <main_schema>.tsearch
       (the_geom, layer_name, label, public, role_id, lang, ts)
     SELECT
       geom,
@@ -115,7 +115,7 @@ available to users with the corresponding role.
 
     .. code:: sql
 
-        INSERT INTO app_schema.tsearch
+        INSERT INTO <main_schema>.tsearch
            (the_geom, layer_name, label, public, role_id, lang, ts)
         SELECT
            geom,
@@ -127,7 +127,7 @@ available to users with the corresponding role.
            to_tsvector('german', text, ' ', 'g'))
         FROM table;
 
-        INSERT INTO app_schema.tsearch
+        INSERT INTO <main_schema>.tsearch
            (the_geom, layer_name, label, public, role_id, lang, ts)
         SELECT
            geom,
@@ -187,7 +187,7 @@ Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on
 
 .. code:: sql
 
-   INSERT INTO app_schema.tsearch (..., actions)
+   INSERT INTO <main_schema>.tsearch (..., actions)
    VALUES (..., '[{"action": "add_layer", "data": "cadastre"}]')
 
 
@@ -303,6 +303,9 @@ And define the configuration in the ``vars.yaml`` file:
 ``fr: fr`` is a link between the pyramid language and the text search configuration, by default it is
 ``fr: french`` because the default french text search configuration is named 'french'.
 
+Then you should adapt the used configuration on your custom script that fill the ``tsearch`` table,
+and run ``theme2fts`` again iu used.
+
 
 Synonym and Thesaurus Dictionary
 --------------------------------
@@ -336,6 +339,11 @@ To change this behavior, you can create and use a new dictionary named ``french_
 
    We keep the stop words to remove the French short words.
 
+The  you should adapt your ``fulltextsearch.languages`` configuration in the ``vars.yaml`` file:
+
+Then you should adapt the used configuration on your custom script that fill the ``tsearch`` table,
+and run ``theme2fts`` again iu used.
+
 See also the `PostgreSQL documentation <https://www.postgresql.org/docs/current/textsearch-configuration.html>`_.
 
 Add Synonyms
@@ -366,5 +374,8 @@ Use the new search configuration named ``de``:
     fulltextsearch:
         languages:
             de: de
+
+Then you should adapt the used configuration on your custom script that fill the ``tsearch`` table,
+and run ``theme2fts`` again iu used.
 
 See also the `PostgreSQL documentation <https://www.postgresql.org/docs/current/textsearch-configuration.html>`_.
