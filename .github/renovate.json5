@@ -27,13 +27,6 @@
       ],
       'datasourceTemplate': 'github-tags',
     },
-    {
-      'fileMatch': ['^ci/config\\\\.yaml$'],
-      'matchStrings': [
-        '.*https://raw\\\\.githubusercontent\\\\.com/(?<depName>[^\\\\s]+)/(?<currentValue>[0-9\\\\.]+)/.*',
-      ],
-      'datasourceTemplate': 'github-tags',
-    },
   ],
   packageRules: [
     /** Docker images versioning */
