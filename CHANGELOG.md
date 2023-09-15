@@ -1,3 +1,7 @@
+##### 2.8.0.97
+
+- Use the @babel/preset-env to select working list of browser [ngeo#9215](https://github.com/camptocamp/ngeo/pull/9215)
+
 ##### 2.8.0.96
 
 - Use a working babel/preset-env configuration [c2cgeoportal#10668](https://github.com/camptocamp/c2cgeoportal/pull/10668)
