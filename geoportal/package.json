@@ -8,7 +8,7 @@
     "snyk-protect": "snyk-protect"
   },
   "dependencies": {
-    "@snyk/protect": "1.1199.0",
+    "@snyk/protect": "1.1207.0",
     "@typescript-eslint/eslint-plugin": "6.2.1",
     "@typescript-eslint/parser": "6.2.1",
     "angular-gettext-tools": "2.5.3",
