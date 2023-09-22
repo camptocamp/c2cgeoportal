@@ -24,7 +24,7 @@ jobs:
   main:
     runs-on: ubuntu-22.04
     name: Continuous integration
-    timeout-minutes: 135
+    timeout-minutes: 150
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
