@@ -20,16 +20,14 @@ application's main ``__init__.py`` file.
 
 In the file ``env.project``, you can configure the policy with the following variables:
 
-.. code::
-
-   AUTHTKT_TIMEOUT  # Default to one day.
-   AUTHTKT_REISSUE_TIME  # Default to 2h30, recommended to be 10 times smaller than AUTHTKT_TIMEOUT.
-   AUTHTKT_MAXAGE  # Default to one day, good to have the same value as AUTHTKT_TIMEOUT.
-   AUTHTKT_SECRET  # Should be defined
-   AUTHTKT_COOKIENAME
-   AUTHTKT_HTTP_ONLY  # Default to true.
-   AUTHTKT_SECURE  # Default to true.
-   AUTHTKT_SAMESITE  # Default to Lax.
+``AUTHTKT_TIMEOUT``: Default to one day.
+``AUTHTKT_REISSUE_TIME``: Default to 2h30, recommended to be 10 times smaller than ``AUTHTKT_TIMEOUT``.
+``AUTHTKT_MAXAGE``: Default to one day, good to have the same value as ``AUTHTKT_TIMEOUT``.
+``AUTHTKT_SECRET``: Should be defined
+``AUTHTKT_COOKIENAME``: Should be defined
+``AUTHTKT_HTTP_ONLY``: Default to ``true``.
+``AUTHTKT_SECURE``: Default to ``true``.
+``AUTHTKT_SAMESITE``: Default to ``Lax``.
 
 .. note::
 

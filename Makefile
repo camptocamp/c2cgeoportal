@@ -1,6 +1,7 @@
 MAJOR_VERSION ?= $(shell scripts/get-version --major)
 MAJOR_MINOR_VERSION ?= $(shell scripts/get-version --major-minor)
 VERSION ?= $(shell scripts/get-version --full)
+MAIN_BRANCH ?= fake-local-branch
 DOCKER_TAG ?= latest
 export DOCKER_BUILDKIT=1
 
@@ -121,4 +122,4 @@ doc: build-tools ## Generate the documentation
 	--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) \
 	--build-arg=MAIN_BRANCH=$(MAIN_BRANCH) \
 	doc
-	MAJOR_VERSION=$(MAJOR_VERSION) MAIN_BRANCH=$(MAIN_BRANCH) ci/extract-documentation artifacts/documentations/
+	ci/extract-documentation artifacts/documentations/
