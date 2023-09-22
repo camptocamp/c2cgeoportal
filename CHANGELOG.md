@@ -1,3 +1,7 @@
+##### 2.8.0.100
+
+- [Backport 2.8] Referrer, while orthographically correct, is not the parameter name a… [c2cgeoportal#10601](https://github.com/camptocamp/c2cgeoportal/pull/10601)
+
 ##### 2.8.0.99
 
 - QGIS with GDAL 3.7 [c2cgeoportal#10677](https://github.com/camptocamp/c2cgeoportal/pull/10677)
