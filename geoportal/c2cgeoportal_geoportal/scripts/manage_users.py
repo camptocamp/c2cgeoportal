@@ -38,9 +38,7 @@ from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_
 def get_argparser() -> argparse.ArgumentParser:
     """Get the argument parser for this script."""
 
-    usage = """Usage: %prog [options] USERNAME
-
-Reset a user password.
+    usage = """Reset a user password.
 The username is used as password if the password is not provided with the corresponding option.
 User can be created if it does not exist yet."""
 

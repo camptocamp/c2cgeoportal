@@ -1,10 +1,6 @@
 #!/bin/bash -eux
 
 mkdir --parent "${1}"
-DOCKER_BUILDKIT=1 docker build --tag=camptocamp/geomapfish-doc \
-    --build-arg="MAJOR_VERSION=${MAJOR_VERSION}" \
-    --build-arg="MAIN_BRANCH=${MAIN_BRANCH}" \
-    doc
 docker run --rm --name=doc --detach camptocamp/geomapfish-doc tail -f /dev/null
 docker cp doc:/doc/_build/html/ "${1}/"
 docker stop doc

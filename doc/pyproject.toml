@@ -1,3 +1,11 @@
+[tool.black]
+line-length = 110
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+line_length = 110
+
 [tool.poetry]
 name = 'c2cgeoportal'
 version = '0.0.0'
@@ -14,4 +22,5 @@ sphinx-jsonschema = "1.19.1"
 sphinx-argparse = "0.4.0"
 Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2022.2.16" }
 sphinxcontrib-mermaid = "0.9.2"
-tilecloud-chain = "1.17.0"
+c2cwsgiutils = ">=6.0.0.dev148"
+tilecloud-chain = "1.17.4"

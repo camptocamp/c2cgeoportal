@@ -135,18 +135,18 @@ The dynamic values names are:
 Ngeo configuration options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. include:: ngeo_configuration.rst
+.. include:: //ngeo_configuration.rst
 
 Ngeo API configuration options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. include:: ngeo_api_configuration.rst
+.. include:: //ngeo_api_configuration.rst
 
 Ngeo internal object configuration options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. include:: ngeo_config_ref.rst
-.. include:: ngeo_other_configuration.rst
+.. include:: //ngeo_config_ref.rst
+.. include:: //ngeo_other_configuration.rst
 
 
 CSS style
