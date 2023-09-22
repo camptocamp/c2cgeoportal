@@ -1,3 +1,7 @@
+##### 2.8.0.99
+
+- QGIS with GDAL 3.7 [c2cgeoportal#10677](https://github.com/camptocamp/c2cgeoportal/pull/10677)
+
 ##### 2.8.0.97
 
 - Use the @babel/preset-env to select working list of browser [ngeo#9215](https://github.com/camptocamp/ngeo/pull/9215)
