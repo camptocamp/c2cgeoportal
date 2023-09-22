@@ -24,7 +24,7 @@ Here is an example of an insertion in the ``tsearch`` table:
 
 .. code:: sql
 
-    INSERT INTO app_schema.tsearch
+    INSERT INTO <main_schema>.tsearch
       (the_geom, layer_name, label, public, role_id, lang, ts)
     VALUES (
        ST_GeomFromText('POINT(2660000 1140000)', 2056),
@@ -33,14 +33,14 @@ Here is an example of an insertion in the ``tsearch`` table:
        't',
        NULL,
        'fr',
-       to_tsvector('french', 'text to search', ' ', 'g'))
+       to_tsvector('french', 'text to search'))
     );
 
 Where the point geometry contains the coordinates to zoom to,
 ``Section name`` will be used a section header in the search result display,
 ``text to display`` is the text to be displayed in the search results,
 ``text to search`` is the text that we search for,
-``french`` is the language used.
+``french`` is the ``TEXT SEARCH CONFIGURATION`` to use, should be adapted if you use ``unaccent``or ``Synonym``.
 
 The section header (in the database, ``layer_name``) must always be provided for the
 result to appear in the search results.
@@ -51,7 +51,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
 
 .. code:: sql
 
-    INSERT INTO app_schema.tsearch
+    INSERT INTO <main_schema>.tsearch
       (the_geom, layer_name, label, public, role_id, lang, ts)
     SELECT
       geom,
@@ -60,7 +60,7 @@ Here is another example where rows from a ``SELECT`` are inserted:
       't',
       NULL,
       'de',
-      to_tsvector('german', text, ' ', 'g'))
+      to_tsvector('german', text))
     FROM table;
 
 .. note::
@@ -88,7 +88,7 @@ Note that some tree items' metadata are used by the ``theme2fts`` script:
   field for the considered tree item (theme, layer group or layer),
   that is to say that considered tree item will match when searching for the search aliases.
 * ``searchLabelPattern``: Template string for the label of tree items in the search results, for example:
-  "{name} ({theme})". The supported parameters are:
+  ``{name} ({theme})``. The supported parameters are:
     * name: name of the tree item
     * parent: parent of the item (may be a group, a block or a theme)
     * block: name of the block to which the item belongs
@@ -115,7 +115,7 @@ available to users with the corresponding role.
 
     .. code:: sql
 
-        INSERT INTO app_schema.tsearch
+        INSERT INTO <main_schema>.tsearch
            (the_geom, layer_name, label, public, role_id, lang, ts)
         SELECT
            geom,
@@ -124,10 +124,10 @@ available to users with the corresponding role.
            'f',
            1,
            'de',
-           to_tsvector('german', text, ' ', 'g'))
+           to_tsvector('german', text))
         FROM table;
 
-        INSERT INTO app_schema.tsearch
+        INSERT INTO <main_schema>.tsearch
            (the_geom, layer_name, label, public, role_id, lang, ts)
         SELECT
            geom,
@@ -136,7 +136,7 @@ available to users with the corresponding role.
            'f',
            2,
            'de',
-           to_tsvector('german', text, ' ', 'g'))
+           to_tsvector('german', text))
         FROM table;
 
 
@@ -187,7 +187,7 @@ Example of ``SQL`` ``INSERT`` of ``actions`` data to add the layer "cadastre" on
 
 .. code:: sql
 
-   INSERT INTO app_schema.tsearch (..., actions)
+   INSERT INTO <main_schema>.tsearch (..., actions)
    VALUES (..., '[{"action": "add_layer", "data": "cadastre"}]')
 
 
@@ -212,13 +212,13 @@ Configuration
 
 In the configuration file ``vars.yaml`` you can add the following variables:
 
-*  ``fulltextsearch.defaultlimit`` the default limit on the results, default is 30.
-*  ``fulltextsearch.maxlimit`` the max possible limit, default is 200.
+*  ``fulltextsearch.defaultlimit`` the default limit on the results, default is ``30``.
+*  ``fulltextsearch.maxlimit`` the max possible limit, default is ``200``.
 *  ``fulltextsearch.languages`` the language correspondence e.-g. ``{ fr: french }``
 *  ``fulltextsearch.split_regex`` the split regex to split the query text and the text in the ``theme2fts``,
         e.-g. ``[.-]`` to transform ``St.Al-ban`` to ``St al ban``.
 *  ``fulltextsearch.replace`` dictionary of rules to do a replacement where the key is a regular expression,
-        e.-g.: ``{ kantonspolizei: 'kantons polizei' }``to transform ``kantonspolizei`` in
+        e.-g.: ``{ kantonspolizei: 'kantons polizei' }`` to transform ``kantonspolizei`` in
         ``kantons polizei``.
 
 
@@ -226,7 +226,7 @@ Ranking system
 --------------
 
 By default, the full-text search uses the `similarity` system of the
-`pg_trgm module <https://www.postgresql.org/docs/9.0/static/pgtrgm.html>`_. This
+`pg_trgm module <https://www.postgresql.org/docs/current/pgtrgm.html>`_. This
 is based only on the similarities of words, without language analysis, and it
 cares only about how near your search is to the result. `12` is nearer to `12`
 than `120`.
@@ -239,7 +239,7 @@ Ensure that the extension is created in you database:
 
 Alternatively, you can use the ``tsvector`` and ``ts_rank_cd`` to rank your search
 results
-(see: `textsearch-controls <https://www.postgresql.org/docs/9.0/static/textsearch-controls.html>`_).
+(see: `textsearch-controls <https://www.postgresql.org/docs/current/textsearch-controls.html>`_).
 These methods are useful to handle language-based strings. That means for instance
 that plural nouns are the same as singular nouns. This system only checks if
 your search word exists in the result. That means that if you search `B 12 Zug`,
@@ -253,7 +253,7 @@ Using the unaccent extension
 
 The full-text search is accent-sensitive by default.
 To make it accent-insensitive Postgres's
-`unaccent extension <https://www.postgresql.org/docs/9.0/static/unaccent.html>`_
+`unaccent extension <https://www.postgresql.org/docs/current/unaccent.html>`_
 can be used.
 
 To activate the unaccent extension, first connect to the database:
@@ -278,8 +278,8 @@ Insert the unaccent dictionary into a text search configuration
         ALTER MAPPING FOR hword, hword_part, word
         WITH unaccent, french_stem;
 
-When populating the ``tsearch`` table use the text configuration 'fr'
-instead of 'french'. For example:
+When populating the ``tsearch`` table use the text configuration ``fr``
+instead of ``french``. For example:
 
 .. code:: sql
 
@@ -303,6 +303,9 @@ And define the configuration in the ``vars.yaml`` file:
 ``fr: fr`` is a link between the pyramid language and the text search configuration, by default it is
 ``fr: french`` because the default french text search configuration is named 'french'.
 
+Then you should adapt the used configuration on your custom script that fill the ``tsearch`` table,
+and run ``theme2fts`` again iu used.
+
 
 Synonym and Thesaurus Dictionary
 --------------------------------
@@ -322,37 +325,57 @@ Thus, 'alignem' does not match in the search, which might be considered unexpect
    SELECT to_tsquery('fr', 'alignem:*');
    'alignem':*
 
-To change this behavior, you can create and use a new dictionary named `french_alt`:
+To change this behavior, you can create and use a new dictionary named ``french_alt``:
 
 .. code:: sql
 
-   CREATE TEXT SEARCH DICTIONARY french_alt (TEMPLATE = pg_catalog.simple);
+   CREATE TEXT SEARCH DICTIONARY french_alt
+        (TEMPLATE = pg_catalog.simple);
    ALTER TEXT SEARCH DICTIONARY french_alt (STOPWORDS = french);
-   ALTER TEXT SEARCH CONFIGURATION fr ALTER MAPPING FOR asciiword WITH french_alt;
+   ALTER TEXT SEARCH CONFIGURATION fr ALTER MAPPING FOR asciiword
+        WITH french_alt;
 
 .. note::
 
    We keep the stop words to remove the French short words.
 
+Then you should adapt your ``fulltextsearch.languages`` configuration in the ``vars.yaml`` file:
+
+Then you should adapt the used configuration on your custom script that fill the ``tsearch`` table,
+and run ``theme2fts`` again iu used.
+
+See also the `PostgreSQL documentation <https://www.postgresql.org/docs/current/textsearch-configuration.html>`_.
+
 Add Synonyms
 ------------
 
 Create a new search configuration:
-``CREATE TEXT SEARCH CONFIGURATION de (COPY = german);``
 
-Create a file with the Synonyms:
-``/usr/share/postgresql/10/tsearch_data/de.syn`` with: ``sankt st``
+.. code:: sql
+
+   CREATE TEXT SEARCH CONFIGURATION de (COPY = german);
+
+Create a file with the synonyms:
+``/usr/share/postgresql/<pg_version>/tsearch_data/de.syn`` with: ``sankt st``
 
 Create the new search directory:
-.. code::
 
-   CREATE TEXT SEARCH DICTIONARY my_de (TEMPLATE = synonym, SYNONYMS= de);
-   ALTER TEXT SEARCH CONFIGURATION de ALTER MAPPING FOR asciiword WITH my_de, german_stem;
+.. code:: sql
 
-Use the new search configuration named de:
+   CREATE TEXT SEARCH DICTIONARY my_de
+        (TEMPLATE = synonym, SYNONYMS = de);
+   ALTER TEXT SEARCH CONFIGURATION de ALTER MAPPING FOR asciiword
+        WITH my_de, german_stem;
+
+Use the new search configuration named ``de``:
 
 .. code:: yaml
 
     fulltextsearch:
         languages:
             de: de
+
+Then you should adapt the used configuration on your custom script that fill the ``tsearch`` table,
+and run ``theme2fts`` again iu used.
+
+See also the `PostgreSQL documentation <https://www.postgresql.org/docs/current/textsearch-configuration.html>`_.
