@@ -1,3 +1,7 @@
+##### 2.8.0.102
+
+- [Backport 2.8] Some fix in the documentations [c2cgeoportal#10680](https://github.com/camptocamp/c2cgeoportal/pull/10680)
+
 ##### 2.8.0.101
 
 - [Backport 2.8] Fix database initialization [c2cgeoportal#10678](https://github.com/camptocamp/c2cgeoportal/pull/10678)
