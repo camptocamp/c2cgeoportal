@@ -51,7 +51,7 @@ zoom to the geometry. Other actions can be set, see below for the available acti
 <section id="populate-the-full-text-search-table">
 <h2>Populate the full-text search table<a class="headerlink" href="#populate-the-full-text-search-table" title="Permalink to this heading">¶</a></h2>
 <p>Here is an example of an insertion in the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
 <span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
 <span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
 <span class="w">   </span><span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(2660000 1140000)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2056</span><span class="p">),</span>
@@ -60,7 +60,7 @@ zoom to the geometry. Other actions can be set, see below for the available acti
 <span class="w">   </span><span class="s1">&#39;t&#39;</span><span class="p">,</span>
 <span class="w">   </span><span class="k">NULL</span><span class="p">,</span>
 <span class="w">   </span><span class="s1">&#39;fr&#39;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;text to search&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;french&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;text to search&#39;</span><span class="p">))</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -68,13 +68,13 @@ zoom to the geometry. Other actions can be set, see below for the available acti
 <code class="docutils literal notranslate"><span class="pre">Section</span> <span class="pre">name</span></code> will be used a section header in the search result display,
 <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">display</span></code> is the text to be displayed in the search results,
 <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">to</span> <span class="pre">search</span></code> is the text that we search for,
-<code class="docutils literal notranslate"><span class="pre">french</span></code> is the language used.</p>
+<code class="docutils literal notranslate"><span class="pre">french</span></code> is the <code class="docutils literal notranslate"><span class="pre">TEXT</span> <span class="pre">SEARCH</span> <span class="pre">CONFIGURATION</span></code> to use, should be adapted if you use <code class="docutils literal notranslate"><span class="pre">unaccent``or</span> <span class="pre">``Synonym</span></code>.</p>
 <p>The section header (in the database, <code class="docutils literal notranslate"><span class="pre">layer_name</span></code>) must always be provided for the
 result to appear in the search results.
 After inserting new section headers, you should invalidate the server cache for the new
 headers to be taken into account.</p>
 <p>Here is another example where rows from a <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> are inserted:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
 <span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
 <span class="k">SELECT</span>
 <span class="w">  </span><span class="n">geom</span><span class="p">,</span>
@@ -83,7 +83,7 @@ headers to be taken into account.</p>
 <span class="w">  </span><span class="s1">&#39;t&#39;</span><span class="p">,</span>
 <span class="w">  </span><span class="k">NULL</span><span class="p">,</span>
 <span class="w">  </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
-<span class="w">  </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="w">  </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">))</span>
 <span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -172,7 +172,7 @@ by default if we find more than one element with the same name only one will be 
 field for the considered tree item (theme, layer group or layer),
 that is to say that considered tree item will match when searching for the search aliases.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">searchLabelPattern</span></code>: Template string for the label of tree items in the search results, for example:
-“{name} ({theme})”. The supported parameters are:</p>
+<code class="docutils literal notranslate"><span class="pre">{name}</span> <span class="pre">({theme})</span></code>. The supported parameters are:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>name: name of the tree item</p></li>
@@ -199,7 +199,7 @@ available to users with the corresponding role.</p>
 insert that data multiple times. For example, if you want to make the data
 of a table <em>text-searchable</em>, and restrict that data to the roles whose ids
 are <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code>, you will use two SQL <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> statements:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
 <span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
 <span class="k">SELECT</span>
 <span class="w">   </span><span class="n">geom</span><span class="p">,</span>
@@ -208,10 +208,10 @@ are <code class="docutils literal notranslate"><span class="pre">1</span></code>
 <span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span>
 <span class="w">   </span><span class="mi">1</span><span class="p">,</span>
 <span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">))</span>
 <span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
 
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
 <span class="w">   </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">lang</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
 <span class="k">SELECT</span>
 <span class="w">   </span><span class="n">geom</span><span class="p">,</span>
@@ -220,7 +220,7 @@ are <code class="docutils literal notranslate"><span class="pre">1</span></code>
 <span class="w">   </span><span class="s1">&#39;f&#39;</span><span class="p">,</span>
 <span class="w">   </span><span class="mi">2</span><span class="p">,</span>
 <span class="w">   </span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
-<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
+<span class="w">   </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">&#39;german&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">text</span><span class="p">))</span>
 <span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -259,7 +259,7 @@ For instance to specify a <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 <p>Example of <code class="docutils literal notranslate"><span class="pre">SQL</span></code> <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> of <code class="docutils literal notranslate"><span class="pre">actions</span></code> data to add the layer “cadastre” on the map:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">app_schema</span><span class="p">.</span><span class="n">tsearch</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="n">actions</span><span class="p">)</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="n">actions</span><span class="p">)</span>
 <span class="k">VALUES</span><span class="w"> </span><span class="p">(...,</span><span class="w"> </span><span class="s1">&#39;[{&quot;action&quot;: &quot;add_layer&quot;, &quot;data&quot;: &quot;cadastre&quot;}]&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -278,8 +278,8 @@ the default behavior is to zoom to this geometry.</p>
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
 <p>In the configuration file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> you can add the following variables:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.defaultlimit</span></code> the default limit on the results, default is 30.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.maxlimit</span></code> the max possible limit, default is 200.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.defaultlimit</span></code> the default limit on the results, default is <code class="docutils literal notranslate"><span class="pre">30</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.maxlimit</span></code> the max possible limit, default is <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch.languages</span></code> the language correspondence e.-g. <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">fr:</span> <span class="pre">french</span> <span class="pre">}</span></code></p></li>
 <li><dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">fulltextsearch.split_regex</span></code> the split regex to split the query text and the text in the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code>,</dt><dd><p>e.-g. <code class="docutils literal notranslate"><span class="pre">[.-]</span></code> to transform <code class="docutils literal notranslate"><span class="pre">St.Al-ban</span></code> to <code class="docutils literal notranslate"><span class="pre">St</span> <span class="pre">al</span> <span class="pre">ban</span></code>.</p>
@@ -287,7 +287,7 @@ the default behavior is to zoom to this geometry.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">fulltextsearch.replace</span></code> dictionary of rules to do a replacement where the key is a regular expression,</dt><dd><p>e.-g.: <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">kantonspolizei:</span> <span class="pre">'kantons</span> <span class="pre">polizei'</span> <span class="pre">}``to</span> <span class="pre">transform</span> <span class="pre">``kantonspolizei</span></code> in
+<dt><code class="docutils literal notranslate"><span class="pre">fulltextsearch.replace</span></code> dictionary of rules to do a replacement where the key is a regular expression,</dt><dd><p>e.-g.: <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">kantonspolizei:</span> <span class="pre">'kantons</span> <span class="pre">polizei'</span> <span class="pre">}</span></code> to transform <code class="docutils literal notranslate"><span class="pre">kantonspolizei</span></code> in
 <code class="docutils literal notranslate"><span class="pre">kantons</span> <span class="pre">polizei</span></code>.</p>
 </dd>
 </dl>
@@ -297,7 +297,7 @@ the default behavior is to zoom to this geometry.</p>
 <section id="ranking-system">
 <h2>Ranking system<a class="headerlink" href="#ranking-system" title="Permalink to this heading">¶</a></h2>
 <p>By default, the full-text search uses the <cite>similarity</cite> system of the
-<a class="reference external" href="https://www.postgresql.org/docs/9.0/static/pgtrgm.html">pg_trgm module</a>. This
+<a class="reference external" href="https://www.postgresql.org/docs/current/pgtrgm.html">pg_trgm module</a>. This
 is based only on the similarities of words, without language analysis, and it
 cares only about how near your search is to the result. <cite>12</cite> is nearer to <cite>12</cite>
 than <cite>120</cite>.</p>
@@ -309,7 +309,7 @@ span.prompt1:before {
 </style><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
 </pre></div></div><p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">tsvector</span></code> and <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to rank your search
 results
-(see: <a class="reference external" href="https://www.postgresql.org/docs/9.0/static/textsearch-controls.html">textsearch-controls</a>).
+(see: <a class="reference external" href="https://www.postgresql.org/docs/current/textsearch-controls.html">textsearch-controls</a>).
 These methods are useful to handle language-based strings. That means for instance
 that plural nouns are the same as singular nouns. This system only checks if
 your search word exists in the result. That means that if you search <cite>B 12 Zug</cite>,
@@ -321,7 +321,7 @@ parameter <code class="docutils literal notranslate"><span class="pre">rank_syst
 <h2>Using the unaccent extension<a class="headerlink" href="#using-the-unaccent-extension" title="Permalink to this heading">¶</a></h2>
 <p>The full-text search is accent-sensitive by default.
 To make it accent-insensitive Postgres’s
-<a class="reference external" href="https://www.postgresql.org/docs/9.0/static/unaccent.html">unaccent extension</a>
+<a class="reference external" href="https://www.postgresql.org/docs/current/unaccent.html">unaccent extension</a>
 can be used.</p>
 <p>To activate the unaccent extension, first connect to the database:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-d<span class="w"> </span>&lt;database&gt;</span>
@@ -337,8 +337,8 @@ can be used.</p>
 <span class="w">    </span><span class="k">WITH</span><span class="w"> </span><span class="n">unaccent</span><span class="p">,</span><span class="w"> </span><span class="n">french_stem</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>When populating the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table use the text configuration ‘fr’
-instead of ‘french’. For example:</p>
+<p>When populating the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table use the text configuration <code class="docutils literal notranslate"><span class="pre">fr</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">french</span></code>. For example:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">tsearch</span>
 <span class="w">  </span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="w"> </span><span class="n">layer_name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p">,</span><span class="w"> </span><span class="n">ts</span><span class="p">)</span>
 <span class="k">VALUES</span>
@@ -357,6 +357,8 @@ instead of ‘french’. For example:</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">fr</span></code> is a link between the pyramid language and the text search configuration, by default it is
 <code class="docutils literal notranslate"><span class="pre">fr:</span> <span class="pre">french</span></code> because the default french text search configuration is named ‘french’.</p>
+<p>Then you should adapt the used configuration on your custom script that fill the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table,
+and run <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> again iu used.</p>
 </section>
 <section id="synonym-and-thesaurus-dictionary">
 <h2>Synonym and Thesaurus Dictionary<a class="headerlink" href="#synonym-and-thesaurus-dictionary" title="Permalink to this heading">¶</a></h2>
@@ -371,35 +373,47 @@ a word like ‘alignement’ is simplified as ‘align’:</p>
 <span class="s1">&#39;alignem&#39;</span><span class="p">:</span><span class="o">*</span>
 </pre></div>
 </div>
-<p>To change this behavior, you can create and use a new dictionary named <cite>french_alt</cite>:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="k">TEMPLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="k">simple</span><span class="p">);</span>
+<p>To change this behavior, you can create and use a new dictionary named <code class="docutils literal notranslate"><span class="pre">french_alt</span></code>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span>
+<span class="w">     </span><span class="p">(</span><span class="k">TEMPLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="k">simple</span><span class="p">);</span>
 <span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">french_alt</span><span class="w"> </span><span class="p">(</span><span class="n">STOPWORDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">french</span><span class="p">);</span>
-<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">asciiword</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">french_alt</span><span class="p">;</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">fr</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">asciiword</span>
+<span class="w">     </span><span class="k">WITH</span><span class="w"> </span><span class="n">french_alt</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We keep the stop words to remove the French short words.</p>
 </div>
+<p>Then you should adapt your <code class="docutils literal notranslate"><span class="pre">fulltextsearch.languages</span></code> configuration in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<p>Then you should adapt the used configuration on your custom script that fill the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table,
+and run <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> again iu used.</p>
+<p>See also the <a class="reference external" href="https://www.postgresql.org/docs/current/textsearch-configuration.html">PostgreSQL documentation</a>.</p>
 </section>
 <section id="add-synonyms">
 <h2>Add Synonyms<a class="headerlink" href="#add-synonyms" title="Permalink to this heading">¶</a></h2>
-<p>Create a new search configuration:
-<code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TEXT</span> <span class="pre">SEARCH</span> <span class="pre">CONFIGURATION</span> <span class="pre">de</span> <span class="pre">(COPY</span> <span class="pre">=</span> <span class="pre">german);</span></code></p>
-<p>Create a file with the Synonyms:
-<code class="docutils literal notranslate"><span class="pre">/usr/share/postgresql/10/tsearch_data/de.syn</span></code> with: <code class="docutils literal notranslate"><span class="pre">sankt</span> <span class="pre">st</span></code></p>
-<p>Create the new search directory:
-.. code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">DICTIONARY</span> <span class="n">my_de</span> <span class="p">(</span><span class="n">TEMPLATE</span> <span class="o">=</span> <span class="n">synonym</span><span class="p">,</span> <span class="n">SYNONYMS</span><span class="o">=</span> <span class="n">de</span><span class="p">);</span>
-<span class="n">ALTER</span> <span class="n">TEXT</span> <span class="n">SEARCH</span> <span class="n">CONFIGURATION</span> <span class="n">de</span> <span class="n">ALTER</span> <span class="n">MAPPING</span> <span class="n">FOR</span> <span class="n">asciiword</span> <span class="n">WITH</span> <span class="n">my_de</span><span class="p">,</span> <span class="n">german_stem</span><span class="p">;</span>
+<p>Create a new search configuration:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="p">(</span><span class="k">COPY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">german</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Use the new search configuration named de:</p>
+<p>Create a file with the synonyms:
+<code class="docutils literal notranslate"><span class="pre">/usr/share/postgresql/&lt;pg_version&gt;/tsearch_data/de.syn</span></code> with: <code class="docutils literal notranslate"><span class="pre">sankt</span> <span class="pre">st</span></code></p>
+<p>Create the new search directory:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="k">DICTIONARY</span><span class="w"> </span><span class="n">my_de</span>
+<span class="w">     </span><span class="p">(</span><span class="k">TEMPLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">synonym</span><span class="p">,</span><span class="w"> </span><span class="n">SYNONYMS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">de</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">SEARCH</span><span class="w"> </span><span class="n">CONFIGURATION</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="n">asciiword</span>
+<span class="w">     </span><span class="k">WITH</span><span class="w"> </span><span class="n">my_de</span><span class="p">,</span><span class="w"> </span><span class="n">german_stem</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Use the new search configuration named <code class="docutils literal notranslate"><span class="pre">de</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fulltextsearch</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">languages</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">de</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">de</span>
 </pre></div>
 </div>
+<p>Then you should adapt the used configuration on your custom script that fill the <code class="docutils literal notranslate"><span class="pre">tsearch</span></code> table,
+and run <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> again iu used.</p>
+<p>See also the <a class="reference external" href="https://www.postgresql.org/docs/current/textsearch-configuration.html">PostgreSQL documentation</a>.</p>
 </section>
 </section>
 
