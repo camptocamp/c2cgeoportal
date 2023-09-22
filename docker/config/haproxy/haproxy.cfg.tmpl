@@ -1,5 +1,5 @@
 global
-    log /dev/log local2
+    ${DISABLE_HAPROXY_LOGGING}log /dev/log local2
     maxconn     4000
     max-spread-checks 500  #ms between heathchecks of different services
     tune.ssl.default-dh-param 2048  # remove warning
@@ -13,9 +13,7 @@ resolvers dns
 
 defaults
     mode                    http
-    log                     global
-    option                  httplog
-    option                  dontlognull
+    ${HAPROXY_LOGGING_OPTIONS}
     option http-server-close
     option forwardfor       except 127.0.0.0/8
     option                  redispatch
