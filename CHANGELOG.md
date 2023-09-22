@@ -1,3 +1,7 @@
+##### 2.8.0.101
+
+- [Backport 2.8] Fix database initialization [c2cgeoportal#10678](https://github.com/camptocamp/c2cgeoportal/pull/10678)
+
 ##### 2.8.0.100
 
 - [Backport 2.8] Referrer, while orthographically correct, is not the parameter name a… [c2cgeoportal#10601](https://github.com/camptocamp/c2cgeoportal/pull/10601)
