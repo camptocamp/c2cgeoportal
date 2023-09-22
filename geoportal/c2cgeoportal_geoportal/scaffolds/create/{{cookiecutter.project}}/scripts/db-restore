@@ -97,7 +97,7 @@ def main() -> None:
                 + [
                     "exec",
                     "-T",
-                    "db",
+                    "tools",
                     "bash",
                     "-c",
                     'pg_restore --dbname="$PGDATABASE" ' + " ".join(args.arg),
