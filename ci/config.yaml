@@ -36,6 +36,14 @@ publish:
         tags:
           - gmf{version}-qgis3.22
       - name: camptocamp/geomapfish-qgisserver
+        group: qgis-3.28-gdal3.6
+        tags:
+          - gmf{version}-qgis3.28-gdal3.6
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-3.28-gdal3.7
+        tags:
+          - gmf{version}-qgis3.28-gdal3.7
+      - name: camptocamp/geomapfish-qgisserver
         group: qgis-3.28
         tags:
           - gmf{version}-qgis3.28
