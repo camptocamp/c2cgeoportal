@@ -1,3 +1,7 @@
+##### 2.7.0.301
+
+- Snyk auto fix [c2cgeoportal#10683](https://github.com/camptocamp/c2cgeoportal/pull/10683)
+
 ##### 2.7.0.300
 
 - Use the long tag names [c2cgeoportal#10669](https://github.com/camptocamp/c2cgeoportal/pull/10669)
