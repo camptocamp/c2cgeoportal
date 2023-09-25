@@ -383,21 +383,17 @@ generation it we set the property <code class="docutils literal notranslate"><sp
 <section id="logging">
 <h3>Logging<a class="headerlink" href="#logging" title="Permalink to this heading">¶</a></h3>
 <p>Tile logs can be saved to a PostgreSQL database with this configuration:</p>
-<p>..code:: yaml</p>
-<blockquote>
-<div><dl class="simple">
-<dt>logging:</dt><dd><dl class="simple">
-<dt>database:</dt><dd><p>dbname: my_db
-host: db
-port: 5432
-table: tilecloud_logs</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p>PostgreSQL authentication can be specified with the <code class="docutils literal notranslate"><span class="pre">PGUSER</span></code> and <code class="docutils literal notranslate"><span class="pre">PGPASSWORD</span></code> environment variables.
-If the database is not reachable, the process will wait until it is.</p>
-</div></blockquote>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logging</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span>
+<span class="w">       </span><span class="nt">dbname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_db</span>
+<span class="w">       </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<span class="w">       </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+<span class="w">       </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tilecloud_logs</span>
+
+<span class="l l-Scalar l-Scalar-Plain">PostgreSQL authentication can be specified with the ``PGUSER`` and ``PGPASSWORD`` environment variables.</span>
+<span class="l l-Scalar l-Scalar-Plain">If the database is not reachable, the process will wait until it is.</span>
+</pre></div>
+</div>
 </section>
 <section id="tiles-error-file">
 <h3>Tiles error file<a class="headerlink" href="#tiles-error-file" title="Permalink to this heading">¶</a></h3>
