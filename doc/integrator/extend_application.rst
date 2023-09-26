@@ -361,7 +361,7 @@ For that you will need to create a new folder named ``geoportal_custom``.
 
 An this folder, add a file named ``authentication.py`` with the content you need, the original content is:
 
-.. code:: python:
+.. code:: python
 
    from pyramid.config import Configurator
 
