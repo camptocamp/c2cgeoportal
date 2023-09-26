@@ -50,16 +50,14 @@ obtained from the “auth ticket” cookie set in the request.
 The policy is created, and added to the application’s configuration, in the
 application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">env.project</span></code>, you can configure the policy with the following variables:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUTHTKT_TIMEOUT</span>  <span class="c1"># Default to one day.</span>
-<span class="n">AUTHTKT_REISSUE_TIME</span>  <span class="c1"># Default to 2h30, recommended to be 10 times smaller than AUTHTKT_TIMEOUT.</span>
-<span class="n">AUTHTKT_MAXAGE</span>  <span class="c1"># Default to one day, good to have the same value as AUTHTKT_TIMEOUT.</span>
-<span class="n">AUTHTKT_SECRET</span>  <span class="c1"># Should be defined</span>
-<span class="n">AUTHTKT_COOKIENAME</span>
-<span class="n">AUTHTKT_HTTP_ONLY</span>  <span class="c1"># Default to true.</span>
-<span class="n">AUTHTKT_SECURE</span>  <span class="c1"># Default to true.</span>
-<span class="n">AUTHTKT_SAMESITE</span>  <span class="c1"># Default to Lax.</span>
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>: Default to one day.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_REISSUE_TIME</span></code>: Default to 2h30, recommended to be 10 times smaller than <code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_MAXAGE</span></code>: Default to one day, good to have the same value as <code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SECRET</span></code>: Should be defined
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_COOKIENAME</span></code>: Should be defined
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_HTTP_ONLY</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SECURE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SAMESITE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">Lax</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>With the default configuration, for security reasons, the authentication will only work if the project is
@@ -148,29 +146,76 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
 <section id="lost-admin-password">
 <h2>Lost admin password<a class="headerlink" href="#lost-admin-password" title="Permalink to this heading">¶</a></h2>
 <p>You can generate a new admin password the following command:</p>
+<p><p>Reset a user password.
+The username is used as password if the password is not provided with the corresponding option.
+User can be created if it does not exist yet.</p>
+</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">exec</span> <span class="n">geoportal</span> <span class="n">manage</span><span class="o">-</span><span class="n">users</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">password</span> <span class="n">PASSWORD</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="o">--</span><span class="n">create</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="o">--</span><span class="n">rolename</span> <span class="n">ROLENAME</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="o">--</span><span class="n">email</span> <span class="n">EMAIL</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="n">config_uri</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]</span> <span class="n">user</span>
+</pre></div>
+</div>
+<section id="positional-arguments">
+<h3>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this heading">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>config_uri</kbd></dt>
+<dd><p>The URI to the configuration file.</p>
+<p>Default: “c2c://geoportal/development.ini”</p>
+</dd>
+<dt><kbd>config_vars</kbd></dt>
+<dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
+<p>Default: ()</p>
+</dd>
+<dt><kbd>user</kbd></dt>
+<dd><p>The user</p>
+</dd>
+</dl>
+</section>
+<section id="named-arguments">
+<h3>Named Arguments<a class="headerlink" href="#named-arguments" title="Permalink to this heading">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>--password, -p</kbd></dt>
+<dd><p>Set password (if not set, username is used as password</p>
+</dd>
+<dt><kbd>--create, -c</kbd></dt>
+<dd><p>Create user if it does not already exist</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>--rolename, -r</kbd></dt>
+<dd><p>The role name which must exist in the database</p>
+<p>Default: “role_admin”</p>
+</dd>
+<dt><kbd>--email, -e</kbd></dt>
+<dd><p>The user email</p>
+</dd>
+</dl>
+</section>
 </section>
 <section id="external-application">
 <h2>External application<a class="headerlink" href="#external-application" title="Permalink to this heading">¶</a></h2>
 <p>Some service of GeoMapFish has some host restriction if you mix the domain.</p>
 <section id="application-authentication">
 <h3>Application authentication<a class="headerlink" href="#application-authentication" title="Permalink to this heading">¶</a></h3>
-<p>To be considered as authenticated we should have the correct <cite>Cookie</cite> header,
-we also check the <cite>Referrer</cite> header to be sure that the user is coming from the same domain.
-If he is equals to the <cite>Host</cite> header, we consider that the user is coming from the same domain.
+<p>To be considered as authenticated we should have the correct <code class="docutils literal notranslate"><span class="pre">Cookie</span></code> header,
+we also check the <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header to be sure that the user is coming from the same domain.
+If he is equals to the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header, we consider that the user is coming from the same domain.
 If your server and client application are not on the same domain, to make the login working,
-you should add the client application domain name (with port) in the vars in <cite>vars/authorized_referers</cite>.</p>
-<p>This check is also done on the <cite>came_from</cite> parameter during the login process.</p>
+you should add the client application domain name (with port) in the vars in <code class="docutils literal notranslate"><span class="pre">vars/authorized_referers</span></code>.</p>
+<p>This check is also done on the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter during the login process.</p>
 </section>
 <section id="shortener">
 <h3>Shortener<a class="headerlink" href="#shortener" title="Permalink to this heading">¶</a></h3>
 <p>If you use the shortener service to create link on application on another domain name, you should add
-this domain name in the vars in <cite>vars/shortener/allowed_hosts</cite>.</p>
+this domain name in the vars in <code class="docutils literal notranslate"><span class="pre">vars/shortener/allowed_hosts</span></code>.</p>
 </section>
 <section id="admin">
 <h3>Admin<a class="headerlink" href="#admin" title="Permalink to this heading">¶</a></h3>
 <p>We provide a view for the admin interface, to be able to clear the cache per OGC server.
-If for an unknown reason you have not the same host in the <cite>Host</cite> header and <cite>came_from</cite> parameter, you should
-add the domain of the <cite>came_from</cite> parameter in the vars in <cite>vars/admin_interface/allowed_hosts</cite>.</p>
+If for an unknown reason you have not the same host in the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header and <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter, you should
+add the domain of the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter in the vars in <code class="docutils literal notranslate"><span class="pre">vars/admin_interface/allowed_hosts</span></code>.</p>
 </section>
 </section>
 </section>
@@ -249,10 +294,6 @@ add the domain of the <cite>came_from</cite> parameter in the vars in <cite>vars
           rel="nofollow">Page source</a>
     </div>
 
-    
-    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
-    </a>
     
 
     

@@ -22,16 +22,14 @@ application's main ``__init__.py`` file.
 
 In the file ``env.project``, you can configure the policy with the following variables:
 
-.. code::
-
-   AUTHTKT_TIMEOUT  # Default to one day.
-   AUTHTKT_REISSUE_TIME  # Default to 2h30, recommended to be 10 times smaller than AUTHTKT_TIMEOUT.
-   AUTHTKT_MAXAGE  # Default to one day, good to have the same value as AUTHTKT_TIMEOUT.
-   AUTHTKT_SECRET  # Should be defined
-   AUTHTKT_COOKIENAME
-   AUTHTKT_HTTP_ONLY  # Default to true.
-   AUTHTKT_SECURE  # Default to true.
-   AUTHTKT_SAMESITE  # Default to Lax.
+``AUTHTKT_TIMEOUT``: Default to one day.
+``AUTHTKT_REISSUE_TIME``: Default to 2h30, recommended to be 10 times smaller than ``AUTHTKT_TIMEOUT``.
+``AUTHTKT_MAXAGE``: Default to one day, good to have the same value as ``AUTHTKT_TIMEOUT``.
+``AUTHTKT_SECRET``: Should be defined
+``AUTHTKT_COOKIENAME``: Should be defined
+``AUTHTKT_HTTP_ONLY``: Default to ``true``.
+``AUTHTKT_SECURE``: Default to ``true``.
+``AUTHTKT_SAMESITE``: Default to ``Lax``.
 
 .. note::
 
@@ -158,23 +156,23 @@ Some service of GeoMapFish has some host restriction if you mix the domain.
 Application authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To be considered as authenticated we should have the correct `Cookie` header,
-we also check the `Referrer` header to be sure that the user is coming from the same domain.
-If he is equals to the `Host` header, we consider that the user is coming from the same domain.
+To be considered as authenticated we should have the correct ``Cookie`` header,
+we also check the ``Referer`` header to be sure that the user is coming from the same domain.
+If he is equals to the ``Host`` header, we consider that the user is coming from the same domain.
 If your server and client application are not on the same domain, to make the login working,
-you should add the client application domain name (with port) in the vars in `vars/authorized_referers`.
+you should add the client application domain name (with port) in the vars in ``vars/authorized_referers``.
 
-This check is also done on the `came_from` parameter during the login process.
+This check is also done on the ``came_from`` parameter during the login process.
 
 Shortener
 ~~~~~~~~~
 
 If you use the shortener service to create link on application on another domain name, you should add
-this domain name in the vars in `vars/shortener/allowed_hosts`.
+this domain name in the vars in ``vars/shortener/allowed_hosts``.
 
 Admin
 ~~~~~
 
 We provide a view for the admin interface, to be able to clear the cache per OGC server.
-If for an unknown reason you have not the same host in the `Host` header and `came_from` parameter, you should
-add the domain of the `came_from` parameter in the vars in `vars/admin_interface/allowed_hosts`.
+If for an unknown reason you have not the same host in the ``Host`` header and ``came_from`` parameter, you should
+add the domain of the ``came_from`` parameter in the vars in ``vars/admin_interface/allowed_hosts``.

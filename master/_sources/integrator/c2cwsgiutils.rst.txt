@@ -3,7 +3,7 @@
 C2C WSGI Utils
 ==============
 
- ``c2cwsgiutils`` is a framework assisting in development, integration and administration of WSGI applications.
+``c2cwsgiutils`` is a framework assisting in development, integration and administration of WSGI applications.
 ``c2cgeoportal`` uses ``c2cwsgiutils``.
 See its `documentation <https://github.com/camptocamp/c2cwsgiutils/#camptocamp-wsgi-utilities>`__.
 

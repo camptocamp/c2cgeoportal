@@ -89,10 +89,11 @@ Note that some tree items' metadata are used by the ``theme2fts`` script:
   that is to say that considered tree item will match when searching for the search aliases.
 * ``searchLabelPattern``: Template string for the label of tree items in the search results, for example:
   ``{name} ({theme})``. The supported parameters are:
-    * name: name of the tree item
-    * parent: parent of the item (may be a group, a block or a theme)
-    * block: name of the block to which the item belongs
-    * theme: name of the theme to which the item belongs
+
+    * ``name``: name of the tree item
+    * ``parent``: parent of the item (may be a group, a block or a theme)
+    * ``block``: name of the block to which the item belongs
+    * ``theme``: name of the theme to which the item belongs
 
 
 Security

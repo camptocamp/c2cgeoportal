@@ -323,18 +323,18 @@ in the <code class="docutils literal notranslate"><span class="pre">geoportal/va
 <p>If you need to configure your own authentication you will need to extend the <code class="docutils literal notranslate"><span class="pre">geoportal</span></code> Docker image.</p>
 <p>For that you will need to create a new folder named <code class="docutils literal notranslate"><span class="pre">geoportal_custom</span></code>.</p>
 <p>An this folder, add a file named <code class="docutils literal notranslate"><span class="pre">authentication.py</span></code> with the content you need, the original content is:</p>
-<div class="highlight-python: notranslate"><div class="highlight"><pre><span></span>from pyramid.config import Configurator
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="kn">import</span> <span class="n">Configurator</span>
 
-from pyramid.authorization import ACLAuthorizationPolicy
-from c2cgeoportal_geoportal.lib.authentication import create_authentication
+<span class="kn">from</span> <span class="nn">pyramid.authorization</span> <span class="kn">import</span> <span class="n">ACLAuthorizationPolicy</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_geoportal.lib.authentication</span> <span class="kn">import</span> <span class="n">create_authentication</span>
 
 
-def includeme(config: Configurator) -&gt; None:
-    &quot;&quot;&quot;
-    Initialize the authentication( for a Pyramid app.
-    &quot;&quot;&quot;
-    config.set_authorization_policy(ACLAuthorizationPolicy())
-    config.set_authentication_policy(create_authentication(config.get_settings()))
+<span class="k">def</span> <span class="nf">includeme</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Configurator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the authentication( for a Pyramid app.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">set_authorization_policy</span><span class="p">(</span><span class="n">ACLAuthorizationPolicy</span><span class="p">())</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">set_authentication_policy</span><span class="p">(</span><span class="n">create_authentication</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()))</span>
 </pre></div>
 </div>
 <p>Create a file named <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> with the following content:</p>
@@ -448,10 +448,6 @@ to be adapted when migrating to future versions of GeoMapFish.</p>
           rel="nofollow">Page source</a>
     </div>
 
-    
-    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
-    </a>
     
 
     
