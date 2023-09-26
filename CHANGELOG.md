@@ -1,3 +1,7 @@
+##### 2.8.0.106
+
+- [Backport 2.8] Fix doccumentation issues [c2cgeoportal#10685](https://github.com/camptocamp/c2cgeoportal/pull/10685)
+
 ##### 2.8.0.104
 
 - [Backport 2.8] Container tools was missing volumes_from config to be able to run the… [c2cgeoportal#10649](https://github.com/camptocamp/c2cgeoportal/pull/10649)
