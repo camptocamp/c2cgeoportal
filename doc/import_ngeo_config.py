@@ -87,7 +87,11 @@ def main() -> None:
     """Convert the ngeo config to ReStructuredText."""
     parser = argparse.ArgumentParser("Convert the config from the JSON from typedoc to ReStructuredText")
     parser.add_argument(
-        "--type", help="create a separate file for a type", nargs=2, action="append", default=[]
+        "--type",
+        help="create a separate file for a type",
+        nargs=2,
+        action="append",
+        default=[],
     )
     parser.add_argument("input", help="the JSON file from typedoc")
     parser.add_argument("other", help="filename for other types")
