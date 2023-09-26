@@ -56,6 +56,7 @@ For OpenShift projects:
         tinyows -.-> postgres;
 
         classDef data fill:#5ba6ff,color:black;
+
 For standalone projects:
 
 .. mermaid::

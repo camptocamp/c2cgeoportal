@@ -12,7 +12,7 @@ There are two ways to manage this:
 * application and SSL certificate on the same server
 
 Application behind a proxy
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If the application is placed behind some proxy that removes the SSL encryption
 (plain HTTP is used between the proxy and the server), then some specific

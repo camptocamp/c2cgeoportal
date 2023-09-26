@@ -61,9 +61,9 @@ Here is an example SQL query template:
             osm_id,
             name,
             type,
-            ST_AsMVTGeom("geom", {envelope}) as geom
+            ST_AsMVTGeom("geom", <envelope>) as geom
         FROM geodata.osm_landuse
-        WHERE ST_Intersects("geom", {envelope})
+        WHERE ST_Intersects("geom", <envelope>)
     ) AS q
 
 Then your vector tiles will be accessible, for example in local development mode, through:

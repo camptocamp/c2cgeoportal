@@ -57,9 +57,10 @@ WORKDIR /doc
 ARG MAJOR_VERSION
 ARG MAIN_BRANCH
 
-RUN ./import_ngeo_config.py --type Configuration integrator/ngeo_configuration.rst \
-    --type APIConfig integrator/ngeo_api_configuration.rst \
-    node_modules/ngeo/dist/typedoc.json integrator/ngeo_other_configuration.rst \
+RUN ./import_ngeo_config.py \
+    --type Configuration /ngeo_configuration.rst \
+    --type APIConfig /ngeo_api_configuration.rst \
+    node_modules/ngeo/dist/typedoc.json /ngeo_other_configuration.rst \
+    && mv integrator/ngeo_config_ref.rst / \
     && mkdir --parent _build/html \
-    && sphinx-build -b html -d _build/doctrees . _build/html \
-    && ./build.sh
+    && sphinx-build -W -b html -d _build/doctrees . _build/html
