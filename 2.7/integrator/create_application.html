@@ -287,134 +287,108 @@ and open a pull request to update the localization files (<cite>.po</cite>) with
 it can be obtained with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">scripts/db-backup<span class="w"> </span>--arg<span class="o">=</span>--schema<span class="o">=</span>&lt;schema&gt;<span class="w"> </span>../dump.backup</span>
 </pre></div></div><p>In the <cite>Makefile</cite> you should add something like:</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
-DUMP_FILE=dump.backup</p>
-<p>.PHONY: acceptance-init
-acceptance-init: ## Initialize the acceptance tests</p>
-<blockquote>
-<div><p>docker-compose –file=docker-compose.yaml –file=docker-compose-db.yaml up -d
-docker-compose exec -T geoportal wait-db
-docker-compose exec -T tools psql –command=”DROP EXTENSION IF EXISTS postgis CASCADE”
-scripts/db-restore –docker-compose-file=docker-compose.yaml –docker-compose-file=docker-compose-db.yaml </p>
-<blockquote>
-<div><p>–arg=–clean –arg=–if-exists –arg=–verbose $(DUMP_FILE)</p>
-</div></blockquote>
-</div></blockquote>
-<p>.PHONY: acceptance
-acceptance: ## Run the acceptance tests</p>
-<blockquote>
-<div><p>docker-compose exec -T tools pytest -vv tests/</p>
-</div></blockquote>
-<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">DUMP_FILE</span><span class="o">=</span>dump.backup
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">acceptance</span>-<span class="n">init</span>
+<span class="nf">acceptance-init</span><span class="o">:</span><span class="w"> </span><span class="c">## Initialize the acceptance tests</span>
+<span class="w">    </span>docker-compose<span class="w"> </span>--file<span class="o">=</span>docker-compose.yaml<span class="w"> </span>--file<span class="o">=</span>docker-compose-db.yaml<span class="w"> </span>up<span class="w"> </span>-d
+<span class="w">    </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>geoportal<span class="w"> </span>wait-db
+<span class="w">    </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>tools<span class="w"> </span>psql<span class="w"> </span>--command<span class="o">=</span><span class="s2">&quot;DROP EXTENSION IF EXISTS postgis CASCADE&quot;</span>
+<span class="w">    </span>scripts/db-restore<span class="w"> </span>--docker-compose-file<span class="o">=</span>docker-compose.yaml<span class="w"> </span>--docker-compose-file<span class="o">=</span>docker-compose-db.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>--arg<span class="o">=</span>--clean<span class="w"> </span>--arg<span class="o">=</span>--if-exists<span class="w"> </span>--arg<span class="o">=</span>--verbose<span class="w"> </span><span class="k">$(</span>DUMP_FILE<span class="k">)</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">acceptance</span>
+<span class="nf">acceptance</span><span class="o">:</span><span class="w"> </span><span class="c">## Run the acceptance tests</span>
+<span class="w">    </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>tools<span class="w"> </span>pytest<span class="w"> </span>-vv<span class="w"> </span>tests/
+</pre></div>
+</div>
 <p>In the file <cite>.github/workflows/main.yaml</cite> you should add something like:</p>
-<dl class="simple">
-<dt><a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a>yaml</dt><dd><ul class="simple">
-<li><p>name: Initialize the acceptance tests
-run: make acceptance-init</p></li>
-<li><p>run: c2cciutils-docker-logs
-if: always()</p></li>
-<li><p>name: Run the acceptance tests
-run: make acceptance</p></li>
-<li><p>run: c2cciutils-docker-logs
-if: always()</p></li>
-</ul>
-</dd>
-</dl>
-<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Initialize the acceptance tests</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make acceptance-init</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c2cciutils-docker-logs</span>
+<span class="w">  </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always()</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run the acceptance tests</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make acceptance</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c2cciutils-docker-logs</span>
+<span class="w">  </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always()</span>
+</pre></div>
+</div>
 <p>You should add a <cite>docker-compose-db.yaml</cite> file, with:</p>
-<p><a href="#id15"><span class="problematic" id="id16">``</span></a>`
-# This file is used by the acceptance tests to have a local database.</p>
-<p>version: ‘2.3’</p>
-<dl>
-<dt>volumes:</dt><dd><p>postgresql_data:</p>
-</dd>
-<dt>services:</dt><dd><dl class="simple">
-<dt>config: &amp;db-config</dt><dd><dl class="simple">
-<dt>environment:</dt><dd><ul class="simple">
-<li><p>PGHOST=db</p></li>
-<li><p>PGHOST_SLAVE=db</p></li>
-<li><p>PGSSLMODE=prefer</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-</dl>
-<p>geoportal: <a href="#id17"><span class="problematic" id="id18">*</span></a>db-config
-# geoportal-advance: <a href="#id19"><span class="problematic" id="id20">*</span></a>db-config
-tools: <a href="#id21"><span class="problematic" id="id22">*</span></a>db-config
-alembic: <a href="#id23"><span class="problematic" id="id24">*</span></a>db-config
-# alembic-advance: <a href="#id25"><span class="problematic" id="id26">*</span></a>db-config
-# webpack_dev_server: <a href="#id27"><span class="problematic" id="id28">*</span></a>db-config</p>
-<dl class="simple">
-<dt>db:</dt><dd><dl class="simple">
-<dt>extends:</dt><dd><p>file: docker-compose-lib.yaml
-service: db</p>
-</dd>
-<dt>volumes:</dt><dd><ul class="simple">
-<li><p>postgresql_data:/var/lib/postgresql/data</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<p><a href="#id29"><span class="problematic" id="id30">``</span></a><a href="#id31"><span class="problematic" id="id32">`</span></a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This file is used by the acceptance tests to have a local database.</span>
+
+<span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2.3&#39;</span>
+
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="nt">postgresql_data</span><span class="p">:</span>
+
+<span class="nt">services</span><span class="p">:</span>
+<span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="nl">&amp;db-config</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PGHOST=db</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PGHOST_SLAVE=db</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PGSSLMODE=prefer</span>
+<span class="nt">geoportal</span><span class="p">:</span><span class="w"> </span><span class="nv">*db-config</span>
+<span class="c1"># geoportal-advance: *db-config</span>
+<span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="nv">*db-config</span>
+<span class="nt">alembic</span><span class="p">:</span><span class="w"> </span><span class="nv">*db-config</span>
+<span class="c1"># alembic-advance: *db-config</span>
+<span class="c1"># webpack_dev_server: *db-config</span>
+
+<span class="nt">db</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extends</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker-compose-lib.yaml</span>
+<span class="w">    </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql_data:/var/lib/postgresql/data</span>
+</pre></div>
+</div>
 <p>And finally the file with the tests <cite>tests/test_app.py</cite> with:</p>
-<p><a href="#id33"><span class="problematic" id="id34">``</span></a>`
-import time
-from typing import Dict</p>
-<p>import pytest
-import requests</p>
-<dl>
-<dt>&#64;pytest.mark.parametrize(</dt><dd><p>“url,params”,
-[</p>
-<blockquote>
-<div><p>(”<a class="reference external" href="https://front">https://front</a>”, {}),
-(”<a class="reference external" href="https://front/themes">https://front/themes</a>”, {}),
-(”<a class="reference external" href="https://front/static-geomapfish/0/locales/fr.json">https://front/static-geomapfish/0/locales/fr.json</a>”, {}),
-(”<a class="reference external" href="https://front/dynamic.json">https://front/dynamic.json</a>”, {“interface”: “desktop”}),
-(”<a class="reference external" href="https://front/dynamic.json">https://front/dynamic.json</a>”, {“interface”: “desktop”, “query”: “”, “path”: “/”}),
-(”<a class="reference external" href="https://front/c2c/health_check">https://front/c2c/health_check</a>”, {}),
-(”<a class="reference external" href="https://front/c2c/health_check">https://front/c2c/health_check</a>”, {“max_level”: “1”}),
-(”<a class="reference external" href="https://front/c2c/health_check">https://front/c2c/health_check</a>”, {“checker”: “check_collector”}),
-(”<a class="reference external" href="https://front/admin/layertree">https://front/admin/layertree</a>”, {}),
-(”<a class="reference external" href="https://front/admin/layertree/children">https://front/admin/layertree/children</a>”, {}),
-(”<a class="reference external" href="http://mapserver:8080/mapserv_proxy">http://mapserver:8080/mapserv_proxy</a>”, {“SERVICE”: “WMS”, “REQUEST”: “GetCapabilities”}),
-(</p>
-<blockquote>
-<div><p>“<a class="reference external" href="https://front/mapserv_proxy">https://front/mapserv_proxy</a>”,
-{“ogcserver”: “source for image/png”, “SERVICE”: “WMS”, “REQUEST”: “GetCapabilities”},</p>
-</div></blockquote>
-<p>),</p>
-</div></blockquote>
-<p>],</p>
-</dd>
-</dl>
-<p>)
-def test_url(url: str, params: Dict[str, str]) -&gt; None:</p>
-<blockquote>
-<div><p>“””Tests that some URL didn’t return an error.”””
-for _ in range(60):</p>
-<blockquote>
-<div><p>response = requests.get(url, params=params, verify=False, timeout=240)  # nosec
-if response.status_code == 503:</p>
-<blockquote>
-<div><p>time.sleep(1)
-continue</p>
-</div></blockquote>
-<p>break</p>
-</div></blockquote>
-<p>assert response.status_code == 200, response.text</p>
-</div></blockquote>
-<dl class="simple">
-<dt>def test_admin() -&gt; None:</dt><dd><p>“””Tests that the admin page will provide the login page.”””
-response = requests.get(”<a class="reference external" href="https://front/admin/">https://front/admin/</a>”, verify=False, timeout=240)  # nosec
-assert response.status_code == 200, response.text
-assert “Login” in response.text</p>
-</dd>
-</dl>
-<p><a href="#id35"><span class="problematic" id="id36">``</span></a><a href="#id37"><span class="problematic" id="id38">`</span></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="s2">&quot;url,params&quot;</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;https://front&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/themes&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/static-geomapfish/0/locales/fr.json&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/dynamic.json&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;interface&quot;</span><span class="p">:</span> <span class="s2">&quot;desktop&quot;</span><span class="p">}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/dynamic.json&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;interface&quot;</span><span class="p">:</span> <span class="s2">&quot;desktop&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/&quot;</span><span class="p">}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/c2c/health_check&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/c2c/health_check&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;max_level&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/c2c/health_check&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;checker&quot;</span><span class="p">:</span> <span class="s2">&quot;check_collector&quot;</span><span class="p">}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/admin/layertree&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="p">(</span><span class="s2">&quot;https://front/admin/layertree/children&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="p">(</span><span class="s2">&quot;http://mapserver:8080/mapserv_proxy&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;SERVICE&quot;</span><span class="p">:</span> <span class="s2">&quot;WMS&quot;</span><span class="p">,</span> <span class="s2">&quot;REQUEST&quot;</span><span class="p">:</span> <span class="s2">&quot;GetCapabilities&quot;</span><span class="p">}),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;https://front/mapserv_proxy&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;ogcserver&quot;</span><span class="p">:</span> <span class="s2">&quot;source for image/png&quot;</span><span class="p">,</span> <span class="s2">&quot;SERVICE&quot;</span><span class="p">:</span> <span class="s2">&quot;WMS&quot;</span><span class="p">,</span> <span class="s2">&quot;REQUEST&quot;</span><span class="p">:</span> <span class="s2">&quot;GetCapabilities&quot;</span><span class="p">},</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests that some URL didn&#39;t return an error.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">240</span><span class="p">)</span>  <span class="c1"># nosec</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">503</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">break</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
+
+<span class="k">def</span> <span class="nf">test_admin</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests that the admin page will provide the login page.&quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://front/admin/&quot;</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">240</span><span class="p">)</span>  <span class="c1"># nosec</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">assert</span> <span class="s2">&quot;Login&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
 </section>
 </section>
 </section>
@@ -497,10 +471,6 @@ assert “Login” in response.text</p>
           rel="nofollow">Page source</a>
     </div>
 
-    
-    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
-    </a>
     
 
     

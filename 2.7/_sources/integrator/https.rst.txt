@@ -1,3 +1,4 @@
+-----
 HTTPS
 -----
 
@@ -12,7 +13,7 @@ There are two ways to manage this:
 * application and SSL certificate on the same server
 
 Application behind a proxy
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 If the application is placed behind some proxy that removes the SSL encryption
 (plain HTTP is used between the proxy and the server), then some specific
@@ -35,7 +36,7 @@ value of ``request.scheme``. For example::
     };
 
 Application and SSL certificate on the same server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------------------------
 
 If the SSL certificate and the application are located on the same server, all
 requests will be redirected to https. So you should change the scheme to https
@@ -52,7 +53,7 @@ In case you load http external resources into your application, you should use
 the resourceproxy service as described below.
 
 Loading non https external resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------
 
 If you want to load non https external resources in your https application, you
 should use the ``resourceproxy`` service and add the list of hosts you want to access in your project
@@ -74,7 +75,7 @@ For example:
 ``https://geoportail.camptocamp.com/main/resourceproxy?target=rfinfo&values=(175,2633)``
 
 Local certificate checks
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Certain c2cgeoportal features open a http session to your c2cgeoportal services,
 for example the ``checker`` or the ``lingua_extractor``.

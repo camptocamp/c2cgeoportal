@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>TileGeneration &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TileCloud-chain Usage" href="tilegeneration_usage.html" />
+    <link rel="prev" title="Tile generation configuration" href="tilegeneration.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="tilegeneration">
+<span id="integrator-tilegeneration-doc"></span><h1>TileGeneration<a class="headerlink" href="#tilegeneration" title="Permalink to this headline">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>With this solution, we solve the following issues:</p>
+<ul class="simple">
+<li><p>Managing millions of files on the file system is difficult.</p></li>
+<li><p>We should be able to update all the generated tiles.</p></li>
+<li><p>We should not have thousands of expired files.</p></li>
+</ul>
+<p>To do so, we need need a tool that can generate the tiles,
+update some of them contained in given geometries and delete empty tiles.</p>
+<p>On-the-fly tiles generation introduces some issues such as having a growing
+number of tiles that may become unmanageable. For example, when updating the
+data, it is not possible to figure out what tiles should be updated.</p>
+<p>For high usage websites, we want to put the tiles on S3 with the same tool.</p>
+<p>One issue we have if we want to generate all the tiles is that the generation time can grow to more than one
+month, especially if we have a high resolution (low if in m/px) on the last zoom level.
+Therefore for the last zoom level we should generate the tiles on the fly
+with a low expiry (4 hours for example).
+We should use metatiles to reduce the number of requests to postgres.
+And the tiles should be deleted after the expiry time.</p>
+<p>The chosen solution is a combination of two tools:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/camptocamp/tilecloud-chain">TileCloud-Chain</a> for the tile generation.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2>TileCloud-chain<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>TileCloud-chain is a TileCloud-based tool that offers a build chain for
+generating tiles from WMS of Mapnik on a local storage or S3 using a
+WMTS layout.</p>
+<p>It supports the following AWS services for generating tiles:
+EC2, SQS, SNS.</p>
+<p>See the <a class="reference external" href="https://pypi.python.org/pypi/tilecloud-chain">readme</a>.</p>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>The configuration is done in the file <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code>.</p>
+<p>The main thing to do is to:</p>
+<ul>
+<li><p>Set the resolutions we want to generate in the <code class="docutils literal notranslate"><span class="pre">grids</span></code>.
+If we want to generate different resolutions per layer, we should create different grids.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">grids</span></code> is the grid name.</p></li>
+<li><p>Configure the <code class="docutils literal notranslate"><span class="pre">caches</span></code> and set the <code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_cache</span></code>.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">caches</span></code> is the cache name.</p></li>
+<li><p>Configure the <code class="docutils literal notranslate"><span class="pre">layer_default</span></code>, the <code class="docutils literal notranslate"><span class="pre">layers</span></code>, and the <code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_layers</span></code>.
+Sub-level of <code class="docutils literal notranslate"><span class="pre">layers</span></code> is the layer name.</p></li>
+<li><p>We can drop the empty tiles with a hash comparison, tilecloud-chain has a tool to help us:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--get-hash<span class="w"> </span>&lt;max-zoom&gt;/0/0<span class="w"> </span>--layer<span class="w"> </span>&lt;layer&gt;</span>
+</pre></div></div><p>We consider that the first tile of the max zoom is empty.
+Then copy-paste the result in the layer config.</p>
+</li>
+</ul>
+<p>If you generate the tiles locally, you do not need all the configuration variables, because many of them
+in the <code class="docutils literal notranslate"><span class="pre">generation</span></code> part are for AWS generation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Points to check with TileCloud chain:</p>
+<ul class="simple">
+<li><p>Disabling metatiles should be avoided.</p></li>
+<li><p>Make sure that <code class="docutils literal notranslate"><span class="pre">empty_metatile_detection</span></code> and <code class="docutils literal notranslate"><span class="pre">empty_tile_detection</span></code> are configured correctly.</p></li>
+<li><p>Make sure to not generate tiles with a resolution higher than the one in the raster sources.</p></li>
+</ul>
+</div>
+</section>
+<section id="tile-generation-and-management">
+<h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this headline">¶</a></h3>
+<p>This package offers two tools, one to generate the tiles locally, see help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles<span class="w"> </span>--help</span>
+</pre></div></div><p>one to generate the tiles using AWS, see help:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--help</span>
+</pre></div></div><p>Before starting a tile generation on S3, measure the cost:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--cost</span>
+</pre></div></div><p>If you setup all the default options, you can generate the tiles by using the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_tiles</span>
+</pre></div></div></section>
+<section id="aws-credentials">
+<h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Permalink to this headline">¶</a></h3>
+<p>To be able to connect to the S3 service, you should define the following variables in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code>
+file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
+<span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If you do not want to commit these credentials you can add them in your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
+<span class="n">export</span> <span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">secret_access_key</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="web-interface">
+<h3>Web Interface<a class="headerlink" href="#web-interface" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to run tile generation commands through a web interface located at URL
+<code class="docutils literal notranslate"><span class="pre">&lt;application</span> <span class="pre">main</span> <span class="pre">URL&gt;/tiles/admin/</span></code>. This interface is protected by a password that
+must be specified in the <code class="docutils literal notranslate"><span class="pre">C2C_SECRET</span></code> environment variable in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
+<p>Predefined commands may be set in parameter <code class="docutils literal notranslate"><span class="pre">server</span> <span class="pre">&gt;</span> <span class="pre">predefined_commands</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
+</section>
+<section id="see-also">
+<h3>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a></p></li>
+<li><p><a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-perepare-raster"><span class="std std-ref">Prepare raster files</span></a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+  <li><a href="tilegeneration.html">Tile generation configuration</a><ul>
+      <li>Previous: <a href="tilegeneration.html" title="previous chapter">Tile generation configuration</a></li>
+      <li>Next: <a href="tilegeneration_usage.html" title="next chapter">TileCloud-chain Usage</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2011-2021, Camptocamp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/integrator/tilegeneration_doc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
