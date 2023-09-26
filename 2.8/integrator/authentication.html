@@ -53,16 +53,14 @@ obtained from the “auth ticket” cookie set in the request.
 The policy is created, and added to the application’s configuration, in the
 application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">env.project</span></code>, you can configure the policy with the following variables:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUTHTKT_TIMEOUT</span>  <span class="c1"># Default to one day.</span>
-<span class="n">AUTHTKT_REISSUE_TIME</span>  <span class="c1"># Default to 2h30, recommended to be 10 times smaller than AUTHTKT_TIMEOUT.</span>
-<span class="n">AUTHTKT_MAXAGE</span>  <span class="c1"># Default to one day, good to have the same value as AUTHTKT_TIMEOUT.</span>
-<span class="n">AUTHTKT_SECRET</span>  <span class="c1"># Should be defined</span>
-<span class="n">AUTHTKT_COOKIENAME</span>
-<span class="n">AUTHTKT_HTTP_ONLY</span>  <span class="c1"># Default to true.</span>
-<span class="n">AUTHTKT_SECURE</span>  <span class="c1"># Default to true.</span>
-<span class="n">AUTHTKT_SAMESITE</span>  <span class="c1"># Default to Lax.</span>
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>: Default to one day.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_REISSUE_TIME</span></code>: Default to 2h30, recommended to be 10 times smaller than <code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_MAXAGE</span></code>: Default to one day, good to have the same value as <code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SECRET</span></code>: Should be defined
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_COOKIENAME</span></code>: Should be defined
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_HTTP_ONLY</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SECURE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SAMESITE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">Lax</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>With the default configuration, for security reasons, the authentication will only work if the project is
@@ -151,8 +149,7 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
 <section id="lost-admin-password">
 <h2>Lost admin password<a class="headerlink" href="#lost-admin-password" title="Permalink to this heading">¶</a></h2>
 <p>You can generate a new admin password the following command:</p>
-<p><p>Usage: %prog [options] USERNAME</p>
-<p>Reset a user password.
+<p><p>Reset a user password.
 The username is used as password if the password is not provided with the corresponding option.
 User can be created if it does not exist yet.</p>
 </p>
@@ -276,10 +273,6 @@ User can be created if it does not exist yet.</p>
           rel="nofollow">Page source</a>
     </div>
 
-    
-    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
-    </a>
     
 
     

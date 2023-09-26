@@ -43,13 +43,13 @@
 <p><code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> adds some HTTP headers on its responses with certain default values.
 You may wish to override the values being written. All this is done in the configuration with the
 <code class="docutils literal notranslate"><span class="pre">headers</span></code> section in the vars file with the following syntax:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>vars:
-  headers:
-    &lt;view&gt;:
-      cache_control_max_age: 600 # 10 minutes
-      access_control_max_age: 600 # 10 minutes
-      access_control_allow_origin: [] # list oh hosts (e.g. https://example.com) or &#39;*&#39;
-      headers: {} @ list of additional headers
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">headers</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">&lt;view&gt;</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cache_control_max_age</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span><span class="w"> </span><span class="c1"># 10 minutes</span>
+<span class="w">      </span><span class="nt">access_control_max_age</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span><span class="w"> </span><span class="c1"># 10 minutes</span>
+<span class="w">      </span><span class="nt">access_control_allow_origin</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"> </span><span class="c1"># list oh hosts (e.g. https://example.com) or &#39;*&#39;</span>
+<span class="w">      </span><span class="nt">headers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"> </span><span class="c1"># list of additional headers</span>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;view&gt;</span></code> can be: <code class="docutils literal notranslate"><span class="pre">dynamic</span></code>, <code class="docutils literal notranslate"><span class="pre">index</span></code>, <code class="docutils literal notranslate"><span class="pre">api</span></code>, <code class="docutils literal notranslate"><span class="pre">apihelp</span></code>, <code class="docutils literal notranslate"><span class="pre">profile</span></code>, <code class="docutils literal notranslate"><span class="pre">raster</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>,
@@ -226,10 +226,6 @@ Pyramid will still add back its default headers.</p>
           rel="nofollow">Page source</a>
     </div>
 
-    
-    <a href="https://github.com/camptocamp/c2cgeoportal" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
-    </a>
     
 
     

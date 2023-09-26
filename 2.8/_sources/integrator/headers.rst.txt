@@ -18,7 +18,7 @@ You may wish to override the values being written. All this is done in the confi
           cache_control_max_age: 600 # 10 minutes
           access_control_max_age: 600 # 10 minutes
           access_control_allow_origin: [] # list oh hosts (e.g. https://example.com) or '*'
-          headers: {} @ list of additional headers
+          headers: {} # list of additional headers
 
 Where ``<view>`` can be: ``dynamic``, ``index``, ``api``, ``apihelp``, ``profile``, ``raster``, ``error``,
 ``themes``, ``config``, ``print``, ``fulltextsearch``, ``mapserver``, ``tinyows``, ``layers``,
