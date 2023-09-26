@@ -1,9 +1,7 @@
 .. _integrator_tilegeneration:
 
-Configuration Guide for advanced settings
------------------------------------------
-
-This chapter describes advanced configuration settings.
+Tile generation configuration
+-----------------------------
 
 .. toctree::
    :maxdepth: 1
