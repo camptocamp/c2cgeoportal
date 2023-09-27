@@ -1,3 +1,7 @@
+##### 2.7.0.303
+
+- Snyk auto fix [c2cgeoportal#10689](https://github.com/camptocamp/c2cgeoportal/pull/10689)
+
 ##### 2.7.0.302
 
 - [Backport 2.7] Fix doccumentation issues [c2cgeoportal#10684](https://github.com/camptocamp/c2cgeoportal/pull/10684)
