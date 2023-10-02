@@ -1,3 +1,7 @@
+##### 2.8.0.110
+
+- Update all patch versions (2.8) (patch) [ngeo#9232](https://github.com/camptocamp/ngeo/pull/9232)
+
 ##### 2.8.0.108
 
 - Update all patch versions (2.8) (patch) [c2cgeoportal#10691](https://github.com/camptocamp/c2cgeoportal/pull/10691)
