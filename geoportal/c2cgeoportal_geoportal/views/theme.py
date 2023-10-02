@@ -237,10 +237,13 @@ class Theme:
         try:
             url, content, errors = await self._wms_getcap_cached(ogc_server, cache=cache)
         except requests.exceptions.RequestException as exception:
-            error = (
-                f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', "
-                f"return the error: {exception.response.status_code} {exception.response.reason}"
-            )
+            if exception.response is None:
+                error = f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', return the error: {exception!s}"
+            else:
+                error = (
+                    f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', "
+                    f"return the error: {exception.response.status_code} {exception.response.reason}"
+                )
             LOG.exception(error)
             return None, {error}
         if errors or preload:
