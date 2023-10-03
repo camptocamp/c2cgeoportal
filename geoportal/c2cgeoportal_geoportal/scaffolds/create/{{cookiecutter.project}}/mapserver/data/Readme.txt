@@ -20,7 +20,7 @@ ISO3		String(3)		ISO 3166-1 Alpha-3 Country Code
 UN		Short Integer(3)	ISO 3166-1 Numeric-3 Country Code
 NAME		String(50)		Name of country/area
 AREA		Long Integer(7)		Land area, FAO Statistics (2002)
-POP2005		Double(10,0)	 	Population, World Polulation Prospects (2005)
+POP2005		Double(10,0)	 	Population, World Population Prospects (2005)
 REGION		Short Integer(3) 	Macro geographical (continental region), UN Statistics
 SUBREGION	Short Integer(3)	Geogrpahical sub-region, UN Statistics
 LON		FLOAT (7,3)		Longitude
@@ -36,7 +36,7 @@ CHANGELOG VERSION 0.3 - 30 July 2008
 
 CHANGELOG VERSION 0.2 - 1 April 2008
 
-- Made new ZIP archieves. No change in dataset.
+- Made new ZIP archives. No change in dataset.
 
 
 CHANGELOG VERSION 0.1 - 13 March 2008
