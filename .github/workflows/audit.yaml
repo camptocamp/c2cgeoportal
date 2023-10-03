@@ -34,7 +34,7 @@ jobs:
       # Have an httplib2 version without any security issues
       - run: sudo python3 -m pip install --upgrade httplib2 numpy
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ matrix.branch }}
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
