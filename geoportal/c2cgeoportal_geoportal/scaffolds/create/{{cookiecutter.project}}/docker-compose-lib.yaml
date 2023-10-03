@@ -165,7 +165,7 @@ services:
     command: redis-server --slaveof redis_master 6379
 
   redis_sentinel:
-    image: camptocamp/c2cwsgiutils-redis-sentinel:6
+    image: camptocamp/c2cwsgiutils-redis-sentinel:7
     environment:
       - MASTER_NAME=mymaster
       - QUORUM=1
