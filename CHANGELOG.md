@@ -1,3 +1,7 @@
+##### 2.8.0.111
+
+- Update pre-commit hook codespell-project/codespell to v2.2.6 (2.8) [c2cgeoportal#10703](https://github.com/camptocamp/c2cgeoportal/pull/10703)
+
 ##### 2.8.0.110
 
 - Update all patch versions (2.8) (patch) [ngeo#9232](https://github.com/camptocamp/ngeo/pull/9232)
