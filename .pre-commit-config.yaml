@@ -46,7 +46,7 @@ repos:
         additional_dependencies:
           - poetry==1.5.1 # pypi
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.5
+    rev: v2.2.6
     hooks:
       - id: codespell
         exclude: |-
@@ -58,7 +58,7 @@ repos:
         args:
           - --ignore-words=.github/spell-ignore-words.txt
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.1
+    rev: v3.0.3
     hooks:
       - id: prettier
         additional_dependencies:
@@ -74,7 +74,7 @@ repos:
             |^CHANGELOG\.md$
           )
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.9.0.5
+    rev: v0.9.0.6
     hooks:
       - id: shellcheck
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
@@ -82,7 +82,7 @@ repos:
     hooks:
       - id: git-check
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.23.3
+    rev: 0.27.0
     hooks:
       - id: check-github-workflows
       - id: check-renovate
@@ -98,7 +98,7 @@ repos:
           - --builtin-schema
           - github-workflows-require-timeout
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.5
+    rev: v0.1.7
     hooks:
       - id: ripsecrets
         exclude: |-
@@ -107,7 +107,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.10.1
+    rev: v3.14.0
     hooks:
       # The script that will run on the project host
       - id: pyupgrade
@@ -132,7 +132,7 @@ repos:
             |upgrade)
           )$
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.0
+    rev: v2.2.1
     hooks:
       - id: autoflake
   - repo: https://github.com/PyCQA/isort
@@ -140,7 +140,7 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 23.7.0
+    rev: 23.9.1
     hooks:
       - id: black
         exclude: |-
