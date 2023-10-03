@@ -12,7 +12,7 @@
 
 ##### 2.8.0.106
 
-- [Backport 2.8] Fix doccumentation issues [c2cgeoportal#10685](https://github.com/camptocamp/c2cgeoportal/pull/10685)
+- [Backport 2.8] Fix documentation issues [c2cgeoportal#10685](https://github.com/camptocamp/c2cgeoportal/pull/10685)
 
 ##### 2.8.0.104
 
@@ -300,7 +300,7 @@
 
 ##### 2.8.rc.27
 
-- Fix code return when basic auth is desabled [c2cgeoportal#10477](https://github.com/camptocamp/c2cgeoportal/pull/10477)
+- Fix code return when basic auth is disabled [c2cgeoportal#10477](https://github.com/camptocamp/c2cgeoportal/pull/10477)
 
 ##### 2.8.rc.25
 

@@ -45,7 +45,7 @@ CACHE_REGION = get_region("std")
 
 
 class Proxy:
-    """Some methodes used by all the proxy."""
+    """Some methods used by all the proxy."""
 
     def __init__(self, request: pyramid.request.Request):
         self.request = request
