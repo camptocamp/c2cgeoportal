@@ -73,7 +73,7 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Download artifacts (Docker images) from previous workflows
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
 
       - name: Load Docker images from previous workflows
         run: |
