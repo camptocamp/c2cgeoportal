@@ -141,7 +141,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: &redis-image redis:7.0
+    image: redis:7.0
     user: www-data
     restart: unless-stopped
     command:
@@ -158,18 +158,29 @@ services:
       - '30'
 
   redis_master:
-    image: *redis-image
+    image: bitnami/redis:7.0
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - ALLOW_EMPTY_PASSWORD=yes
 
   redis_slave:
-    image: *redis-image
-    command: redis-server --slaveof redis_master 6379
+    image: bitnami/redis:7.0
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis_master
+      - ALLOW_EMPTY_PASSWORD=yes
+    depends_on:
+      - redis_master
 
   redis_sentinel:
-    image: camptocamp/c2cwsgiutils-redis-sentinel:7
+    image: bitnami/redis-sentinel:7.0
     environment:
-      - MASTER_NAME=mymaster
-      - QUORUM=1
-      - MASTER=redis_master
+      - REDIS_MASTER_HOST=redis_master
+      - REDIS_MASTER_SET=mymaster
+      - ALLOW_EMPTY_PASSWORD=yes
+    depends_on:
+      - redis_master
+      - redis_slave
 
   tilecloudchain:
     image: &tilecloudchain-image camptocamp/tilecloud-chain:1.18
