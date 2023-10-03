@@ -1,3 +1,5 @@
+##### 2.6.0.208
+* Update dependency urllib3 to v1.26.17 (2.6) [c2cgeoportal#10702](https://github.com/camptocamp/c2cgeoportal/pull/10702)
 ##### 2.6.0.207
 * Update all patch versions (2.6) (patch) [c2cgeoportal#10690](https://github.com/camptocamp/c2cgeoportal/pull/10690)
 ##### 2.6.0.206
