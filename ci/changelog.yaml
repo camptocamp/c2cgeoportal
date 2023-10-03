@@ -2946,7 +2946,7 @@ pulls:
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/10477
       number: 10477
       state: closed
-      title: Fix code return when basic auth is desabled
+      title: Fix code return when basic auth is disabled
       updated_at: '2023-05-01T13:23:23Z'
     bb3d8a14c:
     - base_ref: '2.8'
@@ -3018,7 +3018,7 @@ pulls:
       html_url: https://github.com/camptocamp/c2cgeoportal/pull/10685
       number: 10685
       state: closed
-      title: '[Backport 2.8] Fix doccumentation issues'
+      title: '[Backport 2.8] Fix documentation issues'
       updated_at: '2023-09-26T13:15:48Z'
     caaf2b651:
     - base_ref: '2.8'
