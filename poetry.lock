@@ -1320,13 +1320,13 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "jsonref"
-version = "0.2"
-description = "An implementation of JSON Reference for Python"
+version = "1.1.0"
+description = "jsonref is a library for automatic dereferencing of JSON Reference objects for Python."
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "jsonref-0.2-py3-none-any.whl", hash = "sha256:b1e82fa0b62e2c2796a13e5401fe51790b248f6d9bf9d7212a3e31a3501b291f"},
-    {file = "jsonref-0.2.tar.gz", hash = "sha256:f3c45b121cf6257eafabdc3a8008763aed1cd7da06dbabc59a9e4d2a5e4e6697"},
+    {file = "jsonref-1.1.0-py3-none-any.whl", hash = "sha256:590dc7773df6c21cbf948b5dac07a72a251db28b0238ceecce0a2abfa8ec30a9"},
+    {file = "jsonref-1.1.0.tar.gz", hash = "sha256:32fe8e1d85af0fdefbebce950af85590b22b60f9e95443176adbde4e1ecea552"},
 ]
 
 [[package]]
@@ -1386,18 +1386,19 @@ files = [
 referencing = ">=0.28.0"
 
 [[package]]
-name = "lark-parser"
-version = "0.12.0"
+name = "lark"
+version = "1.1.7"
 description = "a modern parsing library"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 files = [
-    {file = "lark-parser-0.12.0.tar.gz", hash = "sha256:15967db1f1214013dca65b1180745047b9be457d73da224fcda3d9dd4e96a138"},
-    {file = "lark_parser-0.12.0-py2.py3-none-any.whl", hash = "sha256:0eaf30cb5ba787fe404d73a7d6e61df97b21d5a63ac26c5008c78a494373c675"},
+    {file = "lark-1.1.7-py3-none-any.whl", hash = "sha256:9e5dc5bbf93fa1840083707285262514a0ef8a6613874af7ea1cec60468d6e92"},
+    {file = "lark-1.1.7.tar.gz", hash = "sha256:be7437bf1f37ab08b355f29ff2571d77d777113d0a8c4352b0c513dced6c5a1e"},
 ]
 
 [package.extras]
 atomic-cache = ["atomicwrites"]
+interegular = ["interegular (>=0.3.1,<0.4.0)"]
 nearley = ["js2py"]
 regex = ["regex"]
 
@@ -1612,20 +1613,23 @@ proj = ["pyproj (>=3.4.1,<4.0.0)"]
 
 [[package]]
 name = "mappyfile"
-version = "0.9.7"
+version = "1.0.0"
 description = "A pure Python MapFile parser for working with MapServer"
 optional = false
 python-versions = "*"
 files = [
-    {file = "mappyfile-0.9.7-py2.py3-none-any.whl", hash = "sha256:f9975b79ffd2414d560ab002c8103dbbfca8fa6a8cce23db384f931595442338"},
-    {file = "mappyfile-0.9.7.tar.gz", hash = "sha256:1cc7a092e9c64cbc902a3e3d916b368cd8d72aea3f29db422036fd14fa4ede7a"},
+    {file = "mappyfile-1.0.0-py2.py3-none-any.whl", hash = "sha256:a83170c703c060d24ec4b382e4b9a527b948dde49f1fba5f7968dfc57a62404e"},
+    {file = "mappyfile-1.0.0.tar.gz", hash = "sha256:4dbdb49838d69189727859a42cfaae29dd1a193b71bd0d5c2c62a93b8c944eda"},
 ]
 
 [package.dependencies]
-click = {version = "*", markers = "python_version >= \"3.0.0\""}
-jsonref = "0.2"
-jsonschema = {version = ">=2.0", markers = "python_version >= \"3.0.0\""}
-lark-parser = ">=0.11.3"
+click = "*"
+jsonref = "1.1.0"
+jsonschema = ">=4.18.0"
+lark = ">=1.1.5"
+
+[package.extras]
+lark-cython = ["lark-cython (>=0.0.14)"]
 
 [[package]]
 name = "markdown"
@@ -4257,4 +4261,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "90a9af8fb81be5658674f95c44cfa55e22a2c15bf6b696bfab7c7b35e72b2291"
+content-hash = "4c299f7d81ef5733a068dfcb5ab9535a11ec7969fac6e2e8a83287f4c9455585"
