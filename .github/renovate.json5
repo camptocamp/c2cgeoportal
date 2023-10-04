@@ -115,5 +115,13 @@
       'matchPackageNames': ['shellcheck-py/shellcheck-py'],
       'versioning': 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
     },
+    /**
+     * No upgrade for packages sphinxcontrib-*, they requires a new major version od Sphinx
+     */
+    {
+      'matchPackageNames': ['sphinxcontrib-*'],
+      'matchPaths': ['docs/Pipfile'],
+      'enabled': false,
+    },
   ],
 }
