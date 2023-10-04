@@ -132,7 +132,7 @@ repos:
             |upgrade)
           )$
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.0
+    rev: v2.2.1
     hooks:
       - id: autoflake
   - repo: https://github.com/PyCQA/isort
