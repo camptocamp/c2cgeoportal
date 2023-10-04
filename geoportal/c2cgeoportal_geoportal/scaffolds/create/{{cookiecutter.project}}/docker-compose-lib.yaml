@@ -158,13 +158,13 @@ services:
       - '30'
 
   redis_master:
-    image: bitnami/redis:7.0
+    image: bitnami/redis:7.0.13
     environment:
       - REDIS_REPLICATION_MODE=master
       - ALLOW_EMPTY_PASSWORD=yes
 
   redis_slave:
-    image: bitnami/redis:7.0
+    image: bitnami/redis:7.0.13
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis_master
