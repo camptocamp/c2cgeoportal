@@ -173,7 +173,7 @@ services:
       - redis_master
 
   redis_sentinel:
-    image: bitnami/redis-sentinel:7.0
+    image: bitnami/redis-sentinel:7.0.13
     environment:
       - REDIS_MASTER_HOST=redis_master
       - REDIS_MASTER_SET=mymaster
