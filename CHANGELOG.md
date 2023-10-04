@@ -1,3 +1,5 @@
+##### 2.6.0.209
+* Snyk auto fix [c2cgeoportal#10707](https://github.com/camptocamp/c2cgeoportal/pull/10707)
 ##### 2.6.0.208
 * Update dependency urllib3 to v1.26.17 (2.6) [c2cgeoportal#10702](https://github.com/camptocamp/c2cgeoportal/pull/10702)
 ##### 2.6.0.207
