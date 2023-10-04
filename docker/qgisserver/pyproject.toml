@@ -35,7 +35,7 @@ SQLAlchemy = "1.4.49" # commons
 shapely = "2.0.1"
 cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.7"
-pytz = "2023.3"
+pytz = "2023.3.post1"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.2" }
