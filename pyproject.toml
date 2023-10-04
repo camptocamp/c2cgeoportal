@@ -29,7 +29,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
-alembic = "1.11.2" # geoportal
+alembic = "1.11.3" # geoportal
 "c2c.template" = "2.3.0" # geoportal
 c2cgeoform = "2.1.27" # commons
 colander = "2.0" # commons, admin
