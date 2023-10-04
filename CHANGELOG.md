@@ -1,3 +1,7 @@
+##### 2.8.0.113
+
+- Snyk auto fix [c2cgeoportal#10706](https://github.com/camptocamp/c2cgeoportal/pull/10706)
+
 ##### 2.8.0.111
 
 - Update pre-commit hook codespell-project/codespell to v2.2.6 (2.8) [c2cgeoportal#10703](https://github.com/camptocamp/c2cgeoportal/pull/10703)
