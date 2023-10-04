@@ -61,11 +61,11 @@
       automerge: true,
     },
     /** Group the patch and the minor */
-    {
+    /**{
       matchUpdateTypes: ['patch'],
       groupName: 'all patch versions',
       automerge: true,
-    },
+    },*/
     {
       matchUpdateTypes: ['minor'],
       groupName: 'all minor versions',
