@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <section id="automated-check">
-<span id="integrator-checker"></span><h1>Automated check<a class="headerlink" href="#automated-check" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-checker"></span><h1>Automated check<a class="headerlink" href="#automated-check" title="Link to this heading">¶</a></h1>
 <p>c2cgeoportal applications include functionality for testing and assessing that the application is
 functioning correctly, i.e. that its web services respond as expected.</p>
 <p>For this purpose, c2cgeoportal provides a <em>checker</em> and a <em>check_collector</em>.
@@ -72,7 +72,7 @@ monitoring system like Nagios to check that the application is alive.</p>
 <div><p>&lt;project_url&gt;/c2c/health_check?max_level=9</p>
 </div></blockquote>
 <section id="checker">
-<h2>Checker<a class="headerlink" href="#checker" title="Permalink to this heading">¶</a></h2>
+<h2>Checker<a class="headerlink" href="#checker" title="Link to this heading">¶</a></h2>
 <p>The checker uses the following configuration structure in <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># Global configuration</span>
@@ -111,17 +111,17 @@ define a <code class="docutils literal notranslate"><span class="pre">checker_ur
 </div>
 </div>
 <section id="print">
-<h3><code class="docutils literal notranslate"><span class="pre">print</span></code><a class="headerlink" href="#print" title="Permalink to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">print</span></code><a class="headerlink" href="#print" title="Link to this heading">¶</a></h3>
 <p>Check the print version 3.x (try to print a page).</p>
 <p>Uses as spec the <code class="docutils literal notranslate"><span class="pre">spec</span></code> from configuration.</p>
 </section>
 <section id="fulltextsearch">
-<h3><code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code><a class="headerlink" href="#fulltextsearch" title="Permalink to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">fulltextsearch</span></code><a class="headerlink" href="#fulltextsearch" title="Link to this heading">¶</a></h3>
 <p>Check that the Full-text search service returns an element.</p>
 <p>Uses the <code class="docutils literal notranslate"><span class="pre">search</span></code> from configuration as text to search.</p>
 </section>
 <section id="themes">
-<h3><code class="docutils literal notranslate"><span class="pre">themes</span></code><a class="headerlink" href="#themes" title="Permalink to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">themes</span></code><a class="headerlink" href="#themes" title="Link to this heading">¶</a></h3>
 <p>Check that the theme has no error for all interfaces present in the database.</p>
 <p>Uses the <code class="docutils literal notranslate"><span class="pre">themes</span></code> configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">themes</span><span class="p">:</span>
@@ -135,13 +135,13 @@ define a <code class="docutils literal notranslate"><span class="pre">checker_ur
 </div>
 </section>
 <section id="lang">
-<h3><code class="docutils literal notranslate"><span class="pre">lang</span></code><a class="headerlink" href="#lang" title="Permalink to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">lang</span></code><a class="headerlink" href="#lang" title="Link to this heading">¶</a></h3>
 <p>Check that all the language files are present.</p>
 <p>Uses the global configuration <code class="docutils literal notranslate"><span class="pre">available_locale_names</span></code>, and the checker configuration <code class="docutils literal notranslate"><span class="pre">files</span></code>,
 an array of strings that must be in <code class="docutils literal notranslate"><span class="pre">[ngeo]</span></code>.</p>
 </section>
 <section id="routes">
-<h3><code class="docutils literal notranslate"><span class="pre">routes</span></code><a class="headerlink" href="#routes" title="Permalink to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">routes</span></code><a class="headerlink" href="#routes" title="Link to this heading">¶</a></h3>
 <p>Check some routes, configured in <code class="docutils literal notranslate"><span class="pre">routes</span></code> as array of objects with:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: the route name.</p></li>
@@ -152,7 +152,7 @@ an array of strings that must be in <code class="docutils literal notranslate"><
 <p>In the configuration, we can also fill the <code class="docutils literal notranslate"><span class="pre">routes_disable</span></code> to disable some routes.</p>
 </section>
 <section id="phantomjs">
-<h3><code class="docutils literal notranslate"><span class="pre">phantomjs</span></code><a class="headerlink" href="#phantomjs" title="Permalink to this heading">¶</a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">phantomjs</span></code><a class="headerlink" href="#phantomjs" title="Link to this heading">¶</a></h3>
 <p>Check with phantomjs that the pages load correctly without errors,
 using the <code class="docutils literal notranslate"><span class="pre">routes</span></code> configuration as an array of route names to check:</p>
 <ul class="simple">
@@ -163,7 +163,7 @@ using the <code class="docutils literal notranslate"><span class="pre">routes</s
 </section>
 </section>
 <section id="infrastructure">
-<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this heading">¶</a></h2>
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Link to this heading">¶</a></h2>
 <p>If you experience connection issues with your checker, the following configuration options may be useful for you:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">checker</span><span class="p">:</span>
@@ -173,7 +173,7 @@ using the <code class="docutils literal notranslate"><span class="pre">routes</s
 </div>
 </section>
 <section id="check-collector">
-<h2>Check collector<a class="headerlink" href="#check-collector" title="Permalink to this heading">¶</a></h2>
+<h2>Check collector<a class="headerlink" href="#check-collector" title="Link to this heading">¶</a></h2>
 <p>Used to collect checks from a different instance in the parent/children
 structure. It is useful to perform a set of checks all at once.</p>
 <p>The check collector uses the following configuration structure:</p>
@@ -275,7 +275,7 @@ for a host to override it.</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

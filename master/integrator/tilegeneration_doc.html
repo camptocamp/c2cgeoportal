@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +34,9 @@
           <div class="body" role="main">
             
   <section id="tilegeneration">
-<span id="integrator-tilegeneration-doc"></span><h1>TileGeneration<a class="headerlink" href="#tilegeneration" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-tilegeneration-doc"></span><h1>TileGeneration<a class="headerlink" href="#tilegeneration" title="Link to this heading">¶</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>With this solution, we solve the following issues:</p>
 <ul class="simple">
 <li><p>Managing millions of files on the file system is difficult.</p></li>
@@ -61,7 +61,7 @@ And the tiles should be deleted after the expiry time.</p>
 </ul>
 </section>
 <section id="id1">
-<h2>TileCloud-chain<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<h2>TileCloud-chain<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>TileCloud-chain is a TileCloud-based tool that offers a build chain for
 generating tiles from WMS of Mapnik on a local storage or S3 using a
 WMTS layout.</p>
@@ -69,7 +69,7 @@ WMTS layout.</p>
 EC2, SQS, SNS.</p>
 <p>See the <a class="reference external" href="https://pypi.python.org/pypi/tilecloud-chain">readme</a>.</p>
 <section id="configuration">
-<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h3>
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
 <p>The configuration is done in the file <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code>.</p>
 <p>The main thing to do is to:</p>
 <ul>
@@ -104,7 +104,7 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 </div>
 </section>
 <section id="tile-generation-and-management">
-<h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Permalink to this heading">¶</a></h3>
+<h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Link to this heading">¶</a></h3>
 <p>This package offers two tools, one to generate the tiles locally, see help:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles<span class="w"> </span>--help</span>
 </pre></div></div><p>one to generate the tiles using AWS, see help:</p>
@@ -115,7 +115,7 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles</span>
 </pre></div></div></section>
 <section id="aws-credentials">
-<h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Permalink to this heading">¶</a></h3>
+<h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Link to this heading">¶</a></h3>
 <p>To be able to connect to the S3 service, you should define the following variables in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code>
 file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">access_key_id</span><span class="o">&gt;</span>
@@ -129,7 +129,7 @@ file:</p>
 </div>
 </section>
 <section id="web-interface">
-<h3>Web Interface<a class="headerlink" href="#web-interface" title="Permalink to this heading">¶</a></h3>
+<h3>Web Interface<a class="headerlink" href="#web-interface" title="Link to this heading">¶</a></h3>
 <p>It is possible to run tile generation commands through a web interface located at URL
 <code class="docutils literal notranslate"><span class="pre">&lt;application</span> <span class="pre">main</span> <span class="pre">URL&gt;/tiles/admin/</span></code>. This interface require an authentication
 see <a class="reference internal" href="c2cwsgiutils.html#integrator-c2cwsgiutils-auth"><span class="std std-ref">Authentication</span></a> for more information.</p>
@@ -137,7 +137,7 @@ see <a class="reference internal" href="c2cwsgiutils.html#integrator-c2cwsgiutil
 <code class="docutils literal notranslate"><span class="pre">tilegeneration/config.yaml.tmpl</span></code> file.</p>
 </section>
 <section id="see-also">
-<h3>See also<a class="headerlink" href="#see-also" title="Permalink to this heading">¶</a></h3>
+<h3>See also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="api.html#integrator-api"><span class="std std-ref">JavaScript API</span></a></p></li>
 <li><p><a class="reference internal" href="../administrator/mapfile.html#administrator-mapfile-perepare-raster"><span class="std std-ref">Prepare raster files</span></a></p></li>
@@ -220,7 +220,7 @@ see <a class="reference internal" href="c2cwsgiutils.html#integrator-c2cwsgiutil
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

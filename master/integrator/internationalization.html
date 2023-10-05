@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <section id="internationalization">
-<span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this heading">¶</a></h1>
+<span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Link to this heading">¶</a></h1>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default),
 in the simple application mode, the list of languages is constant: en fr de it.</p>
 <div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">LANGUAGES</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>en<span class="w"> </span>fr<span class="w"> </span>de
@@ -87,7 +87,7 @@ in the simple application mode, the list of languages is constant: en fr de it.<
 for translation.</p>
 </div>
 <section id="collect-custom-strings">
-<h2>Collect custom strings<a class="headerlink" href="#collect-custom-strings" title="Permalink to this heading">¶</a></h2>
+<h2>Collect custom strings<a class="headerlink" href="#collect-custom-strings" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -101,13 +101,13 @@ one of your JavaScript application controllers:</p>
 </div>
 </section>
 <section id="i18next-configuration">
-<h2>I18next configuration<a class="headerlink" href="#i18next-configuration" title="Permalink to this heading">¶</a></h2>
+<h2>I18next configuration<a class="headerlink" href="#i18next-configuration" title="Link to this heading">¶</a></h2>
 <p>In the <code class="docutils literal notranslate"><span class="pre">vars</span></code> in <code class="docutils literal notranslate"><span class="pre">i18next</span></code> you can override the default <code class="docutils literal notranslate"><span class="pre">i18next</span></code> configuration.
 If not provided the <code class="docutils literal notranslate"><span class="pre">backend/loadPath</span></code> is automatically generated.</p>
 <p>Seel also <a class="reference external" href="https://www.i18next.com/overview/configuration-options">i18next Configuration Options</a>.</p>
 </section>
 <section id="different-localization-sets">
-<h2>Different localization sets<a class="headerlink" href="#different-localization-sets" title="Permalink to this heading">¶</a></h2>
+<h2>Different localization sets<a class="headerlink" href="#different-localization-sets" title="Link to this heading">¶</a></h2>
 <p>If you use the application with different databases that contains two different layer trees you should
 have a suffix on your po files.</p>
 <p>Before calling the <cite>update-po</cite> command you should rename the po files you want to update without the suffix,
@@ -203,7 +203,7 @@ and after you should rename them with the right name.</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

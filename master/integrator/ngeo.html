@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,11 +34,11 @@
           <div class="body" role="main">
             
   <section id="ngeo">
-<span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-ngeo"></span><h1>ngeo<a class="headerlink" href="#ngeo" title="Link to this heading">¶</a></h1>
 <section id="organization">
-<h2>Organization<a class="headerlink" href="#organization" title="Permalink to this heading">¶</a></h2>
+<h2>Organization<a class="headerlink" href="#organization" title="Link to this heading">¶</a></h2>
 <section id="simple-and-advanced-modes">
-<h3>Simple and advanced modes<a class="headerlink" href="#simple-and-advanced-modes" title="Permalink to this heading">¶</a></h3>
+<h3>Simple and advanced modes<a class="headerlink" href="#simple-and-advanced-modes" title="Link to this heading">¶</a></h3>
 <p>The HTML and the JS of an interface are in the files:
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code> and
 <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>
@@ -49,14 +49,14 @@ where <code class="docutils literal notranslate"><span class="pre">&lt;interface
 <p>The images used from the admin interface should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static/images/</span></code>.</p>
 </section>
 <section id="advanced-mode-only">
-<h3>Advanced mode only<a class="headerlink" href="#advanced-mode-only" title="Permalink to this heading">¶</a></h3>
+<h3>Advanced mode only<a class="headerlink" href="#advanced-mode-only" title="Link to this heading">¶</a></h3>
 <p>The style sheet vars file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/sass/vars_&lt;interface&gt;.scss</span></code>.</p>
 <p>The style sheet file is <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/sass/&lt;interface&gt;.scss</span></code>.</p>
 <p>The images used by the application code should be placed in the folder <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/images/</span></code>.</p>
 </section>
 </section>
 <section id="html-file">
-<h2>HTML file<a class="headerlink" href="#html-file" title="Permalink to this heading">¶</a></h2>
+<h2>HTML file<a class="headerlink" href="#html-file" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -87,7 +87,7 @@ from the controller by doing the following (here, the controller is the <code cl
 </div>
 </section>
 <section id="controller-js-file">
-<h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Permalink to this heading">¶</a></h2>
+<h2>Controller (js file)<a class="headerlink" href="#controller-js-file" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -102,7 +102,7 @@ from the controller by doing the following (here, the controller is the <code cl
 of the vars file. See the section below.</p>
 </section>
 <section id="dynamic-json-view">
-<h2>Dynamic.json view<a class="headerlink" href="#dynamic-json-view" title="Permalink to this heading">¶</a></h2>
+<h2>Dynamic.json view<a class="headerlink" href="#dynamic-json-view" title="Link to this heading">¶</a></h2>
 <p>To configure the ngeo constants with dynamic or configurable values,
 you can use the dynamic view.</p>
 <p>This view is configurable in the vars files in the section <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>.
@@ -152,9 +152,9 @@ be extended. These values will be updated with the interface configuration
 <li><p><code class="docutils literal notranslate"><span class="pre">fulltextsearch_groups</span></code>: The search groups from the <cite>layer_name</cite> of the Full-Text Search table.</p></li>
 </ul>
 <section id="ngeo-configuration-options">
-<h3>Ngeo configuration options<a class="headerlink" href="#ngeo-configuration-options" title="Permalink to this heading">¶</a></h3>
+<h3>Ngeo configuration options<a class="headerlink" href="#ngeo-configuration-options" title="Link to this heading">¶</a></h3>
 <section id="configuration">
-<span id="integrator-guide-ngeo-properties-configuration"></span><h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-configuration"></span><h4>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">authenticationBaseUrl</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-authenticationbaseurl"><span class="std std-ref">authenticationBaseUrl</span></a>)</p></li>
@@ -229,9 +229,9 @@ be extended. These values will be updated with the interface configuration
 </section>
 </section>
 <section id="ngeo-api-configuration-options">
-<h3>Ngeo API configuration options<a class="headerlink" href="#ngeo-api-configuration-options" title="Permalink to this heading">¶</a></h3>
+<h3>Ngeo API configuration options<a class="headerlink" href="#ngeo-api-configuration-options" title="Link to this heading">¶</a></h3>
 <section id="apiconfig">
-<span id="integrator-guide-ngeo-properties-apiconfig"></span><h4>APIConfig<a class="headerlink" href="#apiconfig" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-apiconfig"></span><h4>APIConfig<a class="headerlink" href="#apiconfig" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">backgroundLayer</span></code> (string, optional)</p></li>
@@ -249,70 +249,70 @@ be extended. These values will be updated with the interface configuration
 </section>
 </section>
 <section id="ngeo-internal-object-configuration-options">
-<h3>Ngeo internal object configuration options<a class="headerlink" href="#ngeo-internal-object-configuration-options" title="Permalink to this heading">¶</a></h3>
+<h3>Ngeo internal object configuration options<a class="headerlink" href="#ngeo-internal-object-configuration-options" title="Link to this heading">¶</a></h3>
 </section>
 </section>
 </section>
 <section id="define-additional-types-used-in-the-config">
-<h1>Define additional types used in the config<a class="headerlink" href="#define-additional-types-used-in-the-config" title="Permalink to this heading">¶</a></h1>
+<h1>Define additional types used in the config<a class="headerlink" href="#define-additional-types-used-in-the-config" title="Link to this heading">¶</a></h1>
 <section id="featurecollection">
-<span id="integrator-guide-ngeo-properties-geojson-featurecollection"></span><h2>FeatureCollection<a class="headerlink" href="#featurecollection" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-geojson-featurecollection"></span><h2>FeatureCollection<a class="headerlink" href="#featurecollection" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc7946#section-3.3">FeatureCollection</a>.</p>
 </section>
 <section id="ol-feature">
-<span id="integrator-guide-ngeo-properties-olfeature"></span><h2>ol.Feature<a class="headerlink" href="#ol-feature" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-olfeature"></span><h2>ol.Feature<a class="headerlink" href="#ol-feature" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_Feature-Feature.html">ol.Feature</a>.</p>
 </section>
 <section id="ol-geom-geometry">
-<span id="integrator-guide-ngeo-properties-olgeomgeometry"></span><h2>ol.geom.Geometry<a class="headerlink" href="#ol-geom-geometry" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-olgeomgeometry"></span><h2>ol.geom.Geometry<a class="headerlink" href="#ol-geom-geometry" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_geom_Geometry-Geometry.html">ol.geom.Geometry</a>.</p>
 </section>
 <section id="ol-control-control">
-<span id="integrator-guide-ngeo-properties-olcontrolcontrol"></span><h2>ol.control.Control<a class="headerlink" href="#ol-control-control" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-olcontrolcontrol"></span><h2>ol.control.Control<a class="headerlink" href="#ol-control-control" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_control_Control-Control.html">ol.control.Control</a>.</p>
 </section>
 <section id="ol-interaction-interaction">
-<span id="integrator-guide-ngeo-properties-olinteractioninteraction"></span><h2>ol.interaction.interaction<a class="headerlink" href="#ol-interaction-interaction" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-olinteractioninteraction"></span><h2>ol.interaction.interaction<a class="headerlink" href="#ol-interaction-interaction" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_interaction_Interaction-Interaction.html">ol.interaction.interaction</a>.</p>
 </section>
 <section id="bloodhound-bloodhoundoptions">
-<span id="integrator-guide-ngeo-properties-bloodhound-bloodhoundoptions"></span><h2>Bloodhound.BloodhoundOptions<a class="headerlink" href="#bloodhound-bloodhoundoptions" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-bloodhound-bloodhoundoptions"></span><h2>Bloodhound.BloodhoundOptions<a class="headerlink" href="#bloodhound-bloodhoundoptions" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md#usage">Bloodhound Usage</a>.</p>
 </section>
 <section id="twitter-typeahead-dataset">
-<span id="integrator-guide-ngeo-properties-twitter-typeahead-dataset"></span><h2>Twitter.Typeahead.Dataset<a class="headerlink" href="#twitter-typeahead-dataset" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-twitter-typeahead-dataset"></span><h2>Twitter.Typeahead.Dataset<a class="headerlink" href="#twitter-typeahead-dataset" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://github.com/corejavascript/typeahead.js/blob/master/doc/jquery_typeahead.md#datasets">Typeahead Dataset</a>.</p>
 </section>
 <section id="zextractorfunction">
-<span id="integrator-guide-ngeo-properties-zextractorfunction"></span><h2>ZExtractorFunction<a class="headerlink" href="#zextractorfunction" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-zextractorfunction"></span><h2>ZExtractorFunction<a class="headerlink" href="#zextractorfunction" title="Link to this heading">¶</a></h2>
 </section>
 <section id="regexp">
-<span id="integrator-guide-ngeo-properties-regexp"></span><h2>RegExp<a class="headerlink" href="#regexp" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-regexp"></span><h2>RegExp<a class="headerlink" href="#regexp" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a>.</p>
 </section>
 <section id="linecap">
-<span id="integrator-guide-ngeo-properties-canvaslinecap"></span><h2>lineCap<a class="headerlink" href="#linecap" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-canvaslinecap"></span><h2>lineCap<a class="headerlink" href="#linecap" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap#options">lineCap</a>.</p>
 </section>
 <section id="linejoin">
-<span id="integrator-guide-ngeo-properties-canvaslinejoin"></span><h2>lineJoin<a class="headerlink" href="#linejoin" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-canvaslinejoin"></span><h2>lineJoin<a class="headerlink" href="#linejoin" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin#options">lineJoin</a>.</p>
 </section>
 <section id="ol-control-zoomoptions">
-<span id="integrator-guide-ngeo-properties-olcontrolzoomoptions"></span><h2>ol.control.ZoomOptions<a class="headerlink" href="#ol-control-zoomoptions" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-olcontrolzoomoptions"></span><h2>ol.control.ZoomOptions<a class="headerlink" href="#ol-control-zoomoptions" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_control_Zoom-Zoom.html">ol.control.ZoomOptions</a>.</p>
 </section>
 <section id="ol-interaction-defaultsoptions">
-<span id="integrator-guide-ngeo-properties-olinteractiondefaultsoptions"></span><h2>ol.interaction.DefaultsOptions<a class="headerlink" href="#ol-interaction-defaultsoptions" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-olinteractiondefaultsoptions"></span><h2>ol.interaction.DefaultsOptions<a class="headerlink" href="#ol-interaction-defaultsoptions" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://openlayers.org/en/latest/apidoc/module-ol_interaction_defaults.html">ol.interaction.DefaultsOptions</a>.</p>
 </section>
 <section id="i18next-initoptions">
-<span id="integrator-guide-ngeo-properties-initoptions"></span><h2>i18next.InitOptions<a class="headerlink" href="#i18next-initoptions" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-guide-ngeo-properties-initoptions"></span><h2>i18next.InitOptions<a class="headerlink" href="#i18next-initoptions" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="https://www.i18next.com/overview/api#init">i18next.InitOptions</a>.</p>
 <section id="id12">
-<h3>Ngeo internal object configuration options<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h3>
+<h3>Ngeo internal object configuration options<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
 <section id="circle">
-<span id="integrator-guide-ngeo-properties-circle"></span><h4>Circle<a class="headerlink" href="#circle" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-circle"></span><h4>Circle<a class="headerlink" href="#circle" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">displacement</span></code> (number[], optional)</p></li>
@@ -324,7 +324,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="externalogcserver">
-<span id="integrator-guide-ngeo-properties-externalogcserver"></span><h4>ExternalOGCServer<a class="headerlink" href="#externalogcserver" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-externalogcserver"></span><h4>ExternalOGCServer<a class="headerlink" href="#externalogcserver" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (string)</p></li>
@@ -335,7 +335,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="fill">
-<span id="integrator-guide-ngeo-properties-fill"></span><h4>Fill<a class="headerlink" href="#fill" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-fill"></span><h4>Fill<a class="headerlink" href="#fill" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (number[] | string, optional)</p></li>
@@ -344,11 +344,11 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gridmergetabs">
-<span id="integrator-guide-ngeo-properties-gridmergetabs"></span><h4>GridMergeTabs<a class="headerlink" href="#gridmergetabs" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gridmergetabs"></span><h4>GridMergeTabs<a class="headerlink" href="#gridmergetabs" title="Link to this heading">¶</a></h4>
 <p>Properties:</p>
 </section>
 <section id="layerconfig">
-<span id="integrator-guide-ngeo-properties-layerconfig"></span><h4>LayerConfig<a class="headerlink" href="#layerconfig" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-layerconfig"></span><h4>LayerConfig<a class="headerlink" href="#layerconfig" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">args</span></code> (string[], optional)</p></li>
@@ -360,7 +360,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="lineconfiguration">
-<span id="integrator-guide-ngeo-properties-lineconfiguration"></span><h4>LineConfiguration<a class="headerlink" href="#lineconfiguration" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-lineconfiguration"></span><h4>LineConfiguration<a class="headerlink" href="#lineconfiguration" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (string, optional)</p></li>
@@ -370,7 +370,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="mapconfig">
-<span id="integrator-guide-ngeo-properties-mapconfig"></span><h4>MapConfig<a class="headerlink" href="#mapconfig" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-mapconfig"></span><h4>MapConfig<a class="headerlink" href="#mapconfig" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">maxTilesLoading</span></code> (number, optional)</p></li>
@@ -381,7 +381,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="measurerasterlayer">
-<span id="integrator-guide-ngeo-properties-measurerasterlayer"></span><h4>MeasureRasterLayer<a class="headerlink" href="#measurerasterlayer" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-measurerasterlayer"></span><h4>MeasureRasterLayer<a class="headerlink" href="#measurerasterlayer" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">decimals</span></code> (number, optional)</p></li>
@@ -392,7 +392,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="mousepositionprojection">
-<span id="integrator-guide-ngeo-properties-mousepositionprojection"></span><h4>MousePositionProjection<a class="headerlink" href="#mousepositionprojection" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-mousepositionprojection"></span><h4>MousePositionProjection<a class="headerlink" href="#mousepositionprojection" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">code</span></code> (string)</p></li>
@@ -403,7 +403,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="optionslegendtype">
-<span id="integrator-guide-ngeo-properties-optionslegendtype"></span><h4>OptionsLegendType<a class="headerlink" href="#optionslegendtype" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-optionslegendtype"></span><h4>OptionsLegendType<a class="headerlink" href="#optionslegendtype" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> ({string: boolean})</p></li>
@@ -415,7 +415,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="projection">
-<span id="integrator-guide-ngeo-properties-projection"></span><h4>Projection<a class="headerlink" href="#projection" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-projection"></span><h4>Projection<a class="headerlink" href="#projection" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">definition</span></code> (string[])</p></li>
@@ -425,7 +425,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="regularshape">
-<span id="integrator-guide-ngeo-properties-regularshape"></span><h4>RegularShape<a class="headerlink" href="#regularshape" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-regularshape"></span><h4>RegularShape<a class="headerlink" href="#regularshape" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">angle</span></code> (number, optional)</p></li>
@@ -443,7 +443,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="routingprofile">
-<span id="integrator-guide-ngeo-properties-routingprofile"></span><h4>RoutingProfile<a class="headerlink" href="#routingprofile" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-routingprofile"></span><h4>RoutingProfile<a class="headerlink" href="#routingprofile" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> (string)</p></li>
@@ -453,7 +453,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="searchaction">
-<span id="integrator-guide-ngeo-properties-searchaction"></span><h4>SearchAction<a class="headerlink" href="#searchaction" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-searchaction"></span><h4>SearchAction<a class="headerlink" href="#searchaction" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">action</span></code> (string)</p></li>
@@ -463,7 +463,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="searchcomponentdatasource">
-<span id="integrator-guide-ngeo-properties-searchcomponentdatasource"></span><h4>SearchComponentDatasource<a class="headerlink" href="#searchcomponentdatasource" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-searchcomponentdatasource"></span><h4>SearchComponentDatasource<a class="headerlink" href="#searchcomponentdatasource" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bloodhoundOptions</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-bloodhound-bloodhoundoptions"><span class="std std-ref">Bloodhound.BloodhoundOptions</span></a>&lt;<a class="reference internal" href="#integrator-guide-ngeo-properties-geojson-featurecollection"><span class="std std-ref">FeatureCollection</span></a>&gt;, optional)</p></li>
@@ -479,7 +479,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="stringtohtmlreplacement">
-<span id="integrator-guide-ngeo-properties-stringtohtmlreplacement"></span><h4>StringToHtmlReplacement<a class="headerlink" href="#stringtohtmlreplacement" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-stringtohtmlreplacement"></span><h4>StringToHtmlReplacement<a class="headerlink" href="#stringtohtmlreplacement" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">compiled_expression</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-regexp"><span class="std std-ref">RegExp</span></a>, optional)</p></li>
@@ -491,7 +491,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="stroke">
-<span id="integrator-guide-ngeo-properties-stroke"></span><h4>Stroke<a class="headerlink" href="#stroke" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-stroke"></span><h4>Stroke<a class="headerlink" href="#stroke" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> (number[] | string, optional)</p></li>
@@ -506,7 +506,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="style">
-<span id="integrator-guide-ngeo-properties-style"></span><h4>Style<a class="headerlink" href="#style" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-style"></span><h4>Style<a class="headerlink" href="#style" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">circle</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-circle"><span class="std std-ref">Circle</span></a>, optional)</p></li>
@@ -519,10 +519,10 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="stylelike">
-<span id="integrator-guide-ngeo-properties-stylelike"></span><h4>StyleLike<a class="headerlink" href="#stylelike" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-stylelike"></span><h4>StyleLike<a class="headerlink" href="#stylelike" title="Link to this heading">¶</a></h4>
 </section>
 <section id="view">
-<span id="integrator-guide-ngeo-properties-view"></span><h4>View<a class="headerlink" href="#view" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-view"></span><h4>View<a class="headerlink" href="#view" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">center</span></code> (number[], optional)</p></li>
@@ -550,7 +550,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="wfstype">
-<span id="integrator-guide-ngeo-properties-wfstype"></span><h4>WfsType<a class="headerlink" href="#wfstype" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-wfstype"></span><h4>WfsType<a class="headerlink" href="#wfstype" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">defaultFeatureNS</span></code> (string, optional)</p></li>
@@ -564,16 +564,16 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="authenticationbaseurl">
-<span id="integrator-guide-ngeo-properties-authenticationbaseurl"></span><h4>authenticationBaseUrl<a class="headerlink" href="#authenticationbaseurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-authenticationbaseurl"></span><h4>authenticationBaseUrl<a class="headerlink" href="#authenticationbaseurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="defaultlang">
-<span id="integrator-guide-ngeo-properties-defaultlang"></span><h4>defaultLang<a class="headerlink" href="#defaultlang" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-defaultlang"></span><h4>defaultLang<a class="headerlink" href="#defaultlang" title="Link to this heading">¶</a></h4>
 </section>
 <section id="fulltextsearchurl">
-<span id="integrator-guide-ngeo-properties-fulltextsearchurl"></span><h4>fulltextsearchUrl<a class="headerlink" href="#fulltextsearchurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-fulltextsearchurl"></span><h4>fulltextsearchUrl<a class="headerlink" href="#fulltextsearchurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfauthenticationconfig">
-<span id="integrator-guide-ngeo-properties-gmfauthenticationconfig"></span><h4>gmfAuthenticationConfig<a class="headerlink" href="#gmfauthenticationconfig" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfauthenticationconfig"></span><h4>gmfAuthenticationConfig<a class="headerlink" href="#gmfauthenticationconfig" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">allowPasswordChange</span></code> (boolean)</p></li>
@@ -583,10 +583,10 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfauthenticationnoreloadrole">
-<span id="integrator-guide-ngeo-properties-gmfauthenticationnoreloadrole"></span><h4>gmfAuthenticationNoReloadRole<a class="headerlink" href="#gmfauthenticationnoreloadrole" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfauthenticationnoreloadrole"></span><h4>gmfAuthenticationNoReloadRole<a class="headerlink" href="#gmfauthenticationnoreloadrole" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfbackgroundlayerselectoroptions">
-<span id="integrator-guide-ngeo-properties-gmfbackgroundlayerselectoroptions"></span><h4>gmfBackgroundLayerSelectorOptions<a class="headerlink" href="#gmfbackgroundlayerselectoroptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfbackgroundlayerselectoroptions"></span><h4>gmfBackgroundLayerSelectorOptions<a class="headerlink" href="#gmfbackgroundlayerselectoroptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">opacityLayer</span></code> (string, optional)</p></li>
@@ -595,7 +595,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfcontextualdataoptions">
-<span id="integrator-guide-ngeo-properties-gmfcontextualdataoptions"></span><h4>gmfContextualDataOptions<a class="headerlink" href="#gmfcontextualdataoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfcontextualdataoptions"></span><h4>gmfContextualDataOptions<a class="headerlink" href="#gmfcontextualdataoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">projections</span></code> (string[])</p></li>
@@ -605,10 +605,10 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfcsvfilename">
-<span id="integrator-guide-ngeo-properties-gmfcsvfilename"></span><h4>gmfCsvFilename<a class="headerlink" href="#gmfcsvfilename" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfcsvfilename"></span><h4>gmfCsvFilename<a class="headerlink" href="#gmfcsvfilename" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfcustomcss">
-<span id="integrator-guide-ngeo-properties-gmfcustomcss"></span><h4>gmfCustomCSS<a class="headerlink" href="#gmfcustomcss" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfcustomcss"></span><h4>gmfCustomCSS<a class="headerlink" href="#gmfcustomcss" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">authentication</span></code> (string)</p></li>
@@ -621,13 +621,13 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfcustomjavascripturl">
-<span id="integrator-guide-ngeo-properties-gmfcustomjavascripturl"></span><h4>gmfCustomJavascriptUrl<a class="headerlink" href="#gmfcustomjavascripturl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfcustomjavascripturl"></span><h4>gmfCustomJavascriptUrl<a class="headerlink" href="#gmfcustomjavascripturl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfcustomstylesheeturl">
-<span id="integrator-guide-ngeo-properties-gmfcustomstylesheeturl"></span><h4>gmfCustomStylesheetUrl<a class="headerlink" href="#gmfcustomstylesheeturl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfcustomstylesheeturl"></span><h4>gmfCustomStylesheetUrl<a class="headerlink" href="#gmfcustomstylesheeturl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfdisclaimeroptions">
-<span id="integrator-guide-ngeo-properties-gmfdisclaimeroptions"></span><h4>gmfDisclaimerOptions<a class="headerlink" href="#gmfdisclaimeroptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfdisclaimeroptions"></span><h4>gmfDisclaimerOptions<a class="headerlink" href="#gmfdisclaimeroptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">external</span></code> (boolean, optional)</p></li>
@@ -638,7 +638,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfdisplayquerygridoptions">
-<span id="integrator-guide-ngeo-properties-gmfdisplayquerygridoptions"></span><h4>gmfDisplayQueryGridOptions<a class="headerlink" href="#gmfdisplayquerygridoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfdisplayquerygridoptions"></span><h4>gmfDisplayQueryGridOptions<a class="headerlink" href="#gmfdisplayquerygridoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">featuresStyle</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
@@ -651,7 +651,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfdisplayquerywindowoptions">
-<span id="integrator-guide-ngeo-properties-gmfdisplayquerywindowoptions"></span><h4>gmfDisplayQueryWindowOptions<a class="headerlink" href="#gmfdisplayquerywindowoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfdisplayquerywindowoptions"></span><h4>gmfDisplayQueryWindowOptions<a class="headerlink" href="#gmfdisplayquerywindowoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">collapsed</span></code> (boolean, optional)</p></li>
@@ -663,7 +663,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfeditfeatureoptions">
-<span id="integrator-guide-ngeo-properties-gmfeditfeatureoptions"></span><h4>gmfEditFeatureOptions<a class="headerlink" href="#gmfeditfeatureoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfeditfeatureoptions"></span><h4>gmfEditFeatureOptions<a class="headerlink" href="#gmfeditfeatureoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">closeAfterSave</span></code> (boolean)</p></li>
@@ -674,7 +674,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfelevationoptions">
-<span id="integrator-guide-ngeo-properties-gmfelevationoptions"></span><h4>gmfElevationOptions<a class="headerlink" href="#gmfelevationoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfelevationoptions"></span><h4>gmfElevationOptions<a class="headerlink" href="#gmfelevationoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code> (string[])</p></li>
@@ -684,13 +684,13 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfexternalogcservers">
-<span id="integrator-guide-ngeo-properties-gmfexternalogcservers"></span><h4>gmfExternalOGCServers<a class="headerlink" href="#gmfexternalogcservers" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfexternalogcservers"></span><h4>gmfExternalOGCServers<a class="headerlink" href="#gmfexternalogcservers" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmffloors">
-<span id="integrator-guide-ngeo-properties-gmffloors"></span><h4>gmfFloors<a class="headerlink" href="#gmffloors" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmffloors"></span><h4>gmfFloors<a class="headerlink" href="#gmffloors" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmflayertreeoptions">
-<span id="integrator-guide-ngeo-properties-gmflayertreeoptions"></span><h4>gmfLayerTreeOptions<a class="headerlink" href="#gmflayertreeoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmflayertreeoptions"></span><h4>gmfLayerTreeOptions<a class="headerlink" href="#gmflayertreeoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">isExpanded</span></code> (boolean)</p></li>
@@ -700,10 +700,10 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmflayersurl">
-<span id="integrator-guide-ngeo-properties-gmflayersurl"></span><h4>gmfLayersUrl<a class="headerlink" href="#gmflayersurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmflayersurl"></span><h4>gmfLayersUrl<a class="headerlink" href="#gmflayersurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfmobilemeasureareaoptions">
-<span id="integrator-guide-ngeo-properties-gmfmobilemeasureareaoptions"></span><h4>gmfMobileMeasureAreaOptions<a class="headerlink" href="#gmfmobilemeasureareaoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfmobilemeasureareaoptions"></span><h4>gmfMobileMeasureAreaOptions<a class="headerlink" href="#gmfmobilemeasureareaoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">precision</span></code> (number, optional)</p></li>
@@ -713,7 +713,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfmobilemeasurelengthoptions">
-<span id="integrator-guide-ngeo-properties-gmfmobilemeasurelengthoptions"></span><h4>gmfMobileMeasureLengthOptions<a class="headerlink" href="#gmfmobilemeasurelengthoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfmobilemeasurelengthoptions"></span><h4>gmfMobileMeasureLengthOptions<a class="headerlink" href="#gmfmobilemeasurelengthoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">precision</span></code> (number, optional)</p></li>
@@ -723,7 +723,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfmobilemeasurepointoptions">
-<span id="integrator-guide-ngeo-properties-gmfmobilemeasurepointoptions"></span><h4>gmfMobileMeasurePointOptions<a class="headerlink" href="#gmfmobilemeasurepointoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfmobilemeasurepointoptions"></span><h4>gmfMobileMeasurePointOptions<a class="headerlink" href="#gmfmobilemeasurepointoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">decimals</span></code> (number)</p></li>
@@ -735,7 +735,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfmousepositionoptions">
-<span id="integrator-guide-ngeo-properties-gmfmousepositionoptions"></span><h4>gmfMousePositionOptions<a class="headerlink" href="#gmfmousepositionoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfmousepositionoptions"></span><h4>gmfMousePositionOptions<a class="headerlink" href="#gmfmousepositionoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">projections</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-mousepositionprojection"><span class="std std-ref">MousePositionProjection</span></a>[])</p></li>
@@ -744,7 +744,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfobjecteditingtoolsoptions">
-<span id="integrator-guide-ngeo-properties-gmfobjecteditingtoolsoptions"></span><h4>gmfObjectEditingToolsOptions<a class="headerlink" href="#gmfobjecteditingtoolsoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfobjecteditingtoolsoptions"></span><h4>gmfObjectEditingToolsOptions<a class="headerlink" href="#gmfobjecteditingtoolsoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">regularPolygonRadius</span></code> (number, optional)</p></li>
@@ -753,7 +753,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfoptions">
-<span id="integrator-guide-ngeo-properties-gmfoptions"></span><h4>gmfOptions<a class="headerlink" href="#gmfoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfoptions"></span><h4>gmfOptions<a class="headerlink" href="#gmfoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">controlZoom</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-olcontrolzoomoptions"><span class="std std-ref">ol.control.ZoomOptions</span></a>)</p></li>
@@ -772,7 +772,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfpermalinkoptions">
-<span id="integrator-guide-ngeo-properties-gmfpermalinkoptions"></span><h4>gmfPermalinkOptions<a class="headerlink" href="#gmfpermalinkoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfpermalinkoptions"></span><h4>gmfPermalinkOptions<a class="headerlink" href="#gmfpermalinkoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">crosshairEnabledByDefault</span></code> (boolean, optional)</p></li>
@@ -785,7 +785,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfprintoptions">
-<span id="integrator-guide-ngeo-properties-gmfprintoptions"></span><h4>gmfPrintOptions<a class="headerlink" href="#gmfprintoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfprintoptions"></span><h4>gmfPrintOptions<a class="headerlink" href="#gmfprintoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">defaultLayout</span></code> (string, optional)</p></li>
@@ -800,13 +800,13 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfprinturl">
-<span id="integrator-guide-ngeo-properties-gmfprinturl"></span><h4>gmfPrintUrl<a class="headerlink" href="#gmfprinturl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfprinturl"></span><h4>gmfPrintUrl<a class="headerlink" href="#gmfprinturl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfprofilejsonurl">
-<span id="integrator-guide-ngeo-properties-gmfprofilejsonurl"></span><h4>gmfProfileJsonUrl<a class="headerlink" href="#gmfprofilejsonurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfprofilejsonurl"></span><h4>gmfProfileJsonUrl<a class="headerlink" href="#gmfprofilejsonurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfprofileoptions">
-<span id="integrator-guide-ngeo-properties-gmfprofileoptions"></span><h4>gmfProfileOptions<a class="headerlink" href="#gmfprofileoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfprofileoptions"></span><h4>gmfProfileOptions<a class="headerlink" href="#gmfprofileoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">hoverPointStyle</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>)</p></li>
@@ -816,20 +816,20 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfprojectionsoptions">
-<span id="integrator-guide-ngeo-properties-gmfprojectionsoptions"></span><h4>gmfProjectionsOptions<a class="headerlink" href="#gmfprojectionsoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfprojectionsoptions"></span><h4>gmfProjectionsOptions<a class="headerlink" href="#gmfprojectionsoptions" title="Link to this heading">¶</a></h4>
 <p>Properties:</p>
 </section>
 <section id="gmfquerygrid">
-<span id="integrator-guide-ngeo-properties-gmfquerygrid"></span><h4>gmfQueryGrid<a class="headerlink" href="#gmfquerygrid" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfquerygrid"></span><h4>gmfQueryGrid<a class="headerlink" href="#gmfquerygrid" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfrasterurl">
-<span id="integrator-guide-ngeo-properties-gmfrasterurl"></span><h4>gmfRasterUrl<a class="headerlink" href="#gmfrasterurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfrasterurl"></span><h4>gmfRasterUrl<a class="headerlink" href="#gmfrasterurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfsearchgroups">
-<span id="integrator-guide-ngeo-properties-gmfsearchgroups"></span><h4>gmfSearchGroups<a class="headerlink" href="#gmfsearchgroups" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfsearchgroups"></span><h4>gmfSearchGroups<a class="headerlink" href="#gmfsearchgroups" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfsearchoptions">
-<span id="integrator-guide-ngeo-properties-gmfsearchoptions"></span><h4>gmfSearchOptions<a class="headerlink" href="#gmfsearchoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfsearchoptions"></span><h4>gmfSearchOptions<a class="headerlink" href="#gmfsearchoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">clearButton</span></code> (boolean, optional)</p></li>
@@ -845,7 +845,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfshareoptions">
-<span id="integrator-guide-ngeo-properties-gmfshareoptions"></span><h4>gmfShareOptions<a class="headerlink" href="#gmfshareoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfshareoptions"></span><h4>gmfShareOptions<a class="headerlink" href="#gmfshareoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">enableEmail</span></code> (boolean, optional)</p></li>
@@ -854,10 +854,10 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfshortenercreateurl">
-<span id="integrator-guide-ngeo-properties-gmfshortenercreateurl"></span><h4>gmfShortenerCreateUrl<a class="headerlink" href="#gmfshortenercreateurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfshortenercreateurl"></span><h4>gmfShortenerCreateUrl<a class="headerlink" href="#gmfshortenercreateurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmfsnappingoptions">
-<span id="integrator-guide-ngeo-properties-gmfsnappingoptions"></span><h4>gmfSnappingOptions<a class="headerlink" href="#gmfsnappingoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfsnappingoptions"></span><h4>gmfSnappingOptions<a class="headerlink" href="#gmfsnappingoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">maxFeatures</span></code> (number)</p></li>
@@ -866,7 +866,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmfthemesoptions">
-<span id="integrator-guide-ngeo-properties-gmfthemesoptions"></span><h4>gmfThemesOptions<a class="headerlink" href="#gmfthemesoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmfthemesoptions"></span><h4>gmfThemesOptions<a class="headerlink" href="#gmfthemesoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">addBlankBackgroundLayer</span></code> (boolean, optional)</p></li>
@@ -875,35 +875,35 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="gmftreemanagermodeflush">
-<span id="integrator-guide-ngeo-properties-gmftreemanagermodeflush"></span><h4>gmfTreeManagerModeFlush<a class="headerlink" href="#gmftreemanagermodeflush" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmftreemanagermodeflush"></span><h4>gmfTreeManagerModeFlush<a class="headerlink" href="#gmftreemanagermodeflush" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmftreeurl">
-<span id="integrator-guide-ngeo-properties-gmftreeurl"></span><h4>gmfTreeUrl<a class="headerlink" href="#gmftreeurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmftreeurl"></span><h4>gmfTreeUrl<a class="headerlink" href="#gmftreeurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="gmftwofactorauth">
-<span id="integrator-guide-ngeo-properties-gmftwofactorauth"></span><h4>gmfTwoFactorAuth<a class="headerlink" href="#gmftwofactorauth" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-gmftwofactorauth"></span><h4>gmfTwoFactorAuth<a class="headerlink" href="#gmftwofactorauth" title="Link to this heading">¶</a></h4>
 </section>
 <section id="langurls">
-<span id="integrator-guide-ngeo-properties-langurls"></span><h4>langUrls<a class="headerlink" href="#langurls" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-langurls"></span><h4>langUrls<a class="headerlink" href="#langurls" title="Link to this heading">¶</a></h4>
 <p>Properties:</p>
 </section>
 <section id="ngeocsvencoding">
-<span id="integrator-guide-ngeo-properties-ngeocsvencoding"></span><h4>ngeoCsvEncoding<a class="headerlink" href="#ngeocsvencoding" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeocsvencoding"></span><h4>ngeoCsvEncoding<a class="headerlink" href="#ngeocsvencoding" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeocsvextension">
-<span id="integrator-guide-ngeo-properties-ngeocsvextension"></span><h4>ngeoCsvExtension<a class="headerlink" href="#ngeocsvextension" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeocsvextension"></span><h4>ngeoCsvExtension<a class="headerlink" href="#ngeocsvextension" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeocsvincludeheader">
-<span id="integrator-guide-ngeo-properties-ngeocsvincludeheader"></span><h4>ngeoCsvIncludeHeader<a class="headerlink" href="#ngeocsvincludeheader" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeocsvincludeheader"></span><h4>ngeoCsvIncludeHeader<a class="headerlink" href="#ngeocsvincludeheader" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeocsvquote">
-<span id="integrator-guide-ngeo-properties-ngeocsvquote"></span><h4>ngeoCsvQuote<a class="headerlink" href="#ngeocsvquote" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeocsvquote"></span><h4>ngeoCsvQuote<a class="headerlink" href="#ngeocsvquote" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeocsvseparator">
-<span id="integrator-guide-ngeo-properties-ngeocsvseparator"></span><h4>ngeoCsvSeparator<a class="headerlink" href="#ngeocsvseparator" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeocsvseparator"></span><h4>ngeoCsvSeparator<a class="headerlink" href="#ngeocsvseparator" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeogeolocationoptions">
-<span id="integrator-guide-ngeo-properties-ngeogeolocationoptions"></span><h4>ngeoGeolocationOptions<a class="headerlink" href="#ngeogeolocationoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeogeolocationoptions"></span><h4>ngeoGeolocationOptions<a class="headerlink" href="#ngeogeolocationoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">accuracyFeatureStyle</span></code> (<a class="reference internal" href="#integrator-guide-ngeo-properties-stylelike"><span class="std std-ref">StyleLike</span></a>, optional)</p></li>
@@ -916,29 +916,29 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="ngeomeasuredecimals">
-<span id="integrator-guide-ngeo-properties-ngeomeasuredecimals"></span><h4>ngeoMeasureDecimals<a class="headerlink" href="#ngeomeasuredecimals" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeomeasuredecimals"></span><h4>ngeoMeasureDecimals<a class="headerlink" href="#ngeomeasuredecimals" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeomeasureprecision">
-<span id="integrator-guide-ngeo-properties-ngeomeasureprecision"></span><h4>ngeoMeasurePrecision<a class="headerlink" href="#ngeomeasureprecision" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeomeasureprecision"></span><h4>ngeoMeasurePrecision<a class="headerlink" href="#ngeomeasureprecision" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeomeasurespherical">
-<span id="integrator-guide-ngeo-properties-ngeomeasurespherical"></span><h4>ngeoMeasureSpherical<a class="headerlink" href="#ngeomeasurespherical" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeomeasurespherical"></span><h4>ngeoMeasureSpherical<a class="headerlink" href="#ngeomeasurespherical" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeonominatimsearchdefaultparams">
-<span id="integrator-guide-ngeo-properties-ngeonominatimsearchdefaultparams"></span><h4>ngeoNominatimSearchDefaultParams<a class="headerlink" href="#ngeonominatimsearchdefaultparams" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeonominatimsearchdefaultparams"></span><h4>ngeoNominatimSearchDefaultParams<a class="headerlink" href="#ngeonominatimsearchdefaultparams" title="Link to this heading">¶</a></h4>
 <p>Properties:</p>
 </section>
 <section id="ngeoofflinetesturl">
-<span id="integrator-guide-ngeo-properties-ngeoofflinetesturl"></span><h4>ngeoOfflineTestUrl<a class="headerlink" href="#ngeoofflinetesturl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeoofflinetesturl"></span><h4>ngeoOfflineTestUrl<a class="headerlink" href="#ngeoofflinetesturl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeopermalinkogcserverurl">
-<span id="integrator-guide-ngeo-properties-ngeopermalinkogcserverurl"></span><h4>ngeoPermalinkOgcserverUrl<a class="headerlink" href="#ngeopermalinkogcserverurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeopermalinkogcserverurl"></span><h4>ngeoPermalinkOgcserverUrl<a class="headerlink" href="#ngeopermalinkogcserverurl" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeopointfilter">
-<span id="integrator-guide-ngeo-properties-ngeopointfilter"></span><h4>ngeoPointfilter<a class="headerlink" href="#ngeopointfilter" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeopointfilter"></span><h4>ngeoPointfilter<a class="headerlink" href="#ngeopointfilter" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeoprofileoptions">
-<span id="integrator-guide-ngeo-properties-ngeoprofileoptions"></span><h4>ngeoProfileOptions<a class="headerlink" href="#ngeoprofileoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeoprofileoptions"></span><h4>ngeoProfileOptions<a class="headerlink" href="#ngeoprofileoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">light</span></code> (boolean, optional)</p></li>
@@ -951,7 +951,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="ngeoqueryoptions">
-<span id="integrator-guide-ngeo-properties-ngeoqueryoptions"></span><h4>ngeoQueryOptions<a class="headerlink" href="#ngeoqueryoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeoqueryoptions"></span><h4>ngeoQueryOptions<a class="headerlink" href="#ngeoqueryoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bboxAsGETParam</span></code> (boolean, optional)</p></li>
@@ -969,7 +969,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="ngeoroutingoptions">
-<span id="integrator-guide-ngeo-properties-ngeoroutingoptions"></span><h4>ngeoRoutingOptions<a class="headerlink" href="#ngeoroutingoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeoroutingoptions"></span><h4>ngeoRoutingOptions<a class="headerlink" href="#ngeoroutingoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">backendUrl</span></code> (string, optional)</p></li>
@@ -979,7 +979,7 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="ngeoscaleselectoroptions">
-<span id="integrator-guide-ngeo-properties-ngeoscaleselectoroptions"></span><h4>ngeoScaleSelectorOptions<a class="headerlink" href="#ngeoscaleselectoroptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeoscaleselectoroptions"></span><h4>ngeoScaleSelectorOptions<a class="headerlink" href="#ngeoscaleselectoroptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">dropup</span></code> (boolean, optional)</p></li>
@@ -989,10 +989,10 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="ngeosnappingtolerance">
-<span id="integrator-guide-ngeo-properties-ngeosnappingtolerance"></span><h4>ngeoSnappingTolerance<a class="headerlink" href="#ngeosnappingtolerance" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeosnappingtolerance"></span><h4>ngeoSnappingTolerance<a class="headerlink" href="#ngeosnappingtolerance" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeostreetviewoptions">
-<span id="integrator-guide-ngeo-properties-ngeostreetviewoptions"></span><h4>ngeoStreetviewOptions<a class="headerlink" href="#ngeostreetviewoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeostreetviewoptions"></span><h4>ngeoStreetviewOptions<a class="headerlink" href="#ngeostreetviewoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">bufferSize</span></code> (number, optional)</p></li>
@@ -1003,16 +1003,16 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="ngeostringtohtmlreplacements">
-<span id="integrator-guide-ngeo-properties-ngeostringtohtmlreplacements"></span><h4>ngeoStringToHtmlReplacements<a class="headerlink" href="#ngeostringtohtmlreplacements" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeostringtohtmlreplacements"></span><h4>ngeoStringToHtmlReplacements<a class="headerlink" href="#ngeostringtohtmlreplacements" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeotilespreloadinglimit">
-<span id="integrator-guide-ngeo-properties-ngeotilespreloadinglimit"></span><h4>ngeoTilesPreloadingLimit<a class="headerlink" href="#ngeotilespreloadinglimit" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeotilespreloadinglimit"></span><h4>ngeoTilesPreloadingLimit<a class="headerlink" href="#ngeotilespreloadinglimit" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeousedkeyregexp">
-<span id="integrator-guide-ngeo-properties-ngeousedkeyregexp"></span><h4>ngeoUsedKeyRegexp<a class="headerlink" href="#ngeousedkeyregexp" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeousedkeyregexp"></span><h4>ngeoUsedKeyRegexp<a class="headerlink" href="#ngeousedkeyregexp" title="Link to this heading">¶</a></h4>
 </section>
 <section id="ngeowfspermalinkoptions">
-<span id="integrator-guide-ngeo-properties-ngeowfspermalinkoptions"></span><h4>ngeoWfsPermalinkOptions<a class="headerlink" href="#ngeowfspermalinkoptions" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-ngeowfspermalinkoptions"></span><h4>ngeoWfsPermalinkOptions<a class="headerlink" href="#ngeowfspermalinkoptions" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>Properties:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">defaultFeatureNS</span></code> (string)</p></li>
@@ -1025,14 +1025,14 @@ be extended. These values will be updated with the interface configuration
 </dl>
 </section>
 <section id="pytreelidarprofilejsonurl">
-<span id="integrator-guide-ngeo-properties-pytreelidarprofilejsonurl"></span><h4>pytreeLidarprofileJsonUrl<a class="headerlink" href="#pytreelidarprofilejsonurl" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-guide-ngeo-properties-pytreelidarprofilejsonurl"></span><h4>pytreeLidarprofileJsonUrl<a class="headerlink" href="#pytreelidarprofilejsonurl" title="Link to this heading">¶</a></h4>
 </section>
 </section>
 </section>
 <section id="css-style">
-<h2>CSS style<a class="headerlink" href="#css-style" title="Permalink to this heading">¶</a></h2>
+<h2>CSS style<a class="headerlink" href="#css-style" title="Link to this heading">¶</a></h2>
 <section id="id13">
-<h3>Simple and advanced modes<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h3>
+<h3>Simple and advanced modes<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
 <p>In the <code class="docutils literal notranslate"><span class="pre">gmfOptions</span></code> we have a <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> property where we can configure all CSS variable
 (<code class="docutils literal notranslate"><span class="pre">var(--a-variable)</span></code> in the css files.</p>
 <p>The content of <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> is a dictionary where the keys are the CSS variable names, and the values the
@@ -1050,7 +1050,7 @@ your style with the <code class="docutils literal notranslate"><span class="pre"
 </div>
 </section>
 <section id="id14">
-<h3>Advanced mode only<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h3>
+<h3>Advanced mode only<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
 <p>In the advanced mode, you can set the style of a component by selecting the component using
 the <code class="docutils literal notranslate"><span class="pre">querySelector</span></code> native function and by appending a new style to this element.
 Example:</p>
@@ -1065,7 +1065,7 @@ recommended if you don’t have to override the component for another purpose.</
 </section>
 </section>
 <section id="creating-your-own-component">
-<h2>Creating your own component<a class="headerlink" href="#creating-your-own-component" title="Permalink to this heading">¶</a></h2>
+<h2>Creating your own component<a class="headerlink" href="#creating-your-own-component" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -1130,7 +1130,7 @@ the code. Example in ngeo: <cite>src/auth/service.ts</cite>.</p>
 static functions, helper and utils files instead. It will facilitate the maintenance.</p>
 </section>
 <section id="extending-or-overriding-an-existing-component">
-<h2>Extending or overriding an existing component<a class="headerlink" href="#extending-or-overriding-an-existing-component" title="Permalink to this heading">¶</a></h2>
+<h2>Extending or overriding an existing component<a class="headerlink" href="#extending-or-overriding-an-existing-component" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
@@ -1245,7 +1245,7 @@ In some cases, you may use inheritance (with the <code class="docutils literal n
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

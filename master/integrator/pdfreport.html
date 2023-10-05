@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <section id="pdf-reporting">
-<span id="integrator-pdfreport"></span><h1>PDF Reporting<a class="headerlink" href="#pdf-reporting" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-pdfreport"></span><h1>PDF Reporting<a class="headerlink" href="#pdf-reporting" title="Link to this heading">¶</a></h1>
 <p>c2cgeoportal offers a <em>pdfreport</em> webservice that can be used to generate
 advanced PDF reports about a given feature.</p>
 <p>It is based upon <a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">Mapfish Print version 3</a>
@@ -42,7 +42,7 @@ and <a class="reference external" href="https://community.jaspersoft.com/project
 <p>The webservice is called using the following URL schema:
 <code class="docutils literal notranslate"><span class="pre">https://&lt;host&gt;&lt;entrypoint&gt;/pdfreport/&lt;layername&gt;/&lt;featureid&gt;</span></code>.</p>
 <section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
 <p>The service is configured in the main <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file of the project, as shown in the following example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">vars</span><span class="p">:</span>
     <span class="o">...</span>
@@ -145,7 +145,7 @@ layernames must be embedded in double-quotes (“). Defaults to <code class="doc
 </ul>
 </section>
 <section id="configuration-of-the-reports">
-<h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Permalink to this heading">¶</a></h2>
+<h2>Configuration of the reports<a class="headerlink" href="#configuration-of-the-reports" title="Link to this heading">¶</a></h2>
 <p>If you use the <code class="docutils literal notranslate"><span class="pre">ids</span></code> in an SQL query, you should use <code class="docutils literal notranslate"><span class="pre">$X{IN,</span> <span class="pre">&lt;column_name&gt;,</span> <span class="pre">$P{ids}}</span></code>
 to avoid SQL injection, <a class="reference external" href="https://jasperreports.sourceforge.net/sample.reference/query/">see also the JasperReports documentation</a>.</p>
 </section>
@@ -223,7 +223,7 @@ to avoid SQL injection, <a class="reference external" href="https://jasperreport
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

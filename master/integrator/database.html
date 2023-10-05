@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +34,9 @@
           <div class="body" role="main">
             
   <section id="database">
-<span id="integrator-database"></span><h1>Database<a class="headerlink" href="#database" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-database"></span><h1>Database<a class="headerlink" href="#database" title="Link to this heading">¶</a></h1>
 <section id="update-lifecycle">
-<h2>Update lifecycle<a class="headerlink" href="#update-lifecycle" title="Permalink to this heading">¶</a></h2>
+<h2>Update lifecycle<a class="headerlink" href="#update-lifecycle" title="Link to this heading">¶</a></h2>
 <p>The recommended setup is to have integration and production data on the same database, using
 separate schemas. This setup allows for simpler switches between integration and production.</p>
 <p>The recommended setup for the <code class="docutils literal notranslate"><span class="pre">static</span></code> schema is to have exactly one schema for integration
@@ -72,11 +72,11 @@ The following example shows how an update can be performed from a version <code 
 </tbody>
 </table>
 <section id="initial-state">
-<h3>Initial state<a class="headerlink" href="#initial-state" title="Permalink to this heading">¶</a></h3>
+<h3>Initial state<a class="headerlink" href="#initial-state" title="Link to this heading">¶</a></h3>
 <p>Starting point is that the current version is the same on integration and production =&gt; <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</p>
 </section>
 <section id="prepare-the-project">
-<h3>Prepare the project<a class="headerlink" href="#prepare-the-project" title="Permalink to this heading">¶</a></h3>
+<h3>Prepare the project<a class="headerlink" href="#prepare-the-project" title="Link to this heading">¶</a></h3>
 <p>To be able to proceed like this, the variables <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code>
 should be managed in your makefiles:</p>
 <ul class="simple">
@@ -89,7 +89,7 @@ Makefile, and to <code class="docutils literal notranslate"><span class="pre">pr
 </ul>
 </section>
 <section id="start-a-new-version">
-<h3>Start a new version<a class="headerlink" href="#start-a-new-version" title="Permalink to this heading">¶</a></h3>
+<h3>Start a new version<a class="headerlink" href="#start-a-new-version" title="Link to this heading">¶</a></h3>
 <p>When starting changes such as an application change and/or administration settings,
 create a new schema <code class="docutils literal notranslate"><span class="pre">main_2020</span></code> and use it on integration. Now, integration uses <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>,
 while production still uses <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</p>
@@ -114,7 +114,7 @@ span.prompt1:before {
 <p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> to <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
 </section>
 <section id="do-the-changes">
-<h3>Do the changes<a class="headerlink" href="#do-the-changes" title="Permalink to this heading">¶</a></h3>
+<h3>Do the changes<a class="headerlink" href="#do-the-changes" title="Link to this heading">¶</a></h3>
 <p>Now you can do the changes including upgrades.</p>
 <p>If you want to restructure a geodata table, you should create a new table, use the new table name in your
 mapfiles and your QGIS projects. The new table will be automatically used when you publish the new version.</p>
@@ -127,13 +127,13 @@ mapfiles and your QGIS projects. The new table will be automatically used when y
 <p>Don’t forget to put back your old value before publishing the new version.</p>
 </section>
 <section id="publish-the-new-version">
-<h3>Publish the new version<a class="headerlink" href="#publish-the-new-version" title="Permalink to this heading">¶</a></h3>
+<h3>Publish the new version<a class="headerlink" href="#publish-the-new-version" title="Link to this heading">¶</a></h3>
 <p>Publish the new version on production: now, integration and production both use <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>
 <p>For OpenShift projects, just push the integration branch into the production branch.</p>
 <p>The schema <code class="docutils literal notranslate"><span class="pre">main_2019</span></code> still exists, so if needed, the production can be rolled back to this content.</p>
 </section>
 <section id="editing">
-<h3>Editing<a class="headerlink" href="#editing" title="Permalink to this heading">¶</a></h3>
+<h3>Editing<a class="headerlink" href="#editing" title="Link to this heading">¶</a></h3>
 <p>To have a different schema for the geodata used in the editing, we can define the geo_table as follows:
 <code class="docutils literal notranslate"><span class="pre">{GEODATA_SCHEMA}.table</span></code> where <code class="docutils literal notranslate"><span class="pre">{GEODATA_SCHEMA}</span></code> will be replaced by the <code class="docutils literal notranslate"><span class="pre">GEODATA_SCHEMA</span></code>
 environment variable.</p>
@@ -211,7 +211,7 @@ environment variable.</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,22 +34,22 @@
           <div class="body" role="main">
             
   <section id="application-debugging">
-<span id="developer-debugging"></span><h1>Application debugging<a class="headerlink" href="#application-debugging" title="Permalink to this heading">¶</a></h1>
+<span id="developer-debugging"></span><h1>Application debugging<a class="headerlink" href="#application-debugging" title="Link to this heading">¶</a></h1>
 <p>The goal of this document is to give some troubleshooting tips.</p>
 <p>First, you should copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and update the composition <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>.</p>
 <p>Then access the application on <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
 <section id="browser">
-<h2>Browser<a class="headerlink" href="#browser" title="Permalink to this heading">¶</a></h2>
+<h2>Browser<a class="headerlink" href="#browser" title="Link to this heading">¶</a></h2>
 <p>You can use the browser-integrated debugging tool, usually available with the <code class="docutils literal notranslate"><span class="pre">F12</span></code> key.</p>
 </section>
 <section id="sources-map">
-<h2>Sources map<a class="headerlink" href="#sources-map" title="Permalink to this heading">¶</a></h2>
+<h2>Sources map<a class="headerlink" href="#sources-map" title="Link to this heading">¶</a></h2>
 <p>For debugging purposes, it is better to have all the JavaScript and Style Sheets in separated, non-minified
 files. To achieve this, you can use the sources maps, a function activable in the browser’s debugging tool.</p>
 </section>
 <section id="webpack">
-<h2>Webpack<a class="headerlink" href="#webpack" title="Permalink to this heading">¶</a></h2>
+<h2>Webpack<a class="headerlink" href="#webpack" title="Link to this heading">¶</a></h2>
 <p>To have faster builds, you need to use the Webpack dev server; you can achieve this as follows.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code>,
 remove the <code class="docutils literal notranslate"><span class="pre">ng-strict-di</span></code> in the <code class="docutils literal notranslate"><span class="pre">html</span></code> tag.</p>
@@ -59,13 +59,13 @@ remove the <code class="docutils literal notranslate"><span class="pre">ng-stric
 <p>Open the application at the following URL: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/dev/&lt;interface&gt;.html</span></code>.</p>
 </section>
 <section id="pyramid-debugtoolbar">
-<h2>Pyramid debugtoolbar<a class="headerlink" href="#pyramid-debugtoolbar" title="Permalink to this heading">¶</a></h2>
+<h2>Pyramid debugtoolbar<a class="headerlink" href="#pyramid-debugtoolbar" title="Link to this heading">¶</a></h2>
 <p>With the default <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, the debug toolbar should appear.</p>
 <p>Then the error is directly shown in the request that fails.</p>
 <p>You can also open the debug toolbar at <a class="reference external" href="https://localhost:8484/_debug_toolbar/">https://localhost:8484/_debug_toolbar/</a></p>
 </section>
 <section id="authentication">
-<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h2>
+<h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">¶</a></h2>
 <p>For better security, the session cookie is accessible only via http protocol (meaning, not in JavaScript),
 and is secure (meaning, the cookie is transmitted only in https requests, not in http requests).
 For this reason, you should have your application running on https also in your development environment.</p>
@@ -73,7 +73,7 @@ For this reason, you should have your application running on https also in your 
 available in <code class="docutils literal notranslate"><span class="pre">https</span></code>, and the authentication will work.</p>
 </section>
 <section id="auto-login">
-<h2>Auto login<a class="headerlink" href="#auto-login" title="Permalink to this heading">¶</a></h2>
+<h2>Auto login<a class="headerlink" href="#auto-login" title="Link to this heading">¶</a></h2>
 <p>To be automatically logged in with a user present in the database you should set in the
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
@@ -85,7 +85,7 @@ available in <code class="docutils literal notranslate"><span class="pre">https<
 <p>Then you will directly be logged in to the user.</p>
 </section>
 <section id="mapserver">
-<h2>Mapserver<a class="headerlink" href="#mapserver" title="Permalink to this heading">¶</a></h2>
+<h2>Mapserver<a class="headerlink" href="#mapserver" title="Link to this heading">¶</a></h2>
 <p>Sometimes, more information can be obtained by using this command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
@@ -98,21 +98,21 @@ of the MapServer container <code class="docutils literal notranslate"><span clas
 <p><a class="reference external" href="https://mapserver.org/optimization/debugging.html?highlight=debug#debug-levels">More information</a></p>
 </section>
 <section id="docker-compose">
-<h2>Docker-compose<a class="headerlink" href="#docker-compose" title="Permalink to this heading">¶</a></h2>
+<h2>Docker-compose<a class="headerlink" href="#docker-compose" title="Link to this heading">¶</a></h2>
 <section id="logs">
-<h3>Logs<a class="headerlink" href="#logs" title="Permalink to this heading">¶</a></h3>
+<h3>Logs<a class="headerlink" href="#logs" title="Link to this heading">¶</a></h3>
 <p>With the following command, you can access the logs:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--tail<span class="o">=</span><span class="m">20</span><span class="w"> </span><span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
 </pre></div></div><p>To have the access log on gunicorn you should add the option <code class="docutils literal notranslate"><span class="pre">--access-logfile=-</span></code> in the gunicorn
 configuration (<code class="docutils literal notranslate"><span class="pre">gunicorn.conf.py</span></code> file).</p>
 </section>
 <section id="go-inside-a-container">
-<h3>Go inside a container<a class="headerlink" href="#go-inside-a-container" title="Permalink to this heading">¶</a></h3>
+<h3>Go inside a container<a class="headerlink" href="#go-inside-a-container" title="Link to this heading">¶</a></h3>
 <p>With the following command, you can get a terminal in a container:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="o">[</span>--user<span class="o">=</span>root<span class="o">]</span><span class="w"> </span>&lt;service_name&gt;<span class="w"> </span>bash</span>
 </pre></div></div></section>
 <section id="multiple-dev-on-one-server">
-<h3>Multiple dev on one server<a class="headerlink" href="#multiple-dev-on-one-server" title="Permalink to this heading">¶</a></h3>
+<h3>Multiple dev on one server<a class="headerlink" href="#multiple-dev-on-one-server" title="Link to this heading">¶</a></h3>
 <p>When you want to run multiple instances on the same server, you should:</p>
 <ul class="simple">
 <li><p>Use a different docker tag for each instance (<code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> in the file <code class="docutils literal notranslate"><span class="pre">.env</span></code> files,
@@ -126,9 +126,9 @@ different entry points. (<code class="docutils literal notranslate"><span class=
 </section>
 </section>
 <section id="developing-in-python">
-<h2>Developing in Python<a class="headerlink" href="#developing-in-python" title="Permalink to this heading">¶</a></h2>
+<h2>Developing in Python<a class="headerlink" href="#developing-in-python" title="Link to this heading">¶</a></h2>
 <section id="create-a-development-docker-compose-override-yaml">
-<h3>Create a development docker-compose.override.yaml<a class="headerlink" href="#create-a-development-docker-compose-override-yaml" title="Permalink to this heading">¶</a></h3>
+<h3>Create a development docker-compose.override.yaml<a class="headerlink" href="#create-a-development-docker-compose-override-yaml" title="Link to this heading">¶</a></h3>
 <p>Be sure that the volume for the project is not commented out in <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
 <p>With the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> configuration, Gunicorn will automatically restart
 on code modification.</p>
@@ -136,14 +136,14 @@ on code modification.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">kill</span><span class="w"> </span>-s<span class="w"> </span>HUP<span class="w"> </span><span class="sb">`</span>ps<span class="w"> </span>aux<span class="p">|</span>grep<span class="w"> </span>gunicorn<span class="p">|</span>head<span class="w"> </span>--lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span></span>
 </pre></div></div></section>
 <section id="working-on-c2cgeoportal-itself">
-<h3>Working on c2cgeoportal itself<a class="headerlink" href="#working-on-c2cgeoportal-itself" title="Permalink to this heading">¶</a></h3>
+<h3>Working on c2cgeoportal itself<a class="headerlink" href="#working-on-c2cgeoportal-itself" title="Link to this heading">¶</a></h3>
 <p>Clone and build c2cgeoportal, see <a class="reference internal" href="server_side.html#developer-server-side"><span class="std std-ref">Server-side development</span></a>.</p>
 <p>If it is not already done, copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.
 Be sure that the volumes for c2cgeoportal are uncommented.</p>
 </section>
 <section id="remote-debugging-using-visual-studio-code">
-<h3>Remote debugging using Visual Studio Code<a class="headerlink" href="#remote-debugging-using-visual-studio-code" title="Permalink to this heading">¶</a></h3>
+<h3>Remote debugging using Visual Studio Code<a class="headerlink" href="#remote-debugging-using-visual-studio-code" title="Link to this heading">¶</a></h3>
 <ul>
 <li><p>In <code class="docutils literal notranslate"><span class="pre">geoportal/requirements.txt</span></code> uncomment <code class="docutils literal notranslate"><span class="pre">ptvsd</span></code>.</p></li>
 <li><p>In the code add <code class="docutils literal notranslate"><span class="pre">breakpoint()</span></code> where you want to add a breakpoint.</p></li>
@@ -173,7 +173,7 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
 <a class="reference external" href="https://code.visualstudio.com/docs/python/debugging">Python debug configurations in Visual Studio Code</a></p>
 </section>
 <section id="debugging-the-upgrade-procedure">
-<span id="upgrade-debugging"></span><h3>Debugging the upgrade procedure<a class="headerlink" href="#debugging-the-upgrade-procedure" title="Permalink to this heading">¶</a></h3>
+<span id="upgrade-debugging"></span><h3>Debugging the upgrade procedure<a class="headerlink" href="#debugging-the-upgrade-procedure" title="Link to this heading">¶</a></h3>
 <p>When upgrading a c2cgeoportal application, things happen as follow:</p>
 <ul class="simple">
 <li><p>You manually run <cite>./build –upgrade &lt;target_version&gt;</cite>;</p></li>
@@ -198,7 +198,7 @@ the root of your local c2cgeoportal folder, example:</p>
 c2cgeoportal application.</p>
 </section>
 <section id="profiling">
-<h3>Profiling<a class="headerlink" href="#profiling" title="Permalink to this heading">¶</a></h3>
+<h3>Profiling<a class="headerlink" href="#profiling" title="Link to this heading">¶</a></h3>
 <p>We can profile the application by using <a class="reference external" href="https://wsgi-lineprof.readthedocs.io/">wsgi_lineprof</a>.</p>
 <ul>
 <li><p>In <code class="docutils literal notranslate"><span class="pre">geoportal/requirements.txt</span></code> uncomment <code class="docutils literal notranslate"><span class="pre">wsgi-lineprof</span></code>.</p></li>
@@ -218,7 +218,7 @@ c2cgeoportal application.</p>
 </section>
 </section>
 <section id="access-to-a-hidden-service">
-<h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Permalink to this heading">¶</a></h2>
+<h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Link to this heading">¶</a></h2>
 <p>Within the Docker composition, you can access a port of a container; you can achieve this via <code class="docutils literal notranslate"><span class="pre">curl</span></code>, e.-g.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>curl<span class="w"> </span><span class="s2">&quot;http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities&quot;</span></span>
 </pre></div></div><p>You can also expose a service out of the Docker composition. For that, add a port in your
@@ -232,7 +232,7 @@ c2cgeoportal application.</p>
 <p>Be careful, each port can be open only one time on a server.</p>
 </section>
 <section id="use-a-specific-version-of-ngeo">
-<h2>Use a specific version of ngeo<a class="headerlink" href="#use-a-specific-version-of-ngeo" title="Permalink to this heading">¶</a></h2>
+<h2>Use a specific version of ngeo<a class="headerlink" href="#use-a-specific-version-of-ngeo" title="Link to this heading">¶</a></h2>
 <p>Clone ngeo and build:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span><span class="w"> </span>geoportal</span>
 <span class="prompt1">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/camptocamp/ngeo.git</span>
@@ -322,7 +322,7 @@ c2cgeoportal application.</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

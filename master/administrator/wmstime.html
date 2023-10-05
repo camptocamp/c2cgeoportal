@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,16 +34,16 @@
           <div class="body" role="main">
             
   <section id="wmstime-layer">
-<span id="integrator-wmstime"></span><h1>WMSTime Layer<a class="headerlink" href="#wmstime-layer" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-wmstime"></span><h1>WMSTime Layer<a class="headerlink" href="#wmstime-layer" title="Link to this heading">¶</a></h1>
 <p>c2cgeoportal supports <a class="reference external" href="https://mapserver.org/ogc/wms_time.html">WMS Time layers</a>.</p>
 <p>When the time is enabled for a layer group (a layertree group, not a wms layer group), a time widge
 (a slider or datepicker) is added to this group in the layer tree which enables changing the layer time.</p>
 <section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
 <p>Most of the configuration is automatically extracted from the mapfile. But there
 is also some configuration to do in the administration interface.</p>
 <section id="mapfile">
-<h3>Mapfile<a class="headerlink" href="#mapfile" title="Permalink to this heading">¶</a></h3>
+<h3>Mapfile<a class="headerlink" href="#mapfile" title="Link to this heading">¶</a></h3>
 <p>In the mapfile, a WMS Time layer is configured with the help of the layer metadata:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">wms_timeextent</span></code></p></li>
@@ -83,7 +83,7 @@ ISO 8601 standard and its duration/time intervals definition (see
 <p>For more information, please refer to the <a class="reference external" href="https://mapserver.org/ogc/wms_time.html">MapServer documentation</a>.</p>
 </section>
 <section id="admin-interface-widget">
-<h3>Admin interface - widget<a class="headerlink" href="#admin-interface-widget" title="Permalink to this heading">¶</a></h3>
+<h3>Admin interface - widget<a class="headerlink" href="#admin-interface-widget" title="Link to this heading">¶</a></h3>
 <p>Most of the configuration is done in the mapfile as described in the above
 section. However the time widget must be configured via the admin interface.
 Two different widget types are available: a time slider and a datepicker
@@ -106,14 +106,14 @@ In mode <code class="docutils literal notranslate"><span class="pre">range</span
 to the GetMap request in this case.</p>
 </section>
 <section id="admin-interface-query">
-<h3>Admin interface - query<a class="headerlink" href="#admin-interface-query" title="Permalink to this heading">¶</a></h3>
+<h3>Admin interface - query<a class="headerlink" href="#admin-interface-query" title="Link to this heading">¶</a></h3>
 <p>By setting a <code class="docutils literal notranslate"><span class="pre">timeAttribute</span></code> metadata having as value the attribute used in the OGS server as time item,
 you ensure that the WMS/WFS queries take into account the time filtering values and that no result is
 returned if an object is hidden by the time filter.</p>
 </section>
 </section>
 <section id="merging-configurations">
-<h2>Merging configurations<a class="headerlink" href="#merging-configurations" title="Permalink to this heading">¶</a></h2>
+<h2>Merging configurations<a class="headerlink" href="#merging-configurations" title="Link to this heading">¶</a></h2>
 <p>The previous section describes the time configuration for a single layer.
 However there could be multiple WMS Time layers in a group. In such a case, you
 need to be aware of some limitations that apply to the configuration of the WMS
@@ -201,7 +201,7 @@ layers of a group should be configured to use the same widget and the same time 
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

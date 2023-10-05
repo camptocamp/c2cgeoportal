@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +34,9 @@
           <div class="body" role="main">
             
   <section id="print">
-<span id="integrator-print"></span><h1>Print<a class="headerlink" href="#print" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-print"></span><h1>Print<a class="headerlink" href="#print" title="Link to this heading">¶</a></h1>
 <section id="template-configuration">
-<h2>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this heading">¶</a></h2>
+<h2>Template configuration<a class="headerlink" href="#template-configuration" title="Link to this heading">¶</a></h2>
 <p>All print-related files are located in the <code class="docutils literal notranslate"><span class="pre">print/</span></code> folder, notably the print templates in the
 <code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;</span></code> folder.</p>
 <p>The main configuration file is <code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>.</p>
@@ -45,7 +45,7 @@
 <li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/#/jasperReports">Startup with Jasper Reports</a></p></li>
 </ul>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
 <p>The templates make use of attributes which are either passed directly by the client (client attributes) or
 processed by the print service.
 The client attributes are specified in the print configuration (<code class="docutils literal notranslate"><span class="pre">print/print-apps/&lt;package&gt;/config.yaml</span></code>)
@@ -66,25 +66,25 @@ the map, if any).</p>
 </section>
 </section>
 <section id="notes-about-the-scales">
-<h2>Notes about the scales<a class="headerlink" href="#notes-about-the-scales" title="Permalink to this heading">¶</a></h2>
+<h2>Notes about the scales<a class="headerlink" href="#notes-about-the-scales" title="Link to this heading">¶</a></h2>
 <p>The web map and the map printing do not use the same scales. Therefore, if you change the configuration
 of min/max scaling, you should also test map printing to be sure that it also works as expected.</p>
 </section>
 <section id="infrastructure">
-<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this heading">¶</a></h2>
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Link to this heading">¶</a></h2>
 <p>By default, the configuration is set up to the <cite>mutualized print platform as a service from Camptocamp &lt;https://www.camptocamp.com/en/actualite/saas-printing-service-offer/&gt;</cite>.</p>
 <p>To use this platform, you should ask Camptocamp to create e.-g. two new applications on the platform,
 one for the integration, one for the production.</p>
 <p>Configure the application name in the <code class="docutils literal notranslate"><span class="pre">MUTUALIZED_PRINT_APP</span></code> variable of a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 </section>
 <section id="development">
-<h2>Development<a class="headerlink" href="#development" title="Permalink to this heading">¶</a></h2>
+<h2>Development<a class="headerlink" href="#development" title="Link to this heading">¶</a></h2>
 <p>To test the print locally, you can copy the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
 <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and uncomment the <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> environment variable and the
 <code class="docutils literal notranslate"><span class="pre">print</span></code> service.</p>
 </section>
 <section id="local-print">
-<h2>Local print<a class="headerlink" href="#local-print" title="Permalink to this heading">¶</a></h2>
+<h2>Local print<a class="headerlink" href="#local-print" title="Link to this heading">¶</a></h2>
 <p>To use a local print service, you should:</p>
 <ul class="simple">
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">PRINT_URL</span></code> to <code class="docutils literal notranslate"><span class="pre">http://print:8080/print/</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p></li>
@@ -167,7 +167,7 @@ one for the integration, one for the production.</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

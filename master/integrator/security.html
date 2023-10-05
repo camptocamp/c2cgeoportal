@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,11 +34,11 @@
           <div class="body" role="main">
             
   <section id="security">
-<span id="integrator-security"></span><h1>Security<a class="headerlink" href="#security" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-security"></span><h1>Security<a class="headerlink" href="#security" title="Link to this heading">¶</a></h1>
 <section id="authentication">
-<span id="integrator-authentication"></span><h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-authentication"></span><h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">¶</a></h2>
 <section id="supported-standards">
-<h3>Supported standards<a class="headerlink" href="#supported-standards" title="Permalink to this heading">¶</a></h3>
+<h3>Supported standards<a class="headerlink" href="#supported-standards" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><cite>TOTP</cite>: for two-factor authentication (2FA), this can be used for example with Google Authenticator.</p></li>
 <li><p><cite>OAuth2</cite> as server: An external application can use GeoMapFish as a single sign-on (SSO) for the
@@ -47,7 +47,7 @@ application that requires two factor authentication.</p></li>
 </ul>
 </section>
 <section id="the-default-policy">
-<h3>The default policy<a class="headerlink" href="#the-default-policy" title="Permalink to this heading">¶</a></h3>
+<h3>The default policy<a class="headerlink" href="#the-default-policy" title="Link to this heading">¶</a></h3>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
 policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy, the user name is
 obtained from the “auth ticket” cookie set in the request.
@@ -70,14 +70,14 @@ served on <code class="docutils literal notranslate"><span class="pre">https</sp
 <p>See also <a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy">the official documentation</a>.</p>
 </section>
 <section id="using-another-policy">
-<h3>Using another policy<a class="headerlink" href="#using-another-policy" title="Permalink to this heading">¶</a></h3>
+<h3>Using another policy<a class="headerlink" href="#using-another-policy" title="Link to this heading">¶</a></h3>
 <p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>, an “auth ticket” cookie should be
 set in the request for the user to be identified. In some applications, using
 a custom identification mechanism may be needed instead, for instance to use SSO.
 Our knowledge base has an example of how this can be achieved.</p>
 </section>
 <section id="user-validation">
-<h3>User validation<a class="headerlink" href="#user-validation" title="Permalink to this heading">¶</a></h3>
+<h3>User validation<a class="headerlink" href="#user-validation" title="Link to this heading">¶</a></h3>
 <p>For logging in, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
 (username/password) by reading the user information from the <code class="docutils literal notranslate"><span class="pre">user</span></code> database
 table. If a c2cgeoportal application should work with another user information
@@ -85,7 +85,7 @@ source, like LDAP, a custom <em>client validation</em> mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.</p>
 </section>
 <section id="basic-auth">
-<h3>Basic auth<a class="headerlink" href="#basic-auth" title="Permalink to this heading">¶</a></h3>
+<h3>Basic auth<a class="headerlink" href="#basic-auth" title="Link to this heading">¶</a></h3>
 <p>To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
 by setting <code class="docutils literal notranslate"><span class="pre">BASICAUTH</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
 <p>To force the application to ask for a password, you should have the attribute <code class="docutils literal notranslate"><span class="pre">authentication_required</span></code>
@@ -96,7 +96,7 @@ in your query string.</p>
 </div>
 </section>
 <section id="two-factors-authentication">
-<h3>Two factors authentication<a class="headerlink" href="#two-factors-authentication" title="Permalink to this heading">¶</a></h3>
+<h3>Two factors authentication<a class="headerlink" href="#two-factors-authentication" title="Link to this heading">¶</a></h3>
 <p>GeoMapFish support TOTP (Time-Based One-Time Password Algorithm) two factors authentication
 (<a class="reference external" href="https://tools.ietf.org/html/rfc6238">RFC 6238</a>).
 To enable the two factors authentication you should set the following settings:</p>
@@ -115,7 +115,7 @@ you should use <a class="reference internal" href="#integrator-authentication-oa
 </div>
 </section>
 <section id="account-lockout">
-<h3>Account lockout<a class="headerlink" href="#account-lockout" title="Permalink to this heading">¶</a></h3>
+<h3>Account lockout<a class="headerlink" href="#account-lockout" title="Link to this heading">¶</a></h3>
 <p>To lock an account after a certain number of authentication failures, set the following settings:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
@@ -126,7 +126,7 @@ you should use <a class="reference internal" href="#integrator-authentication-oa
 admin interface.</p>
 </section>
 <section id="intranet">
-<h3>Intranet<a class="headerlink" href="#intranet" title="Permalink to this heading">¶</a></h3>
+<h3>Intranet<a class="headerlink" href="#intranet" title="Link to this heading">¶</a></h3>
 <p>To configure the intranet networks fill in the configuration like:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">intranet</span><span class="p">:</span>
@@ -148,7 +148,7 @@ data, do not rely on Intranet detection; for that, you must use user authenticat
 </div>
 </section>
 <section id="lost-admin-password">
-<h3>Lost admin password<a class="headerlink" href="#lost-admin-password" title="Permalink to this heading">¶</a></h3>
+<h3>Lost admin password<a class="headerlink" href="#lost-admin-password" title="Link to this heading">¶</a></h3>
 <p>You can generate a new admin password the following command:</p>
 <p><p>Reset a user password.
 The username is used as password if the password is not provided with the corresponding option.
@@ -163,7 +163,7 @@ User can be created if it does not exist yet.</p>
 </pre></div>
 </div>
 <section id="positional-arguments">
-<h4>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this heading">¶</a></h4>
+<h4>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Link to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>config_uri</kbd></dt>
 <dd><p>The URI to the configuration file.</p>
@@ -179,7 +179,7 @@ User can be created if it does not exist yet.</p>
 </dl>
 </section>
 <section id="named-arguments">
-<h4>Named Arguments<a class="headerlink" href="#named-arguments" title="Permalink to this heading">¶</a></h4>
+<h4>Named Arguments<a class="headerlink" href="#named-arguments" title="Link to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>--password, -p</kbd></dt>
 <dd><p>Set password (if not set, username is used as password</p>
@@ -199,10 +199,10 @@ User can be created if it does not exist yet.</p>
 </section>
 </section>
 <section id="external-application">
-<h3>External application<a class="headerlink" href="#external-application" title="Permalink to this heading">¶</a></h3>
+<h3>External application<a class="headerlink" href="#external-application" title="Link to this heading">¶</a></h3>
 <p>Some service of GeoMapFish has some host restriction if you mix the domain.</p>
 <section id="application-authentication">
-<h4>Application authentication<a class="headerlink" href="#application-authentication" title="Permalink to this heading">¶</a></h4>
+<h4>Application authentication<a class="headerlink" href="#application-authentication" title="Link to this heading">¶</a></h4>
 <p>To be considered as authenticated we should have the correct <code class="docutils literal notranslate"><span class="pre">Cookie</span></code> header,
 we also check the <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header to be sure that the user is coming from the same domain.
 If he is equals to the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header, we consider that the user is coming from the same domain.
@@ -211,18 +211,18 @@ you should add the client application domain name (with port) in the vars in <co
 <p>This check is also done on the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter during the login process.</p>
 </section>
 <section id="shortener">
-<h4>Shortener<a class="headerlink" href="#shortener" title="Permalink to this heading">¶</a></h4>
+<h4>Shortener<a class="headerlink" href="#shortener" title="Link to this heading">¶</a></h4>
 <p>If you use the shortener service to create link on application on another domain name, you should add
 this domain name in the vars in <code class="docutils literal notranslate"><span class="pre">vars/shortener/allowed_hosts</span></code>.</p>
 </section>
 <section id="admin">
-<h4>Admin<a class="headerlink" href="#admin" title="Permalink to this heading">¶</a></h4>
+<h4>Admin<a class="headerlink" href="#admin" title="Link to this heading">¶</a></h4>
 <p>We provide a view for the admin interface, to be able to clear the cache per OGC server.
 If for an unknown reason you have not the same host in the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header and <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter, you should
 add the domain of the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter in the vars in <code class="docutils literal notranslate"><span class="pre">vars/admin_interface/allowed_hosts</span></code>.</p>
 </section>
 <section id="oauth2-with-qgis">
-<span id="integrator-authentication-oauth2"></span><h4>OAuth2 with QGIS<a class="headerlink" href="#oauth2-with-qgis" title="Permalink to this heading">¶</a></h4>
+<span id="integrator-authentication-oauth2"></span><h4>OAuth2 with QGIS<a class="headerlink" href="#oauth2-with-qgis" title="Link to this heading">¶</a></h4>
 <p>In the admin interface create an ‘OAuth2 Client’ with:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Client</span> <span class="pre">ID</span></code> as e.-g. ‘qgis’</p></li>
@@ -246,7 +246,7 @@ add the domain of the <code class="docutils literal notranslate"><span class="pr
 <p>If you need to have more than one active session you should provide more than one client.</p>
 </div>
 <section id="https">
-<h5>HTTPS<a class="headerlink" href="#https" title="Permalink to this heading">¶</a></h5>
+<h5>HTTPS<a class="headerlink" href="#https" title="Link to this heading">¶</a></h5>
 <p>If your application is accessed in HTTPS, you have to make sure that all URLs
 generated by the application (CSS and JavaScript files, images, MapServer
 requests, etc.) use the HTTPS scheme as well. Otherwise the browser will
@@ -261,7 +261,7 @@ prompt “insecure content” warnings.</p>
 </section>
 </section>
 <section id="application-behind-a-proxy">
-<h2>Application behind a proxy<a class="headerlink" href="#application-behind-a-proxy" title="Permalink to this heading">¶</a></h2>
+<h2>Application behind a proxy<a class="headerlink" href="#application-behind-a-proxy" title="Link to this heading">¶</a></h2>
 <p>If the application is placed behind some proxy that removes the SSL encryption
 (plain HTTP is used between the proxy and the server), then some specific
 configuration is required both on the c2cgeoportal application and on the
@@ -284,7 +284,7 @@ value of <code class="docutils literal notranslate"><span class="pre">request.sc
 </div>
 </section>
 <section id="application-and-ssl-certificate-on-the-same-server">
-<h2>Application and SSL certificate on the same server<a class="headerlink" href="#application-and-ssl-certificate-on-the-same-server" title="Permalink to this heading">¶</a></h2>
+<h2>Application and SSL certificate on the same server<a class="headerlink" href="#application-and-ssl-certificate-on-the-same-server" title="Link to this heading">¶</a></h2>
 <p>If the SSL certificate and the application are located on the same server, all
 requests will be redirected to https. So you should change the scheme to https
 for all url except for some cases that should always use http (typically,
@@ -297,7 +297,7 @@ environment, you may need to request this via your infrastructure support.</p>
 the resourceproxy service as described below.</p>
 </section>
 <section id="loading-non-https-external-resources">
-<h2>Loading non https external resources<a class="headerlink" href="#loading-non-https-external-resources" title="Permalink to this heading">¶</a></h2>
+<h2>Loading non https external resources<a class="headerlink" href="#loading-non-https-external-resources" title="Link to this heading">¶</a></h2>
 <p>If you want to load non https external resources in your https application, you
 should use the <code class="docutils literal notranslate"><span class="pre">resourceproxy</span></code> service and add the list of hosts you want to access in your project
 <cite>vars.yaml</cite> configuration file:</p>
@@ -314,7 +314,7 @@ should use the <code class="docutils literal notranslate"><span class="pre">reso
 <p><code class="docutils literal notranslate"><span class="pre">https://geoportail.camptocamp.com/main/resourceproxy?target=rfinfo&amp;values=(175,2633)</span></code></p>
 </section>
 <section id="local-certificate-checks">
-<h2>Local certificate checks<a class="headerlink" href="#local-certificate-checks" title="Permalink to this heading">¶</a></h2>
+<h2>Local certificate checks<a class="headerlink" href="#local-certificate-checks" title="Link to this heading">¶</a></h2>
 <p>Certain c2cgeoportal features open a http session to your c2cgeoportal services,
 for example the <code class="docutils literal notranslate"><span class="pre">checker</span></code> or the <code class="docutils literal notranslate"><span class="pre">lingua_extractor</span></code>.
 If you are running your server in https and wish to disable certificate checks in these
@@ -328,7 +328,7 @@ connections, you can achieve this by adding the following configuration element 
 <a class="reference external" href="https://docs.python-requests.org/en/latest/api.html#requests.Request">requests.Request</a></p>
 </section>
 <section id="reset-password">
-<h2>Reset password<a class="headerlink" href="#reset-password" title="Permalink to this heading">¶</a></h2>
+<h2>Reset password<a class="headerlink" href="#reset-password" title="Link to this heading">¶</a></h2>
 <p>When a user has forgotten his/her password, a new one may be sent by email if some additional
 GeoMapFish configuration is provided.</p>
 <p>To ensure such an e-mail can be generated, you should add the following configuration
@@ -361,7 +361,7 @@ number interpreted as the port number to use.</p>
 <p>Replace the <code class="docutils literal notranslate"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.</p>
 </section>
 <section id="security-update">
-<h2>Security update<a class="headerlink" href="#security-update" title="Permalink to this heading">¶</a></h2>
+<h2>Security update<a class="headerlink" href="#security-update" title="Link to this heading">¶</a></h2>
 <p>To be sure that we regularly get the security updates, every night the GeoMapFish Docker images are rebuild.
 And every time we do a build we pull the new images to use them.</p>
 <p>For project on Kubernetes we also deploy fresh built images every day.</p>
@@ -376,18 +376,18 @@ in the <code class="docutils literal notranslate"><span class="pre">project.yaml
 <code class="docutils literal notranslate"><span class="pre">template_vars</span></code> section.</p>
 </section>
 <section id="access-to-wms-getcapability">
-<h2>Access to WMS GetCapability<a class="headerlink" href="#access-to-wms-getcapability" title="Permalink to this heading">¶</a></h2>
+<h2>Access to WMS GetCapability<a class="headerlink" href="#access-to-wms-getcapability" title="Link to this heading">¶</a></h2>
 <p>Set <code class="docutils literal notranslate"><span class="pre">hide_capabilities</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> to disable
 the WMS GetCapability when accessing the MapServer proxy (mapserverproxy).</p>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </section>
 <section id="access-to-the-admin-interface">
-<h2>Access to the admin interface<a class="headerlink" href="#access-to-the-admin-interface" title="Permalink to this heading">¶</a></h2>
+<h2>Access to the admin interface<a class="headerlink" href="#access-to-the-admin-interface" title="Link to this heading">¶</a></h2>
 <p>To disable the admin interface, set <code class="docutils literal notranslate"><span class="pre">enable_admin_interface</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.</p>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
 </section>
 <section id="access-to-services-by-external-servers">
-<h2>Access to services by external servers<a class="headerlink" href="#access-to-services-by-external-servers" title="Permalink to this heading">¶</a></h2>
+<h2>Access to services by external servers<a class="headerlink" href="#access-to-services-by-external-servers" title="Link to this heading">¶</a></h2>
 <p>By default, only localhost can access c2cgeoportal’s services.
 To permit access to a specific service by an external server, you must set CORS headers (<code class="docutils literal notranslate"><span class="pre">Access-Control-Allow-Origin</span></code>)
 in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.</p>
@@ -421,7 +421,7 @@ access, but no credentials will be passed in this case.</p>
 </ul>
 </section>
 <section id="authorized-referrers">
-<h2>Authorized referrers<a class="headerlink" href="#authorized-referrers" title="Permalink to this heading">¶</a></h2>
+<h2>Authorized referrers<a class="headerlink" href="#authorized-referrers" title="Link to this heading">¶</a></h2>
 <p>To mitigate <a class="reference external" href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>
 attacks, the server validates the referrer against a list of authorized referrers.</p>
 <p>By default, only the requests coming from the server are allowed. You can change that list by adding an <code class="docutils literal notranslate"><span class="pre">authorized_referers</span></code>
@@ -501,7 +501,7 @@ but that is the most consistent approach with regard to the different JS framewo
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

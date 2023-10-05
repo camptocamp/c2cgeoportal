@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <section id="transactional-wfs-with-tinyows">
-<span id="administrator-tinyows"></span><h1>Transactional WFS with TinyOWS<a class="headerlink" href="#transactional-wfs-with-tinyows" title="Permalink to this heading">¶</a></h1>
+<span id="administrator-tinyows"></span><h1>Transactional WFS with TinyOWS<a class="headerlink" href="#transactional-wfs-with-tinyows" title="Link to this heading">¶</a></h1>
 <p>Based on <a class="reference external" href="https://mapserver.org/tinyows/">TinyOWS</a>, c2cgeoportal mapserver layers can be
 edited via Transactional WFS (WFS-T), for example using QGIS as a client. c2cgeoportal acts as a
 proxy to TinyOWS to limit access to authorized users.</p>
@@ -44,7 +44,7 @@ proxy to TinyOWS to limit access to authorized users.</p>
 </div>
 <p>The following explains how to configure WFS-T for a c2cgeoportal layer.</p>
 <section id="tinyows-configuration">
-<h2>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Permalink to this heading">¶</a></h2>
+<h2>TinyOWS configuration<a class="headerlink" href="#tinyows-configuration" title="Link to this heading">¶</a></h2>
 <p>The configuration of TinyOWS is made in an XML file, which is located at
 <code class="docutils literal notranslate"><span class="pre">mapserver/tinyows.xml.tmpl</span></code>:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;tinyows</span>
@@ -130,7 +130,7 @@ for more information.</p>
 <p>After the configuration is made, re-build your c2cgeoportal application as usual.</p>
 </section>
 <section id="editing-a-layer-with-wfs-t">
-<h2>Editing a layer with WFS-T<a class="headerlink" href="#editing-a-layer-with-wfs-t" title="Permalink to this heading">¶</a></h2>
+<h2>Editing a layer with WFS-T<a class="headerlink" href="#editing-a-layer-with-wfs-t" title="Link to this heading">¶</a></h2>
 <p>The configured layers can now be edited using your favorite GIS supporting
 WFS-T. For example, in QGIS, add a new WFS layer with the URL
 <code class="docutils literal notranslate"><span class="pre">https://${host}/tinyows_proxy</span></code> (e.g.
@@ -209,7 +209,7 @@ authentication use your c2cgeoportal account details.</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

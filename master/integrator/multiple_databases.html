@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,13 +34,13 @@
           <div class="body" role="main">
             
   <section id="using-multiple-databases">
-<span id="integrator-multiple-databases"></span><h1>Using multiple databases<a class="headerlink" href="#using-multiple-databases" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-multiple-databases"></span><h1>Using multiple databases<a class="headerlink" href="#using-multiple-databases" title="Link to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is not possible in the simple application mode</p>
 </div>
 <section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
 <p>In your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, configure any database sessions
 that you want to access in your GMF instance in addition to
 the default database session. For example, to add sessions
@@ -55,7 +55,7 @@ from a database <code class="docutils literal notranslate"><span class="pre">oth
 <p>These additional DB sessions will be automatically initialized by GMF.</p>
 </section>
 <section id="using-the-additional-sessions">
-<h2>Using the additional sessions<a class="headerlink" href="#using-the-additional-sessions" title="Permalink to this heading">¶</a></h2>
+<h2>Using the additional sessions<a class="headerlink" href="#using-the-additional-sessions" title="Link to this heading">¶</a></h2>
 <p>In the layers enumeration of your <code class="docutils literal notranslate"><span class="pre">vars</span></code> file, you can now
 reference the sessions defined above. For example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers</span><span class="p">:</span>
@@ -81,7 +81,7 @@ The session name for the default database is <code class="docutils literal notra
 </div>
 </section>
 <section id="restrictions-in-multiple-database-usage">
-<h2>Restrictions in multiple database usage<a class="headerlink" href="#restrictions-in-multiple-database-usage" title="Permalink to this heading">¶</a></h2>
+<h2>Restrictions in multiple database usage<a class="headerlink" href="#restrictions-in-multiple-database-usage" title="Link to this heading">¶</a></h2>
 <p>In a GMF instance, an editable layer can only be included when that layer’s data
 resides in the default database of the GMF instance.
 Regarding editable layers, see <a class="reference internal" href="../administrator/editing.html#administrator-editing-editable"><span class="std std-ref">here</span></a>.
@@ -164,7 +164,7 @@ only the default database session can be used for such layers.</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

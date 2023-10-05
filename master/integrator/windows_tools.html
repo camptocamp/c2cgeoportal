@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +34,9 @@
           <div class="body" role="main">
             
   <section id="configuring-windows-tools-required-to-connect-to-servers">
-<span id="integrator-preparative-work"></span><h1>Configuring Windows tools required to connect to servers<a class="headerlink" href="#configuring-windows-tools-required-to-connect-to-servers" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-preparative-work"></span><h1>Configuring Windows tools required to connect to servers<a class="headerlink" href="#configuring-windows-tools-required-to-connect-to-servers" title="Link to this heading">¶</a></h1>
 <section id="creating-a-ssh-key-with-windows">
-<h2>Creating a SSH Key with Windows<a class="headerlink" href="#creating-a-ssh-key-with-windows" title="Permalink to this heading">¶</a></h2>
+<h2>Creating a SSH Key with Windows<a class="headerlink" href="#creating-a-ssh-key-with-windows" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Download PuTTYgen:</p>
 <ol class="loweralpha simple">
@@ -51,13 +51,13 @@
 </ol>
 </section>
 <section id="add-your-ssh-public-key-to-github">
-<h2>Add your SSH Public Key to GitHub<a class="headerlink" href="#add-your-ssh-public-key-to-github" title="Permalink to this heading">¶</a></h2>
+<h2>Add your SSH Public Key to GitHub<a class="headerlink" href="#add-your-ssh-public-key-to-github" title="Link to this heading">¶</a></h2>
 <p>In order to pull and push to GitHub from your server, you need to add the key to GitHub: <a class="reference external" href="https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account">https://help.github.com/articles/generating-ssh-keys/#step-4-add-your-ssh-key-to-your-account</a></p>
 </section>
 <section id="connecting-to-a-server-from-windows">
-<h2>Connecting to a server from Windows<a class="headerlink" href="#connecting-to-a-server-from-windows" title="Permalink to this heading">¶</a></h2>
+<h2>Connecting to a server from Windows<a class="headerlink" href="#connecting-to-a-server-from-windows" title="Link to this heading">¶</a></h2>
 <section id="command-line">
-<h3>Command Line<a class="headerlink" href="#command-line" title="Permalink to this heading">¶</a></h3>
+<h3>Command Line<a class="headerlink" href="#command-line" title="Link to this heading">¶</a></h3>
 <p>The following instructions are based on the PuTTY software, which is useful to launch commands on the server.</p>
 <ol class="arabic simple">
 <li><p>Download PuTTY: <a class="reference external" href="https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe">https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe</a></p></li>
@@ -76,7 +76,7 @@ c. Click on “Open” and type your passphrase when prompted</p></li>
 </ol>
 </section>
 <section id="visual-interface">
-<h3>Visual Interface<a class="headerlink" href="#visual-interface" title="Permalink to this heading">¶</a></h3>
+<h3>Visual Interface<a class="headerlink" href="#visual-interface" title="Link to this heading">¶</a></h3>
 <p>The following instructions are based on the WinSCP software,
 which is useful to browse the server, download/upload/edit files in a Windows-like interface.
 WinSCP manual is available online at <a class="reference external" href="https://winscp.net/eng/docs/start">https://winscp.net/eng/docs/start</a></p>
@@ -92,7 +92,7 @@ you should follow
 </ol>
 </section>
 <section id="saving-your-passphrase-with-putty-or-winscp">
-<h3>Saving your Passphrase with PuTTY or WinSCP<a class="headerlink" href="#saving-your-passphrase-with-putty-or-winscp" title="Permalink to this heading">¶</a></h3>
+<h3>Saving your Passphrase with PuTTY or WinSCP<a class="headerlink" href="#saving-your-passphrase-with-putty-or-winscp" title="Link to this heading">¶</a></h3>
 <p>To avoid having to type your passphrase every time you connect to the server using PuTTY or WinSCP,
 you may use Pageant, an authentication agent program, part of WinSCP (Windows Start Menu &gt; All Programs &gt; WinSCP &gt; Key Tools &gt; Pageant):</p>
 <ol class="arabic simple">
@@ -102,7 +102,7 @@ you may use Pageant, an authentication agent program, part of WinSCP (Windows St
 </ol>
 </section>
 <section id="using-putty-to-access-the-server-database">
-<h3>Using PuTTY to Access the Server Database<a class="headerlink" href="#using-putty-to-access-the-server-database" title="Permalink to this heading">¶</a></h3>
+<h3>Using PuTTY to Access the Server Database<a class="headerlink" href="#using-putty-to-access-the-server-database" title="Link to this heading">¶</a></h3>
 <p>The following page explains how to set up an SSH tunnel using PuTTY:
 <a class="reference external" href="https://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html">https://www.postgresonline.com/journal/archives/38-PuTTY-for-SSH-Tunneling-to-PostgreSQL-Server.html</a></p>
 <p>We recommend to use the PuTTY SSH tunnel and not the PGAdminIII tunnelling functionality.</p>
@@ -182,7 +182,7 @@ you may use Pageant, an authentication agent program, part of WinSCP (Windows St
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

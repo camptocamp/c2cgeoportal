@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,9 +34,9 @@
           <div class="body" role="main">
             
   <section id="upgrading-a-geomapfish-application">
-<span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-upgrade-application"></span><h1>Upgrading a GeoMapFish application<a class="headerlink" href="#upgrading-a-geomapfish-application" title="Link to this heading">¶</a></h1>
 <section id="prepare-upgrade">
-<h2>Prepare upgrade<a class="headerlink" href="#prepare-upgrade" title="Permalink to this heading">¶</a></h2>
+<h2>Prepare upgrade<a class="headerlink" href="#prepare-upgrade" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://github.com/camptocamp/c2cgeoportal/blob/master/geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_CHANGELOG.txt">Read the ‘Information to know before starting the upgrade’ chapters in the changelog</a>.
 If you are currently using an LTS (Long-term support) release, you should read all the chapters,
 if you are using the previous version, only the first chapter is relevant.</p>
@@ -47,7 +47,7 @@ If the update process modified files which you do not want modified, then add th
 <code class="docutils literal notranslate"><span class="pre">managed_files</span></code> list.</p>
 </section>
 <section id="prepare-the-database">
-<h2>Prepare the database<a class="headerlink" href="#prepare-the-database" title="Permalink to this heading">¶</a></h2>
+<h2>Prepare the database<a class="headerlink" href="#prepare-the-database" title="Link to this heading">¶</a></h2>
 <p>Clone the schema with e.g.:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SET</span><span class="w"> </span><span class="n">statement_timeout</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;600s&#39;</span><span class="p">;</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_&lt;old_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main_&lt;new_version&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
@@ -57,12 +57,12 @@ If the update process modified files which you do not want modified, then add th
 <p>Update the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> in your <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
 </section>
 <section id="from-a-version-prior-to-2-7-x">
-<h2>From a version prior to 2.7.x<a class="headerlink" href="#from-a-version-prior-to-2-7-x" title="Permalink to this heading">¶</a></h2>
+<h2>From a version prior to 2.7.x<a class="headerlink" href="#from-a-version-prior-to-2-7-x" title="Link to this heading">¶</a></h2>
 <p>Upgrade your project first to 2.7, as this is the current long-term release. Migration scripts and
 instructions assume that your minimal version is the current long-term release.</p>
 </section>
 <section id="upgrade-the-project">
-<h2>Upgrade the project<a class="headerlink" href="#upgrade-the-project" title="Permalink to this heading">¶</a></h2>
+<h2>Upgrade the project<a class="headerlink" href="#upgrade-the-project" title="Link to this heading">¶</a></h2>
 <p>Start the upgrade:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
@@ -74,7 +74,7 @@ span.prompt1:before {
 <p>If for some reason you need to debug what happens during the upgrade see: <a class="reference internal" href="../developer/debugging.html#upgrade-debugging"><span class="std std-ref">here</span></a>.</p>
 </section>
 <section id="upgrade-the-database">
-<h2>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Permalink to this heading">¶</a></h2>
+<h2>Upgrade the database<a class="headerlink" href="#upgrade-the-database" title="Link to this heading">¶</a></h2>
 <p>The database will be automatically upgraded during the upgrade process.</p>
 <p>To upgrade only the database you can use alembic directly.</p>
 <p>The help:</p>
@@ -156,7 +156,7 @@ span.prompt1:before {
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

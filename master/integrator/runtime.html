@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <section id="runtime-configuration">
-<h1>Runtime configuration<a class="headerlink" href="#runtime-configuration" title="Permalink to this heading">¶</a></h1>
+<h1>Runtime configuration<a class="headerlink" href="#runtime-configuration" title="Link to this heading">¶</a></h1>
 <p>In some situations, you may wish to define settings of the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> not directly,
 but via an environment variable instead, to be interpreted at runtime.</p>
 <p>On this documentation page, we will use the following examples:</p>
@@ -46,7 +46,7 @@ variable. This can be helpful if you are running several instances of your proje
 where the link shall appear in some instances, but not all.</p></li>
 </ul>
 <section id="env-files">
-<h2>Env files<a class="headerlink" href="#env-files" title="Permalink to this heading">¶</a></h2>
+<h2>Env files<a class="headerlink" href="#env-files" title="Link to this heading">¶</a></h2>
 <p>For <code class="docutils literal notranslate"><span class="pre">env</span></code> files in general, see <a class="reference internal" href="build.html#integrator-build"><span class="std std-ref">Build configuration</span></a>.</p>
 <p>Add the environment variables to your <code class="docutils literal notranslate"><span class="pre">env</span></code> files, set the right values for that <code class="docutils literal notranslate"><span class="pre">env</span></code>:</p>
 <ul class="simple">
@@ -55,7 +55,7 @@ where the link shall appear in some instances, but not all.</p></li>
 </ul>
 </section>
 <section id="usage-in-vars">
-<h2>Usage in vars<a class="headerlink" href="#usage-in-vars" title="Permalink to this heading">¶</a></h2>
+<h2>Usage in vars<a class="headerlink" href="#usage-in-vars" title="Link to this heading">¶</a></h2>
 <p>In your <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> file, you can refer to these environment variables,
 if you list them in the <code class="docutils literal notranslate"><span class="pre">runtime_environment</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
@@ -164,7 +164,7 @@ correct full path to this variable:</p>
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

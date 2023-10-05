@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <section id="mapfile-configuration">
-<span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Permalink to this heading">¶</a></h1>
+<span id="administrator-mapfile"></span><h1>Mapfile configuration<a class="headerlink" href="#mapfile-configuration" title="Link to this heading">¶</a></h1>
 <p>As mentioned on the index page (<a class="reference internal" href="index.html#administrator-guide"><span class="std std-ref">Administrator Guide</span></a>), the application
 administrator manages the application through the database and via
 the application’s MapServer mapfile.</p>
@@ -51,7 +51,7 @@ These variables are substituted at container start.</p>
 <p>This section describes how to make layers <em>printable</em> and/or <em>queryable</em>
 and/or <em>private</em> (a.k.a <em>restricted</em>).</p>
 <section id="print">
-<h2>Print<a class="headerlink" href="#print" title="Permalink to this heading">¶</a></h2>
+<h2>Print<a class="headerlink" href="#print" title="Link to this heading">¶</a></h2>
 <p>MapFish Print performs single tile requests to the WMS server. For that reason, we
 need to use a relatively large value for the <code class="docutils literal notranslate"><span class="pre">MAXSIZE</span></code> parameter (of the
 <code class="docutils literal notranslate"><span class="pre">MAP</span></code> section); 5000 for example.</p>
@@ -76,7 +76,7 @@ should be used when necessary only, as these parameters do not take the <code cl
 resolution into account.</p>
 </section>
 <section id="wfs-getfeature">
-<span id="administrator-mapfile-wfs-getfeature"></span><h2>WFS GetFeature<a class="headerlink" href="#wfs-getfeature" title="Permalink to this heading">¶</a></h2>
+<span id="administrator-mapfile-wfs-getfeature"></span><h2>WFS GetFeature<a class="headerlink" href="#wfs-getfeature" title="Link to this heading">¶</a></h2>
 <p>Layers that you want to use in a query (box and point), in filters, or for WFS permalink features must
 support WFS GetFeature.
 To support WFS GetFeature a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
@@ -127,7 +127,7 @@ This is because of a limitation in MapServer, where <code class="docutils litera
 values defined in the layer’s classes (<code class="docutils literal notranslate"><span class="pre">CLASS</span></code>) have no effect.</p>
 </section>
 <section id="wms-getfeatureinfo">
-<h2>WMS GetFeatureInfo<a class="headerlink" href="#wms-getfeatureinfo" title="Permalink to this heading">¶</a></h2>
+<h2>WMS GetFeatureInfo<a class="headerlink" href="#wms-getfeatureinfo" title="Link to this heading">¶</a></h2>
 <p>To support WMS GetFeatureInfo, a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="n">fooOnlyForWMSGetFeatureInfo</span>
 </pre></div>
@@ -170,11 +170,11 @@ can cause performance issue, especially on layers like labels. Only enable query
 </div>
 </section>
 <section id="restricted-layer">
-<h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Permalink to this heading">¶</a></h2>
+<h2>Restricted layer<a class="headerlink" href="#restricted-layer" title="Link to this heading">¶</a></h2>
 <p>The restricted layers work only with PostgreSQL data.  All layers defined as restricted in the mapfile
 should be defined as well in the administration interface and vice versa.</p>
 <section id="with-a-restrictionarea-area">
-<h3>With a RestrictionArea area<a class="headerlink" href="#with-a-restrictionarea-area" title="Permalink to this heading">¶</a></h3>
+<h3>With a RestrictionArea area<a class="headerlink" href="#with-a-restrictionarea-area" title="Link to this heading">¶</a></h3>
 <p>A RestrictionArea is used to restrict the layer displaying to a given area.
 This area is specified in the administration interface while defining the <code class="docutils literal notranslate"><span class="pre">RestrictionArea</span></code> element.</p>
 <div class="admonition warning">
@@ -238,7 +238,7 @@ no access; if you have set <code class="docutils literal notranslate"><span clas
 anonymous users apply.</p>
 </section>
 <section id="without-restriction-on-the-restrictionarea-area">
-<h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Permalink to this heading">¶</a></h3>
+<h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Link to this heading">¶</a></h3>
 <p>If we do not need to restrict on an area, we can use the following
 <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM (
@@ -289,12 +289,12 @@ no access; if you have set <code class="docutils literal notranslate"><span clas
 anonymous users apply.</p>
 </section>
 <section id="filename">
-<h3>Filename<a class="headerlink" href="#filename" title="Permalink to this heading">¶</a></h3>
+<h3>Filename<a class="headerlink" href="#filename" title="Link to this heading">¶</a></h3>
 <p>The mapfile should be a <code class="docutils literal notranslate"><span class="pre">.map.tmpl</span></code> file, for the variable to be substituted at container start.</p>
 </section>
 </section>
 <section id="variable-substitution">
-<h2>Variable Substitution<a class="headerlink" href="#variable-substitution" title="Permalink to this heading">¶</a></h2>
+<h2>Variable Substitution<a class="headerlink" href="#variable-substitution" title="Link to this heading">¶</a></h2>
 <p>It is possible to adapt some values in the mapfile according to the user’s role
 by using variable substitution, for instance to hide some layer objects
 attributes. The list of parameters that support variable substitution is
@@ -348,11 +348,11 @@ but beware that these attributes are not available for cached queries like:
 <p><a class="reference external" href="https://mapserver.org/cgi/runsub.html">MapServer documentation</a></p>
 </section>
 <section id="performance-improvement">
-<h2>Performance improvement<a class="headerlink" href="#performance-improvement" title="Permalink to this heading">¶</a></h2>
+<h2>Performance improvement<a class="headerlink" href="#performance-improvement" title="Link to this heading">¶</a></h2>
 <p>Adding an <code class="docutils literal notranslate"><span class="pre">EXTENT</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> section may significantly improve performance
 because it saves MapServer from computing the extent of all layer features.</p>
 <section id="prepare-raster-files">
-<span id="administrator-mapfile-perepare-raster"></span><h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Permalink to this heading">¶</a></h3>
+<span id="administrator-mapfile-perepare-raster"></span><h3>Prepare raster files<a class="headerlink" href="#prepare-raster-files" title="Link to this heading">¶</a></h3>
 <p>To achieve good performance, you should have tiled files with overviews, and ideally
 a tileindex. You can achieve this with these steps:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
@@ -371,7 +371,7 @@ span.prompt1:before {
 </pre></div></div></section>
 </section>
 <section id="note-about-ecw">
-<h2>Note about ECW<a class="headerlink" href="#note-about-ecw" title="Permalink to this heading">¶</a></h2>
+<h2>Note about ECW<a class="headerlink" href="#note-about-ecw" title="Link to this heading">¶</a></h2>
 <p>In general using ECW is not recommended, as MapServer often generates broken
 images and has memory leaks with ECW. See this
 <a class="reference external" href="https://trac.osgeo.org/mapserver/ticket/3245">MapServer ticket</a>
@@ -381,7 +381,7 @@ by <code class="docutils literal notranslate"><span class="pre">SetHandler</span
 file. But note that this affects performance.</p>
 </section>
 <section id="mappyfile">
-<h2>mappyfile<a class="headerlink" href="#mappyfile" title="Permalink to this heading">¶</a></h2>
+<h2>mappyfile<a class="headerlink" href="#mappyfile" title="Link to this heading">¶</a></h2>
 <p>The tool container contains mappyfile, he can be used to ‘Pretty Printing’, ‘Validate’, …
 See the <a class="reference external" href="https://mappyfile.readthedocs.io/">project documentation</a>.</p>
 <p>For example to validate the map files run:</p>
@@ -459,7 +459,7 @@ See the <a class="reference external" href="https://mappyfile.readthedocs.io/">p
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <section id="customize-the-application">
-<span id="integrator-customise"></span><h1>Customize the application<a class="headerlink" href="#customize-the-application" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-customise"></span><h1>Customize the application<a class="headerlink" href="#customize-the-application" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <p>The application can be customized with the following mechanisms:
@@ -61,7 +61,7 @@ It is a list of objects which have a <code class="docutils literal notranslate">
 <p>In order to inherit the default values from <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>, make sure the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> section contains
 the item <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">admin_interface.available_metadata</span></code>.</p>
 <section id="url">
-<h2>URL<a class="headerlink" href="#url" title="Permalink to this heading">¶</a></h2>
+<h2>URL<a class="headerlink" href="#url" title="Link to this heading">¶</a></h2>
 <p>In the admin interface, we can use for all URL definitions the following special schema:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">static</span></code>: to use a static route,</p>
@@ -82,7 +82,7 @@ the URL <code class="docutils literal notranslate"><span class="pre">https://exa
 </ul>
 </section>
 <section id="functionalities">
-<span id="integrator-functionality"></span><h2>Functionalities<a class="headerlink" href="#functionalities" title="Permalink to this heading">¶</a></h2>
+<span id="integrator-functionality"></span><h2>Functionalities<a class="headerlink" href="#functionalities" title="Link to this heading">¶</a></h2>
 <p>c2cgeoportal provides the concept of <em>functionality</em> that can be used to customize
 the application according to the user’s permissions.</p>
 <p>A functionality may be associated to users through the admin interface.</p>
@@ -103,7 +103,7 @@ they are named <cite>anonymous</cite>, <cite>registered</cite> and <cite>intrane
 </pre></div>
 </div>
 <section id="configuration">
-<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h3>
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file includes variables for managing <em>functionalities</em>.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">admin_interface</span></code>/<code class="docutils literal notranslate"><span class="pre">available_functionalities</span></code></dt><dd><p>List of functionality types that should be available in the administration interface (and added to the
@@ -138,12 +138,12 @@ key/value pair: <code class="docutils literal notranslate"><span class="pre">&qu
 </dl>
 </section>
 <section id="usage-in-javascript-client">
-<h3>Usage in JavaScript client<a class="headerlink" href="#usage-in-javascript-client" title="Permalink to this heading">¶</a></h3>
+<h3>Usage in JavaScript client<a class="headerlink" href="#usage-in-javascript-client" title="Link to this heading">¶</a></h3>
 <p>The functionalities will be sent to the JavaScript client application through the user web service.
 To be published, a functionality should be present in the parameter <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code>
 parameter in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
 <section id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
-<h4>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Permalink to this heading">¶</a></h4>
+<h4>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Link to this heading">¶</a></h4>
 <p>A default basemap may be automatically loaded when the user selects a given
 theme. This can be configured in the administration interface, as follows:
 if not available yet, define a
@@ -155,7 +155,7 @@ taken into account.</p>
 </section>
 </section>
 <section id="extend-the-data-model">
-<h2>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Permalink to this heading">¶</a></h2>
+<h2>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Extending the data model is not possible in the simple application mode.</p>
@@ -535,7 +535,7 @@ span.prompt1:before {
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |

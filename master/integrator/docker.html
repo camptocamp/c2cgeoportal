@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true});</script>
     <link rel="icon" href="../_static/favicon.ico"/>
@@ -36,9 +36,9 @@
           <div class="body" role="main">
             
   <section id="use-docker-to-deploy-your-application">
-<span id="integrator-docker"></span><h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Permalink to this heading">¶</a></h1>
+<span id="integrator-docker"></span><h1>Use Docker to deploy your application<a class="headerlink" href="#use-docker-to-deploy-your-application" title="Link to this heading">¶</a></h1>
 <section id="architecture-schema">
-<h2>Architecture schema<a class="headerlink" href="#architecture-schema" title="Permalink to this heading">¶</a></h2>
+<h2>Architecture schema<a class="headerlink" href="#architecture-schema" title="Link to this heading">¶</a></h2>
 <p>For OpenShift projects:</p>
 <div class="mermaid">
             graph LR
@@ -145,7 +145,7 @@
     classDef data fill:#5ba6ff,color:black;
         </div></section>
 <section id="docker-images">
-<h2>Docker Images<a class="headerlink" href="#docker-images" title="Permalink to this heading">¶</a></h2>
+<h2>Docker Images<a class="headerlink" href="#docker-images" title="Link to this heading">¶</a></h2>
 <p>When you build your application, the following images will be generated:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;package&gt;_geoportal:latest</span></code></p></li>
@@ -154,7 +154,7 @@
 <p>The tag is by default <code class="docutils literal notranslate"><span class="pre">latest</span></code>, but you can change it by setting the <code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
 </section>
 <section id="docker-compose-files">
-<h2>Docker compose files<a class="headerlink" href="#docker-compose-files" title="Permalink to this heading">¶</a></h2>
+<h2>Docker compose files<a class="headerlink" href="#docker-compose-files" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>: The main file that describes the composition.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">docker-compose-lib.yaml</span></code>: Provideis the base description of Geomapfish Docker services.</p></li>
@@ -164,7 +164,7 @@
 </ul>
 </section>
 <section id="run-the-developer-composition">
-<h2>Run the developer composition<a class="headerlink" href="#run-the-developer-composition" title="Permalink to this heading">¶</a></h2>
+<h2>Run the developer composition<a class="headerlink" href="#run-the-developer-composition" title="Link to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
 span.prompt1:before {
   content: "$ ";
@@ -173,14 +173,14 @@ span.prompt1:before {
 </pre></div></div><p>You can then access your application with <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
 </section>
 <section id="clean">
-<h2>Clean<a class="headerlink" href="#clean" title="Permalink to this heading">¶</a></h2>
+<h2>Clean<a class="headerlink" href="#clean" title="Link to this heading">¶</a></h2>
 <p>Docker does not clean anything automatically, in particular it does not clean any images,
 therefore disk space may become problematic after a certain number of builds.
 You can use the following commands to manually remove Docker files.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">system</span> <span class="pre">prune</span></code> to clean files; you can add the <code class="docutils literal notranslate"><span class="pre">--all</span></code> option to do a deeper clean.</p>
 </section>
 <section id="environment-variables">
-<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this heading">¶</a></h2>
+<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Link to this heading">¶</a></h2>
 <p>The GeoMapFish containers can be customized with some environment variables:</p>
 <p>Config:</p>
 <blockquote>
@@ -320,7 +320,7 @@ generation, default to <code class="docutils literal notranslate"><span class="p
       &copy;2011-2023, Camptocamp.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
