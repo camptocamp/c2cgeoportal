@@ -119,7 +119,7 @@
      * No upgrade for packages sphinxcontrib-*, they requires a new major version od Sphinx
      */
     {
-      'matchPackageNames': ['^sphinxcontrib-.*'],
+      'matchPackagePatterns': ['^sphinxcontrib-.*'],
       'matchPaths': ['docs/Pipfile', 'docs/Pipfile.lock'],
       'enabled': false,
     },
