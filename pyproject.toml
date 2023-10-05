@@ -77,7 +77,7 @@ prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.2" }
 setuptools = "68.0.0"
 
 [tool.poetry.dev-dependencies]
-Babel = "2.12.1" # i18n
+Babel = "2.13.0" # i18n
 beautifulsoup4 = "4.12.2" # admin tests
 Jinja2 = "3.1.2" # c2c.template
 lingua = "4.15.0" # i18n
