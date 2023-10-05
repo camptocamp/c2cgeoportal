@@ -123,5 +123,16 @@
       'matchPaths': ['docs/Pipfile'],
       'enabled': false,
     },
+    /** Disable upgrading the supported Python version */
+    {
+      matchFileNames: [
+        'pyproject.toml',
+        'doc/pyproject.toml',
+        'docker/config/pyproject.toml',
+        'docker/qgisserver/pyproject.toml',
+      ],
+      matchPackageNames: ['python'],
+      enabled: false,
+    },
   ],
 }
