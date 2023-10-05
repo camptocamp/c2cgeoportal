@@ -80,10 +80,10 @@
       separateMajorMinor: false,
       separateMinorPatch: false,
     },
-    /** daily ngeo */
+    /** Daily ngeo */
     {
       matchPackageNames: ['ngeo'],
-      schedule: 'after 5pm on the first day of the month',
+      schedule: 'after 5pm',
     },
     /** Ungroup OWSLib */
     {
@@ -120,7 +120,7 @@
      */
     {
       'matchPackageNames': ['sphinxcontrib-*'],
-      'matchPaths': ['docs/Pipfile'],
+      'matchPaths': ['docs/Pipfile', 'docs/Pipfile.lock'],
       'enabled': false,
     },
     /** Disable upgrading the supported Python version */
