@@ -117,6 +117,7 @@
     },
     /**
      * No upgrade for packages sphinxcontrib-*, they requires a new major version of Sphinx
+     * For 2.6
      */
     {
       'matchPackagePatterns': ['^sphinxcontrib-.*'],
