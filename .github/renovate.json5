@@ -120,8 +120,8 @@
      * For 2.6
      */
     {
-      'matchPackagePatterns': ['sphinxcontrib-.*'],
-      'matchPaths': ['docs/Pipfile', 'docs/Pipfile.lock'],
+      'matchPackagePatterns': ['^sphinxcontrib-.*'],
+      'matchPaths': ['doc/Pipfile'],
       'enabled': false,
     },
     /** Disable upgrading the supported Python version */
