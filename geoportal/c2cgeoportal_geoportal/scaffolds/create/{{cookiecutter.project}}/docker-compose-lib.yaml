@@ -141,7 +141,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:7.0
+    image: redis:7.2
     user: www-data
     restart: unless-stopped
     command:
