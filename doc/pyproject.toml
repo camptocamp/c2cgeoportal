@@ -17,7 +17,7 @@ python = ">=3.10,<3.11"
 alabaster = "0.7.13" # theme
 Pygments = "2.16.1"
 Sphinx = "7.2.6"
-sphinx-prompt = "1.7.0"
+sphinx-prompt = "1.8.0"
 sphinx-jsonschema = "1.19.1"
 sphinx-argparse = "0.4.0"
 Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2022.2.16" }

@@ -1163,13 +1163,13 @@ requests = "*"
 
 [[package]]
 name = "sphinx-prompt"
-version = "1.7.0"
+version = "1.8.0"
 description = "Sphinx directive to add unselectable prompt"
 optional = false
-python-versions = ">=3.8,<3.11"
+python-versions = ">=3.9,<4.0"
 files = [
-    {file = "sphinx_prompt-1.7.0-py3-none-any.whl", hash = "sha256:7ee415d07f90f7ce1577a2c4c7f2560694af008926a69b4c940f20737621b089"},
-    {file = "sphinx_prompt-1.7.0.tar.gz", hash = "sha256:f95c0b44d73621fc0b493f84b0c2866eb8741140ef0260c20a0f7578457f44ad"},
+    {file = "sphinx_prompt-1.8.0-py3-none-any.whl", hash = "sha256:369ecc633f0711886f9b3a078c83264245be1adf46abeeb9b88b5519e4b51007"},
+    {file = "sphinx_prompt-1.8.0.tar.gz", hash = "sha256:47482f86fcec29662fdfd23e7c04ef03582714195d01f5d565403320084372ed"},
 ]
 
 [package.dependencies]
@@ -1700,4 +1700,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "77b5769d9320f326beff26e67cc83665e857e59d1ec3a0b36cb8340133affa36"
+content-hash = "adc20e134f6be8ee9e8bac93271fdf77696c3b15dd89a248db5f0c30c80605e7"
