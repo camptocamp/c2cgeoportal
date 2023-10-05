@@ -134,5 +134,10 @@
       matchPackageNames: ['python'],
       enabled: false,
     },
+    /** Disable minimal requirements update */
+    {
+      'matchPaths': ['ci/requirements-back\\.txt'],
+      'enabled': false,
+    },
   ],
 }
