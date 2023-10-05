@@ -69,8 +69,9 @@ jobs:
           SKIP: poetry-lock
       - run: git diff && false
         if: failure()
-      - name: Checks
-        run: c2cciutils-checks
+
+      - name: Environment information
+        run: c2cciutils-env
 
       - run: python3 -m pip install --user --requirement=requirements.txt
 
@@ -151,7 +152,7 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
-      - run: git stash pop
+      - run: git stash pop || true
 
         # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
@@ -160,7 +161,8 @@ jobs:
       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 270 ${HOME}/workspace
-      - run: ci/test-upgrade 28 ${HOME}/workspace
+      - run: ci/test-upgrade 280 ${HOME}/workspace
+      - run: ci/test-upgrade 29 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
       - uses: actions/setup-python@v4

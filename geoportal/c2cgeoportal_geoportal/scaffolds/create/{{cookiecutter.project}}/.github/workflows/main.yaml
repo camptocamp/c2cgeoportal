@@ -33,8 +33,8 @@ jobs:
       # - run: make secrets
       # - run: cat env.secrets |grep '^[# A-Z0-9_]\+='|sed -e 's/^[# A-Z0-9_]\+=\(.*\)/::add-mask::\1/g'
 
-      - name: Checks
-        run: c2cciutils-checks
+      - name: Environment information
+        run: c2cciutils-env
 
       # - name: Initialize the acceptance tests
       #   run: make acceptance-init

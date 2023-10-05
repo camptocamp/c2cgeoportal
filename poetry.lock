@@ -245,6 +245,41 @@ files = [
 chardet = ">=3.0.2"
 
 [[package]]
+name = "black"
+version = "22.12.0"
+description = "The uncompromising code formatter."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "black-22.12.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9eedd20838bd5d75b80c9f5487dbcb06836a43833a37846cf1d8c1cc01cef59d"},
+    {file = "black-22.12.0-cp310-cp310-win_amd64.whl", hash = "sha256:159a46a4947f73387b4d83e87ea006dbb2337eab6c879620a3ba52699b1f4351"},
+    {file = "black-22.12.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d30b212bffeb1e252b31dd269dfae69dd17e06d92b87ad26e23890f3efea366f"},
+    {file = "black-22.12.0-cp311-cp311-win_amd64.whl", hash = "sha256:7412e75863aa5c5411886804678b7d083c7c28421210180d67dfd8cf1221e1f4"},
+    {file = "black-22.12.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c116eed0efb9ff870ded8b62fe9f28dd61ef6e9ddd28d83d7d264a38417dcee2"},
+    {file = "black-22.12.0-cp37-cp37m-win_amd64.whl", hash = "sha256:1f58cbe16dfe8c12b7434e50ff889fa479072096d79f0a7f25e4ab8e94cd8350"},
+    {file = "black-22.12.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:77d86c9f3db9b1bf6761244bc0b3572a546f5fe37917a044e02f3166d5aafa7d"},
+    {file = "black-22.12.0-cp38-cp38-win_amd64.whl", hash = "sha256:82d9fe8fee3401e02e79767016b4907820a7dc28d70d137eb397b92ef3cc5bfc"},
+    {file = "black-22.12.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:101c69b23df9b44247bd88e1d7e90154336ac4992502d4197bdac35dd7ee3320"},
+    {file = "black-22.12.0-cp39-cp39-win_amd64.whl", hash = "sha256:559c7a1ba9a006226f09e4916060982fd27334ae1998e7a38b3f33a37f7a2148"},
+    {file = "black-22.12.0-py3-none-any.whl", hash = "sha256:436cc9167dd28040ad90d3b404aec22cedf24a6e4d7de221bec2730ec0c97bcf"},
+    {file = "black-22.12.0.tar.gz", hash = "sha256:229351e5a18ca30f447bf724d007f890f97e13af070bb6ad4c0a441cd7596a2f"},
+]
+
+[package.dependencies]
+click = ">=8.0.0"
+mypy-extensions = ">=0.4.3"
+pathspec = ">=0.9.0"
+platformdirs = ">=2"
+tomli = {version = ">=1.1.0", markers = "python_full_version < \"3.11.0a7\""}
+typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
+
+[package.extras]
+colorama = ["colorama (>=0.4.3)"]
+d = ["aiohttp (>=3.7.4)"]
+jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
+uvloop = ["uvloop (>=0.15.2)"]
+
+[[package]]
 name = "bottle"
 version = "0.12.25"
 description = "Fast and simple WSGI-framework for small web-applications."
@@ -274,31 +309,43 @@ pyyaml-include = "*"
 
 [[package]]
 name = "c2cciutils"
-version = "1.6.10"
+version = "1.5.8"
 description = "Common utilities for Camptocamp CI"
 optional = false
-python-versions = ">=3.9,<4.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "c2cciutils-1.6.10-py3-none-any.whl", hash = "sha256:62da1b26aa20b236e882f944da07d443159ee97c21ab7e3238f8045bfeab91b0"},
-    {file = "c2cciutils-1.6.10.tar.gz", hash = "sha256:b9b14f0f8b96a993eb79a1b21384f0141ae2aa976fdbb5f101af4e2b420e9b33"},
+    {file = "c2cciutils-1.5.8-py3-none-any.whl", hash = "sha256:732f5e603abc2df8db4b55d150d722e5475a4edc2cd9a72503b1886d3b9b21cb"},
+    {file = "c2cciutils-1.5.8.tar.gz", hash = "sha256:0d24594226f7d070210099ce32b4b734aa5d2de152fbc724a75910786b95f135"},
 ]
 
 [package.dependencies]
+black = {version = "22.12.0", optional = true, markers = "extra == \"checks\""}
+certifi = ">=2023.0.0,<2024.0.0"
+click = ">=8.0.0,<9.0.0"
+codespell = {version = "2.2.5", optional = true, markers = "extra == \"checks\" or extra == \"pr_checks\""}
 cryptography = ">=41.0.0,<42.0.0"
 debian-inspector = ">=31.0.0,<32.0.0"
 defusedxml = ">=0.0.0,<1.0.0"
+EditorConfig = {version = ">=0.0.0,<1.0.0", optional = true, markers = "extra == \"checks\""}
+isort = {version = "5.12.0", optional = true, markers = "extra == \"checks\""}
+jsonschema = ">=4.0.0,<5.0.0"
+jsonschema-gentypes = ">=1.4.0,<1.5.0"
 Markdown = ">=3.0.0,<4.0.0"
+markdown-it-py = ">=2.0.0,<3.0.0"
 markdown-table = ">=2020.0.0,<2021.0.0"
+node-vm2 = ">=0.0.0,<1.0.0"
+Pygments = ">=2.0.0,<3.0.0"
+pyOpenSSL = ">=23.0.0,<24.0.0"
 python-magic = ">=0.0.0,<1.0.0"
-PyYAML = ">=6.0.0,<7.0.0"
+PyYAML = ">=6.0,<7.0"
 requests = ">=2.0.0,<3.0.0"
 "ruamel.yaml" = ">=0.0.0,<1.0.0"
 toml = ">=0.0.0,<1.0.0"
 
 [package.extras]
+checks = ["EditorConfig (>=0.0.0,<1.0.0)", "black (==22.12.0)", "codespell (==2.2.5)", "isort (==5.12.0)"]
 pr-checks = ["codespell (==2.2.5)"]
-publish = ["google-api-python-client (>=2.0.0,<3.0.0)", "google-auth-httplib2 (>=0.0.0,<1.0.0)", "google-auth-oauthlib (>=1.0.0,<2.0.0)", "tomlkit (>=0.0.0,<1.0.0)", "twine (>=4.0.0,<5.0.0)"]
-version = ["multi-repo-automation (>=0.0.0,<1.0.0)"]
+publish = ["google-api-python-client (>=2.0.0,<3.0.0)", "google-auth-httplib2 (>=0.0.0,<1.0.0)", "google-auth-oauthlib (>=0.0.0,<1.0.0)", "tomlkit (>=0.0.0,<1.0.0)", "twine (>=4.0.0,<5.0.0)"]
 
 [[package]]
 name = "c2cgeoform"
@@ -476,6 +523,17 @@ files = [
 pycparser = "*"
 
 [[package]]
+name = "cfgv"
+version = "3.4.0"
+description = "Validate configuration and produce human readable error messages."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "cfgv-3.4.0-py2.py3-none-any.whl", hash = "sha256:b7265b1f29fd3316bfcd2b330d63d024f2bfd8bcb8b0272f8e19a504856c48f9"},
+    {file = "cfgv-3.4.0.tar.gz", hash = "sha256:e52591d4c5f5dead8e0f673fb16db7949d2cfb3f7da4582893288f0ded8fe560"},
+]
+
+[[package]]
 name = "chameleon"
 version = "4.0.1"
 description = "Fast HTML/XML Template Compiler."
@@ -630,6 +688,23 @@ click = ">=4.0"
 
 [package.extras]
 test = ["pytest-cov"]
+
+[[package]]
+name = "codespell"
+version = "2.2.5"
+description = "Codespell"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "codespell-2.2.5-py3-none-any.whl", hash = "sha256:efa037f54b73c84f7bd14ce8e853d5f822cdd6386ef0ff32e957a3919435b9ec"},
+    {file = "codespell-2.2.5.tar.gz", hash = "sha256:6d9faddf6eedb692bf80c9a94ec13ab4f5fb585aabae5f3750727148d7b5be56"},
+]
+
+[package.extras]
+dev = ["Pygments", "build", "chardet", "pytest", "pytest-cov", "pytest-dependency", "ruff", "tomli"]
+hard-encoding-detection = ["chardet"]
+toml = ["tomli"]
+types = ["chardet (>=5.1.0)", "mypy", "pytest", "pytest-cov", "pytest-dependency"]
 
 [[package]]
 name = "colander"
@@ -839,6 +914,17 @@ files = [
 graph = ["objgraph (>=1.7.2)"]
 
 [[package]]
+name = "distlib"
+version = "0.3.7"
+description = "Distribution utilities"
+optional = false
+python-versions = "*"
+files = [
+    {file = "distlib-0.3.7-py2.py3-none-any.whl", hash = "sha256:2e24928bc811348f0feb63014e97aaae3037f2cf48712d51ae61df7fd6075057"},
+    {file = "distlib-0.3.7.tar.gz", hash = "sha256:9dafe54b34a028eafd95039d5e5d4851a13734540f1331060d31c9916e7147a8"},
+]
+
+[[package]]
 name = "docopt"
 version = "0.6.2"
 description = "Pythonic argument parser, that will make you smile"
@@ -876,6 +962,17 @@ stevedore = ">=3.0.0"
 typing-extensions = {version = ">=4.0.1", markers = "python_version < \"3.11\""}
 
 [[package]]
+name = "editorconfig"
+version = "0.12.3"
+description = "EditorConfig File Locator and Interpreter for Python"
+optional = false
+python-versions = "*"
+files = [
+    {file = "EditorConfig-0.12.3-py3-none-any.whl", hash = "sha256:6b0851425aa875b08b16789ee0eeadbd4ab59666e9ebe728e526314c4a2e52c1"},
+    {file = "EditorConfig-0.12.3.tar.gz", hash = "sha256:57f8ce78afcba15c8b18d46b5170848c88d56fd38f05c2ec60dbbfcb8996e89e"},
+]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.1.2"
 description = "Backport of PEP 654 (exception groups)"
@@ -888,6 +985,22 @@ files = [
 
 [package.extras]
 test = ["pytest (>=6)"]
+
+[[package]]
+name = "filelock"
+version = "3.12.4"
+description = "A platform independent file lock."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "filelock-3.12.4-py3-none-any.whl", hash = "sha256:08c21d87ded6e2b9da6728c3dff51baf1dcecf973b768ef35bcbc3447edb9ad4"},
+    {file = "filelock-3.12.4.tar.gz", hash = "sha256:2e6f249f1f3654291606e046b09f1fd5eac39b360664c27f5aad072012f8bcbd"},
+]
+
+[package.extras]
+docs = ["furo (>=2023.7.26)", "sphinx (>=7.1.2)", "sphinx-autodoc-typehints (>=1.24)"]
+testing = ["covdefaults (>=2.3)", "coverage (>=7.3)", "diff-cover (>=7.7)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)", "pytest-timeout (>=2.1)"]
+typing = ["typing-extensions (>=4.7.1)"]
 
 [[package]]
 name = "fiona"
@@ -1157,6 +1270,20 @@ docs = ["Sphinx", "pylons-sphinx-themes", "setuptools", "watchdog"]
 testing = ["mock", "pytest", "pytest-cov", "watchdog"]
 
 [[package]]
+name = "identify"
+version = "2.5.30"
+description = "File identification library for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "identify-2.5.30-py2.py3-none-any.whl", hash = "sha256:afe67f26ae29bab007ec21b03d4114f41316ab9dd15aa8736a167481e108da54"},
+    {file = "identify-2.5.30.tar.gz", hash = "sha256:f302a4256a15c849b91cfcdcec052a8ce914634b2f77ae87dad29cd749f2d88d"},
+]
+
+[package.extras]
+license = ["ukkonen"]
+
+[[package]]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1287,6 +1414,27 @@ rpds-py = ">=0.7.1"
 [package.extras]
 format = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3987", "uri-template", "webcolors (>=1.11)"]
 format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3986-validator (>0.1.0)", "uri-template", "webcolors (>=1.11)"]
+
+[[package]]
+name = "jsonschema-gentypes"
+version = "1.4.1"
+description = "Tool to generate Python types based on TypedDict from a JSON Schema"
+optional = false
+python-versions = ">=3.8,<4"
+files = [
+    {file = "jsonschema_gentypes-1.4.1-py3-none-any.whl", hash = "sha256:9a9ecf05a2658deb8ffc199d347957f6e0ac001de761bb37d0c74705254a1c79"},
+    {file = "jsonschema_gentypes-1.4.1.tar.gz", hash = "sha256:a5662ce969c898aebd36bf8d0c6e0f9162f176877d57f916b9f83284d7951af9"},
+]
+
+[package.dependencies]
+certifi = "*"
+jsonschema = "*"
+"ruamel.yaml" = "*"
+
+[package.extras]
+extra = ["pinyin", "romanize", "romkan"]
+generate = ["PyYAML", "requests"]
+tools = ["black", "isort", "pyupgrade"]
 
 [[package]]
 name = "jsonschema-specifications"
@@ -1749,6 +1897,31 @@ files = [
 ]
 
 [[package]]
+name = "node-vm2"
+version = "0.4.5"
+description = "A binding to Node.js + vm2, helps you execute JavaScript safely."
+optional = false
+python-versions = "*"
+files = [
+    {file = "node_vm2-0.4.5-py3-none-any.whl", hash = "sha256:bc8582aeb8c0ad19b60df10c595779ca438e4b311cbc948f68ec049e27835b84"},
+    {file = "node_vm2-0.4.5.tar.gz", hash = "sha256:127ca3eb9f252228e3a317e2cada2e3520308660ceea9466a5070625106a8c8b"},
+]
+
+[[package]]
+name = "nodeenv"
+version = "1.8.0"
+description = "Node.js virtual environment builder"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*"
+files = [
+    {file = "nodeenv-1.8.0-py2.py3-none-any.whl", hash = "sha256:df865724bb3c3adc86b3876fa209771517b0cfe596beff01a92700e0e8be4cec"},
+    {file = "nodeenv-1.8.0.tar.gz", hash = "sha256:d51e0c37e64fbf47d017feac3145cdbb58836d7eee8c6f6d3b6880c5456227d2"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[[package]]
 name = "numpy"
 version = "1.25.2"
 description = "Fundamental package for array computing in Python"
@@ -1928,6 +2101,17 @@ config = ["PasteDeploy"]
 flup = ["Flup"]
 paste = ["Cheetah", "PasteDeploy"]
 wsgiutils = ["WSGIserver"]
+
+[[package]]
+name = "pathspec"
+version = "0.11.2"
+description = "Utility library for gitignore style pattern matching of file paths."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pathspec-0.11.2-py3-none-any.whl", hash = "sha256:1d6ed233af05e679efb96b1851550ea95bbb64b7c490b0f5aa52996c11e92a20"},
+    {file = "pathspec-0.11.2.tar.gz", hash = "sha256:e0d8d0ac2f12da61956eb2306b69f9469b42f4deb0f3cb6ed47b9cce9996ced3"},
+]
 
 [[package]]
 name = "pbr"
@@ -2121,6 +2305,24 @@ files = [
     {file = "polib-1.2.0-py2.py3-none-any.whl", hash = "sha256:1c77ee1b81feb31df9bca258cbc58db1bbb32d10214b173882452c73af06d62d"},
     {file = "polib-1.2.0.tar.gz", hash = "sha256:f3ef94aefed6e183e342a8a269ae1fc4742ba193186ad76f175938621dbfc26b"},
 ]
+
+[[package]]
+name = "pre-commit"
+version = "3.4.0"
+description = "A framework for managing and maintaining multi-language pre-commit hooks."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pre_commit-3.4.0-py2.py3-none-any.whl", hash = "sha256:96d529a951f8b677f730a7212442027e8ba53f9b04d217c4c67dc56c393ad945"},
+    {file = "pre_commit-3.4.0.tar.gz", hash = "sha256:6bbd5129a64cad4c0dfaeeb12cd8f7ea7e15b77028d985341478c8af3c759522"},
+]
+
+[package.dependencies]
+cfgv = ">=2.0.0"
+identify = ">=1.0.0"
+nodeenv = ">=0.11.1"
+pyyaml = ">=5.1"
+virtualenv = ">=20.10.0"
 
 [[package]]
 name = "prometheus-client"
@@ -2572,6 +2774,24 @@ files = [
 
 [package.dependencies]
 pylint = ">=1.7"
+
+[[package]]
+name = "pyopenssl"
+version = "23.2.0"
+description = "Python wrapper module around the OpenSSL library"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pyOpenSSL-23.2.0-py3-none-any.whl", hash = "sha256:24f0dc5227396b3e831f4c7f602b950a5e9833d292c8e4a2e06b709292806ae2"},
+    {file = "pyOpenSSL-23.2.0.tar.gz", hash = "sha256:276f931f55a452e7dea69c7173e984eb2a4407ce413c918aa34b55f82f9b8bac"},
+]
+
+[package.dependencies]
+cryptography = ">=38.0.0,<40.0.0 || >40.0.0,<40.0.1 || >40.0.1,<42"
+
+[package.extras]
+docs = ["sphinx (!=5.2.0,!=5.2.0.post0)", "sphinx-rtd-theme"]
+test = ["flaky", "pretend", "pytest (>=3.0.1)"]
 
 [[package]]
 name = "pyotp"
@@ -3916,6 +4136,26 @@ docs = ["Sphinx", "repoze.sphinx.autointerface"]
 testing = ["coverage", "pytest", "pytest-cov"]
 
 [[package]]
+name = "virtualenv"
+version = "20.24.5"
+description = "Virtual Python Environment builder"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "virtualenv-20.24.5-py3-none-any.whl", hash = "sha256:b80039f280f4919c77b30f1c23294ae357c4c8701042086e3fc005963e4e537b"},
+    {file = "virtualenv-20.24.5.tar.gz", hash = "sha256:e8361967f6da6fbdf1426483bfe9fca8287c242ac0bc30429905721cefbff752"},
+]
+
+[package.dependencies]
+distlib = ">=0.3.7,<1"
+filelock = ">=3.12.2,<4"
+platformdirs = ">=3.9.1,<4"
+
+[package.extras]
+docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.2)", "sphinx-argparse (>=0.4)", "sphinxcontrib-towncrier (>=0.2.1a0)", "towncrier (>=23.6)"]
+test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=23.1)", "pytest (>=7.4)", "pytest-env (>=0.8.2)", "pytest-freezer (>=0.4.8)", "pytest-mock (>=3.11.1)", "pytest-randomly (>=3.12)", "pytest-timeout (>=2.1)", "setuptools (>=68)", "time-machine (>=2.10)"]
+
+[[package]]
 name = "waitress"
 version = "2.1.2"
 description = "Waitress WSGI server"
@@ -4171,4 +4411,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "164503747af8ccdb7f88674afdd1f15442f8e30aab010d77bd1fbd3c64dd3bed"
+content-hash = "737398a00409230745652805e13549a071a7d5688aa195ca5fd2a678fc4507fd"
