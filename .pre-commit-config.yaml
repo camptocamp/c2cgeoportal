@@ -98,7 +98,7 @@ repos:
           - --builtin-schema
           - github-workflows-require-timeout
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.5
+    rev: v0.1.7
     hooks:
       - id: ripsecrets
         exclude: |-
