@@ -23,6 +23,11 @@ services:
       - GEOMAPFISH_OGCSERVER=source for image/png
       - QGIS_SERVER_LOG_LEVEL=0
 
+  tilecloudchain:
+    environment:
+      - TILECLOUD_CHAIN_SESSION_SECRET=secret
+      - TILECLOUD_CHAIN_SESSION_SALT=salt
+
   tools:
     volumes_from:
       - config:rw
