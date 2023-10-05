@@ -116,7 +116,7 @@
       'versioning': 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
     },
     /**
-     * No upgrade for packages sphinxcontrib-*, they requires a new major version od Sphinx
+     * No upgrade for packages sphinxcontrib-*, they requires a new major version of Sphinx
      */
     {
       'matchPackagePatterns': ['^sphinxcontrib-.*'],
