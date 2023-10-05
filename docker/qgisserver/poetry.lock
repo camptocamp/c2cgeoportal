@@ -294,18 +294,21 @@ flake8 = "*"
 
 [[package]]
 name = "geoalchemy2"
-version = "0.13.3"
+version = "0.14.1"
 description = "Using SQLAlchemy with Spatial Databases"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GeoAlchemy2-0.13.3-py3-none-any.whl", hash = "sha256:a29f98cbe2527284d2374a0aa6f7bf31fb7babb61bc56b7e557afdb21610827a"},
-    {file = "GeoAlchemy2-0.13.3.tar.gz", hash = "sha256:d85a7deaa9a230901733f7419d6bff5674b8730651de1a07f2b6423aa4925d09"},
+    {file = "GeoAlchemy2-0.14.1-py3-none-any.whl", hash = "sha256:0830c98f83d6b1706e62b5544793d304e2853493d6e70ac18444c13748c3d1c7"},
+    {file = "GeoAlchemy2-0.14.1.tar.gz", hash = "sha256:620b31cbf97a368b2486dbcfcd36da2081827e933d4163bcb942043b79b545e8"},
 ]
 
 [package.dependencies]
 packaging = "*"
 SQLAlchemy = ">=1.4"
+
+[package.extras]
+shapely = ["Shapely (>=1.7)"]
 
 [[package]]
 name = "geojson"
@@ -1890,4 +1893,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "050fddb0127a676e287eaeb55979b29d1da0574bffa2af742a4611e7f7347d0d"
+content-hash = "1049072dd55c17ebe8d67c8d97bd450b715243f320129c3a9ba49d7c1af945dc"
