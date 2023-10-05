@@ -106,21 +106,21 @@
       matchBaseBranches: ['/2\\..*/'],
       schedule: ['on the 1st day of the month'],
     },
-    /** Don't update the project minimal requirements */
-    {
-      matchPaths: ['ci/requirements-project.txt'],
-      enabled: false,
-    },
     {
       'matchPackageNames': ['shellcheck-py/shellcheck-py'],
       'versioning': 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
+    },
+    /** Don't update the project minimal requirements */
+    {
+      matchPaths: ['ci/requirements-project\\.txt'],
+      enabled: false,
     },
     /**
      * No upgrade for packages sphinxcontrib-*, they requires a new major version of Sphinx
      * For 2.6
      */
     {
-      'matchPackagePatterns': ['^sphinxcontrib-.*'],
+      'matchPackagePatterns': ['sphinxcontrib-.*'],
       'matchPaths': ['docs/Pipfile', 'docs/Pipfile.lock'],
       'enabled': false,
     },
@@ -134,11 +134,6 @@
       ],
       matchPackageNames: ['python'],
       enabled: false,
-    },
-    /** Disable minimal requirements update */
-    {
-      'matchPaths': ['ci/requirements-back\\.txt'],
-      'enabled': false,
     },
   ],
 }
