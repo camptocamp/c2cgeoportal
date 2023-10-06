@@ -38,7 +38,6 @@ import pyramid.response
 import shapely.geometry
 import sqlalchemy.ext.declarative
 from geoalchemy2 import Geometry
-from geoalchemy2 import func as ga_func
 from geoalchemy2.shape import from_shape, to_shape
 from geojson.feature import Feature, FeatureCollection
 from papyrus.protocol import Protocol, create_filter
@@ -186,7 +185,7 @@ class Layers:
 
         filter1_ = create_filter(self.request, cls, geom_attr)
         ra = unary_union(collect_ra)
-        filter2_ = ga_func.ST_Contains(from_shape(ra, use_srid), getattr(cls, geom_attr))
+        filter2_ = func.ST_Contains(from_shape(ra, use_srid), getattr(cls, geom_attr))
         filter_ = filter2_ if filter1_ is None else and_(filter1_, filter2_)
 
         feature = proto.read(self.request, filter=filter_)
