@@ -376,47 +376,52 @@ SQLAlchemy = ">=1.1.13"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "6.0.0.dev148"
+version = "6.0.4"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = ">=3.9,<3.12"
 files = [
-    {file = "c2cwsgiutils-6.0.0.dev148-py3-none-any.whl", hash = "sha256:935f3728ae7f354e6fab946b3ac661e04ef14bdf6c71aca40b966e75e9a9183e"},
-    {file = "c2cwsgiutils-6.0.0.dev148.tar.gz", hash = "sha256:4ca72c20a3f7d413d5b1cae32a050196b9ec0239073c657de86b828b6f6e7c72"},
+    {file = "c2cwsgiutils-6.0.4-py3-none-any.whl", hash = "sha256:1b5a126f75eebfac150742733bcd00b6b9dac2acf3398c7e29e859104e0021f9"},
+    {file = "c2cwsgiutils-6.0.4.tar.gz", hash = "sha256:9d91e3630f341697455728e17487f2e5cffe9f60ff3af4a7c8fceb656f372f1c"},
 ]
 
 [package.dependencies]
-alembic = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-cee_syslog_handler = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+alembic = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"alembic\" or extra == \"all\""}
+cee_syslog_handler = "*"
 certifi = "*"
-cornice = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-gunicorn = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-objgraph = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-prometheus-client = "*"
-psycopg2 = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-pyjwt = {version = "*", optional = true, markers = "extra == \"oauth2\" or extra == \"all\""}
-pyramid = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-pyramid_mako = "*"
-pyramid-tm = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+cornice = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+gunicorn = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+pillow = "*"
+prometheus-client = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+psycopg2 = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+pyjwt = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"oauth2\" or extra == \"all\""}
+pyramid = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+pyramid_mako = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+pyramid-tm = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
 pyyaml = "*"
 redis = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"broadcast\" or extra == \"all\""}
 requests = "*"
-requests-oauthlib = {version = "*", optional = true, markers = "extra == \"oauth2\" or extra == \"all\""}
-sentry-sdk = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-SQLAlchemy = {version = ">=1.4.0,<3.0.0", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-SQLAlchemy-Utils = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-ujson = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-"zope.interface" = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
-"zope.sqlalchemy" = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+requests-oauthlib = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"oauth2\" or extra == \"all\""}
+scipy = "*"
+sentry-sdk = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"sentry\" or extra == \"all\""}
+SQLAlchemy = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+SQLAlchemy-Utils = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+ujson = "*"
+"zope.interface" = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
+"zope.sqlalchemy" = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
 
 [package.extras]
-all = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "boltons", "cee_syslog_handler", "cornice", "gunicorn", "lxml", "objgraph", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "redis", "requests-oauthlib", "sentry-sdk", "ujson", "waitress", "zope.interface", "zope.sqlalchemy"]
+alembic = ["alembic"]
+all = ["SQLAlchemy", "SQLAlchemy-Utils", "alembic", "boltons", "cornice", "gunicorn", "lxml", "objgraph", "prometheus-client", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "pyramid_mako", "redis", "requests-oauthlib", "sentry-sdk", "waitress", "zope.interface", "zope.sqlalchemy"]
 broadcast = ["redis"]
+debug = ["objgraph"]
 dev = ["waitress"]
 oauth2 = ["pyjwt", "requests-oauthlib"]
-standard = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "cee_syslog_handler", "cornice", "gunicorn", "objgraph", "psycopg2", "pyramid", "pyramid-tm", "redis", "sentry-sdk", "ujson", "zope.interface", "zope.sqlalchemy"]
+sentry = ["sentry-sdk"]
+standard = ["SQLAlchemy", "SQLAlchemy-Utils", "alembic", "cornice", "gunicorn", "prometheus-client", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "pyramid_mako", "redis", "requests-oauthlib", "sentry-sdk", "zope.interface", "zope.sqlalchemy"]
 test-images = ["scikit-image"]
-tests = ["boltons", "lxml", "scikit-image"]
+tests = ["boltons", "lxml"]
+webserver = ["SQLAlchemy", "SQLAlchemy-Utils", "cornice", "gunicorn", "prometheus-client", "psycopg2", "pyramid", "pyramid-tm", "pyramid_mako", "zope.interface", "zope.sqlalchemy"]
 
 [[package]]
 name = "cee-syslog-handler"
@@ -1898,20 +1903,6 @@ files = [
 rsa = ["cryptography (>=3.0.0)"]
 signals = ["blinker (>=1.4.0)"]
 signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
-
-[[package]]
-name = "objgraph"
-version = "3.6.0"
-description = "Draws Python object reference graphs with graphviz"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "objgraph-3.6.0-py2.py3-none-any.whl", hash = "sha256:7c4aa57754c41bdd4ba67a8edfb44e45e248a1474444d0b9adca3cfd2717c485"},
-    {file = "objgraph-3.6.0.tar.gz", hash = "sha256:369567c37b4f2f928160b6f6ededcbea8fc7e929831877fd1056c78a900c17d3"},
-]
-
-[package.extras]
-ipython = ["graphviz"]
 
 [[package]]
 name = "owslib"
@@ -3419,6 +3410,48 @@ files = [
 ]
 
 [[package]]
+name = "scipy"
+version = "1.11.3"
+description = "Fundamental algorithms for scientific computing in Python"
+optional = false
+python-versions = "<3.13,>=3.9"
+files = [
+    {file = "scipy-1.11.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:370f569c57e1d888304052c18e58f4a927338eafdaef78613c685ca2ea0d1fa0"},
+    {file = "scipy-1.11.3-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:9885e3e4f13b2bd44aaf2a1a6390a11add9f48d5295f7a592393ceb8991577a3"},
+    {file = "scipy-1.11.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e04aa19acc324a1a076abb4035dabe9b64badb19f76ad9c798bde39d41025cdc"},
+    {file = "scipy-1.11.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3e1a8a4657673bfae1e05e1e1d6e94b0cabe5ed0c7c144c8aa7b7dbb774ce5c1"},
+    {file = "scipy-1.11.3-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:7abda0e62ef00cde826d441485e2e32fe737bdddee3324e35c0e01dee65e2a88"},
+    {file = "scipy-1.11.3-cp310-cp310-win_amd64.whl", hash = "sha256:033c3fd95d55012dd1148b201b72ae854d5086d25e7c316ec9850de4fe776929"},
+    {file = "scipy-1.11.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:925c6f09d0053b1c0f90b2d92d03b261e889b20d1c9b08a3a51f61afc5f58165"},
+    {file = "scipy-1.11.3-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:5664e364f90be8219283eeb844323ff8cd79d7acbd64e15eb9c46b9bc7f6a42a"},
+    {file = "scipy-1.11.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:00f325434b6424952fbb636506f0567898dca7b0f7654d48f1c382ea338ce9a3"},
+    {file = "scipy-1.11.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5f290cf561a4b4edfe8d1001ee4be6da60c1c4ea712985b58bf6bc62badee221"},
+    {file = "scipy-1.11.3-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:91770cb3b1e81ae19463b3c235bf1e0e330767dca9eb4cd73ba3ded6c4151e4d"},
+    {file = "scipy-1.11.3-cp311-cp311-win_amd64.whl", hash = "sha256:e1f97cd89c0fe1a0685f8f89d85fa305deb3067d0668151571ba50913e445820"},
+    {file = "scipy-1.11.3-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:dfcc1552add7cb7c13fb70efcb2389d0624d571aaf2c80b04117e2755a0c5d15"},
+    {file = "scipy-1.11.3-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:0d3a136ae1ff0883fffbb1b05b0b2fea251cb1046a5077d0b435a1839b3e52b7"},
+    {file = "scipy-1.11.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bae66a2d7d5768eaa33008fa5a974389f167183c87bf39160d3fefe6664f8ddc"},
+    {file = "scipy-1.11.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d2f6dee6cbb0e263b8142ed587bc93e3ed5e777f1f75448d24fb923d9fd4dce6"},
+    {file = "scipy-1.11.3-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:74e89dc5e00201e71dd94f5f382ab1c6a9f3ff806c7d24e4e90928bb1aafb280"},
+    {file = "scipy-1.11.3-cp312-cp312-win_amd64.whl", hash = "sha256:90271dbde4be191522b3903fc97334e3956d7cfb9cce3f0718d0ab4fd7d8bfd6"},
+    {file = "scipy-1.11.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:a63d1ec9cadecce838467ce0631c17c15c7197ae61e49429434ba01d618caa83"},
+    {file = "scipy-1.11.3-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:5305792c7110e32ff155aed0df46aa60a60fc6e52cd4ee02cdeb67eaccd5356e"},
+    {file = "scipy-1.11.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9ea7f579182d83d00fed0e5c11a4aa5ffe01460444219dedc448a36adf0c3917"},
+    {file = "scipy-1.11.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c77da50c9a91e23beb63c2a711ef9e9ca9a2060442757dffee34ea41847d8156"},
+    {file = "scipy-1.11.3-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:15f237e890c24aef6891c7d008f9ff7e758c6ef39a2b5df264650eb7900403c0"},
+    {file = "scipy-1.11.3-cp39-cp39-win_amd64.whl", hash = "sha256:4b4bb134c7aa457e26cc6ea482b016fef45db71417d55cc6d8f43d799cdf9ef2"},
+    {file = "scipy-1.11.3.tar.gz", hash = "sha256:bba4d955f54edd61899776bad459bf7326e14b9fa1c552181f0479cc60a568cd"},
+]
+
+[package.dependencies]
+numpy = ">=1.21.6,<1.28.0"
+
+[package.extras]
+dev = ["click", "cython-lint (>=0.12.2)", "doit (>=0.36.0)", "mypy", "pycodestyle", "pydevtool", "rich-click", "ruff", "types-psutil", "typing_extensions"]
+doc = ["jupytext", "matplotlib (>2)", "myst-nb", "numpydoc", "pooch", "pydata-sphinx-theme (==0.9.0)", "sphinx (!=4.1.0)", "sphinx-design (>=0.2.0)"]
+test = ["asv", "gmpy2", "mpmath", "pooch", "pytest", "pytest-cov", "pytest-timeout", "pytest-xdist", "scikit-umfpack", "threadpoolctl"]
+
+[[package]]
 name = "semver"
 version = "3.0.1"
 description = "Python helper for Semantic Versioning (https://semver.org)"
@@ -4259,4 +4292,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "e702044c4f70f0f5e8096ed5a9ed18c25566ef7e9dea55ccf01f5567993285a4"
+content-hash = "bab9ae0dc0a4aba348814e5c036b82e7b3d98dbacea1e19e195be2690d3d6f2a"
