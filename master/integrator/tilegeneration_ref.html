@@ -310,7 +310,51 @@
 </td>
 <td colspan="3"><p><a class="reference internal" href="#logging">Logging</a></p></td>
 </tr>
+<tr class="row-even"><td rowspan="13"><ul class="simple">
+<li><p>authentication</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Authentication</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>The authentication configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>github_repository</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>GitHub repository</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The GitHub repository name, on witch one we will check the access rights</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p>github_access_type</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>GitHub access</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>The kind of rights the user should have on the repository</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p>push, pull, admin</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>pull</p></td>
+</tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
@@ -1488,7 +1532,7 @@
 <li><p>tile_size</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Tile size</em></p></td>
+<td colspan="2"><p><em>Cost tile size</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The tile mean size in bytes</p></td>
 </tr>
@@ -2160,9 +2204,9 @@
 <li><p>authorised_user</p></li>
 </ul>
 </td>
-<td colspan="3"><p><em>Authorised user</em></p></td>
+<td colspan="3"><p><em>Authorized user</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The authorised user to generate the tiles (used to avoid permission issue on generated tiles) (main configuration)</p></td>
+<tr class="row-even"><td colspan="3"><p>The authorized user to generate the tiles (used to avoid permission issue on generated tiles) (main configuration)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -2248,7 +2292,7 @@
 <td colspan="4"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>pattern</p></td>
-<td colspan="4"><p>^redis://[^:]+:[^:]+$</p></td>
+<td colspan="4"><p>^rediss?://([^:&#64;/]*:[^:&#64;/]*&#64;)?[^:&#64;/]+(:[0-9]+)?(/.*)?$</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="14"><ul class="simple">
 <li><p>sentinels</p></li>
@@ -2461,6 +2505,34 @@
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
 <td colspan="4"><p>28800</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>pending_count</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Pending count</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The pending count: the number of pending tiles get in one request (main configuration), default is 10</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>10</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>pending_max_count</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Pending max count</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="5"><p>The pending max count: the maximum number of pending tiles get in one pass (if not generating other tiles, every second) (main configuration), default is 10000</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>10000</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="5"><p>False</p></td>
@@ -2708,7 +2780,7 @@
 <li><p>storage</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Storage</em></p></td>
+<td colspan="2"><p><em>S3 Storage</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The storage cost in $ / Gio / month (main configuration)</p></td>
 </tr>
@@ -2722,7 +2794,7 @@
 <li><p>put</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Put</em></p></td>
+<td colspan="2"><p><em>S3 Put</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The cost of put in $ per 10 000 requests (main configuration)</p></td>
 </tr>
@@ -2736,7 +2808,7 @@
 <li><p>get</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Get</em></p></td>
+<td colspan="2"><p><em>S3 Get</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The cost of get in $ per 10 000 requests (main configuration)</p></td>
 </tr>
@@ -2750,7 +2822,7 @@
 <li><p>download</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Download</em></p></td>
+<td colspan="2"><p><em>S3 Download</em></p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p>The cost of download in $ per Gio (main configuration)</p></td>
 </tr>
@@ -2780,7 +2852,7 @@
 <li><p>get</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Get</em></p></td>
+<td colspan="2"><p><em>CloudFront Get</em></p></td>
 </tr>
 <tr class="row-odd"><td colspan="2"><p>The cost of get in $ per 10 000 requests (main configuration)</p></td>
 </tr>
@@ -2794,7 +2866,7 @@
 <li><p>download</p></li>
 </ul>
 </td>
-<td colspan="2"><p><em>Download</em></p></td>
+<td colspan="2"><p><em>CloudFront Download</em></p></td>
 </tr>
 <tr class="row-odd"><td colspan="2"><p>The cost of download in $ per Gio (main configuration)</p></td>
 </tr>
