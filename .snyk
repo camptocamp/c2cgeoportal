@@ -6,4 +6,8 @@ ignore:
     - '*':
         reason: Not working with linesman
         created: 2022-11-23T11:04:17.906Z
+  SNYK-PYTHON-SETUPTOOLS-3180412:
+    - 'doc/*':
+        reason: Pipenv ignore setuptool
+        created: 2023-10-09T10:12:42.955Z
 patch: {}
