@@ -1,1 +1,2 @@
 c2cciutils==1.1.29
+setuptools==65.5.1
