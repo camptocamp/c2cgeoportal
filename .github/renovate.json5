@@ -135,5 +135,11 @@
       matchPackageNames: ['python'],
       enabled: false,
     },
+    /** Don't upgrade c2cciutils in tools to be able to upbrade a version <= 2.8 */
+    {
+      matchPaths: ['pyproject.toml'],
+      matchPackageNames: ['c2cciutils'],
+      enabled: false,
+    },
   ],
 }
