@@ -13,7 +13,6 @@ touch "${HOME}/workspace/testgeomapfishapp/qgisserver/project.qgs.raster"
 cp ci/tileindex/* "${HOME}/workspace/testgeomapfishapp/mapserver/"
 cp -r ci/test-app-db "${HOME}/workspace/testgeomapfishapp/ci/"
 cp -r ci/test-external-db "${HOME}/workspace/testgeomapfishapp/ci/"
-PROJECT_DIR=$(pwd)
 
 cd "${HOME}/workspace/testgeomapfishapp/"
 
@@ -21,11 +20,6 @@ folder=geoportal/interfaces
 cp -r CONST_create_template/${folder} ${folder}
 file=tests/test_testapp.py
 cp CONST_create_template/${file} ${file}
-
-# Check if the `c2cciutils-checks` pass
-c2cciutils-checks
-cp "${PROJECT_DIR}/ci/project-config.yaml" ci/config.yaml
-c2cciutils-checks
 
 # Build
 echo ::group::Build
@@ -136,6 +130,12 @@ echo ::endgroup::
 
 echo ::group::Init acceptance tests
 make acceptance-init
+docker-compose \
+    --file=docker-compose.yaml \
+    --file=docker-compose-db.yaml \
+    --file=docker-compose.test.yaml up -d db externaldb
+docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
+docker-compose exec -T geoportal wait-db
 docker-compose \
     --file=docker-compose.yaml \
     --file=docker-compose-db.yaml \

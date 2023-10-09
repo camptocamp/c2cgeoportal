@@ -84,9 +84,20 @@ max_line_length = 110
 
     if os.path.exists("ci/config.yaml"):
         os.rename("ci/config.yaml", "ci/config.yaml_")
-    subprocess.run(["c2cciutils-checks", "--fix", "--check=isort"])  # pylint: disable=subprocess-run-check
-    subprocess.run(["c2cciutils-checks", "--fix", "--check=black"])  # pylint: disable=subprocess-run-check
-    subprocess.run(["c2cciutils-checks", "--fix", "--check=prettier"])  # pylint: disable=subprocess-run-check
+    if os.path.exists(".pre-commit-config.yaml"):
+        print("Run pre-commit to fix the style.")
+        subprocess.run(["pre-commit", "run", "--all-files"])  # pylint: disable=subprocess-run-check
+    else:
+        print("Run c2cciutils-checks to fix the style.")
+        subprocess.run(  # pylint: disable=subprocess-run-check
+            ["c2cciutils-checks", "--fix", "--check=isort"]
+        )
+        subprocess.run(  # pylint: disable=subprocess-run-check
+            ["c2cciutils-checks", "--fix", "--check=black"]
+        )
+        subprocess.run(  # pylint: disable=subprocess-run-check
+            ["c2cciutils-checks", "--fix", "--check=prettier"]
+        )
     if os.path.exists("ci/config.yaml_"):
         os.rename("ci/config.yaml_", "ci/config.yaml")
 

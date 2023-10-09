@@ -20,6 +20,8 @@ Information
    - If the hostname (with port) of the candidate URL is in the allowed list, then it's OK.
    And they should be netloc (hostname with port) without schema or path.
 
+2. We replace checks (formatting) done by `c2cciutils` by `pre-commit` hooks.
+   This will me more standard and transparent for the project.
 
 =============
 Version 2.8.0

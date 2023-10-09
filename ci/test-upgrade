@@ -115,14 +115,11 @@ if [ "$1" = "init" ]; then
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create-advance "${WORKSPACE}/ref" "${MAJOR_VERSION}"
     cd "${WORKSPACE}/ref/testgeomapfish"
-    mv ci/config.yaml{,_}
-    c2cciutils-checks --fix --check=isort
-    c2cciutils-checks --fix --check=black
-    c2cciutils-checks --fix --check=prettier
-    mv ci/config.yaml{_,}
+    pre-commit run --all-files || true
     cd -
 
-    create "${WORKSPACE}/v28" "${MAJOR_VERSION}"
+    create "${WORKSPACE}/v29" "${MAJOR_VERSION}"
+    create "${WORKSPACE}/v280" 2.8.0.74
     create "${WORKSPACE}/v270" 2.7.0.65
 fi
 
@@ -130,7 +127,11 @@ if [ "$1" = "270" ]; then
     upgrade "$1"
 fi
 
-if [ "$1" = "28" ]; then
+if [ "$1" = "280" ]; then
+    upgrade "$1"
+fi
+
+if [ "$1" = "29" ]; then
     upgrade "$1"
 fi
 

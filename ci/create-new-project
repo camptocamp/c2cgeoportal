@@ -83,11 +83,7 @@ git commit --quiet --message='Initial commit'
 
 echo ::endgroup::
 
-mv ci/config.yaml{,_}
-c2cciutils-checks --fix --check=isort
-c2cciutils-checks --fix --check=black
-c2cciutils-checks --fix --check=prettier
-mv ci/config.yaml{_,}
+pre-commit run --all-files || true
 
 echo ::group::Diff
 git --no-pager diff
