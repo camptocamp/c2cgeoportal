@@ -1,17 +1,12 @@
----
 checks:
-  versions: False
+  versions: false
   black:
     ignore_patterns_re:
       - ^commons/c2cgeoportal_commons/alembic/script\.py\.mako$
       - .*\.rst$
       - .*\.rst.tmpl$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$
-  required_workflows:
-    main.yaml: False
-    dependabot-auto-merge.yaml: False
-    rebuild-master.yaml:
-      steps: []
+  required_workflows: false
   dependabot_config:
     update_ignore:
       - directory: /admin
