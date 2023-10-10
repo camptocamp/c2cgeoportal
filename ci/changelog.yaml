@@ -23,7 +23,7 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/9be6f78dfb8f9a265450c8b6cb59d40e9cfe9a34
       sha: 00f8ef0ec92ca654bf602556b8ec421a67f5e045
     00f8ef0ec92ca654bf602556b8ec421a67f5e045: *id002
-    02330e788: &id003
+    '02330e788': &id003
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/0a7184b9b490433604da7b158b8c43f346b30faf
         sha: 0a7184b9b490433604da7b158b8c43f346b30faf
@@ -178,7 +178,7 @@ commits:
         sha: 5c14ed3e2b6a28640cfa90e75319dcc120288a38
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/5c14ed3e2b6a28640cfa90e75319dcc120288a38
       sha: 0d2a8acb297d1a4f8b8b6af41cb2f8ffa7467afc
-    14400e540:
+    '14400e540':
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/f82921abccb3d32e9407872f1861be7b33525a58
         sha: f82921abccb3d32e9407872f1861be7b33525a58
@@ -2009,7 +2009,7 @@ commits:
         url: https://api.github.com/repos/camptocamp/ngeo/commits/afb4155eb3d8aedc8275f8041d7bf7ff08108d16
       sha: 60195b8bfeecb090562668c5b9800a9285324b4d
     60195b8bfeecb090562668c5b9800a9285324b4d: *id127
-    632e35044: &id128
+    '632e35044': &id128
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/a107606c196fe245fb520522bdb57d222d74085e
         sha: a107606c196fe245fb520522bdb57d222d74085e
@@ -2405,7 +2405,7 @@ pulls:
       state: closed
       title: Update pre-commit hook codespell-project/codespell to v2.2.6 (2.8)
       updated_at: '2023-10-03T16:18:10Z'
-    02330e788: []
+    '02330e788': []
     0250e95fd:
     - base_ref: '2.8'
       closed_at: '2023-08-28T14:16:27Z'
@@ -2468,7 +2468,7 @@ pulls:
     0c349ccf4: []
     0cb88edeb: []
     0d2a8acb297d1a4f8b8b6af41cb2f8ffa7467afc: []
-    14400e540:
+    '14400e540':
     - base_ref: '2.8'
       closed_at: '2023-04-20T13:57:29Z'
       created_at: '2023-04-18T14:38:56Z'
@@ -3544,7 +3544,7 @@ pulls:
       state: closed
       title: Fix example checks
       updated_at: '2023-04-18T11:46:23Z'
-    632e35044:
+    '632e35044':
     - base_ref: '2.8'
       closed_at: '2023-06-16T13:53:14Z'
       created_at: '2023-06-16T07:02:23Z'
