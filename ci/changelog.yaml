@@ -178,7 +178,7 @@ commits:
         sha: 5c14ed3e2b6a28640cfa90e75319dcc120288a38
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/5c14ed3e2b6a28640cfa90e75319dcc120288a38
       sha: 0d2a8acb297d1a4f8b8b6af41cb2f8ffa7467afc
-    14400e540: &id014
+    14400e540169b9a916977e1d6806f20c22bc7860:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/f82921abccb3d32e9407872f1861be7b33525a58
         sha: f82921abccb3d32e9407872f1861be7b33525a58
@@ -187,7 +187,6 @@ commits:
         sha: deaaa0923a8e4b846948b833751644b056efa093
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/deaaa0923a8e4b846948b833751644b056efa093
       sha: 14400e540169b9a916977e1d6806f20c22bc7860
-    14400e540169b9a916977e1d6806f20c22bc7860: *id014
     148599ff9ba4f6df7b0e9daa1fa6a1db43b40062:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/38080465257db35d26121d0168275cfd576f61fc
@@ -2431,15 +2430,6 @@ pulls:
     0c349ccf4: []
     0cb88edeb: []
     0d2a8acb297d1a4f8b8b6af41cb2f8ffa7467afc: []
-    14400e540:
-    - base_ref: '2.8'
-      closed_at: '2023-04-20T13:57:29Z'
-      created_at: '2023-04-18T14:38:56Z'
-      html_url: https://github.com/camptocamp/c2cgeoportal/pull/10476
-      number: 10476
-      state: closed
-      title: Add the new gmfWMSSourceOptions constant
-      updated_at: '2023-04-20T13:58:06Z'
     148599ff9ba4f6df7b0e9daa1fa6a1db43b40062: []
     154ddefdcf0862ef25616252278afb6fa41d4a07: []
     167536fc2: []
