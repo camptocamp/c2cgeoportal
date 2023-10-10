@@ -1,22 +1,17 @@
----
 checks:
-  versions: False
+  versions: false
   black:
     ignore_patterns_re:
       - ^commons/c2cgeoportal_commons/alembic/script\.py\.mako$
       - .*\.rst$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/.*/.*
       - ^doc/integrator/multi_organization\.rst\.tmpl$
-  required_workflows:
-    main.yaml: False
-    dependabot-auto-merge.yaml: False
-    rebuild-master.yaml:
-      steps: []
-  dependabot_config: False
-  prospector_config: False
-  codespell: False
-  setup: False
-  prettier: False
+  required_workflows: false
+  dependabot_config: false
+  prospector_config: false
+  codespell: false
+  setup: false
+  prettier: false
 
 publish:
   docker:
