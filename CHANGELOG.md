@@ -1,3 +1,7 @@
+##### 2.8.0.115
+
+- Fix child notification [ngeo#9235](https://github.com/camptocamp/ngeo/pull/9235)
+
 ##### 2.8.0.114
 
 - Snyk auto fix [ngeo#9234](https://github.com/camptocamp/ngeo/pull/9234)
