@@ -36,6 +36,7 @@ import sys
 from typing import Any, Dict
 
 import requests
+import ruamel.yaml
 import yaml
 
 REPOS = ("c2cgeoportal", "ngeo")
@@ -45,8 +46,9 @@ with open("ci/changelog.yaml") as cl_file:
 
 
 def save():
+    ruyaml = ruamel.yaml.YAML()
     with open("ci/changelog.yaml", "w") as cl_file_w:
-        cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
+        ruyaml.dump(changelog, cl_file_w)
 
 
 def output(cmd):
