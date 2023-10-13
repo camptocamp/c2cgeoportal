@@ -111,11 +111,6 @@
       matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'lockFileMaintenance', 'rollback', 'bump'],
       enabled: false,
     },
-    /** Mounsly update on stabilization branches */
-    {
-      matchBaseBranches: ['/2\\..*/'],
-      schedule: ['on the 1st day of the month'],
-    },
     /** Support the 4 parts of shellcheck-py version with a v prefix */
     {
       matchPackageNames: ['shellcheck-py/shellcheck-py'],
