@@ -1,5 +1,5 @@
 {
-  extends: ['config:base'],
+  'extends': ['config:base'],
   timezone: 'Europe/Zurich',
   schedule: 'after 5pm on the first day of the month',
   semanticCommits: 'disabled',
@@ -12,20 +12,29 @@
   baseBranches: ['master', '2.6', '2.7', '2.8'],
   'pre-commit': {enabled: true},
   regexManagers: [
+    /** Do updates on pre-commit additional dependencies */
     {
-      fileMatch: ['^.pre-commit-config.yaml$'],
+      fileMatch: ['^\\.pre\\-commit\\-config\\.yaml$'],
       matchStrings: [" +- '?(?<depName>[^' @=]+)(@|==)(?<currentValue>[^' @=]+)'? # (?<datasource>.+)"],
     },
     {
       fileMatch: ['^ci/applications-versions.yaml$'],
       matchStrings: ['(?<depName>[^\\s]+): (?<currentValue>[^\\s]+) # (?<datasource>[^\\s]+)'],
     },
+    /** Do update on the schema present in the ci/config.yaml */
     {
-      'fileMatch': ['^ci/config\\\\.yaml$'],
-      'matchStrings': [
-        '.*https://raw\\\\.githubusercontent\\\\.com/(?<depName>[^\\\\s]+)/(?<currentValue>[0-9\\\\.]+)/.*',
+      fileMatch: ['^ci/config\\.yaml$'],
+      matchStrings: [
+        '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
       ],
-      'datasourceTemplate': 'github-tags',
+      datasourceTemplate: 'github-tags',
+    },
+    /** Do update on packages update (trigger a rebuild) */
+    {
+      fileMatch: ['^ci/dpkg\\-versions\\.yaml$'],
+      matchStrings: [" *(?<depName>[^'\\s]+): '?(?<currentValue>[^'\\s/]*[0-9][^'\\s/]*)'?"],
+      datasourceTemplate: 'repology',
+      versioningTemplate: 'loose',
     },
   ],
   packageRules: [
@@ -55,17 +64,18 @@
       matchPackageNames: ['ghcr.io/osgeo/gdal'],
       versioning: 'regex:^(?<compatibility>.*)-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)?$',
     },
-    /** Automerge the patch, the minor and the dev dependency */
+    /** Auto merge the dev dependency update */
     {
       matchDepTypes: ['devDependencies'],
       automerge: true,
     },
-    /** Group the patch and the minor */
+    /** Group and auto merge the patch updates */
     {
       matchUpdateTypes: ['patch'],
       groupName: 'all patch versions',
       automerge: true,
     },
+    /** Group and auto merge the minor updates */
     {
       matchUpdateTypes: ['minor'],
       groupName: 'all minor versions',
@@ -97,7 +107,7 @@
     },
     /** Accept only the patch on stabilization branches */
     {
-      matchBaseBranches: ['/2\\..*/'],
+      matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
       matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'lockFileMaintenance', 'rollback', 'bump'],
       enabled: false,
     },
@@ -106,9 +116,10 @@
       matchBaseBranches: ['/2\\..*/'],
       schedule: ['on the 1st day of the month'],
     },
+    /** Support the 4 parts of shellcheck-py version with a v prefix */
     {
-      'matchPackageNames': ['shellcheck-py/shellcheck-py'],
-      'versioning': 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
+      matchPackageNames: ['shellcheck-py/shellcheck-py'],
+      versioning: 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
     },
     /** Don't update the project minimal requirements */
     {
@@ -120,9 +131,9 @@
      * For 2.6
      */
     {
-      'matchPackagePatterns': ['^sphinxcontrib-.*'],
-      'matchPaths': ['doc/Pipfile'],
-      'enabled': false,
+      matchPackagePatterns: ['^sphinxcontrib-.*'],
+      matchPaths: ['doc/Pipfile'],
+      enabled: false,
     },
     /** Disable upgrading the supported Python version */
     {
@@ -140,6 +151,14 @@
       matchPaths: ['pyproject.toml'],
       matchPackageNames: ['c2cciutils'],
       enabled: false,
+    },
+    /** Update dpkg versions at any time */
+    {
+      matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
+      matchPaths: ['^ci/dpkg\\-versions\\.yaml$'],
+      schedule: ['at any time'],
+      groupName: 'dpkg',
+      automerge: true,
     },
   ],
 }
