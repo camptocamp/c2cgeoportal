@@ -1,3 +1,7 @@
+##### 2.7.0.312
+
+- Fix dimensions on WMTS layer [ngeo#9244](https://github.com/camptocamp/ngeo/pull/9244)
+
 ##### 2.7.0.310
 
 - CI updates [c2cgeoportal#10771](https://github.com/camptocamp/c2cgeoportal/pull/10771)
