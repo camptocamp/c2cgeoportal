@@ -1,3 +1,7 @@
+##### 2.8.0.118
+
+- Snyk auto fix [c2cgeoportal#10774](https://github.com/camptocamp/c2cgeoportal/pull/10774)
+
 ##### 2.8.0.116
 
 - CI updates [c2cgeoportal#10769](https://github.com/camptocamp/c2cgeoportal/pull/10769)
