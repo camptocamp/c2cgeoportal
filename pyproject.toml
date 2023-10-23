@@ -60,7 +60,7 @@ pygments = "2.15.1"
 cryptography = "41.0.4"
 gitpython = "3.1.37"
 pillow = "10.0.1"
-urllib3 = "1.26.17"
+urllib3 = "1.26.18"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.11.0" # i18n
