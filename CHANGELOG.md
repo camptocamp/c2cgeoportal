@@ -1,3 +1,8 @@
+##### 2.7.0.314
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10777](https://github.com/camptocamp/c2cgeoportal/pull/10777)
+- Snyk auto fix [ngeo#9247](https://github.com/camptocamp/ngeo/pull/9247)
+
 ##### 2.7.0.312
 
 - Fix dimensions on WMTS layer [ngeo#9244](https://github.com/camptocamp/ngeo/pull/9244)
