@@ -49,6 +49,7 @@ def save():
     ruyaml = ruamel.yaml.YAML()
     with open("ci/changelog.yaml", "w", encoding="utf-8") as cl_file_w:
         ruyaml.dump(changelog, cl_file_w)
+    subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"])  # pylint: disable=subprocess-run-check
 
 
 def output(cmd):
