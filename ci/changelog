@@ -250,6 +250,8 @@ def main() -> None:
                             f'- {pull["title"].strip()} [{repo}#{pull["number"]}]({pull["html_url"]})\n'
                         )
 
+    subprocess.run(["pre-commit", "run", "--file=CHANGELOG.md"])  # pylint: disable=subprocess-run-check
+
 
 if __name__ == "__main__":
     main()
