@@ -1,3 +1,7 @@
+##### 2.7.0.316
+
+- [Backport 2.7] The expiration is for the access token, not for the refresh token [c2cgeoportal#10782](https://github.com/camptocamp/c2cgeoportal/pull/10782)
+
 ##### 2.7.0.314
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10777](https://github.com/camptocamp/c2cgeoportal/pull/10777)
