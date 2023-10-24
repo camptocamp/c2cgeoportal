@@ -1,4 +1,4 @@
-# Copyright (c) 2021, Camptocamp SA
+# Copyright (c) 2021-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -914,7 +914,6 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             DBSession.query(static.OAuth2BearerToken)
             .filter(static.OAuth2BearerToken.refresh_token == refresh_token)
             .filter(static.OAuth2BearerToken.client_id == request.client.id)
-            .filter(static.OAuth2BearerToken.expire_at > datetime.now())
             .one_or_none()
         )
 
