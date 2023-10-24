@@ -33,30 +33,30 @@ import os
 import re
 import subprocess
 import sys
-from typing import Any
+from typing import Any, Optional
 
 import requests
 import yaml
 
 REPOS = ("c2cgeoportal", "ngeo")
 
-with open("ci/changelog.yaml") as cl_file:
+with open("ci/changelog.yaml", encoding="utf-8") as cl_file:
     changelog = yaml.load(cl_file, Loader=yaml.SafeLoader)
 
 
-def save():
-    with open("ci/changelog.yaml", "w") as cl_file_w:
+def save() -> None:
+    with open("ci/changelog.yaml", "w", encoding="utf-8") as cl_file_w:
         cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
 
 
-def output(cmd):
+def output(cmd: list[str]) -> Optional[bytes]:
     with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
         if proc.stdout is None:
             return None
         return proc.stdout.read()
 
 
-def get_any(repo, ref, section, url):
+def get_any(repo: str, ref: str, section: str, url: str) -> tuple[bool, Any]:
     if section not in changelog:
         changelog[section] = {}
     if repo not in changelog[section]:
@@ -76,13 +76,14 @@ def get_any(repo, ref, section, url):
             "Accept": "application/vnd.github.groot-preview+json",
             "Authorization": f"token {token}",
         },
+        timeout=60,
     ).json()
 
     changelog[section][repo][ref] = json_stuff
     return True, json_stuff
 
 
-def get_commit(repo, ref):
+def get_commit(repo: str, ref: str) -> Any:
     dirty, commit = get_any(repo, ref, "commits", "https://api.github.com/repos/camptocamp/{}/commits/{}")
     if "sha" not in commit:
         print(f"Error on commit {ref}.")
@@ -101,7 +102,7 @@ def get_commit(repo, ref):
     return commit
 
 
-def get_pulls(repo, ref):
+def get_pulls(repo: str, ref: str) -> list[Any]:
     dirty, pulls = get_any(repo, ref, "pulls", "https://api.github.com/repos/camptocamp/{}/commits/{}/pulls")
     if not isinstance(pulls, list):
         print(f"Error on commit {ref}.")
@@ -139,7 +140,7 @@ def get_pulls(repo, ref):
     return [pull for pull in pulls if pull["state"] == "closed"]
 
 
-def add_new_release():
+def add_new_release() -> None:
     """
     Add a new release in the releases list
     """
@@ -181,7 +182,7 @@ def add_new_release():
         )
 
 
-def add_commit(commits, all_pulls, repo, ref):
+def add_commit(commits: Any, all_pulls: Any, repo: str, ref: str) -> None:
     if ref in commits:
         return
     commit = get_commit(repo, ref)
@@ -194,7 +195,7 @@ def add_commit(commits, all_pulls, repo, ref):
         add_commit(commits, all_pulls, repo, commit["parents"][0]["sha"])
 
 
-def main():
+def main() -> None:
     if os.environ.get("MAIN_BRANCH") == "master":
         print("Ignored for master main branch")
         return
@@ -241,7 +242,7 @@ def main():
                             if first:
                                 first = False
                             else:
-                                md_file.write(f"\n")
+                                md_file.write("\n")
                             md_file.write(f"##### {release}\n\n")
                             title = False
                         md_file.write(
