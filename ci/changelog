@@ -47,6 +47,7 @@ with open("ci/changelog.yaml", encoding="utf-8") as cl_file:
 def save() -> None:
     with open("ci/changelog.yaml", "w", encoding="utf-8") as cl_file_w:
         cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
+    subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"])  # pylint: disable=subprocess-run-check
 
 
 def output(cmd: list[str]) -> Optional[bytes]:
