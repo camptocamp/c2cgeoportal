@@ -1,3 +1,7 @@
+##### 2.8.1.1
+
+- Use GDAL 3.7, remove unused workflow [c2cgeoportal#10785](https://github.com/camptocamp/c2cgeoportal/pull/10785)
+
 ##### 2.8.0.120
 
 - [Backport 2.8] The expiration is for the access token, not for the refresh token [c2cgeoportal#10783](https://github.com/camptocamp/c2cgeoportal/pull/10783)
