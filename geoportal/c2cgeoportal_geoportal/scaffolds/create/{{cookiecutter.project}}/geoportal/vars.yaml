@@ -295,6 +295,11 @@ vars:
       #   connection_kwargs:
       #     db: '{REDIS_DB}'
 
+  # This parameter set the list of hosts allowed to use the iframe api.
+  # 'self' will block all external usage, you must add additional hosts separated by space.
+  # see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
+  content_security_policy_iframe_api_frame_ancestors: "'self'"
+
   # Control the HTTP headers
   headers:
     dynamic: &header {}
