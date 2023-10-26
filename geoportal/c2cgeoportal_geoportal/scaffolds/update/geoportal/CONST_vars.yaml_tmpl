@@ -838,7 +838,7 @@ vars:
     https://stackpath.bootstrapcdn.com/
     {content_security_policy_c2c_style_src_extra}"
 
-  content_security_policy_iframe_api_frame_ancestors: "'self'"
+  content_security_policy_iframe_api_frame_ancestors: "*"
 
   global_headers:
     - pattern: '^/admin/.*'
