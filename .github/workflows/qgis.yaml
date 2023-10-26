@@ -52,13 +52,8 @@ jobs:
           - 3.28-gdal3.6
           - 3.28-gdal3.7
           - latest
-          - master
-        # Will be soon:
-        #  - 3.28-gdal3.7
-        #  - ltr
-        #  - lr
-        #  - latest
-        #  - master
+          - ltr
+          - lr
 
     steps:
       - uses: actions/checkout@v3

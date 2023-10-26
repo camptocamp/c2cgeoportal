@@ -1,5 +1,14 @@
 This file includes migration steps for each release of c2cgeoportal.
 
+=============
+Version 2.8.1
+=============
+
+1. Update dependencies to use GDAL 3.7
+
+   Use MapServer 8.0 with GDAL 3.7 (instead of 3.6)
+   Use QGIS server 3.28 with GDAL 3.7 (instead of 3.6)
+   Use GDAL 3.7 as based image (instead of 3.6)
 
 =============
 Version 2.8.0
