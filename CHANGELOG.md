@@ -1,3 +1,5 @@
+##### 2.6.0.218
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10790](https://github.com/camptocamp/c2cgeoportal/pull/10790)
 ##### 2.6.0.217
 * The expiration is for the access token, not for the refresh token [c2cgeoportal#10780](https://github.com/camptocamp/c2cgeoportal/pull/10780)
 ##### 2.6.0.216
