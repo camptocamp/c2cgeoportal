@@ -1,3 +1,9 @@
+##### 2.7.1.2
+
+- Frame ancestors explanations [c2cgeoportal#10787](https://github.com/camptocamp/c2cgeoportal/pull/10787)
+- Snyk auto fix [c2cgeoportal#10789](https://github.com/camptocamp/c2cgeoportal/pull/10789)
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10791](https://github.com/camptocamp/c2cgeoportal/pull/10791)
+
 ##### 2.7.1.1
 
 - Use GDAL 3.7, latest LTR version of QGIS, remove unused workflow [c2cgeoportal#10784](https://github.com/camptocamp/c2cgeoportal/pull/10784)
