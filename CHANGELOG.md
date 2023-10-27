@@ -1,3 +1,7 @@
+##### 2.8.1.2
+
+- Snyk auto fix [c2cgeoportal#10788](https://github.com/camptocamp/c2cgeoportal/pull/10788)
+
 ##### 2.8.1.1
 
 - Use GDAL 3.7, remove unused workflow [c2cgeoportal#10785](https://github.com/camptocamp/c2cgeoportal/pull/10785)
