@@ -1,5 +1,5 @@
 poetry==1.3.2
 poetry-core>=1.1.0a7 # not directly required, pinned by Snyk to avoid a vulnerability
-pip==23.0
+pip==23.3
 requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
 urllib3>=1.26.17 # not directly required, pinned by Snyk to avoid a vulnerability
