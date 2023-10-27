@@ -1,4 +1,4 @@
-FROM osgeo/gdal:ubuntu-small-3.4.3 as base-all
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.7.2 AS base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \

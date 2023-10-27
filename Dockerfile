@@ -1,7 +1,7 @@
 #############################################################################################################
 # The base image with apt and python packages.
 
-FROM osgeo/gdal:ubuntu-small-3.4.3 AS base
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.7.2 AS base
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 # Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
@@ -32,7 +32,8 @@ RUN \
     apt-get install --assume-yes --no-install-recommends 'nodejs=16.*' && \
     apt-get clean && \
     rm --recursive --force /var/lib/apt/lists/* && \
-    ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so
+    ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so && \
+    ln -s /usr/bin/cython3 /usr/bin/cython
 
 COPY requirements.txt /tmp/
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirement=/tmp/requirements.txt && \
@@ -68,7 +69,7 @@ RUN \
     /etc/apt/sources.list.d/pgdg.list && \
     curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && \
-    apt-get install --assume-yes --no-install-recommends git make python3.8-dev python3.8-venv \
+    apt-get install --assume-yes --no-install-recommends git make python3-dev python3-venv \
     postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
     libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils && \
     apt-get clean && \
@@ -270,8 +271,8 @@ WORKDIR /opt/c2cgeoportal
 
 # For mypy
 RUN \
-    touch /usr/local/lib/python3.8/dist-packages/zope/__init__.py && \
-    touch /usr/local/lib/python3.8/dist-packages/c2c/__init__.py
+    touch /usr/local/lib/python3.10/dist-packages/zope/__init__.py && \
+    touch /usr/local/lib/python3.10/dist-packages/c2c/__init__.py
 
 COPY setup.cfg .prospector.yaml .pylintrc .bandit.yaml checks.mk ./
 COPY .git ./.git/

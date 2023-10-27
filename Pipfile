@@ -33,8 +33,8 @@ pyramid_mako = "==1.1.0"  # geoportal
 pyramid_multiauth = "==1.0.1"  # geoportal
 pyramid_tm = "==2.5"  # geoportal
 python-dateutil = "==2.8.2"  # geoportal
-PyYAML = "==5.4.1"  # geoportal
-rasterio = "==1.2.10"  # geoportal raster
+PyYAML = "==5.3.1"  # geoportal
+rasterio = "==1.3.9"  # geoportal raster
 requests = "==2.31.0"  # geoportal
 redis = "==4.3.6"  # geoportal cache
 Shapely = "==1.8.5.post1"  # geoportal
@@ -151,7 +151,7 @@ PasteScript = "==3.2.1"  # geoportal pcreate
 polib = "==1.1.1"  # i18n
 pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==3.0.0"  # tests
-transifex-client = "==0.14.4"  # Makefile
+transifex-client = "==0.12.5"  # Makefile
 WebTest = "==3.0.0"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
@@ -178,7 +178,7 @@ jsonref = "==0.2"
 lark-parser = "==0.12.0"
 lazy-object-proxy = "==1.7.1"
 mccabe = "==0.6.1"
-mypy = "==0.941"
+mypy = "==0.990"
 pep8-naming = "==0.10.0"
 pluggy = "==1.0.0"
 py = "==1.11.0"
@@ -201,4 +201,4 @@ soupsieve = "==2.3.2.post1"
 types-urllib3 = "==1.26.25.14"
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"
