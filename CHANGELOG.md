@@ -1,3 +1,7 @@
+##### 2.7.1.1
+
+- Use GDAL 3.7, latest LTR version of QGIS, remove unused workflow [c2cgeoportal#10784](https://github.com/camptocamp/c2cgeoportal/pull/10784)
+
 ##### 2.7.0.316
 
 - [Backport 2.7] The expiration is for the access token, not for the refresh token [c2cgeoportal#10782](https://github.com/camptocamp/c2cgeoportal/pull/10782)
