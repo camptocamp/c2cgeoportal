@@ -47,8 +47,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - 3.28-gdal3.6
-          - '3.28'
+          - 3.28-gdal3.7
           - ltr
           - lr
           - latest

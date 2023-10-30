@@ -77,7 +77,7 @@ build-runner:
 	docker build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
-QGIS_VERSION ?= ltr
+QGIS_VERSION ?= lr
 .PHONY: build-qgisserver
 build-qgisserver:
 	docker build --target=runner --build-arg=VERSION=$(QGIS_VERSION) \

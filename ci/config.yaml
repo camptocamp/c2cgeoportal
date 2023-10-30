@@ -16,35 +16,35 @@ publish:
       - name: camptocamp/geomapfishapp-geoportal
         # 2.4
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.10
+        group: qgis-old
         tags:
           - gmf{version}-qgis3.10
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.16
+        group: qgis-old
         tags:
           - gmf{version}-qgis3.16
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.20
+        group: qgis-old
         tags:
           - gmf{version}-qgis3.20
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.22
+        group: qgis-old
         tags:
           - gmf{version}-qgis3.22
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.28-gdal3.6
+        group: qgis-old
         tags:
           - gmf{version}-qgis3.28-gdal3.6
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.28-gdal3.7
+        group: qgis-old
         tags:
           - gmf{version}-qgis3.28-gdal3.7
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.28
+        group: qgis-old
         tags:
           - gmf{version}-qgis3.28
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-latest
+        group: qgis-old
         tags:
           - gmf{version}-qgislatest
       - name: camptocamp/geomapfish-qgisserver
@@ -88,6 +88,36 @@ publish:
         group: qgis-old
         tags:
           - gmf{version}-qgisltr
+      # 2.8
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgis3.28-gdal3.6
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgis3.28-gdal3.7
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgis3.28
+      # master
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-latest
+        tags:
+          - gmf{version}-qgislatest
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-ltr
+        tags:
+          - gmf{version}-qgisltr
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-lr
+        tags:
+          - gmf{version}-qgislr
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-mater
+        tags:
+          - gmf{version}-qgismaster
   pypi:
     packages:
       - path: commons
