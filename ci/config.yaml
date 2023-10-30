@@ -18,23 +18,6 @@ publish:
       - name: camptocamp/geomapfish-config
       - name: camptocamp/geomapfish-tools
       - name: camptocamp/geomapfishapp-geoportal
-        # 2.4
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.10
-        tags:
-          - gmf{version}-qgis3.10
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.16
-        tags:
-          - gmf{version}-qgis3.16
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.20
-        tags:
-          - gmf{version}-qgis3.20
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-3.22
-        tags:
-          - gmf{version}-qgis3.22
       - name: camptocamp/geomapfish-qgisserver
         group: qgis-3.28-gdal3.6
         tags:
@@ -52,25 +35,13 @@ publish:
         tags:
           - gmf{version}-qgislatest
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-master
+        group: qgis-ltr
         tags:
-          - gmf{version}-qgismaster
-        # The group qgis-old is required for the clean workflow
-        # 2.4, 2.5
+          - gmf{version}-qgisltr
       - name: camptocamp/geomapfish-qgisserver
-        group: qgis-old
+        group: qgis-lr
         tags:
-          - gmf{version}-qgis3.4
-        # 2.5
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-old
-        tags:
-          - gmf{version}-qgis3.12
-        # 2.5
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-old
-        tags:
-          - gmf{version}-qgis3.14
+          - gmf{version}-qgislr
   pypi:
     packages:
       - path: commons
