@@ -1,3 +1,7 @@
+##### 2.7.1.4
+
+- Fix CVE [c2cgeoportal#10794](https://github.com/camptocamp/c2cgeoportal/pull/10794)
+
 ##### 2.7.1.2
 
 - Frame ancestors explanations [c2cgeoportal#10787](https://github.com/camptocamp/c2cgeoportal/pull/10787)
