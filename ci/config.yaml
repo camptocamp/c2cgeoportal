@@ -67,6 +67,27 @@ publish:
         group: qgis-old
         tags:
           - gmf{version}-qgis3.14
+      # 2.7
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgis3.22
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgis3.28
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgis3.28-gdal3.6
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgis3.28-gdal3.7
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-old
+        tags:
+          - gmf{version}-qgisltr
   pypi:
     packages:
       - path: commons
