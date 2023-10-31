@@ -1,3 +1,7 @@
+##### 2.7.1.6
+
+- Fix CVE [c2cgeoportal#10795](https://github.com/camptocamp/c2cgeoportal/pull/10795)
+
 ##### 2.7.1.4
 
 - Fix CVE [c2cgeoportal#10794](https://github.com/camptocamp/c2cgeoportal/pull/10794)
