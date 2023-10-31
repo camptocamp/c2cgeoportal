@@ -137,4 +137,5 @@ fi
 
 if [ "$1" = "cleanup" ]; then
     rm --recursive --force "${WORKSPACE}/ref" "${WORKSPACE}/v270" "${WORKSPACE}/v28"
+    docker images --format '{{.Repository}}:{{.Tag}}' | grep 'camptocamp/geomapfish.*:2.[678]'
 fi
