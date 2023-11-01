@@ -40,19 +40,20 @@ SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
+COPY .nvmrc /tmp
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
-    . /etc/os-release \
-    && apt-get update \
+    apt-get update \
     && apt-get upgrade --assume-yes \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends apt-utils gnupg \
-    && echo "deb https://deb.nodesource.com/node_16.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list \
-    && curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
+    && NODE_MAJOR="$(cat /tmp/.nvmrc)" \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+    && curl --silent https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor --output=/etc/apt/keyrings/nodesource.gpg \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         apt-transport-https gettext less gnupg libpq5 \
-        python3-dev libgraphviz-dev libpq-dev nodejs \
+        python3-dev libgraphviz-dev libpq-dev "nodejs=${NODE_MAJOR}.*" \
     && echo "For Chrome installed by Pupetter" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
@@ -93,10 +94,10 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     . /etc/os-release \
-    && echo deb http://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
-    && curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+    && echo deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
+    && curl --silent https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor --output=/etc/apt/keyrings/postgresql.gpg \
     && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make python3-dev \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make g++ python3-dev \
         postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
         libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils iproute2 traceroute pkg-config \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \

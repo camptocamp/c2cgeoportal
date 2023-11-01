@@ -283,6 +283,12 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/ubuntu-keyring: 2021.03.26
   ubuntu_22_04/usrmerge: 25ubuntu2
 camptocamp/geomapfish-tools:latest:
+  ubuntu_22_04/binutils: 2.38-4ubuntu2.3
+  ubuntu_22_04/gcc-defaults: 1.193ubuntu1
+  ubuntu_22_04/gcc-11: 11.4.0-1ubuntu1~22.04
+  ubuntu_22_04/isl: 0.24-2build1
+  ubuntu_22_04/mpclib3: 1.2.1-2build1
+  ubuntu_22_04/mpfr4: 4.1.0-3build3
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/adwaita-icon-theme: 41.0-1ubuntu1
   ubuntu_22_04/apt: 2.4.10

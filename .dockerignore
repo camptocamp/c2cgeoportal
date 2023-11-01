@@ -13,6 +13,7 @@
 !admin/tests
 !admin/package.json
 !admin/package-lock.json
+!.nvmrc
 !admin/.snyk
 !admin/README.md
 !admin/requirements.txt
