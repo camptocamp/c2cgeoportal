@@ -1,3 +1,8 @@
+##### 2.8.1.4
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#10805](https://github.com/camptocamp/c2cgeoportal/pull/10805)
+- Update dependency pip to v23.3.1 (2.8) [c2cgeoportal#10806](https://github.com/camptocamp/c2cgeoportal/pull/10806)
+
 ##### 2.8.1.2
 
 - Snyk auto fix [c2cgeoportal#10788](https://github.com/camptocamp/c2cgeoportal/pull/10788)
