@@ -123,3 +123,9 @@ publish:
       - path: commons
       - path: geoportal
       - path: admin
+
+dpkg:
+  ignored_packages:
+    - postgresql-common
+    - postgresql-16
+    - xorg
