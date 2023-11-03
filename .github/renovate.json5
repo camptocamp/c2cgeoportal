@@ -155,5 +155,11 @@
       groupName: 'dpkg',
       automerge: true,
     },
+    /** Only LTS version of Node */
+    {
+      allowedVersions: '/(0|2|4|6|8)$/',
+      matchPackageNames: ['node'],
+      enabled: false,
+    },
   ],
 }
