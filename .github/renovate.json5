@@ -161,5 +161,11 @@
       matchPackageNames: ['node'],
       enabled: false,
     },
+    /** The version 5.4.1 of PyYAML is not working */
+    {
+      matchPackageNames: ['PyYAML'],
+      matchVersions: ['5.4.1'],
+      enabled: false,
+    },
   ],
 }
