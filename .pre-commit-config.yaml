@@ -11,7 +11,7 @@ ci:
     - jsonschema-validator
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: detect-private-key
         exclude: ^docker/config/haproxy_dev/localhost\.pem$
@@ -107,7 +107,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.14.0
+    rev: v3.15.0
     hooks:
       # The script that will run on the project host
       - id: pyupgrade
@@ -140,7 +140,7 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.10.1
     hooks:
       - id: black
         exclude: |-

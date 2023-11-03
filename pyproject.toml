@@ -94,7 +94,7 @@ types-pkg-resources = "0.1.3"
 mappyfile = "1.0.0"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.8", extras = ["checks"] }
-pre-commit = "3.4.0"
+pre-commit = "3.5.0"
 mapbox-vector-tile = "2.0.1"
 responses = "0.23.3"
 

@@ -19,7 +19,7 @@ jobs:
   common:
     runs-on: ubuntu-22.04
     name: QGIS build
-    timeout-minutes: 20
+    timeout-minutes: 30
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     steps:
