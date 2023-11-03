@@ -1,3 +1,10 @@
+##### 2.8.1.5
+
+- CI updates [ngeo#9237](https://github.com/camptocamp/ngeo/pull/9237)
+- [Backport 2.8] Fix dimensions on WMTS layer [ngeo#9246](https://github.com/camptocamp/ngeo/pull/9246)
+- Snyk auto fix [ngeo#9248](https://github.com/camptocamp/ngeo/pull/9248)
+- Update all patch versions (2.8) (patch) [ngeo#9253](https://github.com/camptocamp/ngeo/pull/9253)
+
 ##### 2.8.1.4
 
 - Update all patch versions (2.8) (patch) [c2cgeoportal#10805](https://github.com/camptocamp/c2cgeoportal/pull/10805)
