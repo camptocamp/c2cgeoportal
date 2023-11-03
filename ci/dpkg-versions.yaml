@@ -7,7 +7,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/util-linux: 2.37.2-4ubuntu3
   ubuntu_22_04/ca-certificates: 20230311ubuntu0.22.04.1
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.13
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.14
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/dbus: 1.12.20-2ubuntu4.1
   ubuntu_22_04/dconf: 0.40.0-3
@@ -113,7 +113,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/openjpeg2: 2.4.0-6
   ubuntu_22_04/p11-kit: 0.24.0-6build1
   ubuntu_22_04/pam: 1.4.0-11ubuntu2.3
-  ubuntu_22_04/systemd: 249.11-0ubuntu3.10
+  ubuntu_22_04/systemd: 249.11-0ubuntu3.11
   ubuntu_22_04/pango1.0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/pcre2: 10.39-3ubuntu0.1
   ubuntu_22_04/pcre3: 2:8.39-13ubuntu0.22.04.1
@@ -139,7 +139,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/spatialite: 5.0.1-2build2
   ubuntu_22_04/sqlite3: 3.37.2-2ubuntu0.1
   ubuntu_22_04/libssh: 0.9.6-2ubuntu0.22.04.1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.10
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/libthai: 0.1.29-1build1
   ubuntu_22_04/tiff: 4.3.0-6ubuntu0.6
@@ -169,7 +169,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libxtst: 2:1.2.3-1build4
   ubuntu_22_04/xxhash: 0.8.1-1
   ubuntu_22_04/libzstd: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux: 5.15.0-86.96
+  ubuntu_22_04/linux: 5.15.0-88.98
   ubuntu_22_04/shadow: 1:4.8.1-2ubuntu2.1
   ubuntu_22_04/lsb: 11.1.0ubuntu4
   ubuntu_22_04/mailcap: 3.70+nmu1ubuntu1
@@ -259,8 +259,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/libsemanage: 3.3-1build2
   ubuntu_22_04/libsepol: 3.3-1build1
   ubuntu_22_04/sqlite3: 3.37.2-2ubuntu0.1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.10
-  ubuntu_22_04/systemd: 249.11-0ubuntu3.10
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
+  ubuntu_22_04/systemd: 249.11-0ubuntu3.11
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/libtirpc: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libunistring: 1.0-1
@@ -295,11 +295,11 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1
   ubuntu_22_04/bash-completion: 1:2.11-5ubuntu1
-  ubuntu_22_04/bind9: 1:9.18.12-0ubuntu0.22.04.3
+  ubuntu_22_04/bind9: 1:9.18.18-0ubuntu0.22.04.1
   ubuntu_22_04/util-linux: 2.37.2-4ubuntu3
   ubuntu_22_04/ca-certificates: 20230311ubuntu0.22.04.1
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.13
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.14
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/dbus: 1.12.20-2ubuntu4.1
   ubuntu_22_04/dconf: 0.40.0-3
@@ -423,7 +423,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/openjpeg2: 2.4.0-6
   ubuntu_22_04/p11-kit: 0.24.0-6build1
   ubuntu_22_04/pam: 1.4.0-11ubuntu2.3
-  ubuntu_22_04/systemd: 249.11-0ubuntu3.10
+  ubuntu_22_04/systemd: 249.11-0ubuntu3.11
   ubuntu_22_04/pango1.0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/pcre2: 10.39-3ubuntu0.1
   ubuntu_22_04/pcre3: 2:8.39-13ubuntu0.22.04.1
@@ -451,7 +451,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/spatialite: 5.0.1-2build2
   ubuntu_22_04/sqlite3: 3.37.2-2ubuntu0.1
   ubuntu_22_04/libssh: 0.9.6-2ubuntu0.22.04.1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.10
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/tcl8.6: 8.6.12+dfsg-1build1
   ubuntu_22_04/libthai: 0.1.29-1build1
@@ -485,7 +485,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/xxhash: 0.8.1-1
   ubuntu_22_04/libyaml: 0.2.2-1build2
   ubuntu_22_04/libzstd: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux: 5.15.0-86.96
+  ubuntu_22_04/linux: 5.15.0-88.98
   ubuntu_22_04/shadow: 1:4.8.1-2ubuntu2.1
   ubuntu_22_04/lsb: 11.1.0ubuntu4
   ubuntu_22_04/lua-bitop: 1.0.2-5
@@ -531,7 +531,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/ucf: '3.0043'
   ubuntu_22_04/unzip: 6.0-26ubuntu3.1
   ubuntu_22_04/usrmerge: 25ubuntu2
-  ubuntu_22_04/vim: 2:8.2.3995-1ubuntu2.12
+  ubuntu_22_04/vim: 2:8.2.3995-1ubuntu2.13
   ubuntu_22_04/vim-addon-manager: 0.5.10
   ubuntu_22_04/vim-editorconfig: 0.3.3+dfsg-2.1
   ubuntu_22_04/xorg: 1:7.7+23ubuntu2
@@ -546,7 +546,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/util-linux: 2.37.2-4ubuntu3
   ubuntu_22_04/ca-certificates: 20230311ubuntu0.22.04.1
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.13
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.14
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/dbus: 1.12.20-2ubuntu4.1
   ubuntu_22_04/dconf: 0.40.0-3
@@ -652,7 +652,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/openjpeg2: 2.4.0-6
   ubuntu_22_04/p11-kit: 0.24.0-6build1
   ubuntu_22_04/pam: 1.4.0-11ubuntu2.3
-  ubuntu_22_04/systemd: 249.11-0ubuntu3.10
+  ubuntu_22_04/systemd: 249.11-0ubuntu3.11
   ubuntu_22_04/pango1.0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/pcre2: 10.39-3ubuntu0.1
   ubuntu_22_04/pcre3: 2:8.39-13ubuntu0.22.04.1
@@ -678,7 +678,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/spatialite: 5.0.1-2build2
   ubuntu_22_04/sqlite3: 3.37.2-2ubuntu0.1
   ubuntu_22_04/libssh: 0.9.6-2ubuntu0.22.04.1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.10
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/libthai: 0.1.29-1build1
   ubuntu_22_04/tiff: 4.3.0-6ubuntu0.6
@@ -708,7 +708,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libxtst: 2:1.2.3-1build4
   ubuntu_22_04/xxhash: 0.8.1-1
   ubuntu_22_04/libzstd: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux: 5.15.0-86.96
+  ubuntu_22_04/linux: 5.15.0-88.98
   ubuntu_22_04/shadow: 1:4.8.1-2ubuntu2.1
   ubuntu_22_04/lsb: 11.1.0ubuntu4
   ubuntu_22_04/mailcap: 3.70+nmu1ubuntu1
@@ -750,7 +750,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1
   ubuntu_22_04/gcc-defaults: 1.193ubuntu1
   ubuntu_22_04/gcc-11: 11.4.0-1ubuntu1~22.04
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.13
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.14
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/debconf: 1.5.79ubuntu1
   ubuntu_22_04/debianutils: 5.5-1ubuntu2
@@ -921,8 +921,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3-28-gdal3-7: &qgis3-28-gdal3-7
   ubuntu_22_04/spatialite: 5.0.1-2build2
   ubuntu_22_04/sqlite3: 3.37.2-2ubuntu0.1
   ubuntu_22_04/libssh: 0.9.6-2ubuntu0.22.04.1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.10
-  ubuntu_22_04/systemd: 249.11-0ubuntu3.10
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
+  ubuntu_22_04/systemd: 249.11-0ubuntu3.11
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/tiff: 4.3.0-6ubuntu0.6
   ubuntu_22_04/libtirpc: 1.3.2-2ubuntu0.1
@@ -959,7 +959,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3-28-gdal3-7: &qgis3-28-gdal3-7
   ubuntu_22_04/xxhash: 0.8.1-1
   ubuntu_22_04/libzip: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux: 5.15.0-86.96
+  ubuntu_22_04/linux: 5.15.0-88.98
   ubuntu_22_04/shadow: 1:4.8.1-2ubuntu2.1
   ubuntu_22_04/lsb: 11.1.0ubuntu4
   ubuntu_22_04/mailcap: 3.70+nmu1ubuntu1
@@ -996,7 +996,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3-28-gdal3-7: &qgis3-28-gdal3-7
   ubuntu_22_04/xfonts-scalable: 1:1.0.3-1.2ubuntu1
   ubuntu_22_04/xfonts-utils: 1:7.7+6build2
   ubuntu_22_04/xkeyboard-config: 2.33-1
-  ubuntu_22_04/xorg-server: 2:21.1.4-2ubuntu1.7~22.04.1
+  ubuntu_22_04/xorg-server: 2:21.1.4-2ubuntu1.7~22.04.2
   ubuntu_22_04/zlib: 1:1.2.11.dfsg-2ubuntu9.2
   ubuntu_22_04/fribidi: 1.0.8-2ubuntu3.1
   ubuntu_22_04/lcms2: 2.12~rc1-2build2
@@ -1130,7 +1130,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr: &qgislr
   ubuntu_22_04/libsemanage: 3.3-1build2
   ubuntu_22_04/libsepol: 3.3-1build1
   ubuntu_22_04/libsm: 2:1.2.3-1build2
-  ubuntu_22_04/libsndfile: 1.0.31-2build1
+  ubuntu_22_04/libsndfile: 1.0.31-2ubuntu0.1
   ubuntu_22_04/libssh: 0.9.6-2ubuntu0.22.04.1
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/libtirpc: 1.3.2-2ubuntu0.1
@@ -1161,7 +1161,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr: &qgislr
   ubuntu_22_04/libxxf86vm: 1:1.1.4-1build3
   ubuntu_22_04/libzip: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux: 5.15.0-87.97
+  ubuntu_22_04/linux: 5.15.0-88.98
   ubuntu_22_04/llvm-toolchain-15: 1:15.0.7-0ubuntu0.22.04.3
   ubuntu_22_04/lm-sensors: 1:3.6.0-7ubuntu1
   ubuntu_22_04/lsb: 11.1.0ubuntu4
