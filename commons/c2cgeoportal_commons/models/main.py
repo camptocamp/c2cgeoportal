@@ -276,7 +276,7 @@ class Role(Base):  # type: ignore
         name: str = "",
         description: str = "",
         functionalities: Optional[list[Functionality]] = None,
-        extent: Geometry = None,
+        extent: Optional[Geometry] = None,
     ) -> None:
         if functionalities is None:
             functionalities = []
@@ -1424,7 +1424,7 @@ class RestrictionArea(Base):  # type: ignore
         description: str = "",
         layers: Optional[list[Layer]] = None,
         roles: Optional[list[Role]] = None,
-        area: Geometry = None,
+        area: Optional[Geometry] = None,
         readwrite: bool = False,
     ) -> None:
         if layers is None:

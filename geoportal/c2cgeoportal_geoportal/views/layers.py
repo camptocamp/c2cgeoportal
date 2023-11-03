@@ -32,6 +32,7 @@ from collections.abc import Generator
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Optional, TypedDict, cast
 
+import geoalchemy2.elements
 import geojson.geometry
 import pyramid.request
 import pyramid.response
@@ -374,7 +375,7 @@ class Layers:
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
 
     @staticmethod
-    def _validate_geometry(geom: Geometry) -> None:
+    def _validate_geometry(geom: Optional[geoalchemy2.elements.WKBElement]) -> None:
         if geom is not None:
             simple = models.DBSession.query(func.ST_IsSimple(func.ST_GeomFromEWKB(geom))).scalar()
             if not simple:
