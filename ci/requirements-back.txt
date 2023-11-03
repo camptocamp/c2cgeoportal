@@ -1,4 +1,4 @@
 PyYAML==5.3.1
 docker-compose==1.29.2
-wheel==0.40.0
+wheel==0.41.3
 urllib3==2.0.7
