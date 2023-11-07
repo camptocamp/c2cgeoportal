@@ -74,7 +74,7 @@ class ThemeViews(TreeItemViews):
                         for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
                     ]
                 ),
-                filter_column=concat(Functionality.name, "=", Functionality.value),
+                filter_column=concat(Functionality.name, "=", Functionality.value),  # type: ignore[no-untyped-call]
             ),
             _list_field(
                 "restricted_roles",
@@ -96,16 +96,18 @@ class ThemeViews(TreeItemViews):
     _model = Theme
     _base_schema = base_schema
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
+    def _base_query(
+        self, query: Optional[sqlalchemy.orm.query.Query[Theme]] = None
+    ) -> sqlalchemy.orm.query.Query[Theme]:
         return super()._base_query(
             self._request.dbsession.query(Theme)
             .distinct()
             .outerjoin("interfaces")
             .outerjoin(Theme.restricted_roles)
             .outerjoin(Theme.functionalities)
-            .options(subqueryload("functionalities"))
-            .options(subqueryload("restricted_roles"))
-            .options(subqueryload("interfaces"))
+            .options(subqueryload(Theme.functionalities))
+            .options(subqueryload(Theme.restricted_roles))
+            .options(subqueryload(Theme.interfaces))
         )
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")

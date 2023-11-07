@@ -29,6 +29,7 @@
 from functools import partial
 
 import colander
+import sqlalchemy.orm.query
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
@@ -110,11 +111,13 @@ class RestrictionAreaViews(LoggedViews):
     _model = RestrictionArea
     _base_schema = base_schema
 
-    def _base_query(self):
+    def _base_query(self) -> sqlalchemy.orm.query.Query[RestrictionArea]:
+        session = self._request.dbsession
+        assert isinstance(session, sqlalchemy.orm.Session)
         return (
-            self._request.dbsession.query(RestrictionArea)
-            .options(subqueryload("roles"))
-            .options(subqueryload("layers"))
+            session.query(RestrictionArea)
+            .options(subqueryload(RestrictionArea.roles))
+            .options(subqueryload(RestrictionArea.layers))
         )
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")

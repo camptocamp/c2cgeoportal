@@ -29,10 +29,11 @@
 from io import BytesIO
 from typing import Any, Callable, Optional, Union, cast
 
+import sqlalchemy.orm.mapper
+import sqlalchemy.sql.elements
 import sqlalchemy.sql.schema
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
-from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
@@ -40,16 +41,16 @@ from sqlalchemy.orm.util import class_mapper
 class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
     """Extends the PapyrusXSDGenerator."""
 
-    def add_class_properties_xsd(self, tb: str, cls: DeclarativeMeta) -> None:
+    def add_class_properties_xsd(self, tb: str, cls: type) -> None:
         """
         Add the XSD for the class properties to the ``TreeBuilder``.
 
         And call the user ``sequence_callback``.
         """
-        mapper = class_mapper(cls)
+        mapper: sqlalchemy.orm.Mapper[Any] = class_mapper(cls)
         properties = []
-        if cls.__attributes_order__:
-            for attribute_name in cls.__attributes_order__:
+        if cls.__attributes_order__:  # type: ignore[attr-defined]
+            for attribute_name in cls.__attributes_order__:  # type: ignore[attr-defined]
                 attr = mapper.attrs.get(attribute_name)
                 if attr:
                     properties.append(attr)
@@ -68,7 +69,7 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
         if self.sequence_callback:
             self.sequence_callback(tb, cls)
 
-    def add_column_property_xsd(self, tb: str, column_property: ColumnProperty) -> None:
+    def add_column_property_xsd(self, tb: str, column_property: ColumnProperty[Any]) -> None:
         column = column_property.columns[0]
         if column.foreign_keys:
             self.add_association_proxy_xsd(tb, column_property)
@@ -76,8 +77,10 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
 
         super().add_column_property_xsd(tb, column_property)
 
-    def add_association_proxy_xsd(self, tb: str, column_property: ColumnProperty) -> None:
+    def add_association_proxy_xsd(self, tb: str, column_property: ColumnProperty[Any]) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         column = column_property.columns[0]
         proxy = column.info["association_proxy"]
@@ -102,7 +105,7 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
                             pass
             self.element_callback(tb4, column)
 
-    def element_callback(self, tb: str, column: sqlalchemy.sql.schema.Column) -> None:
+    def element_callback(self, tb: str, column: sqlalchemy.sql.elements.NamedColumn[Any]) -> None:
         if column.info.get("readonly"):
             with tag(tb, "xsd:annotation"):
                 with tag(tb, "xsd:appinfo"):

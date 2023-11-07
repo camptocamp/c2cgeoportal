@@ -161,6 +161,8 @@ def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_c
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
 
+    assert DBSession is not None
+
     themes_settings = settings["themes"]
     default_params = themes_settings.get("params", {})
     interfaces_settings = themes_settings["interfaces"]

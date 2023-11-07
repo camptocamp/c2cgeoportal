@@ -35,6 +35,7 @@ Revises: e85afd327ab3
 Create Date: 2019-08-29 07:56:15.547216
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column, MetaData, Table
@@ -56,15 +57,17 @@ def upgrade() -> None:
     connection = op.get_bind()
     for interface_name in ("api", "iframe_api"):
         result = connection.execute(
-            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
+            sqlalchemy.text(f"SELECT count(name) FROM {schema}.interface WHERE name=:interface_name"),
+            {"interface_name": interface_name},
         )
-        if result.fetchone()[0] == 0:
+        if result.fetchone()[0] == 0:  # type: ignore[index]
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("edit", "routing"):
         result = connection.execute(
-            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
+            sqlalchemy.text(f"SELECT count(name) FROM {schema}.interface WHERE name=:interface_name"),
+            {"interface_name": interface_name},
         )
-        if result.fetchone()[0] != 0:
+        if result.fetchone()[0] != 0:  # type: ignore[index]
             op.execute(
                 f"DELETE FROM {schema}.interface_theme it "
                 f"USING {schema}.interface i "
@@ -87,15 +90,17 @@ def downgrade() -> None:
     connection = op.get_bind()
     for interface_name in ("edit", "routing"):
         result = connection.execute(
-            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
+            sqlalchemy.text(f"SELECT count(name) FROM {schema}.interface WHERE name=:interface_name"),
+            {"interface_name": interface_name},
         )
-        if result.fetchone()[0] == 0:
+        if result.fetchone()[0] == 0:  # type: ignore[index]
             op.bulk_insert(interface, [{"name": interface_name}])
     for interface_name in ("api", "iframe_api"):
         result = connection.execute(
-            f"SELECT count(name) FROM {schema}.interface WHERE name='{interface_name}'"
+            sqlalchemy.text(f"SELECT count(name) FROM {schema}.interface WHERE name=:interface_name"),
+            {"interface_name": interface_name},
         )
-        if result.fetchone()[0] != 0:
+        if result.fetchone()[0] != 0:  # type: ignore[index]
             op.execute(
                 f"DELETE FROM {schema}.interface_theme it "
                 f"USING {schema}.interface i "

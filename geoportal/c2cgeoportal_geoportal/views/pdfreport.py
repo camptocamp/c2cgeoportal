@@ -103,6 +103,8 @@ class PdfReport(OGCProxy):
 
     @view_config(route_name="pdfreport", renderer="json")  # type: ignore
     def get_report(self) -> pyramid.response.Response:
+        assert models.DBSession is not None
+
         self.layername = self.request.matchdict["layername"]
         layer_config = self.config["layers"].get(self.layername)
 

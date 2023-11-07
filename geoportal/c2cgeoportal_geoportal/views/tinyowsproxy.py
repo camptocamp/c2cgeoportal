@@ -54,6 +54,8 @@ class TinyOWSProxy(OGCProxy):
 
     def __init__(self, request: pyramid.request.Request):
         OGCProxy.__init__(self, request, has_default_ogc_server=True)
+
+        assert models.DBSession is not None
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
         assert "tinyows_url" in self.settings, "tinyowsproxy.tinyows_url must be set"
@@ -125,6 +127,7 @@ class TinyOWSProxy(OGCProxy):
         """Check if the current user has the rights to access the given type-names."""
         writable_layers = set()
         for gmflayer in list(get_writable_layers(self.request, [self.ogc_server.id]).values()):
+            assert isinstance(gmflayer, main.LayerWMS)
             for ogclayer in gmflayer.layer.split(","):
                 writable_layers.add(ogclayer.lower())
         return typenames.issubset(writable_layers)

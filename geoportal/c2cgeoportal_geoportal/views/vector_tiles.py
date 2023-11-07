@@ -27,6 +27,7 @@
 
 import logging
 
+import sqlalchemy
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.request import Request
 from pyramid.response import Response
@@ -48,6 +49,8 @@ class VectorTilesViews:
 
     @view_config(route_name="vector_tiles")  # type: ignore
     def vector_tiles(self) -> Response:
+        assert DBSession is not None
+
         settings = self.request.registry.settings["vector_tiles"]
         grid = FreeTileGrid(settings["resolutions"], max_extent=settings["extent"], tile_size=256)
 
@@ -71,8 +74,8 @@ class VectorTilesViews:
             envelope=f"ST_MakeEnvelope({minx}, {miny}, {maxx}, {maxy}, {settings['srid']})"
         )
 
-        result = DBSession.execute(raw_sql)
-        for row in result:
+        result = DBSession.execute(sqlalchemy.text(raw_sql))
+        for row in result:  # pylint: disable=not-an-iterable
             set_common_headers(self.request, "vector_tiles", Cache.PUBLIC)
             response = self.request.response
             response.content_type = "application/vnd.mapbox-vector-tile"

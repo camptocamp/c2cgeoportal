@@ -32,6 +32,7 @@ from typing import Any, Optional
 
 import colander
 import pyramid.request
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import case, func
@@ -70,8 +71,9 @@ def treeitems(
     """Get a serializable representation of the tree items."""
     del node
     dbsession = kw["request"].dbsession
+    assert isinstance(dbsession, sqlalchemy.orm.Session)
 
-    group = case([(func.count(LayergroupTreeitem.id) == 0, "Unlinked")], else_="Others")
+    group = case([(func.count(LayergroupTreeitem.id) == 0, "Unlinked")], else_="Others")  # type: ignore[arg-type] # pylint: disable=not-callable
 
     query = (
         dbsession.query(TreeItem, group)
@@ -93,7 +95,7 @@ def treeitems(
         search_alias = aliased(search_ancestors, name="search_ancestors")
         relation_alias = aliased(LayergroupTreeitem, name="relation")
         search_ancestors = search_ancestors.union_all(
-            dbsession.query(relation_alias.treegroup_id).filter(
+            dbsession.query(relation_alias.treegroup_id).filter(  # type: ignore[arg-type]
                 relation_alias.treeitem_id == search_alias.c.treegroup_id
             )
         )

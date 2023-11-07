@@ -83,7 +83,9 @@ class LayerWmsViews(DimensionLayerViews):
     _model = LayerWMS
     _base_schema = base_schema
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
+    def _base_query(
+        self, query: Optional[sqlalchemy.orm.query.Query[LayerWMS]] = None
+    ) -> sqlalchemy.orm.query.Query[LayerWMS]:
         del query
         return super()._base_query(self._request.dbsession.query(LayerWMS).distinct().outerjoin("ogc_server"))
 
@@ -97,7 +99,7 @@ class LayerWmsViews(DimensionLayerViews):
 
     def _item_actions(self, item: LayerWMS, readonly: bool = False) -> list[ItemAction]:
         actions: list[ItemAction] = super()._item_actions(item, readonly)
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(

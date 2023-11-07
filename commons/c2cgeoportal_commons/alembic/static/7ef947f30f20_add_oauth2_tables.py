@@ -74,8 +74,8 @@ def upgrade() -> None:
             ForeignKey(staticschema + ".user.id", ondelete="CASCADE"),
             nullable=False,
         ),
-        Column("access_token", Unicode(100), unique=True),
-        Column("refresh_token", Unicode(100), unique=True),
+        Column("access_token", Unicode(100), unique=True),  # type: ignore[no-untyped-call]
+        Column("refresh_token", Unicode(100), unique=True),  # type: ignore[no-untyped-call]
         Column("expire_at", DateTime(timezone=True)),
         sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),
         schema=staticschema,
@@ -96,7 +96,7 @@ def upgrade() -> None:
             nullable=False,
         ),
         Column("redirect_uri", Unicode),
-        Column("code", Unicode(100), unique=True),
+        Column("code", Unicode(100), unique=True),  # type: ignore[no-untyped-call]
         Column("expire_at", DateTime(timezone=True)),
         sqlalchemy.schema.UniqueConstraint("client_id", "user_id"),
         schema=staticschema,

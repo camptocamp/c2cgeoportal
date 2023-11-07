@@ -1,6 +1,7 @@
 # pylint: disable=no-self-use
 
 import pytest
+import sqlalchemy.exc
 
 
 @pytest.fixture(scope="class")
@@ -15,7 +16,10 @@ def insert_users_test_data(dbsession):
     dbsession.add(user)
     dbsession.flush()
     yield
-    t.rollback()
+    try:
+        t.rollback()
+    except sqlalchemy.exc.ResourceClosedError as error:
+        print(error)
 
 
 @pytest.mark.usefixtures("insert_users_test_data", "transact")
@@ -45,7 +49,6 @@ class TestUser:
         user.roles = [Role(name="Role3")]
         dbsession.begin_nested()
         dbsession.add(user)
-        dbsession.commit()
         assert dbsession.query(User).count() == 2, "added a user"
         dbsession.expire(user)
         assert user.username == "momo", "added user is momo"

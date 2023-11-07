@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 
+import sqlalchemy
 import transaction
 from c2c.template.config import config
 from geoalchemy2.shape import from_shape
@@ -54,11 +55,13 @@ restriction_area = RestrictionArea(
 dbsession.add(restriction_area)
 
 dbsession.execute(
-    """
+    sqlalchemy.text(
+        """
 INSERT INTO geodata.testpoint
 (name, city, country, geom)
 VALUES ('test', 'test', 'test', ST_GeomFromText('POINT(500000 80000)', 21781))
 """
+    )
 )
 
 transaction.commit()
