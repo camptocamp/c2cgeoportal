@@ -1,3 +1,7 @@
+##### 2.7.1.12
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20231107T141909Z.b1fb3705a.2.7 (2.7) [c2cgeoportal#10812](https://github.com/camptocamp/c2cgeoportal/pull/10812)
+
 ##### 2.7.1.11
 
 - Remove double space. [ngeo#9254](https://github.com/camptocamp/ngeo/pull/9254)
