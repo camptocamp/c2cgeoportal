@@ -66,7 +66,7 @@ class LoggedViews(AbstractViews[_T], Generic[_T]):
     def _create_log(
         self,
         action: LogAction,
-        obj: Base,
+        obj: Base,  # type: ignore[valid-type]
         element_url_table: Optional[str] = None,
     ) -> None:
         assert self._model is not None

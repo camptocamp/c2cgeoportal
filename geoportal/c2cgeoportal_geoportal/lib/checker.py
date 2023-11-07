@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -160,6 +160,8 @@ def _fts(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
 def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
+
+    assert DBSession is not None
 
     themes_settings = settings["themes"]
     default_params = themes_settings.get("params", {})

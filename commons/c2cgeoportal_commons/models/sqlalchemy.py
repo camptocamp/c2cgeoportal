@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2023, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
 
 # get from https://docs.sqlalchemy.org/en/latest/orm/extensions/
 # mutable.html#establishing-mutability-on-scalar-column-values
-class JSONEncodedDict(TypeDecorator):  # type: ignore
+class JSONEncodedDict(TypeDecorator[Any]):  # pylint: disable=too-many-ancestors
     """Represent an immutable structure as a json-encoded string."""
 
     impl = VARCHAR
@@ -48,7 +48,8 @@ class JSONEncodedDict(TypeDecorator):  # type: ignore
     def python_type(self) -> type[Any]:
         return dict
 
-    def process_literal_param(self, value: str, dialect: Any) -> str:
+    def process_literal_param(self, value: Optional[Any], dialect: Any) -> str:
+        assert isinstance(value, str)
         del dialect
         return json.dumps(value)
 

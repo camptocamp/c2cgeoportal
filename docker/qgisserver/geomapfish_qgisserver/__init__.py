@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023, Camptocamp SA
+# Copyright (c) 2016-2024, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -35,12 +35,9 @@ def serverClassFactory(  # pylint: disable=invalid-name
     LOG.info("Starting GeoMapFish access restriction...")
 
     try:
-        from .accesscontrol import (  # pylint: disable=import-outside-toplevel
-            GeoMapFishAccessControl,
-            GMFException,
-        )
+        from .accesscontrol import GeoMapFishAccessControl  # pylint: disable=import-outside-toplevel
 
         return GeoMapFishAccessControl(serverIface)
-    except GMFException:
+    except Exception:  # pylint: disable=broad-exception-caught
         LOG.error("Cannot setup GeoMapFishAccessControl", exc_info=True)
         return None

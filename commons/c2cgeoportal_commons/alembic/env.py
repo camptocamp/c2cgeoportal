@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023, Camptocamp SA
+# Copyright (c) 2014-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -113,8 +113,8 @@ def run_migrations_online() -> None:
         del name, reflected, compare_to
 
         if type_ == "table":
-            return cast(bool, obj.schema == _schema)
-        return cast(bool, obj.table.schema == _schema)
+            return cast(bool, obj.schema == _schema)  # type: ignore[attr-defined]
+        return cast(bool, obj.table.schema == _schema)  # type: ignore[attr-defined]
 
     if _schema:
         conf.update(

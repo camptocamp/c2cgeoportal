@@ -41,6 +41,8 @@ import pyramid.renderers
 import pyramid.request
 import pyramid.response
 import pyramid.security
+import sqlalchemy
+import sqlalchemy.orm
 import zope.event.classhandler
 from c2cgeoform import translator
 from c2cwsgiutils.broadcast import decorator
@@ -209,6 +211,9 @@ def add_interface_canvas(
 
 def add_admin_interface(config: pyramid.config.Configurator) -> None:
     """Add the administration interface views and routes."""
+
+    assert c2cgeoportal_commons.models.DBSession is not None
+
     if config.get_settings().get("enable_admin_interface", False):
         config.add_request_method(
             lambda request: c2cgeoportal_commons.models.DBSession(),
@@ -310,6 +315,8 @@ def create_get_user_from_request(
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referrer(request, settings)
         if not request.is_valid_referer:
@@ -326,7 +333,7 @@ def create_get_user_from_request(
                 request.user_ = (
                     DBSession.query(User)
                     .filter_by(username=username, deactivated=False)
-                    .options(joinedload("roles"))
+                    .options(joinedload(User.roles))
                     .first()
                 )
 
@@ -365,6 +372,8 @@ def default_user_validator(request: pyramid.request.Request, username: str, pass
     del request  # unused
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+
+    assert DBSession is not None
 
     user = DBSession.query(User).filter_by(username=username).first()
     if user is None:
@@ -787,14 +796,15 @@ def init_db_sessions(
 
     slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
 
-    c2cgeoportal_commons.models.DBSession, rw_bind, _ = c2cwsgiutils.db.setup_session(
+    c2cgeoportal_commons.models.DBSession, rw_bind, _ = c2cwsgiutils.db.setup_session(  # type: ignore[assignment]
         config, "sqlalchemy", slave_prefix, force_master=master_paths, force_slave=slave_paths
     )
-    c2cgeoportal_commons.models.Base.metadata.bind = rw_bind
+    c2cgeoportal_commons.models.Base.metadata.bind = rw_bind  # type: ignore[attr-defined]
+    assert c2cgeoportal_commons.models.DBSession is not None
     c2cgeoportal_commons.models.DBSessions["dbsession"] = c2cgeoportal_commons.models.DBSession
 
     for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
-        c2cgeoportal_commons.models.DBSessions[dbsession_name] = c2cwsgiutils.db.create_session(
+        c2cgeoportal_commons.models.DBSessions[dbsession_name] = c2cwsgiutils.db.create_session(  # type: ignore[assignment]
             config, dbsession_name, **dbsession_config
         )
 
@@ -823,7 +833,7 @@ def init_db_sessions(
                     )
             else:
 
-                def check(session_: Session) -> None:
-                    session_.execute("SELECT 1")
+                def check(session_: sqlalchemy.orm.scoped_session[sqlalchemy.orm.Session]) -> None:
+                    session_.execute(sqlalchemy.text("SELECT 1"))
 
                 health_check.add_db_session_check(session, query_cb=check, level=2)

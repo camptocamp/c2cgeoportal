@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,9 +47,11 @@ class TestReflection(TestCase):
         self.metadata = None
 
     def teardown_method(self, _):
+        from c2cgeoportal_commons.models import DBSession
+
         if self._tables is not None:
             for table in self._tables[::-1]:
-                table.drop()
+                table.drop(bind=DBSession.c2c_rw_bind)
 
     def _create_table(self, tablename):
         """
@@ -61,6 +63,7 @@ class TestReflection(TestCase):
         from geoalchemy2 import Geometry
         from sqlalchemy import Column, ForeignKey, Table, types
 
+        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Base
 
         if self._tables is None:
@@ -73,7 +76,7 @@ class TestReflection(TestCase):
             Column("name", types.Unicode),
             schema="public",
         )
-        ctable.create(checkfirst=True)
+        ctable.create(checkfirst=True, bind=DBSession.c2c_rw_bind)
         self._tables.append(ctable)
 
         ptable = Table(
@@ -95,7 +98,7 @@ class TestReflection(TestCase):
             Column("multipolygon", Geometry("MULTIPOLYGON")),
             schema="public",
         )
-        ptable.create(checkfirst=True)
+        ptable.create(checkfirst=True, bind=DBSession.c2c_rw_bind)
         self._tables.append(ptable)
 
         self.metadata = Base.metadata

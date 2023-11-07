@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -148,6 +148,8 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> dict[str, li
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
+    assert DBSession is not None
+
     errors: set[str] = set()
     servers: dict[str, list[int]] = {}
     for ogc_server in DBSession.query(OGCServer).all():
@@ -162,6 +164,8 @@ def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> dict[str, li
     """Get the OGCServer ids mapped on the WFS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
+
+    assert DBSession is not None
 
     errors: set[str] = set()
     servers: dict[str, list[int]] = {}
@@ -213,6 +217,8 @@ def _get_intranet_networks(
 def get_role_id(name: str) -> int:
     """Get the role ID."""
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
+
+    assert DBSession is not None
 
     return cast(int, DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
 

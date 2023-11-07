@@ -124,7 +124,7 @@ class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
                     obj = form.schema["themes"].children[0].objectify(dict_)
                     self._request.dbsession.merge(obj)
             self._request.dbsession.flush()
-            raise HTTPFound(self._request.route_url("layertree"))
+            return HTTPFound(self._request.route_url("layertree"))
         except ValidationFailure as e:
             # FIXME see https://github.com/Pylons/deform/pull/243
             self._populate_widgets(form.schema)

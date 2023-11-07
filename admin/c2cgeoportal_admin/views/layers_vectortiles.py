@@ -29,8 +29,8 @@
 from functools import partial
 from typing import Optional, cast
 
-import pyramid.request
 import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -68,19 +68,24 @@ base_schema.add(parent_id_node(LayerGroup))
 class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
     """The vector tiles administration view."""
 
+    _list_fields = (
+        DimensionLayerViews._list_fields  # typer: ignore[misc] # pylint: disable=protected-access
+        + [_list_field("style"), _list_field("xyz")]
+        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
+    )
+
     _id_field = "id"
     _model = LayerVectorTiles
     _base_schema = base_schema
 
-    def __init__(self, request: pyramid.request.Request) -> None:
-        super().__init__(request)
-        self._list_fields = (
-            super()._list_fields + [_list_field("style"), _list_field("xyz")] + super()._extra_list_fields
-        )
-
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
-        del query
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerVectorTiles]:
         return super()._sub_query(self._request.dbsession.query(LayerVectorTiles).distinct())
+
+    def _sub_query(
+        self, query: Optional[sqlalchemy.orm.query.Query[LayerVectorTiles]]
+    ) -> sqlalchemy.orm.query.Query[LayerVectorTiles]:
+        del query
+        return self._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
     def index(self) -> IndexResponse:

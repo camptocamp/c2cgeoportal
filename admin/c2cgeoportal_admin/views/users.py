@@ -92,9 +92,9 @@ class UserViews(LoggedViews[User]):
             self._request.dbsession.query(User)
             .distinct()
             .outerjoin(settings_role, settings_role.id == User.settings_role_id)
-            .outerjoin("roles")
-            .options(subqueryload("settings_role"))
-            .options(subqueryload("roles"))
+            .outerjoin(User.roles)
+            .options(subqueryload(User.settings_role))
+            .options(subqueryload(User.roles))
         )
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]

@@ -4,6 +4,7 @@ import email
 import re
 from unittest.mock import MagicMock, patch
 
+import pyramid.httpexceptions
 import pytest
 from pyramid.testing import DummyRequest
 
@@ -329,8 +330,8 @@ class TestUser(AbstractViewsTests):
         from c2cgeoportal_admin.views.users import UserViews
 
         request = DummyRequest(dbsession=dbsession, params={"offset": 0, "limit": 10})
-        info = UserViews(request).grid()
-        assert info.status_int == 500, "Expected 500 status when db error"
+        with pytest.raises(pyramid.httpexceptions.HTTPInternalServerError):
+            UserViews(request).grid()
 
     def test_grid_settings_role_none(self, dbsession, test_app):
         """

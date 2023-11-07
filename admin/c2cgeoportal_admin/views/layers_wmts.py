@@ -28,7 +28,6 @@
 
 from functools import partial
 
-import pyramid.request
 import sqlalchemy
 from c2cgeoform import JSONDict
 from c2cgeoform.schema import GeoFormSchemaNode
@@ -70,30 +69,29 @@ base_schema.add(parent_id_node(LayerGroup))
 class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
     """The WMTS layer administration view."""
 
+    _list_fields = (
+        DimensionLayerViews._list_fields  # pylint: disable=protected-access
+        + [
+            _list_field("url"),
+            _list_field("layer"),
+            _list_field("style"),
+            _list_field("matrix_set"),
+            _list_field("image_type"),
+        ]
+        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
+    )
     _id_field = "id"
     _model = LayerWMTS
     _base_schema = base_schema
 
-    def __init__(self, request: pyramid.request.Request) -> None:
-        super().__init__(request)
-        self._list_fields = (
-            super()._list_fields
-            + [
-                _list_field("url"),
-                _list_field("layer"),
-                _list_field("style"),
-                _list_field("matrix_set"),
-                _list_field("image_type"),
-            ]
-            + super()._extra_list_fields
-        )
-
-    def _base_query(self) -> sqlalchemy.orm.query.Query:
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerWMTS]:
         return super()._sub_query(self._request.dbsession.query(LayerWMTS).distinct())
 
-    def _sub_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
+    def _sub_query(
+        self, query: sqlalchemy.orm.query.Query[LayerWMTS]
+    ) -> sqlalchemy.orm.query.Query[LayerWMTS]:
         del query
-        return self.base_query()
+        return self._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
     def index(self) -> IndexResponse:
@@ -105,7 +103,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
 
     def _item_actions(self, item: LayerWMTS, readonly: bool = False) -> list[ItemAction]:
         actions: list[ItemAction] = super()._item_actions(item, readonly)
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(

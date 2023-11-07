@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,10 +27,11 @@
 
 
 import logging
-from typing import Any
+from typing import Any, Optional, TypeVar
 
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
+import sqlalchemy.orm.scoping
 import zope.event
 
 try:
@@ -42,9 +43,18 @@ except ModuleNotFoundError:
 
 
 # Should be filed on application initialization
-DBSession: sqlalchemy.orm.Session = None
-Base: sqlalchemy.ext.declarative.ConcreteBase = sqlalchemy.ext.declarative.declarative_base()
-DBSessions: dict[str, sqlalchemy.orm.Session] = {}
+DBSession: Optional[sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session]] = None
+
+_Meta = TypeVar("_Meta")
+_Type = TypeVar("_Type")
+
+
+class BaseType(sqlalchemy.ext.declarative.DeclarativeMeta, type):
+    pass
+
+
+Base: BaseType = sqlalchemy.orm.declarative_base()
+DBSessions: dict[str, sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session]] = {}
 
 
 LOG = logging.getLogger(__name__)

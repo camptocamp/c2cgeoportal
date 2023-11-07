@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,7 @@ from xml.parsers.expat import ExpatError
 
 import pyramid.threadlocal
 import requests
+import sqlalchemy.orm
 import yaml
 from bottle import MakoTemplate, template
 from c2c.template.config import config
@@ -47,9 +48,8 @@ from mako.lookup import TemplateLookup
 from mako.template import Template
 from owslib.wms import WebMapService
 from sqlalchemy.exc import NoSuchTableError, OperationalError, ProgrammingError
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 from sqlalchemy.orm.properties import ColumnProperty
-from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.util import class_mapper
 
 import c2cgeoportal_geoportal
@@ -254,6 +254,8 @@ def init_db(settings: dict[str, Any]) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.main import Theme  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         session = DBSession()
         session.query(Theme).count()
     except:  # pylint: disable=bare-except
@@ -328,6 +330,8 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         )
         from c2cgeoportal_commons.models.main import Metadata  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         enums = []
         enum_layers = settings.get("layers", {}).get("enum", {})
         for layername in list(enum_layers.keys()):
@@ -390,7 +394,9 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
 
     @staticmethod
     def _enumerate_attributes_values(
-        dbsessions: dict[str, Session], layerinfos: dict[str, Any], fieldname: str
+        dbsessions: dict[str, sqlalchemy.orm.scoped_session[sqlalchemy.orm.Session]],
+        layerinfos: dict[str, Any],
+        fieldname: str,
     ) -> set[tuple[str, ...]]:
         dbname = layerinfos.get("dbsession", "dbsession")
         translate = cast(dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
@@ -398,6 +404,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             return set()
         try:
             dbsession = dbsessions.get(dbname)
+            assert dbsession is not None
             return Layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         except Exception as e:
             table = cast(dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("table")
@@ -468,6 +475,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             init_db(self.config)
             from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
 
+            assert DBSession is not None
+
             db_session = DBSession()
 
             try:
@@ -537,7 +546,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         Color.RED,
                     )
                 )
-                print(colorize(e, Color.RED))
+                print(colorize(str(e), Color.RED))
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
         except NoSuchTableError as e:
@@ -548,7 +557,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     Color.RED,
                 )
             )
-            print(colorize(e, Color.RED))
+            print(colorize(str(e), Color.RED))
             if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
         except OperationalError as e:
@@ -559,7 +568,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     Color.RED,
                 )
             )
-            print(colorize(e, Color.RED))
+            print(colorize(str(e), Color.RED))
             if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                 raise
 
@@ -576,13 +585,15 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         filter_re = re.compile(name_regex)
 
         query = DBSession.query(object_type)
 
         interfaces = _get_config("INTERFACES")
         if has_interfaces and interfaces is not None:
-            query.join(object_type.interface).filter(Interface.name in interfaces.split("."))
+            query.join(object_type.interface).filter(Interface.name in interfaces.split("."))  # type: ignore[arg-type]
 
         for item in query.all():
             assert item.name is not None
@@ -652,6 +663,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
     def _import_layer_wmts(self, layer: "main.Layer", messages: list[str]) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         layers = [d.value for d in layer.metadatas if d.name == "queryLayers"]
         if not layers:

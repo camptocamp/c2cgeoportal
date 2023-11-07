@@ -29,7 +29,6 @@
 from functools import partial
 from typing import cast
 
-import pyramid.request
 import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
@@ -68,58 +67,55 @@ base_schema.add_unique_validator(Theme.name, Theme.id)
 class ThemeViews(TreeItemViews[Theme]):
     """The theme administration view."""
 
+    _list_fields = (
+        TreeItemViews._list_fields  # type: ignore[misc] # pylint: disable=protected-access
+        + [
+            _list_field("ordering"),
+            _list_field("public"),
+            _list_field("icon"),
+            _list_field(
+                "functionalities",
+                renderer=lambda themes: ", ".join(
+                    [
+                        f"{f.name}={f.value}"
+                        for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
+                    ]
+                ),
+                filter_column=concat(Functionality.name, "=", Functionality.value),  # type: ignore[no-untyped-call]
+            ),
+            _list_field(
+                "restricted_roles",
+                renderer=lambda themes: ", ".join([r.name or "" for r in themes.restricted_roles]),
+                filter_column=Role.name,
+            ),
+            _list_field(
+                "interfaces",
+                renderer=lambda themes: ", ".join(
+                    [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast(str, i.name))]
+                ),
+                filter_column=Interface.name,
+            ),
+        ]
+        + TreeItemViews._extra_list_fields_no_parents  # pylint: disable=protected-access
+    )
+
     _id_field = "id"
     _model = Theme
     _base_schema = base_schema
 
-    def __init__(self, request: pyramid.request.Request):
-        super().__init__(request)
-
-        self._list_fields = (
-            super()._list_fields
-            + [
-                _list_field("ordering"),
-                _list_field("public"),
-                _list_field("icon"),
-                _list_field(
-                    "functionalities",
-                    renderer=lambda themes: ", ".join(
-                        [
-                            f"{f.name}={f.value}"
-                            for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
-                        ]
-                    ),
-                    filter_column=concat(Functionality.name, "=", Functionality.value),
-                ),
-                _list_field(
-                    "restricted_roles",
-                    renderer=lambda themes: ", ".join([r.name or "" for r in themes.restricted_roles]),
-                    filter_column=Role.name,
-                ),
-                _list_field(
-                    "interfaces",
-                    renderer=lambda themes: ", ".join(
-                        [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast(str, i.name))]
-                    ),
-                    filter_column=Interface.name,
-                ),
-            ]
-            + super()._extra_list_fields_no_parents
-        )
-
-    def _base_query(self) -> sqlalchemy.orm.query.Query:
+    def _base_query(self) -> sqlalchemy.orm.query.Query[Theme]:
         return super()._sub_query(
             self._request.dbsession.query(Theme)
             .distinct()
-            .outerjoin("interfaces")
+            .outerjoin(Theme.interfaces)
             .outerjoin(Theme.restricted_roles)
             .outerjoin(Theme.functionalities)
-            .options(subqueryload("functionalities"))
-            .options(subqueryload("restricted_roles"))
-            .options(subqueryload("interfaces"))
+            .options(subqueryload(Theme.functionalities))
+            .options(subqueryload(Theme.restricted_roles))
+            .options(subqueryload(Theme.interfaces))
         )
 
-    def _sub_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
+    def _sub_query(self, query: sqlalchemy.orm.query.Query[Theme]) -> sqlalchemy.orm.query.Query[Theme]:
         del query
         return self._base_query()
 

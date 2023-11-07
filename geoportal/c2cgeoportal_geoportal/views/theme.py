@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ from lxml import etree  # nosec
 from owslib.wms import WebMapService
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url, get_url2
@@ -153,12 +153,12 @@ class Theme:
             self.settings.get("admin_interface", {}).get("available_metadata", [])
         )
 
-        self._ogcservers_cache = None
-        self._treeitems_cache = None
-        self._layerswms_cache = None
-        self._layerswmts_cache = None
-        self._layergroup_cache = None
-        self._themes_cache = None
+        self._ogcservers_cache: Optional[list[main.OGCServer]] = None
+        self._treeitems_cache: Optional[list[main.TreeItem]] = None
+        self._layerswms_cache: Optional[list[main.LayerWMS]] = None
+        self._layerswmts_cache: Optional[list[main.LayerWMTS]] = None
+        self._layergroup_cache: Optional[list[main.LayerGroup]] = None
+        self._themes_cache: Optional[list[main.Theme]] = None
 
     def _get_metadata(
         self, item: main.TreeItem, metadata: str, errors: set[str]
@@ -311,20 +311,25 @@ class Theme:
 
         return url, content, errors
 
-    def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.Query:
+    def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.RowReturningQuery[tuple[str]]:
         """Create an SQLAlchemy query for Layer and for the role identified to by ``role_id``."""
-        query = models.DBSession.query(main.Layer.name).filter(main.Layer.public.is_(True))
+
+        assert models.DBSession is not None
+
+        query: sqlalchemy.orm.query.RowReturningQuery[tuple[str]] = models.DBSession.query(
+            main.Layer.name
+        ).filter(main.Layer.public.is_(True))
 
         if interface is not None:
             query = query.join(main.Layer.interfaces)
             query = query.filter(main.Interface.name == interface)
 
-        query2 = get_protected_layers_query(self.request, None, what=main.LayerWMS.name)
+        query2 = get_protected_layers_query(self.request, None, what=main.LayerWMS.name)  # type: ignore[arg-type]
         if interface is not None:
             query2 = query2.join(main.Layer.interfaces)
             query2 = query2.filter(main.Interface.name == interface)
         query = query.union(query2)
-        query3 = get_protected_layers_query(self.request, None, what=main.LayerWMTS.name)
+        query3 = get_protected_layers_query(self.request, None, what=main.LayerWMTS.name)  # type: ignore[arg-type]
         if interface is not None:
             query3 = query3.join(main.Layer.interfaces)
             query3 = query3.filter(main.Interface.name == interface)
@@ -465,6 +470,8 @@ class Theme:
         return errors
 
     def _fill_editable(self, layer_theme: dict[str, Any], layer: main.Layer) -> set[str]:
+        assert models.DBSession is not None
+
         errors = set()
         try:
             if self.request.user:
@@ -715,6 +722,8 @@ class Theme:
         return wms, set()
 
     def _load_tree_items(self) -> None:
+        assert models.DBSession is not None
+
         # Populate sqlalchemy session.identity_map to reduce the number of database requests.
         self._ogcservers_cache = models.DBSession.query(main.OGCServer).all()
         self._treeitems_cache = models.DBSession.query(main.TreeItem).all()
@@ -747,6 +756,9 @@ class Theme:
         self, interface: str = "desktop", filter_themes: bool = True, min_levels: int = 1
     ) -> tuple[list[dict[str, Any]], set[str]]:
         """Return theme information for the role identified by ``role_id``."""
+
+        assert models.DBSession is not None
+
         self._load_tree_items()
         errors = set()
         layers = self._layers(interface)
@@ -951,12 +963,16 @@ class Theme:
         return url_internal_wfs, url, url_wfs
 
     async def _preload(self, errors: set[str]) -> None:
+        assert models.DBSession is not None
         tasks = set()
+
         for ogc_server in models.DBSession.query(main.OGCServer).all():
             # Don't load unused OGC servers, required for landing page, because the related OGC server
             # will be on error in those functions.
             nb_layers = (
-                models.DBSession.query(sqlalchemy.func.count(main.LayerWMS.id))
+                models.DBSession.query(
+                    sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
+                )
                 .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
                 .one()
             )
@@ -1088,6 +1104,8 @@ class Theme:
         set_common_headers(self.request, "themes", Cache.PRIVATE)
 
         async def get_theme() -> dict[str, Union[dict[str, Any], list[str]]]:
+            assert models.DBSession is not None
+
             export_themes = sets in ("all", "themes")
             export_group = group is not None and sets in ("all", "group")
             export_background = background_layers_group is not None and sets in ("all", "background")
@@ -1105,7 +1123,9 @@ class Theme:
             result["ogcServers"] = {}
             for ogc_server in models.DBSession.query(main.OGCServer).all():
                 nb_layers = (
-                    models.DBSession.query(sqlalchemy.func.count(main.LayerWMS.id))
+                    models.DBSession.query(
+                        sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
+                    )
                     .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
                     .one()
                 )
@@ -1148,7 +1168,7 @@ class Theme:
                             if name in attributes:
                                 del attributes[name]
 
-                result["ogcServers"][ogc_server.name] = {
+                result["ogcServers"][ogc_server.name] = {  # type: ignore[call-overload]
                     "url": url.url() if url else None,
                     "urlWfs": url_wfs.url() if url_wfs else None,
                     "type": ogc_server.type,
@@ -1213,9 +1233,12 @@ class Theme:
     async def _get_group(
         self, group: main.LayerGroup, interface: main.Interface
     ) -> tuple[Optional[dict[str, Any]], set[str]]:
+        assert models.DBSession is not None
+
         layers = self._layers(interface)
         try:
-            group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
+            group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()  # type: ignore[arg-type]
+            assert isinstance(group_db, main.LayerGroup)
             return await self._group(group_db.name, group_db, layers, depth=2, dim=DimensionInformation())
         except NoResultFound:
             return (
@@ -1226,8 +1249,10 @@ class Theme:
                 },
             )
 
-    @view_config(route_name="ogc_server_clear_cache", renderer="json")  # type: ignore
+    @view_config(route_name="ogc_server_clear_cache", renderer="json")  # type: ignore[misc]
     def ogc_server_clear_cache_view(self) -> dict[str, Any]:
+        assert models.DBSession is not None
+
         self._ogc_server_clear_cache(
             models.DBSession.query(main.OGCServer).filter_by(id=self.request.matchdict.get("id")).one()
         )

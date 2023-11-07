@@ -29,8 +29,8 @@
 from functools import partial
 from typing import Generic, TypeVar, cast
 
-import pyramid.request
 import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
@@ -39,45 +39,38 @@ from c2cgeoportal_commons.models.main import Interface, Layer
 
 _list_field = partial(ListField, Layer)  # type: ignore[var-annotated]
 
-
 _T = TypeVar("_T", bound=Layer)
 
 
 class LayerViews(TreeItemViews[_T], Generic[_T]):
     """The layer administration view."""
 
-    def __init__(self, request: pyramid.request.Request):
-        super().__init__(request)
+    _list_fields = TreeItemViews._list_fields + [  # type: ignore[misc] # pylint: disable=protected-access
+        _list_field("public"),
+        _list_field("geo_table"),
+        _list_field("exclude_properties"),
+    ]
 
-        self._list_fields = super()._list_fields + [
-            _list_field("public"),
-            _list_field("geo_table"),
-            _list_field("exclude_properties"),
-        ]
-
-        self._extra_list_fields = [
-            _list_field(
-                "interfaces",
-                renderer=lambda layer_wms: ", ".join(
-                    [i.name or "" for i in sorted(layer_wms.interfaces, key=lambda i: cast(str, i.name))]
-                ),
-                sort_column=Interface.name,
-                filter_column=Interface.name,
+    _extra_list_fields = [
+        _list_field(
+            "interfaces",
+            renderer=lambda layer_wms: ", ".join(
+                [i.name or "" for i in sorted(layer_wms.interfaces, key=lambda i: cast(str, i.name))]
             ),
-            _list_field(
-                "restrictionareas",
-                renderer=lambda layer_wms: ", ".join(
-                    [
-                        r.name or ""
-                        for r in sorted(layer_wms.restrictionareas, key=lambda r: cast(str, r.name))
-                    ]
-                ),
+            sort_column=Interface.name,
+            filter_column=Interface.name,
+        ),
+        _list_field(
+            "restrictionareas",
+            renderer=lambda layer_wms: ", ".join(
+                [r.name or "" for r in sorted(layer_wms.restrictionareas, key=lambda r: cast(str, r.name))]
             ),
-        ] + super()._extra_list_fields
+        ),
+    ] + TreeItemViews._extra_list_fields  # pylint: disable=protected-access
 
-    def _sub_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
+    def _sub_query(self, query: sqlalchemy.orm.query.Query[Layer]) -> sqlalchemy.orm.query.Query[Layer]:
         return super()._sub_query(
             query.outerjoin(Layer.interfaces)
-            .options(subqueryload("interfaces"))
-            .options(subqueryload("restrictionareas"))
+            .options(subqueryload(Layer.interfaces))
+            .options(subqueryload(Layer.restrictionareas))
         )

@@ -39,6 +39,14 @@ prospector: build-checks ## Run the prospector checker
 	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pyflakes --version
 	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) prospector --output-format=pylint --die-on-tool-error
 
+.PHONY: poetry-dev
+poetry-dev:
+	poetry install --with=dev
+
+.PHONY: prospector-poetry
+prospector-poetry: poetry-dev
+	poetry run prospector --output-format=pylint --die-on-tool-error
+
 .PHONY: additionallint
 additionallint: ## Check that we should replace some strings in the code
 	# Verify that we don't directly use the CI project name in the scaffolds

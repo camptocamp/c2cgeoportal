@@ -1,4 +1,5 @@
 import pytest
+import sqlalchemy.exc
 import transaction
 from pyramid import testing
 from pyramid.paster import bootstrap
@@ -14,9 +15,9 @@ from c2cgeoportal_commons.testing.initializedb import truncate_tables
 def dbsession(settings):
     generate_mappers()
     engine = get_engine(settings)
-    truncate_tables(engine)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
+    truncate_tables(session)
     yield session
 
 
@@ -25,7 +26,10 @@ def dbsession(settings):
 def transact(dbsession):
     t = dbsession.begin_nested()
     yield t
-    t.rollback()
+    try:
+        t.rollback()
+    except sqlalchemy.exc.ResourceClosedError:
+        print("The transaction was already closed")
     dbsession.expire_all()
 
 

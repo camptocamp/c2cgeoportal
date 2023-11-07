@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021, Camptocamp SA
+# Copyright (c) 2019-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -63,9 +63,9 @@ def downgrade() -> None:
         Column("id", Integer, ForeignKey(schema + ".layer.id", ondelete="cascade"), primary_key=True),
         Column("is_checked", Boolean, default=True),
         Column("icon", Unicode),
-        Column("layer_type", Unicode(12)),
+        Column("layer_type", Unicode(12)),  # type: ignore[no-untyped-call]
         Column("url", Unicode),
-        Column("image_type", Unicode(10)),
+        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
         Column("style", Unicode),
         Column("dimensions", Unicode),
         Column("matrix_set", Unicode),
@@ -82,8 +82,8 @@ def downgrade() -> None:
         Column("max_resolution", Float),
         Column("disclaimer", Unicode),
         Column("identifier_attribute_field", Unicode),
-        Column("time_mode", Unicode(8)),
-        Column("time_widget", Unicode(10), default="slider"),
+        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
+        Column("time_widget", Unicode(10), default="slider"),  # type: ignore[no-untyped-call]
         Column("layer", Unicode),
         schema=schema,
     )

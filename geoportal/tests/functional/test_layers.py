@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
+from typing import TYPE_CHECKING, Any, Optional
 from unittest import TestCase
 
 from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request
@@ -35,12 +36,15 @@ from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models.main import Metadata
+
 
 class TestLayers(TestCase):
     _table_index = 0
     _tables = None
 
-    def setup_method(self, _):
+    def setup_method(self, _: Any) -> None:
         setup_module()
 
         import transaction
@@ -71,26 +75,30 @@ class TestLayers(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _: Any) -> None:
         import transaction
+
+        from c2cgeoportal_commons.models import DBSession
+
+        transaction.abort()
 
         cleanup_db()
 
         if self._tables is not None:
             for table in self._tables[::-1]:
-                table.drop()
+                table.drop(bind=DBSession.c2c_rw_bind, checkfirst=True)
 
         transaction.commit()
 
     def _create_layer(
         self,
-        public=False,
-        none_area=False,
-        attr_list=False,
-        exclude_properties=False,
-        metadatas=None,
-        geom_type=False,
-    ):
+        public: bool = False,
+        none_area: bool = False,
+        attr_list: bool = False,
+        exclude_properties: bool = False,
+        metadatas: Optional[list["Metadata"]] = None,
+        geom_type: bool = False,
+    ) -> None:
         """
         This function is central for this test class.
 
@@ -111,106 +119,105 @@ class TestLayers(TestCase):
         id = self.__class__._table_index
 
         engine = DBSession.c2c_rw_bind
-        connection = engine.connect()
+        with engine.begin() as connection:
+            if not self.metadata:
+                self.metadata = declarative_base().metadata
 
-        if not self.metadata:
-            self.metadata = declarative_base(bind=engine).metadata
+            tablename = f"table_{id:d}"
 
-        tablename = f"table_{id:d}"
-
-        table1 = Table(
-            f"{tablename!s}_child",
-            self.metadata,
-            Column("id", types.Integer, primary_key=True),
-            Column("name", types.Unicode),
-            schema="public",
-        )
-        if geom_type:
-            table1.append_column(Column("geom", Geometry("POINT", srid=21781)))
-        else:
-            table1.append_column(Column("geom", Geometry(srid=21781)))
-        self._tables.append(table1)
-
-        table2 = Table(
-            tablename,
-            self.metadata,
-            Column("id", types.Integer, primary_key=True),
-            Column("child_id", types.Integer, ForeignKey(f"public.{tablename!s}_child.id")),
-            Column("name", types.Unicode),
-            Column(
-                "email",
-                types.Unicode,
-                CheckConstraint(
-                    """email ~* '^[A-Za-z0-9._%%-]
-                                      +@[A-Za-z0-9.-]+[.][A-Za-z]+$'""",
-                    name="proper_email",
-                ),
-            ),
-            Column("last_update_user", types.Unicode),
-            Column("last_update_date", types.DateTime),
-            schema="public",
-        )
-        if geom_type:
-            table2.append_column(Column("geom", Geometry("POINT", srid=21781)))
-        else:
-            table2.append_column(Column("geom", Geometry(srid=21781)))
-        self._tables.append(table2)
-
-        table1.drop(checkfirst=True)
-        table2.drop(checkfirst=True)
-        table1.create()
-        table2.create()
-
-        ins = table1.insert().values(name="c1é")
-        c1_id = connection.execute(ins).inserted_primary_key[0]
-        ins = table1.insert().values(name="c2é")
-        c2_id = connection.execute(ins).inserted_primary_key[0]
-
-        ins = table2.insert().values(child_id=c1_id, name="foo", geom=WKTElement("POINT(5 45)", 21781))
-        connection.execute(ins)
-        ins = table2.insert().values(child_id=c2_id, name="bar", geom=WKTElement("POINT(6 46)", 21781))
-        connection.execute(ins)
-        if attr_list:
-            ins = table2.insert().values(
-                child_id=c2_id, name="aaa,bbb,foo", geom=WKTElement("POINT(6 46)", 21781)
+            table1 = Table(
+                f"{tablename!s}_child",
+                self.metadata,
+                Column("id", types.Integer, primary_key=True),
+                Column("name", types.Unicode),
+                schema="public",
             )
+            if geom_type:
+                table1.append_column(Column("geom", Geometry("POINT", srid=21781)))
+            else:
+                table1.append_column(Column("geom", Geometry(srid=21781)))
+            self._tables.append(table1)
+
+            table2 = Table(
+                tablename,
+                self.metadata,
+                Column("id", types.Integer, primary_key=True),
+                Column("child_id", types.Integer, ForeignKey(f"public.{tablename!s}_child.id")),
+                Column("name", types.Unicode),
+                Column(
+                    "email",
+                    types.Unicode,
+                    CheckConstraint(
+                        """email ~* '^[A-Za-z0-9._%%-]
+                                        +@[A-Za-z0-9.-]+[.][A-Za-z]+$'""",
+                        name="proper_email",
+                    ),
+                ),
+                Column("last_update_user", types.Unicode),
+                Column("last_update_date", types.DateTime),
+                schema="public",
+            )
+            if geom_type:
+                table2.append_column(Column("geom", Geometry("POINT", srid=21781)))
+            else:
+                table2.append_column(Column("geom", Geometry(srid=21781)))
+            self._tables.append(table2)
+
+            table1.drop(checkfirst=True, bind=engine)
+            table2.drop(checkfirst=True, bind=engine)
+            table1.create(bind=engine)
+            table2.create(bind=engine)
+
+            ins = table1.insert().values(name="c1é")
+            c1_id = connection.execute(ins).inserted_primary_key[0]
+            ins = table1.insert().values(name="c2é")
+            c2_id = connection.execute(ins).inserted_primary_key[0]
+
+            ins = table2.insert().values(child_id=c1_id, name="foo", geom=WKTElement("POINT(5 45)", 21781))
             connection.execute(ins)
+            ins = table2.insert().values(child_id=c2_id, name="bar", geom=WKTElement("POINT(6 46)", 21781))
+            connection.execute(ins)
+            if attr_list:
+                ins = table2.insert().values(
+                    child_id=c2_id, name="aaa,bbb,foo", geom=WKTElement("POINT(6 46)", 21781)
+                )
+                connection.execute(ins)
 
-        ogc_server = DBSession.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one()
-        layer = LayerWMS()
-        layer.id = id
-        layer.name = str(id)
-        layer.ogc_server = ogc_server
-        layer.geo_table = tablename
-        layer.public = public
-        layer.interface = [self.main]
+            ogc_server = DBSession.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one()
+            layer = LayerWMS()
+            layer.id = id
+            layer.name = str(id)
+            layer.ogc_server = ogc_server
+            layer.geo_table = tablename
+            layer.public = public
+            layer.interface = [self.main]
 
-        if exclude_properties:
-            layer.exclude_properties = "name"
+            if exclude_properties:
+                layer.exclude_properties = "name"
 
-        if metadatas:
-            layer.metadatas = metadatas
+            if metadatas:
+                layer.metadatas = metadatas
 
-        DBSession.add(layer)
+            DBSession.add(layer)
 
-        if not public:
-            ra = RestrictionArea()
-            ra.name = "__test_ra"
-            ra.layers = [layer]
-            ra.roles = [self.role]
-            ra.readwrite = True
-            if not none_area:
-                poly = "POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))"
-                ra.area = WKTElement(poly, srid=21781)
-            DBSession.add(ra)
+            if not public:
+                ra = RestrictionArea()
+                ra.name = "__test_ra"
+                ra.layers = [layer]
+                ra.roles = [self.role]
+                ra.readwrite = True
+                if not none_area:
+                    poly = "POLYGON((4 44, 4 46, 6 46, 6 44, 4 44))"
+                    ra.area = WKTElement(poly, srid=21781)
+                DBSession.add(ra)
 
-        transaction.commit()
+            transaction.commit()
 
-        self.layer_ids.append(id)
-        return id
+            self.layer_ids.append(id)
+            return id
 
     @staticmethod
-    def _get_request(layerid, username=None):
+    def _get_request(layerid, username=None) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -220,7 +227,7 @@ class TestLayers(TestCase):
             request.user = DBSession.query(User).filter_by(username=username).one()
         return request
 
-    def test_read_public(self):
+    def test_read_public(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -232,7 +239,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEqual([f.properties["child"] for f in collection.features], ["c1é", "c2é"])
 
-    def test_read_many_no_auth(self):
+    def test_read_many_no_auth(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -243,7 +250,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_many)
 
-    def test_read_many(self):
+    def test_read_many(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -256,7 +263,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         assert [f.properties["child"] for f in collection.features] == ["c1é"]
 
-    def test_read_many_layer_not_found(self):
+    def test_read_many_layer_not_found(self) -> None:
         from pyramid.httpexceptions import HTTPNotFound
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -267,7 +274,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPNotFound, layers.read_many)
 
-    def test_read_many_multi(self):
+    def test_read_many_multi(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -286,7 +293,7 @@ class TestLayers(TestCase):
             [f.properties["__layer_id__"] for f in collection.features], [layer_id1, layer_id2, layer_id3]
         )
 
-    def test_read_one_public(self):
+    def test_read_one_public(self) -> None:
         from geojson.feature import Feature
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -302,7 +309,7 @@ class TestLayers(TestCase):
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
 
-    def test_read_one_public_notfound(self):
+    def test_read_one_public_notfound(self) -> None:
         from pyramid.httpexceptions import HTTPNotFound
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -315,7 +322,7 @@ class TestLayers(TestCase):
         feature = layers.read_one()
         self.assertTrue(isinstance(feature, HTTPNotFound))
 
-    def test_read_one_no_auth(self):
+    def test_read_one_no_auth(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -327,7 +334,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_one)
 
-    def test_read_one_no_perm(self):
+    def test_read_one_no_perm(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -339,7 +346,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_one)
 
-    def test_read_one(self):
+    def test_read_one(self) -> None:
         from geojson.feature import Feature
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -355,7 +362,7 @@ class TestLayers(TestCase):
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
 
-    def test_count(self):
+    def test_count(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -365,7 +372,7 @@ class TestLayers(TestCase):
         response = layers.count()
         assert response == 2
 
-    def test_create_no_auth(self):
+    def test_create_no_auth(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -377,7 +384,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
-    def test_create_no_perm(self):
+    def test_create_no_perm(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -389,7 +396,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
-    def test_create(self):
+    def test_create(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -403,7 +410,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         assert len(collection.features) == 2
 
-    def test_create_with_constraint_fail_integrity(self):
+    def test_create_with_constraint_fail_integrity(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -417,7 +424,7 @@ class TestLayers(TestCase):
         self.assertTrue("message" in response)
         assert response["error_type"] == "integrity_error"
 
-    def test_create_log(self):
+    def test_create_log(self) -> None:
         from datetime import datetime
 
         from geojson.feature import FeatureCollection
@@ -449,7 +456,7 @@ class TestLayers(TestCase):
         assert properties.last_update_user == request.user.id
         self.assertIsInstance(properties.last_update_date, datetime)
 
-    def test_create_validation_fails(self):
+    def test_create_validation_fails(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -464,7 +471,7 @@ class TestLayers(TestCase):
         assert response["error_type"] == "validation_error"
         assert response["message"] == "Too few points in geometry component[5 45]"
 
-    def test_create_no_validation(self):
+    def test_create_no_validation(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_commons.models.main import Metadata
@@ -481,7 +488,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         assert len(collection.features) == 2
 
-    def test_update_no_auth(self):
+    def test_update_no_auth(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -494,7 +501,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
-    def test_update_no_perm_dst_geom(self):
+    def test_update_no_perm_dst_geom(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -507,7 +514,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
-    def test_update_no_perm_src_geom(self):
+    def test_update_no_perm_src_geom(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -520,7 +527,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
-    def test_update(self):
+    def test_update(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -534,7 +541,7 @@ class TestLayers(TestCase):
         assert feature.name == "foobar"
         assert feature.child == "c2é"
 
-    def test_update_log(self):
+    def test_update_log(self) -> None:
         from datetime import datetime
 
         from c2cgeoportal_commons.models.main import Metadata
@@ -555,7 +562,7 @@ class TestLayers(TestCase):
         assert feature.last_update_user == request.user.id
         self.assertIsInstance(feature.last_update_date, datetime)
 
-    def test_update_validation_fails(self):
+    def test_update_validation_fails(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -571,7 +578,7 @@ class TestLayers(TestCase):
         assert response["error_type"] == "validation_error"
         assert response["message"] == "Too few points in geometry component[5 45]"
 
-    def test_update_validation_fails_simple(self):
+    def test_update_validation_fails_simple(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -587,7 +594,7 @@ class TestLayers(TestCase):
         assert response["error_type"] == "validation_error"
         assert response["message"] == "Not simple"
 
-    def test_update_validation_fails_constraint(self):
+    def test_update_validation_fails_constraint(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -602,7 +609,7 @@ class TestLayers(TestCase):
         self.assertTrue("message" in response)
         assert response["error_type"] == "integrity_error"
 
-    def test_update_no_validation(self):
+    def test_update_no_validation(self) -> None:
         from c2cgeoportal_commons.models.main import Metadata
         from c2cgeoportal_geoportal.views.layers import Layers
 
@@ -618,7 +625,7 @@ class TestLayers(TestCase):
         assert feature.name == "foobar"
         assert feature.child == "c2é"
 
-    def test_delete_no_auth(self):
+    def test_delete_no_auth(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -630,7 +637,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.delete)
 
-    def test_delete_no_perm(self):
+    def test_delete_no_perm(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -642,7 +649,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.delete)
 
-    def test_delete(self):
+    def test_delete(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -653,7 +660,7 @@ class TestLayers(TestCase):
         response = layers.delete()
         assert response.status_int == 204
 
-    def test_metadata_no_auth(self):
+    def test_metadata_no_auth(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -664,7 +671,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.metadata)
 
-    def test_metadata(self):
+    def test_metadata(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer()
@@ -676,7 +683,7 @@ class TestLayers(TestCase):
         self.assertTrue(hasattr(cls, "name"))
         self.assertTrue("child" in cls.__dict__)
 
-    def test_metadata_log(self):
+    def test_metadata_log(self) -> None:
         from c2cgeoportal_commons.models.main import Metadata
         from c2cgeoportal_geoportal.views.layers import Layers
 
@@ -692,7 +699,7 @@ class TestLayers(TestCase):
         self.assertFalse(hasattr(cls, "last_update_date"))
         self.assertFalse(hasattr(cls, "last_update_user"))
 
-    def test_metadata_exclude_properties(self):
+    def test_metadata_exclude_properties(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer(exclude_properties=True)
@@ -702,7 +709,7 @@ class TestLayers(TestCase):
         cls = layers.metadata()
         self.assertFalse(hasattr(cls, "name"))
 
-    def test_metadata_columns_order(self):
+    def test_metadata_columns_order(self) -> None:
         from c2cgeoportal_commons.models.main import Metadata
         from c2cgeoportal_geoportal.views.layers import Layers
 
@@ -716,7 +723,7 @@ class TestLayers(TestCase):
 
         self.assertEqual(attributes_order.split(","), cls.__attributes_order__)
 
-    def test_metadata_editing_enumeration_config(self):
+    def test_metadata_editing_enumeration_config(self) -> None:
         import json
 
         from c2cgeoportal_commons.models.main import Metadata
@@ -734,7 +741,7 @@ class TestLayers(TestCase):
         assert json.loads(editing_enumerations) == cls.__enumerations_config__
 
     # # # With None area # # #
-    def test_read_public_none_area(self):
+    def test_read_public_none_area(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -747,7 +754,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         self.assertEqual([f.properties["child"] for f in collection.features], ["c1é", "c2é"])
 
-    def test_read_many_no_auth_none_area(self):
+    def test_read_many_no_auth_none_area(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -758,7 +765,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_many)
 
-    def test_read_many_none_area(self):
+    def test_read_many_none_area(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -773,7 +780,7 @@ class TestLayers(TestCase):
         assert collection.features[0].properties["child"] == "c1é"
         assert collection.features[1].properties["child"] == "c2é"
 
-    def test_read_one_public_none_area(self):
+    def test_read_one_public_none_area(self) -> None:
         from geojson.feature import Feature
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -789,7 +796,7 @@ class TestLayers(TestCase):
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
 
-    def test_read_one_no_auth_none_area(self):
+    def test_read_one_no_auth_none_area(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -801,7 +808,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.read_one)
 
-    def test_read_one_none_area(self):
+    def test_read_one_none_area(self) -> None:
         from geojson.feature import Feature
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -817,7 +824,7 @@ class TestLayers(TestCase):
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
 
-    def test_count_none_area(self):
+    def test_count_none_area(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
@@ -827,7 +834,7 @@ class TestLayers(TestCase):
         response = layers.count()
         assert response == 2
 
-    def test_create_no_auth_none_area(self):
+    def test_create_no_auth_none_area(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -839,7 +846,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
-    def test_create_none_area(self):
+    def test_create_none_area(self) -> None:
         from geojson.feature import FeatureCollection
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -853,7 +860,7 @@ class TestLayers(TestCase):
         self.assertTrue(isinstance(collection, FeatureCollection))
         assert len(collection.features) == 2
 
-    def test_update_no_auth_none_area(self):
+    def test_update_no_auth_none_area(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -866,7 +873,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
-    def test_update_none_area(self):
+    def test_update_none_area(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
@@ -880,7 +887,7 @@ class TestLayers(TestCase):
         assert feature.name == "foobar"
         assert feature.child == "c2é"
 
-    def test_delete_no_auth_none_area(self):
+    def test_delete_no_auth_none_area(self) -> None:
         from pyramid.httpexceptions import HTTPForbidden
 
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -892,7 +899,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.delete)
 
-    def test_delete_none_area(self):
+    def test_delete_none_area(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer(none_area=True)
@@ -903,7 +910,7 @@ class TestLayers(TestCase):
         response = layers.delete()
         assert response.status_int == 204
 
-    def test_enumerate_attribute_values(self):
+    def test_enumerate_attribute_values(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer(public=True)
@@ -922,7 +929,7 @@ class TestLayers(TestCase):
         response = layers.enumerate_attribute_values()
         self.assertEqual(response, {"items": [{"value": "bar"}, {"value": "foo"}]})
 
-    def test_enumerate_attribute_values_list(self):
+    def test_enumerate_attribute_values_list(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
 
         layer_id = self._create_layer(public=True, attr_list=True)

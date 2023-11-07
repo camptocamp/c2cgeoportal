@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any
+
 import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
@@ -34,7 +36,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from c2cgeoportal_commons.models.main import Role
 
 
-def roles_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+def roles_schema_node(prop: InstrumentedAttribute[Any]) -> colander.SequenceSchema:
     """Get the schema of all the items."""
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Role, None),

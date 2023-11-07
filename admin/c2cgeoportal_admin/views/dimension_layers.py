@@ -30,7 +30,7 @@ from functools import partial
 from itertools import groupby
 from typing import Generic, TypeVar, cast
 
-import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
@@ -38,7 +38,6 @@ from c2cgeoportal_admin.views.layers import LayerViews
 from c2cgeoportal_commons.models.main import DimensionLayer
 
 _list_field = partial(ListField, DimensionLayer)  # type: ignore[var-annotated]
-
 
 _T = TypeVar("_T", bound=DimensionLayer)
 
@@ -58,5 +57,7 @@ class DimensionLayerViews(LayerViews[_T], Generic[_T]):
         )
     ] + LayerViews._extra_list_fields  # pylint: disable=protected-access
 
-    def _sub_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
-        return super()._sub_query(query.options(subqueryload("dimensions")))
+    def _sub_query(
+        self, query: sqlalchemy.orm.query.Query[DimensionLayer]
+    ) -> sqlalchemy.orm.query.Query[DimensionLayer]:
+        return super()._sub_query(query.options(subqueryload(DimensionLayer.dimensions)))

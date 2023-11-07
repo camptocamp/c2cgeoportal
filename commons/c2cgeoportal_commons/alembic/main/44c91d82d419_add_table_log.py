@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Camptocamp SA
+# Copyright (c) 2023-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -50,14 +50,14 @@ def upgrade() -> None:
 
     op.create_table(
         "log",
-        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("id", sa.Integer, nullable=False),
         sa.Column("date", sa.DateTime(timezone=True), nullable=False),
         sa.Column("action", sa.Unicode, nullable=False),
         sa.Column("element_type", sa.String(length=50), nullable=False),
-        sa.Column("element_id", sa.Integer(), nullable=False),
-        sa.Column("element_name", sa.Unicode(), nullable=False),
-        sa.Column("element_url_table", sa.Unicode(), nullable=False),
-        sa.Column("username", sa.Unicode(), nullable=False),
+        sa.Column("element_id", sa.Integer, nullable=False),
+        sa.Column("element_name", sa.Unicode, nullable=False),
+        sa.Column("element_url_table", sa.Unicode, nullable=False),
+        sa.Column("username", sa.Unicode, nullable=False),
         sa.PrimaryKeyConstraint("id"),
         schema=schema,
     )

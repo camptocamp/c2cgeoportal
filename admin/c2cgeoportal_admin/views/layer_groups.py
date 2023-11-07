@@ -29,6 +29,7 @@
 from functools import partial
 
 import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -60,18 +61,18 @@ base_schema.add(parent_id_node(TreeGroup))
 class LayerGroupsViews(TreeItemViews[LayerGroup]):
     """The layer group administration view."""
 
+    _list_fields = TreeItemViews._list_fields + TreeItemViews._extra_list_fields  # type: ignore[misc] # pylint: disable=protected-access
+
     _id_field = "id"
     _model = LayerGroup
     _base_schema = base_schema
 
-    def __init__(self, request):
-        super().__init__(request)
-        self._list_fields = super()._list_fields + super()._extra_list_fields
-
-    def _base_query(self) -> sqlalchemy.orm.query.Query:
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerGroup]:
         return super()._sub_query(self._request.dbsession.query(LayerGroup).distinct())
 
-    def _sub_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
+    def _sub_query(
+        self, query: sqlalchemy.orm.query.Query[LayerGroup]
+    ) -> sqlalchemy.orm.query.Query[LayerGroup]:
         del query
         return self._base_query()
 

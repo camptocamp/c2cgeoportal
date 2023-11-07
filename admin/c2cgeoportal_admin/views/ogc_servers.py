@@ -121,7 +121,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
 
     def _item_actions(self, item: OGCServer, readonly: bool = False) -> list[Any]:
         actions = cast(list[Any], super()._item_actions(item, readonly))
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(
@@ -214,6 +214,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
                 clean=clean,
             )
 
+            ogc_server_id = obj.id
             if "check" in self._request.params:
                 synchronizer.check_layers()
 
@@ -226,7 +227,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
                 self._create_log(LogAction.SYNCHRONIZE, obj)
 
             return {
-                "ogcserver": obj,
+                "ogcserver": self._request.dbsession.query(OGCServer).get(ogc_server_id),
                 "success": True,
                 "report": synchronizer.report(),
             }

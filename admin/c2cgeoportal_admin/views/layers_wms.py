@@ -29,7 +29,6 @@
 from functools import partial
 from typing import Optional
 
-import pyramid.request
 import sqlalchemy
 from c2cgeoform import JSONDict
 from c2cgeoform.schema import GeoFormSchemaNode
@@ -71,34 +70,38 @@ base_schema.add(parent_id_node(LayerGroup))
 class LayerWmsViews(DimensionLayerViews[LayerWMS]):
     """The WMS layer administration view."""
 
+    _list_fields = (
+        DimensionLayerViews._list_fields  # pylint: disable=protected-access
+        + [
+            _list_field(
+                "ogc_server",
+                renderer=lambda layer_wms: layer_wms.ogc_server.name,
+                sort_column=OGCServer.name,
+                filter_column=OGCServer.name,
+            ),
+            _list_field("layer"),
+            _list_field("style"),
+            _list_field("valid", label="Valid"),
+            _list_field("invalid_reason", visible=False),
+            _list_field("time_mode"),
+            _list_field("time_widget"),
+        ]
+        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
+    )
     _id_field = "id"
     _model = LayerWMS
     _base_schema = base_schema
 
-    def __init__(self, request: pyramid.request.Request) -> None:
-        super().__init__(request)
-        self._list_fields = (
-            super()._list_fields
-            + [
-                _list_field(
-                    "ogc_server",
-                    renderer=lambda layer_wms: layer_wms.ogc_server.name,
-                    sort_column=OGCServer.name,
-                    filter_column=OGCServer.name,
-                ),
-                _list_field("layer"),
-                _list_field("style"),
-                _list_field("valid", label="Valid"),
-                _list_field("invalid_reason", visible=False),
-                _list_field("time_mode"),
-                _list_field("time_widget"),
-            ]
-            + super()._extra_list_fields
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerWMS]:
+        return super()._sub_query(
+            self._request.dbsession.query(LayerWMS, OGCServer.name).distinct().outerjoin(LayerWMS.ogc_server)
         )
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
+    def _sub_query(
+        self, query: Optional[sqlalchemy.orm.query.Query[LayerWMS]]
+    ) -> sqlalchemy.orm.query.Query[LayerWMS]:
         del query
-        return super()._sub_query(self._request.dbsession.query(LayerWMS).distinct().outerjoin("ogc_server"))
+        return self._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
     def index(self) -> IndexResponse:
@@ -110,7 +113,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
 
     def _item_actions(self, item: LayerWMS, readonly: bool = False) -> list[ItemAction]:
         actions: list[ItemAction] = super()._item_actions(item, readonly)
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(
