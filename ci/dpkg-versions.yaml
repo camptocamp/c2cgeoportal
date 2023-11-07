@@ -196,7 +196,6 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/ucf: '3.0043'
   ubuntu_22_04/unzip: 6.0-26ubuntu3.1
   ubuntu_22_04/usrmerge: 25ubuntu2
-  ubuntu_22_04/xorg: 1:7.7+23ubuntu2
   ubuntu_22_04/xkeyboard-config: 2.33-1
   ubuntu_22_04/zlib: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish-config:latest:
@@ -532,7 +531,6 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/vim: 2:8.2.3995-1ubuntu2.13
   ubuntu_22_04/vim-addon-manager: 0.5.10
   ubuntu_22_04/vim-editorconfig: 0.3.3+dfsg-2.1
-  ubuntu_22_04/xorg: 1:7.7+23ubuntu2
   ubuntu_22_04/xkeyboard-config: 2.33-1
   ubuntu_22_04/zlib: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfishapp-geoportal:latest:
@@ -733,7 +731,6 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/ucf: '3.0043'
   ubuntu_22_04/unzip: 6.0-26ubuntu3.1
   ubuntu_22_04/usrmerge: 25ubuntu2
-  ubuntu_22_04/xorg: 1:7.7+23ubuntu2
   ubuntu_22_04/xkeyboard-config: 2.33-1
   ubuntu_22_04/zlib: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
@@ -984,7 +981,6 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3-28-gdal3-7: &qgis3-28-gdal3-7
   ubuntu_22_04/ucf: '3.0043'
   ubuntu_22_04/unzip: 6.0-26ubuntu3.1
   ubuntu_22_04/usrmerge: 25ubuntu2
-  ubuntu_22_04/xorg: 1:7.7+23ubuntu2
   ubuntu_22_04/x11-xkb-utils: 7.7+5build4
   ubuntu_22_04/xauth: 1:1.1-1build2
   ubuntu_22_04/xfonts-100dpi: 1:1.0.4+nmu1.1
@@ -1278,7 +1274,6 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr: &qgislr
   ubuntu_22_04/xfonts-scalable: 1:1.0.3-1.2ubuntu1
   ubuntu_22_04/xfonts-utils: 1:7.7+6build2
   ubuntu_22_04/xkeyboard-config: 2.33-1
-  ubuntu_22_04/xorg: 1:7.7+23ubuntu2
   ubuntu_22_04/xorg-server: 2:21.1.4-2ubuntu1.7~22.04.2
   ubuntu_22_04/xxhash: 0.8.1-1
   ubuntu_22_04/xz-utils: 5.2.5-2ubuntu1
