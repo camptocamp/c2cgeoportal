@@ -29,7 +29,7 @@ import random
 import threading
 import warnings
 from collections.abc import Iterable
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 import sqlalchemy.ext.declarative
 from papyrus.geo_interface import GeoInterface
@@ -64,7 +64,7 @@ class _AssociationProxy:
     def __get__(
         self,
         obj: sqlalchemy.ext.declarative.ConcreteBase,
-        type_: sqlalchemy.ext.declarative.DeclarativeMeta = None,
+        type_: Optional[sqlalchemy.ext.declarative.DeclarativeMeta] = None,
     ) -> Optional[Union["_AssociationProxy", str]]:
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
@@ -77,6 +77,8 @@ class _AssociationProxy:
 
     def __set__(self, obj: str, val: str) -> None:
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         o = getattr(obj, self.target)
         # if the obj as no child object or if the child object
@@ -112,11 +114,15 @@ def get_table(
         tablename, schema = _get_schema(tablename)
 
     if session is not None:
+        assert session.bind is not None
         engine = session.bind.engine
-        metadata = MetaData(bind=engine)
+        metadata = MetaData(bind=engine)  # type: ignore[call-arg] # pylint: disable=unexpected-keyword-arg
     else:
         from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
+        assert DBSession.bind is not None
 
         engine = DBSession.bind.engine
         metadata = Base.metadata
@@ -129,7 +135,7 @@ def get_table(
             # Ensure we have a primary key to be able to edit views
             args.append(Column(primary_key, Integer, primary_key=True))
         with _get_table_lock:
-            table = Table(*args, schema=schema, autoload=True, autoload_with=engine)
+            table = Table(*args, schema=schema, autoload=True, autoload_with=engine)  # type: ignore[arg-type]
     return table
 
 
@@ -141,7 +147,7 @@ def get_class(
     attributes_order: Optional[list[str]] = None,
     enumerations_config: Optional[dict[str, str]] = None,
     readonly_attributes: Optional[list[str]] = None,
-) -> sqlalchemy.ext.declarative.DeclarativeMeta:
+) -> type:
     """
     Get the SQLAlchemy mapped class for "tablename".
 
@@ -173,7 +179,7 @@ def _create_class(
     enumerations_config: Optional[dict[str, str]] = None,
     readonly_attributes: Optional[list[str]] = None,
     pk_name: Optional[str] = None,
-) -> sqlalchemy.ext.declarative.DeclarativeMeta:
+) -> type:
     from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
 
     exclude_properties = exclude_properties or ()
@@ -188,7 +194,9 @@ def _create_class(
     # The randint is to fix the SAWarning: This declarative base already contains a class with the same
     # class name and module name
     cls = type(
-        f"{table.name.capitalize()}_{random.randint(0, 9999999)}", (GeoInterface, Base), attributes  # nosec
+        f"{table.name.capitalize()}_{random.randint(0, 9999999)}",  # nosec
+        (GeoInterface, Base),
+        attributes,
     )
 
     for col in table.columns:
@@ -200,9 +208,7 @@ def _create_class(
     return cls
 
 
-def _add_association_proxy(
-    cls: sqlalchemy.ext.declarative.DeclarativeMeta, col: sqlalchemy.sql.schema.Column
-) -> None:
+def _add_association_proxy(cls: type[Any], col: sqlalchemy.sql.schema.Column[Any]) -> None:
     if len(col.foreign_keys) != 1:
         raise NotImplementedError
 

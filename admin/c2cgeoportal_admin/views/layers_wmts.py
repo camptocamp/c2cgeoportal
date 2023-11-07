@@ -76,7 +76,9 @@ class LayerWmtsViews(DimensionLayerViews):
     _model = LayerWMTS
     _base_schema = base_schema
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
+    def _base_query(
+        self, query: Optional[sqlalchemy.orm.query.Query[LayerWMTS]] = None
+    ) -> sqlalchemy.orm.query.Query[LayerWMTS]:
         return super()._base_query(self._request.dbsession.query(LayerWMTS).distinct())
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
@@ -89,7 +91,7 @@ class LayerWmtsViews(DimensionLayerViews):
 
     def _item_actions(self, item: LayerWMTS, readonly: bool = False) -> list[ItemAction]:
         actions: list[ItemAction] = super()._item_actions(item, readonly)
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(

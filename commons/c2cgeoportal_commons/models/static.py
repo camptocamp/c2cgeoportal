@@ -39,7 +39,7 @@ from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.dialects.postgresql import HSTORE
 from sqlalchemy.ext.mutable import MutableDict
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import Mapped, backref, mapped_column, relationship
 from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
 
 from c2cgeoportal_commons.lib.literal import Literal
@@ -123,13 +123,15 @@ class User(Base):  # type: ignore
         ),
     }
     __c2cgeoform_config__ = {"duplicate": True}
-    item_type = Column(
+    item_type: Mapped[str] = mapped_column(
         "type", String(10), nullable=False, info={"colanderalchemy": {"widget": HiddenWidget()}}
     )
     __mapper_args__ = {"polymorphic_on": item_type, "polymorphic_identity": "user"}
 
-    id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    username = Column(
+    id: Mapped[int] = mapped_column(
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+    )
+    username: Mapped[str] = mapped_column(
         Unicode,
         unique=True,
         nullable=False,
@@ -140,12 +142,14 @@ class User(Base):  # type: ignore
             }
         },
     )
-    _password = Column("password", Unicode, nullable=False, info={"colanderalchemy": {"exclude": True}})
-    temp_password = Column(
+    _password: Mapped[str] = mapped_column(
+        "password", Unicode, nullable=False, info={"colanderalchemy": {"exclude": True}}
+    )
+    temp_password: Mapped[Optional[str]] = mapped_column(
         "temp_password", Unicode, nullable=True, info={"colanderalchemy": {"exclude": True}}
     )
-    tech_data = Column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})
-    email = Column(
+    tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})  # type: ignore[arg-type]
+    email: Mapped[str] = mapped_column(
         Unicode,
         nullable=False,
         info={
@@ -158,7 +162,7 @@ class User(Base):  # type: ignore
             }
         },
     )
-    is_password_changed = Column(
+    is_password_changed: Mapped[bool] = mapped_column(
         Boolean,
         default=False,
         info={
@@ -169,7 +173,7 @@ class User(Base):  # type: ignore
         },
     )
 
-    settings_role_id = Column(
+    settings_role_id: Mapped[int] = mapped_column(
         Integer,
         info={
             "colanderalchemy": {
@@ -213,7 +217,7 @@ class User(Base):  # type: ignore
         },
     )
 
-    last_login = Column(
+    last_login: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         info={
             "colanderalchemy": {
@@ -225,7 +229,7 @@ class User(Base):  # type: ignore
         },
     )
 
-    expire_on = Column(
+    expire_on: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True),
         info={
             "colanderalchemy": {
@@ -235,7 +239,7 @@ class User(Base):  # type: ignore
         },
     )
 
-    deactivated = Column(
+    deactivated: Mapped[bool] = mapped_column(
         Boolean,
         default=False,
         info={
@@ -271,7 +275,7 @@ class User(Base):  # type: ignore
     @property
     def password(self) -> str:
         """Get the password."""
-        return self._password  # type: ignore
+        return self._password
 
     @password.setter
     def password(self, password: str) -> None:
@@ -336,13 +340,13 @@ class Shorturl(Base):  # type: ignore
 
     __tablename__ = "shorturl"
     __table_args__ = {"schema": _schema}
-    id = Column(Integer, primary_key=True)
-    url = Column(Unicode)
-    ref = Column(String(20), index=True, unique=True, nullable=False)
-    creator_email = Column(Unicode(200))
-    creation = Column(DateTime)
-    last_hit = Column(DateTime)
-    nb_hits = Column(Integer)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    url: Mapped[str] = mapped_column(Unicode)
+    ref: Mapped[str] = mapped_column(String(20), index=True, unique=True, nullable=False)
+    creator_email: Mapped[str] = mapped_column(Unicode(200))  # type: ignore[no-untyped-call]
+    creation: Mapped[datetime] = mapped_column(DateTime)
+    last_hit: Mapped[datetime] = mapped_column(DateTime)
+    nb_hits: Mapped[int] = mapped_column(Integer)
 
 
 class OAuth2Client(Base):  # type: ignore
@@ -352,8 +356,10 @@ class OAuth2Client(Base):  # type: ignore
     __table_args__ = {"schema": _schema}
     __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
     __c2cgeoform_config__ = {"duplicate": True}
-    id = Column(Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}})
-    client_id = Column(
+    id: Mapped[int] = mapped_column(
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+    )
+    client_id: Mapped[str] = mapped_column(
         Unicode,
         unique=True,
         info={
@@ -363,7 +369,7 @@ class OAuth2Client(Base):  # type: ignore
             }
         },
     )
-    secret = Column(
+    secret: Mapped[str] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -372,7 +378,7 @@ class OAuth2Client(Base):  # type: ignore
             }
         },
     )
-    redirect_uri = Column(
+    redirect_uri: Mapped[str] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -386,7 +392,7 @@ class OAuth2Client(Base):  # type: ignore
             }
         },
     )
-    state_required = Column(
+    state_required: Mapped[bool] = mapped_column(
         Boolean,
         default=False,
         info={
@@ -399,7 +405,7 @@ class OAuth2Client(Base):  # type: ignore
             }
         },
     )
-    pkce_required = Column(
+    pkce_required: Mapped[bool] = mapped_column(
         Boolean,
         default=False,
         info={
@@ -425,15 +431,19 @@ class OAuth2BearerToken(Base):  # type: ignore
             "schema": _schema,
         },
     )
-    id = Column(Integer, primary_key=True)
-    client_id = Column(Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    client_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False
+    )
     client = relationship(OAuth2Client)
-    user_id = Column(Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False
+    )
     user = relationship(User)
-    access_token = Column(Unicode(100), unique=True)
-    refresh_token = Column(Unicode(100), unique=True)
-    expire_at = Column(DateTime(timezone=True))  # in one hour
-    state = Column(String)
+    access_token: Mapped[str] = mapped_column(Unicode(100), unique=True)  # type: ignore[no-untyped-call]
+    refresh_token: Mapped[str] = mapped_column(Unicode(100), unique=True)  # type: ignore[no-untyped-call]
+    expire_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))  # in one hour
+    state = mapped_column(String)
 
 
 class OAuth2AuthorizationCode(Base):  # type: ignore
@@ -446,17 +456,21 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
             "schema": _schema,
         },
     )
-    id = Column(Integer, primary_key=True)
-    client_id = Column(Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    client_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False
+    )
     client = relationship(OAuth2Client)
-    user_id = Column(Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False
+    )
     user = relationship(User)
-    redirect_uri = Column(Unicode)
-    code = Column(Unicode(100), unique=True)
-    state = Column(String)
-    challenge = Column(String(128))
-    challenge_method = Column(String(6))
-    expire_at = Column(DateTime(timezone=True))  # in 10 minutes
+    redirect_uri: Mapped[str] = mapped_column(Unicode)
+    code: Mapped[str] = mapped_column(Unicode(100), unique=True)  # type: ignore[no-untyped-call]
+    state: Mapped[Optional[str]] = mapped_column(String)
+    challenge: Mapped[str] = mapped_column(String(128))
+    challenge_method: Mapped[str] = mapped_column(String(6))
+    expire_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))  # in 10 minutes
 
 
 class Log(AbstractLog):

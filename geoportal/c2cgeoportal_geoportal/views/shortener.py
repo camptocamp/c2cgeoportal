@@ -57,6 +57,8 @@ class Shortener:
 
     @view_config(route_name="shortener_get")  # type: ignore
     def get(self) -> HTTPFound:
+        assert DBSession is not None
+
         ref = self.request.matchdict["ref"]
         short_urls = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
 
@@ -71,6 +73,8 @@ class Shortener:
 
     @view_config(route_name="shortener_create", renderer="json")  # type: ignore
     def create(self) -> dict[str, str]:
+        assert DBSession is not None
+
         if "url" not in self.request.params:
             raise HTTPBadRequest("The parameter url is required")
 

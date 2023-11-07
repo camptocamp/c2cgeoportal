@@ -40,14 +40,17 @@ def get_engine(settings: dict[str, Any], prefix: str = "sqlalchemy.") -> Engine:
     return engine_from_config(settings, prefix)
 
 
-def get_session_factory(engine: Engine) -> sessionmaker:
+def get_session_factory(engine: Engine) -> sessionmaker[Session]:  # pylint: disable=unsubscriptable-object
     """Get the session factory."""
     factory = sessionmaker()
     factory.configure(bind=engine)
     return factory
 
 
-def get_tm_session(session_factory: sessionmaker, transaction_manager: TransactionManager) -> Session:
+def get_tm_session(
+    session_factory: sessionmaker[Session],  # pylint: disable=unsubscriptable-object
+    transaction_manager: TransactionManager,
+) -> Session:
     """
     Get a ``sqlalchemy.orm.Session`` instance backed by a transaction.
 
@@ -68,6 +71,7 @@ def get_tm_session(session_factory: sessionmaker, transaction_manager: Transacti
               dbsession = get_tm_session(session_factory, transaction.manager)
     """
     dbsession = session_factory()
+    assert isinstance(dbsession, Session)
     zope.sqlalchemy.register(dbsession, transaction_manager=transaction_manager)
     return dbsession
 

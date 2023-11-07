@@ -65,7 +65,7 @@ class LoggedViews(AbstractViews):  # type: ignore
     def _create_log(
         self,
         action: LogAction,
-        obj: Base,
+        obj: Base,  # type: ignore[valid-type]
         element_url_table: Optional[str] = None,
     ) -> None:
         log = self._log_model(

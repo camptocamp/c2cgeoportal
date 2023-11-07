@@ -52,6 +52,8 @@ class GeometryProcessing:
 
     @view_config(route_name="difference", renderer="geojson")  # type: ignore
     def difference(self) -> Optional[BaseGeometry]:
+        assert DBSession is not None
+
         body = loads(self.request.body)
         if (
             "geometries" not in body

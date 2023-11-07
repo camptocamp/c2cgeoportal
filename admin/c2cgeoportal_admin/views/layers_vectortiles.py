@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@ from functools import partial
 from typing import Optional
 
 import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
@@ -69,7 +70,9 @@ class LayerVectorTilesViews(DimensionLayerViews):
     _model = LayerVectorTiles
     _base_schema = base_schema
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
+    def _base_query(
+        self, query: Optional[sqlalchemy.orm.query.Query[LayerVectorTiles]] = None
+    ) -> sqlalchemy.orm.query.Query[LayerVectorTiles]:
         del query
         return super()._base_query(self._request.dbsession.query(LayerVectorTiles).distinct())
 

@@ -33,13 +33,12 @@ from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
 from sqlalchemy import inspect, select
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from sqlalchemy.orm.decl_api import DeclarativeMeta
 from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_commons.models.main import Functionality
 
 
-def available_functionalities_for(settings: dict[str, Any], model: DeclarativeMeta) -> list[dict[str, Any]]:
+def available_functionalities_for(settings: dict[str, Any], model: type[Any]) -> list[dict[str, Any]]:
     """Return filtered list of functionality definitions."""
     mapper = inspect(model)
     relevant_for = {mapper.local_table.name}
@@ -50,17 +49,17 @@ def available_functionalities_for(settings: dict[str, Any], model: DeclarativeMe
     ]
 
 
-def functionalities_widget(model: DeclarativeMeta) -> colander.deferred:
+def functionalities_widget(model: type[Any]) -> colander.deferred:
     """Return a colander deferred which itself returns a widget for the functionalities field."""
 
     def create_widget(node, kw):
         del node
 
         return RelationCheckBoxListWidget(
-            select(
+            select(  # type: ignore[call-overload]
                 [
                     Functionality.id,
-                    concat(Functionality.name, "=", Functionality.value).label("label"),
+                    concat(Functionality.name, "=", Functionality.value).label("label"),  # type: ignore[no-untyped-call]
                 ]
             )
             .where(
@@ -81,7 +80,7 @@ def functionalities_widget(model: DeclarativeMeta) -> colander.deferred:
 
 
 def functionalities_schema_node(
-    prop: InstrumentedAttribute, model: DeclarativeMeta
+    prop: InstrumentedAttribute[Any], model: type[Any]
 ) -> colander.SequenceSchema:
     """Get the schema of the functionalities."""
 

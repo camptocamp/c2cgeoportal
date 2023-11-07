@@ -30,6 +30,7 @@ from functools import partial
 from typing import Optional
 
 import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import ListField
 from deform.widget import FormWidget
@@ -60,7 +61,9 @@ class LayerGroupsViews(TreeItemViews):
     _model = LayerGroup
     _base_schema = base_schema
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
+    def _base_query(
+        self, query: Optional[sqlalchemy.orm.query.Query[LayerGroup]] = None
+    ) -> sqlalchemy.orm.query.Query[LayerGroup]:
         return super()._base_query(self._request.dbsession.query(LayerGroup).distinct())
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")

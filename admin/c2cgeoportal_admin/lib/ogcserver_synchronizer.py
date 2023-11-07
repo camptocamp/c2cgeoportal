@@ -291,6 +291,7 @@ class OGCServerSynchronizer:
         name_el = el.find("Name")
         assert name_el is not None
         name = name_el.text
+        assert name is not None
 
         layer = cast(
             Optional[main.LayerWMS],

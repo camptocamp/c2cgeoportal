@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any
+
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SequenceWidget
@@ -34,7 +36,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from c2cgeoportal_commons.models.main import Dimension
 
 
-def dimensions_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+def dimensions_schema_node(prop: InstrumentedAttribute[Any]) -> colander.SequenceSchema:
     """Get the scheme of the dimensions."""
     return colander.SequenceSchema(
         GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),

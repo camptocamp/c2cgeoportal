@@ -27,7 +27,7 @@
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Any, Optional, TypedDict
 
 import basicauth
 import oauthlib.common
@@ -40,6 +40,13 @@ from c2cgeoportal_geoportal.lib.caching import get_region
 
 LOG = logging.getLogger(__name__)
 OBJECT_CACHE_REGION = get_region("obj")
+
+
+class _Token(TypedDict):
+    access_token: str
+    refresh_token: str
+    expires_in: int
+    state: Optional[str]
 
 
 class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
@@ -111,6 +118,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("authenticate_client_id %s", client_id)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         params = dict(request.decoded_body)
 
@@ -214,6 +223,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("confirm_redirect_uri %s %s", client_id, redirect_uri)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         authorization_code = (
             DBSession.query(static.OAuth2AuthorizationCode)
@@ -385,6 +396,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         DBSession.delete(
             DBSession.query(static.OAuth2AuthorizationCode)
             .join(static.OAuth2AuthorizationCode.client)
@@ -522,6 +535,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         user = pyramid.threadlocal.get_current_request().user
 
         # Don't allows to have two authentications for the same user and the same client
@@ -560,7 +575,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
     def save_bearer_token(
         self,
-        token: dict[str, Union[str, int]],
+        token: _Token,
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -608,6 +623,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("save_bearer_token")
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         # Don't allows to have tow token for one user end one client
         bearer_token = (
@@ -690,6 +707,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         bearer_token = (
             DBSession.query(static.OAuth2BearerToken)
             .join(static.User)
@@ -731,6 +750,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("validate_client_id")
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         client = (
             DBSession.query(static.OAuth2Client)
@@ -778,6 +799,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("validate_code %s", client_id)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         authorization_code_query = (
             DBSession.query(static.OAuth2AuthorizationCode)
@@ -870,6 +893,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         client = (
             DBSession.query(static.OAuth2Client)
             .filter(static.OAuth2Client.client_id == client_id)
@@ -909,6 +934,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         LOG.debug("validate_refresh_token %s", client.client_id if client else None)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+
+        assert DBSession is not None
 
         bearer_token = (
             DBSession.query(static.OAuth2BearerToken)
@@ -1043,6 +1070,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         client = (
             DBSession.query(static.OAuth2Client)
             .filter(static.OAuth2Client.client_id == client_id)
@@ -1082,6 +1111,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         LOG.debug("get_code_challenge")
 
         authorization_code = (
@@ -1090,7 +1121,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .one_or_none()
         )
         if authorization_code:
-            return authorization_code.challenge  # type: ignore
+            return authorization_code.challenge
         LOG.debug("get_code_challenge authorization_code not found")
         return None
 
@@ -1120,6 +1151,8 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
+        assert DBSession is not None
+
         LOG.debug("get_code_challenge_method")
 
         authorization_code = (
@@ -1128,7 +1161,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .one_or_none()
         )
         if authorization_code:
-            return authorization_code.challenge_method  # type: ignore
+            return authorization_code.challenge_method
         LOG.debug("get_code_challenge_method authorization_code not found")
         return None
 

@@ -110,7 +110,7 @@ class OGCServerViews(LoggedViews):
 
     def _item_actions(self, item: OGCServer, readonly: bool = False) -> list[Any]:
         actions = cast(list[Any], super()._item_actions(item, readonly))
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(

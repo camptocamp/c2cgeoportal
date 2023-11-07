@@ -57,6 +57,8 @@ class DynamicView:
 
     @CACHE_REGION.cache_on_arguments()
     def _fulltextsearch_groups(self) -> list[str]:
+        assert models.DBSession is not None
+
         return [
             group[0]
             for group in models.DBSession.query(func.distinct(main.FullTextSearch.layer_name))

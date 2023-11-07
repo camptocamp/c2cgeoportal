@@ -100,9 +100,9 @@ def upgrade() -> None:
     op.create_table(
         "shorturl",
         Column("id", Integer, primary_key=True),
-        Column("url", Unicode(1000)),
+        Column("url", Unicode(1000)),  # type: ignore[no-untyped-call]
         Column("ref", String(20), index=True, unique=True, nullable=False),
-        Column("creator_email", Unicode(200)),
+        Column("creator_email", Unicode(200)),  # type: ignore[no-untyped-call]
         Column("creation", DateTime),
         Column("last_hit", DateTime),
         Column("nb_hits", Integer),
@@ -131,9 +131,9 @@ def upgrade() -> None:
         Column("inDesktopViewer", Boolean, default=True),
         Column("isChecked", Boolean, default=True),
         Column("icon", Unicode),
-        Column("layerType", Unicode(12)),
+        Column("layerType", Unicode(12)),  # type: ignore[no-untyped-call]
         Column("url", Unicode),
-        Column("imageType", Unicode(10)),
+        Column("imageType", Unicode(10)),  # type: ignore[no-untyped-call]
         Column("style", Unicode),
         Column("dimensions", Unicode),
         Column("matrixSet", Unicode),
@@ -152,7 +152,7 @@ def upgrade() -> None:
         Column("identifierAttributeField", Unicode),
         Column("geoTable", Unicode),
         Column("excludeProperties", Unicode),
-        Column("timeMode", Unicode(8)),
+        Column("timeMode", Unicode(8)),  # type: ignore[no-untyped-call]
         schema=schema,
     )
     op.create_table(

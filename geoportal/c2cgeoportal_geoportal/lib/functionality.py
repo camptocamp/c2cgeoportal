@@ -27,7 +27,7 @@
 
 
 import logging.config
-from typing import Any, Union, cast
+from typing import Any, Optional, Union, cast
 
 import pyramid.request
 from sqlalchemy.orm import joinedload
@@ -44,6 +44,8 @@ CACHE_REGION = get_region("std")
 @CACHE_REGION_OBJ.cache_on_arguments()
 def _get_role(name: str) -> dict[str, Any]:
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+
+    assert DBSession is not None
 
     role = (
         DBSession.query(main.Role)
@@ -62,7 +64,7 @@ def _user_to_struct(user: static.User) -> dict[str, Any]:
     }
 
 
-def _role_to_struct(role: main.Role) -> list[dict[str, Any]]:
+def _role_to_struct(role: Optional[main.Role]) -> list[dict[str, Any]]:
     return [{"name": f.name, "value": f.value} for f in role.functionalities] if role else []
 
 

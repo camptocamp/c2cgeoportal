@@ -27,14 +27,13 @@
 
 
 import re
-from typing import cast
 
 import pyramid.request
 from geoalchemy2.shape import to_shape
 from geojson import Feature, FeatureCollection
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
-from sqlalchemy import and_, desc, func, or_
+from sqlalchemy import ColumnElement, and_, desc, func, or_
 
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.main import FullTextSearch, Interface
@@ -61,10 +60,14 @@ class FullTextSearchView:
     @staticmethod
     @CACHE_REGION.cache_on_arguments()
     def _get_interface_id(interface: str) -> int:
-        return cast(int, DBSession.query(Interface).filter_by(name=interface).one().id)
+        assert DBSession is not None
+
+        return DBSession.query(Interface).filter_by(name=interface).one().id
 
     @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore[misc]
     def fulltextsearch(self) -> FeatureCollection:
+        assert DBSession is not None
+
         lang = locale_negotiator(self.request)
 
         try:
@@ -94,7 +97,7 @@ class FullTextSearchView:
             IGNORED_STARTUP_CHARS_RE.sub("", elem) for elem in IGNORED_CHARS_RE.sub(" ", terms).split(" ")
         ]
         terms_ts = "&".join(w + ":*" for w in terms_array if w != "")
-        _filter = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
+        _filter: ColumnElement[bool] = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
 
         if self.request.user is None:
             _filter = and_(_filter, FullTextSearch.public.is_(True))
@@ -141,7 +144,7 @@ class FullTextSearchView:
             # Here we want to partition the search results based on
             # layer_name and limit each partition.
             row_number = (
-                func.row_number()
+                func.row_number()  # type:ignore[no-untyped-call]
                 .over(partition_by=FullTextSearch.layer_name, order_by=(desc(rank), FullTextSearch.label))
                 .label("row_number")
             )

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ from functools import partial
 from itertools import groupby
 from typing import cast
 
-import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
@@ -55,5 +55,7 @@ class DimensionLayerViews(LayerViews):
         )
     ] + LayerViews._extra_list_fields
 
-    def _base_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
-        return super()._base_query(query.options(subqueryload("dimensions")))
+    def _base_query(
+        self, query: sqlalchemy.orm.query.Query[DimensionLayer]
+    ) -> sqlalchemy.orm.query.Query[DimensionLayer]:
+        return super()._base_query(query.options(subqueryload(DimensionLayer.dimensions)))

@@ -53,7 +53,7 @@ class TreeItemViews(LoggedViews):
         _list_field(
             "metadatas",
             renderer=lambda treeitem: ", ".join([f"{m.name}: {m.value}" or "" for m in treeitem.metadatas]),
-            filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),
+            filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),  # type: ignore[no-untyped-call]
         )
     ]
     _extra_list_fields = [
@@ -82,10 +82,10 @@ class TreeItemViews(LoggedViews):
         return response
 
     def _base_query(  # pylint: disable=arguments-differ
-        self, query: sqlalchemy.orm.query.Query
-    ) -> sqlalchemy.orm.query.Query:
+        self, query: sqlalchemy.orm.query.Query[TreeItem]
+    ) -> sqlalchemy.orm.query.Query[TreeItem]:
         return (
-            query.outerjoin("metadatas")
-            .options(subqueryload("parents_relation").joinedload("treegroup"))
-            .options(subqueryload("metadatas"))
+            query.outerjoin(TreeItem.metadatas)
+            .options(subqueryload(TreeItem.parents_relation).joinedload(TreeItem.treegroup))
+            .options(subqueryload(TreeItem.metadatas))
         )

@@ -105,6 +105,7 @@ def main() -> None:
                     sys.exit(1)
 
                 role = query_role.first()
+                assert role is not None
 
                 user = User(
                     username=username,
@@ -119,7 +120,9 @@ def main() -> None:
 
         else:
             # If user exists (assuming username are unique)
-            user = query.first()
+            first_user = query.first()
+            assert first_user is not None
+            user = first_user
 
             if options.password is not None:
                 print(f"Password set to: {options.password}")

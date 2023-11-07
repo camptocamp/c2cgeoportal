@@ -54,7 +54,7 @@ from pyramid.view import view_config
 from shapely import unary_union
 from shapely.errors import TopologicalError
 from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, exc, func
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
+from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound  # type: ignore[attr-defined]
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.sql import and_, or_
@@ -108,6 +108,8 @@ class Layers:
         """Return a ``Layer`` object for ``layer_id``."""
         from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
 
+        assert models.DBSession is not None
+
         layer_id = int(layer_id)
         try:
             query = models.DBSession.query(Layer, Layer.geo_table)
@@ -155,11 +157,14 @@ class Layers:
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
         """Read features for the layer based on the self.request."""
+
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
             Role,
         )
+
+        assert models.DBSession is not None
 
         proto = self._get_protocol_for_layer(layer)
         if layer.public:
@@ -214,6 +219,8 @@ class Layers:
             Role,
         )
 
+        assert models.DBSession is not None
+
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         layer = self._get_layer_for_request()
@@ -232,7 +239,7 @@ class Layers:
         shape = shapely.geometry.shape(geom)
         srid = self._get_geom_col_info(layer)[1]
         spatial_elt = from_shape(shape, srid=srid)
-        allowed = models.DBSession.query(func.count(RestrictionArea.id))
+        allowed = models.DBSession.query(func.count(RestrictionArea.id))  # pylint: disable=not-callable
         allowed = allowed.join(RestrictionArea.roles)
         allowed = allowed.join(RestrictionArea.layers)
         allowed = allowed.filter(Role.id.in_(get_roles_id(self.request)))
@@ -274,12 +281,16 @@ class Layers:
 
         def check_geometry(_: Any, feature: Feature, obj: Any) -> None:
             del obj  # unused
+            assert models.DBSession is not None
+
             geom = feature.geometry
             if geom and not isinstance(geom, geojson.geometry.Default):
                 shape = shapely.geometry.shape(geom)
                 srid = self._get_geom_col_info(layer)[1]
                 spatial_elt = from_shape(shape, srid=srid)
-                allowed = models.DBSession.query(func.count(RestrictionArea.id))
+                allowed = models.DBSession.query(
+                    func.count(RestrictionArea.id)  # pylint: disable=not-callable
+                )
                 allowed = allowed.join(RestrictionArea.roles)
                 allowed = allowed.join(RestrictionArea.layers)
                 allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
@@ -309,8 +320,9 @@ class Layers:
             return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
             LOG.error(str(e))
+            assert e.orig is not None
             self.request.response.status_int = 400
-            return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
+            return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}  # type: ignore[attr-defined]
 
     @view_config(route_name="layers_update", renderer="geojson")  # type: ignore
     def update(self) -> Feature:
@@ -331,12 +343,14 @@ class Layers:
         layer = self._get_layer_for_request()
 
         def check_geometry(_: Any, feature: Feature, obj: Any) -> None:
+            assert models.DBSession is not None
+
             # we need both the "original" and "new" geometry to be
             # within the restriction area
             geom_attr, srid = self._get_geom_col_info(layer)
             geom_attr = getattr(obj, geom_attr)
             geom = feature.geometry
-            allowed = models.DBSession.query(func.count(RestrictionArea.id))
+            allowed = models.DBSession.query(func.count(RestrictionArea.id))  # pylint: disable=not-callable
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
@@ -371,11 +385,14 @@ class Layers:
             return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
             LOG.error(str(e))
+            assert e.orig is not None
             self.request.response.status_int = 400
-            return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}
+            return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}  # type: ignore[attr-defined]
 
     @staticmethod
     def _validate_geometry(geom: Optional[geoalchemy2.elements.WKBElement]) -> None:
+        assert models.DBSession is not None
+
         if geom is not None:
             simple = models.DBSession.query(func.ST_IsSimple(func.ST_GeomFromEWKB(geom))).scalar()
             if not simple:
@@ -399,7 +416,7 @@ class Layers:
         metadata = layer.get_metadata(key)
         if len(metadata) == 1:
             metadata = metadata[0]
-            return cast(str, metadata.value)
+            return metadata.value
         return default
 
     def _get_validation_setting(self, layer: "main.Layer") -> bool:
@@ -411,6 +428,8 @@ class Layers:
 
     @view_config(route_name="layers_delete")  # type: ignore
     def delete(self) -> pyramid.response.Response:
+        assert models.DBSession is not None
+
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -424,8 +443,10 @@ class Layers:
         layer = self._get_layer_for_request()
 
         def security_cb(_: Any, obj: Any) -> None:
+            assert models.DBSession is not None
+
             geom_attr = getattr(obj, self._get_geom_col_info(layer)[0])
-            allowed = models.DBSession.query(func.count(RestrictionArea.id))
+            allowed = models.DBSession.query(func.count(RestrictionArea.id))  # pylint: disable=not-callable
             allowed = allowed.join(RestrictionArea.roles)
             allowed = allowed.join(RestrictionArea.layers)
             allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
@@ -501,9 +522,7 @@ class Layers:
         return set(cast(list[tuple[str, ...]], dbsession.query(attribute).order_by(attribute).all()))
 
 
-def get_layer_class(
-    layer: "main.Layer", with_last_update_columns: bool = False
-) -> sqlalchemy.ext.declarative.ConcreteBase:
+def get_layer_class(layer: "main.Layer", with_last_update_columns: bool = False) -> type:
     """
     Get the SQLAlchemy class to edit a GeoMapFish layer.
 
@@ -516,6 +535,9 @@ def get_layer_class(
 
     Returns: SQLAlchemy class
     """
+
+    assert layer.geo_table is not None
+
     # Exclude the columns used to record the last features update
     exclude = [] if layer.exclude_properties is None else layer.exclude_properties.split(",")
     if with_last_update_columns:
@@ -561,7 +583,7 @@ def get_layer_class(
                 ", ".join(column_properties),
             )
 
-    return cls
+    return cast(type, cls)
 
 
 class ColumnProperties(TypedDict, total=False):
@@ -580,6 +602,9 @@ class ColumnProperties(TypedDict, total=False):
 
 def get_layer_metadata(layer: "main.Layer") -> list[ColumnProperties]:
     """Get the metadata related to a layer."""
+
+    assert models.DBSession is not None
+
     cls = get_layer_class(layer, with_last_update_columns=True)
     edit_columns: list[ColumnProperties] = []
 
@@ -614,7 +639,7 @@ def get_layer_metadata(layer: "main.Layer") -> list[ColumnProperties]:
                 properties["restriction"] = "enumeration"
                 properties["type"] = "xsd:string"
                 properties["enumeration"] = []
-                for value in query:
+                for value in query:  # pylint: disable=not-an-iterable
                     properties["enumeration"].append(value[0])
 
                 edit_columns.append(properties)

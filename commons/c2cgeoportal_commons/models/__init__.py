@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any
+from typing import Any, Optional, TypeVar
 
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
@@ -42,8 +42,17 @@ except ModuleNotFoundError:
 
 
 # Should be filed on application initialization
-DBSession: sqlalchemy.orm.Session = None
-Base: sqlalchemy.ext.declarative.ConcreteBase = sqlalchemy.ext.declarative.declarative_base()
+DBSession: Optional[sqlalchemy.orm.Session] = None
+
+_Meta = TypeVar("_Meta")
+_Type = TypeVar("_Type")
+
+
+class BaseType(sqlalchemy.ext.declarative.DeclarativeMeta, type):
+    pass
+
+
+Base: BaseType = sqlalchemy.orm.declarative_base()
 DBSessions: dict[str, sqlalchemy.orm.Session] = {}
 
 
