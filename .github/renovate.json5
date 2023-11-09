@@ -147,6 +147,12 @@
       matchPackageNames: ['c2cciutils'],
       enabled: false,
     },
+    /** Disable dpkg on master */
+    {
+      matchBaseBranches: ['master'],
+      matchPaths: ['^ci/dpkg\\-versions\\.yaml$'],
+      enabled: false,
+    },
     /** Update dpkg versions at any time */
     {
       matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
