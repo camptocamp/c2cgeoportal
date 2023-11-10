@@ -86,9 +86,11 @@ max_line_length = 110
         os.rename("ci/config.yaml", "ci/config.yaml_")
     if os.path.exists(".pre-commit-config.yaml"):
         print("Run pre-commit to fix the style.")
+        sys.stdout.flush()
         subprocess.run(["pre-commit", "run", "--all-files"])  # pylint: disable=subprocess-run-check
     else:
         print("Run c2cciutils-checks to fix the style.")
+        sys.stdout.flush()
         subprocess.run(  # pylint: disable=subprocess-run-check
             ["c2cciutils-checks", "--fix", "--check=isort"]
         )
@@ -795,6 +797,8 @@ class C2cUpgradeTool:
     def step11(self, step: int) -> None:
         if os.path.isfile("create.diff"):
             os.unlink("create.diff")
+
+        fix_style()
 
         message = [
             "The upgrade is nearly done, now you should:",
