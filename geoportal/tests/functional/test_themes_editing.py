@@ -76,7 +76,7 @@ class TestThemeEditing(TestCase):
         engine.connect()
         a_geo_table = Table(
             "a_geo_table",
-            declarative_base(bind=engine).metadata,
+            declarative_base().metadata,
             Column("id", types.Integer, primary_key=True),
             Column("geom", Geometry("POINT", srid=21781)),
             schema="geodata",

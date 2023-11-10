@@ -114,7 +114,7 @@ class TestLayers(TestCase):
         connection = engine.connect()
 
         if not self.metadata:
-            self.metadata = declarative_base(bind=engine).metadata
+            self.metadata = declarative_base().metadata
 
         tablename = f"table_{id:d}"
 

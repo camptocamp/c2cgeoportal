@@ -118,7 +118,7 @@ class TestThemesEditColumns(TestCase):
         connection = engine.connect()
 
         if not self.metadata:
-            self.metadata = declarative_base(bind=engine).metadata
+            self.metadata = declarative_base().metadata
 
         tablename = f"geo_table_{id:d}"
         schemaname = "geodata"
