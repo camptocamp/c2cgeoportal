@@ -158,10 +158,10 @@ class TestLayers(TestCase):
             table2.append_column(Column("geom", Geometry(srid=21781)))
         self._tables.append(table2)
 
-        table1.drop(checkfirst=True)
-        table2.drop(checkfirst=True)
-        table1.create()
-        table2.create()
+        table1.drop(checkfirst=True, bind=engine)
+        table2.drop(checkfirst=True, bind=engine)
+        table1.create(bind=engine)
+        table2.create(bind=engine)
 
         ins = table1.insert().values(name="c1é")
         c1_id = connection.execute(ins).inserted_primary_key[0]

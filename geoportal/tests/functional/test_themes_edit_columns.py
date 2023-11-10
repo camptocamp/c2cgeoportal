@@ -164,10 +164,10 @@ class TestThemesEditColumns(TestCase):
 
         self._tables.append(table2)
 
-        table2.drop(checkfirst=True)
-        table1.drop(checkfirst=True)
-        table1.create()
-        table2.create()
+        table2.drop(checkfirst=True, bind=engine)
+        table1.drop(checkfirst=True, bind=engine)
+        table1.create(bind=engine)
+        table2.create(bind=engine)
 
         ins = table1.insert().values(name="c1é")
         connection.execute(ins).inserted_primary_key[0]

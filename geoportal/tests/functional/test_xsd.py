@@ -79,8 +79,8 @@ class TestXSDGenerator(TestCase):
             child2 = _AssociationProxy("child2_", "name", nullable=False, order_by="custom_order")
             child2_id.info["association_proxy"] = "child2"
 
-        Child.__table__.create()
-        Parent.__table__.create()
+        Child.__table__.create(bind=DBSession.c2c_rw_bind)
+        Parent.__table__.create(bind=DBSession.c2c_rw_bind)
         self._tables = [Parent.__table__, Child.__table__]
 
         DBSession.add_all([Child("foo", 2), Child("zad", 1), Child("bar", 2)])
