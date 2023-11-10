@@ -37,6 +37,7 @@ from xml.parsers.expat import ExpatError
 
 import pyramid.threadlocal
 import requests
+import sqlalchemy.orm
 import yaml
 from bottle import MakoTemplate, template
 from c2c.template.config import config
@@ -49,7 +50,6 @@ from owslib.wms import WebMapService
 from sqlalchemy.exc import NoSuchTableError, OperationalError, ProgrammingError
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 from sqlalchemy.orm.properties import ColumnProperty
-from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.util import class_mapper
 
 import c2cgeoportal_geoportal
@@ -256,7 +256,7 @@ def init_db(settings: dict[str, Any]) -> None:
 
         assert DBSession is not None
 
-        session = DBSession()  # type: ignore[operator]
+        session = DBSession()
         session.query(Theme).count()
     except:  # pylint: disable=bare-except
         # Init db sessions
@@ -354,7 +354,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         names = [e["name"] for e in defs if e.get("translate", False)]
 
         if names:
-            session = DBSession()  # type: ignore[operator]
+            session = DBSession()
 
             query = session.query(Metadata).filter(Metadata.name.in_(names))
             for metadata in query.all():
@@ -394,7 +394,9 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
 
     @staticmethod
     def _enumerate_attributes_values(
-        dbsessions: dict[str, Session], layerinfos: dict[str, Any], fieldname: str
+        dbsessions: dict[str, sqlalchemy.orm.scoped_session[sqlalchemy.orm.Session]],
+        layerinfos: dict[str, Any],
+        fieldname: str,
     ) -> set[tuple[str, ...]]:
         dbname = layerinfos.get("dbsession", "dbsession")
         translate = cast(dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
@@ -475,7 +477,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
             assert DBSession is not None
 
-            db_session = DBSession()  # type: ignore[operator]
+            db_session = DBSession()
 
             try:
                 from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel

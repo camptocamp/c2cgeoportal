@@ -42,6 +42,7 @@ import pyramid.request
 import pyramid.response
 import pyramid.security
 import sqlalchemy
+import sqlalchemy.orm
 import zope.event.classhandler
 from c2cgeoform import Form, translator
 from c2cwsgiutils.broadcast import decorator
@@ -214,7 +215,7 @@ def add_admin_interface(config: pyramid.config.Configurator) -> None:
 
     if config.get_settings().get("enable_admin_interface", False):
         config.add_request_method(
-            lambda request: c2cgeoportal_commons.models.DBSession(),  # type: ignore[operator]
+            lambda request: c2cgeoportal_commons.models.DBSession(),
             "dbsession",
             reify=True,
         )
@@ -812,18 +813,18 @@ def init_db_sessions(
     if health_check is not None:
         for name, session in c2cgeoportal_commons.models.DBSessions.items():
             if name == "dbsession":
-                health_check.add_db_session_check(session, at_least_one_model=main.Theme, level=1)  # type: ignore[arg-type]
+                health_check.add_db_session_check(session, at_least_one_model=main.Theme, level=1)
                 alembic_ini = os.path.join(os.path.abspath(os.path.curdir), "alembic.ini")
                 if os.path.exists(alembic_ini):
                     health_check.add_alembic_check(
-                        session,  # type: ignore[arg-type]
+                        session,
                         alembic_ini_path=alembic_ini,
                         name="main",
                         version_schema=settings["schema"],
                         level=1,
                     )
                     health_check.add_alembic_check(
-                        session,  # type: ignore[arg-type]
+                        session,
                         alembic_ini_path=alembic_ini,
                         name="static",
                         version_schema=settings["schema_static"],
@@ -831,7 +832,7 @@ def init_db_sessions(
                     )
             else:
 
-                def check(session_: Session) -> None:
+                def check(session_: sqlalchemy.orm.scoped_session[sqlalchemy.orm.Session]) -> None:
                     session_.execute(sqlalchemy.text("SELECT 1"))
 
-                health_check.add_db_session_check(session, query_cb=check, level=2)  # type: ignore[arg-type]
+                health_check.add_db_session_check(session, query_cb=check, level=2)

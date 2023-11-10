@@ -38,6 +38,7 @@ import pyramid.request
 import pyramid.response
 import shapely.geometry
 import sqlalchemy.ext.declarative
+import sqlalchemy.orm
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import from_shape, to_shape
 from geojson.feature import Feature, FeatureCollection
@@ -507,11 +508,13 @@ class Layers:
 
     @staticmethod
     def query_enumerate_attribute_values(
-        dbsession: sqlalchemy.orm.Session, layerinfos: dict[str, Any], fieldname: str
+        dbsession: sqlalchemy.orm.scoped_session[sqlalchemy.orm.Session],
+        layerinfos: dict[str, Any],
+        fieldname: str,
     ) -> set[tuple[str, ...]]:
         attrinfos = layerinfos["attributes"][fieldname]
         table = attrinfos["table"]
-        layertable = get_table(table, session=dbsession)
+        layertable = get_table(table, session=dbsession())
         column = attrinfos.get("column_name", fieldname)
         attribute = getattr(layertable.columns, column)
         # For instance if `separator` is a "," we consider that the column contains a
