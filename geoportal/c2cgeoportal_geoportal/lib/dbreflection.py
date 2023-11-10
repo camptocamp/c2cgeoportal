@@ -116,7 +116,7 @@ def get_table(
     if session is not None:
         assert session.bind is not None
         engine = session.bind.engine
-        metadata = MetaData()  # type: ignore[call-arg] # pylint: disable=unexpected-keyword-arg
+        metadata = MetaData()
     else:
         from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
