@@ -14,9 +14,9 @@ from c2cgeoportal_commons.testing.initializedb import truncate_tables
 def dbsession(settings):
     generate_mappers()
     engine = get_engine(settings)
-    truncate_tables(engine)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
+    truncate_tables(session)
     yield session
 
 
