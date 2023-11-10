@@ -74,11 +74,13 @@ class TestLayers(TestCase):
     def teardown_method(self, _):
         import transaction
 
+        from c2cgeoportal_commons.models import DBSession
+
         cleanup_db()
 
         if self._tables is not None:
             for table in self._tables[::-1]:
-                table.drop(bind=engine)
+                table.drop(bind=DBSession.c2c_rw_bind)
 
         transaction.commit()
 
