@@ -53,7 +53,7 @@ class TestXSDGenerator(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        Base = declarative_base(bind=DBSession.c2c_rw_bind)  # noqa
+        Base = declarative_base()  # noqa
 
         class Child(Base):  # type: ignore
             __tablename__ = "child"
@@ -91,11 +91,13 @@ class TestXSDGenerator(TestCase):
     def teardown_method(self, _):
         import transaction
 
+        from c2cgeoportal_commons.models import DBSession
+
         transaction.commit()
 
         if self._tables is not None:
             for table in self._tables:
-                table.drop(bind=engine)
+                table.drop(bind=DBSession.c2c_rw_bind)
 
     @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_column_property_xsd")
     def test_add_class_properties_xsd_column_order(self, column_mock):

@@ -80,7 +80,7 @@ class TestLayers(TestCase):
 
         if self._tables is not None:
             for table in self._tables[::-1]:
-                table.drop(bind=DBSession.c2c_rw_bind)
+                table.drop(bind=DBSession.c2c_rw_bind, checkfirst=True)
 
         transaction.commit()
 

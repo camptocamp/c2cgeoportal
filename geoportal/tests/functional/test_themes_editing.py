@@ -150,7 +150,7 @@ class TestThemeEditing(TestCase):
         DBSession.query(OGCServer).delete()
 
         for table in self._tables[::-1]:
-            table.drop(checkfirst=True, bind=engine)
+            table.drop(checkfirst=True, bind=DBSession.c2c_rw_bind)
 
         transaction.commit()
 
