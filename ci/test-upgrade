@@ -96,6 +96,7 @@ function upgrade {
         # Workaround
         git status > /dev/null
         git apply --3way create.diff
+        git add --all
         ./upgrade "${MAJOR_VERSION}" 11
     fi
     if [ ! -e .UPGRADE_SUCCESS ]; then
