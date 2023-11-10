@@ -93,7 +93,7 @@ class TestThemesEditColumns(TestCase):
         cleanup_db()
 
         for table in self._tables[::-1]:
-            table.drop(checkfirst=True)
+            table.drop(checkfirst=True, bind=engine)
 
         transaction.commit()
 

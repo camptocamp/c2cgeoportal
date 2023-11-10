@@ -49,7 +49,7 @@ class TestReflection(TestCase):
     def teardown_method(self, _):
         if self._tables is not None:
             for table in self._tables[::-1]:
-                table.drop()
+                table.drop(bind=engine)
 
     def _create_table(self, tablename):
         """

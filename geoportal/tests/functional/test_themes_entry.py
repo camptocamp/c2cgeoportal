@@ -95,7 +95,7 @@ class TestThemeEntryView(TestCase):
         )
 
         self._tables = [a_geo_table]
-        a_geo_table.drop(checkfirst=True)
+        a_geo_table.drop(checkfirst=True, bind=engine)
         a_geo_table.create()
 
         ogcserver = create_default_ogcserver()

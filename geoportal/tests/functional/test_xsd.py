@@ -95,7 +95,7 @@ class TestXSDGenerator(TestCase):
 
         if self._tables is not None:
             for table in self._tables:
-                table.drop()
+                table.drop(bind=engine)
 
     @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_column_property_xsd")
     def test_add_class_properties_xsd_column_order(self, column_mock):
