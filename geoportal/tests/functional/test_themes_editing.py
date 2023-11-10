@@ -84,7 +84,7 @@ class TestThemeEditing(TestCase):
 
         self._tables = [a_geo_table]
         a_geo_table.drop(checkfirst=True, bind=engine)
-        a_geo_table.create()
+        a_geo_table.create(bind=engine)
 
         private_layer = LayerWMS(name="__test_private_layer", public=False)
         private_layer.layer = "__test_private_layer"

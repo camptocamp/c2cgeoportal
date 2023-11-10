@@ -73,7 +73,7 @@ class TestReflection(TestCase):
             Column("name", types.Unicode),
             schema="public",
         )
-        ctable.create(checkfirst=True)
+        ctable.create(checkfirst=True, bind=engine)
         self._tables.append(ctable)
 
         ptable = Table(
@@ -95,7 +95,7 @@ class TestReflection(TestCase):
             Column("multipolygon", Geometry("MULTIPOLYGON")),
             schema="public",
         )
-        ptable.create(checkfirst=True)
+        ptable.create(checkfirst=True, bind=engine)
         self._tables.append(ptable)
 
         self.metadata = Base.metadata
