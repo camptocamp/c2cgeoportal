@@ -1,3 +1,7 @@
+##### 2.7.1.14
+
+- Support application/geo+json [ngeo#9249](https://github.com/camptocamp/ngeo/pull/9249)
+
 ##### 2.7.1.12
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20231107T141909Z.b1fb3705a.2.7 (2.7) [c2cgeoportal#10812](https://github.com/camptocamp/c2cgeoportal/pull/10812)
