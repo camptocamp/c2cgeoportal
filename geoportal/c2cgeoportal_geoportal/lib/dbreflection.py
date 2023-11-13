@@ -135,7 +135,7 @@ def get_table(
             # Ensure we have a primary key to be able to edit views
             args.append(Column(primary_key, Integer, primary_key=True))
         with _get_table_lock:
-            table = Table(*args, schema=schema, autoload=True, autoload_with=engine)  # type: ignore[arg-type]
+            table = Table(*args, schema=schema, autoload_with=engine)  # type: ignore[arg-type]
     return table
 
 
