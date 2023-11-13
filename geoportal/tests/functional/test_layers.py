@@ -76,6 +76,8 @@ class TestLayers(TestCase):
 
         from c2cgeoportal_commons.models import DBSession
 
+        transaction.abort()
+
         cleanup_db()
 
         if self._tables is not None:
