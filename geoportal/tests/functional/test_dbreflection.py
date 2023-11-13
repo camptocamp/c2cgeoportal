@@ -47,9 +47,11 @@ class TestReflection(TestCase):
         self.metadata = None
 
     def teardown_method(self, _):
+        from c2cgeoportal_commons.models import DBSession
+
         if self._tables is not None:
             for table in self._tables[::-1]:
-                table.drop(bind=engine)
+                table.drop(bind=DBSession.c2c_rw_bind)
 
     def _create_table(self, tablename):
         """
