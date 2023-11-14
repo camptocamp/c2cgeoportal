@@ -73,7 +73,6 @@ class TestThemeEditing(TestCase):
         main = Interface(name="main")
 
         engine = DBSession.c2c_rw_bind
-        engine.connect()
         a_geo_table = Table(
             "a_geo_table",
             declarative_base().metadata,

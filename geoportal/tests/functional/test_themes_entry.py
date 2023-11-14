@@ -84,7 +84,6 @@ class TestThemeEntryView(TestCase):
         mobile = Interface(name="mobile")
 
         engine = DBSession.c2c_rw_bind
-        engine.connect()
 
         a_geo_table = Table(
             "a_geo_table",
