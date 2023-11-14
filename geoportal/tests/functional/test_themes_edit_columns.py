@@ -218,7 +218,13 @@ class TestThemesEditColumns(TestCase):
     def test_themes_edit_columns(self):
         from c2cgeoportal_geoportal.views.theme import Theme
 
+        from commons.c2cgeoportal_commons.models import DBSession
+
         layer_id = self._create_layer(geom_type=True)
+
+        for a in DBSession.query(self._tables[0]).all():
+            print(a)
+
         theme_view = Theme(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
         themes = theme_view.themes()
