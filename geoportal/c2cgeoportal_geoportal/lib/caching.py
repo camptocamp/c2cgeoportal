@@ -52,7 +52,7 @@ _REGION: dict[str, CacheRegion] = {}
 MEMORY_CACHE_DICT: dict[str, Any] = {}
 
 
-def map_dbobject(item: Any) -> Any:
+def map_dbobject(item: type[Any]) -> Any:
     """Get an cache identity key for the cache."""
     return identity_key(item) if isinstance(item, Base) else item
 

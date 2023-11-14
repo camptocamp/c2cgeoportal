@@ -136,6 +136,8 @@ def get_table(
             args.append(Column(primary_key, Integer, primary_key=True))
         with _get_table_lock:
             table = Table(*args, schema=schema, autoload_with=engine)  # type: ignore[arg-type]
+        print(f"Table {tablename} loaded")
+        print([c.name for c in table.columns])
     return table
 
 
