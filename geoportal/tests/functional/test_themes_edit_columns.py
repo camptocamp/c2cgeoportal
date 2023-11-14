@@ -28,6 +28,7 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
+from typing import TYPE_CHECKING, Any, Optional
 from unittest import TestCase
 from urllib.parse import urlencode
 
@@ -36,11 +37,14 @@ from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models.main import Metadata
+
 
 class TestThemesEditColumns(TestCase):
     _table_index = 0
 
-    def setup_method(self, _):
+    def setup_method(self, _: Any) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -87,7 +91,7 @@ class TestThemesEditColumns(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _: Any) -> None:
         import transaction
 
         from c2cgeoportal_commons.models import DBSession
@@ -99,7 +103,12 @@ class TestThemesEditColumns(TestCase):
 
         transaction.commit()
 
-    def _create_layer(self, exclude_properties=False, metadatas=None, geom_type=False):
+    def _create_layer(
+        self,
+        exclude_properties: bool = False,
+        metadatas: Optional[list["Metadata"]] = None,
+        geom_type: bool = False,
+    ) -> int:
         """
         This function is central for this test class.
 
@@ -205,7 +214,7 @@ class TestThemesEditColumns(TestCase):
         return id
 
     @staticmethod
-    def _get_request(layerid, username=None, params=None):
+    def _get_request(layerid, username=None, params=None) -> None:
         if params is None:
             params = {}
 
@@ -215,10 +224,10 @@ class TestThemesEditColumns(TestCase):
         request.params = params
         return request
 
-    def test_themes_edit_columns(self):
-        from c2cgeoportal_geoportal.views.theme import Theme
-
+    def test_themes_edit_columns(self) -> None:
         from commons.c2cgeoportal_commons.models import DBSession
+
+        from c2cgeoportal_geoportal.views.theme import Theme
 
         layer_id = self._create_layer(geom_type=True)
 
@@ -281,7 +290,7 @@ class TestThemesEditColumns(TestCase):
             ],
         )
 
-    def test_themes_edit_columns_extras(self):
+    def test_themes_edit_columns_extras(self) -> None:
         from c2cgeoportal_commons.models.main import Metadata
         from c2cgeoportal_geoportal.views.theme import Theme
 
