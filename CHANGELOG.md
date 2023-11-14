@@ -1,3 +1,7 @@
+##### 2.8.1.6
+
+- [Backport 2.8] Support application/geo+json [ngeo#9256](https://github.com/camptocamp/ngeo/pull/9256)
+
 ##### 2.8.1.5
 
 - CI updates [ngeo#9237](https://github.com/camptocamp/ngeo/pull/9237)
