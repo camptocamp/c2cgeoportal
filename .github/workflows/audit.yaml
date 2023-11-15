@@ -9,8 +9,8 @@ on:
 
 jobs:
   audit:
-    runs-on: ${{ matrix.os }}
     name: Audit
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 20
 
     strategy:
@@ -60,7 +60,9 @@ jobs:
         if: failure()
       - run: python --version
 
-      - name: Audit
+      - name: Snyk audit
         run: ~/.venv/bin/c2cciutils-audit --branch=${{ matrix.branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+      - name: Update dpkg packages versions
+        run: c2cciutils-docker-versions-update --branch=${{ matrix.branch }}

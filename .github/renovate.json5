@@ -29,13 +29,6 @@
       ],
       datasourceTemplate: 'github-tags',
     },
-    /** Do update on packages update (trigger a rebuild) */
-    {
-      fileMatch: ['^ci/dpkg\\-versions\\.yaml$'],
-      matchStrings: [" *(?<depName>[^'\\s]+): '?(?<currentValue>[^'\\s/]*[0-9][^'\\s/]*)'?"],
-      datasourceTemplate: 'repology',
-      versioningTemplate: 'loose',
-    },
   ],
   packageRules: [
     /** Docker images versioning */
@@ -153,14 +146,6 @@
       matchPaths: ['^ci/dpkg\\-versions\\.yaml$'],
       enabled: false,
     },
-    /** Update dpkg versions at any time */
-    {
-      matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
-      matchPaths: ['^ci/dpkg\\-versions\\.yaml$'],
-      schedule: ['at any time'],
-      groupName: 'dpkg',
-      automerge: true,
-    },
     /** Only LTS version of Node */
     {
       allowedVersions: '/(0|2|4|6|8)$/',
@@ -172,6 +157,11 @@
       matchPackageNames: ['PyYAML'],
       allowedVersions: '5.4.1',
       enabled: false,
+    },
+    /** Auto merge the GitHub action and pre-commit updates */
+    {
+      matchDatasources: ['github-actions', 'pre-commit'],
+      automerge: true,
     },
   ],
 }
