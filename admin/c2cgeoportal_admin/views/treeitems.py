@@ -86,6 +86,6 @@ class TreeItemViews(LoggedViews):
     ) -> sqlalchemy.orm.query.Query[TreeItem]:
         return (
             query.outerjoin(TreeItem.metadatas)
-            .options(subqueryload(TreeItem.parents_relation).joinedload(TreeItem.treegroup))
+            .options(subqueryload(TreeItem.parents_relation).joinedload(LayergroupTreeitem.treegroup))
             .options(subqueryload(TreeItem.metadatas))
         )
