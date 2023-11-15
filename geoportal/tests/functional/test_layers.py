@@ -28,13 +28,16 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
-from typing import Any
+from typing import TYPE_CHECKING, Any, Optional
 from unittest import TestCase
 
 from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
+
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models.main import Metadata
 
 
 class TestLayers(TestCase):
@@ -89,12 +92,12 @@ class TestLayers(TestCase):
 
     def _create_layer(
         self,
-        public=False,
-        none_area=False,
-        attr_list=False,
-        exclude_properties=False,
-        metadatas=None,
-        geom_type=False,
+        public: bool = False,
+        none_area: bool = False,
+        attr_list: bool = False,
+        exclude_properties: bool = False,
+        metadatas: Optional[list["Metadata"]] = None,
+        geom_type: bool = False,
     ) -> None:
         """
         This function is central for this test class.
