@@ -1,4 +1,5 @@
 import pytest
+import sqlalchemy.exc
 import transaction
 from pyramid import testing
 from pyramid.paster import bootstrap
@@ -25,7 +26,10 @@ def dbsession(settings):
 def transact(dbsession):
     t = dbsession.begin_nested()
     yield t
-    t.rollback()
+    try:
+        t.rollback()
+    except sqlalchemy.exc.ResourceClosedError:
+        print("The transaction was already closed")
     dbsession.expire_all()
 
 
