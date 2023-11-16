@@ -46,8 +46,8 @@ jobs:
       - run: if [ -e requirements.txt ] ; then pip install --requirement=requirements.txt; fi
 
       - run: python3 -m venv ~/.venv
-      - run: ~/.venv/bin/pip install --pre c2cciutils[audit]
-      - run: python3 -m pip install --pre c2cciutils[audit]
+      - run: ~/.venv/bin/pip install --upgrade --pre c2cciutils[audit]
+      - run: python3 -m pip install --upgrade --pre c2cciutils[audit]
 
       - name: Check .tool-versions file existence
         id: tool-versions
