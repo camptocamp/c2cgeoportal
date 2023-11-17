@@ -1,3 +1,7 @@
+##### 2.8.1.8
+
+- Monkey-patch clear WebGL [ngeo#9257](https://github.com/camptocamp/ngeo/pull/9257)
+
 ##### 2.8.1.6
 
 - [Backport 2.8] Support application/geo+json [ngeo#9256](https://github.com/camptocamp/ngeo/pull/9256)
