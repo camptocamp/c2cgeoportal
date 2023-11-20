@@ -65,4 +65,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
       - name: Update dpkg packages versions
-        run: c2cciutils-docker-versions-update --branch=${{ matrix.branch }}
+        run: ~/.venv/bin/c2cciutils-docker-versions-update --branch=${{ matrix.branch }}
