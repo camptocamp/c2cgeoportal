@@ -682,9 +682,9 @@ vars:
       - name: snappingConfig
         type: json
         description: >
-          The snapping configuration for the layer. If set, the layer is considered to be
-          "snappable", even if the config itself is empty. Example value: {"tolerance": 50, "edge":
-          false}.
+          The snapping configuration for the layer. If set, even if empty, the layer is considered to be
+          "snappable" and snapping is activated by default. To disable snapping by default, set "activated"
+          to false. Example value: {"tolerance": 50, "edge": false}.
         relevant_for:
           - layer_wms
       - name: geometryValidation
