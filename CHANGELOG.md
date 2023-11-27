@@ -1,3 +1,7 @@
+##### 2.8.1.9
+
+- [Backport 2.8] Improve documentation on snapping [c2cgeoportal#10817](https://github.com/camptocamp/c2cgeoportal/pull/10817)
+
 ##### 2.8.1.8
 
 - Monkey-patch clear WebGL [ngeo#9257](https://github.com/camptocamp/ngeo/pull/9257)
