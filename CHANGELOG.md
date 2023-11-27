@@ -1,3 +1,7 @@
+##### 2.7.1.16
+
+- [Backport 2.7] Improve documentation on snapping [c2cgeoportal#10816](https://github.com/camptocamp/c2cgeoportal/pull/10816)
+
 ##### 2.7.1.15
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20231113T145616Z.323d8c0bf.2.7 (2.7) [c2cgeoportal#10814](https://github.com/camptocamp/c2cgeoportal/pull/10814)
