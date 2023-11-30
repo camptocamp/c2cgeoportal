@@ -1,3 +1,7 @@
+##### 2.7.1.17
+
+- Snyk auto fix [c2cgeoportal#10821](https://github.com/camptocamp/c2cgeoportal/pull/10821)
+
 ##### 2.7.1.16
 
 - [Backport 2.7] Improve documentation on snapping [c2cgeoportal#10816](https://github.com/camptocamp/c2cgeoportal/pull/10816)
