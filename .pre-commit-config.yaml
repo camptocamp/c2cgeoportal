@@ -40,11 +40,11 @@ repos:
       - id: poetry-check
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==1.6.1 # pypi
+          - poetry==1.7.1 # pypi
       - id: poetry-lock
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==1.6.1 # pypi
+          - poetry==1.7.1 # pypi
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
