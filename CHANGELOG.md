@@ -1,3 +1,7 @@
+##### 2.8.1.15
+
+- Update dependency cryptography to v41.0.7 (2.8) [c2cgeoportal#10837](https://github.com/camptocamp/c2cgeoportal/pull/10837)
+
 ##### 2.8.1.14
 
 - Update all patch versions (2.8) (patch) [ngeo#9265](https://github.com/camptocamp/ngeo/pull/9265)
