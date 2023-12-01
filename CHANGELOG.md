@@ -1,3 +1,7 @@
+##### 2.8.1.14
+
+- Update all patch versions (2.8) (patch) [ngeo#9265](https://github.com/camptocamp/ngeo/pull/9265)
+
 ##### 2.8.1.12
 
 - CI updates [ngeo#9262](https://github.com/camptocamp/ngeo/pull/9262)
