@@ -1694,13 +1694,13 @@ files = [
 
 [[package]]
 name = "transaction"
-version = "3.1.0"
+version = "4.0"
 description = "Transaction management for Python"
 optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+python-versions = ">=3.7"
 files = [
-    {file = "transaction-3.1.0-py2.py3-none-any.whl", hash = "sha256:8376a959aa71821df1bdd7d066858a3f9f34b7f5f1c0a0e1efbd11d626895449"},
-    {file = "transaction-3.1.0.tar.gz", hash = "sha256:65d0b1ea92dbe7c4e3b237fb6bd8b41dea23d7459e7bdd8c3880bffdaf912fa4"},
+    {file = "transaction-4.0-py3-none-any.whl", hash = "sha256:e2519a316a05b14b3d483ac777df311087daaffeeafd3e9f7de62fc087ce3209"},
+    {file = "transaction-4.0.tar.gz", hash = "sha256:68035db913f60d1be12f6563d201daab36c83e763de15899ff8338f26e5e62f2"},
 ]
 
 [package.dependencies]
@@ -1708,8 +1708,7 @@ files = [
 
 [package.extras]
 docs = ["Sphinx", "repoze.sphinx.autointerface"]
-test = ["mock"]
-testing = ["coverage", "mock", "nose"]
+testing = ["coverage"]
 
 [[package]]
 name = "translationstring"
@@ -2061,4 +2060,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "ff0f7d1d952fa647417070b21146ea41b78d1eaf64e602c0925b9cc1ac9bd1b7"
+content-hash = "e7fe3e468c02accac3ea0c793bdc0d139514c596b0aa1a48e5f09723dc4dbb83"
