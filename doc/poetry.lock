@@ -131,32 +131,32 @@ dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
 name = "boto3"
-version = "1.28.85"
+version = "1.33.7"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.28.85-py3-none-any.whl", hash = "sha256:1fb7e7ba32a6701990168eb7a08e1fb624ae48130784dfab25904ed47deabb31"},
-    {file = "boto3-1.28.85.tar.gz", hash = "sha256:96b4cb2708933cef7dbe1177df37ef0593839942978784147aade0e49511eb2b"},
+    {file = "boto3-1.33.7-py3-none-any.whl", hash = "sha256:d12467fb3a64d359b0bda0570a8163a5859fcac13e786f2a3db0392523178556"},
+    {file = "boto3-1.33.7.tar.gz", hash = "sha256:eed0f7df91066b6ac63a53d16459ac082458d57061bedf766135d9e1c2b75a6b"},
 ]
 
 [package.dependencies]
-botocore = ">=1.31.85,<1.32.0"
+botocore = ">=1.33.7,<1.34.0"
 jmespath = ">=0.7.1,<2.0.0"
-s3transfer = ">=0.7.0,<0.8.0"
+s3transfer = ">=0.8.2,<0.9.0"
 
 [package.extras]
 crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.31.85"
+version = "1.33.7"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.31.85-py3-none-any.whl", hash = "sha256:b8f35d65f2b45af50c36fc25cc1844d6bd61d38d2148b2ef133b8f10e198555d"},
-    {file = "botocore-1.31.85.tar.gz", hash = "sha256:ce58e688222df73ec5691f934be1a2122a52c9d11d3037b586b3fff16ed6d25f"},
+    {file = "botocore-1.33.7-py3-none-any.whl", hash = "sha256:71ec0e85b996cf9def3dd8f4ca6cb4a9fd3a614aa4c9c7cbf33f2f68e1d0649a"},
+    {file = "botocore-1.33.7.tar.gz", hash = "sha256:b2299bc13bb8c0928edc98bf4594deb14cba2357536120f63772027a16ce7374"},
 ]
 
 [package.dependencies]
@@ -165,7 +165,7 @@ python-dateutil = ">=2.1,<3.0.0"
 urllib3 = {version = ">=1.25.4,<2.1", markers = "python_version >= \"3.10\""}
 
 [package.extras]
-crt = ["awscrt (==0.19.12)"]
+crt = ["awscrt (==0.19.17)"]
 
 [[package]]
 name = "bottle"
@@ -1117,17 +1117,18 @@ files = [
 
 [[package]]
 name = "pygments"
-version = "2.16.1"
+version = "2.17.2"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "Pygments-2.16.1-py3-none-any.whl", hash = "sha256:13fc09fa63bc8d8671a6d247e1eb303c4b343eaee81d861f3404db2935653692"},
-    {file = "Pygments-2.16.1.tar.gz", hash = "sha256:1daff0494820c69bc8941e407aa20f577374ee88364ee10a98fdbe0aece96e29"},
+    {file = "pygments-2.17.2-py3-none-any.whl", hash = "sha256:b27c2826c47d0f3219f29554824c30c5e8945175d888647acd804ddd04af846c"},
+    {file = "pygments-2.17.2.tar.gz", hash = "sha256:da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"},
 ]
 
 [package.extras]
 plugins = ["importlib-metadata"]
+windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "pyjwt"
@@ -1607,20 +1608,20 @@ files = [
 
 [[package]]
 name = "s3transfer"
-version = "0.7.0"
+version = "0.8.2"
 description = "An Amazon S3 Transfer Manager"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "s3transfer-0.7.0-py3-none-any.whl", hash = "sha256:10d6923c6359175f264811ef4bf6161a3156ce8e350e705396a7557d6293c33a"},
-    {file = "s3transfer-0.7.0.tar.gz", hash = "sha256:fd3889a66f5fe17299fe75b82eae6cf722554edca744ca5d5fe308b104883d2e"},
+    {file = "s3transfer-0.8.2-py3-none-any.whl", hash = "sha256:c9e56cbe88b28d8e197cf841f1f0c130f246595e77ae5b5a05b69fe7cb83de76"},
+    {file = "s3transfer-0.8.2.tar.gz", hash = "sha256:368ac6876a9e9ed91f6bc86581e319be08188dc60d50e0d56308ed5765446283"},
 ]
 
 [package.dependencies]
-botocore = ">=1.12.36,<2.0a.0"
+botocore = ">=1.33.2,<2.0a.0"
 
 [package.extras]
-crt = ["botocore[crt] (>=1.20.29,<2.0a.0)"]
+crt = ["botocore[crt] (>=1.33.2,<2.0a.0)"]
 
 [[package]]
 name = "scipy"
@@ -2168,13 +2169,13 @@ wsgi = ["pyramid"]
 
 [[package]]
 name = "tilecloud-chain"
-version = "1.19.0"
+version = "1.20.0"
 description = "Tools to generate tiles from WMS or Mapnik, to S3, Berkeley DB, MBTiles, or local filesystem in WMTS layout using Amazon cloud services."
 optional = false
 python-versions = ">=3.9,<3.11"
 files = [
-    {file = "tilecloud_chain-1.19.0-py3-none-any.whl", hash = "sha256:bc84bb96205992a9a3e5c1369c8eefb2e27ab9b8099858483cc8b4d2bf0d1424"},
-    {file = "tilecloud_chain-1.19.0.tar.gz", hash = "sha256:4384e310ce4fd0c7a7a7a82e9b6a285520ef1ce37e92c0753ce0097d0344ecda"},
+    {file = "tilecloud_chain-1.20.0-py3-none-any.whl", hash = "sha256:51a5b6ddeeeb397fc6137a31e580ccd419535195e7dad3e7d9ac6e9dee7ff879"},
+    {file = "tilecloud_chain-1.20.0.tar.gz", hash = "sha256:7bd4aec34416b6fdfc79d43bbb60b318badd89ec918dfe4d8a73ae134ab25f89"},
 ]
 
 [package.dependencies]
@@ -2463,4 +2464,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "3c2ef9cbd23a36b777f38309d7b1eed1b3410d2db421929e965d9c26f17be0aa"
+content-hash = "2f69231b5bbd1ca01643e0b5d2e50ad4c5a0b675baa184247153ca2a12bf71e9"
