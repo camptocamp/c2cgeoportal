@@ -183,7 +183,7 @@ services:
       - redis_slave
 
   tilecloudchain:
-    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.19
+    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.20
     user: www-data
     restart: unless-stopped
     environment:

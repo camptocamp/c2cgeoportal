@@ -17,13 +17,13 @@ test = ["pytest (>=4.6)", "pytest-cov"]
 
 [[package]]
 name = "alembic"
-version = "1.12.1"
+version = "1.13.0"
 description = "A database migration tool for SQLAlchemy."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "alembic-1.12.1-py3-none-any.whl", hash = "sha256:47d52e3dfb03666ed945becb723d6482e52190917fdb47071440cfdba05d92cb"},
-    {file = "alembic-1.12.1.tar.gz", hash = "sha256:bca5877e9678b454706347bc10b97cb7d67f300320fa5c3a94423e8266e2823f"},
+    {file = "alembic-1.13.0-py3-none-any.whl", hash = "sha256:a23974ea301c3ee52705db809c7413cecd165290c6679b9998dd6c74342ca23a"},
+    {file = "alembic-1.13.0.tar.gz", hash = "sha256:ab4b3b94d2e1e5f81e34be8a9b7b7575fc9dd5398fccb0bef351ec9b14872623"},
 ]
 
 [package.dependencies]
@@ -32,7 +32,7 @@ SQLAlchemy = ">=1.3.0"
 typing-extensions = ">=4"
 
 [package.extras]
-tz = ["python-dateutil"]
+tz = ["backports.zoneinfo"]
 
 [[package]]
 name = "arrow"
@@ -119,13 +119,13 @@ aio = ["aiohttp (>=3.0)"]
 
 [[package]]
 name = "azure-storage-blob"
-version = "12.18.3"
+version = "12.19.0"
 description = "Microsoft Azure Blob Storage Client Library for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "azure-storage-blob-12.18.3.tar.gz", hash = "sha256:d8ced0deee3367fa3d4f3d1a03cd9edadf4440c0a371f503d623fa6c807554ee"},
-    {file = "azure_storage_blob-12.18.3-py3-none-any.whl", hash = "sha256:c278dde2ac41857a68d615c9f2b36d894ba877a7e84d62795603c7e79d0bb5e9"},
+    {file = "azure-storage-blob-12.19.0.tar.gz", hash = "sha256:26c0a4320a34a3c2a1b74528ba6812ebcb632a04cd67b1c7377232c4b01a5897"},
+    {file = "azure_storage_blob-12.19.0-py3-none-any.whl", hash = "sha256:7bbc2c9c16678f7a420367fef6b172ba8730a7e66df7f4d7a55d5b3c8216615b"},
 ]
 
 [package.dependencies]
@@ -762,13 +762,13 @@ files = [
 
 [[package]]
 name = "cookiecutter"
-version = "2.4.0"
+version = "2.5.0"
 description = "A command-line utility that creates projects from project templates, e.g. creating a Python package project from a Python package project template."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "cookiecutter-2.4.0-py3-none-any.whl", hash = "sha256:8344663028abc08ec09b912e663636a97e1775bffe973425ec0107431acd390e"},
-    {file = "cookiecutter-2.4.0.tar.gz", hash = "sha256:6d1494e66a784f23324df9d593f3e43af3db4f4b926b9e49e6ff060169fc042a"},
+    {file = "cookiecutter-2.5.0-py3-none-any.whl", hash = "sha256:8aa2f12ed11bc05628651e9dc4353a10571dd9908aaaaeec959a2b9ea465a5d2"},
+    {file = "cookiecutter-2.5.0.tar.gz", hash = "sha256:e61e9034748e3f41b8bd2c11f00d030784b48711c4d5c42363c50989a65331ec"},
 ]
 
 [package.dependencies]
@@ -1110,13 +1110,13 @@ shapely = ["Shapely (>=1.7)"]
 
 [[package]]
 name = "geojson"
-version = "3.0.1"
+version = "3.1.0"
 description = "Python bindings and utilities for GeoJSON"
 optional = false
-python-versions = ">=3.7, <3.12"
+python-versions = ">=3.7"
 files = [
-    {file = "geojson-3.0.1-py3-none-any.whl", hash = "sha256:e49df982b204ed481e4c1236c57f587adf71537301cf8faf7120ab27d73c7568"},
-    {file = "geojson-3.0.1.tar.gz", hash = "sha256:ff3d75acab60b1e66504a11f7ea12c104bad32ff3c410a807788663b966dee4a"},
+    {file = "geojson-3.1.0-py3-none-any.whl", hash = "sha256:68a9771827237adb8c0c71f8527509c8f5bef61733aa434cefc9c9d4f0ebe8f3"},
+    {file = "geojson-3.1.0.tar.gz", hash = "sha256:58a7fa40727ea058efc28b0e9ff0099eadf6d0965e04690830208d3ef571adac"},
 ]
 
 [[package]]
@@ -1650,13 +1650,13 @@ source = ["Cython (>=0.29.35)"]
 
 [[package]]
 name = "mako"
-version = "1.2.4"
+version = "1.3.0"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "Mako-1.2.4-py3-none-any.whl", hash = "sha256:c97c79c018b9165ac9922ae4f32da095ffd3c4e6872b45eded42926deea46818"},
-    {file = "Mako-1.2.4.tar.gz", hash = "sha256:d60a3903dc3bb01a18ad6a89cdbe2e4eadc69c0bc8ef1e3773ba53d44c3f7a34"},
+    {file = "Mako-1.3.0-py3-none-any.whl", hash = "sha256:57d4e997349f1a92035aa25c17ace371a4213f2ca42f99bee9a602500cfd54d9"},
+    {file = "Mako-1.3.0.tar.gz", hash = "sha256:e3a9d388fd00e87043edbe8792f45880ac0114e9c4adc69f6e9bfb2c55e3b11b"},
 ]
 
 [package.dependencies]
@@ -2385,13 +2385,13 @@ with-vulture = ["vulture (>=1.5)"]
 
 [[package]]
 name = "prospector-profile-duplicated"
-version = "0.3.0"
+version = "0.4.0"
 description = "Profile that can be used to disable the duplicated or conflict rules between Prospector and other tools"
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_duplicated-0.3.0-py2.py3-none-any.whl", hash = "sha256:5c9bc909c0bc024421bbd38e75015b56425769233aad31437c41835c8d3a34e7"},
-    {file = "prospector_profile_duplicated-0.3.0.tar.gz", hash = "sha256:142dd353a2e65f3c39c36eba7d1a5f4ffc3869381425bed43a47cc158a122a8a"},
+    {file = "prospector_profile_duplicated-0.4.0-py2.py3-none-any.whl", hash = "sha256:f648c2e81d3e4592143b678378278df6d309ae9e20bf9595b5777ee8bcdaf85d"},
+    {file = "prospector_profile_duplicated-0.4.0.tar.gz", hash = "sha256:862e332c9413aca07c2b747abf9275531cebdf82a0db887e99b63b2f424301da"},
 ]
 
 [[package]]
@@ -3328,23 +3328,22 @@ toml = ">=0.10.2,<0.11.0"
 
 [[package]]
 name = "responses"
-version = "0.23.3"
+version = "0.24.1"
 description = "A utility library for mocking out the `requests` Python library."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "responses-0.23.3-py3-none-any.whl", hash = "sha256:e6fbcf5d82172fecc0aa1860fd91e58cbfd96cee5e96da5b63fa6eb3caa10dd3"},
-    {file = "responses-0.23.3.tar.gz", hash = "sha256:205029e1cb334c21cb4ec64fc7599be48b859a0fd381a42443cdd600bfe8b16a"},
+    {file = "responses-0.24.1-py3-none-any.whl", hash = "sha256:a2b43f4c08bfb9c9bd242568328c65a34b318741d3fab884ac843c5ceeb543f9"},
+    {file = "responses-0.24.1.tar.gz", hash = "sha256:b127c6ca3f8df0eb9cc82fd93109a3007a86acb24871834c47b77765152ecf8c"},
 ]
 
 [package.dependencies]
 pyyaml = "*"
 requests = ">=2.30.0,<3.0"
-types-PyYAML = "*"
 urllib3 = ">=1.25.10,<3.0"
 
 [package.extras]
-tests = ["coverage (>=6.0.0)", "flake8", "mypy", "pytest (>=7.0.0)", "pytest-asyncio", "pytest-cov", "pytest-httpserver", "tomli", "tomli-w", "types-requests"]
+tests = ["coverage (>=6.0.0)", "flake8", "mypy", "pytest (>=7.0.0)", "pytest-asyncio", "pytest-cov", "pytest-httpserver", "tomli", "tomli-w", "types-PyYAML", "types-requests"]
 
 [[package]]
 name = "rich"
@@ -3909,13 +3908,13 @@ files = [
 
 [[package]]
 name = "tilecloud"
-version = "1.10.0"
+version = "1.11.0"
 description = "Tools for managing tiles"
 optional = false
-python-versions = ">=3.8,<3.11"
+python-versions = ">=3.9"
 files = [
-    {file = "tilecloud-1.10.0-py3-none-any.whl", hash = "sha256:769668fd3e3649313390651b8df85eb9fd9d145172605f080600c27290761162"},
-    {file = "tilecloud-1.10.0.tar.gz", hash = "sha256:a5e55379345887f0df58f71d927fcd259a443ea274eb54a061503f25060d097f"},
+    {file = "tilecloud-1.11.0-py3-none-any.whl", hash = "sha256:08e2693a3eb977a19c005ca675cc884e54edbec7ae401e8b983292c8c0db1af9"},
+    {file = "tilecloud-1.11.0.tar.gz", hash = "sha256:de74559f955fdc30cdedff65bd750b5f68c40af7df92d8578d77e8ba8f261078"},
 ]
 
 [package.dependencies]
@@ -4450,4 +4449,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "8b686966d9d45e6c399206c7bb64d4c5dcd8920bfca060c93cfba2e57f157b46"
+content-hash = "03875d17138228ca5730181cbec88eaee2984d04f55cff37f3af4ef9ee6a5055"
