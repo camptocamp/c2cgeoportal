@@ -29,6 +29,7 @@
 import copy
 import logging
 import xml.sax.handler  # nosec
+import xml.sax.xmlreader  # nosec
 from io import StringIO
 from typing import Any, Callable, Optional, Union
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
@@ -143,7 +144,7 @@ def filter_capabilities(
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler, "Layer" if wms else "FeatureType", layers_blacklist=private_layers
     )
-    filter_handler.parse(StringIO(content))  # type: ignore
+    filter_handler.parse(StringIO(content))
     return result.getvalue()
 
 
@@ -175,7 +176,7 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
     filter_handler = _CapabilitiesFilter(
         parser, downstream_handler, "FeatureType", layers_whitelist=writable_layers
     )
-    filter_handler.parse(StringIO(content))  # type: ignore
+    filter_handler.parse(StringIO(content))
     return result.getvalue()
 
 
@@ -230,7 +231,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 
     def _complete_text_node(self) -> None:
         if self._accumulator:
-            self._downstream.characters("".join(self._accumulator))  # type: ignore
+            self._downstream.characters("".join(self._accumulator))
             self._accumulator = []
 
     def _do(self, action: Callable[[], Any]) -> None:
@@ -247,22 +248,22 @@ class _CapabilitiesFilter(XMLFilterBase):
                 action()
             layer.accumulator = []
 
-    def setDocumentLocator(self, locator: str) -> None:  # noqa: ignore=N802
-        self._downstream.setDocumentLocator(locator)  # type: ignore
+    def setDocumentLocator(self, locator: xml.sax.xmlreader.Locator) -> None:  # noqa: ignore=N802
+        self._downstream.setDocumentLocator(locator)
 
     def startDocument(self) -> None:  # noqa: ignore=N802
-        self._downstream.startDocument()  # type: ignore
+        self._downstream.startDocument()
 
     def endDocument(self) -> None:  # noqa: ignore=N802
-        self._downstream.endDocument()  # type: ignore
+        self._downstream.endDocument()
 
-    def startPrefixMapping(self, prefix: str, uri: str) -> None:  # noqa: ignore=N802
-        self._downstream.startPrefixMapping(prefix, uri)  # type: ignore
+    def startPrefixMapping(self, prefix: Optional[str], uri: str) -> None:  # noqa: ignore=N802
+        self._downstream.startPrefixMapping(prefix, uri)
 
-    def endPrefixMapping(self, prefix: str) -> None:  # noqa: ignore=N802
-        self._downstream.endPrefixMapping(prefix)  # type: ignore
+    def endPrefixMapping(self, prefix: Optional[str]) -> None:  # noqa: ignore=N802
+        self._downstream.endPrefixMapping(prefix)
 
-    def startElement(self, name: str, attrs: dict[str, str]) -> None:  # noqa: ignore=N802
+    def startElement(self, name: str, attrs: xml.sax.xmlreader.AttributesImpl) -> None:  # noqa: ignore=N802
         if name == self.tag_name:
             self.level += 1
             if self.layers_path:
@@ -279,10 +280,10 @@ class _CapabilitiesFilter(XMLFilterBase):
         elif name == "Name" and self.layers_path:
             self.in_name = True
 
-        self._do(lambda: self._downstream.startElement(name, attrs))  # type: ignore
+        self._do(lambda: self._downstream.startElement(name, attrs))
 
     def endElement(self, name: str) -> None:  # noqa: ignore=N802
-        self._do(lambda: self._downstream.endElement(name))  # type: ignore
+        self._do(lambda: self._downstream.endElement(name))
 
         if name == self.tag_name:
             self.level -= 1
@@ -294,11 +295,13 @@ class _CapabilitiesFilter(XMLFilterBase):
         elif name == "Name":
             self.in_name = False
 
-    def startElementNS(self, name: str, qname: str, attrs: dict[str, str]) -> None:  # noqa: ignore=N802
-        self._do(lambda: self._downstream.startElementNS(name, qname, attrs))  # type: ignore
+    def startElementNS(  # noqa: ignore=N802
+        self, name: tuple[str, str], qname: str, attrs: xml.sax.xmlreader.AttributesNSImpl
+    ) -> None:
+        self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 
-    def endElementNS(self, name: str, qname: str) -> None:  # noqa: ignore=N802
-        self._do(lambda: self._downstream.endElementNS(name, qname))  # type: ignore
+    def endElementNS(self, name: tuple[str, str], qname: str) -> None:  # noqa: ignore=N802
+        self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def _keep_layer(self, layer_name: str) -> bool:
         return (self.layers_blacklist is not None and layer_name not in self.layers_blacklist) or (
@@ -323,10 +326,10 @@ class _CapabilitiesFilter(XMLFilterBase):
         self._do(lambda: self._accumulator.append(chars))
 
     def processingInstruction(self, target: str, data: str) -> None:  # noqa: ignore=N802
-        self._do(lambda: self._downstream.processingInstruction(target, data))  # type: ignore
+        self._do(lambda: self._downstream.processingInstruction(target, data))
 
     def skippedEntity(self, name: str) -> None:  # noqa: ignore=N802
-        self._downstream.skippedEntity(name)  # type: ignore
+        self._downstream.skippedEntity(name)
 
 
 def normalize_tag(tag: str) -> str:
