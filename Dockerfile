@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
         libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
         libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
-    && ln -s /usr/local/lib/libproj.so.* /usr/local/lib/libproj.so
+    && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
