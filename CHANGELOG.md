@@ -1,3 +1,7 @@
+##### 2.8.1.16
+
+- [Backport 2.8] Fix CVE [c2cgeoportal#10841](https://github.com/camptocamp/c2cgeoportal/pull/10841)
+
 ##### 2.8.1.15
 
 - Update dependency cryptography to v41.0.7 (2.8) [c2cgeoportal#10837](https://github.com/camptocamp/c2cgeoportal/pull/10837)
