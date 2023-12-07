@@ -1,3 +1,7 @@
+##### 2.8.1.17
+
+- Fix CVE [c2cgeoportal#10844](https://github.com/camptocamp/c2cgeoportal/pull/10844)
+
 ##### 2.8.1.16
 
 - [Backport 2.8] Fix CVE [c2cgeoportal#10841](https://github.com/camptocamp/c2cgeoportal/pull/10841)
