@@ -210,6 +210,7 @@ COPY bin/npm-packages /usr/bin/
 WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json ./
 
+ENV PUPPETEER_CACHE_DIR=/opt
 # hadolint ignore=SC2046,DL3016
 RUN npm --no-optional --unsafe-perm --no-package-lock install && \
     npm cache clear --force && \
