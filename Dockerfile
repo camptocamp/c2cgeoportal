@@ -188,6 +188,7 @@ ENV VERSION=$VERSION
 COPY bin/npm-packages /usr/bin/
 COPY package.json /tmp/
 
+ENV PUPPETEER_CACHE_DIR=/opt
 # hadolint ignore=SC2046,DL3016,DL3003
 RUN \
     cd /tmp && \
