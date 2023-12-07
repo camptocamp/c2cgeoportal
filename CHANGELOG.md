@@ -1,3 +1,5 @@
+##### 2.6.0.222
+* Npm lock [c2cgeoportal#10842](https://github.com/camptocamp/c2cgeoportal/pull/10842)
 ##### 2.6.0.221
 * Fix CVE [c2cgeoportal#10839](https://github.com/camptocamp/c2cgeoportal/pull/10839)
 ##### 2.6.0.220
