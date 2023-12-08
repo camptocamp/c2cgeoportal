@@ -27,7 +27,6 @@
 
 
 from functools import partial
-from typing import Optional
 
 import sqlalchemy
 import sqlalchemy.orm.query
@@ -46,7 +45,7 @@ from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayerGroup, LayerVectorTiles
 
-_list_field = partial(ListField, LayerVectorTiles)
+_list_field = partial(ListField, LayerVectorTiles)  # type: ignore[var-annotated]
 
 
 base_schema = GeoFormSchemaNode(LayerVectorTiles, widget=FormWidget(fields_template="layer_fields"))
@@ -58,7 +57,7 @@ base_schema.add(parent_id_node(LayerGroup))  # type: ignore
 
 
 @view_defaults(match_param="table=layers_vectortiles")
-class LayerVectorTilesViews(DimensionLayerViews):
+class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
     """The vector tiles administration view."""
 
     _list_fields = (
@@ -70,11 +69,14 @@ class LayerVectorTilesViews(DimensionLayerViews):
     _model = LayerVectorTiles
     _base_schema = base_schema
 
-    def _base_query(
-        self, query: Optional[sqlalchemy.orm.query.Query[LayerVectorTiles]] = None
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerVectorTiles]:
+        return super()._sub_query(self._request.dbsession.query(LayerVectorTiles).distinct())
+
+    def _sub_query(
+        self, query: sqlalchemy.orm.query.Query[LayerVectorTiles]
     ) -> sqlalchemy.orm.query.Query[LayerVectorTiles]:
         del query
-        return super()._base_query(self._request.dbsession.query(LayerVectorTiles).distinct())
+        return self._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
     def index(self):

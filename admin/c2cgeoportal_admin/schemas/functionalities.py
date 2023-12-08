@@ -85,7 +85,7 @@ def functionalities_schema_node(
     """Get the schema of the functionalities."""
 
     return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Functionality),
+        GeoFormManyToManySchemaNode(Functionality, None),
         name=prop.key,
         title=prop.info["colanderalchemy"]["title"],
         description=prop.info["colanderalchemy"].get("description"),

@@ -136,7 +136,7 @@ class BooleanMetadata(colander.Boolean):  # type: ignore
         return None
 
 
-class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """The metadata schema."""
 
     metadata_definitions: Optional[dict[str, Any]] = None

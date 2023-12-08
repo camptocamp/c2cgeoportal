@@ -239,7 +239,7 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
         --editable=geoportal \
         --editable=admin \
     && python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.* \
-        -x '(/usr/local/lib/python3.*/dist-packages/(networkx)/|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
+        -x '(/usr/local/lib/python3.*/dist-packages/(networkx)/|/usr/local/lib/python3.*/dist-packages/c2cgeoform/scaffolds|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
 
 WORKDIR /opt/c2cgeoportal/geoportal
 

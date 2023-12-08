@@ -42,17 +42,17 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.static import Log, User
 
-_list_field = partial(ListField, User)
+_list_field = partial(ListField, User)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(User, widget=FormWidget(fields_template="user_fields"))
 base_schema.add(roles_schema_node(User.roles))
-base_schema.add_unique_validator(User.username, User.id)
+base_schema.add_unique_validator(User.username, User.id)  # type: ignore[arg-type]
 
 settings_role = aliased(Role)
 
 
 @view_defaults(match_param="table=users")
-class UserViews(LoggedViews):
+class UserViews(LoggedViews[User]):
     """The admin user view."""
 
     _list_fields = [
@@ -75,7 +75,7 @@ class UserViews(LoggedViews):
         ),
     ]
     _id_field = "id"
-    _model = User
+    _model = User  # type: ignore[assignment]
     _base_schema = base_schema
     _log_model = Log
     _name_field = "username"
@@ -111,15 +111,17 @@ class UserViews(LoggedViews):
                 password = pwgenerator.generate()
 
                 user = self._obj
-                user.password = password
-                user.is_password_changed = False
+                assert user is not None
+                user.password = password  # type: ignore[method-assign]
+                user.is_password_changed = False  # type: ignore[assignment]
                 user = self._request.dbsession.merge(user)
+                assert user is not None
                 self._request.dbsession.flush()
 
                 send_email_config(
                     settings=self._request.registry.settings,
                     email_config_name="welcome_email",
-                    email=user.email,
+                    email=user.email,  # type: ignore[arg-type]
                     user=user.username,
                     password=password,
                     application_url=self._request.route_url("base"),

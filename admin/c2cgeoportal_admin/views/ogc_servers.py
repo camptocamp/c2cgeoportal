@@ -46,7 +46,7 @@ from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import cache_invalidate_cb
 from c2cgeoportal_commons.models.main import LogAction, OGCServer
 
-_list_field = partial(ListField, OGCServer)
+_list_field = partial(ListField, OGCServer)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(OGCServer, widget=FormWidget(fields_template="ogcserver_fields"))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
@@ -55,7 +55,7 @@ LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
-class OGCServerViews(LoggedViews):
+class OGCServerViews(LoggedViews[OGCServer]):
     """The OGC server administration view."""
 
     _list_fields = [
@@ -142,7 +142,7 @@ class OGCServerViews(LoggedViews):
         route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
     )
     def view(self) -> dict[str, Any]:
-        return super().edit(self.schema())  # type: ignore
+        return super().edit(self.schema())
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
@@ -174,7 +174,7 @@ class OGCServerViews(LoggedViews):
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
     def duplicate(self) -> dict[str, Any]:
-        return super().duplicate()  # type: ignore
+        return super().duplicate()
 
     @view_config(  # type: ignore
         route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2"

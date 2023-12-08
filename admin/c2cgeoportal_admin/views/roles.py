@@ -43,7 +43,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.static import User
 
-_list_field = partial(ListField, Role)
+_list_field = partial(ListField, Role)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(Role, widget=FormWidget(fields_template="role_fields"))
 base_schema.add_before("extent", functionalities_schema_node(Role.functionalities, Role))
@@ -101,7 +101,7 @@ base_schema["users"].children[0].description = ""
 
 
 @view_defaults(match_param="table=roles")
-class RoleViews(LoggedViews):
+class RoleViews(LoggedViews[Role]):
     """The roles administration view."""
 
     _list_fields = [

@@ -42,7 +42,7 @@ from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 
-_list_field = partial(ListField, RestrictionArea)
+_list_field = partial(ListField, RestrictionArea)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(RestrictionArea, widget=FormWidget(fields_template="restriction_area_fields"))
 base_schema.add_before("area", roles_schema_node(RestrictionArea.roles))
@@ -89,7 +89,7 @@ base_schema.add(
 
 
 @view_defaults(match_param="table=restriction_areas")
-class RestrictionAreaViews(LoggedViews):
+class RestrictionAreaViews(LoggedViews[RestrictionArea]):
     """The restriction area administration view."""
 
     _list_fields = [

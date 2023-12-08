@@ -27,6 +27,7 @@
 
 
 from functools import partial
+from typing import TypeVar
 
 import sqlalchemy
 from c2cgeoform.views.abstract_views import ListField
@@ -37,10 +38,13 @@ from sqlalchemy.sql.functions import concat
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeGroup, TreeItem
 
-_list_field = partial(ListField, TreeItem)
+_list_field = partial(ListField, TreeItem)  # type: ignore[var-annotated]
 
 
-class TreeItemViews(LoggedViews):
+_T = TypeVar("_T", bound=TreeItem)
+
+
+class TreeItemViews(LoggedViews[_T]):
     """The admin tree item view."""
 
     _list_fields = [
@@ -81,9 +85,7 @@ class TreeItemViews(LoggedViews):
             self._request.dbsession.add(rel)
         return response
 
-    def _base_query(  # pylint: disable=arguments-differ
-        self, query: sqlalchemy.orm.query.Query[TreeItem]
-    ) -> sqlalchemy.orm.query.Query[TreeItem]:
+    def _sub_query(self, query: sqlalchemy.orm.query.Query[TreeItem]) -> sqlalchemy.orm.query.Query[TreeItem]:
         return (
             query.outerjoin(TreeItem.metadatas)
             .options(subqueryload(TreeItem.parents_relation).joinedload(LayergroupTreeitem.treegroup))

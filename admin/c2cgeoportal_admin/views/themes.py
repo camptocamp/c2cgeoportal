@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import Optional, cast
+from typing import cast
 
 import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
@@ -45,7 +45,7 @@ from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import Functionality, Interface, Role, Theme
 
-_list_field = partial(ListField, Theme)
+_list_field = partial(ListField, Theme)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(Theme, widget=FormWidget(fields_template="theme_fields"))
 base_schema.add(children_schema_node(only_groups=True))
@@ -57,7 +57,7 @@ base_schema.add_unique_validator(Theme.name, Theme.id)
 
 
 @view_defaults(match_param="table=themes")
-class ThemeViews(TreeItemViews):
+class ThemeViews(TreeItemViews[Theme]):
     """The theme administration view."""
 
     _list_fields = (
@@ -96,10 +96,8 @@ class ThemeViews(TreeItemViews):
     _model = Theme
     _base_schema = base_schema
 
-    def _base_query(
-        self, query: Optional[sqlalchemy.orm.query.Query[Theme]] = None
-    ) -> sqlalchemy.orm.query.Query[Theme]:
-        return super()._base_query(
+    def _base_query(self) -> sqlalchemy.orm.query.Query[Theme]:
+        return super()._sub_query(
             self._request.dbsession.query(Theme)
             .distinct()
             .outerjoin("interfaces")
@@ -109,6 +107,9 @@ class ThemeViews(TreeItemViews):
             .options(subqueryload(Theme.restricted_roles))
             .options(subqueryload(Theme.interfaces))
         )
+
+    def _sub_query(self, query: sqlalchemy.orm.query.Query[Theme]) -> sqlalchemy.orm.query.Query[Theme]:
+        return self._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
     def index(self):

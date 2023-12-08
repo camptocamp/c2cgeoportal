@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import Any, Optional
+from typing import Any
 
 import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
@@ -46,7 +46,7 @@ from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, LogAction, OGCServer, TreeItem
 
-_list_field = partial(ListField, LayerWMS)
+_list_field = partial(ListField, LayerWMS)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(LayerWMS, widget=FormWidget(fields_template="layer_fields"))
 base_schema.add(dimensions_schema_node(LayerWMS.dimensions))
@@ -58,7 +58,7 @@ base_schema.add(parent_id_node(LayerGroup))  # type: ignore
 
 
 @view_defaults(match_param="table=layers_wms")
-class LayerWmsViews(DimensionLayerViews):
+class LayerWmsViews(DimensionLayerViews[LayerWMS]):
     """The WMS layer administration view."""
 
     _list_fields = (
@@ -83,11 +83,12 @@ class LayerWmsViews(DimensionLayerViews):
     _model = LayerWMS
     _base_schema = base_schema
 
-    def _base_query(
-        self, query: Optional[sqlalchemy.orm.query.Query[LayerWMS]] = None
-    ) -> sqlalchemy.orm.query.Query[LayerWMS]:
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerWMS]:
+        return super()._sub_query(self._request.dbsession.query(LayerWMS).distinct().outerjoin("ogc_server"))
+
+    def _sub_query(self, query: sqlalchemy.orm.query.Query[LayerWMS]) -> sqlalchemy.orm.query.Query[LayerWMS]:
         del query
-        return super()._base_query(self._request.dbsession.query(LayerWMS).distinct().outerjoin("ogc_server"))
+        return self._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
     def index(self) -> dict[str, Any]:
@@ -121,8 +122,8 @@ class LayerWmsViews(DimensionLayerViews):
             dbsession = self._request.dbsession
             default_wms = LayerWMS.get_default(dbsession)
             if default_wms:
-                return self.copy(default_wms, excludes=["name", "layer"])  # type: ignore
-        return super().edit()  # type: ignore
+                return self.copy(default_wms, excludes=["name", "layer"])
+        return super().edit()
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
@@ -138,7 +139,7 @@ class LayerWmsViews(DimensionLayerViews):
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
     def duplicate(self) -> dict[str, Any]:
-        return super().duplicate()  # type: ignore
+        return super().duplicate()
 
     @view_config(route_name="convert_to_wmts", request_method="POST", renderer="fast_json")  # type: ignore
     def convert_to_wmts(self) -> dict[str, Any]:

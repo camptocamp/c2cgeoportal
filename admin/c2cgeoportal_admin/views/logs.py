@@ -33,11 +33,11 @@ from pyramid.view import view_config, view_defaults
 from c2cgeoportal_commons.models import _
 from c2cgeoportal_commons.models.main import AbstractLog
 
-_list_field = partial(ListField, AbstractLog)
+_list_field = partial(ListField, AbstractLog)  # type: ignore[var-annotated]
 
 
 @view_defaults(match_param="table=logs")
-class LogViews(AbstractViews):  # type: ignore
+class LogViews(AbstractViews[AbstractLog]):
     """The theme administration view."""
 
     # We pass labels explicitly because actually we are not able to get info

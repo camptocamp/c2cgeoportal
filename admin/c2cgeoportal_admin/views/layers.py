@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import cast
+from typing import TypeVar, cast
 
 import sqlalchemy
 import sqlalchemy.orm.query
@@ -37,10 +37,12 @@ from sqlalchemy.orm import subqueryload
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import Interface, Layer
 
-_list_field = partial(ListField, Layer)
+_list_field = partial(ListField, Layer)  # type: ignore[var-annotated]
+
+_T = TypeVar("_T", bound=Layer)
 
 
-class LayerViews(TreeItemViews):
+class LayerViews(TreeItemViews[_T]):
     """The layer administration view."""
 
     _list_fields = TreeItemViews._list_fields + [
@@ -66,8 +68,8 @@ class LayerViews(TreeItemViews):
         ),
     ] + TreeItemViews._extra_list_fields
 
-    def _base_query(self, query: sqlalchemy.orm.query.Query[Layer]) -> sqlalchemy.orm.query.Query[Layer]:
-        return super()._base_query(
+    def _sub_query(self, query: sqlalchemy.orm.query.Query[Layer]) -> sqlalchemy.orm.query.Query[Layer]:
+        return super()._sub_query(
             query.outerjoin(Layer.interfaces)
             .options(subqueryload(Layer.interfaces))
             .options(subqueryload(Layer.restrictionareas))

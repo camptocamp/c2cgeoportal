@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-from typing import Any, Optional, Union
+from typing import Any, Optional, TypeVar, Union
 
 import pytz
 from c2cgeoform.views.abstract_views import AbstractViews
@@ -35,8 +35,10 @@ from pyramid.httpexceptions import HTTPFound
 from c2cgeoportal_commons.models import Base
 from c2cgeoportal_commons.models.main import Log, LogAction
 
+_T = TypeVar("_T")
 
-class LoggedViews(AbstractViews):  # type: ignore
+
+class LoggedViews(AbstractViews[_T]):
     """Extension of AbstractViews which log actions in a table."""
 
     _log_model = Log  # main.Log or static.Log
@@ -60,7 +62,7 @@ class LoggedViews(AbstractViews):  # type: ignore
 
         self._create_log(LogAction.DELETE, obj)
 
-        return response  # type: ignore
+        return response
 
     def _create_log(
         self,

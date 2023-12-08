@@ -35,13 +35,13 @@ from pyramid.view import view_config, view_defaults
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import Interface
 
-_list_field = partial(ListField, Interface)
+_list_field = partial(ListField, Interface)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(Interface)
 
 
 @view_defaults(match_param="table=interfaces")
-class InterfacesViews(LoggedViews):
+class InterfacesViews(LoggedViews[Interface]):
     """The interface administration view."""
 
     _list_fields = [

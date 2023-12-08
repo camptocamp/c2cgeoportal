@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2023, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Theme, TreeItem
 
 
-class ThemeOrderSchema(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """The theme order schema."""
 
     def objectify(self, dict_, context=None):

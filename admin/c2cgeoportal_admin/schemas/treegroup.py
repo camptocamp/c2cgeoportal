@@ -54,7 +54,7 @@ ITEM_TYPE_ROUTE_MAP = {
 }
 
 
-class ChildSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """Schema of the child nodes."""
 
     def objectify(self, dict_, context=None):

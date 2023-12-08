@@ -63,7 +63,7 @@ except ModuleNotFoundError:
     HiddenWidget = GenericClass
     DateTimeInputWidget = GenericClass
     CollenderGeometry = GenericClass
-    RelationSelect2Widget = GenericClass
+    RelationSelect2Widget = GenericClass  # type: ignore[assignment,misc]
 
 
 LOG = logging.getLogger(__name__)

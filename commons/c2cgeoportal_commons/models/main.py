@@ -68,11 +68,11 @@ except ModuleNotFoundError:
 
     CheckboxWidget = GenericClass
     HiddenWidget = GenericClass
-    MapWidget = GenericClass
+    MapWidget = GenericClass  # type: ignore[assignment,misc]
     SelectWidget = GenericClass
     TextAreaWidget = GenericClass
-    ColanderGeometry = GenericClass
-    RelationSelect2Widget = GenericClass
+    ColanderGeometry = GenericClass  # type: ignore[assignment,misc]
+    RelationSelect2Widget = GenericClass  # type: ignore[assignment,misc]
     TextInputWidget = GenericClass
 
 

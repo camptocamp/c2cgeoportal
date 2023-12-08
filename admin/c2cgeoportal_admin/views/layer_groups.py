@@ -27,7 +27,6 @@
 
 
 from functools import partial
-from typing import Optional
 
 import sqlalchemy
 import sqlalchemy.orm.query
@@ -42,7 +41,7 @@ from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
 
-_list_field = partial(ListField, LayerGroup)
+_list_field = partial(ListField, LayerGroup)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(LayerGroup, widget=FormWidget(fields_template="layer_group_fields"))
 base_schema.add(children_schema_node())
@@ -52,7 +51,7 @@ base_schema.add(parent_id_node(TreeGroup))  # type: ignore
 
 
 @view_defaults(match_param="table=layer_groups")
-class LayerGroupsViews(TreeItemViews):
+class LayerGroupsViews(TreeItemViews[LayerGroup]):
     """The layer group administration view."""
 
     _list_fields = TreeItemViews._list_fields + TreeItemViews._extra_list_fields
@@ -61,10 +60,14 @@ class LayerGroupsViews(TreeItemViews):
     _model = LayerGroup
     _base_schema = base_schema
 
-    def _base_query(
-        self, query: Optional[sqlalchemy.orm.query.Query[LayerGroup]] = None
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerGroup]:
+        return super()._sub_query(self._request.dbsession.query(LayerGroup).distinct())
+
+    def _sub_query(
+        self, query: sqlalchemy.orm.query.Query[LayerGroup]
     ) -> sqlalchemy.orm.query.Query[LayerGroup]:
-        return super()._base_query(self._request.dbsession.query(LayerGroup).distinct())
+        del query
+        return self._base_query()
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
     def index(self):

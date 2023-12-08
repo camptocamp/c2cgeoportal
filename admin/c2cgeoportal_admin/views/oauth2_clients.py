@@ -36,14 +36,14 @@ from pyramid.view import view_config, view_defaults
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
-_list_field = partial(ListField, OAuth2Client)
+_list_field = partial(ListField, OAuth2Client)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(OAuth2Client)
 base_schema.add_unique_validator(OAuth2Client.client_id, OAuth2Client.id)
 
 
 @view_defaults(match_param="table=oauth2_clients")
-class OAuth2ClientViews(LoggedViews):
+class OAuth2ClientViews(LoggedViews[OAuth2Client]):
     """The oAuth2 client administration view."""
 
     _list_fields = [
@@ -73,7 +73,7 @@ class OAuth2ClientViews(LoggedViews):
         route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
     )
     def view(self) -> dict[str, Any]:
-        return super().edit()  # type: ignore
+        return super().edit()
 
     @view_config(  # type: ignore
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
@@ -89,4 +89,4 @@ class OAuth2ClientViews(LoggedViews):
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
     def duplicate(self) -> dict[str, Any]:
-        return super().duplicate()  # type: ignore
+        return super().duplicate()
