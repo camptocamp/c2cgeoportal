@@ -1,3 +1,7 @@
+##### 2.7.1.27
+
+- Be able to set the arcgisWMSInfoFormat per ogcServer [ngeo#9266](https://github.com/camptocamp/ngeo/pull/9266)
+
 ##### 2.7.1.25
 
 - Fix CVE [c2cgeoportal#10845](https://github.com/camptocamp/c2cgeoportal/pull/10845)
