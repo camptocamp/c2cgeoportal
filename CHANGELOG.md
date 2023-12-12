@@ -1,3 +1,7 @@
+##### 2.8.1.19
+
+- [Backport 2.8] Be able to set the arcgisWMSInfoFormat per ogcServer [ngeo#9268](https://github.com/camptocamp/ngeo/pull/9268)
+
 ##### 2.8.1.18
 
 - Docker compose is not compatible with Docker 7.0.0 [c2cgeoportal#10847](https://github.com/camptocamp/c2cgeoportal/pull/10847)
