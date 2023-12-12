@@ -1,3 +1,7 @@
+##### 2.8.1.18
+
+- Docker compose is not compatible with Docker 7.0.0 [c2cgeoportal#10847](https://github.com/camptocamp/c2cgeoportal/pull/10847)
+
 ##### 2.8.1.17
 
 - Fix CVE [c2cgeoportal#10844](https://github.com/camptocamp/c2cgeoportal/pull/10844)
