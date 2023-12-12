@@ -169,6 +169,7 @@ jobs:
       - name: Publish feature branch
         run: |
           c2cciutils-publish --branch=${{ matrix.branch }} --type=rebuild
+          c2cciutils-publish --type=rebuild --version=${{ steps.version.outputs.major_minor }}
 
       - run: >
           docker run --rm --volume=/var/run/docker.sock:/var/run/docker.sock nate/dockviz
