@@ -1,3 +1,7 @@
+##### 2.8.1.20
+
+- Fix for index == 0 [ngeo#9269](https://github.com/camptocamp/ngeo/pull/9269)
+
 ##### 2.8.1.19
 
 - [Backport 2.8] Be able to set the arcgisWMSInfoFormat per ogcServer [ngeo#9268](https://github.com/camptocamp/ngeo/pull/9268)
