@@ -1,3 +1,7 @@
+##### 2.8.1.21
+
+- [Backport 2.8] Fix used ogcServerName [ngeo#9273](https://github.com/camptocamp/ngeo/pull/9273)
+
 ##### 2.8.1.20
 
 - Fix for index == 0 [ngeo#9269](https://github.com/camptocamp/ngeo/pull/9269)
