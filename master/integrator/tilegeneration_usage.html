@@ -159,9 +159,9 @@ zoom, x and y as 0.</p>
 </div>
 <p>Example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgresql password=postgresql dbname=tests host=localhost</span>
 <span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.polygon</span>
-<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgres password=postgres dbname=tests host=localhost</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgresql password=postgresql dbname=tests host=localhost</span>
 <span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the_geom AS geom FROM tests.point</span>
 <span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
@@ -319,6 +319,23 @@ VirtualHost.</p>
 <h3>Alternate mime type<a class="headerlink" href="#alternate-mime-type" title="Link to this heading">¶</a></h3>
 <p>By default TileCloud support only the <code class="docutils literal notranslate"><span class="pre">image/jpeg</span></code> and <code class="docutils literal notranslate"><span class="pre">image/png</span></code> mime type.</p>
 </section>
+</section>
+<section id="queue-store">
+<h2>Queue store<a class="headerlink" href="#queue-store" title="Link to this heading">¶</a></h2>
+<p>We can store the queue in different store: Redis (<code class="docutils literal notranslate"><span class="pre">redis</span></code>), Amazone SQS (<code class="docutils literal notranslate"><span class="pre">sqs</span></code>) or PostgreSQL
+(<code class="docutils literal notranslate"><span class="pre">postgresql</span></code>), see the related section for the configuration.</p>
+<p>To configure witch store to use we should set the <code class="docutils literal notranslate"><span class="pre">queue_store</span></code> in the configuration file,
+default it’s on Redis.</p>
+</section>
+<section id="postgresql">
+<h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Link to this heading">¶</a></h2>
+<p>Is it possible to store the queue in a PostgreSQL database, for that you should at least set the
+<code class="docutils literal notranslate"><span class="pre">queue_store</span></code> to <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> in your (main) configuration file, and set the SqlAlchemy URL in the
+configuration file or in the <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_SQLALCHEMY_URL</span></code> environment variable.</p>
+<p>See the [configuration reference](<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql</a>) for the other configuration possibilities.</p>
+<p>With that the admin page is enhance with a job concept with enhanced status and they can be
+canceled, and restarted.</p>
+<p>Note that you should have an external process to clean the old jobs in the database.</p>
 </section>
 <section id="amazon-services">
 <h2>Amazon services<a class="headerlink" href="#amazon-services" title="Link to this heading">¶</a></h2>
@@ -486,7 +503,7 @@ WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
 <li><p><code class="docutils literal notranslate"><span class="pre">generate-copy</span></code> copy the tiles from a cache to an other.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">generate-process</span></code> process the tiles using a configured process.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">generate-cost</span></code> estimate the cost.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">import_expiretiles</span></code> import the osm2pgsql expire-tiles file as geoms in the database.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">import-expiretiles</span></code> import the osm2pgsql expire-tiles file as geoms in the database.</p></li>
 </ul>
 <p>Each commands have a <code class="docutils literal notranslate"><span class="pre">--help</span></code> option to give a full arguments help.</p>
 </section>
