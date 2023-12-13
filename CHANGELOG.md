@@ -1,3 +1,7 @@
+##### 2.7.1.30
+
+- Fix used ogcServerName [ngeo#9271](https://github.com/camptocamp/ngeo/pull/9271)
+
 ##### 2.7.1.27
 
 - Be able to set the arcgisWMSInfoFormat per ogcServer [ngeo#9266](https://github.com/camptocamp/ngeo/pull/9266)
