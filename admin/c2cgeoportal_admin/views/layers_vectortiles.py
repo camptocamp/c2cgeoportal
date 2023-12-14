@@ -27,6 +27,7 @@
 
 
 from functools import partial
+from typing import cast
 
 import sqlalchemy
 import sqlalchemy.orm.query
@@ -61,9 +62,9 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
     """The vector tiles administration view."""
 
     _list_fields = (
-        DimensionLayerViews._list_fields
+        DimensionLayerViews._list_fields  # pylint: disable=protected-access
         + [_list_field("style"), _list_field("xyz")]
-        + DimensionLayerViews._extra_list_fields
+        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
     )
     _id_field = "id"
     _model = LayerVectorTiles
@@ -92,7 +93,8 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
         except HTTPNotFound:
             obj = None
 
-        schema = self._base_schema.clone()
+        schema = cast(GeoFormSchemaNode, self._base_schema.clone())
+        assert obj.style_description is not None
         schema["style"].description = Literal(
             _("{}<br>Current runtime value is: {}").format(
                 schema["style"].description,

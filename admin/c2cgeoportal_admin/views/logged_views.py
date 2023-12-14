@@ -70,10 +70,11 @@ class LoggedViews(AbstractViews[_T]):
         obj: Base,  # type: ignore[valid-type]
         element_url_table: Optional[str] = None,
     ) -> None:
+        assert self._id_field is not None
         log = self._log_model(
             date=datetime.datetime.now(pytz.utc),
             action=action,
-            element_type=self._model.__tablename__,
+            element_type=self._model.__tablename__,  # type: ignore[union-attr]
             element_id=getattr(obj, self._id_field),
             element_name=getattr(obj, self._name_field),
             element_url_table=element_url_table or self._request.matchdict.get("table", None),

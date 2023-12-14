@@ -62,7 +62,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
     """The WMS layer administration view."""
 
     _list_fields = (
-        DimensionLayerViews._list_fields
+        DimensionLayerViews._list_fields  # pylint: disable=protected-access
         + [
             _list_field(
                 "ogc_server",
@@ -77,7 +77,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
             _list_field("time_mode"),
             _list_field("time_widget"),
         ]
-        + DimensionLayerViews._extra_list_fields
+        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
     )
     _id_field = "id"
     _model = LayerWMS

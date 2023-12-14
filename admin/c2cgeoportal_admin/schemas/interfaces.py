@@ -39,7 +39,7 @@ from c2cgeoportal_commons.models.main import Interface
 def interfaces_schema_node(prop: InstrumentedAttribute[Any]) -> colander.SequenceSchema:
     """Get the serializable representation of an interface."""
     return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Interface),
+        GeoFormManyToManySchemaNode(Interface, None),
         name=prop.key,
         title=prop.info["colanderalchemy"]["title"],
         description=prop.info["colanderalchemy"]["description"],

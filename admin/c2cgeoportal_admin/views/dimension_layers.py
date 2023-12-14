@@ -55,7 +55,7 @@ class DimensionLayerViews(LayerViews[_T]):
                 ]
             ),
         )
-    ] + LayerViews._extra_list_fields
+    ] + LayerViews._extra_list_fields  # pylint: disable=protected-access
 
     def _sub_query(
         self, query: sqlalchemy.orm.query.Query[DimensionLayer]

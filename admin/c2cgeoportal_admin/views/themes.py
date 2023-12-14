@@ -61,7 +61,7 @@ class ThemeViews(TreeItemViews[Theme]):
     """The theme administration view."""
 
     _list_fields = (
-        TreeItemViews._list_fields
+        TreeItemViews._list_fields  # type: ignore[misc] # pylint: disable=protected-access
         + [
             _list_field("ordering"),
             _list_field("public"),
@@ -89,7 +89,7 @@ class ThemeViews(TreeItemViews[Theme]):
                 filter_column=Interface.name,
             ),
         ]
-        + TreeItemViews._extra_list_fields_no_parents
+        + TreeItemViews._extra_list_fields_no_parents  # pylint: disable=protected-access
     )
 
     _id_field = "id"

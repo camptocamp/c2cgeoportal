@@ -62,7 +62,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
     """The WMTS layer administration view."""
 
     _list_fields = (
-        DimensionLayerViews._list_fields
+        DimensionLayerViews._list_fields  # pylint: disable=protected-access
         + [
             _list_field("url"),
             _list_field("layer"),
@@ -70,7 +70,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
             _list_field("matrix_set"),
             _list_field("image_type"),
         ]
-        + DimensionLayerViews._extra_list_fields
+        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
     )
     _id_field = "id"
     _model = LayerWMTS

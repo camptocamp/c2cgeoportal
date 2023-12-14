@@ -46,7 +46,7 @@ _list_field = partial(ListField, User)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(User, widget=FormWidget(fields_template="user_fields"))
 base_schema.add(roles_schema_node(User.roles))
-base_schema.add_unique_validator(User.username, User.id)  # type: ignore[arg-type]
+base_schema.add_unique_validator(User.username, User.id)
 
 settings_role = aliased(Role)
 
@@ -75,7 +75,7 @@ class UserViews(LoggedViews[User]):
         ),
     ]
     _id_field = "id"
-    _model = User  # type: ignore[assignment]
+    _model = User
     _base_schema = base_schema
     _log_model = Log
     _name_field = "username"
@@ -112,8 +112,8 @@ class UserViews(LoggedViews[User]):
 
                 user = self._obj
                 assert user is not None
-                user.password = password  # type: ignore[method-assign]
-                user.is_password_changed = False  # type: ignore[assignment]
+                user.password = password
+                user.is_password_changed = False
                 user = self._request.dbsession.merge(user)
                 assert user is not None
                 self._request.dbsession.flush()
@@ -121,7 +121,7 @@ class UserViews(LoggedViews[User]):
                 send_email_config(
                     settings=self._request.registry.settings,
                     email_config_name="welcome_email",
-                    email=user.email,  # type: ignore[arg-type]
+                    email=user.email,
                     user=user.username,
                     password=password,
                     application_url=self._request.route_url("base"),

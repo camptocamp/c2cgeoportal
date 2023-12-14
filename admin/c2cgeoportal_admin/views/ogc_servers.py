@@ -93,7 +93,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
     def schema(self) -> GeoFormSchemaNode:
         obj = self._get_object()
 
-        schema = self._base_schema.clone()
+        schema = cast(GeoFormSchemaNode, self._base_schema.clone())
         schema["url"].description = Literal(
             _("{}<br>Current runtime value is: {}").format(
                 schema["url"].description,
@@ -149,6 +149,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
     )
     def save(self) -> Union[HTTPFound, dict[str, Any]]:
         result: Union[HTTPFound, dict[str, Any]] = super().save()
+        assert self._obj is not None
         if isinstance(result, HTTPFound):
             self._update_cache(self._obj)
         return result
