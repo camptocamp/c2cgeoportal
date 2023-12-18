@@ -22,7 +22,7 @@ One issue we have if we want to generate all the tiles is that the generation ti
 month, especially if we have a high resolution (low if in m/px) on the last zoom level.
 Therefore for the last zoom level we should generate the tiles on the fly
 with a low expiry (4 hours for example).
-We should use metatiles to reduce the number of requests to postgres.
+Meta tiles should be used to reduce the number of requests to PostgreSQL.
 And the tiles should be deleted after the expiry time.
 
 The chosen solution is a combination of two tools:

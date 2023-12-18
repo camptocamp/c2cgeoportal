@@ -3,6 +3,17 @@
 Database
 ========
 
+Schema
+------
+
+The database tables are separated in two schemas:
+
+* The 'main' schema, which can be configured with the ``PGSCHEMA`` environment variable, contains the data that can be modified only by the administrator interface.
+* The 'static' schema, which can be configured with the ``PGSCHEMA_STATIC`` environment variable, contains the data that can be modified by the end user through the web application (user password, short links, OAuth token and audit logs, not the editing data).
+
+This separation makes possible to manage the application configuration (the layer tree) on the integration environment, and copy it to the production environment without any risk of overwriting the data modified by the end user.
+
+
 Update lifecycle
 ----------------
 
@@ -39,14 +50,14 @@ Starting point is that the current version is the same on integration and produc
 Prepare the project
 ~~~~~~~~~~~~~~~~~~~
 
-To be able to proceed like this, the variables ``PGSCHEMA`` and the ``DOCKER_PGSCHEMA_STATIC``
-should be managed in your makefiles:
+To be able to proceed like this, the variables ``PGSCHEMA`` and ``PGSCHEMA_STATIC``
+should be managed in your env files:
 
-* The variable ``PGSCHEMA`` should be set in the ``Makefile``; in this example, it will be set to
+* The variable ``PGSCHEMA`` should be set in the ``env.project``; in this example, it will be set to
   ``main_2019``.
-* The ``DOCKER_PGSCHEMA_STATIC`` variable for production should be set in a specific makefile
-  for production e.-g. ``production.mk``; it will be set for example to ``integration_static`` in the
-  Makefile, and to ``production_static`` in the production makefile.
+* The ``PGSCHEMA_STATIC`` variable for production should be set in a specific env file
+  for production e.-g. ``env.production``; it will be set for example to ``integration_static`` in the
+  env file, and to ``production_static`` in the production env file.
 * The line ``PGSCHEMA=main`` should be removed from your ``env.project`` file.
 
 
