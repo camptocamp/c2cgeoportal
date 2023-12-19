@@ -71,7 +71,7 @@ span.prompt1:before {
 <h3>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h3>
 <p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
-tests require to run with <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>.</p>
+tests require to run with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>.</p>
 <section id="unit-tests">
 <h4>Unit tests<a class="headerlink" href="#unit-tests" title="Link to this heading">¶</a></h4>
 <p>Before running the tests, install and build all dependencies:</p>
@@ -79,7 +79,7 @@ tests require to run with <code class="docutils literal notranslate"><span class
 </pre></div></div><p>Run the tests:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make<span class="w"> </span>tests</span>
 </pre></div></div><p>To run only a specific test, use the <code class="docutils literal notranslate"><span class="pre">-k</span></code> switch. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tests<span class="w"> </span>pytest<span class="w"> </span>--verbose<span class="w"> </span>--color<span class="o">=</span>yes<span class="w"> </span><span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tests<span class="w"> </span>pytest<span class="w"> </span>--verbose<span class="w"> </span>--color<span class="o">=</span>yes<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-k<span class="w"> </span>test_catalogue<span class="w"> </span>/opt/c2cgeoportal/geoportal/tests</span>
 </pre></div></div></section>
 </section>
@@ -117,7 +117,7 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <p>The scripts should not fail if they are run more than once. See:
 <a class="reference external" href="https://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">https://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
 <p>Then, customize the migration to suit your needs, test it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>upgrade<span class="w"> </span>head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div><dl class="simple">
 <dt>More information at:</dt><dd><ul class="simple">
 <li><p><a class="reference external" href="https://alembic.readthedocs.org/en/latest/index.html">https://alembic.readthedocs.org/en/latest/index.html</a></p></li>

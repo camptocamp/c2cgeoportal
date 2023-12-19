@@ -44,7 +44,7 @@ Running tests
 
 c2cgeoportal has two types of tests: unit tests and functional tests. The unit
 tests are self-contained, and do not require any specific setup. The functional
-tests require to run with ``docker-compose``.
+tests require to run with ``docker compose``.
 
 Unit tests
 ..........
@@ -65,7 +65,7 @@ To run only a specific test, use the ``-k`` switch. For example:
 
 .. prompt:: bash
 
-    docker-compose exec tests pytest --verbose --color=yes \
+    docker compose exec tests pytest --verbose --color=yes \
         -k test_catalogue /opt/c2cgeoportal/geoportal/tests
 
 Database
@@ -122,7 +122,7 @@ Then, customize the migration to suit your needs, test it:
 
 .. prompt:: bash
 
-    docker-compose exec geoportal upgrade head
+    docker compose exec geoportal upgrade head
 
 More information at:
  * https://alembic.readthedocs.org/en/latest/index.html

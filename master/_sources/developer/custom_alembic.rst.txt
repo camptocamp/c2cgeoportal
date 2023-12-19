@@ -23,12 +23,12 @@ an ``alembic.ini`` file, like the /tmp folder. Create also directly the first re
 
 .. prompt:: bash
 
-  docker-compose exec geoportal mkdir /tmp/new_alembic
-  docker-compose exec geoportal bash -c "cd /tmp/new_alembic; alembic init alembic"
+  docker compose exec geoportal mkdir /tmp/new_alembic
+  docker compose exec geoportal bash -c "cd /tmp/new_alembic; alembic init alembic"
   # Ignore the warning message about setting the alembic.ini file for now.
-  docker-compose exec geoportal bash -c "cd /tmp/new_alembic; alembic revision -m 'Inital revision'"
+  docker compose exec geoportal bash -c "cd /tmp/new_alembic; alembic revision -m 'Inital revision'"
 
-Run ``docker-compose ps geoportal`` to know the name of the running geoportal container.
+Run ``docker compose ps geoportal`` to know the name of the running geoportal container.
 
 Then copy the generated alembic folder in the ``geoportal`` folder of your project:
 
@@ -86,12 +86,12 @@ At this point, you should be able to run your (currently empty) first revision f
 Run an alembic upgrade
 ----------------------
 
-Once your revision file completed, build and run docker-compose up on your project.
+Once your revision file completed, build and run docker compose up on your project.
 Your alembic files should be in the running container. You can now run manually an upgrade with:
 
 .. prompt:: bash
 
-  docker-compose exec geoportal bash -c "cd /app/alembic_${PROJECT}; alembic upgrade head"
+  docker compose exec geoportal bash -c "cd /app/alembic_${PROJECT}; alembic upgrade head"
 
 Create a new revision file
 --------------------------
@@ -100,5 +100,5 @@ With a running instance, execute:
 
 .. prompt:: bash
 
-  docker-compose exec geoportal bash -c "cd /app/alembic_${PROJECT}; alembic revision -m '<msg>'"
+  docker compose exec geoportal bash -c "cd /app/alembic_${PROJECT}; alembic revision -m '<msg>'"
   docker cp <geoportal_container_name>:/app/alembic_${PROJECT}/alembic/versions/<the_new_file> geoportal/alembic_${PROJECT}/alembic/versions/.

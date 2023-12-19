@@ -159,7 +159,7 @@ Here is an example:</p>
 </section>
 <section id="custom-image">
 <h2>Custom image<a class="headerlink" href="#custom-image" title="Link to this heading">¶</a></h2>
-<p>In the build script, we use <cite>docker-compose build</cite>, as this simplifies adding a new service from another <cite>Dockerfile</cite>.</p>
+<p>In the build script, we use <cite>docker compose build</cite>, as this simplifies adding a new service from another <cite>Dockerfile</cite>.</p>
 <p>By adding the following in the <cite>docker-compose.yaml</cite> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">custom</span><span class="p">:</span>
 <span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DOCKER_BASE}-custom:${DOCKER_TAG}</span>

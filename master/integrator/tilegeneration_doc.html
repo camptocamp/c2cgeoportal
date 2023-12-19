@@ -85,7 +85,7 @@ Sub-level of <code class="docutils literal notranslate"><span class="pre">layers
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles<span class="w"> </span><span class="se">\</span>
+</style><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--get-hash<span class="w"> </span>&lt;max-zoom&gt;/0/0<span class="w"> </span>--layer<span class="w"> </span>&lt;layer&gt;</span>
 </pre></div></div><p>We consider that the first tile of the max zoom is empty.
 Then copy-paste the result in the layer config.</p>
@@ -106,13 +106,13 @@ in the <code class="docutils literal notranslate"><span class="pre">generation</
 <section id="tile-generation-and-management">
 <h3>Tile Generation and management<a class="headerlink" href="#tile-generation-and-management" title="Link to this heading">¶</a></h3>
 <p>This package offers two tools, one to generate the tiles locally, see help:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles<span class="w"> </span>--help</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles<span class="w"> </span>--help</span>
 </pre></div></div><p>one to generate the tiles using AWS, see help:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--help</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--help</span>
 </pre></div></div><p>Before starting a tile generation on S3, measure the cost:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--cost</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate_controller<span class="w"> </span>--cost</span>
 </pre></div></div><p>If you setup all the default options, you can generate the tiles by using the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles</span>
 </pre></div></div></section>
 <section id="aws-credentials">
 <h3>AWS credentials<a class="headerlink" href="#aws-credentials" title="Link to this heading">¶</a></h3>

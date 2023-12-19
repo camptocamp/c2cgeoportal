@@ -116,11 +116,11 @@ environment variable, for cygwin, git and node binaries.</p>
 <p>Activate the devlopement environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp<span class="w"> </span>docker-compose.override.sample.yaml<span class="w"> </span>docker-compose.override.yaml</span>
 </pre></div></div><p>Run the composition:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span>up<span class="w"> </span>-d</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d</span>
 </pre></div></div><p>Then create the application tables:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--name<span class="o">=</span>main<span class="w"> </span>upgrade<span class="w"> </span>head</span>
-<span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
+<span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--name<span class="o">=</span>static<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div><p>Your application should now be available at: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/</span></code>.</p>
 <p>If you ahave an Apache in front of your application,

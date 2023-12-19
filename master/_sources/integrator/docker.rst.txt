@@ -131,9 +131,9 @@ Docker compose files
 --------------------
 
 * ``docker-compose.yaml``: The main file that describes the composition.
-* ``docker-compose-lib.yaml``: Provideis the base description of Geomapfish Docker services.
+* ``docker-compose-lib.yaml``: Provide the base description of Geomapfish Docker services.
 * ``.env``: Generated from the env files; contains the environment variables used by the composition.
-* ``docker-compose.override[.sample].yaml``: Some rules for debuggung.
+* ``docker-compose.override[.sample].yaml``: Some rules for debugging.
 * ``.env``: The variable used in the compose files.
 
 
@@ -142,7 +142,7 @@ Run the developer composition
 
 .. prompt:: bash
 
-   docker-compose up -d
+   docker compose up -d
 
 You can then access your application with `https://localhost:8484/ <https://localhost:8484/>`_.
 

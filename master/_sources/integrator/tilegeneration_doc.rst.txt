@@ -67,7 +67,7 @@ The main thing to do is to:
 
   .. prompt:: bash
 
-     docker-compose exec tilecloudchain generate-tiles \
+     docker compose exec tilecloudchain generate-tiles \
         --get-hash <max-zoom>/0/0 --layer <layer>
 
   We consider that the first tile of the max zoom is empty.
@@ -92,25 +92,25 @@ This package offers two tools, one to generate the tiles locally, see help:
 
 .. prompt:: bash
 
-    docker-compose exec tilecloudchain generate-tiles --help
+    docker compose exec tilecloudchain generate-tiles --help
 
 one to generate the tiles using AWS, see help:
 
 .. prompt:: bash
 
-    docker-compose exec tilecloudchain generate_controller --help
+    docker compose exec tilecloudchain generate_controller --help
 
 Before starting a tile generation on S3, measure the cost:
 
 .. prompt:: bash
 
-    docker-compose exec tilecloudchain generate_controller --cost
+    docker compose exec tilecloudchain generate_controller --cost
 
 If you setup all the default options, you can generate the tiles by using the command:
 
 .. prompt:: bash
 
-    docker-compose exec tilecloudchain generate-tiles
+    docker compose exec tilecloudchain generate-tiles
 
 
 AWS credentials

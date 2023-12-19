@@ -78,11 +78,11 @@ span.prompt1:before {
 <p>The database will be automatically upgraded during the upgrade process.</p>
 <p>To upgrade only the database you can use alembic directly.</p>
 <p>The help:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--help</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--help</span>
 </pre></div></div><p>Upgrade the main schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--name<span class="o">=</span>main<span class="w"> </span>upgrade<span class="w"> </span>head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--name<span class="o">=</span>main<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div><p>Upgrade the static schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--name<span class="o">=</span>static<span class="w"> </span>upgrade<span class="w"> </span>head</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--name<span class="o">=</span>static<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div></section>
 </section>
 

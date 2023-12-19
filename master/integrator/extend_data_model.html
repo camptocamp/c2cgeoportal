@@ -320,10 +320,10 @@ span.prompt1:before {
   content: "$ ";
 }
 </style><span class="prompt1">./build<span class="w"> </span>&lt;args&gt;</span>
-<span class="prompt1">docker-compose<span class="w"> </span>up<span class="w"> </span>-d</span>
+<span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d</span>
 </pre></div></div><p>Get and run the SQL command to create the tables:</p>
 <p>Run Python console:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>python3</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>python3</span>
 </pre></div></div><p>Execute the following code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2c.template.config</span> <span class="kn">import</span> <span class="n">config</span>
 
@@ -337,7 +337,7 @@ span.prompt1:before {
 </pre></div>
 </div>
 <p>Run pSQL console:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>psql</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>psql</span>
 </pre></div></div><p>And enter the SQL commands</p>
 </section>
 

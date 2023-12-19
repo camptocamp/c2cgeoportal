@@ -14,11 +14,11 @@ First, you should configure ``urllogin`` in the vars file:
 
 The AES key must be either 16, 24, or 32 bytes long.
 
-To generate a key, you can use the ``docker-compose exec geoportal urllogin`` command:
+To generate a key, you can use the ``docker compose exec geoportal urllogin`` command:
 
 .. argparse::
    :ref: c2cgeoportal_geoportal.scripts.urllogin.get_argparser
-   :prog: docker-compose exec geoportal urllogin
+   :prog: docker compose exec geoportal urllogin
 
 This generates a token like: ``auth=148b60cc...`` that you can add in the query string of the permalink.
 

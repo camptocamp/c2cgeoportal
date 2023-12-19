@@ -65,16 +65,16 @@ The help:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal alembic --help
+   docker compose exec geoportal alembic --help
 
 Upgrade the main schema:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal alembic --name=main upgrade head
+   docker compose exec geoportal alembic --name=main upgrade head
 
 Upgrade the static schema:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal alembic --name=static upgrade head
+   docker compose exec geoportal alembic --name=static upgrade head

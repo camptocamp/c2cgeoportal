@@ -37,7 +37,7 @@
 <span id="developer-debugging"></span><h1>Application debugging<a class="headerlink" href="#application-debugging" title="Link to this heading">¶</a></h1>
 <p>The goal of this document is to give some troubleshooting tips.</p>
 <p>First, you should copy the file <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> to
-<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and update the composition <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>, and update the composition <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>.</p>
 <p>Then access the application on <a class="reference external" href="https://localhost:8484/">https://localhost:8484/</a>.</p>
 <section id="browser">
 <h2>Browser<a class="headerlink" href="#browser" title="Link to this heading">¶</a></h2>
@@ -91,7 +91,7 @@ available in <code class="docutils literal notranslate"><span class="pre">https<
 span.prompt1:before {
   content: "$ ";
 }
-</style><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>mapserver<span class="w"> </span>shp2img<span class="w"> </span>-m<span class="w"> </span>/etc/mapserver/mapserver.map<span class="w"> </span>-o<span class="w"> </span>/tmp/test.png<span class="w"> </span><span class="se">\</span>
+</style><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>mapserver<span class="w"> </span>shp2img<span class="w"> </span>-m<span class="w"> </span>/etc/mapserver/mapserver.map<span class="w"> </span>-o<span class="w"> </span>/tmp/test.png<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-e<span class="w"> </span><span class="m">500000</span><span class="w"> </span><span class="m">100000</span><span class="w"> </span><span class="m">700000</span><span class="w"> </span><span class="m">300000</span><span class="w"> </span>-s<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="o">[</span>-l<span class="w"> </span>&lt;layers&gt;<span class="o">]</span></span>
 </pre></div></div><p>You may also activate MapServer’s debug mode and set the environment variable <code class="docutils literal notranslate"><span class="pre">MS_DEBUGLEVEL</span></code>
 of the MapServer container <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> to <code class="docutils literal notranslate"><span class="pre">5</span></code> (most verbose level, default is 0).</p>
@@ -102,14 +102,14 @@ of the MapServer container <code class="docutils literal notranslate"><span clas
 <section id="logs">
 <h3>Logs<a class="headerlink" href="#logs" title="Link to this heading">¶</a></h3>
 <p>With the following command, you can access the logs:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--tail<span class="o">=</span><span class="m">20</span><span class="w"> </span><span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--tail<span class="o">=</span><span class="m">20</span><span class="w"> </span><span class="o">[</span>&lt;service_name&gt;<span class="o">]</span></span>
 </pre></div></div><p>To have the access log on gunicorn you should add the option <code class="docutils literal notranslate"><span class="pre">--access-logfile=-</span></code> in the gunicorn
 configuration (<code class="docutils literal notranslate"><span class="pre">gunicorn.conf.py</span></code> file).</p>
 </section>
 <section id="go-inside-a-container">
 <h3>Go inside a container<a class="headerlink" href="#go-inside-a-container" title="Link to this heading">¶</a></h3>
 <p>With the following command, you can get a terminal in a container:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="o">[</span>--user<span class="o">=</span>root<span class="o">]</span><span class="w"> </span>&lt;service_name&gt;<span class="w"> </span>bash</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="o">[</span>--user<span class="o">=</span>root<span class="o">]</span><span class="w"> </span>&lt;service_name&gt;<span class="w"> </span>bash</span>
 </pre></div></div></section>
 <section id="multiple-dev-on-one-server">
 <h3>Multiple dev on one server<a class="headerlink" href="#multiple-dev-on-one-server" title="Link to this heading">¶</a></h3>
@@ -118,7 +118,7 @@ configuration (<code class="docutils literal notranslate"><span class="pre">guni
 <li><p>Use a different docker tag for each instance (<code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> in the file <code class="docutils literal notranslate"><span class="pre">.env</span></code> files,
 used on the build and on the run)</p></li>
 <li><p>Use a different project name for each instance (<code class="docutils literal notranslate"><span class="pre">COMPOSE_PROJECT_NAME</span></code> in the
-<code class="docutils literal notranslate"><span class="pre">.env</span></code> or option <code class="docutils literal notranslate"><span class="pre">-p</span></code> of <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code>)</p></li>
+<code class="docutils literal notranslate"><span class="pre">.env</span></code> or option <code class="docutils literal notranslate"><span class="pre">-p</span></code> of <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>)</p></li>
 <li><p>Use a different port for each instance (<code class="docutils literal notranslate"><span class="pre">DOCKER_PORT</span></code> in the <code class="docutils literal notranslate"><span class="pre">.env</span></code>)</p></li>
 <li><p>If you want to serve your instances through the same Apache server, each instance must have
 different entry points. (<code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code> in the <code class="docutils literal notranslate"><span class="pre">.env</span></code>)</p></li>
@@ -128,7 +128,7 @@ different entry points. (<code class="docutils literal notranslate"><span class=
 <section id="developing-in-python">
 <h2>Developing in Python<a class="headerlink" href="#developing-in-python" title="Link to this heading">¶</a></h2>
 <section id="create-a-development-docker-compose-override-yaml">
-<h3>Create a development docker-compose.override.yaml<a class="headerlink" href="#create-a-development-docker-compose-override-yaml" title="Link to this heading">¶</a></h3>
+<h3>Create a development <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code><a class="headerlink" href="#create-a-development-docker-compose-override-yaml" title="Link to this heading">¶</a></h3>
 <p>Be sure that the volume for the project is not commented out in <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
 <p>With the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> configuration, Gunicorn will automatically restart
 on code modification.</p>
@@ -220,7 +220,7 @@ c2cgeoportal application.</p>
 <section id="access-to-a-hidden-service">
 <h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Link to this heading">¶</a></h2>
 <p>Within the Docker composition, you can access a port of a container; you can achieve this via <code class="docutils literal notranslate"><span class="pre">curl</span></code>, e.-g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>curl<span class="w"> </span><span class="s2">&quot;http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>curl<span class="w"> </span><span class="s2">&quot;http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities&quot;</span></span>
 </pre></div></div><p>You can also expose a service out of the Docker composition. For that, add a port in your
 <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, e.g.:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>

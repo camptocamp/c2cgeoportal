@@ -298,7 +298,7 @@ Build and run the application:
 .. prompt:: bash
 
    ./build <args>
-   docker-compose up -d
+   docker compose up -d
 
 Get and run the SQL command to create the tables:
 
@@ -306,7 +306,7 @@ Run Python console:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal python3
+   docker compose exec geoportal python3
 
 Execute the following code:
 
@@ -326,6 +326,6 @@ Run pSQL console:
 
 .. prompt:: bash
 
-   docker-compose exec tools psql
+   docker compose exec tools psql
 
 And enter the SQL commands
