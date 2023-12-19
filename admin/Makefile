@@ -17,18 +17,18 @@ help: ## Display this help message
 preparedev: ## Run this once before serve
 	make --directory=.. build-runner build-test-db
 	make docker-build-admin
-	docker-compose up -d db
-	docker-compose run --rm admin wait-db
-	docker-compose run --rm admin alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main upgrade head
-	docker-compose run --rm admin alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static upgrade head
+	docker compose up -d db
+	docker compose run --rm admin wait-db
+	docker compose run --rm admin alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main upgrade head
+	docker compose run --rm admin alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static upgrade head
 
 .PHONY: serve
 serve: ## Run c2cgeoportal_admin in development mode
-	docker-compose up admin
+	docker compose up admin
 
 .PHONY: clean
 clean: ## Stop composition, remove container and images
-	docker-compose down --remove-orphans
+	docker compose down --remove-orphans
 	docker rmi $(DOCKER_BASE)_admin:$(DOCKER_TAG)
 
 .PHONY: docker-build-admin

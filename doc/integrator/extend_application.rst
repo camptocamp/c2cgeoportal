@@ -6,7 +6,7 @@ Extend the application
 To add an additional component in the project in simple mode we should:
 
 - use an interface in canvas mode
-- add a custom docker-compose service
+- add a custom docker compose service
 - add a custom JavaScript file
 
 In this tutorial, we will:

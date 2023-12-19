@@ -8,6 +8,7 @@ components installed on your system:
 
 * **Git**
 * **Docker** >= 17.05
+* **Docker Compose** >= 2.20
 * **Python** >= 3.8, with ``pip``
 * **Apache** >= 2.4 (optional, can be used as a front for SSL)
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1
@@ -17,13 +18,12 @@ Required Python packages
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``PyYAML>=3.13``
-* ``docker-compose>=1.26.0``
 
 They can be install in your user directory with:
 
 .. code:: bash
 
-   python3 -m pip install --user PyYAML docker-compose
+   python3 -m pip install --user PyYAML
 
 If not yet done, add ``$HOME/.local/bin`` to your ``PATH``; add in your ``~/.bashrc`` file:
 

@@ -63,7 +63,7 @@ If you have not yet created this function in your database, use to following com
 
 .. prompt:: bash
 
-   docker-compose exec tools psql --file=/opt/clone_schema.sql
+   docker compose exec tools psql --file=/opt/clone_schema.sql
 
 To use the function, connect to your database and perform the following statement:
 

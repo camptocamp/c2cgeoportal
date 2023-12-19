@@ -6,7 +6,7 @@ Application debugging
 The goal of this document is to give some troubleshooting tips.
 
 First, you should copy the file ``docker-compose.override.sample.yaml`` to
-``docker-compose.override.yaml``, and update the composition ``docker-compose up -d``.
+``docker-compose.override.yaml``, and update the composition ``docker compose up -d``.
 
 Then access the application on `https://localhost:8484/ <https://localhost:8484/>`_.
 
@@ -84,7 +84,7 @@ Sometimes, more information can be obtained by using this command:
 
 .. prompt:: bash
 
-    docker-compose exec mapserver shp2img -m /etc/mapserver/mapserver.map -o /tmp/test.png \
+    docker compose exec mapserver shp2img -m /etc/mapserver/mapserver.map -o /tmp/test.png \
         -e 500000 100000 700000 300000 -s 1000 1000 [-l <layers>]
 
 You may also activate MapServer's debug mode and set the environment variable ``MS_DEBUGLEVEL``
@@ -103,7 +103,7 @@ With the following command, you can access the logs:
 
 .. prompt:: bash
 
-   docker-compose logs -f --tail=20 [<service_name>]
+   docker compose logs -f --tail=20 [<service_name>]
 
 To have the access log on gunicorn you should add the option ``--access-logfile=-`` in the gunicorn
 configuration (``gunicorn.conf.py`` file).
@@ -115,7 +115,7 @@ With the following command, you can get a terminal in a container:
 
 .. prompt:: bash
 
-   docker-compose exec [--user=root] <service_name> bash
+   docker compose exec [--user=root] <service_name> bash
 
 Multiple dev on one server
 ..........................
@@ -125,7 +125,7 @@ When you want to run multiple instances on the same server, you should:
 - Use a different docker tag for each instance (``DOCKER_TAG`` in the file ``.env`` files,
   used on the build and on the run)
 - Use a different project name for each instance (``COMPOSE_PROJECT_NAME`` in the
-  ``.env`` or option ``-p`` of ``docker-compose``)
+  ``.env`` or option ``-p`` of ``docker compose``)
 - Use a different port for each instance (``DOCKER_PORT`` in the ``.env``)
 - If you want to serve your instances through the same Apache server, each instance must have
   different entry points. (``VISIBLE_ENTRY_POINT`` in the ``.env``)
@@ -134,8 +134,8 @@ When you want to run multiple instances on the same server, you should:
 Developing in Python
 --------------------
 
-Create a development docker-compose.override.yaml
-.................................................
+Create a development ``docker-compose.override.yaml``
+.....................................................
 
 Be sure that the volume for the project is not commented out in ``docker-compose.override.yaml``.
 
@@ -243,7 +243,7 @@ Within the Docker composition, you can access a port of a container; you can ach
 
 .. prompt:: bash
 
-   docker-compose exec tools curl "http://mapserver:8080?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
+   docker compose exec tools curl "http://mapserver:8080?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
 
 You can also expose a service out of the Docker composition. For that, add a port in your
 ``docker-compose.yaml``, e.g.:

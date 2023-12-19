@@ -89,7 +89,8 @@ def main() -> None:
         else:
             subprocess.run(
                 [
-                    "docker-compose",
+                    "docker",
+                    "compose",
                     "exec",
                     "-T",
                     "tools",

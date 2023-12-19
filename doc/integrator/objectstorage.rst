@@ -54,7 +54,7 @@ Create the vrt file for a raster layer:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal bash -c \
+   docker compose exec geoportal bash -c \
         'gdalbuildvrt /vsis3/<bucket>/<folder>/index.vrt \
         $(list4vrt <bucket> <folder>/ .tif)'
 
@@ -64,19 +64,19 @@ Use list the container:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal azure --list-container
+   docker compose exec geoportal azure --list-container
 
 Use list the files:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal azure --container=<container> --list ''
+   docker compose exec geoportal azure --container=<container> --list ''
 
 Create the vrt file for a raster layer:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal azure --container=<container> --vrt <folder>/ .tiff
+   docker compose exec geoportal azure --container=<container> --vrt <folder>/ .tiff
 
 
 MapServer
@@ -88,7 +88,7 @@ Exoscale:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal bash -c \
+   docker compose exec geoportal bash -c \
         'gdaltindex mapserver/index.shp $( \
             aws --endpoint-url http://${AWS_S3_ENDPOINT} \
                 --region ${AWS_DEFAULT_REGION} \
@@ -105,11 +105,11 @@ Azure:
 
 .. prompt:: bash
 
-   docker-compose exec geoportal rm index.shp
-   docker-compose exec geoportal rm index.shx
-   docker-compose exec geoportal rm index.dbf
-   docker-compose exec geoportal rm index.prj
-   docker-compose exec geoportal bash -c \
+   docker compose exec geoportal rm index.shp
+   docker compose exec geoportal rm index.shx
+   docker compose exec geoportal rm index.dbf
+   docker compose exec geoportal rm index.prj
+   docker compose exec geoportal bash -c \
         'gdaltindex mapserver/index.shp $( \
             azure --container=<container> --list <folder>/ | \
             grep tiff$ | \
@@ -225,7 +225,7 @@ Exoscale:
 * ``AWS_DEFAULT_REGION=ch-dk-2``: Should already be in your env.project.
 * ``AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io``: Should already be in your env.project.
 
-Azure docker-compose:
+Azure docker compose:
 
 * ``AZURE_STORAGE_CONNECTION_STRING``: The connection string.
 

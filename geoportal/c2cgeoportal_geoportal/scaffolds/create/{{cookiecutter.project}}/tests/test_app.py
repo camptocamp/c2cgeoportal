@@ -5,7 +5,7 @@ import requests
 @pytest.mark.parametrize(
     "url,params,timeout",
     [
-        ("https://front", {}, 10),
+        ("https://front/", {}, 10),
         ("https://front/themes", {}, 120),
         ("https://front/static-geomapfish/0/locales/fr.json", {}, 2),
         ("https://front/dynamic.json", {"interface": "desktop"}, 10),

@@ -80,7 +80,7 @@ A script is available to fill the full-text search table:
 
 .. argparse::
    :ref: c2cgeoportal_geoportal.scripts.theme2fts.get_argparser
-   :prog: docker-compose exec geoportal theme2fts
+   :prog: docker compose exec geoportal theme2fts
 
 Note that some tree items' metadata are used by the ``theme2fts`` script:
 

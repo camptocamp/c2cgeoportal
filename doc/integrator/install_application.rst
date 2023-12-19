@@ -114,15 +114,15 @@ Run the composition:
 
 .. prompt:: bash
 
-    docker-compose up -d
+    docker compose up -d
 
 Then create the application tables:
 
 .. prompt:: bash
 
-    docker-compose exec geoportal alembic --config=alembic.ini \
+    docker compose exec geoportal alembic --config=alembic.ini \
         --name=main upgrade head
-    docker-compose exec geoportal alembic --config=alembic.ini \
+    docker compose exec geoportal alembic --config=alembic.ini \
         --name=static upgrade head
 
 Your application should now be available at: ``https://localhost:8484/``.

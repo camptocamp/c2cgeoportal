@@ -16,30 +16,30 @@ update-po-from-url: ## Update the po files from the URL provide by PROJECT_PUBLI
 	curl --fail --retry 5 --retry-delay 1 \
 		$(PROJECT_PUBLIC_URL)locale.pot > geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
 	sed -i '/^"POT-Creation-Date: /d' geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot
-	docker-compose run --rm -T tools update-po-only `id --user` `id --group` $(LANGUAGES)
+	docker compose run --rm -T tools update-po-only `id --user` `id --group` $(LANGUAGES)
 
 .PHONY: update-po
 update-po: ## Update the po files from the running composition
-	docker-compose exec -T tools sh -c "USER_ID=`id --user` GROUP_ID=`id --group` make --directory=geoportal update-po"
+	docker compose exec -T tools sh -c "USER_ID=`id --user` GROUP_ID=`id --group` make --directory=geoportal update-po"
 
 .PHONY: checks
 checks: prospector eslint ## Runs the checks
 
 .PHONY: prospector
 prospector: ## Runs the Prospector checks
-	docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+	docker compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
 		prospector --output-format=pylint --die-on-tool-error
 
 .PHONY: eslint
 eslint: ## Runs the eslint checks
-	docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+	docker compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
 		eslint $(find {{cookiecutter.package}} -type f -name '*.js' -print 2> /dev/null)
-	docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+	docker compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
 		eslint $(find {{cookiecutter.package}} -type f -name '*.ts' -print 2> /dev/null)
 
 .PHONY: qgis
 qgis: ## Run QGIS desktop
-	docker-compose -f docker-compose.yaml -f docker-compose-qgis.yaml run --rm qgis
+	docker compose -f docker-compose.yaml -f docker-compose-qgis.yaml run --rm qgis
 
 secrets.tar.bz2.gpg: env.secrets ## Encrypt the secrets for committing changes
 	tar -jcf secrets.tar.bz2 $^
@@ -57,14 +57,14 @@ secrets: ## Decrypt the secrets.tar.bz2.gpg file
 
 .PHONY: acceptance-init
 acceptance-init: ## Initialize the acceptance tests
-	docker-compose --file=docker-compose.yaml --file=docker-compose-db.yaml up -d db tools
-	docker-compose exec -T tools wait-db
-	docker-compose exec -T tools psql --command="DROP EXTENSION IF EXISTS postgis CASCADE"
+	docker compose --file=docker-compose.yaml --file=docker-compose-db.yaml up -d db tools
+	docker compose exec -T tools wait-db
+	docker compose exec -T tools psql --command="DROP EXTENSION IF EXISTS postgis CASCADE"
 	scripts/db-restore --docker-compose-file=docker-compose.yaml --docker-compose-file=docker-compose-db.yaml \
 		--arg=--clean --arg=--if-exists --arg=--verbose $(DUMP_FILE)
-	docker-compose --file=docker-compose.yaml --file=docker-compose-db.yaml up -d
+	docker compose --file=docker-compose.yaml --file=docker-compose-db.yaml up -d
 
 .PHONY: acceptance
 acceptance: ## Run the acceptance tests
-	docker-compose exec -T tools pytest -vv tests/
+	docker compose exec -T tools pytest -vv tests/
 	ci/docker-compose-check
