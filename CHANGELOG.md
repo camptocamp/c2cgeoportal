@@ -1,3 +1,7 @@
+##### 2.8.1.24
+
+- [Backport 2.8] Clarify the main/static schema separation, fix some typo [c2cgeoportal#10852](https://github.com/camptocamp/c2cgeoportal/pull/10852)
+
 ##### 2.8.1.23
 
 - Fix error on search result selection with coordinates search [ngeo#9274](https://github.com/camptocamp/ngeo/pull/9274)
