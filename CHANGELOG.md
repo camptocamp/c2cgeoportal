@@ -1,3 +1,7 @@
+##### 2.7.1.31
+
+- [Backport 2.7] Fix error on search result selection with coordinates search [ngeo#9276](https://github.com/camptocamp/ngeo/pull/9276)
+
 ##### 2.7.1.30
 
 - Fix used ogcServerName [ngeo#9271](https://github.com/camptocamp/ngeo/pull/9271)
