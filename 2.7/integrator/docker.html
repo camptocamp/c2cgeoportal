@@ -189,7 +189,7 @@ You can use the following commands to manually remove Docker files.</p>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_WEB_HOST</span></code>: The web host visible by the browser e.g.: ‘example.com’.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: The web path visible by the browser e.g.: ‘/main/’, default to ‘/’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The postgres schema, used by MapServer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The PostgreSQL schema, used to build the access control SQL related to the restriction area.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">GEOPORTAL_INTERNAL_URL</span></code>: Used by the print in non mutualize mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUDCHAIN_INTERNAL_URL</span></code>: Used by the print in non mutualize mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ST_JOIN</span></code>: Can be <code class="docutils literal notranslate"><span class="pre">ST_Collect</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">ST_Union</span></code>, <code class="docutils literal notranslate"><span class="pre">ST_Collect</span></code> is better for performance but
@@ -200,7 +200,7 @@ does not support restriction area intersection.</p></li>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: The web path visible by the browser e.g.: ‘/main/’, default to ‘/’.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The postgres schema, used by MapServer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code>: The PostgreSQL schema, used by MapServer.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_REISSUE_TIME</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_MAXAGE</span></code>: See: <a class="reference internal" href="security.html#integrator-authentication"><span class="std std-ref">Authentication</span></a>.</p></li>

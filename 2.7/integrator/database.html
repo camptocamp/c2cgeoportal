@@ -39,6 +39,15 @@
             
   <section id="database">
 <span id="integrator-database"></span><h1>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h1>
+<section id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h2>
+<p>The database tables are separated in two schemas:</p>
+<ul class="simple">
+<li><p>The ‘main’ schema, which can be configured with the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> environment variable, contains the data that can be modified only by the administrator interface.</p></li>
+<li><p>The ‘static’ schema, which can be configured with the <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> environment variable, contains the data that can be modified by the end user through the web application (user password, short links, OAuth token and audit logs, not the editing data).</p></li>
+</ul>
+<p>This separation makes possible to manage the application configuration (the layer tree) on the integration environment, and copy it to the production environment without any risk of overwriting the data modified by the end user.</p>
+</section>
 <section id="update-lifecycle">
 <h2>Update lifecycle<a class="headerlink" href="#update-lifecycle" title="Permalink to this headline">¶</a></h2>
 <p>The recommended setup is to have integration and production data on the same database, using
@@ -86,14 +95,14 @@ The following example shows how an update can be performed from a version <code 
 </section>
 <section id="prepare-the-project">
 <h3>Prepare the project<a class="headerlink" href="#prepare-the-project" title="Permalink to this headline">¶</a></h3>
-<p>To be able to proceed like this, the variables <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and the <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code>
-should be managed in your makefiles:</p>
+<p>To be able to proceed like this, the variables <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> and <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code>
+should be managed in your env files:</p>
 <ul class="simple">
-<li><p>The variable <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>; in this example, it will be set to
+<li><p>The variable <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> should be set in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code>; in this example, it will be set to
 <code class="docutils literal notranslate"><span class="pre">main_2019</span></code>.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">DOCKER_PGSCHEMA_STATIC</span></code> variable for production should be set in a specific makefile
-for production e.-g. <code class="docutils literal notranslate"><span class="pre">production.mk</span></code>; it will be set for example to <code class="docutils literal notranslate"><span class="pre">integration_static</span></code> in the
-Makefile, and to <code class="docutils literal notranslate"><span class="pre">production_static</span></code> in the production makefile.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA_STATIC</span></code> variable for production should be set in a specific env file
+for production e.-g. <code class="docutils literal notranslate"><span class="pre">env.production</span></code>; it will be set for example to <code class="docutils literal notranslate"><span class="pre">integration_static</span></code> in the
+env file, and to <code class="docutils literal notranslate"><span class="pre">production_static</span></code> in the production env file.</p></li>
 <li><p>The line <code class="docutils literal notranslate"><span class="pre">PGSCHEMA=main</span></code> should be removed from your <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p></li>
 </ul>
 </section>

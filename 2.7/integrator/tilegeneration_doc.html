@@ -57,7 +57,7 @@ data, it is not possible to figure out what tiles should be updated.</p>
 month, especially if we have a high resolution (low if in m/px) on the last zoom level.
 Therefore for the last zoom level we should generate the tiles on the fly
 with a low expiry (4 hours for example).
-We should use metatiles to reduce the number of requests to postgres.
+Meta tiles should be used to reduce the number of requests to PostgreSQL.
 And the tiles should be deleted after the expiry time.</p>
 <p>The chosen solution is a combination of two tools:</p>
 <ul class="simple">
