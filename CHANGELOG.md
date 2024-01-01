@@ -1,3 +1,5 @@
+##### 2.6.0.224
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10862](https://github.com/camptocamp/c2cgeoportal/pull/10862)
 ##### 2.6.0.223
 * Fix CVE [c2cgeoportal#10843](https://github.com/camptocamp/c2cgeoportal/pull/10843)
 ##### 2.6.0.222
