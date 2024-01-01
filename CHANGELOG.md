@@ -1,3 +1,7 @@
+##### 2.7.1.34
+
+- Update dependency loc-i18next to v0.1.6 (2.7) [ngeo#9278](https://github.com/camptocamp/ngeo/pull/9278)
+
 ##### 2.7.1.32
 
 - [Backport 2.7] Clarify the main/static schema separation, fix some typo [c2cgeoportal#10851](https://github.com/camptocamp/c2cgeoportal/pull/10851)
