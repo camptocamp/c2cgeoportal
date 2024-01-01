@@ -1,3 +1,8 @@
+##### 2.8.1.25
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#10864](https://github.com/camptocamp/c2cgeoportal/pull/10864)
+- Update dependency pip to v23.3.2 (2.8) [c2cgeoportal#10865](https://github.com/camptocamp/c2cgeoportal/pull/10865)
+
 ##### 2.8.1.24
 
 - [Backport 2.8] Clarify the main/static schema separation, fix some typo [c2cgeoportal#10852](https://github.com/camptocamp/c2cgeoportal/pull/10852)
