@@ -140,7 +140,7 @@ jobs:
         continue-on-error: true
 
       # Use minimal version from the documentation
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           # When we upgrade this we should also upgrade the requirements
           # in the documentation: doc/integrator/requirements.rst
@@ -177,7 +177,7 @@ jobs:
       - run: ci/test-upgrade 29 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
       - run: pip install --user --requirement=ci/requirements-back.txt
