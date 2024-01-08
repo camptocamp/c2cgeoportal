@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2021, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,8 +49,8 @@ def create_token(aeskey, user, password, valid):
     mod_len = len(data) % 16
     if mod_len != 0:
         data += "".join([" " for i in range(16 - mod_len)])
-    ciphertext, tag = cipher.encrypt_and_digest(data.encode("utf-8"))  # type: ignore
-    return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")  # type: ignore
+    ciphertext, tag = cipher.encrypt_and_digest(data.encode("utf-8"))
+    return binascii.hexlify(cipher.nonce + tag + ciphertext).decode("ascii")
 
 
 def main():
