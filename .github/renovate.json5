@@ -160,13 +160,13 @@
     },
     /** Group and auto merge the GitHub action */
     {
-      matchDatasources: ['github-actions'],
+      matchFiles: ['^\\.github/workflows/.*\\.ya?ml$'],
       groupName: 'github-actions',
       automerge: true,
     },
     /** Group and auto merge the pre-commit updates */
     {
-      matchDatasources: ['pre-commit'],
+      matchFiles: ['^\\.pre-commit-config\\.yaml$'],
       groupName: 'pre-commit',
       automerge: true,
     },
