@@ -37,7 +37,7 @@
       versioning: 'loose',
     },
     {
-      matchFiles: ['docker/config/Dockerfile'],
+      matchFileNames: ['docker/config/Dockerfile'],
       matchDatasources: ['docker'],
       versioning: 'ubuntu',
     },
@@ -160,13 +160,13 @@
     },
     /** Group and auto merge the GitHub action */
     {
-      matchFileNames: ['^\\.github/workflows/.*\\.ya?ml$'],
+      matchFileNames: ['.github/workflows/*.yaml'],
       groupName: 'github-actions',
       automerge: true,
     },
     /** Group and auto merge the pre-commit updates */
     {
-      matchFileNames: ['^\\.pre-commit-config\\.yaml$'],
+      matchFileNames: ['.pre-commit-config.yaml'],
       groupName: 'pre-commit',
       automerge: true,
     },
