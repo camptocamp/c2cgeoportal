@@ -158,9 +158,16 @@
       allowedVersions: '5.4.1',
       enabled: false,
     },
-    /** Auto merge the GitHub action and pre-commit updates */
+    /** Group and auto merge the GitHub action */
     {
-      matchDatasources: ['github-actions', 'pre-commit'],
+      matchDatasources: ['pre-commit'],
+      groupName: 'github-actions',
+      automerge: true,
+    },
+    /** Group and auto merge the pre-commit updates */
+    {
+      matchDatasources: ['pre-commit'],
+      groupName: 'pre-commit',
       automerge: true,
     },
   ],
