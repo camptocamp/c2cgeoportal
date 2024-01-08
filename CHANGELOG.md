@@ -1,3 +1,7 @@
+##### 2.7.1.35
+
+- Snyk auto fix [c2cgeoportal#10868](https://github.com/camptocamp/c2cgeoportal/pull/10868)
+
 ##### 2.7.1.34
 
 - Update dependency loc-i18next to v0.1.6 (2.7) [ngeo#9278](https://github.com/camptocamp/ngeo/pull/9278)
