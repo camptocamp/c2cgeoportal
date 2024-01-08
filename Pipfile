@@ -100,7 +100,7 @@ OWSLib = "==0.28.1"  # geoportal
 papyrus = "==2.4"  # commons, geoportal
 passwordgenerator = "==1.4"  # # geoportal
 psycopg2-binary = "==2.8.6"  # geoportal
-pycryptodome = "==3.11.0"  # geoportal
+pycryptodome = "==3.19.1"  # geoportal
 pyproj = "==3.0.1"  # admin, other?
 pyotp = "==2.5.1"  # geoportal
 pyramid = "==1.10.8"  # geoportal
