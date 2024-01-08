@@ -96,7 +96,7 @@ jobs:
         run: ci/extract-documentation artifacts/documentations/ || true
         if: always()
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Documentation
