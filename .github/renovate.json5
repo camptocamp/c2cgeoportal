@@ -160,7 +160,7 @@
     },
     /** Group and auto merge the GitHub action */
     {
-      matchDatasources: ['pre-commit'],
+      matchDatasources: ['github-actions'],
       groupName: 'github-actions',
       automerge: true,
     },
