@@ -28,9 +28,9 @@
 
 import json
 import logging
+import secrets
 import sys
 import urllib.parse
-from random import Random
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pyotp
@@ -341,12 +341,11 @@ class Login:
 
     @staticmethod
     def generate_password() -> str:
-        allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        rand = Random()
+        all_chars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         password = ""  # nosec
         for _ in range(8):
-            password += rand.choice(allchars)
+            password += secrets.choice(all_chars)
 
         return password
 
