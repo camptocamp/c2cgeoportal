@@ -90,7 +90,7 @@ BEGIN
         || ' MAXVALUE ' || seq.maximum_value
         || ' START WITH ' || seq.start_value
         || ' RESTART ' || seq.minimum_value
-        || sq_cycled || ';';
+        || ' ' || sq_cycled || ';';
 
     buffer := quote_ident(dest_schema) || '.' || quote_ident(seq.sequence_name);
     IF include_recs
