@@ -1,3 +1,5 @@
+##### 2.6.0.226
+* [Backport 2.6] Add missing space to script [c2cgeoportal#10874](https://github.com/camptocamp/c2cgeoportal/pull/10874)
 ##### 2.6.0.225
 * Snyk auto fix [c2cgeoportal#10869](https://github.com/camptocamp/c2cgeoportal/pull/10869)
 ##### 2.6.0.224
