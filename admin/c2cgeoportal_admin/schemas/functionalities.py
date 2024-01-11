@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -86,7 +86,7 @@ def functionalities_schema_node(
     """Get the schema of the functionalities."""
 
     return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Functionality),
+        GeoFormManyToManySchemaNode(Functionality, None),
         name=prop.key,
         title=prop.info["colanderalchemy"]["title"],
         description=prop.info["colanderalchemy"].get("description"),

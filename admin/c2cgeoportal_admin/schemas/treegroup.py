@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ ITEM_TYPE_ROUTE_MAP = {
 }
 
 
-class ChildSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """Schema of the child nodes."""
 
     def objectify(self, dict_, context=None):

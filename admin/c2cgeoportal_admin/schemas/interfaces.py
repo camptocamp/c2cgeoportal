@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ from c2cgeoportal_commons.models.main import Interface
 def interfaces_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
     """Get the serializable representation of an interface."""
     return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Interface),
+        GeoFormManyToManySchemaNode(Interface, None),
         name=prop.key,
         title=prop.info["colanderalchemy"]["title"],
         description=prop.info["colanderalchemy"]["description"],

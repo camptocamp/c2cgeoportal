@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,11 +27,17 @@
 
 
 from functools import partial
-from typing import Optional
 
 import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoform.views.abstract_views import (
+    DeleteResponse,
+    GridResponse,
+    IndexResponse,
+    ListField,
+    ObjectResponse,
+    SaveResponse,
+)
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
@@ -41,50 +47,56 @@ from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
 
-_list_field = partial(ListField, LayerGroup)
+_list_field = partial(ListField, LayerGroup)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(LayerGroup, widget=FormWidget(fields_template="layer_group_fields"))
 base_schema.add(children_schema_node())
 base_schema.add(metadata_schema_node(LayerGroup.metadatas, LayerGroup))
 base_schema.add_unique_validator(LayerGroup.name, LayerGroup.id)
-base_schema.add(parent_id_node(TreeGroup))  # type: ignore
+base_schema.add(parent_id_node(TreeGroup))
 
 
 @view_defaults(match_param="table=layer_groups")
-class LayerGroupsViews(TreeItemViews):
+class LayerGroupsViews(TreeItemViews[LayerGroup]):
     """The layer group administration view."""
-
-    _list_fields = TreeItemViews._list_fields + TreeItemViews._extra_list_fields
 
     _id_field = "id"
     _model = LayerGroup
     _base_schema = base_schema
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
-        return super()._base_query(self._request.dbsession.query(LayerGroup).distinct())
+    def __init__(self, request):
+        super().__init__(request)
+        self._list_fields = super()._list_fields + super()._extra_list_fields
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
-    def index(self):
+    def _base_query(self) -> sqlalchemy.orm.query.Query:
+        return super()._sub_query(self._request.dbsession.query(LayerGroup).distinct())
+
+    def _sub_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
+        del query
+        return self._base_query()
+
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    def index(self) -> IndexResponse:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")
-    def grid(self):
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    def grid(self) -> GridResponse:
         return super().grid()
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
+    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def view(self) -> ObjectResponse:
         return super().edit()
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
+    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def save(self) -> SaveResponse:
         return super().save()
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
-    def delete(self):
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    def delete(self) -> DeleteResponse:
         return super().delete()
 
-    @view_config(
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self):
+    def duplicate(self) -> ObjectResponse:
         return super().duplicate()

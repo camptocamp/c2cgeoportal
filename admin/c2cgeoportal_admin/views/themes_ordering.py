@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews
+from c2cgeoform.views.abstract_views import AbstractViews, ObjectResponse, SaveResponse
 from deform import ValidationFailure
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -39,7 +39,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Theme, TreeItem
 
 
-class ThemeOrderSchema(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """The theme order schema."""
 
     def objectify(self, dict_, context=None):
@@ -68,7 +68,7 @@ def themes_validator(node, cstruct):
             )
 
 
-class ThemesOrderingSchema(colander.MappingSchema):  # type: ignore
+class ThemesOrderingSchema(colander.MappingSchema):  # type: ignore[misc]
     """The theme ordering schema."""
 
     themes = colander.SequenceSchema(
@@ -91,13 +91,13 @@ class ThemesOrderingSchema(colander.MappingSchema):  # type: ignore
     )
 
 
-class ThemesOrdering(AbstractViews):  # type: ignore
+class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
     """The theme ordering admin view."""
 
     _base_schema = ThemesOrderingSchema()
 
-    @view_config(route_name="layertree_ordering", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
+    @view_config(route_name="layertree_ordering", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def view(self) -> ObjectResponse:
         form = self._form()
         dict_ = {
             "themes": [
@@ -108,13 +108,13 @@ class ThemesOrdering(AbstractViews):  # type: ignore
         return {
             "title": form.title,
             "form": form,
-            "form_render_args": (dict_,),
+            "form_render_args": [dict_],
             "form_render_kwargs": {"request": self._request, "actions": []},
             "deform_dependencies": form.get_widget_resources(),
         }
 
-    @view_config(route_name="layertree_ordering", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
+    @view_config(route_name="layertree_ordering", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def save(self) -> SaveResponse:
         try:
             form = self._form()
             form_data = self._request.POST.items()
@@ -124,14 +124,14 @@ class ThemesOrdering(AbstractViews):  # type: ignore
                     obj = form.schema["themes"].children[0].objectify(dict_)
                     self._request.dbsession.merge(obj)
             self._request.dbsession.flush()
-            return HTTPFound(self._request.route_url("layertree"))
+            raise HTTPFound(self._request.route_url("layertree"))
         except ValidationFailure as e:
             # FIXME see https://github.com/Pylons/deform/pull/243
             self._populate_widgets(form.schema)
             return {
                 "title": form.title,
                 "form": e,
-                "form_render_args": tuple(),
+                "form_render_args": [],
                 "form_render_kwargs": {"request": self._request, "actions": []},
                 "deform_dependencies": form.get_widget_resources(),
             }

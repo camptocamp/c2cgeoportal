@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ from c2cgeoportal_commons.models.main import RestrictionArea
 def restrictionareas_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
     """Get the schema of a restriction area."""
     return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(RestrictionArea),
+        GeoFormManyToManySchemaNode(RestrictionArea, None),
         name=prop.key,
         title=prop.info["colanderalchemy"]["title"],
         description=prop.info["colanderalchemy"].get("description"),

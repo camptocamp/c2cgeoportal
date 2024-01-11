@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -136,7 +136,7 @@ class BooleanMetadata(colander.Boolean):  # type: ignore
         return None
 
 
-class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """The metadata schema."""
 
     metadata_definitions: Optional[dict[str, Any]] = None

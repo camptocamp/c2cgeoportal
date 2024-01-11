@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ from c2cgeoportal_admin.schemas.treegroup import base_deferred_parent_id_validat
 
 
 # Used for the creation of a new layer/layergroup from the layertree
-def parent_id_node(model):
+def parent_id_node(model: type) -> colander.SchemaNode:
     """Get the scheme to the parent node ID."""
     return colander.SchemaNode(
         colander.Integer(),

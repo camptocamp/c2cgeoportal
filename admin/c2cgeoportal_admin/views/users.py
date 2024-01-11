@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,14 @@
 from functools import partial
 
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoform.views.abstract_views import (
+    DeleteResponse,
+    GridResponse,
+    IndexResponse,
+    ListField,
+    ObjectResponse,
+    SaveResponse,
+)
 from deform.widget import FormWidget
 from passwordgenerator import pwgenerator
 from pyramid.httpexceptions import HTTPFound
@@ -42,7 +49,7 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.static import Log, User
 
-_list_field = partial(ListField, User)
+_list_field = partial(ListField, User)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(User, widget=FormWidget(fields_template="user_fields"))
 base_schema.add(roles_schema_node(User.roles))
@@ -52,7 +59,7 @@ settings_role = aliased(Role)
 
 
 @view_defaults(match_param="table=users")
-class UserViews(LoggedViews):
+class UserViews(LoggedViews[User]):
     """The admin user view."""
 
     _list_fields = [
@@ -90,20 +97,20 @@ class UserViews(LoggedViews):
             .options(subqueryload("roles"))
         )
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
-    def index(self):
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    def index(self) -> IndexResponse:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")
-    def grid(self):
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    def grid(self) -> GridResponse:
         return super().grid()
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
+    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def view(self) -> ObjectResponse:
         return super().edit()
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
+    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def save(self) -> SaveResponse:
         if self._is_new():
             response = super().save()
 
@@ -111,9 +118,11 @@ class UserViews(LoggedViews):
                 password = pwgenerator.generate()
 
                 user = self._obj
+                assert user is not None
                 user.password = password
                 user.is_password_changed = False
                 user = self._request.dbsession.merge(user)
+                assert user is not None
                 self._request.dbsession.flush()
 
                 send_email_config(
@@ -130,12 +139,12 @@ class UserViews(LoggedViews):
 
         return super().save()
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
-    def delete(self):
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    def delete(self) -> DeleteResponse:
         return super().delete()
 
-    @view_config(
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self):
+    def duplicate(self) -> ObjectResponse:
         return super().duplicate()

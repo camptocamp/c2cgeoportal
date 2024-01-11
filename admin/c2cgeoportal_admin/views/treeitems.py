@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,9 +27,10 @@
 
 
 from functools import partial
+from typing import Generic, TypeVar
 
 import sqlalchemy
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoform.views.abstract_views import ListField, SaveResponse
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql.functions import concat
@@ -37,10 +38,13 @@ from sqlalchemy.sql.functions import concat
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeGroup, TreeItem
 
-_list_field = partial(ListField, TreeItem)
+_list_field = partial(ListField, TreeItem)  # type: ignore[var-annotated]
 
 
-class TreeItemViews(LoggedViews):
+_T = TypeVar("_T", bound=TreeItem)
+
+
+class TreeItemViews(LoggedViews[_T], Generic[_T]):
     """The admin tree item view."""
 
     _list_fields = [
@@ -68,8 +72,8 @@ class TreeItemViews(LoggedViews):
         )
     ] + _extra_list_fields_no_parents
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
+    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def save(self) -> SaveResponse:
         response = super().save()
         # correctly handles the validation error as if there is a validation error, cstruct is empty
         has_to_be_registered_in_parent = (
@@ -81,9 +85,7 @@ class TreeItemViews(LoggedViews):
             self._request.dbsession.add(rel)
         return response
 
-    def _base_query(  # pylint: disable=arguments-differ
-        self, query: sqlalchemy.orm.query.Query
-    ) -> sqlalchemy.orm.query.Query:
+    def _sub_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
         return (
             query.outerjoin("metadatas")
             .options(subqueryload("parents_relation").joinedload("treegroup"))

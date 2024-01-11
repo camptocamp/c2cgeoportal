@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -63,7 +63,7 @@ except ModuleNotFoundError:
     HiddenWidget = GenericClass
     DateTimeInputWidget = GenericClass
     CollenderGeometry = GenericClass
-    RelationSelect2Widget = GenericClass
+    RelationSelect2Widget = GenericClass  # type: ignore[misc,assignment]
 
 
 LOG = logging.getLogger(__name__)

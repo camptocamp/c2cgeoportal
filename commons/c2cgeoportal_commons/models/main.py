@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -67,11 +67,11 @@ except ModuleNotFoundError:
 
     CheckboxWidget = GenericClass
     HiddenWidget = GenericClass
-    MapWidget = GenericClass
+    MapWidget = GenericClass  # type: ignore[misc,assignment]
     SelectWidget = GenericClass
     TextAreaWidget = GenericClass
-    ColanderGeometry = GenericClass
-    RelationSelect2Widget = GenericClass
+    ColanderGeometry = GenericClass  # type: ignore[misc,assignment]
+    RelationSelect2Widget = GenericClass  # type: ignore[misc,assignment]
     TextInputWidget = GenericClass
 
 

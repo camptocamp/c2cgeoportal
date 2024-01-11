@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,10 +42,11 @@ import pyramid.request
 import pyramid.response
 import pyramid.security
 import zope.event.classhandler
-from c2cgeoform import Form, translator
+from c2cgeoform import translator
 from c2cwsgiutils.broadcast import decorator
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.prometheus import MemoryMapCollector
+from deform import Form
 from dogpile.cache import register_backend  # type: ignore[attr-defined]
 from papyrus.renderers import GeoJSON
 from prometheus_client.core import REGISTRY
