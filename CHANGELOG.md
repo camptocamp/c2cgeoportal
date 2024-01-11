@@ -1,3 +1,7 @@
+##### 2.7.1.37
+
+- [Backport 2.7] Add missing space to script [c2cgeoportal#10875](https://github.com/camptocamp/c2cgeoportal/pull/10875)
+
 ##### 2.7.1.36
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#10863](https://github.com/camptocamp/c2cgeoportal/pull/10863)
