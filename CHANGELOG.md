@@ -1,3 +1,7 @@
+##### 2.8.1.30
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#10880](https://github.com/camptocamp/c2cgeoportal/pull/10880)
+
 ##### 2.8.1.29
 
 - [Backport 2.8] Add missing space to script [c2cgeoportal#10876](https://github.com/camptocamp/c2cgeoportal/pull/10876)
