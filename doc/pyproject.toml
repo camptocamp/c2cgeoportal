@@ -14,7 +14,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
-alabaster = "0.7.13" # theme
+alabaster = "0.7.16" # theme
 Pygments = "2.15.1"
 Sphinx = "6.1.3"
 sphinx-prompt = "1.5.0"
