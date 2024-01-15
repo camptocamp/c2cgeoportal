@@ -6,7 +6,7 @@ verify_ssl = true
 [packages]
 alabaster = "==0.7.13" # theme
 Pygments = "==2.15.1"
-Sphinx = "==3.3.1"
+Sphinx = "==4.4.0"
 sphinx-prompt = "==1.1.0"
 setuptools = "==65.5.1"
 # Lock
@@ -26,7 +26,6 @@ six = "==1.14.0"
 snowballstemmer = "==2.0.0"
 sphinxcontrib-applehelp = "==1.0.4"
 sphinxcontrib-devhelp = "==1.0.2"
-sphinxcontrib-htmlhelp = "==1.0.3"
 sphinxcontrib-jsmath = "==1.0.1"
 sphinxcontrib-qthelp = "==1.0.3"
 sphinxcontrib-serializinghtml = "==1.1.5"
