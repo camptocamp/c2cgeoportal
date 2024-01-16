@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,9 +28,10 @@
 
 import json
 import logging
+import secrets
+import string
 import sys
 import urllib.parse
-from random import Random
 from typing import Any, Optional, Union
 
 import pyotp
@@ -367,14 +368,14 @@ class Login:
 
     @staticmethod
     def generate_password() -> str:
-        allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        rand = Random()
-
-        password = ""  # nosec
-        for _ in range(8):
-            password += rand.choice(allchars)
-
-        return password
+        allchars = "".join(
+            [
+                string.ascii_letters * 2,
+                string.digits * 2,
+                string.punctuation,  # One time to have less punctuation char
+            ]
+        )
+        return "".join(secrets.choice(allchars) for i in range(8))
 
     def _loginresetpassword(
         self,
