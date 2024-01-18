@@ -51,14 +51,18 @@ from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
 
 try:
+    import colander
     from c2cgeoform import default_map_settings
     from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
     from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
     from colander import drop
     from deform.widget import CheckboxWidget, HiddenWidget, SelectWidget, TextAreaWidget, TextInputWidget
+
+    colander_null = colander.null
 except ModuleNotFoundError:
     drop = None
     default_map_settings = {"srid": 3857, "view": {"projection": "EPSG:3857"}}
+    colander_null = None
 
     class GenericClass:
         """Fallback class implementation."""
@@ -574,6 +578,7 @@ class Theme(TreeGroup):
             "colanderalchemy": {
                 "title": _("Icon"),
                 "description": _("The icon URL."),
+                "missing": "",
             }
         },
     )
@@ -661,6 +666,7 @@ class Layer(TreeItem):
                     For enumerable attributes (foreign key), the column name should end with '_id'.
                     """
                 ),
+                "missing": "",
             }
         },
     )
@@ -939,6 +945,7 @@ class LayerWMS(DimensionLayer):
                 "description": _("The status reported by latest synchronization (readonly)."),
                 "column": 2,
                 "widget": CheckboxWidget(readonly=True),
+                "missing": colander_null,
             }
         },
     )
@@ -950,6 +957,7 @@ class LayerWMS(DimensionLayer):
                 "description": _("The reason for status reported by latest synchronization (readonly)."),
                 "column": 2,
                 "widget": TextInputWidget(readonly=True),
+                "missing": "",
             }
         },
     )
@@ -1109,6 +1117,7 @@ class LayerWMTS(DimensionLayer):
                 "title": _("Style"),
                 "description": _("The style to use; if not present, the default style is used."),
                 "column": 2,
+                "missing": "",
             }
         },
     )
@@ -1122,6 +1131,7 @@ class LayerWMTS(DimensionLayer):
                     "left empty."
                 ),
                 "column": 2,
+                "missing": "",
             }
         },
     )
