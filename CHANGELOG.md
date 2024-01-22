@@ -1,3 +1,5 @@
+##### 2.6.0.231
+* Snyk auto fix [c2cgeoportal#10884](https://github.com/camptocamp/c2cgeoportal/pull/10884)
 ##### 2.6.0.230
 * Snyk auto fix [c2cgeoportal#10882](https://github.com/camptocamp/c2cgeoportal/pull/10882)
 ##### 2.6.0.229
