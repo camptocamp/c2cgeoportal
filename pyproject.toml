@@ -59,7 +59,7 @@ setuptools = "67.1.0"
 pygments = "2.15.1"
 cryptography = "41.0.7"
 gitpython = "3.1.41"
-pillow = "10.0.1"
+pillow = "10.2.0"
 urllib3 = "1.26.18"
 
 [tool.poetry.dev-dependencies]
