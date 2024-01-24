@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Camptocamp SA
+# Copyright (c) 2023-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,17 +27,18 @@
 
 from functools import partial
 
-from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField
+from c2cgeoform import JSONDict
+from c2cgeoform.views.abstract_views import AbstractViews, GridResponse, IndexResponse, ItemAction, ListField
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_commons.models import _
 from c2cgeoportal_commons.models.main import AbstractLog
 
-_list_field = partial(ListField, AbstractLog)
+_list_field = partial(ListField, AbstractLog)  # type: ignore[var-annotated]
 
 
 @view_defaults(match_param="table=logs")
-class LogViews(AbstractViews):  # type: ignore
+class LogViews(AbstractViews[AbstractLog]):
     """The theme administration view."""
 
     # We pass labels explicitly because actually we are not able to get info
@@ -56,18 +57,18 @@ class LogViews(AbstractViews):  # type: ignore
     _id_field = "id"
     _model = AbstractLog
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
-    def index(self):
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    def index(self) -> IndexResponse:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")
-    def grid(self):
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    def grid(self) -> GridResponse:
         return super().grid()
 
     def _grid_actions(self):
         return []
 
-    def _grid_item_actions(self, item):
+    def _grid_item_actions(self, item: AbstractLog) -> JSONDict:
         element_url = self._request.route_url(
             "c2cgeoform_item",
             table=item.element_url_table,

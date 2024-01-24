@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -52,6 +52,8 @@ class GeometryProcessing:
 
     @view_config(route_name="difference", renderer="geojson")  # type: ignore
     def difference(self) -> Optional[BaseGeometry]:
+        assert DBSession is not None
+
         body = loads(self.request.body)
         if (
             "geometries" not in body

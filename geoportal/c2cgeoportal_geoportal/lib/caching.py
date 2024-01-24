@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2023, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@ from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 import pyramid.interfaces
-import sqlalchemy.ext.declarative
 import zope.interface
 from dogpile.cache.api import NO_VALUE, CacheBackend, CachedValue, NoValue
 from dogpile.cache.backends.memory import MemoryBackend
@@ -53,9 +52,7 @@ _REGION: dict[str, CacheRegion] = {}
 MEMORY_CACHE_DICT: dict[str, Any] = {}
 
 
-def map_dbobject(
-    item: sqlalchemy.ext.declarative.ConcreteBase,
-) -> sqlalchemy.ext.declarative.ConcreteBase:
+def map_dbobject(item: type[Any]) -> Any:
     """Get an cache identity key for the cache."""
     return identity_key(item) if isinstance(item, Base) else item
 
@@ -84,7 +81,7 @@ def keygen_function(namespace: Any, function: Callable[..., Any]) -> Callable[..
         parts.extend(namespace)
         if ignore_first_argument:
             args = args[1:]
-        new_args: list[str] = [
+        new_args = [
             arg for arg in args if pyramid.interfaces.IRequest not in zope.interface.implementedBy(type(arg))
         ]
         parts.extend(map(str, map(map_dbobject, new_args)))

@@ -1,4 +1,4 @@
-# Copyright (c) 2023, Camptocamp SA
+# Copyright (c) 2023-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,25 +26,26 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-from typing import Any, Optional, Union
+from typing import Generic, Optional, TypeVar
 
 import pytz
-from c2cgeoform.views.abstract_views import AbstractViews
+from c2cgeoform.views.abstract_views import AbstractViews, DeleteResponse, SaveResponse
 from pyramid.httpexceptions import HTTPFound
 
 from c2cgeoportal_commons.models import Base
 from c2cgeoportal_commons.models.main import Log, LogAction
 
+_T = TypeVar("_T", bound=Log)
 
-class LoggedViews(AbstractViews):  # type: ignore
+
+class LoggedViews(AbstractViews[_T], Generic[_T]):
     """Extension of AbstractViews which log actions in a table."""
 
     _log_model = Log  # main.Log or static.Log
     _name_field = "name"
 
-    def save(self) -> Union[HTTPFound, dict[str, Any]]:
+    def save(self) -> SaveResponse:
         response = super().save()
-
         if isinstance(response, HTTPFound):
             self._create_log(
                 action=LogAction.INSERT if self._is_new() else LogAction.UPDATE,
@@ -53,21 +54,24 @@ class LoggedViews(AbstractViews):  # type: ignore
 
         return response
 
-    def delete(self) -> dict[str, Any]:
+    def delete(self) -> DeleteResponse:
         obj = self._get_object()
 
         response = super().delete()
 
         self._create_log(LogAction.DELETE, obj)
 
-        return response  # type: ignore
+        return response
 
     def _create_log(
         self,
         action: LogAction,
-        obj: Base,
+        obj: Base,  # type: ignore[valid-type]
         element_url_table: Optional[str] = None,
     ) -> None:
+        assert self._model is not None
+        assert self._name_field is not None
+        assert self._id_field is not None
         log = self._log_model(
             date=datetime.datetime.now(pytz.utc),
             action=action,

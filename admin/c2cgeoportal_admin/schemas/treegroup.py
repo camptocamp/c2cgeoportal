@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@ from typing import Any, Optional
 
 import colander
 import pyramid.request
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import case, func
@@ -53,7 +54,7 @@ ITEM_TYPE_ROUTE_MAP = {
 }
 
 
-class ChildSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """Schema of the child nodes."""
 
     def objectify(self, dict_, context=None):
@@ -70,13 +71,16 @@ def treeitems(
     """Get a serializable representation of the tree items."""
     del node
     dbsession = kw["request"].dbsession
+    assert isinstance(dbsession, sqlalchemy.orm.Session)
 
-    group = case([(func.count(LayergroupTreeitem.id) == 0, "Unlinked")], else_="Others")
+    group = case(
+        (func.count(LayergroupTreeitem.id) == 0, "Unlinked"), else_="Others"  # pylint: disable=not-callable
+    )
 
     query = (
         dbsession.query(TreeItem, group)
         .distinct()
-        .outerjoin("parents_relation")
+        .outerjoin(TreeItem.parents_relation)
         .filter(TreeItem.item_type != "theme")
         .group_by(TreeItem.id)
         .order_by(group.desc(), TreeItem.name)
@@ -93,7 +97,7 @@ def treeitems(
         search_alias = aliased(search_ancestors, name="search_ancestors")
         relation_alias = aliased(LayergroupTreeitem, name="relation")
         search_ancestors = search_ancestors.union_all(
-            dbsession.query(relation_alias.treegroup_id).filter(
+            dbsession.query(relation_alias.treegroup_id).filter(  # type: ignore[arg-type]
                 relation_alias.treeitem_id == search_alias.c.treegroup_id
             )
         )

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023, Camptocamp SA
+# Copyright (c) 2015-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,7 @@ Revises: 164ac0819a61
 Create Date: 2015-04-27 17:31:41.760977
 """
 
+import sqlalchemy
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column
@@ -51,8 +52,8 @@ def upgrade() -> None:
 
     # Instructions
     for table in ["layerv1", "layer_internal_wms", "layer_external_wms"]:
-        op.add_column(table, Column("time_widget", Unicode(10), default="slider"), schema=schema)
-        op.execute(f"UPDATE {schema!s}.{table!s} SET time_widget = 'slider'")
+        op.add_column(table, Column("time_widget", Unicode(10), default="slider"), schema=schema)  # type: ignore[no-untyped-call]
+        op.execute(sqlalchemy.text(f"UPDATE {schema!s}.{table!s} SET time_widget = 'slider'"))
 
 
 def downgrade() -> None:

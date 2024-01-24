@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ class TestXSDGenerator(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        Base = declarative_base(bind=DBSession.c2c_rw_bind)  # noqa
+        Base = declarative_base()  # noqa
 
         class Child(Base):  # type: ignore
             __tablename__ = "child"
@@ -79,8 +79,8 @@ class TestXSDGenerator(TestCase):
             child2 = _AssociationProxy("child2_", "name", nullable=False, order_by="custom_order")
             child2_id.info["association_proxy"] = "child2"
 
-        Child.__table__.create()
-        Parent.__table__.create()
+        Child.__table__.create(bind=DBSession.c2c_rw_bind)
+        Parent.__table__.create(bind=DBSession.c2c_rw_bind)
         self._tables = [Parent.__table__, Child.__table__]
 
         DBSession.add_all([Child("foo", 2), Child("zad", 1), Child("bar", 2)])
@@ -91,11 +91,13 @@ class TestXSDGenerator(TestCase):
     def teardown_method(self, _):
         import transaction
 
+        from c2cgeoportal_commons.models import DBSession
+
         transaction.commit()
 
         if self._tables is not None:
             for table in self._tables:
-                table.drop()
+                table.drop(bind=DBSession.c2c_rw_bind)
 
     @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_column_property_xsd")
     def test_add_class_properties_xsd_column_order(self, column_mock):

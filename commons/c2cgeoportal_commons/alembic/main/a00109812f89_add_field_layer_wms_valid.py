@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021, Camptocamp SA
+# Copyright (c) 2020-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,8 +49,8 @@ depends_on = None
 def upgrade() -> None:
     """Upgrade."""
     schema = config["schema"]
-    op.add_column("layer_wms", sa.Column("valid", sa.Boolean(), nullable=True), schema=schema)
-    op.add_column("layer_wms", sa.Column("invalid_reason", sa.Unicode(), nullable=True), schema=schema)
+    op.add_column("layer_wms", sa.Column("valid", sa.Boolean, nullable=True), schema=schema)
+    op.add_column("layer_wms", sa.Column("invalid_reason", sa.Unicode, nullable=True), schema=schema)
 
 
 def downgrade() -> None:

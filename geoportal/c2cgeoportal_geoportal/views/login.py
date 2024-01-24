@@ -47,7 +47,7 @@ from pyramid.httpexceptions import (
 from pyramid.response import Response
 from pyramid.security import forget, remember
 from pyramid.view import forbidden_view_config, view_config
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
@@ -124,6 +124,8 @@ class Login:
 
     @view_config(route_name="login")  # type: ignore
     def login(self) -> pyramid.response.Response:
+        assert models.DBSession is not None
+
         self._referer_log()
 
         login = self.request.POST.get("login")
@@ -131,6 +133,7 @@ class Login:
         if login is None or password is None:
             raise HTTPBadRequest("'login' and 'password' should be available in request params.")
         username = self.request.registry.validate_user(self.request, login, password)
+        user: Optional[static.User]
         if username is not None:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             if self.two_factor_auth:
@@ -316,6 +319,8 @@ class Login:
 
     @view_config(route_name="change_password", renderer="json")  # type: ignore
     def change_password(self) -> pyramid.response.Response:
+        assert models.DBSession is not None
+
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
         login = self.request.POST.get("login")
@@ -348,6 +353,7 @@ class Login:
         else:
             user = self.request.user
 
+        assert user is not None
         if self.request.registry.validate_user(self.request, user.username, old_password) is None:
             LOG.info("The old password is wrong for user '%s'.", user.username)
             raise HTTPUnauthorized("See server logs for details")
@@ -380,6 +386,8 @@ class Login:
     def _loginresetpassword(
         self,
     ) -> tuple[Optional[static.User], Optional[str], Optional[str], Optional[str]]:
+        assert models.DBSession is not None
+
         username = self.request.POST.get("login")
         if username is None:
             raise HTTPBadRequest("'login' should be available in request params.")

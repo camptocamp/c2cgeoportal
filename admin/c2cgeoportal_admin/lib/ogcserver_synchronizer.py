@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023, Camptocamp SA
+# Copyright (c) 2020-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -291,6 +291,7 @@ class OGCServerSynchronizer:
         name_el = el.find("Name")
         assert name_el is not None
         name = name_el.text
+        assert name is not None
 
         layer = cast(
             Optional[main.LayerWMS],

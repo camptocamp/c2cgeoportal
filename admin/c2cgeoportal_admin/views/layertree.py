@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 from typing import Any, Optional
 
 import pyramid.request
-from c2cgeoform.views.abstract_views import ItemAction
+from c2cgeoform.views.abstract_views import DeleteResponse, ItemAction
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config, view_defaults
 from translationstring import TranslationStringFactory
@@ -195,7 +195,7 @@ class LayerTreeViews:
         return {"success": True, "redirect": self._request.route_url("layertree")}
 
     @view_config(route_name="layertree_delete", request_method="DELETE", renderer="fast_json")  # type: ignore
-    def delete(self) -> dict[str, Any]:
+    def delete(self) -> DeleteResponse:
         item_id = self._request.matchdict.get("item_id")
         item = self._request.dbsession.query(TreeItem).get(item_id)
         if item is None:

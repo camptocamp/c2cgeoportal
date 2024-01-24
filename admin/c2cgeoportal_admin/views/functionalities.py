@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,14 @@ from typing import Any
 import colander
 import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import ListField
+from c2cgeoform.views.abstract_views import (
+    DeleteResponse,
+    GridResponse,
+    IndexResponse,
+    ListField,
+    ObjectResponse,
+    SaveResponse,
+)
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
@@ -40,7 +47,7 @@ from c2cgeoportal_admin import _
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import Functionality
 
-_list_field = partial(ListField, Functionality)
+_list_field = partial(ListField, Functionality)  # type: ignore[var-annotated]
 
 
 def _translate_available_functionality(
@@ -67,7 +74,7 @@ base_schema = GeoFormSchemaNode(
 
 
 @view_defaults(match_param="table=functionalities")
-class FunctionalityViews(LoggedViews):
+class FunctionalityViews(LoggedViews[Functionality]):
     """The functionality administration view."""
 
     _list_fields = [_list_field("id"), _list_field("name"), _list_field("description"), _list_field("value")]
@@ -75,28 +82,28 @@ class FunctionalityViews(LoggedViews):
     _model = Functionality
     _base_schema = base_schema
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")
-    def index(self):
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    def index(self) -> IndexResponse:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")
-    def grid(self):
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    def grid(self) -> GridResponse:
         return super().grid()
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")
-    def view(self):
+    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def view(self) -> ObjectResponse:
         return super().edit()
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")
-    def save(self):
+    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    def save(self) -> SaveResponse:
         return super().save()
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")
-    def delete(self):
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    def delete(self) -> DeleteResponse:
         return super().delete()
 
     @view_config(
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"  # type: ignore[misc]
     )
-    def duplicate(self):
+    def duplicate(self) -> ObjectResponse:
         return super().duplicate()

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ from typing import Any
 
 import c2cgeoform
 import c2cwsgiutils.pretty_json
-import sqlalchemy
+import sqlalchemy.orm.session
 import zope.sqlalchemy
 from c2c.template.config import config as configuration
 from pkg_resources import resource_filename
@@ -70,9 +70,13 @@ def main(_, **settings):
     session_factory.configure(bind=engine)
 
     def get_tm_session(
-        session_factory: sessionmaker, transaction_manager: TransactionManager
+        session_factory: sessionmaker[  # pylint: disable=unsubscriptable-object
+            sqlalchemy.orm.session.Session
+        ],
+        transaction_manager: TransactionManager,
     ) -> sqlalchemy.orm.session.Session:
         dbsession = session_factory()
+        assert isinstance(dbsession, sqlalchemy.orm.session.Session)
         zope.sqlalchemy.register(dbsession, transaction_manager=transaction_manager)
         return dbsession
 

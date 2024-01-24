@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@ import os
 import sys
 from typing import cast
 
+import sqlalchemy
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm import Session
 
@@ -50,15 +51,15 @@ SELECT count(*) AS count
 FROM information_schema.schemata
 WHERE schema_name = '{schema_name}';
 """
-    result = connection.execute(sql)
+    result = connection.execute(sqlalchemy.text(sql))
     row = result.first()
-    return cast(bool, row[0] == 1)
+    return cast(bool, row[0] == 1)  # type: ignore[index]
 
 
 def truncate_tables(connection: Connection) -> None:
     """Truncate all the tables defined in the model."""
     for t in Base.metadata.sorted_tables:
-        connection.execute(f"TRUNCATE TABLE {t.schema}.{t.name} CASCADE;")
+        connection.execute(sqlalchemy.text(f"TRUNCATE TABLE {t.schema}.{t.name} CASCADE;"))
 
 
 def setup_test_data(dbsession: Session) -> None:

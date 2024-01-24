@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,22 +27,25 @@
 
 
 from functools import partial
-from typing import cast
+from typing import Generic, TypeVar, cast
 
 import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import Interface, Layer
 
-_list_field = partial(ListField, Layer)
+_list_field = partial(ListField, Layer)  # type: ignore[var-annotated]
+
+_T = TypeVar("_T", bound=Layer)
 
 
-class LayerViews(TreeItemViews):
+class LayerViews(TreeItemViews[_T], Generic[_T]):
     """The layer administration view."""
 
-    _list_fields = TreeItemViews._list_fields + [
+    _list_fields = TreeItemViews._list_fields + [  # type: ignore[misc] # pylint: disable=protected-access
         _list_field("public"),
         _list_field("geo_table"),
         _list_field("exclude_properties"),
@@ -63,11 +66,11 @@ class LayerViews(TreeItemViews):
                 [r.name or "" for r in sorted(layer_wms.restrictionareas, key=lambda r: cast(str, r.name))]
             ),
         ),
-    ] + TreeItemViews._extra_list_fields
+    ] + TreeItemViews._extra_list_fields  # pylint: disable=protected-access
 
-    def _base_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
-        return super()._base_query(
+    def _sub_query(self, query: sqlalchemy.orm.query.Query[Layer]) -> sqlalchemy.orm.query.Query[Layer]:
+        return super()._sub_query(
             query.outerjoin(Layer.interfaces)
-            .options(subqueryload("interfaces"))
-            .options(subqueryload("restrictionareas"))
+            .options(subqueryload(Layer.interfaces))
+            .options(subqueryload(Layer.restrictionareas))
         )

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,11 +29,22 @@
 import logging
 import threading
 from functools import partial
-from typing import Any, Union, cast
+from typing import Any, cast
 
 import requests
+from c2cgeoform import JSONDict
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import AbstractViews, ItemAction, ListField, UserMessage
+from c2cgeoform.views.abstract_views import (
+    AbstractViews,
+    DeleteResponse,
+    GridResponse,
+    IndexResponse,
+    ItemAction,
+    ListField,
+    ObjectResponse,
+    SaveResponse,
+    UserMessage,
+)
 from deform.widget import FormWidget
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config, view_defaults
@@ -46,7 +57,7 @@ from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import cache_invalidate_cb
 from c2cgeoportal_commons.models.main import LogAction, OGCServer
 
-_list_field = partial(ListField, OGCServer)
+_list_field = partial(ListField, OGCServer)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(OGCServer, widget=FormWidget(fields_template="ogcserver_fields"))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
@@ -55,7 +66,7 @@ LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
-class OGCServerViews(LoggedViews):
+class OGCServerViews(LoggedViews[OGCServer]):
     """The OGC server administration view."""
 
     _list_fields = [
@@ -82,18 +93,18 @@ class OGCServerViews(LoggedViews):
         ),
     }
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
-    def index(self) -> dict[str, Any]:
-        return super().index()  # type: ignore
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    def index(self) -> IndexResponse:
+        return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore
-    def grid(self) -> dict[str, Any]:
-        return super().grid()  # type: ignore
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    def grid(self) -> GridResponse:
+        return super().grid()
 
     def schema(self) -> GeoFormSchemaNode:
         obj = self._get_object()
 
-        schema = self._base_schema.clone()
+        schema = cast(GeoFormSchemaNode, self._base_schema.clone())
         schema["url"].description = Literal(
             _("{}<br>Current runtime value is: {}").format(
                 schema["url"].description,
@@ -110,7 +121,7 @@ class OGCServerViews(LoggedViews):
 
     def _item_actions(self, item: OGCServer, readonly: bool = False) -> list[Any]:
         actions = cast(list[Any], super()._item_actions(item, readonly))
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(
@@ -138,23 +149,24 @@ class OGCServerViews(LoggedViews):
             )
         return actions
 
-    @view_config(  # type: ignore
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def view(self) -> dict[str, Any]:
-        return super().edit(self.schema())  # type: ignore
+    def view(self) -> ObjectResponse:
+        return super().edit(self.schema())
 
-    @view_config(  # type: ignore
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
     )
-    def save(self) -> Union[HTTPFound, dict[str, Any]]:
-        result: Union[HTTPFound, dict[str, Any]] = super().save()
+    def save(self) -> SaveResponse:
+        result = super().save()
         if isinstance(result, HTTPFound):
+            assert self._obj is not None
             self._update_cache(self._obj)
         return result
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
-    def delete(self) -> dict[str, Any]:
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    def delete(self) -> DeleteResponse:
         obj = self._get_object()
         if len(obj.layers) > 0:
             return {
@@ -166,20 +178,20 @@ class OGCServerViews(LoggedViews):
                     _query=[("msg_col", "cannot_delete")],
                 ),
             }
-        result: dict[str, Any] = super().delete()
+        result = super().delete()
         cache_invalidate_cb()
         return result
 
-    @view_config(  # type: ignore
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self) -> dict[str, Any]:
-        return super().duplicate()  # type: ignore
+    def duplicate(self) -> ObjectResponse:
+        return super().duplicate()
 
-    @view_config(  # type: ignore
+    @view_config(  # type: ignore[misc]
         route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2"
     )
-    def synchronize(self) -> dict[str, Any]:
+    def synchronize(self) -> JSONDict:
         obj = self._get_object()
 
         if self._request.method == "GET":
@@ -202,6 +214,7 @@ class OGCServerViews(LoggedViews):
                 clean=clean,
             )
 
+            ogc_server_id = obj.id
             if "check" in self._request.params:
                 synchronizer.check_layers()
 
@@ -214,7 +227,7 @@ class OGCServerViews(LoggedViews):
                 self._create_log(LogAction.SYNCHRONIZE, obj)
 
             return {
-                "ogcserver": obj,
+                "ogcserver": self._request.dbsession.query(OGCServer).get(ogc_server_id),
                 "success": True,
                 "report": synchronizer.report(),
             }

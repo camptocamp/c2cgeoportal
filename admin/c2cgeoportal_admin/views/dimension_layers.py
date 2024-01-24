@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,19 +28,21 @@
 
 from functools import partial
 from itertools import groupby
-from typing import cast
+from typing import Generic, TypeVar, cast
 
-import sqlalchemy
+import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_admin.views.layers import LayerViews
 from c2cgeoportal_commons.models.main import DimensionLayer
 
-_list_field = partial(ListField, DimensionLayer)
+_list_field = partial(ListField, DimensionLayer)  # type: ignore[var-annotated]
+
+_T = TypeVar("_T", bound=DimensionLayer)
 
 
-class DimensionLayerViews(LayerViews):
+class DimensionLayerViews(LayerViews[_T], Generic[_T]):
     """The layer with dimensions administration view."""
 
     _extra_list_fields = [
@@ -53,7 +55,9 @@ class DimensionLayerViews(LayerViews):
                 ]
             ),
         )
-    ] + LayerViews._extra_list_fields
+    ] + LayerViews._extra_list_fields  # pylint: disable=protected-access
 
-    def _base_query(self, query: sqlalchemy.orm.query.Query) -> sqlalchemy.orm.query.Query:
-        return super()._base_query(query.options(subqueryload("dimensions")))
+    def _sub_query(
+        self, query: sqlalchemy.orm.query.Query[DimensionLayer]
+    ) -> sqlalchemy.orm.query.Query[DimensionLayer]:
+        return super()._sub_query(query.options(subqueryload(DimensionLayer.dimensions)))

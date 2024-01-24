@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -27,6 +27,7 @@ from qgis.core import (
     QgsLayerTreeGroup,
     QgsLayerTreeLayer,
     QgsLayerTreeNode,
+    QgsProject,
     QgsVectorLayer,
 )
 from qgis.server import QgsAccessControlFilter, QgsConfigCache
@@ -52,7 +53,7 @@ def create_session_factory(url: str, configuration: dict[str, Any]) -> sessionma
         ", ".join([f"{e[0]}={e[1]}" for e in configuration.items()]),
     )
     engine = sqlalchemy.create_engine(url, **configuration)
-    session_factory = sessionmaker(autocommit=True)
+    session_factory = sessionmaker()
     session_factory.configure(bind=engine)
     return session_factory
 
@@ -327,7 +328,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         ogcserver_name: str,
         map_file: str,
         srid: int,
-        DBSession: Session,  # pylint: disable=invalid-name
+        DBSession: sessionmaker,  # pylint: disable=invalid-name
         ogcserver: Optional["main.OGCServer"] = None,
     ):
         super().__init__(server_iface)
@@ -354,7 +355,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         self._init(ogcserver_name)
 
-    def project(self):
+    def project(self) -> QgsProject:
         return QgsConfigCache.instance().project(self.map_file)
 
     def _init(self, ogcserver_name: str) -> None:
@@ -437,12 +438,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
             # Transform ancestor names in LayerWMS instances
             layers: dict[str, list[LayerWMS]] = {}
-            for layer in cast(
-                list[LayerWMS],
+            for layer in (
                 session.query(LayerWMS)
                 .options(subqueryload(LayerWMS.restrictionareas).subqueryload(RestrictionArea.roles))
                 .filter(LayerWMS.ogc_server_id == self.ogcserver.id)
-                .all(),
+                .all()
             ):
                 found = False
                 for ogc_layer_name, ancestors in nodes.items():
@@ -480,10 +480,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if "ROLE_IDS" not in parameters:
             return []
 
-        roles = cast(
-            list["main.Role"],
-            session.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(","))).all(),
-        )
+        roles = session.query(Role).filter(Role.id.in_(parameters.get("ROLE_IDS").split(","))).all()
 
         LOG.debug("Roles: %s", ",".join([role.name for role in roles]) if roles else "-")
         return roles

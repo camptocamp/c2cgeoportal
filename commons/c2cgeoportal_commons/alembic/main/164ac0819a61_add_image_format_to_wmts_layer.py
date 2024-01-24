@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023, Camptocamp SA
+# Copyright (c) 2015-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ def upgrade() -> None:
     """Upgrade."""
     schema = config["schema"]
 
-    op.add_column("layer_wmts", Column("image_type", Unicode(10)), schema=schema)
+    op.add_column("layer_wmts", Column("image_type", Unicode(10)), schema=schema)  # type: ignore[no-untyped-call]
 
 
 def downgrade() -> None:

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
+from typing import TYPE_CHECKING, Any, Optional
 from unittest import TestCase
 from urllib.parse import urlencode
 
@@ -36,11 +37,14 @@ from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models.main import Metadata
+
 
 class TestThemesEditColumns(TestCase):
     _table_index = 0
 
-    def setup_method(self, _):
+    def setup_method(self, _: Any) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -87,17 +91,24 @@ class TestThemesEditColumns(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _: Any) -> None:
         import transaction
+
+        from c2cgeoportal_commons.models import DBSession
 
         cleanup_db()
 
         for table in self._tables[::-1]:
-            table.drop(checkfirst=True)
+            table.drop(checkfirst=True, bind=DBSession.c2c_rw_bind)
 
         transaction.commit()
 
-    def _create_layer(self, exclude_properties=False, metadatas=None, geom_type=False):
+    def _create_layer(
+        self,
+        exclude_properties: bool = False,
+        metadatas: Optional[list["Metadata"]] = None,
+        geom_type: bool = False,
+    ) -> int:
         """
         This function is central for this test class.
 
@@ -115,95 +126,94 @@ class TestThemesEditColumns(TestCase):
         id = self.__class__._table_index
 
         engine = DBSession.c2c_rw_bind
-        connection = engine.connect()
+        with engine.begin() as connection:
+            if not self.metadata:
+                self.metadata = declarative_base().metadata
 
-        if not self.metadata:
-            self.metadata = declarative_base(bind=engine).metadata
+            tablename = f"geo_table_{id}"
+            schemaname = "geodata"
 
-        tablename = f"geo_table_{id:d}"
-        schemaname = "geodata"
+            table1 = Table(
+                f"{tablename!s}_child",
+                self.metadata,
+                Column("id", types.Integer, primary_key=True),
+                Column("name", types.Unicode),
+                schema=schemaname,
+            )
 
-        table1 = Table(
-            f"{tablename!s}_child",
-            self.metadata,
-            Column("id", types.Integer, primary_key=True),
-            Column("name", types.Unicode),
-            schema=schemaname,
-        )
+            self._tables.append(table1)
 
-        self._tables.append(table1)
+            table2 = Table(
+                tablename,
+                self.metadata,
+                Column("id", types.Integer, primary_key=True),
+                Column("child_id", types.Integer, ForeignKey(f"{schemaname}.{tablename}_child.id")),
+                Column("name", types.Unicode, nullable=False),
+                Column("deleted", types.Boolean),
+                Column("last_update_user", types.Unicode),
+                Column("last_update_date", types.DateTime),
+                Column("date", types.Date),
+                Column("start_time", types.Time),
+                # Column("interval", Interval()),
+                Column("short_name1", types.String, nullable=True),
+                Column("short_name2", types.String(50), nullable=True),
+                Column("short_number", types.Integer, nullable=True),
+                Column("double_number", types.Float(precision=4)),
+                Column("large_binary", types.LargeBinary(length=60), nullable=True),
+                Column("value", types.Enum("one", "two", "three", name="an_enum_value")),
+                Column("numeric", types.Numeric(precision=5, scale=2), nullable=True),
+                Column("numeric2", types.Numeric(), nullable=True),
+                schema=schemaname,
+            )
+            if geom_type:
+                table2.append_column(Column("geom", Geometry("POINT", srid=21781)))
+            else:
+                table2.append_column(Column("geom", Geometry(srid=21781)))
 
-        table2 = Table(
-            tablename,
-            self.metadata,
-            Column("id", types.Integer, primary_key=True),
-            Column("child_id", types.Integer, ForeignKey(f"{schemaname!s}.{tablename!s}_child.id")),
-            Column("name", types.Unicode, nullable=False),
-            Column("deleted", types.Boolean),
-            Column("last_update_user", types.Unicode),
-            Column("last_update_date", types.DateTime),
-            Column("date", types.Date),
-            Column("start_time", types.Time),
-            # Column("interval", Interval()),
-            Column("short_name1", types.String, nullable=True),
-            Column("short_name2", types.String(50), nullable=True),
-            Column("short_number", types.Integer, nullable=True),
-            Column("double_number", types.Float(precision=4)),
-            Column("large_binary", types.LargeBinary(length=60), nullable=True),
-            Column("value", types.Enum("one", "two", "three", name="an_enum_value")),
-            Column("numeric", types.Numeric(precision=5, scale=2), nullable=True),
-            Column("numeric2", types.Numeric(), nullable=True),
-            schema=schemaname,
-        )
-        if geom_type:
-            table2.append_column(Column("geom", Geometry("POINT", srid=21781)))
-        else:
-            table2.append_column(Column("geom", Geometry(srid=21781)))
+            self._tables.append(table2)
 
-        self._tables.append(table2)
+            table2.drop(checkfirst=True, bind=engine)
+            table1.drop(checkfirst=True, bind=engine)
+            table1.create(bind=engine)
+            table2.create(bind=engine)
 
-        table2.drop(checkfirst=True)
-        table1.drop(checkfirst=True)
-        table1.create()
-        table2.create()
+            ins = table1.insert().values(name="c1é")
+            print(connection.execute(ins).inserted_primary_key[0])
+            ins = table1.insert().values(name="c2é")
+            print(connection.execute(ins).inserted_primary_key[0])
 
-        ins = table1.insert().values(name="c1é")
-        connection.execute(ins).inserted_primary_key[0]
-        ins = table1.insert().values(name="c2é")
-        connection.execute(ins).inserted_primary_key[0]
+            layer = LayerWMS(name="test_WMS_1", public=True)
+            layer.layer = "testpoint_unprotected"
+            layer.id = id
+            layer.geo_table = f"{schemaname}.{tablename}"
+            layer.interfaces = [self.main]
+            layer.ogc_server = self.ogc_server
 
-        layer = LayerWMS(name="test_WMS_1", public=True)
-        layer.layer = "testpoint_unprotected"
-        layer.id = id
-        layer.geo_table = f"{schemaname!s}.{tablename!s}"
-        layer.interfaces = [self.main]
-        layer.ogc_server = self.ogc_server
+            if exclude_properties:
+                layer.exclude_properties = "name"
 
-        if exclude_properties:
-            layer.exclude_properties = "name"
+            if metadatas:
+                layer.metadatas = metadatas
 
-        if metadatas:
-            layer.metadatas = metadatas
+            DBSession.add(self.layer_group_1)
+            self.layer_group_1.children = self.layer_group_1.children + [layer]
 
-        DBSession.add(self.layer_group_1)
-        self.layer_group_1.children = self.layer_group_1.children + [layer]
+            DBSession.add(self.layer_group_1)
 
-        DBSession.add(self.layer_group_1)
+            ra = RestrictionArea()
+            ra.name = "__test_ra"
+            ra.layers = [layer]
+            ra.roles = [self.role]
+            ra.readwrite = True
+            DBSession.add(ra)
 
-        ra = RestrictionArea()
-        ra.name = "__test_ra"
-        ra.layers = [layer]
-        ra.roles = [self.role]
-        ra.readwrite = True
-        DBSession.add(ra)
+            transaction.commit()
 
-        transaction.commit()
-
-        self.layer_ids.append(id)
-        return id
+            self.layer_ids.append(id)
+            return id
 
     @staticmethod
-    def _get_request(layerid, username=None, params=None):
+    def _get_request(layerid, username=None, params=None) -> None:
         if params is None:
             params = {}
 
@@ -213,10 +223,12 @@ class TestThemesEditColumns(TestCase):
         request.params = params
         return request
 
-    def test_themes_edit_columns(self):
+    def test_themes_edit_columns(self) -> None:
+        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.views.theme import Theme
 
         layer_id = self._create_layer(geom_type=True)
+
         theme_view = Theme(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
         themes = theme_view.themes()
@@ -273,7 +285,7 @@ class TestThemesEditColumns(TestCase):
             ],
         )
 
-    def test_themes_edit_columns_extras(self):
+    def test_themes_edit_columns_extras(self) -> None:
         from c2cgeoportal_commons.models.main import Metadata
         from c2cgeoportal_geoportal.views.theme import Theme
 

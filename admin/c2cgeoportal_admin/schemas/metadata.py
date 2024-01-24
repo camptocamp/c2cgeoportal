@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,6 @@ from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from sqlalchemy import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
-from sqlalchemy.orm.decl_api import DeclarativeMeta
 from sqlalchemy.orm.mapper import Mapper
 
 from c2cgeoportal_admin import _
@@ -42,16 +41,17 @@ from c2cgeoportal_commons.lib.validators import url
 from c2cgeoportal_commons.models.main import Metadata
 
 
-def get_relevant_for(model: Union[DeclarativeMeta, Mapper]) -> set[str]:
+def get_relevant_for(model: Union[type[Any], Mapper[Any]]) -> set[str]:
     """Return list of relevant_for values for passed class."""
     mapper = inspect(model)
+    assert mapper is not None
     relevant_for = {mapper.local_table.name}  # or mapper.polymorphic_identity
     if mapper.inherits:
         relevant_for |= get_relevant_for(mapper.inherits)
     return relevant_for
 
 
-def metadata_definitions(settings: dict[str, Any], model: DeclarativeMeta) -> list[dict[str, Any]]:
+def metadata_definitions(settings: dict[str, Any], model: type[Any]) -> list[dict[str, Any]]:
     """Return filtered list metadata definitions."""
     return [
         m
@@ -76,7 +76,7 @@ class MetadataSelectWidget(SelectWidget):  # type: ignore
         return super().serialize(field, cstruct, **kw)
 
 
-def metadata_name_widget(model: DeclarativeMeta) -> colander.deferred:
+def metadata_name_widget(model: type[Any]) -> colander.deferred:
     """Return a colander deferred which itself returns a widget for the metadata name field."""
 
     def create_widget(node, kw):
@@ -136,7 +136,7 @@ class BooleanMetadata(colander.Boolean):  # type: ignore
         return None
 
 
-class MetadataSchemaNode(GeoFormSchemaNode):  # type: ignore # pylint: disable=abstract-method
+class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """The metadata schema."""
 
     metadata_definitions: Optional[dict[str, Any]] = None
@@ -200,7 +200,7 @@ def _translate_available_metadata(
     return result
 
 
-def metadata_schema_node(prop: InstrumentedAttribute, model: DeclarativeMeta) -> colander.SequenceSchema:
+def metadata_schema_node(prop: InstrumentedAttribute[Any], model: type[Any]) -> colander.SequenceSchema:
     """Get the schema of a collection of metadata."""
 
     # Deferred which returns a dictionary with metadata name as key and metadata definition as value.

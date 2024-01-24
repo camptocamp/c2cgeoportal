@@ -27,12 +27,17 @@ RUN poetry export --output=requirements.txt
 # Base, the biggest thing is to install the Python packages
 FROM base-all as builder
 
-RUN --mount=type=cache,target=/root/.cache \
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     python3 -m pip install \
     --use-deprecated=legacy-resolver \
     --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && (strip /usr/local/lib/python3.*/dist-packages/*/*.so || true)
+    && apt-get update \
+    && apt-get install --assume-yes --no-install-recommends binutils \
+    && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
+    && apt-get auto-remove --assume-yes binutils
 
 ARG VERSION
 ENV VERSION=$VERSION

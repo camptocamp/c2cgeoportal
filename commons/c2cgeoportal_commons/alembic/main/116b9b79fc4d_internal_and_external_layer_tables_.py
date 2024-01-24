@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023, Camptocamp SA
+# Copyright (c) 2015-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -169,10 +169,10 @@ def downgrade() -> None:
         "layer_internal_wms",
         Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
         Column("layer", Unicode),
-        Column("image_type", Unicode(10)),
+        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
         Column("style", Unicode),
-        Column("time_mode", Unicode(8)),
-        Column("time_widget", Unicode(10), server_default="slider"),
+        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
+        Column("time_widget", Unicode(10), server_default="slider"),  # type: ignore[no-untyped-call]
         schema=schema,
     )
 
@@ -181,11 +181,11 @@ def downgrade() -> None:
         Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
         Column("url", Unicode),
         Column("layer", Unicode),
-        Column("image_type", Unicode(10)),
+        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
         Column("style", Unicode),
         Column("is_single_tile", Boolean),
-        Column("time_mode", Unicode(8)),
-        Column("time_widget", Unicode(10), server_default="slider"),
+        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
+        Column("time_widget", Unicode(10), server_default="slider"),  # type: ignore[no-untyped-call]
         schema=schema,
     )
     # move data back

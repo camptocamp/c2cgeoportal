@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,11 +27,19 @@
 
 
 from functools import partial
-from typing import Any, Optional
 
 import sqlalchemy
+from c2cgeoform import JSONDict
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoform.views.abstract_views import ItemAction, ListField
+from c2cgeoform.views.abstract_views import (
+    DeleteResponse,
+    GridResponse,
+    IndexResponse,
+    ItemAction,
+    ListField,
+    ObjectResponse,
+    SaveResponse,
+)
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy import delete, insert, inspect, update
@@ -46,7 +54,7 @@ from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, LogAction, OGCServer, TreeItem
 
-_list_field = partial(ListField, LayerWMTS)
+_list_field = partial(ListField, LayerWMTS)  # type: ignore[var-annotated]
 
 base_schema = GeoFormSchemaNode(LayerWMTS, widget=FormWidget(fields_template="layer_fields"))
 base_schema.add(dimensions_schema_node(LayerWMTS.dimensions))
@@ -54,15 +62,15 @@ base_schema.add(metadata_schema_node(LayerWMTS.metadatas, LayerWMTS))
 base_schema.add(interfaces_schema_node(LayerWMTS.interfaces))
 base_schema.add(restrictionareas_schema_node(LayerWMTS.restrictionareas))
 base_schema.add_unique_validator(LayerWMTS.name, LayerWMTS.id)
-base_schema.add(parent_id_node(LayerGroup))  # type: ignore
+base_schema.add(parent_id_node(LayerGroup))
 
 
 @view_defaults(match_param="table=layers_wmts")
-class LayerWmtsViews(DimensionLayerViews):
+class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
     """The WMTS layer administration view."""
 
     _list_fields = (
-        DimensionLayerViews._list_fields
+        DimensionLayerViews._list_fields  # pylint: disable=protected-access
         + [
             _list_field("url"),
             _list_field("layer"),
@@ -70,26 +78,32 @@ class LayerWmtsViews(DimensionLayerViews):
             _list_field("matrix_set"),
             _list_field("image_type"),
         ]
-        + DimensionLayerViews._extra_list_fields
+        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
     )
     _id_field = "id"
     _model = LayerWMTS
     _base_schema = base_schema
 
-    def _base_query(self, query: Optional[sqlalchemy.orm.query.Query] = None) -> sqlalchemy.orm.query.Query:
-        return super()._base_query(self._request.dbsession.query(LayerWMTS).distinct())
+    def _base_query(self) -> sqlalchemy.orm.query.Query[LayerWMTS]:
+        return super()._sub_query(self._request.dbsession.query(LayerWMTS).distinct())
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore
-    def index(self) -> dict[str, Any]:
-        return super().index()  # type: ignore
+    def _sub_query(
+        self, query: sqlalchemy.orm.query.Query[LayerWMTS]
+    ) -> sqlalchemy.orm.query.Query[LayerWMTS]:
+        del query
+        return self._base_query()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore
-    def grid(self) -> dict[str, Any]:
-        return super().grid()  # type: ignore
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    def index(self) -> IndexResponse:
+        return super().index()
+
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    def grid(self) -> GridResponse:
+        return super().grid()
 
     def _item_actions(self, item: LayerWMTS, readonly: bool = False) -> list[ItemAction]:
         actions: list[ItemAction] = super()._item_actions(item, readonly)
-        if inspect(item).persistent:
+        if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(
@@ -103,35 +117,35 @@ class LayerWmtsViews(DimensionLayerViews):
             )
         return actions
 
-    @view_config(  # type: ignore
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def view(self) -> dict[str, Any]:
+    def view(self) -> ObjectResponse:
         if self._is_new():
             dbsession = self._request.dbsession
             default_wmts = LayerWMTS.get_default(dbsession)
             if default_wmts:
-                return self.copy(default_wmts, excludes=["name", "layer"])  # type: ignore
-        return super().edit()  # type: ignore
+                return self.copy(default_wmts, excludes=["name", "layer"])
+        return super().edit()
 
-    @view_config(  # type: ignore
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
     )
-    def save(self) -> dict[str, Any]:
-        return super().save()  # type: ignore
+    def save(self) -> SaveResponse:
+        return super().save()
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore
-    def delete(self) -> dict[str, Any]:
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    def delete(self) -> DeleteResponse:
         return super().delete()
 
-    @view_config(  # type: ignore
+    @view_config(  # type: ignore[misc]
         route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
     )
-    def duplicate(self) -> dict[str, Any]:
-        return super().duplicate()  # type: ignore
+    def duplicate(self) -> ObjectResponse:
+        return super().duplicate()
 
-    @view_config(route_name="convert_to_wms", request_method="POST", renderer="fast_json")  # type: ignore
-    def convert_to_wms(self) -> dict[str, Any]:
+    @view_config(route_name="convert_to_wms", request_method="POST", renderer="fast_json")  # type: ignore[misc]
+    def convert_to_wms(self) -> JSONDict:
         src = self._get_object()
         dbsession = self._request.dbsession
         default_wms = LayerWMS.get_default(dbsession)

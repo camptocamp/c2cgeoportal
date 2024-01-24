@@ -15,22 +15,19 @@ help: ## Display this help message
 
 .PHONY: preparedev
 preparedev: ## Run this once before serve
-	make --directory=.. build-runner build-test-db
-	make docker-build-admin
-	docker compose up -d db
-	docker compose run --rm admin wait-db
+	make --directory=.. build-runner
+	docker buildx rm --all-inactive --force # to be sure that we get the new image
+	docker compose build
+	docker compose up --detach db
+	docker compose run --rm admin wait-db || (docker-compose logs db && false)
 	docker compose run --rm admin alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main upgrade head
 	docker compose run --rm admin alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static upgrade head
 
 .PHONY: serve
 serve: ## Run c2cgeoportal_admin in development mode
-	docker compose up admin
+	docker compose up --detach
 
 .PHONY: clean
 clean: ## Stop composition, remove container and images
 	docker compose down --remove-orphans
-	docker rmi $(DOCKER_BASE)_admin:$(DOCKER_TAG)
-
-.PHONY: docker-build-admin
-docker-build-admin:
-	docker build -t $(DOCKER_BASE)_admin:$(DOCKER_TAG) .
+	docker image rm $(DOCKER_BASE)_admin:$(DOCKER_TAG)

@@ -6,13 +6,17 @@ version: '2.3'
 services:
   db:
     image: camptocamp/geomapfish-test-db
+    build:
+      context: ../docker/test-db
     environment:
       - POSTGRES_USER=www-data
       - POSTGRES_PASSWORD=www-data
       - POSTGRES_DB=geomapfish
 
   admin:
-    image: camptocamp/c2cgeoportal_admin:latest
+    image: camptocamp/c2cgeoportal_admin
+    build:
+      context: .
     environment:
       - PGHOST=db
       - PGPORT=5432

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any
+
 import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
@@ -34,10 +36,10 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from c2cgeoportal_commons.models.main import Interface
 
 
-def interfaces_schema_node(prop: InstrumentedAttribute) -> colander.SequenceSchema:
+def interfaces_schema_node(prop: InstrumentedAttribute[Any]) -> colander.SequenceSchema:
     """Get the serializable representation of an interface."""
     return colander.SequenceSchema(
-        GeoFormManyToManySchemaNode(Interface),
+        GeoFormManyToManySchemaNode(Interface, None),
         name=prop.key,
         title=prop.info["colanderalchemy"]["title"],
         description=prop.info["colanderalchemy"]["description"],

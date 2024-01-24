@@ -9,7 +9,7 @@ vars:
     pool_recycle: 30
     pool_size: 5
     max_overflow: 25
-    executemany_mode: batch
+    executemany_mode: values_plus_batch
     pool_pre_ping: True
 environment:
   - PGUSER

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-from typing import Optional, cast
+from typing import Optional
 
 import pyramid.request
 from pyramid.httpexceptions import HTTPBadRequest
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
 from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import DBSession, main
@@ -78,10 +78,12 @@ class OGCProxy(Proxy):
 
     @CACHE_REGION.cache_on_arguments()
     def _get_ogcserver_byname(self, name: str) -> main.OGCServer:
+        assert DBSession is not None
+
         try:
             result = DBSession.query(main.OGCServer).filter(main.OGCServer.name == name).one()
             DBSession.expunge(result)
-            return cast(main.OGCServer, result)
+            return result
         except NoResultFound:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
                 f"The OGC Server '{name}' does not exist (existing: "

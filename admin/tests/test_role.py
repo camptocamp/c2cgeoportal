@@ -3,6 +3,7 @@
 import json
 import re
 
+import pyramid.httpexceptions
 import pytest
 from geoalchemy2.shape import from_shape, to_shape
 from pyramid.testing import DummyRequest
@@ -341,5 +342,5 @@ class TestRole(TestTreeGroup):
         from c2cgeoportal_admin.views.roles import RoleViews
 
         request = DummyRequest(dbsession=dbsession, params={"offset": 0, "limit": 10})
-        info = RoleViews(request).grid()
-        assert info.status_int == 500, "Expected 500 status when db error"
+        with pytest.raises(pyramid.httpexceptions.HTTPInternalServerError):
+            RoleViews(request).grid()

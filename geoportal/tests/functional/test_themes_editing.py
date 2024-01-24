@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -73,18 +73,17 @@ class TestThemeEditing(TestCase):
         main = Interface(name="main")
 
         engine = DBSession.c2c_rw_bind
-        engine.connect()
         a_geo_table = Table(
             "a_geo_table",
-            declarative_base(bind=engine).metadata,
+            declarative_base().metadata,
             Column("id", types.Integer, primary_key=True),
             Column("geom", Geometry("POINT", srid=21781)),
             schema="geodata",
         )
 
         self._tables = [a_geo_table]
-        a_geo_table.drop(checkfirst=True)
-        a_geo_table.create()
+        a_geo_table.drop(checkfirst=True, bind=engine)
+        a_geo_table.create(bind=engine)
 
         private_layer = LayerWMS(name="__test_private_layer", public=False)
         private_layer.layer = "__test_private_layer"
@@ -150,7 +149,7 @@ class TestThemeEditing(TestCase):
         DBSession.query(OGCServer).delete()
 
         for table in self._tables[::-1]:
-            table.drop(checkfirst=True)
+            table.drop(checkfirst=True, bind=DBSession.c2c_rw_bind)
 
         transaction.commit()
 

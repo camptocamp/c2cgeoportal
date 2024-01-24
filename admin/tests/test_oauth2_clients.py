@@ -3,6 +3,7 @@
 import re
 from uuid import uuid4
 
+import pyramid.httpexceptions
 import pytest
 from pyramid.testing import DummyRequest
 
@@ -181,5 +182,5 @@ class TestOAuth2Client(TestTreeGroup):
         from c2cgeoportal_admin.views.oauth2_clients import OAuth2ClientViews
 
         request = DummyRequest(dbsession=dbsession, params={"offset": 0, "limit": 10})
-        info = OAuth2ClientViews(request).grid()
-        assert info.status_int == 500, "Expected 500 status when db error"
+        with pytest.raises(pyramid.httpexceptions.HTTPInternalServerError):
+            OAuth2ClientViews(request).grid()
