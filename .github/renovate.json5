@@ -174,5 +174,13 @@
       separateMajorMinor: false,
       separateMinorPatch: false,
     },
+    /** Group and auto merge the CI dependencies */
+    {
+      matchFileNames: ['.github/**', '.pre-commit-config.yaml', 'ci/**'],
+      groupName: 'CI dependencies',
+      automerge: true,
+      separateMajorMinor: false,
+      separateMinorPatch: false,
+    },
   ],
 }

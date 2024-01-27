@@ -57,8 +57,8 @@ jobs:
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
-      - run: scripts/get-version --auto-increment --github
-        id: version
+      - id: version
+        run: scripts/get-version --auto-increment --github
 
       - uses: actions/cache@v3
         with:
@@ -122,22 +122,22 @@ jobs:
         if: always()
 
       - uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: Documentation
           path: artifacts/documentations/
           if-no-files-found: ignore
           retention-days: 5
+        if: always()
 
       # Test App with Docker compose version 2.x
-      - run: ci/test-app
-        timeout-minutes: 30
+      - timeout-minutes: 30
+        run: ci/test-app
       - name: Docker logs
+        continue-on-error: true
         run: |
           cd ${HOME}/workspace/testgeomapfishapp/
           c2cciutils-docker-logs
         if: failure()
-        continue-on-error: true
 
       # Use minimal version from the documentation
       - uses: actions/setup-python@v5
@@ -150,14 +150,14 @@ jobs:
       - run: docker compose version
 
       # Test App
-      - run: ci/test-app
-        timeout-minutes: 30
+      - timeout-minutes: 30
+        run: ci/test-app
       - name: Docker logs
+        continue-on-error: true
         run: |
           cd ${HOME}/workspace/testgeomapfishapp/
           c2cciutils-docker-logs
         if: failure()
-        continue-on-error: true
 
       - run: git stash
       - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
