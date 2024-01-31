@@ -13,10 +13,7 @@ checks:
     update_ignore:
       - directory: /admin
         package-ecosystem: npm
-  codespell:
-    ignore_re:
-      - docker/config/poetry.lock
-
+  codespell: false
 publish:
   docker:
     images:
