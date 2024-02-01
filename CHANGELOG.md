@@ -1,3 +1,8 @@
+##### 2.7.1.41
+
+- Snyk auto fix [c2cgeoportal#10890](https://github.com/camptocamp/c2cgeoportal/pull/10890)
+- CI updates [ngeo#9282](https://github.com/camptocamp/ngeo/pull/9282)
+
 ##### 2.7.1.40
 
 - CI updates [c2cgeoportal#10887](https://github.com/camptocamp/c2cgeoportal/pull/10887)
