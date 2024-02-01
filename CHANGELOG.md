@@ -1,3 +1,5 @@
+##### 2.6.0.233
+* CI updates [c2cgeoportal#10893](https://github.com/camptocamp/c2cgeoportal/pull/10893)
 ##### 2.6.0.232
 * CI updates [c2cgeoportal#10888](https://github.com/camptocamp/c2cgeoportal/pull/10888)
 ##### 2.6.0.231
