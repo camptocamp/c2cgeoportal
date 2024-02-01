@@ -247,7 +247,7 @@ class TestThemesEditColumns(TestCase):
                     {
                         "nillable": True,
                         "type": "xsd:time",
-                        "name": "start_time"
+                        "name": "start_time",
                         # }, {
                         #     "nillable": True,
                         #     "type": "xsd:duration",
@@ -310,7 +310,7 @@ class TestThemesEditColumns(TestCase):
                     {
                         "nillable": True,
                         "type": "xsd:time",
-                        "name": "start_time"
+                        "name": "start_time",
                         # }, {
                         #     "nillable": True,
                         #     "type": "xsd:duration",

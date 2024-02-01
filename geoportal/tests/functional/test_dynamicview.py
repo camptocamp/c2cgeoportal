@@ -105,13 +105,13 @@ class TestDynamicView(TestCase):
         query_ = {"interface": "test"}
         query_.update(query)
         request = DummyRequest(query_)
-        request.route_url = (
-            lambda url, _query=None: f"/dummy/route/url/{url}"
+        request.route_url = lambda url, _query=None: (
+            f"/dummy/route/url/{url}"
             if _query is None
             else f"/dummy/route/url/{url}?{pyramid.url.urlencode(_query)}"
         )
-        request.static_url = (
-            lambda url, _query=None: f"/dummy/static/url/{url}"
+        request.static_url = lambda url, _query=None: (
+            f"/dummy/static/url/{url}"
             if _query is None
             else f"/dummy/static/url/{url}?{pyramid.url.urlencode(_query)}"
         )
@@ -180,8 +180,8 @@ class TestDynamicView(TestCase):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
         request = self._request()
-        request.static_url = (
-            lambda url, _query=None: f"/dummy/static/url/{url}"
+        request.static_url = lambda url, _query=None: (
+            f"/dummy/static/url/{url}"
             if _query is None
             else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
         )
@@ -198,8 +198,8 @@ class TestDynamicView(TestCase):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
         request = self._request()
-        request.static_url = (
-            lambda url, _query=None: f"/dummy/static/url/{url}"
+        request.static_url = lambda url, _query=None: (
+            f"/dummy/static/url/{url}"
             if _query is None
             else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
         )
