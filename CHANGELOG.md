@@ -1,3 +1,7 @@
+##### 2.8.1.35
+
+- CI updates [ngeo#9285](https://github.com/camptocamp/ngeo/pull/9285)
+
 ##### 2.8.1.34
 
 - CI updates [c2cgeoportal#10889](https://github.com/camptocamp/c2cgeoportal/pull/10889)
