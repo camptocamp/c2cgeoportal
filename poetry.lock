@@ -2127,13 +2127,13 @@ testing = ["Paste", "pytest", "pytest-cov"]
 
 [[package]]
 name = "pastescript"
-version = "3.3.0"
+version = "3.4.0"
 description = "A pluggable command-line frontend, including commands to setup package file layouts"
 optional = false
 python-versions = "*"
 files = [
-    {file = "PasteScript-3.3.0-py2.py3-none-any.whl", hash = "sha256:30b515633c839054635830b6c0e7039d815c0777352e69a7f75d42dfca028a08"},
-    {file = "PasteScript-3.3.0.tar.gz", hash = "sha256:ddec801a13ac667e094edde28f90212cdea7bdc9a18d4371b08f5a6ef7d2eba2"},
+    {file = "PasteScript-3.4.0-py2.py3-none-any.whl", hash = "sha256:7e75d36fdb5bc79648142634f44e77b18b2a91c775d8f6a973d0fa4db738bfa8"},
+    {file = "PasteScript-3.4.0.tar.gz", hash = "sha256:9348ef065aff22cf1588c12dfb020cc751c6482e216f8a3c7512fa40a43f90dc"},
 ]
 
 [package.dependencies]
@@ -2993,13 +2993,13 @@ testing = ["coverage", "nose", "virtualenv"]
 
 [[package]]
 name = "pyramid-debugtoolbar"
-version = "4.10"
+version = "4.11"
 description = "A package which provides an interactive HTML debugger for Pyramid application development"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pyramid_debugtoolbar-4.10-py3-none-any.whl", hash = "sha256:0cfef31c4b3ffd3208d15a6fd3e91019c9ec1e1d510c6d1c5cbc9c1a9e32ed92"},
-    {file = "pyramid_debugtoolbar-4.10.tar.gz", hash = "sha256:cfc8cfaf342609577fbb93e899fbb2290b31e3418c4b68f0dae37cb3b60fe88b"},
+    {file = "pyramid_debugtoolbar-4.11-py3-none-any.whl", hash = "sha256:ede2b33aa155da3478f18ea86e5fa84a9260d71d9293c37531117b125d6608e1"},
+    {file = "pyramid_debugtoolbar-4.11.tar.gz", hash = "sha256:b3a358d5e47b2daeda94b1f1d744c746163e876c097f2553bf3ed6eb1abace72"},
 ]
 
 [package.dependencies]
@@ -4108,13 +4108,13 @@ files = [
 
 [[package]]
 name = "types-pytz"
-version = "2023.3.1.1"
+version = "2023.4.0.20240130"
 description = "Typing stubs for pytz"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "types-pytz-2023.3.1.1.tar.gz", hash = "sha256:cc23d0192cd49c8f6bba44ee0c81e4586a8f30204970fc0894d209a6b08dab9a"},
-    {file = "types_pytz-2023.3.1.1-py3-none-any.whl", hash = "sha256:1999a123a3dc0e39a2ef6d19f3f8584211de9e6a77fe7a0259f04a524e90a5cf"},
+    {file = "types-pytz-2023.4.0.20240130.tar.gz", hash = "sha256:33676a90bf04b19f92c33eec8581136bea2f35ddd12759e579a624a006fd387a"},
+    {file = "types_pytz-2023.4.0.20240130-py3-none-any.whl", hash = "sha256:6ce76a9f8fd22bd39b01a59c35bfa2db39b60d11a2f77145e97b730de7e64fe0"},
 ]
 
 [[package]]
@@ -4535,4 +4535,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "bd9b5dd993477568beec4ab9cc58d2b710799c05f6bace0a71858d9c540d266b"
+content-hash = "b070c84716079543df9970edbd5894689d0d16e44d23531f7d9048c09b8536ac"
