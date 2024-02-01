@@ -1,3 +1,7 @@
+##### 2.8.1.36
+
+- Update dependency c2cciutils to v1.4.14 (2.8) [c2cgeoportal#10903](https://github.com/camptocamp/c2cgeoportal/pull/10903)
+
 ##### 2.8.1.35
 
 - CI updates [ngeo#9285](https://github.com/camptocamp/ngeo/pull/9285)
