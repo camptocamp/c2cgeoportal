@@ -28,8 +28,8 @@ c2cwsgiutils = { extras = ["broadcast"], version = "6.0.7" }
 papyrus = "2.5" # commons
 transaction = "4.0" # commons
 "c2c.template" = "2.3.0"
-GeoAlchemy2 = "0.14.2"
-SQLAlchemy = "2.0.23" # commons
+GeoAlchemy2 = "0.14.3"
+SQLAlchemy = "2.0.25" # commons
 "zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.1" # commons
 shapely = "2.0.2"
