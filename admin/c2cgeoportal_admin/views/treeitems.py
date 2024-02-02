@@ -57,7 +57,7 @@ class TreeItemViews(LoggedViews[_T], Generic[_T]):
         _list_field(
             "metadatas",
             renderer=lambda treeitem: ", ".join([f"{m.name}: {m.value}" or "" for m in treeitem.metadatas]),
-            filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),  # type: ignore[no-untyped-call]
+            filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),
         )
     ]
     _extra_list_fields = [

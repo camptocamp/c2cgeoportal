@@ -81,7 +81,7 @@ class ThemeViews(TreeItemViews[Theme]):
                         for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
                     ]
                 ),
-                filter_column=concat(Functionality.name, "=", Functionality.value),  # type: ignore[no-untyped-call]
+                filter_column=concat(Functionality.name, "=", Functionality.value),
             ),
             _list_field(
                 "restricted_roles",

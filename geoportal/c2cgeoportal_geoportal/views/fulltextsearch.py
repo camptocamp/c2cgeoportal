@@ -144,7 +144,7 @@ class FullTextSearchView:
             # Here we want to partition the search results based on
             # layer_name and limit each partition.
             row_number = (
-                func.row_number()  # type:ignore[no-untyped-call]
+                func.row_number()
                 .over(partition_by=FullTextSearch.layer_name, order_by=(desc(rank), FullTextSearch.label))
                 .label("row_number")
             )
