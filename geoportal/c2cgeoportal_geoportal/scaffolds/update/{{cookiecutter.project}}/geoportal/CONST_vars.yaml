@@ -300,9 +300,12 @@ vars:
           zoom:
           autoRotate: False
         gmfWMSSourceOptions:
-          # The default value is 1.5 but it add a slight blur on the layer,
-          # 1 is also possible but the application will do a getMap on all the pan.
-          ratio: 2
+          # The OpenLayers default value is 1.5.
+          # But it add a slight blur on the layer, the it should be an integer value.
+          # The value 2 will create too big image for iPad Pro.
+          # The we use the value 1,
+          # event if the application will do a getMap on all the pan.
+          ratio: 1
 
       dynamic_constants:
         interface: interface
