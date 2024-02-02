@@ -58,7 +58,7 @@ def functionalities_widget(model: type[Any]) -> colander.deferred:
         return RelationCheckBoxListWidget(
             select(  # type: ignore[arg-type]
                 Functionality.id,
-                concat(Functionality.name, "=", Functionality.value).label("label"),  # type: ignore[no-untyped-call]
+                concat(Functionality.name, "=", Functionality.value).label("label"),
             )
             .where(
                 Functionality.name.in_(
