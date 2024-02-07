@@ -1,3 +1,7 @@
+##### 2.8.1.39
+
+- Fix CVE [c2cgeoportal#10911](https://github.com/camptocamp/c2cgeoportal/pull/10911)
+
 ##### 2.8.1.38
 
 - Update CI dependencies to v1.5.9 (2.8) (patch) [c2cgeoportal#10910](https://github.com/camptocamp/c2cgeoportal/pull/10910)
