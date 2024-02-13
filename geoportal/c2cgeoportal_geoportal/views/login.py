@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -342,7 +342,7 @@ class Login:
     @staticmethod
     def generate_password() -> str:
         allchars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        rand = Random()
+        rand = Random()  # nosec
 
         password = ""  # nosec
         for _ in range(8):
