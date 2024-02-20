@@ -92,12 +92,14 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
 
     from c2cgeoportal_admin.schemas.roles import roles_schema_node
     from c2cgeoportal_admin.views.users import UserViews
+    from c2cgeoportal_commons.models.main import Role
+    from c2cgeoportal_commons.models.static import User
 
 
     _list_field = partial(ListField, UserDetail)
 
     base_schema = GeoFormSchemaNode(UserDetail, widget=FormWidget(fields_template="user_fields"))
-    base_schema.add(roles_schema_node("roles"))
+    base_schema.add(roles_schema_node(User.roles))
     base_schema.add_unique_validator(UserDetail.username, UserDetail.id)
 
     settings_role = aliased(Role)
@@ -135,9 +137,9 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
                 self._request.dbsession.query(UserDetail)
                 .distinct()
                 .outerjoin(settings_role, settings_role.id == UserDetail.settings_role_id)
-                .outerjoin("roles")
-                .options(subqueryload("settings_role"))
-                .options(subqueryload("roles"))
+                .outerjoin(User.roles)
+                .options(subqueryload(User.settings_role))
+                .options(subqueryload(User.roles))
             )
 
         @view_config(
