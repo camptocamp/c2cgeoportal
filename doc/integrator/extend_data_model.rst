@@ -14,6 +14,7 @@ add to ``geoportal/<package>_geoportal/models.py``:
 
     from deform.widget import HiddenWidget
     from sqlalchemy import Column, ForeignKey, types
+    from sqlalchemy.orm import backref, relationship
 
     from c2cgeoportal_commons.models.static import User, _schema
 
