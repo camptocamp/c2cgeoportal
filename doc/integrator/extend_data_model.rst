@@ -317,7 +317,7 @@ Execute the following code:
 
    from c2c.template.config import config
 
-   config.init('/etc/config/config.yaml')
+   config.init('/etc/geomapfish/config.yaml')
 
    from <package>_geoportal.models import Title, UserDetail
    from sqlalchemy.schema import CreateTable
