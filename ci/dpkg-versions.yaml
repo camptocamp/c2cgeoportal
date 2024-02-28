@@ -1488,6 +1488,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxcb-dri3-0: 1.14-3ubuntu3
+  ubuntu_22_04/libxcb-randr0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-render0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-shm0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb1: 1.14-3ubuntu3
@@ -1840,6 +1841,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxcb-dri3-0: 1.14-3ubuntu3
+  ubuntu_22_04/libxcb-randr0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-render0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-shm0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb1: 1.14-3ubuntu3
@@ -2160,6 +2162,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxcb-dri3-0: 1.14-3ubuntu3
+  ubuntu_22_04/libxcb-randr0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-render0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-shm0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb1: 1.14-3ubuntu3
