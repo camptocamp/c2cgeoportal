@@ -1,3 +1,11 @@
+##### 2.8.1.44
+
+- Lock file maintenance (2.8) [c2cgeoportal#10924](https://github.com/camptocamp/c2cgeoportal/pull/10924)
+- Update all patch versions (2.8) (patch) [ngeo#9290](https://github.com/camptocamp/ngeo/pull/9290)
+- Update CI dependencies to v1.4.15 (2.8) (patch) [ngeo#9293](https://github.com/camptocamp/ngeo/pull/9293)
+- Add came_from URL in the login, useful for 2FA [ngeo#9294](https://github.com/camptocamp/ngeo/pull/9294)
+- Rename came_from to referrer_to [ngeo#9296](https://github.com/camptocamp/ngeo/pull/9296)
+
 ##### 2.8.1.43
 
 - Uses latest 2.8 version [c2cgeoportal#10920](https://github.com/camptocamp/c2cgeoportal/pull/10920)
