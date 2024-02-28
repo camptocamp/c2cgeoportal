@@ -9,10 +9,7 @@ checks:
       - .*\.rst.tmpl$
       - ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$
   required_workflows: false
-  dependabot_config:
-    update_ignore:
-      - directory: /admin
-        package-ecosystem: npm
+  dependabot_config: false
   codespell: false
 publish:
   docker:
