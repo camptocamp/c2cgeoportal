@@ -89,6 +89,13 @@
       schedule: 'after 5am',
       groupName: 'Ngeo',
     },
+    /** Daily ngeo */
+    {
+      matchPaths: ['geoportal/package-lock.json', 'geoportal/package.json'],
+      lockFileMaintenance: true,
+      schedule: 'after 5am',
+      groupName: 'Ngeo',
+    },
     /** Ungroup OWSLib */
     {
       matchPackageNames: ['OWSLib'],
