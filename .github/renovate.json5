@@ -86,7 +86,7 @@
     /** Daily ngeo */
     {
       matchPackageNames: ['ngeo'],
-      schedule: 'after 5pm',
+      schedule: 'after 5am',
     },
     /** Ungroup OWSLib */
     {
