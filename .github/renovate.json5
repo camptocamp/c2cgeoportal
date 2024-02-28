@@ -95,6 +95,7 @@
       matchUpdateTypes: ['lockFileMaintenance'],
       schedule: 'after 5am',
       groupName: 'Ngeo',
+      enabled: true,
     },
     /** Ungroup OWSLib */
     {
