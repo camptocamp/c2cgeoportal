@@ -1,3 +1,7 @@
+##### 2.8.1.43
+
+- Uses latest 2.8 version [c2cgeoportal#10920](https://github.com/camptocamp/c2cgeoportal/pull/10920)
+
 ##### 2.8.1.40
 
 - Snyk auto fix [c2cgeoportal#10912](https://github.com/camptocamp/c2cgeoportal/pull/10912)
