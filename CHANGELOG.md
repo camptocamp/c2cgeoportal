@@ -1,3 +1,5 @@
+##### 2.6.0.235
+* Lock file maintenance (2.6) [c2cgeoportal#10923](https://github.com/camptocamp/c2cgeoportal/pull/10923)
 ##### 2.6.0.234
 * Update all patch versions (2.6) (patch) [c2cgeoportal#10901](https://github.com/camptocamp/c2cgeoportal/pull/10901)
 ##### 2.6.0.233
