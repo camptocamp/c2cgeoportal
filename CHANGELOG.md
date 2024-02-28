@@ -1,3 +1,7 @@
+##### 2.8.1.45
+
+- Lock file maintenance (2.8) [c2cgeoportal#10927](https://github.com/camptocamp/c2cgeoportal/pull/10927)
+
 ##### 2.8.1.44
 
 - Lock file maintenance (2.8) [c2cgeoportal#10924](https://github.com/camptocamp/c2cgeoportal/pull/10924)
