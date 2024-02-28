@@ -83,20 +83,6 @@
       separateMajorMinor: false,
       separateMinorPatch: false,
     },
-    /** Daily ngeo */
-    {
-      matchPackageNames: ['ngeo'],
-      schedule: 'after 5am',
-      groupName: 'Ngeo',
-    },
-    /** Daily ngeo */
-    {
-      matchPaths: ['geoportal/package-lock.json', 'geoportal/package.json'],
-      matchUpdateTypes: ['lockFileMaintenance'],
-      schedule: 'after 5am',
-      groupName: 'Ngeo',
-      enabled: true,
-    },
     /** Ungroup OWSLib */
     {
       matchPackageNames: ['OWSLib'],
@@ -188,6 +174,20 @@
       matchFileNames: ['.github/**', '.pre-commit-config.yaml', 'ci/**'],
       groupName: 'CI dependencies',
       automerge: true,
+    },
+    /** Daily ngeo */
+    {
+      matchPackageNames: ['ngeo'],
+      schedule: 'after 5am',
+      groupName: 'Ngeo',
+    },
+    /** Daily ngeo */
+    {
+      matchPaths: ['geoportal/package-lock.json', 'geoportal/package.json'],
+      matchUpdateTypes: ['lockFileMaintenance'],
+      schedule: 'after 5am',
+      groupName: 'Ngeo',
+      enabled: true,
     },
   ],
 }
