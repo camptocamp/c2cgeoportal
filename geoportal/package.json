@@ -9,13 +9,13 @@
   },
   "dependencies": {
     "@snyk/protect": "1.1276.0",
-    "@typescript-eslint/eslint-plugin": "6.20.0",
-    "@typescript-eslint/parser": "6.20.0",
+    "@typescript-eslint/eslint-plugin": "7.1.0",
+    "@typescript-eslint/parser": "7.1.0",
     "angular-gettext-tools": "2.5.3",
-    "commander": "11.1.0",
+    "commander": "12.0.0",
     "eslint": "8.56.0",
     "ngeo": "2.9.0-latest.20240202T122354Z.84275ca8f",
-    "puppeteer": "21.10.0",
+    "puppeteer": "22.3.0",
     "url-parse": "1.5.10"
   },
   "devDependencies": {
