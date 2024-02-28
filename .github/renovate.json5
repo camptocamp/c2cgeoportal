@@ -87,6 +87,7 @@
     {
       matchPackageNames: ['ngeo'],
       schedule: 'after 5am',
+      groupName: 'Ngeo',
     },
     /** Ungroup OWSLib */
     {
