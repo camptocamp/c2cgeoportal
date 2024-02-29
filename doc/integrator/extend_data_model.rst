@@ -315,20 +315,24 @@ Execute the following code:
 
 .. code:: python
 
+   import sqlalchemy
    from c2c.template.config import config
 
+   import c2cgeoportal_commons.models
+
    config.init('/etc/geomapfish/config.yaml')
+   engine = sqlalchemy.engine_from_config(config.get_config(), 'sqlalchemy.')
+   c2cgeoportal_commons.models.Base.metadata.bind = engine
 
    from <package>_geoportal.models import Title, UserDetail
    from sqlalchemy.schema import CreateTable
 
-   print(CreateTable(UserDetail.__table__))
    print(CreateTable(Title.__table__))
+   print(CreateTable(UserDetail.__table__))
 
-Run pSQL console:
+If the generated SQL looks good, do in the same Python console to effectively create the tables:
 
-.. prompt:: bash
+.. prompt:: python
 
-   docker compose exec tools psql
-
-And enter the SQL commands
+   Title.__table__.create()
+   UserDetail.__table__.create()
