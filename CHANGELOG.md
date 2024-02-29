@@ -1,3 +1,7 @@
+##### 2.7.1.51
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240229T151411Z.4cd90e5e6.2.7 (2.7) [c2cgeoportal#10936](https://github.com/camptocamp/c2cgeoportal/pull/10936)
+
 ##### 2.7.1.50
 
 - [Backport 2.7] Add came_from URL in the login, useful for 2FA [ngeo#9300](https://github.com/camptocamp/ngeo/pull/9300)
