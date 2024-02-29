@@ -1,3 +1,7 @@
+##### 2.7.1.50
+
+- [Backport 2.7] Add came_from URL in the login, useful for 2FA [ngeo#9300](https://github.com/camptocamp/ngeo/pull/9300)
+
 ##### 2.7.1.49
 
 - Fix publishing geoportal image in advance mode [c2cgeoportal#10925](https://github.com/camptocamp/c2cgeoportal/pull/10925)
