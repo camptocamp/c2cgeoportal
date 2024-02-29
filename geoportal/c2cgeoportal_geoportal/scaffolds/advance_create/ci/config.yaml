@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/master/c2cciutils/schema.json
+
+checks:
+  black: False
+  isort: False
+  prettier: False
+  codespell: False
+  eof: False
+  required_workflows: False
+  dependabot_config: False
+  prospector_config: False
+  setup: False
+
+version:
+  branch_to_version_re:
+    - from: (prod-[0-9]+-[0-9]+)
+      to: \1
+    - from: (int-[0-9]+-[0-9]+)
+      to: \1
+
+publish:
+  pypi: false
+  docker:
+    images:
+      - name: camptocamp/{{cookiecutter.package}}-config
+      - name: camptocamp/{{cookiecutter.package}}-geoportal
