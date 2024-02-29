@@ -1,3 +1,7 @@
+##### 2.8.1.52
+
+- Lock file maintenance (2.8) [c2cgeoportal#10937](https://github.com/camptocamp/c2cgeoportal/pull/10937)
+
 ##### 2.8.1.51
 
 - Fix open panel on private layer of a public block [ngeo#9298](https://github.com/camptocamp/ngeo/pull/9298)
