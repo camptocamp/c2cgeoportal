@@ -1,3 +1,7 @@
+##### 2.7.1.49
+
+- Fix publishing geoportal image in advance mode [c2cgeoportal#10925](https://github.com/camptocamp/c2cgeoportal/pull/10925)
+
 ##### 2.7.1.48
 
 - Snyk auto fix [c2cgeoportal#10915](https://github.com/camptocamp/c2cgeoportal/pull/10915)
