@@ -1,3 +1,7 @@
+##### 2.8.1.49
+
+- [Backport 2.8] Fix publishing geoportal image in advance mode [c2cgeoportal#10932](https://github.com/camptocamp/c2cgeoportal/pull/10932)
+
 ##### 2.8.1.48
 
 - Lock file maintenance (2.8) [c2cgeoportal#10930](https://github.com/camptocamp/c2cgeoportal/pull/10930)
