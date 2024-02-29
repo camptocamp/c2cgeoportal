@@ -1,3 +1,7 @@
+##### 2.8.1.51
+
+- Fix open panel on private layer of a public block [ngeo#9298](https://github.com/camptocamp/ngeo/pull/9298)
+
 ##### 2.8.1.49
 
 - [Backport 2.8] Fix publishing geoportal image in advance mode [c2cgeoportal#10932](https://github.com/camptocamp/c2cgeoportal/pull/10932)
