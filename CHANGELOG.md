@@ -1,3 +1,7 @@
+##### 2.8.1.55
+
+- Fix remove demo URL [c2cgeoportal#10940](https://github.com/camptocamp/c2cgeoportal/pull/10940)
+
 ##### 2.8.1.54
 
 - [Backport 2.8] Frame ancestors explanations [c2cgeoportal#10793](https://github.com/camptocamp/c2cgeoportal/pull/10793)
