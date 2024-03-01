@@ -1,3 +1,7 @@
+##### 2.8.1.54
+
+- [Backport 2.8] Frame ancestors explanations [c2cgeoportal#10793](https://github.com/camptocamp/c2cgeoportal/pull/10793)
+
 ##### 2.8.1.53
 
 - Lock file maintenance (2.8) [c2cgeoportal#10938](https://github.com/camptocamp/c2cgeoportal/pull/10938)
