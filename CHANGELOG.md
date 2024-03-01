@@ -1,3 +1,8 @@
+##### 2.8.1.56
+
+- Update CI dependencies (2.8) [c2cgeoportal#10964](https://github.com/camptocamp/c2cgeoportal/pull/10964)
+- Update all patch versions (2.8) (patch) [c2cgeoportal#10965](https://github.com/camptocamp/c2cgeoportal/pull/10965)
+
 ##### 2.8.1.55
 
 - Fix remove demo URL [c2cgeoportal#10940](https://github.com/camptocamp/c2cgeoportal/pull/10940)
