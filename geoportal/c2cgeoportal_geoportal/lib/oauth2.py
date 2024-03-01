@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023, Camptocamp SA
+# Copyright (c) 2021-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             - Client Credentials Grant
             - Refresh Token Grant
 
-        .. _`HTTP Basic Authentication Scheme`: http://tools.ietf.org/html/rfc1945#section-11.1
+        .. _`HTTP Basic Authentication Scheme`: https://tools.ietf.org/html/rfc1945#section-11.1
         """
         del args, kwargs
 
@@ -165,9 +165,9 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             - Resource Owner Password Credentials Grant
             - Refresh Token Grant
 
-        .. _`Section 4.3.2`: http://tools.ietf.org/html/rfc6749#section-4.3.2
-        .. _`Section 4.1.3`: http://tools.ietf.org/html/rfc6749#section-4.1.3
-        .. _`Section 6`: http://tools.ietf.org/html/rfc6749#section-6
+        .. _`Section 4.3.2`: https://tools.ietf.org/html/rfc6749#section-4.3.2
+        .. _`Section 4.1.3`: https://tools.ietf.org/html/rfc6749#section-4.1.3
+        .. _`Section 6`: https://tools.ietf.org/html/rfc6749#section-6
         """
         del request, args, kwargs
 
