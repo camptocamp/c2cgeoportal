@@ -1,3 +1,7 @@
+##### 2.8.1.59
+
+- Update dependency pyjson5 to v1.6.6 (2.8) [ngeo#9305](https://github.com/camptocamp/ngeo/pull/9305)
+
 ##### 2.8.1.58
 
 - Update dependency karma to v6.4.3 (2.8) [ngeo#9304](https://github.com/camptocamp/ngeo/pull/9304)
