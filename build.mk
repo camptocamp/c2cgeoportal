@@ -123,7 +123,7 @@ $(STATIC_PATH)/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
 	sed -i -e 's#"data\.txt"#"../static/$${CACHE_VERSION}/apihelp/data.txt"#g' $@/index.html.tmpl
 	sed -i -e "s#'data\.txt'#'../static/\$${CACHE_VERSION}/apihelp/data.txt'#g" $@/index.html.tmpl
 	sed -i -e 's#img/#../static/$${CACHE_VERSION}/apihelp/img/#g' $@/index.html.tmpl
-	sed -i -e "s#https://geomapfish-demo-2-[0-9].camptocamp.com/0/img/markers/#../static/0/images/markers/#g" $@/data.txt
+	sed -i -e "s#https://geomapfish-demo-2-[0-9].camptocamp.com/static/0/img/markers/#../static/0/images/markers/#g" $@/data.txt
 
 .PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/{{cookiecutter.project}}/CONST_create_template/
 geoportal/c2cgeoportal_geoportal/scaffolds%update/{{cookiecutter.project}}/CONST_create_template/: \
