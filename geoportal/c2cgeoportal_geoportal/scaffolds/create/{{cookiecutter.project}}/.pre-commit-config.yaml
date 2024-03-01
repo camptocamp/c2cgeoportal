@@ -18,7 +18,7 @@ repos:
     hooks:
       - id: prettier
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.1
+    rev: v2.3.0
     hooks:
       - id: autoflake
   - repo: https://github.com/PyCQA/isort
@@ -26,6 +26,6 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 24.1.1
+    rev: 24.2.0
     hooks:
       - id: black
