@@ -1,3 +1,7 @@
+##### 2.8.1.58
+
+- Update dependency karma to v6.4.3 (2.8) [ngeo#9304](https://github.com/camptocamp/ngeo/pull/9304)
+
 ##### 2.8.1.56
 
 - Update CI dependencies (2.8) [c2cgeoportal#10964](https://github.com/camptocamp/c2cgeoportal/pull/10964)
