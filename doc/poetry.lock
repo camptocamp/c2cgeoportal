@@ -1926,23 +1926,22 @@ Sphinx = ">=7.0.0,<8.0.0"
 
 [[package]]
 name = "sphinx-substitution-extensions"
-version = "2022.2.16"
+version = "2024.2.25"
 description = "Extensions for Sphinx which allow for substitutions."
 optional = false
-python-versions = "*"
+python-versions = ">=3.10"
 files = [
-    {file = "Sphinx Substitution Extensions-2022.2.16.tar.gz", hash = "sha256:ff7d05bd00e8b2d7eb8a403b9f317d70411d4e9b6812bf91534a50df22190c75"},
-    {file = "Sphinx_Substitution_Extensions-2022.2.16-py3-none-any.whl", hash = "sha256:5a8ca34dac3984486344e95c36e3ed4766d402a71bdee7390d600f153db9795b"},
+    {file = "sphinx-substitution-extensions-2024.2.25.tar.gz", hash = "sha256:9d489d462343ba14dabc7f290c4d305946a54541d978a21d1d9b904f1ff7afe4"},
+    {file = "sphinx_substitution_extensions-2024.2.25-py2.py3-none-any.whl", hash = "sha256:1e22951dbe5052b5b7866897196317da3fb2640776b608828ffe6c675e607b95"},
 ]
 
 [package.dependencies]
-docutils = ">=0.15"
-sphinx = ">=4.0.0"
-sphinx-prompt = {version = ">=0.1", optional = true, markers = "extra == \"prompt\""}
+docutils = ">=0.19"
+sphinx = ">=7.2"
+sphinx-prompt = ">=1.8"
 
 [package.extras]
-dev = ["autoflake (==1.4)", "black (==22.1.0)", "check-manifest (==0.47)", "doc8 (==0.10.1)", "flake8 (==4.0.1)", "flake8-commas (==2.1.0)", "flake8-quotes (==3.3.1)", "isort (==5.10.1)", "mypy (==0.931)", "pip-check-reqs (==2.3.2)", "pydocstyle (==6.1.1)", "pyenchant (==3.2.2)", "pylint (==2.12.2)", "pyroma (==3.2)", "pytest (==7.0.1)", "pytest-cov (==3.0.0)", "types-docutils (==0.17.5)", "vulture (==2.3)"]
-prompt = ["sphinx-prompt (>=0.1)"]
+dev = ["actionlint-py (==1.6.26.11)", "check-manifest (==0.49)", "deptry (==0.12.0)", "doc8 (==1.1.1)", "mypy (==1.8.0)", "myst-parser (==2.0.0)", "pyenchant (==3.2.2)", "pylint (==3.0.3)", "pyproject-fmt (==1.7.0)", "pyright (==1.1.351)", "pyroma (==4.2)", "pytest (==8.0.1)", "pytest-cov (==4.1)", "ruff (==0.2.2)", "types-docutils (==0.20.0.20240201)", "uv (==0.1.9)", "vulture (==2.11)"]
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -2494,4 +2493,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "cc1010303a8bd32297316cf0374c5f888d72e8257e5b5d7eb904b15cb0446e8c"
+content-hash = "ee69d571f27fa15dfba6ecacaf7f273c0f2d8b19b77d40a81a2b0358e846a3f5"
