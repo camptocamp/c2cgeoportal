@@ -27,14 +27,14 @@ checks: prospector eslint ## Runs the checks
 
 .PHONY: prospector
 prospector: ## Runs the Prospector checks
-	docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+	docker-compose run --entrypoint= --no-deps --rm --volume=$(CURDIR)/geoportal:/app geoportal \
 		prospector --output-format=pylint --die-on-tool-error
 
 .PHONY: eslint
 eslint: ## Runs the eslint checks
-	docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+	docker-compose run --entrypoint= --no-deps --rm --volume=$(CURDIR)/geoportal:/app geoportal \
 		eslint $(find {{cookiecutter.package}} -type f -name '*.js' -print 2> /dev/null)
-	docker-compose run --entrypoint= --no-deps --rm --volume=$(pwd)/geoportal:/app geoportal \
+	docker-compose run --entrypoint= --no-deps --rm --volume=$(CURDIR)/geoportal:/app geoportal \
 		eslint $(find {{cookiecutter.package}} -type f -name '*.ts' -print 2> /dev/null)
 
 .PHONY: qgis
