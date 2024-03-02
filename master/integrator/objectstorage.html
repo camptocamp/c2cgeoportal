@@ -67,7 +67,11 @@ on the <code class="docutils literal notranslate"><span class="pre">geoportal</s
 </ul>
 <p>Exoscale:</p>
 <p>Use the aws client to list the files:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">aws<span class="w"> </span>--endpoint-url<span class="w"> </span>https://sos-ch-dk-2.exo.io/<span class="w"> </span>--region<span class="w"> </span>ch-dk-2<span class="w"> </span><span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">aws<span class="w"> </span>--endpoint-url<span class="w"> </span>https://sos-ch-dk-2.exo.io/<span class="w"> </span>--region<span class="w"> </span>ch-dk-2<span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://&lt;bucket&gt;/&lt;folder&gt;</span>
 </pre></div></div><p>Create the vrt file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
