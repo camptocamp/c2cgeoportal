@@ -106,11 +106,7 @@ while production still uses <code class="docutils literal notranslate"><span cla
 <p>To create the new schema, you should copy the old one, for that <cite>c2cgeoportal</cite> provides a Postgres
 function called <cite>clone_schema</cite>.
 If you have not yet created this function in your database, use to following command to create it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>psql<span class="w"> </span>--file<span class="o">=</span>/opt/clone_schema.sql</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>psql<span class="w"> </span>--file<span class="o">=</span>/opt/clone_schema.sql</span>
 </pre></div></div><p>To use the function, connect to your database and perform the following statement:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span>
 <span class="w">    </span><span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span>

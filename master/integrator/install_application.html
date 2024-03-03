@@ -62,11 +62,7 @@ layers</em>), where joining user/role tables to PostGIS layer tables is necessar
 <span id="integrator-install-application-create-schema"></span><h3>Create the schemas<a class="headerlink" href="#create-the-schemas" title="Link to this heading">¶</a></h3>
 <p>Each application needs two application-specific schemas.
 To create them, do:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
-span.prompt1:before {
-  content: "$ ";
-}
-</style><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
 <span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
 <span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span><span class="w"> </span>&lt;db_name&gt;</span>
 <span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span><span class="w"> </span>&lt;db_name&gt;</span>
