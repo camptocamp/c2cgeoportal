@@ -144,7 +144,7 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
     && rm -rf /tmp/angular \
     && git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git /tmp/angular \
     && mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ \
-    && curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
+    && curl --output /opt/jasperreport.xsd https://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
 WORKDIR /opt/c2cgeoportal
 COPY dependencies.mk vars.yaml ./
