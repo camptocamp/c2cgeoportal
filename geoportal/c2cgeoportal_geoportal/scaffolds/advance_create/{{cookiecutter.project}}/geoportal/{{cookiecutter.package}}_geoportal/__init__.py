@@ -1,5 +1,3 @@
-import distutils.core
-
 from pyramid.config import Configurator
 
 import {{cookiecutter.package}}_geoportal.authentication
@@ -28,10 +26,7 @@ def main(global_config, **settings):
 
     config.add_translation_dirs(LOCALE_PATH)
 
-    # Workaround to not have the error: distutils.errors.DistutilsArgError: no commands supplied
-    distutils.core._setup_stop_after = "config"  # pylint: disable=protected-access
     config.include("c2cgeoportal_geoportal")
-    distutils.core._setup_stop_after = None  # pylint: disable=protected-access
 
     config.include({{cookiecutter.package}}_geoportal.multi_organization.includeme)
 
