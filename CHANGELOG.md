@@ -1,3 +1,9 @@
+##### 2.8.1.62
+
+- Use https protocol [c2cgeoportal#10941](https://github.com/camptocamp/c2cgeoportal/pull/10941)
+- Update docker-compose version, add buildx, reorganize [c2cgeoportal#10942](https://github.com/camptocamp/c2cgeoportal/pull/10942)
+- Fix checks [c2cgeoportal#10945](https://github.com/camptocamp/c2cgeoportal/pull/10945)
+
 ##### 2.8.1.61
 
 - Lock file maintenance (2.8) [c2cgeoportal#10969](https://github.com/camptocamp/c2cgeoportal/pull/10969)
