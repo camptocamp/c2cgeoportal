@@ -85,9 +85,9 @@ def upgrade() -> None:
         Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
         Column("is_checked", Boolean, default=True),
         Column("icon", Unicode),
-        Column("layer_type", Unicode(12)),  # type: ignore[no-untyped-call]
+        Column("layer_type", Unicode(12)),
         Column("url", Unicode),
-        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
+        Column("image_type", Unicode(10)),
         Column("style", Unicode),
         Column("dimensions", Unicode),
         Column("matrix_set", Unicode),
@@ -105,7 +105,7 @@ def upgrade() -> None:
         Column("disclaimer", Unicode),
         Column("identifier_attribute_field", Unicode),
         Column("exclude_properties", Unicode),
-        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
+        Column("time_mode", Unicode(8)),
         schema=schema,
     )
 
@@ -199,9 +199,9 @@ def upgrade() -> None:
         "layer_internal_wms",
         Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
         Column("layer", Unicode),
-        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
+        Column("image_type", Unicode(10)),
         Column("style", Unicode),
-        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
+        Column("time_mode", Unicode(8)),
         schema=schema,
     )
 
@@ -210,10 +210,10 @@ def upgrade() -> None:
         Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
         Column("url", Unicode),
         Column("layer", Unicode),
-        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
+        Column("image_type", Unicode(10)),
         Column("style", Unicode),
         Column("is_single_tile", Boolean),
-        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
+        Column("time_mode", Unicode(8)),
         schema=schema,
     )
 
@@ -299,7 +299,7 @@ def downgrade() -> None:
         "WHERE i.name = 'main' AND i.id = il.interface_id AND il.layer_id = l.id"
     )
 
-    op.add_column("layer", Column("timeMode", Unicode(8)), schema=schema)  # type: ignore[no-untyped-call]
+    op.add_column("layer", Column("timeMode", Unicode(8)), schema=schema)
     op.add_column("layer", Column("excludeProperties", Unicode), schema=schema)
     op.add_column("layer", Column("identifierAttributeField", Unicode), schema=schema)
     op.add_column("layer", Column("disclaimer", Unicode), schema=schema)
@@ -317,9 +317,9 @@ def downgrade() -> None:
     op.add_column("layer", Column("matrixSet", Unicode), schema=schema)
     op.add_column("layer", Column("dimensions", Unicode), schema=schema)
     op.add_column("layer", Column("style", Unicode), schema=schema)
-    op.add_column("layer", Column("imageType", Unicode(10)), schema=schema)  # type: ignore[no-untyped-call]
+    op.add_column("layer", Column("imageType", Unicode(10)), schema=schema)
     op.add_column("layer", Column("url", Unicode), schema=schema)
-    op.add_column("layer", Column("layerType", Unicode(12)), schema=schema)  # type: ignore[no-untyped-call]
+    op.add_column("layer", Column("layerType", Unicode(12)), schema=schema)
     op.add_column("layer", Column("icon", Unicode), schema=schema)
     op.add_column("layer", Column("isChecked", Boolean, default=True), schema=schema)
 

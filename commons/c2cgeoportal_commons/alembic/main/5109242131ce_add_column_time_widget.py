@@ -52,7 +52,7 @@ def upgrade() -> None:
 
     # Instructions
     for table in ["layerv1", "layer_internal_wms", "layer_external_wms"]:
-        op.add_column(table, Column("time_widget", Unicode(10), default="slider"), schema=schema)  # type: ignore[no-untyped-call]
+        op.add_column(table, Column("time_widget", Unicode(10), default="slider"), schema=schema)
         op.execute(sqlalchemy.text(f"UPDATE {schema!s}.{table!s} SET time_widget = 'slider'"))
 
 

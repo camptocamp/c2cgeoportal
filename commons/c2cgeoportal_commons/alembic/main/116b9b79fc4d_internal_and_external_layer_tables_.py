@@ -169,10 +169,10 @@ def downgrade() -> None:
         "layer_internal_wms",
         Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
         Column("layer", Unicode),
-        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
+        Column("image_type", Unicode(10)),
         Column("style", Unicode),
-        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
-        Column("time_widget", Unicode(10), server_default="slider"),  # type: ignore[no-untyped-call]
+        Column("time_mode", Unicode(8)),
+        Column("time_widget", Unicode(10), server_default="slider"),
         schema=schema,
     )
 
@@ -181,11 +181,11 @@ def downgrade() -> None:
         Column("id", Integer, ForeignKey(schema + ".layer.id"), primary_key=True),
         Column("url", Unicode),
         Column("layer", Unicode),
-        Column("image_type", Unicode(10)),  # type: ignore[no-untyped-call]
+        Column("image_type", Unicode(10)),
         Column("style", Unicode),
         Column("is_single_tile", Boolean),
-        Column("time_mode", Unicode(8)),  # type: ignore[no-untyped-call]
-        Column("time_widget", Unicode(10), server_default="slider"),  # type: ignore[no-untyped-call]
+        Column("time_mode", Unicode(8)),
+        Column("time_widget", Unicode(10), server_default="slider"),
         schema=schema,
     )
     # move data back
