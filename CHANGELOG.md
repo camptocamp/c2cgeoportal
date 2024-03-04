@@ -1,3 +1,7 @@
+##### 2.7.1.54
+
+- [Backport 2.7] Use https protocol [c2cgeoportal#10974](https://github.com/camptocamp/c2cgeoportal/pull/10974)
+
 ##### 2.7.1.53
 
 - Update dependency cryptography to v42.0.5 (2.7) [c2cgeoportal#10963](https://github.com/camptocamp/c2cgeoportal/pull/10963)
