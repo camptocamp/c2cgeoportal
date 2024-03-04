@@ -39,6 +39,8 @@
             
   <section id="requirements">
 <span id="integrator-requirements"></span><h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h1>
+<section id="system-requirements">
+<h2>System requirements<a class="headerlink" href="#system-requirements" title="Permalink to this heading">¶</a></h2>
 <p>To install a GeoMapFish application, you need to have the following
 components installed on your system:</p>
 <ul class="simple">
@@ -48,11 +50,32 @@ components installed on your system:</p>
 <li><p><strong>Apache</strong> &gt;= 2.4 (optional, can be used as a front for SSL)</p></li>
 <li><p><strong>PostgreSQL</strong> &gt;= 9.1/<strong>PostGIS</strong> &gt;= 2.1</p></li>
 </ul>
+<section id="required-apache-modules">
+<h3>Required Apache modules<a class="headerlink" href="#required-apache-modules" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mod_proxy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mod_proxy_http</span></code></p></li>
+</ul>
+</section>
+<section id="required-postgresql-extensions">
+<h3>Required PostgreSQL extensions<a class="headerlink" href="#required-postgresql-extensions" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">postgis</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hstore</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> (optional)</p></li>
+</ul>
+</section>
+</section>
+<section id="requirements-that-can-be-installed-in-the-user-space">
+<h2>Requirements that can be installed in the user space<a class="headerlink" href="#requirements-that-can-be-installed-in-the-user-space" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Docker Buildx</strong> See <a class="reference external" href="https://docs.docker.com/build/architecture/#install-buildx">Docker Buildx</a></p></li>
+</ul>
 <section id="required-python-packages">
-<h2>Required Python packages<a class="headerlink" href="#required-python-packages" title="Permalink to this heading">¶</a></h2>
+<h3>Required Python packages<a class="headerlink" href="#required-python-packages" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">PyYAML&gt;=3.12</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">docker-compose&gt;=1.26.0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker-compose&gt;=1.29.2</span></code></p></li>
 </ul>
 <p>They can be install in your user directory with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>PyYAML<span class="w"> </span>docker-compose
@@ -63,20 +86,6 @@ components installed on your system:</p>
 </pre></div>
 </div>
 </section>
-<section id="required-apache-modules">
-<h2>Required Apache modules<a class="headerlink" href="#required-apache-modules" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">mod_proxy</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mod_proxy_http</span></code></p></li>
-</ul>
-</section>
-<section id="required-postgresql-extensions">
-<h2>Required PostgreSQL extensions<a class="headerlink" href="#required-postgresql-extensions" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">postgis</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hstore</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> (optional)</p></li>
-</ul>
 </section>
 <section id="additional-notes-for-windows-users">
 <h2>Additional notes for Windows users<a class="headerlink" href="#additional-notes-for-windows-users" title="Permalink to this heading">¶</a></h2>
