@@ -49,25 +49,25 @@ See its <a class="reference external" href="https://github.com/camptocamp/c2cwsg
 <p>You can also activate the authentication on GitHub with OAuth2, the configuration is in the
 <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file:</p>
 <ul class="simple">
-<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_REPOSITORY</span></code> is correctly configured.</p></li>
+<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_REPOSITORY</span></code> is correctly configured to match the project repository name on GitHub.</p></li>
 <li><p>By default, the <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_ACCESS_TYPE</span></code> is set to admin then only admins users of the previously
-defined repository have access.</p></li>
-<li><p>You should ask Camptocamp for a new secret and set it in <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_CLIENT_SECRET</span></code>.
-It will be defined in the GitHub organizations settings, on ‘Developer settings’, ‘OAuth Apps’,
-‘Geoservicies` application, ‘Generate a new client secret’,
-the URL should also be configured in the redirect proxy.</p></li>
+defined repository have access, can be <code class="docutils literal notranslate"><span class="pre">pull</span></code>, <code class="docutils literal notranslate"><span class="pre">push</span></code> or <code class="docutils literal notranslate"><span class="pre">admin</span></code>.</p></li>
 <li><p>Define the <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_SECRET</span></code> randomly.</p></li>
 </ul>
-<p>If you want to be independent you should:</p>
+<p>For projects that create their GitHub applications:</p>
 <ul class="simple">
-<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_REPOSITORY</span></code> is correctly configured.</p></li>
-<li><p>By default, the <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_ACCESS_TYPE</span></code> is set to admin then only admins users of the previously
-defined repository have access.</p></li>
 <li><p>Create an OAuth Apps on GitHub: GitHub organizations settings, on ‘Developer settings’, ‘OAuth Apps’,
 ‘New OAuth App`, fill the form, reopen the application, ‘Generate a new client secret’,
 <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_CLIENT_ID</span></code> and <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_CLIENT_SECRET</span></code> should be configured with the
 obtain information.</p></li>
-<li><p>Define the <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_SECRET</span></code> randomly.</p></li>
+</ul>
+<p>For project hosted by Camptocamp, who use the standard Camptocamp GitHub application:</p>
+<ul class="simple">
+<li><p>You should ask Camptocamp for a new secret and set it in <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_CLIENT_SECRET</span></code>.
+It will be defined in the GitHub organizations settings, on ‘Developer settings’, ‘OAuth Apps’,
+‘Geoservices` application, ‘Generate a new client secret’,
+the URL should also be configured in the redirect proxy.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">C2C_AUTH_GITHUB_PROXY_URL</span></code> should be uncommented.</p></li>
 </ul>
 <p>For more information see
 <a class="reference external" href="https://github.com/camptocamp/c2cwsgiutils#general-config">C2C WSGI Utils Readme</a>.</p>
