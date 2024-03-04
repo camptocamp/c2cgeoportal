@@ -1,3 +1,7 @@
+##### 2.8.1.64
+
+- Lock file maintenance (2.8) [c2cgeoportal#10978](https://github.com/camptocamp/c2cgeoportal/pull/10978)
+
 ##### 2.8.1.63
 
 - Improve GitHub authentication documentation [c2cgeoportal#10943](https://github.com/camptocamp/c2cgeoportal/pull/10943)
