@@ -65,7 +65,7 @@ CMD ["tail", "--follow", "--zero-terminated", "/dev/null"]
 # hadolint ignore=SC1091,DL3008
 RUN \
     . /etc/os-release && \
-    echo deb http://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > \
+    echo deb https://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > \
     /etc/apt/sources.list.d/pgdg.list && \
     curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && \
@@ -131,9 +131,9 @@ RUN \
     rm -rf /tmp/* && \
     git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git \
     /tmp/angular && \
-    mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ &&\
+    mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ && \
     rm -rf /tmp/angular && \
-    curl --output /opt/jasperreport.xsd http://jasperreports.sourceforge.net/xsd/jasperreport.xsd
+    curl --output /opt/jasperreport.xsd https://jasperreports.sourceforge.net/xsd/jasperreport.xsd
 
 WORKDIR /opt/c2cgeoportal
 COPY dependencies.mk vars.yaml ./
