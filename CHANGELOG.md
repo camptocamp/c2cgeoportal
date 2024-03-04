@@ -1,3 +1,7 @@
+##### 2.8.1.63
+
+- Improve GitHub authentication documentation [c2cgeoportal#10943](https://github.com/camptocamp/c2cgeoportal/pull/10943)
+
 ##### 2.8.1.62
 
 - Use https protocol [c2cgeoportal#10941](https://github.com/camptocamp/c2cgeoportal/pull/10941)
