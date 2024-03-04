@@ -3,33 +3,17 @@
 Requirements
 ============
 
+System requirements
+-------------------
+
 To install a GeoMapFish application, you need to have the following
 components installed on your system:
 
 * **Git**
 * **Docker** >= 17.05
-* **Docker Compose** >= 2.20
 * **Python** >= 3.8, with ``pip``
 * **Apache** >= 2.4 (optional, can be used as a front for SSL)
 * **PostgreSQL** >= 9.1/**PostGIS** >= 2.1
-
-
-Required Python packages
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-* ``PyYAML>=3.13``
-
-They can be install in your user directory with:
-
-.. code:: bash
-
-   python3 -m pip install --user PyYAML
-
-If not yet done, add ``$HOME/.local/bin`` to your ``PATH``; add in your ``~/.bashrc`` file:
-
-.. code:: bash
-
-   PATH=$HOME/.local/bin:$PATH
 
 Required Apache modules
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,12 +29,35 @@ Required PostgreSQL extensions
 * ``hstore``
 * ``pg_trgm`` (optional)
 
+Requirements that can be installed in the user space
+----------------------------------------------------
+
+* **Docker Compose** >= 2.20, See `Docker compose install <https://docs.docker.com/compose/install/>`_
+* **Docker Buildx** See `Docker Buildx <https://docs.docker.com/build/architecture/#install-buildx>`_
+
+Required Python packages
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``PyYAML>=6.0``
+
+They can be install in your user directory with:
+
+.. code:: bash
+
+   python3 -m pip install --user PyYAML
+
+If not yet done, add ``$HOME/.local/bin`` to your ``PATH``; add in your ``~/.bashrc`` file:
+
+.. code:: bash
+
+   PATH=$HOME/.local/bin:$PATH
+
 
 Additional notes for Windows users
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------
 
 Cygwin
-^^^^^^
+~~~~~~
 
 * Go to https://cygwin.com/
 * In the download section, download the installer corresponding to your system
@@ -78,7 +85,7 @@ To avoid file permission problems between Windows and Cygwin, edit Cygwin's
     none /cygdrive cygdrive binary,noacl,posix=0,user 0 0
 
 Configure Git
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 Cygwin comes with its own git package. Configure
 Cygwin's git for Windows as follows:
