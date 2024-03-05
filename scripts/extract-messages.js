@@ -1,5 +1,5 @@
 const fs = require('fs');
-const options = require('commander');
+const {program} = require('commander');
 const Extractor = require('angular-gettext-tools').Extractor;
 
 function main(inputs) {
@@ -34,8 +34,8 @@ function main(inputs) {
 
 // If running this module directly then call the main function.
 if (require.main === module) {
-  options.parse(process.argv);
-  main(options.args);
+  program.parse(process.argv);
+  main(program.args);
 }
 
 module.exports = main;
