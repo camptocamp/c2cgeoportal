@@ -175,6 +175,16 @@
       groupName: 'CI dependencies',
       automerge: true,
     },
+    /** Group and auto merge the projects CI dependencies */
+    {
+      matchFileNames: [
+        'geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/.github/**',
+        'geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/.pre-commit-config.yaml',
+        'geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/ci/**',
+      ],
+      groupName: 'CI dependencies',
+      automerge: true,
+    },
     /** Daily ngeo */
     {
       matchPackageNames: ['ngeo'],
