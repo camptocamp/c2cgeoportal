@@ -1,3 +1,8 @@
+##### 2.7.1.55
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#10989](https://github.com/camptocamp/c2cgeoportal/pull/10989)
+- Update CI dependencies to v1.3.21 (2.7) (patch) [ngeo#9310](https://github.com/camptocamp/ngeo/pull/9310)
+
 ##### 2.7.1.54
 
 - [Backport 2.7] Use https protocol [c2cgeoportal#10974](https://github.com/camptocamp/c2cgeoportal/pull/10974)
