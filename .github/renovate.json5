@@ -28,6 +28,16 @@
         '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
       ],
       datasourceTemplate: 'github-tags',
+      versioning: 'regex:(<major>\\d+.<minor>\\d+)',
+    },
+    /** Do update on the schema present in the projects ci/config.yaml */
+    {
+      fileMatch: ['^geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/ci/config\\.yaml$'],
+      matchStrings: [
+        '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
+      ],
+      datasourceTemplate: 'github-tags',
+      versioning: 'regex:(<major>\\d+.<minor>\\d+)',
     },
   ],
   packageRules: [
