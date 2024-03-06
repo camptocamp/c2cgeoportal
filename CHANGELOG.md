@@ -1,3 +1,7 @@
+##### 2.6.0.236
+* Update CI dependencies to v1.1.34 (2.6) (patch) [c2cgeoportal#10961](https://github.com/camptocamp/c2cgeoportal/pull/10961)
+* Update all patch versions (2.6) (patch) [c2cgeoportal#10962](https://github.com/camptocamp/c2cgeoportal/pull/10962)
+* Update CI dependencies to v1.1.35 (2.6) (patch) [c2cgeoportal#10984](https://github.com/camptocamp/c2cgeoportal/pull/10984)
 ##### 2.6.0.235
 * Lock file maintenance (2.6) [c2cgeoportal#10923](https://github.com/camptocamp/c2cgeoportal/pull/10923)
 ##### 2.6.0.234
