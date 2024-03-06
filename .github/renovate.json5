@@ -28,7 +28,7 @@
         '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
       ],
       datasourceTemplate: 'github-tags',
-      versioningTemplate: 'regex:(<major>\\d+.<minor>\\d+)',
+      versioningTemplate: 'regex:^(<major>\\d+).(<minor>\\d+)$',
     },
     /** Do update on the schema present in the projects ci/config.yaml */
     {
@@ -37,7 +37,7 @@
         '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
       ],
       datasourceTemplate: 'github-tags',
-      versioningTemplate: 'regex:(<major>\\d+.<minor>\\d+)',
+      versioningTemplate: 'regex:^(<major>\\d+).(<minor>\\d+)$',
     },
   ],
   packageRules: [
