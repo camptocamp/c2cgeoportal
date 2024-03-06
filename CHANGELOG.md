@@ -1,3 +1,7 @@
+##### 2.7.1.57
+
+- Update dependency camptocamp/c2cciutils to v1.1.35 (2.7) [c2cgeoportal#10985](https://github.com/camptocamp/c2cgeoportal/pull/10985)
+
 ##### 2.7.1.56
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20240306T122704Z.539fb3136.2.7 (2.7) [c2cgeoportal#10986](https://github.com/camptocamp/c2cgeoportal/pull/10986)
