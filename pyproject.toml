@@ -70,7 +70,7 @@ translationstring = "1.4" # admin
 c2cwsgiutils = { version = "6.0.7", extras = ["broadcast", "standard", "oauth2", "debug"] }
 oauthlib = "3.2.2"
 tilecloud = "1.11.0" # geoportal
-azure-storage-blob = "12.19.0"
+azure-storage-blob = "12.19.1"
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.3" }
 # pylint = "2.15.5"
