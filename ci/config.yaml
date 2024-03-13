@@ -24,6 +24,7 @@ publish:
       - name: camptocamp/geomapfish-tools
         group: full
       - name: camptocamp/geomapfishapp-geoportal
+
       - name: camptocamp/geomapfish-qgisserver
         group: qgis-3.22
         tags:
@@ -40,6 +41,18 @@ publish:
         group: qgis-3.28-gdal3.7
         tags:
           - gmf{version}-qgis3.28-gdal3.7
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-3.34-gdal3.7
+        tags:
+          - gmf{version}-qgis3.34-gdal3.7
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-3.34-gdal3.8
+        tags:
+          - gmf{version}-qgis3.34-gdal3.8
+      - name: camptocamp/geomapfish-qgisserver
+        group: qgis-3.34
+        tags:
+          - gmf{version}-qgis3.34
       - name: camptocamp/geomapfish-qgisserver
         group: qgis-ltr
         tags:
