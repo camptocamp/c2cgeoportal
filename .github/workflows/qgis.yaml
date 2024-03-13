@@ -51,9 +51,12 @@ jobs:
           - '3.28'
           - 3.28-gdal3.6
           - 3.28-gdal3.7
-          - latest
+          - '3.34'
+          - 3.34-gdal3.7
+          - 3.34-gdal3.8
           - ltr
           - lr
+          - latest
 
     steps:
       - uses: actions/checkout@v3
