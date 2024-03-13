@@ -1,3 +1,7 @@
+##### 2.8.1.67
+
+- [Backport 2.8] Add support of QGIS 3.34 [c2cgeoportal#10992](https://github.com/camptocamp/c2cgeoportal/pull/10992)
+
 ##### 2.8.1.66
 
 - Update dependency SQLAlchemy to v1.4.52 (2.8) [c2cgeoportal#10988](https://github.com/camptocamp/c2cgeoportal/pull/10988)
