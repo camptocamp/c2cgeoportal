@@ -121,7 +121,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/ubuntu-keyring: 2021.03.26
   ubuntu_22_04/usrmerge: 25ubuntu2
   ubuntu_22_04/util-linux: 2.37.2-4ubuntu3
-camptocamp/geomapfish-qgisserver:gmflatest-qgis3-34-gdal3-8: &qgis
+camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8: &qgis
   ubuntu_22_04/acl: 2.3.1-1
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/apache2: 2.4.52-1ubuntu4.6
@@ -355,7 +355,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3-34-gdal3-8: &qgis
   ubuntu_22_04/xxhash: 0.8.1-1
   ubuntu_22_04/xz-utils: 5.2.5-2ubuntu1
   ubuntu_22_04/zlib: 1:1.2.11.dfsg-2ubuntu9.2
-camptocamp/geomapfish-qgisserver:gmflatest-qgis3-34: *qgis
+camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34: *qgis
 camptocamp/geomapfish-qgisserver:gmflatest-qgislr: *qgis
 camptocamp/geomapfish-qgisserver:gmflatest-qgisltr: *qgis
 camptocamp/geomapfish-qgisserver:gmflatest-qgismaster: *qgis
