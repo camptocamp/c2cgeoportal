@@ -741,6 +741,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8: &qgis
   ubuntu_22_04/xxhash: 0.8.1-1
   ubuntu_22_04/xz-utils: 5.2.5-2ubuntu1
   ubuntu_22_04/zlib: 1:1.2.11.dfsg-2ubuntu9.2
+  ubuntu_22_04/python3-pyqt5.qtserialport: 5.15.6+dfsg-1ubuntu3
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34: *qgis
 camptocamp/geomapfish-qgisserver:gmflatest-qgislr: *qgis
 camptocamp/geomapfish-qgisserver:gmflatest-qgisltr: *qgis
