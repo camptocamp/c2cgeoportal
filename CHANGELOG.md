@@ -1,3 +1,5 @@
+##### 2.6.0.238
+* Fix lock [c2cgeoportal#10998](https://github.com/camptocamp/c2cgeoportal/pull/10998)
 ##### 2.6.0.237
 * Snyk auto fix [c2cgeoportal#10993](https://github.com/camptocamp/c2cgeoportal/pull/10993)
 * Update CI dependencies to v1.1.36 (2.6) (patch) [c2cgeoportal#10996](https://github.com/camptocamp/c2cgeoportal/pull/10996)
