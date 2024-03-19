@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2021, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -212,16 +212,20 @@ class TimeExtentInterval:
         self.min_def_value = (
             self.min_def_value
             if extent.min_def_value is None
-            else extent.min_def_value
-            if self.min_def_value is None
-            else min_none(self.min_def_value, extent.min_def_value)
+            else (
+                extent.min_def_value
+                if self.min_def_value is None
+                else min_none(self.min_def_value, extent.min_def_value)
+            )
         )
         self.max_def_value = (
             self.max_def_value
             if extent.max_def_value is None
-            else extent.max_def_value
-            if self.max_def_value is None
-            else max_none(self.max_def_value, extent.max_def_value)
+            else (
+                extent.max_def_value
+                if self.max_def_value is None
+                else max_none(self.max_def_value, extent.max_def_value)
+            )
         )
 
     def to_dict(self) -> Dict[str, Any]:

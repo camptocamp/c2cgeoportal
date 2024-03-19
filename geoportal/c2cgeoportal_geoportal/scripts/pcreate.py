@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023, Camptocamp SA
+# Copyright (c) 2021-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -183,9 +183,9 @@ class PCreateCommand:
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":
-            context[
-                "authtkt_secret"  # nosec
-            ] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
+            context["authtkt_secret"] = (  # nosec
+                "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
+            )
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast(int, context["srid"])
@@ -193,10 +193,12 @@ class PCreateCommand:
         self.get_var(
             context,
             "extent",
-            f"Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
-            f"[{extent[0]} {extent[1]} {extent[2]} {extent[3]}]: "
-            if extent
-            else f"Extent (minx miny maxx maxy): in EPSG: {srid} projection: ",
+            (
+                f"Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
+                f"[{extent[0]} {extent[1]} {extent[2]} {extent[3]}]: "
+                if extent
+                else f"Extent (minx miny maxx maxy): in EPSG: {srid} projection: "
+            ),
         )
         match = re.match(
             r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)",
