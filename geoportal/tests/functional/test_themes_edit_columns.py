@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2019, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -236,7 +236,7 @@ class TestThemesEditColumns(TestCase):
                     {
                         "nillable": True,
                         "type": "xsd:time",
-                        "name": "start_time"
+                        "name": "start_time",
                         # }, {
                         #     "nillable": True,
                         #     "type": "xsd:duration",
@@ -299,7 +299,7 @@ class TestThemesEditColumns(TestCase):
                     {
                         "nillable": True,
                         "type": "xsd:time",
-                        "name": "start_time"
+                        "name": "start_time",
                         # }, {
                         #     "nillable": True,
                         #     "type": "xsd:duration",
