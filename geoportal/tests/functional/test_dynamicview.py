@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2019, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -106,13 +106,13 @@ class TestDynamicView(TestCase):
         query_ = {"interface": "test"}
         query_.update(query)
         request = DummyRequest(query_)
-        request.route_url = (
-            lambda url, _query=None: "/dummy/route/url/{}".format(url)
+        request.route_url = lambda url, _query=None: (
+            "/dummy/route/url/{}".format(url)
             if _query is None
             else "/dummy/route/url/{}?{}".format(url, pyramid.url.urlencode(_query))
         )
-        request.static_url = (
-            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+        request.static_url = lambda url, _query=None: (
+            "/dummy/static/url/{}".format(url)
             if _query is None
             else "/dummy/static/url/{}?{}".format(url, pyramid.url.urlencode(_query))
         )
@@ -181,8 +181,8 @@ class TestDynamicView(TestCase):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
         request = self._request()
-        request.static_url = (
-            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+        request.static_url = lambda url, _query=None: (
+            "/dummy/static/url/{}".format(url)
             if _query is None
             else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
         )
@@ -199,8 +199,8 @@ class TestDynamicView(TestCase):
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
         request = self._request()
-        request.static_url = (
-            lambda url, _query=None: "/dummy/static/url/{}".format(url)
+        request.static_url = lambda url, _query=None: (
+            "/dummy/static/url/{}".format(url)
             if _query is None
             else "/dummy/static/url/{}?{}".format(url, "&".join(["=".join(e) for e in _query.items()]))
         )
