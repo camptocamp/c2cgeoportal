@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2022, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -64,10 +64,12 @@ class BaseTemplate(Template):  # pragma: no cover
         self._get_vars(
             vars_,
             "extent",
-            "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
-            "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
-            if extent
-            else "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid),
+            (
+                "Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
+                "[{bbox[0]} {bbox[1]} {bbox[2]} {bbox[3]}]: ".format(srid=srid, bbox=extent)
+                if extent
+                else "Extent (minx miny maxx maxy): in EPSG: {srid} projection: ".format(srid=srid)
+            ),
         )
         match = re.match(r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)", vars_["extent"])
         if match is not None:

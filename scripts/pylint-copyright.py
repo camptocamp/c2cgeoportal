@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2020, Camptocamp SA
+# Copyright (c) 2020-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -91,9 +91,11 @@ class CopyrightChecker(BaseChecker):
                         "missing-copyright",
                         line=line_no,
                         args=(
-                            str(first_year)
-                            if first_year == datetime.date.today().year
-                            else "{}-{}".format(first_year, datetime.date.today().year),
+                            (
+                                str(first_year)
+                                if first_year == datetime.date.today().year
+                                else "{}-{}".format(first_year, datetime.date.today().year)
+                            ),
                         ),
                     )
         except Exception as e:
