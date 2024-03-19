@@ -13,7 +13,7 @@ yamllint = "==1.25.0"
 # Lock
 appdirs = "==1.4.4"
 attrs = "==20.3.0"
-black = "==19.10b0"
+black = "==24.3.0"
 click = "==8.0.4"
 codespell = "==2.0.0"
 pathspec = "==0.8.1"
