@@ -36,6 +36,12 @@ repos:
       - id: mixed-line-ending
         args:
           - --fix=lf
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-shebang-scripts-are-executable
+        exclude: ^.*/setup.py$
+      - id: check-symlinks
+      - id: fix-byte-order-marker
   - repo: https://github.com/sbrunner/hooks
     rev: 0.7.0
     hooks:
