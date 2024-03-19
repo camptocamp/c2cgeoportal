@@ -1,3 +1,7 @@
+##### 2.7.1.60
+
+- Update dependency camptocamp/c2cciutils to v1.1.36 (2.7) [c2cgeoportal#10997](https://github.com/camptocamp/c2cgeoportal/pull/10997)
+
 ##### 2.7.1.58
 
 - Add support of QGIS 3.34 [c2cgeoportal#10990](https://github.com/camptocamp/c2cgeoportal/pull/10990)
