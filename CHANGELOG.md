@@ -1,3 +1,6 @@
+##### 2.6.0.237
+* Snyk auto fix [c2cgeoportal#10993](https://github.com/camptocamp/c2cgeoportal/pull/10993)
+* Update CI dependencies to v1.1.36 (2.6) (patch) [c2cgeoportal#10996](https://github.com/camptocamp/c2cgeoportal/pull/10996)
 ##### 2.6.0.236
 * Update CI dependencies to v1.1.34 (2.6) (patch) [c2cgeoportal#10961](https://github.com/camptocamp/c2cgeoportal/pull/10961)
 * Update all patch versions (2.6) (patch) [c2cgeoportal#10962](https://github.com/camptocamp/c2cgeoportal/pull/10962)
