@@ -1,3 +1,5 @@
+##### 2.6.0.239
+* Restrict debug toolbar to the Docker network [c2cgeoportal#10999](https://github.com/camptocamp/c2cgeoportal/pull/10999)
 ##### 2.6.0.238
 * Fix lock [c2cgeoportal#10998](https://github.com/camptocamp/c2cgeoportal/pull/10998)
 ##### 2.6.0.237
