@@ -1,3 +1,7 @@
+##### 2.7.1.61
+
+- [Backport 2.7] Restrict debug toolbar to the Docker network [c2cgeoportal#11001](https://github.com/camptocamp/c2cgeoportal/pull/11001)
+
 ##### 2.7.1.60
 
 - Update dependency camptocamp/c2cciutils to v1.1.36 (2.7) [c2cgeoportal#10997](https://github.com/camptocamp/c2cgeoportal/pull/10997)
