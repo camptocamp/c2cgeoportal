@@ -1,3 +1,7 @@
+##### 2.8.1.69
+
+- [Backport 2.8] Restrict debug toolbar to the Docker network [c2cgeoportal#11002](https://github.com/camptocamp/c2cgeoportal/pull/11002)
+
 ##### 2.8.1.67
 
 - [Backport 2.8] Add support of QGIS 3.34 [c2cgeoportal#10992](https://github.com/camptocamp/c2cgeoportal/pull/10992)
