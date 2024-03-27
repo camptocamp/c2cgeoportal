@@ -193,6 +193,8 @@ ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 ARG MAJOR_MINOR_VERSION
 ENV MAJOR_MINOR_VERSION=$MAJOR_MINOR_VERSION
 
+RUN pip freeze > /requirements.txt
+
 #############################################################################################################
 # Cleaned image used to copy files to the runner
 
@@ -242,8 +244,8 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
-RUN adduser www-data root
-
+RUN adduser www-data root \
+    && pip freeze > /requirements.txt
 # From c2cwsgiutils
 
 ENV C2C_BASE_PATH=/c2c \
