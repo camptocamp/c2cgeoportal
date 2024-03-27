@@ -1,3 +1,7 @@
+##### 2.8.1.71
+
+- Fix custom user [c2cgeoportal#10913](https://github.com/camptocamp/c2cgeoportal/pull/10913)
+
 ##### 2.8.1.70
 
 - Fix some remark [c2cgeoportal#11003](https://github.com/camptocamp/c2cgeoportal/pull/11003)
