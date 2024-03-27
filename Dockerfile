@@ -107,7 +107,8 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
-    python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
+    python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt \
+    && rm --recursive --force /tmp/* /root/.cache/* /usr/local/lib/python3.*/dist-packages/node_vm2
 ENV PATH=/root/.local/bin/:${PATH}
 
 WORKDIR /opt/c2cgeoportal
