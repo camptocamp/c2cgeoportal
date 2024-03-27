@@ -47,7 +47,8 @@ COPY logging.ini /var/www/
 COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
 RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
-    --editable=/opt/c2cgeoportal/commons
+    --editable=/opt/c2cgeoportal/commons \
+    && pip freeze > /requirements.txt
 
 ENV LOG_LEVEL=INFO \
     LOG_TYPE=console \
