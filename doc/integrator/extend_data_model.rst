@@ -14,6 +14,7 @@ add to ``geoportal/<package>_geoportal/models.py``:
 
     from deform.widget import HiddenWidget
     from sqlalchemy import Column, ForeignKey, types
+    from sqlalchemy.orm import backref, relationship
 
     from c2cgeoportal_commons.models.static import User, _schema
 
@@ -91,12 +92,14 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
 
     from c2cgeoportal_admin.schemas.roles import roles_schema_node
     from c2cgeoportal_admin.views.users import UserViews
+    from c2cgeoportal_commons.models.main import Role
+    from c2cgeoportal_commons.models.static import User
 
 
     _list_field = partial(ListField, UserDetail)
 
     base_schema = GeoFormSchemaNode(UserDetail, widget=FormWidget(fields_template="user_fields"))
-    base_schema.add(roles_schema_node("roles"))
+    base_schema.add(roles_schema_node(User.roles))
     base_schema.add_unique_validator(UserDetail.username, UserDetail.id)
 
     settings_role = aliased(Role)
@@ -134,9 +137,9 @@ Now, create a file ``geoportal/<package>_geoportal/admin/views/userdetail.py`` a
                 self._request.dbsession.query(UserDetail)
                 .distinct()
                 .outerjoin(settings_role, settings_role.id == UserDetail.settings_role_id)
-                .outerjoin("roles")
-                .options(subqueryload("settings_role"))
-                .options(subqueryload("roles"))
+                .outerjoin(User.roles)
+                .options(subqueryload(User.settings_role))
+                .options(subqueryload(User.roles))
             )
 
         @view_config(
@@ -312,20 +315,24 @@ Execute the following code:
 
 .. code:: python
 
+   import sqlalchemy
    from c2c.template.config import config
 
-   config.init('/etc/config/config.yaml')
+   import c2cgeoportal_commons.models
+
+   config.init('/etc/geomapfish/config.yaml')
+   engine = sqlalchemy.engine_from_config(config.get_config(), 'sqlalchemy.')
+   c2cgeoportal_commons.models.Base.metadata.bind = engine
 
    from <package>_geoportal.models import Title, UserDetail
    from sqlalchemy.schema import CreateTable
 
-   print(CreateTable(UserDetail.__table__))
    print(CreateTable(Title.__table__))
+   print(CreateTable(UserDetail.__table__))
 
-Run pSQL console:
+If the generated SQL looks good, do in the same Python console to effectively create the tables:
 
-.. prompt:: bash
+.. prompt:: python
 
-   docker-compose exec tools psql
-
-And enter the SQL commands
+   Title.__table__.create()
+   UserDetail.__table__.create()
