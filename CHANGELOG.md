@@ -1,3 +1,7 @@
+##### 2.8.1.70
+
+- Fix some remark [c2cgeoportal#11003](https://github.com/camptocamp/c2cgeoportal/pull/11003)
+
 ##### 2.8.1.69
 
 - [Backport 2.8] Restrict debug toolbar to the Docker network [c2cgeoportal#11002](https://github.com/camptocamp/c2cgeoportal/pull/11002)
