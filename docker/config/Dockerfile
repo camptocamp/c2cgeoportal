@@ -25,7 +25,7 @@ COPY poetry.lock pyproject.toml ./
 RUN poetry export --output=requirements.txt
 
 # Base, the biggest thing is to install the Python packages
-FROM base-all as builder
+FROM base-all as runner
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
@@ -37,7 +37,8 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && apt-get update \
     && apt-get install --assume-yes --no-install-recommends binutils \
     && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
-    && apt-get auto-remove --assume-yes binutils
+    && apt-get auto-remove --assume-yes binutils \
+    && pip freeze > /requirements.txt
 
 ARG VERSION
 ENV VERSION=$VERSION
