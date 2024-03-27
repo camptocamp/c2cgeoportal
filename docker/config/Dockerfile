@@ -25,14 +25,15 @@ COPY poetry.lock pyproject.toml ./
 RUN poetry export --output=requirements.txt
 
 # Base, the biggest thing is to install the Python packages
-FROM base-all as builder
+FROM base-all as runner
 
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     python3 -m pip install \
     --use-deprecated=legacy-resolver \
     --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && (strip /usr/local/lib/python3.*/dist-packages/*/*.so || true)
+    && (strip /usr/local/lib/python3.*/dist-packages/*/*.so || true) \
+    && pip freeze > /requirements.txt
 
 ARG VERSION
 ENV VERSION=$VERSION
