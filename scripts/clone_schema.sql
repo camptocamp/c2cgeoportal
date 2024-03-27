@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE FUNCTION clone_schema(
+CREATE OR REPLACE FUNCTION clone_schema(
     source_schema text,
     dest_schema text,
     include_recs boolean)
