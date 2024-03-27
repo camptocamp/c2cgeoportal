@@ -1,3 +1,7 @@
+##### 2.7.1.62
+
+- Add requirement.txt with all installed packages [c2cgeoportal#11007](https://github.com/camptocamp/c2cgeoportal/pull/11007)
+
 ##### 2.7.1.61
 
 - [Backport 2.7] Restrict debug toolbar to the Docker network [c2cgeoportal#11001](https://github.com/camptocamp/c2cgeoportal/pull/11001)
