@@ -1,3 +1,7 @@
+##### 2.8.1.72
+
+- [Backport 2.8] Add requirement.txt with all installed packages [c2cgeoportal#11010](https://github.com/camptocamp/c2cgeoportal/pull/11010)
+
 ##### 2.8.1.71
 
 - Fix custom user [c2cgeoportal#10913](https://github.com/camptocamp/c2cgeoportal/pull/10913)
