@@ -46,6 +46,7 @@
 add to <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">HiddenWidget</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">backref</span><span class="p">,</span> <span class="n">relationship</span>
 
 <span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">_schema</span>
 
@@ -121,12 +122,14 @@ For this, first ensure that the following files exist (if needed, create them as
 
 <span class="kn">from</span> <span class="nn">c2cgeoportal_admin.schemas.roles</span> <span class="kn">import</span> <span class="n">roles_schema_node</span>
 <span class="kn">from</span> <span class="nn">c2cgeoportal_admin.views.users</span> <span class="kn">import</span> <span class="n">UserViews</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="kn">import</span> <span class="n">Role</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span>
 
 
 <span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">)</span>
 
 <span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">FormWidget</span><span class="p">(</span><span class="n">fields_template</span><span class="o">=</span><span class="s2">&quot;user_fields&quot;</span><span class="p">))</span>
-<span class="n">base_schema</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">roles_schema_node</span><span class="p">(</span><span class="s2">&quot;roles&quot;</span><span class="p">))</span>
+<span class="n">base_schema</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">roles_schema_node</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
 <span class="n">base_schema</span><span class="o">.</span><span class="n">add_unique_validator</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
 <span class="n">settings_role</span> <span class="o">=</span> <span class="n">aliased</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span>
@@ -164,9 +167,9 @@ For this, first ensure that the following files exist (if needed, create them as
             <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="o">.</span><span class="n">dbsession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">)</span>
             <span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
             <span class="o">.</span><span class="n">outerjoin</span><span class="p">(</span><span class="n">settings_role</span><span class="p">,</span> <span class="n">settings_role</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">settings_role_id</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">outerjoin</span><span class="p">(</span><span class="s2">&quot;roles&quot;</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="s2">&quot;settings_role&quot;</span><span class="p">))</span>
-            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="s2">&quot;roles&quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">outerjoin</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">roles</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">settings_role</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
         <span class="p">)</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -329,21 +332,30 @@ span.prompt1:before {
 <p>Run Python console:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>python3</span>
 </pre></div></div><p>Execute the following code:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2c.template.config</span> <span class="kn">import</span> <span class="n">config</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="kn">from</span> <span class="nn">c2c.template.config</span> <span class="kn">import</span> <span class="n">config</span>
 
-<span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/etc/config/config.yaml&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">c2cgeoportal_commons.models</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/etc/geomapfish/config.yaml&#39;</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">engine_from_config</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">(),</span> <span class="s1">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
+<span class="n">c2cgeoportal_commons</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
 
 <span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span><span class="o">,</span> <span class="nn">UserDetail</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="kn">import</span> <span class="n">CreateTable</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Run pSQL console:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>psql</span>
-</pre></div></div><p>And enter the SQL commands</p>
-</section>
+<p>If the generated SQL looks good, do in the same Python console to effectively create the tables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt2:before {
+  content: " ";
+}
+</style><span class="prompt2"><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></span>
+<span class="prompt2"><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></span>
+</pre></div></div></section>
 
 
           </div>
