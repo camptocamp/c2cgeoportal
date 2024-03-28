@@ -1,3 +1,7 @@
+##### 2.7.1.65
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240328T081921Z.685dea7d9.2.7 (2.7) [c2cgeoportal#11012](https://github.com/camptocamp/c2cgeoportal/pull/11012)
+
 ##### 2.7.1.64
 
 - Add missing @ngInject [ngeo#9314](https://github.com/camptocamp/ngeo/pull/9314)
