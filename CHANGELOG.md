@@ -1,3 +1,8 @@
+##### 2.8.1.73
+
+- Update CI dependencies to v1.4.16 (2.8) (patch) [ngeo#9311](https://github.com/camptocamp/ngeo/pull/9311)
+- [Backport 2.8] Add missing @ngInject [ngeo#9316](https://github.com/camptocamp/ngeo/pull/9316)
+
 ##### 2.8.1.72
 
 - [Backport 2.8] Add requirement.txt with all installed packages [c2cgeoportal#11010](https://github.com/camptocamp/c2cgeoportal/pull/11010)
