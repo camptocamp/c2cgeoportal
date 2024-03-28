@@ -1,3 +1,7 @@
+##### 2.7.1.64
+
+- Add missing @ngInject [ngeo#9314](https://github.com/camptocamp/ngeo/pull/9314)
+
 ##### 2.7.1.62
 
 - Add requirement.txt with all installed packages [c2cgeoportal#11007](https://github.com/camptocamp/c2cgeoportal/pull/11007)
