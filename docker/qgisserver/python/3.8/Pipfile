@@ -47,15 +47,15 @@ wrapt = "==1.13.3"
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
-types-pyyaml = "==6.0.12.12"
+types-pyyaml = "==6.0.12.20240311"
 
 # Lock dependencies
 astroid = "==2.9.3"
-bandit = "==1.7.7"
+bandit = "==1.7.8"
 dodgy = "==0.2.1"
 flake8-polyfill = "==1.0.2"
 gitdb = "==4.0.11"
-gitpython = "==3.1.42"
+gitpython = "==3.1.43"
 isort = "==5.10.1"
 lazy-object-proxy = "==1.7.1"
 mccabe = "==0.6.1"
