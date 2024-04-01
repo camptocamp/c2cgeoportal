@@ -43,18 +43,18 @@ repos:
       - id: check-symlinks
       - id: fix-byte-order-marker
   - repo: https://github.com/sbrunner/hooks
-    rev: 0.7.0
+    rev: 1.0.0
     hooks:
       - id: copyright
       - id: workflows-require-timeout
       - id: poetry-check
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==1.8.1 # pypi
+          - poetry==1.8.2 # pypi
       - id: poetry-lock
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==1.8.1 # pypi
+          - poetry==1.8.2 # pypi
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
@@ -84,7 +84,7 @@ repos:
             |^CHANGELOG\.md$
           )
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.9.0.6
+    rev: v0.10.0.1
     hooks:
       - id: shellcheck
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
@@ -92,7 +92,7 @@ repos:
     hooks:
       - id: git-check
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.0
+    rev: 0.28.1
     hooks:
       - id: check-github-workflows
       - id: check-renovate
@@ -117,7 +117,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.1
+    rev: v3.15.2
     hooks:
       # The script that will run on the project host
       - id: pyupgrade
@@ -142,7 +142,7 @@ repos:
             |upgrade)
           )$
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.3.0
+    rev: v2.3.1
     hooks:
       - id: autoflake
   - repo: https://github.com/PyCQA/isort
@@ -150,7 +150,7 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 24.2.0
+    rev: 24.3.0
     hooks:
       - id: black
         exclude: |-
@@ -169,7 +169,7 @@ repos:
           - --die-on-tool-error
           - --output-format=pylint
         additional_dependencies:
-          - prospector-profile-duplicated==1.1.0 # pypi
+          - prospector-profile-duplicated==1.2.0 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 0.1.0
     hooks:
