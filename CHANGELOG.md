@@ -1,3 +1,5 @@
+##### 2.6.0.240
+* Update all patch versions (2.6) (patch) [c2cgeoportal#11021](https://github.com/camptocamp/c2cgeoportal/pull/11021)
 ##### 2.6.0.239
 * Restrict debug toolbar to the Docker network [c2cgeoportal#10999](https://github.com/camptocamp/c2cgeoportal/pull/10999)
 ##### 2.6.0.238
