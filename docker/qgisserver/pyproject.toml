@@ -41,4 +41,4 @@ pytz = "2024.1"
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.3" }
 # pylint = "2.15.5"
 types-pyyaml = "6.0.12.12"
-pytest = "8.0.2"
+pytest = "8.1.1"
