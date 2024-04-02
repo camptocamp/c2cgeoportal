@@ -43,6 +43,7 @@ importlib-metadata = "==5.0.0"
 setuptools = "==65.5.1"
 six = "==1.16.0"
 zipp = "==3.9.1"
+pillow = "==10.3.0"
 
 [requires]
 python_version = "3.8"
