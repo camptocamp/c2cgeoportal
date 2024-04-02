@@ -1429,13 +1429,13 @@ docs = ["Sphinx (>=1.3.1)", "docutils", "pylons-sphinx-themes"]
 
 [[package]]
 name = "types-pyyaml"
-version = "6.0.12.12"
+version = "6.0.12.20240311"
 description = "Typing stubs for PyYAML"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "types-PyYAML-6.0.12.12.tar.gz", hash = "sha256:334373d392fde0fdf95af5c3f1661885fa10c52167b14593eb856289e1855062"},
-    {file = "types_PyYAML-6.0.12.12-py3-none-any.whl", hash = "sha256:c05bc6c158facb0676674b7f11fe3960db4f389718e19e62bd2b84d6205cfd24"},
+    {file = "types-PyYAML-6.0.12.20240311.tar.gz", hash = "sha256:a9e0f0f88dc835739b0c1ca51ee90d04ca2a897a71af79de9aec5f38cb0a5342"},
+    {file = "types_PyYAML-6.0.12.20240311-py3-none-any.whl", hash = "sha256:b845b06a1c7e54b8e5b4c683043de0d9caf205e7434b3edc678ff2411979b8f6"},
 ]
 
 [[package]]
@@ -1674,4 +1674,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "cad6fff33a0dc30a2a348aae7440c004cf42f9ec98ef1b41854694aaefb340f4"
+content-hash = "22e44684206653b5fe24967d9a05b1a207c8cc236fdabf6f64e8cc4483918d41"
