@@ -59,7 +59,7 @@ setuptools = "67.1.0"
 pygments = "2.15.1"
 cryptography = "42.0.5"
 gitpython = "3.1.42"
-pillow = "10.2.0"
+pillow = "10.3.0"
 urllib3 = "1.26.18"
 bandit = "1.7.7"
 
