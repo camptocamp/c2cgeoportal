@@ -199,5 +199,11 @@
       schedule: 'after 5am',
       groupName: 'Ngeo',
     },
+    /** No Alabaster update on 2.7 */
+    {
+      matchPackageNames: ['alabaster'],
+      matchBaseBranches: ['2.7'],
+      enabled: false,
+    },
   ],
 }
