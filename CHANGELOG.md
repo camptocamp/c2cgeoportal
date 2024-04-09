@@ -1,3 +1,7 @@
+##### 2.7.1.69
+
+- Fix lock [c2cgeoportal#11032](https://github.com/camptocamp/c2cgeoportal/pull/11032)
+
 ##### 2.7.1.68
 
 - Snyk auto fix [c2cgeoportal#11028](https://github.com/camptocamp/c2cgeoportal/pull/11028)
