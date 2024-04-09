@@ -1,3 +1,7 @@
+##### 2.8.1.78
+
+- Fix CVE [c2cgeoportal#11033](https://github.com/camptocamp/c2cgeoportal/pull/11033)
+
 ##### 2.8.1.77
 
 - Update all patch versions (2.8) (patch) [c2cgeoportal#11023](https://github.com/camptocamp/c2cgeoportal/pull/11023)
