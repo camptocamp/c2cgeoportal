@@ -1,23 +1,16 @@
-strictness: veryhigh
-max-line-length: 110
-
-pylint:
-  disable:
-    - too-many-arguments
+inherits:
+  - duplicated
+  - utils:base
+  - utils:fix
+  - utils:no-design-checks
 
 pycodestyle:
   disable:
-    - N802 # function name should be lowercase, done by Pylint
     - N803 # argument name should be lowercase, done by Pylint
-    - N806 # variable in function should be lowercase, done by Pylint
 
-mccabe:
-  run: false
-
-mypy:
-  run: true
+pyroma:
+  run: False
 
 bandit:
-  run: true
   options:
     config: .bandit.yaml

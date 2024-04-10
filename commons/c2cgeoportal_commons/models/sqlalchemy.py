@@ -33,7 +33,7 @@ from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
 
 # get from https://docs.sqlalchemy.org/en/latest/orm/extensions/
 # mutable.html#establishing-mutability-on-scalar-column-values
-class JSONEncodedDict(TypeDecorator[Any]):  # pylint: disable=too-many-ancestors
+class JSONEncodedDict(TypeDecorator[Any]):
     """Represent an immutable structure as a json-encoded string."""
 
     impl = VARCHAR

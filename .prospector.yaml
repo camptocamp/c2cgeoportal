@@ -1,8 +1,8 @@
 inherits:
   - duplicated
-strictness: veryhigh
-max-line-length: 110
-doc-warnings: true
+  - utils:base
+  - utils:fix
+  - utils:no-design-checks
 
 ignore-paths:
   - commons/setup.py
@@ -10,10 +10,6 @@ ignore-paths:
   - admin/setup.py
   - geoportal/c2cgeoportal_geoportal/scaffolds
   - docker/qgisserver
-
-pycodestyle:
-  disable:
-    - E722 # Do not use bare 'except'
 
 pydocstyle:
   disable:
@@ -27,23 +23,7 @@ pydocstyle:
     - D212 # Multi-line docstring summary should start at the first line
     - D407 # Missing dashed underline after section ('Arguments')
     - D412 # No blank lines allowed between a section header and its content ('Arguments')
-pylint:
-  options:
-    extension-pkg-allow-list:
-      - 'lxml'
-  disable:
-    - missing-module-docstring
-    - missing-function-docstring
-    - missing-timeout # Default timeout set by c2cwsgiutils
-
-pyflakes: {}
-mypy:
-  run: true
 
 bandit:
-  run: true
   options:
     config: .bandit.yaml
-
-mccabe:
-  run: false

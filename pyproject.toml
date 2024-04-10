@@ -73,7 +73,7 @@ oauthlib = "3.2.2"
 tilecloud = "1.11.0" # geoportal
 azure-storage-blob = "12.19.1"
 basicauth = "1.0.0"
-prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.3" }
+prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.10.3" }
 # pylint = "2.15.5"
 setuptools = "69.2.0"
 
@@ -102,3 +102,4 @@ waitress = "2.1.2"
 
 [tool.poetry.group.dev.dependencies]
 prospector-profile-duplicated = "1.4.0"
+prospector-profile-utils  = "1.7.2"

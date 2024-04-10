@@ -875,7 +875,7 @@ class Theme:
 
     async def _wfs_get_features_type(
         self, wfs_url: Url, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
-    ) -> tuple[Optional[etree.Element], set[str]]:
+    ) -> tuple[Optional[etree.Element], set[str]]:  # pylint: disable=c-extension-no-member
         errors = set()
 
         wfs_url.add_query(

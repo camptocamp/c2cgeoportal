@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023, Camptocamp SA
+# Copyright (c) 2014-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -254,6 +254,7 @@ class C2cUpgradeTool:
                 self.project["checker_url"],
                 headers=self.project.get("checker_headers"),
                 verify=False,  # nosec
+                timeout=120,
             )
         except requests.exceptions.ConnectionError as exception:
             return False, "\n".join([f"Connection error: {exception}", run_curl])
