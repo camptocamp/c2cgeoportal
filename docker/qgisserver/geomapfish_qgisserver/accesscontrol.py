@@ -80,8 +80,11 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
             c2cwsgiutils.broadcast.init()
 
+            configuration = config.get_config()
+            assert configuration is not None
+
             DBSession = create_session_factory(  # pylint: disable=invalid-name
-                config.get("sqlalchemy_slave.url"), config.get_config().get("sqlalchemy", {})
+                config.get("sqlalchemy_slave.url"), configuration.get("sqlalchemy", {})
             )
 
             if "GEOMAPFISH_OGCSERVER" in os.environ:
@@ -126,7 +129,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                             ogcserver.url,
                             None,
                             errors,
-                            config.get_config().get("servers", {}),
+                            configuration.get("servers", {}),
                         )
 
                         if errors:
