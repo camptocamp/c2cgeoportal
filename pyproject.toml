@@ -30,7 +30,7 @@ authors = []
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
 alembic = "1.13.1" # geoportal
-"c2c.template" = "2.3.0" # geoportal
+"c2c.template" = "2.4.1" # geoportal
 c2cgeoform = "2.2.5" # commons
 colander = "2.0" # commons, admin
 ColanderAlchemy = "0.3.4" # commons
@@ -100,4 +100,4 @@ responses = "0.25.0"
 waitress = "2.1.2"
 
 [tool.poetry.group.dev.dependencies]
-prospector-profile-duplicated = "1.2.0"
+prospector-profile-duplicated = "1.4.0"

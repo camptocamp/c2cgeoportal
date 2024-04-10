@@ -27,7 +27,7 @@ python = ">=3.9,<3.11"
 c2cwsgiutils = { extras = ["broadcast"], version = "6.0.7" }
 papyrus = "2.5" # commons
 transaction = "4.0" # commons
-"c2c.template" = "2.3.0"
+"c2c.template" = "2.4.1"
 GeoAlchemy2 = "0.14.7"
 SQLAlchemy = "2.0.29" # commons
 "zope.event" = "5.0" # commons
