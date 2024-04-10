@@ -39,6 +39,7 @@ pytz = "2024.1"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.3" }
-# pylint = "2.15.5"
+prospector-profile-duplicated = "1.4.0"
+prospector-profile-utils  = "1.7.2"
 types-pyyaml = "6.0.12.20240311"
 pytest = "8.1.1"

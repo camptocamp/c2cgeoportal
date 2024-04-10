@@ -248,7 +248,8 @@ class OGCServerViews(LoggedViews[OGCServer]):
                         _query={
                             "came_from": self._request.current_route_url(),
                         },
-                    )
+                    ),
+                    timeout=60,
                 )
                 if not response.ok:
                     LOG.error("Error while cleaning the OGC server cache:\n%s", response.text)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,6 +53,8 @@ setup(
     version=VERSION,
     description="c2cgeoportal geoportal",
     long_description=README,
+    long_description_content_type="text/markdown",
+    python_requires=">=3.10",
     classifiers=[
         "Development Status :: 6 - Mature",
         "Environment :: Web Environment",
@@ -62,7 +64,7 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering :: GIS",
         "Typing :: Typed",
     ],

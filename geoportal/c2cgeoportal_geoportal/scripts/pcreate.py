@@ -277,18 +277,20 @@ class PCreateCommand:
     @staticmethod
     def epsg2bbox(srid: int) -> Optional[list[str]]:
         try:
-            r = requests.get(f"https://epsg.io/?format=json&q={srid}")
+            r = requests.get(f"https://epsg.io/?format=json&q={srid}", timeout=60)
             bbox = r.json()["results"][0]["bbox"]
             r = requests.get(
                 "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}".format(
                     srid=srid, bbox=bbox
-                )
+                ),
+                timeout=60,
             )
             r1 = r.json()[0]
             r = requests.get(
                 "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}".format(
                     srid=srid, bbox=bbox
-                )
+                ),
+                timeout=60,
             )
             r2 = r.json()[0]
             return [r1["x"], r2["y"], r2["x"], r1["y"]]

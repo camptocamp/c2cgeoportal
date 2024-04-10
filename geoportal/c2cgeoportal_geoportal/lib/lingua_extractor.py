@@ -782,7 +782,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     ]
                 )
                 print(f"Get WMS GetCapabilities for URL {wms_getcap_url},\nwith headers: {rendered_headers}")
-                response = requests.get(wms_getcap_url, headers=headers, **kwargs)
+                response = requests.get(wms_getcap_url, headers=headers, timeout=60, **kwargs)
 
                 if response.ok:
                     try:
@@ -848,7 +848,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 .url()
             )
             try:
-                response = requests.get(wfs_describe_feature_url, headers=headers, **kwargs)
+                response = requests.get(wfs_describe_feature_url, headers=headers, timeout=60, **kwargs)
             except Exception as e:
                 print(colorize(str(e), Color.RED))
                 print(
