@@ -1,3 +1,9 @@
+##### 2.8.1.79
+
+- Add debug image to be able to debug QGIS [c2cgeoportal#11035](https://github.com/camptocamp/c2cgeoportal/pull/11035)
+- Update dependency @types/jqueryui to v1.12.22 (2.8) [ngeo#9322](https://github.com/camptocamp/ngeo/pull/9322)
+- [Backport 2.8] Fix WMTS opacity from permalink [ngeo#9327](https://github.com/camptocamp/ngeo/pull/9327)
+
 ##### 2.8.1.78
 
 - Fix CVE [c2cgeoportal#11033](https://github.com/camptocamp/c2cgeoportal/pull/11033)
