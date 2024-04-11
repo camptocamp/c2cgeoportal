@@ -1,3 +1,8 @@
+##### 2.7.1.71
+
+- Update all patch versions (2.7) (patch) [ngeo#9321](https://github.com/camptocamp/ngeo/pull/9321)
+- Fix WMTS opacity from permalink [ngeo#9325](https://github.com/camptocamp/ngeo/pull/9325)
+
 ##### 2.7.1.69
 
 - Fix lock [c2cgeoportal#11032](https://github.com/camptocamp/c2cgeoportal/pull/11032)
