@@ -51,6 +51,7 @@ jobs:
           - 3.34-gdal3.8
           - ltr
           - lr
+          - lr-debug
           - master
 
     steps:
