@@ -303,6 +303,9 @@ vars:
         host: '{REDIS_HOST}'
         port: '{REDIS_PORT}'
         db: '{REDIS_DB}'
+        password: '{REDIS_PASSWORD}'
+        connection_kwargs:
+          ssl: '{REDIS_SSL}'
       # Kubernetes version
       # arguments: &redis-cache-arguments
       #   sentinels:
@@ -417,3 +420,7 @@ runtime_postprocess:
   - expression: int({})
     vars:
       - cache.std.arguments.port
+  - expression: str({}).lower() in ("true", "yes", "1")
+    vars:
+      - cache.std.arguments.connection_kwargs.ssl
+      - cache.ogc-server.arguments.connection_kwargs.ssl
