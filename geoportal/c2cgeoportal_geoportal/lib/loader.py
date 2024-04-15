@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023, Camptocamp SA
+# Copyright (c) 2019-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -44,8 +44,10 @@ class Loader(BaseLoader):
         self, name: Optional[str] = None, defaults: Optional[dict[str, str]] = None
     ) -> dict[str, Any]:
         settings = cast(dict[str, Any], super().get_wsgi_app_settings(name, defaults))
-        configuration.init(settings.get("app.cfg"))
-        settings.update(configuration.get_config())
+        app_cfg = settings.get("app.cfg")
+        if app_cfg is not None:
+            configuration.init(app_cfg)
+        settings.update(configuration.get_config())  # type: ignore[arg-type]
         if "available_locale_names" not in settings:
             settings["available_locale_names"] = available_locale_names()
         return settings

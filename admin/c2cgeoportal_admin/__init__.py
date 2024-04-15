@@ -52,8 +52,12 @@ _ = TranslationStringFactory("c2cgeoportal_admin")
 
 def main(_, **settings):
     """Return a Pyramid WSGI application."""
-    configuration.init(settings.get("app.cfg"))
-    settings.update(configuration.get_config())
+    app_cfg = settings.get("app.cfg")
+    assert app_cfg is not None
+    configuration.init(app_cfg)
+    conf = configuration.get_config()
+    assert conf is not None
+    settings.update(conf)
 
     config = Configurator(settings=settings)
 

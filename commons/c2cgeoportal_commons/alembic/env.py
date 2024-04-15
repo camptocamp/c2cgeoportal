@@ -47,9 +47,13 @@ setup_logging(context.config.config_file_name)
 
 def get_config() -> dict[str, Union[str, bool]]:
     """Get the application configuration."""
-    config.init(context.config.get_main_option("app.cfg"))
+    app_cfg = context.config.get_main_option("app.cfg")
+    assert app_cfg is not None
+    config.init(app_cfg)
+    conf = config.get_config()
+    assert conf is not None
     settings: dict[str, Union[str, bool]] = {}
-    settings.update(config.get_config())
+    settings.update(conf)
     alembic_name = context.config.get_main_option("type")
     schema_postfix = f"_{alembic_name}" if alembic_name != "main" else ""
     schema_config_name = f"schema{schema_postfix}"
