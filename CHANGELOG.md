@@ -1,3 +1,5 @@
+##### 2.6.0.243
+* Fix CVE [c2cgeoportal#11047](https://github.com/camptocamp/c2cgeoportal/pull/11047)
 ##### 2.6.0.242
 * Fix lock [c2cgeoportal#11046](https://github.com/camptocamp/c2cgeoportal/pull/11046)
 ##### 2.6.0.241
