@@ -1,3 +1,5 @@
+##### 2.6.0.244
+* Ignore setuptools CVE [c2cgeoportal#11048](https://github.com/camptocamp/c2cgeoportal/pull/11048)
 ##### 2.6.0.243
 * Fix CVE [c2cgeoportal#11047](https://github.com/camptocamp/c2cgeoportal/pull/11047)
 ##### 2.6.0.242
