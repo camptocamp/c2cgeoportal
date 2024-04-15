@@ -1091,7 +1091,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
   ubuntu_22_04/net-tools: 1.60+git20181103.0eebece-1ubuntu5
   ubuntu_22_04/netbase: '6.3'
-  ubuntu_22_04/nodejs: 20.10.0-1nodesource1
+  ubuntu_22_04/nodejs: 18.20.2-1nodesource1
   ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.1
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.3
@@ -1436,7 +1436,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/mount: 2.37.2-4ubuntu3
   ubuntu_22_04/ncurses-base: 6.3-2ubuntu0.1
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
-  ubuntu_22_04/nodejs: 20.10.0-1nodesource1
+  ubuntu_22_04/nodejs: 18.20.2-1nodesource1
   ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.1
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.3
@@ -1757,7 +1757,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/mount: 2.37.2-4ubuntu3
   ubuntu_22_04/ncurses-base: 6.3-2ubuntu0.1
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
-  ubuntu_22_04/nodejs: 20.10.0-1nodesource1
+  ubuntu_22_04/nodejs: 18.20.2-1nodesource1
   ubuntu_22_04/openssl: 3.0.2-0ubuntu1.12
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.1
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.3
