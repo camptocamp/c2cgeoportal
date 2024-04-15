@@ -2,7 +2,7 @@ alembic
 bottle
 c2cgeoportal_commons[upgrade]
 c2cwsgiutils
-c2c.template>=2.4.1  # Makefile
+#c2c.template>=2.4.1  # Makefile
 defusedxml
 dogpile.cache>=0.6
 Fiona

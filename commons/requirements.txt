@@ -1,4 +1,4 @@
-c2c.template
+#c2c.template
 GeoAlchemy2
 papyrus
 pyramid
