@@ -97,7 +97,9 @@ _schema: str = config["schema"] or "main"
 _srid: int = cast(int, config["srid"]) or 3857
 
 # Set some default values for the admin interface
-_admin_config: dict[str, Any] = config.get_config().get("admin_interface", {})
+conf = config.get_config()
+assert conf is not None
+_admin_config: dict[str, Any] = conf.get("admin_interface", {})
 _map_config: dict[str, Any] = {**default_map_settings, **_admin_config.get("map", {})}
 view_srid_match = re.match(r"EPSG:(\d+)", _map_config["view"]["projection"])
 if "map_srid" not in _admin_config and view_srid_match is not None:

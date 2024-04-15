@@ -135,9 +135,11 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
         super().__init__()
         if os.path.exists("/etc/geomapfish/config.yaml"):
             config.init("/etc/geomapfish/config.yaml")
-            self.config = config.get_config()
+            conf = config.get_config()
+            assert conf is not None
+            self.config = conf
         else:
-            self.config = None
+            self.config = {}
         self.tpl = None
 
     @staticmethod
@@ -311,6 +313,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     def _collect_app_config(self, filename: str) -> list[Message]:
         config.init(filename)
         settings = config.get_config()
+        assert settings is not None
         assert not [
             raster_layer for raster_layer in list(settings.get("raster", {}).keys()) if raster_layer is None
         ]
@@ -457,9 +460,11 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         super().__init__()
         if os.path.exists("/etc/geomapfish/config.yaml"):
             config.init("/etc/geomapfish/config.yaml")
-            self.config = config.get_config()
+            conf = config.get_config()
+            assert conf is not None
+            self.config = conf
         else:
-            self.config = None
+            self.config = {}
         self.env = None
 
     def __call__(
