@@ -228,6 +228,13 @@ jobs:
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
 
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Update dpkg versions list.patch
+          path: /tmp/dpkg-versions.patch
+          retention-days: 1
+        if: failure()
       - name: Notify demo
         run: >
           curl --request POST --header "Content-Type: application/json"
