@@ -127,6 +127,10 @@ publish:
         tags:
           - gmf{version}-qgislr
       - name: camptocamp/geomapfish-qgisserver
+        group: qgis-lr-debug
+        tags:
+          - gmf{version}-qgislr-debug
+      - name: camptocamp/geomapfish-qgisserver
         group: qgis-mater
         tags:
           - gmf{version}-qgismaster
