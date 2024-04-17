@@ -71,13 +71,13 @@ jobs:
       - run: pre-commit run --all-files
       - run: git diff --exit-code --patch > /tmp/pre-commit.patch || true
         if: failure()
-
       - uses: actions/upload-artifact@v4
         with:
           name: Apply pre-commit fix.patch
           path: /tmp/pre-commit.patch
           retention-days: 1
         if: failure()
+
       - name: Environment information
         run: c2cciutils-env
 
@@ -227,7 +227,6 @@ jobs:
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
-
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
       - uses: actions/upload-artifact@v4
         with:
@@ -235,6 +234,7 @@ jobs:
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
+
       - name: Notify demo
         run: >
           curl --request POST --header "Content-Type: application/json"
