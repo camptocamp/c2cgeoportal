@@ -1334,6 +1334,10 @@ runtime_environment:
     default: '30'
   - name: REDIS_LOCK_TIMEOUT
     default: '120' # Two minutes
+  - name: REDIS_PASSWORD
+    default: ''
+  - name: REDIS_SSL
+    default: 'false'
   - name: REDIS_EXPIRATION_TIME
     default: '86400' # One day
   - name: TILEGENERATION_SQS_QUEUE
