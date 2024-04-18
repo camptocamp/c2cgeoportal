@@ -1211,6 +1211,46 @@ layer_ra = Table(
 )
 
 
+class LayerCOG(Layer):
+    """The Cloud Optimized GeoTIFF layer table representation."""
+
+    __tablename__ = "layer_cog"
+    __table_args__ = {"schema": _schema}
+    __colanderalchemy_config__ = {
+        "title": _("COG Layer"),
+        "plural": _("COG Layers"),
+        "description": c2cgeoportal_commons.lib.literal.Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>Definition of a <code>COG Layer</code>.</p>
+            </div>
+                """
+            )
+        ),
+    }
+    __c2cgeoform_config__ = {"duplicate": True}
+    __mapper_args__ = {"polymorphic_identity": "l_cog"}  # type: ignore[dict-item]
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey(_schema + ".layer.id"),
+        primary_key=True,
+        info={"colanderalchemy": {"missing": None, "widget": HiddenWidget()}},
+    )
+    url: Mapped[str] = mapped_column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("URL"),
+                "description": _("The URL to the COG."),
+                "column": 2,
+            }
+        },
+    )
+
+
 class LayerVectorTiles(DimensionLayer):
     """The layer_vectortiles table representation."""
 
