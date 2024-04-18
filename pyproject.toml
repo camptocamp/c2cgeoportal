@@ -63,6 +63,7 @@ pillow = "10.3.0"
 urllib3 = "1.26.18"
 bandit = "1.7.8"
 idna = "3.7"
+gunicorn = "22.0.0"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.11.0" # i18n
