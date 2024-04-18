@@ -80,6 +80,9 @@ jobs:
 
       - name: Environment information
         run: c2cciutils-env
+        env:
+          # To display the content of the github object
+          GITHUB_EVENT: ${{ toJson(github) }}
 
       - run: python3 -m pip install --user --requirement=requirements.txt
 
@@ -90,14 +93,43 @@ jobs:
         if: always()
       - run: make build-config
 
-        # Build and lint QGIS images
+      # Build and lint QGIS images
       - run: QGIS_VERSION=3.34-gdal3.8 make build-qgisserver
       - run: QGIS_VERSION=3.34-gdal3.8 make prospector-qgisserver
 
-        # Tests
       - run: make preparetest
-      - run: c2cciutils-docker-logs
+
+      # Auto generate Alembic script
+      - run: |
+          docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main check \
+            || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
+            revision --autogenerate --message='${{ github.event.pull_request.title }}'
+          docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static check \
+            || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
+            revision --autogenerate --message='${{ github.event.pull_request.title }}'
+          sudo chmod go+rw -R commons/c2cgeoportal_commons/alembic/
+          # Replace 'main' by schema and 'main. by f'{schema}.
+          sed -i "s/'main'/schema/g" commons/c2cgeoportal_commons/alembic/*/*.py
+          sed -i "s/'main\.'/f'{schema}./g" commons/c2cgeoportal_commons/alembic/*/*.py
+          # Replace 'main_static' by staticschema and 'main_static. by f'{staticschema}.
+          sed -i "s/'main_static'/staticschema/g" commons/c2cgeoportal_commons/alembic/*/*.py
+          sed -i "s/'main_static\.'/f'{staticschema}./g" commons/c2cgeoportal_commons/alembic/*/*.py
+          git checkout commons/c2cgeoportal_commons/alembic/main/ee25d267bf46_main_interface_desktop.py
+          git checkout commons/c2cgeoportal_commons/alembic/main/415746eb9f6_changes_for_v2.py
+          git add commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py
+          pre-commit run --files commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py || true
+          git add commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py
+          git diff --staged --patch > /tmp/alembic.patch
+          git diff --staged --exit-code
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Add Alembic upgrade script.patch
+          path: /tmp/alembic.patch
+          retention-days: 1
         if: failure()
+
+      # Tests
+      - run: c2cciutils-docker-logs
       - run: make tests-commons
       - run: c2cciutils-docker-logs
       - run: make tests-geoportal
@@ -105,7 +137,6 @@ jobs:
       - run: make tests-admin
       - run: c2cciutils-docker-logs
       - run: make tests-qgisserver
-      - run: c2cciutils-docker-logs
       - run: c2cciutils-docker-logs
         if: always()
       - run: docker compose down

@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023, Camptocamp SA
+# Copyright (c) 2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,7 @@ Create Date: ${create_date}
 """
 
 from alembic import op
+import sqlalchemy as sa
 from c2c.template.config import config
 
 # revision identifiers, used by Alembic.
