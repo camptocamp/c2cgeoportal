@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023, Camptocamp SA
+# Copyright (c) 2020-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -124,6 +124,7 @@ class TestGeomapfishThemeExtractor:
         del transact
 
         fts = main.FullTextSearch()
+        fts.label = "label"
         fts.layer_name = "some_layer_name"
         fts.actions = [{"action": "add_layer", "data": "another_layer_name"}]
         dbsession.add(fts)

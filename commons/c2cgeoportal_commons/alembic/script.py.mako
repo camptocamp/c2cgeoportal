@@ -36,6 +36,7 @@ Create Date: ${create_date}
 from alembic import op
 import sqlalchemy as sa
 from c2c.template.config import config
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = ${repr(up_revision)}
