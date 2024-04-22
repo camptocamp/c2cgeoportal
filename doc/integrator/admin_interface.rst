@@ -10,6 +10,13 @@ Configure the admin interface
 You can activate or deactivate (tabs, modules, models or tables) in administration interface using configuration key ``exclude_pages`` and ``include_pages``.
 
 
+Defaults values
+---------------
+
+You can define the default values used for creating new layer by creating a layer with the name:
+``wms-defaults``, ``wmts-defaults``, ``vector-tiles-defaults`` or ``cog-defaults``.
+
+
 Include and excludes tabs
 -------------------------
 

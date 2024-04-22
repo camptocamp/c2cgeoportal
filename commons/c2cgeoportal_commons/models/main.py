@@ -1244,11 +1244,31 @@ class LayerCOG(Layer):
         info={
             "colanderalchemy": {
                 "title": _("URL"),
-                "description": _("The URL to the COG."),
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        """
+            <div class="help-block">
+                <p>Definition of a <code>COG Layer</code>.</p>
+                <p>Note: The layers named <code>cog-defaults</code> contains the values
+                used when we create a new <code>COG layer</code>.</p>
+                <hr>
+            </div>
+                """
+                    )
+                ),
                 "column": 2,
             }
         },
     )
+
+    @staticmethod
+    def get_default(dbsession: Session) -> Optional[Layer]:
+        return dbsession.query(LayerCOG).filter(LayerCOG.name == "cog-defaults").one_or_none()
+
+    def url_description(self, request: pyramid.request.Request) -> str:
+        errors: set[str] = set()
+        url = get_url2(self.name, self.url, request, errors)
+        return url.url() if url else "\n".join(errors)
 
 
 class LayerVectorTiles(DimensionLayer):
