@@ -1,3 +1,9 @@
+##### 2.8.1.80
+
+- Snyk auto fix [c2cgeoportal#11040](https://github.com/camptocamp/c2cgeoportal/pull/11040)
+- Snyk auto fix [c2cgeoportal#11051](https://github.com/camptocamp/c2cgeoportal/pull/11051)
+- Add isort config [c2cgeoportal#11055](https://github.com/camptocamp/c2cgeoportal/pull/11055)
+
 ##### 2.8.1.79
 
 - Add debug image to be able to debug QGIS [c2cgeoportal#11035](https://github.com/camptocamp/c2cgeoportal/pull/11035)
