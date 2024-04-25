@@ -31,6 +31,8 @@ Clone the schema with e.g.:
     SELECT clone_schema('main_<old_version>', 'main_<new_version>', TRUE);
     SELECT clone_schema('static_<old_version>', 'static_<new_version>', TRUE);
 
+*Postgresql 14+ only*
+
 Update the ``PGSCHEMA`` and the ``PGSCHEMA_STATIC`` in your ``env.project`` file.
 
 From a version prior to 2.7.x
