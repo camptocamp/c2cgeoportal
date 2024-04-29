@@ -1,3 +1,7 @@
+##### 2.8.1.81
+
+- [Backport 2.8] Remove no more needed workaround [c2cgeoportal#11060](https://github.com/camptocamp/c2cgeoportal/pull/11060)
+
 ##### 2.8.1.80
 
 - Snyk auto fix [c2cgeoportal#11040](https://github.com/camptocamp/c2cgeoportal/pull/11040)
