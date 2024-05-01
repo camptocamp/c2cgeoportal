@@ -1,3 +1,8 @@
+##### 2.7.1.76
+
+- Snyk auto fix [c2cgeoportal#11041](https://github.com/camptocamp/c2cgeoportal/pull/11041)
+- Snyk auto fix [c2cgeoportal#11052](https://github.com/camptocamp/c2cgeoportal/pull/11052)
+
 ##### 2.7.1.74
 
 - Update dependency camptocamp/c2cciutils to v1.1.37 (2.7) [c2cgeoportal#11044](https://github.com/camptocamp/c2cgeoportal/pull/11044)
