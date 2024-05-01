@@ -39,7 +39,7 @@ deform = "2.0.15" # commons, admin
 defusedxml = "0.7.1" # geoportal
 "dogpile.cache" = "1.3.2" # geoportal
 Fiona = "1.9.6" # geoportal raster
-GeoAlchemy2 = "0.14.7" # commons, geoportal
+GeoAlchemy2 = "0.15.0" # commons, geoportal
 geojson = "3.1.0" # geoportal
 getitfixed = "1.0.29" # geoportal
 isodate = "0.6.1" # geoportal
@@ -74,17 +74,17 @@ azure-storage-blob = "12.19.1"
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.10.3" }
 # pylint = "2.15.5"
-setuptools = "69.2.0"
+setuptools = "69.5.1"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.14.0" # i18n
 beautifulsoup4 = "4.12.3" # admin tests
 Jinja2 = "3.1.3" # c2c.template
 lingua = "4.15.0" # i18n
-PasteScript = "3.5.1" # geoportal pcreate
+PasteScript = "3.6.0" # geoportal pcreate
 polib = "1.2.0" # i18n
 pykwalify = "1.8.0" # Validate config
-pytest = "8.1.1" # tests
+pytest = "8.2.0" # tests
 WebTest = "3.0.0" # admin tests
 types-pytz = "2024.1.0.20240203"
 types-pyyaml = "6.0.12.20240311"
@@ -100,5 +100,5 @@ responses = "0.25.0"
 waitress = "2.1.2"
 
 [tool.poetry.group.dev.dependencies]
-prospector-profile-duplicated = "1.4.0"
+prospector-profile-duplicated = "1.5.0"
 prospector-profile-utils  = "1.7.2"
