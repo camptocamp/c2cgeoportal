@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, Camptocamp SA
+# Copyright (c) 2022-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -225,7 +225,7 @@ class TestThemesView(TestCase):
         transaction.commit()
 
     @responses.activate
-    def test_ogc_server_cache_clean(self):
+    def test_ogc_server_cache_clean(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import OGCServer
         from c2cgeoportal_geoportal.views.theme import Theme

@@ -75,21 +75,31 @@ TIMEOUT = int(os.environ.get("C2CGEOPORTAL_THEME_TIMEOUT", "300"))
 Metadata = Union[str, int, float, bool, list[Any], dict[str, Any]]
 
 
-def get_http_cached(
+async def get_http_cached(
     http_options: dict[str, Any], url: str, headers: dict[str, str], cache: bool = True
 ) -> tuple[bytes, str]:
-    """Get the content of the URL with a cash (dogpile)."""
+    """Get the content of the URL with a cache (dogpile)."""
 
     @CACHE_OGC_SERVER_REGION.cache_on_arguments()
     def do_get_http_cached(url: str) -> tuple[bytes, str]:
-        response = requests.get(url, headers=headers, timeout=TIMEOUT, **http_options)
-        response.raise_for_status()
-        LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
-        return response.content, response.headers.get("Content-Type", "")
+        # This function is just used to create a cache entry
+        raise NotImplementedError()
 
+    # Use the cache
     if cache:
-        return do_get_http_cached(url)  # type: ignore[no-any-return]
-    return do_get_http_cached.refresh(url)  # type: ignore[attr-defined,no-any-return]
+        result = cast(tuple[bytes, str], do_get_http_cached.get(url))  # type: ignore[attr-defined]
+        if result != dogpile.cache.api.NO_VALUE:  # type: ignore[comparison-overlap]
+            return result
+
+    response = await asyncio.to_thread(
+        requests.get, url.strip(), headers=headers, timeout=TIMEOUT, **http_options
+    )
+    response.raise_for_status()
+    LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
+    result = (response.content, response.headers.get("Content-Type", ""))
+    # Set the result in the cache
+    do_get_http_cached.set(result, url)  # type: ignore[attr-defined]
+    return result
 
 
 class DimensionInformation:
@@ -289,7 +299,7 @@ class Theme:
             headers["sec-roles"] = "root"
 
         try:
-            content, content_type = get_http_cached(self.http_options, url.url(), headers, cache=cache)
+            content, content_type = await get_http_cached(self.http_options, url.url(), headers, cache=cache)
         except Exception:
             error = f"Unable to GetCapabilities from URL {url}"
             errors.add(error)
@@ -898,7 +908,7 @@ class Theme:
             headers["sec-roles"] = "root"
 
         try:
-            content, _ = get_http_cached(self.http_options, wfs_url.url(), headers, cache)
+            content, _ = await get_http_cached(self.http_options, wfs_url.url(), headers, cache)
         except requests.exceptions.RequestException as exception:
             error = (
                 f"Unable to get WFS DescribeFeatureType from the URL '{wfs_url.url()}' for "
