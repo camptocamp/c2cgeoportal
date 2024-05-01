@@ -1,3 +1,6 @@
+##### 2.6.0.245
+* Snyk auto fix [c2cgeoportal#11053](https://github.com/camptocamp/c2cgeoportal/pull/11053)
+* Update dependency alabaster to v0.7.16 (2.6) [c2cgeoportal#11069](https://github.com/camptocamp/c2cgeoportal/pull/11069)
 ##### 2.6.0.244
 * Ignore setuptools CVE [c2cgeoportal#11048](https://github.com/camptocamp/c2cgeoportal/pull/11048)
 ##### 2.6.0.243
