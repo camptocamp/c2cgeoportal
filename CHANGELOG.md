@@ -1,3 +1,11 @@
+##### 2.8.1.83
+
+- Update dependency transifex/cli to v1.6.11 (2.8) [c2cgeoportal#11071](https://github.com/camptocamp/c2cgeoportal/pull/11071)
+- Update pre-commit hook sirwart/ripsecrets to v0.1.8 (2.8) [c2cgeoportal#11072](https://github.com/camptocamp/c2cgeoportal/pull/11072)
+- Snyk auto fix [ngeo#9330](https://github.com/camptocamp/ngeo/pull/9330)
+- Update CI dependencies (2.8) (patch) [ngeo#9338](https://github.com/camptocamp/ngeo/pull/9338)
+- Update all patch versions (2.8) (patch) [ngeo#9339](https://github.com/camptocamp/ngeo/pull/9339)
+
 ##### 2.8.1.81
 
 - [Backport 2.8] Remove no more needed workaround [c2cgeoportal#11060](https://github.com/camptocamp/c2cgeoportal/pull/11060)
