@@ -132,17 +132,17 @@ dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
 name = "boto3"
-version = "1.34.75"
+version = "1.34.95"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.34.75-py3-none-any.whl", hash = "sha256:ba5d2104bba4370766036d64ad9021eb6289d154265852a2a821ec6a5e816faa"},
-    {file = "boto3-1.34.75.tar.gz", hash = "sha256:eaec72fda124084105a31bcd67eafa1355b34df6da70cadae0c0f262d8a4294f"},
+    {file = "boto3-1.34.95-py3-none-any.whl", hash = "sha256:e836b71d79671270fccac0a4d4c8ec239a6b82ea47c399b64675aa597d0ee63b"},
+    {file = "boto3-1.34.95.tar.gz", hash = "sha256:decf52f8d5d8a1b10c9ff2a0e96ee207ed79e33d2e53fdf0880a5cbef70785e0"},
 ]
 
 [package.dependencies]
-botocore = ">=1.34.75,<1.35.0"
+botocore = ">=1.34.95,<1.35.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -151,13 +151,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.34.84"
+version = "1.34.95"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.34.84-py3-none-any.whl", hash = "sha256:da1ae0a912e69e10daee2a34dafd6c6c106450d20b8623665feceb2d96c173eb"},
-    {file = "botocore-1.34.84.tar.gz", hash = "sha256:a2b309bf5594f0eb6f63f355ade79ba575ce8bf672e52e91da1a7933caa245e6"},
+    {file = "botocore-1.34.95-py3-none-any.whl", hash = "sha256:ead5823e0dd6751ece5498cb979fd9abf190e691c8833bcac6876fd6ca261fa7"},
+    {file = "botocore-1.34.95.tar.gz", hash = "sha256:6bd76a2eadb42b91fa3528392e981ad5b4dfdee3968fa5b904278acf6cbf15ff"},
 ]
 
 [package.dependencies]
@@ -166,7 +166,7 @@ python-dateutil = ">=2.1,<3.0.0"
 urllib3 = {version = ">=1.25.4,<2.2.0 || >2.2.0,<3", markers = "python_version >= \"3.10\""}
 
 [package.extras]
-crt = ["awscrt (==0.19.19)"]
+crt = ["awscrt (==0.20.9)"]
 
 [[package]]
 name = "bottle"
@@ -2510,4 +2510,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "702ce0bde44cf54779e9ffcdd045f283a7d2125abec1ba5a5a9e56a046a9bb78"
+content-hash = "8ff9a3e127ca801d7e08161e85f56d004035413f55c38c87c308fa25824fe5bc"
