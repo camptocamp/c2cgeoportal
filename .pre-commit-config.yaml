@@ -11,7 +11,7 @@ ci:
     - jsonschema-validator
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: detect-private-key
         exclude: ^docker/config/haproxy_dev/localhost\.pem$
@@ -92,7 +92,7 @@ repos:
     hooks:
       - id: git-check
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.1
+    rev: 0.28.2
     hooks:
       - id: check-github-workflows
       - id: check-renovate
@@ -108,7 +108,7 @@ repos:
           - --builtin-schema
           - github-workflows-require-timeout
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.7
+    rev: v0.1.8
     hooks:
       - id: ripsecrets
         exclude: |-
@@ -150,7 +150,7 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 24.3.0
+    rev: 24.4.2
     hooks:
       - id: black
         exclude: |-
@@ -169,7 +169,7 @@ repos:
           - --die-on-tool-error
           - --output-format=pylint
         additional_dependencies:
-          - prospector-profile-duplicated==1.2.0 # pypi
+          - prospector-profile-duplicated==1.5.0 # pypi
           - prospector-profile-utils==1.7.2 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 0.1.0
