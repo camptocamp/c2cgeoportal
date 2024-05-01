@@ -1,3 +1,9 @@
+##### 2.7.1.77
+
+- Snyk auto fix [ngeo#9329](https://github.com/camptocamp/ngeo/pull/9329)
+- Update CI dependencies to v1.3.22 (2.7) (patch) [ngeo#9336](https://github.com/camptocamp/ngeo/pull/9336)
+- Update all patch versions (2.7) (patch) [ngeo#9337](https://github.com/camptocamp/ngeo/pull/9337)
+
 ##### 2.7.1.76
 
 - Snyk auto fix [c2cgeoportal#11041](https://github.com/camptocamp/c2cgeoportal/pull/11041)
