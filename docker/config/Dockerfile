@@ -7,8 +7,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     apt-get update \
     && apt-get upgrade --assume-yes \
     && apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python-is-python3 \
-    && apt-get clean \
-    && rm --recursive --force /var/lib/apt/lists/*
+    && rm /usr/lib/python*/EXTERNALLY-MANAGED
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
