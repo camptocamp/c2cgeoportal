@@ -35,7 +35,6 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && apt-get update \
     && apt-get install --assume-yes --no-install-recommends binutils \
-    && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils \
     && pip freeze > /requirements.txt
 
