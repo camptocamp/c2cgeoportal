@@ -6,7 +6,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python-is-python3 \
+    && apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python-is-python3 adduser \
     && rm /usr/lib/python*/EXTERNALLY-MANAGED
 
 # Used to convert the locked packages by poetry to pip requirements format
@@ -36,7 +36,8 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && apt-get update \
     && apt-get install --assume-yes --no-install-recommends binutils \
     && apt-get auto-remove --assume-yes binutils \
-    && pip freeze > /requirements.txt
+    && pip freeze > /requirements.txt \
+    && adduser www-data root
 
 ARG VERSION
 ENV VERSION=$VERSION

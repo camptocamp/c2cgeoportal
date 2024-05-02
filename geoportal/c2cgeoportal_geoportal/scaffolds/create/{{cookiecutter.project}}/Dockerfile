@@ -62,7 +62,6 @@ RUN \
         /usr/local/tomcat/webapps/ROOT/print-apps \
         /etc/haproxy_dev \
         /etc/haproxy \
-    && adduser www-data root \
     && sed 's#bind :80#bind *:443 ssl crt /etc/haproxy_dev/localhost.pem#g' /etc/haproxy/haproxy.cfg.tmpl \
         > /etc/haproxy_dev/haproxy.cfg.tmpl \
     && echo '    http-request set-header X-Forwarded-Proto https' >> /etc/haproxy_dev/haproxy.cfg.tmpl
