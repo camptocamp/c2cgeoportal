@@ -18,6 +18,8 @@
 /commons/tests/tests.yaml
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/static/robot.txt
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/mapserver/tinyows.xml
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/mapserver/demo.map
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/mapserver/mapserver.map
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/print/print-apps/{{cookiecutter.package}}/config.yaml
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/qgisserver/pg_service.conf
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/tilegeneration/config.yaml
