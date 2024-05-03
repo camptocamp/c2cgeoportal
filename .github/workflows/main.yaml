@@ -228,6 +228,7 @@ jobs:
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        if: failure()
       - uses: actions/upload-artifact@v4
         with:
           name: Update dpkg versions list.patch
