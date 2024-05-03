@@ -5,7 +5,7 @@ description = 'Not used'
 authors = []
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.10,<3.13"
 "c2c.template" = "2.4.2"
 fiona = "1.9.6"
 defusedxml = "0.7.1"
