@@ -1,3 +1,8 @@
+##### 2.7.1.80
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#11081](https://github.com/camptocamp/c2cgeoportal/pull/11081)
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240506T104619Z.acc139343.2.7 (2.7) [c2cgeoportal#11082](https://github.com/camptocamp/c2cgeoportal/pull/11082)
+
 ##### 2.7.1.79
 
 - [Backport 2.7] Fix undefined value [ngeo#9340](https://github.com/camptocamp/ngeo/pull/9340)
