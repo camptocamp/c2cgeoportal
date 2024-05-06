@@ -1,3 +1,8 @@
+##### 2.8.1.84
+
+- Snyk auto fix [c2cgeoportal#11078](https://github.com/camptocamp/c2cgeoportal/pull/11078)
+- [Backport 2.8] Fix undefined value [ngeo#9341](https://github.com/camptocamp/ngeo/pull/9341)
+
 ##### 2.8.1.83
 
 - Update dependency transifex/cli to v1.6.11 (2.8) [c2cgeoportal#11071](https://github.com/camptocamp/c2cgeoportal/pull/11071)
