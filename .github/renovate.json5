@@ -205,5 +205,11 @@
       matchBaseBranches: ['2.7'],
       enabled: false,
     },
+    /** No types-pyyaml from 2.8 */
+    {
+      matchPackageNames: ['types-pyyaml'],
+      matchBaseBranches: ['2.8'],
+      enabled: false,
+    },
   ],
 }
