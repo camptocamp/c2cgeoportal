@@ -1,3 +1,7 @@
+##### 2.7.1.82
+
+- Add pypi group [c2cgeoportal#11087](https://github.com/camptocamp/c2cgeoportal/pull/11087)
+
 ##### 2.7.1.81
 
 - Publish the Python packages to pypi [c2cgeoportal#11084](https://github.com/camptocamp/c2cgeoportal/pull/11084)
