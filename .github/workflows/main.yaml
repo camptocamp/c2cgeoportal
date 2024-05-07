@@ -30,6 +30,7 @@ jobs:
       - run: '! ls BACKPORT_TODO'
       - run: df -h
       - run: docker system prune --all --force
+      - run: pip install pyOpenSSL --upgrade
 
       - uses: actions/checkout@v2
         with:
