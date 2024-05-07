@@ -1,3 +1,7 @@
+##### 2.7.1.83
+
+- Upgrade pyOpenSSL [c2cgeoportal#11091](https://github.com/camptocamp/c2cgeoportal/pull/11091)
+
 ##### 2.7.1.82
 
 - Add pypi group [c2cgeoportal#11087](https://github.com/camptocamp/c2cgeoportal/pull/11087)
