@@ -1,3 +1,7 @@
+##### 2.8.1.87
+
+- [Backport 2.8] Add pypi group [c2cgeoportal#11090](https://github.com/camptocamp/c2cgeoportal/pull/11090)
+
 ##### 2.8.1.86
 
 - [Backport 2.8] Publish the Python packages to pypi [c2cgeoportal#11086](https://github.com/camptocamp/c2cgeoportal/pull/11086)
