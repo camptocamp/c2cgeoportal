@@ -242,6 +242,12 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
+      - name: Publish version branch to pypi
+        run: |
+          c2cciutils-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Notify demo
         run: >
