@@ -1,3 +1,7 @@
+##### 2.7.1.81
+
+- Publish the Python packages to pypi [c2cgeoportal#11084](https://github.com/camptocamp/c2cgeoportal/pull/11084)
+
 ##### 2.7.1.80
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#11081](https://github.com/camptocamp/c2cgeoportal/pull/11081)
