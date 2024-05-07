@@ -57,5 +57,8 @@ publish:
   pypi:
     packages:
       - path: commons
+        group: pypi
       - path: geoportal
+        group: pypi
       - path: admin
+        group: pypi
