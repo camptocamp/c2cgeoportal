@@ -1,3 +1,7 @@
+##### 2.8.1.86
+
+- [Backport 2.8] Publish the Python packages to pypi [c2cgeoportal#11086](https://github.com/camptocamp/c2cgeoportal/pull/11086)
+
 ##### 2.8.1.85
 
 - Update all patch versions (2.8) (patch) [c2cgeoportal#11070](https://github.com/camptocamp/c2cgeoportal/pull/11070)
