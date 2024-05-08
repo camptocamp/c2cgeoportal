@@ -1,3 +1,7 @@
+##### 2.8.1.88
+
+- [Backport 2.8] Fix WMTS layer opacity from permalink [ngeo#9345](https://github.com/camptocamp/ngeo/pull/9345)
+
 ##### 2.8.1.87
 
 - [Backport 2.8] Add pypi group [c2cgeoportal#11090](https://github.com/camptocamp/c2cgeoportal/pull/11090)
