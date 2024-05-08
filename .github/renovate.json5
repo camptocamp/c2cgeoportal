@@ -211,5 +211,11 @@
       matchBaseBranches: ['2.8'],
       enabled: false,
     },
+    /* No update alabaster on branch 2.6 */
+    {
+      matchPackageNames: ['alabaster'],
+      matchBaseBranches: ['2.6'],
+      enabled: false,
+    },
   ],
 }
