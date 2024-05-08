@@ -1,3 +1,7 @@
+##### 2.7.1.85
+
+- Fix WMTS layer opacity from permalink [ngeo#9343](https://github.com/camptocamp/ngeo/pull/9343)
+
 ##### 2.7.1.83
 
 - Upgrade pyOpenSSL [c2cgeoportal#11091](https://github.com/camptocamp/c2cgeoportal/pull/11091)
