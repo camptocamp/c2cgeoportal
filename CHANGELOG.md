@@ -1,3 +1,7 @@
+##### 2.7.1.86
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240508T143630Z.3bf6a7edd.2.7 (2.7) [c2cgeoportal#11097](https://github.com/camptocamp/c2cgeoportal/pull/11097)
+
 ##### 2.7.1.85
 
 - Fix WMTS layer opacity from permalink [ngeo#9343](https://github.com/camptocamp/ngeo/pull/9343)
