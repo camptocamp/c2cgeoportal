@@ -5,6 +5,5 @@ ignore:
   SNYK-JS-INFLIGHT-6095116:
     - '*':
         reason: Requires a new node version to fix (^18.18.0, ^20.9.0, or >=21.1.0)
-        expires: 2024-05-09T06:44:05.988Z
         created: 2024-04-09T06:44:05.991Z
 patch: {}
