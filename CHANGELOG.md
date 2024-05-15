@@ -1,3 +1,7 @@
+##### 2.8.1.92
+
+- The clone can be null [ngeo#9342](https://github.com/camptocamp/ngeo/pull/9342)
+
 ##### 2.8.1.88
 
 - [Backport 2.8] Fix WMTS layer opacity from permalink [ngeo#9345](https://github.com/camptocamp/ngeo/pull/9345)
