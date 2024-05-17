@@ -15,9 +15,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - branch: int
+          - branch: int-{{cookiecutter.geomapfish_main_version_dash}}
             base_url: int.customer.ch
-          - branch: prod
+          - branch: prod-{{cookiecutter.geomapfish_main_version_dash}}
             base_url: prod.customer.ch
 
     steps:
