@@ -1,3 +1,7 @@
+##### 2.8.1.93
+
+- Fix branch names in update_l10n workflow [c2cgeoportal#11099](https://github.com/camptocamp/c2cgeoportal/pull/11099)
+
 ##### 2.8.1.92
 
 - The clone can be null [ngeo#9342](https://github.com/camptocamp/ngeo/pull/9342)
