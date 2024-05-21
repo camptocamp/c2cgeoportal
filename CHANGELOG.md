@@ -1,3 +1,7 @@
+##### 2.8.1.94
+
+- Fix the build [c2cgeoportal#11102](https://github.com/camptocamp/c2cgeoportal/pull/11102)
+
 ##### 2.8.1.93
 
 - Fix branch names in update_l10n workflow [c2cgeoportal#11099](https://github.com/camptocamp/c2cgeoportal/pull/11099)
