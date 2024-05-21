@@ -38,7 +38,7 @@ Required Python packages
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``PyYAML>=3.12``
-* ``docker-compose>=1.29.2``
+* ``docker-compose==1.29.2`` implies: ``PyYAML==5.3.1``, ``docker<7.0.0``, ``requests<2.32.0``.
 
 They can be install in your user directory with:
 
