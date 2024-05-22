@@ -17,13 +17,13 @@ Required Python packages
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``PyYAML>=3.12``
-* ``docker-compose>=1.21.0``
+* ``docker-compose>=1.21.0`` implies: ``PyYAML==5.3.1``, ``docker<7.0.0``, ``requests<2.32.0``.
 
 They can be install in your user directory with:
 
 .. code:: bash
 
-   python3 -m pip install --user PyYAML docker-compose
+   python3 -m pip install --user PyYAML==5.3.1 docker-compose 'docker<7.0.0' 'requests<2.32.0'
 
 If not yet done, add ``$HOME/.local/bin`` to your ``PATH``; add in your ``~/.bashrc`` file:
 
