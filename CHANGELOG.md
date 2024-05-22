@@ -1,3 +1,7 @@
+##### 2.7.1.88
+
+- [Backport 2.7] Fix the build [c2cgeoportal#11107](https://github.com/camptocamp/c2cgeoportal/pull/11107)
+
 ##### 2.7.1.86
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20240508T143630Z.3bf6a7edd.2.7 (2.7) [c2cgeoportal#11097](https://github.com/camptocamp/c2cgeoportal/pull/11097)
