@@ -1,3 +1,7 @@
+##### 2.7.1.90
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240530T162212Z.02c5e3f8c.2.7 (2.7) [c2cgeoportal#11113](https://github.com/camptocamp/c2cgeoportal/pull/11113)
+
 ##### 2.7.1.89
 
 - Snyk auto fix [c2cgeoportal#11105](https://github.com/camptocamp/c2cgeoportal/pull/11105)
