@@ -1,3 +1,10 @@
+##### 2.7.1.89
+
+- Snyk auto fix [c2cgeoportal#11105](https://github.com/camptocamp/c2cgeoportal/pull/11105)
+- Update dependency camptocamp/c2cciutils to v1.1.39 (2.7) [c2cgeoportal#11106](https://github.com/camptocamp/c2cgeoportal/pull/11106)
+- Snyk auto fix [ngeo#9348](https://github.com/camptocamp/ngeo/pull/9348)
+- [Backport 2.7] Fix tree state from permalink [ngeo#9358](https://github.com/camptocamp/ngeo/pull/9358)
+
 ##### 2.7.1.88
 
 - [Backport 2.7] Fix the build [c2cgeoportal#11107](https://github.com/camptocamp/c2cgeoportal/pull/11107)
