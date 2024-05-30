@@ -1,3 +1,8 @@
+##### 2.8.1.98
+
+- Snyk auto fix [ngeo#9347](https://github.com/camptocamp/ngeo/pull/9347)
+- Fix tree state from permalink [ngeo#9355](https://github.com/camptocamp/ngeo/pull/9355)
+
 ##### 2.8.1.96
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11112](https://github.com/camptocamp/c2cgeoportal/pull/11112)
