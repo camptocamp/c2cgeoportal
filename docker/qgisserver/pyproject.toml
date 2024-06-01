@@ -28,8 +28,8 @@ c2cwsgiutils = { extras = ["broadcast"], version = "6.0.8" }
 papyrus = "2.5" # commons
 transaction = "4.0" # commons
 "c2c.template" = "2.4.2"
-GeoAlchemy2 = "0.15.0"
-SQLAlchemy = "2.0.29" # commons
+GeoAlchemy2 = "0.15.1"
+SQLAlchemy = "2.0.30" # commons
 "zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.1" # commons
 shapely = "2.0.4"
@@ -42,4 +42,4 @@ prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.3" }
 prospector-profile-duplicated = "1.5.0"
 prospector-profile-utils  = "1.7.2"
 types-pyyaml = "6.0.12.20240311"
-pytest = "8.2.0"
+pytest = "8.2.1"
