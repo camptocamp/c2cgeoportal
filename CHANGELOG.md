@@ -1,3 +1,10 @@
+##### 2.8.1.99
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#11126](https://github.com/camptocamp/c2cgeoportal/pull/11126)
+- Update dependency transifex/cli to v1.6.13 (2.8) [c2cgeoportal#11127](https://github.com/camptocamp/c2cgeoportal/pull/11127)
+- Update all patch versions (2.8) (patch) [ngeo#9364](https://github.com/camptocamp/ngeo/pull/9364)
+- Update dependency transifex/cli to v1.6.13 (2.8) [ngeo#9365](https://github.com/camptocamp/ngeo/pull/9365)
+
 ##### 2.8.1.98
 
 - Snyk auto fix [ngeo#9347](https://github.com/camptocamp/ngeo/pull/9347)
