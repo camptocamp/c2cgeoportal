@@ -8,9 +8,9 @@
     "snyk-protect": "snyk-protect"
   },
   "dependencies": {
-    "@snyk/protect": "1.1291.0",
+    "@snyk/protect": "1.1291.1",
     "bootstrap": "3.4.1",
-    "bootstrap-table": "1.22.5",
+    "bootstrap-table": "1.22.6",
     "jquery": "3.7.1",
     "jquery.scrollintoview": "1.9.4",
     "jstree": "3.3.16",

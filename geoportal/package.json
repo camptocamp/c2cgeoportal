@@ -8,7 +8,7 @@
     "snyk-protect": "snyk-protect"
   },
   "dependencies": {
-    "@snyk/protect": "1.1291.0",
+    "@snyk/protect": "1.1291.1",
     "@typescript-eslint/eslint-plugin": "7.8.0",
     "@typescript-eslint/parser": "7.8.0",
     "angular-gettext-tools": "2.5.3",
@@ -19,6 +19,6 @@
     "url-parse": "1.5.10"
   },
   "devDependencies": {
-    "@babel/plugin-transform-typescript": "7.24.5"
+    "@babel/plugin-transform-typescript": "7.24.6"
   }
 }
