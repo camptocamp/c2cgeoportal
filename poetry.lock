@@ -2155,13 +2155,13 @@ ipython = ["graphviz"]
 
 [[package]]
 name = "owslib"
-version = "0.30.0"
+version = "0.31.0"
 description = "OGC Web Service utility library"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "OWSLib-0.30.0-py2.py3-none-any.whl", hash = "sha256:88277cf674ded604596af5c04eb2a17c6846dfe8bcfb7a5dc9ab50b3ef5f1385"},
-    {file = "OWSLib-0.30.0.tar.gz", hash = "sha256:f17413cc75836c0303cd1d4fd9bb0f21915a8b492dacc64ef5f4021b28e82d4c"},
+    {file = "OWSLib-0.31.0-py2.py3-none-any.whl", hash = "sha256:ab54d20974bd8ddd24ee5539c46a7829ec9e77ed0976724f635d1a3a321d3a39"},
+    {file = "OWSLib-0.31.0.tar.gz", hash = "sha256:2ed6540087445cc57d905138a590b6ae58624ec7661b5c1682ed4e3303bcd150"},
 ]
 
 [package.dependencies]
@@ -4724,4 +4724,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "7f7f0dc5e4bcebebfe52d09acab2b0bb8524d7d10603b550b8ccf3c41881de9a"
+content-hash = "c17fca78eabb6008c2e7975ddf8ea4ea84107e7439f4845dfac816744414249d"
