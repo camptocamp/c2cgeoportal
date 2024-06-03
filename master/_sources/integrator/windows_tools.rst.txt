@@ -34,7 +34,7 @@ Command Line
 The following instructions are based on the PuTTY software, which is useful to launch commands on the server.
 
 1. Download PuTTY: https://the.earth.li/~sgtatham/putty/latest/x86/putty.exe
-2. Configurate PuTTY:
+2. Configure PuTTY:
    a. In the left-hand column (Category), choose "Connection>SSH>Auth"
    b. Fill the "Private key file for authentication" field
    c. Activate "Allow agent forwarding"
