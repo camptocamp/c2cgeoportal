@@ -28,7 +28,7 @@ description = 'Not used'
 authors = []
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
+python = ">=3.9,<3.13"
 alembic = "1.13.1" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.2.5" # commons

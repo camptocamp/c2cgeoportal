@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     apt-get update \
     && apt-get upgrade --assume-yes \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends python3-pip adduser \
-    && pip install --upgrade pip
+    && rm /usr/lib/python*/EXTERNALLY-MANAGED
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
@@ -57,9 +57,8 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && echo "For Chrome installed by Pupetter" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
-        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
-        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
-    && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
+        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 liboss4-salsa-asound2 libatk1.0-0 \
+        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
@@ -71,7 +70,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
         --use-deprecated=legacy-resolver \
         --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
+    && strip /usr/lib/python3/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++ \
     && python -c 'from fiona.collection import Collection'
 
