@@ -6,3 +6,5 @@ copyable
 referer
 aks
 astroid
+dokument
+assertIn
