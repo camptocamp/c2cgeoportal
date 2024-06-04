@@ -257,7 +257,6 @@ def _phantomjs(settings: dict[str, Any], health_check: c2cwsgiutils.health_check
 
                 cmd: list[str] = ["check-example", url]
                 env = dict(os.environ)
-                env.setdefault("XDG_CONFIG_HOME", "/dev/null")
                 for name, value in self.route.get("environment", {}).items():
                     if isinstance(value, (list, dict)):
                         value = json.dumps(value)
