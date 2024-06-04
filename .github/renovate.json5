@@ -51,19 +51,19 @@
     },
     {
       matchDatasources: ['docker'],
-      matchPackageNames: [
+      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
+      matchDepNames: [
         'camptocamp/mapfish_print',
         'camptocamp/tilecloud-chain',
         'camptocamp/mapserver',
         'redis',
         'haproxy',
       ],
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
     },
     {
       matchDatasources: ['docker'],
-      matchPackageNames: ['ghcr.io/osgeo/gdal'],
       versioning: 'regex:^(?<compatibility>.*)-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)?$',
+      matchDepNames: ['ghcr.io/osgeo/gdal'],
     },
     /** Auto merge the dev dependency update */
     {
@@ -84,17 +84,17 @@
     },
     /** Group Poetry packages */
     {
-      matchPackageNames: ['poetry', 'pip'],
       matchPackagePrefixes: ['poetry-'],
       groupName: 'Poetry',
       automerge: true,
       separateMajorMinor: false,
       separateMinorPatch: false,
+      matchDepNames: ['poetry', 'pip'],
     },
     /** Ungroup OWSLib */
     {
-      matchPackageNames: ['OWSLib'],
       groupName: 'OWSLib',
+      matchDepNames: ['OWSLib'],
     },
     /** Ignore geoportal/requirements.txt */
     {
@@ -109,8 +109,8 @@
     },
     /** Support the 4 parts of shellcheck-py version with a v prefix */
     {
-      matchPackageNames: ['shellcheck-py/shellcheck-py'],
       versioning: 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
+      matchDepNames: ['shellcheck-py/shellcheck-py'],
     },
     /** Don't update the project minimal requirements */
     {
@@ -134,14 +134,14 @@
         'docker/config/pyproject.toml',
         'docker/qgisserver/pyproject.toml',
       ],
-      matchPackageNames: ['python'],
       enabled: false,
+      matchDepNames: ['python'],
     },
     /** Don't upgrade c2cciutils in tools to be able to upbrade a version <= 2.8 */
     {
       matchPaths: ['pyproject.toml'],
-      matchPackageNames: ['c2cciutils'],
       enabled: false,
+      matchDepNames: ['c2cciutils'],
     },
     /** Disable dpkg on master */
     {
@@ -152,14 +152,14 @@
     /** Only LTS version of Node */
     {
       allowedVersions: '/(0|2|4|6|8)$/',
-      matchPackageNames: ['node'],
       enabled: false,
+      matchDepNames: ['node'],
     },
     /** The version 5.4.1 of PyYAML is not working */
     {
-      matchPackageNames: ['PyYAML'],
       allowedVersions: '5.4.1',
       enabled: false,
+      matchDepNames: ['PyYAML'],
     },
     /** Group and auto merge the GitHub action */
     {
@@ -195,27 +195,27 @@
     },
     /** Daily ngeo */
     {
-      matchPackageNames: ['ngeo'],
       schedule: 'after 5am',
       groupName: 'Ngeo',
+      matchDepNames: ['ngeo'],
     },
     /** No Alabaster update on 2.7 */
     {
-      matchPackageNames: ['alabaster'],
       matchBaseBranches: ['2.7'],
       enabled: false,
+      matchDepNames: ['alabaster'],
     },
     /** No types-pyyaml from 2.8 */
     {
-      matchPackageNames: ['types-pyyaml'],
       matchBaseBranches: ['2.8'],
       enabled: false,
+      matchDepNames: ['types-pyyaml'],
     },
-    /* No update alabaster on branch 2.6 */
+    /** No update alabaster on branch 2.6 */
     {
-      matchPackageNames: ['alabaster'],
       matchBaseBranches: ['2.6'],
       enabled: false,
+      matchDepNames: ['alabaster'],
     },
   ],
 }
