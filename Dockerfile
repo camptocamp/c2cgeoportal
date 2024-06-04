@@ -54,11 +54,13 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         apt-transport-https gettext less gnupg libpq5 \
         python3-dev libgraphviz-dev libpq-dev "nodejs=${NODE_MAJOR}.*" \
-    && echo "For Chrome installed by Pupetter" \
+    && echo "For Chrome installed by Pupetter: https://source.chromium.org/chromium/chromium/src/+/main:chrome/installer/linux/debian/dist_package_versions.json" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
         libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
         libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
+        libatspi2.0-0 libc6 libcairo2 libdbus-1-3 libdrm2 libexpat1 libglib2.0-0 libnspr4 libpango-1.0-0 \
+        libstdc++6 libuuid1 libxcb1 libxfixes3 libxkbcommon0 libxrender1 \
     && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
