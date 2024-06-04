@@ -226,6 +226,7 @@ WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
 ENV PUPPETEER_CACHE_DIR=/opt
+ENV XDG_CONFIG_HOME=/etc
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
