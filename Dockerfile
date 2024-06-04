@@ -120,8 +120,6 @@ RUN c2cciutils-download-applications --applications-file=applications.yaml --ver
 COPY bin/npm-packages /usr/bin/
 WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
-# Used by puppeteer
-ENV XDG_CONFIG_HOME=/var
 
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
