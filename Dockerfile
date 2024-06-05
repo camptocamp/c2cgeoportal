@@ -94,7 +94,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && curl --silent https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor --output=/etc/apt/keyrings/postgresql.gpg \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make g++ python3-dev \
-        postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
+        postgresql-client net-tools iputils-ping vim vim-addon-manager tree groff-base \
         libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils iproute2 traceroute pkg-config \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
     && vim-addon-manager --system-wide install editorconfig \
