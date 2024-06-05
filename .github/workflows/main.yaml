@@ -14,16 +14,17 @@ env:
 
 jobs:
   not-failed-backport:
-    runs-on: ubuntu-22.04
     name: Test that's not a failed backport
+    runs-on: ubuntu-22.04
     timeout-minutes: 5
+
     steps:
       - run: 'false'
         if: github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'
 
   main:
-    runs-on: ubuntu-22.04
     name: Continuous integration
+    runs-on: ubuntu-22.04
     timeout-minutes: 150
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
@@ -58,8 +59,8 @@ jobs:
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
-      - run: scripts/get-version --auto-increment --github
-        id: version
+      - id: version
+        run: scripts/get-version --auto-increment --github
 
       - uses: actions/cache@v3
         with:
@@ -69,7 +70,13 @@ jobs:
       - run: pre-commit run --all-files
         env:
           SKIP: poetry-lock
-      - run: git diff
+      - run: git diff --exit-code --patch > /tmp/pre-commit.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Apply pre-commit fix.patch
+          path: /tmp/pre-commit.patch
+          retention-days: 1
         if: failure()
       - name: Checks
         run: c2cciutils-checks
@@ -122,12 +129,12 @@ jobs:
         if: always()
 
       - uses: actions/upload-artifact@v3
-        if: always()
         with:
           name: Documentation
           path: artifacts/documentations/
           if-no-files-found: ignore
           retention-days: 5
+        if: always()
 
         # Use minimal version from the documentation
       - uses: actions/setup-python@v4
@@ -140,14 +147,14 @@ jobs:
       - run: pip install --user PyYAML==3.13 docker-compose==1.26.0 'docker<7.0.0' urllib3==1.26.15 'requests<2.32.0'
 
         # Test App
-      - run: ci/test-app
-        timeout-minutes: 30
+      - timeout-minutes: 30
+        run: ci/test-app
       - name: Docker logs
+        continue-on-error: true
         run: |
           cd ${HOME}/workspace/testgeomapfishapp/
           c2cciutils-docker-logs
         if: failure()
-        continue-on-error: true
 
       - run: git stash
       - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
@@ -169,7 +176,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - run: pip install --user PyYAML==5.3.1 docker-compose==1.29.2 'docker<7.0.0' wheel==0.40.0 urllib3==1.26.15 'requests<2.32.0'
+      - run:
+          pip install --user PyYAML==5.3.1 docker-compose==1.29.2 'docker<7.0.0' wheel==0.40.0 urllib3==1.26.15
+          'requests<2.32.0'
 
       - name: Init Git
         run:
@@ -206,6 +215,14 @@ jobs:
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Update dpkg versions list.patch
+          path: /tmp/dpkg-versions.patch
+          retention-days: 1
+        if: failure()
       - name: Publish version branch to pypi
         run: |
           c2cciutils-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
