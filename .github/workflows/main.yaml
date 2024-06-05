@@ -9,16 +9,17 @@ env:
 
 jobs:
   not-failed-backport:
-    runs-on: ubuntu-22.04
     name: Test that's not a failed backport
+    runs-on: ubuntu-22.04
     timeout-minutes: 5
+
     steps:
       - run: 'false'
         if: "github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'"
 
   main:
-    runs-on: ubuntu-22.04
     name: Continuous integration
+    runs-on: ubuntu-22.04
     timeout-minutes: 120
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
@@ -107,6 +108,7 @@ jobs:
           /src/tests/functional
       - run: c2cciutils-docker-logs
       - name: Extract tests artifacts
+        continue-on-error: true
         run: |
           docker-compose exec -T tests coverage report
           docker-compose exec -T tests coverage html --directory=/tmp/coverage
@@ -117,7 +119,6 @@ jobs:
           docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
           docker cp c2cgeoportal_qgisserver-tests_1:/tmp/coverage/ artifacts/qgisserver-plugin-coverage/
         if: always()
-        continue-on-error: true
       - run: c2cciutils-docker-logs
         if: always()
       - run: docker-compose down
@@ -148,12 +149,12 @@ jobs:
         if: always()
 
       - uses: actions/upload-artifact@v2
-        if: always()
         with:
           name: Documentation
           path: artifacts/documentations/
           if-no-files-found: ignore
           retention-days: 5
+        if: always()
 
       # Use minimal version from the documentation
       - uses: actions/setup-python@v4
@@ -169,18 +170,18 @@ jobs:
       # Test App
       - run: ci/test-app
       - name: Docker logs
+        continue-on-error: true
         run: |
           cd ${HOME}/workspace/testgeomapfishapp/
           c2cciutils-docker-logs
         if: failure()
-        continue-on-error: true
 
       - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
-      - run: scripts/get-version --auto-increment --github
-        id: version
+      - id: version
+        run: scripts/get-version --auto-increment --github
 
       # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
@@ -250,6 +251,14 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Update dpkg versions list.patch
+          path: /tmp/dpkg-versions.patch
+          retention-days: 1
+        if: failure()
       - name: Notify demo
         run: >
           curl --request POST --header "Content-Type: application/json"
