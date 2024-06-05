@@ -5,16 +5,17 @@ on:
 
 jobs:
   not-failed-backport:
-    runs-on: ubuntu-22.04
     name: Test that's not a failed backport
+    runs-on: ubuntu-22.04
     timeout-minutes: 5
+
     steps:
       - run: 'false'
         if: "github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'"
 
   main:
-    runs-on: ubuntu-22.04
     name: Continuous integration
+    runs-on: ubuntu-22.04
     timeout-minutes: 90
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
@@ -45,8 +46,8 @@ jobs:
       - name: Checks
         run: c2cciutils-checks
 
-      - run: scripts/get-version --auto-increment --github
-        id: version
+      - id: version
+        run: scripts/get-version --auto-increment --github
         if: github.repository == 'camptocamp/c2cgeoportal'
 
       - run: python3 -m pip install --user --requirement=requirements.txt
@@ -90,6 +91,7 @@ jobs:
           pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
           /src/tests/functional
       - name: Extract tests artifacts
+        continue-on-error: true
         run: |
           docker-compose exec -T tests coverage report
           docker-compose exec -T tests coverage html --directory=/tmp/coverage
@@ -97,7 +99,6 @@ jobs:
           mkdir --parent artifacts/qgisserver-plugin-coverage
           docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
         if: always()
-        continue-on-error: true
       - run: docker-compose down
 
       - uses: actions/upload-artifact@v2
@@ -125,23 +126,23 @@ jobs:
         if: always()
 
       - uses: actions/upload-artifact@v2
-        if: always()
         with:
           name: Documentation
           path: artifacts/documentations/
           if-no-files-found: ignore
           retention-days: 5
+        if: always()
 
       # Test App
       - run: ci/test-app
-      - run: |
+      - continue-on-error: true
+        run: |
           cd ${HOME}/workspace/testgeomapfishapp/
           for service in $(docker-compose config --services)
           do
             docker-compose logs ${service}
           done
         if: failure()
-        continue-on-error: true
 
       # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
@@ -184,6 +185,14 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
 
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Update dpkg versions list.patch
+          path: /tmp/dpkg-versions.patch
+          retention-days: 1
+        if: failure()
       - name: Push version and changelog
         run: |
           set -eux
