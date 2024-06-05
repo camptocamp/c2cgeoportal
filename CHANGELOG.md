@@ -1,3 +1,7 @@
+##### 2.7.1.93
+
+- CI updates [c2cgeoportal#11134](https://github.com/camptocamp/c2cgeoportal/pull/11134)
+
 ##### 2.7.1.92
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20240601T160826Z.9293b5772.2.7 (2.7) [c2cgeoportal#11130](https://github.com/camptocamp/c2cgeoportal/pull/11130)
