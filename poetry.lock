@@ -403,7 +403,7 @@ colanderalchemy = "*"
 deform = "*"
 geoalchemy2 = "*"
 geojson = "*"
-lingua = "*"
+lingva = "*"
 pyproj = "*"
 pyramid = "*"
 pyramid-beaker = "*"
@@ -936,9 +936,9 @@ translationstring = ">=1.0"
 "zope.deprecation" = "*"
 
 [package.extras]
-dev = ["Sphinx (>=1.7.4)", "beautifulsoup4", "black", "check-manifest", "coverage", "flake8", "flake8-bugbear", "flake8-builtins", "flaky", "isort", "lingua", "pygments", "pylons-sphinx-latesturl", "pylons-sphinx-themes", "pyramid", "pytest", "pytest-cov", "readme-renderer", "repoze.sphinx.autointerface", "selenium (>=4.0a)", "waitress"]
+dev = ["Sphinx (>=1.7.4)", "beautifulsoup4", "black", "check-manifest", "coverage", "flake8", "flake8-bugbear", "flake8-builtins", "flaky", "isort", "lingva", "pygments", "pylons-sphinx-latesturl", "pylons-sphinx-themes", "pyramid", "pytest", "pytest-cov", "readme-renderer", "repoze.sphinx.autointerface", "selenium (>=4.0a)", "waitress"]
 docs = ["Sphinx (>=1.7.4)", "pylons-sphinx-latesturl", "pylons-sphinx-themes", "repoze.sphinx.autointerface"]
-functional = ["lingua", "pygments", "selenium (>=4.0a)", "waitress"]
+functional = ["lingva", "pygments", "selenium (>=4.0a)", "waitress"]
 lint = ["black", "check-manifest", "flake8", "flake8-bugbear", "flake8-builtins", "isort", "readme-renderer"]
 testing = ["beautifulsoup4", "coverage", "flaky", "pyramid", "pytest", "pytest-cov"]
 
@@ -1623,14 +1623,14 @@ files = [
 ]
 
 [[package]]
-name = "lingua"
+name = "lingva"
 version = "4.15.0"
 description = "Translation toolset"
 optional = false
 python-versions = "*"
 files = [
-    {file = "lingua-4.15.0-py2.py3-none-any.whl", hash = "sha256:8645a8029425bc97b74850f3c7817a7fae58d5f60709f13b3f3f41e5041f8a68"},
-    {file = "lingua-4.15.0.tar.gz", hash = "sha256:0e1a946741db288a40361ad04ff38fe04bf0819834b8abb84c4b535fed9ba4ef"},
+    {file = "lingva-4.15.0-py2.py3-none-any.whl", hash = "sha256:8645a8029425bc97b74850f3c7817a7fae58d5f60709f13b3f3f41e5041f8a68"},
+    {file = "lingva-4.15.0.tar.gz", hash = "sha256:0e1a946741db288a40361ad04ff38fe04bf0819834b8abb84c4b535fed9ba4ef"},
 ]
 
 [package.dependencies]
@@ -1639,6 +1639,25 @@ polib = ">=1.1.1"
 
 [package.extras]
 chameleonextractor = ["Chameleon"]
+dev = ["black (>=22.1.0)", "flake8 (>=4.0.1)", "pytest (>=7.0.1)"]
+
+[[package]]
+name = "lingva"
+version = "5.0.2"
+description = "Translation toolset"
+optional = false
+python-versions = "*"
+files = [
+    {file = "lingva-5.0.2-py2.py3-none-any.whl", hash = "sha256:8287c97ab2e49e722fcc79f85a8b441a1b87da03a04edf9c0f783b6c37e4dd6e"},
+    {file = "lingva-5.0.2.tar.gz", hash = "sha256:5f9ce7ff3061dad66a4bbac1ff90c227d389b6d45f0ba6253b80874bc3e5c275"},
+]
+
+[package.dependencies]
+chameleon = "*"
+click = ">=8.0.3"
+polib = ">=1.1.1"
+
+[package.extras]
 dev = ["black (>=22.1.0)", "flake8 (>=4.0.1)", "pytest (>=7.0.1)"]
 
 [[package]]
@@ -1815,7 +1834,7 @@ MarkupSafe = ">=0.9.2"
 
 [package.extras]
 babel = ["Babel"]
-lingua = ["lingua"]
+lingva = ["lingva"]
 testing = ["pytest"]
 
 [[package]]
@@ -4728,4 +4747,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "f22c1e38582a30ecc3bdf7885ceca5eda672d0d7172f3c18e4dfd9a357720026"
+content-hash = "401622bdfc6403e83b5792714e617c3d1e4a58bc9d887557606874b062804473"

@@ -143,12 +143,12 @@ geoportal/c2cgeoportal_geoportal/scaffolds%advance_update/{{cookiecutter.project
 	cp -r $< $@
 
 geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
-		lingua.cfg $(SRC_FILES)
+		lingva.cfg $(SRC_FILES)
 	mkdir --parent $(dir $@)
 	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(SRC_FILES)
 
 admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: \
-		admin/lingua.cfg $(ADMIN_SRC_FILES)
+		admin/lingva.cfg $(ADMIN_SRC_FILES)
 	mkdir --parent $(dir $@)
 	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(ADMIN_SRC_FILES) ./geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/geoportal/CONST_vars.yaml
 

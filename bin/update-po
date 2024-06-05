@@ -30,7 +30,7 @@ OWNER=$1:$2
 shift 2
 
 # shellcheck disable=SC2046
-pot-create --config="geoportal/lingua-client${SUFFIX}.cfg" --width=110 \
+pot-create --config="geoportal/lingva-client${SUFFIX}.cfg" --width=110 \
     --output="geoportal/${PACKAGE}_geoportal/locale/${PACKAGE}_geoportal-client${SUFFIX}.pot" \
     $(find "geoportal/${PACKAGE}_geoportal/static-ngeo/js/apps/" -type f -name '*.html.ejs') \
     $(find "geoportal/${PACKAGE}_geoportal/static-ngeo/js/" -type f -name '*.js') \

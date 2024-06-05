@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023, Camptocamp SA
+# Copyright (c) 2020-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,13 +31,13 @@ from unittest.mock import Mock
 
 import pytest
 
-from c2cgeoportal_geoportal.lib.lingua_extractor import GeomapfishThemeExtractor
+from c2cgeoportal_geoportal.lib.lingva_extractor import GeomapfishThemeExtractor
 
 
 class TestGeomapfishThemeExtractor:
     def extract(self):
         extractor = GeomapfishThemeExtractor()
-        extractor.config = {"lingua_extractor": {}}
+        extractor.config = {"lingva_extractor": {}}
 
         options = Mock()
         options.keywords = []

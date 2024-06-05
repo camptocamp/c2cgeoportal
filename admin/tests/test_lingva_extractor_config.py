@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023, Camptocamp SA
+# Copyright (c) 2022-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,106 +32,28 @@ from unittest.mock import Mock, mock_open, patch
 import pytest
 import yaml
 from c2c.template.config import config as configuration
-from tests.functional import setup_common as setup_module
 
-from c2cgeoportal_geoportal.lib.lingua_extractor import GeomapfishConfigExtractor
+from c2cgeoportal_admin.lib.lingva_extractor import GeomapfishConfigExtractor
 
 GMF_CONFIG = """
 vars:
-  interfaces_config:
-    desktop:
-      constants:
-        gmfSearchOptions:
-          datasources:
-
   admin_interface:
     available_metadata:
       - name: metadata1
+        description: description1
         translate: true
-
-  raster:
-    raster1:
-
-  dbsessions:
-    db1:
-      url: postgresql://www-data:www-data@db:5432/geomapfish_tests
-
-  layers:
-    enum:
-      layer1:
-        attributes:
-          name:
-            table: geodata.testpoint
+    available_functionalities:
+      - name: functionality1
+        description: description2
 """
 
 
-@pytest.fixture(scope="module")
-def settings():
-    setup_module()
-
-    settings = {
-        **configuration.get_config(),
-        **yaml.load(GMF_CONFIG, Loader=yaml.BaseLoader)["vars"],
-    }
-
-    with patch(
-        "c2c.template.get_config",
-        return_value=settings,
-    ):
-        yield settings
-
-
-@pytest.fixture(scope="module")
-def dbsession(settings):
-    from c2cgeoportal_commons.models import DBSession, DBSessions
-
-    DBSessions["db1"] = DBSession
-
-    with patch("c2cgeoportal_geoportal.init_db_sessions"):
-        yield DBSession
-
-
-@pytest.fixture(scope="function")
-def transact(dbsession):
-    t = dbsession.begin_nested()
-    yield t
-    t.rollback()
-    dbsession.expire_all()
-
-
-@pytest.fixture(scope="function")
-def test_data(dbsession, transact):
-    from sqlalchemy import text
-
-    from c2cgeoportal_commons.models import main
-
-    dbsession.execute(
-        text(
-            """
-INSERT INTO geodata.testpoint (name)
-VALUES ('testpoint_name1');
-"""
-        )
-    )
-
-    theme = main.Theme(name="test_theme")
-    theme.metadatas = [
-        main.Metadata(
-            name="metadata1",
-            value="metadata1_value",
-        )
-    ]
-    dbsession.add(theme)
-    dbsession.flush()
-
-
-@pytest.mark.usefixtures("test_data")
 class TestGeomapfishConfigExtractor:
     @patch(
-        "c2cgeoportal_geoportal.lib.lingua_extractor.open",
-        mock_open(read_data="vars:"),
+        "c2cgeoportal_admin.lib.lingva_extractor.open",
+        mock_open(read_data=GMF_CONFIG),
     )
-    def test_extract_config(self, settings, dbsession):
+    def test_extract_config(self):
         extractor = GeomapfishConfigExtractor()
 
         options = Mock()
@@ -139,4 +61,4 @@ class TestGeomapfishConfigExtractor:
 
         messages = list(extractor("config.yaml", options))
 
-        assert {msg.msgid for msg in messages} == {"raster1", "testpoint_name1", "metadata1_value"}
+        assert {msg.msgid for msg in messages} == {"description1", "description2"}

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, Camptocamp SA
+# Copyright (c) 2020-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,25 @@
 
 # pylint: disable=missing-docstring
 
-from unittest.mock import Mock, mock_open, patch
+from unittest.mock import Mock, patch
 
-import pytest
-import yaml
-from c2c.template.config import config as configuration
-
-from c2cgeoportal_admin.lib.lingua_extractor import GeomapfishConfigExtractor
-
-GMF_CONFIG = """
-vars:
-  admin_interface:
-    available_metadata:
-      - name: metadata1
-        description: description1
-        translate: true
-    available_functionalities:
-      - name: functionality1
-        description: description2
-"""
+from c2cgeoportal_geoportal.lib.lingva_extractor import GeomapfishAngularExtractor
 
 
-class TestGeomapfishConfigExtractor:
-    @patch(
-        "c2cgeoportal_admin.lib.lingua_extractor.open",
-        mock_open(read_data=GMF_CONFIG),
-    )
-    def test_extract_config(self):
-        extractor = GeomapfishConfigExtractor()
+class TestGeomapfishAngularExtractor:
+    def test_extract_desktop_html_ejs(self):
+        extractor = GeomapfishAngularExtractor()
+        extractor.config = {
+            "package": "geomapfish_geoportal",
+        }
 
-        options = Mock()
-        options.keywords = []
+        with patch(
+            "c2cgeoportal_geoportal.lib.lingva_extractor.subprocess.check_output",
+            return_value=b'[["desktop.html.ejs:34","Theme:"]]',
+        ):
+            options = Mock()
+            options.keywords = []
 
-        messages = list(extractor("config.yaml", options))
+            messages = list(extractor("desktop.html.ejs", options))
 
-        assert {msg.msgid for msg in messages} == {"description1", "description2"}
+        assert {msg.msgid for msg in messages} == {"Theme:"}
