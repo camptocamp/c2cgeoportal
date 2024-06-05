@@ -67,7 +67,10 @@ files = [
 [package.dependencies]
 lazy-object-proxy = ">=1.4.0"
 typing-extensions = {version = ">=4.0.0", markers = "python_version < \"3.11\""}
-wrapt = {version = ">=1.11,<2", markers = "python_version < \"3.11\""}
+wrapt = [
+    {version = ">=1.11,<2", markers = "python_version < \"3.11\""},
+    {version = ">=1.14,<2", markers = "python_version >= \"3.11\""},
+]
 
 [[package]]
 name = "async-timeout"
@@ -385,13 +388,13 @@ publish = ["google-api-python-client (>=2.0.0,<3.0.0)", "google-auth-httplib2 (>
 
 [[package]]
 name = "c2cgeoform"
-version = "2.2.5"
+version = "2.3.1"
 description = "c2cgeoform"
 optional = false
-python-versions = ">=3.9,<3.11"
+python-versions = "<3.13,>=3.9"
 files = [
-    {file = "c2cgeoform-2.2.5-py3-none-any.whl", hash = "sha256:c8939f116d0be4cf572e05ad20cb5a211b3a569671df56119c69b6a9e7605aca"},
-    {file = "c2cgeoform-2.2.5.tar.gz", hash = "sha256:a917c71ae8e6282187f620fab54fcde9e6c7af5b3e55466c9e2ce614113efd28"},
+    {file = "c2cgeoform-2.3.1-py3-none-any.whl", hash = "sha256:57f457dab99760ac0c8b7a43765e98487c12672f6120c1bcc318b5dc57e12c41"},
+    {file = "c2cgeoform-2.3.1.tar.gz", hash = "sha256:328c911ef129bd97c4056cd875b72316e4b0683cab0ce1be9d41e8b636cda4a3"},
 ]
 
 [package.dependencies]
@@ -400,7 +403,6 @@ colanderalchemy = "*"
 deform = "*"
 geoalchemy2 = "*"
 geojson = "*"
-jinja2 = "*"
 lingua = "*"
 pyproj = "*"
 pyramid = "*"
@@ -2903,7 +2905,10 @@ files = [
 [package.dependencies]
 astroid = ">=2.15.8,<=2.17.0-dev0"
 colorama = {version = ">=0.4.5", markers = "sys_platform == \"win32\""}
-dill = {version = ">=0.2", markers = "python_version < \"3.11\""}
+dill = [
+    {version = ">=0.2", markers = "python_version < \"3.11\""},
+    {version = ">=0.3.6", markers = "python_version >= \"3.11\""},
+]
 isort = ">=4.2.5,<6"
 mccabe = ">=0.6,<0.8"
 platformdirs = ">=2.2.0"
@@ -4722,5 +4727,5 @@ test = ["zope.testing"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.9,<3.11"
-content-hash = "d11da2cde55502476aecfbe8fe0dc87a7345d23e61ac98447ae4d4da8c6e7726"
+python-versions = ">=3.9,<3.13"
+content-hash = "f22c1e38582a30ecc3bdf7885ceca5eda672d0d7172f3c18e4dfd9a357720026"
