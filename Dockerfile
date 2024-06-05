@@ -67,6 +67,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         binutils gcc g++ \
+    && python3 -m pip install --disable-pip-version-check --no-deps setuptools \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
         --use-deprecated=legacy-resolver \
         --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
