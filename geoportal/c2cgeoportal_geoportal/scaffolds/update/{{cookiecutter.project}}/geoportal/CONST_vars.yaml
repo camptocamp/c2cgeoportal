@@ -972,7 +972,7 @@ vars:
   pdfreport:
     print_url: '{PRINT_URL}'
 
-  lingua_extractor: {}
+  lingva_extractor: {}
 
   content_security_policy_main_default_src_extra: ''
   # Google Maps uses map.google.com and map.googleapis.com

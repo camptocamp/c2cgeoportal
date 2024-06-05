@@ -78,7 +78,7 @@ Local certificate checks
 ------------------------
 
 Certain c2cgeoportal features open a http session to your c2cgeoportal services,
-for example the ``checker`` or the ``lingua_extractor``.
+for example the ``checker`` or the ``lingva_extractor``.
 If you are running your server in https and wish to disable certificate checks in these
 connections, you can achieve this by adding the following configuration element to your ``vars`` file:
 

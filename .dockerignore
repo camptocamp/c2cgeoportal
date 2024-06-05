@@ -19,12 +19,12 @@
 !admin/requirements.txt
 !admin/setup.cfg
 !admin/setup.py
-!admin/lingua.cfg
+!admin/lingva.cfg
 !scripts/clone_schema.sql
 !scripts/extract-messages.js
 !vars.yaml
 !.tx
-!lingua.cfg
+!lingva.cfg
 **/*~
 **/*.pyc
 **/*.pyo

@@ -31,7 +31,7 @@ import logging
 
 import pyramid.request
 import pyramid.response
-from lingua.extract import (  # strip_linenumbers,
+from lingva.extract import (  # strip_linenumbers,
     ExtractorOptions,
     POEntry,
     create_catalog,
@@ -40,8 +40,8 @@ from lingua.extract import (  # strip_linenumbers,
     no_duplicates,
     read_config,
 )
-from lingua.extractors import get_extractor, register_extractors
-from lingua.extractors.babel import register_babel_plugins
+from lingva.extractors import get_extractor, register_extractors
+from lingva.extractors.babel import register_babel_plugins
 from pyramid.httpexceptions import HTTPFound, HTTPInternalServerError
 from pyramid.view import view_config
 
@@ -78,7 +78,7 @@ def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     sources += ["/etc/geomapfish/config.yaml", "/app/development.ini"]
 
     # The following code is a modified version of the main function of this file:
-    # https://github.com/wichert/lingua/blob/master/src/lingua/extract.py
+    # https://github.com/wichert/lingva/blob/master/src/lingva/extract.py
 
     global _INITIALIZED
     if not _INITIALIZED:
@@ -86,7 +86,7 @@ def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
         register_babel_plugins()
         _INITIALIZED = True
 
-        with open("/app/lingua-client.cfg", encoding="utf-8") as config_file:
+        with open("/app/lingva-client.cfg", encoding="utf-8") as config_file:
             read_config(config_file)
         _INITIALIZED = True
 
