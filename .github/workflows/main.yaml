@@ -78,6 +78,7 @@ jobs:
           path: /tmp/pre-commit.patch
           retention-days: 1
         if: failure()
+
       - name: Checks
         run: c2cciutils-checks
 
@@ -215,6 +216,13 @@ jobs:
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
+
+      - name: Publish version branch to pypi
+        run: |
+          c2cciutils-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && env.HAS_SECRETS == 'HAS_SECRETS'
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
         if: failure()
       - uses: actions/upload-artifact@v4
@@ -223,12 +231,6 @@ jobs:
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
-      - name: Publish version branch to pypi
-        run: |
-          c2cciutils-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Notify demo
         run: >
