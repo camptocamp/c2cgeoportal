@@ -1,3 +1,7 @@
+##### 2.7.1.98
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#11156](https://github.com/camptocamp/c2cgeoportal/pull/11156)
+
 ##### 2.7.1.97
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20240607T150950Z.f99a5de6b.2.7 (2.7) [c2cgeoportal#11147](https://github.com/camptocamp/c2cgeoportal/pull/11147)
