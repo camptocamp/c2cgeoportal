@@ -18,3 +18,4 @@
 /geoportal/tests/tests.ini
 /geoportal/node_modules/
 /geoportal/package-lock.json
+/node_modules/
