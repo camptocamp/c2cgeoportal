@@ -14,3 +14,4 @@
 /geoportal/c2cgeoportal_geoportal/scaffolds/create/print/print-apps/+package+/config.yaml
 /geoportal/tests/testegg/production.ini
 /geoportal/tests/tests.ini
+/node_modules/
