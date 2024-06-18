@@ -1,3 +1,9 @@
+##### 2.7.1.99
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#11158](https://github.com/camptocamp/c2cgeoportal/pull/11158)
+- Remove files added by the audit [c2cgeoportal#11159](https://github.com/camptocamp/c2cgeoportal/pull/11159)
+- Audit Snyk check/fix 2.7 [ngeo#9371](https://github.com/camptocamp/ngeo/pull/9371)
+
 ##### 2.7.1.98
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#11156](https://github.com/camptocamp/c2cgeoportal/pull/11156)
