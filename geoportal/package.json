@@ -11,16 +11,16 @@
     "@snyk/protect": "1.1094.0",
     "@typescript-eslint/eslint-plugin": "5.50.0",
     "@typescript-eslint/parser": "5.50.0",
-    "angular-gettext-tools": "2.5.3",
+    "angular-gettext-tools": "2.3.18",
     "commander": "10.0.1",
     "eslint": "8.33.0",
     "ngeo": "version-2.8-latest",
-    "puppeteer": "19.7.5",
+    "puppeteer": "22.11.2",
     "url-parse": "1.5.10"
   },
   "devDependencies": {
-    "@babel/plugin-transform-typescript": "7.20.13",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
-    "@babel/plugin-proposal-optional-chaining": "7.21.0"
+    "@babel/plugin-proposal-optional-chaining": "7.21.0",
+    "@babel/plugin-transform-typescript": "7.20.13"
   }
 }
