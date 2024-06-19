@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ab6c3c925ce0c10e505048da36ea816ba26c68be6421ce5c5b0bed23a4bd6779"
+            "sha256": "3eb5a4e90e7bdfa7e9f3790ad1a623adf5c2cdf9a7cb3a8f5ad5ba30001939f9"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1479,11 +1479,11 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:34b97092d7e0a3a8cf7cd10e386f401b3737364026c45e622aa02903dffe0f07",
-                "sha256:f8ecc1bba5667413457c529ab955bf8c67b45db799d159066261719e328580a0"
+                "sha256:37a0344459b199fce0e80b0d3569837ec6b6937435c5244e7fd73fa6006830f3",
+                "sha256:3e3d753a8618b86d7de333b4223005f68720bcd6a7d2bcb9fbd2229ec7c1e429"
             ],
             "index": "pypi",
-            "version": "==1.26.18"
+            "version": "==1.26.19"
         },
         "venusian": {
             "hashes": [
@@ -2516,11 +2516,11 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:34b97092d7e0a3a8cf7cd10e386f401b3737364026c45e622aa02903dffe0f07",
-                "sha256:f8ecc1bba5667413457c529ab955bf8c67b45db799d159066261719e328580a0"
+                "sha256:37a0344459b199fce0e80b0d3569837ec6b6937435c5244e7fd73fa6006830f3",
+                "sha256:3e3d753a8618b86d7de333b4223005f68720bcd6a7d2bcb9fbd2229ec7c1e429"
             ],
             "index": "pypi",
-            "version": "==1.26.18"
+            "version": "==1.26.19"
         },
         "waitress": {
             "hashes": [
