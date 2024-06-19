@@ -1,3 +1,8 @@
+##### 2.8.1.107
+
+- CI updates [ngeo#9367](https://github.com/camptocamp/ngeo/pull/9367)
+- CI updates [ngeo#9370](https://github.com/camptocamp/ngeo/pull/9370)
+
 ##### 2.8.1.104
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11151](https://github.com/camptocamp/c2cgeoportal/pull/11151)
