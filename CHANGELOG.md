@@ -1,3 +1,5 @@
+##### 2.6.0.256
+* [Backport 2.6] Ignore CVE [c2cgeoportal#11172](https://github.com/camptocamp/c2cgeoportal/pull/11172)
 ##### 2.6.0.255
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11157](https://github.com/camptocamp/c2cgeoportal/pull/11157)
 * Remove files added by the audit [c2cgeoportal#11160](https://github.com/camptocamp/c2cgeoportal/pull/11160)
