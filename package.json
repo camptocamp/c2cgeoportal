@@ -4,9 +4,9 @@
   "description": "GeoMapFish geoportal interface",
   "author": "",
   "dependencies": {
-    "angular-gettext-tools": "2.3.18",
+    "angular-gettext-tools": "2.5.3",
     "commander": "7.0.0",
-    "puppeteer": "22.11.2",
+    "puppeteer": "19.7.5",
     "url-parse": "1.5.10"
   }
 }
