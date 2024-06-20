@@ -1,3 +1,7 @@
+##### 2.8.1.108
+
+- Ignore CVE [c2cgeoportal#11171](https://github.com/camptocamp/c2cgeoportal/pull/11171)
+
 ##### 2.8.1.107
 
 - CI updates [ngeo#9367](https://github.com/camptocamp/ngeo/pull/9367)
