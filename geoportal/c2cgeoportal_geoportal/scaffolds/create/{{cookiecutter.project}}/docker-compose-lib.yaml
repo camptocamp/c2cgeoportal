@@ -1,7 +1,5 @@
 # This file is managed by c2cgeoportal, it contains the default services configuration
 
-version: '2.3'
-
 services:
   config:
     image: ${DOCKER_BASE}-config:${DOCKER_TAG}

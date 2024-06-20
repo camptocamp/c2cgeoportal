@@ -1,7 +1,5 @@
 # This file is used by the acceptance tests to have a local database.
 
-version: '2.3'
-
 volumes:
   postgresql_data:
 

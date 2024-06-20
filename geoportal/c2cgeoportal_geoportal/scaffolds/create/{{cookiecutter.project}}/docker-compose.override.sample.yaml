@@ -1,8 +1,6 @@
 # This file can be renamed as `docker-compose.override.yaml` and uncomment the desired lines for
 # development. The file `docker-compose.override.yaml` is ignored by Git by default.
 
-version: '2.3'
-
 services:
   geoportal:
     user: root

@@ -1,7 +1,5 @@
 # This file is used to run QGIS client from the Docker image
 
-version: '2'
-
 services:
   qgis:
     extends:
