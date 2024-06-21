@@ -1,3 +1,7 @@
+##### 2.7.1.102
+
+- No more maintain the QGIS version 3.22 [c2cgeoportal#11182](https://github.com/camptocamp/c2cgeoportal/pull/11182)
+
 ##### 2.7.1.101
 
 - [Backport 2.7] Ignore CVE [c2cgeoportal#11173](https://github.com/camptocamp/c2cgeoportal/pull/11173)
