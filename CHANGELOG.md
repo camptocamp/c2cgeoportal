@@ -1,3 +1,8 @@
+##### 2.7.1.103
+
+- Use a pipenv version supported by Snyk [c2cgeoportal#11181](https://github.com/camptocamp/c2cgeoportal/pull/11181)
+- [Backport 2.7] Put the CVE ignore at the right place [c2cgeoportal#11184](https://github.com/camptocamp/c2cgeoportal/pull/11184)
+
 ##### 2.7.1.102
 
 - No more maintain the QGIS version 3.22 [c2cgeoportal#11182](https://github.com/camptocamp/c2cgeoportal/pull/11182)
