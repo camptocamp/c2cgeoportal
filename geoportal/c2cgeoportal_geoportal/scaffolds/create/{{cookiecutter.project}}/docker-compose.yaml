@@ -1,7 +1,5 @@
 # The project Docker compose file.
 
-version: '2.3'
-
 volumes:
   postgresql_data:
 
