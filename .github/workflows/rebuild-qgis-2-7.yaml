@@ -17,7 +17,6 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '3.22'
           - '3.28'
           - 3.28-gdal3.6
           - 3.28-gdal3.7
@@ -25,6 +24,9 @@ jobs:
           - 3.34-gdal3.7
           - 3.34-gdal3.8
           - ltr
+          - lr
+          - lr-debug
+          - master
         branch:
           - '2.7'
 
