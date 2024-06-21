@@ -1,3 +1,5 @@
+##### 2.6.0.258
+* Put the CVE ignore at the right place [c2cgeoportal#11180](https://github.com/camptocamp/c2cgeoportal/pull/11180)
 ##### 2.6.0.257
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11174](https://github.com/camptocamp/c2cgeoportal/pull/11174)
 ##### 2.6.0.256
