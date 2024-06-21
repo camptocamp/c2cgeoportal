@@ -214,15 +214,14 @@ def add_admin_interface(config: pyramid.config.Configurator) -> None:
 
     assert c2cgeoportal_commons.models.DBSession is not None
 
-    if config.get_settings().get("enable_admin_interface", False):
-        config.add_request_method(
-            lambda request: c2cgeoportal_commons.models.DBSession(),
-            "dbsession",
-            reify=True,
-        )
-        config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name="admin_add_ending_slash")
-        config.add_route("admin_add_ending_slash", "/admin", request_method="GET")
-        config.include("c2cgeoportal_admin")
+    config.add_request_method(
+        lambda request: c2cgeoportal_commons.models.DBSession(),
+        "dbsession",
+        reify=True,
+    )
+    config.add_view(c2cgeoportal_geoportal.views.add_ending_slash, route_name="admin_add_ending_slash")
+    config.add_route("admin_add_ending_slash", "/admin", request_method="GET")
+    config.include("c2cgeoportal_admin")
 
 
 def add_getitfixed(config: pyramid.config.Configurator) -> None:
@@ -721,7 +720,17 @@ def includeme(config: pyramid.config.Configurator) -> None:
         ]
     )
 
-    add_admin_interface(config)
+    admin_interface = (
+        config.get_settings().get("enable_admin_interface", False)
+        and importlib.util.find_spec("c2cgeoportal_admin") is not None
+    )
+    if admin_interface:
+        add_admin_interface(config)
+    else:
+        if not config.get_settings().get("enable_admin_interface", False):
+            LOG.info("Admin interface disabled by configuration")
+        else:
+            LOG.info("Admin interface disabled because c2cgeoportal_admin is not installed")
     add_getitfixed(config)
 
     # Add the project static view with cache buster
@@ -770,7 +779,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
             '<a href="../memory">Memory status</a><br>',
         ]
     )
-    if config.get_settings().get("enable_admin_interface", False):
+    if admin_interface:
         c2cwsgiutils.index.additional_noauth.append('<a href="../admin/">Admin</a><br>')
 
     c2cwsgiutils.index.additional_noauth.append(
