@@ -58,8 +58,8 @@ jobs:
       - run: make build-config
 
       # Build and lint QGIS images
-      - run: docker build --target=lint --build-arg=VERSION=3.22 docker/qgisserver
-      - run: QGIS_VERSION=3.22 make build-qgisserver
+      - run: docker build --target=lint --build-arg=VERSION=3.28-gdal3.7 docker/qgisserver
+      - run: QGIS_VERSION=3.28-gdal3.7 make build-qgisserver
 
       # Tests
       - run: make preparetest
