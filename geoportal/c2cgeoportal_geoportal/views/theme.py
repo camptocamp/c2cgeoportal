@@ -438,6 +438,10 @@ class Theme:
             layer_info["type"] = "VectorTiles"
             self._vectortiles_layers(layer_info, layer, errors)
 
+        elif isinstance(layer, main.LayerCOG):
+            layer_info["type"] = "COG"
+            self._cog_layers(layer_info, layer, errors)
+
         return None if errors else layer_info, errors
 
     @staticmethod
@@ -575,11 +579,17 @@ class Theme:
         layer_theme["layer"] = layer.layer
         layer_theme["imageType"] = layer.image_type
 
-    def _vectortiles_layers(self, layer_theme: dict[str, Any], layer: main.Layer, errors: set[str]) -> None:
+    def _vectortiles_layers(
+        self, layer_theme: dict[str, Any], layer: main.LayerVectorTiles, errors: set[str]
+    ) -> None:
         style = get_url2(f"The VectorTiles layer '{layer.name}'", layer.style, self.request, errors=errors)
         layer_theme["style"] = style.url() if style is not None else None
         if layer.xyz:
             layer_theme["xyz"] = layer.xyz
+
+    def _cog_layers(self, layer_theme: dict[str, Any], layer: main.LayerCOG, errors: set[str]) -> None:
+        url = get_url2(f"The COG layer '{layer.name}'", layer.url, self.request, errors=errors)
+        layer_theme["url"] = url.url() if url is not None else None
 
     @staticmethod
     def _layer_included(tree_item: main.TreeItem) -> bool:

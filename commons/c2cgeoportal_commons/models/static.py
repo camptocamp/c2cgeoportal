@@ -174,7 +174,8 @@ class User(Base):  # type: ignore
     )
 
     settings_role_id: Mapped[int] = mapped_column(
-        Integer,
+        Integer(),
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Settings from role"),
@@ -219,6 +220,7 @@ class User(Base):  # type: ignore
 
     last_login: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Last login"),
@@ -343,9 +345,9 @@ class Shorturl(Base):  # type: ignore
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     url: Mapped[str] = mapped_column(Unicode)
     ref: Mapped[str] = mapped_column(String(20), index=True, unique=True, nullable=False)
-    creator_email: Mapped[str] = mapped_column(Unicode(200))
+    creator_email: Mapped[str] = mapped_column(Unicode(200), nullable=True)
     creation: Mapped[datetime] = mapped_column(DateTime)
-    last_hit: Mapped[datetime] = mapped_column(DateTime)
+    last_hit: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     nb_hits: Mapped[int] = mapped_column(Integer)
 
 
@@ -443,7 +445,7 @@ class OAuth2BearerToken(Base):  # type: ignore
     access_token: Mapped[str] = mapped_column(Unicode(100), unique=True)
     refresh_token: Mapped[str] = mapped_column(Unicode(100), unique=True)
     expire_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))  # in one hour
-    state = mapped_column(String)
+    state = mapped_column(String, nullable=True)
 
 
 class OAuth2AuthorizationCode(Base):  # type: ignore
@@ -466,10 +468,10 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
     )
     user = relationship(User)
     redirect_uri: Mapped[str] = mapped_column(Unicode)
-    code: Mapped[str] = mapped_column(Unicode(100), unique=True)
-    state: Mapped[Optional[str]] = mapped_column(String)
-    challenge: Mapped[str] = mapped_column(String(128))
-    challenge_method: Mapped[str] = mapped_column(String(6))
+    code: Mapped[str] = mapped_column(Unicode(100), unique=True, nullable=True)
+    state: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    challenge: Mapped[str] = mapped_column(String(128), nullable=True)
+    challenge_method: Mapped[str] = mapped_column(String(6), nullable=True)
     expire_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))  # in 10 minutes
 
 

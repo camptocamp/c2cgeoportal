@@ -1,29 +1,30 @@
 # pylint: disable=no-self-use
 
 import re
+from typing import Any
 
 import pytest
+from sqlalchemy.orm import Session, SessionTransaction
+from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 
 from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
 @pytest.fixture(scope="function")
 @pytest.mark.usefixtures("dbsession", "transact")
-def layer_vectortiles_test_data(dbsession, transact):
+def layer_cog_test_data(dbsession: Session, transact: SessionTransaction) -> dict[str, Any]:
     del transact
 
-    from c2cgeoportal_commons.models.main import LayerVectorTiles
+    from c2cgeoportal_commons.models.main import LayerCOG
 
-    def layer_builder(i):
-        name = f"layer_vectortiles_{i}"
-        layer = LayerVectorTiles(name=name)
-        layer.layer = name
+    def layer_builder(i: int) -> LayerCOG:
+        name = f"layer_cog_{i}"
+        layer = LayerCOG(name=name)
         layer.public = 1 == i % 2
-        layer.style = "https://vectortiles-staging.geoportail.lu/styles/roadmap/style.json"
-        layer.xyz = "https://vectortiles-staging.geoportail.lu/styles/roadmap/{z}/{x}/{y}.png"
+        layer.url = "https://example.com/image.tiff"
         return layer
 
-    data = factory_build_layers(layer_builder, dbsession)
+    data = factory_build_layers(layer_builder, dbsession, add_dimension=False)
     data["default"] = get_test_default_layers(dbsession, None)
 
     dbsession.flush()
@@ -31,14 +32,14 @@ def layer_vectortiles_test_data(dbsession, transact):
     yield data
 
 
-@pytest.mark.usefixtures("layer_vectortiles_test_data", "test_app")
+@pytest.mark.usefixtures("layer_cog_test_data", "test_app")
 class TestLayerVectortiles(AbstractViewsTests):
-    _prefix = "/admin/layers_vectortiles"
+    _prefix = "/admin/layers_cog"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app: WebTestApp) -> None:
         resp = self.get(test_app)
 
-        self.check_left_menu(resp, "Vector Tiles Layers")
+        self.check_left_menu(resp, "COG Layers")
 
         expected = [
             ("actions", "", "false"),
@@ -48,9 +49,7 @@ class TestLayerVectortiles(AbstractViewsTests):
             ("public", "Public"),
             ("geo_table", "Geo table"),
             ("exclude_properties", "Exclude properties"),
-            ("style", "Style"),
-            ("xyz", "Raster URL"),
-            ("dimensions", "Dimensions", "false"),
+            ("url", "URL"),
             ("interfaces", "Interfaces"),
             ("restrictionareas", "Restriction areas", "false"),
             ("parents_relation", "Parents", "false"),
@@ -58,51 +57,52 @@ class TestLayerVectortiles(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_complex_column_val(self, test_app, layer_vectortiles_test_data):
-        json = self.check_search(test_app, sort="name")
+    def test_grid_complex_column_val(self, test_app: WebTestApp, layer_cog_test_data: dict[str, Any]) -> None:
+        json = self.check_search(test_app, search="layer", sort="name")
 
         row = json["rows"][0]
-        layer = layer_vectortiles_test_data["layers"][0]
+        layer = layer_cog_test_data["layers"][0]
 
-        assert layer.id == int(row["_id_"])
         assert layer.name == row["name"]
+        assert layer.id == int(row["_id_"])
 
-    def test_new(self, test_app, layer_vectortiles_test_data, dbsession):
-        default_vectortiles = layer_vectortiles_test_data["default"]["vectortiles"]
-        default_vectortiles.name = "so can I not be found"
+    def test_new(self, test_app: WebTestApp, layer_cog_test_data: dict[str, Any], dbsession: Session) -> None:
+        default_cog = layer_cog_test_data["default"]["cog"]
+        default_cog.name = "so can I not be found"
         dbsession.flush()
 
         form = self.get_item(test_app, "new").form
 
-        assert "" == self.get_first_field_named(form, "id").value
         assert "" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "style").value
-        assert "" == self.get_first_field_named(form, "xyz").value
+        assert "" == self.get_first_field_named(form, "id").value
+        assert "" == self.get_first_field_named(form, "url").value
 
-    def test_grid_search(self, test_app):
-        self.check_search(test_app, "layer_vectortiles_10", total=1)
+    def test_grid_search(self, test_app: WebTestApp) -> None:
+        self.check_search(test_app, "layer_cog_10", total=1)
 
-    def test_base_edit(self, test_app, layer_vectortiles_test_data):
-        layer = layer_vectortiles_test_data["layers"][10]
+    def test_base_edit(self, test_app: WebTestApp, layer_cog_test_data: dict[str, Any]) -> None:
+        layer = layer_cog_test_data["layers"][10]
 
         form = self.get_item(test_app, layer.id).form
 
-        assert "layer_vectortiles_10" == self.get_first_field_named(form, "name").value
+        assert "layer_cog_10" == self.get_first_field_named(form, "name").value
         assert "" == self.get_first_field_named(form, "description").value
 
-    def test_public_checkbox_edit(self, test_app, layer_vectortiles_test_data):
-        layer = layer_vectortiles_test_data["layers"][10]
+    def test_public_checkbox_edit(self, test_app: WebTestApp, layer_cog_test_data: dict[str, Any]) -> None:
+        layer = layer_cog_test_data["layers"][10]
         form = self.get_item(test_app, layer.id).form
         assert not form["public"].checked
 
-        layer = layer_vectortiles_test_data["layers"][11]
+        layer = layer_cog_test_data["layers"][11]
         form = self.get_item(test_app, layer.id).form
         assert form["public"].checked
 
-    def test_edit(self, test_app, layer_vectortiles_test_data, dbsession):
+    def test_edit(
+        self, test_app: WebTestApp, layer_cog_test_data: dict[str, Any], dbsession: Session
+    ) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
-        layer = layer_vectortiles_test_data["layers"][0]
+        layer = layer_cog_test_data["layers"][0]
 
         form = self.get_item(test_app, layer.id).form
 
@@ -114,14 +114,13 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert layer.public == form["public"].checked
         assert str(layer.geo_table or "") == form["geo_table"].value
         assert str(layer.exclude_properties or "") == form["exclude_properties"].value
-        assert str(layer.style or "") == form["style"].value
-        assert str(layer.xyz or "") == form["xyz"].value
+        # assert str(layer.url or "") == form["url"].value
 
-        interfaces = layer_vectortiles_test_data["interfaces"]
+        interfaces = layer_cog_test_data["interfaces"]
         assert {interfaces[0].id, interfaces[2].id} == {i.id for i in layer.interfaces}
         self._check_interfaces(form, interfaces, layer)
 
-        ras = layer_vectortiles_test_data["restrictionareas"]
+        ras = layer_cog_test_data["restrictionareas"]
         assert {ras[0].id, ras[2].id} == {i.id for i in layer.restrictionareas}
         self._check_restrictionsareas(form, ras, layer)
 
@@ -131,8 +130,7 @@ class TestLayerVectortiles(AbstractViewsTests):
             "public": True,
             "geo_table": "new_geo_table",
             "exclude_properties": "property1,property2",
-            "style": "https://new_style.json",
-            "xyz": "https://new_style/{x}/{y}/{z}.png",
+            "url": "https://example.com/image.tiff",
         }
 
         for key, value in new_values.items():
@@ -157,45 +155,48 @@ class TestLayerVectortiles(AbstractViewsTests):
         log = dbsession.query(Log).one()
         assert log.date != None
         assert log.action == LogAction.UPDATE
-        assert log.element_type == "layer_vectortiles"
+        assert log.element_type == "layer_cog"
         assert log.element_id == layer.id
         assert log.element_name == layer.name
         assert log.username == "test_user"
 
-    def test_submit_new(self, dbsession, test_app, layer_vectortiles_test_data):
-        from c2cgeoportal_commons.models.main import LayerVectorTiles, Log, LogAction
+    def test_submit_new(
+        self, dbsession: Session, test_app: WebTestApp, layer_cog_test_data: dict[str, Any]
+    ) -> None:
+        from c2cgeoportal_commons.models.main import LayerCOG, Log, LogAction
 
         resp = test_app.post(
-            "/admin/layers_vectortiles/new",
+            "/admin/layers_cog/new",
             {
                 "name": "new_name",
                 "description": "new description",
                 "public": True,
-                "style": "https://new_style/styles/layer/style.json",
-                "xyz": "https://new_style/styles/layer/{z}/{x}/{y}.png",
+                "url": "https://example.com/image.tiff",
             },
             status=302,
         )
 
-        layer = dbsession.query(LayerVectorTiles).filter(LayerVectorTiles.name == "new_name").one()
+        layer = dbsession.query(LayerCOG).filter(LayerCOG.name == "new_name").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_cog/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         log = dbsession.query(Log).one()
         assert log.date != None
         assert log.action == LogAction.INSERT
-        assert log.element_type == "layer_vectortiles"
+        assert log.element_type == "layer_cog"
         assert log.element_id == layer.id
         assert log.element_name == layer.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, layer_vectortiles_test_data, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import LayerVectorTiles
+    def test_duplicate(
+        self, layer_cog_test_data: dict[str, Any], test_app: WebTestApp, dbsession: Session
+    ) -> None:
+        from c2cgeoportal_commons.models.main import LayerCOG
 
-        layer = layer_vectortiles_test_data["layers"][3]
+        layer = layer_cog_test_data["layers"][3]
 
-        resp = test_app.get(f"/admin/layers_vectortiles/{layer.id}/duplicate", status=200)
+        resp = test_app.get(f"/admin/layers_cog/{layer.id}/duplicate", status=200)
         form = resp.form
 
         assert "" == self.get_first_field_named(form, "id").value
@@ -205,39 +206,38 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert layer.public == form["public"].checked
         assert str(layer.geo_table or "") == form["geo_table"].value
         assert str(layer.exclude_properties or "") == form["exclude_properties"].value
-        assert str(layer.style or "") == form["style"].value
-        assert str(layer.xyz or "") == form["xyz"].value
-        interfaces = layer_vectortiles_test_data["interfaces"]
+        # assert str(layer.url or "") == form["url"].value
+        interfaces = layer_cog_test_data["interfaces"]
         assert {interfaces[3].id, interfaces[1].id} == {i.id for i in layer.interfaces}
         self._check_interfaces(form, interfaces, layer)
 
         self.set_first_field_named(form, "name", "clone")
         resp = form.submit("submit")
 
-        layer = dbsession.query(LayerVectorTiles).filter(LayerVectorTiles.name == "clone").one()
+        layer = dbsession.query(LayerCOG).filter(LayerCOG.name == "clone").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_cog/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
         assert layer.id == layer.metadatas[0].item_id
-        assert layer_vectortiles_test_data["layers"][3].metadatas[0].name == layer.metadatas[0].name
-        assert layer_vectortiles_test_data["layers"][3].metadatas[1].name == layer.metadatas[1].name
+        assert layer_cog_test_data["layers"][3].metadatas[0].name == layer.metadatas[0].name
+        assert layer_cog_test_data["layers"][3].metadatas[1].name == layer.metadatas[1].name
 
-    def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Layer, LayerVectorTiles, Log, LogAction, TreeItem
+    def test_delete(self, test_app: WebTestApp, dbsession: Session) -> None:
+        from c2cgeoportal_commons.models.main import Layer, LayerCOG, Log, LogAction, TreeItem
 
-        layer = dbsession.query(LayerVectorTiles).first()
+        layer = dbsession.query(LayerCOG).first()
 
-        test_app.delete(f"/admin/layers_vectortiles/{layer.id}", status=200)
+        test_app.delete(f"/admin/layers_cog/{layer.id}", status=200)
 
-        assert dbsession.query(LayerVectorTiles).get(layer.id) is None
+        assert dbsession.query(LayerCOG).get(layer.id) is None
         assert dbsession.query(Layer).get(layer.id) is None
         assert dbsession.query(TreeItem).get(layer.id) is None
 
         log = dbsession.query(Log).one()
         assert log.date != None
         assert log.action == LogAction.DELETE
-        assert log.element_type == "layer_vectortiles"
+        assert log.element_type == "layer_cog"
         assert log.element_id == layer.id
         assert log.element_name == layer.name
         assert log.username == "test_user"

@@ -509,6 +509,9 @@ vars:
   admin_interface:
     layer_tree_max_nodes: 1000
 
+    exclude_pages:
+      - layers-cog
+
     # The list of available variable names for the `Metadatas` form.
     available_metadata:
       # TreeItem
