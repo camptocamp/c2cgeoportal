@@ -217,7 +217,7 @@ With that you will not have URL encoding issues.
 Landing page
 ============
 
-`The QGIS documentation <https://docs.qgis.org/3.28/en/docs/server_manual/services.html#qgis-server-catalog>`_.
+`The QGIS documentation <https://docs.qgis.org/latest/en/docs/server_manual/services.html#qgis-server-catalog>`_.
 
 To have the landing page you should:
 
