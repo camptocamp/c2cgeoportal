@@ -1,3 +1,9 @@
+##### 2.7.1.104
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#11187](https://github.com/camptocamp/c2cgeoportal/pull/11187)
+- [Backport 2.7] Remove all polyfill.io [c2cgeoportal#11193](https://github.com/camptocamp/c2cgeoportal/pull/11193)
+- [Backport 2.7] Remove all polyfill.io [ngeo#9382](https://github.com/camptocamp/ngeo/pull/9382)
+
 ##### 2.7.1.103
 
 - Use a pipenv version supported by Snyk [c2cgeoportal#11181](https://github.com/camptocamp/c2cgeoportal/pull/11181)
