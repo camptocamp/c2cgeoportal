@@ -59,3 +59,9 @@ upgrade_files:
   - action: remove
     paths:
       - geoportal/tools/extract-messages.js
+  - action: move
+    from: geoportal/lingua-server.cfg
+    to: geoportal/lingva-server.cfg
+  - action: move
+    from: geoportal/lingua-client.cfg
+    to: geoportal/lingva-client.cfg

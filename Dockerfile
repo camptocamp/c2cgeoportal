@@ -1,5 +1,5 @@
 # Base of all section, install the apt packages
-FROM ghcr.io/osgeo/gdal:ubuntu-small-3.8.5 as base-all
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.9.0 as base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 # Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
@@ -7,16 +7,13 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-# Workaround for newer version of setuptools
-ENV SETUPTOOLS_USE_DISTUTILS=stdlib
-
 # pip install --upgrade pip should be removed when we upgrade from Ubuntu 22.04 to 24.04
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends python3-pip adduser \
-    && pip install --upgrade pip
+    && rm /usr/lib/python*/EXTERNALLY-MANAGED
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
@@ -57,9 +54,8 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && echo "For Chrome installed by Pupetter" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
-        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
-        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
-    && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
+        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 liboss4-salsa-asound2 libatk1.0-0 \
+        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
@@ -71,7 +67,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
         --use-deprecated=legacy-resolver \
         --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
+    && strip /usr/lib/python3/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++ \
     && python -c 'from fiona.collection import Collection'
 
@@ -98,7 +94,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && curl --silent https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor --output=/etc/apt/keyrings/postgresql.gpg \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make g++ python3-dev \
-        postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
+        postgresql-client net-tools iputils-ping vim vim-addon-manager tree groff-base \
         libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils iproute2 traceroute pkg-config \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
     && vim-addon-manager --system-wide install editorconfig \
@@ -156,7 +152,7 @@ RUN make --makefile=dependencies.mk dependencies
 COPY bin/ /usr/bin/
 COPY scripts/ scripts/
 COPY geoportal/c2cgeoportal_geoportal/scaffolds/ geoportal/c2cgeoportal_geoportal/scaffolds/
-COPY build.mk lingua.cfg ./
+COPY build.mk lingva.cfg ./
 
 RUN make --makefile=build.mk build \
     && mkdir -p 'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/' \

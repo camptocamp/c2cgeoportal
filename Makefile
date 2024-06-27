@@ -33,11 +33,11 @@ VALIDATE_PY_TEST_FOLDERS = geoportal/tests
 
 .PHONY: prospector
 prospector: build-checks ## Run the prospector checker
-	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) prospector --version
-	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) mypy --version
-	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pylint --version --rcfile=/dev/null
-	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pyflakes --version
-	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) prospector --output-format=pylint --die-on-tool-error
+	@${shell which docker} run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) prospector --version
+	@${shell which docker} run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) mypy --version
+	@${shell which docker} run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pylint --version --rcfile=/dev/null
+	@${shell which docker} run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pyflakes --version
+	${shell which docker} run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) prospector --output-format=pylint --die-on-tool-error
 
 .PHONY: poetry-dev
 poetry-dev:
@@ -67,48 +67,48 @@ additionallint: ## Check that we should replace some strings in the code
 
 .PHONY: build-tools
 build-tools:
-	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
+	${shell which docker} build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-checks
 build-checks:
-	docker build --target=checks --tag=camptocamp/geomapfish-checks:$(DOCKER_TAG) \
+	${shell which docker} build --target=checks --tag=camptocamp/geomapfish-checks:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 .PHONY: build-config
 build-config:
-	docker build --tag=camptocamp/geomapfish-config:$(DOCKER_TAG) \
+	${shell which docker} build --tag=camptocamp/geomapfish-config:$(DOCKER_TAG) \
 		--build-arg=VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) docker/config
 
 .PHONY: build-runner
 build-runner:
-	docker build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
+	${shell which docker} build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) --build-arg=VERSION=$(VERSION) .
 
 QGIS_VERSION ?= lr
 .PHONY: build-qgisserver
 build-qgisserver:
-	docker build --target=runner --build-arg=VERSION=$(QGIS_VERSION) \
+	${shell which docker} build --target=runner --build-arg=VERSION=$(QGIS_VERSION) \
 		--build-arg=GEOMAPFISH_VERSION=$(MAJOR_VERSION) \
-		--tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION) docker/qgisserver
+		--tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION) ${shell which docker}/qgisserver
 
 .PHONY: build-qgisserver-tests
 build-qgisserver-tests:
-	docker build --target=tests --build-arg=VERSION=$(QGIS_VERSION) \
+	${shell which docker} build --target=tests --build-arg=VERSION=$(QGIS_VERSION) \
 		--build-arg=GEOMAPFISH_VERSION=$(MAJOR_VERSION) \
 		--tag=camptocamp/geomapfish-qgisserver-tests docker/qgisserver
 
 .PHONY: prospector-qgisserver
 prospector-qgisserver: build-qgisserver-tests
-	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests prospector --output-format=pylint --die-on-tool-error
+	${shell which docker} run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests prospector --output-format=pylint --die-on-tool-error
 
 .PHONY: build-test-db
 build-test-db:
-	docker build --tag=camptocamp/geomapfish-test-db docker/test-db
+	${shell which docker} build --tag=camptocamp/geomapfish-test-db docker/test-db
 
 .PHONY: build-test-mapserver
 build-test-mapserver:
-	docker build --tag=camptocamp/geomapfish-test-mapserver docker/test-mapserver
+	${shell which docker} build --tag=camptocamp/geomapfish-test-mapserver docker/test-mapserver
 
 .PHONY: tests
 tests: ## Run all the unit tests
@@ -116,44 +116,44 @@ tests: tests-commons  tests-geoportal tests-admin tests-qgisserver
 
 .PHONY: tests-commons
 tests-commons: ## Run the commons unit tests
-	docker compose exec -T tests pytest --verbose --color=yes \
+	${shell which docker} compose exec -T tests pytest --verbose --color=yes \
 		/opt/c2cgeoportal/commons/tests
 
 .PHONY: tests-geoportal
 tests-geoportal: ## Run the geoportal unit tests
-	docker compose exec -T tests pytest --verbose --color=yes \
+	${shell which docker} compose exec -T tests pytest --verbose --color=yes \
 		/opt/c2cgeoportal/geoportal/tests
 
 .PHONY: tests-admin
 tests-admin: ## Run the admin unit tests
-	docker compose exec -T tests pytest --verbose --color=yes \
+	${shell which docker} compose exec -T tests pytest --verbose --color=yes \
 		/opt/c2cgeoportal/admin/tests
 
 .PHONY: tests-qgis
 tests-qgisserver: ## Run the qgisserver unit tests
-	docker compose exec -T qgisserver-tests pytest --verbose --color=yes \
+	${shell which docker} compose exec -T qgisserver-tests pytest --verbose --color=yes \
 		/src/tests/functional
 
 .PHONY: preparetest
 preparetest: ## Run the compositon used to run the tests
 preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgisserver-tests
-	docker compose up -d
-	docker compose exec -T tests wait-db
-	docker compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
+	${shell which docker} compose up -d
+	${shell which docker} compose exec -T tests wait-db
+	${shell which docker} compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
 		upgrade head
-	docker compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
+	${shell which docker} compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
 		upgrade head
-	docker compose exec -T tests psql --command='DELETE FROM main_static.user_role'
-	docker compose exec -T tests psql --command='DELETE FROM main_static."user"'
+	${shell which docker} compose exec -T tests psql --command='DELETE FROM main_static.user_role'
+	${shell which docker} compose exec -T tests psql --command='DELETE FROM main_static."user"'
 
 .PHONY: stoptest
 stoptest: ## Stop the compositon used to run the tests
-	docker compose stop --timeout=0
-	docker compose down --remove-orphans
+	${shell which docker} compose stop --timeout=0
+	${shell which docker} compose down --remove-orphans
 
 .PHONY: doc
 doc: build-tools ## Generate the documentation
-	docker build --tag=camptocamp/geomapfish-doc \
+	${shell which docker} build --tag=camptocamp/geomapfish-doc \
 	--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) \
 	--build-arg=MAIN_BRANCH=$(MAIN_BRANCH) \
 	doc

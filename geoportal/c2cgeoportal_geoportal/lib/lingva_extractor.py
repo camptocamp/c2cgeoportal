@@ -43,7 +43,7 @@ from bottle import MakoTemplate, template
 from c2c.template.config import config
 from defusedxml.minidom import parseString
 from geoalchemy2.types import Geometry
-from lingua.extractors import Extractor, Message
+from lingva.extractors import Extractor, Message
 from mako.lookup import TemplateLookup
 from mako.template import Template
 from owslib.wms import WebMapService
@@ -732,7 +732,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
     def _build_url(self, url: Url) -> tuple[Url, dict[str, str], dict[str, Any]]:
         hostname = url.hostname
-        host_map = self.config.get("lingua_extractor", {}).get("host_map", {})
+        host_map = self.config.get("lingva_extractor", {}).get("host_map", {})
         if hostname in host_map:
             map_ = host_map[hostname]
             if "netloc" in map_:

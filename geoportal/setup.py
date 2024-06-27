@@ -94,10 +94,10 @@ setup(
             "c2cgeoportal_advance_create = c2cgeoportal_geoportal.scaffolds:TemplateAdvanceCreate",
             "c2cgeoportal_advance_update = c2cgeoportal_geoportal.scaffolds:TemplateAdvanceUpdate",
         ],
-        "lingua.extractors": [
-            "geomapfish-theme = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishThemeExtractor",
-            "geomapfish-config = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishConfigExtractor",
-            "geomapfish-angular = c2cgeoportal_geoportal.lib.lingua_extractor:GeomapfishAngularExtractor",
+        "lingva.extractors": [
+            "geomapfish-theme = c2cgeoportal_geoportal.lib.lingva_extractor:GeomapfishThemeExtractor",
+            "geomapfish-config = c2cgeoportal_geoportal.lib.lingva_extractor:GeomapfishConfigExtractor",
+            "geomapfish-angular = c2cgeoportal_geoportal.lib.lingva_extractor:GeomapfishAngularExtractor",
         ],
         "plaster.loader_factory": [
             "c2cgeoportal=c2cgeoportal_geoportal.lib.loader:Loader",
