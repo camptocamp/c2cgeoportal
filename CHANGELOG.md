@@ -1,3 +1,5 @@
+##### 2.6.0.259
+* [Backport 2.6] Remove all polyfill.io [c2cgeoportal#11192](https://github.com/camptocamp/c2cgeoportal/pull/11192)
 ##### 2.6.0.258
 * Put the CVE ignore at the right place [c2cgeoportal#11180](https://github.com/camptocamp/c2cgeoportal/pull/11180)
 ##### 2.6.0.257
