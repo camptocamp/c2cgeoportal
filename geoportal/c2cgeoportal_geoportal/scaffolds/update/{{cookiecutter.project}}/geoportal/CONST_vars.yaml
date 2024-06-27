@@ -935,7 +935,6 @@ vars:
   content_security_policy_main_script_src: "
     'self'
     'unsafe-inline'
-    https://cdn.polyfill.io/
     {content_security_policy_main_script_src_extra}"
   content_security_policy_main_style_src: "
     'self'
@@ -988,7 +987,6 @@ vars:
     'self'
     'unsafe-inline'
     'unsafe-eval'
-    https://cdn.polyfill.io/
     {content_security_policy_apihelp_script_src_extra}"
   content_security_policy_apihelp_style_src: "
     'self'
