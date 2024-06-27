@@ -1,3 +1,7 @@
+##### 2.8.1.113
+
+- Fix pypi package check [c2cgeoportal#11197](https://github.com/camptocamp/c2cgeoportal/pull/11197)
+
 ##### 2.8.1.112
 
 - [Backport 2.8] Remove all polyfill.io [c2cgeoportal#11194](https://github.com/camptocamp/c2cgeoportal/pull/11194)
