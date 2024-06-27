@@ -1,3 +1,8 @@
+##### 2.8.1.112
+
+- [Backport 2.8] Remove all polyfill.io [c2cgeoportal#11194](https://github.com/camptocamp/c2cgeoportal/pull/11194)
+- Remove all polyfill.io [ngeo#9379](https://github.com/camptocamp/ngeo/pull/9379)
+
 ##### 2.8.1.110
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11185](https://github.com/camptocamp/c2cgeoportal/pull/11185)
