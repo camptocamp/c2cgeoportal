@@ -1003,7 +1003,7 @@ vars:
   content_security_policy_admin_style_src: "
     'self'
     'unsafe-inline'
-    https://stackpath.bootstrapcdn.com/
+    https://cdnjs.cloudflare.com/
     {content_security_policy_admin_style_src_extra}"
   content_security_policy_admin_img_src: '
     *
@@ -1031,7 +1031,7 @@ vars:
   content_security_policy_apihelp_style_src: "
     'self'
     'unsafe-inline'
-    https://stackpath.bootstrapcdn.com/
+    https://cdnjs.cloudflare.com/
     {content_security_policy_apihelp_style_src_extra}"
   content_security_policy_apihelp_img_src: '
     *
@@ -1053,7 +1053,7 @@ vars:
   content_security_policy_c2c_style_src: "
     'self'
     'unsafe-inline'
-    https://stackpath.bootstrapcdn.com/
+    https://cdnjs.cloudflare.com/
     {content_security_policy_c2c_style_src_extra}"
 
   content_security_policy_iframe_api_frame_ancestors: "'self'"
