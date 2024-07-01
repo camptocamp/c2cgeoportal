@@ -1,3 +1,8 @@
+##### 2.8.1.116
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#11213](https://github.com/camptocamp/c2cgeoportal/pull/11213)
+- Update dependency transifex/cli to v1.6.14 (2.8) [c2cgeoportal#11214](https://github.com/camptocamp/c2cgeoportal/pull/11214)
+
 ##### 2.8.1.115
 
 - Update all patch versions (2.8) (patch) [ngeo#9388](https://github.com/camptocamp/ngeo/pull/9388)
