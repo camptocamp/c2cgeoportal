@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 awscli = "==1.19.112"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
-bandit = "==1.7.8"  # lint
+bandit = "==1.7.9"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
 coverage = "==5.4"  # Build coverage XML for Codacy
 Jinja2 = "==3.1.4"  # c2c.template
