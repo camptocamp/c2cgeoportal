@@ -1,3 +1,7 @@
+##### 2.8.1.115
+
+- Update all patch versions (2.8) (patch) [ngeo#9388](https://github.com/camptocamp/ngeo/pull/9388)
+
 ##### 2.8.1.113
 
 - Fix pypi package check [c2cgeoportal#11197](https://github.com/camptocamp/c2cgeoportal/pull/11197)
