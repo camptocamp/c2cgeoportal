@@ -51,7 +51,7 @@ types-pyyaml = "==6.0.12.20240311"
 
 # Lock dependencies
 astroid = "==2.9.3"
-bandit = "==1.7.8"
+bandit = "==1.7.9"
 dodgy = "==0.2.1"
 flake8-polyfill = "==1.0.2"
 gitdb = "==4.0.11"
