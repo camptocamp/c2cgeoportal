@@ -179,13 +179,17 @@ class PCreateCommand:
         context: dict[str, Union[str, int]] = {
             "project": project_name,
             "package": pkg_name,
-            "authtkt_secret": gen_authtkt_secret(),
+            "authtkt_secret": pwgen(),
+            "tilecloud_chain_session_secret": pwgen(),
+            "tilecloud_chain_session_salt": pwgen(8),
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":
             context["authtkt_secret"] = (  # nosec
                 "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
             )
+            context["tilecloud_chain_session_secret"] = "secret"
+            context["tilecloud_chain_session_salt"] = "salt"
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast(int, context["srid"])
@@ -305,9 +309,9 @@ class PCreateCommand:
         return None
 
 
-def gen_authtkt_secret() -> str:
-    """Generate a random authtkt secret."""
-    return subprocess.run(["pwgen", "64"], stdout=subprocess.PIPE, check=True).stdout.decode().strip()
+def pwgen(number=64) -> str:
+    """Generate a random secret."""
+    return subprocess.run(["pwgen", str(number)], stdout=subprocess.PIPE, check=True).stdout.decode().strip()
 
 
 if __name__ == "__main__":  # pragma: no cover
