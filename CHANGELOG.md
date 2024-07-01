@@ -1,3 +1,6 @@
+##### 2.6.0.260
+* Update CI dependencies to v1.1.41 (2.6) (patch) [c2cgeoportal#11208](https://github.com/camptocamp/c2cgeoportal/pull/11208)
+* Update all patch versions (2.6) (patch) [c2cgeoportal#11209](https://github.com/camptocamp/c2cgeoportal/pull/11209)
 ##### 2.6.0.259
 * [Backport 2.6] Remove all polyfill.io [c2cgeoportal#11192](https://github.com/camptocamp/c2cgeoportal/pull/11192)
 ##### 2.6.0.258
