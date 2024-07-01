@@ -61,7 +61,7 @@ cryptography = "42.0.8"
 gitpython = "3.1.43"
 pillow = "10.3.0"
 urllib3 = "1.26.19"
-bandit = "1.7.8"
+bandit = "1.7.9"
 idna = "3.7"
 gunicorn = "22.0.0"
 
