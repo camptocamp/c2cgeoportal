@@ -1,3 +1,7 @@
+##### 2.8.1.117
+
+- Update dependency c2cciutils to v1.4.17 (2.8) [c2cgeoportal#11216](https://github.com/camptocamp/c2cgeoportal/pull/11216)
+
 ##### 2.8.1.116
 
 - Update all patch versions (2.8) (patch) [c2cgeoportal#11213](https://github.com/camptocamp/c2cgeoportal/pull/11213)
