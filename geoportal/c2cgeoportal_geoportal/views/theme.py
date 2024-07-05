@@ -233,6 +233,9 @@ class Theme:
             if result != dogpile.cache.api.NO_VALUE:
                 return result  # type: ignore
 
+            if not preload:
+                LOG.debug("WMS Capabilities of '%s' not found in the cache.", ogc_server.name)
+
         try:
             url, content, errors = await self._wms_getcap_cached(ogc_server, cache=cache)
         except requests.exceptions.RequestException as exception:
@@ -968,11 +971,11 @@ class Theme:
         self, ogc_server: main.OGCServer, url_internal_wfs: Url, cache: bool = True
     ) -> None:
         if ogc_server.wfs_support:
-            await self._get_features_attributes(url_internal_wfs, ogc_server, cache=cache)
+            await self._get_features_attributes(url_internal_wfs, ogc_server, preload=True, cache=cache)
         await self._wms_getcap(ogc_server, False, cache=cache)
 
     async def _get_features_attributes(
-        self, url_internal_wfs: Url, ogc_server: main.OGCServer, cache: bool = True
+        self, url_internal_wfs: Url, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
     ) -> Tuple[Optional[Dict[str, Dict[Any, Dict[str, Any]]]], Optional[str], Set[str]]:
         @CACHE_OGC_SERVER_REGION.cache_on_arguments()  # type: ignore
         def _get_features_attributes_cache(
@@ -1062,7 +1065,7 @@ class Theme:
             if result != dogpile.cache.api.NO_VALUE:
                 return result  # type: ignore
 
-        feature_type, errors = await self._wfs_get_features_type(url_internal_wfs, ogc_server, False, cache)
+        feature_type, errors = await self._wfs_get_features_type(url_internal_wfs, ogc_server, preload, cache)
 
         return _get_features_attributes_cache.refresh(url_internal_wfs, ogc_server.name)  # type: ignore
 
