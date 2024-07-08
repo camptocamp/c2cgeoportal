@@ -24,7 +24,7 @@ Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2022.2.16" }
 sphinxcontrib-mermaid = "0.7.1"
 tilecloud-chain = "1.17.4"
 requests = "2.32.3"
-certifi = "2023.7.22"
+certifi = "2024.7.4"
 urllib3 = "1.26.19"
 jinja2 = "3.1.4"
 pillow = "10.3.0"
