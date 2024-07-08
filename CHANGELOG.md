@@ -1,3 +1,7 @@
+##### 2.8.1.119
+
+- Update CI dependencies to v1.5.12 (2.8) (patch) [c2cgeoportal#11225](https://github.com/camptocamp/c2cgeoportal/pull/11225)
+
 ##### 2.8.1.118
 
 - Update dependency c2cciutils to v1.5.11 (2.8) [c2cgeoportal#11220](https://github.com/camptocamp/c2cgeoportal/pull/11220)
