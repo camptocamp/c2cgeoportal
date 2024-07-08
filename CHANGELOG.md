@@ -1,3 +1,7 @@
+##### 2.8.1.120
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#11219](https://github.com/camptocamp/c2cgeoportal/pull/11219)
+
 ##### 2.8.1.119
 
 - Update CI dependencies to v1.5.12 (2.8) (patch) [c2cgeoportal#11225](https://github.com/camptocamp/c2cgeoportal/pull/11225)
