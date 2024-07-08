@@ -1,7 +1,7 @@
 ARG {{cookiecutter.geomapfish_version_tag}}
 ARG {{cookiecutter.geomapfish_major_version_tag}}
 
-FROM camptocamp/geomapfish-tools:{{cookiecutter.geomapfish_version_tag_env}} as builder
+FROM camptocamp/geomapfish-tools:{{cookiecutter.geomapfish_version_tag_env}} AS builder
 
 ENV VARS_FILE=vars.yaml
 ENV CONFIG_VARS sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \

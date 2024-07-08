@@ -10,7 +10,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
-FROM base-all as poetry
+FROM base-all AS poetry
 
 # Install Poetry
 WORKDIR /tmp
@@ -24,7 +24,7 @@ RUN poetry export --output=requirements.txt \
     && poetry export --with=dev --output=requirements-dev.txt
 
 # Base, the biggest thing is to install the Python packages
-FROM base-all as base
+FROM base-all AS base
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
@@ -64,7 +64,7 @@ ENV LOG_LEVEL=INFO \
 
 #############################################################################################################
 
-FROM runner as tests
+FROM runner AS tests
 
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
@@ -84,4 +84,4 @@ RUN mv tests/geomapfish.yaml /etc/qgisserver/geomapfish.yaml \
 
 #############################################################################################################
 
-FROM runner as final
+FROM runner AS final

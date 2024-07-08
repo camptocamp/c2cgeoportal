@@ -1,7 +1,7 @@
 ARG {{cookiecutter.geomapfish_version_tag}}
 ARG {{cookiecutter.geomapfish_major_version_tag}}
 
-FROM camptocamp/geomapfish-tools:{{cookiecutter.geomapfish_version_tag_env}} as builder
+FROM camptocamp/geomapfish-tools:{{cookiecutter.geomapfish_version_tag_env}} AS builder
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 COPY requirements.txt /tmp/requirements.txt
@@ -23,7 +23,7 @@ CMD [ "webpack-dev-server", "--mode=development", "--debug", "--watch", "--no-in
 
 ###############################################################################
 
-FROM camptocamp/geomapfish:{{cookiecutter.geomapfish_major_version_tag_env}} as runner
+FROM camptocamp/geomapfish:{{cookiecutter.geomapfish_major_version_tag_env}} AS runner
 
 COPY requirements.txt /tmp/requirements.txt
 RUN --mount=type=cache,target=/root/.cache \
