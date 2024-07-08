@@ -1,5 +1,5 @@
 # Base of all section, install the apt packages
-FROM ghcr.io/osgeo/gdal:ubuntu-small-3.8.5 as base-all
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.8.5 AS base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 # Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
-FROM base-all as poetry
+FROM base-all AS poetry
 
 # Install Poetry
 WORKDIR /tmp
@@ -34,7 +34,7 @@ RUN poetry export --output=requirements.txt \
     && poetry export --with=dev --output=requirements-dev.txt
 
 # Base, the biggest thing is to install the Python packages
-FROM base-all as base
+FROM base-all AS base
 
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 

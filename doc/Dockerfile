@@ -1,9 +1,9 @@
 # hadolint ignore=DL3006
-FROM camptocamp/geomapfish-tools as base
+FROM camptocamp/geomapfish-tools AS base
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
-FROM base as poetry
+FROM base AS poetry
 
 # Install Poetry
 WORKDIR /tmp

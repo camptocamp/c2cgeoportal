@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 as base-all
+FROM ubuntu:24.04 AS base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
-FROM base-all as poetry
+FROM base-all AS poetry
 
 # Install Poetry
 WORKDIR /tmp
@@ -24,7 +24,7 @@ COPY poetry.lock pyproject.toml ./
 RUN poetry export --output=requirements.txt
 
 # Base, the biggest thing is to install the Python packages
-FROM base-all as runner
+FROM base-all AS runner
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
