@@ -1,3 +1,8 @@
+##### 2.7.1.107
+
+- Update dependency c2cciutils to v1.1.42 (2.7) [c2cgeoportal#11223](https://github.com/camptocamp/c2cgeoportal/pull/11223)
+- Update dependency camptocamp/c2cciutils to v1.1.42 (2.7) [c2cgeoportal#11224](https://github.com/camptocamp/c2cgeoportal/pull/11224)
+
 ##### 2.7.1.106
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#11210](https://github.com/camptocamp/c2cgeoportal/pull/11210)
