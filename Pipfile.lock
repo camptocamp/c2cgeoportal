@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "66135654aacd309df1ef0258f9be75ec8d269157177ae3c383e6fb736715dc69"
+            "sha256": "985621e97a92c71574bd692a26a765400a862cb9325246c65df15a3c59ca0858"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -2082,10 +2082,10 @@
         },
         "c2cciutils": {
             "hashes": [
-                "sha256:4e11c3ca86ca776f3837acea285460293857ad35b5394aea7ffa9d42f00b233f"
+                "sha256:fc7a2a67b3c5c262b8e38c3ca5bb3bd666227d22c7e50e745b5a913310fa8a48"
             ],
             "index": "pypi",
-            "version": "==1.1.41"
+            "version": "==1.1.42"
         },
         "cachetools": {
             "hashes": [
@@ -2847,11 +2847,11 @@
         },
         "pipenv": {
             "hashes": [
-                "sha256:3b80b4512934b9d8e8ce12c988394642ff96bb697680e5b092e59af503178327",
-                "sha256:f84d7119239b22ab2ac2b8fbc7d619d83cf41135206d72a17c4f151cda529fd0"
+                "sha256:30568d90a566148a630ce3382843d59beaede28d1c4e9045278972036ebd178c",
+                "sha256:e26ded6ab90a7900676a1db9955d5ee714115f443aecc072b09497153ed237c7"
             ],
-            "markers": "python_version >= '3.6'",
-            "version": "==2022.1.8"
+            "markers": "python_version >= '3.7'",
+            "version": "==2022.4.30"
         },
         "pkginfo": {
             "hashes": [
