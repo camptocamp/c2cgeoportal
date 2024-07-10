@@ -10,7 +10,7 @@ COPY python/ /tmp/python/
 RUN cd /tmp/python/$(python3 --version|awk '{print $2}'|awk -F '.' '{print $1 "." $2}') && \
     PIP_NO_BINARY=shapely pipenv --python=$(python3 --version|awk '{print $2}') \
     install --system --deploy --clear && \
-    rm -rf /root/.local/share/virtualenv /root/.local/share/virtualenvs
+    rm -rf /root/.local/share/virtualenvs
 
 #############################################################################################################
 
