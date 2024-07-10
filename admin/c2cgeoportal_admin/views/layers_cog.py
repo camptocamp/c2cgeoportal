@@ -113,7 +113,12 @@ class LayerCOGViews(LayerViews[LayerCOG]):
 
     @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[misc]
     def view(self) -> ObjectResponse:
-        return super().edit(self.schema())
+        if self._is_new():
+            dbsession = self._request.dbsession
+            default_cog = LayerCOG.get_default(dbsession)
+            if default_cog:
+                return self.copy(default_cog, excludes=["name", "url"])
+        return super().edit()
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
     def save(self) -> SaveResponse:
