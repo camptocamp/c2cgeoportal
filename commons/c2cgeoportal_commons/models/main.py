@@ -1223,7 +1223,8 @@ class LayerCOG(Layer):
             _(
                 """
             <div class="help-block">
-                <p>Definition of a <code>COG Layer</code>.</p>
+                <p>Definition of a <code>COG Layer</code> (COG for
+                <a href="https://www.cogeo.org/">Cloud Optimized GeoTIFF</a>).</p>
                 <p>Note: The layers named <code>cog-defaults</code> contains the values
                 used when we create a new <code>COG layer</code>.</p>
             </div>
@@ -1246,18 +1247,7 @@ class LayerCOG(Layer):
         info={
             "colanderalchemy": {
                 "title": _("URL"),
-                "description": c2cgeoportal_commons.lib.literal.Literal(
-                    _(
-                        """
-            <div class="help-block">
-                <p>Definition of a <code>COG Layer</code>.</p>
-                <p>Note: The layers named <code>cog-defaults</code> contains the values
-                used when we create a new <code>COG layer</code>.</p>
-                <hr>
-            </div>
-                """
-                    )
-                ),
+                "description": _("URL of the COG file."),
                 "column": 2,
             }
         },
