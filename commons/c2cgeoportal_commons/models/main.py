@@ -110,11 +110,15 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore
     """The tsearch table representation."""
 
     __tablename__ = "tsearch"
-    __table_args__ = (Index("tsearch_ts_idx", "ts", postgresql_using="gin"), {"schema": _schema})
+    __table_args__ = (
+        Index("tsearch_search_index", "ts", "public", "role_id", "interface_id", "lang"),
+        Index("tsearch_ts_idx", "ts", postgresql_using="gin"),
+        {"schema": _schema},
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     label: Mapped[str] = mapped_column(Unicode)
-    layer_name: Mapped[str] = mapped_column(Unicode)
+    layer_name: Mapped[str] = mapped_column(Unicode, nullable=True)
     role_id: Mapped[int] = mapped_column(
         Integer, ForeignKey(_schema + ".role.id", ondelete="CASCADE"), nullable=True
     )
@@ -126,7 +130,7 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore
     lang: Mapped[str] = mapped_column(String(2), nullable=True)
     public: Mapped[bool] = mapped_column(Boolean, server_default="true")
     ts = mapped_column(TsVector)
-    the_geom = mapped_column(Geometry("GEOMETRY", srid=_srid))
+    the_geom = mapped_column(Geometry("GEOMETRY", srid=_srid, spatial_index=False))
     params = mapped_column(JSONEncodedDict, nullable=True)
     actions = mapped_column(JSONEncodedDict, nullable=True)
     from_theme: Mapped[bool] = mapped_column(Boolean, server_default="false")
@@ -261,7 +265,7 @@ class Role(Base):  # type: ignore
         },
     )
     extent = mapped_column(
-        Geometry("POLYGON", srid=_srid),
+        Geometry("POLYGON", srid=_srid, spatial_index=False),
         info={
             "colanderalchemy": {
                 "title": _("Extent"),
@@ -398,7 +402,7 @@ class LayergroupTreeitem(Base):  # type: ignore
     description: Mapped[Optional[str]] = mapped_column(Unicode, info={"colanderalchemy": {"exclude": True}})
     treegroup_id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey(_schema + ".treegroup.id"),
+        ForeignKey(_schema + ".treegroup.id", name="treegroup_id_fkey"),
         nullable=False,
         info={"colanderalchemy": {"exclude": True}},
     )
@@ -415,7 +419,7 @@ class LayergroupTreeitem(Base):  # type: ignore
     )
     treeitem_id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey(_schema + ".treeitem.id"),
+        ForeignKey(_schema + ".treeitem.id", ondelete="CASCADE"),
         nullable=False,
         info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
@@ -457,7 +461,11 @@ class TreeGroup(TreeItem):
     __table_args__ = {"schema": _schema}
     __mapper_args__ = {"polymorphic_identity": "treegroup"}  # type: ignore[dict-item] # needed for _identity_class
 
-    id: Mapped[int] = mapped_column(Integer, ForeignKey(_schema + ".treeitem.id"), primary_key=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey(_schema + ".treeitem.id", ondelete="CASCADE", name="treegroup_id_fkey"),
+        primary_key=True,
+    )
 
     def _get_children(self) -> list[TreeItem]:
         return [c.treeitem for c in self.children_relation]
@@ -526,7 +534,7 @@ class LayerGroup(TreeGroup):
 
     id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey(_schema + ".treegroup.id"),
+        ForeignKey(_schema + ".treegroup.id", ondelete="CASCADE"),
         primary_key=True,
         info={"colanderalchemy": {"missing": drop, "widget": HiddenWidget()}},
     )
@@ -556,7 +564,7 @@ class Theme(TreeGroup):
 
     id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey(_schema + ".treegroup.id"),
+        ForeignKey(_schema + ".treegroup.id", ondelete="CASCADE"),
         primary_key=True,
         info={"colanderalchemy": {"missing": drop, "widget": HiddenWidget()}},
     )
@@ -576,6 +584,7 @@ class Theme(TreeGroup):
     )
     icon: Mapped[str] = mapped_column(
         Unicode,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Icon"),
@@ -633,7 +642,7 @@ class Layer(TreeItem):
 
     id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey(_schema + ".treeitem.id"),
+        ForeignKey(_schema + ".treeitem.id", ondelete="CASCADE"),
         primary_key=True,
         info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
@@ -658,6 +667,7 @@ class Layer(TreeItem):
     )
     exclude_properties: Mapped[str] = mapped_column(
         Unicode,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Exclude properties"),
@@ -941,6 +951,7 @@ class LayerWMS(DimensionLayer):
     )
     valid: Mapped[bool] = mapped_column(
         Boolean,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Valid"),
@@ -953,6 +964,7 @@ class LayerWMS(DimensionLayer):
     )
     invalid_reason: Mapped[str] = mapped_column(
         Unicode,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Reason why I am not valid"),
@@ -1086,7 +1098,7 @@ class LayerWMTS(DimensionLayer):
 
     id: Mapped[int] = mapped_column(
         Integer,
-        ForeignKey(_schema + ".layer.id"),
+        ForeignKey(_schema + ".layer.id", ondelete="CASCADE"),
         primary_key=True,
         info={"colanderalchemy": {"missing": None, "widget": HiddenWidget()}},
     )
@@ -1114,6 +1126,7 @@ class LayerWMTS(DimensionLayer):
     )
     style: Mapped[str] = mapped_column(
         Unicode,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Style"),
@@ -1125,6 +1138,7 @@ class LayerWMTS(DimensionLayer):
     )
     matrix_set: Mapped[str] = mapped_column(
         Unicode,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Matrix set"),
@@ -1195,6 +1209,68 @@ layer_ra = Table(
     ),
     schema=_schema,
 )
+
+
+class LayerCOG(Layer):
+    """The Cloud Optimized GeoTIFF layer table representation."""
+
+    __tablename__ = "layer_cog"
+    __table_args__ = {"schema": _schema}
+    __colanderalchemy_config__ = {
+        "title": _("COG Layer"),
+        "plural": _("COG Layers"),
+        "description": c2cgeoportal_commons.lib.literal.Literal(
+            _(
+                """
+            <div class="help-block">
+                <p>Definition of a <code>COG Layer</code>.</p>
+                <p>Note: The layers named <code>cog-defaults</code> contains the values
+                used when we create a new <code>COG layer</code>.</p>
+            </div>
+                """
+            )
+        ),
+    }
+    __c2cgeoform_config__ = {"duplicate": True}
+    __mapper_args__ = {"polymorphic_identity": "l_cog"}  # type: ignore[dict-item]
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey(_schema + ".layer.id"),
+        primary_key=True,
+        info={"colanderalchemy": {"missing": None, "widget": HiddenWidget()}},
+    )
+    url: Mapped[str] = mapped_column(
+        Unicode,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("URL"),
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        """
+            <div class="help-block">
+                <p>Definition of a <code>COG Layer</code>.</p>
+                <p>Note: The layers named <code>cog-defaults</code> contains the values
+                used when we create a new <code>COG layer</code>.</p>
+                <hr>
+            </div>
+                """
+                    )
+                ),
+                "column": 2,
+            }
+        },
+    )
+
+    @staticmethod
+    def get_default(dbsession: Session) -> Optional[Layer]:
+        return dbsession.query(LayerCOG).filter(LayerCOG.name == "cog-defaults").one_or_none()
+
+    def url_description(self, request: pyramid.request.Request) -> str:
+        errors: set[str] = set()
+        url = get_url2(self.name, self.url, request, errors)
+        return url.url() if url else "\n".join(errors)
 
 
 class LayerVectorTiles(DimensionLayer):
@@ -1577,6 +1653,7 @@ class Metadata(Base):  # type: ignore
     )
     value: Mapped[str] = mapped_column(
         Unicode,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Value"),
@@ -1599,7 +1676,7 @@ class Metadata(Base):  # type: ignore
     item_id: Mapped[int] = mapped_column(
         "item_id",
         Integer,
-        ForeignKey(_schema + ".treeitem.id"),
+        ForeignKey(_schema + ".treeitem.id", ondelete="CASCADE"),
         nullable=False,
         info={"colanderalchemy": {"exclude": True}, "c2cgeoform": {"duplicate": False}},
     )
@@ -1684,6 +1761,7 @@ class Dimension(Base):  # type: ignore
     )
     value: Mapped[str] = mapped_column(
         Unicode,
+        nullable=True,
         info={
             "colanderalchemy": {
                 "title": _("Value"),

@@ -24,6 +24,14 @@ Information
 2. We replace checks (formatting) done by `c2cciutils` by `pre-commit` hooks.
    This will me more standard and transparent for the project.
 
+3. The COG layers where added, but are disabled by default.
+   To enable them, you need to add the following configuration in the `vars.yaml` file:
+   ```yaml
+   vars:
+     admin_interface:
+       exclude_pages: []
+   ```
+
 =============
 Version 2.8.0
 =============

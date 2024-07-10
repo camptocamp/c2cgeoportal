@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -57,6 +57,7 @@ def includeme(config):
     from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
         Functionality,
         Interface,
+        LayerCOG,
         LayerGroup,
         LayerVectorTiles,
         LayerWMS,
@@ -78,6 +79,7 @@ def includeme(config):
         ("layers_wms", LayerWMS),
         ("layers_wmts", LayerWMTS),
         ("layers_vectortiles", LayerVectorTiles),
+        ("layers_cog", LayerCOG),
         ("ogc_servers", OGCServer),
         ("restriction_areas", RestrictionArea),
         ("users", User),

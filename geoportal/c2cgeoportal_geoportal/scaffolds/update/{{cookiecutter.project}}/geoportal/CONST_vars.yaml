@@ -509,6 +509,9 @@ vars:
   admin_interface:
     layer_tree_max_nodes: 1000
 
+    exclude_pages:
+      - layers-cog
+
     # The list of available variable names for the `Metadatas` form.
     available_metadata:
       # TreeItem
@@ -566,6 +569,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: isLegendExpanded
         type: boolean
         description: >
@@ -573,6 +577,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: legendRule
         description: >
           The WMS "RULE" parameter used to display the icon in the layer tree. "Short version" of
@@ -586,6 +591,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: hiDPILegendImages
         type: json
         description: >
@@ -595,6 +601,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: iconUrl
         type: url
         description: >
@@ -602,6 +609,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: metadataUrl
         type: url
         description: >
@@ -609,6 +617,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
           - layergroup
       - name: disclaimer
         translate: True
@@ -623,6 +632,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: identifierAttributeField
         description: >
           The field used in the "display query window" as feature title.
@@ -636,6 +646,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: minResolution
         type: float
         description: >
@@ -644,6 +655,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: opacity
         type: float
         description: >
@@ -651,6 +663,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: thumbnail
         type: url
         description: >
@@ -658,6 +671,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: timeAttribute
         description: >
           The name of the time attribute. For WMS(-T) layers.
@@ -700,6 +714,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: editingAttributesOrder
         type: list
         description: >
@@ -728,6 +743,7 @@ vars:
         relevant_for:
           - layer_wms
           - layer_wmts
+          - layer_cog
       - name: editingSelectionAttribute
         description: >
           The field used in the selector tooltip to name the layer when multiple ones are selected on the map.
@@ -753,6 +769,7 @@ vars:
           The corresponding OGC server for a WMTS layer.
         relevant_for:
           - layer_wmts
+          - layer_cog
       - name: wmsLayers
         description: >
           Corresponding WMS/WFS layers (comma separated) that will be used instead of the WMTS layer
@@ -761,6 +778,7 @@ vars:
           See also printLayers and queryLayers metadata for more granularity.
         relevant_for:
           - layer_wmts
+          - layer_cog
       - name: queryLayers
         description: >
           Corresponding WFS layers (comma separated) that will be used instead of the WMTS layer
@@ -768,6 +786,7 @@ vars:
           An OGCServer metadata must be set with the name of the OGC server.
         relevant_for:
           - layer_wmts
+          - layer_cog
       - name: printLayers
         description: >
           Corresponding WMS layers (comma separated) that will be used instead of the WMTS layer
@@ -777,18 +796,21 @@ vars:
           An OGCServer metadata must be set with the name of the OGC server.
         relevant_for:
           - layer_wmts
+          - layer_cog
       - name: maxQueryResolution
         type: float
         description: >
           The max resolution where the layer is queryable.
         relevant_for:
           - layer_wmts
+          - layer_cog
       - name: minQueryResolution
         type: float
         description: >
           The min resolution where the layer is queryable.
         relevant_for:
           - layer_wmts
+          - layer_cog
       - name: timeout
         type: float
         description: The fetch capabilities timeout in seconds. Use `300` by default.
