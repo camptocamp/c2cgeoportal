@@ -94,9 +94,11 @@ def upgrade() -> None:
     op.alter_column(
         "oauth2_client", "redirect_uri", existing_type=sa.VARCHAR(), nullable=False, schema=staticschema
     )
+    op.execute(f"UPDATE {staticschema}.oauth2_client SET state_required = true WHERE state_required IS NULL")
     op.alter_column(
         "oauth2_client", "state_required", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema
     )
+    op.execute(f"UPDATE {staticschema}.oauth2_client SET pkce_required = true WHERE pkce_required IS NULL")
     op.alter_column(
         "oauth2_client", "pkce_required", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema
     )
