@@ -40,7 +40,7 @@ jobs:
   main:
     runs-on: ubuntu-22.04
     name: QGIS build
-    timeout-minutes: 10
+    timeout-minutes: 15
     needs: common
 
     strategy:

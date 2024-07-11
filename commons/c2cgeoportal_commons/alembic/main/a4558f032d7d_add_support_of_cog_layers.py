@@ -55,7 +55,7 @@ def upgrade() -> None:
         sa.Column("url", sa.Unicode(), nullable=False),
         sa.ForeignKeyConstraint(
             ["id"],
-            ["main.layer.id"],
+            [f"{schema}.layer.id"],
         ),
         sa.PrimaryKeyConstraint("id"),
         schema=schema,
