@@ -1,3 +1,5 @@
+##### 2.6.0.265
+* Add missing configuration in pyproject.toml [c2cgeoportal#11234](https://github.com/camptocamp/c2cgeoportal/pull/11234)
 ##### 2.6.0.264
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11226](https://github.com/camptocamp/c2cgeoportal/pull/11226)
 ##### 2.6.0.263
