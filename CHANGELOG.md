@@ -1,3 +1,8 @@
+##### 2.7.1.111
+
+- Add missing configuration in pyproject.toml [c2cgeoportal#11233](https://github.com/camptocamp/c2cgeoportal/pull/11233)
+- Add missing configuration in pyproject.toml [ngeo#9391](https://github.com/camptocamp/ngeo/pull/9391)
+
 ##### 2.7.1.110
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#11227](https://github.com/camptocamp/c2cgeoportal/pull/11227)
