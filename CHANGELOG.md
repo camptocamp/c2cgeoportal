@@ -1,3 +1,7 @@
+##### 2.7.1.110
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#11227](https://github.com/camptocamp/c2cgeoportal/pull/11227)
+
 ##### 2.7.1.109
 
 - Update dependency camptocamp/c2cciutils to v1.1.43 (2.7) [c2cgeoportal#11230](https://github.com/camptocamp/c2cgeoportal/pull/11230)
