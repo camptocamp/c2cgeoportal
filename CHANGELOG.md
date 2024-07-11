@@ -1,3 +1,8 @@
+##### 2.8.1.122
+
+- Update dependency transifex/cli to v1.6.14 (2.8) [ngeo#9389](https://github.com/camptocamp/ngeo/pull/9389)
+- Add missing configuration in pyproject.toml [ngeo#9392](https://github.com/camptocamp/ngeo/pull/9392)
+
 ##### 2.8.1.121
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11228](https://github.com/camptocamp/c2cgeoportal/pull/11228)
