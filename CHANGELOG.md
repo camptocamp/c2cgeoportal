@@ -1,3 +1,7 @@
+##### 2.7.1.112
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240711T081721Z.1b5135e5c.2.7 (2.7) [c2cgeoportal#11236](https://github.com/camptocamp/c2cgeoportal/pull/11236)
+
 ##### 2.7.1.111
 
 - Add missing configuration in pyproject.toml [c2cgeoportal#11233](https://github.com/camptocamp/c2cgeoportal/pull/11233)
