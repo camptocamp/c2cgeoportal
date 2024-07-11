@@ -157,12 +157,13 @@ jobs:
           c2cciutils-docker-logs
         if: failure()
 
-      - run: git stash
-      - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
+      - run: |
+          git stash
+          git pull --ff-only origin ${{ env.MAIN_BRANCH }}
+          git stash pop
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
-      - run: git stash pop
 
         # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
