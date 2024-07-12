@@ -45,6 +45,9 @@
 .icon-l_wmts:before {
   content: '\e011';
 }
+.icon-l_cog:before {
+  content: '\e011';
+}
 .icon-mvt:before {
   content: '\e011';
 }

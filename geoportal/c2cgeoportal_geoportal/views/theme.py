@@ -415,7 +415,8 @@ class Theme:
         assert time_ is not None
         assert dim is not None
 
-        errors |= dim.merge(layer, layer_info, mixed)
+        if not isinstance(layer, main.LayerCOG):
+            errors |= dim.merge(layer, layer_info, mixed)
 
         if isinstance(layer, main.LayerWMS):
             wms, wms_errors = await self._wms_layers(layer.ogc_server)
