@@ -42,6 +42,7 @@ itemtypes_tables = {
     "group": "layer_groups",
     "l_wms": "layers_wms",
     "l_wmts": "layers_wmts",
+    "l_cog": "layers_cog",
 }
 
 
