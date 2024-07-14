@@ -15,3 +15,4 @@
 /geoportal/tests/testegg/production.ini
 /geoportal/tests/tests.ini
 /node_modules/
+/admin/node_modules/
