@@ -122,7 +122,7 @@ translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
 c2cwsgiutils = {version = "==4.1.4", extras = ["broadcast", "profiler", "standard"]}
 oauthlib = "==3.2.2"
-setuptools = "==65.5.1"
+setuptools = "==70.0.0"
 # Lock
 affine = "==2.3.1"
 argparse = "==1.4.0"
