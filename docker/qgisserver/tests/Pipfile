@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 pytest = "==7.1.0"
-setuptools = "==65.5.1"
+setuptools = "==70.0.0"
 
 [requires]
 python_version = "3.8"

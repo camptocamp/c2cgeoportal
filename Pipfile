@@ -47,7 +47,7 @@ oauthlib = "==3.2.2"
 tilecloud = "==1.8.2" # geoportal
 azure-storage-blob = "==12.14.1"
 basicauth = "==0.4.1"
-setuptools = "==65.5.1"
+setuptools = "==70.0.0"
 # Lock dependencies
 affine = "==2.3.1"
 arrow = "==1.2.3"
