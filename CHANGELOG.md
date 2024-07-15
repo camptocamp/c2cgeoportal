@@ -1,3 +1,5 @@
+##### 2.6.0.267
+* Audit Snyk check/fix 2.6 [c2cgeoportal#11247](https://github.com/camptocamp/c2cgeoportal/pull/11247)
 ##### 2.6.0.266
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11241](https://github.com/camptocamp/c2cgeoportal/pull/11241)
 * D'ont commit admin/node_modules/ in audit pull-request [c2cgeoportal#11243](https://github.com/camptocamp/c2cgeoportal/pull/11243)
