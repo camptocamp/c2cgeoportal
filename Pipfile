@@ -13,7 +13,7 @@ cookiecutter = "==2.1.1"  # geoportal
 deform = "==2.0.15"  # commons, admin
 defusedxml = "==0.7.1"  # geoportal
 "dogpile.cache" = "==1.1.8"  # geoportal
-Fiona = "==1.8.22"  # geoportal raster
+Fiona = "==1.10b2"  # geoportal raster
 GeoAlchemy2 = "==0.11.1"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.29"  # geoportal
