@@ -91,7 +91,7 @@ ColanderAlchemy = "==0.3.4"  # commons
 deform = "==2.0.15"  # commons, admin
 defusedxml = "==0.6.0"  # geoportal
 "dogpile.cache" = "==1.0.2"  # geoportal
-Fiona = "==1.10b2"  # geoportal raster
+Fiona = "==1.10b3"  # geoportal raster
 GeoAlchemy2 = "==0.8.5"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.29"  # geoportal
