@@ -97,7 +97,7 @@ jobs:
 
         # Tests
       - run: make preparetest
-      - run: docker-compose logs --timestamps
+      - run: docker compose logs --timestamps
         if: failure()
       - run: make tests-commons
       - run: c2cciutils-docker-logs
@@ -109,7 +109,7 @@ jobs:
       - run: c2cciutils-docker-logs
       - run: c2cciutils-docker-logs
         if: always()
-      - run: docker-compose down
+      - run: docker compose down
 
       - name: Test version generation for the changelog
         run: scripts/updated_version latest latest

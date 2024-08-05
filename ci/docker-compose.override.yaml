@@ -23,10 +23,6 @@ services:
       - GEOMAPFISH_OGCSERVER=source for image/png
       - QGIS_SERVER_LOG_LEVEL=0
 
-  tools:
-    volumes_from:
-      - config:rw
-
   db:
     extends:
       file: docker-compose-lib.yaml
