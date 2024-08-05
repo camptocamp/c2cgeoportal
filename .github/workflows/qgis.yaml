@@ -103,16 +103,16 @@ jobs:
       - name: Acceptance tests
         run: |
           cd docker/qgisserver
-          docker-compose up -d
-          docker-compose exec -T tests /tests/wait-db
-          docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=main upgrade head
-          docker-compose exec -T tests alembic --config=/tests/alembic.ini --name=static upgrade head
-          docker-compose exec -T tests /tests/fill-db
+          docker compose up -d
+          docker compose exec -T tests /tests/wait-db
+          docker compose exec -T tests alembic --config=/tests/alembic.ini --name=main upgrade head
+          docker compose exec -T tests alembic --config=/tests/alembic.ini --name=static upgrade head
+          docker compose exec -T tests /tests/fill-db
           c2cciutils-docker-logs
-          docker-compose exec -T tests /tests/acceptance-tests
+          docker compose exec -T tests /tests/acceptance-tests
       - run: c2cciutils-docker-logs
         if: failure()
-      - run: docker-compose down
+      - run: docker compose down
 
       - name: Publish feature branch
         run: |

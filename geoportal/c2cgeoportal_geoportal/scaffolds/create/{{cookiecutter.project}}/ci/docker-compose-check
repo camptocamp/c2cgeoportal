@@ -11,7 +11,7 @@ def _main() -> None:
 
     services = [
         s.strip()
-        for s in subprocess.run(["docker-compose", "ps"], check=True, stdout=subprocess.PIPE)
+        for s in subprocess.run(["docker", "compose", "ps"], check=True, stdout=subprocess.PIPE)
         .stdout.decode("utf-8")
         .splitlines()
     ]
