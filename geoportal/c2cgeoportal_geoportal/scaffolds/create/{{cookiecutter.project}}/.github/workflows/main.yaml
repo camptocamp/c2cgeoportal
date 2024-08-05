@@ -47,7 +47,7 @@ jobs:
       #   if: always()
 
       - name: Build
-        run: ./build
+        run: ./build --docker-compose-version-2
 
       - name: Application checks
         run: make checks

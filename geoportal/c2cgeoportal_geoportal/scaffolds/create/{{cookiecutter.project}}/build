@@ -66,6 +66,9 @@ def main() -> None:
         "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
     )
     parser.add_argument("--stack-trace", action="store_true", help="Display the stack trace on error")
+    parser.add_argument(
+        "--docker-compose-version-2", action="store_true", help="Use Docker Compose version 2"
+    )
     parser.add_argument("env_files", nargs="*", help="The environment config")
     args = parser.parse_args()
 
@@ -133,13 +136,14 @@ def main() -> None:
 
         dest.write("# Used env files: {}\n".format(", ".join(env_files)))
 
+    docker_compose = ["docker", "compose"] if args.docker_compose_version_2 else ["docker-compose"]
     if not args.env:
-        docker_compose_build_cmd = ["docker-compose", "build"]
+        docker_compose_build_cmd = [*docker_compose, "build"]
 
         if not args.no_pull:
             # Pull all the images
             if not args.service:
-                run(args, ["docker-compose", "pull", "--ignore-pull-failures"])  # nosec
+                run(args, [*docker_compose, "pull", "--ignore-pull-failures"])  # nosec
             docker_compose_build_cmd.append("--pull")
 
         if args.service:
@@ -163,7 +167,7 @@ def main() -> None:
             service
             for service in run(
                 args,
-                ["docker-compose", "ps", "--services", "--all"],
+                [*docker_compose, "ps", "--services", "--all"],
                 stdout=subprocess.PIPE,
                 exit_on_error=True,
             )
@@ -173,9 +177,9 @@ def main() -> None:
         ]
 
     if args.reload is not None:
-        run(args, ["docker-compose", "rm", "--force", "-v", "config"])
+        run(args, [*docker_compose, "rm", "--force", "-v", "config"])
         for service in services:
-            run(args, ["docker-compose", "up", "--detach", "--force-recreate", service])
+            run(args, [*docker_compose, "up", "--detach", "--force-recreate", service])
 
 
 if __name__ == "__main__":
