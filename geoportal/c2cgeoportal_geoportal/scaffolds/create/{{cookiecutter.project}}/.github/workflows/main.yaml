@@ -36,7 +36,7 @@ jobs:
         run: c2cciutils-checks
 
       - name: Build
-        run: ./build
+        run: ./build --docker-compose-version-2
 
       # To publish the images to be used on Kubernetes
       # - name: Publish
