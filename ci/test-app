@@ -23,35 +23,35 @@ c2cciutils-checks
 cp "${PROJECT_DIR}/ci/project-config.yaml" ci/config.yaml
 c2cciutils-checks
 CI=true ./build
-docker-compose down --volumes
-docker-compose up -d
-docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
-docker-compose exec -T geoportal wait-db
-docker-compose ps
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
-docker-compose exec -T geoportal create-demo-theme
+docker compose down --volumes
+docker compose up -d
+docker compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
+docker compose exec -T geoportal wait-db
+docker compose ps
+docker compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
+docker compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
+docker compose exec -T geoportal create-demo-theme
 c2cciutils-docker-logs
-docker-compose exec -T geoportal theme2fts
+docker compose exec -T geoportal theme2fts
 make update-po
 
-docker-compose exec -T geoportal ci/waitwsgi https://front/themes
+docker compose exec -T geoportal ci/waitwsgi https://front/themes
 for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector "layers/test/values/type enum" admin/layertree admin/layertree/children; do
-    docker-compose exec -T geoportal ci/test-new-project https://front/${path}
+    docker compose exec -T geoportal ci/test-new-project https://front/${path}
 done
-docker-compose exec -T geoportal ci/test-new-project 'http://qgisserver:8080/mapserv_proxy?SERVICE=WMS&REQUEST=GetCapabilities'
-docker-compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
-docker-compose exec -T geoportal curl --insecure 'https://front/dynamic.json?interface=desktop&query=&path=%2F'
-docker-compose exec -T geoportal curl --insecure https://front/static-geomapfish/0/locales/fr.json
-docker-compose exec -T geoportal curl --insecure https://front/desktop_alt
-docker-compose exec -T geoportal curl --insecure https://front/desktop_alt | \
+docker compose exec -T geoportal ci/test-new-project 'http://qgisserver:8080/mapserv_proxy?SERVICE=WMS&REQUEST=GetCapabilities'
+docker compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
+docker compose exec -T geoportal curl --insecure 'https://front/dynamic.json?interface=desktop&query=&path=%2F'
+docker compose exec -T geoportal curl --insecure https://front/static-geomapfish/0/locales/fr.json
+docker compose exec -T geoportal curl --insecure https://front/desktop_alt
+docker compose exec -T geoportal curl --insecure https://front/desktop_alt | \
     grep '<script src="https://front/static-ngeo-dist/desktop\..*\.js" crossorigin="anonymous"></script>'
-docker-compose exec -T geoportal curl --insecure https://front/desktop_alt | \
+docker compose exec -T geoportal curl --insecure https://front/desktop_alt | \
     grep '<html lang="{{mainCtrl.lang}}" '
 
 function test_pot {
-    docker-compose exec -T geoportal curl --insecure https://front/locale.pot --output /tmp/locale.pot
-    docker-compose exec -T geoportal cat /tmp/locale.pot > /tmp/locale.pot
+    docker compose exec -T geoportal curl --insecure https://front/locale.pot --output /tmp/locale.pot
+    docker compose exec -T geoportal cat /tmp/locale.pot > /tmp/locale.pot
     if [ "$(wc -l < /tmp/locale.pot)" -eq "$(wc -l < geoportal/testgeomapfishapp_geoportal/locale/testgeomapfishapp_geoportal-client.pot)" ]
     then
         echo 'View locale.pot match in size with update-po'
@@ -66,28 +66,28 @@ test_pot
 # A second time to check that the initialisation is working
 test_pot
 
-docker-compose exec -T geoportal proutes c2c://development.ini
-docker-compose exec -T geoportal pviews c2c://development.ini /
-docker-compose exec -T geoportal proutes c2c://production.ini
-docker-compose exec -T geoportal pviews c2c://production.ini /
+docker compose exec -T geoportal proutes c2c://development.ini
+docker compose exec -T geoportal pviews c2c://development.ini /
+docker compose exec -T geoportal proutes c2c://production.ini
+docker compose exec -T geoportal pviews c2c://production.ini /
 
-docker-compose stop qgisserver
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
+docker compose stop qgisserver
+docker compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
+docker compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
 
 cp .env env.int
 echo PGHOST_SLAVE="$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+')" >> env.int
 echo PGPORT_SLAVE=54321 >> env.int
 scripts/db-backup --env=env.int dump.backup
 scripts/db-backup --env=env.int --arg=--schema=main dump.backup
-docker-compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
-docker-compose exec -T tools psql --command="CREATE SCHEMA main"
+docker compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
+docker compose exec -T tools psql --command="CREATE SCHEMA main"
 scripts/db-restore --arg=--schema=main dump.backup
 
-docker-compose exec -T tools rm /etc/mapserver/demo.map
-docker-compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
+docker compose exec -T tools rm /etc/mapserver/demo.map
+docker compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
 c2cciutils-docker-logs
-docker-compose down
+docker compose down
 sudo rm -rf "${HOME}/workspace/testgeomapfishapp"
 
 docker rmi camptocamp/testgeomapfishapp-config:latest
