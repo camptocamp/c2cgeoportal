@@ -1,3 +1,7 @@
+##### 2.7.1.120
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#11285](https://github.com/camptocamp/c2cgeoportal/pull/11285)
+
 ##### 2.7.1.119
 
 - [Backport 2.7] Use Docker Compose version 2 in project build [c2cgeoportal#11282](https://github.com/camptocamp/c2cgeoportal/pull/11282)
