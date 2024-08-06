@@ -1,3 +1,7 @@
+##### 2.7.1.119
+
+- [Backport 2.7] Use Docker Compose version 2 in project build [c2cgeoportal#11282](https://github.com/camptocamp/c2cgeoportal/pull/11282)
+
 ##### 2.7.1.118
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#11271](https://github.com/camptocamp/c2cgeoportal/pull/11271)
