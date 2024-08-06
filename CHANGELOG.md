@@ -1,3 +1,7 @@
+##### 2.8.1.125
+
+- Use Docker Compose version 2 in project build [c2cgeoportal#11279](https://github.com/camptocamp/c2cgeoportal/pull/11279)
+
 ##### 2.8.1.124
 
 - Update CI dependencies (2.8) (patch) [c2cgeoportal#11281](https://github.com/camptocamp/c2cgeoportal/pull/11281)
