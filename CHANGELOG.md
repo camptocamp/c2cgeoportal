@@ -1,3 +1,7 @@
+##### 2.8.1.126
+
+- Use Docker Compose version 2 in db scripts [c2cgeoportal#11284](https://github.com/camptocamp/c2cgeoportal/pull/11284)
+
 ##### 2.8.1.125
 
 - Use Docker Compose version 2 in project build [c2cgeoportal#11279](https://github.com/camptocamp/c2cgeoportal/pull/11279)
