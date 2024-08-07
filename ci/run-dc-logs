@@ -14,5 +14,5 @@ try:
 except subprocess.CalledProcessError:
     sys.exit(2)
 finally:
-    for container in subprocess.check_output(["docker-compose", "ps", "-q"]).decode().strip().split("\n"):
+    for container in subprocess.check_output(["docker", "compose", "ps", "-q"]).decode().strip().split("\n"):
         subprocess.call(["docker", "logs", "--timestamps", "--since", since, container])

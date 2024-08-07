@@ -76,37 +76,37 @@ tests: tests-commons  tests-geoportal tests-admin tests-qgisserver
 
 .PHONY: tests-commons
 tests-commons: ## Run the commons unit tests
-	docker-compose exec -T tests pytest --verbose --color=yes \
+	docker compose exec -T tests pytest --verbose --color=yes \
 		/opt/c2cgeoportal/commons/tests
 
 .PHONY: tests-geoportal
 tests-geoportal: ## Run the geoportal unit tests
-	docker-compose exec -T tests pytest --verbose --color=yes \
+	docker compose exec -T tests pytest --verbose --color=yes \
 		/opt/c2cgeoportal/geoportal/tests
 
 .PHONY: tests-admin
 tests-admin: ## Run the admin unit tests
-	docker-compose exec -T tests pytest --verbose --color=yes \
+	docker compose exec -T tests pytest --verbose --color=yes \
 		/opt/c2cgeoportal/admin/tests
 
 .PHONY: tests-qgis
 tests-qgisserver: ## Run the qgisserver unit tests
-	docker-compose exec -T qgisserver-tests pytest --verbose --color=yes \
+	docker compose exec -T qgisserver-tests pytest --verbose --color=yes \
 		/src/tests/functional
 
 .PHONY: preparetest
 preparetest: ## Run the compositon used to run the tests
 preparetest: stoptest build-tools build-test-db build-test-mapserver build-qgis-server-tests
-	docker-compose up -d
-	docker-compose exec -T tests wait-db
-	docker-compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
+	docker compose up -d
+	docker compose exec -T tests wait-db
+	docker compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
 		upgrade head
-	docker-compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
+	docker compose exec -T tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
 		upgrade head
-	docker-compose exec -T tests psql --command='DELETE FROM main_static.user_role'
-	docker-compose exec -T tests psql --command='DELETE FROM main_static."user"'
+	docker compose exec -T tests psql --command='DELETE FROM main_static.user_role'
+	docker compose exec -T tests psql --command='DELETE FROM main_static."user"'
 
 .PHONY: stoptest
 stoptest: ## Stop the compositon used to run the tests
-	docker-compose stop --timeout=0
-	docker-compose down --remove-orphans
+	docker compose stop --timeout=0
+	docker compose down --remove-orphans

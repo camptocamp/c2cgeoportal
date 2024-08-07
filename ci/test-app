@@ -14,15 +14,15 @@ c2cciutils-checks
 cp ${PROJECT_DIR}/ci/project-config.yaml ci/config.yaml
 c2cciutils-checks
 ./build
-docker-compose down
-docker-compose up -d
-docker-compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
-docker-compose exec -T geoportal wait-db
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
-docker-compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
-docker-compose exec -T geoportal create-demo-theme
+docker compose down
+docker compose up -d
+docker compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
+docker compose exec -T geoportal wait-db
+docker compose exec -T geoportal alembic --config=alembic.ini --name=main upgrade head
+docker compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
+docker compose exec -T geoportal create-demo-theme
 make update-po
-docker-compose exec -T geoportal theme2fts
+docker compose exec -T geoportal theme2fts
 
 # Commit the l10n files modifications
 # To prevent fail on modification files check
@@ -30,17 +30,17 @@ docker-compose exec -T geoportal theme2fts
 #git add geoportal/testgeomapfishapp_geoportal/locale/*/LC_MESSAGES/testgeomapfishapp_geoportal-*.po
 #git commit -m "Upgrade the po files"
 
-ci/run-dc-logs docker-compose exec -T geoportal ci/waitwsgi https://front/themes
+ci/run-dc-logs docker compose exec -T geoportal ci/waitwsgi https://front/themes
 for path in c2c/health_check c2c/health_check?max_level=9 c2c/health_check?checks=check_collector "layers/test/values/type enum" admin/layertree admin/layertree/children; do
-    ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project https://front/${path}
-    #docker-compose exec -T geoportal curl --insecure https://front/c2c/debug/stacks?secret=c2c
+    ci/run-dc-logs docker compose exec -T geoportal ci/test-new-project https://front/${path}
+    #docker compose exec -T geoportal curl --insecure https://front/c2c/debug/stacks?secret=c2c
 done
-ci/run-dc-logs docker-compose exec -T geoportal ci/test-new-project 'http://qgisserver:8080/mapserv_proxy?SERVICE=WMS&REQUEST=GetCapabilities'
-ci/run-dc-logs docker-compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
-docker-compose stop qgisserver
-ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
-ci/run-dc-logs docker-compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
-docker-compose down
+ci/run-dc-logs docker compose exec -T geoportal ci/test-new-project 'http://qgisserver:8080/mapserv_proxy?SERVICE=WMS&REQUEST=GetCapabilities'
+ci/run-dc-logs docker compose exec -T geoportal curl --insecure https://front/admin/ | grep Login
+docker compose stop qgisserver
+ci/run-dc-logs docker compose exec -T geoportal alembic --config=alembic.ini --name=static downgrade base
+ci/run-dc-logs docker compose exec -T geoportal alembic --config=alembic.ini --name=main downgrade base
+docker compose down
 rm -rf ${HOME}/workspace/testgeomapfishapp
 
 docker rmi camptocamp/testgeomapfishapp-geoportal-dev:latest
