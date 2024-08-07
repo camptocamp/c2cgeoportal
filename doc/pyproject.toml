@@ -16,8 +16,8 @@ authors = []
 python = ">=3.10,<3.11"
 alabaster = "0.7.16" # theme
 Pygments = "2.17.2"
-Sphinx = "7.3.7"
-sphinx-prompt = "1.8.0"
+Sphinx = "8.0.2"
+sphinx-prompt = "1.9.0"
 sphinx-jsonschema = "1.19.1"
 sphinx-argparse = "0.4.0"
 Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2024.2.25" }
