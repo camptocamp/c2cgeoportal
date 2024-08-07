@@ -1,3 +1,6 @@
+##### 2.6.0.270
+* Update dependency Fiona to v1.10b3 (2.6) [c2cgeoportal#11270](https://github.com/camptocamp/c2cgeoportal/pull/11270)
+* Update CI dependencies to v1.1.44 (2.6) (patch) [c2cgeoportal#11290](https://github.com/camptocamp/c2cgeoportal/pull/11290)
 ##### 2.6.0.269
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11252](https://github.com/camptocamp/c2cgeoportal/pull/11252)
 ##### 2.6.0.268
