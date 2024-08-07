@@ -1,3 +1,7 @@
+##### 2.8.1.127
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#11272](https://github.com/camptocamp/c2cgeoportal/pull/11272)
+
 ##### 2.8.1.126
 
 - Use Docker Compose version 2 in db scripts [c2cgeoportal#11284](https://github.com/camptocamp/c2cgeoportal/pull/11284)
