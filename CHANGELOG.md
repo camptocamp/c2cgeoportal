@@ -1,3 +1,8 @@
+##### 2.7.1.121
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240807T064247Z.1f62c2c71.2.7 (2.7) [c2cgeoportal#11287](https://github.com/camptocamp/c2cgeoportal/pull/11287)
+- Update CI dependencies (2.7) (patch) [ngeo#9403](https://github.com/camptocamp/ngeo/pull/9403)
+
 ##### 2.7.1.120
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#11285](https://github.com/camptocamp/c2cgeoportal/pull/11285)
