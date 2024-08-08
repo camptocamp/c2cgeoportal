@@ -55,25 +55,25 @@ jobs:
 
       # Tests
       - run: make preparetest
-      - run: docker-compose logs --timestamps
+      - run: docker compose logs --timestamps
         if: failure()
       # Similar to: make tests-commons
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/commons.xml
+          ci/run-dc-logs docker compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/commons.xml
           /opt/c2cgeoportal/commons/tests
       # Similar to: make tests-geoportal
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
+          ci/run-dc-logs docker compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
           /opt/c2cgeoportal/geoportal/tests
       # Similar to: make tests-admin
       - run: >
-          ci/run-dc-logs docker-compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/admin.xml
+          ci/run-dc-logs docker compose exec -T tests pytest --verbose --color=yes --junitxml=/tmp/admin.xml
           /opt/c2cgeoportal/admin/tests
       # Similar to: make tests-qgisserver
       - run: >
-          ci/run-dc-logs docker-compose exec -T qgisserver-tests pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+          ci/run-dc-logs docker compose exec -T qgisserver-tests pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
           /src/tests/functional
-      - run: docker-compose down
+      - run: docker compose down
       # Documentation
       - run: >
           docker build --tag=camptocamp/geomapfish-doc
@@ -97,9 +97,9 @@ jobs:
       - run: ci/test-app
       - run: |
           cd ${HOME}/workspace/testgeomapfishapp/
-          for service in $(docker-compose config --services)
+          for service in $(docker compose config --services)
           do
-            docker-compose logs ${service}
+            docker compose logs ${service}
           done
         if: failure()
         continue-on-error: true

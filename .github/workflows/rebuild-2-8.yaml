@@ -72,7 +72,7 @@ jobs:
 
         # Tests
       - run: make preparetest
-      - run: docker-compose logs --timestamps
+      - run: docker compose logs --timestamps
         if: failure()
       - run: make tests-commons
       - run: c2cciutils-docker-logs
@@ -84,7 +84,7 @@ jobs:
       - run: c2cciutils-docker-logs
       - run: c2cciutils-docker-logs
         if: always()
-      - run: docker-compose down
+      - run: docker compose down
 
       - run: sudo git clean -fdx
 
@@ -117,7 +117,7 @@ jobs:
           python-version: '3.7'
         # When we upgrade this we should also upgrade the requirements
         # in the documentation: doc/integrator/requirements.rst
-      - run: pip install --user PyYAML==3.13 'docker<7.0.0' docker-compose==1.26.0 urllib3==1.26.15 'requests<2.32.0'
+      - run: pip install --user PyYAML==3.13 'docker<7.0.0' urllib3==1.26.15 'requests<2.32.0'
 
         # Test App
       - run: ci/test-app
@@ -134,7 +134,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - run: pip install --user PyYAML==5.3.1 'docker<7.0.0' docker-compose==1.29.2 wheel==0.40.0 urllib3==1.26.15 'requests<2.32.0'
+      - run: pip install --user PyYAML==5.3.1 'docker<7.0.0' wheel==0.40.0 urllib3==1.26.15 'requests<2.32.0'
 
       - name: Init Git
         run:
