@@ -63,45 +63,45 @@ jobs:
 
       # Tests
       - run: make preparetest
-      - run: docker-compose logs --timestamps
+      - run: docker compose logs --timestamps
         if: failure()
       # Similar to: make tests-commons
       - run: >
-          docker-compose exec -T tests coverage run
+          docker compose exec -T tests coverage run
           --source=/opt/c2cgeoportal/commons/c2cgeoportal_commons
           --module pytest --verbose --color=yes --junitxml=/tmp/commons.xml
           /opt/c2cgeoportal/commons/tests
       - run: c2cciutils-docker-logs
       # Similar to: make tests-geoportal
       - run: >
-          docker-compose exec -T tests coverage run --append
+          docker compose exec -T tests coverage run --append
           --source=/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
           --module pytest --verbose --color=yes --junitxml=/tmp/geoportal.xml
           /opt/c2cgeoportal/geoportal/tests
       - run: c2cciutils-docker-logs
       # Similar to: make tests-admin
       - run: >
-          docker-compose exec -T tests coverage run --append
+          docker compose exec -T tests coverage run --append
           --source=/opt/c2cgeoportal/admin/c2cgeoportal_admin
           --module pytest --verbose --color=yes --junitxml=/tmp/admin.xml
           /opt/c2cgeoportal/admin/tests
       - run: c2cciutils-docker-logs
       # Similar to: make tests-qgisserver
       - run: >
-          docker-compose exec -T qgisserver-tests pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
+          docker compose exec -T qgisserver-tests pytest --verbose --color=yes --junitxml=/tmp/qgis.xml
           /src/tests/functional
       - run: c2cciutils-docker-logs
       - name: Extract tests artifacts
         run: |
-          docker-compose exec -T tests coverage report
-          docker-compose exec -T tests coverage html --directory=/tmp/coverage
+          docker compose exec -T tests coverage report
+          docker compose exec -T tests coverage html --directory=/tmp/coverage
           mkdir --parent artifacts/geoportal-coverage
           docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
         if: always()
         continue-on-error: true
       - run: c2cciutils-docker-logs
         if: always()
-      - run: docker-compose down
+      - run: docker compose down
 
       - uses: actions/upload-artifact@v4
         with:
