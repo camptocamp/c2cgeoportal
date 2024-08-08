@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2021-2023, Camptocamp SA
+# Copyright (c) 2021-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import argparse
+import shlex
 import subprocess
+import sys
 
 
 def main() -> None:
@@ -66,45 +68,43 @@ def main() -> None:
                         except ValueError:
                             # Ignore lines that don't have a '='
                             pass
-            subprocess.run(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "--interactive",
-                    "--env=PGHOST={}".format(env["PGHOST"]),
-                    "--env=PGPORT={}".format(env["PGPORT"]),
-                    "--env=PGUSER={}".format(env["PGUSER"]),
-                    "--env=PGPASSWORD={}".format(env["PGPASSWORD"]),
-                ]
-                + (["--env=PGSSLMODE={}".format(env["PGSSLMODE"])] if "PGSSLMODE" in env else [])
-                + (["--env=PGOPTIONS={}".format(env["PGOPTIONS"])] if "PGOPTIONS" in env else [])
-                + [
-                    "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
-                ]
-                + [
-                    "pg_restore",
-                    "--dbname={}".format(env["PGDATABASE"]),
-                ]
-                + args.arg,
-                stdin=file_in,
-                check=True,
-            )
+            command1 = [
+                "docker",
+                "run",
+                "--rm",
+                "--interactive",
+                "--env=PGHOST={}".format(env["PGHOST"]),
+                "--env=PGPORT={}".format(env["PGPORT"]),
+                "--env=PGUSER={}".format(env["PGUSER"]),
+            ]
+            command2 = [
+                "--env=PGPASSWORD={}".format(env["PGPASSWORD"]),
+            ]
+            command2_annon = ["--env=PGPASSWORD=***"]
+            command3 = [
+                *(["--env=PGSSLMODE={}".format(env["PGSSLMODE"])] if "PGSSLMODE" in env else []),
+                *(["--env=PGOPTIONS={}".format(env["PGOPTIONS"])] if "PGOPTIONS" in env else []),
+                "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
+                "pg_restore",
+                "--dbname={}".format(env["PGDATABASE"]),
+                *args.arg,
+            ]
+            print(shlex.join([*command1, *command2_annon, *command3]))
+            sys.exit(subprocess.run([*command1, *command2, *command3], stdin=file_in).returncode)
         else:
-            subprocess.run(
-                ["docker", "compose"]
-                + [f"--file={f}" for f in args.docker_compose_file]
-                + [
-                    "exec",
-                    "-T",
-                    "tools",
-                    "bash",
-                    "-c",
-                    'pg_restore --dbname="$PGDATABASE" ' + " ".join(args.arg),
-                ],
-                stdin=file_in,
-                check=True,
-            )
+            command = [
+                "docker",
+                "compose",
+                *[f"--file={f}" for f in args.docker_compose_file],
+                "exec",
+                "-T",
+                "tools",
+                "bash",
+                "-c",
+                'pg_restore --dbname="$PGDATABASE" ' + " ".join(args.arg),
+            ]
+            print(shlex.join(command))
+            sys.exit(subprocess.run(command, stdin=file_in).returncode)
 
 
 if __name__ == "__main__":
