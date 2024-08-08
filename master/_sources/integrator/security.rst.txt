@@ -23,7 +23,7 @@ This is good for security but with that we can't guarantee that the result of a 
 as the previous one.
 
 To avoid incidents on production service, Kubernetes will publish a service only if he start correctly.
-we are on docker-compose we have to choose ourself. The best is to build the image only on
+For Project on Docker Compose we have to choose ourself. The best is to build the image only on
 integration when the result is correct we push it on a repository, and on production we will use the
 images from the repository. The other solution is to use fixed tag for the base image, this imply that we
 should do a minor update of the application to get the security fix. To do that you should set
