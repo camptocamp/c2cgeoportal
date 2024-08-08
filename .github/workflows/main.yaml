@@ -37,7 +37,8 @@ jobs:
       - run: df -h
       - name: Clean all docker images
         run: docker system prune --all --force
-      - run: sudo rm -rf /usr/local/lib/android
+      # Inspired by https://github.com/jlumbroso/free-disk-space/
+      - run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet "$AGENT_TOOLSDIRECTORY"
       - run: df -h
 
       - uses: actions/checkout@v4
@@ -308,10 +309,6 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - run: >
-          docker run --rm --volume=/var/run/docker.sock:/var/run/docker.sock nate/dockviz
-          images --tree
-        if: always()
       - run: docker images
         if: always()
       - run: docker system df
