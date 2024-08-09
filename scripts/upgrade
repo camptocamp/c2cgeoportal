@@ -41,10 +41,12 @@ parser.add_argument(
 )
 parser.add_argument("version", help="the version to upgrade to (master or x.y.z)")
 parser.add_argument("step", nargs="?", help="the step to run")
-parser.add_argument("--docker-compose-version-2", action="store_true", help="Use Docker Compose version 2")
 parser_finalize = argparse.ArgumentParser(description="Upgrade the project", add_help=False)
 parser_finalize.add_argument("--finalize", action="store_true", help="finalize the upgrade")
 parser_finalize.add_argument("--help", action="help", help="show this help message and exit")
+parser_finalize.add_argument(
+    "--docker-compose-version-2", action="store_true", help="Use Docker Compose version 2"
+)
 parser_finalize.add_argument("build_arg", nargs="*", help="build arguments")
 
 if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
