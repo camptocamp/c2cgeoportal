@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -128,7 +128,11 @@ def get_table(
             # Ensure we have a primary key to be able to edit views
             args.append(Column(primary_key, Integer, primary_key=True))
         with _get_table_lock:
-            table = Table(*args, schema=schema, autoload=True, autoload_with=engine)
+            try:
+                table = Table(*args, schema=schema, autoload=True, autoload_with=engine)
+            except sqlalchemy.exc.InvalidRequestError:
+                # Try to use extend_existing
+                table = Table(*args, schema=schema, autoload=True, autoload_with=engine, extend_existing=True)
     return table
 
 
