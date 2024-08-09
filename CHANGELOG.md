@@ -1,3 +1,7 @@
+##### 2.7.1.123
+
+- [Backport 2.7] Fix upgrade for Docker Compose version 2 [c2cgeoportal#11298](https://github.com/camptocamp/c2cgeoportal/pull/11298)
+
 ##### 2.7.1.122
 
 - Fix Docker Compose version 2 [c2cgeoportal#11294](https://github.com/camptocamp/c2cgeoportal/pull/11294)
