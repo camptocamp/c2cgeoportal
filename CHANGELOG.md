@@ -1,3 +1,7 @@
+##### 2.7.1.122
+
+- Fix Docker Compose version 2 [c2cgeoportal#11294](https://github.com/camptocamp/c2cgeoportal/pull/11294)
+
 ##### 2.7.1.121
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20240807T064247Z.1f62c2c71.2.7 (2.7) [c2cgeoportal#11287](https://github.com/camptocamp/c2cgeoportal/pull/11287)
