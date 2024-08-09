@@ -14,5 +14,7 @@
   "geomapfish_version_tag_env": "",
   "geomapfish_major_version_tag": "",
   "geomapfish_major_version_tag_env": "",
-  "_copy_without_render": ["*.po", "*/contextualdata.html"]
+  "_copy_without_render": ["*.po", "*/contextualdata.html"],
+  "tilecloud_chain_session_secret": "",
+  "tilecloud_chain_session_salt": ""
 }
