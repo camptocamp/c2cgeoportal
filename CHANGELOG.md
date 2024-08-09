@@ -1,3 +1,7 @@
+##### 2.7.1.124
+
+- Fix CI error [c2cgeoportal#11300](https://github.com/camptocamp/c2cgeoportal/pull/11300)
+
 ##### 2.7.1.123
 
 - [Backport 2.7] Fix upgrade for Docker Compose version 2 [c2cgeoportal#11298](https://github.com/camptocamp/c2cgeoportal/pull/11298)
