@@ -29,7 +29,7 @@ c2cciutils-checks
 
 # Build
 echo ::group::Build
-CI=true ./build
+CI=true ./build --docker-compose-version-2
 echo ::endgroup::
 
 # Lint
