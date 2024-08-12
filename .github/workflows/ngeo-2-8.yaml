@@ -114,7 +114,7 @@ jobs:
           python-version: '3.7'
         # When we upgrade this we should also upgrade the requirements
         # in the documentation: doc/integrator/requirements.rst
-      - run: pip install --user PyYAML==3.13 'docker<7.0.0' urllib3==1.26.15 'requests<2.32.0'
+      - run: pip install --user PyYAML==3.13 docker-compose==1.21.0 'docker<7.0.0' urllib3==1.26.15 'requests<2.32.0'
 
         # Test App
       - run: ci/test-app
