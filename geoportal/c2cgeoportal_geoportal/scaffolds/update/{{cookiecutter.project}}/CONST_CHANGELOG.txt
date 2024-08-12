@@ -10,6 +10,13 @@ Version 2.8.1
    Use QGIS server 3.28 with GDAL 3.7 (instead of 3.6)
    Use GDAL 3.7 as based image (instead of 3.6)
 
+2. Docker Compose version 2
+
+   Docker Compose version 2 is now supported (with the command `docker compose` instead of `docker-compose`) is now supported.
+   For that an new argument `--docker-compose-version-2` is added to the `build` command, this argument should be used in the CI/CD pipeline.
+
+   End of support by GitHub: https://github.blog/changelog/2024-04-10-github-hosted-runner-images-deprecation-notice-docker-compose-v1/.
+
 =============
 Version 2.8.0
 =============
