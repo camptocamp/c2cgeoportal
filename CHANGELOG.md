@@ -1,3 +1,7 @@
+##### 2.8.1.131
+
+- Docker Compose version 2: add changelog notice [c2cgeoportal#11302](https://github.com/camptocamp/c2cgeoportal/pull/11302)
+
 ##### 2.8.1.130
 
 - [Backport 2.8] Fix upgrade for Docker Compose version 2 [c2cgeoportal#11299](https://github.com/camptocamp/c2cgeoportal/pull/11299)
