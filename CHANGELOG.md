@@ -1,3 +1,7 @@
+##### 2.7.1.125
+
+- Docker Compose version 2: add changelog notice [c2cgeoportal#11303](https://github.com/camptocamp/c2cgeoportal/pull/11303)
+
 ##### 2.7.1.124
 
 - Fix CI error [c2cgeoportal#11300](https://github.com/camptocamp/c2cgeoportal/pull/11300)
