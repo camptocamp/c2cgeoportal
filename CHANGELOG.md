@@ -1,3 +1,7 @@
+##### 2.8.1.132
+
+- Fix CVE [c2cgeoportal#11306](https://github.com/camptocamp/c2cgeoportal/pull/11306)
+
 ##### 2.8.1.131
 
 - Docker Compose version 2: add changelog notice [c2cgeoportal#11302](https://github.com/camptocamp/c2cgeoportal/pull/11302)
