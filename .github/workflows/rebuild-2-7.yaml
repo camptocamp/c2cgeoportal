@@ -136,7 +136,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 5
 
-      - run: pip install --user PyYAML==5.3.1 docker-compose==1.21.0 netifaces 'requests<2.32.0'
+      - run: pip install --user PyYAML==3.13 docker-compose==1.21.0 netifaces 'requests<2.32.0'
 
       # Test App
       - run: ci/test-app
