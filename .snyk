@@ -8,6 +8,30 @@ ignore:
         created: 2024-06-20T06:41:37.783Z
   SNYK-JS-WS-7266574:
     - '*':
-        reason: Requires a new version of Puppeteer that we didn't succeed to make it working
+        reason: >-
+          Requires a new version of Puppeteer that we didn't succeed to make it
+          working
         created: 2024-06-20T06:45:06.586Z
+  SNYK-PYTHON-BEAKER-575115:
+    - '*':
+        reason: Will probably never be fixed
+        expires: 2025-01-01T05:35:00.814Z
+        created: 2024-08-15T05:35:00.817Z
+  SNYK-JS-BOOTSTRAP-7444593:
+    - '*':
+        reason: We are not able to update Bootstrap
+        created: 2024-08-15T05:35:55.694Z
+  SNYK-JS-BOOTSTRAP-7444617:
+    - '*':
+        reason: We are not able to update Bootstrap
+        created: 2024-08-15T05:36:09.218Z
+  SNYK-PYTHON-FIONA-7462744:
+    - '*':
+        reason: Currently fix is in alpha version
+        expires: 2024-09-14T05:36:35.129Z
+        created: 2024-08-15T05:36:35.132Z
+  SNYK-PYTHON-PYYAML-590151:
+    - '*':
+        reason: Unable to install this version, we shouldn't be impacted by this vulnerability
+        created: 2024-08-15T05:44:53.724Z
 patch: {}

@@ -46,7 +46,7 @@ COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
 COPY logging.ini /var/www/
 COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
-RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
+RUN VERSION=0.0.0 python3 -m pip install --disable-pip-version-check --no-cache-dir --no-deps \
     --editable=/opt/c2cgeoportal/commons \
     && pip freeze > /requirements.txt
 
