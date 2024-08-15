@@ -1,3 +1,7 @@
+##### 2.8.1.134
+
+- Complete the changelog for Docker Compose version 2 [c2cgeoportal#11313](https://github.com/camptocamp/c2cgeoportal/pull/11313)
+
 ##### 2.8.1.133
 
 - Add some CVE ignore [c2cgeoportal#11311](https://github.com/camptocamp/c2cgeoportal/pull/11311)
