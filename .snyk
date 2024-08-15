@@ -4,6 +4,15 @@ version: v1.25.0
 ignore:
   SNYK-PYTHON-BEAKER-575115:
     - '*':
-        reason: Not used in c2cgeoportal
-        created: 2022-10-12T12:46:58.590Z
+        reason: Will probably never be fixed
+        expires: 2025-01-01T05:35:00.814Z
+        created: 2024-08-15T05:50:47.531Z
+  SNYK-JS-BOOTSTRAP-7444593:
+    - '*':
+        reason: We are not able to update Bootstrap
+        created: 2024-08-15T05:50:25.097Z
+  SNYK-JS-BOOTSTRAP-7444617:
+    - '*':
+        reason: We are not able to update Bootstrap
+        created: 2024-08-15T05:50:31.927Z
 patch: {}
