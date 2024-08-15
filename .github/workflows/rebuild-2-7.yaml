@@ -136,6 +136,15 @@ jobs:
           if-no-files-found: ignore
           retention-days: 5
 
+      # Use minimal version from the documentation
+      - uses: actions/setup-python@v4
+        with:
+          # When we upgrade this we should also upgrade the requirements
+          # in the documentation: doc/integrator/requirements.rst
+          python-version: '3.7'
+      # When we upgrade this we should also upgrade the requirements
+      # in the documentation: doc/integrator/requirements.rst
+      # netifaces is for 2.4
       - run: pip install --user PyYAML==3.13 docker-compose==1.21.0 netifaces 'requests<2.32.0'
 
       # Test App
