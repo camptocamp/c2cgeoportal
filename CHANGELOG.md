@@ -1,3 +1,7 @@
+##### 2.8.1.135
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#11315](https://github.com/camptocamp/c2cgeoportal/pull/11315)
+
 ##### 2.8.1.134
 
 - Complete the changelog for Docker Compose version 2 [c2cgeoportal#11313](https://github.com/camptocamp/c2cgeoportal/pull/11313)
