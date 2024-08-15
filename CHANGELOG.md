@@ -1,3 +1,7 @@
+##### 2.8.1.133
+
+- Add some CVE ignore [c2cgeoportal#11311](https://github.com/camptocamp/c2cgeoportal/pull/11311)
+
 ##### 2.8.1.132
 
 - Fix CVE [c2cgeoportal#11306](https://github.com/camptocamp/c2cgeoportal/pull/11306)
