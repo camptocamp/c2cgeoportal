@@ -1,3 +1,5 @@
+##### 2.6.0.272
+* Audit Snyk check/fix 2.6 [c2cgeoportal#11304](https://github.com/camptocamp/c2cgeoportal/pull/11304)
 ##### 2.6.0.271
 * Fix upgrade for Docker Compose version 2 [c2cgeoportal#11295](https://github.com/camptocamp/c2cgeoportal/pull/11295)
 ##### 2.6.0.270
