@@ -90,19 +90,19 @@ def get_typed(
         elif type_["type"] == "float":
             return float(value)
         elif type_["type"] == "date":
-            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))  # type: ignore
+            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))
             if date.time() != datetime.time(0, 0, 0):
                 errors.add(f"{prefix}The date attribute '{name}'='{value}' should not have any time")
             else:
                 return datetime.date.strftime(date.date(), "%Y-%m-%d")
         elif type_["type"] == "time":
-            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))  # type: ignore
+            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))
             if date.date() != datetime.date(1, 1, 1):
                 errors.add(f"{prefix}The time attribute '{name}'='{value}' should not have any date")
             else:
                 return datetime.time.strftime(date.time(), "%H:%M:%S")
         elif type_["type"] == "datetime":
-            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))  # type: ignore
+            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))
             return datetime.datetime.strftime(date, "%Y-%m-%dT%H:%M:%S")
         elif type_["type"] == "url":
             url = get_url2(f"{prefix}The attribute '{name}'", value, request, errors)

@@ -205,6 +205,49 @@ mapping:
           oauth2_token_expire_minutes:
             type: scalar
             required: false
+          openid_connect:
+            type: map
+            required: false
+            mapping:
+              enabled:
+                type: bool
+                default: false
+              url:
+                type: str
+                required: false
+              client_id:
+                type: str
+                required: false
+              client_secret:
+                type: str
+                required: false
+              trusted_audiences:
+                type: seq
+                sequence:
+                  - type: str
+              scopes:
+                type: seq
+                sequence:
+                  - type: str
+              provide_roles:
+                type: bool
+                default: false
+              query_user_info:
+                type: bool
+                default: false
+              user_info_fields:
+                type: map
+                mapping:
+                  username:
+                    type: str
+                    default: name
+                  email:
+                    type: str
+                    default: email
+                  settings_role:
+                    type: str
+                  roles:
+                    type: str
       intranet:
         type: map
         required: false

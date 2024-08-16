@@ -26,6 +26,9 @@
 /geoportal/tests/testegg/production.ini
 /geoportal/tests/tests.ini
 node_modules/
+# Files generated when we mount c2cgeoportal in the project, created with `make tests`
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/mapserver/demo.map
+/geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/mapserver/mapserver.map
 # Files needed to mount c2cgeoportal in the project, created with `make dev`
 /geoportal/c2cgeoportal_geoportal/locale/
 /admin/c2cgeoportal_admin/locale/

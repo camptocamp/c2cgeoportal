@@ -319,6 +319,8 @@ vars:
           currentInterface: True
         authenticationBaseUrl:
           name: base
+        gmfOidcLoginUrl:
+          name: oidc_login
         gmfLayersUrl:
           name: layers_root
         gmfRasterUrl:

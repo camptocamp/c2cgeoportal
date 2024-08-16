@@ -125,6 +125,7 @@ class TestLoginView(TestCase):
             "username": "__test_user1",
             "email": "__test_user1@example.com",
             "is_intranet": False,
+            "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role1", "id": self.role1_id}],
             "functionalities": {},
@@ -196,6 +197,7 @@ class TestLoginView(TestCase):
             "username": "__test_user1",
             "email": "__test_user1@example.com",
             "is_intranet": False,
+            "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role1", "id": self.role1_id}],
             "functionalities": {},
@@ -333,6 +335,7 @@ class TestLoginView(TestCase):
             "username": "__test_user",
             "email": "info@example.com",
             "is_intranet": False,
+            "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role", "id": 123}],
             "functionalities": {"func": ["reg"]},
@@ -350,6 +353,7 @@ class TestLoginView(TestCase):
             "username": "__test_user",
             "email": "info@example.com",
             "is_intranet": False,
+            "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role2", "id": 123}],
             "functionalities": {"func": ["value"]},
@@ -368,13 +372,15 @@ class TestLoginView(TestCase):
 
         login = Login(request)
         self.assertEqual(
-            login.loginuser(), {"is_intranet": False, "functionalities": {}, "two_factor_enable": False}
+            login.loginuser(),
+            {"is_intranet": False, "login_type": "local", "functionalities": {}, "two_factor_enable": False},
         )
 
         request.client_addr = "192.168.1.20"
         login = Login(request)
         self.assertEqual(
-            login.loginuser(), {"is_intranet": True, "functionalities": {}, "two_factor_enable": False}
+            login.loginuser(),
+            {"is_intranet": True, "login_type": "local", "functionalities": {}, "two_factor_enable": False},
         )
 
         class G:
@@ -404,6 +410,7 @@ class TestLoginView(TestCase):
                 "email": "info@example.com",
                 "functionalities": {},
                 "is_intranet": False,
+                "login_type": "local",
                 "roles": [{"id": 123, "name": "__test_role"}],
                 "two_factor_enable": False,
                 "username": "__test_user",
@@ -418,6 +425,7 @@ class TestLoginView(TestCase):
                 "email": "info@example.com",
                 "functionalities": {},
                 "is_intranet": True,
+                "login_type": "local",
                 "roles": [{"id": 123, "name": "__test_role"}],
                 "two_factor_enable": False,
                 "username": "__test_user",

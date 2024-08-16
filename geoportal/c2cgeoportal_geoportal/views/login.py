@@ -34,6 +34,7 @@ import sys
 import urllib.parse
 from typing import Any, Optional, Union
 
+import pkce
 import pyotp
 import pyramid.request
 import pyramid.response
@@ -51,15 +52,14 @@ from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import static
+from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal import is_allowed_url, is_valid_referrer
-from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2
+from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2, oidc
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 
 _LOG = logging.getLogger(__name__)
-_CACHE_REGION = get_region("std")
 
 
 class Login:
@@ -74,10 +74,10 @@ class Login:
         self.settings = request.registry.settings
         self.lang = request.locale_name
 
-        authentication_settings = self.settings.get("authentication", {})
+        self.authentication_settings = self.settings.get("authentication", {})
 
-        self.two_factor_auth = authentication_settings.get("two_factor", False)
-        self.two_factor_issuer_name = authentication_settings.get("two_factor_issuer_name")
+        self.two_factor_auth = self.authentication_settings.get("two_factor", False)
+        self.two_factor_issuer_name = self.authentication_settings.get("two_factor_issuer_name")
 
     def _functionality(self) -> dict[str, list[Union[str, int, float, bool, list[Any], dict[str, Any]]]]:
         functionality = {}
@@ -85,7 +85,7 @@ class Login:
             functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
         return functionality
 
-    def _referer_log(self) -> None:
+    def _referrer_log(self) -> None:
         if not hasattr(self.request, "is_valid_referer"):
             self.request.is_valid_referer = is_valid_referrer(self.request)
         if not self.request.is_valid_referer:
@@ -93,6 +93,14 @@ class Login:
 
     @forbidden_view_config(renderer="login.html")  # type: ignore
     def loginform403(self) -> Union[dict[str, Any], pyramid.response.Response]:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            return HTTPFound(
+                location=self.request.route_url(
+                    "login",
+                    _query={"came_from": f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}"},
+                )
+            )
+
         if self.request.authenticated_userid is not None:
             return HTTPForbidden()
 
@@ -100,14 +108,15 @@ class Login:
 
         return {
             "lang": self.lang,
-            "login_params": {
-                "came_from": (f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}")
-            },
+            "login_params": {"came_from": f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}"},
             "two_fa": self.two_factor_auth,
         }
 
     @view_config(route_name="loginform", renderer="login.html")  # type: ignore
     def loginform(self) -> dict[str, Any]:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
+
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
         return {
@@ -125,8 +134,10 @@ class Login:
     @view_config(route_name="login")  # type: ignore
     def login(self) -> pyramid.response.Response:
         assert models.DBSession is not None
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
 
-        self._referer_log()
+        self._referrer_log()
 
         login = self.request.POST.get("login")
         password = self.request.POST.get("password")
@@ -281,6 +292,13 @@ class Login:
 
     @view_config(route_name="logout")  # type: ignore
     def logout(self) -> pyramid.response.Response:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            client = oidc.get_oidc_client(self.request)
+            user_info = json.loads(self.request.authenticated_userid)
+            client.revoke_token(user_info["access_token"])
+            if user_info.get("refresh_token") is not None:
+                client.revoke_token(user_info["refresh_token"])
+
         headers = forget(self.request)
 
         if not self.request.user:
@@ -298,8 +316,15 @@ class Login:
         result = {
             "functionalities": self._functionality(),
             "is_intranet": is_intranet(self.request),
-            "two_factor_enable": self.two_factor_auth,
+            "login_type": (
+                "oidc"
+                if self.authentication_settings.get("openid_connect", {}).get("enabled", False)
+                else "local"
+            ),
         }
+        if not self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            result["two_factor_enable"] = self.two_factor_auth
+
         user = self.request.user if user is None else user
         if user is not None:
             result.update(
@@ -320,6 +345,9 @@ class Login:
     @view_config(route_name="change_password", renderer="json")  # type: ignore
     def change_password(self) -> pyramid.response.Response:
         assert models.DBSession is not None
+
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
 
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
@@ -406,6 +434,9 @@ class Login:
 
     @view_config(route_name="loginresetpassword", renderer="json")  # type: ignore
     def loginresetpassword(self) -> dict[str, Any]:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
+
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
         user, username, password, error = self._loginresetpassword()
@@ -435,6 +466,9 @@ class Login:
 
     @view_config(route_name="oauth2introspect")  # type: ignore
     def oauth2introspect(self) -> pyramid.response.Response:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
+
         _LOG.debug(
             "Call OAuth create_introspect_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
             self.request.current_route_url(_query=self.request.GET),
@@ -465,6 +499,9 @@ class Login:
 
     @view_config(route_name="oauth2token")  # type: ignore
     def oauth2token(self) -> pyramid.response.Response:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
+
         _LOG.debug(
             "Call OAuth create_token_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
             self.request.current_route_url(_query=self.request.GET),
@@ -494,6 +531,9 @@ class Login:
 
     @view_config(route_name="oauth2revoke_token")  # type: ignore
     def oauth2revoke_token(self) -> pyramid.response.Response:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
+
         _LOG.debug(
             "Call OAuth create_revocation_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
             self.request.create_revocation_response(_query=self.request.GET),
@@ -521,6 +561,9 @@ class Login:
 
     @view_config(route_name="oauth2loginform", renderer="login.html")  # type: ignore
     def oauth2loginform(self) -> dict[str, Any]:
+        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+            raise HTTPBadRequest("View disabled by OpenID Connect")
+
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
         if self.request.user:
@@ -539,3 +582,112 @@ class Login:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
         return {"lang": self.lang}
+
+    @view_config(route_name="oidc_login")  # type: ignore
+    def oidc_login(self) -> pyramid.response.Response:
+        client = oidc.get_oidc_client(self.request)
+        if "came_from" in self.request.params:
+            self.request.response.set_cookie(
+                "came_from",
+                self.request.params["came_from"],
+                httponly=True,
+                samesite="Lax",
+                secure=True,
+                domain=self.request.domain,
+                max_age=600,
+            )
+
+        code_verifier, code_challenge = pkce.generate_pkce_pair()
+        self.request.response.set_cookie(
+            "code_verifier",
+            code_verifier,
+            httponly=True,
+            samesite="Lax",
+            secure=True,
+            domain=self.request.domain,
+            max_age=600,
+        )
+        self.request.response.set_cookie(
+            "code_challenge",
+            code_challenge,
+            httponly=True,
+            samesite="Lax",
+            secure=True,
+            domain=self.request.domain,
+            max_age=600,
+        )
+
+        try:
+            return HTTPFound(
+                location=client.authorization_code_flow.start_authentication(
+                    code_challenge=code_challenge,
+                    code_challenge_method="S256",
+                ),
+                headers=self.request.response.headers,
+            )
+        finally:
+            client.authorization_code_flow.code_challenge = ""
+
+    @view_config(route_name="oidc_callback")  # type: ignore
+    def oidc_callback(self) -> pyramid.response.Response:
+        client = oidc.get_oidc_client(self.request)
+        assert models.DBSession is not None
+
+        token_response = client.authorization_code_flow.handle_authentication_result(
+            "?" + urllib.parse.urlencode(self.request.params),
+            code_verifier=self.request.cookies["code_verifier"],
+            code_challenge=self.request.cookies["code_challenge"],
+            code_challenge_method="S256",
+        )
+        self.request.response.delete_cookie("code_verifier")
+        self.request.response.delete_cookie("code_challenge")
+
+        remember_object = oidc.OidcRemember(self.request).remember(token_response)
+
+        user: Optional[Union[static.User, oidc.DynamicUser]]
+        if self.authentication_settings.get("openid_connect", {}).get("provide_roles", False) is False:
+            user = models.DBSession.query(static.User).filter_by(email=remember_object["email"]).one_or_none()
+            if user is None:
+                user = static.User(username=remember_object["username"], email=remember_object["email"])
+                models.DBSession.add(user)
+        else:
+            user = oidc.DynamicUser(
+                username=remember_object["username"],
+                email=remember_object["email"],
+                settings_role=(
+                    models.DBSession.query(main.Role).filter_by(name=remember_object["settings_role"]).first()
+                    if remember_object.get("settings_role") is not None
+                    else None
+                ),
+                roles=[
+                    models.DBSession.query(main.Role).filter_by(name=role).one()
+                    for role in remember_object.get("roles", [])
+                ],
+            )
+        assert user is not None
+        self.request.user_ = user
+
+        if "came_from" in self.request.cookies:
+            came_from = self.request.cookies["came_from"]
+            self.request.response.delete_cookie("came_from")
+
+            return HTTPFound(location=came_from, headers=self.request.response.headers)
+
+        return set_common_headers(
+            self.request,
+            "login",
+            Cache.PRIVATE_NO,
+            response=Response(
+                # TODO respect the user interface...
+                json.dumps(
+                    {
+                        "username": user.username,
+                        "email": user.email,
+                        "is_intranet": is_intranet(self.request),
+                        "functionalities": self._functionality(),
+                        "roles": [{"name": r.name, "id": r.id} for r in user.roles],
+                    }
+                ),
+                headers=(("Content-Type", "text/json"),),
+            ),
+        )

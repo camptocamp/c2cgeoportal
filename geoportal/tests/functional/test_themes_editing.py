@@ -33,8 +33,9 @@ from unittest import TestCase
 import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
-from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
+from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 
 
@@ -60,10 +61,11 @@ class TestThemeEditing(TestCase):
         )
         from c2cgeoportal_commons.models.static import User
 
+        setup_db()
+
         ogcserver = create_default_ogcserver()
 
         role1 = Role(name="__test_role1")
-        role1.id = 999
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
         user1.email = "__test_user1@example.com"
 
@@ -114,30 +116,10 @@ class TestThemeEditing(TestCase):
     def teardown_method(self, _):
         testing.tearDown()
 
+        cleanup_db()
+
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import (
-            Interface,
-            Layer,
-            LayerGroup,
-            OGCServer,
-            RestrictionArea,
-            Role,
-            Theme,
-        )
-        from c2cgeoportal_commons.models.static import User
-
-        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
-        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user2").one())
-
-        ra = DBSession.query(RestrictionArea).filter(RestrictionArea.name == "__test_ra1").one()
-        ra.roles = []
-        DBSession.delete(ra)
-        ra = DBSession.query(RestrictionArea).filter(RestrictionArea.name == "__test_ra2").one()
-        ra.roles = []
-        DBSession.delete(ra)
-
-        DBSession.query(Role).filter(Role.name == "__test_role1").delete()
-        DBSession.query(Role).filter(Role.name == "__test_role2").delete()
+        from c2cgeoportal_commons.models.main import Layer, LayerGroup, Theme
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)
@@ -145,8 +127,6 @@ class TestThemeEditing(TestCase):
             DBSession.delete(g)
         for layer in DBSession.query(Layer).all():
             DBSession.delete(layer)
-        DBSession.query(Interface).filter(Interface.name == "main").delete()
-        DBSession.query(OGCServer).delete()
 
         for table in self._tables[::-1]:
             table.drop(checkfirst=True, bind=DBSession.c2c_rw_bind)

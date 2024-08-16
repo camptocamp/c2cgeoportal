@@ -25,7 +25,9 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import datetime
 import importlib
+import json
 import logging
 import os
 import urllib.parse
@@ -36,6 +38,7 @@ import c2cgeoform
 import c2cwsgiutils
 import c2cwsgiutils.db
 import c2cwsgiutils.index
+import dateutil.parser
 import pyramid.config
 import pyramid.renderers
 import pyramid.request
@@ -313,6 +316,7 @@ def create_get_user_from_request(
         """
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_geoportal.lib import oidc  # pylint: disable=import-outside-toplevel
 
         assert DBSession is not None
 
@@ -327,14 +331,52 @@ def create_get_user_from_request(
             if username is None:
                 username = request.authenticated_userid
             if username is not None:
-                # We know we will need the role object of the
-                # user so we use joined loading
-                request.user_ = (
-                    DBSession.query(User)
-                    .filter_by(username=username, deactivated=False)
-                    .options(joinedload(User.roles))
-                    .first()
-                )
+                openid_connect_config = settings.get("authentication", {}).get("openid_connect", {})
+                if openid_connect_config.get("enabled", False):
+                    user_info = json.loads(username)
+                    access_token_expires = dateutil.parser.isoparse(user_info["access_token_expires"])
+                    if access_token_expires < datetime.datetime.now():
+                        if user_info["refresh_token_expires"] is None:
+                            return None
+                        refresh_token_expires = dateutil.parser.isoparse(user_info["refresh_token_expires"])
+                        if refresh_token_expires < datetime.datetime.now():
+                            return None
+                        token_response = oidc.get_oidc_client(request).exchange_refresh_token(
+                            user_info["refresh_token"]
+                        )
+                        user_info = oidc.OidcRemember(request).remember(token_response)
+
+                    if openid_connect_config.get("provide_roles", False) is True:
+                        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+                            Role,
+                        )
+
+                        request.user_ = oidc.DynamicUser(
+                            username=user_info["username"],
+                            email=user_info["email"],
+                            settings_role=(
+                                DBSession.query(Role).filter_by(name=user_info["settings_role"]).first()
+                                if user_info.get("settings_role") is not None
+                                else None
+                            ),
+                            roles=[
+                                DBSession.query(Role).filter_by(name=role).one()
+                                for role in user_info.get("roles", [])
+                            ],
+                        )
+                    else:
+                        request.user_ = DBSession.query(User).filter_by(email=user_info["email"]).first()
+                        for user in DBSession.query(User).all():
+                            _LOG.error(user.username)
+                else:
+                    # We know we will need the role object of the
+                    # user so we use joined loading
+                    request.user_ = (
+                        DBSession.query(User)
+                        .filter_by(username=username, deactivated=False)
+                        .options(joinedload(User.roles))
+                        .first()
+                    )
 
         return cast(User, request.user_)
 
@@ -596,6 +638,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
     add_cors_route(config, "/loginuser", "login")
     config.add_route("loginuser", "/loginuser", request_method="GET")
     config.add_route("testi18n", "/testi18n.html", request_method="GET")
+    config.add_route("oidc_login", "/oidc/login", request_method="GET")
+    config.add_route("oidc_callback", "/oidc/callback", request_method="GET")
 
     config.add_renderer(".map", AssetRendererFactory)
     config.add_renderer(".css", AssetRendererFactory)
