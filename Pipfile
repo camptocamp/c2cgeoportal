@@ -184,7 +184,7 @@ ujson = "==5.4.0"
 urllib3 = "==1.26.19"
 venusian = "==3.0.0"
 waitress = "==2.1.2"
-webob = "==1.8.7"
+webob = "==1.8.8"
 "zope.deprecation" = "==4.4.0"
 # Lock dependencies
 pyramid-debugtoolbar = "==4.9"
