@@ -9,13 +9,19 @@ ignore:
   SNYK-PYTHON-SETUPTOOLS-3180412:
     - '*':
         reason: Pipenv ignore setuptool
-        created: 2023-10-09T10:12:42.955Z
+        created: 2024-08-19T12:48:41.395Z
   SNYK-JS-NTHCHECK-1586032:
     - '*':
         reason: Finally requires new version of webpack
         created: 2024-06-20T06:41:37.783Z
   SNYK-JS-WS-7266574:
     - '*':
-        reason: Requires a new version of Puppeteer that we didn't succeed to make it working
+        reason: >-
+          Requires a new version of Puppeteer that we didn't succeed to make it
+          working
         created: 2024-06-20T06:45:06.586Z
+  SNYK-PYTHON-BEAKER-575115:
+    - '*':
+        reason: Will probably never been fixed
+        created: 2024-08-19T12:47:12.462Z
 patch: {}
