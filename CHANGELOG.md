@@ -1,3 +1,5 @@
+##### 2.6.0.273
+* Add some unable to update Snyk ignore [c2cgeoportal#11319](https://github.com/camptocamp/c2cgeoportal/pull/11319)
 ##### 2.6.0.272
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11304](https://github.com/camptocamp/c2cgeoportal/pull/11304)
 ##### 2.6.0.271
