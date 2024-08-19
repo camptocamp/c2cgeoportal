@@ -1,0 +1,9 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-PYTHON-PYYAML-590151:
+    - '*':
+        reason: Unable to install this version, we shouldn't be impacted by this vulnerability
+        created: 2024-08-15T05:44:43.586Z
+patch: {}
