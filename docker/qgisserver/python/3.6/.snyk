@@ -1,0 +1,37 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-PYTHON-SETUPTOOLS-3180412:
+    - '*':
+        reason: Not compatible with Python 3.6
+        created: 2024-08-19T12:48:41.395Z
+  SNYK-PYTHON-BEAKER-575115:
+    - '*':
+        reason: Will probably never been fixed
+        created: 2024-08-19T12:47:12.462Z
+  SNYK-JS-BOOTSTRAP-7444593:
+    - '*':
+        reason: Unable to update it
+        created: 2024-08-19T12:47:33.934Z
+  SNYK-JS-BOOTSTRAP-7444617:
+    - '*':
+        reason: Unable to update it
+        created: 2024-08-19T12:47:47.325Z
+  SNYK-PYTHON-JINJA2-6150717:
+    - '*':
+        reason: Not compatible with Python 3.6
+        created: 2024-08-19T12:48:01.460Z
+  SNYK-PYTHON-JINJA2-6809379:
+    - '*':
+        reason: Not compatible with Python 3.6
+        created: 2024-08-19T12:48:17.390Z
+  SNYK-PYTHON-MAKO-3017600:
+    - '*':
+        reason: Not compatible with Python 3.6
+        created: 2024-08-19T12:48:30.609Z
+  SNYK-PYTHON-SETUPTOOLS-7448482:
+    - '*':
+        reason: Not compatible with Python 3.6
+        created: 2024-08-19T12:48:52.936Z
+patch: {}
