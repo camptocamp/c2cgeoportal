@@ -17,14 +17,6 @@ ignore:
         reason: Will probably never be fixed
         expires: 2025-01-01T05:35:00.814Z
         created: 2024-08-15T05:35:00.817Z
-  SNYK-JS-BOOTSTRAP-7444593:
-    - '*':
-        reason: We are not able to update Bootstrap
-        created: 2024-08-15T05:35:55.694Z
-  SNYK-JS-BOOTSTRAP-7444617:
-    - '*':
-        reason: We are not able to update Bootstrap
-        created: 2024-08-15T05:36:09.218Z
   SNYK-PYTHON-FIONA-7462744:
     - '*':
         reason: Currently fix is in alpha version
