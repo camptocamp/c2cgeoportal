@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023, Camptocamp SA
+# Copyright (c) 2019-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,8 +49,6 @@ max_requests = int(os.environ.get("GUNICORN_MAX_REQUESTS", 1000))
 max_requests_jitter = int(os.environ.get("GUNICORN_MAX_REQUESTS_JITTER", 100))
 worker_tmp_dir = "/dev/shm"  # nosec
 limit_request_line = int(os.environ.get("GUNICORN_LIMIT_REQUEST_LINE", 8190))
-
-preload = "true"
 
 accesslog = "-"
 access_log_format = os.environ.get(
