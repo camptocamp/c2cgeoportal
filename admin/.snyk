@@ -1,0 +1,17 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-PYTHON-BEAKER-575115:
+    - '*':
+        reason: Will probably never be fixed
+        created: 2024-08-15T05:50:47.531Z
+  SNYK-JS-BOOTSTRAP-7444593:
+    - '*':
+        reason: We are not able to update Bootstrap
+        created: 2024-08-15T05:50:25.097Z
+  SNYK-JS-BOOTSTRAP-7444617:
+    - '*':
+        reason: We are not able to update Bootstrap
+        created: 2024-08-15T05:50:31.927Z
+patch: {}
