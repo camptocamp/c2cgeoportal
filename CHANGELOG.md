@@ -1,3 +1,7 @@
+##### 2.7.1.131
+
+- Update the CVE ignore [c2cgeoportal#11322](https://github.com/camptocamp/c2cgeoportal/pull/11322)
+
 ##### 2.7.1.130
 
 - Fix CVE [c2cgeoportal#11320](https://github.com/camptocamp/c2cgeoportal/pull/11320)
