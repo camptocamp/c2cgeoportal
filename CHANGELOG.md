@@ -1,3 +1,7 @@
+##### 2.8.1.136
+
+- Update the CVE ignore [c2cgeoportal#11321](https://github.com/camptocamp/c2cgeoportal/pull/11321)
+
 ##### 2.8.1.135
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11315](https://github.com/camptocamp/c2cgeoportal/pull/11315)
