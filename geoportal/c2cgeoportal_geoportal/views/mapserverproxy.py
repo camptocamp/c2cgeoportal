@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,8 @@ from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-CACHE_REGION = get_region("std")
-LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
 
 
 class MapservProxy(OGCProxy):
@@ -62,7 +62,7 @@ class MapservProxy(OGCProxy):
     @view_config(route_name="mapserverproxy_post_path")  # type: ignore
     def proxy(self) -> Response:
         if self.user is None and "authentication_required" in self.request.params:
-            LOG.debug("proxy() detected authentication_required")
+            _LOG.debug("proxy() detected authentication_required")
             if self.request.registry.settings.get("basicauth", "False").lower() == "true":
                 raise HTTPUnauthorized(
                     headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'}
@@ -83,7 +83,7 @@ class MapservProxy(OGCProxy):
         # Do not allows direct variable substitution
         for k in list(self.params.keys()):
             if len(k) > 1 and k[:2].capitalize() == "S_":
-                LOG.warning("Direct substitution not allowed (%s=%s).", k, self.params[k])
+                _LOG.warning("Direct substitution not allowed (%s=%s).", k, self.params[k])
                 del self.params[k]
 
         if (
@@ -125,7 +125,7 @@ class MapservProxy(OGCProxy):
             _url = self._get_wfs_url(errors)
 
         if _url is None:
-            LOG.error("Error getting the URL:\n%s", "\n".join(errors))
+            _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
             raise HTTPInternalServerError()
 
         cache_control = (

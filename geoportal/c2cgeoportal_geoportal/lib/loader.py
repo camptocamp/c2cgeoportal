@@ -34,7 +34,7 @@ from c2cwsgiutils.loader import Loader as BaseLoader
 
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class Loader(BaseLoader):

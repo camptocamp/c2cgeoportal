@@ -58,8 +58,8 @@ from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 
-LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
 
 
 class Login:
@@ -89,7 +89,7 @@ class Login:
         if not hasattr(self.request, "is_valid_referer"):
             self.request.is_valid_referer = is_valid_referrer(self.request)
         if not self.request.is_valid_referer:
-            LOG.info("Invalid referrer for %s: %s", self.request.path_qs, repr(self.request.referrer))
+            _LOG.info("Invalid referrer for %s: %s", self.request.path_qs, repr(self.request.referrer))
 
     @forbidden_view_config(renderer="login.html")  # type: ignore
     def loginform403(self) -> Union[dict[str, Any], pyramid.response.Response]:
@@ -166,7 +166,7 @@ class Login:
                 if otp is None:
                     raise HTTPBadRequest("The second factor is missing.")
                 if not self._validate_2fa_totp(user, otp):
-                    LOG.info("The second factor is wrong for user '%s'.", user.username)
+                    _LOG.info("The second factor is wrong for user '%s'.", user.username)
                     raise HTTPUnauthorized("See server logs for details")
             user.update_last_login()
             user.tech_data["consecutive_failed"] = "0"
@@ -190,7 +190,7 @@ class Login:
                     ),
                 )
 
-            LOG.info("User '%s' logged in.", username)
+            _LOG.info("User '%s' logged in.", username)
             if self.request.GET.get("type") == "oauth2":
                 self._oauth2_login(user)
 
@@ -207,7 +207,7 @@ class Login:
                             f"is not the current host '{self.request.host}' "
                             f"or part of allowed hosts: {', '.join(allowed_hosts)}"
                         )
-                        LOG.debug(message)
+                        _LOG.debug(message)
                         return HTTPBadRequest(message)
                 return HTTPFound(location=came_from, headers=headers)
 
@@ -235,7 +235,7 @@ class Login:
 
     def _oauth2_login(self, user: static.User) -> pyramid.response.Response:
         self.request.user_ = user
-        LOG.debug(
+        _LOG.debug(
             "Call OAuth create_authorization_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
             self.request.current_route_url(_query=self.request.GET),
             self.request.method,
@@ -251,7 +251,7 @@ class Login:
         )
         if hasattr(self.request, "tm"):
             self.request.tm.commit()
-        LOG.debug("OAuth create_authorization_response return\nstatus: %s\nbody:\n%s", status, body)
+        _LOG.debug("OAuth create_authorization_response return\nstatus: %s\nbody:\n%s", status, body)
 
         location = headers.get("Location")
         location_hostname = urllib.parse.urlparse(location).hostname
@@ -263,7 +263,7 @@ class Login:
                 f"is not the current host '{self.request.host}' "
                 f"or part of allowed_hosts: {', '.join(allowed_hosts)}"
             )
-            LOG.debug(message)
+            _LOG.debug(message)
             return HTTPBadRequest(message)
 
         if status == 302:
@@ -284,10 +284,10 @@ class Login:
         headers = forget(self.request)
 
         if not self.request.user:
-            LOG.info("Logout on non login user.")
+            _LOG.info("Logout on non login user.")
             raise HTTPUnauthorized("See server logs for details")
 
-        LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
+        _LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
 
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(
@@ -313,7 +313,7 @@ class Login:
 
     @view_config(route_name="loginuser", renderer="json")  # type: ignore
     def loginuser(self) -> dict[str, Any]:
-        LOG.info("Client IP address: %s", self.request.client_addr)
+        _LOG.info("Client IP address: %s", self.request.client_addr)
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
         return self._user()
 
@@ -343,25 +343,25 @@ class Login:
         if login is not None:
             user = models.DBSession.query(static.User).filter_by(username=login).one_or_none()
             if user is None:
-                LOG.info("The login '%s' does not exist.", login)
+                _LOG.info("The login '%s' does not exist.", login)
                 raise HTTPUnauthorized("See server logs for details")
 
             if self.two_factor_auth:
                 if not self._validate_2fa_totp(user, otp):
-                    LOG.info("The second factor is wrong for user '%s'.", login)
+                    _LOG.info("The second factor is wrong for user '%s'.", login)
                     raise HTTPUnauthorized("See server logs for details")
         else:
             user = self.request.user
 
         assert user is not None
         if self.request.registry.validate_user(self.request, user.username, old_password) is None:
-            LOG.info("The old password is wrong for user '%s'.", user.username)
+            _LOG.info("The old password is wrong for user '%s'.", user.username)
             raise HTTPUnauthorized("See server logs for details")
 
         user.password = new_password
         user.is_password_changed = True
         models.DBSession.flush()
-        LOG.info("Password changed for user '%s'", user.username)
+        _LOG.info("Password changed for user '%s'", user.username)
 
         headers = remember(self.request, user.username)
         headers.append(("Content-Type", "text/json"))
@@ -410,15 +410,15 @@ class Login:
 
         user, username, password, error = self._loginresetpassword()
         if error is not None:
-            LOG.info(error)
+            _LOG.info(error)
             return {"success": True}
 
         if user is None:
-            LOG.info("The user is not found without any error.")
+            _LOG.info("The user is not found without any error.")
             return {"success": True}
 
         if user.deactivated:
-            LOG.info("The user '%s' is deactivated", username)
+            _LOG.info("The user '%s' is deactivated", username)
             return {"success": True}
 
         send_email_config(
@@ -435,7 +435,7 @@ class Login:
 
     @view_config(route_name="oauth2introspect")  # type: ignore
     def oauth2introspect(self) -> pyramid.response.Response:
-        LOG.debug(
+        _LOG.debug(
             "Call OAuth create_introspect_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
             self.request.current_route_url(_query=self.request.GET),
             self.request.method,
@@ -449,7 +449,7 @@ class Login:
             self.request.body,
             self.request.headers,
         )
-        LOG.debug("OAuth create_introspect_response return status: %s", status)
+        _LOG.debug("OAuth create_introspect_response return status: %s", status)
 
         # All requests to /token will return a json response, no redirection.
         if status != 200:
@@ -465,7 +465,7 @@ class Login:
 
     @view_config(route_name="oauth2token")  # type: ignore
     def oauth2token(self) -> pyramid.response.Response:
-        LOG.debug(
+        _LOG.debug(
             "Call OAuth create_token_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
             self.request.current_route_url(_query=self.request.GET),
             self.request.method,
@@ -478,7 +478,7 @@ class Login:
             self.request.headers,
             {},
         )
-        LOG.debug("OAuth create_token_response return status: %s", status)
+        _LOG.debug("OAuth create_token_response return status: %s", status)
 
         # All requests to /token will return a json response, no redirection.
         if status != 200:
@@ -494,7 +494,7 @@ class Login:
 
     @view_config(route_name="oauth2revoke_token")  # type: ignore
     def oauth2revoke_token(self) -> pyramid.response.Response:
-        LOG.debug(
+        _LOG.debug(
             "Call OAuth create_revocation_response with:\nurl: %s\nmethod: %s\nbody:\n%s",
             self.request.create_revocation_response(_query=self.request.GET),
             self.request.method,

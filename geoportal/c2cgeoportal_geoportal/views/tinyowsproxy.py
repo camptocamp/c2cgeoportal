@@ -46,7 +46,7 @@ from c2cgeoportal_geoportal.lib.filter_capabilities import (
 from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class TinyOWSProxy(OGCProxy):
@@ -87,7 +87,7 @@ class TinyOWSProxy(OGCProxy):
             try:
                 (operation, typenames_post) = self._parse_body(self.request.body)
             except Exception:
-                LOG.exception("Error while parsing POST request body")
+                _LOG.exception("Error while parsing POST request body")
                 raise HTTPBadRequest(  # pylint: disable=raise-missing-from
                     "Error parsing the request (see logs for more details)"
                 )
@@ -147,7 +147,7 @@ class TinyOWSProxy(OGCProxy):
         errors: set[str] = set()
         url = super()._get_wfs_url(errors)
         if url is None:
-            LOG.error("Error getting the URL:\n%s", "\n".join(errors))
+            _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
             raise HTTPInternalServerError()
 
         if operation == "getcapabilities":

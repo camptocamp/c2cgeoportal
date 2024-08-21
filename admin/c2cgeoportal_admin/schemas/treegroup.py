@@ -42,7 +42,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeGroup, TreeItem
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 # Correspondence between TreeItem.item_type and route table segment
 ITEM_TYPE_ROUTE_MAP = {
@@ -149,7 +149,7 @@ def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> 
         return None
     table = ITEM_TYPE_ROUTE_MAP.get(treeitem.item_type, None)
     if table is None:
-        LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
+        _LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
         return None
     return request.route_url(  # type: ignore
         "c2cgeoform_item",

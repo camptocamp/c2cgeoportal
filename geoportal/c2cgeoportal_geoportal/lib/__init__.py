@@ -45,9 +45,9 @@ from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
 
-LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region("std")
-CACHE_REGION_OBJ = get_region("obj")
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
+_CACHE_REGION_OBJ = get_region("obj")
 
 
 def get_types_map(types_array: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
@@ -142,7 +142,7 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
     return value if value else default
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@_CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WMS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
@@ -159,7 +159,7 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> dict[str, li
     return servers
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@_CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WFS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
@@ -203,7 +203,7 @@ class C2CPregenerator:
 _formatter = Formatter()
 
 
-@CACHE_REGION_OBJ.cache_on_arguments()
+@_CACHE_REGION_OBJ.cache_on_arguments()
 def _get_intranet_networks(
     request: pyramid.request.Request,
 ) -> list[Union[ipaddress.IPv4Network, ipaddress.IPv6Network]]:
@@ -213,7 +213,7 @@ def _get_intranet_networks(
     ]
 
 
-@CACHE_REGION.cache_on_arguments()
+@_CACHE_REGION.cache_on_arguments()
 def get_role_id(name: str) -> int:
     """Get the role ID."""
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel

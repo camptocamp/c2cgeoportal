@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022, Camptocamp SA
+# Copyright (c) 2019-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ from pyramid.view import view_config
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 _INITIALIZED = False
 
 
@@ -101,11 +101,11 @@ def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     for filename in no_duplicates(list_files(None, sources)):
         real_filename = find_file(filename)
         if real_filename is None:
-            LOG.error("Can not find file %s", filename)
+            _LOG.error("Can not find file %s", filename)
             raise HTTPInternalServerError(f"Can not find file {filename}")
         extractor = get_extractor(real_filename)
         if extractor is None:
-            LOG.error("No extractor available for file %s", filename)
+            _LOG.error("No extractor available for file %s", filename)
             raise HTTPInternalServerError(f"No extractor available for file {filename}")
 
         extractor_options = ExtractorOptions(

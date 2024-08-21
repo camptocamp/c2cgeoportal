@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@ from typing import Optional
 
 from pyramid.request import Request
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class Url:
@@ -55,7 +55,7 @@ class Url:
             try:
                 self._port = url_split.port
             except ValueError as error:
-                LOG.debug(error)
+                _LOG.debug(error)
             self.path = url_split.path
             self.query = dict(urllib.parse.parse_qsl(url_split.query))
             self.fragment = url_split.fragment
@@ -94,7 +94,7 @@ class Url:
         if len(netloc_split) == 2:
             allowed = re.compile(r"^[0-9]+$")
             if not allowed.match(netloc_split[1]):
-                LOG.debug("The netloc '%s' contains invalid port", netloc)
+                _LOG.debug("The netloc '%s' contains invalid port", netloc)
                 self._port = None
             else:
                 self._port = int(netloc_split[1])

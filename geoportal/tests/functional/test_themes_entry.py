@@ -41,7 +41,7 @@ from tests.functional import teardown_common as teardown_module  # noqa, pylint:
 
 from c2cgeoportal_geoportal.lib.caching import invalidate_region
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class TestThemeEntryView(TestCase):

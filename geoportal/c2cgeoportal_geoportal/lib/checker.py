@@ -39,7 +39,7 @@ import pyramid.config
 import pyramid.request
 import requests
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 def build_url(
@@ -54,7 +54,7 @@ def build_url(
     if forward_host:
         headers["Host"] = request.host
 
-    LOG.debug("%s, URL: %s", name, url)
+    _LOG.debug("%s, URL: %s", name, url)
     return {"url": url, "headers": headers}
 
 

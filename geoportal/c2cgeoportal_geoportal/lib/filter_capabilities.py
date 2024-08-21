@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023, Camptocamp SA
+# Copyright (c) 2014-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,12 +47,12 @@ from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib import caching, get_ogc_server_wfs_url_ids, get_ogc_server_wms_url_ids
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers, get_writable_layers
 
-CACHE_REGION = caching.get_region("std")
-LOG = logging.getLogger(__name__)
+_CACHE_REGION = caching.get_region("std")
+_LOG = logging.getLogger(__name__)
 ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
 
 
-@CACHE_REGION.cache_on_arguments()
+@_CACHE_REGION.cache_on_arguments()
 def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> dict[str, list[str]]:
     """Get a simple serializable structure of the WMS capabilities."""
     url = wms_url.clone().add_query({"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
@@ -66,7 +66,7 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
             url.url(), headers=headers, **request.registry.settings.get("http_options", {})
         )
     except Exception:
-        LOG.exception("Unable to GetCapabilities from wms_url '%s'", wms_url)
+        _LOG.exception("Unable to GetCapabilities from wms_url '%s'", wms_url)
         raise HTTPBadGateway(  # pylint: disable=raise-missing-from
             "Unable to GetCapabilities, see logs for details"
         )
@@ -96,13 +96,13 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
     except AttributeError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
         error = f"{error}\nurl: {wms_url}\nxml:\n{response.text}"
-        LOG.exception(error)
+        _LOG.exception(error)
         raise HTTPBadGateway(error)  # pylint: disable=raise-missing-from
 
     except SyntaxError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
         error = f"{error}\nurl: {wms_url}\nxml:\n{response.text}"
-        LOG.exception(error)
+        _LOG.exception(error)
         raise HTTPBadGateway(error)  # pylint: disable=raise-missing-from
 
 
@@ -128,7 +128,7 @@ def filter_capabilities(
             if ogc_layer in wms_structure_:
                 private_layers.update(wms_structure_[ogc_layer])
 
-    LOG.debug(
+    _LOG.debug(
         "Filter capabilities of OGC server %s\nprivate_layers: %s",
         ", ".join([str(e) for e in ogc_server_ids]),
         ", ".join(private_layers),
@@ -154,13 +154,13 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
     writable_layers: set[str] = set()
     ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url.url())
     if ogc_server_ids is None:
-        LOG.error("No OGC server found for WFS URL %s", wfs_url)
+        _LOG.error("No OGC server found for WFS URL %s", wfs_url)
         raise pyramid.httpexceptions.HTTPInternalServerError("No OGC server found for WFS URL")
 
     for gmf_layer in list(get_writable_layers(request, ogc_server_ids).values()):
         writable_layers |= set(gmf_layer.layer.split(","))
 
-    LOG.debug(
+    _LOG.debug(
         "Filter WFS-T capabilities of OGC server %s\nlayers: %s",
         ", ".join([str(e) for e in ogc_server_ids]),
         ", ".join(writable_layers),

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ import c2cgeoportal_geoportal.lib
 from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import caching
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 mapserv_url = "http://mapserver:8080/"
 config = None
 

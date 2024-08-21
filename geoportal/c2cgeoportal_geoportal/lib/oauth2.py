@@ -38,8 +38,8 @@ from pyramid.httpexceptions import HTTPBadRequest
 import c2cgeoportal_commons
 from c2cgeoportal_geoportal.lib.caching import get_region
 
-LOG = logging.getLogger(__name__)
-OBJECT_CACHE_REGION = get_region("obj")
+_LOG = logging.getLogger(__name__)
+_OBJECT_CACHE_REGION = get_region("obj")
 
 
 class _Token(TypedDict):
@@ -89,7 +89,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("authenticate_client => unimplemented")
+        _LOG.debug("authenticate_client => unimplemented")
 
         raise NotImplementedError("Not implemented, the method `authenticate_client_id` should be used.")
 
@@ -115,7 +115,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("authenticate_client_id %s", client_id)
+        _LOG.debug("authenticate_client_id %s", client_id)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -140,7 +140,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .one_or_none()
         )
 
-        LOG.debug("authenticate_client_id => %s", request.client is not None)
+        _LOG.debug("authenticate_client_id => %s", request.client is not None)
         return request.client is not None
 
     def client_authentication_required(
@@ -180,7 +180,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del request, args, kwargs
 
-        LOG.debug("client_authentication_required => False")
+        _LOG.debug("client_authentication_required => False")
 
         return False
 
@@ -220,7 +220,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("confirm_redirect_uri %s %s", client_id, redirect_uri)
+        _LOG.debug("confirm_redirect_uri %s %s", client_id, redirect_uri)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -235,7 +235,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .filter(static.OAuth2AuthorizationCode.expire_at > datetime.now())
             .one_or_none()
         )
-        LOG.debug("confirm_redirect_uri => %s", authorization_code is not None)
+        _LOG.debug("confirm_redirect_uri => %s", authorization_code is not None)
         return authorization_code is not None
 
     def get_default_redirect_uri(
@@ -261,7 +261,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del request, args, kwargs
 
-        LOG.debug("get_default_redirect_uri %s", client_id)
+        _LOG.debug("get_default_redirect_uri %s", client_id)
 
         raise NotImplementedError("Not implemented.")
 
@@ -290,7 +290,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del request, args, kwargs
 
-        LOG.debug("get_default_scopes %s", client_id)
+        _LOG.debug("get_default_scopes %s", client_id)
 
         return ["geomapfish"]
 
@@ -316,7 +316,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del refresh_token, request, args, kwargs
 
-        LOG.debug("get_original_scopes")
+        _LOG.debug("get_original_scopes")
 
         return []
 
@@ -366,7 +366,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del token, request, args, kwargs
 
-        LOG.debug("introspect_token %s", token_type_hint)
+        _LOG.debug("introspect_token %s", token_type_hint)
 
         raise NotImplementedError("Not implemented.")
 
@@ -392,7 +392,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("invalidate_authorization_code %s", client_id)
+        _LOG.debug("invalidate_authorization_code %s", client_id)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -437,7 +437,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del request, args, kwargs
 
-        LOG.debug("is_within_original_scope %s %s", request_scopes, refresh_token)
+        _LOG.debug("is_within_original_scope %s %s", request_scopes, refresh_token)
 
         return False
 
@@ -463,7 +463,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del token, request, args, kwargs
 
-        LOG.debug("revoke_token %s", token_type_hint)
+        _LOG.debug("revoke_token %s", token_type_hint)
 
         raise NotImplementedError("Not implemented.")
 
@@ -484,7 +484,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del request
 
-        LOG.debug("rotate_refresh_token")
+        _LOG.debug("rotate_refresh_token")
 
         return True
 
@@ -531,7 +531,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("save_authorization_code %s", client_id)
+        _LOG.debug("save_authorization_code %s", client_id)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -620,7 +620,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("save_bearer_token")
+        _LOG.debug("save_bearer_token")
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -703,7 +703,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             - Client Credentials Grant
         """
 
-        LOG.debug("validate_bearer_token %s", scopes)
+        _LOG.debug("validate_bearer_token %s", scopes)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -719,7 +719,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         if bearer_token is not None:
             request.user = bearer_token.user
 
-        LOG.debug("validate_bearer_token => %s", bearer_token is not None)
+        _LOG.debug("validate_bearer_token => %s", bearer_token is not None)
         return bearer_token is not None
 
     def validate_client_id(
@@ -747,7 +747,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("validate_client_id")
+        _LOG.debug("validate_client_id")
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -796,7 +796,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("validate_code %s", client_id)
+        _LOG.debug("validate_code %s", client_id)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -816,7 +816,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         authorization_code = authorization_code_query.one_or_none()
         if authorization_code is None:
-            LOG.debug("validate_code => KO, no authorization_code found")
+            _LOG.debug("validate_code => KO, no authorization_code found")
             return False
 
         if authorization_code.client.pkce_required:
@@ -824,7 +824,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             request.code_challenge_method = authorization_code.challenge_method
 
         request.user = authorization_code.user
-        LOG.debug("validate_code => OK")
+        _LOG.debug("validate_code => OK")
         return True
 
     def validate_grant_type(
@@ -854,7 +854,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del client, request, args, kwargs
 
-        LOG.debug(
+        _LOG.debug(
             "validate_grant_type %s %s => %s",
             client_id,
             grant_type,
@@ -889,7 +889,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del request, args, kwargs
 
-        LOG.debug("validate_redirect_uri %s %s", client_id, redirect_uri)
+        _LOG.debug("validate_redirect_uri %s %s", client_id, redirect_uri)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -901,7 +901,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .filter(static.OAuth2Client.redirect_uri == redirect_uri)
             .one_or_none()
         )
-        LOG.debug("validate_redirect_uri %s", client is not None)
+        _LOG.debug("validate_redirect_uri %s", client is not None)
         return client is not None
 
     def validate_refresh_token(
@@ -931,7 +931,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del args, kwargs
 
-        LOG.debug("validate_refresh_token %s", client.client_id if client else None)
+        _LOG.debug("validate_refresh_token %s", client.client_id if client else None)
 
         from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
 
@@ -974,7 +974,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del client, request, args, kwargs
 
-        LOG.debug("validate_response_type %s %s", client_id, response_type)
+        _LOG.debug("validate_response_type %s %s", client_id, response_type)
 
         return response_type == "code"
 
@@ -1005,7 +1005,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del client, request, args, kwargs
 
-        LOG.debug("validate_scopes %s %s", client_id, scopes)
+        _LOG.debug("validate_scopes %s %s", client_id, scopes)
 
         return True
 
@@ -1038,7 +1038,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         del password, client, request, args, kwargs
 
-        LOG.debug("validate_user %s", username)
+        _LOG.debug("validate_user %s", username)
 
         raise NotImplementedError("Not implemented.")
 
@@ -1113,7 +1113,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         assert DBSession is not None
 
-        LOG.debug("get_code_challenge")
+        _LOG.debug("get_code_challenge")
 
         authorization_code = (
             DBSession.query(static.OAuth2AuthorizationCode)
@@ -1122,7 +1122,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         )
         if authorization_code:
             return authorization_code.challenge
-        LOG.debug("get_code_challenge authorization_code not found")
+        _LOG.debug("get_code_challenge authorization_code not found")
         return None
 
     def get_code_challenge_method(self, code: str, request: oauthlib.common.Request) -> Optional[str]:
@@ -1153,7 +1153,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         assert DBSession is not None
 
-        LOG.debug("get_code_challenge_method")
+        _LOG.debug("get_code_challenge_method")
 
         authorization_code = (
             DBSession.query(static.OAuth2AuthorizationCode)
@@ -1162,7 +1162,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         )
         if authorization_code:
             return authorization_code.challenge_method
-        LOG.debug("get_code_challenge_method authorization_code not found")
+        _LOG.debug("get_code_challenge_method authorization_code not found")
         return None
 
 
@@ -1175,7 +1175,7 @@ def get_oauth_client(settings: dict[str, Any]) -> oauthlib.oauth2.WebApplication
     )
 
 
-@OBJECT_CACHE_REGION.cache_on_arguments()
+@_OBJECT_CACHE_REGION.cache_on_arguments()
 def _get_oauth_client_cache(
     authorization_expire_minutes: int, token_expire_minutes: int
 ) -> oauthlib.oauth2.WebApplicationServer:

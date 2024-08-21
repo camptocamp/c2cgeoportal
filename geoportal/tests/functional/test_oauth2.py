@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023, Camptocamp SA
+# Copyright (c) 2021-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ from tests.functional import cleanup_db, create_dummy_request, init_registry
 from tests.functional import setup_common as setup_module  # pylint: disable=unused-import
 from tests.functional import teardown_common as teardown_module  # pylint: disable=unused-import
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class TestLoginView(TestCase):

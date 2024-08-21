@@ -47,7 +47,7 @@ if TYPE_CHECKING:
 else:
     SerializedReturnType = Any
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 _REGION: dict[str, CacheRegion] = {}
 MEMORY_CACHE_DICT: dict[str, Any] = {}
 

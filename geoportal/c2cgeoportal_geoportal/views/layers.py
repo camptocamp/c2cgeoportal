@@ -68,8 +68,8 @@ from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class
 
 if TYPE_CHECKING:
     from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports.useless-suppression
-LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
 
 
 class Layers:
@@ -320,7 +320,7 @@ class Layers:
             self.request.response.status_int = 400
             return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
-            LOG.error(str(e))
+            _LOG.error(str(e))
             assert e.orig is not None
             self.request.response.status_int = 400
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}  # type: ignore[attr-defined]
@@ -385,7 +385,7 @@ class Layers:
             self.request.response.status_int = 400
             return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
-            LOG.error(str(e))
+            _LOG.error(str(e))
             assert e.orig is not None
             self.request.response.status_int = 400
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}  # type: ignore[attr-defined]
@@ -488,7 +488,7 @@ class Layers:
 
         return cast(dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
 
-    @CACHE_REGION.cache_on_arguments()
+    @_CACHE_REGION.cache_on_arguments()
     def _enumerate_attribute_values(self, layername: str, fieldname: str) -> dict[str, Any]:
         if layername not in self.layers_enum_config:
             raise HTTPBadRequest(f"Unknown layer: {layername!s}")
@@ -574,7 +574,7 @@ def get_layer_class(layer: "main.Layer", with_last_update_columns: bool = False)
     for attribute_name in attributes_order or []:
         if attribute_name not in column_properties:
             table = mapper.mapped_table
-            LOG.warning(
+            _LOG.warning(
                 'Attribute "%s" does not exists in table "%s.%s".\n'
                 'Please correct metadata "editingAttributesOrder" in layer "%s" (id=%s).\n'
                 "Available attributes are: %s.",

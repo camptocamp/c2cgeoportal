@@ -91,7 +91,7 @@ if os.environ.get("DEVELOPMENT", "0") == "1":
     # information
     sqlalchemy.orm.base.state_str = state_str
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 _schema: str = config["schema"] or "main"
 _srid: int = cast(int, config["srid"]) or 3857

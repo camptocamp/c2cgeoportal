@@ -41,7 +41,7 @@ from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class PdfReport(OGCProxy):
