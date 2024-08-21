@@ -1,3 +1,7 @@
+##### 2.7.1.132
+
+- [Backport 2.7] Remove wrong preload option [c2cgeoportal#11324](https://github.com/camptocamp/c2cgeoportal/pull/11324)
+
 ##### 2.7.1.131
 
 - Update the CVE ignore [c2cgeoportal#11322](https://github.com/camptocamp/c2cgeoportal/pull/11322)
