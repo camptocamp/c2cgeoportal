@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2023, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 if TYPE_CHECKING:
     import fiona.collection
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class Raster:
@@ -166,7 +166,7 @@ class Raster:
             result = dataset.read(1, window=(get_index(index[0]), get_index(index[1])))[0][0]
             result = None if result == layer.get("nodata", dataset.nodata) else result
         else:
-            LOG.debug(
+            _LOG.debug(
                 "Out of index for layer: %s (%s), lon/lat: %dx%d, index: %dx%d, shape: %dx%d.",
                 name,
                 layer["file"],
@@ -188,6 +188,6 @@ class Raster:
             try:
                 return decimal_value.quantize(decimal.Decimal(str(round_to)))
             except decimal.InvalidOperation:
-                LOG.info("Error on rounding %s: %s", decimal_value, traceback.format_exc())
+                _LOG.info("Error on rounding %s: %s", decimal_value, traceback.format_exc())
                 return decimal_value
         return None

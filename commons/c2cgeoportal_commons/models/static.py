@@ -66,7 +66,7 @@ except ModuleNotFoundError:
     RelationSelect2Widget = GenericClass  # type: ignore[misc,assignment]
 
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 _schema: str = config["schema_static"] or "static"
 

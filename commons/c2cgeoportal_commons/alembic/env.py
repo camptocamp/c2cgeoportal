@@ -37,7 +37,7 @@ from c2c.template.config import config
 from plaster.loaders import setup_logging
 from sqlalchemy import engine_from_config, pool
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 # Interpret the config file for Python logging.

@@ -38,7 +38,7 @@ from tilecloud.grid.free import FreeTileGrid
 from c2cgeoportal_commons.models import DBSession, main
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class VectorTilesViews:

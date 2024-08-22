@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ except ModuleNotFoundError:
         """Fallback class."""
 
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 def send_email_config(settings: dict[str, Any], email_config_name: str, email: str, **kwargs: Any) -> None:
@@ -59,7 +59,7 @@ def send_email_config(settings: dict[str, Any], email_config_name: str, email: s
             smtp_config,
         )
     except gaierror:
-        LOG.exception("Unable to send the email.")
+        _LOG.exception("Unable to send the email.")
         raise HTTPInternalServerError("See server logs for details")  # pylint: disable=raise-missing-from
 
 

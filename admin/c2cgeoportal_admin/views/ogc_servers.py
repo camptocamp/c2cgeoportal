@@ -62,7 +62,7 @@ _list_field = partial(ListField, OGCServer)  # type: ignore[var-annotated]
 base_schema = GeoFormSchemaNode(OGCServer, widget=FormWidget(fields_template="ogcserver_fields"))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
@@ -252,8 +252,8 @@ class OGCServerViews(LoggedViews[OGCServer]):
                     timeout=60,
                 )
                 if not response.ok:
-                    LOG.error("Error while cleaning the OGC server cache:\n%s", response.text)
+                    _LOG.error("Error while cleaning the OGC server cache:\n%s", response.text)
 
             threading.Thread(target=update_cache).start()
         except Exception:
-            LOG.error("Error on cleaning the OGC server cache", exc_info=True)
+            _LOG.error("Error on cleaning the OGC server cache", exc_info=True)

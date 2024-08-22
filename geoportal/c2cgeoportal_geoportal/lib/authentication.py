@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023, Camptocamp SA
+# Copyright (c) 2014-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ from zope.interface import implementer
 from c2cgeoportal_geoportal.lib import oauth2
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 @implementer(IAuthenticationPolicy)
@@ -88,7 +88,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
                     return cast(str, auth["u"])
 
         except Exception as e:
-            LOG.error("URL login error: %s.", e, exc_info=True)
+            _LOG.error("URL login error: %s.", e, exc_info=True)
 
         return None
 
@@ -115,7 +115,7 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         except ValueError:
             route_url = request.route_url("base", _query={**request.GET})
 
-        LOG.debug(
+        _LOG.debug(
             "Call OAuth verify_request with:\nurl: %s\nmethod: %s\nbody:\n%s",
             route_url,
             request.method,
@@ -128,7 +128,7 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
             request.headers,
             [],
         )
-        LOG.debug("OAuth verify_request: %s", valid)
+        _LOG.debug("OAuth verify_request: %s", valid)
         if valid:
             request.user_ = oauth2_request.user
 
@@ -206,7 +206,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
 
     if basicauth:
         if settings["authentication"].get("two_factor", False):
-            LOG.warning(
+            _LOG.warning(
                 "Basic auth and two factor auth should not be enable together, "
                 "you should use OAuth2 instead of Basic auth"
             )

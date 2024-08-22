@@ -77,7 +77,7 @@ if TYPE_CHECKING:
     from c2cgeoportal_commons.models import static  # pylint: disable=ungrouped-imports,useless-suppression
 
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 # Header predicate to accept only JSON content
 JSON_CONTENT_TYPE = "Content-Type:application/json"
@@ -140,7 +140,7 @@ def add_interface(
             **kwargs,
         )
     else:
-        LOG.error(
+        _LOG.error(
             "Unknown interface type '%s', should be '%s' or '%s'.",
             interface_type,
             INTERFACE_TYPE_NGEO,
@@ -282,7 +282,7 @@ def is_valid_referrer(request: pyramid.request.Request, settings: Optional[dict[
         authorized_referrers = settings.get("authorized_referers", [])
         referrer_hostname, ok = is_allowed_url(request, request.referrer, authorized_referrers)
         if not ok:
-            LOG.info(
+            _LOG.info(
                 "Invalid referrer hostname '%s', "
                 "is not the current host '%s' "
                 "or part of authorized_referers: %s",
@@ -319,7 +319,7 @@ def create_get_user_from_request(
         if not hasattr(request, "is_valid_referer"):
             request.is_valid_referer = is_valid_referrer(request, settings)
         if not request.is_valid_referer:
-            LOG.debug("Invalid referrer for %s: %s", request.path_qs, repr(request.referrer))
+            _LOG.debug("Invalid referrer for %s: %s", request.path_qs, repr(request.referrer))
             return None
 
         if not hasattr(request, "user_"):
@@ -376,16 +376,16 @@ def default_user_validator(request: pyramid.request.Request, username: str, pass
 
     user = DBSession.query(User).filter_by(username=username).first()
     if user is None:
-        LOG.info('Unknown user "%s" tried to log in', username)
+        _LOG.info('Unknown user "%s" tried to log in', username)
         return None
     if user.deactivated:
-        LOG.info('Deactivated user "%s" tried to log in', username)
+        _LOG.info('Deactivated user "%s" tried to log in', username)
         return None
     if user.expired():
-        LOG.info("Expired user %s tried to log in", username)
+        _LOG.info("Expired user %s tried to log in", username)
         return None
     if not user.validate_password(password):
-        LOG.info('User "%s" tried to log in with bad credentials', username)
+        _LOG.info('User "%s" tried to log in with bad credentials', username)
         return None
     return username
 
@@ -431,7 +431,7 @@ def error_handler(
     http_exception: HTTPException, request: pyramid.request.Request
 ) -> pyramid.response.Response:
     """View callable for handling all the exceptions that are not already handled."""
-    LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
+    _LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
     return set_common_headers(request, "error", Cache.PRIVATE_NO, http_exception)
 
 
@@ -728,9 +728,9 @@ def includeme(config: pyramid.config.Configurator) -> None:
         add_admin_interface(config)
     else:
         if not config.get_settings().get("enable_admin_interface", False):
-            LOG.info("Admin interface disabled by configuration")
+            _LOG.info("Admin interface disabled by configuration")
         else:
-            LOG.info("Admin interface disabled because c2cgeoportal_admin is not installed")
+            _LOG.info("Admin interface disabled because c2cgeoportal_admin is not installed")
     add_getitfixed(config)
 
     # Add the project static view with cache buster

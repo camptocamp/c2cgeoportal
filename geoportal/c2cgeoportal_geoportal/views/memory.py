@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ from pyramid.view import view_config
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views import raster
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 @view_config(route_name="memory", renderer="fast_json")  # type: ignore

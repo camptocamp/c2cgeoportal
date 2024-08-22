@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,8 +38,8 @@ from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 _ = TranslationStringFactory("c2cgeoportal")
-LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
 
 
 class Entry:
@@ -60,7 +60,7 @@ class Entry:
         return {}
 
     @staticmethod
-    @CACHE_REGION.cache_on_arguments()
+    @_CACHE_REGION.cache_on_arguments()
     def get_apijs(api_name: Optional[str]) -> str:
         with open("/etc/static-ngeo/api.js", encoding="utf-8") as api_file:
             api = api_file.read().split("\n")

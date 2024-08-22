@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,8 @@ from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.views import restrict_headers
 
-LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
 
 
 class Proxy:
@@ -67,7 +67,7 @@ class Proxy:
         params = dict(self.request.params) if params is None else params
         url = url.clone().add_query(params, True)
 
-        LOG.debug("Send query to URL:\n%s.", url)
+        _LOG.debug("Send query to URL:\n%s.", url)
 
         if method is None:
             method = self.request.method
@@ -132,7 +132,7 @@ class Proxy:
             if method in ("POST", "PUT") and body is not None:
                 errors += ["--- Query with body ---", "%s"]
                 args1.append(body.decode("utf-8"))
-            LOG.exception("\n".join(errors), *args1)
+            _LOG.exception("\n".join(errors), *args1)
 
             raise HTTPBadGateway(  # pylint: disable=raise-missing-from
                 "Error on backend, See logs for detail"
@@ -164,15 +164,15 @@ class Proxy:
                 args2.append(body.decode("utf-8"))
             errors += ["--- Return content ---", "%s"]
             args2.append(response.text)
-            LOG.error("\n".join(errors), *args2)
+            _LOG.error("\n".join(errors), *args2)
 
             raise exception_response(response.status_code)
         if not response.headers.get("Content-Type", "").startswith("image/"):
-            LOG.debug("Get result for URL: %s:\n%s.", url, body)
+            _LOG.debug("Get result for URL: %s:\n%s.", url, body)
 
         return response
 
-    @CACHE_REGION.cache_on_arguments()
+    @_CACHE_REGION.cache_on_arguments()
     def _proxy_cache(self, method: str, *args: Any, **kwargs: Any) -> pyramid.response.Response:
         # Method is only for the cache
         del method

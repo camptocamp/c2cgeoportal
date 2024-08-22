@@ -37,8 +37,8 @@ from c2cgeoportal_commons.models import DBSession, main
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
-CACHE_REGION = get_region("std")
-LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
 
 
 class OGCProxy(Proxy):
@@ -76,7 +76,7 @@ class OGCProxy(Proxy):
         elif not has_default_ogc_server:
             raise HTTPBadRequest("The querystring argument 'ogcserver' is required")
 
-    @CACHE_REGION.cache_on_arguments()
+    @_CACHE_REGION.cache_on_arguments()
     def _get_ogcserver_byname(self, name: str) -> main.OGCServer:
         assert DBSession is not None
 
@@ -94,7 +94,7 @@ class OGCProxy(Proxy):
         ogc_server = self.ogc_server
         url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors)
         if errors:
-            LOG.error("\n".join(errors))
+            _LOG.error("\n".join(errors))
         return url
 
     def _get_wfs_url(self, errors: set[str]) -> Optional[Url]:
@@ -106,7 +106,7 @@ class OGCProxy(Proxy):
             errors,
         )
         if errors:
-            LOG.error("\n".join(errors))
+            _LOG.error("\n".join(errors))
         return url
 
     def get_headers(self) -> dict[str, str]:

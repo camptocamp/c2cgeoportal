@@ -67,10 +67,10 @@ from c2cgeoportal_geoportal.lib.layers import (
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadata
 
-LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region("std")
-CACHE_OGC_SERVER_REGION = get_region("ogc-server")
-TIMEOUT = int(os.environ.get("C2CGEOPORTAL_THEME_TIMEOUT", "300"))
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
+_CACHE_OGC_SERVER_REGION = get_region("ogc-server")
+_TIMEOUT = int(os.environ.get("C2CGEOPORTAL_THEME_TIMEOUT", "300"))
 
 Metadata = Union[str, int, float, bool, list[Any], dict[str, Any]]
 
@@ -80,7 +80,7 @@ async def get_http_cached(
 ) -> tuple[bytes, str]:
     """Get the content of the URL with a cache (dogpile)."""
 
-    @CACHE_OGC_SERVER_REGION.cache_on_arguments()
+    @_CACHE_OGC_SERVER_REGION.cache_on_arguments()
     def do_get_http_cached(url: str) -> tuple[bytes, str]:
         # This function is just used to create a cache entry
         raise NotImplementedError()
@@ -92,10 +92,10 @@ async def get_http_cached(
             return result
 
     response = await asyncio.to_thread(
-        requests.get, url.strip(), headers=headers, timeout=TIMEOUT, **http_options
+        requests.get, url.strip(), headers=headers, timeout=_TIMEOUT, **http_options
     )
     response.raise_for_status()
-    LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
+    _LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
     result = (response.content, response.headers.get("Content-Type", ""))
     # Set the result in the cache
     do_get_http_cached.set(result, url)  # type: ignore[attr-defined]
@@ -195,9 +195,9 @@ class Theme:
     async def _wms_getcap(
         self, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
     ) -> tuple[Optional[dict[str, dict[str, Any]]], set[str]]:
-        LOG.debug("Get the WMS Capabilities of %s, preload: %s, cache: %s", ogc_server.name, preload, cache)
+        _LOG.debug("Get the WMS Capabilities of %s, preload: %s, cache: %s", ogc_server.name, preload, cache)
 
-        @CACHE_OGC_SERVER_REGION.cache_on_arguments()
+        @_CACHE_OGC_SERVER_REGION.cache_on_arguments()
         def build_web_map_service(ogc_server_id: int) -> tuple[Optional[dict[str, dict[str, Any]]], set[str]]:
             del ogc_server_id  # Just for cache
 
@@ -214,7 +214,7 @@ class Theme:
                     "recover the themes."
                     f"\nURL: {url}\n{content.decode() if content else None}"
                 )
-                LOG.error(error, exc_info=True)
+                _LOG.error(error, exc_info=True)
                 return None, {error}
             wms_layers_name = list(wms.contents)
             for layer_name in wms_layers_name:
@@ -257,7 +257,7 @@ class Theme:
                     f"Unable to get the WMS Capabilities for OGC server '{ogc_server.name}', "
                     f"return the error: {exception.response.status_code} {exception.response.reason}"
                 )
-            LOG.exception(error)
+            _LOG.exception(error)
             return None, {error}
         if errors or preload:
             return None, errors
@@ -289,7 +289,7 @@ class Theme:
             },
         )
 
-        LOG.debug("Get WMS GetCapabilities for URL: %s", url)
+        _LOG.debug("Get WMS GetCapabilities for URL: %s", url)
 
         headers = {}
 
@@ -303,7 +303,7 @@ class Theme:
         except Exception:
             error = f"Unable to GetCapabilities from URL {url}"
             errors.add(error)
-            LOG.error(error, exc_info=True)
+            _LOG.error(error, exc_info=True)
             return url, None, errors
 
         # With wms 1.3 it returns text/xml also in case of error :-(
@@ -316,7 +316,7 @@ class Theme:
                 f"{content.decode()}"
             )
             errors.add(error)
-            LOG.error(error)
+            _LOG.error(error)
             return url, None, errors
 
         return url, content, errors
@@ -502,7 +502,7 @@ class Theme:
                     layer_theme["edit_columns"] = get_layer_metadata(layer)
                     layer_theme["editable"] = True
         except Exception as exception:
-            LOG.exception(str(exception))
+            _LOG.exception(str(exception))
             errors.add(str(exception))
         return errors
 
@@ -603,7 +603,7 @@ class Theme:
 
         # escape loop
         if depth > 30:
-            LOG.error("Error: too many recursions with group '%s'", group.name)
+            _LOG.error("Error: too many recursions with group '%s'", group.name)
             return ogc_servers
 
         # recurse on children
@@ -875,7 +875,7 @@ class Theme:
                         children.append(layer_theme)
         return children, errors
 
-    @CACHE_REGION.cache_on_arguments()
+    @_CACHE_REGION.cache_on_arguments()
     def _get_layers_enum(self) -> dict[str, dict[str, str]]:
         layers_enum = {}
         if "enum" in self.settings.get("layers", {}):
@@ -909,7 +909,7 @@ class Theme:
             }
         )
 
-        LOG.debug("WFS DescribeFeatureType for the URL: %s", wfs_url.url())
+        _LOG.debug("WFS DescribeFeatureType for the URL: %s", wfs_url.url())
 
         headers = {}
 
@@ -931,7 +931,7 @@ class Theme:
                 )
             )
             errors.add(error)
-            LOG.exception(error)
+            _LOG.exception(error)
             return None, errors
         except Exception:
             error = (
@@ -939,7 +939,7 @@ class Theme:
                 f"OGC server {ogc_server.name}"
             )
             errors.add(error)
-            LOG.exception(error)
+            _LOG.exception(error)
             return None, errors
 
         if preload:
@@ -997,9 +997,9 @@ class Theme:
                 .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
                 .one()
             )
-            LOG.debug("%i layers for OGC server '%s'", nb_layers[0], ogc_server.name)
+            _LOG.debug("%i layers for OGC server '%s'", nb_layers[0], ogc_server.name)
             if nb_layers[0] > 0:
-                LOG.debug("Preload OGC server '%s'", ogc_server.name)
+                _LOG.debug("Preload OGC server '%s'", ogc_server.name)
                 url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
                 if url_internal_wfs is not None:
                     tasks.add(self.preload_ogc_server(ogc_server, url_internal_wfs))
@@ -1016,7 +1016,7 @@ class Theme:
     async def _get_features_attributes(
         self, url_internal_wfs: Url, ogc_server: main.OGCServer, cache: bool = True
     ) -> tuple[Optional[dict[str, dict[Any, dict[str, Any]]]], Optional[str], set[str]]:
-        @CACHE_OGC_SERVER_REGION.cache_on_arguments()
+        @_CACHE_OGC_SERVER_REGION.cache_on_arguments()
         def _get_features_attributes_cache(
             url_internal_wfs: Url, ogc_server_name: str
         ) -> tuple[Optional[dict[str, dict[Any, dict[str, Any]]]], Optional[str], set[str]]:
@@ -1034,7 +1034,7 @@ class Theme:
                     name = child.attrib["name"]
                     type_namespace, type_ = child.attrib["type"].split(":")
                     if type_namespace not in child.nsmap:
-                        LOG.info(
+                        _LOG.info(
                             "The namespace '%s' of the type '%s' is not found in the "
                             "available namespaces: %s (OGC server: %s)",
                             type_namespace,
@@ -1043,7 +1043,7 @@ class Theme:
                             ogc_server_name,
                         )
                     elif child.nsmap[type_namespace] != namespace:
-                        LOG.info(
+                        _LOG.info(
                             "The namespace '%s' of the type '%s' should be '%s' (OGC server: %s).",
                             child.nsmap[type_namespace],
                             name,
@@ -1066,7 +1066,7 @@ class Theme:
                             type_namespace = children.nsmap[type_namespace]
                             attrib[name]["namespace"] = type_namespace
                         else:
-                            LOG.info(
+                            _LOG.info(
                                 "The namespace '%s' of the type '%s' is not found in the "
                                 "available namespaces: %s (OGC server: %s)",
                                 type_namespace,
@@ -1083,7 +1083,7 @@ class Theme:
                 if type_ in types:
                     attributes[name] = types[type_]
                 elif (type_ == "Character") and (name + "Type") in types:
-                    LOG.debug(
+                    _LOG.debug(
                         'Due to MapServer weird behavior when using METADATA "gml_types" "auto"'
                         "the type 'ms:Character' is returned as type '%sType' for feature '%s'.",
                         name,
@@ -1091,7 +1091,7 @@ class Theme:
                     )
                     attributes[name] = types[name + "Type"]
                 else:
-                    LOG.warning(
+                    _LOG.warning(
                         "The provided type '%s' does not exist, available types are %s.",
                         type_,
                         ", ".join(types.keys()),
@@ -1133,14 +1133,14 @@ class Theme:
 
             result: dict[str, Union[dict[str, Any], list[Any]]] = {}
             all_errors: set[str] = set()
-            LOG.debug("Start preload")
+            _LOG.debug("Start preload")
             start_time = time.time()
             await self._preload(all_errors)
-            LOG.debug("End preload")
+            _LOG.debug("End preload")
             # Don't log if it looks to be already preloaded.
             if (time.time() - start_time) > 1:
-                LOG.info("Do preload in %.3fs.", time.time() - start_time)
-            LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
+                _LOG.info("Do preload in %.3fs.", time.time() - start_time)
+            _LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
             result["ogcServers"] = {}
             for ogc_server in models.DBSession.query(main.OGCServer).all():
                 nb_layers = (
@@ -1154,7 +1154,7 @@ class Theme:
                     # QGIS Server landing page requires an OGC server that can't be used here.
                     continue
 
-                LOG.debug("Process OGC server '%s'", ogc_server.name)
+                _LOG.debug("Process OGC server '%s'", ogc_server.name)
 
                 url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
 
@@ -1219,10 +1219,10 @@ class Theme:
 
             result["errors"] = list(all_errors)
             if all_errors:
-                LOG.info("Theme errors:\n%s", "\n".join(all_errors))
+                _LOG.info("Theme errors:\n%s", "\n".join(all_errors))
             return result
 
-        @CACHE_REGION.cache_on_arguments()
+        @_CACHE_REGION.cache_on_arguments()
         def get_theme_anonymous(
             intranet: bool,
             interface: str,
@@ -1286,7 +1286,7 @@ class Theme:
                 f"is not the current host '{self.request.host}' "
                 f"or part of allowed hosts: {', '.join(allowed_hosts)}"
             )
-            LOG.debug(message)
+            _LOG.debug(message)
             raise pyramid.httpexceptions.HTTPBadRequest(message)
         if came_from:
             raise pyramid.httpexceptions.HTTPFound(location=came_from)
@@ -1296,7 +1296,7 @@ class Theme:
         errors: set[str] = set()
         url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
         if errors:
-            LOG.error(
+            _LOG.error(
                 "Error while getting the URL of the OGC Server %s:\n%s", ogc_server.id, "\n".join(errors)
             )
             return

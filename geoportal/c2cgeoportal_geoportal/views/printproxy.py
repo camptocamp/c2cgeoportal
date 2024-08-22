@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,8 @@ from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
-LOG = logging.getLogger(__name__)
-CACHE_REGION = get_region("std")
+_LOG = logging.getLogger(__name__)
+_CACHE_REGION = get_region("std")
 
 
 class PrintProxy(Proxy):
@@ -71,7 +71,7 @@ class PrintProxy(Proxy):
         response.vary += ("Referrer", "Referer")
         return response
 
-    @CACHE_REGION.cache_on_arguments()
+    @_CACHE_REGION.cache_on_arguments()
     def _capabilities(
         self, templates: list[str], query_string: dict[str, str], method: str, referrer: str
     ) -> tuple[requests.Response, str]:
@@ -88,7 +88,7 @@ class PrintProxy(Proxy):
             try:
                 capabilities = response.json()
             except json.decoder.JSONDecodeError:
-                LOG.exception("Unable to parse capabilities: %s", response.text)
+                _LOG.exception("Unable to parse capabilities: %s", response.text)
                 raise HTTPBadGateway(response.text)  # pylint: disable=raise-missing-from
 
             capabilities["layouts"] = list(

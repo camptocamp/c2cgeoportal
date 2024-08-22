@@ -40,7 +40,7 @@ from tests.functional import setup_common as setup_module  # noqa, pylint: disab
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class TestEntryView(TestCase):

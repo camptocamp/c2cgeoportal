@@ -57,7 +57,7 @@ Base: BaseType = sqlalchemy.orm.declarative_base()
 DBSessions: dict[str, sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session]] = {}
 
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class InvalidateCacheEvent:
@@ -77,4 +77,4 @@ try:
         zope.event.notify(InvalidateCacheEvent())
 
 except ModuleNotFoundError:
-    LOG.error("c2cwsgiutils broadcast not found")
+    _LOG.error("c2cwsgiutils broadcast not found")

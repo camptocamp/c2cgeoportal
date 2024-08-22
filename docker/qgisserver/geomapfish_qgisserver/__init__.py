@@ -15,7 +15,7 @@ from qgis.core import Qgis, QgsMessageLog
 
 from . import gmf_logging
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 def serverClassFactory(  # pylint: disable=invalid-name
@@ -32,12 +32,12 @@ def serverClassFactory(  # pylint: disable=invalid-name
             level=Qgis.Critical,
         )
 
-    LOG.info("Starting GeoMapFish access restriction...")
+    _LOG.info("Starting GeoMapFish access restriction...")
 
     try:
         from .accesscontrol import GeoMapFishAccessControl  # pylint: disable=import-outside-toplevel
 
         return GeoMapFishAccessControl(serverIface)
     except Exception:  # pylint: disable=broad-exception-caught
-        LOG.error("Cannot setup GeoMapFishAccessControl", exc_info=True)
+        _LOG.error("Cannot setup GeoMapFishAccessControl", exc_info=True)
         return None

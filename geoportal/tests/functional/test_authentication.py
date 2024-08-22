@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023, Camptocamp SA
+# Copyright (c) 2017-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -108,7 +108,7 @@ class TestUrlAuthenticationPolicy(TestCase):
         userid = policy.unauthenticated_userid(request)
         self.assertIsNone(userid)
 
-    @patch("c2cgeoportal_geoportal.lib.authentication.LOG.error", side_effect=Exception())
+    @patch("c2cgeoportal_geoportal.lib.authentication._LOG.error", side_effect=Exception())
     def test_wrong_method(self, log_mock):  # pylint: disable=unused-argument
         """
         POST requests with input named "auth" must not raise exceptions due to urllogin.

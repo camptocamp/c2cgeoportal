@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ from pyramid.view import view_config
 from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
-LOG = logging.getLogger(__name__)
+_LOG = logging.getLogger(__name__)
 
 
 class ResourceProxy(Proxy):
@@ -69,5 +69,5 @@ class ResourceProxy(Proxy):
                 if header not in self.settings["allowed_headers"]:
                     response.headers.pop(header)
             return response
-        LOG.warning("Target URL not found: %s", target)
+        _LOG.warning("Target URL not found: %s", target)
         return HTTPBadRequest("URL not allowed")
