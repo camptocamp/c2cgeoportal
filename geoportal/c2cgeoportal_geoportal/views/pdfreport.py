@@ -107,7 +107,7 @@ class PdfReport(OGCProxy):
         layer_config = self.config["layers"].get(self.layername)
 
         if layer_config is None:
-            raise HTTPBadRequest("Layer not found")
+            raise HTTPBadRequest("Layer not found: " + self.layername)
 
         multiple = layer_config.get("multiple", False)
         ids = self.request.matchdict["ids"]
