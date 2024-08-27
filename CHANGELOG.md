@@ -1,3 +1,8 @@
+##### 2.8.1.138
+
+- PDFreport: improve error handling [c2cgeoportal#11328](https://github.com/camptocamp/c2cgeoportal/pull/11328)
+- Fix copyright [c2cgeoportal#11335](https://github.com/camptocamp/c2cgeoportal/pull/11335)
+
 ##### 2.8.1.137
 
 - [Backport 2.8] Remove wrong preload option [c2cgeoportal#11325](https://github.com/camptocamp/c2cgeoportal/pull/11325)
