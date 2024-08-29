@@ -14,7 +14,7 @@ ENV CONFIG_VARS sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqla
     dbsessions urllogin host_forward_host headers_whitelist headers_blacklist \
     smtp c2c.base_path welcome_email \
     lingva_extractor interfaces_config interfaces devserver_url api authentication intranet metrics pdfreport \
-    vector_tiles i18next main_ogc_server
+    vector_tiles i18next main_ogc_server static_files
 
 COPY . /tmp/config/
 

@@ -75,7 +75,7 @@ from c2cgeoportal_geoportal.lib.metrics import (
     TotalPythonObjectMemoryCollector,
 )
 from c2cgeoportal_geoportal.lib.xsd import XSD
-from c2cgeoportal_geoportal.views.entry import Entry, canvas_view
+from c2cgeoportal_geoportal.views.entry import Entry, canvas_view, custom_view
 
 if TYPE_CHECKING:
     from c2cgeoportal_commons.models import static  # pylint: disable=ungrouped-imports,useless-suppression
@@ -103,6 +103,7 @@ class AssetRendererFactory:
 
 INTERFACE_TYPE_NGEO = "ngeo"
 INTERFACE_TYPE_CANVAS = "canvas"
+INTERFACE_TYPE_CUSTOM = "custom"
 
 
 def add_interface_config(config: pyramid.config.Configurator, interface_config: dict[str, Any]) -> None:
@@ -137,6 +138,15 @@ def add_interface(
     elif interface_type == INTERFACE_TYPE_CANVAS:
         assert interface_config is not None
         add_interface_canvas(
+            config,
+            route_name=interface_name,
+            route=route,
+            interface_config=interface_config,
+            **kwargs,
+        )
+    elif interface_type == INTERFACE_TYPE_CUSTOM:
+        assert interface_config is not None
+        add_interface_custom(
             config,
             route_name=interface_name,
             route=route,
@@ -209,6 +219,36 @@ def add_interface_canvas(
         view,
         route_name=f"{route_name}theme",
         renderer=renderer,
+        permission=permission,
+    )
+
+
+def add_interface_custom(
+    config: pyramid.config.Configurator,
+    route_name: str,
+    route: str,
+    interface_config: dict[str, Any],
+    permission: str | None = None,
+) -> None:
+    """Add custom interfaces views and routes."""
+
+    config.add_route(route_name, route, request_method="GET")
+    # Permalink theme: recover the theme for generating custom viewer.js URL
+    config.add_route(
+        f"{route_name}theme",
+        f"{route}{'' if route[-1] == '/' else '/'}theme/{{themes}}",
+        request_method="GET",
+    )
+    view = partial(custom_view, interface_config=interface_config)
+    view.__module__ = custom_view.__module__
+    config.add_view(
+        view,
+        route_name=route_name,
+        permission=permission,
+    )
+    config.add_view(
+        view,
+        route_name=f"{route_name}theme",
         permission=permission,
     )
 
@@ -663,12 +703,17 @@ def includeme(config: pyramid.config.Configurator) -> None:
         config.add_route(name, path, request_method="GET")
         config.add_view(Entry, attr=attr, route_name=name, renderer=renderer)
 
-    add_static_route("favicon", "favicon", "/favicon.ico", "/etc/geomapfish/static/images/favicon.ico")
-    add_static_route("robot.txt", "robot_txt", "/robot.txt", "/etc/geomapfish/static/robot.txt")
+    static_files = config.get_settings().get("static_files", {})
+    for name, attr, path in [
+        ("favicon.ico", "favicon", "/favicon.ico"),
+        ("robot.txt", "robot_txt", "/robot.txt"),
+        ("api.js.map", "apijsmap", "/api.js.map"),
+        ("api.css", "apicss", "/api.css"),
+        ("apihelp.html", "apihelp", "/apihelp/index.html"),
+    ]:
+        if static_files.get(name):
+            add_static_route(name, attr, path, static_files[name])
     config.add_route("apijs", "/api.js", request_method="GET")
-    add_static_route("apijsmap", "apijsmap", "/api.js.map", "/etc/static-ngeo/api.js.map")
-    add_static_route("apicss", "apicss", "/api.css", "/etc/static-ngeo/api.css")
-    add_static_route("apihelp", "apihelp", "/apihelp/index.html", "/etc/geomapfish/static/apihelp/index.html")
     c2cgeoportal_geoportal.views.add_redirect(config, "apihelp_redirect", "/apihelp.html", "apihelp")
 
     config.add_route("themes", "/themes", request_method="GET", pregenerator=C2CPregenerator(role=True))
@@ -801,6 +846,11 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_static_view(
         name="static-ngeo",
         path="/etc/static-ngeo",
+        cache_max_age=int(config.get_settings()["default_max_age"]),
+    )
+    config.add_static_view(
+        name="static-frontend",
+        path="/etc/static-frontend",
         cache_max_age=int(config.get_settings()["default_max_age"]),
     )
 

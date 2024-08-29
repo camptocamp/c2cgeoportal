@@ -121,6 +121,8 @@ mapping:
               layout:
                 type: str
                 default: ngeo
+              html_filename:
+                type: str
       interfaces_config:
         required: True
         type: map

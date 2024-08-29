@@ -28,9 +28,11 @@
 
 import glob
 import logging
+import os
 from typing import Any
 
 import pyramid.request
+from bs4 import BeautifulSoup
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
@@ -61,8 +63,8 @@ class Entry:
 
     @staticmethod
     @_CACHE_REGION.cache_on_arguments()
-    def get_apijs(api_name: str | None) -> str:
-        with open("/etc/static-ngeo/api.js", encoding="utf-8") as api_file:
+    def get_apijs(api_filename: str, api_name: str | None) -> str:
+        with open(api_filename, encoding="utf-8") as api_file:
             api = api_file.read().split("\n")
         sourcemap = api.pop(-1)
         if api_name:
@@ -77,7 +79,10 @@ class Entry:
 
     @view_config(route_name="apijs")  # type: ignore
     def apijs(self) -> pyramid.response.Response:
-        self.request.response.text = self.get_apijs(self.request.registry.settings["api"].get("name"))
+        self.request.response.text = self.get_apijs(
+            self.request.registry.settings["static_files"]["api.js"],
+            self.request.registry.settings["api"].get("name"),
+        )
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/javascript")
         return self.request.response
 
@@ -138,3 +143,32 @@ def canvas_view(request: pyramid.request.Request, interface_config: dict[str, An
         ),
         "spinner": spinner,
     }
+
+
+def custom_view(
+    request: pyramid.request.Request, interface_config: dict[str, Any]
+) -> pyramid.response.Response:
+    """Get view used as entry point of a canvas interface."""
+
+    set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")
+
+    html_filename = interface_config.get("html_filename", f"{interface_config['name']}.html")
+    if not html_filename.startswith("/"):
+        html_filename = os.path.join("/etc/static-frontend/", html_filename)
+
+    with open(html_filename, encoding="utf-8") as html_file:
+        html = BeautifulSoup(html_file.read, "html.parser")
+
+    meta = html.find("meta", attrs={"name": "interface"})
+    if meta is not None:
+        meta["content"] = interface_config["name"]
+    meta = html.find("meta", attrs={"name": "dynamicUrl"})
+    if meta is not None:
+        meta["content"] = request.route_url("dynamic")
+
+    if hasattr(request, "custom_interface_transformer"):
+        request.custom_interface_transformer(html, interface_config)
+
+    request.response.text = str(html)
+
+    return request.response
