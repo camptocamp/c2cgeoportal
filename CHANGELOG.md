@@ -1,3 +1,7 @@
+##### 2.8.1.139
+
+- Allow layers with special characters to be displayed in the theme [c2cgeoportal#11339](https://github.com/camptocamp/c2cgeoportal/pull/11339)
+
 ##### 2.8.1.138
 
 - PDFreport: improve error handling [c2cgeoportal#11328](https://github.com/camptocamp/c2cgeoportal/pull/11328)
