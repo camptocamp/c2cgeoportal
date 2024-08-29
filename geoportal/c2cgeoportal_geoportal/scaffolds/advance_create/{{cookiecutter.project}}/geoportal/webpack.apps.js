@@ -50,7 +50,7 @@ const projectRule = {
       presets: babelPresets,
       babelrc: false,
       comments: false,
-      plugins: [require.resolve('babel-plugin-angularjs-annotate')],
+      plugins: [],
     },
   },
 };
