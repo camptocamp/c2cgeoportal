@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -383,8 +383,6 @@ class Theme:
         layer_info = {"id": layer.id, "name": layer.name, "metadata": self._get_metadata_list(layer, errors)}
         if re.search("[/?#]", layer.name):
             errors.add(f"The layer has an unsupported name '{layer.name}'.")
-        if isinstance(layer, main.LayerWMS) and re.search("[/?#]", layer.layer):
-            errors.add(f"The layer has an unsupported layers '{layer.layer}'.")
         if layer.geo_table:
             errors |= self._fill_editable(layer_info, layer)
         if mixed:
