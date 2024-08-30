@@ -1630,6 +1630,8 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/gettext: 0.21-4ubuntu4
   ubuntu_22_04/gettext-base: 0.21-4ubuntu4
+  ubuntu_22_04/git: 1:2.34.1-1ubuntu1.11
+  ubuntu_22_04/git-man: 1:2.34.1-1ubuntu1.11
   ubuntu_22_04/gnupg: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gnupg-l10n: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gnupg-utils: 2.2.27-3ubuntu2.1
@@ -1698,6 +1700,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libdrm-common: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libepoxy0: 1.5.10-1
+  ubuntu_22_04/liberror-perl: 0.17029-1
   ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.3
   ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.3
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.1
@@ -1951,6 +1954,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/gettext: 0.21-4ubuntu4
   ubuntu_22_04/gettext-base: 0.21-4ubuntu4
+  ubuntu_22_04/git: 1:2.34.1-1ubuntu1.11
+  ubuntu_22_04/git-man: 1:2.34.1-1ubuntu1.11
   ubuntu_22_04/gnupg: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gnupg-l10n: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gnupg-utils: 2.2.27-3ubuntu2.1
@@ -2019,6 +2024,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libdrm-common: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libepoxy0: 1.5.10-1
+  ubuntu_22_04/liberror-perl: 0.17029-1
   ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.3
   ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.3
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.1
