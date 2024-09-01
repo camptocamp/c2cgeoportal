@@ -1,3 +1,5 @@
+##### 2.6.0.274
+* Update all patch versions (2.6) (patch) [c2cgeoportal#11349](https://github.com/camptocamp/c2cgeoportal/pull/11349)
 ##### 2.6.0.273
 * Add some unable to update Snyk ignore [c2cgeoportal#11319](https://github.com/camptocamp/c2cgeoportal/pull/11319)
 ##### 2.6.0.272
