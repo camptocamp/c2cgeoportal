@@ -137,7 +137,7 @@ jobs:
           retention-days: 5
 
       # Use minimal version from the documentation
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           # When we upgrade this we should also upgrade the requirements
           # in the documentation: doc/integrator/requirements.rst
