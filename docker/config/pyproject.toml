@@ -7,7 +7,7 @@ authors = []
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
 c2c-template = "2.3.0"
-fiona = "1.10b2"
+fiona = "1.10.0rc1"
 defusedxml = "0.7.1"
 lxml = "4.9.4"
 certifi = "2024.7.4"
