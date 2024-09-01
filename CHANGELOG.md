@@ -1,3 +1,7 @@
+##### 2.8.1.140
+
+- Update CI dependencies (2.8) (patch) [c2cgeoportal#11352](https://github.com/camptocamp/c2cgeoportal/pull/11352)
+
 ##### 2.8.1.139
 
 - Allow layers with special characters to be displayed in the theme [c2cgeoportal#11339](https://github.com/camptocamp/c2cgeoportal/pull/11339)
