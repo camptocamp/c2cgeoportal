@@ -78,9 +78,9 @@ toml = "==0.10.2"
 typed-ast = "==1.4.3"
 typing-extensions = "==3.7.4.3"
 waitress = "==2.1.2"
-webob = "==1.8.7"
+webob = "==1.8.8"
 wrapt = "==1.12.1"
-zipp = "==3.19.2"
+zipp = "==3.19.3"
 
 [packages]
 alembic = "==1.5.8"  # geoportal
@@ -91,7 +91,7 @@ ColanderAlchemy = "==0.3.4"  # commons
 deform = "==2.0.15"  # commons, admin
 defusedxml = "==0.6.0"  # geoportal
 "dogpile.cache" = "==1.0.2"  # geoportal
-Fiona = "==1.10b3"  # geoportal raster
+Fiona = "==1.10.0rc1"  # geoportal raster
 GeoAlchemy2 = "==0.8.5"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.29"  # geoportal
@@ -181,7 +181,7 @@ sqlalchemy-utils = "==0.36.8"
 stevedore = "==3.3.3"
 toml = "==0.10.2"
 ujson = "==5.4.0"
-urllib3 = "==1.26.19"
+urllib3 = "==1.26.20"
 venusian = "==3.0.0"
 waitress = "==2.1.2"
 webob = "==1.8.8"
