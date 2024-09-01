@@ -1,3 +1,7 @@
+##### 2.7.1.133
+
+- Update dependency camptocamp/c2cciutils to v1.1.44 (2.7) [c2cgeoportal#11351](https://github.com/camptocamp/c2cgeoportal/pull/11351)
+
 ##### 2.7.1.132
 
 - [Backport 2.7] Remove wrong preload option [c2cgeoportal#11324](https://github.com/camptocamp/c2cgeoportal/pull/11324)
