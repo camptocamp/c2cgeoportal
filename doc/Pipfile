@@ -29,7 +29,7 @@ sphinxcontrib-devhelp = "==1.0.2"
 sphinxcontrib-jsmath = "==1.0.1"
 sphinxcontrib-qthelp = "==1.0.3"
 sphinxcontrib-serializinghtml = "==1.1.5"
-urllib3 = "==1.26.19"
+urllib3 = "==1.26.20"
 
 [requires]
 python_version = "3.8"
