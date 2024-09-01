@@ -1,1 +1,1 @@
-c2cciutils[checks,publish]==1.4.18
+c2cciutils[checks,publish]==1.4.20
