@@ -19,6 +19,6 @@
     "url-parse": "1.5.10"
   },
   "devDependencies": {
-    "@babel/plugin-transform-typescript": "7.24.7"
+    "@babel/plugin-transform-typescript": "7.24.8"
   }
 }
