@@ -1,3 +1,7 @@
+##### 2.7.1.135
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#11350](https://github.com/camptocamp/c2cgeoportal/pull/11350)
+
 ##### 2.7.1.134
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20240902T075235Z.fda6ee399.2.7 (2.7) [c2cgeoportal#11354](https://github.com/camptocamp/c2cgeoportal/pull/11354)
