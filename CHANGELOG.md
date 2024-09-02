@@ -1,3 +1,8 @@
+##### 2.7.1.134
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20240902T075235Z.fda6ee399.2.7 (2.7) [c2cgeoportal#11354](https://github.com/camptocamp/c2cgeoportal/pull/11354)
+- Update dependency urllib3 to v1.26.20 (2.7) [ngeo#9460](https://github.com/camptocamp/ngeo/pull/9460)
+
 ##### 2.7.1.133
 
 - Update dependency camptocamp/c2cciutils to v1.1.44 (2.7) [c2cgeoportal#11351](https://github.com/camptocamp/c2cgeoportal/pull/11351)
