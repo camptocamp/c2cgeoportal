@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends python3-pip adduser \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends adduser git python3-pip \
     && pip install --upgrade pip
 
 # Used to convert the locked packages by poetry to pip requirements format
@@ -30,8 +30,8 @@ RUN --mount=type=cache,target=/root/.cache \
 
 # Do the conversion
 COPY poetry.lock pyproject.toml ./
-RUN poetry export --output=requirements.txt \
-    && poetry export --with=dev --output=requirements-dev.txt
+RUN poetry export --without-hashes --output=requirements.txt \
+    && poetry export --with=dev --without-hashes --output=requirements-dev.txt
 
 # Base, the biggest thing is to install the Python packages
 FROM base-all AS base
@@ -69,7 +69,6 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         binutils gcc g++ \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
-        --use-deprecated=legacy-resolver \
         --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++ \

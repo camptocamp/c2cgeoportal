@@ -152,6 +152,7 @@ class User(Base):  # type: ignore
     email: Mapped[str] = mapped_column(
         Unicode,
         nullable=False,
+        index=True,
         info={
             "colanderalchemy": {
                 "title": _("Email"),
