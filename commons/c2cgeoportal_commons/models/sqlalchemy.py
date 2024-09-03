@@ -54,7 +54,7 @@ class JSONEncodedDict(TypeDecorator[Any]):
         return json.dumps(value)
 
 
-class TsVector(UserDefinedType):  # type: ignore
+class TsVector(UserDefinedType[dict[str, str]]):  # pylint: disable=abstract-method
     """A custom type for PostgreSQL's tsvector type."""
 
     cache_ok = True
