@@ -5,6 +5,7 @@ Authentication
 Supported standards
 ~~~~~~~~~~~~~~~~~~~
 
+- `OpenID Connect`: as client, to be able to connect to an external OpenID Connect (OIDC) server.
 - `TOTP`: for two-factor authentication (2FA), this can be used for example with Google Authenticator.
 - `OAuth2` as server: An external application can use GeoMapFish as a single sign-on (SSO) for the
   authentication, even if it was initially implemented to be able to connect from QGIS desktop on an

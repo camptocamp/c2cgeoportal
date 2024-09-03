@@ -13,6 +13,8 @@
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -42,6 +44,7 @@
 <section id="supported-standards">
 <h3>Supported standards<a class="headerlink" href="#supported-standards" title="Link to this heading">¶</a></h3>
 <ul class="simple">
+<li><p><cite>OpenID Connect</cite>: as client, to be able to connect to an external OpenID Connect (OIDC) server.</p></li>
 <li><p><cite>TOTP</cite>: for two-factor authentication (2FA), this can be used for example with Google Authenticator.</p></li>
 <li><p><cite>OAuth2</cite> as server: An external application can use GeoMapFish as a single sign-on (SSO) for the
 authentication, even if it was initially implemented to be able to connect from QGIS desktop on an
@@ -223,6 +226,80 @@ this domain name in the vars in <code class="docutils literal notranslate"><span
 If for an unknown reason you have not the same host in the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header and <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter, you should
 add the domain of the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter in the vars in <code class="docutils literal notranslate"><span class="pre">vars/admin_interface/allowed_hosts</span></code>.</p>
 </section>
+<section id="openid-connect">
+<span id="integrator-authentication-oidc"></span><h4>OpenID Connect<a class="headerlink" href="#openid-connect" title="Link to this heading">¶</a></h4>
+<p>We can configure an OpenID connect service as an SSO (Single Sign-On) provider for our application. This allows users to log in to our application using their OpenID Connect credentials.</p>
+<p>We use [OpenID Connect Discovery 1.0](<a class="reference external" href="https://openid.net/specs/openid-connect-discovery-1_0.html">https://openid.net/specs/openid-connect-discovery-1_0.html</a>) with an Authorization Code Flow from [OpenID Connect Core 1.0](<a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a>), with PKCE (Proof Key for Code Exchange, RFC 7636).</p>
+<div class="mermaid">
+            sequenceDiagram
+    actor User
+    participant Browser
+    participant Geoportal
+    participant IAM
+    Geoportal-&gt;&gt;IAM: discovery endpoint
+
+    User-&gt;&gt;+Browser: Login
+    Browser-&gt;&gt;+Geoportal: Login
+    Geoportal-&gt;&gt;-Browser: redirect
+    Browser-&gt;&gt;+IAM: authorization endpoint
+    IAM-&gt;&gt;-Browser: redirect
+    Browser-&gt;&gt;+Geoportal: callback endpoint
+    Geoportal-&gt;&gt;IAM: token endpoint
+    opt on using user info instead of jwt token
+    Geoportal-&gt;&gt;IAM: userinfo endpoint
+    end
+    Geoportal-&gt;&gt;-Browser: authentication data in cookie
+    Browser-&gt;&gt;-User: Reload
+
+    Browser-&gt;&gt;+Geoportal: any auth endpoint
+    opt on token expiry
+    Geoportal-&gt;&gt;IAM: refresh token endpoint
+    end
+    Geoportal-&gt;&gt;-Browser: response
+        </div></section>
+</section>
+<section id="authentication-provider">
+<h3>Authentication provider<a class="headerlink" href="#authentication-provider" title="Link to this heading">¶</a></h3>
+<p>If we want to use OpenID Connect as an authentication provider, we need to set the following configuration in our <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the service URL&gt;</span>
+<span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the client application ID&gt;</span>
+<span class="w">      </span><span class="nt">user_info_fields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span><span class="w">  </span><span class="c1"># Default value</span>
+<span class="w">        </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span><span class="w">  </span><span class="c1"># Default value</span>
+</pre></div>
+</div>
+<p>With that the user will be create in the database at the first login, and the access right will be set in the GeoMapFish database.
+The user correspondence will be done on the email field.</p>
+</section>
+<section id="authorization-provider">
+<h3>Authorization provider<a class="headerlink" href="#authorization-provider" title="Link to this heading">¶</a></h3>
+<p>If we want to use OpenID Connect as an authorization provider, we need to set the following configuration in our <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the service URL&gt;</span>
+<span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the client application ID&gt;</span>
+<span class="w">      </span><span class="nt">provide_roles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">user_info_fields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span><span class="w">  </span><span class="c1"># Default value</span>
+<span class="w">        </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span><span class="w"> </span><span class="c1"># Default value</span>
+<span class="w">        </span><span class="nt">settings_role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">settings_role</span>
+<span class="w">        </span><span class="nt">roles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">roles</span>
+</pre></div>
+</div>
+<p>With that the user will not be in the database only the roles will be set in the GeoMapFish database.</p>
+</section>
+<section id="other-options">
+<h3>Other options<a class="headerlink" href="#other-options" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">client_secret</span></code>: The secret of the client.</p>
+<p><code class="docutils literal notranslate"><span class="pre">trusted_audiences</span></code>: The list of trusted audiences, if the token audience is not in this list, the token will be rejected.</p>
+<p><code class="docutils literal notranslate"><span class="pre">scopes</span></code>: The list of scopes to request, default is [<code class="docutils literal notranslate"><span class="pre">openid</span></code>, <code class="docutils literal notranslate"><span class="pre">profile</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>].</p>
+<p><code class="docutils literal notranslate"><span class="pre">query_user_info</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the user info will be requested instead if using the <code class="docutils literal notranslate"><span class="pre">id_token</span></code>, default is false.</p>
 <section id="oauth2-with-qgis">
 <span id="integrator-authentication-oauth2"></span><h4>OAuth2 with QGIS<a class="headerlink" href="#oauth2-with-qgis" title="Link to this heading">¶</a></h4>
 <p>In the admin interface create an ‘OAuth2 Client’ with:</p>

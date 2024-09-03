@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OpenID Connect &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=c058f7c8" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="openid-connect">
+<h1>OpenID Connect<a class="headerlink" href="#openid-connect" title="Link to this heading">¶</a></h1>
+<p>We can configure an OpenID connect service as an SSO (Single Sign-On) provider for our application. This allows users to log in to our application using their OpenID Connect credentials.</p>
+<p>We use [OpenID Connect Discovery 1.0](<a class="reference external" href="https://openid.net/specs/openid-connect-discovery-1_0.html">https://openid.net/specs/openid-connect-discovery-1_0.html</a>) with an Authorization Code Flow from [OpenID Connect Core 1.0](<a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a>), with PKCE (Proof Key for Code Exchange, RFC 7636).</p>
+<div class="mermaid">
+            sequenceDiagram
+    actor User
+    participant Browser
+    participant Geoportal
+    participant IAM
+    Geoportal-&gt;&gt;IAM: discovery endpoint
+
+    User-&gt;&gt;+Browser: Login
+    Browser-&gt;&gt;+Geoportal: Login
+    Geoportal-&gt;&gt;-Browser: redirect
+    Browser-&gt;&gt;+IAM: authorization endpoint
+    IAM-&gt;&gt;-Browser: redirect
+    Browser-&gt;&gt;+Geoportal: callback endpoint
+    Geoportal-&gt;&gt;IAM: token endpoint
+    opt on using user info instead of jwt token
+    Geoportal-&gt;&gt;IAM: userinfo endpoint
+    end
+    Geoportal-&gt;&gt;-Browser: authentication data in cookie
+    Browser-&gt;&gt;-User: Reload
+
+    Browser-&gt;&gt;+Geoportal: any auth endpoint
+    opt on token expiry
+    Geoportal-&gt;&gt;IAM: refresh token endpoint
+    end
+    Geoportal-&gt;&gt;-Browser: response
+        </div><section id="authentication-provider">
+<h2>Authentication provider<a class="headerlink" href="#authentication-provider" title="Link to this heading">¶</a></h2>
+<p>If we want to use OpenID Connect as an authentication provider, we need to set the following configuration in our <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the service URL&gt;</span>
+<span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the client application ID&gt;</span>
+<span class="w">      </span><span class="nt">user_info_fields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span><span class="w">  </span><span class="c1"># Default value</span>
+<span class="w">        </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span><span class="w">  </span><span class="c1"># Default value</span>
+</pre></div>
+</div>
+<p>With that the user will be create in the database at the first login, and the access right will be set in the GeoMapFish database.
+The user correspondence will be done on the email field.</p>
+</section>
+<section id="authorization-provider">
+<h2>Authorization provider<a class="headerlink" href="#authorization-provider" title="Link to this heading">¶</a></h2>
+<p>If we want to use OpenID Connect as an authorization provider, we need to set the following configuration in our <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the service URL&gt;</span>
+<span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the client application ID&gt;</span>
+<span class="w">      </span><span class="nt">provide_roles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">user_info_fields</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span><span class="w">  </span><span class="c1"># Default value</span>
+<span class="w">        </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span><span class="w"> </span><span class="c1"># Default value</span>
+<span class="w">        </span><span class="nt">settings_role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">settings_role</span>
+<span class="w">        </span><span class="nt">roles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">roles</span>
+</pre></div>
+</div>
+<p>With that the user will not be in the database only the roles will be set in the GeoMapFish database.</p>
+</section>
+<section id="other-options">
+<h2>Other options<a class="headerlink" href="#other-options" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">client_secret</span></code>: The secret of the client.</p>
+<p><code class="docutils literal notranslate"><span class="pre">trusted_audiences</span></code>: The list of trusted audiences, if the token audience is not in this list, the token will be rejected.</p>
+<p><code class="docutils literal notranslate"><span class="pre">scopes</span></code>: The list of scopes to request, default is [<code class="docutils literal notranslate"><span class="pre">openid</span></code>, <code class="docutils literal notranslate"><span class="pre">profile</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>].</p>
+<p><code class="docutils literal notranslate"><span class="pre">query_user_info</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the user info will be requested instead if using the <code class="docutils literal notranslate"><span class="pre">id_token</span></code>, default is false.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo of c2cgeoportal"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2011-2024, Camptocamp.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.0.2</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/integrator/authentication_oidc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
