@@ -73,6 +73,14 @@ vars:
       escapeValue: false
     backend: {}
 
+  static_files:
+    favicon.ico: /etc/geomapfish/static/images/favicon.ico
+    robot.txt: /etc/geomapfish/static/robot.txt
+    api.js: /etc/static-ngeo/api.js
+    api.js.map: /etc/static-ngeo/api.js.map
+    api.css: /etc/static-ngeo/api.css
+    apihelp.html: /etc/geomapfish/static/apihelp/index.html
+
   interfaces_config:
     default:
       constants:

@@ -61,8 +61,8 @@ class Entry:
 
     @staticmethod
     @_CACHE_REGION.cache_on_arguments()
-    def get_apijs(api_name: Optional[str]) -> str:
-        with open("/etc/static-ngeo/api.js", encoding="utf-8") as api_file:
+    def get_apijs(api_filename: str, api_name: Optional[str]) -> str:
+        with open(api_filename, encoding="utf-8") as api_file:
             api = api_file.read().split("\n")
         sourcemap = api.pop(-1)
         if api_name:
@@ -77,7 +77,10 @@ class Entry:
 
     @view_config(route_name="apijs")  # type: ignore
     def apijs(self) -> pyramid.response.Response:
-        self.request.response.text = self.get_apijs(self.request.registry.settings["api"].get("name"))
+        self.request.response.text = self.get_apijs(
+            self.request.registry.settings["static_files"]["api.js"],
+            self.request.registry.settings["api"].get("name"),
+        )
         set_common_headers(self.request, "api", Cache.PUBLIC, content_type="application/javascript")
         return self.request.response
 
@@ -137,4 +140,19 @@ def canvas_view(request: pyramid.request.Request, interface_config: dict[str, An
             [f'<script src="{request.static_url(js)}" crossorigin="anonymous"></script>' for js in js_files]
         ),
         "spinner": spinner,
+    }
+
+
+def custom_view(request: pyramid.request.Request, interface_config: dict[str, Any]) -> dict[str, Any]:
+    """Get view used as entry point of a canvas interface."""
+
+    set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")
+
+    dynamic_url = request.route_url("dynamic")
+    return {
+        "request": request,
+        "dynamicUrl": dynamic_url,
+        "interface": interface_config["name"],
+        "staticFrontend": request.static_url("/etc/static-frontend"),
+        "staticCashBuster": request.static_url("/etc/geomapfish/static"),
     }
