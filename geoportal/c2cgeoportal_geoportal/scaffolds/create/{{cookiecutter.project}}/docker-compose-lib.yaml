@@ -135,7 +135,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:7.2
+    image: redis:7.4
     user: www-data
     restart: unless-stopped
     command:
@@ -152,13 +152,13 @@ services:
       - '30'
 
   redis_master:
-    image: bitnami/redis:7.2.5
+    image: bitnami/redis:7.4.0
     environment:
       - REDIS_REPLICATION_MODE=master
       - ALLOW_EMPTY_PASSWORD=yes
 
   redis_slave:
-    image: bitnami/redis:7.2.5
+    image: bitnami/redis:7.4.0
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis_master
@@ -167,7 +167,7 @@ services:
       - redis_master
 
   redis_sentinel:
-    image: bitnami/redis-sentinel:7.2.5
+    image: bitnami/redis-sentinel:7.4.0
     environment:
       - REDIS_MASTER_HOST=redis_master
       - REDIS_MASTER_SET=mymaster
@@ -177,7 +177,7 @@ services:
       - redis_slave
 
   tilecloudchain:
-    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.20
+    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.21
     user: www-data
     restart: unless-stopped
     environment:

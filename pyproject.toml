@@ -31,14 +31,14 @@ authors = []
 python = ">=3.9,<3.11"
 alembic = "1.13.2" # geoportal
 "c2c.template" = "2.4.2" # geoportal
-c2cgeoform = "2.2.5" # commons
+c2cgeoform = "2.4.0" # commons
 colander = "2.0" # commons, admin
 ColanderAlchemy = "0.3.4" # commons
 cookiecutter = "2.6.0" # geoportal
 deform = "2.0.15" # commons, admin
 defusedxml = "0.7.1" # geoportal
 "dogpile.cache" = "1.3.3" # geoportal
-Fiona = "1.9.6" # geoportal raster
+Fiona = "1.10.0" # geoportal raster
 GeoAlchemy2 = "0.15.2" # commons, geoportal
 geojson = "3.1.0" # geoportal
 getitfixed = "1.0.29" # geoportal
@@ -69,35 +69,35 @@ translationstring = "1.4" # admin
 "zope.event" = "5.0" # commons, geoportal
 c2cwsgiutils = { version = "6.0.8", extras = ["broadcast", "standard", "oauth2", "debug"] }
 oauthlib = "3.2.2"
-tilecloud = "1.11.0" # geoportal
-azure-storage-blob = "12.19.1"
+tilecloud = "1.12.3" # geoportal
+azure-storage-blob = "12.22.0"
 # simple_openid_connect = '1.0.1' # geoportal
 simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.10.3" }
-setuptools = "74.0.0"
+setuptools = "74.1.1"
 
 [tool.poetry.dev-dependencies]
-Babel = "2.14.0" # i18n
+Babel = "2.16.0" # i18n
 beautifulsoup4 = "4.12.3" # admin tests
 Jinja2 = "3.1.4" # c2c.template
 lingva = "5.0.3" # i18n
 PasteScript = "3.6.0" # geoportal pcreate
 polib = "1.2.0" # i18n
 pykwalify = "1.8.0" # Validate config
-pytest = "8.2.2" # tests
+pytest = "8.3.2" # tests
 WebTest = "3.0.1" # admin tests
 types-pytz = "2024.1.0.20240417"
 types-pyyaml = "6.0.12.20240808"
 types-python-dateutil = "2.9.0.20240821"
-types-requests = "2.31.0.20240406"
+types-requests = "2.32.0.20240712"
 types-setuptools = "74.0.0.20240831"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.8", extras = ["checks"] }
-pre-commit = "3.7.1"
-mapbox-vector-tile = "2.0.1"
+pre-commit = "3.8.0"
+mapbox-vector-tile = "2.1.0"
 responses = "0.25.3"
 waitress = "3.0.0"
 

@@ -42,4 +42,4 @@ prospector = { extras = ["with_mypy", "with_bandit"], version = "1.10.3" }
 prospector-profile-duplicated = "1.5.0"
 prospector-profile-utils  = "1.7.2"
 types-pyyaml = "6.0.12.20240808"
-pytest = "8.2.2"
+pytest = "8.3.2"
