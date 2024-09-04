@@ -217,5 +217,10 @@
       enabled: false,
       matchDepNames: ['alabaster'],
     },
+    /** Disabling automatic update of .python-version */
+    {
+      matchFileNames: ['^\\.python\\-version$'],
+      enabled: false,
+    },
   ],
 }
