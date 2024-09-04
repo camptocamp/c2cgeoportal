@@ -9,7 +9,7 @@ Fiona
 GeoAlchemy2
 geojson
 isodate  # WMST support
-lingua
+lingva
 Mako
 OWSLib>=0.6.0
 papyrus

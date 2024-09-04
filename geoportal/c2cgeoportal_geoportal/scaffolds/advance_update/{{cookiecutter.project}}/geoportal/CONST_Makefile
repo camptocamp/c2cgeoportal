@@ -54,7 +54,7 @@ build: $(BUILD_RULES)
 PO_FILES = $(addprefix $(PACKAGE)_geoportal/locale/, $(addsuffix /LC_MESSAGES/$(PACKAGE)_geoportal-server.po, $(LANGUAGES)))
 
 .INTERMEDIATE: $(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot
-$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot: lingua-server.cfg $(SRC_FILES)
+$(PACKAGE)_geoportal/locale/$(PACKAGE)_geoportal-server.pot: lingva-server.cfg $(SRC_FILES)
 	mkdir --parent $(dir $@)
 	[ -z "$(SRC_FILES)" ] || pot-create --width=110 --config=$< --keyword=_ --output=$@ $(SRC_FILES)
 

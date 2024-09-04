@@ -71,8 +71,8 @@ setup(
     install_requires=install_requires,
     entry_points={
         "paste.app_factory": ["main = c2cgeoportal_admin:main"],
-        "lingua.extractors": [
-            "geomapfish-admin-config = c2cgeoportal_admin.lib.lingua_extractor:GeomapfishConfigExtractor",
+        "lingva.extractors": [
+            "geomapfish-admin-config = c2cgeoportal_admin.lib.lingva_extractor:GeomapfishConfigExtractor",
         ],
     },
 )

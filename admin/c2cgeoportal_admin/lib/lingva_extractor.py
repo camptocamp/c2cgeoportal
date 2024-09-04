@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ import os
 from typing import Any, Optional
 
 import yaml
-from lingua.extractors import Extractor, Message
+from lingva.extractors import Extractor, Message
 
 
 class GeomapfishConfigExtractor(Extractor):  # type: ignore

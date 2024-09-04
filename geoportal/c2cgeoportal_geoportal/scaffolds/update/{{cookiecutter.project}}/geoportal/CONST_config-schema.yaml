@@ -693,7 +693,7 @@ mapping:
                     sequence:
                       - *map
 
-      lingua_extractor:
+      lingva_extractor:
         type: map
         mapping:
           host_map:

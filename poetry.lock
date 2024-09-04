@@ -1681,6 +1681,25 @@ chameleonextractor = ["Chameleon"]
 dev = ["black (>=22.1.0)", "flake8 (>=4.0.1)", "pytest (>=7.0.1)"]
 
 [[package]]
+name = "lingva"
+version = "5.0.3"
+description = "Translation toolset"
+optional = false
+python-versions = "*"
+files = [
+    {file = "lingva-5.0.3-py2.py3-none-any.whl", hash = "sha256:b8f28d1bc8c7c25b5389c3b8f07648f9888e822b90b56a1dda24bc8878203078"},
+    {file = "lingva-5.0.3.tar.gz", hash = "sha256:0d266905748d6b3c75f5644ecca7efc5314214020103a258326dc38d5a820755"},
+]
+
+[package.dependencies]
+chameleon = "*"
+click = ">=8.0.3"
+polib = ">=1.1.1"
+
+[package.extras]
+dev = ["black (>=22.1.0)", "flake8 (>=4.0.1)", "pytest (>=7.0.1)"]
+
+[[package]]
 name = "lxml"
 version = "5.2.2"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
@@ -4940,4 +4959,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "8abd8e18d9df8ba862bb23ed53507b6aff2c0efc9ca752fdf161ecaef7f2d6a2"
+content-hash = "15969684a26dbb019fc8993b22778a294b2bd0bca7dc47c33b468022101e5b52"

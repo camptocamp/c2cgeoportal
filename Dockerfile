@@ -155,7 +155,7 @@ RUN make --makefile=dependencies.mk dependencies
 COPY bin/ /usr/bin/
 COPY scripts/ scripts/
 COPY geoportal/c2cgeoportal_geoportal/scaffolds/ geoportal/c2cgeoportal_geoportal/scaffolds/
-COPY build.mk lingua.cfg ./
+COPY build.mk lingva.cfg ./
 
 RUN make --makefile=build.mk build \
     && mkdir -p 'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/' \
