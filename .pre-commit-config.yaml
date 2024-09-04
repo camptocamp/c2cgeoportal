@@ -133,7 +133,7 @@ repos:
       # All other
       - id: pyupgrade
         args:
-          - --py39-plus
+          - --py310-plus
         exclude: |-
           (?x)^(
             geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build

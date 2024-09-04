@@ -1,5 +1,5 @@
 [tool.mypy]
-python_version = 3.9
+python_version = 3.10
 warn_redundant_casts = true
 warn_unused_ignores = true
 check_untyped_defs = true
@@ -8,7 +8,7 @@ ignore_missing_imports = true
 
 [tool.black]
 line-length = 110
-target-version = ['py39']
+target-version = ['py310']
 
 [tool.isort]
 profile = "black"
@@ -23,7 +23,7 @@ description = 'Not used'
 authors = []
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
+python = ">=3.10,<3.13"
 c2cwsgiutils = { extras = ["broadcast"], version = "6.0.8" }
 papyrus = "2.5" # commons
 transaction = "4.0" # commons
