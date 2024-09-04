@@ -33,7 +33,7 @@ import logging
 import re
 from collections.abc import Iterable
 from string import Formatter
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import dateutil
 import pyramid.request
@@ -61,8 +61,8 @@ def get_typed(
     types: dict[str, Any],
     request: pyramid.request.Request,
     errors: set[str],
-    layer_name: Optional[str] = None,
-) -> Union[str, int, float, bool, None, list[Any], dict[str, Any]]:
+    layer_name: str | None = None,
+) -> str | int | float | bool | None | list[Any] | dict[str, Any]:
     """Get the typed (parsed) value of a metadata or a functionality."""
     prefix = f"Layer '{layer_name}': " if layer_name is not None else ""
     type_ = {"type": "not init"}
@@ -206,7 +206,7 @@ _formatter = Formatter()
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def _get_intranet_networks(
     request: pyramid.request.Request,
-) -> list[Union[ipaddress.IPv4Network, ipaddress.IPv6Network]]:
+) -> list[ipaddress.IPv4Network | ipaddress.IPv6Network]:
     return [
         ipaddress.ip_network(network, strict=False)
         for network in request.registry.settings.get("intranet", {}).get("networks", [])

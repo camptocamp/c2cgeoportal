@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import Optional, cast
+from typing import cast
 
 import sqlalchemy
 import sqlalchemy.orm.query
@@ -82,7 +82,7 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
         return super()._sub_query(self._request.dbsession.query(LayerVectorTiles).distinct())
 
     def _sub_query(
-        self, query: Optional[sqlalchemy.orm.query.Query[LayerVectorTiles]]
+        self, query: sqlalchemy.orm.query.Query[LayerVectorTiles] | None
     ) -> sqlalchemy.orm.query.Query[LayerVectorTiles]:
         del query
         return self._base_query()

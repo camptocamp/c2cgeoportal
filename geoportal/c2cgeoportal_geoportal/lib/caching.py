@@ -28,8 +28,8 @@
 
 import inspect
 import logging
-from collections.abc import Mapping, Sequence
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from collections.abc import Callable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any
 
 import pyramid.interfaces
 import zope.interface
@@ -112,7 +112,7 @@ def get_region(region: str) -> CacheRegion:
     return _REGION[region]
 
 
-def invalidate_region(region: Optional[str] = None) -> None:
+def invalidate_region(region: str | None = None) -> None:
     """Invalidate a cache region."""
     if region is None:
         for cache_region in _REGION.values():
@@ -131,7 +131,7 @@ class HybridRedisBackend(CacheBackend):
         )
         self._redis: CacheBackend = RedisBackend(arguments)  # type: ignore[no-untyped-call]
 
-    def get(self, key: str) -> Union[CachedValue, bytes, NoValue]:
+    def get(self, key: str) -> CachedValue | bytes | NoValue:
         value = self._memory.get(key)
         if value == NO_VALUE:
             val = self._redis.get_serialized(sha1_mangle_key(key.encode()))  # type: ignore[no-untyped-call]
@@ -144,10 +144,10 @@ class HybridRedisBackend(CacheBackend):
                 self._memory.set(key, value)
         return value
 
-    def get_multi(self, keys: Sequence[str]) -> list[Union[CachedValue, bytes, NoValue]]:
+    def get_multi(self, keys: Sequence[str]) -> list[CachedValue | bytes | NoValue]:
         return [self.get(key) for key in keys]
 
-    def set(self, key: str, value: Union[CachedValue, bytes]) -> None:
+    def set(self, key: str, value: CachedValue | bytes) -> None:
         if self._use_memory_cache:
             self._memory.set(key, value)
         self._redis.set_serialized(
@@ -155,7 +155,7 @@ class HybridRedisBackend(CacheBackend):
             self._redis.serializer(value),  # type: ignore[misc]
         )
 
-    def set_multi(self, mapping: Mapping[str, Union[CachedValue, bytes]]) -> None:
+    def set_multi(self, mapping: Mapping[str, CachedValue | bytes]) -> None:
         for key, value in mapping.items():
             self.set(key, value)
 

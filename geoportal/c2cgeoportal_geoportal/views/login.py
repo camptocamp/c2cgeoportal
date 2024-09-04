@@ -32,7 +32,7 @@ import secrets
 import string
 import sys
 import urllib.parse
-from typing import Any, Optional, Union
+from typing import Any
 
 import pkce
 import pyotp
@@ -79,7 +79,7 @@ class Login:
         self.two_factor_auth = self.authentication_settings.get("two_factor", False)
         self.two_factor_issuer_name = self.authentication_settings.get("two_factor_issuer_name")
 
-    def _functionality(self) -> dict[str, list[Union[str, int, float, bool, list[Any], dict[str, Any]]]]:
+    def _functionality(self) -> dict[str, list[str | int | float | bool | list[Any] | dict[str, Any]]]:
         functionality = {}
         for func_ in get_setting(self.settings, ("functionalities", "available_in_templates"), []):
             functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
@@ -92,7 +92,7 @@ class Login:
             _LOG.info("Invalid referrer for %s: %s", self.request.path_qs, repr(self.request.referrer))
 
     @forbidden_view_config(renderer="login.html")  # type: ignore
-    def loginform403(self) -> Union[dict[str, Any], pyramid.response.Response]:
+    def loginform403(self) -> dict[str, Any] | pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             return HTTPFound(
                 location=self.request.route_url(
@@ -144,7 +144,7 @@ class Login:
         if login is None or password is None:
             raise HTTPBadRequest("'login' and 'password' should be available in request params.")
         username = self.request.registry.validate_user(self.request, login, password)
-        user: Optional[static.User]
+        user: static.User | None
         if username is not None:
             user = models.DBSession.query(static.User).filter(static.User.username == username).one()
             if self.two_factor_auth:
@@ -312,7 +312,7 @@ class Login:
             self.request, "login", Cache.PRIVATE_NO, response=Response("true", headers=headers)
         )
 
-    def _user(self, user: Optional[static.User] = None) -> dict[str, Any]:
+    def _user(self, user: static.User | None = None) -> dict[str, Any]:
         result = {
             "functionalities": self._functionality(),
             "is_intranet": is_intranet(self.request),
@@ -413,7 +413,7 @@ class Login:
 
     def _loginresetpassword(
         self,
-    ) -> tuple[Optional[static.User], Optional[str], Optional[str], Optional[str]]:
+    ) -> tuple[static.User | None, str | None, str | None, str | None]:
         assert models.DBSession is not None
 
         username = self.request.POST.get("login")
@@ -644,7 +644,7 @@ class Login:
 
         remember_object = oidc.OidcRemember(self.request).remember(token_response)
 
-        user: Optional[Union[static.User, oidc.DynamicUser]]
+        user: static.User | oidc.DynamicUser | None
         if self.authentication_settings.get("openid_connect", {}).get("provide_roles", False) is False:
             user = models.DBSession.query(static.User).filter_by(email=remember_object["email"]).one_or_none()
             if user is None:

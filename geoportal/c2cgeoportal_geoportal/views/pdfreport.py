@@ -27,7 +27,7 @@
 
 import logging
 from json import dumps, loads
-from typing import Any, Union
+from typing import Any
 
 import pyramid.request
 import pyramid.response
@@ -227,7 +227,7 @@ class PdfReport(OGCProxy):
 
         return self._do_print(spec)
 
-    def walker(self, spec: Union[dict[str, Any], list[dict[str, Any]]], name: str, value: Any) -> None:
+    def walker(self, spec: dict[str, Any] | list[dict[str, Any]], name: str, value: Any) -> None:
         if isinstance(spec, dict):
             for k, v in spec.items():
                 if isinstance(v, str):

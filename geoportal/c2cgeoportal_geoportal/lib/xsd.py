@@ -26,8 +26,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from collections.abc import Callable
 from io import BytesIO
-from typing import Any, Callable, Optional, Union, cast
+from typing import Any, cast
 
 import sqlalchemy.orm.mapper
 import sqlalchemy.sql.elements
@@ -120,8 +121,8 @@ class XSD:
         self,
         include_primary_keys: bool = False,
         include_foreign_keys: bool = False,
-        sequence_callback: Optional[str] = None,
-        element_callback: Optional[str] = None,
+        sequence_callback: str | None = None,
+        element_callback: str | None = None,
     ):
         self.generator = XSDGenerator(
             include_primary_keys=include_primary_keys,
@@ -130,10 +131,8 @@ class XSD:
             element_callback=element_callback,
         )
 
-    def __call__(
-        self, table: str
-    ) -> Callable[[Union[type[str], type[bytes]], dict[str, Any]], Optional[bytes]]:
-        def _render(cls: Union[type[str], type[bytes]], system: dict[str, Any]) -> Optional[bytes]:
+    def __call__(self, table: str) -> Callable[[type[str] | type[bytes], dict[str, Any]], bytes | None]:
+        def _render(cls: type[str] | type[bytes], system: dict[str, Any]) -> bytes | None:
             request = system.get("request")
             if request is not None:
                 response = request.response

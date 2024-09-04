@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import Optional, cast
+from typing import cast
 
 import sqlalchemy
 import sqlalchemy.orm.query
@@ -82,7 +82,7 @@ class LayerCOGViews(LayerViews[LayerCOG]):
         return super()._sub_query(self._request.dbsession.query(LayerCOG).distinct())
 
     def _sub_query(
-        self, query: Optional[sqlalchemy.orm.query.Query[LayerCOG]]
+        self, query: sqlalchemy.orm.query.Query[LayerCOG] | None
     ) -> sqlalchemy.orm.query.Query[LayerCOG]:
         del query
         return self._base_query()

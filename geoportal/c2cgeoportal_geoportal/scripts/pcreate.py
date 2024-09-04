@@ -32,7 +32,7 @@ import re
 import subprocess
 import sys
 from argparse import ArgumentParser
-from typing import Any, Optional, Union, cast
+from typing import Any, Union, cast
 
 import pkg_resources
 import requests
@@ -168,7 +168,7 @@ class PCreateCommand:
         if not self.quiet:
             print(msg)
 
-    def get_context(self) -> dict[str, Union[str, int]]:
+    def get_context(self) -> dict[str, str | int]:
         output_dir = self.output_path
         project_name = os.path.basename(output_dir)
         if self.args.package_name is None:
@@ -176,7 +176,7 @@ class PCreateCommand:
         else:
             pkg_name = self.args.package_name
 
-        context: dict[str, Union[str, int]] = {
+        context: dict[str, str | int] = {
             "project": project_name,
             "package": pkg_name,
             "authtkt_secret": gen_authtkt_secret(),
@@ -241,7 +241,7 @@ class PCreateCommand:
 
         return context
 
-    def read_project_file(self) -> dict[str, Union[str, int]]:
+    def read_project_file(self) -> dict[str, str | int]:
         project_file = os.path.join(self.output_path, "project.yaml")
         if os.path.exists(project_file):
             with open(project_file, encoding="utf8") as f:
@@ -255,7 +255,7 @@ class PCreateCommand:
         context: dict[str, Any],
         name: str,
         prompt: str,
-        type_: Optional[type[Any]] = None,
+        type_: type[Any] | None = None,
     ) -> None:
         if name.upper() in os.environ and os.environ[name.upper()] != "":
             value = os.environ.get(name.upper())
@@ -275,7 +275,7 @@ class PCreateCommand:
         context[name] = value
 
     @staticmethod
-    def epsg2bbox(srid: int) -> Optional[list[str]]:
+    def epsg2bbox(srid: int) -> list[str] | None:
         try:
             r = requests.get(f"https://epsg.io/?format=json&q={srid}", timeout=60)
             bbox = r.json()["results"][0]["bbox"]

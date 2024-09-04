@@ -26,7 +26,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import logging
-from typing import Optional
 
 import pyramid.request
 from pyramid.httpexceptions import HTTPBadRequest
@@ -90,14 +89,14 @@ class OGCProxy(Proxy):
                 f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])})."
             )
 
-    def _get_wms_url(self, errors: set[str]) -> Optional[Url]:
+    def _get_wms_url(self, errors: set[str]) -> Url | None:
         ogc_server = self.ogc_server
         url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors)
         if errors:
             _LOG.error("\n".join(errors))
         return url
 
-    def _get_wfs_url(self, errors: set[str]) -> Optional[Url]:
+    def _get_wfs_url(self, errors: set[str]) -> Url | None:
         ogc_server = self.ogc_server
         url = get_url2(
             f"The OGC server (WFS) '{ogc_server.name}'",

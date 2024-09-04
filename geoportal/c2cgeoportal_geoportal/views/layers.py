@@ -30,7 +30,7 @@ import logging
 import os
 from collections.abc import Generator
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Optional, TypedDict, cast
+from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 import geoalchemy2.elements
 import geojson.geometry
@@ -264,7 +264,7 @@ class Layers:
         return cast(int, count)
 
     @view_config(route_name="layers_create", renderer="geojson")  # type: ignore
-    def create(self) -> Optional[FeatureCollection]:
+    def create(self) -> FeatureCollection | None:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -391,7 +391,7 @@ class Layers:
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}  # type: ignore[attr-defined]
 
     @staticmethod
-    def _validate_geometry(geom: Optional[geoalchemy2.elements.WKBElement]) -> None:
+    def _validate_geometry(geom: geoalchemy2.elements.WKBElement | None) -> None:
         assert models.DBSession is not None
 
         if geom is not None:
@@ -413,7 +413,7 @@ class Layers:
             setattr(feature, last_update_user, self.request.user.id)
 
     @staticmethod
-    def get_metadata(layer: "main.Layer", key: str, default: Optional[str] = None) -> Optional[str]:
+    def get_metadata(layer: "main.Layer", key: str, default: str | None = None) -> str | None:
         metadata = layer.get_metadata(key)
         if len(metadata) == 1:
             metadata = metadata[0]

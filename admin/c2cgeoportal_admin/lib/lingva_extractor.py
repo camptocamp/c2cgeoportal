@@ -27,7 +27,7 @@
 
 
 import os
-from typing import Any, Optional
+from typing import Any
 
 import yaml
 from lingva.extractors import Extractor, Message
@@ -42,7 +42,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         self,
         filename: str,
         options: dict[str, Any],
-        fileobj: Optional[dict[str, Any]] = None,
+        fileobj: dict[str, Any] | None = None,
         lineno: int = 0,
     ) -> list[Message]:
         del options, fileobj, lineno

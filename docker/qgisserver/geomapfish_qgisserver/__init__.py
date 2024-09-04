@@ -8,7 +8,6 @@
 import logging
 import sys
 import traceback
-from typing import Optional
 
 import qgis.server
 from qgis.core import Qgis, QgsMessageLog
@@ -20,7 +19,7 @@ _LOG = logging.getLogger(__name__)
 
 def serverClassFactory(  # pylint: disable=invalid-name
     serverIface: qgis.server.QgsServerInterface,  # pylint: disable=invalid-name
-) -> Optional[qgis.server.QgsAccessControlFilter]:
+) -> qgis.server.QgsAccessControlFilter | None:
     QgsMessageLog.logMessage("Configure logging...", "GeoMapFish-init", level=Qgis.Info)
 
     try:

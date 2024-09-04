@@ -28,7 +28,7 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 from unittest import TestCase
 from urllib.parse import urlencode
 
@@ -106,7 +106,7 @@ class TestThemesEditColumns(TestCase):
     def _create_layer(
         self,
         exclude_properties: bool = False,
-        metadatas: Optional[list["Metadata"]] = None,
+        metadatas: list["Metadata"] | None = None,
         geom_type: bool = False,
     ) -> int:
         """

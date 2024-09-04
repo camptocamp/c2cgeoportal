@@ -12,7 +12,7 @@ import random
 import re
 from enum import Enum
 from threading import Lock
-from typing import TYPE_CHECKING, Any, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 import c2cwsgiutils.broadcast
 import geoalchemy2
@@ -248,7 +248,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             )
         return cast("OGCServerAccessControl", self.ogcserver_accesscontrols[config_file]["access_control"])
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str | None:  # pylint: disable=invalid-name
         """Return an additional subset string (typically SQL) filter."""
         try:
             if not self.initialized:
@@ -259,7 +259,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             _LOG.error("Unhandled error", exc_info=True)
             raise
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> str | None:  # pylint: disable=invalid-name
         """Return an additional expression filter."""
         try:
             if not self.initialized:
@@ -342,7 +342,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.DBSession = DBSession  # pylint: disable=invalid-name
 
         self.area_cache: dict[Any, tuple[Access, BaseGeometry]] = {}
-        self.layers: Optional[dict[str, list["main.LayerWMS"]]] = None
+        self.layers: dict[str, list["main.LayerWMS"]] | None = None
         self.lock = Lock()
         self.srid = srid
         self.ogcserver = ogcserver
@@ -467,7 +467,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             self.layers = layers
             return layers
 
-    def get_roles(self, session: Session) -> Union[str, list["main.Role"]]:
+    def get_roles(self, session: Session) -> str | list["main.Role"]:
         """
         Get the current user's available roles based on request parameter USER_ID.
         Returns:
@@ -492,7 +492,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
     def get_restriction_areas(
         gmf_layers: list["main.Layer"],
         read_write: bool = False,
-        roles: Optional[Union[str, list["main.Role"]]] = None,
+        roles: str | list["main.Role"] | None = None,
     ) -> tuple[Access, BaseGeometry]:
         """
         Get access areas given by GMF layers and user roles for an access mode.
@@ -577,7 +577,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         self.area_cache[key] = (Access.AREA, area)
         return (Access.AREA, area)
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str | None:  # pylint: disable=invalid-name
         """
         Returns an additional subset string (typically SQL) filter.
         """
@@ -622,7 +622,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             _LOG.error("Cannot run layerFilterSubsetString", exc_info=True)
             raise
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> Optional[str]:  # pylint: disable=invalid-name
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> str | None:  # pylint: disable=invalid-name
         """
         Returns an additional expression filter.
         """

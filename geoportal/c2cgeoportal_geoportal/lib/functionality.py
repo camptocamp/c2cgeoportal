@@ -27,7 +27,7 @@
 
 
 import logging.config
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import pyramid.request
 from sqlalchemy.orm import joinedload
@@ -64,7 +64,7 @@ def _user_to_struct(user: static.User) -> dict[str, Any]:
     }
 
 
-def _role_to_struct(role: Optional[main.Role]) -> list[dict[str, Any]]:
+def _role_to_struct(role: main.Role | None) -> list[dict[str, Any]]:
     return [{"name": f.name, "value": f.value} for f in role.functionalities] if role else []
 
 
@@ -74,7 +74,7 @@ def _get_db_functionality(
     types: dict[str, dict[str, Any]],
     request: pyramid.request.Request,
     errors: set[str],
-) -> list[Union[str, int, float, bool, list[Any], dict[str, Any]]]:
+) -> list[str | int | float | bool | list[Any] | dict[str, Any]]:
     if types.get(name, {}).get("single", False):
         values = [
             get_typed(name, functionality["value"], types, request, errors)
@@ -105,9 +105,9 @@ def _get_functionalities_type(request: pyramid.request.Request) -> dict[str, dic
 
 def get_functionality(
     name: str, request: pyramid.request.Request, is_intranet_: bool
-) -> list[Union[str, int, float, bool, list[Any], dict[str, Any]]]:
+) -> list[str | int | float | bool | list[Any] | dict[str, Any]]:
     """Get all the functionality for the current user."""
-    result: list[Union[str, int, float, bool, list[Any], dict[str, Any]]] = []
+    result: list[str | int | float | bool | list[Any] | dict[str, Any]] = []
     errors: set[str] = set()
 
     if request.user is not None:

@@ -27,7 +27,7 @@
 
 
 from collections.abc import Iterable
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy.orm
 from pyramid.request import Request
@@ -41,7 +41,7 @@ if TYPE_CHECKING:
 CACHE_REGION = caching.get_region("std")
 
 
-def _get_layers_query(request: Request, what: Union[sqlalchemy.orm.Mapper[Any], type[Any]]) -> Query[Any]:
+def _get_layers_query(request: Request, what: sqlalchemy.orm.Mapper[Any] | type[Any]) -> Query[Any]:
     from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
 
     assert DBSession is not None
@@ -56,8 +56,8 @@ def _get_layers_query(request: Request, what: Union[sqlalchemy.orm.Mapper[Any], 
 
 def get_protected_layers_query(
     request: Request,
-    ogc_server_ids: Optional[Iterable[int]],
-    what: Union[sqlalchemy.orm.Mapper[Any], type[Any]],
+    ogc_server_ids: Iterable[int] | None,
+    what: sqlalchemy.orm.Mapper[Any] | type[Any],
 ) -> Query[Any]:
     """
     Get the protected layers query.

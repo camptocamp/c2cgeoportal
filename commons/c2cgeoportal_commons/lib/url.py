@@ -28,7 +28,6 @@
 import logging
 import re
 import urllib.parse
-from typing import Optional
 
 from pyramid.request import Request
 
@@ -40,13 +39,13 @@ class Url:
 
     scheme = ""
     _netloc = ""
-    _hostname: Optional[str] = None
-    _port: Optional[int] = None
+    _hostname: str | None = None
+    _port: int | None = None
     path = ""
     query: dict[str, str] = {}
     fragment = ""
 
-    def __init__(self, url: Optional[str] = None):
+    def __init__(self, url: str | None = None):
         if url:
             url_split = urllib.parse.urlsplit(url)
             self.scheme = url_split.scheme
@@ -104,7 +103,7 @@ class Url:
         self._hostname = netloc_split[0]
 
     @property
-    def hostname(self) -> Optional[str]:
+    def hostname(self) -> str | None:
         return self._hostname
 
     @hostname.setter
@@ -115,11 +114,11 @@ class Url:
         self.netloc = hostname if self._port is None else f"{hostname}:{self._port}"
 
     @property
-    def port(self) -> Optional[int]:
+    def port(self) -> int | None:
         return self._port
 
     @port.setter
-    def port(self, port: Optional[int]) -> None:
+    def port(self, port: int | None) -> None:
         self._port = port
         self.netloc = (self._hostname or "") if port is None else f"{self._hostname}:{port}"
 
@@ -153,8 +152,8 @@ class Url:
 
 
 def get_url2(
-    name: str, url: str, request: Request, errors: set[str], servers: Optional[dict[str, str]] = None
-) -> Optional[Url]:
+    name: str, url: str, request: Request, errors: set[str], servers: dict[str, str] | None = None
+) -> Url | None:
     """
     Get the real URL from the URI of the administration interface.
 

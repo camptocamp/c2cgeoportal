@@ -28,7 +28,7 @@
 import datetime
 import json
 import logging
-from typing import NamedTuple, Optional, TypedDict, Union
+from typing import NamedTuple, TypedDict
 
 import pyramid.request
 import pyramid.response
@@ -52,7 +52,7 @@ class DynamicUser(NamedTuple):
 
     username: str
     email: str
-    settings_role: Optional[main.Role]
+    settings_role: main.Role | None
     roles: list[main.Role]
 
 
@@ -84,11 +84,11 @@ class OidcRememberObject(TypedDict):
 
     access_token: str
     access_token_expires: str
-    refresh_token: Optional[str]
-    refresh_token_expires: Optional[str]
-    username: Optional[str]
-    email: Optional[str]
-    settings_role: Optional[str]
+    refresh_token: str | None
+    refresh_token_expires: str | None
+    username: str | None
+    email: str | None
+    settings_role: str | None
     roles: list[str]
 
 
@@ -104,9 +104,9 @@ class OidcRemember:
     @_CACHE_REGION_OBJ.cache_on_arguments()
     def remember(
         self,
-        token_response: Union[
-            simple_openid_connect.data.TokenSuccessResponse, simple_openid_connect.data.TokenErrorResponse
-        ],
+        token_response: (
+            simple_openid_connect.data.TokenSuccessResponse | simple_openid_connect.data.TokenErrorResponse
+        ),
     ) -> OidcRememberObject:
         """
         Remember the user in the cookie.

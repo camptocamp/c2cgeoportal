@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import json
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import colander
 import pyramid.request
@@ -41,7 +41,7 @@ from c2cgeoportal_commons.lib.validators import url
 from c2cgeoportal_commons.models.main import Metadata
 
 
-def get_relevant_for(model: Union[type[Any], Mapper[Any]]) -> set[str]:
+def get_relevant_for(model: type[Any] | Mapper[Any]) -> set[str]:
     """Return list of relevant_for values for passed class."""
     mapper = inspect(model)
     assert mapper is not None
@@ -139,7 +139,7 @@ class BooleanMetadata(colander.Boolean):  # type: ignore
 class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """The metadata schema."""
 
-    metadata_definitions: Optional[dict[str, Any]] = None
+    metadata_definitions: dict[str, Any] | None = None
 
     def __init__(self, *args: Any, **kw: Any):
         super().__init__(*args, **kw)

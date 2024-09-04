@@ -31,7 +31,7 @@ import os
 import subprocess
 from collections.abc import Mapping
 from time import sleep
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 from urllib.parse import urljoin
 
 import c2cwsgiutils.health_check
@@ -43,8 +43,8 @@ _LOG = logging.getLogger(__name__)
 
 
 def build_url(
-    name: str, path: str, request: pyramid.request.Request, headers: Optional[dict[str, str]] = None
-) -> dict[str, Union[str, dict[str, str]]]:
+    name: str, path: str, request: pyramid.request.Request, headers: dict[str, str] | None = None
+) -> dict[str, str | dict[str, str]]:
     """Build an URL and headers for the checkers."""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
     url = urljoin(base_internal_url, path)
@@ -58,9 +58,7 @@ def build_url(
     return {"url": url, "headers": headers}
 
 
-def _build_headers(
-    request: pyramid.request.Request, headers: Optional[dict[str, str]] = None
-) -> dict[str, str]:
+def _build_headers(request: pyramid.request.Request, headers: dict[str, str] | None = None) -> dict[str, str]:
     if headers is None:
         headers = {}
     headers["Cache-Control"] = "no-cache"
@@ -85,7 +83,7 @@ def _routes(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.He
                     self.route_name = route_name
                     self.type = type_
 
-                def __call__(self, request: pyramid.request.Request) -> Union[str, dict[str, str]]:
+                def __call__(self, request: pyramid.request.Request) -> str | dict[str, str]:
                     return build_url("route", request.route_path(self.route_name), request)[self.type]
 
             health_check.add_url_check(
@@ -141,7 +139,7 @@ def _fts(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
     if fts_settings.get("disable", False):
         return
 
-    def get_both(request: pyramid.request.Request) -> dict[str, Union[str, dict[str, str]]]:
+    def get_both(request: pyramid.request.Request) -> dict[str, str | dict[str, str]]:
         return build_url("Check the fulltextsearch", request.route_path("fulltextsearch"), request)
 
     def check(_request: pyramid.request.Request, response: pyramid.response.Response) -> None:
@@ -224,7 +222,7 @@ def _lang_files(
                     self.lang = lang
                     self.type = type_
 
-                def __call__(self, request: pyramid.request.Request) -> Union[str, Mapping[str, str]]:
+                def __call__(self, request: pyramid.request.Request) -> str | Mapping[str, str]:
                     return build_url(
                         self.name,
                         request.static_path(

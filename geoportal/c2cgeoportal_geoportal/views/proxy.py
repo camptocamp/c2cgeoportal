@@ -28,7 +28,7 @@
 
 import logging
 import sys
-from typing import Any, Optional, Union
+from typing import Any
 
 import pyramid.request
 import pyramid.response
@@ -57,11 +57,11 @@ class Proxy:
     def _proxy(
         self,
         url: Url,
-        params: Optional[dict[str, str]] = None,
-        method: Optional[str] = None,
+        params: dict[str, str] | None = None,
+        method: str | None = None,
         cache: bool = False,
-        body: Optional[bytes] = None,
-        headers: Optional[dict[str, str]] = None,
+        body: bytes | None = None,
+        headers: dict[str, str] | None = None,
     ) -> requests.models.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
@@ -147,7 +147,7 @@ class Proxy:
                 "--- With headers ---",
                 "%s",
             ]
-            args2: list[Union[str, int]] = [
+            args2: list[str | int] = [
                 response.reason,
                 url.url(),
                 response.status_code,
@@ -183,7 +183,7 @@ class Proxy:
         self,
         service_name: str,
         url: Url,
-        headers_update: Optional[dict[str, str]] = None,
+        headers_update: dict[str, str] | None = None,
         public: bool = False,
         **kwargs: Any,
     ) -> pyramid.response.Response:
@@ -210,9 +210,9 @@ class Proxy:
         content: bytes,
         cache_control: Cache,
         service_name: str,
-        headers: Optional[dict[str, str]] = None,
-        headers_update: Optional[dict[str, str]] = None,
-        content_type: Optional[str] = None,
+        headers: dict[str, str] | None = None,
+        headers_update: dict[str, str] | None = None,
+        content_type: str | None = None,
     ) -> pyramid.response.Response:
         if headers_update is None:
             headers_update = {}

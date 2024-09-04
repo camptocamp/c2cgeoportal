@@ -26,8 +26,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Optional
-
 import pyramid.request
 from geoalchemy2.shape import from_shape, to_shape
 from geojson import loads
@@ -51,7 +49,7 @@ class GeometryProcessing:
         self.request = request
 
     @view_config(route_name="difference", renderer="geojson")  # type: ignore
-    def difference(self) -> Optional[BaseGeometry]:
+    def difference(self) -> BaseGeometry | None:
         assert DBSession is not None
 
         body = loads(self.request.body)
