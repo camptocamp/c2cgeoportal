@@ -126,7 +126,7 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
     && npm-packages \
         @types @typescript-eslint @storybook ol-cesium jasmine-core karma karma-chrome-launcher \
         karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
-        react react-dom cypress chromatic jscodeshift sass start-server-and-test \
+        react react-dom cypress chromatic jscodeshift start-server-and-test \
         typedoc typescript \
         angular-gettext-tools commander puppeteer url-parse eslint \
         --src=package.json --src=node_modules/ngeo/package.json --dst=npm-packages \
