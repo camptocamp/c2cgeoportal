@@ -8,12 +8,12 @@ import re
 import subprocess
 import urllib.parse
 import zipfile
-from typing import Union, cast
+from typing import cast
 
 import fiona
 from defusedxml import ElementTree
 
-SCHEME_PORT: dict[str, Union[str, int]] = {
+SCHEME_PORT: dict[str, str | int] = {
     "http": 80,
     "https": 443,
 }

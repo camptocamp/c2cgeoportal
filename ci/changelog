@@ -33,7 +33,7 @@ import os
 import re
 import subprocess
 import sys
-from typing import Any, Optional
+from typing import Any
 
 import requests
 import yaml
@@ -50,7 +50,7 @@ def save() -> None:
     subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"])  # pylint: disable=subprocess-run-check
 
 
-def output(cmd: list[str]) -> Optional[bytes]:
+def output(cmd: list[str]) -> bytes | None:
     with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
         if proc.stdout is None:
             return None

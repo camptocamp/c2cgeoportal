@@ -35,9 +35,10 @@ import shutil
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
+from collections.abc import Callable
 from json.decoder import JSONDecodeError
 from subprocess import call, check_call, check_output
-from typing import Any, Callable, Optional, Union, cast
+from typing import Any, Union, cast
 
 import pkg_resources
 import requests
@@ -210,7 +211,7 @@ class C2cUpgradeTool:
             return cast(dict[str, Any], yaml.safe_load(project_file))
 
     @staticmethod
-    def get_upgrade(section: str) -> Union[list[Any], dict[str, Any]]:
+    def get_upgrade(section: str) -> list[Any] | dict[str, Any]:
         if not os.path.isfile(".upgrade.yaml"):
             print(colorize("Unable to find the required '.upgrade.yaml' file.", Color.RED))
             sys.exit(1)
@@ -222,7 +223,7 @@ class C2cUpgradeTool:
         self,
         step: int,
         error: bool = False,
-        message: Optional[str] = None,
+        message: str | None = None,
         prompt: str = "To continue, type:",
     ) -> None:
         with open(".UPGRADE_INSTRUCTIONS", "w", encoding="utf8") as instructions:
@@ -243,7 +244,7 @@ class C2cUpgradeTool:
     def run_step(self, step: int) -> None:
         getattr(self, f"step{step}")()
 
-    def test_checkers(self) -> tuple[bool, Optional[str]]:
+    def test_checkers(self) -> tuple[bool, str | None]:
         headers = " ".join(
             [f"--header {i[0]}={i[1]}" for i in self.project.get("checker_headers", {}).items()]
         )
@@ -869,7 +870,7 @@ class C2cUpgradeTool:
         print(f"git push {self.options.git_remote} {branch}.")
 
 
-def check_git_status_output(args: Optional[list[str]] = None) -> str:
+def check_git_status_output(args: list[str] | None = None) -> str:
     """Check if there is something that's not committed."""
     return check_output(["git", "status", "--short"] + (args if args is not None else [])).decode("utf-8")
 

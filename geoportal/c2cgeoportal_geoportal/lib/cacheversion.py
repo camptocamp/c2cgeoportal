@@ -27,7 +27,8 @@
 
 
 import uuid
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 from urllib.parse import urljoin
 
 import pyramid.registry

@@ -29,7 +29,7 @@
 # pylint: disable=no-member
 
 import logging.config
-from typing import Any, Union, cast
+from typing import Any, cast
 
 import sqlalchemy
 from alembic import context
@@ -45,14 +45,14 @@ _LOG = logging.getLogger(__name__)
 setup_logging(context.config.config_file_name)
 
 
-def get_config() -> dict[str, Union[str, bool]]:
+def get_config() -> dict[str, str | bool]:
     """Get the application configuration."""
     app_cfg = context.config.get_main_option("app.cfg")
     assert app_cfg is not None
     config.init(app_cfg)
     conf = config.get_config()
     assert conf is not None
-    settings: dict[str, Union[str, bool]] = {}
+    settings: dict[str, str | bool] = {}
     settings.update(conf)
     alembic_name = context.config.get_main_option("type")
     schema_postfix = f"_{alembic_name}" if alembic_name != "main" else ""

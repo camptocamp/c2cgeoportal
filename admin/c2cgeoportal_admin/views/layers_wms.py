@@ -27,7 +27,6 @@
 
 
 from functools import partial
-from typing import Optional
 
 import sqlalchemy
 from c2cgeoform import JSONDict
@@ -98,7 +97,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
         )
 
     def _sub_query(
-        self, query: Optional[sqlalchemy.orm.query.Query[LayerWMS]]
+        self, query: sqlalchemy.orm.query.Query[LayerWMS] | None
     ) -> sqlalchemy.orm.query.Query[LayerWMS]:
         del query
         return self._base_query()

@@ -31,7 +31,8 @@ import os
 import re
 import subprocess
 import traceback
-from typing import TYPE_CHECKING, Any, Callable, Optional, cast
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any, Optional, cast
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
@@ -66,7 +67,7 @@ class LinguaExtractorException(Exception):
     """Exception raised when an error occurs during the extraction."""
 
 
-def _get_config(key: str, default: Optional[str] = None) -> Optional[str]:
+def _get_config(key: str, default: str | None = None) -> str | None:
     """
     Return the config value for passed key.
 
@@ -89,7 +90,7 @@ def _get_config_str(key: str, default: str) -> str:
 class _Registry:
     settings = None
 
-    def __init__(self, settings: Optional[dict[str, Any]]) -> None:
+    def __init__(self, settings: dict[str, Any] | None) -> None:
         self.settings = settings
 
 
@@ -98,7 +99,7 @@ class _Request:
     matchdict: dict[str, str] = {}
     GET: dict[str, str] = {}
 
-    def __init__(self, settings: Optional[dict[str, Any]] = None) -> None:
+    def __init__(self, settings: dict[str, Any] | None = None) -> None:
         self.registry: _Registry = _Registry(settings)
 
     @staticmethod
@@ -158,7 +159,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
         self,
         filename: str,
         options: dict[str, Any],
-        fileobj: Optional[dict[str, Any]] = None,
+        fileobj: dict[str, Any] | None = None,
         lineno: int = 0,
     ) -> list[Message]:
         del fileobj, lineno
@@ -290,7 +291,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         self,
         filename: str,
         options: dict[str, Any],
-        fileobj: Optional[dict[str, Any]] = None,
+        fileobj: dict[str, Any] | None = None,
         lineno: int = 0,
     ) -> list[Message]:
         del options, fileobj, lineno
@@ -453,7 +454,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
     # Run on the development.ini file
     extensions = [".ini"]
-    featuretype_cache: dict[str, Optional[dict[str, Any]]] = {}
+    featuretype_cache: dict[str, dict[str, Any] | None] = {}
     wms_capabilities_cache: dict[str, WebMapService] = {}
 
     def __init__(self) -> None:
@@ -468,7 +469,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         self.env = None
 
     def __call__(
-        self, filename: str, options: dict[str, Any], fileobj: Optional[str] = None, lineno: int = 0
+        self, filename: str, options: dict[str, Any], fileobj: str | None = None, lineno: int = 0
     ) -> list[Message]:
         del fileobj, lineno
 
@@ -583,7 +584,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
     def _import(
         object_type: type[Any],
         messages: list[str],
-        callback: Optional[Callable[["main.Layer", list[str]], None]] = None,
+        callback: Callable[["main.Layer", list[str]], None] | None = None,
         has_interfaces: bool = True,
         name_regex: str = ".*",
     ) -> None:
@@ -880,7 +881,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
             try:
                 describe = parseString(response.text)
-                featurestype: Optional[dict[str, Node]] = {}
+                featurestype: dict[str, Node] | None = {}
                 self.featuretype_cache[url] = featurestype
                 for type_element in describe.getElementsByTagNameNS(
                     "http://www.w3.org/2001/XMLSchema", "complexType"

@@ -27,7 +27,7 @@
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Optional, TypedDict
+from typing import Any, TypedDict
 
 import basicauth
 import oauthlib.common
@@ -46,7 +46,7 @@ class _Token(TypedDict):
     access_token: str
     refresh_token: str
     expires_in: int
-    state: Optional[str]
+    state: str | None
 
 
 class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
@@ -1080,7 +1080,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         return client and client.pkce_required  # type: ignore
 
-    def get_code_challenge(self, code: str, request: oauthlib.common.Request) -> Optional[str]:
+    def get_code_challenge(self, code: str, request: oauthlib.common.Request) -> str | None:
         """
         Is called for every “token” requests.
 
@@ -1125,7 +1125,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         _LOG.debug("get_code_challenge authorization_code not found")
         return None
 
-    def get_code_challenge_method(self, code: str, request: oauthlib.common.Request) -> Optional[str]:
+    def get_code_challenge_method(self, code: str, request: oauthlib.common.Request) -> str | None:
         """
         Is called during the “token” request processing.
 

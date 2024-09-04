@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import logging
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 import c2cwsgiutils.health_check
 import pyramid.config
@@ -57,7 +57,7 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
             def __init__(self, host: dict[str, Any]):
                 self.host = host
 
-            def __call__(self, request: pyramid.request.Request) -> Optional[dict[str, Any]]:
+            def __call__(self, request: pyramid.request.Request) -> dict[str, Any] | None:
                 params = request.params
                 display = self.host["display"]
                 if "host" not in params or display == params["host"]:

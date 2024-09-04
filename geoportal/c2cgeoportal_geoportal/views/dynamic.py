@@ -28,7 +28,7 @@
 
 import re
 import urllib.parse
-from typing import Any, Union, cast
+from typing import Any, cast
 
 import pyramid.request
 from pyramid.httpexceptions import HTTPNotFound
@@ -163,7 +163,7 @@ class DynamicView:
         do_redirect = False
         url = None
         if "redirect_interface" in interface_config:
-            no_redirect_query: dict[str, Union[str, list[str]]] = {"no_redirect": "t"}
+            no_redirect_query: dict[str, str | list[str]] = {"no_redirect": "t"}
             if "query" in self.request.params:
                 query = urllib.parse.parse_qs(self.request.params["query"][1:], keep_blank_values=True)
                 no_redirect_query.update(query)

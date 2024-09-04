@@ -28,7 +28,7 @@
 
 import logging
 from functools import partial
-from typing import Any, Optional
+from typing import Any
 
 import colander
 import pyramid.request
@@ -143,7 +143,7 @@ def base_deferred_parent_id_validator(node, kw, model):
     return validator
 
 
-def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> Optional[str]:
+def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> str | None:
     """Get the tree item editing URL."""
     if treeitem.item_type is None:
         return None

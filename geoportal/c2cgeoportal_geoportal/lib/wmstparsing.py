@@ -27,14 +27,14 @@
 
 
 import datetime
-from typing import Any, Optional, Union
+from typing import Any, Union
 
 import isodate
 
 TimeExtent = Union["TimeExtentValue", "TimeExtentInterval"]
 
 
-def min_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
+def min_none(a: datetime.datetime | None, b: datetime.datetime | None) -> datetime.datetime | None:
     """Return the min value, support non in input."""
     if a is None:
         return b
@@ -43,7 +43,7 @@ def min_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> 
     return min(a, b)
 
 
-def max_none(a: Optional[datetime.datetime], b: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
+def max_none(a: datetime.datetime | None, b: datetime.datetime | None) -> datetime.datetime | None:
     """Return the max value, support non in input."""
     if a is None:
         return b
@@ -64,10 +64,10 @@ class TimeInformation:
     """
 
     def __init__(self) -> None:
-        self.extent: Optional[TimeExtent] = None
-        self.mode: Optional[str] = None
-        self.widget: Optional[str] = None
-        self.layer: Optional[dict[str, Any]] = None
+        self.extent: TimeExtent | None = None
+        self.mode: str | None = None
+        self.widget: str | None = None
+        self.layer: dict[str, Any] | None = None
 
     def merge(self, layer: dict[str, Any], extent: TimeExtent, mode: str, widget: str) -> None:
         layer_apply = self.layer == layer or (not self.has_time() and extent is not None)
@@ -97,7 +97,7 @@ class TimeInformation:
             else:
                 self.mode = mode
 
-    def merge_widget(self, widget: Optional[str]) -> None:
+    def merge_widget(self, widget: str | None) -> None:
         widget = "slider" if not widget else widget
         assert widget is not None
 
@@ -110,7 +110,7 @@ class TimeInformation:
     def has_time(self) -> bool:
         return self.extent is not None
 
-    def to_dict(self) -> Optional[dict[str, Any]]:
+    def to_dict(self) -> dict[str, Any] | None:
         if self.has_time():
             assert self.extent is not None
             time = self.extent.to_dict()
@@ -127,8 +127,8 @@ class TimeExtentValue:
         self,
         values: set[datetime.datetime],
         resolution: str,
-        min_def_value: Optional[datetime.datetime],
-        max_def_value: Optional[datetime.datetime],
+        min_def_value: datetime.datetime | None,
+        max_def_value: datetime.datetime | None,
     ):
         """
         Initialize.
@@ -176,8 +176,8 @@ class TimeExtentInterval:
         end: datetime.datetime,
         interval: tuple[int, int, int, int],
         resolution: str,
-        min_def_value: Optional[datetime.datetime],
-        max_def_value: Optional[datetime.datetime],
+        min_def_value: datetime.datetime | None,
+        max_def_value: datetime.datetime | None,
     ):
         """
         Initialize.
@@ -274,7 +274,7 @@ def parse_extent(extent: list[str], default_values: str) -> TimeExtent:
     raise ValueError(f"Invalid time extent format '{extent}'")
 
 
-def _parse_default_values(default_values: str) -> tuple[datetime.datetime, Optional[datetime.datetime]]:
+def _parse_default_values(default_values: str) -> tuple[datetime.datetime, datetime.datetime | None]:
     """
     Parse the 'default' value from OWSLib's defaulttimeposition and return a maximum of two dates.
 

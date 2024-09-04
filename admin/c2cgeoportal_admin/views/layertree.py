@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Any, Optional
+from typing import Any
 
 import pyramid.request
 from c2cgeoform.views.abstract_views import DeleteResponse, ItemAction
@@ -98,7 +98,7 @@ class LayerTreeViews:
             or interface in [interface.name for interface in item.interfaces]
         ]
 
-    def _item_actions(self, item: TreeItem, parent_id: Optional[int] = None) -> list[ItemAction]:
+    def _item_actions(self, item: TreeItem, parent_id: int | None = None) -> list[ItemAction]:
         actions = []
         actions.append(
             ItemAction(

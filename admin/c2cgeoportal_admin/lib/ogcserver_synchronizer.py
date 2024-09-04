@@ -202,7 +202,7 @@ class OGCServerSynchronizer:
         self._logger.info("%s layers added", self._layers_added)
         self._logger.info("%s layers removed", self._layers_removed)
 
-    def synchronize_layer(self, el: Element, parent: Optional[main.TreeGroup] = None) -> main.TreeItem:
+    def synchronize_layer(self, el: Element, parent: main.TreeGroup | None = None) -> main.TreeItem:
         if el.find("Layer") is None:
             tree_item = self.get_layer_wms(el, parent)
         elif parent is None:
@@ -287,7 +287,7 @@ class OGCServerSynchronizer:
 
         return group
 
-    def get_layer_wms(self, el: Element, parent: Optional[main.TreeGroup] = None) -> main.LayerWMS:
+    def get_layer_wms(self, el: Element, parent: main.TreeGroup | None = None) -> main.LayerWMS:
         name_el = el.find("Name")
         assert name_el is not None
         name = name_el.text

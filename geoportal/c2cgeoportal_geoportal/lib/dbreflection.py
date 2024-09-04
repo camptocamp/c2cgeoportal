@@ -29,7 +29,7 @@ import random
 import threading
 import warnings
 from collections.abc import Iterable
-from typing import Any, Optional, Union
+from typing import Any, Union
 
 import sqlalchemy.ext.declarative
 from papyrus.geo_interface import GeoInterface
@@ -55,7 +55,7 @@ SQL_GEOMETRY_COLUMNS = """
 class _AssociationProxy:
     # A specific "association proxy" implementation
 
-    def __init__(self, target: str, value_attr: str, nullable: bool = True, order_by: Optional[str] = None):
+    def __init__(self, target: str, value_attr: str, nullable: bool = True, order_by: str | None = None):
         self.target = target
         self.value_attr = value_attr
         self.nullable = nullable
@@ -64,8 +64,8 @@ class _AssociationProxy:
     def __get__(
         self,
         obj: sqlalchemy.ext.declarative.ConcreteBase,
-        type_: Optional[sqlalchemy.ext.declarative.DeclarativeMeta] = None,
-    ) -> Optional[Union["_AssociationProxy", str]]:
+        type_: sqlalchemy.ext.declarative.DeclarativeMeta | None = None,
+    ) -> Union["_AssociationProxy", str] | None:
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.
@@ -105,9 +105,9 @@ _get_table_lock = threading.RLock()
 
 def get_table(
     tablename: str,
-    schema: Optional[str] = None,
-    session: Optional[Session] = None,
-    primary_key: Optional[str] = None,
+    schema: str | None = None,
+    session: Session | None = None,
+    primary_key: str | None = None,
 ) -> Table:
     """Build an SQLAlchemy table."""
     if schema is None:
@@ -144,11 +144,11 @@ def get_table(
 @CACHE_REGION_OBJ.cache_on_arguments()
 def get_class(
     tablename: str,
-    exclude_properties: Optional[list[str]] = None,
-    primary_key: Optional[str] = None,
-    attributes_order: Optional[list[str]] = None,
-    enumerations_config: Optional[dict[str, str]] = None,
-    readonly_attributes: Optional[list[str]] = None,
+    exclude_properties: list[str] | None = None,
+    primary_key: str | None = None,
+    attributes_order: list[str] | None = None,
+    enumerations_config: dict[str, str] | None = None,
+    readonly_attributes: list[str] | None = None,
 ) -> type:
     """
     Get the SQLAlchemy mapped class for "tablename".
@@ -176,11 +176,11 @@ def get_class(
 
 def _create_class(
     table: Table,
-    exclude_properties: Optional[Iterable[str]] = None,
-    attributes_order: Optional[list[str]] = None,
-    enumerations_config: Optional[dict[str, str]] = None,
-    readonly_attributes: Optional[list[str]] = None,
-    pk_name: Optional[str] = None,
+    exclude_properties: Iterable[str] | None = None,
+    attributes_order: list[str] | None = None,
+    enumerations_config: dict[str, str] | None = None,
+    readonly_attributes: list[str] | None = None,
+    pk_name: str | None = None,
 ) -> type:
     from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
 

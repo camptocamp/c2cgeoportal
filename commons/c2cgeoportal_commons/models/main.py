@@ -31,7 +31,7 @@ import logging
 import os
 import re
 from datetime import datetime
-from typing import Any, Literal, Optional, Union, cast, get_args
+from typing import Any, Literal, Optional, cast, get_args
 
 import pyramid.request
 import sqlalchemy.orm.base
@@ -171,7 +171,7 @@ class Functionality(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -255,7 +255,7 @@ class Role(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -294,8 +294,8 @@ class Role(Base):  # type: ignore
         self,
         name: str = "",
         description: str = "",
-        functionalities: Optional[list[Functionality]] = None,
-        extent: Optional[Geometry] = None,
+        functionalities: list[Functionality] | None = None,
+        extent: Geometry | None = None,
     ) -> None:
         if functionalities is None:
             functionalities = []
@@ -308,7 +308,7 @@ class Role(Base):  # type: ignore
         return f"{self.name}[{self.id}]>"
 
     @property
-    def bounds(self) -> Optional[tuple[float, float, float, float]]:  # TODO
+    def bounds(self) -> tuple[float, float, float, float] | None:  # TODO
         if self.extent is None:
             return None
         return cast(tuple[float, float, float, float], to_shape(self.extent).bounds)
@@ -323,7 +323,7 @@ class TreeItem(Base):  # type: ignore
     """The treeitem table representation."""
 
     __tablename__ = "treeitem"
-    __table_args__: Union[tuple[Any, ...], dict[str, Any]] = (
+    __table_args__: tuple[Any, ...] | dict[str, Any] = (
         UniqueConstraint("type", "name"),
         {"schema": _schema},
     )
@@ -348,7 +348,7 @@ class TreeItem(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -399,7 +399,7 @@ class LayergroupTreeitem(Base):  # type: ignore
     id: Mapped[int] = mapped_column(
         Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
     )
-    description: Mapped[Optional[str]] = mapped_column(Unicode, info={"colanderalchemy": {"exclude": True}})
+    description: Mapped[str | None] = mapped_column(Unicode, info={"colanderalchemy": {"exclude": True}})
     treegroup_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey(_schema + ".treegroup.id", name="treegroup_id_fkey"),
@@ -439,7 +439,7 @@ class LayergroupTreeitem(Base):  # type: ignore
     ordering: Mapped[int] = mapped_column(Integer, info={"colanderalchemy": {"widget": HiddenWidget()}})
 
     def __init__(
-        self, group: Optional["TreeGroup"] = None, item: Optional[TreeItem] = None, ordering: int = 0
+        self, group: Optional["TreeGroup"] = None, item: TreeItem | None = None, ordering: int = 0
     ) -> None:
         self.treegroup = group
         self.treeitem = item
@@ -656,7 +656,7 @@ class Layer(TreeItem):
             }
         },
     )
-    geo_table: Mapped[Optional[str]] = mapped_column(
+    geo_table: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -751,7 +751,7 @@ class OGCServer(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -770,7 +770,7 @@ class OGCServer(Base):  # type: ignore
             }
         },
     )
-    url_wfs: Mapped[Optional[str]] = mapped_column(
+    url_wfs: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -840,9 +840,9 @@ class OGCServer(Base):  # type: ignore
     def __init__(
         self,
         name: str = "",
-        description: Optional[str] = None,
+        description: str | None = None,
         url: str = "https://wms.example.com",
-        url_wfs: Optional[str] = None,
+        url_wfs: str | None = None,
         type_: OGCServerType = OGCSERVER_TYPE_MAPSERVER,
         image_type: ImageType = "image/png",
         auth: OGCServerAuth = OGCSERVER_AUTH_STANDARD,
@@ -867,7 +867,7 @@ class OGCServer(Base):  # type: ignore
         url = get_url2(self.name, self.url, request, errors)
         return url.url() if url else "\n".join(errors)
 
-    def url_wfs_description(self, request: pyramid.request.Request) -> Optional[str]:
+    def url_wfs_description(self, request: pyramid.request.Request) -> str | None:
         if not self.url_wfs:
             return self.url_description(request)
         errors: set[str] = set()
@@ -939,7 +939,7 @@ class LayerWMS(DimensionLayer):
             }
         },
     )
-    style: Mapped[Optional[str]] = mapped_column(
+    style: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -1031,7 +1031,7 @@ class LayerWMS(DimensionLayer):
         self.time_widget = time_widget
 
     @staticmethod
-    def get_default(dbsession: Session) -> Optional[DimensionLayer]:
+    def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
             Optional[DimensionLayer],
             dbsession.query(LayerWMS).filter(LayerWMS.name == "wms-defaults").one_or_none(),
@@ -1175,7 +1175,7 @@ class LayerWMTS(DimensionLayer):
         self.image_type = image_type
 
     @staticmethod
-    def get_default(dbsession: Session) -> Optional[DimensionLayer]:
+    def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
             Optional[DimensionLayer],
             dbsession.query(LayerWMTS).filter(LayerWMTS.name == "wmts-defaults").one_or_none(),
@@ -1254,7 +1254,7 @@ class LayerCOG(Layer):
     )
 
     @staticmethod
-    def get_default(dbsession: Session) -> Optional[Layer]:
+    def get_default(dbsession: Session) -> Layer | None:
         return dbsession.query(LayerCOG).filter(LayerCOG.name == "cog-defaults").one_or_none()
 
     def url_description(self, request: pyramid.request.Request) -> str:
@@ -1370,7 +1370,7 @@ class LayerVectorTiles(DimensionLayer):
         self.sql = sql
 
     @staticmethod
-    def get_default(dbsession: Session) -> Optional[DimensionLayer]:
+    def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
             Optional[DimensionLayer],
             dbsession.query(LayerVectorTiles)
@@ -1404,7 +1404,7 @@ class RestrictionArea(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -1497,9 +1497,9 @@ class RestrictionArea(Base):  # type: ignore
         self,
         name: str = "",
         description: str = "",
-        layers: Optional[list[Layer]] = None,
-        roles: Optional[list[Role]] = None,
-        area: Optional[Geometry] = None,
+        layers: list[Layer] | None = None,
+        roles: list[Role] | None = None,
+        area: Geometry | None = None,
         readwrite: bool = False,
     ) -> None:
         if layers is None:
@@ -1565,7 +1565,7 @@ class Interface(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -1652,7 +1652,7 @@ class Metadata(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -1713,7 +1713,7 @@ class Metadata(Base):  # type: ignore
         ),
     )
 
-    def __init__(self, name: str = "", value: str = "", description: Optional[str] = None) -> None:
+    def __init__(self, name: str = "", value: str = "", description: str | None = None) -> None:
         self.name = name
         self.value = value
         self.description = description
@@ -1759,7 +1759,7 @@ class Dimension(Base):  # type: ignore
             }
         },
     )
-    field: Mapped[Optional[str]] = mapped_column(
+    field: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -1770,7 +1770,7 @@ class Dimension(Base):  # type: ignore
             }
         },
     )
-    description: Mapped[Optional[str]] = mapped_column(
+    description: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -1817,9 +1817,9 @@ class Dimension(Base):  # type: ignore
         self,
         name: str = "",
         value: str = "",
-        layer: Optional[str] = None,
-        field: Optional[str] = None,
-        description: Optional[str] = None,
+        layer: str | None = None,
+        field: str | None = None,
+        description: str | None = None,
     ) -> None:
         self.name = name
         self.value = value

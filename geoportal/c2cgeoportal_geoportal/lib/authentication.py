@@ -31,7 +31,8 @@ import json
 import logging
 import os
 import time
-from typing import Any, Callable, Optional, cast
+from collections.abc import Callable
+from typing import Any, cast
 
 import pyramid.request
 from Crypto.Cipher import AES  # nosec
@@ -56,13 +57,13 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     """An authentication policy based on information given in the URL."""
 
     def __init__(
-        self, aes_key: str, callback: Optional[Callable[[str, Any], list[str]]] = None, debug: bool = False
+        self, aes_key: str, callback: Callable[[str, Any], list[str]] | None = None, debug: bool = False
     ):
         self.aeskey = aes_key
         self.callback = callback
         self.debug = debug
 
-    def unauthenticated_userid(self, request: pyramid.request.Request) -> Optional[str]:
+    def unauthenticated_userid(self, request: pyramid.request.Request) -> str | None:
         if not request.method == "GET" or "auth" not in request.params:
             return None
         auth_enc = request.params.get("auth")
@@ -108,7 +109,7 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     """The oauth2 authentication policy."""
 
     @staticmethod
-    def unauthenticated_userid(request: pyramid.request.Request) -> Optional[str]:
+    def unauthenticated_userid(request: pyramid.request.Request) -> str | None:
         route_url = ""
         try:
             route_url = request.current_route_url(_query={**request.GET})
@@ -151,7 +152,7 @@ class DevAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     """An authentication policy for the dev base on an environment variable."""
 
     @staticmethod
-    def unauthenticated_userid(request: pyramid.request.Request) -> Optional[str]:
+    def unauthenticated_userid(request: pyramid.request.Request) -> str | None:
         """Get the user name from the environment variable."""
         del request
         return os.environ["DEV_LOGINNAME"]
@@ -221,7 +222,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
     return MultiAuthenticationPolicy(policies)
 
 
-def c2cgeoportal_check(username: str, password: str, request: pyramid.request.Request) -> Optional[list[str]]:
+def c2cgeoportal_check(username: str, password: str, request: pyramid.request.Request) -> list[str] | None:
     """Check the user authentication."""
     if request.registry.validate_user(request, username, password):
         return defaultgroupsfinder(username, request)

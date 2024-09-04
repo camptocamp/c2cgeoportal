@@ -28,7 +28,7 @@
 
 import glob
 import logging
-from typing import Any, Optional
+from typing import Any
 
 import pyramid.request
 from pyramid.i18n import TranslationStringFactory
@@ -61,7 +61,7 @@ class Entry:
 
     @staticmethod
     @_CACHE_REGION.cache_on_arguments()
-    def get_apijs(api_name: Optional[str]) -> str:
+    def get_apijs(api_name: str | None) -> str:
         with open("/etc/static-ngeo/api.js", encoding="utf-8") as api_file:
             api = api_file.read().split("\n")
         sourcemap = api.pop(-1)

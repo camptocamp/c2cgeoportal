@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 import json
-from typing import Any, Optional
+from typing import Any
 
 from sqlalchemy.engine import Dialect
 from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
@@ -38,17 +38,17 @@ class JSONEncodedDict(TypeDecorator[Any]):
 
     impl = VARCHAR
 
-    def process_bind_param(self, value: Optional[dict[str, Any]], _: Dialect) -> Optional[str]:
+    def process_bind_param(self, value: dict[str, Any] | None, _: Dialect) -> str | None:
         return json.dumps(value) if value is not None else None
 
-    def process_result_value(self, value: Optional[str], _: Dialect) -> Optional[dict[str, Any]]:
+    def process_result_value(self, value: str | None, _: Dialect) -> dict[str, Any] | None:
         return json.loads(value) if value is not None else None
 
     @property
     def python_type(self) -> type[Any]:
         return dict
 
-    def process_literal_param(self, value: Optional[Any], dialect: Any) -> str:
+    def process_literal_param(self, value: Any | None, dialect: Any) -> str:
         assert isinstance(value, str)
         del dialect
         return json.dumps(value)

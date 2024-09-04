@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from typing import Union, cast
+from typing import cast
 
 from pyramid.i18n import TranslationString
 from pyramid.threadlocal import get_current_request
@@ -34,7 +34,7 @@ from pyramid.threadlocal import get_current_request
 class Literal:
     """For use in templates to mark a string as safe and avoid HTML escaping."""
 
-    def __init__(self, s: Union[str, TranslationString]) -> None:
+    def __init__(self, s: str | TranslationString) -> None:
         self.s = s
 
     def __html__(self) -> str:

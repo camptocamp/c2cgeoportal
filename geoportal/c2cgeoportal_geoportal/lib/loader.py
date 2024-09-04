@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 from c2c.template.config import config as configuration
 from c2cwsgiutils.loader import Loader as BaseLoader
@@ -41,7 +41,7 @@ class Loader(BaseLoader):
     """The Pyramid configuration loader."""
 
     def get_wsgi_app_settings(
-        self, name: Optional[str] = None, defaults: Optional[dict[str, str]] = None
+        self, name: str | None = None, defaults: dict[str, str] | None = None
     ) -> dict[str, Any]:
         settings = cast(dict[str, Any], super().get_wsgi_app_settings(name, defaults))
         app_cfg = settings.get("app.cfg")

@@ -28,7 +28,7 @@
 
 import logging
 from enum import Enum
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 import pyramid.request
 import pyramid.response
@@ -115,7 +115,7 @@ def _set_common_headers(
     response: pyramid.response.Response,
     service_headers_settings: dict[str, dict[str, str]],
     cache: Cache,
-    content_type: Optional[str],
+    content_type: str | None,
 ) -> pyramid.response.Response:
     """Set the common headers."""
 
@@ -155,7 +155,7 @@ def set_common_headers(
     cache: Cache,
     response: pyramid.response.Response = None,
     credentials: bool = True,
-    content_type: Optional[str] = None,
+    content_type: str | None = None,
 ) -> pyramid.response.Response:
     """Set the common headers."""
     if response is None:

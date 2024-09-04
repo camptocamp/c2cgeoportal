@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 import pytz
 from c2cgeoform.views.abstract_views import AbstractViews, DeleteResponse, SaveResponse
@@ -67,7 +67,7 @@ class LoggedViews(AbstractViews[_T], Generic[_T]):
         self,
         action: LogAction,
         obj: Base,  # type: ignore[valid-type]
-        element_url_table: Optional[str] = None,
+        element_url_table: str | None = None,
     ) -> None:
         assert self._model is not None
         assert self._name_field is not None

@@ -30,8 +30,9 @@ import copy
 import logging
 import xml.sax.handler  # nosec
 import xml.sax.xmlreader  # nosec
+from collections.abc import Callable
 from io import StringIO
-from typing import Any, Callable, Optional, Union
+from typing import Any, Union
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
 
 import defusedxml.expatreader
@@ -203,8 +204,8 @@ class _CapabilitiesFilter(XMLFilterBase):
         upstream: XMLFilterBase,
         downstream: XMLGenerator,
         tag_name: str,
-        layers_blacklist: Optional[set[str]] = None,
-        layers_whitelist: Optional[set[str]] = None,
+        layers_blacklist: set[str] | None = None,
+        layers_whitelist: set[str] | None = None,
     ):
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
@@ -257,10 +258,10 @@ class _CapabilitiesFilter(XMLFilterBase):
     def endDocument(self) -> None:  # noqa: ignore=N802
         self._downstream.endDocument()
 
-    def startPrefixMapping(self, prefix: Optional[str], uri: str) -> None:  # noqa: ignore=N802
+    def startPrefixMapping(self, prefix: str | None, uri: str) -> None:  # noqa: ignore=N802
         self._downstream.startPrefixMapping(prefix, uri)
 
-    def endPrefixMapping(self, prefix: Optional[str]) -> None:  # noqa: ignore=N802
+    def endPrefixMapping(self, prefix: str | None) -> None:  # noqa: ignore=N802
         self._downstream.endPrefixMapping(prefix)
 
     def startElement(self, name: str, attrs: xml.sax.xmlreader.AttributesImpl) -> None:  # noqa: ignore=N802

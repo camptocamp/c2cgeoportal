@@ -27,7 +27,7 @@
 
 
 import logging
-from typing import Any, Optional, TypeVar
+from typing import Any, TypeVar
 
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
@@ -43,7 +43,7 @@ except ModuleNotFoundError:
 
 
 # Should be filed on application initialization
-DBSession: Optional[sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session]] = None
+DBSession: sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session] | None = None
 
 _Meta = TypeVar("_Meta")
 _Type = TypeVar("_Type")

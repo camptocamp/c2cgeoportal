@@ -31,8 +31,9 @@ import json
 import logging
 import os
 import urllib.parse
+from collections.abc import Callable
 from functools import partial
-from typing import TYPE_CHECKING, Any, Callable, Optional, cast
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 import c2cgeoform
 import c2cwsgiutils
@@ -119,7 +120,7 @@ def add_interface(
     config: pyramid.config.Configurator,
     interface_name: str = "desktop",
     interface_type: str = INTERFACE_TYPE_NGEO,
-    interface_config: Optional[dict[str, Any]] = None,
+    interface_config: dict[str, Any] | None = None,
     default: bool = False,
     **kwargs: Any,
 ) -> None:
@@ -155,8 +156,8 @@ def add_interface_ngeo(
     config: pyramid.config.Configurator,
     route_name: str,
     route: str,
-    renderer: Optional[str] = None,
-    permission: Optional[str] = None,
+    renderer: str | None = None,
+    permission: str | None = None,
 ) -> None:
     """Add the ngeo interfaces views and routes."""
 
@@ -184,7 +185,7 @@ def add_interface_canvas(
     route_name: str,
     route: str,
     interface_config: dict[str, Any],
-    permission: Optional[str] = None,
+    permission: str | None = None,
 ) -> None:
     """Add the ngeo interfaces views and routes."""
 
@@ -266,7 +267,7 @@ def _match_url_start(reference: str, value: list[str]) -> bool:
 
 def is_allowed_url(
     request: pyramid.request.Request, url: str, allowed_hosts: list[str]
-) -> tuple[Optional[str], bool]:
+) -> tuple[str | None, bool]:
     """
     Check if the URL is allowed.
 
@@ -277,7 +278,7 @@ def is_allowed_url(
     return url_netloc, url_netloc == request.host or url_netloc in allowed_hosts
 
 
-def is_valid_referrer(request: pyramid.request.Request, settings: Optional[dict[str, Any]] = None) -> bool:
+def is_valid_referrer(request: pyramid.request.Request, settings: dict[str, Any] | None = None) -> bool:
     """Check if the referrer is valid."""
     if request.referrer is not None:
         if settings is None:
@@ -299,11 +300,11 @@ def is_valid_referrer(request: pyramid.request.Request, settings: Optional[dict[
 
 def create_get_user_from_request(
     settings: dict[str, Any]
-) -> Callable[[pyramid.request.Request, Optional[str]], Optional["static.User"]]:
+) -> Callable[[pyramid.request.Request, str | None], Optional["static.User"]]:
     """Get the get_user_from_request function."""
 
     def get_user_from_request(
-        request: pyramid.request.Request, username: Optional[str] = None
+        request: pyramid.request.Request, username: str | None = None
     ) -> Optional["static.User"]:
         """
         Return the User object for the request.
@@ -403,7 +404,7 @@ def set_user_validator(
     config.action("user_validator", register)
 
 
-def default_user_validator(request: pyramid.request.Request, username: str, password: str) -> Optional[str]:
+def default_user_validator(request: pyramid.request.Request, username: str, password: str) -> str | None:
     """
     Validate the username/password.
 
@@ -840,7 +841,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
 
 def init_db_sessions(
-    settings: dict[str, Any], config: Configurator, health_check: Optional[HealthCheck] = None
+    settings: dict[str, Any], config: Configurator, health_check: HealthCheck | None = None
 ) -> None:
     """Initialize the database sessions."""
     db_chooser = settings.get("db_chooser", {})

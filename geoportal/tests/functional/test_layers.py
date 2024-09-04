@@ -28,7 +28,7 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 from unittest import TestCase
 
 from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request
@@ -96,7 +96,7 @@ class TestLayers(TestCase):
         none_area: bool = False,
         attr_list: bool = False,
         exclude_properties: bool = False,
-        metadatas: Optional[list["Metadata"]] = None,
+        metadatas: list["Metadata"] | None = None,
         geom_type: bool = False,
     ) -> None:
         """

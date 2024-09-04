@@ -31,7 +31,7 @@ import logging
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
-from typing import Any, Optional
+from typing import Any
 
 import pytz
 import sqlalchemy.schema
@@ -145,7 +145,7 @@ class User(Base):  # type: ignore
     _password: Mapped[str] = mapped_column(
         "password", Unicode, nullable=False, info={"colanderalchemy": {"exclude": True}}
     )
-    temp_password: Mapped[Optional[str]] = mapped_column(
+    temp_password: Mapped[str | None] = mapped_column(
         "temp_password", Unicode, nullable=True, info={"colanderalchemy": {"exclude": True}}
     )
     tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})  # type: ignore[arg-type]
@@ -232,7 +232,7 @@ class User(Base):  # type: ignore
         },
     )
 
-    expire_on: Mapped[Optional[datetime]] = mapped_column(
+    expire_on: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         info={
             "colanderalchemy": {
@@ -259,9 +259,9 @@ class User(Base):  # type: ignore
         password: str = "",
         email: str = "",
         is_password_changed: bool = False,
-        settings_role: Optional[Role] = None,
-        roles: Optional[list[Role]] = None,
-        expire_on: Optional[datetime] = None,
+        settings_role: Role | None = None,
+        roles: list[Role] | None = None,
+        expire_on: datetime | None = None,
         deactivated: bool = False,
     ) -> None:
         self.username = username
@@ -470,7 +470,7 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
     user = relationship(User)
     redirect_uri: Mapped[str] = mapped_column(Unicode)
     code: Mapped[str] = mapped_column(Unicode(100), unique=True, nullable=True)
-    state: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    state: Mapped[str | None] = mapped_column(String, nullable=True)
     challenge: Mapped[str] = mapped_column(String(128), nullable=True)
     challenge_method: Mapped[str] = mapped_column(String(6), nullable=True)
     expire_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))  # in 10 minutes

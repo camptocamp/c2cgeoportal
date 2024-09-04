@@ -31,7 +31,7 @@ import logging
 import math
 import os
 import traceback
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import numpy
 import pyramid.request
@@ -121,7 +121,7 @@ class Raster:
 
     def _get_raster_value(
         self, layer: dict[str, Any], name: str, lon: float, lat: float
-    ) -> Optional[decimal.Decimal]:
+    ) -> decimal.Decimal | None:
         data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
         if type_ == "shp_index":
@@ -153,11 +153,11 @@ class Raster:
     @staticmethod
     def _get_value(
         layer: dict[str, Any], name: str, dataset: DatasetReader, lon: float, lat: float
-    ) -> Optional[numpy.float32]:
+    ) -> numpy.float32 | None:
         index = dataset.index(lon, lat)
 
         shape = dataset.shape
-        result: Optional[numpy.float32]
+        result: numpy.float32 | None
         if 0 <= index[0] < shape[0] and 0 <= index[1] < shape[1]:
 
             def get_index(index_: int) -> tuple[int, int]:
@@ -182,7 +182,7 @@ class Raster:
         return result
 
     @staticmethod
-    def _round(value: numpy.float32, round_to: float) -> Optional[decimal.Decimal]:
+    def _round(value: numpy.float32, round_to: float) -> decimal.Decimal | None:
         if value is not None:
             decimal_value = decimal.Decimal(str(value))
             try:
