@@ -42,7 +42,11 @@
 <section id="create-a-tunnel-on-the-database-server">
 <h3>Create a tunnel on the database server<a class="headerlink" href="#create-a-tunnel-on-the-database-server" title="Link to this heading">¶</a></h3>
 <p>If you cannot connect directly to the database, you can create a tunnel to be able to connect:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ssh<span class="w"> </span>-L<span class="w"> </span><span class="m">5432</span>:localhost:5432<span class="w"> </span>&lt;server&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">ssh<span class="w"> </span>-L<span class="w"> </span><span class="m">5432</span>:localhost:5432<span class="w"> </span>&lt;server&gt;</span>
 </pre></div></div><p>If you run QGIS in Docker, you should bind to a specific IP:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span>dev<span class="w"> </span><span class="k">$(</span>route<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>default<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $(NF)}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="k">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;$1 ~ /^inet/ { sub(&quot;/.*&quot;, &quot;&quot;, $2); print $2 }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-1<span class="k">)</span></span>
 <span class="prompt1">ssh<span class="w"> </span>-L<span class="w"> </span><span class="si">${</span><span class="nv">IP</span><span class="si">}</span>:5432:localhost:5432<span class="w"> </span>&lt;remote<span class="w"> </span>server&gt;</span>

@@ -54,7 +54,11 @@ For example, to have two NGEO interfaces called “mobile” and “new”, set:
 <section id="copy-files-from-template">
 <h2>Copy files from template<a class="headerlink" href="#copy-files-from-template" title="Link to this heading">¶</a></h2>
 <p>If you want a new mobile interface, get the default files as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/mobile.html.ejs<span class="w"> </span><span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/mobile.html.ejs<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span>
 <span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controllermobile.js<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span>

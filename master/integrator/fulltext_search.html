@@ -112,53 +112,53 @@ and the application’s default language match.</p>
                                                <span class="p">[</span><span class="n">config_uri</span><span class="p">]</span> <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
-<section id="positional-arguments">
-<h3>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Link to this heading">¶</a></h3>
+<section id="c2cgeoportal_geoportal.scripts.theme2fts-get_argparser-positional-arguments">
+<h3>Positional Arguments<a class="headerlink" href="#c2cgeoportal_geoportal.scripts.theme2fts-get_argparser-positional-arguments" title="Link to this heading">¶</a></h3>
 <dl class="option-list">
 <dt><kbd>config_uri</kbd></dt>
 <dd><p>The URI to the configuration file.</p>
-<p>Default: “c2c://geoportal/development.ini”</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'c2c://geoportal/development.ini'</span></code></p>
 </dd>
 <dt><kbd>config_vars</kbd></dt>
 <dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
-<p>Default: ()</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">()</span></code></p>
 </dd>
 </dl>
 </section>
-<section id="named-arguments">
-<h3>Named Arguments<a class="headerlink" href="#named-arguments" title="Link to this heading">¶</a></h3>
+<section id="c2cgeoportal_geoportal.scripts.theme2fts-get_argparser-named-arguments">
+<h3>Named Arguments<a class="headerlink" href="#c2cgeoportal_geoportal.scripts.theme2fts-get_argparser-named-arguments" title="Link to this heading">¶</a></h3>
 <dl class="option-list">
 <dt><kbd>--locale-folder</kbd></dt>
 <dd><p>The folder where the locale files are stored (default is /etc/geomapfish/locale/)</p>
-<p>Default: “/etc/geomapfish/locale/”</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'/etc/geomapfish/locale/'</span></code></p>
 </dd>
 <dt><kbd>--interfaces</kbd></dt>
 <dd><p>the interfaces to export</p>
 </dd>
 <dt><kbd>--exclude-interfaces</kbd></dt>
 <dd><p>the interfaces to exclude (can’t be used with –interfaces)</p>
-<p>Default: [‘api’]</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">['api']</span></code></p>
 </dd>
 <dt><kbd>--duplicate-name</kbd></dt>
 <dd><p>allows to add a name more than one time,
 by default if we find more than one element with the same name only one will be imported</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 <dt><kbd>--no-themes</kbd></dt>
 <dd><p>do not import the themes</p>
-<p>Default: True</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 </dd>
 <dt><kbd>--no-blocks</kbd></dt>
 <dd><p>do not import the blocks (first level layer groups)</p>
-<p>Default: True</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 </dd>
 <dt><kbd>--no-folders</kbd></dt>
 <dd><p>do not import the folders (tree folders)</p>
-<p>Default: True</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 </dd>
 <dt><kbd>--no-layers</kbd></dt>
 <dd><p>do not import the layers (tree leaf)</p>
-<p>Default: True</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 </dd>
 <dt><kbd>--package</kbd></dt>
 <dd><p>the application package</p>
@@ -301,7 +301,11 @@ is based only on the similarities of words, without language analysis, and it
 cares only about how near your search is to the result. <cite>12</cite> is nearer to <cite>12</cite>
 than <cite>120</cite>.</p>
 <p>Ensure that the extension is created in you database:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE EXTENSION pg_trgm&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
 </pre></div></div><p>Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">tsvector</span></code> and <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to rank your search
 results
 (see: <a class="reference external" href="https://www.postgresql.org/docs/current/textsearch-controls.html">textsearch-controls</a>).

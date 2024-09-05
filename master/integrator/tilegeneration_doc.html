@@ -83,7 +83,11 @@ Sub-level of <code class="docutils literal notranslate"><span class="pre">caches
 <li><p>Configure the <code class="docutils literal notranslate"><span class="pre">layer_default</span></code>, the <code class="docutils literal notranslate"><span class="pre">layers</span></code>, and the <code class="docutils literal notranslate"><span class="pre">generation</span></code>/<code class="docutils literal notranslate"><span class="pre">default_layers</span></code>.
 Sub-level of <code class="docutils literal notranslate"><span class="pre">layers</span></code> is the layer name.</p></li>
 <li><p>We can drop the empty tiles with a hash comparison, tilecloud-chain has a tool to help us:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles<span class="w"> </span><span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tilecloudchain<span class="w"> </span>generate-tiles<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--get-hash<span class="w"> </span>&lt;max-zoom&gt;/0/0<span class="w"> </span>--layer<span class="w"> </span>&lt;layer&gt;</span>
 </pre></div></div><p>We consider that the first tile of the max zoom is empty.
 Then copy-paste the result in the layer config.</p>

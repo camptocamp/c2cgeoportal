@@ -167,35 +167,35 @@ User can be created if it does not exist yet.</p>
                                                   <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]</span> <span class="n">user</span>
 </pre></div>
 </div>
-<section id="positional-arguments">
-<h4>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Link to this heading">¶</a></h4>
+<section id="c2cgeoportal_geoportal.scripts.manage_users-get_argparser-positional-arguments">
+<h4>Positional Arguments<a class="headerlink" href="#c2cgeoportal_geoportal.scripts.manage_users-get_argparser-positional-arguments" title="Link to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>config_uri</kbd></dt>
 <dd><p>The URI to the configuration file.</p>
-<p>Default: “c2c://geoportal/development.ini”</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'c2c://geoportal/development.ini'</span></code></p>
 </dd>
 <dt><kbd>config_vars</kbd></dt>
 <dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
-<p>Default: ()</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">()</span></code></p>
 </dd>
 <dt><kbd>user</kbd></dt>
 <dd><p>The user</p>
 </dd>
 </dl>
 </section>
-<section id="named-arguments">
-<h4>Named Arguments<a class="headerlink" href="#named-arguments" title="Link to this heading">¶</a></h4>
+<section id="c2cgeoportal_geoportal.scripts.manage_users-get_argparser-named-arguments">
+<h4>Named Arguments<a class="headerlink" href="#c2cgeoportal_geoportal.scripts.manage_users-get_argparser-named-arguments" title="Link to this heading">¶</a></h4>
 <dl class="option-list">
 <dt><kbd>--password, -p</kbd></dt>
 <dd><p>Set password (if not set, username is used as password</p>
 </dd>
 <dt><kbd>--create, -c</kbd></dt>
 <dd><p>Create user if it does not already exist</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 <dt><kbd>--rolename, -r</kbd></dt>
 <dd><p>The role name which must exist in the database</p>
-<p>Default: “role_admin”</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'role_admin'</span></code></p>
 </dd>
 <dt><kbd>--email, -e</kbd></dt>
 <dd><p>The user email</p>

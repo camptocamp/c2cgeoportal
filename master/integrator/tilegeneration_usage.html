@@ -344,7 +344,11 @@ canceled, and restarted.</p>
 <section id="authentication">
 <h3>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">¶</a></h3>
 <p>To be authenticated by Amazon you should set those environments variable before running a command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>...</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>...</span>
 <span class="prompt1"><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>...</span>
 </pre></div></div></section>
 <section id="configure-s3">
@@ -590,6 +594,7 @@ configuration file to use.</p></li>
 configuration file to use.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTSFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>, the hosts to config file
 mapping file to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAX_GENERATION_TIME</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">60</span></code>, the maximum time to generate the tiles (lock timeout) in second.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">2</span></code>, the number of thread used to generate the tiles (If we use meta tiles)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">METATILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">25</span></code>, the number of thread used to generate the meta tiles (If we use
 meta tiles, also to generate the tiles)</p></li>
@@ -598,6 +603,8 @@ meta tiles, also to generate the tiles)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1</span></code>, the chunk size to process the tiles after the meta tiles.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_MAX_OUTPUT_LENGTH</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1000</span></code>, the maximum number of character of the
 output to be display in the admin interface.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_CONCURRENT_GET_LEGEND</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">10</span></code>, the number of concurrent request to get the
+legend images during the generation of the capabilities.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">console</span></code>, can also be <code class="docutils literal notranslate"><span class="pre">json</span></code> to log in JSON for <code class="docutils literal notranslate"><span class="pre">Logstash</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
 <code class="docutils literal notranslate"><span class="pre">TILECLOUD_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
