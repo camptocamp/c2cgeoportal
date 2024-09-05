@@ -133,6 +133,7 @@
         'doc/pyproject.toml',
         'docker/config/pyproject.toml',
         'docker/qgisserver/pyproject.toml',
+        '.python-version',
       ],
       enabled: false,
       matchDepNames: ['python'],
@@ -216,11 +217,6 @@
       matchBaseBranches: ['2.6'],
       enabled: false,
       matchDepNames: ['alabaster'],
-    },
-    /** Disabling automatic update of .python-version */
-    {
-      matchFileNames: ['^\\.python\\-version$'],
-      enabled: false,
     },
   ],
 }
