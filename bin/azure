@@ -28,7 +28,7 @@ import os
 import subprocess
 
 import yaml
-from azure.storage.blob import BlobServiceClient, __version__
+from azure.storage.blob import BlobServiceClient, ContainerClient, __version__
 
 
 def main() -> None:
@@ -37,6 +37,11 @@ def main() -> None:
         "--connection-string",
         help="Azure Storage connection string",
         default=os.environ.get("AZURE_STORAGE_CONNECTION_STRING"),
+    )
+    parser.add_argument(
+        "--blob-container-url",
+        help="Azure Storage blob container URL",
+        default=os.environ.get("AZURE_STORAGE_BLOB_CONTAINER_URL"),
     )
     parser.add_argument(
         "--connection-info", help="Display Azure Storage connection info file", action="store_true"
@@ -50,19 +55,32 @@ def main() -> None:
     parser.add_argument("--sync-download", help="Download files from the container (azure, local)", nargs=2)
     args = parser.parse_args()
 
-    blob_service_client = BlobServiceClient.from_connection_string(args.connection_string)
+    blob_service_client is None
+    container_client = None
+    if args.connection_string:
+        blob_service_client = BlobServiceClient.from_connection_string(args.connection_string)
+        if args.container:
+            container_client = blob_service_client.get_container_client(args.container)
+    elif args.blob_container_url:
+        container_client = ContainerClient.from_container_url(args.blob_container_url)
 
     if args.connection_info:
         print(f"Azure Blob Storage version: {__version__}")
-        print(f"Connected as {blob_service_client.account_name}, account information:")
-        print(yaml.dump(blob_service_client.get_account_information(), Dumper=yaml.SafeDumper))
+        if blob_service_client is not None:
+            print(f"Connected as {blob_service_client.account_name}, account information:")
+            print(yaml.dump(blob_service_client.get_account_information(), Dumper=yaml.SafeDumper))
+        if container_client is not None:
+            print(f"Container information:")
+            print(yaml.dump(container_client.get_container_properties(), Dumper=yaml.SafeDumper))
 
     if args.list_containers:
+        if blob_service_client is None:
+            print("Cannot list containers without a connection string")
+            return
         for container in blob_service_client.list_containers():
             print(container["name"])
 
-    if args.container:
-        container_client = blob_service_client.get_container_client(container=args.container)
+    if container_client is not None:
         if args.list is not None:
             print("\n".join([c["name"] for c in container_client.walk_blobs(name_starts_with=args.list)]))
 
