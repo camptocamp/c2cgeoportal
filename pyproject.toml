@@ -83,7 +83,7 @@ types-pytz = "2022.7.1.2"
 types-pyyaml = "6.0.12.12"
 types-python-dateutil = "2.8.19.20240311"
 types-requests = "2.28.11.17"
-types-pkg-resources = "0.1.3"
+types-setuptools = "67.1.0.2"
 mappyfile = "0.9.7"
 c2cciutils = { version = "1.4.20", extras = ["checks"] }
 mapbox-vector-tile = "2.0.1"
