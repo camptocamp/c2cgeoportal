@@ -1,3 +1,7 @@
+##### 2.7.1.136
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#11367](https://github.com/camptocamp/c2cgeoportal/pull/11367)
+
 ##### 2.7.1.135
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#11350](https://github.com/camptocamp/c2cgeoportal/pull/11350)
