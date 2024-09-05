@@ -35,7 +35,7 @@ import sys
 import time
 from collections import Counter
 from math import sqrt
-from typing import Any, Union, cast
+from typing import Any, Optional, Union, cast
 
 import dogpile.cache.api
 import pyramid.httpexceptions
@@ -894,7 +894,7 @@ class Theme:
 
     async def _wfs_get_features_type(
         self, wfs_url: Url, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
-    ) -> tuple[etree.Element | None, set[str]]:  # pylint: disable=c-extension-no-member
+    ) -> tuple[Optional[etree.Element], set[str]]:  # pylint: disable=c-extension-no-member
         errors = set()
 
         wfs_url.add_query(

@@ -134,12 +134,13 @@ repos:
       - id: pyupgrade
         args:
           - --py310-plus
+        # geoportal/c2cgeoportal_geoportal/views/theme\.py is present because of issue:
+        # https://bugs.launchpad.net/lxml/+bug/2079018
         exclude: |-
           (?x)^(
-            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build
-            |scripts/.*)
-            |scripts/(get-version
-            |upgrade)
+            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build|scripts/.*)
+            |scripts/(get-version|upgrade)
+            |geoportal/c2cgeoportal_geoportal/views/theme\.py
           )$
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.3.1
