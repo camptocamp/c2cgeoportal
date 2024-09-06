@@ -14,10 +14,10 @@ and the `GDAL output driver options <https://gdal.org/drivers/raster/cog.html>`_
 Generalities
 ------------
 
-In this section, we explain how to use the S3-like storage from Exoscale.
+In this section, we explain how to use the S3-like storage from Exoscale,
+or the blob container from Azure.
 
-First of all, you should set the following variables
-on the ``geoportal``, ``config`` and ``qgisserver`` services:
+First of all, you should set the following variables on the desired env file:
 
 For Exoscale:
 
@@ -26,13 +26,15 @@ For Exoscale:
 * ``AWS_DEFAULT_REGION=ch-dk-2``: The region used by Exoscale.
 * ``AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io``: The endpoint used by Exoscale.
 
-For Azure:
+For Azure connection string:
 
 * ``AZURE_STORAGE_CONNECTION_STRING``: The connection string.
 
+For Azure blob container URL:
 
-For better performance, you should furthermore set the following variables
-on the ``geoportal`` and ``qgisserver`` services:
+* ``AZURE_STORAGE_BLOB_CONTAINER_URL``: The blob container URL.
+
+For better performance, you should furthermore also set the following variables:
 
 * ``CPL_VSIL_CURL_USE_CACHE=TRUE``
 * ``CPL_VSIL_CURL_CACHE_SIZE=128000000``
@@ -58,7 +60,7 @@ Create the vrt file for a raster layer:
         'gdalbuildvrt /vsis3/<bucket>/<folder>/index.vrt \
         $(list4vrt <bucket> <folder>/ .tif)'
 
-Azure:
+Azure connection string:
 
 Use list the container:
 
@@ -78,6 +80,19 @@ Create the vrt file for a raster layer:
 
    docker compose exec geoportal azure --container=<container> --vrt <folder>/ .tiff
 
+Azure blob container URL:
+
+Use list the files:
+
+.. prompt:: bash
+
+   docker compose exec geoportal azure --list ''
+
+Create the vrt file for a raster layer:
+
+.. prompt:: bash
+
+   docker compose exec geoportal azure --vrt <folder>/ .tiff
 
 MapServer
 ---------
@@ -101,7 +116,7 @@ Exoscale:
     docker cp <docker_compose_project_name>_geoportal_1:/app/index.dbf mapserver/
     docker cp <docker_compose_project_name>_geoportal_1:/app/index.prj mapserver/
 
-Azure:
+Azure connection string:
 
 .. prompt:: bash
 
@@ -120,6 +135,24 @@ Azure:
     docker cp <docker_compose_project_name>_geoportal_1:/app/index.dbf mapserver/<set>.dbf
     docker cp <docker_compose_project_name>_geoportal_1:/app/index.prj mapserver/<set>.prj
 
+Azure blob container URL:
+
+.. prompt:: bash
+
+   docker compose exec geoportal rm index.shp
+   docker compose exec geoportal rm index.shx
+   docker compose exec geoportal rm index.dbf
+   docker compose exec geoportal rm index.prj
+   docker compose exec geoportal bash -c \
+        'gdaltindex mapserver/index.shp $( \
+            azure --list <folder>/ | \
+            grep tiff$ | \
+            awk '"'"'{print "/vsiaz/<container>/"$1}'"'"' \
+        )'
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shp mapserver/<set>.shp
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.shx mapserver/<set>.shx
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.dbf mapserver/<set>.dbf
+    docker cp <docker_compose_project_name>_geoportal_1:/app/index.prj mapserver/<set>.prj
 
 Add the following config in the ``mapserver/mapserver.map.tmpl`` file:
 
@@ -139,11 +172,19 @@ Exoscale:
    CONFIG "AWS_DEFAULT_REGION" "${AWS_DEFAULT_REGION}"
    CONFIG "AWS_S3_ENDPOINT" "${AWS_S3_ENDPOINT}"
 
-Azure:
+Azure connection string:
 
 .. code::
 
    ${DISABLE_LOCAL} CONFIG "AZURE_STORAGE_CONNECTION_STRING" "${AZURE_STORAGE_CONNECTION_STRING}"
+   ${DISABLE_MUTUALIZE} CONFIG "AZURE_STORAGE_ACCOUNT" "${AZURE_STORAGE_ACCOUNT}"
+
+Azure blob container URL:
+
+.. code::
+
+   ${DISABLE_LOCAL} CONFIG "AZURE_STORAGE_ACCOUNT" "${AZURE_STORAGE_ACCOUNT}"
+   ${DISABLE_LOCAL} CONFIG "AZURE_STORAGE_SAS_TOKEN" "${AZURE_STORAGE_SAS_TOKEN}"
    ${DISABLE_MUTUALIZE} CONFIG "AZURE_STORAGE_ACCOUNT" "${AZURE_STORAGE_ACCOUNT}"
 
 Use the shape index in the layer:
@@ -194,9 +235,14 @@ Exoscale:
 * ``AWS_DEFAULT_REGION=ch-dk-2``: The region used by Exoscale.
 * ``AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io``: The endpoint used by Exoscale.
 
-Azure:
+Azure connection string:
 
 * ``AZURE_STORAGE_CONNECTION_STRING``: The connection string.
+
+Azure blob container URL:
+
+* ``AZURE_STORAGE_ACCOUNT``: The account name.
+* ``AZURE_STORAGE_SAS_TOKEN``: The SAS token.
 
 On Windows also add:
 
@@ -225,9 +271,14 @@ Exoscale:
 * ``AWS_DEFAULT_REGION=ch-dk-2``: Should already be in your env.project.
 * ``AWS_S3_ENDPOINT=sos-ch-dk-2.exo.io``: Should already be in your env.project.
 
-Azure docker compose:
+Azure connection string:
 
 * ``AZURE_STORAGE_CONNECTION_STRING``: The connection string.
+
+Azure blob container URL:
+
+* ``AZURE_STORAGE_ACCOUNT``: The account name.
+* ``AZURE_STORAGE_SAS_TOKEN``: The SAS token.
 
 For Azure AKS the access should be given by the AzureAssignedIdentity in Kubernetes,
 
