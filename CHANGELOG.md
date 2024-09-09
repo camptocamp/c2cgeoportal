@@ -1,3 +1,7 @@
+##### 2.8.1.145
+
+- Fix typo in azure script [c2cgeoportal#11373](https://github.com/camptocamp/c2cgeoportal/pull/11373)
+
 ##### 2.8.1.144
 
 - Be able to use Azure storage blob container URL [c2cgeoportal#11369](https://github.com/camptocamp/c2cgeoportal/pull/11369)
