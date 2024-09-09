@@ -55,7 +55,7 @@ def main() -> None:
     parser.add_argument("--sync-download", help="Download files from the container (azure, local)", nargs=2)
     args = parser.parse_args()
 
-    blob_service_client is None
+    blob_service_client = None
     container_client = None
     if args.connection_string:
         blob_service_client = BlobServiceClient.from_connection_string(args.connection_string)
