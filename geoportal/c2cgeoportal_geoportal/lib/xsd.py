@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import xml.etree.ElementTree  # nosec
 from collections.abc import Callable
 from io import BytesIO
 from typing import Any, cast
@@ -39,8 +40,33 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
 
+def _element_callback(tb: str, column: sqlalchemy.sql.elements.NamedColumn[Any]) -> None:
+    if column.info.get("readonly"):
+        with tag(tb, "xsd:annotation"):
+            with tag(tb, "xsd:appinfo"):
+                with tag(tb, "readonly", {"value": "true"}):
+                    pass
+
+
 class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
     """Extends the PapyrusXSDGenerator."""
+
+    def __init__(
+        self,
+        include_primary_keys: bool = False,
+        include_foreign_keys: bool = False,
+        sequence_callback: Callable[[xml.etree.ElementTree.TreeBuilder, type[str]], None] | None = None,
+        element_callback: (
+            Callable[[xml.etree.ElementTree.TreeBuilder, sqlalchemy.sql.expression.ColumnElement[Any]], None]
+            | None
+        ) = None,
+    ) -> None:
+        super().__init__(
+            include_primary_keys=include_primary_keys,
+            include_foreign_keys=include_foreign_keys,
+            sequence_callback=sequence_callback,
+            element_callback=element_callback or _element_callback,
+        )
 
     def add_class_properties_xsd(self, tb: str, cls: type) -> None:
         """
@@ -106,13 +132,6 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
                             pass
             self.element_callback(tb4, column)
 
-    def element_callback(self, tb: str, column: sqlalchemy.sql.elements.NamedColumn[Any]) -> None:
-        if column.info.get("readonly"):
-            with tag(tb, "xsd:annotation"):
-                with tag(tb, "xsd:appinfo"):
-                    with tag(tb, "readonly", {"value": "true"}):
-                        pass
-
 
 class XSD:
     """The XSD file generator on a pyramid view."""
@@ -121,9 +140,12 @@ class XSD:
         self,
         include_primary_keys: bool = False,
         include_foreign_keys: bool = False,
-        sequence_callback: str | None = None,
-        element_callback: str | None = None,
-    ):
+        sequence_callback: Callable[[xml.etree.ElementTree.TreeBuilder, type[str]], None] | None = None,
+        element_callback: (
+            Callable[[xml.etree.ElementTree.TreeBuilder, sqlalchemy.sql.expression.ColumnElement[Any]], None]
+            | None
+        ) = None,
+    ) -> None:
         self.generator = XSDGenerator(
             include_primary_keys=include_primary_keys,
             include_foreign_keys=include_foreign_keys,
