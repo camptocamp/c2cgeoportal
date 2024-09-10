@@ -864,21 +864,20 @@ files = [
 
 [[package]]
 name = "papyrus"
-version = "2.5"
+version = "2.6.2"
 description = "Geospatial Extensions for Pyramid"
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 files = [
-    {file = "papyrus-2.5-py2.py3-none-any.whl", hash = "sha256:2a604a63582834f2ca1f49458ea9019772c83ab9464e57afdc3ed9a169fbeac4"},
-    {file = "papyrus-2.5.tar.gz", hash = "sha256:a4e3d5e4c91cb2205a5726b5e7c75d46c4ee3e9ae43c213d175f7db4de198967"},
+    {file = "papyrus-2.6.2-py3-none-any.whl", hash = "sha256:e56a0c50ee2fa75de8a0ba71ddfb583adf0a517fbea706c2f2f7ddfc8e364430"},
+    {file = "papyrus-2.6.2.tar.gz", hash = "sha256:565d19e30dedcd0b0e7fbee3ba0f9cb5627a6adc135545141dfd2f383776544a"},
 ]
 
 [package.dependencies]
-GeoAlchemy2 = ">=0.2.4"
-geojson = ">=1.1.0"
-pyramid = ">=1.1a3"
-Shapely = ">=1.2"
-six = "*"
+geoalchemy2 = ">=0.0.0,<1.0.0"
+geojson = ">=3.0.0,<4.0.0"
+pyramid = ">=2.0.0,<3.0.0"
+shapely = ">=2.0.0,<3.0.0"
 
 [[package]]
 name = "pastedeploy"
@@ -1666,17 +1665,6 @@ docs = ["matplotlib", "numpydoc (==1.1.*)", "sphinx", "sphinx-book-theme", "sphi
 test = ["pytest", "pytest-cov"]
 
 [[package]]
-name = "six"
-version = "1.16.0"
-description = "Python 2 and 3 compatibility utilities"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-files = [
-    {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
-    {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
-]
-
-[[package]]
 name = "smmap"
 version = "5.0.1"
 description = "A pure Python implementation of a sliding window memory map manager"
@@ -2210,4 +2198,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "d729969eaeab609558ca82e5c177aef565ca16f8fbc4b9f42f8066b9f8bc1b0e"
+content-hash = "b3d3873d02d846acd45f36d54523a449740d614c2488280b6209b92abab2bc5d"

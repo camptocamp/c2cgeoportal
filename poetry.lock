@@ -2252,21 +2252,20 @@ files = [
 
 [[package]]
 name = "papyrus"
-version = "2.5"
+version = "2.6.2"
 description = "Geospatial Extensions for Pyramid"
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 files = [
-    {file = "papyrus-2.5-py2.py3-none-any.whl", hash = "sha256:2a604a63582834f2ca1f49458ea9019772c83ab9464e57afdc3ed9a169fbeac4"},
-    {file = "papyrus-2.5.tar.gz", hash = "sha256:a4e3d5e4c91cb2205a5726b5e7c75d46c4ee3e9ae43c213d175f7db4de198967"},
+    {file = "papyrus-2.6.2-py3-none-any.whl", hash = "sha256:e56a0c50ee2fa75de8a0ba71ddfb583adf0a517fbea706c2f2f7ddfc8e364430"},
+    {file = "papyrus-2.6.2.tar.gz", hash = "sha256:565d19e30dedcd0b0e7fbee3ba0f9cb5627a6adc135545141dfd2f383776544a"},
 ]
 
 [package.dependencies]
-GeoAlchemy2 = ">=0.2.4"
-geojson = ">=1.1.0"
-pyramid = ">=1.1a3"
-Shapely = ">=1.2"
-six = "*"
+geoalchemy2 = ">=0.0.0,<1.0.0"
+geojson = ">=3.0.0,<4.0.0"
+pyramid = ">=2.0.0,<3.0.0"
+shapely = ">=2.0.0,<3.0.0"
 
 [[package]]
 name = "passwordgenerator"
@@ -4544,13 +4543,13 @@ urllib3 = ">=2"
 
 [[package]]
 name = "types-setuptools"
-version = "74.0.0.20240831"
+version = "74.1.0.20240907"
 description = "Typing stubs for setuptools"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-setuptools-74.0.0.20240831.tar.gz", hash = "sha256:8b4a544cc91d42a019dc1e41fd397608b4bc7e20c7d7d5bc326589ffd9e8f8a1"},
-    {file = "types_setuptools-74.0.0.20240831-py3-none-any.whl", hash = "sha256:4d9d18ea9214828d695a384633130009f5dee2681a157ee873d3680b62931590"},
+    {file = "types-setuptools-74.1.0.20240907.tar.gz", hash = "sha256:0abdb082552ca966c1e5fc244e4853adc62971f6cd724fb1d8a3713b580e5a65"},
+    {file = "types_setuptools-74.1.0.20240907-py3-none-any.whl", hash = "sha256:15b38c8e63ca34f42f6063ff4b1dd662ea20086166d5ad6a102e670a52574120"},
 ]
 
 [[package]]
@@ -4960,4 +4959,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "e0990f81b14fd69f71c124d4023aac61ad8523eb3bcdf1bca3b8523e8248adee"
+content-hash = "ed4d19e80090178cd7dbcb881bff2b10a5e64f8b8d508388965f3b35cc394693"
