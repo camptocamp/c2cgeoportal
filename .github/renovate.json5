@@ -93,8 +93,13 @@
     },
     /** Ungroup OWSLib */
     {
-      groupName: 'OWSLib',
       matchDepNames: ['OWSLib'],
+      groupName: 'OWSLib',
+    },
+    /** Ungroup Gdal */
+    {
+      matchDepNames: ['ghcr.io/osgeo/gdal'],
+      groupName: 'Gdal',
     },
     /** Ignore geoportal/requirements.txt */
     {
