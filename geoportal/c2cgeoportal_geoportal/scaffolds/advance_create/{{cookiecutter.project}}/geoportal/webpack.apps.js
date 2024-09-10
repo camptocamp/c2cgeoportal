@@ -30,32 +30,6 @@ for (const filename of ls(
   );
 }
 
-const babelPresets = [
-  [
-    require.resolve('@babel/preset-env'),
-    {
-      targets: 'defaults, > 0.1% in CH, > 0.1% in FR, Firefox ESR and supports es6-class and not iOS < 10',
-      modules: false,
-      loose: true,
-    },
-  ],
-];
-
-// Transform code to ES2015 and annotate injectable functions with an $inject array.
-const projectRule = {
-  test: /{{cookiecutter.package}}_geoportal\/static-ngeo\/js\/.*\.js$/,
-  use: {
-    loader: 'babel-loader',
-    options: {
-      presets: babelPresets,
-      babelrc: false,
-      comments: false,
-      plugins: [],
-    },
-  },
-};
-const rules = [projectRule];
-
 const noDevServer = process.env['NO_DEV_SERVER'] == 'TRUE';
 const devServer = dev && !noDevServer;
 
@@ -74,9 +48,6 @@ module.exports = {
     hot: true,
   },
   entry: entry,
-  module: {
-    rules,
-  },
   plugins: plugins,
   resolve: {
     modules: ['/usr/lib/node_modules'],

@@ -17,8 +17,5 @@
     "ngeo": "2.9.0-latest.20240920T130728Z.f0b587f58",
     "puppeteer": "23.3.0",
     "url-parse": "1.5.10"
-  },
-  "devDependencies": {
-    "@babel/plugin-transform-typescript": "7.25.2"
   }
 }
