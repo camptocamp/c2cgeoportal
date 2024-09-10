@@ -25,7 +25,7 @@ authors = []
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 c2cwsgiutils = { extras = ["broadcast"], version = "6.0.8" }
-papyrus = "2.5" # commons
+papyrus = "2.6.2" # commons
 transaction = "4.0" # commons
 "c2c.template" = "2.4.2"
 GeoAlchemy2 = "0.15.2"
