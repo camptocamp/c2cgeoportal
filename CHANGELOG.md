@@ -1,3 +1,7 @@
+##### 2.7.1.139
+
+- Fix URL login arguments [c2cgeoportal#11379](https://github.com/camptocamp/c2cgeoportal/pull/11379)
+
 ##### 2.7.1.138
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#11370](https://github.com/camptocamp/c2cgeoportal/pull/11370)
