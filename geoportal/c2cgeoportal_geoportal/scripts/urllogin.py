@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2021, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -58,7 +58,7 @@ def get_argparser() -> argparse.ArgumentParser:
     """Get the argument parser for this script."""
 
     parser = argparse.ArgumentParser(description="Generate an auth token")
-    fill_arguments(parser)
+    fill_arguments(parser, use_attribute=True)
     parser.add_argument("user", help="The username")
     parser.add_argument("password", help="The password")
     parser.add_argument("valid", type=int, default=1, nargs="?", help="Is valid for, in days")
