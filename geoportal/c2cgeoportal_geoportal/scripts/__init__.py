@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,12 +38,14 @@ from sqlalchemy import engine_from_config
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
 
 
-def fill_arguments(parser: ArgumentParser) -> None:
+def fill_arguments(parser: ArgumentParser, use_attribute: bool = False) -> None:
     """Fill the command line argument description."""
     default_config_uri = (
         "c2c://development.ini" if os.path.isfile("development.ini") else "c2c://geoportal/development.ini"
     )
-    c2cwsgiutils.setup_process.fill_arguments(parser, default_config_uri=default_config_uri)
+    c2cwsgiutils.setup_process.fill_arguments(
+        parser, default_config_uri=default_config_uri, use_attribute=use_attribute
+    )
 
 
 def get_appsettings(options: Namespace) -> pyramid.config.Configurator:
