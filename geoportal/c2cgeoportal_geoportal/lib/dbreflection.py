@@ -130,14 +130,19 @@ def get_table(
     # create table and reflect it
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", "Did not recognize type 'geometry' of column", SAWarning)
-        args = [tablename, metadata]
+        args = []
         if primary_key is not None:
             # Ensure we have a primary key to be able to edit views
             args.append(Column(primary_key, Integer, primary_key=True))
         with _get_table_lock:
-            table = Table(*args, schema=schema, autoload_with=engine)  # type: ignore[arg-type]
-        print(f"Table {tablename} loaded")
-        print([c.name for c in table.columns])
+            table = Table(
+                tablename,
+                metadata,
+                *args,
+                schema=schema,
+                autoload_with=engine,
+                keep_existing=True,
+            )
     return table
 
 
