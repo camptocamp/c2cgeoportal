@@ -49,22 +49,14 @@
 <p>To generate a key, you can use the <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">exec</span> <span class="pre">geoportal</span> <span class="pre">urllogin</span></code> command:</p>
 <p><p>Generate an auth token</p>
 </p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">exec</span> <span class="n">geoportal</span> <span class="n">urllogin</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
-                                              <span class="p">[</span><span class="n">config_uri</span><span class="p">]</span> <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">exec</span> <span class="n">geoportal</span> <span class="n">urllogin</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">uri</span> <span class="p">[</span><span class="n">CONFIG_URI</span><span class="p">]]</span>
+                                              <span class="p">[</span><span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="nb">vars</span> <span class="p">[</span><span class="n">CONFIG_VARS</span> <span class="o">...</span><span class="p">]]</span>
                                               <span class="n">user</span> <span class="n">password</span> <span class="p">[</span><span class="n">valid</span><span class="p">]</span>
 </pre></div>
 </div>
 <section id="Positional Arguments">
 <h2>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h2>
 <dl class="option-list">
-<dt><kbd>config_uri</kbd></dt>
-<dd><p>The URI to the configuration file.</p>
-<p>Default: “c2c://geoportal/development.ini”</p>
-</dd>
-<dt><kbd>config_vars</kbd></dt>
-<dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
-<p>Default: ()</p>
-</dd>
 <dt><kbd>user</kbd></dt>
 <dd><p>The username</p>
 </dd>
@@ -74,6 +66,19 @@
 <dt><kbd>valid</kbd></dt>
 <dd><p>Is valid for, in days</p>
 <p>Default: 1</p>
+</dd>
+</dl>
+</section>
+<section id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<dl class="option-list">
+<dt><kbd>--config-uri</kbd></dt>
+<dd><p>The URI to the configuration file.</p>
+<p>Default: “c2c://geoportal/development.ini”</p>
+</dd>
+<dt><kbd>--config-vars</kbd></dt>
+<dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
+<p>Default: ()</p>
 </dd>
 </dl>
 </section>
