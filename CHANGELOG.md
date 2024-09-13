@@ -1,3 +1,7 @@
+##### 2.8.1.146
+
+- [Backport 2.8] Fix URL login arguments [c2cgeoportal#11381](https://github.com/camptocamp/c2cgeoportal/pull/11381)
+
 ##### 2.8.1.145
 
 - Fix typo in azure script [c2cgeoportal#11373](https://github.com/camptocamp/c2cgeoportal/pull/11373)
