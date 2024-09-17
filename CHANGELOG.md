@@ -1,3 +1,7 @@
+##### 2.8.1.147
+
+- Add missing PGSCHEMA in geoportal in simple mode [c2cgeoportal#11382](https://github.com/camptocamp/c2cgeoportal/pull/11382)
+
 ##### 2.8.1.146
 
 - [Backport 2.8] Fix URL login arguments [c2cgeoportal#11381](https://github.com/camptocamp/c2cgeoportal/pull/11381)
