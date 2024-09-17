@@ -376,11 +376,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:35ab7fd3bcd95e6b7fd704e4a1539513edad446c097797f2985e0e4b960772f2",
-                "sha256:d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+                "sha256:f211a66637b8fa059bb28183da127d4e86396c991a942b028c6650d4319c3fd0",
+                "sha256:54faa7f2e8d2d11bcd2c07bed282eef1046b5c080d1c32add737d7b5817b1ad4"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==75.1.0"
+            "version": "==70.0.0"
         },
         "shapely": {
             "hashes": [
@@ -992,11 +992,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:35ab7fd3bcd95e6b7fd704e4a1539513edad446c097797f2985e0e4b960772f2",
-                "sha256:d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+                "sha256:f211a66637b8fa059bb28183da127d4e86396c991a942b028c6650d4319c3fd0",
+                "sha256:54faa7f2e8d2d11bcd2c07bed282eef1046b5c080d1c32add737d7b5817b1ad4"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==75.1.0"
+            "version": "==70.0.0"
         },
         "smmap": {
             "hashes": [
