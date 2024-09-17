@@ -28,7 +28,7 @@ FROM base-all as runner
 
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
-    PIP_NO_BINARY=fiona python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
+    python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && (strip /usr/local/lib/python3.*/dist-packages/*/*.so || true) \
     && pip freeze > /requirements.txt
 
