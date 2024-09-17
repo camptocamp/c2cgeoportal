@@ -1,3 +1,7 @@
+##### 2.7.1.140
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#11383](https://github.com/camptocamp/c2cgeoportal/pull/11383)
+
 ##### 2.7.1.139
 
 - Fix URL login arguments [c2cgeoportal#11379](https://github.com/camptocamp/c2cgeoportal/pull/11379)
