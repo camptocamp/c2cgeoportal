@@ -9,7 +9,7 @@ papyrus = "==2.4"  # commons
 transaction = "==3.0.1"  # commons
 "c2c.template" = "==2.3.0"
 GeoAlchemy2 = "==0.11.1"
-SQLAlchemy = "==1.4.53"  # commons
+SQLAlchemy = "==1.4.54"  # commons
 "zope.event" = "==4.4"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.8.5.post1"
@@ -46,7 +46,7 @@ wrapt = "==1.13.3"
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
-types-pyyaml = "==6.0.12.20240808"
+types-pyyaml = "==6.0.12.20240917"
 # Lock dependencies
 astroid = "==2.9.3"
 bandit = "==1.7.9"
