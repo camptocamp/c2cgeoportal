@@ -259,6 +259,7 @@ services:
       - PGPASSWORD
       - PGDATABASE
       - PGSSLMODE
+      - PGSCHEMA
       - PGSCHEMA_STATIC
       - PGOPTIONS
       - SQLALCHEMY_POOL_RECYCLE
@@ -352,7 +353,6 @@ services:
     volumes:
       - .:/src
     environment:
-      - PGSCHEMA
       # From geoportal
       - DEVELOPMENT
       - VISIBLE_ENTRY_POINT
@@ -365,6 +365,7 @@ services:
       - PGPASSWORD
       - PGDATABASE
       - PGSSLMODE
+      - PGSCHEMA
       - PGSCHEMA_STATIC
       - PGOPTIONS
       - AWS_ACCESS_KEY_ID
