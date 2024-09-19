@@ -50,12 +50,15 @@ module.exports = {
   entry: entry,
   plugins: plugins,
   resolve: {
-    modules: ['/usr/lib/node_modules'],
+    modules: ['/opt/c2cgeoportal/geoportal/node_modules/'],
     alias: {
       '{{cookiecutter.package}}': path.resolve(
         __dirname,
         '{{cookiecutter.package}}_geoportal/static-ngeo/js'
       ),
+      ngeo: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/src',
+      gmf: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/src',
+      gmfapi: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/srcapi',
     },
   },
 };

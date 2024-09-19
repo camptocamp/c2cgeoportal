@@ -46,72 +46,72 @@ build: \
 .PHONY: import-ngeo-apps
 import-ngeo-apps: $(API_FILES) $(APPS_FILES) $(APPS_FILES_ALT) $(STATIC_PATH)/header.html
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/%.html.ejs: geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js: /usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/Controller%.js: geoportal/node_modules/ngeo/contribs/gmf/apps/%/Controller.js
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/%.html.ejs: \
-		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
+		geoportal/node_modules/ngeo/contribs/gmf/apps/%/index.html.ejs \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --html $* $< $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/Controller%.js: \
-		/usr/lib/node_modules/ngeo/contribs/gmf/apps/%/Controller.js \
+		geoportal/node_modules/ngeo/contribs/gmf/apps/%/Controller.js \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/
 	mkdir --parent $(dir $@)
 	import-ngeo-apps --js $* $< $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/%.scss:
 	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
+	cp geoportal/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
 
 $(APPS_PACKAGE_PATH)/static-ngeo/js/apps/sass/vars_%.scss:
 	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
+	cp geoportal/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/%.scss: \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/
 	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
+	cp geoportal/node_modules/ngeo/contribs/gmf/apps/$*/sass/$*.scss $@
 
 $(APPS_PACKAGE_PATH_ALT)/static-ngeo/js/apps/sass/vars_%.scss: \
 		geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/
 	mkdir --parent $(dir $@)
-	cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
+	cp geoportal/node_modules/ngeo/contribs/gmf/apps/$*/sass/vars_$*.scss $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/contextualdata.html
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/contextualdata.html: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/contextualdata.html
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(STATIC_PATH)/header.html:  /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/header.html
+$(STATIC_PATH)/header.html:  geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/header.html
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(STATIC_PATH)/images/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
+$(STATIC_PATH)/images/%: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/image/%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop_alt/image/%
+$(APPS_PACKAGE_PATH)/static-ngeo/js/apps/image/%: geoportal/node_modules/ngeo/contribs/gmf/apps/desktop_alt/image/%
 	$(PRERULE_CMD)
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: /usr/lib/node_modules/ngeo/api/src/api.css
+$(APPS_PACKAGE_PATH)/static-ngeo/api/api.css: geoportal/node_modules/ngeo/api/src/api.css
 	mkdir --parent $(dir $@)
 	cp $< $@
 
-$(STATIC_PATH)/apihelp: /usr/lib/node_modules/ngeo/api/dist/apihelp
+$(STATIC_PATH)/apihelp: geoportal/node_modules/ngeo/api/dist/apihelp
 	rm --recursive --force $@
 	cp -r $< $@
 	mv $@/apihelp.html $@/index.html.tmpl

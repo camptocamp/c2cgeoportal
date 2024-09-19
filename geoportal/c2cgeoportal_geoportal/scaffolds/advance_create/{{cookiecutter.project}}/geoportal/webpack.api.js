@@ -21,7 +21,6 @@ module.exports = (env, argv) => {
       minimizer: [
         new TerserPlugin({
           parallel: true,
-          sourceMap: true,
           terserOptions: {
             compress: false,
           },
@@ -29,14 +28,10 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      modules: [
-        '/usr/lib/node_modules',
-        '/usr/lib/node_modules/ol/node_modules',
-        '/usr/lib/node_modules/proj4/node_modules',
-      ],
+      modules: ['/opt/c2cgeoportal/geoportal/node_modules'],
       alias: {
-        api: '/usr/lib/node_modules/ngeo/api/src',
-        ngeo: '/usr/lib/node_modules/ngeo/src',
+        api: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/api/src',
+        ngeo: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/src',
       },
     },
     resolveLoader: {

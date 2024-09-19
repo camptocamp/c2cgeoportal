@@ -50,8 +50,8 @@ services:
   #   # Adapt the path for ngeo / gmf contrib to point where you have checkouted the code.
   #   # volumes:
   #   #   - ./geoportal/${PACKAGE}_geoportal/static-ngeo:/app/${PACKAGE}_geoportal/static-ngeo
-  #   #   - ./../ngeo/src:/usr/lib/node_modules/ngeo/src
-  #   #   - ./../ngeo/contribs:/usr/lib/node_modules/ngeo/contribs
+  #   #   - ./../ngeo/src:/opt/c2cgeoportal/geoportal/node_modules/ngeo/src
+  #   #   - ./../ngeo/contribs:/opt/c2cgeoportal/geoportal/node_modules/ngeo/contribs
   #   volumes_from:
   #     - config:rw
   #   extends:
