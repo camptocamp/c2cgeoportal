@@ -26,9 +26,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
+import dis
 import json
 import logging
-from typing import NamedTuple, TypedDict
+from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
 
 import pyramid.request
 import pyramid.response
@@ -37,8 +38,10 @@ import simple_openid_connect.data
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPUnauthorized
 from pyramid.security import remember
 
-from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.caching import get_region
+
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models import main, static
 
 _LOG = logging.getLogger(__name__)
 _CACHE_REGION_OBJ = get_region("obj")
@@ -53,8 +56,8 @@ class DynamicUser(NamedTuple):
     username: str
     display_name: str
     email: str
-    settings_role: main.Role | None
-    roles: list[main.Role]
+    settings_role: Optional["main.Role"]
+    roles: list["main.Role"]
 
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
@@ -70,7 +73,6 @@ def get_oidc_client(request: pyramid.request.Request, host: str) -> simple_openi
     if openid_connect.get("enabled", False) is not True:
         raise HTTPBadRequest("OpenID Connect not enabled")
 
-    _LOG.info(openid_connect)
     return simple_openid_connect.client.OpenidClient.from_issuer_url(
         url=openid_connect["url"],
         authentication_redirect_uri=request.route_url("oidc_callback"),
@@ -94,6 +96,95 @@ class OidcRememberObject(TypedDict):
     email: str | None
     settings_role: str | None
     roles: list[str]
+
+
+def get_remember_from_user_info(
+    request: pyramid.request.Request, user_info: dict[str, Any], remember_object: OidcRememberObject
+) -> None:
+    """
+    Fill the remember object from the user info.
+
+    The remember object will be stored in a cookie to remember the user.
+
+    :param user_info: The user info from the ID token or from the user info view according to the `query_user_info` configuration.
+    :param remember_object: The object to fill, by default with the `username`, `email`, `settings_role` and `roles`,
+        the corresponding field from `user_info` can be configured in `user_info_fields`.
+    :param settings: The OpenID Connect configuration.
+    """
+    settings_fields = (
+        request.registry.settings.get("authentication", {})
+        .get("openid_connect", {})
+        .get("user_info_fields", {})
+    )
+
+    for field_, default_field in (
+        ("username", "sub"),
+            ("display_name", "name"),
+        ("email", "email"),
+        ("settings_role", None),
+        ("roles", None),
+    ):
+        user_info_field = settings_fields.get(field_, default_field)
+        if user_info_field is not None:
+            if user_info_field not in user_info:
+                _LOG.error(
+                    "Field '%s' not found in user info, available: %s.",
+                    user_info_field,
+                    ", ".join(user_info.keys()),
+                )
+                raise HTTPInternalServerError(f"Field '{user_info_field}' not found in user info.")
+            remember_object[field_] = user_info[user_info_field]  # type: ignore[literal-required]
+
+
+def get_user_from_remember(
+    request: pyramid.request.Request, remember_object: OidcRememberObject, create_user: bool = False
+) -> Union["static.User", DynamicUser] | None:
+    """
+    Create a user from the remember object filled from `get_remember_from_user_info`.
+
+    :param remember_object: The object to fill, by default with the `username`, `email`, `settings_role` and `roles`.
+    :param settings: The OpenID Connect configuration.
+    :param create_user: If the user should be created if it does not exist.
+    """
+    from c2cgeoportal_commons import models  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import main, static  # pylint: disable=import-outside-toplevel
+
+    assert models.DBSession is not None
+
+    user: static.User | DynamicUser | None
+    username = remember_object["username"]
+    assert username is not None
+    email = remember_object["email"]
+    assert email is not None
+    display_name = remember_object["display_name"] or email
+
+
+    provide_roles = (
+        request.registry.settings.get("authentication", {})
+        .get("openid_connect", {})
+        .get("provide_roles", False)
+    )
+    if provide_roles is False:
+        user = models.DBSession.query(static.User).filter_by(email=email).one_or_none()
+        if user is None and create_user is True:
+            user = static.User(username=username, email=email, display_name=display_name)
+            models.DBSession.add(user)
+    else:
+        user = DynamicUser(
+            username=username,
+            display_name=display_name,
+            email=email,
+            settings_role=(
+                models.DBSession.query(main.Role).filter_by(name=remember_object["settings_role"]).first()
+                if remember_object.get("settings_role") is not None
+                else None
+            ),
+            roles=[
+                models.DBSession.query(main.Role).filter_by(name=role).one()
+                for role in remember_object.get("roles", [])
+            ],
+        )
+    return user
 
 
 class OidcRemember:
@@ -151,7 +242,6 @@ class OidcRemember:
             "settings_role": None,
             "roles": [],
         }
-        settings_fields = openid_connect.get("user_info_fields", {})
         client = get_oidc_client(self.request, self.request.host)
 
         if openid_connect.get("query_user_info", False) is True:
@@ -175,25 +265,15 @@ class OidcRemember:
                 ),
             )
 
-        for field_, default_field in (
-            ("username", "sub"),
-            ("display_name", "name"),
-            ("email", "email"),
-            ("settings_role", None),
-            ("roles", None),
-        ):
-            user_info_field = settings_fields.get(field_, default_field)
-            if user_info_field is not None:
-                user_info_dict = user_info.dict()
-                if user_info_field not in user_info_dict:
-                    _LOG.error(
-                        "Field '%s' not found in user info, available: %s.",
-                        user_info_field,
-                        ", ".join(user_info_dict.keys()),
-                    )
-                    raise HTTPInternalServerError(f"Field '{user_info_field}' not found in user info.")
-                remember_object[field_] = user_info_dict[user_info_field]  # type: ignore[literal-required]
-
+        self.request.get_remember_from_user_info(user_info.dict(), remember_object)
         self.request.response.headers.extend(remember(self.request, json.dumps(remember_object)))
 
         return remember_object
+
+
+def includeme(config: pyramid.config.Configurator) -> None:
+    """
+    Pyramid includeme function.
+    """
+    config.add_request_method(get_remember_from_user_info, name="get_remember_from_user_info")
+    config.add_request_method(get_user_from_remember, name="get_user_from_remember")
