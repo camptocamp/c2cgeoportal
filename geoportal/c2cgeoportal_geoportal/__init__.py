@@ -49,7 +49,6 @@ import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
 from c2cgeoform import translator
-from c2cwsgiutils.broadcast import decorator
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.prometheus import MemoryMapCollector
 from deform import Form
@@ -57,15 +56,15 @@ from dogpile.cache import register_backend  # type: ignore[attr-defined]
 from papyrus.renderers import GeoJSON
 from prometheus_client.core import REGISTRY
 from pyramid.config import Configurator
-from pyramid.httpexceptions import HTTPBadRequest, HTTPException
+from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import joinedload
 
 import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal.views
 from c2cgeoportal_commons.models import InvalidateCacheEvent
-from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker
+from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker, oidc
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
@@ -368,7 +367,6 @@ def create_get_user_from_request(
         """
         from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
         from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_geoportal.lib import oidc  # pylint: disable=import-outside-toplevel
 
         assert DBSession is not None
 
@@ -398,29 +396,7 @@ def create_get_user_from_request(
                         )
                         user_info = oidc.OidcRemember(request).remember(token_response, request.host)
 
-                    if openid_connect_config.get("provide_roles", False) is True:
-                        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
-                            Role,
-                        )
-
-                        request.user_ = oidc.DynamicUser(
-                            username=user_info["sub"],
-                            display_name=user_info["username"],
-                            email=user_info["email"],
-                            settings_role=(
-                                DBSession.query(Role).filter_by(name=user_info["settings_role"]).first()
-                                if user_info.get("settings_role") is not None
-                                else None
-                            ),
-                            roles=[
-                                DBSession.query(Role).filter_by(name=role).one()
-                                for role in user_info.get("roles", [])
-                            ],
-                        )
-                    else:
-                        request.user_ = DBSession.query(User).filter_by(username=user_info["sub"]).first()
-                        for user in DBSession.query(User).all():
-                            _LOG.error(user.username)
+                    request.user_ = request.get_user_from_reminder(user_info)
                 else:
                     # We know we will need the role object of the
                     # user so we use joined loading
@@ -569,6 +545,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     config.include("pyramid_mako")
     config.include("c2cwsgiutils.pyramid.includeme")
+    config.include(oidc.includeme)
     health_check = HealthCheck(config)
     config.registry["health_check"] = health_check
 

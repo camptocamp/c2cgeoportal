@@ -89,3 +89,34 @@ Other options
 ``scopes``: The list of scopes to request, default is [``openid``, ``profile``, ``email``].
 
 ``query_user_info``: If ``true``, the user info will be requested instead if using the ``id_token``, default is false.
+
+~~~~~
+Hooks
+~~~~~
+
+If you want to redefine the user creation process, you can use the hooks ``get_remember_from_user_info``
+and ``get_user_from_remember``.
+
+``get_remember_from_user_info``: This hook is called during the user is authentication.
+The argument are the pyramid ``request``, the received ``user_info``, and the ``remember_object`` dictionary
+to be filled and will be stored in the cookie.
+
+``get_user_from_remember``: This hook is called during the user is certification.
+The argument are the pyramid ``request``, the received ``remember_object``, and the ``create_user`` boolean.
+The return value is the user object ``User`` or ``DynamicUsed``.
+
+Full signatures:
+
+.. code:: python
+
+    def get_remember_from_user_info(request: Request, user_info: Dict[str, Any], remember_object: OidcRememberObject) -> None:
+
+    def get_user_from_remember(request: Request, remember_object: OidcRememberObject, create_user: bool) -> Union[User, DynamicUsed]:
+
+Configure the hooks in the project initialization:
+
+.. code:: python
+
+    def includeme(config):
+        config.add_request_method(get_remember_from_user_info, name="get_remember_from_user_info")
+        config.add_request_method(get_user_from_remember, name="get_user_from_remember")

@@ -1,18 +1,20 @@
 import base64
 import re
+import types
 import urllib.parse
 from http.client import responses
 from unittest import TestCase
 
 import jwt
 import responses
-from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from pyramid import testing
 from tests.functional import cleanup_db, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
 from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+
+from c2cgeoportal_geoportal.lib import oidc
 
 _OIDC_CONFIGURATION = {
     "issuer": "https://sso.example.com",
@@ -41,6 +43,11 @@ _OIDC_KEYS = {
 }
 
 
+def includeme(request):
+    request.get_remember_from_user_info = types.MethodType(oidc.get_remember_from_user_info, request)
+    request.get_user_from_remember = types.MethodType(oidc.get_user_from_remember, request)
+
+
 class TestLogin(TestCase):
     def setUp(self):
         setup_db()
@@ -66,6 +73,7 @@ class TestLogin(TestCase):
             },
             params={"came_from": "/came_from"},
         )
+        includeme(request)
         responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
         responses.get("https://sso.example.com/jwks", json=_OIDC_KEYS)
 
@@ -106,6 +114,7 @@ class TestLogin(TestCase):
                 "authentication": {
                     "openid_connect": {
                         "enabled": True,
+                        "provide_roles": True,
                         "url": "https://sso.example.com",
                         "client_id": "client_id_123",
                     }
@@ -118,6 +127,7 @@ class TestLogin(TestCase):
                 "code_challenge": "code_challenge",
             },
         )
+        includeme(request)
         responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
         responses.get("https://sso.example.com/jwks", json=_OIDC_KEYS)
         responses.post(
