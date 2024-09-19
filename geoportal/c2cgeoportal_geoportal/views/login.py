@@ -643,27 +643,7 @@ class Login:
 
         remember_object = oidc.OidcRemember(self.request).remember(token_response, self.request.host)
 
-        user: static.User | oidc.DynamicUser | None
-        if self.authentication_settings.get("openid_connect", {}).get("provide_roles", False) is False:
-            user = models.DBSession.query(static.User).filter_by(email=remember_object["email"]).one_or_none()
-            if user is None:
-                user = static.User(username=remember_object["username"], email=remember_object["email"])
-                models.DBSession.add(user)
-        else:
-            user = oidc.DynamicUser(
-                username=remember_object["sub"],
-                display_name=remember_object["username"],
-                email=remember_object["email"],
-                settings_role=(
-                    models.DBSession.query(main.Role).filter_by(name=remember_object["settings_role"]).first()
-                    if remember_object.get("settings_role") is not None
-                    else None
-                ),
-                roles=[
-                    models.DBSession.query(main.Role).filter_by(name=role).one()
-                    for role in remember_object.get("roles", [])
-                ],
-            )
+        user: static.User | oidc.DynamicUser | None = self.request.get_user_from_remember(remember_object)
         assert user is not None
         self.request.user_ = user
 
