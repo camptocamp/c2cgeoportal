@@ -293,7 +293,7 @@ class Login:
     @view_config(route_name="logout")  # type: ignore
     def logout(self) -> pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
-            client = oidc.get_oidc_client(self.request)
+            client = oidc.get_oidc_client(self.request, self.request.host)
             user_info = json.loads(self.request.authenticated_userid)
             client.revoke_token(user_info["access_token"])
             if user_info.get("refresh_token") is not None:
@@ -585,7 +585,7 @@ class Login:
 
     @view_config(route_name="oidc_login")  # type: ignore
     def oidc_login(self) -> pyramid.response.Response:
-        client = oidc.get_oidc_client(self.request)
+        client = oidc.get_oidc_client(self.request, self.request.host)
         if "came_from" in self.request.params:
             self.request.response.set_cookie(
                 "came_from",
@@ -630,7 +630,7 @@ class Login:
 
     @view_config(route_name="oidc_callback")  # type: ignore
     def oidc_callback(self) -> pyramid.response.Response:
-        client = oidc.get_oidc_client(self.request)
+        client = oidc.get_oidc_client(self.request, self.request.host)
         assert models.DBSession is not None
 
         token_response = client.authorization_code_flow.handle_authentication_result(
@@ -642,7 +642,7 @@ class Login:
         self.request.response.delete_cookie("code_verifier")
         self.request.response.delete_cookie("code_challenge")
 
-        remember_object = oidc.OidcRemember(self.request).remember(token_response)
+        remember_object = oidc.OidcRemember(self.request).remember(token_response, self.request.host)
 
         user: static.User | oidc.DynamicUser | None
         if self.authentication_settings.get("openid_connect", {}).get("provide_roles", False) is False:

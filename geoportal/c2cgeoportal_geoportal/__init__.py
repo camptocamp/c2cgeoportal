@@ -342,10 +342,10 @@ def create_get_user_from_request(
                         refresh_token_expires = dateutil.parser.isoparse(user_info["refresh_token_expires"])
                         if refresh_token_expires < datetime.datetime.now():
                             return None
-                        token_response = oidc.get_oidc_client(request).exchange_refresh_token(
+                        token_response = oidc.get_oidc_client(request, request.host).exchange_refresh_token(
                             user_info["refresh_token"]
                         )
-                        user_info = oidc.OidcRemember(request).remember(token_response)
+                        user_info = oidc.OidcRemember(request).remember(token_response, request.host)
 
                     if openid_connect_config.get("provide_roles", False) is True:
                         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
