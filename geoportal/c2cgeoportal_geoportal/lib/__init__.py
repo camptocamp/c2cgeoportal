@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -142,11 +142,12 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
-def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
+def get_ogc_server_wms_url_ids(request: pyramid.request.Request, host: str) -> Dict[str, List[int]]:
     """Get the OGCServer ids mapped on the WMS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
+    del host  # used for cache
     errors: Set[str] = set()
     servers: Dict[str, List[int]] = {}
     for ogc_server in DBSession.query(OGCServer).all():
@@ -157,11 +158,12 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request) -> Dict[str, Li
 
 
 @CACHE_REGION_OBJ.cache_on_arguments()  # type: ignore
-def get_ogc_server_wfs_url_ids(request: pyramid.request.Request) -> Dict[str, List[int]]:
+def get_ogc_server_wfs_url_ids(request: pyramid.request.Request, host: str) -> Dict[str, List[int]]:
     """Get the OGCServer ids mapped on the WFS URL."""
     from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
 
+    del host  # used for cache
     errors: Set[str] = set()
     servers: Dict[str, List[int]] = {}
     for ogc_server in DBSession.query(OGCServer).all():
