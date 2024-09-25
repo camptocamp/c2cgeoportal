@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023, Camptocamp SA
+# Copyright (c) 2014-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -112,7 +112,9 @@ def filter_capabilities(
     wms_structure_ = wms_structure(url, headers.get("Host"), request)
 
     ogc_server_ids = (
-        get_ogc_server_wms_url_ids(request) if wms else get_ogc_server_wfs_url_ids(request)
+        get_ogc_server_wms_url_ids(request, request.host)
+        if wms
+        else get_ogc_server_wfs_url_ids(request, request.host)
     ).get(url.url())
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
     for id_ in list(get_protected_layers(request, ogc_server_ids).keys()):
@@ -150,7 +152,7 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
     """Filter the WTS capabilities."""
 
     writable_layers: Set[str] = set()
-    ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url.url())
+    ogc_server_ids = get_ogc_server_wfs_url_ids(request, request.host).get(wfs_url.url())
 
     for gmf_layer in list(get_writable_layers(request, ogc_server_ids).values()):
         writable_layers |= set(gmf_layer.layer.split(","))

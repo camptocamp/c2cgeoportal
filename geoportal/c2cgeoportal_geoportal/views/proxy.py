@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2011-2022, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -175,9 +175,10 @@ class Proxy:
         return response
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
-    def _proxy_cache(self, method: str, *args: Any, **kwargs: Any) -> pyramid.response.Response:
+    def _proxy_cache(self, host: str, method: str, *args: Any, **kwargs: Any) -> pyramid.response.Response:
         # Method is only for the cache
-        del method
+        del host, method
+
         kwargs["cache"] = True
         return self._proxy(*args, **kwargs)
 
@@ -193,7 +194,7 @@ class Proxy:
             headers_update = {}
         cache = kwargs.get("cache", False)
         if cache is True:
-            response = self._proxy_cache(url, self.request.method, **kwargs)
+            response = self._proxy_cache(url, self.request.host, self.request.method, **kwargs)
         else:
             response = self._proxy(url, **kwargs)
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ class PrintProxy(Proxy):
         query_string = urllib.parse.urlencode(params)
 
         resp, content = self._capabilities(
-            templates, query_string, self.request.method, self.request.referrer
+            templates, query_string, self.request.method, self.request.referrer, self.request.host
         )
 
         response = self._build_response(resp, content, Cache.PRIVATE, "print")
@@ -74,12 +74,14 @@ class PrintProxy(Proxy):
 
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _capabilities(
-        self, templates: List[str], query_string: Dict[str, str], method: str, referrer: str
+        self, templates: List[str], query_string: Dict[str, str], method: str, referrer: str, host: str
     ) -> Tuple[requests.Response, str]:
         del query_string  # Just for caching
         del method  # Just for caching
         del referrer  # Just for caching
-        # get URL
+        del host  # Just for caching
+
+        # Get URL
         _url = self.request.get_organization_print_url() + "/capabilities.json"
 
         response = self._proxy(Url(_url))
