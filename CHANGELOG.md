@@ -1,3 +1,7 @@
+##### 2.8.1.151
+
+- [Backport 2.8] [Backport 2.7] [Backport 2.8] Update the cache key to avoid cache poisoning [c2cgeoportal#11394](https://github.com/camptocamp/c2cgeoportal/pull/11394)
+
 ##### 2.8.1.150
 
 - [Backport 2.8] Update the cache key to avoid cache poisoning [c2cgeoportal#11391](https://github.com/camptocamp/c2cgeoportal/pull/11391)
