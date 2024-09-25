@@ -179,11 +179,11 @@ class MapservProxy(OGCProxy):
         content = response.content
         if self.lower_params.get("request") == "getcapabilities":
             content = filter_capabilities(
+                self.request,
                 response.text,
                 self.lower_params.get("service") == "wms",
                 url,
                 self.request.headers,
-                self.request,
             ).encode("utf-8")
 
         content_type = response.headers["Content-Type"]

@@ -57,10 +57,12 @@ class DynamicUser(NamedTuple):
 
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
-def get_oidc_client(request: pyramid.request.Request) -> simple_openid_connect.client.OpenidClient:
+def get_oidc_client(request: pyramid.request.Request, host: str) -> simple_openid_connect.client.OpenidClient:
     """
     Get the OpenID Connect client from the request settings.
     """
+
+    del host  # used for cache key
 
     authentication_settings = request.registry.settings.get("authentication", {})
     openid_connect = authentication_settings.get("openid_connect", {})
@@ -107,10 +109,14 @@ class OidcRemember:
         token_response: (
             simple_openid_connect.data.TokenSuccessResponse | simple_openid_connect.data.TokenErrorResponse
         ),
+        host: str,
     ) -> OidcRememberObject:
         """
         Remember the user in the cookie.
         """
+
+        del host  # Used for cache key
+
         if isinstance(token_response, simple_openid_connect.data.TokenErrorResponse):
             _LOG.warning(
                 "OpenID connect connection error: %s [%s]",
@@ -143,7 +149,7 @@ class OidcRemember:
             "roles": [],
         }
         settings_fields = openid_connect.get("user_info_fields", {})
-        client = get_oidc_client(self.request)
+        client = get_oidc_client(self.request, self.request.host)
 
         if openid_connect.get("query_user_info", False) is True:
             user_info = client.fetch_userinfo(token_response.access_token)

@@ -54,7 +54,7 @@ ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
 
 
 @_CACHE_REGION.cache_on_arguments()
-def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> dict[str, list[str]]:
+def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> dict[str, list[str]]:
     """Get a simple serializable structure of the WMS capabilities."""
     url = wms_url.clone().add_query({"SERVICE": "WMS", "VERSION": "1.1.1", "REQUEST": "GetCapabilities"})
 
@@ -108,14 +108,16 @@ def wms_structure(wms_url: Url, host: str, request: pyramid.request.Request) -> 
 
 
 def filter_capabilities(
-    content: str, wms: bool, url: Url, headers: dict[str, str], request: pyramid.request.Request
+    request: pyramid.request.Request, content: str, wms: bool, url: Url, headers: dict[str, str]
 ) -> str:
     """Filter the WMS/WFS capabilities."""
 
-    wms_structure_ = wms_structure(url, headers.get("Host"), request)
+    wms_structure_ = wms_structure(request, url, headers.get("Host"))
 
     ogc_server_ids = (
-        get_ogc_server_wms_url_ids(request) if wms else get_ogc_server_wfs_url_ids(request)
+        get_ogc_server_wms_url_ids(request, request.host)
+        if wms
+        else get_ogc_server_wfs_url_ids(request, request.host)
     ).get(url.url())
     gmf_private_layers = copy.copy(get_private_layers(ogc_server_ids))
     for id_ in list(get_protected_layers(request, ogc_server_ids).keys()):
@@ -153,7 +155,7 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
     """Filter the WTS capabilities."""
 
     writable_layers: set[str] = set()
-    ogc_server_ids = get_ogc_server_wfs_url_ids(request).get(wfs_url.url())
+    ogc_server_ids = get_ogc_server_wfs_url_ids(request, request.host).get(wfs_url.url())
     if ogc_server_ids is None:
         _LOG.error("No OGC server found for WFS URL %s", wfs_url)
         raise pyramid.httpexceptions.HTTPInternalServerError("No OGC server found for WFS URL")
