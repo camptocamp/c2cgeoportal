@@ -1,3 +1,7 @@
+##### 2.7.1.141
+
+- [Backport 2.7] [Backport 2.8] Update the cache key to avoid cache poisoning [c2cgeoportal#11392](https://github.com/camptocamp/c2cgeoportal/pull/11392)
+
 ##### 2.7.1.140
 
 - Update all patch versions (2.7) (patch) [c2cgeoportal#11383](https://github.com/camptocamp/c2cgeoportal/pull/11383)
