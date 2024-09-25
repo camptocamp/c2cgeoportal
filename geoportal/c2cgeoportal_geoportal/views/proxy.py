@@ -192,7 +192,7 @@ class Proxy:
             headers_update = {}
         cache = kwargs.get("cache", False)
         if cache is True:
-            response = self._proxy_cache(url, self.request.method, **kwargs)
+            response = self._proxy_cache(url, self.request.host, self.request.method, **kwargs)
         else:
             response = self._proxy(url, **kwargs)
 
