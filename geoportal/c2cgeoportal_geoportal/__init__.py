@@ -278,6 +278,16 @@ def is_allowed_url(
     return url_netloc, url_netloc == request.host or url_netloc in allowed_hosts
 
 
+def is_allowed_host(request: pyramid.request.Request) -> bool:
+    """
+    Check if the URL is allowed.
+
+    Allowed if URL netloc is request host or is found in allowed hosts.
+    """
+
+    return request.host in request.registry.settings.get("allowed_hosts", [])
+
+
 def is_valid_referrer(request: pyramid.request.Request, settings: dict[str, Any] | None = None) -> bool:
     """Check if the referrer is valid."""
     if request.referrer is not None:

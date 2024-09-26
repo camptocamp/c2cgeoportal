@@ -265,6 +265,10 @@ vars:
       Sincerely yours
       The GeoMapFish team
 
+  allowed_hosts:
+    # TODO: Add the allowed hosts for the application (themes and dynamic.json)
+    - localhost:8484
+
   # Checker configuration
   checker:
     fulltextsearch:
@@ -403,7 +407,6 @@ update_paths:
   - interfaces_theme
   - resourceproxy
   - servers
-  - shortener.allowed_hosts
   - smtp
   - sqlalchemy
   - sqlalchemy_slave

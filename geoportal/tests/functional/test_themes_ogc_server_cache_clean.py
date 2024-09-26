@@ -325,10 +325,12 @@ class TestThemesView(TestCase):
         ("http://example.com", "other.com", [], False),
     ],
 )
-def test_ogc_server_cache_clean_wrong_host(default_ogcserver, came_from, host, allowed_hosts, expected):
+def test_ogc_server_cache_clean_wrong_host(
+    default_ogcserver, admin_user, came_from, host, allowed_hosts, expected
+):
     from c2cgeoportal_geoportal.views.theme import Theme
 
-    request = create_dummy_request()
+    request = create_dummy_request(user=admin_user.username)
 
     request.params["came_from"] = came_from
     request.matchdict["id"] = default_ogcserver.id
@@ -350,4 +352,24 @@ def test_ogc_server_cache_clean_wrong_host(default_ogcserver, came_from, host, a
     with pytest.raises(
         pyramid.httpexceptions.HTTPFound if expected else pyramid.httpexceptions.HTTPBadRequest
     ):
+        theme.ogc_server_clear_cache_view()
+
+
+def test_ogc_server_cache_clean_wrong_host_non_admin_user(some_user):
+    from c2cgeoportal_geoportal.views.theme import Theme
+
+    request = create_dummy_request(user=some_user.username)
+    theme = Theme(request)
+
+    with pytest.raises(pyramid.httpexceptions.HTTPForbidden):
+        theme.ogc_server_clear_cache_view()
+
+
+def test_ogc_server_cache_clean_wrong_host_no_user():
+    from c2cgeoportal_geoportal.views.theme import Theme
+
+    request = create_dummy_request()
+    theme = Theme(request)
+
+    with pytest.raises(pyramid.httpexceptions.HTTPForbidden):
         theme.ogc_server_clear_cache_view()

@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023, Camptocamp SA
+# Copyright (c) 2021-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -93,3 +93,31 @@ def default_ogcserver(dbsession, transact):
     dbsession.flush()
 
     yield ogcserver
+
+
+@pytest.fixture
+def some_user(dbsession, transact):
+    from c2cgeoportal_commons.models.static import User
+
+    del transact
+
+    user = User(username="__test_user", password="__test_user")
+    dbsession.add(user)
+    dbsession.flush()
+
+    yield user
+
+
+@pytest.fixture
+def admin_user(dbsession, transact):
+    from c2cgeoportal_commons.models.main import Role
+    from c2cgeoportal_commons.models.static import User
+
+    del transact
+
+    role = Role(name="role_admin")
+    user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
+    dbsession.add_all([role, user])
+    dbsession.flush()
+
+    yield user
