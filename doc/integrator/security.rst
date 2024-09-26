@@ -95,8 +95,23 @@ Authorized referrers
 To mitigate `CSRF <https://en.wikipedia.org/wiki/Cross-site_request_forgery>`_
 attacks, the server validates the referrer against a list of authorized referrers.
 
-By default, only the requests coming from the server are allowed. You can change that list by adding an ``authorized_referers``
+By default, only the requests coming from the server are allowed. You can change that list by adding an ``vars.authorized_referers``
 list in your ``vars.yaml`` file.
 
 This solution is not the most secure (some people have browser extensions that reset the referrer),
 but that is the most consistent approach with regard to the different JS frameworks.
+
+Allowed hosts
+-------------
+
+For security reason we check the host of the request, to be sure that the request is coming from an authorized domain.
+
+For that we have the following configurations in the ``vars.yaml`` file:
+
+- `vars.authentication.allowed_hosts`: List of hosts that are allowed to access the oauth2 authentication service (same host allowed).
+
+- `vars.shortener.allowed_hosts`: List of hosts that are allowed to be shortened (same host allowed).
+
+- `vars.admin_interface.allowed_hosts`: List of host that are allowed to be redirected by the ogc_server_clear_cache (same host allowed).
+
+- `vars.allowed_hosts`: List of hosts that are allowed to access the application (theme and dynamic.json).

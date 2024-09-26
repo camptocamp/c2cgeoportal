@@ -37,6 +37,7 @@ from sqlalchemy import func
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.models import main
+from c2cgeoportal_geoportal import is_allowed_host
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
@@ -123,6 +124,8 @@ class DynamicView:
 
     @view_config(route_name="dynamic", renderer="json")  # type: ignore
     def dynamic(self) -> dict[str, Any]:
+        is_allowed_host(self.request)
+
         original_interface_name = self.request.params.get("interface")
         interface_name = self.request.get_organization_interface(original_interface_name)
 

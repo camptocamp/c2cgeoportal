@@ -205,6 +205,10 @@ mapping:
           oauth2_token_expire_minutes:
             type: scalar
             required: false
+          allowed_hosts:
+            type: seq
+            sequence:
+              - type: str
           openid_connect:
             type: map
             required: false
@@ -256,10 +260,17 @@ mapping:
             type: seq
             sequence:
               - type: str
+
       authorized_referers:
         type: seq
         sequence:
           - type: str
+
+      allowed_hosts:
+        type: seq
+        sequence:
+          - type: str
+
       global_headers:
         type: seq
         sequence:

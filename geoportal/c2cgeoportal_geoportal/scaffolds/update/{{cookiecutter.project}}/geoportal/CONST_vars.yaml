@@ -1072,10 +1072,9 @@ vars:
     'self'
     {content_security_policy_c2c_default_src_extra}"
   content_security_policy_c2c_script_src: "
-    'self'
+    'unsafe-inline'
     {content_security_policy_c2c_script_src_extra}"
   content_security_policy_c2c_style_src: "
-    'self'
     'unsafe-inline'
     https://cdnjs.cloudflare.com/
     {content_security_policy_c2c_style_src_extra}"
@@ -1110,15 +1109,12 @@ vars:
         Access-Control-Allow-Origin: '*'
         Access-Control-Allow-Headers: X-Requested-With, Content-Type
     - pattern: '^/c2c$'
-      headers:
+      headers: &c2c_headers
         Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
           script-src {content_security_policy_c2c_script_src};
           style-src {content_security_policy_c2c_style_src};'
     - pattern: '^/c2c/.*'
-      headers:
-        Content-Security-Policy: 'default-src {content_security_policy_c2c_default_src};
-          script-src {content_security_policy_c2c_script_src};
-          style-src {content_security_policy_c2c_style_src};'
+      headers: *c2c_headers
     - pattern: '^/iframe_api(/theme/.*)?$'
       headers:
         Content-Security-Policy: 'default-src {content_security_policy_main_default_src};

@@ -54,7 +54,7 @@ from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import cache_invalidate_cb, main
-from c2cgeoportal_geoportal import is_allowed_url
+from c2cgeoportal_geoportal import is_allowed_host, is_allowed_url
 from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
@@ -1114,6 +1114,9 @@ class Theme:
 
     @view_config(route_name="themes", renderer="json")  # type: ignore[misc]
     def themes(self) -> dict[str, dict[str, dict[str, Any]] | list[str]]:
+
+        is_allowed_host(self.request)
+
         interface = self.request.params.get("interface", "desktop")
         sets = self.request.params.get("set", "all")
         min_levels = int(self.request.params.get("min_levels", 1))
@@ -1271,6 +1274,13 @@ class Theme:
     @view_config(route_name="ogc_server_clear_cache", renderer="json")  # type: ignore[misc]
     def ogc_server_clear_cache_view(self) -> dict[str, Any]:
         assert models.DBSession is not None
+
+        if not self.request.user:
+            raise pyramid.httpexceptions.HTTPForbidden()
+
+        admin_roles = [r for r in self.request.user.roles if r.name == ("role_admin")]
+        if not admin_roles:
+            raise pyramid.httpexceptions.HTTPForbidden()
 
         self._ogc_server_clear_cache(
             models.DBSession.query(main.OGCServer).filter_by(id=self.request.matchdict.get("id")).one()

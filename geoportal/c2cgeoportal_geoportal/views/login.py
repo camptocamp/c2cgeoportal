@@ -266,7 +266,7 @@ class Login:
 
         location = headers.get("Location")
         location_hostname = urllib.parse.urlparse(location).hostname
-        allowed_hosts = self.request.registry.settings.get("allowed_hosts", [])
+        allowed_hosts = self.request.registry.settings.get("authentication", {}).get("allowed_hosts", [])
         location_hostname, ok = is_allowed_url(self.request, location, allowed_hosts)
         if not ok:
             message = (
