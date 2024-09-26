@@ -503,10 +503,21 @@ access, but no credentials will be passed in this case.</p>
 <h2>Authorized referrers<a class="headerlink" href="#authorized-referrers" title="Link to this heading">¶</a></h2>
 <p>To mitigate <a class="reference external" href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a>
 attacks, the server validates the referrer against a list of authorized referrers.</p>
-<p>By default, only the requests coming from the server are allowed. You can change that list by adding an <code class="docutils literal notranslate"><span class="pre">authorized_referers</span></code>
+<p>By default, only the requests coming from the server are allowed. You can change that list by adding an <code class="docutils literal notranslate"><span class="pre">vars.authorized_referers</span></code>
 list in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file.</p>
 <p>This solution is not the most secure (some people have browser extensions that reset the referrer),
 but that is the most consistent approach with regard to the different JS frameworks.</p>
+</section>
+<section id="allowed-hosts">
+<h2>Allowed hosts<a class="headerlink" href="#allowed-hosts" title="Link to this heading">¶</a></h2>
+<p>For security reason we check the host of the request, to be sure that the request is coming from an authorized domain.</p>
+<p>For that we have the following configurations in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<ul class="simple">
+<li><p><cite>vars.authentication.allowed_hosts</cite>: List of hosts that are allowed to access the oauth2 authentication service (same host allowed).</p></li>
+<li><p><cite>vars.shortener.allowed_hosts</cite>: List of hosts that are allowed to be shortened (same host allowed).</p></li>
+<li><p><cite>vars.admin_interface.allowed_hosts</cite>: List of host that are allowed to be redirected by the ogc_server_clear_cache (same host allowed).</p></li>
+<li><p><cite>vars.allowed_hosts</cite>: List of hosts that are allowed to access the application (theme and dynamic.json).</p></li>
+</ul>
 </section>
 </section>
 
