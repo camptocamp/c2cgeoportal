@@ -36,6 +36,10 @@ import sys
 def main() -> None:
     """Restore the database backup."""
     parser = argparse.ArgumentParser(description="Restore the database backup.")
+    parser.add_argument("--verbose", action="store_true", help="Print the command that is executed.")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Only print the command that would be executed."
+    )
     parser.add_argument(
         "--env",
         help="The env file to use to get the connection settings, by default we log in the composition to "
@@ -89,7 +93,20 @@ def main() -> None:
                 "--dbname={}".format(env["PGDATABASE"]),
                 *args.arg,
             ]
-            print(shlex.join([*command1, *command2_annon, *command3]))
+            if args.verbose or args.dry_run:
+                subprocess.run(
+                    [
+                        "docker",
+                        "run",
+                        "--rm",
+                        "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
+                        "pg_restore",
+                        "--version",
+                    ]
+                )
+                print(shlex.join([*command1, *command2_annon, *command3]))
+            if args.dry_run:
+                sys.exit(0)
             sys.exit(subprocess.run([*command1, *command2, *command3], stdin=file_in).returncode)
         else:
             command = [
@@ -103,7 +120,11 @@ def main() -> None:
                 "-c",
                 'pg_restore --dbname="$PGDATABASE" ' + " ".join(args.arg),
             ]
-            print(shlex.join(command))
+            if args.verbose or args.dry_run:
+                subprocess.run(["docker", "compose", "exec", "tools", "pg_restore", "--version"])
+                print(shlex.join(command))
+            if args.dry_run:
+                sys.exit(0)
             sys.exit(subprocess.run(command, stdin=file_in).returncode)
 
 

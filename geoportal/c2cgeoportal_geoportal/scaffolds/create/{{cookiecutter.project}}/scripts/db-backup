@@ -37,6 +37,10 @@ import sys
 def main() -> None:
     """Backup the database."""
     parser = argparse.ArgumentParser(description="Backup the database.")
+    parser.add_argument("--verbose", action="store_true", help="Print the command that is executed.")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Only print the command that would be executed."
+    )
     parser.add_argument(
         "--env",
         default=".env",
@@ -83,7 +87,20 @@ def main() -> None:
                 "--dbname={}".format(env["PGDATABASE"]),
                 *args.arg,
             ]
-            print(shlex.join([*command1, *command2_annon, *command3]))
+            if args.dry_run or args.verbose:
+                subprocess.run(
+                    [
+                        "docker",
+                        "run",
+                        "--rm",
+                        "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
+                        "pg_dump",
+                        "--version",
+                    ]
+                )
+                print(shlex.join([*command1, *command2_annon, *command3]))
+            if args.dry_run:
+                sys.exit(0)
             sys.exit(subprocess.run([*command1, *command2, *command3], stdout=file_out).returncode)
         else:
             command = [
@@ -97,7 +114,11 @@ def main() -> None:
                 'pg_dump --format=c --dbname="$PGDATABASE"',
                 *args.arg,
             ]
-            print(shlex.join(command))
+            if args.dry_run or args.verbose:
+                subprocess.run(["docker", "compose", "exec", "tools", "pg_dump", "--version"])
+                print(shlex.join(command))
+            if args.dry_run:
+                sys.exit(0)
             sys.exit(subprocess.run(command, stdout=file_out).returncode)
 
 
