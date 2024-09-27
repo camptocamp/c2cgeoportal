@@ -3,42 +3,12 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const destDir = '/etc/static-ngeo/';
 
-const babelPresets = [
-  [
-    require.resolve('@babel/preset-env'),
-    {
-      targets: 'defaults, > 0.1% in CH, > 0.1% in FR, Firefox ESR and supports es6-class and not iOS < 10',
-      modules: false,
-      loose: true,
-    },
-  ],
-];
-
 module.exports = (env, argv) => {
   const library = argv.library ? argv.library : '{{cookiecutter.package}}';
   return {
     entry: path.resolve(__dirname, '{{cookiecutter.package}}_geoportal/static-ngeo/api/index.js'),
     devtool: 'source-map',
     mode: 'production',
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: babelPresets,
-              babelrc: false,
-              comments: false,
-              plugins: [
-                require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
-                require.resolve('@babel/plugin-proposal-optional-chaining'),
-              ],
-            },
-          },
-        },
-      ],
-    },
     output: {
       filename: 'api.js',
       path: destDir,
@@ -51,7 +21,6 @@ module.exports = (env, argv) => {
       minimizer: [
         new TerserPlugin({
           parallel: true,
-          sourceMap: true,
           terserOptions: {
             compress: false,
           },
@@ -59,14 +28,10 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      modules: [
-        '/usr/lib/node_modules',
-        '/usr/lib/node_modules/ol/node_modules',
-        '/usr/lib/node_modules/proj4/node_modules',
-      ],
+      modules: ['/opt/c2cgeoportal/geoportal/node_modules'],
       alias: {
-        api: '/usr/lib/node_modules/ngeo/api/src',
-        ngeo: '/usr/lib/node_modules/ngeo/src',
+        api: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/api/src',
+        ngeo: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/src',
       },
     },
     resolveLoader: {

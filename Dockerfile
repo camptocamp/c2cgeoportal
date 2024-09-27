@@ -80,6 +80,7 @@ COPY scripts/extract-messages.js /opt/c2cgeoportal/geoportal/
 
 ENV TEST=false
 ENV PATH=/opt/c2cgeoportal/geoportal/node_modules/.bin:$PATH
+ENV NODE_PATH=/opt/c2cgeoportal/geoportal/node_modules
 
 #############################################################################################################
 # Finally used for all misk task, will not be used on prod runtime
@@ -88,7 +89,6 @@ FROM base AS tools
 
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-ENV NODE_PATH=/usr/lib/node_modules
 CMD ["tail", "--follow", "--zero-terminated", "/dev/null"]
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
@@ -116,7 +116,6 @@ WORKDIR /opt/c2cgeoportal
 COPY ci/applications*.yaml .
 RUN c2cciutils-download-applications --applications-file=applications.yaml --versions-file=applications-versions.yaml
 
-COPY bin/npm-packages /usr/bin/
 WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
@@ -124,15 +123,8 @@ COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
-    npm install --omit=optional \
-    && npm-packages \
-        @types @typescript-eslint @storybook ol-cesium jasmine-core karma karma-chrome-launcher \
-        karma-jasmine karma-sinon karma-sourcemap-loader karma-webpack \
-        react react-dom cypress chromatic jscodeshift start-server-and-test \
-        typedoc typescript \
-        angular-gettext-tools commander puppeteer url-parse eslint \
-        --src=package.json --src=node_modules/ngeo/package.json --dst=npm-packages \
-    && npm install --omit=optional --global --unsafe-perm $(cat /opt/c2cgeoportal/geoportal/npm-packages)
+    npm --ignore-scripts install \
+    && puppeteer browsers install chrome
 
 COPY admin/package.json admin/package-lock.json admin/.snyk /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
@@ -161,10 +153,10 @@ COPY build.mk lingva.cfg ./
 
 RUN make --makefile=build.mk build \
     && mkdir -p 'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/' \
-    && import-ngeo-apps --html --canvas desktop_alt /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop_alt/index.html.ejs \
+    && import-ngeo-apps --html --canvas desktop_alt geoportal/node_modules/ngeo/contribs/gmf/apps/desktop_alt/index.html.ejs \
         'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/interfaces/desktop_alt.html.mako' \
     && mkdir -p 'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/{{cookiecutter.package}}_geoportal/static/images/' \
-    && cp /usr/lib/node_modules/ngeo/contribs/gmf/apps/desktop/image/background-layer-button.png \
+    && cp geoportal/node_modules/ngeo/contribs/gmf/apps/desktop/image/background-layer-button.png \
         'geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/geoportal/{{cookiecutter.package}}_geoportal/static/images/'
 
 COPY commons/ commons/

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -34,8 +34,8 @@ all_required_js = set()
 IMPORT_FROM = re.compile(r"^import +.* +from +'(.*)';$")
 ONLY_IMPORT = re.compile(r"^import +'(.*)';$")
 for pathname in (
-    "/usr/lib/node_modules/ngeo/src/**/*.js",
-    "/usr/lib/node_modules/ngeo/contribs/gmf/src/**/*.js",
+    "geoportal/node_modules/ngeo/src/**/*.js",
+    "geoportal/node_modules/ngeo/contribs/gmf/src/**/*.js",
 ):
     for filename in glob.glob(pathname, recursive=True):
         with open(filename) as js:

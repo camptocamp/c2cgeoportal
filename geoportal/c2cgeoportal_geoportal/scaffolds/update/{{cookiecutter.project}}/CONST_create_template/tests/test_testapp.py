@@ -34,7 +34,7 @@ def test_desktop_alt(url: str) -> None:
     assert response.status_code == 200, response.text
 
     assert re.search(
-        r'<script src="https?://front/static-ngeo-dist/desktop\..*\.js" crossorigin="anonymous"></script>',
+        r'<script src="https?://front/static-ngeo-dist/desktop-.*\.js" crossorigin="anonymous"></script>',
         response.text,
     ), response.text
     assert re.search(r'<html lang="{{"{{mainCtrl.lang}}"}}" ', response.text), response.text

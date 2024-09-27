@@ -36,7 +36,7 @@ NGEO_OUTPUT_FILES = $(ANGULAR_LOCALES_FILES)
 NGEO_API_OUTPUT_JS_FILE ?= $(APP_OUTPUT_DIR)/api.js.tmpl
 NGEO_API_OUTPUT_FILES += $(NGEO_API_OUTPUT_JS_FILE) $(APP_OUTPUT_DIR)/api.css
 
-WEBPACK_ARGS ?= --debug
+WEBPACK_ARGS ?=
 
 VALIDATE_PY_FOLDERS = admin/$(PACKAGE)_admin \
 	$(PACKAGE)_geoportal/*.py $(PACKAGE)_geoportal/lib \
@@ -83,12 +83,12 @@ update-po: update-server-po update-client-po
 .PHONY: build-ngeo
 build-ngeo: $(NGEO_OUTPUT_FILES)
 
-$(APP_OUTPUT_DIR)/angular-locale_%.js: /usr/lib/node_modules/ngeo/package.json language_mapping
+$(APP_OUTPUT_DIR)/angular-locale_%.js: /opt/c2cgeoportal/geoportal/node_modules/ngeo/package.json language_mapping
 	mkdir --parent $(dir $@)
 	rm --force $@
 	cp /opt/angular-locale/angular-locale_`(grep $* language_mapping || echo $*) | cut --delimiter = --fields 2 | tr --delete '\r\n'`.js $@
 
-$(APP_OUTPUT_DIR)/images/: /usr/lib/node_modules/jquery-ui/themes/base/images
+$(APP_OUTPUT_DIR)/images/: /opt/c2cgeoportal/geoportal/node_modules/jquery-ui/themes/base/images
 	mkdir --parent $@
 	cp -r $</* $@
 
@@ -110,7 +110,7 @@ apps: webpack.apps.js
 build-api: $(NGEO_API_OUTPUT_FILES)
 
 $(APP_OUTPUT_DIR)/api.js.tmpl: webpack.api.js $(PACKAGE)_geoportal/static-ngeo/api/index.js
-	webpack --config webpack.api.js $(WEBPACK_ARGS)
+	webpack --config=webpack.api.js $(WEBPACK_ARGS)
 	cp $(APP_OUTPUT_DIR)/api.js $(APP_OUTPUT_DIR)/api.js_
 	sed --in-place --expression='s/\$$/$${DOLLAR}/g' $(APP_OUTPUT_DIR)/api.js
 	sed --in-place --expression='s#{FULL_ENTRY_POINT}#$${VISIBLE_WEB_PROTOCOL}://$${VISIBLE_WEB_HOST}$${VISIBLE_ENTRY_POINT}#g' $(APP_OUTPUT_DIR)/api.js
