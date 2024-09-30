@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2021-2023, Camptocamp SA
+# Copyright (c) 2021-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,14 @@ def output(cmd: list[str]) -> bytes:
     except subprocess.CalledProcessError as error:
         assert error.output is not None
         return error.output
+
+
+def _get_postgresql_version(deb_versions: dict[str, str]) -> str:
+    if "postgresql-client" in deb_versions:
+        return deb_versions["postgresql-client"]
+    deb_version = {k: v for k, v in deb_versions.items() if k.startswith("postgresql-client-")}
+    if deb_version:
+        return max(deb_version.values())
 
 
 def get_versions(
@@ -132,7 +140,7 @@ def get_versions(
             .decode()
             .strip(),
         ),
-        ("Postgres", deb_versions["postgresql-client"]),
+        ("Postgres", _get_postgresql_version(deb_versions)),
     ]
 
     if old_version >= 2.6:
