@@ -4,15 +4,15 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/base-passwd: 3.6.3build1
   ubuntu_24_04/bash: 5.2.21-2ubuntu4
   ubuntu_24_04/binutils-common: 2.42-4ubuntu2
-  ubuntu_24_04/bsdutils: 1:2.39.3-9ubuntu6
+  ubuntu_24_04/bsdutils: 1:2.39.3-9ubuntu6.1
   ubuntu_24_04/ca-certificates: '20240203'
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
   ubuntu_24_04/diffutils: 1:3.10-1build1
-  ubuntu_24_04/dpkg: 1.22.6ubuntu6
-  ubuntu_24_04/e2fsprogs: 1.47.0-2.4~exp1ubuntu4
+  ubuntu_24_04/dpkg: 1.22.6ubuntu6.1
+  ubuntu_24_04/e2fsprogs: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/findutils: 4.9.0-5build1
   ubuntu_24_04/gcc-14-base: 14-20240412-0ubuntu1
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
@@ -27,91 +27,91 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/libattr1: 1:2.5.2-1build1
   ubuntu_24_04/libaudit-common: 1:3.1.2-2.1build1
   ubuntu_24_04/libaudit1: 1:3.1.2-2.1build1
-  ubuntu_24_04/libblkid1: 2.39.3-9ubuntu6
-  ubuntu_24_04/libbz2-1.0: 1.0.8-5.1
-  ubuntu_24_04/libc-bin: 2.39-0ubuntu8.1
-  ubuntu_24_04/libc6: 2.39-0ubuntu8.1
+  ubuntu_24_04/libblkid1: 2.39.3-9ubuntu6.1
+  ubuntu_24_04/libbz2-1.0: 1.0.8-5.1build0.1
+  ubuntu_24_04/libc-bin: 2.39-0ubuntu8.3
+  ubuntu_24_04/libc6: 2.39-0ubuntu8.3
   ubuntu_24_04/libcap-ng0: 0.8.4-2build2
   ubuntu_24_04/libcap2: 1:2.66-5ubuntu2
-  ubuntu_24_04/libcom-err2: 1.47.0-2.4~exp1ubuntu4
+  ubuntu_24_04/libcom-err2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libcrypt1: 1:4.4.36-4build1
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
-  ubuntu_24_04/libexpat1: 2.6.1-2build1
-  ubuntu_24_04/libext2fs2t64: 1.47.0-2.4~exp1ubuntu4
+  ubuntu_24_04/libexpat1: 2.6.1-2ubuntu0.1
+  ubuntu_24_04/libext2fs2t64: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libffi8: 3.4.6-1build1
   ubuntu_24_04/libgcc-s1: 14-20240412-0ubuntu1
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgmp10: 2:6.3.0+dfsg-2ubuntu6
-  ubuntu_24_04/libgnutls30t64: 3.8.3-1.1ubuntu3.1
+  ubuntu_24_04/libgnutls30t64: 3.8.3-1.1ubuntu3.2
   ubuntu_24_04/libgpg-error0: 1.47-3build2
-  ubuntu_24_04/libhogweed6t64: 3.9.1-2.2build1
+  ubuntu_24_04/libhogweed6t64: 3.9.1-2.2build1.1
   ubuntu_24_04/libidn2-0: 2.3.7-2build1
-  ubuntu_24_04/liblz4-1: 1.9.4-1build1
-  ubuntu_24_04/liblzma5: 5.6.1+really5.4.5-1
+  ubuntu_24_04/liblz4-1: 1.9.4-1build1.1
+  ubuntu_24_04/liblzma5: 5.6.1+really5.4.5-1build0.1
   ubuntu_24_04/libmd0: 1.1.0-2build1
-  ubuntu_24_04/libmount1: 2.39.3-9ubuntu6
+  ubuntu_24_04/libmount1: 2.39.3-9ubuntu6.1
   ubuntu_24_04/libncursesw6: 6.4+20240113-1ubuntu2
-  ubuntu_24_04/libnettle8t64: 3.9.1-2.2build1
+  ubuntu_24_04/libnettle8t64: 3.9.1-2.2build1.1
   ubuntu_24_04/libnpth0t64: 1.6-3.1build1
-  ubuntu_24_04/libp11-kit0: 0.25.3-4ubuntu2
-  ubuntu_24_04/libpam-modules: 1.5.3-5ubuntu5
-  ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5
-  ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5
-  ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5
+  ubuntu_24_04/libp11-kit0: 0.25.3-4ubuntu2.1
+  ubuntu_24_04/libpam-modules: 1.5.3-5ubuntu5.1
+  ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.1
+  ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.1
+  ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2
-  ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3
-  ubuntu_24_04/libpython3-stdlib: 3.12.3-0ubuntu1
-  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1
-  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1
+  ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.1
+  ubuntu_24_04/libpython3-stdlib: 3.12.3-0ubuntu2
+  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.2
   ubuntu_24_04/libreadline8t64: 8.2-4build1
-  ubuntu_24_04/libseccomp2: 2.5.5-1ubuntu3
+  ubuntu_24_04/libseccomp2: 2.5.5-1ubuntu3.1
   ubuntu_24_04/libselinux1: 3.5-2ubuntu2
   ubuntu_24_04/libsemanage-common: 3.5-1build5
   ubuntu_24_04/libsemanage2: 3.5-1build5
   ubuntu_24_04/libsepol2: 3.5-2build1
-  ubuntu_24_04/libsmartcols1: 2.39.3-9ubuntu6
+  ubuntu_24_04/libsmartcols1: 2.39.3-9ubuntu6.1
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2
-  ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3
+  ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.4
   ubuntu_24_04/libstdc++6: 14-20240412-0ubuntu1
-  ubuntu_24_04/libsystemd0: 255.4-1ubuntu8
+  ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.4
   ubuntu_24_04/libtasn1-6: 4.19.0-3build1
   ubuntu_24_04/libtinfo6: 6.4+20240113-1ubuntu2
-  ubuntu_24_04/libudev1: 255.4-1ubuntu8
+  ubuntu_24_04/libudev1: 255.4-1ubuntu8.4
   ubuntu_24_04/libunistring5: 1.1-2build1
-  ubuntu_24_04/libuuid1: 2.39.3-9ubuntu6
+  ubuntu_24_04/libuuid1: 2.39.3-9ubuntu6.1
   ubuntu_24_04/libxxhash0: 0.8.2-2build1
-  ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1
+  ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3
-  ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4
+  ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
   ubuntu_24_04/media-types: 10.1.0
-  ubuntu_24_04/mount: 2.39.3-9ubuntu6
+  ubuntu_24_04/mount: 2.39.3-9ubuntu6.1
   ubuntu_24_04/ncurses-base: 6.4+20240113-1ubuntu2
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.4
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3
   ubuntu_24_04/perl-base: 5.38.2-3.2build2
-  ubuntu_24_04/procps: 2:4.0.4-4ubuntu3
+  ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.1
   ubuntu_24_04/python-is-python3: 3.11.4-1
-  ubuntu_24_04/python3: 3.12.3-0ubuntu1
-  ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu1
+  ubuntu_24_04/python3: 3.12.3-0ubuntu2
+  ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1
-  ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1
-  ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1
+  ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.1
+  ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-wheel: 0.42.0-2
-  ubuntu_24_04/python3.12: 3.12.3-1
-  ubuntu_24_04/python3.12-minimal: 3.12.3-1
+  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.2
   ubuntu_24_04/readline-common: 8.2-4build1
   ubuntu_24_04/sed: 4.9-2build1
   ubuntu_24_04/sensible-utils: 0.0.22
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
   ubuntu_24_04/tar: 1.35+dfsg-3build1
-  ubuntu_24_04/tzdata: 2024a-2ubuntu1
+  ubuntu_24_04/tzdata: 2024a-3ubuntu1.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
-  ubuntu_24_04/util-linux: 2.39.3-9ubuntu6
+  ubuntu_24_04/util-linux: 2.39.3-9ubuntu6.1
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34: &id001
   ubuntu_22_04/acl: 2.3.1-1
   ubuntu_22_04/adduser: 3.118ubuntu5
@@ -1192,24 +1192,24 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster: *id001
 camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/adwaita-icon-theme: 41.0-1ubuntu1
-  ubuntu_22_04/apt: 2.4.12
-  ubuntu_22_04/apt-transport-https: 2.4.12
-  ubuntu_22_04/apt-utils: 2.4.12
+  ubuntu_22_04/apt: 2.4.13
+  ubuntu_22_04/apt-transport-https: 2.4.13
+  ubuntu_22_04/apt-utils: 2.4.13
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/bash-completion: 1:2.11-5ubuntu1
-  ubuntu_22_04/bind9-dnsutils: 1:9.18.18-0ubuntu0.22.04.2
-  ubuntu_22_04/bind9-host: 1:9.18.18-0ubuntu0.22.04.2
-  ubuntu_22_04/bind9-libs: 1:9.18.18-0ubuntu0.22.04.2
+  ubuntu_22_04/bind9-dnsutils: 1:9.18.28-0ubuntu0.22.04.1
+  ubuntu_22_04/bind9-host: 1:9.18.28-0ubuntu0.22.04.1
+  ubuntu_22_04/bind9-libs: 1:9.18.28-0ubuntu0.22.04.1
   ubuntu_22_04/binutils: 2.38-4ubuntu2.6
   ubuntu_22_04/binutils-common: 2.38-4ubuntu2.6
   ubuntu_22_04/binutils-x86-64-linux-gnu: 2.38-4ubuntu2.6
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.4
-  ubuntu_22_04/ca-certificates: 20230311ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20240203~22.04.1
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.2
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.16
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.18
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/dbus: 1.12.20-2ubuntu4.1
   ubuntu_22_04/dbus-user-session: 1.12.20-2ubuntu4.1
@@ -1219,9 +1219,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/debianutils: 5.5-1ubuntu2
   ubuntu_22_04/diffutils: 1:3.8-0ubuntu2
   ubuntu_22_04/dirmngr: 2.2.27-3ubuntu2.1
-  ubuntu_22_04/dnsutils: 1:9.18.18-0ubuntu0.22.04.2
+  ubuntu_22_04/dnsutils: 1:9.18.28-0ubuntu0.22.04.1
   ubuntu_22_04/dpkg: 1.21.1ubuntu2.3
-  ubuntu_22_04/e2fsprogs: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/e2fsprogs: 1.46.5-2ubuntu1.2
   ubuntu_22_04/editorconfig: 0.12.5-2
   ubuntu_22_04/findutils: 4.8.0-1ubuntu3
   ubuntu_22_04/fontconfig: 2.13.1-4.2ubuntu5
@@ -1235,8 +1235,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/gettext: 0.21-4ubuntu4
   ubuntu_22_04/gettext-base: 0.21-4ubuntu4
-  ubuntu_22_04/git: 1:2.34.1-1ubuntu1.10
-  ubuntu_22_04/git-man: 1:2.34.1-1ubuntu1.10
+  ubuntu_22_04/git: 1:2.34.1-1ubuntu1.11
+  ubuntu_22_04/git-man: 1:2.34.1-1ubuntu1.11
   ubuntu_22_04/gnupg: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gnupg-l10n: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gnupg-utils: 2.2.27-3ubuntu2.1
@@ -1249,7 +1249,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.1
   ubuntu_22_04/grep: 3.7-1build1
   ubuntu_22_04/groff-base: 1.22.4-8build1
-  ubuntu_22_04/gtk-update-icon-cache: 3.24.33-1ubuntu2
+  ubuntu_22_04/gtk-update-icon-cache: 3.24.33-1ubuntu2.2
   ubuntu_22_04/gzip: 1.10-4ubuntu4.1
   ubuntu_22_04/hicolor-icon-theme: 0.17-2
   ubuntu_22_04/hostname: 3.23ubuntu2
@@ -1259,8 +1259,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/iputils-ping: 3:20211215-1
   ubuntu_22_04/less: 590-1ubuntu0.22.04.3
   ubuntu_22_04/libacl1: 2.3.1-1
-  ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.12
+  ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.4
+  ubuntu_22_04/libapt-pkg6.0: 2.4.13
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04
   ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1
@@ -1284,28 +1284,28 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libbrotli1: 1.0.9-2build6
   ubuntu_22_04/libbsd0: 0.11.5-1
   ubuntu_22_04/libbz2-1.0: 1.0.8-5build1
-  ubuntu_22_04/libc-bin: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc-dev-bin: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc6: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc6-dev: 2.35-0ubuntu3.7
+  ubuntu_22_04/libc-bin: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc-dev-bin: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc6: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc6-dev: 2.35-0ubuntu3.8
   ubuntu_22_04/libcairo-gobject2: 1.16.0-5ubuntu2
   ubuntu_22_04/libcairo2: 1.16.0-5ubuntu2
   ubuntu_22_04/libcap-ng0: 0.7.9-2.2build3
   ubuntu_22_04/libcap2: 1:2.44-1ubuntu0.22.04.1
   ubuntu_22_04/libcap2-bin: 1:2.44-1ubuntu0.22.04.1
   ubuntu_22_04/libcc1-0: 12.3.0-1ubuntu1~22.04
-  ubuntu_22_04/libcdt5: 2.42.2-6
-  ubuntu_22_04/libcgraph6: 2.42.2-6
+  ubuntu_22_04/libcdt5: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libcgraph6: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libcolord2: 1.4.6-1
-  ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libcrypt-dev: 1:4.4.27-1
   ubuntu_22_04/libcrypt1: 1:4.4.27-1
   ubuntu_22_04/libcryptsetup12: 2:2.4.3-1ubuntu1.2
   ubuntu_22_04/libctf-nobfd0: 2.38-4ubuntu2.6
   ubuntu_22_04/libctf0: 2.38-4ubuntu2.6
-  ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.8
-  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.16
-  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.16
+  ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.11
+  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.18
+  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.18
   ubuntu_22_04/libdatrie1: 0.2.13-2
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
@@ -1321,9 +1321,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libelf1: 0.186-1build1
   ubuntu_22_04/libepoxy0: 1.5.10-1
   ubuntu_22_04/liberror-perl: 0.17029-1
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.3
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.3
-  ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.4
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.4
+  ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libffi8: 3.4.2-4
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
   ubuntu_22_04/libfreetype6: 2.11.1+dfsg-1ubuntu0.2
@@ -1336,28 +1336,28 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libgd3: 2.3.0-2ubuntu2
   ubuntu_22_04/libgdbm-compat4: 1.23-1
   ubuntu_22_04/libgdbm6: 1.23-1
-  ubuntu_22_04/libgdk-pixbuf-2.0-0: 2.42.8+dfsg-1ubuntu0.2
-  ubuntu_22_04/libgdk-pixbuf2.0-common: 2.42.8+dfsg-1ubuntu0.2
+  ubuntu_22_04/libgdk-pixbuf-2.0-0: 2.42.8+dfsg-1ubuntu0.3
+  ubuntu_22_04/libgdk-pixbuf2.0-common: 2.42.8+dfsg-1ubuntu0.3
   ubuntu_22_04/libgeos-c1v5: 3.10.2-1
   ubuntu_22_04/libgeos3.10.2: 3.10.2-1
   ubuntu_22_04/libgfortran5: 12.3.0-1ubuntu1~22.04
-  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.2
+  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.3
   ubuntu_22_04/libgmp10: 2:6.2.1+dfsg-3ubuntu1
   ubuntu_22_04/libgnutls30: 3.7.3-4ubuntu1.5
   ubuntu_22_04/libgomp1: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libgpg-error0: 1.43-3
   ubuntu_22_04/libgpm2: 1.20.7-10build1
   ubuntu_22_04/libgraphite2-3: 1.3.14-1build2
-  ubuntu_22_04/libgraphviz-dev: 2.42.2-6
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.3
-  ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2
-  ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2
-  ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2
-  ubuntu_22_04/libgtk2.0-common: 2.24.33-2ubuntu2
+  ubuntu_22_04/libgraphviz-dev: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.4
+  ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2.2
+  ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2.2
+  ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2.1
+  ubuntu_22_04/libgtk2.0-common: 2.24.33-2ubuntu2.1
   ubuntu_22_04/libgts-0.7-5: 0.7.6+darcs121130-5
-  ubuntu_22_04/libgvc6: 2.42.2-6
-  ubuntu_22_04/libgvc6-plugins-gtk: 2.42.2-6
-  ubuntu_22_04/libgvpr2: 2.42.2-6
+  ubuntu_22_04/libgvc6: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgvc6-plugins-gtk: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgvpr2: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.1
   ubuntu_22_04/libhogweed6: 3.7.3-1build2
   ubuntu_22_04/libicu70: 70.1-2
@@ -1374,16 +1374,16 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.3
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.4
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmod2: 29-1ubuntu1
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.3
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.3
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.4
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.4
   ubuntu_22_04/libksba8: 1.6.0-2ubuntu0.2
-  ubuntu_22_04/liblab-gamut1: 2.42.2-6
+  ubuntu_22_04/liblab-gamut1: 2.42.2-6ubuntu0.1
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
-  ubuntu_22_04/libldap-2.5-0: 2.5.17+dfsg-0ubuntu0.22.04.1
+  ubuntu_22_04/libldap-2.5-0: 2.5.18+dfsg-0ubuntu0.22.04.2
   ubuntu_22_04/liblmdb0: 0.9.24-1build2
   ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libltdl7: 2.4.6-15build2
@@ -1411,7 +1411,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libnsl2: 1.3.0-2build2
   ubuntu_22_04/libnspr4: 2:4.35-0ubuntu0.22.04.1
   ubuntu_22_04/libnss3: 2:3.98-0ubuntu0.22.04.2
-  ubuntu_22_04/libopenjp2-7: 2.4.0-6
+  ubuntu_22_04/libopenjp2-7: 2.4.0-6ubuntu0.1
   ubuntu_22_04/libp11-kit0: 0.24.0-6build1
   ubuntu_22_04/libpam-modules: 1.4.0-11ubuntu2.4
   ubuntu_22_04/libpam-modules-bin: 1.4.0-11ubuntu2.4
@@ -1421,30 +1421,30 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libpango-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangocairo-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangoft2-1.0-0: 1.50.6+ds-2ubuntu1
-  ubuntu_22_04/libpathplan4: 2.42.2-6
+  ubuntu_22_04/libpathplan4: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.3
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3build5
-  ubuntu_22_04/libpq-dev: 16.2-1.pgdg22.04+1
-  ubuntu_22_04/libpq5: 16.2-1.pgdg22.04+1
+  ubuntu_22_04/libpq-dev: 17.0-1.pgdg22.04+1
+  ubuntu_22_04/libpq5: 17.0-1.pgdg22.04+1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
   ubuntu_22_04/libpsl5: 0.21.0-1.2build2
-  ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04
-  ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04
-  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.3
+  ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
+  ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
+  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.6
   ubuntu_22_04/libquadmath0: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libraqm0: 0.7.0-4ubuntu1
   ubuntu_22_04/libreadline8: 8.1.2-1
   ubuntu_22_04/librsvg2-2: 2.52.5+dfsg-3ubuntu0.2
   ubuntu_22_04/librtmp1: 2.4+20151223.gitfa8646d.1-2build4
   ubuntu_22_04/librttopo1: 1.1.0-2
-  ubuntu_22_04/libruby3.0: 3.0.2-7ubuntu2.5
+  ubuntu_22_04/libruby3.0: 3.0.2-7ubuntu2.7
   ubuntu_22_04/libsasl2-2: 2.1.27+dfsg2-3ubuntu1.2
   ubuntu_22_04/libsasl2-modules-db: 2.1.27+dfsg2-3ubuntu1.2
   ubuntu_22_04/libseccomp2: 2.5.3-2ubuntu2
@@ -1456,10 +1456,10 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libsodium23: 1.0.18-1build2
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.3
-  ubuntu_22_04/libss2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.3
-  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.15
-  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.15
+  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.18
+  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.18
   ubuntu_22_04/libstdc++-11-dev: 11.4.0-1ubuntu1~22.04
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.12
@@ -1467,7 +1467,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libtcl8.6: 8.6.12+dfsg-1build1
   ubuntu_22_04/libthai-data: 0.1.29-1build1
   ubuntu_22_04/libthai0: 0.1.29-1build1
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.8
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.10
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.1
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -1499,7 +1499,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libxcursor1: 1:1.2.0-2build4
   ubuntu_22_04/libxdamage1: 1:1.1.5-2build2
   ubuntu_22_04/libxdmcp6: 1:1.1.3-0ubuntu5
-  ubuntu_22_04/libxdot4: 2.42.2-6
+  ubuntu_22_04/libxdot4: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libxerces-c3.2: 3.2.3+debian-3ubuntu0.1
   ubuntu_22_04/libxext6: 2:1.3.4-1build1
   ubuntu_22_04/libxfixes3: 1:6.0.0-1
@@ -1518,9 +1518,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libyaml-0-2: 0.2.2-1build2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-105.115
+  ubuntu_22_04/linux-libc-dev: 5.15.0-122.132
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
-  ubuntu_22_04/logsave: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
   ubuntu_22_04/lua-bitop: 1.0.2-5
   ubuntu_22_04/lua-cjson: 2.1.0+dfsg-2.1
@@ -1534,35 +1534,35 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
   ubuntu_22_04/net-tools: 1.60+git20181103.0eebece-1ubuntu5
   ubuntu_22_04/netbase: '6.3'
-  ubuntu_22_04/nodejs: 18.20.2-1nodesource1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.15
+  ubuntu_22_04/nodejs: 18.20.4-1nodesource1
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.18
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.3
   ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.3
   ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.3
   ubuntu_22_04/pinentry-curses: 1.1.1-1build2
   ubuntu_22_04/pkg-config: 0.29.2-1ubuntu3
-  ubuntu_22_04/postgresql-client: 16+259.pgdg22.04+1
-  ubuntu_22_04/postgresql-client-16: 16.2-1.pgdg22.04+1
-  ubuntu_22_04/postgresql-client-common: 259.pgdg22.04+1
+  ubuntu_22_04/postgresql-client: 17+264.pgdg22.04+1
+  ubuntu_22_04/postgresql-client-17: 17.0-1.pgdg22.04+1
+  ubuntu_22_04/postgresql-client-common: 264.pgdg22.04+1
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
   ubuntu_22_04/pwgen: 2.08-2build1
   ubuntu_22_04/python-is-python3: 3.9.2-2
-  ubuntu_22_04/python3: 3.10.6-1~22.04
-  ubuntu_22_04/python3-dev: 3.10.6-1~22.04
+  ubuntu_22_04/python3: 3.10.6-1~22.04.1
+  ubuntu_22_04/python3-dev: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-distutils: 3.10.8-1~22.04
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
-  ubuntu_22_04/python3-minimal: 3.10.6-1~22.04
+  ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
   ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.3
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.4
-  ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.1
-  ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.1
+  ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.2
+  ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.2
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
-  ubuntu_22_04/python3.10: 3.10.12-1~22.04.3
-  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.3
-  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.3
+  ubuntu_22_04/python3.10: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.6
   ubuntu_22_04/rake: 13.0.6-2
   ubuntu_22_04/readline-common: 8.1.2-1
   ubuntu_22_04/redis-tools: 5:6.0.16-1ubuntu1
@@ -1572,7 +1572,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/ruby-rubygems: 3.3.5-2
   ubuntu_22_04/ruby-webrick: 1.7.0-3
   ubuntu_22_04/ruby-xmlrpc: 0.3.2-1ubuntu0.1
-  ubuntu_22_04/ruby3.0: 3.0.2-7ubuntu2.5
+  ubuntu_22_04/ruby3.0: 3.0.2-7ubuntu2.7
   ubuntu_22_04/rubygems-integration: '1.18'
   ubuntu_22_04/sed: 4.8-1ubuntu2
   ubuntu_22_04/sensible-utils: 0.0.17
@@ -1583,35 +1583,35 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/tar: 1.34+dfsg-1ubuntu0.1.22.04.2
   ubuntu_22_04/traceroute: 1:2.1.0-2
   ubuntu_22_04/tree: 2.0.2-1
-  ubuntu_22_04/tzdata: 2024a-0ubuntu0.22.04
+  ubuntu_22_04/tzdata: 2024a-0ubuntu0.22.04.1
   ubuntu_22_04/ubuntu-keyring: 2021.03.26
   ubuntu_22_04/ubuntu-mono: 20.10-0ubuntu2
   ubuntu_22_04/ucf: '3.0043'
   ubuntu_22_04/unzip: 6.0-26ubuntu3.2
   ubuntu_22_04/usrmerge: 25ubuntu2
   ubuntu_22_04/util-linux: 2.37.2-4ubuntu3.4
-  ubuntu_22_04/vim: 2:8.2.3995-1ubuntu2.16
+  ubuntu_22_04/vim: 2:8.2.3995-1ubuntu2.18
   ubuntu_22_04/vim-addon-manager: 0.5.10
-  ubuntu_22_04/vim-common: 2:8.2.3995-1ubuntu2.16
+  ubuntu_22_04/vim-common: 2:8.2.3995-1ubuntu2.18
   ubuntu_22_04/vim-editorconfig: 0.3.3+dfsg-2.1
-  ubuntu_22_04/vim-nox: 2:8.2.3995-1ubuntu2.16
-  ubuntu_22_04/vim-runtime: 2:8.2.3995-1ubuntu2.16
+  ubuntu_22_04/vim-nox: 2:8.2.3995-1ubuntu2.18
+  ubuntu_22_04/vim-runtime: 2:8.2.3995-1ubuntu2.18
   ubuntu_22_04/x11-common: 1:7.7+23ubuntu2
   ubuntu_22_04/xkb-data: 2.33-1
-  ubuntu_22_04/xxd: 2:8.2.3995-1ubuntu2.16
+  ubuntu_22_04/xxd: 2:8.2.3995-1ubuntu2.18
   ubuntu_22_04/zlib1g: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish:latest:
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/adwaita-icon-theme: 41.0-1ubuntu1
-  ubuntu_22_04/apt: 2.4.12
-  ubuntu_22_04/apt-transport-https: 2.4.12
-  ubuntu_22_04/apt-utils: 2.4.12
+  ubuntu_22_04/apt: 2.4.13
+  ubuntu_22_04/apt-transport-https: 2.4.13
+  ubuntu_22_04/apt-utils: 2.4.13
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.4
-  ubuntu_22_04/ca-certificates: 20230311ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20240203~22.04.1
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.2
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.16
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.18
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/dbus: 1.12.20-2ubuntu4.1
   ubuntu_22_04/dbus-user-session: 1.12.20-2ubuntu4.1
@@ -1622,7 +1622,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/diffutils: 1:3.8-0ubuntu2
   ubuntu_22_04/dirmngr: 2.2.27-3ubuntu2.1
   ubuntu_22_04/dpkg: 1.21.1ubuntu2.3
-  ubuntu_22_04/e2fsprogs: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/e2fsprogs: 1.46.5-2ubuntu1.2
   ubuntu_22_04/findutils: 4.8.0-1ubuntu3
   ubuntu_22_04/fontconfig: 2.13.1-4.2ubuntu5
   ubuntu_22_04/fontconfig-config: 2.13.1-4.2ubuntu5
@@ -1643,7 +1643,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/gpgsm: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.1
   ubuntu_22_04/grep: 3.7-1build1
-  ubuntu_22_04/gtk-update-icon-cache: 3.24.33-1ubuntu2
+  ubuntu_22_04/gtk-update-icon-cache: 3.24.33-1ubuntu2.2
   ubuntu_22_04/gzip: 1.10-4ubuntu4.1
   ubuntu_22_04/hicolor-icon-theme: 0.17-2
   ubuntu_22_04/hostname: 3.23ubuntu2
@@ -1651,8 +1651,8 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/init-system-helpers: '1.62'
   ubuntu_22_04/less: 590-1ubuntu0.22.04.3
   ubuntu_22_04/libacl1: 2.3.1-1
-  ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.12
+  ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.4
+  ubuntu_22_04/libapt-pkg6.0: 2.4.13
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
   ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1
   ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1
@@ -1672,24 +1672,24 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libbrotli1: 1.0.9-2build6
   ubuntu_22_04/libbsd0: 0.11.5-1
   ubuntu_22_04/libbz2-1.0: 1.0.8-5build1
-  ubuntu_22_04/libc-bin: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc-dev-bin: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc6: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc6-dev: 2.35-0ubuntu3.7
+  ubuntu_22_04/libc-bin: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc-dev-bin: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc6: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc6-dev: 2.35-0ubuntu3.8
   ubuntu_22_04/libcairo-gobject2: 1.16.0-5ubuntu2
   ubuntu_22_04/libcairo2: 1.16.0-5ubuntu2
   ubuntu_22_04/libcap-ng0: 0.7.9-2.2build3
   ubuntu_22_04/libcap2: 1:2.44-1ubuntu0.22.04.1
-  ubuntu_22_04/libcdt5: 2.42.2-6
-  ubuntu_22_04/libcgraph6: 2.42.2-6
+  ubuntu_22_04/libcdt5: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libcgraph6: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libcolord2: 1.4.6-1
-  ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libcrypt-dev: 1:4.4.27-1
   ubuntu_22_04/libcrypt1: 1:4.4.27-1
   ubuntu_22_04/libcryptsetup12: 2:2.4.3-1ubuntu1.2
-  ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.8
-  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.16
-  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.16
+  ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.11
+  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.18
+  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.18
   ubuntu_22_04/libdatrie1: 0.2.13-2
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
@@ -1701,9 +1701,9 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libepoxy0: 1.5.10-1
   ubuntu_22_04/liberror-perl: 0.17029-1
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.3
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.3
-  ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.4
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.4
+  ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libffi8: 3.4.2-4
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
   ubuntu_22_04/libfreetype6: 2.11.1+dfsg-1ubuntu0.2
@@ -1715,27 +1715,27 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libgd3: 2.3.0-2ubuntu2
   ubuntu_22_04/libgdbm-compat4: 1.23-1
   ubuntu_22_04/libgdbm6: 1.23-1
-  ubuntu_22_04/libgdk-pixbuf-2.0-0: 2.42.8+dfsg-1ubuntu0.2
-  ubuntu_22_04/libgdk-pixbuf2.0-common: 2.42.8+dfsg-1ubuntu0.2
+  ubuntu_22_04/libgdk-pixbuf-2.0-0: 2.42.8+dfsg-1ubuntu0.3
+  ubuntu_22_04/libgdk-pixbuf2.0-common: 2.42.8+dfsg-1ubuntu0.3
   ubuntu_22_04/libgeos-c1v5: 3.10.2-1
   ubuntu_22_04/libgeos3.10.2: 3.10.2-1
   ubuntu_22_04/libgfortran5: 12.3.0-1ubuntu1~22.04
-  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.2
+  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.3
   ubuntu_22_04/libgmp10: 2:6.2.1+dfsg-3ubuntu1
   ubuntu_22_04/libgnutls30: 3.7.3-4ubuntu1.5
   ubuntu_22_04/libgomp1: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libgpg-error0: 1.43-3
   ubuntu_22_04/libgraphite2-3: 1.3.14-1build2
-  ubuntu_22_04/libgraphviz-dev: 2.42.2-6
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.3
-  ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2
-  ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2
-  ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2
-  ubuntu_22_04/libgtk2.0-common: 2.24.33-2ubuntu2
+  ubuntu_22_04/libgraphviz-dev: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.4
+  ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2.2
+  ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2.2
+  ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2.1
+  ubuntu_22_04/libgtk2.0-common: 2.24.33-2ubuntu2.1
   ubuntu_22_04/libgts-0.7-5: 0.7.6+darcs121130-5
-  ubuntu_22_04/libgvc6: 2.42.2-6
-  ubuntu_22_04/libgvc6-plugins-gtk: 2.42.2-6
-  ubuntu_22_04/libgvpr2: 2.42.2-6
+  ubuntu_22_04/libgvc6: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgvc6-plugins-gtk: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgvpr2: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.1
   ubuntu_22_04/libhogweed6: 3.7.3-1build2
   ubuntu_22_04/libicu70: 70.1-2
@@ -1749,16 +1749,16 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.3
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.4
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmod2: 29-1ubuntu1
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.3
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.3
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.4
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.4
   ubuntu_22_04/libksba8: 1.6.0-2ubuntu0.2
-  ubuntu_22_04/liblab-gamut1: 2.42.2-6
+  ubuntu_22_04/liblab-gamut1: 2.42.2-6ubuntu0.1
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
-  ubuntu_22_04/libldap-2.5-0: 2.5.17+dfsg-0ubuntu0.22.04.1
+  ubuntu_22_04/libldap-2.5-0: 2.5.18+dfsg-0ubuntu0.22.04.2
   ubuntu_22_04/libltdl7: 2.4.6-15build2
   ubuntu_22_04/liblz4-1: 1.9.3-2build2
   ubuntu_22_04/liblzma5: 5.2.5-2ubuntu1
@@ -1775,7 +1775,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libnsl2: 1.3.0-2build2
   ubuntu_22_04/libnspr4: 2:4.35-0ubuntu0.22.04.1
   ubuntu_22_04/libnss3: 2:3.98-0ubuntu0.22.04.2
-  ubuntu_22_04/libopenjp2-7: 2.4.0-6
+  ubuntu_22_04/libopenjp2-7: 2.4.0-6ubuntu0.1
   ubuntu_22_04/libp11-kit0: 0.24.0-6build1
   ubuntu_22_04/libpam-modules: 1.4.0-11ubuntu2.4
   ubuntu_22_04/libpam-modules-bin: 1.4.0-11ubuntu2.4
@@ -1785,23 +1785,23 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libpango-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangocairo-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangoft2-1.0-0: 1.50.6+ds-2ubuntu1
-  ubuntu_22_04/libpathplan4: 2.42.2-6
+  ubuntu_22_04/libpathplan4: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.3
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3build5
-  ubuntu_22_04/libpq-dev: 14.11-0ubuntu0.22.04.1
-  ubuntu_22_04/libpq5: 14.11-0ubuntu0.22.04.1
+  ubuntu_22_04/libpq-dev: 14.13-0ubuntu0.22.04.1
+  ubuntu_22_04/libpq5: 14.13-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
   ubuntu_22_04/libpsl5: 0.21.0-1.2build2
-  ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04
-  ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04
-  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.3
+  ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
+  ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
+  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.6
   ubuntu_22_04/libquadmath0: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libraqm0: 0.7.0-4ubuntu1
   ubuntu_22_04/libreadline8: 8.1.2-1
@@ -1818,16 +1818,16 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libsmartcols1: 2.37.2-4ubuntu3.4
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.3
-  ubuntu_22_04/libss2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.3
-  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.15
-  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.15
+  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.18
+  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.18
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.12
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/libthai-data: 0.1.29-1build1
   ubuntu_22_04/libthai0: 0.1.29-1build1
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.8
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.10
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.1
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -1855,7 +1855,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libxcursor1: 1:1.2.0-2build4
   ubuntu_22_04/libxdamage1: 1:1.1.5-2build2
   ubuntu_22_04/libxdmcp6: 1:1.1.3-0ubuntu5
-  ubuntu_22_04/libxdot4: 2.42.2-6
+  ubuntu_22_04/libxdot4: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libxerces-c3.2: 3.2.3+debian-3ubuntu0.1
   ubuntu_22_04/libxext6: 2:1.3.4-1build1
   ubuntu_22_04/libxfixes3: 1:6.0.0-1
@@ -1871,9 +1871,9 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libxtst6: 2:1.2.3-1build4
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-105.115
+  ubuntu_22_04/linux-libc-dev: 5.15.0-122.132
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
-  ubuntu_22_04/logsave: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
   ubuntu_22_04/mailcap: 3.70+nmu1ubuntu1
   ubuntu_22_04/mawk: 1.3.4.20200120-3
@@ -1882,8 +1882,8 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/mount: 2.37.2-4ubuntu3.4
   ubuntu_22_04/ncurses-base: 6.3-2ubuntu0.1
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
-  ubuntu_22_04/nodejs: 18.20.2-1nodesource1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.15
+  ubuntu_22_04/nodejs: 18.20.4-1nodesource1
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.18
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.3
   ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.3
@@ -1892,20 +1892,20 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
   ubuntu_22_04/python-is-python3: 3.9.2-2
-  ubuntu_22_04/python3: 3.10.6-1~22.04
-  ubuntu_22_04/python3-dev: 3.10.6-1~22.04
+  ubuntu_22_04/python3: 3.10.6-1~22.04.1
+  ubuntu_22_04/python3-dev: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-distutils: 3.10.8-1~22.04
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
-  ubuntu_22_04/python3-minimal: 3.10.6-1~22.04
+  ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
   ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.3
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.4
-  ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.1
-  ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.1
+  ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.2
+  ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.2
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
-  ubuntu_22_04/python3.10: 3.10.12-1~22.04.3
-  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.3
-  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.3
+  ubuntu_22_04/python3.10: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.6
   ubuntu_22_04/readline-common: 8.1.2-1
   ubuntu_22_04/rpcsvc-proto: 1.4.2-0ubuntu6
   ubuntu_22_04/sed: 4.8-1ubuntu2
@@ -1927,15 +1927,15 @@ camptocamp/geomapfish:latest:
 camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/adwaita-icon-theme: 41.0-1ubuntu1
-  ubuntu_22_04/apt: 2.4.12
-  ubuntu_22_04/apt-transport-https: 2.4.12
-  ubuntu_22_04/apt-utils: 2.4.12
+  ubuntu_22_04/apt: 2.4.13
+  ubuntu_22_04/apt-transport-https: 2.4.13
+  ubuntu_22_04/apt-utils: 2.4.13
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.4
-  ubuntu_22_04/ca-certificates: 20230311ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20240203~22.04.1
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.2
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.16
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.18
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/dbus: 1.12.20-2ubuntu4.1
   ubuntu_22_04/dbus-user-session: 1.12.20-2ubuntu4.1
@@ -1946,7 +1946,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/diffutils: 1:3.8-0ubuntu2
   ubuntu_22_04/dirmngr: 2.2.27-3ubuntu2.1
   ubuntu_22_04/dpkg: 1.21.1ubuntu2.3
-  ubuntu_22_04/e2fsprogs: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/e2fsprogs: 1.46.5-2ubuntu1.2
   ubuntu_22_04/findutils: 4.8.0-1ubuntu3
   ubuntu_22_04/fontconfig: 2.13.1-4.2ubuntu5
   ubuntu_22_04/fontconfig-config: 2.13.1-4.2ubuntu5
@@ -1967,7 +1967,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/gpgsm: 2.2.27-3ubuntu2.1
   ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.1
   ubuntu_22_04/grep: 3.7-1build1
-  ubuntu_22_04/gtk-update-icon-cache: 3.24.33-1ubuntu2
+  ubuntu_22_04/gtk-update-icon-cache: 3.24.33-1ubuntu2.2
   ubuntu_22_04/gzip: 1.10-4ubuntu4.1
   ubuntu_22_04/hicolor-icon-theme: 0.17-2
   ubuntu_22_04/hostname: 3.23ubuntu2
@@ -1975,8 +1975,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/init-system-helpers: '1.62'
   ubuntu_22_04/less: 590-1ubuntu0.22.04.3
   ubuntu_22_04/libacl1: 2.3.1-1
-  ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.12
+  ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.4
+  ubuntu_22_04/libapt-pkg6.0: 2.4.13
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
   ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1
   ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1
@@ -1996,24 +1996,24 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libbrotli1: 1.0.9-2build6
   ubuntu_22_04/libbsd0: 0.11.5-1
   ubuntu_22_04/libbz2-1.0: 1.0.8-5build1
-  ubuntu_22_04/libc-bin: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc-dev-bin: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc6: 2.35-0ubuntu3.7
-  ubuntu_22_04/libc6-dev: 2.35-0ubuntu3.7
+  ubuntu_22_04/libc-bin: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc-dev-bin: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc6: 2.35-0ubuntu3.8
+  ubuntu_22_04/libc6-dev: 2.35-0ubuntu3.8
   ubuntu_22_04/libcairo-gobject2: 1.16.0-5ubuntu2
   ubuntu_22_04/libcairo2: 1.16.0-5ubuntu2
   ubuntu_22_04/libcap-ng0: 0.7.9-2.2build3
   ubuntu_22_04/libcap2: 1:2.44-1ubuntu0.22.04.1
-  ubuntu_22_04/libcdt5: 2.42.2-6
-  ubuntu_22_04/libcgraph6: 2.42.2-6
+  ubuntu_22_04/libcdt5: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libcgraph6: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libcolord2: 1.4.6-1
-  ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libcrypt-dev: 1:4.4.27-1
   ubuntu_22_04/libcrypt1: 1:4.4.27-1
   ubuntu_22_04/libcryptsetup12: 2:2.4.3-1ubuntu1.2
-  ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.8
-  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.16
-  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.16
+  ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.11
+  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.18
+  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.18
   ubuntu_22_04/libdatrie1: 0.2.13-2
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
@@ -2025,9 +2025,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libepoxy0: 1.5.10-1
   ubuntu_22_04/liberror-perl: 0.17029-1
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.3
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.3
-  ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.4
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.4
+  ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libffi8: 3.4.2-4
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
   ubuntu_22_04/libfreetype6: 2.11.1+dfsg-1ubuntu0.2
@@ -2039,27 +2039,27 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libgd3: 2.3.0-2ubuntu2
   ubuntu_22_04/libgdbm-compat4: 1.23-1
   ubuntu_22_04/libgdbm6: 1.23-1
-  ubuntu_22_04/libgdk-pixbuf-2.0-0: 2.42.8+dfsg-1ubuntu0.2
-  ubuntu_22_04/libgdk-pixbuf2.0-common: 2.42.8+dfsg-1ubuntu0.2
+  ubuntu_22_04/libgdk-pixbuf-2.0-0: 2.42.8+dfsg-1ubuntu0.3
+  ubuntu_22_04/libgdk-pixbuf2.0-common: 2.42.8+dfsg-1ubuntu0.3
   ubuntu_22_04/libgeos-c1v5: 3.10.2-1
   ubuntu_22_04/libgeos3.10.2: 3.10.2-1
   ubuntu_22_04/libgfortran5: 12.3.0-1ubuntu1~22.04
-  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.2
+  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.3
   ubuntu_22_04/libgmp10: 2:6.2.1+dfsg-3ubuntu1
   ubuntu_22_04/libgnutls30: 3.7.3-4ubuntu1.5
   ubuntu_22_04/libgomp1: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libgpg-error0: 1.43-3
   ubuntu_22_04/libgraphite2-3: 1.3.14-1build2
-  ubuntu_22_04/libgraphviz-dev: 2.42.2-6
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.3
-  ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2
-  ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2
-  ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2
-  ubuntu_22_04/libgtk2.0-common: 2.24.33-2ubuntu2
+  ubuntu_22_04/libgraphviz-dev: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.4
+  ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2.2
+  ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2.2
+  ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2.1
+  ubuntu_22_04/libgtk2.0-common: 2.24.33-2ubuntu2.1
   ubuntu_22_04/libgts-0.7-5: 0.7.6+darcs121130-5
-  ubuntu_22_04/libgvc6: 2.42.2-6
-  ubuntu_22_04/libgvc6-plugins-gtk: 2.42.2-6
-  ubuntu_22_04/libgvpr2: 2.42.2-6
+  ubuntu_22_04/libgvc6: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgvc6-plugins-gtk: 2.42.2-6ubuntu0.1
+  ubuntu_22_04/libgvpr2: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.1
   ubuntu_22_04/libhogweed6: 3.7.3-1build2
   ubuntu_22_04/libicu70: 70.1-2
@@ -2073,16 +2073,16 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.3
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.4
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmod2: 29-1ubuntu1
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.3
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.3
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.4
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.4
   ubuntu_22_04/libksba8: 1.6.0-2ubuntu0.2
-  ubuntu_22_04/liblab-gamut1: 2.42.2-6
+  ubuntu_22_04/liblab-gamut1: 2.42.2-6ubuntu0.1
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
-  ubuntu_22_04/libldap-2.5-0: 2.5.17+dfsg-0ubuntu0.22.04.1
+  ubuntu_22_04/libldap-2.5-0: 2.5.18+dfsg-0ubuntu0.22.04.2
   ubuntu_22_04/libltdl7: 2.4.6-15build2
   ubuntu_22_04/liblz4-1: 1.9.3-2build2
   ubuntu_22_04/liblzma5: 5.2.5-2ubuntu1
@@ -2099,7 +2099,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libnsl2: 1.3.0-2build2
   ubuntu_22_04/libnspr4: 2:4.35-0ubuntu0.22.04.1
   ubuntu_22_04/libnss3: 2:3.98-0ubuntu0.22.04.2
-  ubuntu_22_04/libopenjp2-7: 2.4.0-6
+  ubuntu_22_04/libopenjp2-7: 2.4.0-6ubuntu0.1
   ubuntu_22_04/libp11-kit0: 0.24.0-6build1
   ubuntu_22_04/libpam-modules: 1.4.0-11ubuntu2.4
   ubuntu_22_04/libpam-modules-bin: 1.4.0-11ubuntu2.4
@@ -2109,23 +2109,23 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libpango-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangocairo-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangoft2-1.0-0: 1.50.6+ds-2ubuntu1
-  ubuntu_22_04/libpathplan4: 2.42.2-6
+  ubuntu_22_04/libpathplan4: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.3
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3build5
-  ubuntu_22_04/libpq-dev: 14.11-0ubuntu0.22.04.1
-  ubuntu_22_04/libpq5: 14.11-0ubuntu0.22.04.1
+  ubuntu_22_04/libpq-dev: 14.13-0ubuntu0.22.04.1
+  ubuntu_22_04/libpq5: 14.13-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
   ubuntu_22_04/libpsl5: 0.21.0-1.2build2
-  ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04
-  ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04
-  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.3
-  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.3
+  ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
+  ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
+  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.6
   ubuntu_22_04/libquadmath0: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libraqm0: 0.7.0-4ubuntu1
   ubuntu_22_04/libreadline8: 8.1.2-1
@@ -2142,16 +2142,16 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libsmartcols1: 2.37.2-4ubuntu3.4
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.3
-  ubuntu_22_04/libss2: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.3
-  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.15
-  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.15
+  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.18
+  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.18
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.12
   ubuntu_22_04/libtasn1-6: 4.18.0-4build1
   ubuntu_22_04/libthai-data: 0.1.29-1build1
   ubuntu_22_04/libthai0: 0.1.29-1build1
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.8
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.10
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.1
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -2179,7 +2179,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libxcursor1: 1:1.2.0-2build4
   ubuntu_22_04/libxdamage1: 1:1.1.5-2build2
   ubuntu_22_04/libxdmcp6: 1:1.1.3-0ubuntu5
-  ubuntu_22_04/libxdot4: 2.42.2-6
+  ubuntu_22_04/libxdot4: 2.42.2-6ubuntu0.1
   ubuntu_22_04/libxerces-c3.2: 3.2.3+debian-3ubuntu0.1
   ubuntu_22_04/libxext6: 2:1.3.4-1build1
   ubuntu_22_04/libxfixes3: 1:6.0.0-1
@@ -2195,9 +2195,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libxtst6: 2:1.2.3-1build4
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-105.115
+  ubuntu_22_04/linux-libc-dev: 5.15.0-122.132
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
-  ubuntu_22_04/logsave: 1.46.5-2ubuntu1.1
+  ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
   ubuntu_22_04/mailcap: 3.70+nmu1ubuntu1
   ubuntu_22_04/mawk: 1.3.4.20200120-3
@@ -2206,8 +2206,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/mount: 2.37.2-4ubuntu3.4
   ubuntu_22_04/ncurses-base: 6.3-2ubuntu0.1
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
-  ubuntu_22_04/nodejs: 18.20.2-1nodesource1
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.15
+  ubuntu_22_04/nodejs: 18.20.4-1nodesource1
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.18
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.3
   ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.3
@@ -2216,20 +2216,20 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
   ubuntu_22_04/python-is-python3: 3.9.2-2
-  ubuntu_22_04/python3: 3.10.6-1~22.04
-  ubuntu_22_04/python3-dev: 3.10.6-1~22.04
+  ubuntu_22_04/python3: 3.10.6-1~22.04.1
+  ubuntu_22_04/python3-dev: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-distutils: 3.10.8-1~22.04
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
-  ubuntu_22_04/python3-minimal: 3.10.6-1~22.04
+  ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
   ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.3
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.4
-  ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.1
-  ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.1
+  ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.2
+  ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.2
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
-  ubuntu_22_04/python3.10: 3.10.12-1~22.04.3
-  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.3
-  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.3
+  ubuntu_22_04/python3.10: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.6
   ubuntu_22_04/readline-common: 8.1.2-1
   ubuntu_22_04/rpcsvc-proto: 1.4.2-0ubuntu6
   ubuntu_22_04/sed: 4.8-1ubuntu2
