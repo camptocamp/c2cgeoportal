@@ -82,7 +82,7 @@ def treeitems(
         .distinct()
         .outerjoin(TreeItem.parents_relation)
         .filter(TreeItem.item_type != "theme")
-        .group_by(TreeItem.id)
+        .group_by(TreeItem)
         .order_by(group.desc(), TreeItem.name)
     )
 
