@@ -10,13 +10,13 @@
   "dependencies": {
     "@snyk/protect": "1.1293.1",
     "ngeo": "2.9.0-latest.20241001T174903Z.ea0c2cf50",
-    "puppeteer": "23.2.2"
+    "puppeteer": "23.4.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.1.0",
-    "@eslint/js": "9.9.1",
+    "@eslint/js": "9.11.1",
     "@popperjs/core": "2.11.8",
-    "@sentry/browser": "8.29.0",
+    "@sentry/browser": "8.32.0",
     "angular-gettext-tools": "2.5.3",
     "angular-mocks": "1.8.3",
     "commander": "12.1.0",
@@ -25,9 +25,9 @@
     "cy-mobile-commands": "0.3.0",
     "ejs-loader": "0.5.0",
     "eslint": "8.57.1",
-    "eslint-plugin-jsdoc": "50.2.5",
-    "eslint-plugin-lit": "1.14.0",
-    "eslint-plugin-storybook": "0.8.0",
+    "eslint-plugin-jsdoc": "50.3.1",
+    "eslint-plugin-lit": "1.15.0",
+    "eslint-plugin-storybook": "0.9.0",
     "eslint-plugin-wc": "2.1.1",
     "event-hooks-webpack-plugin": "2.3.0",
     "expose-loader": "5.0.0",
@@ -40,17 +40,17 @@
     "minify-html-literals-loader": "1.1.1",
     "neat-csv": "7.0.0",
     "parse-absolute-css-unit": "1.0.2",
-    "sass": "1.77.8",
+    "sass": "1.79.4",
     "sass-loader": "16.0.2",
     "simple-html-tokenizer": "0.5.11",
     "svgo": "3.3.2",
     "svgo-loader": "4.0.0",
-    "terser": "5.31.6",
+    "terser": "5.34.1",
     "terser-webpack-plugin": "5.3.10",
     "url-parse": "1.5.10",
-    "webpack": "5.94.0",
+    "webpack": "5.95.0",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.0.4",
+    "webpack-dev-server": "5.1.0",
     "webpack-merge": "6.0.1"
   }
 }
