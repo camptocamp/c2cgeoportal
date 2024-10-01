@@ -48,7 +48,8 @@ If we want to use OpenID Connect as an authentication provider, we need to set t
          url: <the service URL>
          client_id: <the client application ID>
          user_info_fields:
-           username: name  # Default value
+           username: sub  # Default value
+           display_name: name  # Default value
            email: email  # Default value
 
 With that the user will be create in the database at the first login, and the access right will be set in the GeoMapFish database.

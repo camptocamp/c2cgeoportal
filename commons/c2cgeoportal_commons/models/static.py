@@ -142,6 +142,15 @@ class User(Base):  # type: ignore
             }
         },
     )
+    display_name: Mapped[str] = mapped_column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Display name"),
+                "description": _("Name displayed in the application."),
+            }
+        },
+    )
     _password: Mapped[str] = mapped_column(
         "password", Unicode, nullable=False, info={"colanderalchemy": {"exclude": True}}
     )
@@ -263,8 +272,10 @@ class User(Base):  # type: ignore
         roles: list[Role] | None = None,
         expire_on: datetime | None = None,
         deactivated: bool = False,
+        display_name: str | None = None,
     ) -> None:
         self.username = username
+        self.display_name = display_name or username
         self.password = password
         self.tech_data = {}
         self.email = email

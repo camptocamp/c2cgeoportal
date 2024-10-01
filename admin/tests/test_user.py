@@ -166,6 +166,7 @@ class TestUser(AbstractViewsTests):
                 ("item_type", "user"),
                 ("id", user.id),
                 ("username", "new_name_withéàô"),
+                ("display_name", "New name withéàô"),
                 ("email", "new_mail@valid.net"),
                 ("settings_role_id", roles[2].id),
                 ("__start__", "roles:sequence"),
@@ -271,6 +272,7 @@ class TestUser(AbstractViewsTests):
                 ("item_type", "user"),
                 ("id", ""),
                 ("username", "new_user"),
+                ("display_name", "New user"),
                 ("email", "valid@email.net"),
                 ("settings_role_id", roles[2].id),
             ),
@@ -284,6 +286,7 @@ class TestUser(AbstractViewsTests):
         ).group(1)
 
         assert user.username == "new_user"
+        assert user.display_name == "New user"
         assert user.email == "valid@email.net"
         assert user.settings_role_id == roles[2].id
         assert user.password is not None and len(user.password)
@@ -315,6 +318,7 @@ class TestUser(AbstractViewsTests):
                 "item_type": "user",
                 "id": "",
                 "username": "invalid_email",
+                "display_name": "Invalid email",
                 "email": "new_mail",
                 "role_name": "secretary_2",
                 "is_password_changed": "false",

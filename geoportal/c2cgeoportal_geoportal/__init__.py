@@ -363,7 +363,8 @@ def create_get_user_from_request(
                         )
 
                         request.user_ = oidc.DynamicUser(
-                            username=user_info["username"],
+                            username=user_info["sub"],
+                            display_name=user_info["username"],
                             email=user_info["email"],
                             settings_role=(
                                 DBSession.query(Role).filter_by(name=user_info["settings_role"]).first()
@@ -376,7 +377,7 @@ def create_get_user_from_request(
                             ],
                         )
                     else:
-                        request.user_ = DBSession.query(User).filter_by(email=user_info["email"]).first()
+                        request.user_ = DBSession.query(User).filter_by(username=user_info["sub"]).first()
                         for user in DBSession.query(User).all():
                             _LOG.error(user.username)
                 else:
