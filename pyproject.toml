@@ -29,7 +29,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-alembic = "1.13.2" # geoportal
+alembic = "1.13.3" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.4.0" # commons
 colander = "2.0" # commons, admin
@@ -38,7 +38,7 @@ cookiecutter = "2.6.0" # geoportal
 deform = "2.0.15" # commons, admin
 defusedxml = "0.7.1" # geoportal
 "dogpile.cache" = "1.3.3" # geoportal
-Fiona = "1.10.0" # geoportal raster
+Fiona = "1.10.1" # geoportal raster
 GeoAlchemy2 = "0.15.2" # commons, geoportal
 geojson = "3.1.0" # geoportal
 getitfixed = "1.0.29" # geoportal
@@ -63,7 +63,7 @@ rasterio = "1.3.11" # geoportal raster
 requests = "2.32.3" # geoportal
 redis = "5.0.8" # geoportal cache
 Shapely = "2.0.6" # geoportal
-SQLAlchemy = "2.0.34"
+SQLAlchemy = "2.0.35"
 transaction = "4.0" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "5.0" # commons, geoportal
@@ -76,22 +76,22 @@ simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_co
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.10.3" }
-setuptools = "74.1.2"
+setuptools = "74.1.3"
 
 [tool.poetry.dev-dependencies]
 Babel = "2.16.0" # i18n
 beautifulsoup4 = "4.12.3" # admin tests
 Jinja2 = "3.1.4" # c2c.template
-lingva = "5.0.3" # i18n
+lingva = "5.0.4" # i18n
 PasteScript = "3.6.0" # geoportal pcreate
 polib = "1.2.0" # i18n
 pykwalify = "1.8.0" # Validate config
-pytest = "8.3.2" # tests
+pytest = "8.3.3" # tests
 WebTest = "3.0.1" # admin tests
 types-pytz = "2024.1.0.20240417"
-types-pyyaml = "6.0.12.20240808"
-types-python-dateutil = "2.9.0.20240821"
-types-requests = "2.32.0.20240905"
+types-pyyaml = "6.0.12.20240917"
+types-python-dateutil = "2.9.0.20240906"
+types-requests = "2.32.0.20240914"
 types-setuptools = "74.1.0.20240907"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
