@@ -78,7 +78,6 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 
 COPY scripts/extract-messages.js /opt/c2cgeoportal/geoportal/
 
-ENV TEST=false
 ENV PATH=/opt/c2cgeoportal/geoportal/node_modules/.bin:$PATH
 ENV NODE_PATH=/opt/c2cgeoportal/geoportal/node_modules
 
