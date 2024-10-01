@@ -166,7 +166,7 @@ c2cciutils = "==1.1.46"
 mapbox-vector-tile = "==1.2.1"
 # Lock dependencies
 astroid = "==2.9.3"
-bandit = "==1.7.9"
+bandit = "==1.7.10"
 docopt = "==0.6.2"
 dodgy = "==0.2.1"
 flake8-polyfill = "==1.0.2"
