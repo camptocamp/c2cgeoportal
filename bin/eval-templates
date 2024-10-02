@@ -33,23 +33,43 @@ function evaluate {
     fi
 }
 
-if [ "${TEST}" == true ]; then
+if [ "${TEST:-false}" == true ]; then
     find /opt/c2cgeoportal/ -name '*.tmpl' -print | while read -r file; do
         evaluate "$file"
     done
 fi
 
-find /app/ -name '*.tmpl' -print | while read -r file; do
-    evaluate "$file"
-done
+if [ "${EVALUATE_APP:-true}" == true ]; then
+    find /app/ -name '*.tmpl' -print | while read -r file; do
+        evaluate "$file"
+    done
+fi
 
-find /etc/static-ngeo/ -name '*.tmpl' -print | while read -r file; do
-    evaluate "$file"
-done
+if [ "${EVALUATE_NGEO_TMPL:-true}" == true ]; then
+    find /etc/static-ngeo/ -name '*.tmpl' -print | while read -r file; do
+        evaluate "$file"
+    done
+fi
 
-find /etc/static-ngeo/ \( -name '*.js' -or -name '*.css' -or -name '*.html' \) -print | while read -r file; do
-    echo "Evaluate: ${file}"
-    sed --in-place --expression="s#\.__ENTRY_POINT__#${VISIBLE_ENTRY_POINT}#g" "${file}"
-done
+if [ "${EVALUATE_NGEO_JS:-true}" == true ]; then
+    find /etc/static-ngeo/ -name '*.js' -print | while read -r file; do
+        echo "Evaluate: ${file}"
+        sed --in-place --expression="s#\.__ENTRY_POINT__#${VISIBLE_ENTRY_POINT}#g" "${file}"
+    done
+fi
+
+if [ "${EVALUATE_NGEO_CSS:-true}" == true ]; then
+    find /etc/static-ngeo/ -name '*.css' -print | while read -r file; do
+        echo "Evaluate: ${file}"
+        sed --in-place --expression="s#\.__ENTRY_POINT__#${VISIBLE_ENTRY_POINT}#g" "${file}"
+    done
+fi
+
+if [ "${EVALUATE_NGEO_HTML:-true}" == true ]; then
+    find /etc/static-ngeo/ -name '*.html' -print | while read -r file; do
+        echo "Evaluate: ${file}"
+        sed --in-place --expression="s#\.__ENTRY_POINT__#${VISIBLE_ENTRY_POINT}#g" "${file}"
+    done
+fi
 
 exec "$@"

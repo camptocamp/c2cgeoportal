@@ -76,6 +76,11 @@ services:
       - PGSSLMODE=disable
       - CI=true
       - TEST=true
+      - EVALUATE_APP=false
+      - EVALUATE_NGEO_TMPL=false
+      - EVALUATE_NGEO_JS=false
+      - EVALUATE_NGEO_CSS=false
+      - EVALUATE_NGEO_HTML=false
     entrypoint:
       - /usr/bin/eval-templates
     command:
