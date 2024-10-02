@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 awscli = "==1.19.112"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
-bandit = "==1.7.9"  # lint
+bandit = "==1.7.10"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
 coverage = "==5.4"  # Build coverage XML for Codacy
 Jinja2 = "==3.1.4"  # c2c.template
@@ -91,7 +91,7 @@ ColanderAlchemy = "==0.3.4"  # commons
 deform = "==2.0.15"  # commons, admin
 defusedxml = "==0.6.0"  # geoportal
 "dogpile.cache" = "==1.0.2"  # geoportal
-Fiona = "==1.10.0rc1"  # geoportal raster
+Fiona = "==1.10.1"  # geoportal raster
 GeoAlchemy2 = "==0.8.5"  # commons, geoportal
 geojson = "==2.5.0"  # geoportal
 getitfixed = "==1.0.29"  # geoportal
