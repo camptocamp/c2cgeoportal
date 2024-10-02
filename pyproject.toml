@@ -64,7 +64,7 @@ requests = "2.32.3" # geoportal
 redis = "5.1.0" # geoportal cache
 Shapely = "2.0.6" # geoportal
 SQLAlchemy = "2.0.35"
-transaction = "4.0" # commons, geoportal
+transaction = "5.0" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "5.0" # commons, geoportal
 c2cwsgiutils = { version = "6.0.8", extras = ["broadcast", "standard", "oauth2", "debug"] }
