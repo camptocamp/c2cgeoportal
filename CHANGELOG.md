@@ -1,3 +1,7 @@
+##### 2.8.1.152
+
+- Update CI dependencies (2.8) (patch) [c2cgeoportal#11419](https://github.com/camptocamp/c2cgeoportal/pull/11419)
+
 ##### 2.8.1.151
 
 - [Backport 2.8] [Backport 2.7] [Backport 2.8] Update the cache key to avoid cache poisoning [c2cgeoportal#11394](https://github.com/camptocamp/c2cgeoportal/pull/11394)
