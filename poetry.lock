@@ -4428,13 +4428,13 @@ files = [
 
 [[package]]
 name = "transaction"
-version = "4.0"
+version = "5.0"
 description = "Transaction management for Python"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "transaction-4.0-py3-none-any.whl", hash = "sha256:e2519a316a05b14b3d483ac777df311087daaffeeafd3e9f7de62fc087ce3209"},
-    {file = "transaction-4.0.tar.gz", hash = "sha256:68035db913f60d1be12f6563d201daab36c83e763de15899ff8338f26e5e62f2"},
+    {file = "transaction-5.0-py3-none-any.whl", hash = "sha256:b4c0b2d49a042d86235fa76531c3356b66d7635bb0e9f29ba2512915fc7b7a42"},
+    {file = "transaction-5.0.tar.gz", hash = "sha256:106e7bd782bcc0cb5119fc9225b0c9a71dfc53adb938be905223adaef22b1174"},
 ]
 
 [package.dependencies]
@@ -4934,4 +4934,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "d4d4373354db7abe3b6f6c5d9c9f37b39def766da9710cbf73d2358c462e149a"
+content-hash = "1083dbf7556c68eed69e79866814ff658c16736e8b4dca98d1f6903ff8025523"
