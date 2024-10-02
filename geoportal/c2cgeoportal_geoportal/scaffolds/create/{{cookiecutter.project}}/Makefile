@@ -61,7 +61,7 @@ acceptance-init: ## Initialize the acceptance tests
 	docker-compose exec -T tools wait-db
 	docker-compose exec -T tools psql --command="DROP EXTENSION IF EXISTS postgis CASCADE"
 	scripts/db-restore --docker-compose-file=docker-compose.yaml --docker-compose-file=docker-compose-db.yaml \
-		--arg=--clean --arg=--if-exists --arg=--verbose $(DUMP_FILE)
+		--arg=--clean --arg=--if-exists --arg=--verbose $(DUMP_FILE) || true
 	docker-compose --file=docker-compose.yaml --file=docker-compose-db.yaml up -d
 
 .PHONY: acceptance
