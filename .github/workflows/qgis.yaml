@@ -17,7 +17,7 @@ env:
 
 jobs:
   common:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: QGIS build
     timeout-minutes: 30
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
@@ -38,7 +38,7 @@ jobs:
           path: /tmp/tools.docker
 
   main:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: QGIS build
     timeout-minutes: 15
     needs: common
