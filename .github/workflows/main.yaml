@@ -58,7 +58,16 @@ jobs:
           patterns: pypi docker transifex
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - run: python3 -m pip install --requirement=ci/requirements.txt
+      - name: Environment information
+        run: c2cciutils-env
+        env:
+          # To display the content of the github object
+          GITHUB_EVENT: ${{ toJson(github) }}
+
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
       - id: version
         run: scripts/get-version --auto-increment --github
@@ -77,12 +86,6 @@ jobs:
           path: /tmp/pre-commit.patch
           retention-days: 1
         if: failure()
-
-      - name: Environment information
-        run: c2cciutils-env
-        env:
-          # To display the content of the github object
-          GITHUB_EVENT: ${{ toJson(github) }}
 
       - run: python3 -m pip install --requirement=requirements.txt
 
