@@ -1,3 +1,7 @@
+##### 2.8.1.153
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#11420](https://github.com/camptocamp/c2cgeoportal/pull/11420)
+
 ##### 2.8.1.152
 
 - Update CI dependencies (2.8) (patch) [c2cgeoportal#11419](https://github.com/camptocamp/c2cgeoportal/pull/11419)
