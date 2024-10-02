@@ -66,8 +66,11 @@ jobs:
           patterns: docker
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
+
       - run: scripts/get-version --auto-increment --github
         id: version
         if: env.HAS_SECRETS == 'HAS_SECRETS'
