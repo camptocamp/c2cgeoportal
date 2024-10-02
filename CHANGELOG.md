@@ -1,3 +1,7 @@
+##### 2.7.1.142
+
+- Update dependency camptocamp/c2cciutils to v1.1.46 (2.7) [c2cgeoportal#11418](https://github.com/camptocamp/c2cgeoportal/pull/11418)
+
 ##### 2.7.1.141
 
 - [Backport 2.7] [Backport 2.8] Update the cache key to avoid cache poisoning [c2cgeoportal#11392](https://github.com/camptocamp/c2cgeoportal/pull/11392)
