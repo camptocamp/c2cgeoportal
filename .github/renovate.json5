@@ -228,5 +228,14 @@
       matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
       minimumReleaseAge: '7 days',
     },
+    /** Don't update the old workflow files */
+    {
+      matchFileNames: [
+        '.github/workflows/*-2-6.yaml',
+        '.github/workflows/*-2-7.yaml',
+        '.github/workflows/*-2-8.yaml',
+      ],
+      enabled: false,
+    },
   ],
 }
