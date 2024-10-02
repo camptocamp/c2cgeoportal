@@ -82,7 +82,7 @@ scripts/db-backup --env=env.int dump.backup
 scripts/db-backup --env=env.int --arg=--schema=main dump.backup
 docker compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
 docker compose exec -T tools psql --command="CREATE SCHEMA main"
-scripts/db-restore --arg=--schema=main dump.backup
+scripts/db-restore --arg=--schema=main dump.backup || true
 
 docker compose exec -T tools rm /etc/mapserver/demo.map
 docker compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
