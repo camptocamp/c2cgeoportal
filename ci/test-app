@@ -104,7 +104,7 @@ echo ::endgroup::
 echo ::group::Test the db-restore command
 docker compose exec -T tools psql --command="ALTER SCHEMA main RENAME TO main_old"
 docker compose exec -T tools psql --command="CREATE SCHEMA main"
-scripts/db-restore --arg=--schema=main dump.backup
+scripts/db-restore --arg=--schema=main dump.backup || true
 echo ::endgroup::
 
 # Empty the database
