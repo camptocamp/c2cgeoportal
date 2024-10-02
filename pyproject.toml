@@ -19,7 +19,7 @@ cookiecutter = "2.1.1" # geoportal
 deform = "2.0.15" # commons, admin
 defusedxml = "0.7.1" # geoportal
 "dogpile.cache" = "1.1.8" # geoportal
-Fiona = "1.10.0" # geoportal raster
+Fiona = "1.10.1" # geoportal raster
 GeoAlchemy2 = "0.13.3" # commons, geoportal
 geojson = "3.0.1" # geoportal
 getitfixed = "1.0.29" # geoportal
@@ -44,7 +44,7 @@ rasterio = "1.3.11" # geoportal raster
 requests = "2.32.3" # geoportal
 redis = "4.4.4" # geoportal cache
 Shapely = "2.0.6" # geoportal
-SQLAlchemy = "1.4.53"
+SQLAlchemy = "1.4.54"
 transaction = "3.0.1" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "4.6" # commons, geoportal
@@ -61,7 +61,7 @@ cryptography = { version = "43.0.1", optional = true }
 gitpython = "3.1.43"
 pillow = "10.3.0"
 urllib3 = { version = "1.26.20", optional = true }
-bandit = { version = "1.7.9", optional = true }
+bandit = { version = "1.7.10", optional = true }
 idna = { version = "3.7", optional = true }
 gunicorn = "22.0.0"
 certifi = { version = "2024.7.4", optional = true }
