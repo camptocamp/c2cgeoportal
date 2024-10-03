@@ -765,6 +765,12 @@ vars:
           List of attribute names which have enumerated attribute values (for filters purpose).
         relevant_for:
           - layer_wms
+      - name: protectedAttributes
+        type: list
+        description: >
+          For QGIS server: List of attribute names that's protected, to be used with the `allowed_attributes` functionality.
+        relevant_for:
+          - layer_wms
       # WMTS layers
       - name: ogcServer
         description: >
@@ -861,6 +867,13 @@ vars:
         single: true
         description: >
           Name of a panel to open upon loading an application.
+        relevant_for:
+          - role
+      - name: allowed_attributes
+        description: >
+          For QGIS server: List of protected attribute names that we can access, to be used with the `protectedAttributes` metadata.
+
+          Syntax: <WMS layer name>:<attribute name>,<attribute name>,...
         relevant_for:
           - role
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -68,6 +68,10 @@ def test_data(clean_dbsession):
     DBSession = clean_dbsession  # noqa: ignore=N806
 
     dbsession = DBSession()
+
+    for cls in [RestrictionArea, LayerWMS, OGCServer, Role, User]:
+        for obj in dbsession.query(cls).all():
+            dbsession.delete(obj)
 
     ogc_server1 = OGCServer(
         name="qgisserver1",
@@ -186,6 +190,11 @@ def test_data(clean_dbsession):
         # "restriction_areas": restriction_areas,
         "project": project,
     }
+
+    for cls in [RestrictionArea, LayerWMS, OGCServer, Role, User]:
+        for obj in dbsession.query(cls).all():
+            dbsession.delete(obj)
+    dbsession.commit()
 
 
 @pytest.fixture(scope="function")
