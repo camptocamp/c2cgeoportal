@@ -48,7 +48,7 @@ OWSLib = "0.31.0" # geoportal
 papyrus = "2.6.2" # commons, geoportal
 passwordgenerator = "1.5.1" # geoportal
 psycopg2 = "2.9.9" # geoportal
-pycryptodome = "3.20.0" # geoportal
+pycryptodome = "3.21.0" # geoportal
 pyproj = "3.7.0" # admin, other?
 pyotp = "2.9.0" # geoportal
 pyramid = "2.0.2" # geoportal
@@ -75,7 +75,7 @@ azure-storage-blob = "12.23.1"
 simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.10.3" }
+prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.11.0" }
 setuptools = "75.1.0"
 
 [tool.poetry.dev-dependencies]
