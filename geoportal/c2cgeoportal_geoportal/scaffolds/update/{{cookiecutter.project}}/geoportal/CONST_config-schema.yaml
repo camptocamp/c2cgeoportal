@@ -244,6 +244,9 @@ mapping:
                 mapping:
                   username:
                     type: str
+                    default: sub
+                  display_name:
+                    type: str
                     default: name
                   email:
                     type: str

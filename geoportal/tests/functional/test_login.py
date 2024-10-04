@@ -320,6 +320,7 @@ class TestLoginView(TestCase):
 
         class U:
             username = "__test_user"
+            display_name = "Test User"
             is_password_changed = True
             email = "info@example.com"
             settings_role = None
@@ -332,7 +333,7 @@ class TestLoginView(TestCase):
         request.user = U()
         login = Login(request)
         expected = {
-            "username": "__test_user",
+            "username": "Test User",
             "email": "info@example.com",
             "is_intranet": False,
             "login_type": "local",
@@ -350,7 +351,7 @@ class TestLoginView(TestCase):
         del request.response.headers["Vary"]
         login = Login(request)
         expected = {
-            "username": "__test_user",
+            "username": "Test User",
             "email": "info@example.com",
             "is_intranet": False,
             "login_type": "local",
@@ -392,6 +393,7 @@ class TestLoginView(TestCase):
 
         class U:
             username = "__test_user"
+            display_name = "Test User"
             is_password_changed = True
             email = "info@example.com"
 
@@ -407,13 +409,13 @@ class TestLoginView(TestCase):
         self.assertEqual(
             login.loginuser(),
             {
+                "username": "Test User",
                 "email": "info@example.com",
                 "functionalities": {},
                 "is_intranet": False,
                 "login_type": "local",
                 "roles": [{"id": 123, "name": "__test_role"}],
                 "two_factor_enable": False,
-                "username": "__test_user",
             },
         )
 
@@ -422,13 +424,13 @@ class TestLoginView(TestCase):
         self.assertEqual(
             login.loginuser(),
             {
+                "username": "Test User",
                 "email": "info@example.com",
                 "functionalities": {},
                 "is_intranet": True,
                 "login_type": "local",
                 "roles": [{"id": 123, "name": "__test_role"}],
                 "two_factor_enable": False,
-                "username": "__test_user",
             },
         )
 

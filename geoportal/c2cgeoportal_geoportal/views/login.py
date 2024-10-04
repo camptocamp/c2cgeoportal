@@ -329,7 +329,7 @@ class Login:
         if user is not None:
             result.update(
                 {
-                    "username": user.username,
+                    "username": user.display_name,
                     "email": user.email,
                     "roles": [{"name": r.name, "id": r.id} for r in user.roles],
                 }
@@ -652,7 +652,8 @@ class Login:
                 models.DBSession.add(user)
         else:
             user = oidc.DynamicUser(
-                username=remember_object["username"],
+                username=remember_object["sub"],
+                display_name=remember_object["username"],
                 email=remember_object["email"],
                 settings_role=(
                     models.DBSession.query(main.Role).filter_by(name=remember_object["settings_role"]).first()
@@ -681,7 +682,7 @@ class Login:
                 # TODO respect the user interface...
                 json.dumps(
                     {
-                        "username": user.username,
+                        "username": user.display_name,
                         "email": user.email,
                         "is_intranet": is_intranet(self.request),
                         "functionalities": self._functionality(),

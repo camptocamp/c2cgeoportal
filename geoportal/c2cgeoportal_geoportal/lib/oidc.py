@@ -51,6 +51,7 @@ class DynamicUser(NamedTuple):
     """
 
     username: str
+    display_name: str
     email: str
     settings_role: main.Role | None
     roles: list[main.Role]
@@ -89,6 +90,7 @@ class OidcRememberObject(TypedDict):
     refresh_token: str | None
     refresh_token_expires: str | None
     username: str | None
+    display_name: str | None
     email: str | None
     settings_role: str | None
     roles: list[str]
@@ -144,6 +146,7 @@ class OidcRemember:
                 ).isoformat()
             ),
             "username": None,
+            "display_name": None,
             "email": None,
             "settings_role": None,
             "roles": [],
@@ -173,7 +176,8 @@ class OidcRemember:
             )
 
         for field_, default_field in (
-            ("username", "name"),
+            ("username", "sub"),
+            ("display_name", "name"),
             ("email", "email"),
             ("settings_role", None),
             ("roles", None),
