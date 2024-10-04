@@ -34,7 +34,7 @@ repos:
       - id: check-symlinks
       - id: fix-byte-order-marker
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.1.0
+    rev: 1.1.1
     hooks:
       - id: copyright
       - id: workflows-require-timeout
@@ -155,7 +155,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py
           )$
   - repo: https://github.com/PyCQA/prospector
-    rev: v1.10.3
+    rev: v1.11.0
     hooks:
       - id: prospector
         args:
@@ -171,6 +171,6 @@ repos:
       - id: jsonschema-validator
         files: ^ci/config\.yaml$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 38.106.3
+    rev: 38.108.0
     hooks:
       - id: renovate-config-validator
