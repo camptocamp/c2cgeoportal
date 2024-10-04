@@ -5,7 +5,6 @@
 # GNU General Public License as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
 
-import json
 import logging
 import os
 import random
@@ -458,12 +457,14 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                     _LOG.info("Rejected GeoMapFish layer: name: %s, layer: %s", layer.name, layer.layer)
 
             session.expunge_all()
-            _LOG.debug(
-                "layers: %s",
-                json.dumps(
-                    {k: [layer.name for layer in v] for k, v in layers.items()}, sort_keys=True, indent=4
-                ),
-            )
+            if _LOG.isEnabledFor(logging.DEBUG):
+                messages = []
+                for ogc_name, gmf_layers in layers.items():
+                    messages.append(f"{ogc_name}: {', '.join([layer.name for layer in gmf_layers])}")
+                _LOG.debug(
+                    "layers (<OGC layer>: <GMF layers>):\n%s",
+                    "\n".join(messages),
+                )
             self.layers = layers
             return layers
 
