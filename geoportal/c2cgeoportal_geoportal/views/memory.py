@@ -27,6 +27,7 @@
 
 
 import logging
+import os
 import time
 from typing import Any, cast
 
@@ -83,7 +84,7 @@ def _process_dict(dict_: dict[str, Any], dogpile_cache: bool = False) -> dict[st
 
 @broadcast.decorator(expect_answers=True, timeout=110)
 def _memory() -> dict[str, Any]:
-    return {
-        "raster_data": _process_dict(raster.Raster.data),
-        "memory_cache": _process_dict(MEMORY_CACHE_DICT, True),
-    }
+    result = {"raster_data": _process_dict(raster.Raster.data)}
+    if os.environ.get("GEOMAPFISH_DEBUG_MEMORY_CACHE", "false").lower() in ("true", "1", "yes", "on"):
+        result["memory_cache"] = _process_dict(MEMORY_CACHE_DICT, True)
+    return result

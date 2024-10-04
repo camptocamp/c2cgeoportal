@@ -76,6 +76,18 @@ To be automatically logged in with a user present in the database you should set
 
 Then you will directly be logged in to the user.
 
+C2C WSGI Utils tools
+--------------------
+
+:ref:`integrator_c2cwsgiutils` offers some debugging tools on the URL ``/c2c``.
+
+Cache
+-----
+
+There a view that expose the cache status of the application, to be able to access to this view you should
+set the environment variable ``GEOMAPFISH_DEBUG_MEMORY_CACHE`` to ``true``.
+
+Then you can access the cache status through the :ref:`integrator_c2cwsgiutils` ``/c2c`` URL.
 
 Mapserver
 ---------
