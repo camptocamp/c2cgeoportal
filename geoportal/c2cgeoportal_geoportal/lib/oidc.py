@@ -26,7 +26,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-import dis
 import json
 import logging
 from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
@@ -119,7 +118,7 @@ def get_remember_from_user_info(
 
     for field_, default_field in (
         ("username", "sub"),
-            ("display_name", "name"),
+        ("display_name", "name"),
         ("email", "email"),
         ("settings_role", None),
         ("roles", None),
@@ -157,7 +156,6 @@ def get_user_from_remember(
     email = remember_object["email"]
     assert email is not None
     display_name = remember_object["display_name"] or email
-
 
     provide_roles = (
         request.registry.settings.get("authentication", {})
