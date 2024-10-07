@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Camptocamp SA
+# Copyright (c) 2018-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ def treeitems(
         .distinct()
         .outerjoin("parents_relation")
         .filter(TreeItem.item_type != "theme")
-        .group_by(TreeItem.id)
+        .group_by(TreeItem)
         .order_by(group.desc(), TreeItem.name)
     )
 
