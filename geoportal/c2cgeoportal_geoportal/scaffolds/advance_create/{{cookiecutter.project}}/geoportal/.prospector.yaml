@@ -1,3 +1,7 @@
+inherits:
+  - duplicated
+  - utils:no-design-checks
+
 max-line-length: 110
 
 pycodestyle:

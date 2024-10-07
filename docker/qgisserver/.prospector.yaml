@@ -4,10 +4,6 @@ inherits:
   - utils:fix
   - utils:no-design-checks
 
-pycodestyle:
-  disable:
-    - N803 # argument name should be lowercase, done by Pylint
-
 pyroma:
   run: False
 

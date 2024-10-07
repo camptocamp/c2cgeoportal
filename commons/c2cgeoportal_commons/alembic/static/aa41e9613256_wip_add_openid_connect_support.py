@@ -25,6 +25,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+# pylint: disable=invalid-name
+
 """
 Add OpenID connect support.
 
@@ -32,6 +34,7 @@ Revision ID: aa41e9613256
 Revises: 910b4ca53b68
 Create Date: 2024-08-30 15:56:31.163378
 """
+
 
 import sqlalchemy as sa
 from alembic import op

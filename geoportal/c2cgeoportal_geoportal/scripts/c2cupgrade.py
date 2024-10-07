@@ -131,15 +131,15 @@ class InteruptedException(Exception):
     """The interrupted exception."""
 
 
-current_step_number = 0
+_CURRENT_STEP_NUMBER = 0
 
 
 class Step:
     """Decorator used for en upgrade step."""
 
     def __init__(self, step_number: int, file_marker: bool = True):
-        global current_step_number
-        current_step_number = step_number
+        global _CURRENT_STEP_NUMBER  # pylint: disable=global-statement
+        _CURRENT_STEP_NUMBER = step_number
         self.step_number = step_number
         self.file_marker = file_marker
 
@@ -176,7 +176,7 @@ class Step:
             except Exception as exception:
                 catch_exception = exception
 
-                if self.step_number == current_step_number:
+                if self.step_number == _CURRENT_STEP_NUMBER:
 
                     def message() -> None:
                         c2cupgradetool.print_step(
@@ -598,7 +598,7 @@ class C2cUpgradeTool:
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
                 try:
                     check_call(["git", "mv", src, dst])
-                except Exception as exception:
+                except Exception as exception:  # pylint: disable=broad-exception-caught
                     print(f"[Warning] Git move error: {exception}.")
                     os.rename(src, dst)
         return task_to_do

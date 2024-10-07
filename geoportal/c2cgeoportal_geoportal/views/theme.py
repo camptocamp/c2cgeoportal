@@ -208,7 +208,7 @@ class Theme:
             layers = {}
             try:
                 wms = WebMapService(None, xml=content, version=version)
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 error = (
                     f"WARNING! an error '{e!s}' occurred while trying to read the mapfile and "
                     "recover the themes."
@@ -300,7 +300,7 @@ class Theme:
 
         try:
             content, content_type = await get_http_cached(self.http_options, url.url(), headers, cache=cache)
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             error = f"Unable to GetCapabilities from URL {url}"
             errors.add(error)
             _LOG.error(error, exc_info=True)
@@ -499,7 +499,7 @@ class Theme:
                 if count > 0:
                     layer_theme["edit_columns"] = get_layer_metadata(layer)
                     layer_theme["editable"] = True
-        except Exception as exception:
+        except Exception as exception:  # pylint: disable=broad-exception-caught
             _LOG.exception(str(exception))
             errors.add(str(exception))
         return errors
@@ -931,7 +931,7 @@ class Theme:
             errors.add(error)
             _LOG.exception(error)
             return None, errors
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             error = (
                 f"Unable to get WFS DescribeFeatureType from the URL {wfs_url} for "
                 f"OGC server {ogc_server.name}"
@@ -945,7 +945,7 @@ class Theme:
 
         try:
             return lxml.XML(content), errors
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             errors.add(
                 f"Error '{e!s}' on reading DescribeFeatureType from URL {wfs_url}:\n{content.decode()}"
             )

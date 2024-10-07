@@ -300,7 +300,7 @@ class PCreateCommand:
             print("epsg.io doesn't return a correct json.")
         except IndexError:
             print("Unable to get the bbox")
-        except Exception as exception:
+        except Exception as exception:  # pylint: disable=broad-exception-caught
             print(f"unexpected error: {str(exception)}")
         return None
 

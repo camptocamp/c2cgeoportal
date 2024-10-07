@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: disable=no-member
+# pylint: disable=no-member,invalid-name
 
 """
 Changes to start the implementation of the version 2.

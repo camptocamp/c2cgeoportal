@@ -51,7 +51,7 @@ try:
     from colander import Email, drop
     from deform.widget import DateTimeInputWidget, HiddenWidget
 except ModuleNotFoundError:
-    drop = None
+    drop = None  # pylint: disable=invalid-name
 
     class GenericClass:
         """Generic class."""

@@ -80,7 +80,7 @@ def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     # The following code is a modified version of the main function of this file:
     # https://github.com/wichert/lingva/blob/master/src/lingva/extract.py
 
-    global _INITIALIZED
+    global _INITIALIZED  # pylint: disable=global-statement
     if not _INITIALIZED:
         register_extractors()
         register_babel_plugins()
