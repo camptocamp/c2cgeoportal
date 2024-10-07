@@ -1,3 +1,7 @@
+##### 2.8.1.154
+
+- Fix missing columns in group by [c2cgeoportal#11401](https://github.com/camptocamp/c2cgeoportal/pull/11401)
+
 ##### 2.8.1.153
 
 - Update all patch versions (2.8) (patch) [c2cgeoportal#11420](https://github.com/camptocamp/c2cgeoportal/pull/11420)
