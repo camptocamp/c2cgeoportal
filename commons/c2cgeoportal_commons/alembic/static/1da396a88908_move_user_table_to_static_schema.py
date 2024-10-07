@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023, Camptocamp SA
+# Copyright (c) 2015-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: disable=no-member
+# pylint: disable=no-member,invalid-name
 
 """
 Move user table to static schema.
@@ -98,7 +98,7 @@ def upgrade() -> None:
             }
         )
         op.drop_table("user", schema=schema)
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         op.execute(
             "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
             "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')"

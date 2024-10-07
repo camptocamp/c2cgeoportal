@@ -110,7 +110,7 @@ def get_typed(
         elif type_["type"] == "json":
             try:
                 return cast(dict[str, Any], json.loads(value))
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {str(e)}")
         elif type_["type"] == "regex":
             pattern = type_["regex"]
@@ -123,7 +123,7 @@ def get_typed(
                 return value
         else:
             errors.add(f"{prefix}Unknown type '{type_['type']}'.")
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         errors.add(
             f"{prefix}Unable to parse the attribute '{name}'='{value}' with the type "
             f"'{type_.get('type', 'string')}', error:\n{e!s}"

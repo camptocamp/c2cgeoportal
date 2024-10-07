@@ -1110,13 +1110,13 @@ files = [
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.7.2"
+version = "1.8.0"
 description = "Some utility Prospector profiles."
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_utils-1.7.2-py2.py3-none-any.whl", hash = "sha256:b22f391258c8baff67a56c93fccabd0a62a637572330ca6b520586065cd7912d"},
-    {file = "prospector_profile_utils-1.7.2.tar.gz", hash = "sha256:200f955d4c506e1ed2b111d986062ef54c01879889809b505aaebdb17dfe3622"},
+    {file = "prospector_profile_utils-1.8.0-py2.py3-none-any.whl", hash = "sha256:dfc3009033d952dc2beb45da6c59e18e6f6b97cc91e6226ebd0d016156952d08"},
+    {file = "prospector_profile_utils-1.8.0.tar.gz", hash = "sha256:d496253930542ebb820b335ca20b20975884889d02f8b168f7401669f2669a3a"},
 ]
 
 [[package]]
@@ -2104,4 +2104,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "11801632a63ad236dcc7f4286aa5aedaef5f1ee76fe42b3b415dfed0f61374f0"
+content-hash = "5654677def0ef27c8d52c26a8ceb7155e2668bccdefbad3f2585600242067552"

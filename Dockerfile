@@ -7,9 +7,6 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-# Workaround for newer version of setuptools
-ENV SETUPTOOLS_USE_DISTUTILS=stdlib
-
 # pip install --upgrade pip should be removed when we upgrade from Ubuntu 22.04 to 24.04
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \

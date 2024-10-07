@@ -76,9 +76,10 @@ simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_co
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.12.0" }
-setuptools = "75.1.0"
+prospector-profile-duplicated = "1.5.0"
+prospector-profile-utils  = "1.9.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 Babel = "2.16.0" # i18n
 beautifulsoup4 = "4.12.3" # admin tests
 Jinja2 = "3.1.4" # c2c.template
@@ -100,7 +101,3 @@ pre-commit = "3.8.0"
 mapbox-vector-tile = "2.1.0"
 responses = "0.25.3"
 waitress = "3.0.0"
-
-[tool.poetry.group.dev.dependencies]
-prospector-profile-duplicated = "1.5.0"
-prospector-profile-utils  = "1.7.2"

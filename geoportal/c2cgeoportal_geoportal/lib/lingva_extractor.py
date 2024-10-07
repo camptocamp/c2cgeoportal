@@ -214,7 +214,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                     int_filename = os.path.join(os.path.dirname(filename), "_" + os.path.basename(filename))
                     with open(int_filename, "wb") as file_open:
                         file_open.write(processed.encode("utf-8"))
-                except Exception:
+                except Exception:  # pylint: disable=broad-exception-caught
                     print(colorize(f"ERROR! Occurred during the '{filename}' template generation", Color.RED))
                     print(colorize(traceback.format_exc(), Color.RED))
                     if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
@@ -222,7 +222,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                         int_filename = filename
                     else:
                         raise
-            except Exception:
+            except Exception:  # pylint: disable=broad-exception-caught
                 print(traceback.format_exc())
 
         # Path in geomapfish-tools
@@ -793,7 +793,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 if response.ok:
                     try:
                         self.wms_capabilities_cache[url] = WebMapService(None, xml=response.content)
-                    except Exception as e:
+                    except Exception as e:  # pylint: disable=broad-exception-caught
                         print(
                             colorize(
                                 "ERROR! an error occurred while trying to parse "
@@ -816,7 +816,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     print(f"Response: {response.status_code} {response.reason}\n{response.text}")
                     if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise LinguaExtractorException(response.reason)
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 print(colorize(str(e), Color.RED))
                 rendered_headers = " ".join(
                     [

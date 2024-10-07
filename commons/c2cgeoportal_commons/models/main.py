@@ -60,9 +60,9 @@ try:
 
     colander_null = colander.null
 except ModuleNotFoundError:
-    drop = None
+    drop = None  # pylint: disable=invalid-name
     default_map_settings = {"srid": 3857, "view": {"projection": "EPSG:3857"}}
-    colander_null = None
+    colander_null = None  # pylint: disable=invalid-name
 
     class GenericClass:
         """Fallback class implementation."""

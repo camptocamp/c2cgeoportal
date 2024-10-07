@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023, Camptocamp SA
+# Copyright (c) 2016-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-# pylint: disable=no-member
+# pylint: disable=no-member,invalid-name
 
 """
 Put the default WMS server in the servers part, add some constrains.

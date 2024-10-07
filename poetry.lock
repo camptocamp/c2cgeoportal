@@ -2593,13 +2593,13 @@ files = [
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.7.2"
+version = "1.9.0"
 description = "Some utility Prospector profiles."
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_utils-1.7.2-py2.py3-none-any.whl", hash = "sha256:b22f391258c8baff67a56c93fccabd0a62a637572330ca6b520586065cd7912d"},
-    {file = "prospector_profile_utils-1.7.2.tar.gz", hash = "sha256:200f955d4c506e1ed2b111d986062ef54c01879889809b505aaebdb17dfe3622"},
+    {file = "prospector_profile_utils-1.9.0-py2.py3-none-any.whl", hash = "sha256:dcea1587fa9f852a9cfedc257881f60fa10ba70519dec037ad1306f5b21c89fa"},
+    {file = "prospector_profile_utils-1.9.0.tar.gz", hash = "sha256:5bc95572217936829bff70ba62ee3b265917e714d445e8617b1b7477c5d6a0e8"},
 ]
 
 [[package]]
@@ -4130,7 +4130,7 @@ djangorestframework = ["djangorestframework (>=3.13,<4.0)"]
 type = "git"
 url = "https://github.com/sbrunner/py_simple_openid_connect.git"
 reference = "allows-pkce"
-resolved_reference = "b95ebee2b1bc4318ac514ca7b85ec77fe5cb2a87"
+resolved_reference = "a335eb2c12026725c5cd093a5037323cfa4c557f"
 
 [[package]]
 name = "six"
@@ -4805,4 +4805,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "f03a5fb66233edb7c2a3c7729cf651c68316ea9f273ec3168b74764148fc9daa"
+content-hash = "77c9877ead5991bb52f7e19399ebb3dc5affb6b0d44a6422fea7055d470f7dbb"

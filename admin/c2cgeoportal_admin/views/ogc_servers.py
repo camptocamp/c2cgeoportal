@@ -255,5 +255,5 @@ class OGCServerViews(LoggedViews[OGCServer]):
                     _LOG.error("Error while cleaning the OGC server cache:\n%s", response.text)
 
             threading.Thread(target=update_cache).start()
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             _LOG.error("Error on cleaning the OGC server cache", exc_info=True)
