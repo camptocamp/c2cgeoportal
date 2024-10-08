@@ -7,13 +7,14 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-# pip install --upgrade pip should be removed when we upgrade from Ubuntu 22.04 to 24.04
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends adduser git python3-pip \
-    && pip install --upgrade pip
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends adduser git python3-pip python3-venv \
+    && python3 -m venv /venv
+
+ENV PATH=/venv/bin:$PATH
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
