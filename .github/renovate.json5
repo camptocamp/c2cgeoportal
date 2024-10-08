@@ -249,5 +249,10 @@
       matchDepNames: ['python'],
       groupName: 'Python',
     },
+    /** In file `.python-version`, use the `<major>.<minor>` version */
+    {
+      matchFileNames: ['.python-version'],
+      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
+    },
   ],
 }
