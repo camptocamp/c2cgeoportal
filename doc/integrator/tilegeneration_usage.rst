@@ -5,4 +5,4 @@ TileCloud-chain Usage
 
 Upstream documentation:
 
-.. include:: //usr/local/lib/python3.10/dist-packages/tilecloud_chain/USAGE.rst
+.. include:: //venv/lib/python3.12/site-packages/tilecloud_chain/USAGE.rst

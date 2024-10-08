@@ -55,7 +55,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && echo "For Chrome installed by Pupetter: https://source.chromium.org/chromium/chromium/src/+/main:chrome/installer/linux/debian/dist_package_versions.json" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
-        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
+        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 liboss4-salsa-asound2 libatk1.0-0 \
         libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
         libatspi2.0-0 libc6 libcairo2 libdbus-1-3 libdrm2 libexpat1 libglib2.0-0 libnspr4 libpango-1.0-0 \
         libstdc++6 libuuid1 libxcb1 libxfixes3 libxkbcommon0 libxrender1 \
@@ -70,7 +70,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
         binutils gcc g++ \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
         --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
+    && strip /venv/lib/python3.*/site-packages/*/*.so \
     && apt-get auto-remove --assume-yes binutils gcc g++ \
     && python -c 'from fiona.collection import Collection'
 
@@ -96,10 +96,9 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && curl --silent https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor --output=/etc/apt/keyrings/postgresql.gpg \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make g++ python3-dev \
-        postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
+        postgresql-client net-tools iputils-ping vim tree groff-base \
         libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils iproute2 traceroute pkg-config \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
-    && vim-addon-manager --system-wide install editorconfig \
     && echo 'set hlsearch  " Highlight search' > /etc/vim/vimrc.local \
     && echo 'set wildmode=list:longest  " Completion menu' >> /etc/vim/vimrc.local \
     && echo 'set term=xterm-256color " Make home and end working' >> /etc/vim/vimrc.local
@@ -107,10 +106,11 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
-ENV PATH=/root/.local/bin/:${PATH}
 
 WORKDIR /opt/c2cgeoportal
+
 COPY ci/applications*.yaml .
+ENV PATH=/root/.local/bin/:${PATH}
 RUN c2cciutils-download-applications --applications-file=applications.yaml --versions-file=applications-versions.yaml
 
 WORKDIR /opt/c2cgeoportal/geoportal
@@ -165,7 +165,7 @@ ENV VERSION=$VERSION
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     grep -r masterdev . || true \
-    && python3 -m pip install --no-use-pep517 --disable-pip-version-check --no-deps \
+    && python3 -m pip install --disable-pip-version-check --no-deps \
         --editable=commons \
         --editable=geoportal \
         --editable=admin
@@ -235,8 +235,8 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
         --editable=commons \
         --editable=geoportal \
         --editable=admin \
-    && python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.* \
-        -x '(/usr/local/lib/python3.*/dist-packages/(networkx|yaml_include)/|/usr/local/lib/python3.*/dist-packages/c2cgeoform/scaffolds|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
+    && python3 -m compileall -q /opt/c2cgeoportal /venv/lib/python3.* \
+        -x '(/venv/lib/python3.*/site-packages/(networkx|yaml_include)/|/venv/lib/python3.*/site-packages/c2cgeoform/scaffolds|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
@@ -268,5 +268,5 @@ FROM tools AS checks
 WORKDIR /opt/c2cgeoportal
 
 # For mypy
-RUN touch "$(echo /usr/local/lib/python3.*/dist-packages/)/zope/__init__.py" \
-    && touch "$(echo /usr/local/lib/python3.*/dist-packages/)/c2c/__init__.py"
+RUN touch "$(echo /venv/lib/python3.*/site-packages/)/zope/__init__.py" \
+    && touch "$(echo /venv/lib/python3.*/site-packages/)/c2c/__init__.py"
