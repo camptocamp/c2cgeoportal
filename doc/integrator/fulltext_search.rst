@@ -222,6 +222,18 @@ In the configuration file ``vars.yaml`` you can add the following variables:
         e.-g.: ``{ kantonspolizei: 'kantons polizei' }`` to transform ``kantonspolizei`` in
         ``kantons polizei``.
 
+You can also group the result of the search by adding the following variable:
+
+.. code:: yaml
+
+    vars:
+        interfaces_config:
+            <interface>:
+                constants:
+                    gmfSearchGroups: [layer_name1, layer_name2]
+
+The values corresponding to the 'layer_name' field in the tsearch table.
+
 
 Ranking system
 --------------
