@@ -1,3 +1,7 @@
+##### 2.8.1.155
+
+- Add gmfSearchGroups documentation [c2cgeoportal#11445](https://github.com/camptocamp/c2cgeoportal/pull/11445)
+
 ##### 2.8.1.154
 
 - Fix missing columns in group by [c2cgeoportal#11401](https://github.com/camptocamp/c2cgeoportal/pull/11401)
