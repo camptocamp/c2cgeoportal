@@ -186,7 +186,8 @@ jobs:
           # When we upgrade this we should also upgrade the requirements
           # in the documentation: doc/integrator/requirements.rst
           # and the first pyupgrade pre-commit hook in .pre-commit-config.yaml
-          python-version: '3.13'
+          python-version: '3.8' # Shouldn't be upgraded to latest Python version
+      - run: python --version|grep ' 3\.8\.'
       - run: pip install --requirement=ci/requirements-project.txt
       - run: docker compose version
 
