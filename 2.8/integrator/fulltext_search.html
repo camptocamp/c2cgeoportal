@@ -294,6 +294,15 @@ the default behavior is to zoom to this geometry.</p>
 </dl>
 </li>
 </ul>
+<p>You can also group the result of the search by adding the following variable:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">interfaces_config</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">&lt;interface&gt;</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">gmfSearchGroups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">layer_name1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">layer_name2</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The values corresponding to the ‘layer_name’ field in the tsearch table.</p>
 </section>
 <section id="ranking-system">
 <h2>Ranking system<a class="headerlink" href="#ranking-system" title="Permalink to this heading">¶</a></h2>
