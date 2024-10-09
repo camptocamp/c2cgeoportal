@@ -1,3 +1,9 @@
+##### 2.7.1.143
+
+- Update dependency ngeo to v2.7.0-version-2.7-latest.20241002T135008Z.31d1ce60f.2.7 (2.7) [c2cgeoportal#11452](https://github.com/camptocamp/c2cgeoportal/pull/11452)
+- Update CI dependencies to v1.3.25 (2.7) (patch) [ngeo#9494](https://github.com/camptocamp/ngeo/pull/9494)
+- Update dependency @types/jquery to v3.5.31 (2.7) [ngeo#9495](https://github.com/camptocamp/ngeo/pull/9495)
+
 ##### 2.7.1.142
 
 - Update dependency camptocamp/c2cciutils to v1.1.46 (2.7) [c2cgeoportal#11418](https://github.com/camptocamp/c2cgeoportal/pull/11418)
