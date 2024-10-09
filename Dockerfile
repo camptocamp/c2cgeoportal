@@ -38,40 +38,27 @@ SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
-COPY .nvmrc /tmp
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends apt-utils gnupg \
-    && NODE_MAJOR="$(cat /tmp/.nvmrc)" \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
-    && curl --silent https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor --output=/etc/apt/keyrings/nodesource.gpg \
-    && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
-        apt-transport-https gettext less gnupg libpq5 \
-        python3-dev libgraphviz-dev libpq-dev "nodejs=${NODE_MAJOR}.*" \
-    && echo "For Chrome installed by Pupetter: https://source.chromium.org/chromium/chromium/src/+/main:chrome/installer/linux/debian/dist_package_versions.json" \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
-        libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
-        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 liboss4-salsa-asound2 libatk1.0-0 \
-        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
-        libatspi2.0-0 libc6 libcairo2 libdbus-1-3 libdrm2 libexpat1 libglib2.0-0 libnspr4 libpango-1.0-0 \
-        libstdc++6 libuuid1 libxcb1 libxfixes3 libxkbcommon0 libxrender1 \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends chromium-browser gettext gnupg libpq5 npm \
     && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
 
+# shellcheck disable=SC2086
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     apt-get update \
+    && export DEV_PACKAGES="binutils gcc g++ libpq-dev python3-dev" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
-        binutils gcc g++ \
+        ${DEV_PACKAGES} \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
         --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
     && strip /venv/lib/python3.*/site-packages/*/*.so \
-    && apt-get auto-remove --assume-yes binutils gcc g++ \
+    && apt-get auto-remove --assume-yes binutils ${DEV_PACKAGES} \
     && python -c 'from fiona.collection import Collection'
 
 COPY scripts/extract-messages.js /opt/c2cgeoportal/geoportal/
@@ -92,7 +79,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     . /etc/os-release \
-    && echo deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
+    && echo 'deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt/' "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
     && curl --silent https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor --output=/etc/apt/keyrings/postgresql.gpg \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make g++ python3-dev \
@@ -120,8 +107,8 @@ COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
-    npm --ignore-scripts install \
-    && puppeteer browsers install chrome
+    npm --ignore-scripts install
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 COPY admin/package.json admin/package-lock.json admin/.snyk /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
