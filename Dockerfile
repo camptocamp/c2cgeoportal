@@ -43,6 +43,10 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/root/.cache \
     apt-get update \
     && apt-get upgrade --assume-yes \
+    && apt-get install --assume-yes --no-install-recommends software-properties-common \
+    && add-apt-repository ppa:savoury1/pipewire \
+    && add-apt-repository ppa:savoury1/chromium \
+    && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends chromium-browser gettext gnupg libpq5 npm \
     && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
 
@@ -108,7 +112,6 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
     npm --ignore-scripts install
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 COPY admin/package.json admin/package-lock.json admin/.snyk /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
@@ -117,7 +120,7 @@ WORKDIR /opt/c2cgeoportal/admin
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
-    npm install --omit=optional \
+    npm install --omit=optional --ignore-scripts \
     && rm -rf /tmp/angular \
     && git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git /tmp/angular \
     && mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ \
@@ -200,15 +203,14 @@ ENV VERSION=$VERSION
 WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
-ENV PUPPETEER_CACHE_DIR=/opt
 ENV XDG_CONFIG_HOME=/etc/xdg
-
 RUN chmod ugo+rw /etc/xdg
 
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
-    npm install --omit=dev --omit=optional
+    npm install --omit=dev --omit=optional --ignore-scripts
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 COPY bin/eval-templates bin/wait-db bin/list4vrt bin/azure /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal

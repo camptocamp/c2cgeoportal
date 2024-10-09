@@ -29,8 +29,9 @@
 
 import argparse
 import json
-import re
 import subprocess
+
+from packaging.version import Version
 
 
 def output(cmd: list[str]) -> bytes:
@@ -49,8 +50,8 @@ def _get_postgresql_version(deb_versions: dict[str, str]) -> str:
         return max(deb_version.values())
 
 
-def get_versions(
-    version: str, old_version: float
+def _get_versions(
+    version: str, old_version: Version
 ) -> tuple[list[tuple[str, str]], dict[str, str], dict[str, str]]:
     deb_versions = {
         e.split("==")[0]: e.split("==")[1]
@@ -143,7 +144,7 @@ def get_versions(
         ("Postgres", _get_postgresql_version(deb_versions)),
     ]
 
-    if old_version >= 2.6:
+    if old_version >= Version("2.6.0"):
         major_versions += (
             (
                 "GDAL",
@@ -201,27 +202,46 @@ def get_versions(
             .split("\n")
             if e and len(e.split("==")) == 2 and e[0] not in ("#", "-")
         },
-        {
-            e: v["version"]
-            for e, v in json.loads(
-                output(
-                    [
-                        "docker",
-                        "run",
-                        "--rm",
-                        "--entrypoint=",
-                        f"camptocamp/geomapfish-tools:{version}",
-                        "npm",
-                        "list",
-                        "--global",
-                        "--json",
-                        "--depth=0",
-                    ]
-                )
-            )["dependencies"].items()
-            if "version" in v and e != "ngeo"
-        },
+        {e: v["version"] for e, v in _get_npm_versions(version).items() if "version" in v and e != "ngeo"},
     )
+
+
+def _get_npm_versions(version_str: str) -> dict[str, dict[str, str]]:
+    version = Version("999!9" if version_str == "latest" else version_str)
+    if version >= Version("2.9.0"):
+        return json.loads(
+            output(
+                [
+                    "docker",
+                    "run",
+                    "--rm",
+                    "--entrypoint=",
+                    "--workdir=/opt/c2cgeoportal/geoportal",
+                    f"camptocamp/geomapfish-tools:{version_str}",
+                    "npm",
+                    "list",
+                    "--json",
+                    "--depth=0",
+                ]
+            )
+        )["dependencies"]
+    else:
+        return json.loads(
+            output(
+                [
+                    "docker",
+                    "run",
+                    "--rm",
+                    "--entrypoint=",
+                    f"camptocamp/geomapfish-tools:{version_str}",
+                    "npm",
+                    "list",
+                    "--global",
+                    "--json",
+                    "--depth=0",
+                ]
+            )
+        )["dependencies"]
 
 
 def print_package_update(package_old: dict[str, str], package_new: dict[str, str]) -> None:
@@ -260,11 +280,9 @@ def main() -> None:
     parser.add_argument("new_version", metavar="NEW", help="The new GeoMapFish version")
     args = parser.parse_args()
 
-    old_major_version = 3.0
-    if re.match(r".*\.\d\.\d$", args.old_version):
-        old_major_version = float(args.old_version[:3])
-    main_old, python_old, npm_old = get_versions(args.old_version, old_major_version)
-    main_new, python_new, npm_new = get_versions(args.new_version, old_major_version)
+    old_major_version = Version("999!9" if args.old_version == "latest" else args.old_version)
+    main_old, python_old, npm_old = _get_versions(args.old_version, old_major_version)
+    main_new, python_new, npm_new = _get_versions(args.new_version, old_major_version)
 
     print("Main versions updates")
     print("-------------------")
