@@ -81,8 +81,8 @@ def settings():
         yield settings
 
 
-@pytest.fixture(scope="module")
-def dbsession(settings):
+@pytest.fixture()
+def dbsession_db1(settings, dbsession_old):
     from c2cgeoportal_commons.models import DBSession, DBSessions
 
     DBSessions["db1"] = DBSession
@@ -92,20 +92,12 @@ def dbsession(settings):
 
 
 @pytest.fixture(scope="function")
-def transact(dbsession):
-    t = dbsession.begin_nested()
-    yield t
-    t.rollback()
-    dbsession.expire_all()
-
-
-@pytest.fixture(scope="function")
-def test_data(dbsession, transact):
+def test_data(dbsession_db1, transact_old):
     from sqlalchemy import text
 
     from c2cgeoportal_commons.models import main
 
-    dbsession.execute(
+    dbsession_db1.execute(
         text(
             """
 INSERT INTO geodata.testpoint (name)
@@ -121,8 +113,8 @@ VALUES ('testpoint_name1');
             value="metadata1_value",
         )
     ]
-    dbsession.add(theme)
-    dbsession.flush()
+    dbsession_db1.add(theme)
+    dbsession_db1.flush()
 
 
 @pytest.mark.usefixtures("test_data")
@@ -131,7 +123,7 @@ class TestGeomapfishConfigExtractor:
         "c2cgeoportal_geoportal.lib.lingva_extractor.open",
         mock_open(read_data="vars:"),
     )
-    def test_extract_config(self, settings, dbsession):
+    def test_extract_config(self, settings, dbsession_db1):
         extractor = GeomapfishConfigExtractor()
 
         options = Mock()

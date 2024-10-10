@@ -25,18 +25,28 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import logging
+from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
+import pyramid.request
 import pytest
 import sqlalchemy.orm
 import transaction
 from c2c.template.config import config as configuration
 from pyramid.testing import DummyRequest
+from sqlalchemy.orm.session import Session, SessionTransaction
 from tests.functional import setup_common as setup_module
 
+from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
+from c2cgeoportal_commons.testing.initializedb import truncate_tables
 from c2cgeoportal_geoportal.lib import caching
 
+_LOG = logging.getLogger(__name__)
 mapserv_url = "http://mapserver:8080/"
+
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models import main, static
 
 
 @pytest.fixture
@@ -46,23 +56,51 @@ def settings():
 
 
 @pytest.fixture
-def dbsession(settings):
+def dbsession_old(settings: dict[str, Any]) -> Session:
     from c2cgeoportal_commons.models import DBSession
 
+    truncate_tables(DBSession)
     with patch("c2cgeoportal_geoportal.views.vector_tiles.DBSession", new=DBSession):
         yield DBSession
+    truncate_tables(DBSession)
 
 
 @pytest.fixture
-def transact(dbsession):
+def dbsession(settings: dict[str, Any]) -> Session:
+    generate_mappers()
+    engine = get_engine(settings)
+    session_factory = get_session_factory(engine)
+    session = get_tm_session(session_factory, transaction.manager)
+    truncate_tables(session)
+    with patch("c2cgeoportal_commons.models.DBSession", new=session):
+        yield session
+    truncate_tables(session)
+
+
+@pytest.fixture
+def transact_old(dbsession_old) -> SessionTransaction:
+    t = dbsession_old.begin_nested()
+    yield t
+    try:
+        t.rollback()
+    except sqlalchemy.exc.ResourceClosedError:  # pragma: no cover
+        _LOG.warning("Transaction already closed")
+    dbsession_old.expire_all()
+
+
+@pytest.fixture
+def transact(dbsession) -> SessionTransaction:
     t = dbsession.begin_nested()
     yield t
-    t.rollback()
+    try:
+        t.rollback()
+    except sqlalchemy.exc.ResourceClosedError:  # pragma: no cover
+        _LOG.warning("Transaction already closed")
     dbsession.expire_all()
 
 
 @pytest.fixture
-def dummy_request(dbsession):
+def dummy_request(dbsession_old) -> pyramid.request.Request:
     """
     A lightweight dummy request.
 
@@ -76,48 +114,67 @@ def dummy_request(dbsession):
     """
     request = DummyRequest()
     request.host = "example.com"
-    request.dbsession = dbsession
+    request.dbsession = dbsession_old
 
     return request
 
 
 @pytest.fixture
-def default_ogcserver(dbsession, transact):
+def default_ogcserver(dbsession_old, transact_old) -> "main.OGCServer":
     from c2cgeoportal_commons.models.main import OGCServer
 
-    del transact
+    del transact_old
 
-    ogcserver = OGCServer(name="__test_ogc_server")
+    dbsession_old.flush()
+    ogcserver = dbsession_old.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one_or_none()
+    if ogcserver is None:
+        ogcserver = OGCServer(name="__test_ogc_server")
     ogcserver.url = mapserv_url
-    dbsession.add(ogcserver)
-    dbsession.flush()
+    dbsession_old.add(ogcserver)
+    dbsession_old.flush()
 
     yield ogcserver
 
 
 @pytest.fixture
-def some_user(dbsession, transact):
+def some_user(dbsession_old, transact_old) -> "static.User":
     from c2cgeoportal_commons.models.static import User
 
-    del transact
+    del transact_old
 
     user = User(username="__test_user", password="__test_user")
-    dbsession.add(user)
-    dbsession.flush()
+    dbsession_old.add(user)
+    dbsession_old.flush()
 
     yield user
 
 
 @pytest.fixture
-def admin_user(dbsession, transact):
+def admin_user(dbsession_old, transact_old) -> "static.User":
     from c2cgeoportal_commons.models.main import Role
     from c2cgeoportal_commons.models.static import User
 
-    del transact
+    del transact_old
 
     role = Role(name="role_admin")
     user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
-    dbsession.add_all([role, user])
-    dbsession.flush()
+    dbsession_old.add_all([role, user])
+    dbsession_old.flush()
 
     yield user
+
+
+@pytest.fixture()
+@pytest.mark.usefixtures("dbsession")
+def default_ogcserver(dbsession: Session) -> "main.OGCServer":
+    from c2cgeoportal_commons.models.main import OGCServer
+
+    dbsession.flush()
+    ogcserver = dbsession.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one_or_none()
+    if ogcserver is None:
+        ogcserver = OGCServer(name="__test_ogc_server")
+    ogcserver.url = mapserv_url
+    dbsession.add(ogcserver)
+    caching.invalidate_region()
+
+    return ogcserver

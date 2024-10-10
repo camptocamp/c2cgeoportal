@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ class TestLayerMultiNameErrorView(TestCase):
 
         main = Interface(name="desktop")
 
-        ogc_server = create_default_ogcserver()
+        ogc_server = create_default_ogcserver(DBSession)
 
         layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
         layer_wms_1.layer = "testpoint_unprotected"

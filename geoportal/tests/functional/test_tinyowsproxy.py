@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023, Camptocamp SA
+# Copyright (c) 2015-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -89,7 +89,7 @@ class TestTinyOWSProxyView(TestCase):
         user2.roles = [role2]
         user2.email = "Tarenpion"
 
-        ogc_server_internal = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver(DBSession)
 
         main = Interface(name="main")
 
@@ -304,12 +304,14 @@ class TestTinyOWSProxyViewNoDb(TestCase):
     transaction_insert_request_file = data_base + "tinyows_transaction_insert_request.xml"
 
     def setup_method(self, _):
+        from c2cgeoportal_commons.models import DBSession
+
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
         cleanup_db()
-        create_default_ogcserver()
+        create_default_ogcserver(DBSession)
 
     def teardown_method(self, _):
         cleanup_db()
