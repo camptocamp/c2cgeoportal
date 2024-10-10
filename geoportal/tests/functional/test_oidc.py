@@ -43,7 +43,10 @@ _OIDC_KEYS = {
 
 class TestLogin(TestCase):
     def setUp(self):
-        setup_db()
+        from c2cgeoportal_commons.models import DBSession
+
+        with DBSession() as session:
+            setup_db(session)
         self.config = testing.setUp()
 
     def tearDown(self):

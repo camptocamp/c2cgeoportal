@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,50 +47,54 @@ class TestThemesScale(TestCase):
 
         main = Interface(name="desktop")
 
-        ogc_server = create_default_ogcserver()
+        with DBSession() as session:
+            ogc_server = create_default_ogcserver(session)
 
-        layer_noscale = LayerWMS(name="__test_layer_noscale", public=True)
-        layer_noscale.layer = "test_noscale"
-        layer_noscale.interfaces = [main]
-        layer_noscale.ogc_server = ogc_server
+            layer_noscale = LayerWMS(name="__test_layer_noscale", public=True)
+            layer_noscale.layer = "test_noscale"
+            layer_noscale.interfaces = [main]
+            layer_noscale.ogc_server = ogc_server
 
-        layer_minscale = LayerWMS(name="__test_layer_minscale", public=True)
-        layer_minscale.layer = "test_minscale"
-        layer_minscale.interfaces = [main]
-        layer_minscale.ogc_server = ogc_server
+            layer_minscale = LayerWMS(name="__test_layer_minscale", public=True)
+            layer_minscale.layer = "test_minscale"
+            layer_minscale.interfaces = [main]
+            layer_minscale.ogc_server = ogc_server
 
-        layer_maxscale = LayerWMS(name="__test_layer_maxscale", public=True)
-        layer_maxscale.layer = "test_maxscale"
-        layer_maxscale.interfaces = [main]
-        layer_maxscale.ogc_server = ogc_server
+            layer_maxscale = LayerWMS(name="__test_layer_maxscale", public=True)
+            layer_maxscale.layer = "test_maxscale"
+            layer_maxscale.interfaces = [main]
+            layer_maxscale.ogc_server = ogc_server
 
-        layer_boothscale = LayerWMS(name="__test_layer_boothscale", public=True)
-        layer_boothscale.layer = "test_boothscale"
-        layer_boothscale.interfaces = [main]
-        layer_boothscale.ogc_server = ogc_server
+            layer_boothscale = LayerWMS(name="__test_layer_boothscale", public=True)
+            layer_boothscale.layer = "test_boothscale"
+            layer_boothscale.interfaces = [main]
+            layer_boothscale.ogc_server = ogc_server
 
-        layer_metadatascale = LayerWMS(name="__test_layer_metadatascale", public=True)
-        layer_metadatascale.layer = "test_boothscale"
-        layer_metadatascale.interfaces = [main]
-        layer_metadatascale.ogc_server = ogc_server
-        layer_metadatascale.metadatas = [Metadata("minResolution", "100"), Metadata("maxResolution", "1000")]
+            layer_metadatascale = LayerWMS(name="__test_layer_metadatascale", public=True)
+            layer_metadatascale.layer = "test_boothscale"
+            layer_metadatascale.interfaces = [main]
+            layer_metadatascale.ogc_server = ogc_server
+            layer_metadatascale.metadatas = [
+                Metadata("minResolution", "100"),
+                Metadata("maxResolution", "1000"),
+            ]
 
-        layer_group = LayerGroup(name="__test_layer_group")
-        layer_group.children = [
-            layer_noscale,
-            layer_minscale,
-            layer_maxscale,
-            layer_boothscale,
-            layer_metadatascale,
-        ]
+            layer_group = LayerGroup(name="__test_layer_group")
+            layer_group.children = [
+                layer_noscale,
+                layer_minscale,
+                layer_maxscale,
+                layer_boothscale,
+                layer_metadatascale,
+            ]
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [main]
-        theme.children = [layer_group]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [main]
+            theme.children = [layer_group]
 
-        DBSession.add_all([theme])
+            session.add_all([theme])
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

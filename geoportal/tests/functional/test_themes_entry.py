@@ -71,152 +71,159 @@ class TestThemeEntryView(TestCase):
         )
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
+        with DBSession() as session:
+            setup_db(session)
 
-        role1 = Role(name="__test_role1")
-        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
-        user1.email = "__test_user1@example.com"
+            role1 = Role(name="__test_role1")
+            user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
+            user1.email = "__test_user1@example.com"
 
-        role2 = Role(name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781))
-        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
+            role2 = Role(
+                name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781)
+            )
+            user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
-        main = Interface(name="desktop")
-        mobile = Interface(name="mobile")
+            main = Interface(name="desktop")
+            mobile = Interface(name="mobile")
 
-        engine = DBSession.c2c_rw_bind
+            engine = DBSession.c2c_rw_bind
 
-        a_geo_table = Table(
-            "a_geo_table",
-            declarative_base().metadata,
-            Column("id", types.Integer, primary_key=True),
-            Column("geom", Geometry("POINT", srid=21781)),
-            schema="geodata",
-        )
+            a_geo_table = Table(
+                "a_geo_table",
+                declarative_base().metadata,
+                Column("id", types.Integer, primary_key=True),
+                Column("geom", Geometry("POINT", srid=21781)),
+                schema="geodata",
+            )
 
-        self._tables = [a_geo_table]
-        a_geo_table.drop(checkfirst=True, bind=engine)
-        a_geo_table.create(bind=engine)
+            self._tables = [a_geo_table]
+            a_geo_table.drop(checkfirst=True, bind=engine)
+            a_geo_table.create(bind=engine)
 
-        ogcserver = create_default_ogcserver()
+            ogcserver = create_default_ogcserver(session)
 
-        private_layer_edit = LayerWMS(name="__test_private_layer_edit", public=False)
-        private_layer_edit.layer = "__test_private_layer"
-        private_layer_edit.geo_table = "a_schema.a_geo_table"
-        private_layer_edit.interfaces = [main, mobile]
-        private_layer_edit.ogc_server = ogcserver
+            private_layer_edit = LayerWMS(name="__test_private_layer_edit", public=False)
+            private_layer_edit.layer = "__test_private_layer"
+            private_layer_edit.geo_table = "a_schema.a_geo_table"
+            private_layer_edit.interfaces = [main, mobile]
+            private_layer_edit.ogc_server = ogcserver
 
-        public_layer2 = LayerWMS(name="__test_public_layer", layer="__test_public_layer_bis", public=True)
-        public_layer2.interfaces = [main, mobile]
-        public_layer2.ogc_server = ogcserver
+            public_layer2 = LayerWMS(name="__test_public_layer", layer="__test_public_layer_bis", public=True)
+            public_layer2.interfaces = [main, mobile]
+            public_layer2.ogc_server = ogcserver
 
-        private_layer = LayerWMS(name="__test_private_layer", layer="__test_private_layer_bis", public=False)
-        private_layer.interfaces = [main, mobile]
-        private_layer.ogc_server = ogcserver
+            private_layer = LayerWMS(
+                name="__test_private_layer", layer="__test_private_layer_bis", public=False
+            )
+            private_layer.interfaces = [main, mobile]
+            private_layer.ogc_server = ogcserver
 
-        interface_not_in_mapfile = Interface(name="interface_not_in_mapfile")
-        public_layer_not_in_mapfile = LayerWMS(
-            name="__test_public_layer_not_in_mapfile", layer="__test_public_layer_not_in_mapfile", public=True
-        )
-        public_layer_not_in_mapfile.interfaces = [interface_not_in_mapfile]
-        public_layer_not_in_mapfile.ogc_server = ogcserver
+            interface_not_in_mapfile = Interface(name="interface_not_in_mapfile")
+            public_layer_not_in_mapfile = LayerWMS(
+                name="__test_public_layer_not_in_mapfile",
+                layer="__test_public_layer_not_in_mapfile",
+                public=True,
+            )
+            public_layer_not_in_mapfile.interfaces = [interface_not_in_mapfile]
+            public_layer_not_in_mapfile.ogc_server = ogcserver
 
-        interface_notmapfile = Interface(name="interface_notmapfile")
-        ogcserver_notmapfile = OGCServer(name="__test_ogc_server_notmapfile")
-        ogcserver_notmapfile.url = mapserv_url + "?map=not_a_mapfile"
-        public_layer_not_mapfile = LayerWMS(
-            name="__test_public_layer_notmapfile", layer="__test_public_layer_notmapfile", public=True
-        )
-        public_layer_not_mapfile.interfaces = [interface_notmapfile]
-        public_layer_not_mapfile.ogc_server = ogcserver_notmapfile
+            interface_notmapfile = Interface(name="interface_notmapfile")
+            ogcserver_notmapfile = OGCServer(name="__test_ogc_server_notmapfile")
+            ogcserver_notmapfile.url = mapserv_url + "?map=not_a_mapfile"
+            public_layer_not_mapfile = LayerWMS(
+                name="__test_public_layer_notmapfile", layer="__test_public_layer_notmapfile", public=True
+            )
+            public_layer_not_mapfile.interfaces = [interface_notmapfile]
+            public_layer_not_mapfile.ogc_server = ogcserver_notmapfile
 
-        interface_geoserver = Interface(name="interface_geoserver")
-        ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
-        ogcserver_geoserver.url = mapserv_url
-        ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
-        ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
-        public_layer_geoserver = LayerWMS(
-            name="__test_public_layer_geoserver", layer="testpoint_unprotected", public=True
-        )
-        public_layer_geoserver.interfaces = [interface_geoserver]
-        public_layer_geoserver.ogc_server = ogcserver_geoserver
+            interface_geoserver = Interface(name="interface_geoserver")
+            ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
+            ogcserver_geoserver.url = mapserv_url
+            ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
+            ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
+            public_layer_geoserver = LayerWMS(
+                name="__test_public_layer_geoserver", layer="testpoint_unprotected", public=True
+            )
+            public_layer_geoserver.interfaces = [interface_geoserver]
+            public_layer_geoserver.ogc_server = ogcserver_geoserver
 
-        interface_no_layers = Interface(name="interface_no_layers")
-        public_layer_no_layers = LayerWMS(name="__test_public_layer_no_layers", public=True)
-        public_layer_no_layers.interfaces = [interface_no_layers]
-        public_layer_no_layers.ogc_server = ogcserver
+            interface_no_layers = Interface(name="interface_no_layers")
+            public_layer_no_layers = LayerWMS(name="__test_public_layer_no_layers", public=True)
+            public_layer_no_layers.interfaces = [interface_no_layers]
+            public_layer_no_layers.ogc_server = ogcserver
 
-        group = LayerGroup(name="__test_layer_group")
-        group.children = [
-            private_layer_edit,
-            public_layer2,
-            public_layer_not_in_mapfile,
-            public_layer_not_mapfile,
-            public_layer_geoserver,
-            public_layer_no_layers,
-            private_layer,
-        ]
-        theme = Theme(name="__test_theme")
-        theme.children = [group]
-        theme.interfaces = [
-            main,
-            interface_not_in_mapfile,
-            interface_notmapfile,
-            interface_geoserver,
-            interface_no_layers,
-        ]
+            group = LayerGroup(name="__test_layer_group")
+            group.children = [
+                private_layer_edit,
+                public_layer2,
+                public_layer_not_in_mapfile,
+                public_layer_not_mapfile,
+                public_layer_geoserver,
+                public_layer_no_layers,
+                private_layer,
+            ]
+            theme = Theme(name="__test_theme")
+            theme.children = [group]
+            theme.interfaces = [
+                main,
+                interface_not_in_mapfile,
+                interface_notmapfile,
+                interface_geoserver,
+                interface_no_layers,
+            ]
 
-        functionality1 = Functionality(name="test_name", value="test_value_1")
-        functionality2 = Functionality(name="test_name", value="test_value_2")
-        theme.functionalities = [functionality1, functionality2]
+            functionality1 = Functionality(name="test_name", value="test_value_1")
+            functionality2 = Functionality(name="test_name", value="test_value_2")
+            theme.functionalities = [functionality1, functionality2]
 
-        poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
+            poly = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
 
-        area = WKTElement(poly, srid=21781)
-        RestrictionArea(
-            name="__test_ra1",
-            description="",
-            layers=[private_layer_edit, private_layer],
-            roles=[role1],
-            area=area,
-        )
+            area = WKTElement(poly, srid=21781)
+            RestrictionArea(
+                name="__test_ra1",
+                description="",
+                layers=[private_layer_edit, private_layer],
+                roles=[role1],
+                area=area,
+            )
 
-        area = WKTElement(poly, srid=21781)
-        RestrictionArea(
-            name="__test_ra2",
-            description="",
-            layers=[private_layer_edit, private_layer],
-            roles=[role2],
-            area=area,
-            readwrite=True,
-        )
+            area = WKTElement(poly, srid=21781)
+            RestrictionArea(
+                name="__test_ra2",
+                description="",
+                layers=[private_layer_edit, private_layer],
+                roles=[role2],
+                area=area,
+                readwrite=True,
+            )
 
-        entry1 = FullTextSearch()
-        entry1.label = "label1"
-        entry1.layer_name = "layer1"
-        entry1.ts = func.to_tsvector("french", "soleil travail")
-        entry1.the_geom = WKTElement("POINT(-90 -45)", 21781)
-        entry1.public = True
+            entry1 = FullTextSearch()
+            entry1.label = "label1"
+            entry1.layer_name = "layer1"
+            entry1.ts = func.to_tsvector("french", "soleil travail")
+            entry1.the_geom = WKTElement("POINT(-90 -45)", 21781)
+            entry1.public = True
 
-        entry2 = FullTextSearch()
-        entry2.label = "label1"
-        entry2.layer_name = "layer1"
-        entry2.ts = func.to_tsvector("french", "soleil travail")
-        entry2.the_geom = WKTElement("POINT(-90 -45)", 21781)
-        entry2.public = True
+            entry2 = FullTextSearch()
+            entry2.label = "label1"
+            entry2.layer_name = "layer1"
+            entry2.ts = func.to_tsvector("french", "soleil travail")
+            entry2.the_geom = WKTElement("POINT(-90 -45)", 21781)
+            entry2.public = True
 
-        entry3 = FullTextSearch()
-        entry3.label = "label1"
-        entry3.layer_name = None
-        entry3.ts = func.to_tsvector("french", "soleil travail")
-        entry3.the_geom = WKTElement("POINT(-90 -45)", 21781)
-        entry3.public = True
+            entry3 = FullTextSearch()
+            entry3.label = "label1"
+            entry3.layer_name = None
+            entry3.ts = func.to_tsvector("french", "soleil travail")
+            entry3.the_geom = WKTElement("POINT(-90 -45)", 21781)
+            entry3.public = True
 
-        DBSession.add_all([user1, user2, theme, entry1, entry2, entry3])
-        DBSession.flush()
+            session.add_all([user1, user2, theme, entry1, entry2, entry3])
+            session.flush()
 
-        self.role1_id = role1.id
+            self.role1_id = role1.id
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

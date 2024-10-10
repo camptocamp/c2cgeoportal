@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,64 +53,65 @@ class TestMapserverproxyCapabilities(TestCase):
         )
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
-        create_default_ogcserver()
+        with DBSession() as session:
+            setup_db(session)
+            create_default_ogcserver(session)
 
-        ogcserver_jpeg = OGCServer(name="__test_ogc_server_jpeg")
-        ogcserver_jpeg.url = mapserv_url
-        ogcserver_jpeg.image_type = "image/jpeg"
-        ogcserver_jpeg.type = OGCSERVER_TYPE_MAPSERVER
-        ogcserver_jpeg.auth = OGCSERVER_AUTH_STANDARD
+            ogcserver_jpeg = OGCServer(name="__test_ogc_server_jpeg")
+            ogcserver_jpeg.url = mapserv_url
+            ogcserver_jpeg.image_type = "image/jpeg"
+            ogcserver_jpeg.type = OGCSERVER_TYPE_MAPSERVER
+            ogcserver_jpeg.auth = OGCSERVER_AUTH_STANDARD
 
-        ogcserver_png = OGCServer(name="__test_ogc_server_png")
-        ogcserver_png.url = mapserv_url
-        ogcserver_png.image_type = "image/png"
-        ogcserver_png.type = OGCSERVER_TYPE_MAPSERVER
-        ogcserver_png.auth = OGCSERVER_AUTH_STANDARD
+            ogcserver_png = OGCServer(name="__test_ogc_server_png")
+            ogcserver_png.url = mapserv_url
+            ogcserver_png.image_type = "image/png"
+            ogcserver_png.type = OGCSERVER_TYPE_MAPSERVER
+            ogcserver_png.auth = OGCSERVER_AUTH_STANDARD
 
-        ogcserver_wfs1 = OGCServer(name="__test_ogc_server_wfs1")
-        ogcserver_wfs1.url = mapserv_url
-        ogcserver_wfs1.url_wfs = "config://srv"
-        ogcserver_wfs1.image_type = "image/png"
-        ogcserver_wfs1.type = OGCSERVER_TYPE_MAPSERVER
-        ogcserver_wfs1.auth = OGCSERVER_AUTH_STANDARD
+            ogcserver_wfs1 = OGCServer(name="__test_ogc_server_wfs1")
+            ogcserver_wfs1.url = mapserv_url
+            ogcserver_wfs1.url_wfs = "config://srv"
+            ogcserver_wfs1.image_type = "image/png"
+            ogcserver_wfs1.type = OGCSERVER_TYPE_MAPSERVER
+            ogcserver_wfs1.auth = OGCSERVER_AUTH_STANDARD
 
-        ogcserver_wfs2 = OGCServer(name="__test_ogc_server_wfs2")
-        ogcserver_wfs2.url = "config://srv"
-        ogcserver_wfs2.url_wfs = mapserv_url
-        ogcserver_wfs2.image_type = "image/png"
-        ogcserver_wfs2.type = OGCSERVER_TYPE_MAPSERVER
-        ogcserver_wfs2.auth = OGCSERVER_AUTH_STANDARD
+            ogcserver_wfs2 = OGCServer(name="__test_ogc_server_wfs2")
+            ogcserver_wfs2.url = "config://srv"
+            ogcserver_wfs2.url_wfs = mapserv_url
+            ogcserver_wfs2.image_type = "image/png"
+            ogcserver_wfs2.type = OGCSERVER_TYPE_MAPSERVER
+            ogcserver_wfs2.auth = OGCSERVER_AUTH_STANDARD
 
-        role = Role(name="__test_role", description="__test_role")
-        user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
+            role = Role(name="__test_role", description="__test_role")
+            user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
 
-        main = Interface(name="main")
+            main = Interface(name="main")
 
-        layer1 = LayerWMS("__test_layer1", public=False)
-        layer1.layer = "__test_private_layer1"
-        layer1.ogc_server = ogcserver_jpeg
-        layer1.interfaces = [main]
+            layer1 = LayerWMS("__test_layer1", public=False)
+            layer1.layer = "__test_private_layer1"
+            layer1.ogc_server = ogcserver_jpeg
+            layer1.interfaces = [main]
 
-        layer2 = LayerWMS("__test_layer2", public=False)
-        layer2.layer = "__test_private_layer2"
-        layer2.ogc_server = ogcserver_png
-        layer2.interfaces = [main]
+            layer2 = LayerWMS("__test_layer2", public=False)
+            layer2.layer = "__test_private_layer2"
+            layer2.ogc_server = ogcserver_png
+            layer2.interfaces = [main]
 
-        layer3 = LayerWMS("__test_layer3", public=False)
-        layer3.layer = "__test_private_layer3"
-        layer3.ogc_server = ogcserver_wfs1
-        layer3.interfaces = [main]
+            layer3 = LayerWMS("__test_layer3", public=False)
+            layer3.layer = "__test_private_layer3"
+            layer3.ogc_server = ogcserver_wfs1
+            layer3.interfaces = [main]
 
-        layer4 = LayerWMS("__test_layer4", public=False)
-        layer4.layer = "__test_private_layer4"
-        layer4.ogc_server = ogcserver_wfs2
-        layer4.interfaces = [main]
+            layer4 = LayerWMS("__test_layer4", public=False)
+            layer4.layer = "__test_private_layer4"
+            layer4.ogc_server = ogcserver_wfs2
+            layer4.interfaces = [main]
 
-        restricted_area = RestrictionArea("__test_ra", "", [layer1, layer2, layer3, layer4], [role])
+            restricted_area = RestrictionArea("__test_ra", "", [layer1, layer2, layer3, layer4], [role])
 
-        DBSession.add_all([user, restricted_area])
-        transaction.commit()
+            session.add_all([user, restricted_area])
+            transaction.commit()
 
     def teardown_method(self, _):
         cleanup_db()

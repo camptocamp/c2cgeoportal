@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,35 +48,36 @@ class TestLayerMultiNameErrorView(TestCase):
 
         main = Interface(name="desktop")
 
-        ogc_server = create_default_ogcserver()
+        with DBSession() as session:
+            ogc_server = create_default_ogcserver(session)
 
-        layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
-        layer_wms_1.layer = "testpoint_unprotected"
-        layer_wms_1.interfaces = [main]
-        layer_wms_1.ogc_server = ogc_server
+            layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
+            layer_wms_1.layer = "testpoint_unprotected"
+            layer_wms_1.interfaces = [main]
+            layer_wms_1.ogc_server = ogc_server
 
-        layer_wms_2 = LayerWMS(name="__test_layer_wms_2", public=True)
-        layer_wms_2.layer = "testpoint_substitution"
-        layer_wms_2.interfaces = [main]
-        layer_wms_2.ogc_server = ogc_server
+            layer_wms_2 = LayerWMS(name="__test_layer_wms_2", public=True)
+            layer_wms_2.layer = "testpoint_substitution"
+            layer_wms_2.interfaces = [main]
+            layer_wms_2.ogc_server = ogc_server
 
-        layer_wms_3 = LayerWMS(name="__test_layer_wms_3", public=True)
-        layer_wms_3.layer = "testpoint_unprotected,testpoint_substitution"
-        layer_wms_3.interfaces = [main]
-        layer_wms_3.ogc_server = ogc_server
+            layer_wms_3 = LayerWMS(name="__test_layer_wms_3", public=True)
+            layer_wms_3.layer = "testpoint_unprotected,testpoint_substitution"
+            layer_wms_3.interfaces = [main]
+            layer_wms_3.ogc_server = ogc_server
 
-        layer_group_1 = LayerGroup(name="__test_layer_group_1")
-        layer_group_1.children = [layer_wms_1, layer_wms_2]
+            layer_group_1 = LayerGroup(name="__test_layer_group_1")
+            layer_group_1.children = [layer_wms_1, layer_wms_2]
 
-        layer_group_2 = LayerGroup(name="__test_layer_group_2")
-        layer_group_2.children = [layer_wms_1, layer_wms_3]
+            layer_group_2 = LayerGroup(name="__test_layer_group_2")
+            layer_group_2.children = [layer_wms_1, layer_wms_3]
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [main]
-        theme.children = [layer_group_1, layer_group_2]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [main]
+            theme.children = [layer_group_1, layer_group_2]
 
-        DBSession.add(theme)
-        transaction.commit()
+            session.add(theme)
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

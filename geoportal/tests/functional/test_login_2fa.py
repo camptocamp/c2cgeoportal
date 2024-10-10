@@ -55,13 +55,14 @@ class Test2faView(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
+        with DBSession() as session:
+            setup_db(session)
 
-        user = User(username="__test_user", password="__test_user")
-        user.email = "__test_user@example.com"
-        DBSession.add(user)
-        testing.setUp().testing_securitypolicy(remember_result=[("Cookie", "Test")])
-        transaction.commit()
+            user = User(username="__test_user", password="__test_user")
+            user.email = "__test_user@example.com"
+            session.add(user)
+            testing.setUp().testing_securitypolicy(remember_result=[("Cookie", "Test")])
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

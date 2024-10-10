@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,32 +43,32 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_commons.models.main import Interface, LayerWMS, RestrictionArea, Role
         from c2cgeoportal_commons.models.static import User
 
-        ogc_server_internal = create_default_ogcserver()
+        with DBSession() as session:
+            ogc_server_internal = create_default_ogcserver(session)
 
-        role1 = Role(name="__test_role1", description="__test_role1")
-        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
-        user1.email = "Tarenpion"
+            role1 = Role(name="__test_role1", description="__test_role1")
+            user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
+            user1.email = "Tarenpion"
 
-        main = Interface(name="main")
+            main = Interface(name="main")
 
-        layer1 = LayerWMS("testpoint_group_name", public=False)
-        layer1.layer = "testpoint_group"
-        layer1.ogc_server = ogc_server_internal
-        layer1.interfaces = [main]
+            layer1 = LayerWMS("testpoint_group_name", public=False)
+            layer1.layer = "testpoint_group"
+            layer1.ogc_server = ogc_server_internal
+            layer1.interfaces = [main]
 
-        layer2 = LayerWMS("testpoint_protected_2_name", public=False)
-        layer2.layer = "testpoint_protected_2"
-        layer2.ogc_server = ogc_server_internal
-        layer2.interfaces = [main]
+            layer2 = LayerWMS("testpoint_protected_2_name", public=False)
+            layer2.layer = "testpoint_protected_2"
+            layer2.ogc_server = ogc_server_internal
+            layer2.interfaces = [main]
 
-        area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
-        area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea("__test_ra1", "", [layer1, layer2], [role1], area)
+            area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
+            area = WKTElement(area, srid=21781)
+            restricted_area1 = RestrictionArea("__test_ra1", "", [layer1, layer2], [role1], area)
 
-        DBSession.add_all([user1, role1, layer1, layer2, restricted_area1])
-        DBSession.flush()
+            session.add_all([user1, role1, layer1, layer2, restricted_area1])
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession

@@ -55,25 +55,28 @@ class TestLoginView(TestCase):
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
+        with DBSession() as session:
+            setup_db(session)
 
-        role1 = Role(name="__test_role1")
-        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
-        user1.email = "__test_user1@example.com"
+            role1 = Role(name="__test_role1")
+            user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
+            user1.email = "__test_user1@example.com"
 
-        role2 = Role(name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781))
-        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
+            role2 = Role(
+                name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781)
+            )
+            user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
-        user3 = User(username="__test_user3", password="__test_user3", settings_role=role1, roles=[role1])
-        user3.is_password_changed = True
-        user3.deactivated = True
+            user3 = User(username="__test_user3", password="__test_user3", settings_role=role1, roles=[role1])
+            user3.is_password_changed = True
+            user3.deactivated = True
 
-        DBSession.add_all([user1, user2, user3])
-        DBSession.flush()
+            session.add_all([user1, user2, user3])
+            session.flush()
 
-        self.role1_id = role1.id
+            self.role1_id = role1.id
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()
@@ -273,94 +276,94 @@ class TestLoginView(TestCase):
         assert user._password == crypt.crypt("1234", user._password)
 
     def test_login_0(self):
-        from tests import DummyRequest
-
+        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.views.login import Login
 
-        request = self._create_request_obj()
-        request.get_organization_role = lambda role_type: role_type
-        request.is_valid_referer = True
-        request.user = None
-        login = Login(request)
+        with DBSession as session:
+            request = self._create_request_obj()
+            request.get_organization_role = lambda role_type: role_type
+            request.is_valid_referer = True
+            request.user = None
+            login = Login(request)
 
-        request.path = "/for_test"
-        response = login.loginform403()
-        assert response["login_params"] == {"came_from": "/for_test?"}
+            request.path = "/for_test"
+            response = login.loginform403()
+            assert response["login_params"] == {"came_from": "/for_test?"}
 
-        request.path = "/for_test"
-        request.GET = {"test": "123"}
-        response = login.loginform403()
-        assert response["login_params"] == {"came_from": "/for_test?test=123"}
+            request.path = "/for_test"
+            request.GET = {"test": "123"}
+            response = login.loginform403()
+            assert response["login_params"] == {"came_from": "/for_test?test=123"}
 
-        request.params = {"came_from": "/for_a_second_test"}
-        login = Login(request)
-        response = login.loginform()
-        assert response["login_params"] == {"came_from": "/for_a_second_test"}
+            request.params = {"came_from": "/for_a_second_test"}
+            login = Login(request)
+            response = login.loginform()
+            assert response["login_params"] == {"came_from": "/for_a_second_test"}
 
-        login = Login(request)
-        request.params = {}
-        response = login.loginform()
-        assert response["login_params"] == {"came_from": "/"}
+            login = Login(request)
+            request.params = {}
+            response = login.loginform()
+            assert response["login_params"] == {"came_from": "/"}
 
-        request.registry.settings = {
-            "functionalities": {"available_in_templates": ["func"]},
-            "admin_interface": {"available_functionalities": [{"name": "func"}]},
-        }
-        fill_tech_user_functionality("anonymous", (("func", "anon"), ("toto", "anon_value2")))
-        fill_tech_user_functionality("registered", (("func", "reg"),))
-        login = Login(request)
-        assert login.loginuser()["functionalities"] == {"func": ["anon"]}
+            request.registry.settings = {
+                "functionalities": {"available_in_templates": ["func"]},
+                "admin_interface": {"available_functionalities": [{"name": "func"}]},
+            }
+            fill_tech_user_functionality("anonymous", (("func", "anon"), ("toto", "anon_value2")), session)
+            fill_tech_user_functionality("registered", (("func", "reg"),), session)
+            login = Login(request)
+            assert login.loginuser()["functionalities"] == {"func": ["anon"]}
 
-        class R:
-            id = 123
+            class R:
+                id = 123
 
-            def __init__(self, name, functionalities):
-                self.name = name
-                self.functionalities = functionalities
+                def __init__(self, name, functionalities):
+                    self.name = name
+                    self.functionalities = functionalities
 
-        class U:
-            username = "__test_user"
-            display_name = "Test User"
-            is_password_changed = True
-            email = "info@example.com"
-            settings_role = None
+            class U:
+                username = "__test_user"
+                display_name = "Test User"
+                is_password_changed = True
+                email = "info@example.com"
+                settings_role = None
 
-            def __init__(self, role="__test_role", functionalities=None):
-                if functionalities is None:
-                    functionalities = []
-                self.roles = [R(role, functionalities)]
+                def __init__(self, role="__test_role", functionalities=None):
+                    if functionalities is None:
+                        functionalities = []
+                    self.roles = [R(role, functionalities)]
 
-        request.user = U()
-        login = Login(request)
-        expected = {
-            "username": "Test User",
-            "email": "info@example.com",
-            "is_intranet": False,
-            "login_type": "local",
-            "two_factor_enable": False,
-            "roles": [{"name": "__test_role", "id": 123}],
-            "functionalities": {"func": ["reg"]},
-        }
-        assert login.loginuser() == expected
+            request.user = U()
+            login = Login(request)
+            expected = {
+                "username": "Test User",
+                "email": "info@example.com",
+                "is_intranet": False,
+                "login_type": "local",
+                "two_factor_enable": False,
+                "roles": [{"name": "__test_role", "id": 123}],
+                "functionalities": {"func": ["reg"]},
+            }
+            assert login.loginuser() == expected
 
-        class F:
-            name = "func"
-            value = "value"
+            class F:
+                name = "func"
+                value = "value"
 
-        request.user = U("__test_role2", [F()])
-        del request.response.headers["Vary"]
-        login = Login(request)
-        expected = {
-            "username": "Test User",
-            "email": "info@example.com",
-            "is_intranet": False,
-            "login_type": "local",
-            "two_factor_enable": False,
-            "roles": [{"name": "__test_role2", "id": 123}],
-            "functionalities": {"func": ["value"]},
-        }
-        assert login.loginuser() == expected
-        assert request.response.headers["Vary"] == "Origin, Cookie"
+            request.user = U("__test_role2", [F()])
+            del request.response.headers["Vary"]
+            login = Login(request)
+            expected = {
+                "username": "Test User",
+                "email": "info@example.com",
+                "is_intranet": False,
+                "login_type": "local",
+                "two_factor_enable": False,
+                "roles": [{"name": "__test_role2", "id": 123}],
+                "functionalities": {"func": ["value"]},
+            }
+            assert login.loginuser() == expected
+            assert request.response.headers["Vary"] == "Origin, Cookie"
 
     def test_intranet(self):
         from tests import DummyRequest

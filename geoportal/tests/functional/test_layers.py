@@ -53,25 +53,26 @@ class TestLayers(TestCase):
         from c2cgeoportal_commons.models.main import Interface, Role
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
+        with DBSession() as session:
+            setup_db(session)
 
-        self.metadata = None
-        self.layer_ids = []
+            self.metadata = None
+            self.layer_ids = []
 
-        for o in DBSession.query(User).all():
-            DBSession.delete(o)
+            for o in session.query(User).all():
+                session.delete(o)
 
-        self.role = Role(name="__test_role")
-        self.user = User(
-            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
-        )
-        self.main = Interface(name="main")
+            self.role = Role(name="__test_role")
+            self.user = User(
+                username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
+            )
+            self.main = Interface(name="main")
 
-        DBSession.add(self.user)
-        DBSession.add(self.role)
-        DBSession.add(self.main)
+            session.add(self.user)
+            session.add(self.role)
+            session.add(self.main)
 
-        create_default_ogcserver()
+            create_default_ogcserver(session)
 
         transaction.commit()
 

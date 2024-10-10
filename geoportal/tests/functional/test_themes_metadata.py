@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,70 +49,71 @@ class TestThemesViewMetadata(TestCase):
 
         desktop = Interface(name="desktop")
 
-        ogc_server_internal = create_default_ogcserver()
+        with DBSession() as session:
+            ogc_server_internal = create_default_ogcserver(session)
 
-        layer_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
-        layer_wms.layer = "testpoint_unprotected"
-        layer_wms.ogc_server = ogc_server_internal
-        layer_wms.interfaces = [desktop]
-        layer_wms.metadatas = [
-            Metadata("string", "string"),
-            Metadata("list", "1, 2, a"),
-            Metadata("boolean", "y"),
-            Metadata("boolean2", "no"),
-            Metadata("integer", "1"),
-            Metadata("float", "5.5"),
-            Metadata("json", '{"test": 123}'),
-            Metadata("date", "Sep 25 2003"),
-            Metadata("time", "10:36:28"),
-            Metadata("datetime", "Sep 25 10:36:28 BRST 2003"),
-            Metadata("regex", "valid"),
-            Metadata("url1", "http://example.com/hi?a=b#c"),
-            Metadata("url2", "static:///path/icon.png"),
-            Metadata("url3", "static://static/path/icon.png"),
-            Metadata("url4", "static://cgxp/path/icon.png"),
-            Metadata("url5", "static://project:static/path/icon.png"),
-            Metadata("url6", "static://project:cgxp/path/icon.png"),
-            Metadata("url7", "config://server"),
-            Metadata("url8", "config://server/index.html"),
-            Metadata("url9", "/dummy/static/icon.png"),
-            Metadata("url10", "dummy/static/icon.png"),
-        ]
+            layer_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
+            layer_wms.layer = "testpoint_unprotected"
+            layer_wms.ogc_server = ogc_server_internal
+            layer_wms.interfaces = [desktop]
+            layer_wms.metadatas = [
+                Metadata("string", "string"),
+                Metadata("list", "1, 2, a"),
+                Metadata("boolean", "y"),
+                Metadata("boolean2", "no"),
+                Metadata("integer", "1"),
+                Metadata("float", "5.5"),
+                Metadata("json", '{"test": 123}'),
+                Metadata("date", "Sep 25 2003"),
+                Metadata("time", "10:36:28"),
+                Metadata("datetime", "Sep 25 10:36:28 BRST 2003"),
+                Metadata("regex", "valid"),
+                Metadata("url1", "http://example.com/hi?a=b#c"),
+                Metadata("url2", "static:///path/icon.png"),
+                Metadata("url3", "static://static/path/icon.png"),
+                Metadata("url4", "static://cgxp/path/icon.png"),
+                Metadata("url5", "static://project:static/path/icon.png"),
+                Metadata("url6", "static://project:cgxp/path/icon.png"),
+                Metadata("url7", "config://server"),
+                Metadata("url8", "config://server/index.html"),
+                Metadata("url9", "/dummy/static/icon.png"),
+                Metadata("url10", "dummy/static/icon.png"),
+            ]
 
-        layer_wms_errors = LayerWMS(name="__test_layer_internal_wms_errors", public=True)
-        layer_wms_errors.layer = "testpoint_unprotected"
-        layer_wms_errors.ogc_server = ogc_server_internal
-        layer_wms_errors.interfaces = [desktop]
-        layer_wms_errors.metadatas = [
-            Metadata("boolean3", "Hello"),
-            Metadata("json_wrong", '{"test": 123'),
-            Metadata("date2", "Sep 25 10:36:28 BRST 2003"),
-            Metadata("time2", "Sep 25 10:36:28 BRST 2003"),
-            Metadata("datetime2", "Hello"),
-            Metadata("regex", "invalid"),
-            Metadata("url11", "https:///static/icon.png"),
-            Metadata("url12", "static://test"),
-            Metadata("url13", "static://test/"),
-            Metadata("url14", "config:///static/icon.png"),
-            Metadata("url15", "config://unknown_server"),
-            Metadata("url16", "https://"),
-            Metadata("url17", "https:///"),
-            Metadata("url18", "https:///static"),
-            Metadata("url19", ""),
-            Metadata("url20", "/"),
-            Metadata("unknown", "Hello"),
-        ]
+            layer_wms_errors = LayerWMS(name="__test_layer_internal_wms_errors", public=True)
+            layer_wms_errors.layer = "testpoint_unprotected"
+            layer_wms_errors.ogc_server = ogc_server_internal
+            layer_wms_errors.interfaces = [desktop]
+            layer_wms_errors.metadatas = [
+                Metadata("boolean3", "Hello"),
+                Metadata("json_wrong", '{"test": 123'),
+                Metadata("date2", "Sep 25 10:36:28 BRST 2003"),
+                Metadata("time2", "Sep 25 10:36:28 BRST 2003"),
+                Metadata("datetime2", "Hello"),
+                Metadata("regex", "invalid"),
+                Metadata("url11", "https:///static/icon.png"),
+                Metadata("url12", "static://test"),
+                Metadata("url13", "static://test/"),
+                Metadata("url14", "config:///static/icon.png"),
+                Metadata("url15", "config://unknown_server"),
+                Metadata("url16", "https://"),
+                Metadata("url17", "https:///"),
+                Metadata("url18", "https:///static"),
+                Metadata("url19", ""),
+                Metadata("url20", "/"),
+                Metadata("unknown", "Hello"),
+            ]
 
-        layer_group = LayerGroup(name="__test_layer_group")
-        layer_group.children = [layer_wms, layer_wms_errors]
+            layer_group = LayerGroup(name="__test_layer_group")
+            layer_group.children = [layer_wms, layer_wms_errors]
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [desktop]
-        theme.children = [layer_group]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [desktop]
+            theme.children = [layer_group]
 
-        DBSession.add(theme)
+            session.add(theme)
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

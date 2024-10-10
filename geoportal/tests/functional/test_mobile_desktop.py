@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -46,57 +46,58 @@ class TestMobileDesktop(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, Theme
 
-        create_default_ogcserver()
-        main = Interface(name="main")
-        mobile = Interface(name="mobile")
+        with DBSession() as session:
+            create_default_ogcserver(session)
+            main = Interface(name="main")
+            mobile = Interface(name="mobile")
 
-        layer = LayerWMS(name="__test_layer")
-        layer.interfaces = [main, mobile]
+            layer = LayerWMS(name="__test_layer")
+            layer.interfaces = [main, mobile]
 
-        mobile_only_layer = LayerWMS(name="__test_mobile_only_layer")
-        mobile_only_layer.interfaces = [mobile]
+            mobile_only_layer = LayerWMS(name="__test_mobile_only_layer")
+            mobile_only_layer.interfaces = [mobile]
 
-        desktop_only_layer = LayerWMS(name="__test_desktop_only_layer")
-        desktop_only_layer.interfaces = [main]
+            desktop_only_layer = LayerWMS(name="__test_desktop_only_layer")
+            desktop_only_layer.interfaces = [main]
 
-        group = LayerGroup(name="__test_layer_group")
-        group.children = [layer, mobile_only_layer, desktop_only_layer]
-        theme = Theme(name="__test_theme")
-        theme.children = [group]
-        theme.interfaces = [main, mobile]
+            group = LayerGroup(name="__test_layer_group")
+            group.children = [layer, mobile_only_layer, desktop_only_layer]
+            theme = Theme(name="__test_theme")
+            theme.children = [group]
+            theme.interfaces = [main, mobile]
 
-        mobile_only_group = LayerGroup(name="__test_mobile_only_layer_group")
-        mobile_only_group.children = [layer]
-        mobile_only_theme = Theme(name="__test_mobile_only_theme")
-        mobile_only_theme.children = [mobile_only_group]
-        mobile_only_theme.interfaces = [mobile]
+            mobile_only_group = LayerGroup(name="__test_mobile_only_layer_group")
+            mobile_only_group.children = [layer]
+            mobile_only_theme = Theme(name="__test_mobile_only_theme")
+            mobile_only_theme.children = [mobile_only_group]
+            mobile_only_theme.interfaces = [mobile]
 
-        desktop_only_group = LayerGroup(name="__test_desktop_only_layer_group")
-        desktop_only_group.children = [layer]
-        desktop_only_theme = Theme(name="__test_desktop_only_theme")
-        desktop_only_theme.children = [desktop_only_group]
-        desktop_only_theme.interfaces = [main]
+            desktop_only_group = LayerGroup(name="__test_desktop_only_layer_group")
+            desktop_only_group.children = [layer]
+            desktop_only_theme = Theme(name="__test_desktop_only_theme")
+            desktop_only_theme.children = [desktop_only_group]
+            desktop_only_theme.interfaces = [main]
 
-        # the following theme should not appear in the list of themes on desktop
-        # nor on mobile
-        # It should be accessible by explicitly loading it in mobile though
-        mobile_private_group = LayerGroup(name="__test_mobile_private_layer_group")
-        mobile_private_group.children = [layer]
-        mobile_private_theme = Theme(name="__test_mobile_private_theme")
-        mobile_private_theme.children = [mobile_private_group]
+            # the following theme should not appear in the list of themes on desktop
+            # nor on mobile
+            # It should be accessible by explicitly loading it in mobile though
+            mobile_private_group = LayerGroup(name="__test_mobile_private_layer_group")
+            mobile_private_group.children = [layer]
+            mobile_private_theme = Theme(name="__test_mobile_private_theme")
+            mobile_private_theme.children = [mobile_private_group]
 
-        DBSession.add_all(
-            [
-                layer,
-                mobile_only_layer,
-                desktop_only_layer,
-                theme,
-                mobile_only_theme,
-                desktop_only_theme,
-                mobile_private_theme,
-            ]
-        )
-        transaction.commit()
+            session.add_all(
+                [
+                    layer,
+                    mobile_only_layer,
+                    desktop_only_layer,
+                    theme,
+                    mobile_only_theme,
+                    desktop_only_theme,
+                    mobile_private_theme,
+                ]
+            )
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

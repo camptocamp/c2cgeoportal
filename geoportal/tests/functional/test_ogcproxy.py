@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, Camptocamp SA
+# Copyright (c) 2022-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -46,14 +46,14 @@ class TestOGCProxy(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import OGCServer
 
-        setup_db()
+        with DBSession() as session:
+            setup_db(session)
 
-        ogcserver = OGCServer(name="MixedCaseOGCServer")
-        ogcserver.url = "http://mapserver:8080/"
-        DBSession.add(ogcserver)
-        DBSession.flush()
+            ogcserver = OGCServer(name="MixedCaseOGCServer")
+            ogcserver.url = "http://mapserver:8080/"
+            session.add(ogcserver)
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         cleanup_db()

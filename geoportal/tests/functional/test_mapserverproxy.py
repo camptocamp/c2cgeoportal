@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -134,107 +134,108 @@ class TestMapserverproxyView(TestCase):
         )
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
+        with DBSession() as session:
+            setup_db(session)
 
-        ogc_server_internal = create_default_ogcserver()
-        ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
-        ogcserver_geoserver.url = mapserv_url
-        ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
-        ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
+            ogc_server_internal = create_default_ogcserver(session)
+            ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
+            ogcserver_geoserver.url = mapserv_url
+            ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
+            ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
 
-        DBSession.query(PointTest).delete()
+            DBSession.query(PointTest).delete()
 
-        geom = WKTElement("POINT(599910 199955)", srid=21781)
-        p1 = PointTest(geom=geom, name="foo", city="Lausanne", country="Swiss")
-        geom = WKTElement("POINT(599910 200045)", srid=21781)
-        p2 = PointTest(geom=geom, name="bar", city="Chambéry", country="France")
-        geom = WKTElement("POINT(600090 200045)", srid=21781)
-        p3 = PointTest(geom=geom, name="éàè", city="Paris", country="France")
-        geom = WKTElement("POINT(600090 199955)", srid=21781)
-        p4 = PointTest(geom=geom, name="123", city="Londre", country="UK")
+            geom = WKTElement("POINT(599910 199955)", srid=21781)
+            p1 = PointTest(geom=geom, name="foo", city="Lausanne", country="Swiss")
+            geom = WKTElement("POINT(599910 200045)", srid=21781)
+            p2 = PointTest(geom=geom, name="bar", city="Chambéry", country="France")
+            geom = WKTElement("POINT(600090 200045)", srid=21781)
+            p3 = PointTest(geom=geom, name="éàè", city="Paris", country="France")
+            geom = WKTElement("POINT(600090 199955)", srid=21781)
+            p4 = PointTest(geom=geom, name="123", city="Londre", country="UK")
 
-        pt1 = Functionality(name="print_template", value="1 Wohlen A4 portrait")
-        pt2 = Functionality(name="print_template", value="2 Wohlen A3 landscape")
-        role1 = Role(name="__test_role1", description="__test_role1", functionalities=[pt1, pt2])
-        user1 = User(username="__test_user1", password="__test_user1", roles=[role1])
-        user1.email = "Tarenpion"
+            pt1 = Functionality(name="print_template", value="1 Wohlen A4 portrait")
+            pt2 = Functionality(name="print_template", value="2 Wohlen A3 landscape")
+            role1 = Role(name="__test_role1", description="__test_role1", functionalities=[pt1, pt2])
+            user1 = User(username="__test_user1", password="__test_user1", roles=[role1])
+            user1.email = "Tarenpion"
 
-        role2 = Role(name="__test_role2", description="__test_role2", functionalities=[pt1, pt2])
-        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
-        user2.email = "Tarenpion"
+            role2 = Role(name="__test_role2", description="__test_role2", functionalities=[pt1, pt2])
+            user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
+            user2.email = "Tarenpion"
 
-        role3 = Role(name="__test_role3", description="__test_role3", functionalities=[pt1, pt2])
-        user3 = User(username="__test_user3", password="__test_user3", settings_role=role3, roles=[role3])
+            role3 = Role(name="__test_role3", description="__test_role3", functionalities=[pt1, pt2])
+            user3 = User(username="__test_user3", password="__test_user3", settings_role=role3, roles=[role3])
 
-        role4 = Role(name="__test_role4", description="__test_role4", functionalities=[pt1, pt2])
-        role5 = Role(name="__test_role5", description="__test_role5", functionalities=[pt1, pt2])
-        user4 = User(
-            username="__test_user4", password="__test_user4", settings_role=role3, roles=[role4, role5]
-        )
+            role4 = Role(name="__test_role4", description="__test_role4", functionalities=[pt1, pt2])
+            role5 = Role(name="__test_role5", description="__test_role5", functionalities=[pt1, pt2])
+            user4 = User(
+                username="__test_user4", password="__test_user4", settings_role=role3, roles=[role4, role5]
+            )
 
-        main = Interface(name="main")
+            main = Interface(name="main")
 
-        layer2 = LayerWMS("testpoint_protected", public=False)
-        layer2.layer = "testpoint_protected"
-        layer2.ogc_server = ogc_server_internal
-        layer2.interfaces = [main]
+            layer2 = LayerWMS("testpoint_protected", public=False)
+            layer2.layer = "testpoint_protected"
+            layer2.ogc_server = ogc_server_internal
+            layer2.interfaces = [main]
 
-        layer3 = LayerWMS("testpoint_protected_query_with_collect", public=False)
-        layer3.layer = "testpoint_protected_query_with_collect"
-        layer3.ogc_server = ogc_server_internal
-        layer3.interfaces = [main]
+            layer3 = LayerWMS("testpoint_protected_query_with_collect", public=False)
+            layer3.layer = "testpoint_protected_query_with_collect"
+            layer3.ogc_server = ogc_server_internal
+            layer3.interfaces = [main]
 
-        area = "POLYGON((599900 200030, 599900 200050, 600100 200050, 600100 200030, 599900 200030))"
-        area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea("__test_ra1", "", [layer2, layer3], [role1], area)
+            area = "POLYGON((599900 200030, 599900 200050, 600100 200050, 600100 200030, 599900 200030))"
+            area = WKTElement(area, srid=21781)
+            restricted_area1 = RestrictionArea("__test_ra1", "", [layer2, layer3], [role1], area)
 
-        area = "POLYGON((599900 200000, 599900 200020, 600100 200020, 600100 200000, 599900 200000))"
-        area = WKTElement(area, srid=21781)
-        restricted_area2 = RestrictionArea("__test_ra2", "", [layer2, layer3], [role2, role3], area)
+            area = "POLYGON((599900 200000, 599900 200020, 600100 200020, 600100 200000, 599900 200000))"
+            area = WKTElement(area, srid=21781)
+            restricted_area2 = RestrictionArea("__test_ra2", "", [layer2, layer3], [role2, role3], area)
 
-        area = "POLYGON((599905 200043, 599905 200047, 600095 200047, 600095 200043, 599905 200043))"
-        area = WKTElement(area, srid=21781)
-        restricted_area3 = RestrictionArea("__test_ra3", "", [layer3], [role3], area, readwrite=True)
+            area = "POLYGON((599905 200043, 599905 200047, 600095 200047, 600095 200043, 599905 200043))"
+            area = WKTElement(area, srid=21781)
+            restricted_area3 = RestrictionArea("__test_ra3", "", [layer3], [role3], area, readwrite=True)
 
-        area = "POLYGON((599909 199954, 599911 199954, 599911 199956, 599909 199956, 599909 199954))"
-        area = WKTElement(area, srid=21781)
-        restricted_area4 = RestrictionArea("__test_ra4", "", [layer2], [role4], area, readwrite=True)
+            area = "POLYGON((599909 199954, 599911 199954, 599911 199956, 599909 199956, 599909 199954))"
+            area = WKTElement(area, srid=21781)
+            restricted_area4 = RestrictionArea("__test_ra4", "", [layer2], [role4], area, readwrite=True)
 
-        area = "POLYGON((599909 200044, 599911 200044, 599911 200046, 599909 200046, 599909 200044))"
-        area = WKTElement(area, srid=21781)
-        restricted_area5 = RestrictionArea("__test_ra5", "", [layer2], [role5], area, readwrite=True)
+            area = "POLYGON((599909 200044, 599911 200044, 599911 200046, 599909 200046, 599909 200044))"
+            area = WKTElement(area, srid=21781)
+            restricted_area5 = RestrictionArea("__test_ra5", "", [layer2], [role5], area, readwrite=True)
 
-        DBSession.add_all(
-            [
-                p1,
-                p2,
-                p3,
-                p4,
-                user1,
-                user2,
-                user3,
-                user4,
-                role1,
-                role2,
-                role3,
-                ogcserver_geoserver,
-                restricted_area1,
-                restricted_area2,
-                restricted_area3,
-                restricted_area4,
-                restricted_area5,
-            ]
-        )
-        DBSession.flush()
+            session.add_all(
+                [
+                    p1,
+                    p2,
+                    p3,
+                    p4,
+                    user1,
+                    user2,
+                    user3,
+                    user4,
+                    role1,
+                    role2,
+                    role3,
+                    ogcserver_geoserver,
+                    restricted_area1,
+                    restricted_area2,
+                    restricted_area3,
+                    restricted_area4,
+                    restricted_area5,
+                ]
+            )
+            session.flush()
 
-        self.id_lausanne = p1.id
-        self.id_paris = p3.id
-        self.ogc_server_id = ogc_server_internal.id
-        self.user1_id = user1.id
-        self.user2_id = user2.id
-        self.user3_id = user3.id
+            self.id_lausanne = p1.id
+            self.id_paris = p3.id
+            self.ogc_server_id = ogc_server_internal.id
+            self.user1_id = user1.id
+            self.user2_id = user2.id
+            self.user3_id = user3.id
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
@@ -904,93 +905,100 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_substitution(self):
+        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
-        request = self._create_dummy_request()
-        request.method = "POST"
-        request.headers["Content-Type"] = "application/xml; charset=UTF-8"
-        request.body = SUBSTITUTION_GETFEATURE_REQUEST
+        with DBSession as session:
 
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "foo" in response.body.decode("utf-8")
-        assert "bar" not in response.body.decode("utf-8")
-        assert "éàè" not in response.body.decode("utf-8")
-        assert "123" not in response.body.decode("utf-8")
+            request = self._create_dummy_request()
+            request.method = "POST"
+            request.headers["Content-Type"] = "application/xml; charset=UTF-8"
+            request.body = SUBSTITUTION_GETFEATURE_REQUEST
 
-        request.params.update(dict(s_name="bar"))
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "foo" in response.body.decode("utf-8")
-        assert "bar" not in response.body.decode("utf-8")
-        assert "éàè" not in response.body.decode("utf-8")
-        assert "123" not in response.body.decode("utf-8")
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "foo" in response.body.decode("utf-8")
+            assert "bar" not in response.body.decode("utf-8")
+            assert "éàè" not in response.body.decode("utf-8")
+            assert "123" not in response.body.decode("utf-8")
 
-        request = self._create_dummy_request()
-        request.method = "POST"
-        request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        request.params.update(dict(S_NAME="bar"))
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "foo" in response.body.decode("utf-8")
-        assert "bar" not in response.body.decode("utf-8")
-        assert "éàè" not in response.body.decode("utf-8")
-        assert "123" not in response.body.decode("utf-8")
+            request.params.update(dict(s_name="bar"))
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "foo" in response.body.decode("utf-8")
+            assert "bar" not in response.body.decode("utf-8")
+            assert "éàè" not in response.body.decode("utf-8")
+            assert "123" not in response.body.decode("utf-8")
 
-        request = self._create_dummy_request()
-        request.method = "POST"
-        request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        fill_tech_user_functionality("anonymous", (("mapserver_substitution", "name=bar"),))
+            request = self._create_dummy_request()
+            request.method = "POST"
+            request.body = SUBSTITUTION_GETFEATURE_REQUEST
+            request.params.update(dict(S_NAME="bar"))
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "foo" in response.body.decode("utf-8")
+            assert "bar" not in response.body.decode("utf-8")
+            assert "éàè" not in response.body.decode("utf-8")
+            assert "123" not in response.body.decode("utf-8")
 
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "foo" not in response.body.decode("utf-8")
-        assert "bar" in response.body.decode("utf-8")
-        assert "éàè" not in response.body.decode("utf-8")
-        assert "123" not in response.body.decode("utf-8")
+            request = self._create_dummy_request()
+            request.method = "POST"
+            request.body = SUBSTITUTION_GETFEATURE_REQUEST
+            fill_tech_user_functionality("anonymous", (("mapserver_substitution", "name=bar"),), session)
 
-        request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
-        fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=city", "cols=country"]]
-        )
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "Lausanne" in response.body.decode("utf-8")
-        assert "Swiss" in response.body.decode("utf-8")
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "foo" not in response.body.decode("utf-8")
+            assert "bar" in response.body.decode("utf-8")
+            assert "éàè" not in response.body.decode("utf-8")
+            assert "123" not in response.body.decode("utf-8")
 
-        fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=city"]]
-        )
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "Lausanne" in response.body.decode("utf-8")
-        assert "Swiss" not in response.body.decode("utf-8")
+            request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
+            fill_tech_user_functionality(
+                "anonymous",
+                [("mapserver_substitution", e) for e in ["cols=name", "cols=city", "cols=country"]],
+                session,
+            )
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "Lausanne" in response.body.decode("utf-8")
+            assert "Swiss" in response.body.decode("utf-8")
 
-        fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=country"]]
-        )
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "Lausanne" not in response.body.decode("utf-8")
-        assert "Swiss" in response.body.decode("utf-8")
+            fill_tech_user_functionality(
+                "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=city"]], session
+            )
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "Lausanne" in response.body.decode("utf-8")
+            assert "Swiss" not in response.body.decode("utf-8")
 
-        fill_tech_user_functionality("anonymous", [("mapserver_substitution", e) for e in ["cols=name"]])
-        response = MapservProxy(request).proxy()
-        self.assertTrue(response.status_int, 200)
-        assert "Lausanne" not in response.body.decode("utf-8")
-        assert "Swiss" not in response.body.decode("utf-8")
+            fill_tech_user_functionality(
+                "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=country"]], session
+            )
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "Lausanne" not in response.body.decode("utf-8")
+            assert "Swiss" in response.body.decode("utf-8")
 
-        request = self._create_dummy_request()
-        request.registry.settings["admin_interface"] = {
-            "available_functionalities": [{"name": "mapserver_substitution"}]
-        }
-        request.method = "POST"
-        request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        fill_tech_user_functionality("anonymous", (("mapserver_substitution", "foo_bar"),))
+            fill_tech_user_functionality(
+                "anonymous", [("mapserver_substitution", e) for e in ["cols=name"]], session
+            )
+            response = MapservProxy(request).proxy()
+            self.assertTrue(response.status_int, 200)
+            assert "Lausanne" not in response.body.decode("utf-8")
+            assert "Swiss" not in response.body.decode("utf-8")
 
-        request.params.update(dict(s_test1="to be removed", S_TEST2="to be removed"))
-        # just pass in the log message
-        response = MapservProxy(request).proxy()
+            request = self._create_dummy_request()
+            request.registry.settings["admin_interface"] = {
+                "available_functionalities": [{"name": "mapserver_substitution"}]
+            }
+            request.method = "POST"
+            request.body = SUBSTITUTION_GETFEATURE_REQUEST
+            fill_tech_user_functionality("anonymous", (("mapserver_substitution", "foo_bar"),), session)
+
+            request.params.update(dict(s_test1="to be removed", S_TEST2="to be removed"))
+            # just pass in the log message
+            response = MapservProxy(request).proxy()
 
     def test_geoserver(self):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy

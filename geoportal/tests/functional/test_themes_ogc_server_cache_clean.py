@@ -182,34 +182,35 @@ class TestThemesView(TestCase):
 
         main = Interface(name="desktop")
 
-        ogc_server_internal = create_default_ogcserver()
+        with DBSession() as session:
+            ogc_server_internal = create_default_ogcserver(session)
 
-        layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
-        layer_internal_wms.layer = "__test_layer_internal_wms"
-        layer_internal_wms.interfaces = [main]
-        layer_internal_wms.ogc_server = ogc_server_internal
+            layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
+            layer_internal_wms.layer = "__test_layer_internal_wms"
+            layer_internal_wms.interfaces = [main]
+            layer_internal_wms.ogc_server = ogc_server_internal
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [
-            main,
-        ]
-        theme.children = [layer_internal_wms]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [
+                main,
+            ]
+            theme.children = [layer_internal_wms]
 
-        DBSession.add_all([theme])
+            session.add_all([theme])
 
-        self.std_cache = {}
-        self.ogc_cache = {}
-        caching.MEMORY_CACHE_DICT.clear()
+            self.std_cache = {}
+            self.ogc_cache = {}
+            caching.MEMORY_CACHE_DICT.clear()
 
-        caching.init_region(
-            {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.std_cache}}, "std"
-        )
-        caching.init_region({"backend": "dogpile.cache.memory"}, "obj")
-        caching.init_region(
-            {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.ogc_cache}}, "ogc-server"
-        )
+            caching.init_region(
+                {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.std_cache}}, "std"
+            )
+            caching.init_region({"backend": "dogpile.cache.memory"}, "obj")
+            caching.init_region(
+                {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.ogc_cache}}, "ogc-server"
+            )
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

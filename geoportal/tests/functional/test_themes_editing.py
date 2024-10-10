@@ -61,57 +61,60 @@ class TestThemeEditing(TestCase):
         )
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
+        with DBSession.begin() as session:
+            setup_db(session)
 
-        ogcserver = create_default_ogcserver()
+            ogcserver = create_default_ogcserver(session)
 
-        role1 = Role(name="__test_role1")
-        user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
-        user1.email = "__test_user1@example.com"
+            role1 = Role(name="__test_role1")
+            user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
+            user1.email = "__test_user1@example.com"
 
-        role2 = Role(name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781))
-        user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
-
-        main = Interface(name="main")
-
-        engine = DBSession.c2c_rw_bind
-        a_geo_table = Table(
-            "a_geo_table",
-            declarative_base().metadata,
-            Column("id", types.Integer, primary_key=True),
-            Column("geom", Geometry("POINT", srid=21781)),
-            schema="geodata",
-        )
-
-        self._tables = [a_geo_table]
-        a_geo_table.drop(checkfirst=True, bind=engine)
-        a_geo_table.create(bind=engine)
-
-        private_layer = LayerWMS(name="__test_private_layer", public=False)
-        private_layer.layer = "__test_private_layer"
-        private_layer.geo_table = "geodata.a_geo_table"
-        private_layer.interfaces = [main]
-        private_layer.ogc_server = ogcserver
-
-        group = LayerGroup(name="__test_layer_group")
-        group.children = [private_layer]
-
-        theme = Theme(name="__test_theme")
-        theme.children = [group]
-        theme.interfaces = [main]
-
-        DBSession.add(
-            RestrictionArea(name="__test_ra1", description="", layers=[private_layer], roles=[role1])
-        )
-        DBSession.add(
-            RestrictionArea(
-                name="__test_ra2", description="", layers=[private_layer], roles=[role2], readwrite=True
+            role2 = Role(
+                name="__test_role2", extent=WKTElement("POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))", srid=21781)
             )
-        )
+            user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
 
-        DBSession.add_all([user1, user2, role1, role2, theme, group, private_layer])
+            main = Interface(name="main")
 
-        transaction.commit()
+            engine = DBSession.c2c_rw_bind
+            a_geo_table = Table(
+                "a_geo_table",
+                declarative_base().metadata,
+                Column("id", types.Integer, primary_key=True),
+                Column("geom", Geometry("POINT", srid=21781)),
+                schema="geodata",
+            )
+
+            self._tables = [a_geo_table]
+            a_geo_table.drop(checkfirst=True, bind=engine)
+            a_geo_table.create(bind=engine)
+
+            private_layer = LayerWMS(name="__test_private_layer", public=False)
+            private_layer.layer = "__test_private_layer"
+            private_layer.geo_table = "geodata.a_geo_table"
+            private_layer.interfaces = [main]
+            private_layer.ogc_server = ogcserver
+
+            group = LayerGroup(name="__test_layer_group")
+            group.children = [private_layer]
+
+            theme = Theme(name="__test_theme")
+            theme.children = [group]
+            theme.interfaces = [main]
+
+            session.add(
+                RestrictionArea(name="__test_ra1", description="", layers=[private_layer], roles=[role1])
+            )
+            session.add(
+                RestrictionArea(
+                    name="__test_ra2", description="", layers=[private_layer], roles=[role2], readwrite=True
+                )
+            )
+
+            session.add_all([user1, user2, role1, role2, theme, group, private_layer])
+
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

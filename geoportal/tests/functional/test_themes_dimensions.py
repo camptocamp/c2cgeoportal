@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023, Camptocamp SA
+# Copyright (c) 2016-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -54,99 +54,100 @@ class TestThemesView(TestCase):
             Theme,
         )
 
-        ogc_server = create_default_ogcserver()
-        main = Interface(name="main")
+        with DBSession() as session:
+            ogc_server = create_default_ogcserver(session)
+            main = Interface(name="main")
 
-        layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
-        layer_wms_1.layer = "testpoint_unprotected"
-        layer_wms_1.interfaces = [main]
-        layer_wms_1.ogc_server = ogc_server
-        Dimension("A", "a", layer_wms_1)
+            layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
+            layer_wms_1.layer = "testpoint_unprotected"
+            layer_wms_1.interfaces = [main]
+            layer_wms_1.ogc_server = ogc_server
+            Dimension("A", "a", layer_wms_1)
 
-        layer_wms_2 = LayerWMS(name="__test_layer_wms_2", public=True)
-        layer_wms_2.layer = "testpoint_unprotected"
-        layer_wms_2.interfaces = [main]
-        layer_wms_2.ogc_server = ogc_server
-        Dimension("A", "b", layer_wms_2)
+            layer_wms_2 = LayerWMS(name="__test_layer_wms_2", public=True)
+            layer_wms_2.layer = "testpoint_unprotected"
+            layer_wms_2.interfaces = [main]
+            layer_wms_2.ogc_server = ogc_server
+            Dimension("A", "b", layer_wms_2)
 
-        layer_wms_3 = LayerWMS(name="__test_layer_wms_3", public=True)
-        layer_wms_3.layer = "testpoint_unprotected"
-        layer_wms_3.interfaces = [main]
-        layer_wms_3.ogc_server = ogc_server
-        Dimension("A", None, layer_wms_3)
+            layer_wms_3 = LayerWMS(name="__test_layer_wms_3", public=True)
+            layer_wms_3.layer = "testpoint_unprotected"
+            layer_wms_3.interfaces = [main]
+            layer_wms_3.ogc_server = ogc_server
+            Dimension("A", None, layer_wms_3)
 
-        layer_wms_4 = LayerWMS(name="__test_layer_wms_4", public=True)
-        layer_wms_4.layer = "testpoint_unprotected"
-        layer_wms_4.interfaces = [main]
-        layer_wms_4.ogc_server = ogc_server
-        Dimension("A", "a", layer_wms_4)
+            layer_wms_4 = LayerWMS(name="__test_layer_wms_4", public=True)
+            layer_wms_4.layer = "testpoint_unprotected"
+            layer_wms_4.interfaces = [main]
+            layer_wms_4.ogc_server = ogc_server
+            Dimension("A", "a", layer_wms_4)
 
-        layer_wms_5 = LayerWMS(name="__test_layer_wms_5", public=True)
-        layer_wms_5.layer = "testpoint_unprotected"
-        layer_wms_5.interfaces = [main]
-        layer_wms_5.ogc_server = ogc_server
-        Dimension("B", "b", layer_wms_5)
+            layer_wms_5 = LayerWMS(name="__test_layer_wms_5", public=True)
+            layer_wms_5.layer = "testpoint_unprotected"
+            layer_wms_5.interfaces = [main]
+            layer_wms_5.ogc_server = ogc_server
+            Dimension("B", "b", layer_wms_5)
 
-        layer_wms_6 = LayerWMS(name="__test_layer_wms_6", public=True)
-        layer_wms_6.layer = "testpoint_unprotected"
-        layer_wms_6.interfaces = [main]
-        layer_wms_6.ogc_server = ogc_server
-        Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wms_6)
+            layer_wms_6 = LayerWMS(name="__test_layer_wms_6", public=True)
+            layer_wms_6.layer = "testpoint_unprotected"
+            layer_wms_6.interfaces = [main]
+            layer_wms_6.ogc_server = ogc_server
+            Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wms_6)
 
-        layer_wms_7 = LayerWMS(name="__test_layer_wms_7", public=True)
-        layer_wms_7.layer = "testpoint_unprotected"
-        layer_wms_7.interfaces = [main]
-        layer_wms_7.ogc_server = ogc_server
-        Dimension("FLOOR", None, layer_wms_7, "floor")
+            layer_wms_7 = LayerWMS(name="__test_layer_wms_7", public=True)
+            layer_wms_7.layer = "testpoint_unprotected"
+            layer_wms_7.interfaces = [main]
+            layer_wms_7.ogc_server = ogc_server
+            Dimension("FLOOR", None, layer_wms_7, "floor")
 
-        layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
-        layer_wmts.url = "http://tilecloudchain/1.0.0/WMTSCapabilities.xml"
-        layer_wmts.layer = "map"
-        layer_wmts.interfaces = [main]
-        Dimension("B", "b", layer_wmts)
+            layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
+            layer_wmts.url = "http://tilecloudchain/1.0.0/WMTSCapabilities.xml"
+            layer_wmts.layer = "map"
+            layer_wmts.interfaces = [main]
+            Dimension("B", "b", layer_wmts)
 
-        layer_wmts_2 = LayerWMTS(name="__test_layer_wmts_2", public=True)
-        layer_wmts_2.url = "http://tilecloudchain/1.0.0/WMTSCapabilities.xml"
-        layer_wmts_2.layer = "map"
-        layer_wmts_2.interfaces = [main]
-        Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wmts_2)
+            layer_wmts_2 = LayerWMTS(name="__test_layer_wmts_2", public=True)
+            layer_wmts_2.url = "http://tilecloudchain/1.0.0/WMTSCapabilities.xml"
+            layer_wmts_2.layer = "map"
+            layer_wmts_2.interfaces = [main]
+            Dimension("FILTER", "countries:\"name\" IN ( 'Germany' , 'Italy' )", layer_wmts_2)
 
-        layer_group_1 = LayerGroup(name="__test_layer_group_1")
-        layer_group_1.children = [layer_wms_1, layer_wmts, layer_wmts_2]
+            layer_group_1 = LayerGroup(name="__test_layer_group_1")
+            layer_group_1.children = [layer_wms_1, layer_wmts, layer_wmts_2]
 
-        layer_group_2 = LayerGroup(name="__test_layer_group_2")
-        layer_group_2.children = [layer_wms_1, layer_wms_2]
+            layer_group_2 = LayerGroup(name="__test_layer_group_2")
+            layer_group_2.children = [layer_wms_1, layer_wms_2]
 
-        layer_group_3 = LayerGroup(name="__test_layer_group_3")
-        layer_group_3.children = [layer_wms_1, layer_wms_3]
+            layer_group_3 = LayerGroup(name="__test_layer_group_3")
+            layer_group_3.children = [layer_wms_1, layer_wms_3]
 
-        layer_group_4 = LayerGroup(name="__test_layer_group_4")
-        layer_group_4.children = [layer_wms_1, layer_wms_4]
+            layer_group_4 = LayerGroup(name="__test_layer_group_4")
+            layer_group_4.children = [layer_wms_1, layer_wms_4]
 
-        layer_group_5 = LayerGroup(name="__test_layer_group_5")
-        layer_group_5.children = [layer_wms_1, layer_wms_5, layer_wms_6]
+            layer_group_5 = LayerGroup(name="__test_layer_group_5")
+            layer_group_5.children = [layer_wms_1, layer_wms_5, layer_wms_6]
 
-        layer_group_6 = LayerGroup(name="__test_layer_group_6")
-        layer_group_6.children = [layer_wms_3]
+            layer_group_6 = LayerGroup(name="__test_layer_group_6")
+            layer_group_6.children = [layer_wms_3]
 
-        layer_group_7 = LayerGroup(name="__test_layer_group_7")
-        layer_group_7.children = [layer_wms_7]
+            layer_group_7 = LayerGroup(name="__test_layer_group_7")
+            layer_group_7.children = [layer_wms_7]
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [main]
-        theme.children = [
-            layer_group_1,
-            layer_group_2,
-            layer_group_3,
-            layer_group_4,
-            layer_group_5,
-            layer_group_6,
-            layer_group_7,
-        ]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [main]
+            theme.children = [
+                layer_group_1,
+                layer_group_2,
+                layer_group_3,
+                layer_group_4,
+                layer_group_5,
+                layer_group_6,
+                layer_group_7,
+            ]
 
-        DBSession.add(theme)
+            session.add(theme)
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

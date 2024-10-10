@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,23 +47,24 @@ class TestLoopTheme(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, Theme
 
-        ogc_server = create_default_ogcserver()
-        main = Interface(name="desktop2")
+        with DBSession() as session:
+            ogc_server = create_default_ogcserver(session)
+            main = Interface(name="desktop2")
 
-        layer = LayerWMS(name="__test_layer", public=True)
-        layer.layers = "__test_layer"
-        layer.interfaces = [main]
-        layer.ogc_server = ogc_server
+            layer = LayerWMS(name="__test_layer", public=True)
+            layer.layers = "__test_layer"
+            layer.interfaces = [main]
+            layer.ogc_server = ogc_server
 
-        layer_group = LayerGroup(name="__test_layer_group")
-        layer_group.children = [layer, layer_group]
+            layer_group = LayerGroup(name="__test_layer_group")
+            layer_group.children = [layer, layer_group]
 
-        theme = Theme(name="__test_theme")
-        theme.children = [layer_group]
-        theme.interfaces = [main]
+            theme = Theme(name="__test_theme")
+            theme.children = [layer_group]
+            theme.interfaces = [main]
 
-        DBSession.add_all([layer, layer_group, theme])
-        transaction.commit()
+            session.add_all([layer, layer_group, theme])
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023, Camptocamp SA
+# Copyright (c) 2015-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -77,48 +77,51 @@ class TestTinyOWSProxyView(TestCase):
         from c2cgeoportal_commons.models.main import Interface, LayerWMS, RestrictionArea, Role
         from c2cgeoportal_commons.models.static import User
 
-        setup_db()
+        with DBSession() as session:
+            setup_db(session)
 
-        user1 = User(username="__test_user1", password="__test_user1")
-        role1 = Role(name="__test_role1", description="__test_role1")
-        user1.roles = [role1]
-        user1.email = "Tarenpion"
+            user1 = User(username="__test_user1", password="__test_user1")
+            role1 = Role(name="__test_role1", description="__test_role1")
+            user1.roles = [role1]
+            user1.email = "Tarenpion"
 
-        user2 = User(username="__test_user2", password="__test_user2")
-        role2 = Role(name="__test_role2", description="__test_role2")
-        user2.roles = [role2]
-        user2.email = "Tarenpion"
+            user2 = User(username="__test_user2", password="__test_user2")
+            role2 = Role(name="__test_role2", description="__test_role2")
+            user2.roles = [role2]
+            user2.email = "Tarenpion"
 
-        ogc_server_internal = create_default_ogcserver()
+            ogc_server_internal = create_default_ogcserver(session)
 
-        main = Interface(name="main")
+            main = Interface(name="main")
 
-        layer1 = LayerWMS("layer_1", public=False)
-        layer1.layer = "layer_1"
-        layer1.ogc_server = ogc_server_internal
-        layer1.interfaces = [main]
+            layer1 = LayerWMS("layer_1", public=False)
+            layer1.layer = "layer_1"
+            layer1.ogc_server = ogc_server_internal
+            layer1.interfaces = [main]
 
-        layer2 = LayerWMS("layer_2", public=False)
-        layer2.layer = "layer_2"
-        layer2.ogc_server = ogc_server_internal
-        layer2.interfaces = [main]
+            layer2 = LayerWMS("layer_2", public=False)
+            layer2.layer = "layer_2"
+            layer2.ogc_server = ogc_server_internal
+            layer2.interfaces = [main]
 
-        layer3 = LayerWMS("layer_3", public=False)
-        layer3.layer = "layer_3"
-        layer3.ogc_server = ogc_server_internal
-        layer3.interfaces = [main]
+            layer3 = LayerWMS("layer_3", public=False)
+            layer3.layer = "layer_3"
+            layer3.ogc_server = ogc_server_internal
+            layer3.interfaces = [main]
 
-        area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
-        area = WKTElement(area, srid=21781)
-        restricted_area1 = RestrictionArea("__test_ra1", "", [layer1, layer2], [role1], area, readwrite=True)
+            area = "POLYGON((-100 30, -100 50, 100 50, 100 30, -100 30))"
+            area = WKTElement(area, srid=21781)
+            restricted_area1 = RestrictionArea(
+                "__test_ra1", "", [layer1, layer2], [role1], area, readwrite=True
+            )
 
-        area = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
-        area = WKTElement(area, srid=21781)
-        restricted_area2 = RestrictionArea("__test_ra2", "", [layer1, layer2, layer3], [role2], area)
+            area = "POLYGON((-100 0, -100 20, 100 20, 100 0, -100 0))"
+            area = WKTElement(area, srid=21781)
+            restricted_area2 = RestrictionArea("__test_ra2", "", [layer1, layer2, layer3], [role2], area)
 
-        DBSession.add_all([user1, user2, role1, role2, restricted_area1, restricted_area2])
+            session.add_all([user1, user2, role1, role2, restricted_area1, restricted_area2])
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         cleanup_db()
@@ -304,12 +307,15 @@ class TestTinyOWSProxyViewNoDb(TestCase):
     transaction_insert_request_file = data_base + "tinyows_transaction_insert_request.xml"
 
     def setup_method(self, _):
+        from c2cgeoportal_commons.models import DBSession
+
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        cleanup_db()
-        create_default_ogcserver()
+        with DBSession() as session:
+            cleanup_db(session)
+            create_default_ogcserver(session)
 
     def teardown_method(self, _):
         cleanup_db()

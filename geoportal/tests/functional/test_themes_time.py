@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -63,90 +63,91 @@ class TestThemesTimeView(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, LayerWMTS, Theme
 
-        DBSession.query(PointTest).delete()
+        with DBSession() as session:
+            session.query(PointTest).delete()
 
-        main = Interface(name="desktop")
-        ogc_server = create_default_ogcserver()
+            main = Interface(name="desktop")
+            ogc_server = create_default_ogcserver(session)
 
-        layer_wms_1 = LayerWMS(name="__test_layer_time_1", public=True)
-        layer_wms_1.layer = "test_wmstime"
-        layer_wms_1.time_mode = "value"
-        layer_wms_1.interfaces = [main]
-        layer_wms_1.ogc_server = ogc_server
+            layer_wms_1 = LayerWMS(name="__test_layer_time_1", public=True)
+            layer_wms_1.layer = "test_wmstime"
+            layer_wms_1.time_mode = "value"
+            layer_wms_1.interfaces = [main]
+            layer_wms_1.ogc_server = ogc_server
 
-        layer_wms_2 = LayerWMS(name="__test_layer_time_2", public=True)
-        layer_wms_2.layer = "test_wmstime2"
-        layer_wms_2.time_mode = "value"
-        layer_wms_2.interfaces = [main]
-        layer_wms_2.ogc_server = ogc_server
+            layer_wms_2 = LayerWMS(name="__test_layer_time_2", public=True)
+            layer_wms_2.layer = "test_wmstime2"
+            layer_wms_2.time_mode = "value"
+            layer_wms_2.interfaces = [main]
+            layer_wms_2.ogc_server = ogc_server
 
-        layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
-        layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
-        layer_wmts.layer = "map"
-        layer_wmts.interfaces = [main]
+            layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
+            layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+            layer_wmts.layer = "map"
+            layer_wmts.interfaces = [main]
 
-        layer_wms_group_1 = LayerWMS(name="__test_layer_time_group_1", public=True)
-        layer_wms_group_1.layer = "test_wmstimegroup"
-        layer_wms_group_1.time_mode = "range"
-        layer_wms_group_1.time_widget = "datepicker"
-        layer_wms_group_1.interfaces = [main]
-        layer_wms_group_1.ogc_server = ogc_server
+            layer_wms_group_1 = LayerWMS(name="__test_layer_time_group_1", public=True)
+            layer_wms_group_1.layer = "test_wmstimegroup"
+            layer_wms_group_1.time_mode = "range"
+            layer_wms_group_1.time_widget = "datepicker"
+            layer_wms_group_1.interfaces = [main]
+            layer_wms_group_1.ogc_server = ogc_server
 
-        layer_wms_group_2 = LayerWMS(name="__test_layer_time_group_2", public=True)
-        layer_wms_group_2.layer = "test_wmstimegroup"
-        layer_wms_group_2.time_mode = "value"
-        layer_wms_group_2.interfaces = [main]
-        layer_wms_group_2.ogc_server = ogc_server
+            layer_wms_group_2 = LayerWMS(name="__test_layer_time_group_2", public=True)
+            layer_wms_group_2.layer = "test_wmstimegroup"
+            layer_wms_group_2.time_mode = "value"
+            layer_wms_group_2.interfaces = [main]
+            layer_wms_group_2.ogc_server = ogc_server
 
-        layer_wms_no_time = LayerWMS(name="__test_layer_without_time_info", public=True)
-        layer_wms_no_time.layer = "test_wmsfeatures"
-        layer_wms_no_time.time_mode = "value"
-        layer_wms_no_time.interfaces = [main]
-        layer_wms_no_time.ogc_server = ogc_server
+            layer_wms_no_time = LayerWMS(name="__test_layer_without_time_info", public=True)
+            layer_wms_no_time.layer = "test_wmsfeatures"
+            layer_wms_no_time.time_mode = "value"
+            layer_wms_no_time.interfaces = [main]
+            layer_wms_no_time.ogc_server = ogc_server
 
-        # Expect merge of times
-        layer_group_1 = LayerGroup(name="__test_layer_group_1")
-        layer_group_1.children = [layer_wms_1, layer_wms_2]
+            # Expect merge of times
+            layer_group_1 = LayerGroup(name="__test_layer_group_1")
+            layer_group_1.children = [layer_wms_1, layer_wms_2]
 
-        # Expect time from layer.
-        layer_group_2 = LayerGroup(name="__test_layer_group_2")
-        layer_group_2.children = [layer_wms_1]
+            # Expect time from layer.
+            layer_group_2 = LayerGroup(name="__test_layer_group_2")
+            layer_group_2.children = [layer_wms_1]
 
-        # Expect merge of wms 1 and 2, layer_wms_group_1 excluded and in errors as its mode don't match.
-        layer_group_3 = LayerGroup(name="__test_layer_group_3")
-        layer_group_3.children = [layer_wms_1, layer_wms_2, layer_wms_group_1]
+            # Expect merge of wms 1 and 2, layer_wms_group_1 excluded and in errors as its mode don't match.
+            layer_group_3 = LayerGroup(name="__test_layer_group_3")
+            layer_group_3.children = [layer_wms_1, layer_wms_2, layer_wms_group_1]
 
-        # Expect time from layers in wms layer group
-        layer_group_4 = LayerGroup(name="__test_layer_group_4")
-        layer_group_4.children = [layer_wms_group_1]
+            # Expect time from layers in wms layer group
+            layer_group_4 = LayerGroup(name="__test_layer_group_4")
+            layer_group_4.children = [layer_wms_group_1]
 
-        # Expect merge of wms 1 and 2 and group.
-        layer_group_5 = LayerGroup(name="__test_layer_group_5")
-        layer_group_5.children = [layer_wms_1, layer_wms_2, layer_wms_group_2]
+            # Expect merge of wms 1 and 2 and group.
+            layer_group_5 = LayerGroup(name="__test_layer_group_5")
+            layer_group_5.children = [layer_wms_1, layer_wms_2, layer_wms_group_2]
 
-        # Expect individual layers
-        layer_group_6 = LayerGroup(name="__test_layer_group_6")
-        layer_group_6.children = [layer_wms_1, layer_wms_2, layer_wmts]
+            # Expect individual layers
+            layer_group_6 = LayerGroup(name="__test_layer_group_6")
+            layer_group_6.children = [layer_wms_1, layer_wms_2, layer_wmts]
 
-        # Expect layer_wms_no_time excluded and in errors as it has no time info
-        layer_group_7 = LayerGroup(name="__test_layer_group_7")
-        layer_group_7.children = [layer_wms_1, layer_wms_no_time]
+            # Expect layer_wms_no_time excluded and in errors as it has no time info
+            layer_group_7 = LayerGroup(name="__test_layer_group_7")
+            layer_group_7.children = [layer_wms_1, layer_wms_no_time]
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [main]
-        theme.children = [
-            layer_group_1,
-            layer_group_2,
-            layer_group_3,
-            layer_group_4,
-            layer_group_5,
-            layer_group_6,
-            layer_group_7,
-        ]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [main]
+            theme.children = [
+                layer_group_1,
+                layer_group_2,
+                layer_group_3,
+                layer_group_4,
+                layer_group_5,
+                layer_group_6,
+                layer_group_7,
+            ]
 
-        DBSession.add_all([theme])
+            session.add_all([theme])
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()

@@ -49,10 +49,6 @@ class TestThemesEditColumns(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        setup_db()
-
-        self._tables = []
-
         import transaction
 
         from c2cgeoportal_commons.models import DBSession
@@ -66,30 +62,35 @@ class TestThemesEditColumns(TestCase):
         )
         from c2cgeoportal_commons.models.static import User
 
-        for treeitem in DBSession.query(TreeItem).all():
-            DBSession.delete(treeitem)
+        self._tables = []
 
-        self.role = Role(name="__test_role")
-        self.user = User(
-            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
-        )
-        self.main = Interface(name="main")
+        with DBSession() as session:
+            setup_db(session)
 
-        self.ogc_server = create_default_ogcserver()
-        self.ogc_server.auth = OGCSERVER_AUTH_NOAUTH
+            for treeitem in DBSession.query(TreeItem).all():
+                DBSession.delete(treeitem)
 
-        self.metadata = None
-        self.layer_ids = []
+            self.role = Role(name="__test_role")
+            self.user = User(
+                username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
+            )
+            self.main = Interface(name="main")
 
-        self.layer_group_1 = LayerGroup(name="__test_layer_group_1")
+            self.ogc_server = create_default_ogcserver(session)
+            self.ogc_server.auth = OGCSERVER_AUTH_NOAUTH
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [self.main]
-        theme.children = [self.layer_group_1]
+            self.metadata = None
+            self.layer_ids = []
 
-        DBSession.add_all([self.main, self.user, self.role, theme, self.layer_group_1])
+            self.layer_group_1 = LayerGroup(name="__test_layer_group_1")
 
-        transaction.commit()
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [self.main]
+            theme.children = [self.layer_group_1]
+
+            session.add_all([self.main, self.user, self.role, theme, self.layer_group_1])
+
+            transaction.commit()
 
     def teardown_method(self, _: Any) -> None:
         import transaction

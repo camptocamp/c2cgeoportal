@@ -32,21 +32,25 @@ Pyramid application test package.
 
 import logging
 from configparser import ConfigParser
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pyramid.registry
 import pyramid.request
-import sqlalchemy.exc
 import tests
 import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration
 from pyramid import testing
+from sqlalchemy.orm.session import Session
 
 import c2cgeoportal_geoportal
 import c2cgeoportal_geoportal.lib
 from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import caching
+
+if TYPE_CHECKING:
+    from c2cgeoportal_commons.models import main, static
+
 
 _LOG = logging.getLogger(__name__)
 mapserv_url = "http://mapserver:8080/"
@@ -76,30 +80,28 @@ def cleanup_db() -> None:
     )
     from c2cgeoportal_commons.models.static import OAuth2Client, Shorturl, User
 
-    try:
+    models.DBSession.rollback()
+
+    with models.DBSession() as session:
+        for ra in session.query(RestrictionArea).all():
+            ra.roles = []
+            session.delete(ra)
+        for ti in session.query(TreeItem).all():
+            session.delete(ti)
+        session.query(OGCServer).delete()
+        session.query(Interface).delete()
+        for r in session.query(Role).all():
+            r.functionalities = []
+            session.delete(r)
+        session.query(User).delete()
+        session.query(Functionality).delete()
+        session.query(FullTextSearch).delete()
+        session.query(Shorturl).delete()
+        session.query(OAuth2Client).delete()
         transaction.commit()
-    except sqlalchemy.exc.InvalidRequestError:
-        models.DBSession.rollback()
-
-    for ra in models.DBSession.query(RestrictionArea).all():
-        ra.roles = []
-        models.DBSession.delete(ra)
-    for ti in models.DBSession.query(TreeItem).all():
-        models.DBSession.delete(ti)
-    models.DBSession.query(OGCServer).delete()
-    models.DBSession.query(Interface).delete()
-    for r in models.DBSession.query(Role).all():
-        r.functionalities = []
-        models.DBSession.delete(r)
-    models.DBSession.query(User).delete()
-    models.DBSession.query(Functionality).delete()
-    models.DBSession.query(FullTextSearch).delete()
-    models.DBSession.query(Shorturl).delete()
-    models.DBSession.query(OAuth2Client).delete()
-    transaction.commit()
 
 
-def setup_db() -> None:
+def setup_db(session: Session) -> None:
     """
     Cleanup the database.
     """
@@ -108,7 +110,7 @@ def setup_db() -> None:
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.main import Role
 
-    DBSession.add_all([Role(name) for name in ("anonymous", "registered", "intranet")])
+    session.add_all([Role(name) for name in ("anonymous", "registered", "intranet")])
 
     transaction.commit()
 
@@ -152,13 +154,16 @@ def get_settings() -> dict[str, Any]:
 
 
 def setup_common() -> None:
+    from c2cgeoportal_commons.models import DBSession
+
     global config
 
     config = testing.setUp(settings=get_settings())
 
     c2cgeoportal_geoportal.init_db_sessions(config.get_settings(), config)
 
-    setup_db()
+    with DBSession() as session:
+        setup_db(session)
 
 
 def teardown_common() -> None:
@@ -166,29 +171,24 @@ def teardown_common() -> None:
     testing.tearDown()
 
     models.DBSession.close()
-    models.DBSession = None
     models.DBSessions = {}
 
 
-def create_default_ogcserver():
-    from c2cgeoportal_commons.models import DBSession
+def create_default_ogcserver(session: Session) -> "main.OGCServer":
     from c2cgeoportal_commons.models.main import OGCServer
 
-    transaction.commit()
     ogcserver = OGCServer(name="__test_ogc_server")
     ogcserver.url = mapserv_url
-    DBSession.add(ogcserver)
-    transaction.commit()
+    session.add(ogcserver)
     caching.invalidate_region()
 
     return ogcserver
 
 
-def _get_user(username: str):
-    from c2cgeoportal_commons.models import DBSession
+def _get_user(username: str, session: Session) -> "static.User":
     from c2cgeoportal_commons.models.static import User
 
-    return DBSession.query(User).filter(User.username == username).one()
+    return session.query(User).filter(User.username == username).one()
 
 
 def init_registry(registry=None):
@@ -285,12 +285,10 @@ def create_dummy_request(
     return request
 
 
-def fill_tech_user_functionality(name, functionalities):
-    from c2cgeoportal_commons.models import DBSession
+def fill_tech_user_functionality(name, functionalities, session: Session) -> None:
     from c2cgeoportal_commons.models.main import Functionality, Role
 
-    role = DBSession.query(Role).filter_by(name=name).one()
+    role = session.query(Role).filter_by(name=name).one()
     role.functionalities = [Functionality(name, value) for name, value in functionalities]
-    DBSession.add(role)
-    transaction.commit()
+    session.add(role)
     caching.invalidate_region()

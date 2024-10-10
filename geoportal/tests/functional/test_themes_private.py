@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,62 +56,65 @@ class TestThemesPrivateView(TestCase):
         )
         from c2cgeoportal_commons.models.static import User
 
-        main = Interface(name="desktop")
-        role = Role(name="__test_role")
-        user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
-        user.email = "__test_user@example.com"
-        role2 = Role(name="__test_role2")
-        user2 = User(username="__test_user2", password="__test_user", settings_role=role, roles=[role, role2])
-        user2.email = "__test_user@example.com"
-        ogc_server_internal = create_default_ogcserver()
+        with DBSession() as session:
+            main = Interface(name="desktop")
+            role = Role(name="__test_role")
+            user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
+            user.email = "__test_user@example.com"
+            role2 = Role(name="__test_role2")
+            user2 = User(
+                username="__test_user2", password="__test_user", settings_role=role, roles=[role, role2]
+            )
+            user2.email = "__test_user@example.com"
+            ogc_server_internal = create_default_ogcserver(session)
 
-        layer_wms = LayerWMS(name="__test_layer_wms", public=True)
-        layer_wms.layer = "__test_public_layer"
-        layer_wms.interfaces = [main]
-        layer_wms.ogc_server = ogc_server_internal
+            layer_wms = LayerWMS(name="__test_layer_wms", public=True)
+            layer_wms.layer = "__test_public_layer"
+            layer_wms.interfaces = [main]
+            layer_wms.ogc_server = ogc_server_internal
 
-        layer_wms_private = LayerWMS(name="__test_layer_wms_private", public=False)
-        layer_wms_private.layer = "testpoint_protected"
-        layer_wms_private.interfaces = [main]
-        layer_wms_private.ogc_server = ogc_server_internal
+            layer_wms_private = LayerWMS(name="__test_layer_wms_private", public=False)
+            layer_wms_private.layer = "testpoint_protected"
+            layer_wms_private.interfaces = [main]
+            layer_wms_private.ogc_server = ogc_server_internal
 
-        layer_wms_private2 = LayerWMS(name="__test_layer_wms_private2", public=False)
-        layer_wms_private2.layer = "__test_private_layer2"
-        layer_wms_private2.interfaces = [main]
-        layer_wms_private2.ogc_server = ogc_server_internal
+            layer_wms_private2 = LayerWMS(name="__test_layer_wms_private2", public=False)
+            layer_wms_private2.layer = "__test_private_layer2"
+            layer_wms_private2.interfaces = [main]
+            layer_wms_private2.ogc_server = ogc_server_internal
 
-        layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
-        layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
-        layer_wmts.layer = "map"
-        layer_wmts.interfaces = [main]
+            layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
+            layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+            layer_wmts.layer = "map"
+            layer_wmts.interfaces = [main]
 
-        layer_wmts_private = LayerWMTS(name="__test_layer_wmts_private", public=True)
-        layer_wmts_private.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
-        layer_wmts_private.layer = "map"
-        layer_wmts_private.public = False
-        layer_wmts_private.interfaces = [main]
+            layer_wmts_private = LayerWMTS(name="__test_layer_wmts_private", public=True)
+            layer_wmts_private.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+            layer_wmts_private.layer = "map"
+            layer_wmts_private.public = False
+            layer_wmts_private.interfaces = [main]
 
-        layer_group = LayerGroup(name="__test_layer_group")
-        layer_group.children = [
-            layer_wms,
-            layer_wms_private,
-            layer_wms_private2,
-            layer_wmts,
-            layer_wmts_private,
-        ]
+            layer_group = LayerGroup(name="__test_layer_group")
+            layer_group.children = [
+                layer_wms,
+                layer_wms_private,
+                layer_wms_private2,
+                layer_wmts,
+                layer_wmts_private,
+            ]
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [main]
-        theme.children = [layer_group]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [main]
+            theme.children = [layer_group]
 
-        restriction_area = RestrictionArea(
-            name="__test_ra1", layers=[layer_wms_private, layer_wmts_private], roles=[role]
-        )
-        restriction_area2 = RestrictionArea(name="__test_ra2", layers=[layer_wms_private2], roles=[role2])
+            restriction_area = RestrictionArea(
+                name="__test_ra1", layers=[layer_wms_private, layer_wmts_private], roles=[role]
+            )
+            restriction_area2 = RestrictionArea(name="__test_ra2", layers=[layer_wms_private2], roles=[role2])
 
-        DBSession.add_all([theme, restriction_area, restriction_area2, user])
+            session.add_all([theme, restriction_area, restriction_area2, user])
 
-        transaction.commit()
+            transaction.commit()
 
     def tearDown(self):  # noqa
         self.clean()
