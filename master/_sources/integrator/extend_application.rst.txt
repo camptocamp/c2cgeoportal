@@ -90,7 +90,7 @@ in debugging mode with auto reloading:
 
   custom:
     command:
-      - /usr/local/bin/pserve
+      - /venv/bin/pserve
       - --reload
       - c2c://development.ini
     volumes:
