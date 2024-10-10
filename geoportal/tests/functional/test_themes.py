@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -57,67 +57,68 @@ class TestThemesView(TestCase):
             Theme,
         )
 
-        main = Interface(name="desktop")
-        mobile = Interface(name="mobile")
-        min_levels = Interface(name="min_levels")
+        with DBSession() as session:
+            main = Interface(name="desktop")
+            mobile = Interface(name="mobile")
+            min_levels = Interface(name="min_levels")
 
-        ogc_server_internal = create_default_ogcserver()
-        ogc_server_external = OGCServer(
-            name="__test_ogc_server_chtopo",
-            url="http://wms.geo.admin.ch/",
-            image_type="image/jpeg",
-            auth=OGCSERVER_AUTH_NOAUTH,
-        )
-        ogc_server_external.wfs_support = False
+            ogc_server_internal = create_default_ogcserver(session)
+            ogc_server_external = OGCServer(
+                name="__test_ogc_server_chtopo",
+                url="http://wms.geo.admin.ch/",
+                image_type="image/jpeg",
+                auth=OGCSERVER_AUTH_NOAUTH,
+            )
+            ogc_server_external.wfs_support = False
 
-        layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
-        layer_internal_wms.layer = "__test_layer_internal_wms"
-        layer_internal_wms.interfaces = [main, min_levels]
-        layer_internal_wms.metadatas = [Metadata("test", "internal_wms")]
-        layer_internal_wms.ogc_server = ogc_server_internal
+            layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
+            layer_internal_wms.layer = "__test_layer_internal_wms"
+            layer_internal_wms.interfaces = [main, min_levels]
+            layer_internal_wms.metadatas = [Metadata("test", "internal_wms")]
+            layer_internal_wms.ogc_server = ogc_server_internal
 
-        layer_external_wms = LayerWMS(
-            name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True
-        )
-        layer_external_wms.interfaces = [main]
-        layer_external_wms.metadatas = [Metadata("test", "external_wms")]
-        layer_external_wms.ogc_server = ogc_server_external
+            layer_external_wms = LayerWMS(
+                name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True
+            )
+            layer_external_wms.interfaces = [main]
+            layer_external_wms.metadatas = [Metadata("test", "external_wms")]
+            layer_external_wms.ogc_server = ogc_server_external
 
-        layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
-        layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
-        layer_wmts.layer = "map"
-        layer_wmts.interfaces = [main, mobile]
-        layer_wmts.metadatas = [Metadata("test", "wmts")]
-        layer_wmts.dimensions = [Dimension("year", "2015")]
+            layer_wmts = LayerWMTS(name="__test_layer_wmts", public=True)
+            layer_wmts.url = "http://example.com/1.0.0/WMTSCapabilities.xml"
+            layer_wmts.layer = "map"
+            layer_wmts.interfaces = [main, mobile]
+            layer_wmts.metadatas = [Metadata("test", "wmts")]
+            layer_wmts.dimensions = [Dimension("year", "2015")]
 
-        layer_group_1 = LayerGroup(name="__test_layer_group_1")
-        layer_group_1.children = [layer_internal_wms, layer_external_wms, layer_wmts]
-        layer_group_1.metadatas = [Metadata("test", "group_1")]
+            layer_group_1 = LayerGroup(name="__test_layer_group_1")
+            layer_group_1.children = [layer_internal_wms, layer_external_wms, layer_wmts]
+            layer_group_1.metadatas = [Metadata("test", "group_1")]
 
-        layer_group_2 = LayerGroup(name="__test_layer_group_2")
-        layer_group_2.children = [layer_wmts, layer_internal_wms, layer_external_wms]
+            layer_group_2 = LayerGroup(name="__test_layer_group_2")
+            layer_group_2.children = [layer_wmts, layer_internal_wms, layer_external_wms]
 
-        layer_group_3 = LayerGroup(name="__test_layer_group_3")
-        layer_group_3.children = [layer_wmts, layer_internal_wms, layer_external_wms]
+            layer_group_3 = LayerGroup(name="__test_layer_group_3")
+            layer_group_3.children = [layer_wmts, layer_internal_wms, layer_external_wms]
 
-        layer_group_4 = LayerGroup(name="__test_layer_group_4")
-        layer_group_4.children = [layer_group_2]
+            layer_group_4 = LayerGroup(name="__test_layer_group_4")
+            layer_group_4.children = [layer_group_2]
 
-        theme = Theme(name="__test_theme")
-        theme.interfaces = [main, mobile]
-        theme.metadatas = [Metadata("test", "theme")]
-        theme.children = [layer_group_1, layer_group_2]
-        theme_layer = Theme(name="__test_theme_layer")
-        theme_layer.interfaces = [min_levels]
-        theme_layer.children = [layer_internal_wms]
+            theme = Theme(name="__test_theme")
+            theme.interfaces = [main, mobile]
+            theme.metadatas = [Metadata("test", "theme")]
+            theme.children = [layer_group_1, layer_group_2]
+            theme_layer = Theme(name="__test_theme_layer")
+            theme_layer.interfaces = [min_levels]
+            theme_layer.children = [layer_internal_wms]
 
-        functionality1 = Functionality(name="test_name", value="test_value_1")
-        functionality2 = Functionality(name="test_name", value="test_value_2")
-        theme.functionalities = [functionality1, functionality2]
+            functionality1 = Functionality(name="test_name", value="test_value_1")
+            functionality2 = Functionality(name="test_name", value="test_value_2")
+            theme.functionalities = [functionality1, functionality2]
 
-        DBSession.add_all([theme, theme_layer])
+            session.add_all([theme, theme_layer])
 
-        transaction.commit()
+            transaction.commit()
 
     def teardown_method(self, _):
         testing.tearDown()
@@ -125,14 +126,14 @@ class TestThemesView(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Dimension, Interface, Metadata, OGCServer, TreeItem
 
-        DBSession.query(Metadata).delete()
-        DBSession.query(Dimension).delete()
-        for item in DBSession.query(TreeItem).all():
-            DBSession.delete(item)
-        DBSession.query(Interface).filter(Interface.name == "main").delete()
-        DBSession.query(OGCServer).delete()
-
-        transaction.commit()
+        with DBSession() as session:
+            session.query(Metadata).delete()
+            session.query(Dimension).delete()
+            for item in session.query(TreeItem).all():
+                session.delete(item)
+            session.query(Interface).filter(Interface.name == "main").delete()
+            session.query(OGCServer).delete()
+            transaction.commit()
 
     #
     # viewer view tests
