@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_commons.models.main import Interface, LayerWMS, RestrictionArea, Role
         from c2cgeoportal_commons.models.static import User
 
-        ogc_server_internal = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver(DBSession)
 
         role1 = Role(name="__test_role1", description="__test_role1")
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])

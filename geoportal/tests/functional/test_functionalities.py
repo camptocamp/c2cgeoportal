@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models.main import Functionality, Role
         from c2cgeoportal_commons.models.static import User
 
-        create_default_ogcserver()
+        create_default_ogcserver(DBSession)
         role1 = Role(name="__test_role1")
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
         role2 = Role(name="__test_role2")
@@ -128,7 +128,7 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_b", request3, False), [])
 
         fill_tech_user_functionality(
-            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2"))
+            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
         )
         settings = {
             "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
@@ -146,9 +146,9 @@ class TestFunctionalities(TestCase):
         self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
         self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
-        fill_tech_user_functionality("registered", [])
+        fill_tech_user_functionality("registered", [], DBSession)
         fill_tech_user_functionality(
-            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2"))
+            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")), DBSession
         )
         settings = {
             "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
@@ -167,10 +167,10 @@ class TestFunctionalities(TestCase):
         self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
         fill_tech_user_functionality(
-            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2"))
+            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
         )
         fill_tech_user_functionality(
-            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2"))
+            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")), DBSession
         )
         settings = {
             "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
@@ -204,10 +204,10 @@ class TestFunctionalities(TestCase):
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
 
         fill_tech_user_functionality(
-            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2"))
+            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
         )
         fill_tech_user_functionality(
-            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2"))
+            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")), DBSession
         )
         settings = {
             "functionalities": {"available_in_templates": ["__test_s", "__test_a"]},

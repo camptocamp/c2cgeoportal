@@ -44,43 +44,43 @@ class TestGeomapfishThemeExtractor:
 
         return list(extractor("development.ini", options))
 
-    def test_extract_theme(self, dbsession, transact):
+    def test_extract_theme(self, dbsession_old, transact_old):
         from c2cgeoportal_commons.models import main
 
-        del transact
+        del transact_old
 
         theme = main.Theme(name="theme")
-        dbsession.add(theme)
-        dbsession.flush()
+        dbsession_old.add(theme)
+        dbsession_old.flush()
 
         messages = self.extract()
 
-        assert {m.msgid for m in messages} == {"theme"}
+        assert {"theme"} == {m.msgid for m in messages}
 
-    def test_extract_group(self, dbsession, transact):
+    def test_extract_group(self, dbsession_old, transact_old):
         from c2cgeoportal_commons.models import main
 
-        del transact
+        del transact_old
 
         group = main.LayerGroup(name="group")
-        dbsession.add(group)
-        dbsession.flush()
+        dbsession_old.add(group)
+        dbsession_old.flush()
 
         messages = self.extract()
 
-        assert {m.msgid for m in messages} == {"group"}
+        assert {"group"} == {m.msgid for m in messages}
 
-    def test_extract_layer_wms(self, dbsession, transact):
+    def test_extract_layer_wms(self, dbsession_old, transact_old):
         from c2cgeoportal_commons.models import main
 
-        del transact
+        del transact_old
 
         ogc_server = main.OGCServer(name="mapserver", url="http://mapserver:8080")
         layer_wms = main.LayerWMS(name="layer_wms")
         layer_wms.ogc_server = ogc_server
         layer_wms.layer = "testpoint_unprotected"
-        dbsession.add(layer_wms)
-        dbsession.flush()
+        dbsession_old.add(layer_wms)
+        dbsession_old.flush()
 
         messages = self.extract()
 
@@ -92,10 +92,10 @@ class TestGeomapfishThemeExtractor:
             "name",
         }
 
-    def test_extract_layer_wmts(self, dbsession, transact):
+    def test_extract_layer_wmts(self, dbsession_old, transact_old):
         from c2cgeoportal_commons.models import main
 
-        del transact
+        del transact_old
 
         ogc_server = main.OGCServer(name="mapserver", url="http://mapserver:8080")
         layer_wmts = main.LayerWMTS(name="layer_wmts")
@@ -105,8 +105,8 @@ class TestGeomapfishThemeExtractor:
             main.Metadata("ogcServer", "mapserver"),
             main.Metadata("queryLayers", "testpoint_protected"),
         ]
-        dbsession.add_all([ogc_server, layer_wmts])
-        dbsession.flush()
+        dbsession_old.add_all([ogc_server, layer_wmts])
+        dbsession_old.flush()
 
         messages = self.extract()
 
@@ -118,17 +118,17 @@ class TestGeomapfishThemeExtractor:
             "name",
         }
 
-    def test_extract_full_text_search(self, dbsession, transact):
+    def test_extract_full_text_search(self, dbsession_old, transact_old):
         from c2cgeoportal_commons.models import main
 
-        del transact
+        del transact_old
 
         fts = main.FullTextSearch()
         fts.label = "label"
         fts.layer_name = "some_layer_name"
         fts.actions = [{"action": "add_layer", "data": "another_layer_name"}]
-        dbsession.add(fts)
-        dbsession.flush()
+        dbsession_old.add(fts)
+        dbsession_old.flush()
 
         messages = self.extract()
 
