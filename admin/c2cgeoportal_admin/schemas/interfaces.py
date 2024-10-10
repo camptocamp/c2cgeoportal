@@ -36,7 +36,9 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from c2cgeoportal_commons.models.main import Interface
 
 
-def interfaces_schema_node(prop: InstrumentedAttribute[Any]) -> colander.SequenceSchema:
+def interfaces_schema_node(
+    prop: InstrumentedAttribute[Any],  # pylint: disable=unsubscriptable-object
+) -> colander.SequenceSchema:
     """Get the serializable representation of an interface."""
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(Interface, None),

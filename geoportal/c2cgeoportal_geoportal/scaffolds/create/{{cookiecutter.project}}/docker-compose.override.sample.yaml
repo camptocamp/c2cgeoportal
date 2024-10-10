@@ -12,7 +12,7 @@ services:
     # - ./../c2cgeoportal/geoportal/c2cgeoportal_geoportal:/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal
     # - ./../c2cgeoportal/admin/c2cgeoportal_admin:/opt/c2cgeoportal/admin/c2cgeoportal_admin
     command:
-      - /usr/local/bin/pserve
+      - /venv/bin/pserve
       - --reload
       - c2c:///app/development.ini
     environment:

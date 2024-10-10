@@ -1,5 +1,5 @@
 # Base of all section, install the apt packages
-FROM ghcr.io/osgeo/gdal:ubuntu-small-3.8.5 AS base-all
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.9.2 AS base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 # Fail on error on pipe, see: https://github.com/hadolint/hadolint/wiki/DL4006.
@@ -7,13 +7,14 @@ LABEL maintainer Camptocamp "info@camptocamp.com"
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-# pip install --upgrade pip should be removed when we upgrade from Ubuntu 22.04 to 24.04
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends adduser git python3-pip \
-    && pip install --upgrade pip
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends adduser git python3-pip python3-venv \
+    && python3 -m venv /venv
+
+ENV PATH=/venv/bin:$PATH
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
@@ -37,40 +38,31 @@ SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
-COPY .nvmrc /tmp
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends apt-utils gnupg \
-    && NODE_MAJOR="$(cat /tmp/.nvmrc)" \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
-    && curl --silent https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor --output=/etc/apt/keyrings/nodesource.gpg \
+    && apt-get install --assume-yes --no-install-recommends software-properties-common \
+    && add-apt-repository ppa:savoury1/pipewire \
+    && add-apt-repository ppa:savoury1/chromium \
     && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
-        apt-transport-https gettext less gnupg libpq5 \
-        python3-dev libgraphviz-dev libpq-dev "nodejs=${NODE_MAJOR}.*" \
-    && echo "For Chrome installed by Pupetter: https://source.chromium.org/chromium/chromium/src/+/main:chrome/installer/linux/debian/dist_package_versions.json" \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
-        libx11-6 libx11-xcb1 libxcomposite1 libxcursor1 \
-        libxdamage1 libxext6 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 \
-        libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3.0 libxcb-dri3-0 libgbm1 libxshmfence1 \
-        libatspi2.0-0 libc6 libcairo2 libdbus-1-3 libdrm2 libexpat1 libglib2.0-0 libnspr4 libpango-1.0-0 \
-        libstdc++6 libuuid1 libxcb1 libxfixes3 libxkbcommon0 libxrender1 \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends chromium-browser gettext gnupg libpq5 npm \
     && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
 
+# shellcheck disable=SC2086
 RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     apt-get update \
+    && export DEV_PACKAGES="binutils gcc g++ libpq-dev python3-dev" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
-        binutils gcc g++ \
+        ${DEV_PACKAGES} \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
         --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && strip /usr/local/lib/python3.*/dist-packages/*/*.so \
-    && apt-get auto-remove --assume-yes binutils gcc g++ \
+    && strip /venv/lib/python3.*/site-packages/*/*.so \
+    && apt-get auto-remove --assume-yes binutils ${DEV_PACKAGES} \
     && python -c 'from fiona.collection import Collection'
 
 COPY scripts/extract-messages.js /opt/c2cgeoportal/geoportal/
@@ -91,14 +83,13 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     . /etc/os-release \
-    && echo deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
+    && echo 'deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt/' "${VERSION_CODENAME}-pgdg" main > /etc/apt/sources.list.d/pgdg.list \
     && curl --silent https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor --output=/etc/apt/keyrings/postgresql.gpg \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends git make g++ python3-dev \
-        postgresql-client net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base \
+        postgresql-client net-tools iputils-ping vim tree groff-base \
         libxml2-utils bash-completion pwgen redis-tools libmagic1 dnsutils iproute2 traceroute pkg-config \
     && curl https://raw.githubusercontent.com/awslabs/git-secrets/1.3.0/git-secrets > /usr/bin/git-secrets \
-    && vim-addon-manager --system-wide install editorconfig \
     && echo 'set hlsearch  " Highlight search' > /etc/vim/vimrc.local \
     && echo 'set wildmode=list:longest  " Completion menu' >> /etc/vim/vimrc.local \
     && echo 'set term=xterm-256color " Make home and end working' >> /etc/vim/vimrc.local
@@ -106,10 +97,11 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
-ENV PATH=/root/.local/bin/:${PATH}
 
 WORKDIR /opt/c2cgeoportal
+
 COPY ci/applications*.yaml .
+ENV PATH=/root/.local/bin/:${PATH}
 RUN c2cciutils-download-applications --applications-file=applications.yaml --versions-file=applications-versions.yaml
 
 WORKDIR /opt/c2cgeoportal/geoportal
@@ -119,8 +111,7 @@ COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
-    npm --ignore-scripts install \
-    && puppeteer browsers install chrome
+    npm --ignore-scripts install
 
 COPY admin/package.json admin/package-lock.json admin/.snyk /opt/c2cgeoportal/admin/
 WORKDIR /opt/c2cgeoportal/admin
@@ -129,7 +120,7 @@ WORKDIR /opt/c2cgeoportal/admin
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     --mount=type=cache,target=/tmp \
-    npm install --omit=optional \
+    npm install --omit=optional --ignore-scripts \
     && rm -rf /tmp/angular \
     && git clone --branch=v1.7.x --depth=1 --single-branch https://github.com/angular/angular.js.git /tmp/angular \
     && mv /tmp/angular/src/ngLocale/ /opt/angular-locale/ \
@@ -164,7 +155,7 @@ ENV VERSION=$VERSION
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     grep -r masterdev . || true \
-    && python3 -m pip install --no-use-pep517 --disable-pip-version-check --no-deps \
+    && python3 -m pip install --disable-pip-version-check --no-deps \
         --editable=commons \
         --editable=geoportal \
         --editable=admin
@@ -212,15 +203,14 @@ ENV VERSION=$VERSION
 WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
-ENV PUPPETEER_CACHE_DIR=/opt
 ENV XDG_CONFIG_HOME=/etc/xdg
-
 RUN chmod ugo+rw /etc/xdg
 
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
-    npm install --omit=dev --omit=optional
+    npm install --omit=dev --omit=optional --ignore-scripts
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 COPY bin/eval-templates bin/wait-db bin/list4vrt bin/azure /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
@@ -234,8 +224,8 @@ RUN --mount=type=cache,target=/var/cache,sharing=locked \
         --editable=commons \
         --editable=geoportal \
         --editable=admin \
-    && python3 -m compileall -q /opt/c2cgeoportal /usr/local/lib/python3.* \
-        -x '(/usr/local/lib/python3.*/dist-packages/(networkx|yaml_include)/|/usr/local/lib/python3.*/dist-packages/c2cgeoform/scaffolds|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
+    && python3 -m compileall -q /opt/c2cgeoportal /venv/lib/python3.* \
+        -x '(/venv/lib/python3.*/site-packages/(networkx|yaml_include)/|/venv/lib/python3.*/site-packages/c2cgeoform/scaffolds|/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scaffolds/)'
 
 WORKDIR /opt/c2cgeoportal/geoportal
 
@@ -267,5 +257,5 @@ FROM tools AS checks
 WORKDIR /opt/c2cgeoportal
 
 # For mypy
-RUN touch "$(echo /usr/local/lib/python3.*/dist-packages/)/zope/__init__.py" \
-    && touch "$(echo /usr/local/lib/python3.*/dist-packages/)/c2c/__init__.py"
+RUN touch "$(echo /venv/lib/python3.*/site-packages/)/zope/__init__.py" \
+    && touch "$(echo /venv/lib/python3.*/site-packages/)/c2c/__init__.py"
