@@ -116,22 +116,22 @@ tests: tests-commons  tests-geoportal tests-admin tests-qgisserver
 
 .PHONY: tests-commons
 tests-commons: ## Run the commons unit tests
-	docker compose exec -T tests pytest --verbose --color=yes \
+	docker compose exec -T tests pytest -vv --color=yes \
 		/opt/c2cgeoportal/commons/tests
 
 .PHONY: tests-geoportal
 tests-geoportal: ## Run the geoportal unit tests
-	docker compose exec -T tests pytest --verbose --color=yes \
+	docker compose exec -T tests pytest -vv --color=yes \
 		/opt/c2cgeoportal/geoportal/tests
 
 .PHONY: tests-admin
 tests-admin: ## Run the admin unit tests
-	docker compose exec -T tests pytest --verbose --color=yes \
+	docker compose exec -T tests pytest -vv --color=yes \
 		/opt/c2cgeoportal/admin/tests
 
 .PHONY: tests-qgis
 tests-qgisserver: ## Run the qgisserver unit tests
-	docker compose exec -T qgisserver-tests pytest --verbose --color=yes \
+	docker compose exec -T qgisserver-tests pytest -vv --color=yes \
 		/src/tests/functional
 
 .PHONY: preparetest
