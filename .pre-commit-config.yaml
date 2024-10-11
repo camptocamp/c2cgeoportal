@@ -34,7 +34,7 @@ repos:
       - id: check-symlinks
       - id: fix-byte-order-marker
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.1.1
+    rev: 1.1.2
     hooks:
       - id: copyright
       - id: workflows-require-timeout
@@ -46,6 +46,7 @@ repos:
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
           - poetry==1.8.3 # pypi
+      - id: npm-lock
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:
