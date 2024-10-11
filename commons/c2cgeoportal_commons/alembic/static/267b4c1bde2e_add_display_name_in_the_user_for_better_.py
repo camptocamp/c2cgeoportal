@@ -38,7 +38,6 @@ Create Date: 2024-10-02 14:33:59.185133
 import sqlalchemy as sa
 from alembic import op
 from c2c.template.config import config
-from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "267b4c1bde2e"

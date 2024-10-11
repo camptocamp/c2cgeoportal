@@ -735,8 +735,6 @@ class OGCServerAccessControl(QgsAccessControlFilter):
 
         assert not isinstance(roles, str)  # nosec
 
-        from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
-
         if self.ogcserver is None:
             parameters = self.serverInterface().requestHandler().parameterMap()
             _LOG.warning(
