@@ -10,6 +10,7 @@ This chapter describes advanced configuration settings.
 
    build
    runtime
+   interface
    ngeo
    backend
    caching
