@@ -61,7 +61,7 @@ python-dateutil = "2.9.0.post0" # geoportal
 PyYAML = "6.0.1" # geoportal
 rasterio = "1.4.1" # geoportal raster
 requests = "2.32.3" # geoportal
-redis = "5.1.0" # geoportal cache
+redis = "5.1.1" # geoportal cache
 Shapely = "2.0.6" # geoportal
 SQLAlchemy = "2.0.35"
 transaction = "5.0" # commons, geoportal
@@ -75,9 +75,9 @@ azure-storage-blob = "12.23.1"
 simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.12.0" }
+prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.12.1" }
 prospector-profile-duplicated = "1.6.0"
-prospector-profile-utils  = "1.9.0"
+prospector-profile-utils  = "1.9.1"
 beautifulsoup4 = "4.12.3"
 
 [tool.poetry.group.dev.dependencies]
