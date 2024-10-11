@@ -10,7 +10,7 @@
   "dependencies": {
     "@snyk/protect": "1.1293.1",
     "ngeo": "2.9.0-latest.20241011T123514Z.2c17b03be",
-    "puppeteer": "23.5.0"
+    "puppeteer": "23.5.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.1.0",
@@ -40,7 +40,7 @@
     "minify-html-literals-loader": "1.1.1",
     "neat-csv": "7.0.0",
     "parse-absolute-css-unit": "1.0.2",
-    "sass": "1.79.4",
+    "sass": "1.79.5",
     "sass-loader": "16.0.2",
     "simple-html-tokenizer": "0.5.11",
     "svgo": "3.3.2",
