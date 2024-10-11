@@ -1477,17 +1477,14 @@ files = [
 
 [[package]]
 name = "isodate"
-version = "0.6.1"
+version = "0.7.2"
 description = "An ISO 8601 date/time/duration parser and formatter"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "isodate-0.6.1-py2.py3-none-any.whl", hash = "sha256:0751eece944162659049d35f4f549ed815792b38793f07cf73381c1c87cbed96"},
-    {file = "isodate-0.6.1.tar.gz", hash = "sha256:48c5881de7e8b0a0d648cb024c8062dc84e7b840ed81e864c7614fd3c127bde9"},
+    {file = "isodate-0.7.2-py3-none-any.whl", hash = "sha256:28009937d8031054830160fce6d409ed342816b543597cece116d966c6d99e15"},
+    {file = "isodate-0.7.2.tar.gz", hash = "sha256:4cd1aa0f43ca76f4a6c6c0292a85f40b35ec2e43e315b59f06e6d32171a953e6"},
 ]
-
-[package.dependencies]
-six = "*"
 
 [[package]]
 name = "isort"
@@ -2582,13 +2579,13 @@ with-vulture = ["vulture (>=1.5)"]
 
 [[package]]
 name = "prospector-profile-duplicated"
-version = "1.5.0"
+version = "1.6.0"
 description = "Profile that can be used to disable the duplicated or conflict rules between Prospector and other tools"
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_duplicated-1.5.0-py2.py3-none-any.whl", hash = "sha256:fd4d3272ff6b5ceead036f4a60da6dd7aa5317057f66c735994b75542c9a0815"},
-    {file = "prospector_profile_duplicated-1.5.0.tar.gz", hash = "sha256:c1d6074ebb44fd3ea6a7b85e96d58a27f6e525687b019ef94924a9c8d2ccd5d5"},
+    {file = "prospector_profile_duplicated-1.6.0-py2.py3-none-any.whl", hash = "sha256:bf6a6aae0c7de48043b95e4d42e23ccd090c6c7115b6ee8c8ca472ffb1a2022b"},
+    {file = "prospector_profile_duplicated-1.6.0.tar.gz", hash = "sha256:9c2d541076537405e8b2484cb6222276a2df17492391b6af1b192695770aab83"},
 ]
 
 [[package]]
@@ -4805,4 +4802,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "6ddcdeedbf612dfd030c969d827b37a1b4afeec865a4076f2423a34c7a783feb"
+content-hash = "56658401704a6b1adfdc4d684f6159b25a88f86cd6e2490958f26ba54cddbfb2"

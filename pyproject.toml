@@ -42,7 +42,7 @@ Fiona = "1.10.1" # geoportal raster
 GeoAlchemy2 = "0.15.2" # commons, geoportal
 geojson = "3.1.0" # geoportal
 getitfixed = "1.0.29" # geoportal
-isodate = "0.6.1" # geoportal
+isodate = "0.7.2" # geoportal
 Mako = "1.3.5" # geoportal
 OWSLib = "0.31.0" # geoportal
 papyrus = "2.6.2" # commons, geoportal
@@ -76,7 +76,7 @@ simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_co
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.12.0" }
-prospector-profile-duplicated = "1.5.0"
+prospector-profile-duplicated = "1.6.0"
 prospector-profile-utils  = "1.9.0"
 beautifulsoup4 = "4.12.3"
 
