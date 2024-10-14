@@ -207,6 +207,12 @@ mapping:
           oauth2_token_expire_minutes:
             type: scalar
             required: false
+          oauth2:
+            type: map
+            required: false
+            mapping:
+              enabled:
+                type: bool
           allowed_hosts:
             type: seq
             sequence:
@@ -216,8 +222,8 @@ mapping:
             required: false
             mapping:
               enabled:
-                type: bool
-                default: false
+                type: scalar
+                # default: false
               url:
                 type: str
                 required: false
@@ -241,6 +247,22 @@ mapping:
               query_user_info:
                 type: bool
                 default: false
+              create_user:
+                type: bool
+                default: false
+              match_field:
+                type: str
+                enum:
+                  - username
+                  - email
+              update_fields:
+                type: seq
+                sequence:
+                  - type: str
+                    enum:
+                      - username
+                      - display_name
+                      - email
               user_info_fields:
                 type: map
                 mapping:

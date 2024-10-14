@@ -26,7 +26,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 import datetime
-import dis
 import json
 import logging
 from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
@@ -119,7 +118,7 @@ def get_remember_from_user_info(
 
     for field_, default_field in (
         ("username", "sub"),
-            ("display_name", "name"),
+        ("display_name", "name"),
         ("email", "email"),
         ("settings_role", None),
         ("roles", None),
@@ -137,15 +136,18 @@ def get_remember_from_user_info(
 
 
 def get_user_from_remember(
-    request: pyramid.request.Request, remember_object: OidcRememberObject, create_user: bool = False
+    request: pyramid.request.Request, remember_object: OidcRememberObject, update_create_user: bool = False
 ) -> Union["static.User", DynamicUser] | None:
     """
     Create a user from the remember object filled from `get_remember_from_user_info`.
 
     :param remember_object: The object to fill, by default with the `username`, `email`, `settings_role` and `roles`.
     :param settings: The OpenID Connect configuration.
-    :param create_user: If the user should be created if it does not exist.
+    :param update_create_user: If the user should be updated or created if it does not exist.
     """
+
+    # Those imports are here to avoid initializing the models module before the database schema are
+    # correctly initialized.
     from c2cgeoportal_commons import models  # pylint: disable=import-outside-toplevel
     from c2cgeoportal_commons.models import main, static  # pylint: disable=import-outside-toplevel
 
@@ -158,17 +160,38 @@ def get_user_from_remember(
     assert email is not None
     display_name = remember_object["display_name"] or email
 
-
-    provide_roles = (
-        request.registry.settings.get("authentication", {})
-        .get("openid_connect", {})
-        .get("provide_roles", False)
+    openid_connect_configuration = request.registry.settings.get("authentication", {}).get(
+        "openid_connect", {}
     )
+    provide_roles = openid_connect_configuration.get("provide_roles", False)
     if provide_roles is False:
-        user = models.DBSession.query(static.User).filter_by(email=email).one_or_none()
-        if user is None and create_user is True:
-            user = static.User(username=username, email=email, display_name=display_name)
-            models.DBSession.add(user)
+        user_query = models.DBSession.query(static.User)
+        match_field = openid_connect_configuration.get("match_field", "username")
+        if match_field == "username":
+            user_query = user_query.filter_by(username=username)
+        elif match_field == "email":
+            user_query = user_query.filter_by(email=email)
+        else:
+            raise HTTPInternalServerError(
+                f"Unknown match_field: '{match_field}', allowed values are 'username' and 'email'"
+            )
+        user = user_query.one_or_none()
+        if update_create_user is True:
+            if user is not None:
+                for field in openid_connect_configuration.get("update_fields", []):
+                    if field == "username":
+                        user.username = username
+                    elif field == "display_name":
+                        user.display_name = display_name
+                    elif field == "email":
+                        user.email = email
+                    else:
+                        raise HTTPInternalServerError(
+                            f"Unknown update_field: '{field}', allowed values are 'username', 'display_name' and 'email'"
+                        )
+            elif openid_connect_configuration.get("create_user", False) is True:
+                user = static.User(username=username, email=email, display_name=display_name)
+                models.DBSession.add(user)
     else:
         user = DynamicUser(
             username=username,

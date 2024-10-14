@@ -52,7 +52,7 @@ from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import main, static
+from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal import is_allowed_url, is_valid_referrer
 from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2, oidc
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
@@ -95,7 +95,7 @@ class Login:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             return HTTPFound(
                 location=self.request.route_url(
-                    "login",
+                    "oidc_login",
                     _query={"came_from": f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}"},
                 )
             )
@@ -293,10 +293,11 @@ class Login:
     def logout(self) -> pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             client = oidc.get_oidc_client(self.request, self.request.host)
-            user_info = json.loads(self.request.authenticated_userid)
-            client.revoke_token(user_info["access_token"])
-            if user_info.get("refresh_token") is not None:
-                client.revoke_token(user_info["refresh_token"])
+            if hasattr(client, "revoke_token"):
+                user_info = json.loads(self.request.authenticated_userid)
+                client.revoke_token(user_info["access_token"])
+                if user_info.get("refresh_token") is not None:
+                    client.revoke_token(user_info["refresh_token"])
 
         headers = forget(self.request)
 
@@ -643,9 +644,11 @@ class Login:
 
         remember_object = oidc.OidcRemember(self.request).remember(token_response, self.request.host)
 
-        user: static.User | oidc.DynamicUser | None = self.request.get_user_from_remember(remember_object)
-        assert user is not None
-        self.request.user_ = user
+        user: static.User | oidc.DynamicUser | None = self.request.get_user_from_remember(
+            remember_object, update_create_user=True
+        )
+        if user is not None:
+            self.request.user_ = user
 
         if "came_from" in self.request.cookies:
             came_from = self.request.cookies["came_from"]
@@ -653,21 +656,24 @@ class Login:
 
             return HTTPFound(location=came_from, headers=self.request.response.headers)
 
-        return set_common_headers(
-            self.request,
-            "login",
-            Cache.PRIVATE_NO,
-            response=Response(
-                # TODO respect the user interface...
-                json.dumps(
-                    {
-                        "username": user.display_name,
-                        "email": user.email,
-                        "is_intranet": is_intranet(self.request),
-                        "functionalities": self._functionality(),
-                        "roles": [{"name": r.name, "id": r.id} for r in user.roles],
-                    }
+        if user is not None:
+            return set_common_headers(
+                self.request,
+                "login",
+                Cache.PRIVATE_NO,
+                response=Response(
+                    # TODO respect the user interface...
+                    json.dumps(
+                        {
+                            "username": user.display_name,
+                            "email": user.email,
+                            "is_intranet": is_intranet(self.request),
+                            "functionalities": self._functionality(),
+                            "roles": [{"name": r.name, "id": r.id} for r in user.roles],
+                        }
+                    ),
+                    headers=(("Content-Type", "text/json"),),
                 ),
-                headers=(("Content-Type", "text/json"),),
-            ),
-        )
+            )
+        else:
+            return HTTPUnauthorized("See server logs for details")

@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import os
 from functools import partial
 
 from c2cgeoform.schema import GeoFormSchemaNode
@@ -57,6 +58,8 @@ base_schema.add_unique_validator(User.username, User.id)
 
 settings_role = aliased(Role)
 
+_OPENID_CONNECT_ENABLED = os.environ.get("OPENID_CONNECT_ENABLED", "false").lower() in ("true", "yes", "1")
+
 
 @view_defaults(match_param="table=users")
 class UserViews(LoggedViews[User]):
@@ -64,11 +67,14 @@ class UserViews(LoggedViews[User]):
 
     _list_fields = [
         _list_field("id"),
-        _list_field("username"),
+        *([_list_field("username")] if not _OPENID_CONNECT_ENABLED else []),
+        _list_field("display_name"),
         _list_field("email"),
-        _list_field("last_login"),
-        _list_field("expire_on"),
-        _list_field("deactivated"),
+        *(
+            [_list_field("last_login"), _list_field("expire_on"), _list_field("deactivated")]
+            if not _OPENID_CONNECT_ENABLED
+            else []
+        ),
         _list_field(
             "settings_role",
             renderer=lambda user: user.settings_role.name if user.settings_role else "",

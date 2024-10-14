@@ -45,6 +45,7 @@ import pyramid.renderers
 import pyramid.request
 import pyramid.response
 import pyramid.security
+import simple_openid_connect.data
 import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
@@ -378,25 +379,47 @@ def create_get_user_from_request(
 
         if not hasattr(request, "user_"):
             request.user_ = None
-            if username is None:
-                username = request.authenticated_userid
-            if username is not None:
-                openid_connect_config = settings.get("authentication", {}).get("openid_connect", {})
-                if openid_connect_config.get("enabled", False):
-                    user_info = json.loads(username)
-                    access_token_expires = dateutil.parser.isoparse(user_info["access_token_expires"])
-                    if access_token_expires < datetime.datetime.now():
-                        if user_info["refresh_token_expires"] is None:
-                            return None
-                        refresh_token_expires = dateutil.parser.isoparse(user_info["refresh_token_expires"])
-                        if refresh_token_expires < datetime.datetime.now():
-                            return None
-                        token_response = oidc.get_oidc_client(request, request.host).exchange_refresh_token(
-                            user_info["refresh_token"]
+            user_info_remember: dict[str, Any] | None = None
+            openid_connect_configuration = settings.get("authentication", {}).get("openid_connect", {})
+            openid_connect_enabled = openid_connect_configuration.get("enabled", False)
+            if (
+                openid_connect_enabled
+                and "Authorization" in request.headers
+                and request.headers["Authorization"].startswith("Bearer ")
+            ):
+                token = request.headers["Authorization"][7:]
+                client = oidc.get_oidc_client(request, request.host)
+                user_info = client.fetch_userinfo(token)
+                user_info_remember = {}
+                request.get_remember_from_user_info(user_info.dict(), user_info_remember)
+            elif username is None:
+                username = request.unauthenticated_userid
+            if username is not None or user_info_remember is not None:
+                if openid_connect_enabled:
+                    if user_info_remember is None:
+                        assert username is not None
+                        user_info_remember = json.loads(username)
+                    del username
+                    if "access_token_expires" in user_info_remember:
+                        access_token_expires = dateutil.parser.isoparse(
+                            user_info_remember["access_token_expires"]
                         )
-                        user_info = oidc.OidcRemember(request).remember(token_response, request.host)
+                        if access_token_expires < datetime.datetime.now():
+                            if user_info_remember["refresh_token_expires"] is None:
+                                return None
+                            refresh_token_expires = dateutil.parser.isoparse(
+                                user_info_remember["refresh_token_expires"]
+                            )
+                            if refresh_token_expires < datetime.datetime.now():
+                                return None
+                            token_response = oidc.get_oidc_client(
+                                request, request.host
+                            ).exchange_refresh_token(user_info_remember["refresh_token"])
+                            user_info_remember = oidc.OidcRemember(request).remember(
+                                token_response, request.host
+                            )
 
-                    request.user_ = request.get_user_from_reminder(user_info)
+                    request.user_ = request.get_user_from_remember(user_info_remember)
                 else:
                     # We know we will need the role object of the
                     # user so we use joined loading

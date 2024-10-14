@@ -28,6 +28,7 @@
 
 import crypt
 import logging
+import os
 from datetime import datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
@@ -67,6 +68,7 @@ except ModuleNotFoundError:
 
 
 _LOG = logging.getLogger(__name__)
+_OPENID_CONNECT_ENABLED = os.environ.get("OPENID_CONNECT_ENABLED", "false").lower() in ("true", "yes", "1")
 
 _schema: str = config["schema_static"] or "static"
 
@@ -136,10 +138,14 @@ class User(Base):  # type: ignore
         unique=True,
         nullable=False,
         info={
-            "colanderalchemy": {
-                "title": _("Username"),
-                "description": _("Name used for authentication (must be unique)."),
-            }
+            "colanderalchemy": (
+                {
+                    "title": _("Username"),
+                    "description": _("Name used for authentication (must be unique)."),
+                }
+                if not _OPENID_CONNECT_ENABLED
+                else {"widget": HiddenWidget()}
+            )
         },
     )
     display_name: Mapped[str] = mapped_column(
@@ -176,10 +182,14 @@ class User(Base):  # type: ignore
         Boolean,
         default=False,
         info={
-            "colanderalchemy": {
-                "title": _("The user changed his password"),
-                "description": _("Indicates if user has changed his password."),
-            }
+            "colanderalchemy": (
+                {
+                    "title": _("The user changed his password"),
+                    "description": _("Indicates if user has changed his password."),
+                }
+                if not _OPENID_CONNECT_ENABLED
+                else {"exclude": True}
+            )
         },
     )
 
@@ -232,22 +242,30 @@ class User(Base):  # type: ignore
         DateTime(timezone=True),
         nullable=True,
         info={
-            "colanderalchemy": {
-                "title": _("Last login"),
-                "description": _("Date of the user's last login."),
-                "missing": drop,
-                "widget": DateTimeInputWidget(readonly=True),
-            }
+            "colanderalchemy": (
+                {
+                    "title": _("Last login"),
+                    "description": _("Date of the user's last login."),
+                    "missing": drop,
+                    "widget": DateTimeInputWidget(readonly=True),
+                }
+                if not _OPENID_CONNECT_ENABLED
+                else {"exclude": True}
+            )
         },
     )
 
     expire_on: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         info={
-            "colanderalchemy": {
-                "title": _("Expiration date"),
-                "description": _("After this date the user will not be able to login anymore."),
-            }
+            "colanderalchemy": (
+                {
+                    "title": _("Expiration date"),
+                    "description": _("After this date the user will not be able to login anymore."),
+                }
+                if not _OPENID_CONNECT_ENABLED
+                else {"exclude": True}
+            )
         },
     )
 
@@ -255,10 +273,14 @@ class User(Base):  # type: ignore
         Boolean,
         default=False,
         info={
-            "colanderalchemy": {
-                "title": _("Deactivated"),
-                "description": _("Deactivate a user without removing it completely."),
-            }
+            "colanderalchemy": (
+                {
+                    "title": _("Deactivated"),
+                    "description": _("Deactivate a user without removing it completely."),
+                }
+                if not _OPENID_CONNECT_ENABLED
+                else {"exclude": True}
+            )
         },
     )
 
