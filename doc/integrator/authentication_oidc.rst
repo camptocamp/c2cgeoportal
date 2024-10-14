@@ -37,20 +37,17 @@ We use [OpenID Connect Discovery 1.0](https://openid.net/specs/openid-connect-di
 Authentication provider
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-If we want to use OpenID Connect as an authentication provider, we need to set the following configuration in our ``vars.yaml`` file:
+If we want to use OpenID Connect as an authentication provider, we need to set the environment variable
+``OPENID_CONNECT_ENABLED`` to ``true``, then we need to set the following configuration in our
+``vars.yaml`` file:
 
 .. code:: yaml
 
    vars:
      authentication:
        openid_connect:
-         enabled: true
          url: <the service URL>
          client_id: <the client application ID>
-         user_info_fields:
-           username: sub  # Default value
-           display_name: name  # Default value
-           email: email  # Default value
 
 With that the user will be create in the database at the first login, and the access right will be set in the GeoMapFish database.
 The user correspondence will be done on the email field.
@@ -59,20 +56,19 @@ The user correspondence will be done on the email field.
 Authorization provider
 ~~~~~~~~~~~~~~~~~~~~~~
 
-If we want to use OpenID Connect as an authorization provider, we need to set the following configuration in our ``vars.yaml`` file:
+If we want to use OpenID Connect as an authorization provider, we need to set the environment variable
+``OPENID_CONNECT_ENABLED`` to ``true``, then we need to set the following configuration in our
+``vars.yaml`` file:
 
 .. code:: yaml
 
    vars:
      authentication:
        openid_connect:
-         enabled: true
          url: <the service URL>
          client_id: <the client application ID>
          provide_roles: true
          user_info_fields:
-           username: name  # Default value
-           email: email # Default value
            settings_role: settings_role
            roles: roles
 
@@ -84,11 +80,45 @@ Other options
 
 ``client_secret``: The secret of the client.
 
-``trusted_audiences``: The list of trusted audiences, if the token audience is not in this list, the token will be rejected.
+``trusted_audiences``: The list of trusted audiences, if the audience provided by the id-token is not in
+  this list, the id-token will be rejected.
 
 ``scopes``: The list of scopes to request, default is [``openid``, ``profile``, ``email``].
 
-``query_user_info``: If ``true``, the user info will be requested instead if using the ``id_token``, default is false.
+``query_user_info``: If ``true``, the user info will be requested instead if using the ``id_token``,
+  default is ``false``.
+
+``create_user``: If ``true``, a user will be create in the geomapfish database if not exists,
+  default is ``false``.
+
+``match_field``: The field to use to match the user in the database, can be ``username`` (default) or ``email``.
+
+``update_fields``: The fields to update in the database, default is: ``[]``, allowed values are
+  ``username``, ``display_name`` and ``email``.
+
+``user_info_fields:`` The mapping between the user info fields and the user fields in the GeoMapFish database,
+  default is:
+
+  .. code:: yaml
+
+     username: sub
+     display_name: name
+     email: email
+
+~~~~~~~~~~~~~~~~~~~~
+Example with Zitadel
+~~~~~~~~~~~~~~~~~~~~
+
+.. code:: yaml
+
+   vars:
+     authentication:
+       openid_connect:
+         enabled: true
+         url: https://sso.geomapfish-demo.prod.apps.gs-ch-prod.camptocamp.com
+         client_id: '***'
+         query_user_info: true
+         create_user: true
 
 ~~~~~
 Hooks
@@ -120,3 +150,37 @@ Configure the hooks in the project initialization:
     def includeme(config):
         config.add_request_method(get_remember_from_user_info, name="get_remember_from_user_info")
         config.add_request_method(get_user_from_remember, name="get_user_from_remember")
+
+~~~~~~~~~~~~~~~~~
+QGIS with Zitadel
+~~~~~~~~~~~~~~~~~
+
+In Zitadel you should have a PKCS application with the following settings:
+Redirect URI: ``http://127.0.0.1:7070/``.
+
+On QGIS:
+
+* Add an ``Authentication``.
+* Set a ``Name``.
+* Set ``Authentication`` to ``OAuth2``.
+* Set ``Grant flow`` to ``PKCE authentication code``.
+* Set ``Request URL`` to ``<zitadel_base_url>/oauth/v2/authorize``.
+* Set ``Token URL`` to ``<zitadel_base_url>/oauth/v2/token``.
+* Set ``Client ID`` to ``<client_id>``.
+* Set ``Scope`` to the ``openid profile email``.
+
+~~~~~~~~~~~~~~
+Implementation
+~~~~~~~~~~~~~~
+
+When we implement OpenID Connect, we have to possibilities:
+- Implement it in the backend.
+- Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.
+
+In c2cgeoportal we have implemented booth method.
+
+The backend implementation is used by ngeo an the admin interface, where se store the user information
+(including the access and refresh token) in an encrypted JSON as a cookie.
+
+The frontend implementation is used by application like QGIS desktop, on every call we have to call the
+user info endpoint to get the user information.

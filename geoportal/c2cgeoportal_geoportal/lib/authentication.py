@@ -203,14 +203,20 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
         )
     )
 
-    policies.append(OAuth2AuthenticationPolicy())
+    authentication_config = settings.get("authentication", {})
+    openid_connect_config = authentication_config.get("openid_connect", {})
+    oauth2_config = authentication_config.get("oauth2", {})
+    if oauth2_config.get("enabled", not openid_connect_config.get("enabled", False)):
+        policies.append(OAuth2AuthenticationPolicy())
 
     if basicauth:
-        if settings["authentication"].get("two_factor", False):
+        if authentication_config.get("two_factor", False):
             _LOG.warning(
                 "Basic auth and two factor auth should not be enable together, "
                 "you should use OAuth2 instead of Basic auth"
             )
+        if openid_connect_config.get("enabled", False):
+            _LOG.warning("Basic auth and OpenID Connect should not be enable together")
 
         basic_authentication_policy = BasicAuthAuthenticationPolicy(c2cgeoportal_check)
         policies.append(basic_authentication_policy)

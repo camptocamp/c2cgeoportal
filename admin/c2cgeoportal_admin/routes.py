@@ -73,6 +73,13 @@ def includeme(config):
         User,
     )
 
+    authentication_configuration = config.registry.settings.get("authentication", {})
+    oidc_configuration = authentication_configuration.get("openid_connect", {})
+    oidc_enabled = oidc_configuration.get("enabled", False)
+    oidc_provide_roles = oidc_configuration.get("provide_roles", False)
+    oauth2_configuration = authentication_configuration.get("oauth2", {})
+    oauth2_enabled = oauth2_configuration.get("enabled", not oidc_enabled)
+
     visible_routes = [
         ("themes", Theme),
         ("layer_groups", LayerGroup),
@@ -82,11 +89,11 @@ def includeme(config):
         ("layers_cog", LayerCOG),
         ("ogc_servers", OGCServer),
         ("restriction_areas", RestrictionArea),
-        ("users", User),
+        *([("users", User)] if not oidc_enabled or not oidc_provide_roles else []),
         ("roles", Role),
         ("functionalities", Functionality),
         ("interfaces", Interface),
-        ("oauth2_clients", OAuth2Client),
+        *([("oauth2_clients", OAuth2Client)] if oauth2_enabled else []),
         ("logs", Log),
     ]
 
