@@ -43,6 +43,8 @@ vars:
     oauth2_token_expire_minutes: 60
     oauth2_authorization_expire_minutes: 10
     max_consecutive_failures: 10
+    openid_connect:
+      enabled: '{OPENID_CONNECT_ENABLED}'
 
   intranet:
     networks: []
@@ -1389,6 +1391,8 @@ runtime_environment:
     default: ''
   - name: SENTRY_CLIENT_ENVIRONMENT
     default: ''
+  - name: OPENID_CONNECT_ENABLED
+    default: 'false'
 
 runtime_postprocess:
   - expression: int({})
@@ -1469,6 +1473,7 @@ runtime_postprocess:
   - expression: str({}).lower() in ("true", "yes", "1")
     vars:
       - authentication.two_factor
+      - authentication.openid_connect.enabled
       - getitfixed.enabled
       - layers.geometry_validation
       - smtp.ssl
