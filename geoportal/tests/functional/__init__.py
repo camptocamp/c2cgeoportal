@@ -112,7 +112,10 @@ def setup_db() -> None:
     from c2cgeoportal_commons.models.main import Role
 
     with DBSession() as session:
-        session.add_all([Role(name) for name in ("anonymous", "registered", "intranet")])
+        for role_name in ("anonymous", "registered", "intranet"):
+            role = session.query(Role).filter(Role.name == role_name).one_or_none()
+            if role is None:
+                session.add(Role(name=role_name))
 
         transaction.commit()
 
