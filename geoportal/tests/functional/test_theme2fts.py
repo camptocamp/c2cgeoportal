@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023, Camptocamp SA
+# Copyright (c) 2020-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,42 +53,27 @@ def settings():
     }
 
 
-@pytest.fixture(scope="module")
-def dbsession(settings):
-    from c2cgeoportal_commons.models import DBSession
-
-    yield DBSession
-
-
-@pytest.fixture
-def transact(dbsession):
-    t = dbsession.begin_nested()
-    yield t
-    t.rollback()
-    dbsession.expire_all()
-
-
-def add_parent(dbsession, item, group):
+def add_parent(dbsession_old, item, group):
     """
     Utility function to add a TreeItem in a TreeGroup.
     """
     from c2cgeoportal_commons.models import main
 
-    dbsession.add(main.LayergroupTreeitem(group=group, item=item, ordering=len(group.children_relation)))
+    dbsession_old.add(main.LayergroupTreeitem(group=group, item=item, ordering=len(group.children_relation)))
 
 
 @pytest.fixture(scope="function")
-def test_data(dbsession, transact):
+def test_data(dbsession_old, transact_old):
     from c2cgeoportal_commons.models import main
 
     ogc_server = main.OGCServer(name="ogc_server")
-    dbsession.add(ogc_server)
+    dbsession_old.add(ogc_server)
 
     interfaces = {i.name: i for i in [main.Interface(name=name) for name in ["desktop", "mobile", "api"]]}
-    dbsession.add_all(interfaces.values())
+    dbsession_old.add_all(interfaces.values())
 
     role = main.Role(name="role")
-    dbsession.add(role)
+    dbsession_old.add(role)
 
     public_theme = main.Theme(name="public_theme")
     public_theme.interfaces = list(interfaces.values())
@@ -99,37 +84,37 @@ def test_data(dbsession, transact):
     private_theme.restricted_roles = [role]
 
     themes = {t.name: t for t in [public_theme, private_theme]}
-    dbsession.add_all(themes.values())
+    dbsession_old.add_all(themes.values())
 
     first_level_group = main.LayerGroup(name="first_level_group")
-    add_parent(dbsession, first_level_group, public_theme)
-    add_parent(dbsession, first_level_group, private_theme)
+    add_parent(dbsession_old, first_level_group, public_theme)
+    add_parent(dbsession_old, first_level_group, private_theme)
 
     second_level_group = main.LayerGroup(name="second_level_group")
-    add_parent(dbsession, second_level_group, first_level_group)
+    add_parent(dbsession_old, second_level_group, first_level_group)
 
     groups = {g.name: g for g in [first_level_group, second_level_group]}
-    dbsession.add_all(groups.values())
+    dbsession_old.add_all(groups.values())
 
     public_layer = main.LayerWMS(name="public_layer")
     public_layer.ogc_server = ogc_server
     public_layer.interfaces = list(interfaces.values())
-    add_parent(dbsession, public_layer, first_level_group)
+    add_parent(dbsession_old, public_layer, first_level_group)
 
     private_layer = main.LayerWMS(name="private_layer", public=False)
     private_layer.ogc_server = ogc_server
     private_layer.interfaces = list(interfaces.values())
-    add_parent(dbsession, private_layer, second_level_group)
+    add_parent(dbsession_old, private_layer, second_level_group)
 
     layers = {layer.name: layer for layer in [public_layer, private_layer]}
-    dbsession.add_all(layers.values())
+    dbsession_old.add_all(layers.values())
 
     ra = main.RestrictionArea(name="ra")
     ra.roles = [role]
     ra.layers = [private_layer]
-    dbsession.add(ra)
+    dbsession_old.add(ra)
 
-    dbsession.flush()  # Flush here to detect integrity errors now.
+    dbsession_old.flush()  # Flush here to detect integrity errors now.
 
     yield {
         "ogc_server": ogc_server,
@@ -185,11 +170,11 @@ def dummy_translation():
 
 @pytest.mark.usefixtures("test_data", "dummy_translation")
 class TestImport:
-    def assert_fts(self, dbsession, attrs):
+    def assert_fts(self, dbsession_old, attrs):
         from c2cgeoportal_commons.models import main
 
         fts = (
-            dbsession.query(main.FullTextSearch)
+            dbsession_old.query(main.FullTextSearch)
             .filter(main.FullTextSearch.label == attrs["label"])
             .filter(main.FullTextSearch.interface == attrs["interface"])
             .filter(main.FullTextSearch.role == attrs["role"])
@@ -210,15 +195,15 @@ class TestImport:
         assert fts.actions == attrs["actions"]
         assert fts.from_theme is True
 
-    def test_import(self, dbsession, settings, test_data):
+    def test_import(self, dbsession_old, settings, test_data):
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 
-        Import(dbsession, settings, options())
+        Import(dbsession_old, settings, options())
 
         # languages * interfaces * (themes + groups + layers)
         total = 4 * 2 * (2 + 2 + 2)
-        assert dbsession.query(main.FullTextSearch).count() == total
+        assert dbsession_old.query(main.FullTextSearch).count() == total
 
         for lang in settings["available_locale_names"]:
             for interface in test_data["interfaces"].values():
@@ -311,24 +296,24 @@ class TestImport:
                     },
                 ]
                 for e in expected:
-                    self.assert_fts(dbsession, e)
+                    self.assert_fts(dbsession_old, e)
 
-    def test_search_alias(self, dbsession, settings, test_data):
+    def test_search_alias(self, dbsession_old, settings, test_data):
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 
         alias_layer = main.LayerWMS(name="alias_layer")
         alias_layer.ogc_server = test_data["ogc_server"]
         alias_layer.interfaces = list(test_data["interfaces"].values())
-        add_parent(dbsession, alias_layer, test_data["groups"]["first_level_group"])
+        add_parent(dbsession_old, alias_layer, test_data["groups"]["first_level_group"])
         alias_layer.metadatas = [
             main.Metadata(name="searchAlias", value="myalias,mykeyword"),
             main.Metadata(name="searchAlias", value="myotheralias,myotherkeyword"),
         ]
-        dbsession.add(alias_layer)
-        dbsession.flush()
+        dbsession_old.add(alias_layer)
+        dbsession_old.flush()
 
-        Import(dbsession, settings, options())
+        Import(dbsession_old, settings, options())
 
         for lang in settings["available_locale_names"]:
             for interface in test_data["interfaces"].values():
@@ -351,9 +336,9 @@ class TestImport:
                     },
                 ]
                 for e in expected:
-                    self.assert_fts(dbsession, e)
+                    self.assert_fts(dbsession_old, e)
 
-    def test_search_label_pattern(self, dbsession, settings, test_data):
+    def test_search_label_pattern(self, dbsession_old, settings, test_data):
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 
@@ -362,34 +347,34 @@ class TestImport:
         label_theme.metadatas = [
             main.Metadata(name="searchLabelPattern", value="{name}, {theme}"),
         ]
-        dbsession.add(label_theme)
+        dbsession_old.add(label_theme)
 
         label_block = main.LayerGroup(name="label_block")
-        add_parent(dbsession, label_block, label_theme)
+        add_parent(dbsession_old, label_block, label_theme)
         label_block.metadatas = [
             main.Metadata(name="searchLabelPattern", value="{name} ({theme}, {parent})"),
         ]
-        dbsession.add(label_block)
+        dbsession_old.add(label_block)
 
         label_group = main.LayerGroup(name="label_group")
-        add_parent(dbsession, label_group, label_block)
+        add_parent(dbsession_old, label_group, label_block)
         label_group.metadatas = [
             main.Metadata(name="searchLabelPattern", value="{name} ({theme}, {block}, {parent})"),
         ]
-        dbsession.add(label_group)
+        dbsession_old.add(label_group)
 
         label_layer = main.LayerWMS(name="label_layer")
         label_layer.ogc_server = test_data["ogc_server"]
         label_layer.interfaces = list(test_data["interfaces"].values())
-        add_parent(dbsession, label_layer, label_group)
+        add_parent(dbsession_old, label_layer, label_group)
         label_layer.metadatas = [
             main.Metadata(name="searchLabelPattern", value="{name} ({theme}, {block}, {parent})"),
         ]
 
-        dbsession.add(label_layer)
-        dbsession.flush()
+        dbsession_old.add(label_layer)
+        dbsession_old.flush()
 
-        Import(dbsession, settings, options())
+        Import(dbsession_old, settings, options())
 
         for lang in settings["available_locale_names"]:
             for interface in test_data["interfaces"].values():
@@ -454,4 +439,4 @@ class TestImport:
                     },
                 ]
                 for e in expected:
-                    self.assert_fts(dbsession, e)
+                    self.assert_fts(dbsession_old, e)

@@ -63,7 +63,7 @@ class TestThemeEditing(TestCase):
 
         setup_db()
 
-        ogcserver = create_default_ogcserver()
+        ogcserver = create_default_ogcserver(DBSession)
 
         role1 = Role(name="__test_role1")
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])

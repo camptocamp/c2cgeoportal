@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023, Camptocamp SA
+# Copyright (c) 2021-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,10 +35,10 @@ from tests.functional.geodata_model import PointTest
 
 
 @pytest.fixture
-def test_data(dbsession, transact):
+def test_data(dbsession_old, transact_old):
     from c2cgeoportal_commons.models.main import LayerVectorTiles
 
-    del transact
+    del transact_old
 
     points = {
         "p1": PointTest(
@@ -54,7 +54,7 @@ def test_data(dbsession, transact):
             geom=WKTElement("POINT(600090 199955)", srid=21781), name="123", city="Londre", country="UK"
         ),
     }
-    dbsession.add_all(points.values())
+    dbsession_old.add_all(points.values())
 
     layers = {
         "layer_vector_tiles": LayerVectorTiles(
@@ -73,9 +73,9 @@ def test_data(dbsession, transact):
             """,
         )
     }
-    dbsession.add_all(layers.values())
+    dbsession_old.add_all(layers.values())
 
-    dbsession.flush()
+    dbsession_old.flush()
 
     yield {
         "layers": layers,

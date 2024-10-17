@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023, Camptocamp SA
+# Copyright (c) 2016-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ class TestThemesView(TestCase):
             Theme,
         )
 
-        ogc_server = create_default_ogcserver()
+        ogc_server = create_default_ogcserver(DBSession)
         main = Interface(name="main")
 
         layer_wms_1 = LayerWMS(name="__test_layer_wms_1", public=True)
