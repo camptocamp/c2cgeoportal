@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ class TestMapserverproxyCapabilities(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         setup_db()
-        create_default_ogcserver()
+        create_default_ogcserver(DBSession)
 
         ogcserver_jpeg = OGCServer(name="__test_ogc_server_jpeg")
         ogcserver_jpeg.url = mapserv_url

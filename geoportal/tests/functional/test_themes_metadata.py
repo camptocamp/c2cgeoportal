@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ class TestThemesViewMetadata(TestCase):
 
         desktop = Interface(name="desktop")
 
-        ogc_server_internal = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver(DBSession)
 
         layer_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_wms.layer = "testpoint_unprotected"
