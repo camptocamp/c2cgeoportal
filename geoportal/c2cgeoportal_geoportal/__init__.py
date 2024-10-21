@@ -714,7 +714,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         if static_files.get(name):
             add_static_route(name, attr, path, static_files[name])
     config.add_route("apijs", "/api.js", request_method="GET")
-    c2cgeoportal_geoportal.views.add_redirect(config, "apihelp_redirect", "/apihelp.html", "apihelp")
+    c2cgeoportal_geoportal.views.add_redirect(config, "apihelp_redirect", "/apihelp.html", "apihelp.html")
 
     config.add_route("themes", "/themes", request_method="GET", pregenerator=C2CPregenerator(role=True))
 
