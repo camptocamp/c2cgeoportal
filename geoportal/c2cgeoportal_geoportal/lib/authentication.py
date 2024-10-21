@@ -88,8 +88,8 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
                     request.response.headerlist.extend(headers)
                     return cast(str, auth["u"])
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            _LOG.error("URL login error: %s.", e, exc_info=True)
+        except Exception:  # pylint: disable=broad-exception-caught
+            _LOG.exception("URL login error on auth '%s'.", auth_enc)
 
         return None
 
