@@ -130,7 +130,11 @@ class DynamicView:
         interface_name = self.request.get_organization_interface(original_interface_name)
 
         if interface_name not in self.interfaces_config:
-            raise HTTPNotFound("Interface {} doesn't exists in the 'interfaces_config'.")
+            interface_separator = "', '"
+            raise HTTPNotFound(
+                f"Interface '{interface_name}' doesn't exist in the 'interfaces_config', "
+                f"available interfaces are: '{interface_separator.join(self.interfaces_config.keys())}'."
+            )
 
         interface_config = self.interfaces_config[interface_name]
         lang_urls_suffix = interface_config.get("lang_urls_suffix", "")
