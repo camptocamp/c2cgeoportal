@@ -182,7 +182,7 @@ class TestThemesView(TestCase):
 
         main = Interface(name="desktop")
 
-        ogc_server_internal = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver(DBSession)
 
         layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
         layer_internal_wms.layer = "__test_layer_internal_wms"

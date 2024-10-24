@@ -97,7 +97,7 @@ class TestThemeEntryView(TestCase):
         a_geo_table.drop(checkfirst=True, bind=engine)
         a_geo_table.create(bind=engine)
 
-        ogcserver = create_default_ogcserver()
+        ogcserver = create_default_ogcserver(DBSession)
 
         private_layer_edit = LayerWMS(name="__test_private_layer_edit", public=False)
         private_layer_edit.layer = "__test_private_layer"

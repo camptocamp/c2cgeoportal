@@ -71,7 +71,7 @@ class TestLayers(TestCase):
         DBSession.add(self.role)
         DBSession.add(self.main)
 
-        create_default_ogcserver()
+        create_default_ogcserver(DBSession)
 
         transaction.commit()
 
