@@ -9,6 +9,22 @@ Information to know before starting the upgrade
 
 1. The build command will use Docker Compose version 2 (with the `docker compose` command).
 
+2. RFC 001 - simplification of Ngeo buildtools and custom frontends for GeoMapfish
+   https://github.com/camptocamp/GeoMapFish/blob/6f8bffaa1e472cdd8ed3de52c8250b5da62d69de/rfcs/rfc_001.md
+
+   Important points:
+   - The `@ngInject` annotation is no more used, you should pass an array in the function or use the `$inject` property,
+     see related pull request: https://github.com/camptocamp/ngeo/pull/9453
+   - The build will not anymore inline the svg, If you use that you should do it manually,
+     see related commit: https://github.com/camptocamp/ngeo/pull/9454/commits/fb3ccfb0bdc8273975cdebfd7dbda401416674c3.
+   - Remove the custom SASS plugin to load the SCSS files.
+     You should have one SCSS file per interface, the component will not anymore integrate the related style.
+     See the related pull request: https://github.com/camptocamp/ngeo/pull/9455.
+   - Update Webpack to version 5 and remove Babel transpilation to ES05,
+     See the related pull request: https://github.com/camptocamp/ngeo/pull/9463.
+   - Update FontAwesome to version 6,
+     See the related pull request: https://github.com/camptocamp/ngeo/pull/9470
+
 Information
 ===========
 
