@@ -61,13 +61,13 @@ python-dateutil = "2.9.0.post0" # geoportal
 PyYAML = "6.0.1" # geoportal
 rasterio = "1.4.1" # geoportal raster
 requests = "2.32.3" # geoportal
-redis = "5.1.1" # geoportal cache
+redis = "5.2.0" # geoportal cache
 Shapely = "2.0.6" # geoportal
 SQLAlchemy = "2.0.35"
 transaction = "5.0" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "5.0" # commons, geoportal
-c2cwsgiutils = { version = "6.0.8", extras = ["broadcast", "standard", "oauth2", "debug"] }
+c2cwsgiutils = { version = "6.1.1", extras = ["broadcast", "standard", "oauth2", "debug"] }
 oauthlib = "3.2.2"
 tilecloud = "1.12.3" # geoportal
 azure-storage-blob = "12.23.1"
@@ -94,7 +94,7 @@ types-pytz = "2024.2.0.20241003"
 types-pyyaml = "6.0.12.20240917"
 types-python-dateutil = "2.9.0.20241003"
 types-requests = "2.32.0.20240914"
-types-setuptools = "75.1.0.20240917"
+types-setuptools = "75.2.0.20241025"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.8", extras = ["checks"] }
