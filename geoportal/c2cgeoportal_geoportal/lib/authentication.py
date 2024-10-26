@@ -30,6 +30,7 @@ import binascii
 import json
 import logging
 import os
+import re
 import time
 from collections.abc import Callable
 from typing import Any, cast
@@ -51,6 +52,8 @@ from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 
 _LOG = logging.getLogger(__name__)
 
+_HEX_RE = re.compile(r"^[0-9a-fA-F]+$")
+
 
 @implementer(IAuthenticationPolicy)
 class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
@@ -70,8 +73,20 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         if auth_enc is None:
             return None
         try:
-            if self.aeskey is None:  # pragma: nocover
-                raise Exception("urllogin is not configured")  # pylint: disable=broad-exception-raised
+            if self.aeskey is None:
+                _LOG.warning("Found auth parameter in URL query string but urllogin is not configured")
+                return None
+
+            if not _HEX_RE.match(auth_enc):
+                _LOG.warning("Found auth parameter in URL query string but it is not an hex string")
+                return None
+
+            if len(auth_enc) % 2 != 0:
+                _LOG.warning(
+                    "Found auth parameter in URL query string but it is not an even number of characters"
+                )
+                return None
+
             now = int(time.time())
             data = binascii.unhexlify(auth_enc.encode("ascii"))
             nonce = data[0:16]

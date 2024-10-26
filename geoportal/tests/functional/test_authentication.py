@@ -115,15 +115,11 @@ class TestUrlAuthenticationPolicy(TestCase):
         """
 
         def _get_user(method):
-            request = create_dummy_request(params={"auth": "this is a form field value"}, method=method)
+            request = create_dummy_request(params={"auth": "this is a wrong field value"}, method=method)
             policy = UrlAuthenticationPolicy(None, defaultgroupsfinder)
-            policy.unauthenticated_userid(request)
+            assert policy.unauthenticated_userid(request) is None
 
-        # Verify that GET request raises an Exception
-        with self.assertRaises(Exception):
-            _get_user("GET")
-
-        # Verify that POST request does not raises an Exception
+        _get_user("GET")
         _get_user("POST")
 
     def test_user_deactivated(self):
