@@ -60,6 +60,7 @@ class TestUser(AbstractViewsTests):
             ("actions", "", "false"),
             ("id", "id", "true"),
             ("username", "Username"),
+            ("display_name", "Display name", "true"),
             ("email", "Email"),
             ("last_login", "Last login"),
             ("expire_on", "Expiration date"),
