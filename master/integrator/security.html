@@ -260,17 +260,14 @@ add the domain of the <code class="docutils literal notranslate"><span class="pr
 </section>
 <section id="authentication-provider">
 <h3>Authentication provider<a class="headerlink" href="#authentication-provider" title="Link to this heading">¶</a></h3>
-<p>If we want to use OpenID Connect as an authentication provider, we need to set the following configuration in our <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<p>If we want to use OpenID Connect as an authentication provider, we need to set the environment variable
+<code class="docutils literal notranslate"><span class="pre">OPENID_CONNECT_ENABLED</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, then we need to set the following configuration in our
+<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the service URL&gt;</span>
 <span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the client application ID&gt;</span>
-<span class="w">      </span><span class="nt">user_info_fields</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span><span class="w">  </span><span class="c1"># Default value</span>
-<span class="w">        </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span><span class="w">  </span><span class="c1"># Default value</span>
-<span class="w">        </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span><span class="w">  </span><span class="c1"># Default value</span>
 </pre></div>
 </div>
 <p>With that the user will be create in the database at the first login, and the access right will be set in the GeoMapFish database.
@@ -278,17 +275,16 @@ The user correspondence will be done on the email field.</p>
 </section>
 <section id="authorization-provider">
 <h3>Authorization provider<a class="headerlink" href="#authorization-provider" title="Link to this heading">¶</a></h3>
-<p>If we want to use OpenID Connect as an authorization provider, we need to set the following configuration in our <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
+<p>If we want to use OpenID Connect as an authorization provider, we need to set the environment variable
+<code class="docutils literal notranslate"><span class="pre">OPENID_CONNECT_ENABLED</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, then we need to set the following configuration in our
+<code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the service URL&gt;</span>
 <span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;the client application ID&gt;</span>
 <span class="w">      </span><span class="nt">provide_roles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">      </span><span class="nt">user_info_fields</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span><span class="w">  </span><span class="c1"># Default value</span>
-<span class="w">        </span><span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span><span class="w"> </span><span class="c1"># Default value</span>
 <span class="w">        </span><span class="nt">settings_role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">settings_role</span>
 <span class="w">        </span><span class="nt">roles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">roles</span>
 </pre></div>
@@ -298,9 +294,94 @@ The user correspondence will be done on the email field.</p>
 <section id="other-options">
 <h3>Other options<a class="headerlink" href="#other-options" title="Link to this heading">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">client_secret</span></code>: The secret of the client.</p>
-<p><code class="docutils literal notranslate"><span class="pre">trusted_audiences</span></code>: The list of trusted audiences, if the token audience is not in this list, the token will be rejected.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">trusted_audiences</span></code>: The list of trusted audiences, if the audience provided by the id-token is not in</dt><dd><p>this list, the <code class="docutils literal notranslate"><span class="pre">ID</span> <span class="pre">token</span></code> will be rejected.</p>
+</dd>
+</dl>
 <p><code class="docutils literal notranslate"><span class="pre">scopes</span></code>: The list of scopes to request, default is [<code class="docutils literal notranslate"><span class="pre">openid</span></code>, <code class="docutils literal notranslate"><span class="pre">profile</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>].</p>
-<p><code class="docutils literal notranslate"><span class="pre">query_user_info</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the user info will be requested instead if using the <code class="docutils literal notranslate"><span class="pre">id_token</span></code>, default is false.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">query_user_info</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the OpenID Connect provider user info endpoint will be requested to</dt><dd><p>provide the user info instead of using the information provided in the <code class="docutils literal notranslate"><span class="pre">ID</span> <span class="pre">token</span></code>,
+default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">create_user</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, a user will be create in the geomapfish database if not exists,</dt><dd><p>default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">match_field</span></code>: The field to use to match the user in the database, can be <code class="docutils literal notranslate"><span class="pre">username</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">email</span></code>.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">update_fields</span></code>: The fields to update in the database, default is: <code class="docutils literal notranslate"><span class="pre">[]</span></code>, allowed values are</dt><dd><p><code class="docutils literal notranslate"><span class="pre">username</span></code>, <code class="docutils literal notranslate"><span class="pre">display_name</span></code> and <code class="docutils literal notranslate"><span class="pre">email</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">user_info_fields:</span></code> The mapping between the user info fields and the user fields in the GeoMapFish database,</dt><dd><p>the key is the GeoMpaFish user field and the value is the field of the user info provided by the
+OpenID Connect provider, default is:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span>
+<span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+<section id="example-with-zitadel">
+<h3>Example with Zitadel<a class="headerlink" href="#example-with-zitadel" title="Link to this heading">¶</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://sso.example.com</span>
+<span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;***&#39;</span>
+<span class="w">      </span><span class="nt">query_user_info</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">create_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</section>
+<section id="hooks">
+<h3>Hooks<a class="headerlink" href="#hooks" title="Link to this heading">¶</a></h3>
+<p>If you want to redefine the user creation process, you can use the hooks <code class="docutils literal notranslate"><span class="pre">get_remember_from_user_info</span></code>
+and <code class="docutils literal notranslate"><span class="pre">get_user_from_remember</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">get_remember_from_user_info</span></code>: This hook is called during the user is authentication.
+The argument are the pyramid <code class="docutils literal notranslate"><span class="pre">request</span></code>, the received <code class="docutils literal notranslate"><span class="pre">user_info</span></code>, and the <code class="docutils literal notranslate"><span class="pre">remember_object</span></code> dictionary
+to be filled and will be stored in the cookie.</p>
+<p><code class="docutils literal notranslate"><span class="pre">get_user_from_remember</span></code>: This hook is called during the user is certification.
+The argument are the pyramid <code class="docutils literal notranslate"><span class="pre">request</span></code>, the received <code class="docutils literal notranslate"><span class="pre">remember_object</span></code>, and the <code class="docutils literal notranslate"><span class="pre">update_create_user</span></code> boolean.
+The return value is the user object <code class="docutils literal notranslate"><span class="pre">User</span></code> or <code class="docutils literal notranslate"><span class="pre">DynamicUsed</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">update_create_user</span></code> will be <code class="docutils literal notranslate"><span class="pre">True</span></code> only when we are in the callback endpoint.</p>
+<p>Full signatures:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_remember_from_user_info</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">user_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">remember_object</span><span class="p">:</span> <span class="n">OidcRememberObject</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="k">def</span> <span class="nf">get_user_from_remember</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">remember_object</span><span class="p">:</span> <span class="n">OidcRememberObject</span><span class="p">,</span> <span class="n">update_create_user</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">User</span><span class="p">,</span> <span class="n">DynamicUsed</span><span class="p">]:</span>
+</pre></div>
+</div>
+<p>Configure the hooks in the project initialization:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">includeme</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_remember_from_user_info</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_remember_from_user_info&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_user_from_remember</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_user_from_remember&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="qgis-with-zitadel">
+<h3>QGIS with Zitadel<a class="headerlink" href="#qgis-with-zitadel" title="Link to this heading">¶</a></h3>
+<p>In Zitadel you should have a PKCS application with the following settings:
+Redirect URI: <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:7070/</span></code>.</p>
+<p>On QGIS:</p>
+<ul class="simple">
+<li><p>Add an <code class="docutils literal notranslate"><span class="pre">Authentication</span></code>.</p></li>
+<li><p>Set a <code class="docutils literal notranslate"><span class="pre">Name</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Authentication</span></code> to <code class="docutils literal notranslate"><span class="pre">OAuth2</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Grant</span> <span class="pre">flow</span></code> to <code class="docutils literal notranslate"><span class="pre">PKCE</span> <span class="pre">authentication</span> <span class="pre">code</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Request</span> <span class="pre">URL</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;zitadel_base_url&gt;/oauth/v2/authorize</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Token</span> <span class="pre">URL</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;zitadel_base_url&gt;/oauth/v2/token</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Client</span> <span class="pre">ID</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;client_id&gt;</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">Scope</span></code> to the <code class="docutils literal notranslate"><span class="pre">openid</span> <span class="pre">profile</span> <span class="pre">email</span></code>.</p></li>
+</ul>
+</section>
+<section id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h3>
+<p>When we implement OpenID Connect, we have to possibilities:
+- Implement it in the backend.
+- Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.</p>
+<p>In c2cgeoportal we have implemented booth method.</p>
+<p>The backend implementation is used by ngeo an the admin interface, where se store the user information
+(including the access and refresh token) in an encrypted JSON as a cookie.</p>
+<p>The frontend implementation is used by application like QGIS desktop, on every call we have to call the
+user info endpoint to get the user information.</p>
 <section id="oauth2-with-qgis">
 <span id="integrator-authentication-oauth2"></span><h4>OAuth2 with QGIS<a class="headerlink" href="#oauth2-with-qgis" title="Link to this heading">¶</a></h4>
 <p>In the admin interface create an ‘OAuth2 Client’ with:</p>
