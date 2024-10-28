@@ -157,7 +157,7 @@ def custom_view(
         html_filename = os.path.join("/etc/static-frontend/", html_filename)
 
     with open(html_filename, encoding="utf-8") as html_file:
-        html = BeautifulSoup(html_file.read, "html.parser")
+        html = BeautifulSoup(html_file, "html.parser")
 
     meta = html.find("meta", attrs={"name": "interface"})
     if meta is not None:
