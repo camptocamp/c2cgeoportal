@@ -26,6 +26,12 @@ vars:
   checker:
     fulltextsearch:
       disable: true
+    phantomjs:
+      disable:
+        - apihelp
+        - desktop
+        - mobile
+        - iframe_api
     routes:
       disable:
         - printproxy_capabilities
@@ -39,4 +45,5 @@ update_paths:
   - layers
   - checker.fulltextsearch
   - checker.routes
+  - checker.phantomjs
   - check_collector
