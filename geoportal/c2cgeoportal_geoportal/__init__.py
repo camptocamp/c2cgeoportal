@@ -155,10 +155,11 @@ def add_interface(
         )
     else:
         _LOG.error(
-            "Unknown interface type '%s', should be '%s' or '%s'.",
+            "Unknown interface type '%s', should be '%s', '%s' or '%s'.",
             interface_type,
             INTERFACE_TYPE_NGEO,
             INTERFACE_TYPE_CANVAS,
+            INTERFACE_TYPE_CUSTOM,
         )
 
 
