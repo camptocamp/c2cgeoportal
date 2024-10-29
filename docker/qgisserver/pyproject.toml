@@ -29,12 +29,12 @@ papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
 "c2c.template" = "2.4.2"
 GeoAlchemy2 = "0.15.2"
-SQLAlchemy = "2.0.35" # commons
+SQLAlchemy = "2.0.36" # commons
 "zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.1" # commons
 shapely = "2.0.6"
 cee-syslog-handler = "0.6.0"
-psycopg2 = "2.9.9"
+psycopg2 = "2.9.10"
 pytz = "2024.2"
 
 [tool.poetry.dev-dependencies]
