@@ -138,13 +138,7 @@ def main() -> None:
                 )
                 data = _sub(
                     re.escape('<script src="../../../dist/vendor.js') + r".*",
-                    (
-                        r'<script src="{entry_point}static-ngeo/vendor.js?{cache_version}" '
-                        r'crossorigin="anonymous"></script>'
-                    ).format(
-                        entry_point="<%= htmlWebpackPlugin.options.vars.entry_point %>",
-                        cache_version="<%= htmlWebpackPlugin.options.vars.cache_version %>",
-                    ),
+                    "",
                     data,
                     required=False,
                 )
