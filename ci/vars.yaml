@@ -29,7 +29,6 @@ vars:
     phantomjs:
       disable:
         - apihelp
-        - desktop
         - mobile
         - iframe_api
     routes:
