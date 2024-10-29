@@ -5,6 +5,7 @@ const config = commons({
     context: '/usr/lib/',
   },
   noTs: true,
+  nodll: true,
 });
 
 module.exports = () => config;
