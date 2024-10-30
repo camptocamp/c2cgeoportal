@@ -35,7 +35,8 @@ Information
    Now everywhere:
    - If the hostname (with port) of the candidate URL equals to the request's header "Host", then it's OK.
    - If the hostname (with port) of the candidate URL is in the allowed list, then it's OK.
-   And they should be netloc (hostname with port) without schema or path.
+   And they should be netloc (hostname with port) without schema or path
+   (if schema or path is present they are ignored).
    The `vars.allowed_hosts` is added to allowed only some authorized host.
 
 2. We replace checks (formatting) done by `c2cciutils` by `pre-commit` hooks.

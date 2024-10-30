@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2023, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -102,6 +102,8 @@ class TestIncludeme(TestCase):
 @pytest.mark.parametrize(
     "authorized,value,expected",
     [
+        ("https://example.com", "http://example.com/app", True),
+        ("http://example.com", "https://example.com/app", True),
         ("example.com", "http://example.com/app?k=v", True),
         ("example.com", "http://example.com/app?k=v#link", True),
         ("example.com", "http://example.com/app#link", True),
