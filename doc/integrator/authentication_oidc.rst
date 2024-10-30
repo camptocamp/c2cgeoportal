@@ -3,7 +3,7 @@ OpenID Connect
 
 We can configure an OpenID connect service as an SSO (Single Sign-On) provider for our application. This allows users to log in to our application using their OpenID Connect credentials.
 
-We use [OpenID Connect Discovery 1.0](https://openid.net/specs/openid-connect-discovery-1_0.html) with an Authorization Code Flow from [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html), with PKCE (Proof Key for Code Exchange, RFC 7636).
+We use `OpenID Connect Discovery 1.0 <https://openid.net/specs/openid-connect-discovery-1_0.html>`_ with an Authorization Code Flow from `OpenID Connect Core 1.0 <https://openid.net/specs/openid-connect-core-1_0.html>`_, with PKCE (Proof Key for Code Exchange, `RFC 7636 <https://tools.ietf.org/html/rfc7636>`_).
 
 .. mermaid::
 
@@ -176,8 +176,9 @@ Implementation
 ~~~~~~~~~~~~~~
 
 When we implement OpenID Connect, we have to possibilities:
-- Implement it in the backend.
-- Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.
+
+* Implement it in the backend.
+* Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.
 
 In c2cgeoportal we have implemented booth method.
 
