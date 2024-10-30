@@ -229,7 +229,7 @@ add the domain of the <code class="docutils literal notranslate"><span class="pr
 <section id="openid-connect">
 <span id="integrator-authentication-oidc"></span><h4>OpenID Connect<a class="headerlink" href="#openid-connect" title="Link to this heading">¶</a></h4>
 <p>We can configure an OpenID connect service as an SSO (Single Sign-On) provider for our application. This allows users to log in to our application using their OpenID Connect credentials.</p>
-<p>We use [OpenID Connect Discovery 1.0](<a class="reference external" href="https://openid.net/specs/openid-connect-discovery-1_0.html">https://openid.net/specs/openid-connect-discovery-1_0.html</a>) with an Authorization Code Flow from [OpenID Connect Core 1.0](<a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a>), with PKCE (Proof Key for Code Exchange, RFC 7636).</p>
+<p>We use <a class="reference external" href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a> with an Authorization Code Flow from <a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>, with PKCE (Proof Key for Code Exchange, <a class="reference external" href="https://tools.ietf.org/html/rfc7636">RFC 7636</a>).</p>
 <div class="mermaid">
             sequenceDiagram
     actor User
@@ -374,9 +374,11 @@ Redirect URI: <code class="docutils literal notranslate"><span class="pre">http:
 </section>
 <section id="implementation">
 <h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h3>
-<p>When we implement OpenID Connect, we have to possibilities:
-- Implement it in the backend.
-- Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.</p>
+<p>When we implement OpenID Connect, we have to possibilities:</p>
+<ul class="simple">
+<li><p>Implement it in the backend.</p></li>
+<li><p>Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.</p></li>
+</ul>
 <p>In c2cgeoportal we have implemented booth method.</p>
 <p>The backend implementation is used by ngeo an the admin interface, where se store the user information
 (including the access and refresh token) in an encrypted JSON as a cookie.</p>
