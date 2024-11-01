@@ -20,11 +20,11 @@ SQLAlchemy = "1.4.54" # commons
 "zope.sqlalchemy" = "1.6" # commons
 shapely = "2.0.6"
 cee-syslog-handler = "0.6.0"
-psycopg2 = "2.9.9"
+psycopg2 = "2.9.10"
 pytz = "2022.7.1"
 redis = "4.4.4"
 pyramid = "2.0.2"
-webob = "1.8.8"
+webob = "1.8.9"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.4" }
