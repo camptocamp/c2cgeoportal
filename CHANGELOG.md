@@ -1,3 +1,7 @@
+##### 2.8.1.156
+
+- Fix CVE [c2cgeoportal#11476](https://github.com/camptocamp/c2cgeoportal/pull/11476)
+
 ##### 2.8.1.155
 
 - Add gmfSearchGroups documentation [c2cgeoportal#11445](https://github.com/camptocamp/c2cgeoportal/pull/11445)
