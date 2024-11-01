@@ -80,13 +80,13 @@ pyyaml-include = ">=2.0"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "6.1.1"
+version = "6.1.2"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "c2cwsgiutils-6.1.1-py3-none-any.whl", hash = "sha256:1a244ba39135f1ee1895127c869bfb356d41ee75426e9294315e5210921403e2"},
-    {file = "c2cwsgiutils-6.1.1.tar.gz", hash = "sha256:fa718beb6f163fe1025ab65d0c84d3be07dfd611f6b9109dffe3838d56d9ae02"},
+    {file = "c2cwsgiutils-6.1.2-py3-none-any.whl", hash = "sha256:21d3833f1df8a431c6907880b127a6c1edb12efee6536f5f913797ac7d744fa1"},
+    {file = "c2cwsgiutils-6.1.2.tar.gz", hash = "sha256:969938bbe6f4b961c47803107e0e3b17dced8e3e7010966056bff38353645103"},
 ]
 
 [package.dependencies]
@@ -1955,4 +1955,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "5f8baa4aa8e14eb0fce4365a62f201644438a15392303dfe44a8fca1b29a79f9"
+content-hash = "d2be3893637c79ccdd5e316dd871bbb130f3356c8984bbaca11899c96543dced"
