@@ -1,3 +1,7 @@
+##### 2.6.0.281
+* Update CI dependencies to v1.1.47 (2.6) (patch) [c2cgeoportal#11490](https://github.com/camptocamp/c2cgeoportal/pull/11490)
+* Update dependency python to v3.8.20 (2.6) [c2cgeoportal#11491](https://github.com/camptocamp/c2cgeoportal/pull/11491)
+* Update dependency webob to v1.8.9 (2.6) [c2cgeoportal#11492](https://github.com/camptocamp/c2cgeoportal/pull/11492)
 ##### 2.6.0.280
 * Ignore CVE [c2cgeoportal#11477](https://github.com/camptocamp/c2cgeoportal/pull/11477)
 ##### 2.6.0.279
