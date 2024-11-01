@@ -1,3 +1,8 @@
+##### 2.8.1.157
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#11495](https://github.com/camptocamp/c2cgeoportal/pull/11495)
+- Update dependency pyjson5 to v1.6.7 (2.8) [c2cgeoportal#11496](https://github.com/camptocamp/c2cgeoportal/pull/11496)
+
 ##### 2.8.1.156
 
 - Fix CVE [c2cgeoportal#11476](https://github.com/camptocamp/c2cgeoportal/pull/11476)
