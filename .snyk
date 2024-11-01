@@ -24,4 +24,12 @@ ignore:
     - '*':
         reason: Will probably never been fixed
         created: 2024-08-19T12:47:12.462Z
+  SNYK-PYTHON-WAITRESS-8309635:
+      - '*':
+            reason: Requires a newer python version
+            created: 2024-11-01T09:43:34.583Z
+  SNYK-PYTHON-WAITRESS-8309636:
+      - '*':
+            reason: Requires a newer python version
+            created: 2024-11-01T09:43:47.251Z
 patch: {}
